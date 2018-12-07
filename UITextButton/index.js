@@ -1,0 +1,93 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import StylePropType from 'react-style-proptype';
+import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+
+import UIFont from '../UIFont';
+import UIColor from '../UIColor';
+import UIStyle from '../UIStyle';
+import UIConstant from '../UIConstant';
+
+const styles = StyleSheet.create({
+    textButton: {
+        height: UIConstant.buttonHeight(),
+        backgroundColor: 'transparent',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    titleText: {
+        color: UIColor.primary(),
+        ...UIFont.smallMedium(),
+    },
+    detailsText: {
+        marginRight: UIConstant.contentOffset(),
+    },
+});
+
+class UITextButton extends Component {
+    // Render
+    textSecondary
+    renderTitle() {
+        const {
+            title, textStyle, details, disabled,
+        } = this.props;
+        const defaultTitleStyle = disabled ? UIStyle.textSecondarySmallMedium : styles.titleText;
+        return (
+            <Text style={[defaultTitleStyle, textStyle, { flexGrow: details ? 1 : 0 }]}>
+                {title}
+            </Text>
+        );
+    }
+
+    renderDetails() {
+        const { details, detailsStyle } = this.props;
+        if (!details || !details.length) {
+            return null;
+        }
+        return (
+            <Text style={[UIStyle.textSecondarySmallRegular, detailsStyle]}>
+                {details}
+            </Text>
+        );
+    }
+
+    render() {
+        const { buttonStyle, onPress, disabled } = this.props;
+        return (
+            <TouchableOpacity
+                style={[
+                    styles.textButton,
+                    buttonStyle,
+                ]}
+                disabled={disabled}
+                onPress={() => onPress()}
+            >
+                {this.renderTitle()}
+                {this.renderDetails()}
+            </TouchableOpacity>
+        );
+    }
+}
+
+export default UITextButton;
+
+UITextButton.defaultProps = {
+    buttonStyle: {},
+    textStyle: {},
+    detailsStyle: {},
+    title: '',
+    details: '',
+    disabled: false,
+    onPress: () => {},
+};
+
+UITextButton.propTypes = {
+    buttonStyle: StylePropType,
+    textStyle: StylePropType,
+    detailsStyle: StylePropType,
+    title: PropTypes.string,
+    details: PropTypes.string,
+    disabled: PropTypes.bool,
+    onPress: PropTypes.func,
+};
