@@ -92,7 +92,9 @@ export {
     UITextInput,
     UIToastMessage,
     UIToggle,
+};
 
+export type {
     CreateNavigationOptions,
     ReactNavigation,
     NavigationProps,

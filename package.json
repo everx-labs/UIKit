@@ -36,9 +36,9 @@
         "react-style-proptype": "^3.2.1"
     },
     "devDependencies": {
+        "@babel/preset-flow": "7.0.0",
         "babel-eslint": "9.0.0",
-        "flow-bin": "0.78.0",
-        "@babel/preset-flow": "7.0.0"
+        "flow-bin": "0.78.0"
     },
     "repository": {
         "type": "git",
