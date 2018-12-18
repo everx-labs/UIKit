@@ -297,9 +297,11 @@ export default class UIFunction {
 
             const itemA = objA[propName];
             const itemB = objB[propName];
-            if ((itemA instanceof Object && itemB instanceof Object
-                && !this.areObjectsEqual(itemA, itemB))
-                || itemA !== itemB) {
+            if (itemA instanceof Object && itemB instanceof Object) {
+                if (!this.areObjectsEqual(itemA, itemB)) {
+                    return false;
+                }
+            } else if (itemA !== itemB) {
                 return false;
             }
         }
