@@ -1,12 +1,6 @@
 # UIKit
 UI components kit
 
-# Install in TON-Wallet
-clone UIKit in src/services using
-```
-cd src/services && git clone https://github.com/tonlabs/UIKit
-```
-
 # Install in separate project
 add to package.json in "dependencies":
 ```
