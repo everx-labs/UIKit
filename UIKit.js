@@ -43,6 +43,10 @@ import UITextInput from './components/UITextInput';
 import UIToastMessage from './components/UIToastMessage';
 import UIToggle from './components/UIToggle';
 
+// Types
+import type { CreateNavigationOptions, ReactNavigation } from './components/UINavigationBar';
+import type { NavigationProps } from './helpers/UINavigator';
+
 export {
     UIActionSheet,
     UIAlertView,
@@ -88,4 +92,8 @@ export {
     UITextInput,
     UIToastMessage,
     UIToggle,
+
+    CreateNavigationOptions,
+    ReactNavigation,
+    NavigationProps,
 };
