@@ -5,7 +5,7 @@ import Moment from 'moment';
 
 const currencies = require('currency-formatter/currencies.json');
 
-const countries = require('../../components/UIAssets/countries/countries.json');
+const countries = require('../../assets/countries/countries.json');
 
 export default class UIFunction {
     // Async Helpers

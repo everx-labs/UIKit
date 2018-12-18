@@ -15,8 +15,7 @@ add to package.json in "dependencies":
 
 then run:
 ```
-npm install
-npm install --save react && react-dom && react-native
+npm install --save ui-kit && react && react-dom && react-native
 react-native link react-native-localization
 react-native link react-native-device-info
 ```

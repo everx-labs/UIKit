@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
 
-import icoInactive from '../UIAssets/ico-toggle-inactive/ico-toggle-inactive.png';
-import icoActive from '../UIAssets/ico-toggle-active/ico-toggle-active.png';
-import icoOn from '../UIAssets/ico-toggle-on/ico-toggle-on.png';
-import icoOff from '../UIAssets/ico-toggle-off/ico-toggle-off.png';
+import icoInactive from '../../assets/ico-toggle-inactive/ico-toggle-inactive.png';
+import icoActive from '../../assets/ico-toggle-active/ico-toggle-active.png';
+import icoOn from '../../assets/ico-toggle-on/ico-toggle-on.png';
+import icoOff from '../../assets/ico-toggle-off/ico-toggle-off.png';
 
 export default class UIToggle extends Component {
     // Render

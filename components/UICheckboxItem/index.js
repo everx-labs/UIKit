@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Image, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
 import icoSquareCheckboxActive
-    from '../UIAssets/ico-checkbox-square-active/ico-checkbox-square-active.png';
+    from '../../assets/ico-checkbox-square-active/ico-checkbox-square-active.png';
 import icoSquareCheckboxInactive
-    from '../UIAssets/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
+    from '../../assets/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
 import icoCircleCheckboxActive
-    from '../UIAssets/ico-checkbox-circle-active/ico-checkbox-circle-active.png';
+    from '../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active.png';
 import icoCircleCheckboxInactive
-    from '../UIAssets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive.png';
+    from '../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive.png';
 
 const checkboxSize = 24;
 

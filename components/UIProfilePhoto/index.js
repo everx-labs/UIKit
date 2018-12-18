@@ -8,7 +8,7 @@ import UIStyle from '../../helpers/UIStyle';
 import UIConstant from '../../helpers/UIConstant';
 import UIImageView from '../UIImageView';
 
-const cameraImage = require('../UIAssets/ico-camera/ico-camera.png');
+const cameraImage = require('../../assets/ico-camera/ico-camera.png');
 
 const styles = StyleSheet.create({
     container: {

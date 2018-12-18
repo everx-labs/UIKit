@@ -6,7 +6,7 @@ import UIConstant from '../../helpers/UIConstant';
 import UIColor from '../../helpers/UIColor';
 import UIFont from '../../helpers/UIFont';
 
-import icoClose from '../UIAssets/ico-close/close.png';
+import icoClose from '../../assets/ico-close/close.png';
 
 const styles = StyleSheet.create({
     containerStyle: {

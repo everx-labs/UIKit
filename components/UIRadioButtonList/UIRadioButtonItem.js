@@ -6,8 +6,8 @@ import { TouchableWithoutFeedback, View, Image, Text, StyleSheet } from 'react-n
 import UIConstant from '../../helpers/UIConstant';
 import UIStyle from '../../helpers/UIStyle';
 
-import icoRadiobuttonActive from '../UIAssets/ico-radiobutton-active/ico-radiobutton-active.png';
-import icoRadiobuttonInactive from '../UIAssets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
+import icoRadiobuttonActive from '../../assets/ico-radiobutton-active/ico-radiobutton-active.png';
+import icoRadiobuttonInactive from '../../assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
 
 const styles = StyleSheet.create({
     radiobuttonItem: {

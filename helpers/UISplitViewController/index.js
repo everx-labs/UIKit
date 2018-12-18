@@ -2,10 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 
 import UIController from '../UIController';
-// import UIConstant from '../../helpers/UIConstant';
 import UIDevice from '../UIDevice';
 import UIStyle from '../UIStyle';
-import UIColor from '../UIColor';
 
 export default class UISplitViewController extends UIController {
     // constructor

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Image, TouchableOpacity, View } from 'react-native';
 import UIStyle from '../../helpers/UIStyle';
 
-const backImage = require('../UIAssets/ico-arrow-left/ico-arrow-left.png');
+const backImage = require('../../assets/ico-arrow-left/ico-arrow-left.png');
 
 export default class UINavigationBackButton extends React.Component {
     static propTypes = {
