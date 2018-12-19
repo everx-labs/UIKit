@@ -225,8 +225,9 @@ const en = {
 
     // WalletSetup
     WalletSetup: {
-        CreateANew: 'Create a new',
-        Restore: 'Restore',
+        LogoText: 'Fast way to receive and send cryptocurrencies',
+        CreateANew: 'Create a new Wallet',
+        Restore: 'Restore Wallet',
         PrivateKey: 'Private Key',
         PrivateKeyDetails: 'It is the only thing that can provide an access to your data and money and recover the wallet if needed.',
         PrivateKeyHint: 'We recommend you not to save this key, but to use a mnemonic phrase based on it. It is much easier to remember the phrase than such a big number.',
