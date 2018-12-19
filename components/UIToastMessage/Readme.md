@@ -20,7 +20,7 @@ class ModalExample extends React.Component {
     render() {
         const autoHide = this.getAutoHide();
         return (
-            <div>
+            <UIView>
                 <UITextButton 
                         title="Show default toast with message only"
                         onPress={() => UIToastMessage.showMessage(
@@ -102,7 +102,7 @@ class ModalExample extends React.Component {
                     />
                 </div>
                 <UIToastMessage />
-            </div>
+            </UIView>
         );
     }
 };
