@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
 // need this component only for styleguide
 const UIView = props => (
-    <View style={styles.container}>
+    <View style={[styles.container, props.style]}>
         {props.children}
     </View>
 );
