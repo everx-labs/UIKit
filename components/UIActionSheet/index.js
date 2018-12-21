@@ -40,7 +40,7 @@ class UIActionSheet extends Component {
     constructor(props) {
         super(props);
         this.menuItemsList = [];
-        this.needCancelItem = false;
+        this.needCancelItem = true;
         this.onCancelCallback = () => {};
 
         this.state = {
@@ -80,7 +80,7 @@ class UIActionSheet extends Component {
     }
 
     // Actions
-    show(menuItemsList = [], needCancelItem = false, onCancelCallback = () => {}) {
+    show(menuItemsList = [], needCancelItem = true, onCancelCallback = () => {}) {
         this.menuItemsList = menuItemsList;
         this.needCancelItem = needCancelItem;
         this.onCancelCallback = onCancelCallback;
@@ -114,7 +114,7 @@ class UIActionSheet extends Component {
     }
 
     // Render
-    renderCancelButton() {
+    renderCancelItem() {
         if (!this.needCancelItem) {
             return null;
         }
@@ -152,7 +152,7 @@ class UIActionSheet extends Component {
                             renderItem={({ item }) => this.renderMenuItem(item)}
                             scrollEnabled={false}
                         />
-                        {this.renderCancelButton()}
+                        {this.renderCancelItem()}
                     </Animated.View>
                 </View>
             </TouchableWithoutFeedback>

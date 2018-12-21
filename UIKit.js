@@ -21,7 +21,7 @@ import UILoadMoreButton from './components/UILoadMoreButton';
 import UILocalized from './helpers/UILocalized';
 import UIMenuView from './components/UIMenuView';
 import UIMenuBackground from './helpers/UIMenuBackground';
-import UIModalController from './components/UIModalController';
+import UIModalController from './helpers/UIModalController';
 import UINavigationBackButton from './components/UINavigationBackButton';
 import UINavigationBar from './components/UINavigationBar';
 import UINavigator from './helpers/UINavigator';
