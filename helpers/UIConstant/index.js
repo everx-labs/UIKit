@@ -63,7 +63,7 @@ const UI_PROFILE_PHOTO_SIZE = 72;
 
 const MAX_TEXT_LINE_LENGTH = 200;
 
-const DATA_COUNT = 20;
+const DATA_COUNT = 12; // Good for 1,2,3,4 columns when loading data in grid!
 
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
