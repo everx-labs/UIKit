@@ -224,6 +224,7 @@ const ru = {
     Later: 'Позже',
 
     WalletSetup: {
+        LogoText: 'Самый быстрый способ получить и переслать криптовалюту',
         CreateANew: 'Создать новый',
         Restore: 'Восстановить',
         PrivateKey: 'Приватный ключ',

@@ -17,15 +17,16 @@ const styles = StyleSheet.create({
 });
 
 const MenuItem = (props) => {
+    const textStyle = props.disabled
+        ? UIStyle.textSecondarySmallRegular
+        : UIStyle.textPrimarySmallRegular;
     return (
         <TouchableOpacity
             style={styles.itemContainer}
-            onPress={() => props.onSelect()}
+            onPress={props.disabled ? null : (() => props.onSelect())}
             key={Math.random()}
         >
-            <Text style={[UIStyle.primarySmallRegular, props.titleStyle]}>
-                {props.title}
-            </Text>
+            <Text style={[textStyle, props.titleStyle]}>{props.title}</Text>
         </TouchableOpacity>
     );
 };
@@ -35,11 +36,14 @@ export default MenuItem;
 MenuItem.defaultProps = {
     titleStyle: {},
     title: '',
-    onSelect: () => {},
+    disabled: false,
+    onSelect: () => {
+    },
 };
 
 MenuItem.propTypes = {
     titleStyle: StylePropType,
     title: PropTypes.string,
+    disabled: PropTypes.bool,
     onSelect: PropTypes.func,
 };

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
 import UIDevice from '../../helpers/UIDevice';
 import UIFont from '../../helpers/UIFont';
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     titleText: {
         marginHorizontal: UIConstant.contentOffset(),
         ...UIFont.subtitleBold(),
+        color: UIColor.black(),
     },
     navigatorHeader: {
         ...StyleSheet.flatten(UIStyle.navigatorHeader),
@@ -44,7 +45,7 @@ export interface ReactNavigation {
 
     goBack(): void;
 
-    addListener(): void;
+    addListener(event: any, callback: (payload: any) => void): { remove(): void };
 
     isFocused(): boolean;
 
