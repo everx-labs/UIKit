@@ -1,21 +1,61 @@
+// @flow
 import React, { Component } from 'react';
 import { Platform, Keyboard, Alert, SafeAreaView } from 'react-native';
+import type { ReactNavigation } from '../../components/UINavigationBar';
 
 import UIStyle from '../UIStyle';
 import UILocalized from '../UILocalized/';
 import UISpinnerOverlay from '../../components/UISpinnerOverlay';
 
-const AndroidKeyboardAdjust = Platform.OS === 'android' ? require('react-native-android-keyboard-adjust') : null;
+const AndroidKeyboardAdjust = Platform.OS === 'android'
+    ? require('react-native-android-keyboard-adjust')
+    : {
+        setAdjustPan() {
+        },
+        setAdjustResize() {
+        },
+    };
 
-const pathAndParamsForScreens = {};
+type Params = {
+    [string]: string,
+};
 
-export default class UIController extends Component {
+type PathAndParams = {
+    path: string,
+    params: Params,
+};
+
+const pathAndParamsForScreens: {
+    [string]: PathAndParams,
+} = {};
+
+type ContentInset = {
+    left: number,
+    right: number,
+    top: number,
+    bottom: number,
+};
+
+type ControllerProps = {
+    navigation: ReactNavigation,
+};
+
+type ControllerState = {
+    contentInset?: ContentInset,
+    showIndicator?: boolean,
+    spinnerTextContent?: string,
+    spinnerTitleContent?: string,
+    spinnerVisible?: boolean,
+};
+
+export default class UIController<Props, State>
+    extends Component<Props & ControllerProps, State & ControllerState> {
     static AndroidKeyboardAdjust = {
         Pan: 'pan',
         Resize: 'resize',
     };
 
-    static showAlertWithTitleAndMessage(title, message, callback) {
+    static showAlertWithTitleAndMessage(title: string, message: string, callback?: () => void) {
         if (Platform.OS === 'web') {
             alert(message);
             setTimeout(() => {
@@ -41,40 +81,47 @@ export default class UIController extends Component {
         }
     }
 
-    static showErrorWithMessage(message, callback) {
+    static showErrorWithMessage(message: string, callback?: () => void) {
         this.showAlertWithTitleAndMessage(UILocalized.Error, message, callback);
     }
 
-    static showSuccessWithMessage(message, callback) {
+    static showSuccessWithMessage(message: string, callback?: () => void) {
         this.showAlertWithTitleAndMessage(UILocalized.Success, message, callback);
     }
 
-    static showCannotDoActionError(action, error) {
+    static showCannotDoActionError(action: string, error: any) {
         setTimeout(() => {
-            UIController.showErrorWithMessage(`${UILocalized.formatString(UILocalized.SorryWeCannotDoActionAtTheMoment, action)}\n\n${JSON.stringify(error)}`);
+            const message = UILocalized.formatString(
+                UILocalized.SorryWeCannotDoActionAtTheMoment,
+                action,
+            );
+            const errorText = JSON.stringify(error);
+            UIController.showErrorWithMessage(`${message}\n\n${errorText}`);
         }, 500);
     }
 
-    static setPathAndParamsForScreen(pathAndParams, screen) {
+    static setPathAndParamsForScreen(pathAndParams: PathAndParams, screen: string) {
         pathAndParamsForScreens[screen] = pathAndParams;
     }
 
-    static getParametersFromString(string) {
+    static getParametersFromString(string: string): ?Params {
         const index = string.indexOf('?');
         const parametersString = index >= 0 ? string.substring(index + 1) : '';
         if (parametersString.length > 0) { // has parameters
-            return parametersString.split('&').reduce((object, keyValue) => {
-                const [key, value] = keyValue.split('=');
-                const newObject = object;
-                newObject[key] = value;
-                return newObject;
-            }, {});
+            return parametersString
+                .split('&')
+                .reduce((object, keyValue) => {
+                    const [key, value] = keyValue.split('=');
+                    const newObject = object;
+                    newObject[key] = value;
+                    return newObject;
+                }, {});
         }
         return null;
     }
 
     // constructor
-    constructor(props) {
+    constructor(props: Props & ControllerProps) {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
@@ -101,8 +148,14 @@ export default class UIController extends Component {
         this.pushStateIfNeeded();
     }
 
+    // Virtual
+    // eslint-disable-next-line class-methods-use-this
+    renderSafely() {
+        return null;
+    }
+
     // Events
-    onKeyboardWillShow(e) {
+    onKeyboardWillShow(e: any) {
         const keyboardHeight = e.endCoordinates ? e.endCoordinates.height : e.end.height;
         this.setContentInset({
             top: 0,
@@ -112,7 +165,7 @@ export default class UIController extends Component {
         });
     }
 
-    onKeyboardWillHide() {
+    onKeyboardWillHide(e: any) {
         this.setContentInset({
             top: 0,
             left: 0,
@@ -122,19 +175,24 @@ export default class UIController extends Component {
     }
 
     // Setters
-    setContentInset(contentInset) {
+    setContentInset(contentInset: ContentInset) {
         this.setStateSafely({ contentInset });
     }
 
-    setSpinnerTitleContent(spinnerTitleContent) {
+    setSpinnerTitleContent(spinnerTitleContent: string) {
         this.setStateSafely({ spinnerTitleContent });
     }
 
-    setSpinnerTextContent(spinnerTextContent) {
+    setSpinnerTextContent(spinnerTextContent: string) {
         this.setStateSafely({ spinnerTextContent });
     }
 
-    setStateSafely(state, callback) {
+    setStateSafely(
+        state:
+            $Shape<State & ControllerState>
+            | ((State & ControllerState, Props) => $Shape<State & ControllerState> | void),
+        callback?: () => mixed,
+    ) {
         if (!this.mounted) {
             return;
         }
@@ -158,11 +216,11 @@ export default class UIController extends Component {
         return {};
     }
 
-    getContentInset() {
+    getContentInset(): ?ContentInset {
         return this.state.contentInset;
     }
 
-    shouldShowIndicator() {
+    shouldShowIndicator(): ?boolean {
         return this.state.showIndicator;
     }
 
@@ -177,31 +235,34 @@ export default class UIController extends Component {
             if (this.params) {
                 const params = this.getNavigationParams();
                 const parameters = {};
-                Object.keys(params).forEach((key) => {
-                    if (this.params[key]) {
-                        parameters[key] = params[key];
-                    }
-                });
+                Object.keys(params)
+                    .forEach((key) => {
+                        if (this.params[key]) {
+                            parameters[key] = params[key];
+                        }
+                    });
                 this.addParametersToPath(parameters);
             }
-            console.log(`[UIController] Succeeded to handle a path "/${this.path}" for class:`, this.constructor.name);
+            console.log(`[UIController] Succeeded to handle a path "/${this.path}" for class:`,
+                this.constructor.name);
         } else {
             console.log('[UIController] Failed to handle a path for class:', this.constructor.name);
         }
     }
 
-    addParametersToPath(parameters) {
+    addParametersToPath(parameters: Params) {
         if (!this.path) {
             console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
             return;
         }
         const pathParameters = UIController.getParametersFromString(this.path);
-        Object.keys(parameters).forEach((key) => {
-            if (!pathParameters || !pathParameters[key]) {
-                const symbol = this.path.includes('?') ? '&' : '?';
-                this.path += `${symbol}${key}=${parameters[key]}`;
-            }
-        });
+        Object.keys(parameters)
+            .forEach((key) => {
+                if (!pathParameters || !pathParameters[key]) {
+                    const symbol = this.path.includes('?') ? '&' : '?';
+                    this.path += `${symbol}${key}=${parameters[key]}`;
+                }
+            });
     }
 
     listenToNavigation() {
@@ -209,7 +270,8 @@ export default class UIController extends Component {
             return;
         }
         this.props.navigation.addListener('willFocus', (payload) => {
-            console.log(`[UIController] Controller ${this.constructor.name} will focus with payload:`, payload);
+            console.log(`[UIController] Controller ${this.constructor.name} will focus with payload:`,
+                payload);
             this.componentWillFocus();
         });
     }
@@ -267,7 +329,7 @@ export default class UIController extends Component {
     }
 
     // Actions
-    showSpinnerOverlay(show = true) {
+    showSpinnerOverlay(show: boolean = true) {
         this.setStateSafely({ spinnerVisible: show });
     }
 
@@ -280,7 +342,7 @@ export default class UIController extends Component {
         this.setSpinnerTextContent('');
     }
 
-    showIndicator(showIndicator = true) {
+    showIndicator(showIndicator: boolean = true) {
         this.setStateSafely({ showIndicator });
     }
 
@@ -305,12 +367,13 @@ export default class UIController extends Component {
             </SafeAreaView>
         );
     }
+
+    // Internals
+    mounted: boolean;
+    androidKeyboardAdjust: string;
+    keyboardWillShowListener: { remove(): void };
+    keyboardWillHideListener: { remove(): void };
+    path: string;
+    params: Params;
 }
 
-UIController.defaultProps = {
-    //
-};
-
-UIController.propTypes = {
-    //
-};

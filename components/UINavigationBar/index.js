@@ -45,7 +45,7 @@ export interface ReactNavigation {
 
     goBack(): void;
 
-    addListener(): void;
+    addListener(event: any, callback: (payload: any) => void): { remove(): void };
 
     isFocused(): boolean;
 
