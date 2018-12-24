@@ -63,7 +63,7 @@ const UI_PROFILE_PHOTO_SIZE = 72;
 
 const MAX_TEXT_LINE_LENGTH = 200;
 
-const DATA_COUNT = 20;
+const INITIAL_RENDER_DATA_COUNT = 12; // good for displaying a tables of 1,2,3,4 columns
 
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
@@ -290,7 +290,7 @@ export default class UIConstant {
         return MAX_TEXT_LINE_LENGTH;
     }
 
-    static dataCountInLists() {
-        return DATA_COUNT;
+    static initialRenderDataCount() {
+        return INITIAL_RENDER_DATA_COUNT;
     }
 }
