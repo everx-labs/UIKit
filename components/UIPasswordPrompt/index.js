@@ -118,7 +118,7 @@ export default class UIPasswordPrompt extends UIController {
     }
 
     componentWillUnmount() {
-        super.componentWillMount();
+        super.componentWillUnmount();
         if (this.props.masterPrompt) {
             masterRef = null;
         }

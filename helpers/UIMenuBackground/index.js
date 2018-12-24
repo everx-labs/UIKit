@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { PopoverContainer } from 'react-native-simple-popover';
 
 import UIMenuView from '../../components/UIMenuView';
-import UIStyle from '../UIStyle';
-import UIDevice from '../UIDevice';
+import UIStyle from '../../helpers/UIStyle';
+import UIDevice from '../../helpers/UIDevice';
 
 let masterRef = null;
 
