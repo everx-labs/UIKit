@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { Platform, Modal, View, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
@@ -16,7 +18,7 @@ const slideAnimation = new SlideAnimation({
     slideFrom: 'bottom',
 });
 
-export default class UIModalController extends UIController {
+export default class UIModalController<Props, State> extends UIController<Props, State> {
     // Constructor
     constructor(props) {
         super(props);
@@ -71,7 +73,10 @@ export default class UIModalController extends UIController {
     getDialogStyle() {
         let { width, height } = this.state;
         if (!width || !height) {
-            ({ width, height } = Dimensions.get('window'));
+            ({
+                width,
+                height,
+            } = Dimensions.get('window'));
         }
 
         const statusBarHeight = UIDevice.statusBarHeight();
@@ -103,10 +108,16 @@ export default class UIModalController extends UIController {
 
         height -= statusBarHeight + navBarHeight;
 
-        const contentHeight = (height - UIModalNavigationBar.getBarHeight()) + UIConstant.coverBounceOffset();
+        const contentHeight =
+            (height - UIModalNavigationBar.getBarHeight()) +
+            UIConstant.coverBounceOffset();
 
         return {
-            width, height, contentHeight, containerStyle, dialogStyle,
+            width,
+            height,
+            contentHeight,
+            containerStyle,
+            dialogStyle,
         };
     }
 
