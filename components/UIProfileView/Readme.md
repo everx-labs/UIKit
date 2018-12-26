@@ -3,7 +3,6 @@ Right profile photo isn't editable you can press and expand it in lightbox full-
 
 ```js
 const image = require('../../assets/ico-checkbox-square-active/ico-checkbox-square-active@3x.png');
-console.log(image);
 
 class ModalExample extends React.Component {
     constructor() {
@@ -18,7 +17,7 @@ class ModalExample extends React.Component {
     render() {
         const { name, secondName } = this.state;
         return (
-            <UIView style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row' }}>
                 <UIProfileView
                     editable
                     containerStyle={{ marginRight: 16 }}
@@ -63,7 +62,7 @@ class ModalExample extends React.Component {
                         photo: newPhoto
                     })}
                 />
-            </UIView>
+            </View>
         );
     }
 };

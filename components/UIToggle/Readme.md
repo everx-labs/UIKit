@@ -13,7 +13,7 @@ class ModalExample extends React.Component {
     render() {
         const { active, coloredActive } = this.state;
         return (
-            <UIView style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row' }}>
                 <UIToggle
                     active={active}
                     onPress={() => this.setState({ active: !active })}
@@ -26,7 +26,7 @@ class ModalExample extends React.Component {
                         coloredActive: !coloredActive
                     })}
                 />
-            </UIView>
+            </View>
         );
     }
 };

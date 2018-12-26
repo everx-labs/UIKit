@@ -19,7 +19,7 @@ class ModalExample extends React.Component {
     render() {
         const { visible, modalMode } = this.state;
         return (
-            <UIView style={{ height: 200, justifyContent: 'flex-end' }}>
+            <View style={{ height: 200, justifyContent: 'flex-end' }}>
                 <UIButton 
                     title="Show spinner overlay"
                     onPress={() => this.showSpinner()}
@@ -27,7 +27,7 @@ class ModalExample extends React.Component {
                 <UISpinnerOverlay
                     visible={visible}
                 />
-            </UIView>
+            </View>
         );
     }
 };

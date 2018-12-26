@@ -1,6 +1,13 @@
 Example:
 
 ```js
+const containerStyle = {
+    height: 300,
+    margin: -16,
+    padding: 16,
+    borderRadius: 4,
+}
+
 const menuItems = [
     {
         title: 'Item 1',
@@ -12,11 +19,11 @@ const menuItems = [
     },
 ];
 
-<UIView style={{ height: 300 }}>
+<View style={containerStyle}>
     <UITextButton 
         title="Show default ActionSheet"
         onPress={() => UIActionSheet.show(menuItems)}
     />
     <UIActionSheet />
-</UIView>
+</View>
 ```

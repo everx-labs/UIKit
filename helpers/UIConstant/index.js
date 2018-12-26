@@ -36,6 +36,7 @@ const UI_HUGE_CELL_HEIGHT = 96;
 const UI_LARGE_AVATAR_SIZE = 64;
 const UI_MEDIUM_AVATAR_SIZE = 40;
 const UI_SMALL_AVATAR_SIZE = 20;
+const UI_ICON_SIZE = 24;
 
 const UI_DISABLED_OUTLINE = Platform.OS === 'web' ? { outline: '0' } : null;
 
@@ -50,6 +51,8 @@ const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 
 const UI_PASSWORD_PROMPT_WIDTH = 416;
+
+const UI_NOTICE_WIDTH = 360;
 
 const UI_ACTIONSHEET_ITEM_HEIGHT = 48;
 const UI_MENU_WIDTH = 176; // menu for web
@@ -210,6 +213,10 @@ export default class UIConstant {
         return UI_SMALL_AVATAR_SIZE;
     }
 
+    static iconSize() {
+        return UI_ICON_SIZE;
+    }
+
     // Styles
     static disabledOutline() {
         return UI_DISABLED_OUTLINE;
@@ -242,6 +249,10 @@ export default class UIConstant {
 
     static passwordPromptWidth() {
         return UI_PASSWORD_PROMPT_WIDTH;
+    }
+
+    static noticeWidth() {
+        return UI_NOTICE_WIDTH;
     }
 
     // Action sheet

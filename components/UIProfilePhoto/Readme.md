@@ -15,7 +15,7 @@ class ModalExample extends React.Component {
 
     render() {
         return (
-            <UIView style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row' }}>
                 <UIProfilePhoto
                     editable
                     style={{ marginRight: 16 }}
@@ -27,7 +27,7 @@ class ModalExample extends React.Component {
                 <UIProfilePhoto
                     source={this.state.source}
                 />
-            </UIView>
+            </View>
         );
     }
 };

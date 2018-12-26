@@ -15,13 +15,13 @@ const menuItems = [
 ];
 
 <UIMenuBackground>
-    <UIView style={{ height: 200 }}>
+    <View style={{ height: 200 }}>
         <UIMenuView menuItemsList={menuItems}>
             <UIDetailsView 
                 value="Menu trigger"
                 comments="Press to show menu"
             />
         </UIMenuView>
-    </UIView>
+    </View>
 </UIMenuBackground>
 ```

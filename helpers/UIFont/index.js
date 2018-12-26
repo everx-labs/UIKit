@@ -48,6 +48,9 @@ const UI_FONT_TINY = {
 const UI_FONT_MENU = {
     fontSize: 13, lineHeight: 16, letterSpacing: 2, ...UI_FONT_FAMILY,
 };
+const UI_FONT_ICON = {
+    fontSize: 10, lineHeight: 16, letterSpacing: 0.2, ...UI_FONT_FAMILY,
+};
 
 const UI_FONT_KEY_BOLD = { ...UI_FONT_KEY, ...UI_FONT_BOLD };
 const UI_FONT_KEY_LIGHT = { ...UI_FONT_KEY, ...UI_FONT_LIGHT };
@@ -77,6 +80,7 @@ const UI_FONT_TINY_REGULAR = { ...UI_FONT_TINY, ...UI_FONT_REGULAR };
 const UI_FONT_TINY_MEDIUM = { ...UI_FONT_TINY, ...UI_FONT_MEDIUM };
 const UI_FONT_MENU_BOLD = { ...UI_FONT_MENU, ...UI_FONT_BOLD };
 const UI_FONT_MENU_REGULAR = { ...UI_FONT_MENU, ...UI_FONT_REGULAR };
+const UI_FONT_ICON_REGULAR = { ...UI_FONT_ICON, ...UI_FONT_REGULAR };
 
 export default class UIFont {
     static keyBold() {
@@ -189,5 +193,9 @@ export default class UIFont {
 
     static menuRegular() {
         return UI_FONT_MENU_REGULAR;
+    }
+
+    static iconRegular() {
+        return UI_FONT_ICON_REGULAR;
     }
 }
