@@ -12,7 +12,7 @@ import icoCloseBlue from '../../assets/ico-close/close-blue.png';
 import icoCloseGrey from '../../assets/ico-close/close-grey.png';
 
 const screenWidth = Dimensions.get('window').width;
-const doubleOffset = 2 * UIConstant.mediumContentOffset();
+const doubleOffset = 2 * UIConstant.largeContentOffset();
 const hiddenContainerWidth = Math.min(UIConstant.noticeWidth() + doubleOffset, screenWidth);
 const noticeContainerWidth = hiddenContainerWidth - doubleOffset;
 
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     hiddenContainer: {
         overflow: 'hidden',
         width: hiddenContainerWidth,
-        paddingVertical: UIConstant.mediumContentOffset(),
-        margin: UIConstant.contentOffset() - UIConstant.mediumContentOffset(),
+        paddingVertical: UIConstant.largeContentOffset(),
+        margin: UIConstant.contentOffset() - UIConstant.largeContentOffset(),
     },
     noticeStyle: {
         flexDirection: 'row',
@@ -129,7 +129,7 @@ export default class UINotice extends Component {
     animateOpening() {
         this.setMarginLeft(new Animated.Value(hiddenContainerWidth + UIConstant.contentOffset()), () => {
             Animated.spring(this.state.marginLeft, {
-                toValue: UIConstant.mediumContentOffset(),
+                toValue: UIConstant.largeContentOffset(),
                 duration: UIConstant.animationDuration(),
             }).start();
         });
