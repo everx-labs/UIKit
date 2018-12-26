@@ -14,8 +14,8 @@ class ModalExample extends React.Component {
 
     render() {
         return (
-            <UIView style={{ flexDirection: 'row' }}>
-                <UIView style={{ marginRight: 16 }}>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ marginRight: 16 }}>
                     <UIImageView
                         photoStyle={{ width: 100, height: 100 }}
                         editable
@@ -24,12 +24,12 @@ class ModalExample extends React.Component {
                             source: newSource
                         })}
                     />
-                </UIView>
+                </View>
                 <UIImageView
                     photoStyle={{ width: 100, height: 100 }}
                     source={this.state.source}
                 />
-            </UIView>
+            </View>
         );
     }
 };

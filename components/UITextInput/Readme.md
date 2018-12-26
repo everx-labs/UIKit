@@ -18,7 +18,7 @@ class ModalExample extends React.Component {
             value, needBorderBottom, disabled, secureTextEntry, beginningTag
         } = this.state;
         return (
-            <UIView>
+            <View>
                 <UITextInput 
                     value={value}
                     placeholder="Your text"
@@ -31,7 +31,7 @@ class ModalExample extends React.Component {
                         value: newText 
                     })}
                 />
-                <UIView style={{ 
+                <View style={{ 
                     flexDirection: 'row', justifyContent: 'space-between' 
                 }}>
                     <UIDetailsToggle
@@ -62,8 +62,8 @@ class ModalExample extends React.Component {
                             beginningTag: !beginningTag
                         })}
                     />
-                </UIView>
-            </UIView>
+                </View>
+            </View>
         );
     }
 };

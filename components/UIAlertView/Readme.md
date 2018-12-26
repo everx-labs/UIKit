@@ -1,8 +1,8 @@
 Example:
 
 ```js
-<UIView style={{ height: 300, padding: 0 }}>
-    <UIView style={{ margin: 0 }}>
+<View style={{ height: 300, margin: -16 }}>
+    <View style={{ padding: 16 }}>
         <UITextButton
             title="Show default AlertView"
             onPress={() => UIAlertView.showAlert(
@@ -13,7 +13,7 @@ Example:
                 ]
             )}
         />
-    </UIView>
+    </View>
     <UIAlertView />
-</UIView>
+</View>
 ```

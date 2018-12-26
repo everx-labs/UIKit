@@ -4,7 +4,7 @@ Now there are 14 colors for this in UIColor.
 Example:
 
 ```js
-<UIView style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
     <UIProfileInitials
         id="1"
         initials="A"
@@ -33,9 +33,9 @@ Example:
         id="7"
         initials="G"
     />
-</UIView>
+</View>
 
-<UIView style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
     <UIProfileInitials
         id="8"
         initials="HI"
@@ -64,5 +64,5 @@ Example:
         id="e"
         initials="TU"
     />
-</UIView>
+</View>
 ```

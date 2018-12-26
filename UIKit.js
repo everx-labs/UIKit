@@ -27,6 +27,7 @@ import UINavigationBackButton from './components/UINavigationBackButton';
 import UINavigationBar from './components/UINavigationBar';
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/UINetworkStatus';
+import UINotice from './components/UINotice';
 import UIPasswordPrompt from './components/UIPasswordPrompt';
 import UIProfilePhoto from './components/UIProfilePhoto';
 import UIProfileInitials from './components/UIProfileInitials';
@@ -78,6 +79,7 @@ export {
     UINavigationBar,
     UINavigator,
     UINetworkStatus,
+    UINotice,
     UIPasswordPrompt,
     UIProfilePhoto,
     UIProfileInitials,

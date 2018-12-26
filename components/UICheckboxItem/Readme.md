@@ -13,7 +13,7 @@ class ModalExample extends React.Component {
     render() {
         const { selectedSquare, selectedCircle } = this.state;
         return (
-            <UIView style={{ height: 100, justifyContent: 'space-between' }}>
+            <View style={{ height: 100, justifyContent: 'space-between' }}>
                 <UICheckboxItem
                     selected={selectedSquare}
                     onPress={() => this.setState({ 
@@ -27,7 +27,7 @@ class ModalExample extends React.Component {
                         selectedCircle: !selectedCircle
                     })}
                 />
-            </UIView>
+            </View>
         );
     }
 };
