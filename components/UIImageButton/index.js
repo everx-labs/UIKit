@@ -17,8 +17,10 @@ type Props = {
 type State = {};
 
 export default class UIImageButton extends React.Component<Props, State> {
-    static backImage = 'back';
-    static closeImage = 'close';
+    static Images: {
+        back: 'back',
+        close: 'close',
+    };
 
     static defaultProps = {
         buttonStyle: null,
@@ -40,7 +42,7 @@ export default class UIImageButton extends React.Component<Props, State> {
         switch (this.props.image) {
         case 'close':
             // eslint-disable-next-line global-require
-            return require('../../assets/ico-arrow-left/ico-arrow-left.png');
+            return require('../../assets/ico-close/close.png');
         case 'back':
             // eslint-disable-next-line global-require
             return require('../../assets/ico-arrow-left/ico-arrow-left.png');
