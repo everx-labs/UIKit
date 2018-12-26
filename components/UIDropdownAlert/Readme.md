@@ -14,5 +14,5 @@ Example will be here soon
 //     </UIView>
 //     <UIDropdownAlert />
 // </UIView>
-<UIView></UIView>
+<View></View>
 ```

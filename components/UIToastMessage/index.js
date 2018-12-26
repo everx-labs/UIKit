@@ -6,7 +6,7 @@ import UIConstant from '../../helpers/UIConstant';
 import UIColor from '../../helpers/UIColor';
 import UIFont from '../../helpers/UIFont';
 
-import icoClose from '../../assets/ico-close/close.png';
+import icoClose from '../../assets/ico-close/close-light.png';
 
 const styles = StyleSheet.create({
     containerStyle: {
@@ -91,7 +91,7 @@ export default class UIToastMessage extends Component {
                 </TouchableOpacity>
             );
         }
-        if (this.type === UIToastMessage.Type.Default && this.action) {
+        if (this.type === UIToastMessage.Type.Default && this.action.title) {
             return (
                 <TouchableOpacity onPress={() => this.closeToast()} >
                     <Text style={styles.actionTitleStyle}>{this.action.title}</Text>

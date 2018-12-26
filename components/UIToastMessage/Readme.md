@@ -1,6 +1,11 @@
 UIToastMessage example:
 
 ```js
+const containerStyle = {
+    margin: -16,
+    padding: 16,
+}
+
 class ModalExample extends React.Component {
     constructor() {
         super();
@@ -20,14 +25,14 @@ class ModalExample extends React.Component {
     render() {
         const autoHide = this.getAutoHide();
         return (
-            <UIView>
+            <View style={containerStyle}>
                 <UITextButton 
                         title="Show default toast with message only"
                         onPress={() => UIToastMessage.showMessage(
                             'Address copied to clipboard.'
                         )}
                     />
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UITextButton 
                         title="Show default toast on left"
                         onPress={() => UIToastMessage.showMessage({
@@ -44,9 +49,9 @@ class ModalExample extends React.Component {
                             autoHide,
                         })}
                     />
-                    <div/>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View/>
+                </View>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UITextButton 
                         title="Show action toast on left"
                         onPress={() => UIToastMessage.showMessage({
@@ -71,9 +76,9 @@ class ModalExample extends React.Component {
                             autoHide,
                         })}
                     />
-                    <div/>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View/>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UITextButton 
                         title="Show alert toast on left"
                         onPress={() => UIToastMessage.showMessage({
@@ -92,17 +97,17 @@ class ModalExample extends React.Component {
                             autoHide,
                         })}
                     />
-                    <div/>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <View/>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <UIDetailsView value="Auto-hide option  " />
                     <UIToggle 
                         active={this.getAutoHide()}
                         onPress={() => this.toggleAutoHide()}
                     />
-                </div>
+                </View>
                 <UIToastMessage />
-            </UIView>
+            </View>
         );
     }
 };
