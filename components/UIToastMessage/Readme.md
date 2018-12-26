@@ -1,4 +1,4 @@
-UIToastMessage example:
+Example:
 
 ```js
 const containerStyle = {

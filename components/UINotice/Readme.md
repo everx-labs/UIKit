@@ -1,4 +1,6 @@
-UIToastMessage example:
+For web and tablets Notice is shown on left / For mobile devices on center
+
+Example:
 
 ```js
 const viewContainer = {
