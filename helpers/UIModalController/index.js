@@ -51,9 +51,6 @@ export default class UIModalController<Props, State>
 
     constructor(props: Props & ModalControllerProps) {
         super(props);
-        this.state = {
-        };
-
         this.fullscreen = false;
         this.dialog = null;
         this.onShow = null;
@@ -156,11 +153,11 @@ export default class UIModalController<Props, State>
     interpolateColor(): ColorValue {
         const { height } = Dimensions.get('window');
         const maxValue = height - UIDevice.statusBarHeight() - UIModalNavigationBar.getBarHeight();
-        const dy: ?(Animated.Value) = this.state.dy;
+        const { dy } = this.state;
         if (!dy) {
             return UIColor.overlay60();
         }
-        return dy.interpolate({
+        return (dy: any).interpolate({
             inputRange: [0, maxValue],
             outputRange: [UIColor.overlay60(), UIColor.overlay0()],
         });

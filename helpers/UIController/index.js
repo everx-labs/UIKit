@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import { Platform, Keyboard, Alert, SafeAreaView } from 'react-native';
 import type { ReactNavigation } from '../../components/UINavigationBar';
 
@@ -360,7 +361,7 @@ export default class UIController<Props, State>
         />);
     }
 
-    render(): ?Component {
+    render(): ?Node {
         return (
             <SafeAreaView style={UIStyle.screenBackground}>
                 {this.renderSafely()}
