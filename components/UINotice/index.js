@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, Dimensions } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 
 import UIConstant from '../../helpers/UIConstant';
@@ -11,7 +11,10 @@ import UIStyle from '../../helpers/UIStyle';
 import icoCloseBlue from '../../assets/ico-close/close-blue.png';
 import icoCloseGrey from '../../assets/ico-close/close-grey.png';
 
-const hiddenContainerWidth = UIConstant.noticeWidth() + (2 * UIConstant.mediumContentOffset());
+const screenWidth = Dimensions.get('window').width;
+const doubleOffset = 2 * UIConstant.mediumContentOffset();
+const hiddenContainerWidth = Math.min(UIConstant.noticeWidth() + doubleOffset, screenWidth);
+const noticeContainerWidth = hiddenContainerWidth - doubleOffset;
 
 const styles = StyleSheet.create({
     hiddenContainer: {
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
     noticeStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: UIConstant.noticeWidth(),
+        width: noticeContainerWidth,
         padding: UIConstant.contentOffset(),
         paddingHorizontal: UIConstant.contentOffset(),
         borderRadius: UIConstant.smallBorderRadius(),
