@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
@@ -12,16 +11,14 @@ import UIStyle from '../../helpers/UIStyle';
 import icoCloseBlue from '../../assets/ico-close/close-blue.png';
 import icoCloseGrey from '../../assets/ico-close/close-grey.png';
 
-const hiddenContainerWidth = UIConstant.noticeWidth() + (2 * UIConstant.contentOffset());
+const hiddenContainerWidth = UIConstant.noticeWidth() + (2 * UIConstant.mediumContentOffset());
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-    },
     hiddenContainer: {
         overflow: 'hidden',
         width: hiddenContainerWidth,
-        paddingVertical: UIConstant.contentOffset(),
+        paddingVertical: UIConstant.mediumContentOffset(),
+        margin: UIConstant.contentOffset() - UIConstant.mediumContentOffset(),
     },
     noticeStyle: {
         flexDirection: 'row',
@@ -53,12 +50,12 @@ export default class UINotice extends Component {
     static Type = {
         Default: 'default',
         Alert: 'alert',
-    };
+    }
 
     static Place = {
         Top: 'top',
         Bottom: 'bottom',
-    };
+    }
 
     static showMessage(args) {
         if (typeof args === 'string') {
@@ -72,7 +69,7 @@ export default class UINotice extends Component {
         super(props);
 
         this.state = {
-            marginLeft: new Animated.Value(hiddenContainerWidth + 10),
+            marginLeft: new Animated.Value(hiddenContainerWidth + UIConstant.contentOffset()),
         };
     }
 
@@ -96,16 +93,16 @@ export default class UINotice extends Component {
 
     // Actions
     showMessage({
-                    title, subComponent, message, action, placement = UINotice.Place.Bottom, autoHide = true,
-                }) {
+        title, subComponent, message, action,
+        placement = UINotice.Place.Bottom,
+        autoHide = true,
+        onCancel = () => {},
+    }) {
         this.subComponent = subComponent || null;
         this.title = title || '';
         this.message = message || '';
-        this.action = action || {
-            title: '',
-            onPress: () => {
-            }
-        };
+        this.action = action || { title: '', onPress: () => {} };
+        this.onCancel = onCancel;
         showMessage({
             position: placement,
             animated: false,
@@ -116,22 +113,28 @@ export default class UINotice extends Component {
         this.animateOpening();
     }
 
+    closeWithCancel() {
+        this.onCancel();
+        this.animateClosing();
+    }
+
+    closeWithAction() {
+        this.action.onPress();
+        this.animateClosing();
+    }
+
     animateOpening() {
-        this.setMarginLeft(new Animated.Value(hiddenContainerWidth + 10), () => {
+        this.setMarginLeft(new Animated.Value(hiddenContainerWidth + UIConstant.contentOffset()), () => {
             Animated.spring(this.state.marginLeft, {
-                toValue: UIConstant.contentOffset(),
+                toValue: UIConstant.mediumContentOffset(),
                 duration: UIConstant.animationDuration(),
             }).start();
         });
     }
 
-    closeNotice() {
-        this.animateClosing();
-    }
-
     animateClosing() {
         Animated.timing(this.state.marginLeft, {
-            toValue: hiddenContainerWidth + 10,
+            toValue: hiddenContainerWidth + UIConstant.contentOffset(),
             duration: UIConstant.animationDuration(),
         }).start(() => hideMessage());
     }
@@ -140,7 +143,7 @@ export default class UINotice extends Component {
     renderCloseButton() {
         const icoClose = this.action.title ? icoCloseGrey : icoCloseBlue;
         return (
-            <TouchableOpacity onPress={() => this.closeNotice()}>
+            <TouchableOpacity onPress={() => this.closeWithCancel()} >
                 <Image source={icoClose} />
             </TouchableOpacity>
         );
@@ -175,10 +178,7 @@ export default class UINotice extends Component {
             return (
                 <TouchableOpacity
                     style={{ marginTop: UIConstant.largeContentOffset() }}
-                    onPress={() => {
-                        this.action.onPress();
-                        this.closeNotice();
-                    }}
+                    onPress={() => this.closeWithAction()}
                 >
                     <Text style={styles.actionTitleStyle}>{this.action.title}</Text>
                 </TouchableOpacity>
@@ -189,10 +189,10 @@ export default class UINotice extends Component {
 
     renderMessageComponent() {
         const margin = { marginLeft: this.getMarginLeft() };
-        const alignItems = Platform.OS === 'web' || UIDevice.isTablet() ? 'start' : 'flex-end';
+        const alignItems = Platform.OS === 'web' || UIDevice.isTablet() ? 'start' : 'center';
 
         return (
-            <View style={[styles.container, { alignItems }]}>
+            <View style={{ alignItems }}>
                 <View style={styles.hiddenContainer}>
                     <Animated.View style={[styles.noticeStyle, margin]}>
                         <View style={styles.contentContainer}>
