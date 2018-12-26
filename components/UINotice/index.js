@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
@@ -52,12 +53,12 @@ export default class UINotice extends Component {
     static Type = {
         Default: 'default',
         Alert: 'alert',
-    }
+    };
 
     static Place = {
         Top: 'top',
         Bottom: 'bottom',
-    }
+    };
 
     static showMessage(args) {
         if (typeof args === 'string') {
@@ -95,12 +96,16 @@ export default class UINotice extends Component {
 
     // Actions
     showMessage({
-        title, subComponent, message, action, placement = UINotice.Place.Bottom, autoHide = true,
-    }) {
+                    title, subComponent, message, action, placement = UINotice.Place.Bottom, autoHide = true,
+                }) {
         this.subComponent = subComponent || null;
         this.title = title || '';
         this.message = message || '';
-        this.action = action || { title: '', onPress: () => {} };
+        this.action = action || {
+            title: '',
+            onPress: () => {
+            }
+        };
         showMessage({
             position: placement,
             animated: false,
@@ -135,7 +140,7 @@ export default class UINotice extends Component {
     renderCloseButton() {
         const icoClose = this.action.title ? icoCloseGrey : icoCloseBlue;
         return (
-            <TouchableOpacity onPress={() => this.closeNotice()} >
+            <TouchableOpacity onPress={() => this.closeNotice()}>
                 <Image source={icoClose} />
             </TouchableOpacity>
         );
@@ -169,7 +174,7 @@ export default class UINotice extends Component {
         if (this.action.title) {
             return (
                 <TouchableOpacity
-                    style={{ marginTop: UIConstant.largeContentOffset()}}
+                    style={{ marginTop: UIConstant.largeContentOffset() }}
                     onPress={() => {
                         this.action.onPress();
                         this.closeNotice();
@@ -185,7 +190,7 @@ export default class UINotice extends Component {
     renderMessageComponent() {
         const margin = { marginLeft: this.getMarginLeft() };
         const alignItems = Platform.OS === 'web' || UIDevice.isTablet() ? 'start' : 'flex-end';
-        
+
         return (
             <View style={[styles.container, { alignItems }]}>
                 <View style={styles.hiddenContainer}>

@@ -36,11 +36,11 @@ type ContentInset = {
     bottom: number,
 };
 
-type ControllerProps = {
+export type ControllerProps = {
     navigation: ReactNavigation,
 };
 
-type ControllerState = {
+export type ControllerState = {
     contentInset?: ContentInset,
     showIndicator?: boolean,
     spinnerTextContent?: string,
@@ -135,7 +135,7 @@ export default class UIController<Props, State>
         this.initKeyboardListeners();
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps: Props) {
         // TODO: remove and use getDerivedStateFromProps
     }
 
@@ -360,7 +360,7 @@ export default class UIController<Props, State>
         />);
     }
 
-    render() {
+    render(): ?Component {
         return (
             <SafeAreaView style={UIStyle.screenBackground}>
                 {this.renderSafely()}

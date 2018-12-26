@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 // @flow
 
 import React from 'react';
@@ -6,10 +7,19 @@ import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import UIStyle from '../../helpers/UIStyle';
 
-type ButtonImage = 'close' | 'back' | ImageSource;
+type ButtonImage = 'back' | 'close-primary' | 'close-secondary' | 'close-light' | 'custom';
+
+const assets = {
+    back: () => require('../../assets/ico-arrow-left/ico-arrow-left.png'),
+    'close-primary': () => require('../../assets/ico-close/close-blue.png'),
+    'close-secondary': () => require('../../assets/ico-close/close-grey.png'),
+    'close-light': () => require('../../assets/ico-close/close-light.png'),
+    custom: () => null,
+};
 
 type Props = {
     image: ButtonImage,
+    customImage?: ImageSource,
     onPress: () => void,
     buttonStyle?: ViewStyleProp,
 
@@ -17,12 +27,16 @@ type Props = {
 type State = {};
 
 export default class UIImageButton extends React.Component<Props, State> {
-    static Images: {
+    static Images = {
         back: 'back',
-        close: 'close',
+        closePrimary: 'close-primary',
+        closeSecondary: 'close-secondary',
+        closeLight: 'close-light',
+        custom: 'custom',
     };
 
     static defaultProps = {
+        customImage: null,
         buttonStyle: null,
     };
 
@@ -39,16 +53,12 @@ export default class UIImageButton extends React.Component<Props, State> {
     }
 
     getImage(): ImageSource {
-        switch (this.props.image) {
-        case 'close':
-            // eslint-disable-next-line global-require
-            return require('../../assets/ico-close/close.png');
-        case 'back':
-            // eslint-disable-next-line global-require
-            return require('../../assets/ico-arrow-left/ico-arrow-left.png');
-        default:
-            return this.props.image;
+        const { image } = this.props;
+        if (image === UIImageButton.Images.custom) {
+            return this.props.customImage;
         }
+        // eslint-disable-next-line import/no-dynamic-require,global-require
+        return assets[image]();
     }
 
     // React.Component
