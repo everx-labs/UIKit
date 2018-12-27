@@ -1,6 +1,14 @@
 Example:
 
 ```js
+const buttonContainer = {
+    height: 200,
+    width: 300,
+    justifyContent: 'flex-end',
+    borderWidth: 1,
+    borderColor: 'grey',
+};
+
 class ModalExample extends React.Component {
     constructor() {
         super();
@@ -16,17 +24,29 @@ class ModalExample extends React.Component {
         }, 2000);
     }
 
+    showMasterSpinner() {
+        UISpinnerOverlay.show();
+        setTimeout(() => {
+            UISpinnerOverlay.hide();
+        }, 2000);
+    }
+
     render() {
         const { visible, modalMode } = this.state;
         return (
-            <View style={{ height: 200, justifyContent: 'flex-end' }}>
-                <UIButton 
-                    title="Show spinner overlay"
-                    onPress={() => this.showSpinner()}
-                />
-                <UISpinnerOverlay
-                    visible={visible}
-                />
+            <View style={{ margin: -16, padding: 16 }}>
+                <View style={buttonContainer}>
+                    <UIButton 
+                        title="Show spinner overlay"
+                        onPress={() => this.showSpinner()}
+                    />
+                    <UIButton 
+                        title="Show master spinner overlay"
+                        onPress={() => this.showMasterSpinner()}
+                    />
+                    <UISpinnerOverlay visible={visible} />
+                </View>
+                <UISpinnerOverlay masterSpinner />
             </View>
         );
     }

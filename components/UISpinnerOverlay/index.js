@@ -59,7 +59,21 @@ const styles = StyleSheet.create({
     },
 });
 
+let masterRef = null;
+
 export default class UISpinnerOverlay extends Component {
+    static show() {
+        if (masterRef) {
+            masterRef.setVisible(true);
+        }
+    }
+
+    static hide() {
+        if (masterRef) {
+            masterRef.setVisible(false);
+        }
+    }
+
     // Constructor
     constructor(props) {
         super(props);
@@ -67,11 +81,15 @@ export default class UISpinnerOverlay extends Component {
         this.state = {
             titleContent: this.props.titleContent,
             textContent: this.props.textContent,
+            visible: false,
         };
     }
 
     componentDidMount() {
         this.mounted = true;
+        if (this.props.masterSpinner) {
+            masterRef = this;
+        }
         this.processProps(this.props);
     }
 
@@ -80,6 +98,9 @@ export default class UISpinnerOverlay extends Component {
     }
 
     componentWillUnmount() {
+        if (this.props.masterSpinner) {
+            masterRef = null;
+        }
         this.mounted = false;
     }
 
@@ -102,10 +123,20 @@ export default class UISpinnerOverlay extends Component {
         });
     }
 
+    setVisible(visible) {
+        this.setState({ visible });
+    }
+
+    // Getters
+    getVisible() {
+        return this.state.visible; 
+    }
+
     // Processing
     processProps(props) {
         this.setTitleContent(props.titleContent);
         this.setTextContent(props.textContent);
+        this.setVisible(props.visible);
     }
 
     // Render
@@ -177,7 +208,7 @@ export default class UISpinnerOverlay extends Component {
     }
 
     render() {
-        if (!this.props.visible) {
+        if (!this.getVisible()) {
             return null;
         }
         if (Platform.OS === 'web' || !this.props.modal) {
@@ -188,7 +219,7 @@ export default class UISpinnerOverlay extends Component {
                 supportedOrientations={['landscape', 'portrait']}
                 hardwareAccelerated
                 transparent
-                visible={this.props.visible}
+                visible={this.getVisible()}
             >
                 {this.renderSpinner()}
             </Modal>
@@ -207,6 +238,7 @@ UISpinnerOverlay.defaultProps = {
     titleStyle: {},
     textStyle: {},
     containerStyle: {},
+    masterSpinner: false,
 };
 
 UISpinnerOverlay.propTypes = {
@@ -220,4 +252,5 @@ UISpinnerOverlay.propTypes = {
     titleStyle: StylePropType,
     textStyle: StylePropType,
     containerStyle: StylePropType,
+    masterSpinner: PropTypes.bool,
 };
