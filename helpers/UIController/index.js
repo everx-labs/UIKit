@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import type { Node } from 'react';
 import { Platform, Keyboard, Alert, SafeAreaView } from 'react-native';
 import type { ReactNavigation } from '../../components/UINavigationBar';
 
@@ -36,11 +37,11 @@ type ContentInset = {
     bottom: number,
 };
 
-type ControllerProps = {
+export type ControllerProps = {
     navigation: ReactNavigation,
 };
 
-type ControllerState = {
+export type ControllerState = {
     contentInset?: ContentInset,
     showIndicator?: boolean,
     spinnerTextContent?: string,
@@ -135,7 +136,7 @@ export default class UIController<Props, State>
         this.initKeyboardListeners();
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps: Props) {
         // TODO: remove and use getDerivedStateFromProps
     }
 
@@ -360,7 +361,7 @@ export default class UIController<Props, State>
         />);
     }
 
-    render() {
+    render(): ?Node {
         return (
             <SafeAreaView style={UIStyle.screenBackground}>
                 {this.renderSafely()}

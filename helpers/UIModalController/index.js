@@ -1,6 +1,10 @@
+// @flow
+
 import React from 'react';
 import { Platform, Modal, View, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
+import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import type { ControllerProps, ControllerState } from '../../helpers/UIController';
 
 import UIController from '../../helpers/UIController';
 import UIDevice from '../../helpers/UIDevice';
@@ -16,22 +20,49 @@ const slideAnimation = new SlideAnimation({
     slideFrom: 'bottom',
 });
 
-export default class UIModalController extends UIController {
-    // Constructor
-    constructor(props) {
-        super(props);
-        this.state = {
-            dy: null,
-        };
+type OnLayoutEventArgs = {
+    nativeEvent: {
+        layout: {
+            x: number,
+            y: number,
+            width: number,
+            height: number,
+        },
+    },
+};
 
+type ModalControllerProps = ControllerProps;
+
+type ModalControllerState = ControllerState & {
+    dy?: ?Animated.Value;
+    width?: ?number,
+    height?: ?number,
+    controllerVisible?: boolean,
+};
+
+export default class UIModalController<Props, State>
+    extends UIController<Props & ModalControllerProps, State & ModalControllerState> {
+    fullscreen: boolean;
+    onShow: ?(() => void);
+    onHide: ?(() => void);
+    onCancel: ?(() => void);
+    bgAlpha: ?ColorValue;
+    dialog: ?PopupDialog;
+
+    constructor(props: Props & ModalControllerProps) {
+        super(props);
         this.fullscreen = false;
+        this.dialog = null;
+        this.onShow = null;
+        this.onHide = null;
+        this.onCancel = null;
     }
 
     componentDidMount() {
         super.componentDidMount();
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props & ModalControllerProps) {
         super.componentWillReceiveProps(nextProps);
     }
 
@@ -53,13 +84,13 @@ export default class UIModalController extends UIController {
         }
     }
 
-    onLayout(e) {
+    onLayout(e: OnLayoutEventArgs) {
         const { layout } = e.nativeEvent;
         const { width, height } = layout;
         this.setSize(width, height);
     }
 
-    onReleaseSwipe(dy) {
+    onReleaseSwipe(dy: number) {
         if (dy > UIConstant.swipeToDismissTreshold()) {
             this.onCancelPress();
         } else {
@@ -71,7 +102,10 @@ export default class UIModalController extends UIController {
     getDialogStyle() {
         let { width, height } = this.state;
         if (!width || !height) {
-            ({ width, height } = Dimensions.get('window'));
+            ({
+                width,
+                height,
+            } = Dimensions.get('window'));
         }
 
         const statusBarHeight = UIDevice.statusBarHeight();
@@ -103,43 +137,51 @@ export default class UIModalController extends UIController {
 
         height -= statusBarHeight + navBarHeight;
 
-        const contentHeight = (height - UIModalNavigationBar.getBarHeight()) + UIConstant.coverBounceOffset();
+        const contentHeight =
+            (height - UIModalNavigationBar.getBarHeight()) +
+            UIConstant.coverBounceOffset();
 
         return {
-            width, height, contentHeight, containerStyle, dialogStyle,
+            width,
+            height,
+            contentHeight,
+            containerStyle,
+            dialogStyle,
         };
     }
 
-    interpolateColor() {
+    interpolateColor(): ColorValue {
         const { height } = Dimensions.get('window');
         const maxValue = height - UIDevice.statusBarHeight() - UIModalNavigationBar.getBarHeight();
-        return this.state.dy.interpolate({
+        const { dy } = this.state;
+        if (!dy) {
+            return UIColor.overlay60();
+        }
+        return (dy: any).interpolate({
             inputRange: [0, maxValue],
             outputRange: [UIColor.overlay60(), UIColor.overlay0()],
         });
     }
 
     // Setters
-    setControllerVisible(controllerVisible, callback) {
+    setControllerVisible(controllerVisible: boolean, callback?: () => void) {
         if (!this.mounted) {
             return;
         }
-        this.setState({
-            controllerVisible,
-        }, callback);
+        this.setState({ controllerVisible }, callback);
     }
 
-    setSize(width, height) {
+    setSize(width: number, height: number) {
         if (!this.mounted) {
             return;
         }
         this.setState({
             width,
-            height,
+            height
         });
     }
 
-    setDy(dy, callback) {
+    setDy(dy: ?Animated.Value, callback?: () => void) {
         if (!this.mounted) {
             return;
         }
@@ -162,19 +204,26 @@ export default class UIModalController extends UIController {
         }
         // First set visible then do the rest
         setTimeout(() => { // in order to render
-            this.dialog.show();
+            if (this.dialog) {
+                this.dialog.show();
+            }
             this.setInitialSwipeState();
         }, 0);
     }
 
     hide() {
-        this.dialog.dismiss();
-        if (this.onHide) {
-            this.onHide();
+        if (this.dialog) {
+            this.dialog.dismiss();
+            if (this.onHide) {
+                this.onHide();
+            }
         }
     }
 
     returnToTop() {
+        if (!this.state.dy) {
+            return;
+        }
         Animated.spring(this.state.dy, {
             toValue: 0,
             // Use same options as in popup-dialog animation module
@@ -205,7 +254,7 @@ export default class UIModalController extends UIController {
                         swipeToDismiss={Platform.OS !== 'web'}
                         onMove={Animated.event([
                             null,
-                            { dy: this.state.dy },
+                            { dy: (this.state.dy || new Animated.Value(0)) },
                         ])}
                         onRelease={dy => this.onReleaseSwipe(dy)}
                         onCancel={() => this.onCancelPress()}
@@ -219,6 +268,11 @@ export default class UIModalController extends UIController {
                 </View>
             </PopupDialog>
         );
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    renderContentView(contentHeight: number): ?React$Element<*> {
+        return null;
     }
 
     renderContainer() {
@@ -256,4 +310,6 @@ export default class UIModalController extends UIController {
             </Modal>
         );
     }
+
+    // Internals
 }

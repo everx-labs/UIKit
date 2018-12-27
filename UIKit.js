@@ -15,6 +15,7 @@ import UIDialogController from './helpers/UIDialogController';
 import UIDropdownAlert from './components/UIDropdownAlert';
 import UIFont from './helpers/UIFont';
 import UIFunction from './helpers/UIFunction';
+import UIImageButton from './components/UIImageButton';
 import UIImageView from './components/UIImageView';
 import UIListHeader from './components/UIListHeader';
 import UILoadMoreButton from './components/UILoadMoreButton';
@@ -66,6 +67,7 @@ export {
     UIDropdownAlert,
     UIFont,
     UIFunction,
+    UIImageButton,
     UIImageView,
     UIListHeader,
     UILoadMoreButton,
