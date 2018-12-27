@@ -11,22 +11,18 @@ import UIStyle from '../../helpers/UIStyle';
 import icoCloseBlue from '../../assets/ico-close/close-blue.png';
 import icoCloseGrey from '../../assets/ico-close/close-grey.png';
 
-const screenWidth = Dimensions.get('window').width;
 const doubleOffset = 2 * UIConstant.largeContentOffset();
-const hiddenContainerWidth = Math.min(UIConstant.noticeWidth() + doubleOffset, screenWidth);
-const noticeContainerWidth = hiddenContainerWidth - doubleOffset;
+const doubleVisibleOffset = 2 * UIConstant.contentOffset();
 
 const styles = StyleSheet.create({
-    hiddenContainer: {
+    container: {
         overflow: 'hidden',
-        width: hiddenContainerWidth,
         paddingVertical: UIConstant.largeContentOffset(),
         margin: UIConstant.contentOffset() - UIConstant.largeContentOffset(),
     },
     noticeStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: noticeContainerWidth,
         padding: UIConstant.contentOffset(),
         paddingHorizontal: UIConstant.contentOffset(),
         borderRadius: UIConstant.smallBorderRadius(),
@@ -34,7 +30,7 @@ const styles = StyleSheet.create({
         ...UIConstant.cardShadow(),
     },
     contentContainer: {
-        width: UIConstant.noticeWidth() - (3 * UIConstant.contentOffset()) - UIConstant.iconSize(),
+        flex: 1,
         marginRight: UIConstant.contentOffset(),
     },
     messageStyle: {
@@ -72,7 +68,8 @@ export default class UINotice extends Component {
         super(props);
 
         this.state = {
-            marginLeft: new Animated.Value(hiddenContainerWidth + UIConstant.contentOffset()),
+            marginLeft: 0,
+            pageWidth: 0,
         };
     }
 
@@ -84,14 +81,32 @@ export default class UINotice extends Component {
         masterRef = null;
     }
 
+    // Events
+    onWindowContainerLayout(e) {
+        const { width } = e.nativeEvent.layout;
+        this.setPageWidth(width);
+    }
+
     // Setters
     setMarginLeft(marginLeft, callback) {
         this.setState({ marginLeft }, callback);
     }
 
+    setPageWidth(pageWidth) {
+        this.setState({ pageWidth });
+    }
+
     // Getters
     getMarginLeft() {
         return this.state.marginLeft;
+    }
+
+    getPageWidth() {
+        return this.state.pageWidth;
+    }
+
+    getContainerWidth() {
+        return Math.min(this.getPageWidth(), UIConstant.noticeWidth() + doubleVisibleOffset);
     }
 
     // Actions
@@ -127,7 +142,8 @@ export default class UINotice extends Component {
     }
 
     animateOpening() {
-        this.setMarginLeft(new Animated.Value(hiddenContainerWidth + UIConstant.contentOffset()), () => {
+        const containerWidth = this.getContainerWidth();
+        this.setMarginLeft(new Animated.Value(containerWidth + UIConstant.contentOffset()), () => {
             Animated.spring(this.state.marginLeft, {
                 toValue: UIConstant.largeContentOffset(),
                 duration: UIConstant.animationDuration(),
@@ -136,8 +152,9 @@ export default class UINotice extends Component {
     }
 
     animateClosing() {
+        const containerWidth = this.getContainerWidth();
         Animated.timing(this.state.marginLeft, {
-            toValue: hiddenContainerWidth + UIConstant.contentOffset(),
+            toValue: containerWidth + UIConstant.contentOffset(),
             duration: UIConstant.animationDuration(),
         }).start(() => hideMessage());
     }
@@ -191,13 +208,18 @@ export default class UINotice extends Component {
     }
 
     renderMessageComponent() {
-        const margin = { marginLeft: this.getMarginLeft() };
-        const alignItems = Platform.OS === 'web' || UIDevice.isTablet() ? 'start' : 'center';
+        const alignItems = Platform.OS === 'web' || UIDevice.isTablet() ? 'flex-start' : 'center';
+        const marginLeft = this.getMarginLeft();
+        const containerWidth = this.getContainerWidth();
+        const noticeWidth = containerWidth - doubleOffset;
 
         return (
-            <View style={{ alignItems }}>
-                <View style={styles.hiddenContainer}>
-                    <Animated.View style={[styles.noticeStyle, margin]}>
+            <View
+                style={{ alignItems }}
+                onLayout={e => this.onWindowContainerLayout(e)}
+            >
+                <View style={[styles.container, { width: containerWidth }]}>
+                    <Animated.View style={[styles.noticeStyle, { width: noticeWidth, marginLeft }]}>
                         <View style={styles.contentContainer}>
                             {this.renderHeader()}
                             <Text style={styles.messageStyle}>
