@@ -16,6 +16,7 @@
         "currency-formatter": "^1.4.3",
         "libphonenumber-js": "1.5.2",
         "mobile-detect": "^1.4.2",
+        "prop-types": "15.6.2",
         "moment": "^2.22.2",
         "react-images": "^0.5.19",
         "react-localization": "git+https://github.com/FactorBench/react-localization.git",
