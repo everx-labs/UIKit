@@ -13,6 +13,7 @@ import UIDetailsView from './components/UIDetailsView';
 import UIDevice from './helpers/UIDevice';
 import UIDialogController from './helpers/UIDialogController';
 import UIDropdownAlert from './components/UIDropdownAlert';
+import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UIFunction from './helpers/UIFunction';
 import UIImageButton from './components/UIImageButton';
@@ -65,6 +66,7 @@ export {
     UIDevice,
     UIDialogController,
     UIDropdownAlert,
+    UIFlashMessage,
     UIFont,
     UIFunction,
     UIImageButton,

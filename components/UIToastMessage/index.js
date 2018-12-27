@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import { hideMessage } from 'react-native-flash-message';
 
 import UIConstant from '../../helpers/UIConstant';
 import UIColor from '../../helpers/UIColor';
 import UIFont from '../../helpers/UIFont';
+import UINotice from '../../components/UINotice';
 
 import icoClose from '../../assets/ico-close/close-light.png';
 
@@ -33,9 +34,7 @@ const styles = StyleSheet.create({
     },
 });
 
-let masterRef = null;
-
-export default class UIToastMessage extends Component {
+export default class UIToastMessage {
     static Type = {
         Default: 'default',
         Alert: 'alert',
@@ -48,50 +47,45 @@ export default class UIToastMessage extends Component {
 
     static showMessage(args) {
         if (typeof args === 'string') {
-            masterRef.showMessage({ message: args });
+            this.prepareAndShowMessage({ message: args });
         } else {
-            masterRef.showMessage(args);
+            this.prepareAndShowMessage(args);
         }
     }
 
-    componentDidMount() {
-        masterRef = this;
-    }
-
-    componentWillUnmount() {
-        masterRef = null;
-    }
-
     // Actions
-    showMessage({
+    static prepareAndShowMessage({
         message, type, placement, autoHide = true, action,
     }) {
         this.message = message || '';
-        this.type = type || UIToastMessage.Type.Default;
-        this.placement = placement || UIToastMessage.Place.Center;
+        this.type = type || this.Type.Default;
+        this.placement = placement || this.Place.Center;
         this.action = action || { title: '', onPress: () => {} };
-        showMessage({
-            message: '', // unused but required param
+        const messageComponent = this.renderMessageComponent();
+        const messageObject = {
+            position: UINotice.Place.Bottom,
+            animated: true,
             duration: 5000,
             autoHide,
-        });
+        };
+        UINotice.showToastMessage(messageObject, messageComponent);
     }
 
-    closeToast() {
+    static closeToast() {
         this.action.onPress();
         hideMessage();
     }
 
     // Render
-    renderCloseButton() {
-        if (this.type === UIToastMessage.Type.Alert) {
+    static renderCloseButton() {
+        if (this.type === this.Type.Alert) {
             return (
                 <TouchableOpacity onPress={() => this.closeToast()} >
                     <Image source={icoClose} />
                 </TouchableOpacity>
             );
         }
-        if (this.type === UIToastMessage.Type.Default && this.action.title) {
+        if (this.type === this.Type.Default && this.action.title) {
             return (
                 <TouchableOpacity onPress={() => this.closeToast()} >
                     <Text style={styles.actionTitleStyle}>{this.action.title}</Text>
@@ -101,8 +95,8 @@ export default class UIToastMessage extends Component {
         return null;
     }
 
-    renderMessageComponent() {
-        const color = this.type === UIToastMessage.Type.Alert ? UIColor.error() : UIColor.black();
+    static renderMessageComponent() {
+        const color = this.type === this.Type.Alert ? UIColor.error() : UIColor.black();
         return (
             <View style={[styles.containerStyle, { alignItems: this.placement }]}>
                 <View style={[styles.toastStyle, { backgroundColor: color }]}>
@@ -112,15 +106,6 @@ export default class UIToastMessage extends Component {
                     {this.renderCloseButton()}
                 </View>
             </View>
-        );
-    }
-
-    render() {
-        return (
-            <FlashMessage
-                position="bottom"
-                MessageComponent={() => this.renderMessageComponent()}
-            />
         );
     }
 }
