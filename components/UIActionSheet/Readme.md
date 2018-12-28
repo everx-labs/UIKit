@@ -21,8 +21,18 @@ const menuItems = [
 
 <View style={containerStyle}>
     <UITextButton 
-        title="Show default ActionSheet"
+        title="Show ActionSheet"
+        onPress={() => this.actionSheet.show()}
+    />
+    <UITextButton 
+        title="Show master ActionSheet"
         onPress={() => UIActionSheet.show(menuItems)}
+    />
+    <UIActionSheet
+        ref={(component) => { this.actionSheet = component; }}
+        needCancelItem
+        menuItemsList={menuItems}
+        masterActionSheet={false}
     />
     <UIActionSheet />
 </View>
