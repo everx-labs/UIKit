@@ -1,4 +1,4 @@
-Example:
+Open it in full window mode to see an example:
 
 ```js
 const containerStyle = {
@@ -106,7 +106,7 @@ class ModalExample extends React.Component {
                         onPress={() => this.toggleAutoHide()}
                     />
                 </View>
-                <UIToastMessage />
+                <UINotice />
             </View>
         );
     }

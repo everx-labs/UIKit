@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 
 import UIConstant from '../../helpers/UIConstant';
@@ -64,12 +64,18 @@ export default class UINotice extends Component {
         }
     }
 
+    static showToastMessage(messageObject, messageComponent) {
+        masterRef.showToastMessage(messageObject, messageComponent);
+    }
+
     constructor(props) {
         super(props);
 
         this.state = {
             marginLeft: 0,
             pageWidth: 0,
+
+            externalMessageComponent: null,
         };
     }
 
@@ -96,6 +102,10 @@ export default class UINotice extends Component {
         this.setState({ pageWidth });
     }
 
+    setExternalMessageComponent(externalMessageComponent) {
+        this.setState({ externalMessageComponent });
+    }
+
     // Getters
     getMarginLeft() {
         return this.state.marginLeft;
@@ -107,6 +117,10 @@ export default class UINotice extends Component {
 
     getContainerWidth() {
         return Math.min(this.getPageWidth(), UIConstant.noticeWidth() + doubleVisibleOffset);
+    }
+
+    getExternalMessageComponent() {
+        return this.state.externalMessageComponent;
     }
 
     // Actions
@@ -121,14 +135,28 @@ export default class UINotice extends Component {
         this.message = message || '';
         this.action = action || { title: '', onPress: () => {} };
         this.onCancel = onCancel;
+        this.messageComponent = null;
         showMessage({
             position: placement,
             animated: false,
             message: '', // unused but required param
-            duration: 5000,
+            duration: 10000,
             autoHide,
         });
         this.animateOpening();
+    }
+
+    showToastMessage({
+        position, animated, duration, autoHide,
+    }, messageComponent) {
+        this.setExternalMessageComponent(messageComponent);
+        showMessage({
+            message: '', // unused but required param
+            position,
+            animated,
+            duration,
+            autoHide,
+        });
     }
 
     closeWithCancel() {
@@ -161,7 +189,7 @@ export default class UINotice extends Component {
 
     // Render
     renderCloseButton() {
-        const icoClose = this.action.title ? icoCloseGrey : icoCloseBlue;
+        const icoClose = this.action && this.action.title ? icoCloseGrey : icoCloseBlue;
         return (
             <TouchableOpacity onPress={() => this.closeWithCancel()} >
                 <Image source={icoClose} />
@@ -194,7 +222,7 @@ export default class UINotice extends Component {
     }
 
     renderActionButton() {
-        if (this.action.title) {
+        if (this.action && this.action.title) {
             return (
                 <TouchableOpacity
                     style={{ marginTop: UIConstant.largeContentOffset() }}
@@ -235,10 +263,10 @@ export default class UINotice extends Component {
     }
 
     render() {
+        const component = this.getExternalMessageComponent() || this.renderMessageComponent();
         return (
             <FlashMessage
-                position="bottom"
-                MessageComponent={() => this.renderMessageComponent()}
+                MessageComponent={() => component}
             />
         );
     }
