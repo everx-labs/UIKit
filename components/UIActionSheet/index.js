@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
         right: UIConstant.contentOffset(),
         bottom: UIConstant.contentOffset(),
         borderRadius: UIConstant.borderRadius(),
-        paddingBottom: UIConstant.coverBounceOffset(),
         paddingHorizontal: UIConstant.contentOffset(),
     },
 });
@@ -81,9 +80,15 @@ class UIActionSheet extends Component {
 
     // Actions
     show(menuItemsList = [], needCancelItem = true, onCancelCallback = () => {}) {
-        this.menuItemsList = menuItemsList;
-        this.needCancelItem = needCancelItem;
-        this.onCancelCallback = onCancelCallback;
+        if (this.props.masterActionSheet) {
+            this.menuItemsList = menuItemsList;
+            this.needCancelItem = needCancelItem;
+            this.onCancelCallback = onCancelCallback;
+        } else {
+            this.menuItemsList = this.props.menuItemsList;
+            this.needCancelItem = this.props.needCancelItem;
+            this.onCancelCallback = this.props.onCancelCallback;
+        }
         this.setModalVisible(true, () => {
             Animated.spring(this.state.marginBottom, {
                 toValue: UIConstant.contentOffset(),
@@ -110,7 +115,7 @@ class UIActionSheet extends Component {
         const height = UIConstant.actionSheetItemHeight();
         const numberItems = this.menuItemsList.length;
         const actionSheetHeight = height * (numberItems + (this.needCancelItem ? 1 : 0));
-        return actionSheetHeight + UIConstant.contentOffset() + UIConstant.coverBounceOffset();
+        return actionSheetHeight + UIConstant.contentOffset();
     }
 
     // Render
@@ -182,8 +187,14 @@ export default UIActionSheet;
 
 UIActionSheet.defaultProps = {
     masterActionSheet: true,
+    menuItemsList: [],
+    needCancelItem: true,
+    onCancelCallback: () => {},
 };
 
 UIActionSheet.propTypes = {
+    menuItemsList: PropTypes.arrayOf(Object),
+    needCancelItem: PropTypes.bool,
+    onCancelCallback: PropTypes.func,
     masterActionSheet: PropTypes.bool,
 };

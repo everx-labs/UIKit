@@ -326,8 +326,8 @@ export default class UIImageView extends Component {
         return (
             <UIActionSheet
                 ref={(component) => { this.actionSheet = component; }}
-                needCancelItem={false}
-                menuItemsList={this.state.menuItemsList}
+                needCancelItem
+                menuItemsList={this.menuItemsList}
                 masterActionSheet={false}
             />
         );
