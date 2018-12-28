@@ -11,27 +11,29 @@ import UIStyle from '../../helpers/UIStyle';
 import icoCloseBlue from '../../assets/ico-close/close-blue.png';
 import icoCloseGrey from '../../assets/ico-close/close-grey.png';
 
-const doubleOffset = 2 * UIConstant.largeContentOffset();
-const doubleVisibleOffset = 2 * UIConstant.contentOffset();
+const cardShadowWidth = UIConstant.cardShadowWidth();
+const doubleOffset = 2 * cardShadowWidth;
+const contentOffset = UIConstant.contentOffset();
+const hiddenOffset = cardShadowWidth - contentOffset;
 
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
-        paddingVertical: UIConstant.largeContentOffset(),
-        margin: UIConstant.contentOffset() - UIConstant.largeContentOffset(),
+        paddingVertical: cardShadowWidth,
+        margin: -hiddenOffset,
     },
     noticeStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: UIConstant.contentOffset(),
-        paddingHorizontal: UIConstant.contentOffset(),
+        padding: contentOffset,
+        paddingHorizontal: contentOffset,
         borderRadius: UIConstant.smallBorderRadius(),
         backgroundColor: UIColor.white(),
         ...UIConstant.cardShadow(),
     },
     contentContainer: {
         flex: 1,
-        marginRight: UIConstant.contentOffset(),
+        marginRight: contentOffset,
     },
     messageStyle: {
         color: UIColor.grey(),
@@ -90,7 +92,9 @@ export default class UINotice extends Component {
     // Events
     onWindowContainerLayout(e) {
         const { width } = e.nativeEvent.layout;
-        this.setPageWidth(width);
+        if (width !== this.getPageWidth()) {
+            this.setPageWidth(width);
+        }
     }
 
     // Setters
@@ -116,7 +120,9 @@ export default class UINotice extends Component {
     }
 
     getContainerWidth() {
-        return Math.min(this.getPageWidth(), UIConstant.noticeWidth() + doubleVisibleOffset);
+        const pageNoticeWidth = this.getPageWidth() + (hiddenOffset * 2);
+        const defaultNoticeWidth = UIConstant.noticeWidth() + doubleOffset;
+        return Math.min(pageNoticeWidth, defaultNoticeWidth);
     }
 
     getExternalMessageComponent() {
@@ -171,9 +177,9 @@ export default class UINotice extends Component {
 
     animateOpening() {
         const containerWidth = this.getContainerWidth();
-        this.setMarginLeft(new Animated.Value(containerWidth + UIConstant.contentOffset()), () => {
+        this.setMarginLeft(new Animated.Value(containerWidth + contentOffset), () => {
             Animated.spring(this.state.marginLeft, {
-                toValue: UIConstant.largeContentOffset(),
+                toValue: cardShadowWidth,
                 duration: UIConstant.animationDuration(),
             }).start();
         });
@@ -182,7 +188,7 @@ export default class UINotice extends Component {
     animateClosing() {
         const containerWidth = this.getContainerWidth();
         Animated.timing(this.state.marginLeft, {
-            toValue: containerWidth + UIConstant.contentOffset(),
+            toValue: containerWidth + contentOffset,
             duration: UIConstant.animationDuration(),
         }).start(() => hideMessage());
     }
@@ -225,7 +231,7 @@ export default class UINotice extends Component {
         if (this.action && this.action.title) {
             return (
                 <TouchableOpacity
-                    style={{ marginTop: UIConstant.largeContentOffset() }}
+                    style={{ marginTop: UIConstant.mediumContentOffset() }}
                     onPress={() => this.closeWithAction()}
                 >
                     <Text style={styles.actionTitleStyle}>{this.action.title}</Text>
