@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import { UISpinnerOverlay, UILocalized, UIActionSheet, UIAlertView, UIColor } from '../../UIKit';
+import { UISpinnerOverlay, UILocalized, UIActionSheet, UIAlertView, UIColor } from '../../UIKit/UIKit';
+import { FBLog } from '../../../services/FBKit/FBKit';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -35,6 +36,7 @@ export default class UIImageView extends Component {
     constructor(props) {
         super(props);
         const { FromCamera, FromGallery, DeletePhoto } = UILocalized;
+
         this.menuItemsList = [
             {
                 key: 'item 1',
@@ -53,7 +55,6 @@ export default class UIImageView extends Component {
                 onPress: () => this.onDeletePhoto(),
             },
         ];
-
         this.state = {
             showSpinnerOnPhotoView: false,
             lightboxVisible: false,
@@ -72,14 +73,12 @@ export default class UIImageView extends Component {
     }
 
     // Events
-    onPressPhoto() {
-        if (!this.isEditable() && this.isExpandable()) {
-            this.props.onPressPhoto(
-                this.showSpinnerOnPhotoView,
-                this.hideSpinnerOnPhotoView,
-            );
-            this.setLightboxVisible();
-        } else if (this.isEditable() && Platform.OS !== 'web') {
+    onPhotoPress() {
+        if (Platform.OS === 'web') {
+            if (!this.isEditable() && this.isExpandable()) {
+                this.setLightboxVisible();
+            }
+        } else if (this.isEditable()) {
             this.actionSheet.show();
         }
     }
@@ -87,7 +86,7 @@ export default class UIImageView extends Component {
     onPickFromCamera() {
         ImagePicker.launchCamera(photoOptions, (response) => {
             if (response.error) {
-                console.warn('[UIImageView] ImagePicker from camera Error: ', response.error);
+                FBLog.error('[UIImageView] ImagePicker from camera Error: ', response.error);
             } else if (response.didCancel) {
                 console.log('[UIImageView] User cancelled ImagePicker from camera');
             } else {
@@ -103,7 +102,7 @@ export default class UIImageView extends Component {
     onPickFromGallery() {
         ImagePicker.launchImageLibrary(photoOptions, (response) => {
             if (response.error) {
-                console.warn('[UIImageView] ImagePicker from gallery Error: ', response.error);
+                FBLog.error('[UIImageView] ImagePicker from gallery Error: ', response.error);
             } else if (response.didCancel) {
                 console.log('[UIImageView] User cancelled ImagePicker from gallery');
             } else {
@@ -138,24 +137,12 @@ export default class UIImageView extends Component {
         return photoURI;
     }
 
-    getPhotoBig() {
-        const photoURI = this.props.sourceBig;
-        if (photoURI instanceof String || typeof photoURI === 'string') {
-            return { uri: photoURI };
-        }
-        return photoURI;
-    }
-
     isEditable() {
         return this.props.editable && !this.props.disabled;
     }
 
     isExpandable() {
         return this.props.expandable;
-    }
-
-    isShowSpinnerOnPhotoView() {
-        return this.state.showSpinnerOnPhotoView;
     }
 
     // Actions
@@ -247,17 +234,13 @@ export default class UIImageView extends Component {
             return null;
         }
         const photo = this.getPhoto();
-        if (!photo || this.isShowSpinnerOnPhotoView()) {
+        if (!photo) {
             return null;
         }
-        let photoBig = this.getPhotoBig();
-        if (!photoBig) {
-            photoBig = photo;
-        }
-        console.log('[UIImageView] Images:', [{ src: photoBig.uri }]);
+        console.log('[UIImageView] Images:', [{ src: photo.uri }]);
         return (
             <Lightbox
-                images={[{ src: photoBig.uri }]}
+                images={[{ src: photo.uri }]}
                 isOpen={this.state.lightboxVisible}
                 onClose={() => this.setLightboxVisible(false)}
                 showImageCount={false}
@@ -267,44 +250,9 @@ export default class UIImageView extends Component {
         );
     }
 
-    // this for render spinner while big photo loading
-    // but with it animation little worse, angles of photo are square
-    // need to make research
-    // without it photo renders small until big will be loaded
-    renderLightBoxMobileContent() {
-        let photo = this.getPhoto();
-        if (photo) {
-            const photoBig = this.getPhotoBig();
-            if (photoBig) {
-                photo = photoBig;
-            }
-            return ([
-                <UISpinnerOverlay
-                    visible={this.state.showSpinnerOnPhotoView}
-                />,
-                <Image
-                    resizeMode="contain"
-                    resizeMethod="auto"
-                    style={{ flex: 1 }}
-                    source={photo}
-                />,
-            ]);
-        }
-        return ([
-            <UISpinnerOverlay
-                visible={this.state.showSpinnerOnPhotoView}
-            />,
-            <View style={styles.photoContainer} />,
-        ]);
-    }
-
     renderPhotoContent() {
-        let photo = this.getPhoto();
+        const photo = this.getPhoto();
         if (photo) {
-            const photoBig = this.getPhotoBig();
-            if (photoBig) {
-                photo = photoBig;
-            }
             return (
                 <Image
                     resizeMode={this.props.resizeMode}
@@ -326,8 +274,7 @@ export default class UIImageView extends Component {
         return (
             <UIActionSheet
                 ref={(component) => { this.actionSheet = component; }}
-                needCancelItem={false}
-                menuItemsList={this.state.menuItemsList}
+                menuItemsList={this.menuItemsList}
                 masterActionSheet={false}
             />
         );
@@ -338,7 +285,7 @@ export default class UIImageView extends Component {
             return (
                 <TouchableOpacity
                     style={[styles.photoContainer, this.props.photoStyle]}
-                    onPress={() => this.onPressPhoto()}
+                    onPress={() => this.onPhotoPress()}
                 >
                     {this.renderPhotoContent()}
                     {this.renderLightBox()}
@@ -354,9 +301,6 @@ export default class UIImageView extends Component {
                 activeProps={{
                     style: { resizeMode: 'contain', width, height },
                 }}
-                // for render spinner while photo loading
-                renderContent={() => this.renderLightBoxMobileContent()}
-                onOpen={() => this.onPressPhoto()}
             >
                 {this.renderPhotoContent()}
             </LightboxMobile>
@@ -367,8 +311,8 @@ export default class UIImageView extends Component {
         return (
             <View style={[styles.photoContainer, this.props.photoStyle]}>
                 {this.renderPhoto()}
-                {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
+                {this.renderSpinnerOverlay()}
             </View>
         );
     }
@@ -376,7 +320,6 @@ export default class UIImageView extends Component {
 
 UIImageView.defaultProps = {
     source: null,
-    sourceBig: null,
     editable: false,
     expandable: true,
     disabled: false,
@@ -385,12 +328,10 @@ UIImageView.defaultProps = {
     resizeMethod: 'auto',
     onUploadPhoto: () => {},
     onDeletePhoto: () => {},
-    onPressPhoto: () => {},
 };
 
 UIImageView.propTypes = {
     source: PropTypes.string,
-    sourceBig: PropTypes.string,
     editable: PropTypes.bool,
     expandable: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -399,5 +340,4 @@ UIImageView.propTypes = {
     resizeMethod: PropTypes.string,
     onUploadPhoto: PropTypes.func,
     onDeletePhoto: PropTypes.func,
-    onPressPhoto: PropTypes.func,
 };

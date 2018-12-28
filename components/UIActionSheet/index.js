@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import { Platform, View, Modal, StyleSheet, TouchableWithoutFeedback, FlatList, Animated } from 'react-native';
 
-import UIColor from '../../helpers/UIColor';
-import UIConstant from '../../helpers/UIConstant';
-import UILocalized from '../../helpers/UILocalized';
-import UIStyle from '../../helpers/UIStyle';
+import UIColor from '../UIColor';
+import UIConstant from '../UIConstant';
+import UILocalized from '../UILocalized';
+import UIStyle from '../UIStyle';
 
 import MenuItem from './MenuItem';
 
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
         right: UIConstant.contentOffset(),
         bottom: UIConstant.contentOffset(),
         borderRadius: UIConstant.borderRadius(),
-        paddingBottom: UIConstant.coverBounceOffset(),
         paddingHorizontal: UIConstant.contentOffset(),
     },
 });
@@ -40,7 +39,7 @@ class UIActionSheet extends Component {
     constructor(props) {
         super(props);
         this.menuItemsList = [];
-        this.needCancelItem = true;
+        this.needCancelItem = false;
         this.onCancelCallback = () => {};
 
         this.state = {
@@ -80,10 +79,16 @@ class UIActionSheet extends Component {
     }
 
     // Actions
-    show(menuItemsList = [], needCancelItem = true, onCancelCallback = () => {}) {
-        this.menuItemsList = menuItemsList;
-        this.needCancelItem = needCancelItem;
-        this.onCancelCallback = onCancelCallback;
+    show(menuItemsList = [], needCancelItem = false, onCancelCallback = () => {}) {
+        if (this.props.masterActionSheet) {
+            this.menuItemsList = menuItemsList;
+            this.needCancelItem = needCancelItem;
+            this.onCancelCallback = onCancelCallback;
+        } else {
+            this.menuItemsList = this.props.menuItemsList;
+            this.needCancelItem = this.props.needCancelItem;
+            this.onCancelCallback = this.props.onCancelCallback;
+        }
         this.setModalVisible(true, () => {
             Animated.spring(this.state.marginBottom, {
                 toValue: UIConstant.contentOffset(),
@@ -114,7 +119,7 @@ class UIActionSheet extends Component {
     }
 
     // Render
-    renderCancelItem() {
+    renderCancelButton() {
         if (!this.needCancelItem) {
             return null;
         }
@@ -142,7 +147,6 @@ class UIActionSheet extends Component {
                 <View style={[UIStyle.absoluteFillObject, styles.container]}>
                     <Animated.View
                         style={[
-                            UIStyle.bottomScreenContainer,
                             styles.downMenu,
                             { bottom: this.getMarginBottom() },
                         ]}
@@ -152,7 +156,7 @@ class UIActionSheet extends Component {
                             renderItem={({ item }) => this.renderMenuItem(item)}
                             scrollEnabled={false}
                         />
-                        {this.renderCancelItem()}
+                        {this.renderCancelButton()}
                     </Animated.View>
                 </View>
             </TouchableWithoutFeedback>
@@ -182,8 +186,14 @@ export default UIActionSheet;
 
 UIActionSheet.defaultProps = {
     masterActionSheet: true,
+    menuItemsList: [],
+    needCancelItem: true,
+    onCancelCallback: () => {},
 };
 
 UIActionSheet.propTypes = {
+    menuItemsList: PropTypes.arrayOf(Object),
+    needCancelItem: PropTypes.bool,
     masterActionSheet: PropTypes.bool,
+    onCancelCallback: PropTypes.func,
 };
