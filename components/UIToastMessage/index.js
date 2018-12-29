@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
 
 import UIConstant from '../../helpers/UIConstant';
@@ -9,6 +9,9 @@ import UINotice from '../../components/UINotice';
 
 import icoClose from '../../assets/ico-close/close-light.png';
 
+const { width } = Dimensions.get('window');
+const pageToastWidth = width - (UIConstant.contentOffset() * 2);
+
 const styles = StyleSheet.create({
     containerStyle: {
         height: 84,
@@ -16,7 +19,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.contentOffset(),
     },
     toastStyle: {
-        width: 328,
+        width: Math.min(UIConstant.toastWidth(), pageToastWidth),
         height: 52,
         borderRadius: UIConstant.smallBorderRadius(),
         paddingHorizontal: UIConstant.contentOffset(),
