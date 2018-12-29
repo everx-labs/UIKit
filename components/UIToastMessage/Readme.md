@@ -27,11 +27,11 @@ class ModalExample extends React.Component {
         return (
             <View style={containerStyle}>
                 <UITextButton 
-                        title="Show default toast with message only"
-                        onPress={() => UIToastMessage.showMessage(
-                            'Address copied to clipboard.'
-                        )}
-                    />
+                    title="Show default toast with message only"
+                    onPress={() => UIToastMessage.showMessage(
+                        'Address copied to clipboard.'
+                    )}
+                />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UITextButton 
                         title="Show default toast on left"
