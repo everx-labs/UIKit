@@ -53,6 +53,7 @@ const UI_ELASTIC_WIDTH_MAX = 1280;
 const UI_PASSWORD_PROMPT_WIDTH = 416;
 
 const UI_NOTICE_WIDTH = 360;
+const UI_TOAST_WIDTH = 328;
 
 const UI_ACTIONSHEET_ITEM_HEIGHT = 48;
 const UI_MENU_WIDTH = 176; // menu for web
@@ -255,6 +256,10 @@ export default class UIConstant {
 
     static noticeWidth() {
         return UI_NOTICE_WIDTH;
+    }
+
+    static toastWidth() {
+        return UI_TOAST_WIDTH;
     }
 
     // Action sheet
