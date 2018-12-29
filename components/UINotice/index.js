@@ -83,12 +83,10 @@ export default class UINotice extends Component {
 
     componentDidMount() {
         masterRef = this;
-        console.log(masterRef);
     }
 
     componentWillUnmount() {
         masterRef = null;
-        console.log(masterRef);
     }
 
     // Events
