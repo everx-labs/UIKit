@@ -83,10 +83,12 @@ export default class UINotice extends Component {
 
     componentDidMount() {
         masterRef = this;
+        console.log(masterRef);
     }
 
     componentWillUnmount() {
         masterRef = null;
+        console.log(masterRef);
     }
 
     // Events
@@ -141,7 +143,7 @@ export default class UINotice extends Component {
         this.message = message || '';
         this.action = action || { title: '', onPress: () => {} };
         this.onCancel = onCancel;
-        this.messageComponent = null;
+        this.setExternalMessageComponent(null);
         showMessage({
             position: placement,
             animated: false,
@@ -158,8 +160,9 @@ export default class UINotice extends Component {
         this.setExternalMessageComponent(messageComponent);
         showMessage({
             message: '', // unused but required param
-            position,
+            animationDuration: UIConstant.animationDuration(),
             animated,
+            position,
             duration,
             autoHide,
         });
