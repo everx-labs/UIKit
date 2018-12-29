@@ -96,6 +96,8 @@ const UI_CARD_SHADOW = Platform.OS === 'android'
         },
     };
 
+const UI_CARD_SHADOW_WIDTH = 40;
+
 export default class UIConstant {
     // Animations
     static animationDuration() {
@@ -277,6 +279,10 @@ export default class UIConstant {
 
     static cardShadow() {
         return UI_CARD_SHADOW;
+    }
+
+    static cardShadowWidth() {
+        return UI_CARD_SHADOW_WIDTH;
     }
 
     // Components size
