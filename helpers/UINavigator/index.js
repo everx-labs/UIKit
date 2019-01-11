@@ -1,6 +1,6 @@
 // @flow
 
-import type { ReactNavigation } from '../../components/UINavigationBar';
+import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
 export type NavigationProps = {
     navigation: ReactNavigation,
