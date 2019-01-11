@@ -1,0 +1,1 @@
+Example for UINotice included in UIToastMessage below
