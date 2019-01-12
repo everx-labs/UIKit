@@ -1,6 +1,6 @@
 import { Platform, Share, Clipboard } from 'react-native';
 
-import UIToastMessage from '../../components/UIToastMessage';
+import UIToastMessage from '../../components/notifications/UIToastMessage';
 
 export default class UIShareManager {
     // Private

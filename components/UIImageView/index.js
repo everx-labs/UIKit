@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import { UISpinnerOverlay, UILocalized, UIActionSheet, UIAlertView, UIColor } from '../../UIKit';
+import UISpinnerOverlay from '../UISpinnerOverlay';
+import UILocalized from '../../helpers/UILocalized';
+import UIActionSheet from '../menus/UIActionSheet';
+import UIAlertView from '../popup/UIAlertView';
+import UIColor from '../../helpers/UIColor';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;

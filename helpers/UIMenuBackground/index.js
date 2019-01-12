@@ -3,7 +3,7 @@ import { View, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 import { PopoverContainer } from 'react-native-simple-popover';
 
-import UIMenuView from '../../components/UIMenuView';
+import UIMenuView from '../../components/menus/UIMenuView';
 import UIStyle from '../../helpers/UIStyle';
 import UIDevice from '../../helpers/UIDevice';
 
