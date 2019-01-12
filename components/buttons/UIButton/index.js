@@ -199,7 +199,6 @@ export default class UIButton extends Component {
         if (bottomExtend) {
             height *= 2;
         }
-        const footerStyle = footer ? UIStyle.bottomScreenContainer : null;
         return (
             <View
                 style={[
@@ -207,7 +206,6 @@ export default class UIButton extends Component {
                     { height },
                     { backgroundColor: this.getButtonColor() },
                     { borderRadius: this.getButtonRadius() },
-                    footerStyle,
                     style,
                 ]}
             >

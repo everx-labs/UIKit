@@ -125,6 +125,7 @@ class ModalExample extends React.Component {
         return (
             <UIButton
                 title="Footer button"
+                style={UIStyle.bottomScreenContainer}
                 footer
                 onPress={() => alert('Action was called')}
             />
