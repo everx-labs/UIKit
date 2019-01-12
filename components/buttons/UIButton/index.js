@@ -9,6 +9,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
+import UINotice from '../../notifications/UINotice';
 
 const styles = StyleSheet.create({
     container: {
@@ -56,10 +57,12 @@ export default class UIButton extends Component {
 
     componentDidMount() {
         this.mounted = true;
+        this.setInsetIfFooter();
     }
 
     componentWillUnmount() {
         this.mounted = false;
+        this.removeInsetIfFooter();
     }
 
     // Events
@@ -135,6 +138,25 @@ export default class UIButton extends Component {
     }
 
     // Actions
+    setInsetIfFooter() {
+        const { footer, bottomExtend } = this.props;
+        if (!footer) {
+            return;
+        }
+        let height = this.getButtonHeight();
+        if (bottomExtend) {
+            height *= 2;
+        }
+        this.insetKey = `UIButton~key~${new Date()}`;
+        UINotice.setAdditionalInset(this.insetKey, height);
+    }
+
+    removeInsetIfFooter() {
+        if (!this.props.footer) {
+            return;
+        }
+        UINotice.removeAdditionalInset(this.insetKey);
+    }
 
     // render
     renderBadge() {
@@ -172,10 +194,12 @@ export default class UIButton extends Component {
     }
 
     render() {
+        const { bottomExtend, footer, style } = this.props;
         let height = this.getButtonHeight();
-        if (this.props.bottomExtend) {
+        if (bottomExtend) {
             height *= 2;
         }
+        const footerStyle = footer ? UIStyle.bottomScreenContainer : null;
         return (
             <View
                 style={[
@@ -183,7 +207,8 @@ export default class UIButton extends Component {
                     { height },
                     { backgroundColor: this.getButtonColor() },
                     { borderRadius: this.getButtonRadius() },
-                    this.props.style,
+                    footerStyle,
+                    style,
                 ]}
             >
                 <TouchableWithoutFeedback
@@ -219,6 +244,7 @@ UIButton.defaultProps = {
     disabled: false,
     bottomExtend: false, // useful for iPhone X (SafeArea)
     showIndicator: false,
+    footer: false,
     onPress: () => {},
 };
 
@@ -231,5 +257,6 @@ UIButton.propTypes = {
     disabled: PropTypes.bool,
     bottomExtend: PropTypes.bool,
     showIndicator: PropTypes.bool,
+    footer: PropTypes.bool,
     onPress: PropTypes.func,
 };
