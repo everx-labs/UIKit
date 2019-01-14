@@ -4,9 +4,9 @@ import React from 'react';
 import { Platform, Modal, View, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
-import type { ControllerProps, ControllerState } from '../UIController';
+import type { ControllerProps, ControllerState } from '../../helpers/UIController';
 
-import UIController from '../UIController';
+import UIController from '../../helpers/UIController';
 import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
@@ -71,6 +71,10 @@ export default class UIModalController<Props, State>
     }
 
     // Events
+    onShown() {
+        this.onShow();
+    }
+
     onDismissed() {
         this.setControllerVisible(false, () => {
             this.setDy(null);
@@ -177,7 +181,7 @@ export default class UIModalController<Props, State>
         }
         this.setState({
             width,
-            height,
+            height
         });
     }
 
@@ -197,11 +201,9 @@ export default class UIModalController<Props, State>
     // Events
 
     // Actions
-    show() {
+    show(callback: () => void) {
         this.setControllerVisible(true);
-        if (this.onShow) {
-            this.onShow();
-        }
+        this.onShow = callback;
         // First set visible then do the rest
         setTimeout(() => { // in order to render
             if (this.dialog) {
@@ -211,12 +213,9 @@ export default class UIModalController<Props, State>
         }, 0);
     }
 
-    hide() {
+    hide(callback: () => void) {
         if (this.dialog) {
             this.dialog.dismiss();
-            if (this.onHide) {
-                this.onHide();
-            }
         }
     }
 
@@ -261,6 +260,7 @@ export default class UIModalController<Props, State>
                     />}
                 dismissOnTouchOutside={false}
                 onDismissed={() => this.onDismissed()}
+                onShown={() => this.onShown()}
                 overlayBackgroundColor="transparent"
             >
                 <View style={{ height: contentHeight }}>
