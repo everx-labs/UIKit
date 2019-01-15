@@ -4,9 +4,9 @@ import React from 'react';
 import { Platform, Modal, View, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
-import type { ControllerProps, ControllerState } from '../../helpers/UIController';
+import type { ControllerProps, ControllerState } from '../UIController';
 
-import UIController from '../../helpers/UIController';
+import UIController from '../UIController';
 import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
@@ -71,8 +71,8 @@ export default class UIModalController<Props, State>
     }
 
     // Events
-    onShown() {
-        this.onShow();
+    onDidAppear() {
+        return null;
     }
 
     onDismissed() {
@@ -181,7 +181,7 @@ export default class UIModalController<Props, State>
         }
         this.setState({
             width,
-            height
+            height,
         });
     }
 
@@ -201,9 +201,8 @@ export default class UIModalController<Props, State>
     // Events
 
     // Actions
-    show(callback: () => void) {
+    show() {
         this.setControllerVisible(true);
-        this.onShow = callback;
         // First set visible then do the rest
         setTimeout(() => { // in order to render
             if (this.dialog) {
@@ -213,7 +212,7 @@ export default class UIModalController<Props, State>
         }, 0);
     }
 
-    hide(callback: () => void) {
+    hide() {
         if (this.dialog) {
             this.dialog.dismiss();
         }
@@ -260,7 +259,7 @@ export default class UIModalController<Props, State>
                     />}
                 dismissOnTouchOutside={false}
                 onDismissed={() => this.onDismissed()}
-                onShown={() => this.onShown()}
+                onShown={() => this.onDidAppear()}
                 overlayBackgroundColor="transparent"
             >
                 <View style={{ height: contentHeight }}>
