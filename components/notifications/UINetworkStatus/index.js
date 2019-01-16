@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, StatusBar } from 'react-native';
 
@@ -8,6 +8,7 @@ import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIDevice from '../../../helpers/UIDevice';
+import UIComponent from '../../UIComponent';
 
 const STATUS_HEIGHT = 20; // Same as typical iPhone status bar height before X models
 
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
 
 let connected;
 
-export default class UINetworkStatus extends Component {
+export default class UINetworkStatus extends UIComponent {
     static setIsConnected(isConnected) {
         connected = isConnected;
         // Change status bar color style

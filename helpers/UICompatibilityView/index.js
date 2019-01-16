@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import Bowser from 'bowser';
 
 import UIStyle from '../UIStyle';
 import UILocalized from '../UILocalized';
+import UIComponent from '../../components/UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UICompatibilityView extends Component {
+export default class UICompatibilityView extends UIComponent {
     static renderNotCompatible() {
         return (
             <Text style={UIStyle.textPrimaryBodyRegular}>

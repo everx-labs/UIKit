@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
@@ -7,6 +7,7 @@ import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     textButton: {
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class UITextButton extends Component {
+class UITextButton extends UIComponent {
     // Render
     textSecondary
     renderTitle() {

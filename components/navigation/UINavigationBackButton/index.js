@@ -3,10 +3,11 @@ import StylePropType from 'react-style-proptype';
 import PropTypes from 'prop-types';
 import { Image, TouchableOpacity, View } from 'react-native';
 import UIStyle from '../../../helpers/UIStyle';
+import UIComponent from '../../UIComponent';
 
 const backImage = require('../../../assets/ico-arrow-left/ico-arrow-left.png');
 
-export default class UINavigationBackButton extends React.Component {
+export default class UINavigationBackButton extends UIComponent {
     static propTypes = {
         containerStyle: StylePropType,
         icon: PropTypes.any,

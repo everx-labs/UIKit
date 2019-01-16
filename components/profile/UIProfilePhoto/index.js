@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Image } from 'react-native';
@@ -7,6 +7,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIImageView from '../../UIImageView';
+import UIComponent from '../../UIComponent';
 
 const cameraImage = require('../../../assets/ico-camera/ico-camera.png');
 
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIProfilePhoto extends Component {
+export default class UIProfilePhoto extends UIComponent {
     // Render
     renderOverlay() {
         if (!this.props.editable) {

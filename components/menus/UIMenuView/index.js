@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { Popover } from 'react-native-simple-popover';
 import PropTypes from 'prop-types';
@@ -8,13 +8,14 @@ import UIColor from '../../../helpers/UIColor';
 import UIMenuBackground from '../../../helpers/UIMenuBackground';
 import UIDevice from '../../../helpers/UIDevice';
 import UIActionSheet from '../../menus/UIActionSheet';
+import UIComponent from '../../UIComponent';
 
 import MenuItem from './MenuItem';
 
 let masterRef = null;
 const MENU_TRIGGER = 'menu-trigger';
 
-export default class UIMenuView extends Component {
+export default class UIMenuView extends UIComponent {
     static hideMenu() {
         if (masterRef) {
             masterRef.hideMenu();
@@ -46,15 +47,15 @@ export default class UIMenuView extends Component {
 
     // Setters
     setIsVisible(isVisible = true) {
-        this.setState({ isVisible });
+        this.setStateSafely({ isVisible });
     }
 
     setTriggerWidth(triggerWidth) {
-        this.setState({ triggerWidth });
+        this.setStateSafely({ triggerWidth });
     }
 
     setMenuMarginLeft(menuMarginLeft) {
-        this.setState({ menuMarginLeft });
+        this.setStateSafely({ menuMarginLeft });
     }
 
     // Getters

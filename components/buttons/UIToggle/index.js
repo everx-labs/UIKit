@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
+
+import UIComponent from '../../UIComponent';
 
 import icoInactive from '../../../assets/ico-toggle-inactive/ico-toggle-inactive.png';
 import icoActive from '../../../assets/ico-toggle-active/ico-toggle-active.png';
 import icoOn from '../../../assets/ico-toggle-on/ico-toggle-on.png';
 import icoOff from '../../../assets/ico-toggle-off/ico-toggle-off.png';
 
-export default class UIToggle extends Component {
+export default class UIToggle extends UIComponent {
     // Render
     renderIcon() {
         const { active, colored } = this.props;

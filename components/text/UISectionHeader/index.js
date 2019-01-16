@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
@@ -7,6 +7,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import UIStyle from '../../../helpers/UIStyle';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     sectionHeader: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class UISectionHeader extends Component {
+class UISectionHeader extends UIComponent {
     // Getters
     getTitle() {
         return this.props.title;

@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
 import { View } from 'react-native';
 
 import UIRadioButtonItem from './UIRadioButtonItem';
+import UIComponent from '../../UIComponent';
 
-class UIRadioButtonList extends Component {
+class UIRadioButtonList extends UIComponent {
     renderList() {
         const { selected, radiobuttonList } = this.props.state;
         return radiobuttonList.map((item, index) => (

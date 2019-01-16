@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, TouchableWithoutFeedback, View, Text } from 'react-native';
@@ -9,6 +9,8 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
+import UINotice from '../../notifications/UINotice';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -23,14 +25,14 @@ const styles = StyleSheet.create({
     title: {
         ...UIFont.bodyMedium(),
     },
-    extenstion: {
+    extension: {
         flex: 1,
         borderTopWidth: StyleSheet.hairlineWidth,
         borderTopColor: UIColor.overlay20(),
     },
 });
 
-export default class UIButton extends Component {
+export default class UIButton extends UIComponent {
     static ButtonSize = {
         Default: 'default',
         Large: 'large',
@@ -55,11 +57,13 @@ export default class UIButton extends Component {
     }
 
     componentDidMount() {
-        this.mounted = true;
+        super.componentDidMount();
+        this.setInsetIfFooter();
     }
 
     componentWillUnmount() {
-        this.mounted = false;
+        super.componentWillUnmount();
+        this.removeInsetIfFooter();
     }
 
     // Events
@@ -77,10 +81,7 @@ export default class UIButton extends Component {
 
     // Setters
     setOverlayColor(overlayColor) {
-        if (!this.mounted) {
-            return;
-        }
-        this.setState({
+        this.setStateSafely({
             overlayColor,
         });
     }
@@ -135,6 +136,25 @@ export default class UIButton extends Component {
     }
 
     // Actions
+    setInsetIfFooter() {
+        const { footer, bottomExtend } = this.props;
+        if (!footer) {
+            return;
+        }
+        let height = this.getButtonHeight();
+        if (bottomExtend) {
+            height *= 2;
+        }
+        this.insetKey = `UIButton~key~${new Date()}`;
+        UINotice.setAdditionalInset(this.insetKey, height);
+    }
+
+    removeInsetIfFooter() {
+        if (!this.props.footer) {
+            return;
+        }
+        UINotice.removeAdditionalInset(this.insetKey);
+    }
 
     // render
     renderBadge() {
@@ -168,12 +188,13 @@ export default class UIButton extends Component {
         if (!this.props.bottomExtend) {
             return null;
         }
-        return (<View style={styles.extenstion} />);
+        return (<View style={styles.extension} />);
     }
 
     render() {
+        const { bottomExtend, style } = this.props;
         let height = this.getButtonHeight();
-        if (this.props.bottomExtend) {
+        if (bottomExtend) {
             height *= 2;
         }
         return (
@@ -183,7 +204,7 @@ export default class UIButton extends Component {
                     { height },
                     { backgroundColor: this.getButtonColor() },
                     { borderRadius: this.getButtonRadius() },
-                    this.props.style,
+                    style,
                 ]}
             >
                 <TouchableWithoutFeedback
@@ -219,6 +240,7 @@ UIButton.defaultProps = {
     disabled: false,
     bottomExtend: false, // useful for iPhone X (SafeArea)
     showIndicator: false,
+    footer: false,
     onPress: () => {},
 };
 
@@ -231,5 +253,6 @@ UIButton.propTypes = {
     disabled: PropTypes.bool,
     bottomExtend: PropTypes.bool,
     showIndicator: PropTypes.bool,
+    footer: PropTypes.bool,
     onPress: PropTypes.func,
 };

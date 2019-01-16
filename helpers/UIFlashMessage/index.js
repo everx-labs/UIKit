@@ -1,10 +1,12 @@
 // this component isn't used now, all logic included into UINotice
-import React, { Component } from 'react';
+import React from 'react';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+
+import UIComponent from '../../components/UIComponent';
 
 let masterRef = null;
 
-export default class UIFlashMessage extends Component {
+export default class UIFlashMessage extends UIComponent {
     static Position = {
         Bottom: 'bottom',
         Top: 'top',
@@ -23,16 +25,18 @@ export default class UIFlashMessage extends Component {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         masterRef = this;
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         masterRef = null;
     }
 
     // Setters
     setMessageComponent(messageComponent) {
-        this.setState({ messageComponent });
+        this.setStateSafely({ messageComponent });
     }
 
     // Getters

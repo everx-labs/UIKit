@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, Text } from 'react-native';
@@ -6,8 +6,9 @@ import { View, StyleSheet, Text } from 'react-native';
 import UIColor from '../../../helpers/UIColor';
 import UIFont from '../../../helpers/UIFont';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
-class UIProfileInitials extends Component {
+class UIProfileInitials extends UIComponent {
     getBackgroundColor() {
         const { id } = this.props;
         return UIColor.getAvatarBackgroundColor(id);

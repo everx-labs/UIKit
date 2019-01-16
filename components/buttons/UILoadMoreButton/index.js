@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
@@ -8,6 +8,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
+import UIComponent from '../../UIComponent';
 
 const buttonHeight = 30;
 
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UILoadMoreButton extends Component {
+export default class UILoadMoreButton extends UIComponent {
     renderIndicator() {
         if (!this.props.isLoadingMore) {
             return null;

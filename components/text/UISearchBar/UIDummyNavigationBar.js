@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Animated } from 'react-native';
 
 import UIDevice from '../../../helpers/UIDevice';
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
+import UIComponent from '../../UIComponent';
 
-class UIDummyNavigationBar extends Component {
+class UIDummyNavigationBar extends UIComponent {
     static calcFullHeight() {
         return UIDevice.statusBarHeight() + UIDevice.navigationBarHeight();
     }
@@ -19,12 +20,10 @@ class UIDummyNavigationBar extends Component {
     }
 
     componentDidMount() {
-        this.mounted = true;
         this.animateRollUp();
     }
 
     componentWillUnmount() {
-        this.mounted = false;
         this.animateRollDown();
     }
 

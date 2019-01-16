@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Platform, View, Modal, StyleSheet, TouchableWithoutFeedback, FlatList, Animated } from 'react-native';
@@ -7,6 +7,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
+import UIComponent from '../../UIComponent';
 
 import MenuItem from './MenuItem';
 
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 
 let masterRef = null;
 
-class UIActionSheet extends Component {
+class UIActionSheet extends UIComponent {
     static show(menuItemsList, needCancelItem, onCancelCallback) {
         if (masterRef) {
             masterRef.show(menuItemsList, needCancelItem, onCancelCallback);
@@ -49,12 +50,14 @@ class UIActionSheet extends Component {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         if (this.props.masterActionSheet) {
             masterRef = this;
         }
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         if (this.props.masterActionSheet) {
             masterRef = null;
         }
@@ -73,7 +76,7 @@ class UIActionSheet extends Component {
 
     // Setters
     setModalVisible(modalVisible, callback) {
-        this.setState({
+        this.setStateSafely({
             modalVisible,
         }, callback);
     }

@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, Image, TouchableOpacity, PanResponder } from 'react-native';
 
 import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized';
 import UIConstant from '../../helpers/UIConstant';
+import UIComponent from '../../components/UIComponent';
 
 const navigationBarHeight = 48.0;
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIModalNavigationBar extends Component {
+export default class UIModalNavigationBar extends UIComponent {
     static getBarHeight() {
         return navigationBarHeight;
     }

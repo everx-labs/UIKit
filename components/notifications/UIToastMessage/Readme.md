@@ -2,26 +2,36 @@
 const containerStyle = {
     margin: -16,
     padding: 16,
+    height: 550,
 }
 
 class ModalExample extends React.Component {
     constructor() {
         super();
         this.state = {
-            autoHide: true,
+            footer: true,
         }
     }
 
-    getAutoHide() {
-        return this.state.autoHide;
+    toggleFooter() {
+        this.setState({ footer: !this.state.footer });
     }
 
-    toggleAutoHide() {
-        this.setState({ autoHide: !this.getAutoHide() });
+    // Render
+    renderToggle() {
+        const { footer } = this.state;
+        return (
+            <View style={UIStyle.centerLeftContainer}>
+                <UIDetailsView value="Show footer  " />
+                <UIToggle 
+                    active={footer}
+                    onPress={() => this.toggleFooter()}
+                />
+            </View>
+        )
     }
 
     renderNoticeButtons() {
-        const autoHide = this.getAutoHide();
         return (
             <View>
                 <UITextButton 
@@ -38,31 +48,7 @@ class ModalExample extends React.Component {
                     })}
                 />
                 <UITextButton 
-                    title="Show notice with action and cancell callback"
-                    onPress={() => UINotice.showMessage({
-                        message: 'System is going down at midnight tonight. We’ll notify you when it’s back up.',
-                        action: {
-                            title: 'Confirm',
-                            onPress: () => alert('Action was called'),
-                        },
-                        onCancel: () => alert('Notice was canceled'),
-                        autoHide,
-                    })}
-                />
-                <UITextButton 
-                    title="Show notice with title and action"
-                    onPress={() => UINotice.showMessage({
-                        title: 'Hey, Eugene',
-                        message: 'Please confirm your Passport to complete transactions in your wallet.',
-                        action: {
-                            title: 'Confirm',
-                            onPress: () => alert('Action was called'),
-                        },
-                        autoHide,
-                    })}
-                />
-                <UITextButton 
-                    title="Show notice with subcomponent, title and action"
+                    title="Show notice with subcomponent, title, action, cancel callback without autohide"
                     onPress={() => UINotice.showMessage({
                         title: 'Hey, Eugene',
                         subComponent: (
@@ -78,7 +64,8 @@ class ModalExample extends React.Component {
                             title: 'Confirm',
                             onPress: () => alert('Action was called'),
                         },
-                        autoHide,
+                        onCancel: () => alert('Notice was canceled'),
+                        autoHide: false,
                     })}
                 />  
             </View>
@@ -86,37 +73,27 @@ class ModalExample extends React.Component {
     }
 
     renderToastButtons() {
-        const autoHide = this.getAutoHide();
         return (
-            <View>
-                <UITextButton 
-                    title="Show default toast with message only"
-                    onPress={() => UIToastMessage.showMessage(
-                        'Address copied to clipboard.'
-                    )}
-                />
+            <View style={{ marginTop: 16 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UITextButton 
                         title="Show default toast on left"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Address copied to clipboard.',
                             placement: UIToastMessage.Place.Left,
-                            autoHide,
                         })}
                     />
                     <UITextButton 
-                        title="Show default toast on center"
-                        onPress={() => UIToastMessage.showMessage({
-                            message: 'Address copied to clipboard.',
-                            placement: UIToastMessage.Place.Center,
-                            autoHide,
-                        })}
+                        title="Show default toast with message only"
+                        onPress={() => UIToastMessage.showMessage(
+                            'Address copied to clipboard.'
+                        )}
                     />
                     <View/>
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UITextButton 
-                        title="Show action toast on left"
+                        title="Show action toast on left without autohide"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Account deleted.',
                             action: {
@@ -124,40 +101,15 @@ class ModalExample extends React.Component {
                                 onPress: () => alert('Action was called')
                             },
                             placement: UIToastMessage.Place.Left,
-                            autoHide,
+                            autoHide: false,
                         })}
                     />
                     <UITextButton 
-                        title="Show action toast on center"
-                        onPress={() => UIToastMessage.showMessage({
-                            message: 'Account deleted.',
-                            action: {
-                                title: 'Action',
-                                onPress: () => alert('Action was called')
-                            },
-                            placement: UIToastMessage.Place.Center,
-                            autoHide,
-                        })}
-                    />
-                    <View/>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <UITextButton 
-                        title="Show alert toast on left"
-                        onPress={() => UIToastMessage.showMessage({
-                            message: 'Error deleting account.',
-                            type: UIToastMessage.Type.Alert,
-                            placement: UIToastMessage.Place.Left,
-                            autoHide,
-                        })}
-                    />
-                    <UITextButton 
-                        title="Show alert toast on center"
+                        title="Show alert toast on center without autohide"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Error deleting account.',
                             type: UIToastMessage.Type.Alert,
                             placement: UIToastMessage.Place.Center,
-                            autoHide,
                         })}
                     />
                     <View/>
@@ -166,15 +118,17 @@ class ModalExample extends React.Component {
         );
     }
 
-    renderToggle() {
+    renderFooter() {
+        if (!this.state.footer) {
+            return null;
+        }
         return (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <UIDetailsView value="Auto-hide option  " />
-                <UIToggle 
-                    active={this.getAutoHide()}
-                    onPress={() => this.toggleAutoHide()}
-                />
-            </View>
+            <UIButton
+                title="Footer button"
+                style={UIStyle.bottomScreenContainer}
+                footer
+                onPress={() => alert('Action was called')}
+            />
         )
     }
 
@@ -183,8 +137,9 @@ class ModalExample extends React.Component {
             <View style={containerStyle}>
                 {this.renderToggle()} 
                 {this.renderNoticeButtons()}        
-                {this.renderToastButtons()}       
+                {this.renderToastButtons()}
                 <UINotice />
+                {this.renderFooter()}
             </View>
         );
     }
