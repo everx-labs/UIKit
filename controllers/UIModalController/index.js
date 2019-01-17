@@ -51,8 +51,6 @@ export default class UIModalController<Props, State>
         super(props);
         this.fullscreen = false;
         this.dialog = null;
-        this.onWillAppear = null;
-        this.onWillHide = null;
         this.onCancel = null;
     }
 
