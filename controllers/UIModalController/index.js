@@ -72,15 +72,15 @@ export default class UIModalController<Props, State>
 
     // Events
     onWillAppear() {
-        return null;
+        // Method needs to be overriden in order to be used.
     }
 
     onDidAppear() {
-        return null;
+        // Method needs to be overriden in order to be used.
     }
 
     onWillHide() {
-        return null;
+        // Method needs to be overriden in order to be used.
     }
 
     onDidHide() {
@@ -211,9 +211,7 @@ export default class UIModalController<Props, State>
     // Actions
     show() {
         this.setControllerVisible(true);
-        if (this.onWillAppear) {
-            this.onWillAppear();
-        }
+        this.onWillAppear();
         // First set visible then do the rest
         setTimeout(() => { // in order to render
             if (this.dialog) {
@@ -226,9 +224,7 @@ export default class UIModalController<Props, State>
     hide() {
         if (this.dialog) {
             this.dialog.dismiss();
-            if (this.onWillHide) {
-                this.onWillHide();
-            }
+            this.onWillHide();
         }
     }
 
