@@ -43,8 +43,8 @@ type ModalControllerState = ControllerState & {
 export default class UIModalController<Props, State>
     extends UIController<Props & ModalControllerProps, State & ModalControllerState> {
     fullscreen: boolean;
-    onShow: ?(() => void);
-    onHide: ?(() => void);
+    onWillAppear: ?(() => void);
+    onWillHide: ?(() => void);
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
@@ -53,8 +53,8 @@ export default class UIModalController<Props, State>
         super(props);
         this.fullscreen = false;
         this.dialog = null;
-        this.onShow = null;
-        this.onHide = null;
+        this.onWillAppear = null;
+        this.onWillHide = null;
         this.onCancel = null;
     }
 
@@ -71,11 +71,19 @@ export default class UIModalController<Props, State>
     }
 
     // Events
+    onWillAppear() {
+        return null;
+    }
+
     onDidAppear() {
         return null;
     }
 
-    onDismissed() {
+    onWillHide() {
+        return null;
+    }
+
+    onDidHide() {
         this.setControllerVisible(false, () => {
             this.setDy(null);
         });
@@ -203,8 +211,8 @@ export default class UIModalController<Props, State>
     // Actions
     show() {
         this.setControllerVisible(true);
-        if (this.onShow) {
-            this.onShow();
+        if (this.onWillAppear) {
+            this.onWillAppear();
         }
         // First set visible then do the rest
         setTimeout(() => { // in order to render
@@ -218,8 +226,8 @@ export default class UIModalController<Props, State>
     hide() {
         if (this.dialog) {
             this.dialog.dismiss();
-            if (this.onHide) {
-                this.onHide();
+            if (this.onWillHide) {
+                this.onWillHide();
             }
         }
     }
@@ -264,7 +272,7 @@ export default class UIModalController<Props, State>
                         onCancel={() => this.onCancelPress()}
                     />}
                 dismissOnTouchOutside={false}
-                onDismissed={() => this.onDismissed()}
+                onDismissed={() => this.onDidHide()}
                 onShown={() => this.onDidAppear()}
                 overlayBackgroundColor="transparent"
             >
