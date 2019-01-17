@@ -45,6 +45,8 @@ import UITextButton from './components/buttons/UITextButton';
 import UITextInput from './components/text/UITextInput';
 import UIToastMessage from './components/notifications/UIToastMessage';
 import UIToggle from './components/buttons/UIToggle';
+import UIComponent from './components/UIComponent';
+import UIPureComponent from './components/UIPureComponent';
 
 // Types
 import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';
@@ -58,6 +60,7 @@ export {
     UICheckboxItem,
     UIColor,
     UICompatibilityView,
+    UIComponent,
     UIConstant,
     UIController,
     UIDetailsInput,
@@ -86,6 +89,7 @@ export {
     UIProfilePhoto,
     UIProfileInitials,
     UIProfileView,
+    UIPureComponent,
     UIRadioButtonList,
     UISearchBar,
     UISectionHeader,

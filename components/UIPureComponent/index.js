@@ -13,7 +13,7 @@ export default class UIPureComponent<Props, State> extends PureComponent<Props, 
     }
 
     setStateSafely(
-        state: $Shape<State> | StateUpdate,
+        state: $Shape<State> | StateUpdate<State, Props>,
         callback?: () => mixed,
     ) {
         if (!this.mounted) {
@@ -21,6 +21,8 @@ export default class UIPureComponent<Props, State> extends PureComponent<Props, 
         }
         this.setState(state, callback);
     }
+
+    mounted: boolean;
 
     render() {
         return null;
