@@ -5,6 +5,7 @@ import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UIColor from './helpers/UIColor';
 import UICompatibilityView from './helpers/UICompatibilityView';
+import UIComponent from './components/UIComponent';
 import UIConstant from './helpers/UIConstant';
 import UIController from './controllers/UIController';
 import UIDetailsInput from './components/text/UIDetailsInput';
@@ -33,6 +34,7 @@ import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIProfilePhoto from './components/profile/UIProfilePhoto';
 import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
+import UIPureComponent from './components/UIPureComponent';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
 import UISearchBar from './components/text/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
@@ -45,8 +47,6 @@ import UITextButton from './components/buttons/UITextButton';
 import UITextInput from './components/text/UITextInput';
 import UIToastMessage from './components/notifications/UIToastMessage';
 import UIToggle from './components/buttons/UIToggle';
-import UIComponent from './components/UIComponent';
-import UIPureComponent from './components/UIPureComponent';
 
 // Types
 import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';

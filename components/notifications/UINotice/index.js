@@ -134,6 +134,10 @@ export default class UINotice extends UIComponent {
         this.setStateSafely({ insets });
     }
 
+    setInsets(insets) {
+        this.setState({ insets });
+    }
+
     // Getters
     getMarginLeft() {
         return this.state.marginLeft;

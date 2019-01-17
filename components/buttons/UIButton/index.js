@@ -10,7 +10,10 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
+<<<<<<< HEAD
 import UIComponent from '../../UIComponent';
+=======
+>>>>>>> footer-inset
 
 const styles = StyleSheet.create({
     container: {
@@ -57,12 +60,20 @@ export default class UIButton extends UIComponent {
     }
 
     componentDidMount() {
+<<<<<<< HEAD
         super.componentDidMount();
+=======
+        this.mounted = true;
+>>>>>>> footer-inset
         this.setInsetIfFooter();
     }
 
     componentWillUnmount() {
+<<<<<<< HEAD
         super.componentWillUnmount();
+=======
+        this.mounted = false;
+>>>>>>> footer-inset
         this.removeInsetIfFooter();
     }
 
