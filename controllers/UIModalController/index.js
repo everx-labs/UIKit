@@ -203,6 +203,9 @@ export default class UIModalController<Props, State>
     // Actions
     show() {
         this.setControllerVisible(true);
+        if (this.onShow) {
+            this.onShow();
+        }
         // First set visible then do the rest
         setTimeout(() => { // in order to render
             if (this.dialog) {
@@ -215,6 +218,9 @@ export default class UIModalController<Props, State>
     hide() {
         if (this.dialog) {
             this.dialog.dismiss();
+            if (this.onHide) {
+                this.onHide();
+            }
         }
     }
 
