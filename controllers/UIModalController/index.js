@@ -43,8 +43,6 @@ type ModalControllerState = ControllerState & {
 export default class UIModalController<Props, State>
     extends UIController<Props & ModalControllerProps, State & ModalControllerState> {
     fullscreen: boolean;
-    onWillAppear: ?(() => void);
-    onWillHide: ?(() => void);
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
