@@ -6,6 +6,7 @@ import { Image, TouchableOpacity } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import UIStyle from '../../../helpers/UIStyle';
+import UIComponent from '../../UIComponent';
 
 type ButtonImage = 'back' | 'close-primary' | 'close-secondary' | 'close-light' | 'custom';
 
@@ -26,7 +27,7 @@ type Props = {
 };
 type State = {};
 
-export default class UIImageButton extends React.Component<Props, State> {
+export default class UIImageButton extends UIComponent<Props, State> {
     static Images = {
         back: 'back',
         closePrimary: 'close-primary',

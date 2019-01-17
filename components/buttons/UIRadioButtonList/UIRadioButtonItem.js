@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { TouchableWithoutFeedback, View, Image, Text, StyleSheet } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIComponent from '../../UIComponent';
 
 import icoRadiobuttonActive from '../../../assets/ico-radiobutton-active/ico-radiobutton-active.png';
 import icoRadiobuttonInactive from '../../../assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class UIRadioButtonItem extends Component {
+class UIRadioButtonItem extends UIComponent {
     renderActiveItem() {
         const { textPrimaryBodyRegular, marginRightDefault, centerLeftContainer } = UIStyle;
         return (

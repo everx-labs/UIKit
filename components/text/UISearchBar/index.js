@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -10,6 +10,7 @@ import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
 import UITextInput from '../../text/UITextInput';
+import UIComponent from '../../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class UISearchBar extends Component {
+class UISearchBar extends UIComponent {
     static handleHeader(navigation) {
         const { params } = navigation.state;
         return params ? params.headerProp : null;
@@ -46,14 +47,6 @@ class UISearchBar extends Component {
         this.state = {
             focused: false,
         };
-    }
-
-    componentDidMount() {
-        this.mounted = true;
-    }
-
-    componentWillUnmount() {
-        this.mounted = false;
     }
 
     // Events
@@ -84,7 +77,7 @@ class UISearchBar extends Component {
         if (!this.mounted) {
             return;
         }
-        this.setState({ focused });
+        this.setStateSafely({ focused });
     }
 
     // Getters

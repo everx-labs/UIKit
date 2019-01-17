@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -6,6 +6,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     containerStyle: {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
 
 let masterRef = null;
 
-export default class UIAlertView extends Component {
+export default class UIAlertView extends UIComponent {
     static showAlert(alertTitle, alertMessage, alertButtons) {
         if (masterRef) {
             masterRef.showAlert(alertTitle, alertMessage, alertButtons);
@@ -73,12 +74,14 @@ export default class UIAlertView extends Component {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         if (this.props.masterAlert) {
             masterRef = this;
         }
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         if (this.props.masterAlert) {
             masterRef = null;
         }

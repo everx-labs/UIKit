@@ -1,6 +1,6 @@
 // @flow
 import type { ComponentType, Node } from 'react';
-import React, { Component } from 'react';
+import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import type { NavigationState, Scene, SceneRendererProps } from 'react-native-tab-view';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -9,6 +9,7 @@ import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIComponent from '../../UIComponent';
 
 type PageScreen = ComponentType<*>;
 type PageCollection = {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UITabView extends Component<UITabViewProps, NavigationState<*>> {
+export default class UITabView extends UIComponent<UITabViewProps, NavigationState<*>> {
     static defaultProps = {
         tabWidth: 80,
     };
@@ -81,7 +82,7 @@ export default class UITabView extends Component<UITabViewProps, NavigationState
 
     // Events
     onIndexChange(index: number) {
-        this.setState({ index });
+        this.setStateSafely({ index });
     }
 
     // Getters

@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Platform } from 'react-native';
+
+import UIComponent from '../../UIComponent';
 
 const DropdownAlert = Platform.OS === 'web' ? null : require('react-native-dropdownalert').default;
 
 let masterRef = null;
 
-export default class UIDropdownAlert extends Component {
+export default class UIDropdownAlert extends UIComponent {
     static showNotification(notificationTitle, notificationMessage, callback) {
         if (masterRef) {
             masterRef.showNotification(notificationTitle, notificationMessage, callback);
@@ -15,12 +17,14 @@ export default class UIDropdownAlert extends Component {
 
     // Lifecycle
     componentDidMount() {
+        super.componentDidMount();
         if (this.props.masterAlert) {
             masterRef = this;
         }
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         if (this.props.masterAlert) {
             masterRef = null;
         }

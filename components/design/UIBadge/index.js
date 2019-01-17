@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text } from 'react-native';
@@ -6,6 +6,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
 const bubbleSize = 20;
 
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIBadge extends Component {
+export default class UIBadge extends UIComponent {
     // constructor
     constructor(props) {
         super(props);
@@ -33,14 +34,6 @@ export default class UIBadge extends Component {
         this.state = {
             //
         };
-    }
-
-    componentDidMount() {
-        this.mounted = true;
-    }
-
-    componentWillUnmount() {
-        this.mounted = false;
     }
 
     // Events

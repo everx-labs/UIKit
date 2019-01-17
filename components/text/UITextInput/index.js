@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
@@ -7,6 +7,7 @@ import { TextInput, View, StyleSheet, TouchableOpacity, Text } from 'react-nativ
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class UITextInput extends Component {
+class UITextInput extends UIComponent {
     // Getters
     isFocused() {
         return this.textInput && this.textInput.isFocused();

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
@@ -6,6 +6,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIDetailsView extends Component {
+export default class UIDetailsView extends UIComponent {
     // Render
     renderContentView() {
         const { textSecondaryCaptionRegular, textPrimarySmallMedium } = UIStyle;
