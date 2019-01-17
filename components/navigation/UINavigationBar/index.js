@@ -82,7 +82,7 @@ type UINavigationBarProps = {
     headerRight?: AnyComponent,
 }
 
-export default class UINavigationBar extends UIComponent<UINavigationBarProps> {
+export default class UINavigationBar extends UIComponent<UINavigationBarProps, *> {
     static defaultProps = {
         title: null,
         headerLeft: null,
