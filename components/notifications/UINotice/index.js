@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, SafeAreaView } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 
 import UIConstant from '../../../helpers/UIConstant';
@@ -132,10 +132,6 @@ export default class UINotice extends UIComponent {
 
     setInsets(insets) {
         this.setStateSafely({ insets });
-    }
-
-    setInsets(insets) {
-        this.setState({ insets });
     }
 
     // Getters
@@ -333,9 +329,13 @@ export default class UINotice extends UIComponent {
             component = this.renderMessageComponent();
         }
         return (
-            <FlashMessage
-                MessageComponent={() => component}
-            />
+            <SafeAreaView style={{ flex: 1 }} pointerEvents="none">
+                <View style={{ flex: 1 }}>
+                    <FlashMessage
+                        MessageComponent={() => component}
+                    />
+                </View>
+            </SafeAreaView>
         );
     }
 }
