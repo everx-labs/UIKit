@@ -123,7 +123,7 @@ export default class UIDetailsInput extends Component {
     }
 
     renderComment() {
-        const { comment, textStyle } = this.props;
+        const { comment, commentStyle } = this.props;
         if (!comment) {
             return null;
         }
@@ -133,7 +133,7 @@ export default class UIDetailsInput extends Component {
                     UIStyle.textSecondaryCaptionRegular,
                     UIStyle.marginTopTiny,
                     UIStyle.marginBottomSmall,
-                    textStyle,
+                    commentStyle,
                 ]}
             >
                 {comment}
@@ -166,7 +166,7 @@ UIDetailsInput.defaultProps = {
     keyboardType: 'default',
     returnKeyType: null,
     editable: true,
-    textStyle: {},
+    commentStyle: {},
     onFocus: () => {},
     onBlur: () => {},
     onChangeText: () => {},
@@ -187,7 +187,7 @@ UIDetailsInput.propTypes = {
     keyboardType: PropTypes.string,
     returnKeyType: PropTypes.string,
     editable: PropTypes.bool,
-    textStyle: StylePropType,
+    commentStyle: StylePropType,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     onChangeText: PropTypes.func,
