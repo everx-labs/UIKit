@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 
@@ -7,6 +7,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIFont from '../../../helpers/UIFont';
 import UIDevice from '../../../helpers/UIDevice';
 import UIStyle from '../../../helpers/UIStyle';
+import UIComponent from '../../UIComponent';
 
 import icoCloseBlue from '../../../assets/ico-close/close-blue.png';
 import icoCloseGrey from '../../../assets/ico-close/close-grey.png';
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
 
 let masterRef = null;
 
-export default class UINotice extends Component {
+export default class UINotice extends UIComponent {
     static Type = {
         Default: 'default',
         Alert: 'alert',
@@ -59,15 +60,31 @@ export default class UINotice extends Component {
     }
 
     static showMessage(args) {
-        if (typeof args === 'string') {
-            masterRef.showMessage({ message: args });
-        } else {
-            masterRef.showMessage(args);
+        if (masterRef) {
+            if (typeof args === 'string') {
+                masterRef.showMessage({ message: args });
+            } else {
+                masterRef.showMessage(args);
+            }
         }
     }
 
     static showToastMessage(messageObject, messageComponent) {
-        masterRef.showToastMessage(messageObject, messageComponent);
+        if (masterRef) {
+            masterRef.showToastMessage(messageObject, messageComponent);
+        }
+    }
+
+    static setAdditionalInset(key, inset) {
+        if (masterRef) {
+            masterRef.setAdditionalInset(key, inset);
+        }
+    }
+
+    static removeAdditionalInset(key) {
+        if (masterRef) {
+            masterRef.removeAdditionalInset(key);
+        }
     }
 
     constructor(props) {
@@ -77,15 +94,18 @@ export default class UINotice extends Component {
             marginLeft: 0,
             pageWidth: 0,
 
+            insets: {},
             externalMessageComponent: null,
         };
     }
 
     componentDidMount() {
+        super.componentDidMount();
         masterRef = this;
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         masterRef = null;
     }
 
@@ -99,15 +119,23 @@ export default class UINotice extends Component {
 
     // Setters
     setMarginLeft(marginLeft, callback) {
-        this.setState({ marginLeft }, callback);
+        this.setStateSafely({ marginLeft }, callback);
     }
 
     setPageWidth(pageWidth) {
-        this.setState({ pageWidth });
+        this.setStateSafely({ pageWidth });
     }
 
     setExternalMessageComponent(externalMessageComponent) {
-        this.setState({ externalMessageComponent });
+        this.setStateSafely({ externalMessageComponent });
+    }
+
+    setInsets(insets) {
+        this.setStateSafely({ insets });
+    }
+
+    setInsets(insets) {
+        this.setState({ insets });
     }
 
     // Getters
@@ -127,6 +155,19 @@ export default class UINotice extends Component {
 
     getExternalMessageComponent() {
         return this.state.externalMessageComponent;
+    }
+
+    getInsets() {
+        return this.state.insets;
+    }
+
+    getMaxInset() {
+        const insets = this.getInsets();
+        let maxInset = 0;
+        Object.keys(insets).forEach((key) => {
+            maxInset = Math.max(insets[key], maxInset);
+        });
+        return maxInset;
     }
 
     // Actions
@@ -194,6 +235,18 @@ export default class UINotice extends Component {
         }).start(() => hideMessage());
     }
 
+    setAdditionalInset(key, inset) {
+        const insets = this.getInsets();
+        insets[key] = inset;
+        this.setInsets(insets);
+    }
+
+    removeAdditionalInset(key) {
+        const insets = this.getInsets();
+        delete insets[key];
+        this.setInsets(insets);
+    }
+
     // Render
     renderCloseButton() {
         const icoClose = this.action && this.action.title ? icoCloseGrey : icoCloseBlue;
@@ -247,10 +300,11 @@ export default class UINotice extends Component {
         const marginLeft = this.getMarginLeft();
         const containerWidth = this.getContainerWidth();
         const noticeWidth = containerWidth - doubleOffset;
+        const marginBottom = this.getMaxInset();
 
         return (
             <View
-                style={{ alignItems }}
+                style={{ alignItems, marginBottom }}
                 onLayout={e => this.onWindowContainerLayout(e)}
             >
                 <View style={[styles.container, { width: containerWidth }]}>
@@ -270,7 +324,14 @@ export default class UINotice extends Component {
     }
 
     render() {
-        const component = this.getExternalMessageComponent() || this.renderMessageComponent();
+        const marginBottom = this.getMaxInset();
+        let component = null;
+        const externalComponent = this.getExternalMessageComponent();
+        if (externalComponent) {
+            component = <View style={{ marginBottom }}>{externalComponent}</View>;
+        } else {
+            component = this.renderMessageComponent();
+        }
         return (
             <FlashMessage
                 MessageComponent={() => component}

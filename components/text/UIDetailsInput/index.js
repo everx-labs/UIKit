@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
@@ -8,6 +8,7 @@ import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIDetailsInput extends Component {
+export default class UIDetailsInput extends UIComponent {
     // Getters
     isFocused() {
         return this.textInput && this.textInput.isFocused();

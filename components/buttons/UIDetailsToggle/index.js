@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
@@ -7,6 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import UIDetailsView from '../../text/UIDetailsView';
 import UIToggle from '../UIToggle';
 import UIConstant from '../../../helpers/UIConstant';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIDetailsToggle extends Component {
+export default class UIDetailsToggle extends UIComponent {
     // Render
     renderDetailsView() {
         const {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { View, Text, StyleSheet } from 'react-native';
@@ -8,6 +8,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIProfileInitials from '../UIProfileInitials';
 import UIProfilePhoto from '../UIProfilePhoto';
 import UITextInput from '../../text/UITextInput';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIProfileView extends Component {
+export default class UIProfileView extends UIComponent {
     // Render
     renderProfilePhoto() {
         const {

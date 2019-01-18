@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import type { Node } from 'react';
 import { Platform, Keyboard, Alert, SafeAreaView } from 'react-native';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
@@ -7,6 +7,7 @@ import type { ReactNavigation } from '../../components/navigation/UINavigationBa
 import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized/';
 import UISpinnerOverlay from '../../components/UISpinnerOverlay';
+import UIComponent from '../../components/UIComponent';
 
 const AndroidKeyboardAdjust = Platform.OS === 'android'
     ? require('react-native-android-keyboard-adjust')
@@ -50,7 +51,7 @@ export type ControllerState = {
 };
 
 export default class UIController<Props, State>
-    extends Component<Props & ControllerProps, State & ControllerState> {
+    extends UIComponent<Props & ControllerProps, State & ControllerState> {
     static AndroidKeyboardAdjust = {
         Pan: 'pan',
         Resize: 'resize',
@@ -132,7 +133,7 @@ export default class UIController<Props, State>
     }
 
     componentDidMount() {
-        this.mounted = true;
+        super.componentDidMount();
         this.initKeyboardListeners();
     }
 
@@ -141,7 +142,7 @@ export default class UIController<Props, State>
     }
 
     componentWillUnmount() {
-        this.mounted = false;
+        super.componentWillUnmount();
         this.deinitKeyboardListeners();
     }
 
@@ -186,18 +187,6 @@ export default class UIController<Props, State>
 
     setSpinnerTextContent(spinnerTextContent: string) {
         this.setStateSafely({ spinnerTextContent });
-    }
-
-    setStateSafely(
-        state:
-            $Shape<State & ControllerState>
-            | ((State & ControllerState, Props) => $Shape<State & ControllerState> | void),
-        callback?: () => mixed,
-    ) {
-        if (!this.mounted) {
-            return;
-        }
-        this.setState(state, callback);
     }
 
     // Getters

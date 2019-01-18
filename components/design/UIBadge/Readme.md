@@ -3,6 +3,6 @@ Example:
 ```js
 <UIBadge
     style={{ width: 20 }}
-    badge="1"  
+    badge={1}  
 />
 ```

@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+
+import UIComponent from '../../UIComponent';
 
 import icoSquareCheckboxActive
     from '../../../assets/ico-checkbox-square-active/ico-checkbox-square-active.png';
@@ -19,7 +21,7 @@ const styles = StyleSheet.create({
         height: checkboxSize,
     },
 });
-class UICheckboxItem extends Component {
+class UICheckboxItem extends UIComponent {
     static Type = {
         Square: 'square',
         Circle: 'circle',

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 import { PopoverContainer } from 'react-native-simple-popover';
@@ -6,10 +6,11 @@ import { PopoverContainer } from 'react-native-simple-popover';
 import UIMenuView from '../../components/menus/UIMenuView';
 import UIStyle from '../../helpers/UIStyle';
 import UIDevice from '../../helpers/UIDevice';
+import UIComponent from '../../components/UIComponent';
 
 let masterRef = null;
 
-export default class UIMenuBackground extends Component {
+export default class UIMenuBackground extends UIComponent {
     static initBackgroundForTablet() {
         if (masterRef) {
             masterRef.initBackgroundForTablet();
@@ -31,16 +32,18 @@ export default class UIMenuBackground extends Component {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         masterRef = this;
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         masterRef = null;
     }
 
     // Setters
     setIsBackgroundActive(isBackgroundActive = true) {
-        this.setState({ isBackgroundActive });
+        this.setStateSafely({ isBackgroundActive });
     }
 
     // Getters

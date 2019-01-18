@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -9,6 +9,7 @@ import UIFont from '../../../helpers/UIFont';
 import UIStyle from '../../../helpers/UIStyle';
 import UINavigationBackButton from '../UINavigationBackButton';
 import UISearchBar from '../../text/UISearchBar';
+import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -81,7 +82,7 @@ type UINavigationBarProps = {
     headerRight?: AnyComponent,
 }
 
-export default class UINavigationBar extends Component<UINavigationBarProps> {
+export default class UINavigationBar extends UIComponent<UINavigationBarProps, *> {
     static defaultProps = {
         title: null,
         headerLeft: null,
