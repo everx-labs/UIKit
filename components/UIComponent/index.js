@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from 'react';
+import { Component } from 'react';
 import type { Node } from 'react';
 
-type StateUpdate<State, Props> = ((State, Props) => $Shape<State> | void);
+type StateUpdate<Props, State> = ((Props, State) => $Shape<State> | void);
 
 export default class UIComponent<Props, State> extends Component<Props, State> {
     componentDidMount() {
@@ -14,7 +14,7 @@ export default class UIComponent<Props, State> extends Component<Props, State> {
     }
 
     setStateSafely(
-        state: $Shape<State> | StateUpdate<State, Props>,
+        state: $Shape<State> | StateUpdate<Props, State>,
         callback?: () => mixed,
     ) {
         if (!this.mounted) {

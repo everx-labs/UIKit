@@ -1,7 +1,9 @@
+// @flow
 import React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { Popover } from 'react-native-simple-popover';
-import PropTypes from 'prop-types';
+import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
+import type { Node } from 'react';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -15,14 +17,36 @@ import MenuItem from './MenuItem';
 let masterRef = null;
 const MENU_TRIGGER = 'menu-trigger';
 
-export default class UIMenuView extends UIComponent {
+type Placement = 'top' | 'bottom' | 'left' | 'right';
+
+type MenuItemType = {
+    title: string,
+    disabled?: boolean,
+    onPress: () => void
+};
+
+type Props = {
+    menuItemsList: MenuItemType[],
+    placement?: Placement,
+    needCancelItem?: boolean,
+    children?: Node,
+    onCancelCallback?: () => void,
+};
+
+type State = {
+    isVisible: boolean,
+    triggerWidth: number,
+    menuMarginLeft: number,
+};
+
+export default class UIMenuView extends UIComponent<Props, State> {
     static hideMenu() {
         if (masterRef) {
             masterRef.hideMenu();
         }
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             isVisible: false,
@@ -32,12 +56,12 @@ export default class UIMenuView extends UIComponent {
     }
 
     // Events
-    onTriggerLayout(e) {
+    onTriggerLayout(e: ViewLayoutEvent) {
         const { width: triggerWidth } = e.nativeEvent.layout;
         this.setTriggerWidth(triggerWidth);
     }
 
-    onMenuLayout(e) {
+    onMenuLayout(e: ViewLayoutEvent) {
         const { width: menuWidth } = e.nativeEvent.layout;
         const triggerWidth = this.getTriggerWidth();
         if (menuWidth > triggerWidth) {
@@ -46,28 +70,28 @@ export default class UIMenuView extends UIComponent {
     }
 
     // Setters
-    setIsVisible(isVisible = true) {
+    setIsVisible(isVisible: boolean = true) {
         this.setStateSafely({ isVisible });
     }
 
-    setTriggerWidth(triggerWidth) {
+    setTriggerWidth(triggerWidth: number) {
         this.setStateSafely({ triggerWidth });
     }
 
-    setMenuMarginLeft(menuMarginLeft) {
+    setMenuMarginLeft(menuMarginLeft: number) {
         this.setStateSafely({ menuMarginLeft });
     }
 
     // Getters
-    getTriggerWidth() {
+    getTriggerWidth(): number {
         return this.state.triggerWidth;
     }
 
-    getMenuPaddingLeft() {
+    getMenuPaddingLeft(): number {
         return this.state.menuMarginLeft;
     }
 
-    isVisible() {
+    isVisible(): boolean {
         return this.state.isVisible;
     }
 
@@ -98,7 +122,7 @@ export default class UIMenuView extends UIComponent {
             return;
         }
         const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
-        this.clickListener = (e) => {
+        this.clickListener = (e: any) => {
             const triggers = Array.from(document.getElementsByClassName(MENU_TRIGGER));
             if (triggers && triggers.length) {
                 const clickOnTrigger = triggers.reduce((contains, trigger) => {
@@ -173,6 +197,9 @@ export default class UIMenuView extends UIComponent {
             </View>
         );
     }
+
+    clickListener: (e: any) => void
+    static defaultProps: Props;
 }
 
 UIMenuView.defaultProps = {
@@ -180,11 +207,4 @@ UIMenuView.defaultProps = {
     placement: 'bottom',
     needCancelItem: true, // for iOS and Android only
     onCancelCallback: () => {}, // for iOS and Android only
-};
-
-UIMenuView.propTypes = {
-    menuItemsList: PropTypes.arrayOf(PropTypes.instanceOf(Object)),
-    placement: PropTypes.string,
-    needCancelItem: PropTypes.bool,
-    onCancelCallback: PropTypes.func,
 };

@@ -1,4 +1,8 @@
+// @flow
 import React from 'react';
+import type { Node } from 'react';
+import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
+import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, SafeAreaView } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 
@@ -46,9 +50,47 @@ const styles = StyleSheet.create({
     },
 });
 
+export type MessageObject = {
+    position?: string,
+    animated?: boolean,
+    message: string,
+    duration?: number,
+    animationDuration?: number,
+    autoHide?: boolean,
+};
+
+export type NoticeAction = {
+    title: string,
+    onPress: () => void,
+};
+
+type NoticeObject = {
+    title?: string,
+    message: string,
+    subComponent?: Node,
+    placement?: Placement,
+    autoHide?: boolean,
+    action?: NoticeAction,
+    onCancel?: () => void,
+};
+
+type Insets = { [string]: number };
+
+type State = {
+    marginLeft: AnimatedValue,
+    pageWidth: number,
+    insets: Insets,
+    externalMessageComponent: Node,
+};
+
+type Props = {};
+
+type Placement = 'top' | 'bottom' | 'left' | 'right';
+
 let masterRef = null;
 
-export default class UINotice extends UIComponent {
+export default class UINotice
+    extends UIComponent<Props, State> {
     static Type = {
         Default: 'default',
         Alert: 'alert',
@@ -59,7 +101,7 @@ export default class UINotice extends UIComponent {
         Bottom: 'bottom',
     }
 
-    static showMessage(args) {
+    static showMessage(args: string | NoticeObject) {
         if (masterRef) {
             if (typeof args === 'string') {
                 masterRef.showMessage({ message: args });
@@ -69,29 +111,32 @@ export default class UINotice extends UIComponent {
         }
     }
 
-    static showToastMessage(messageObject, messageComponent) {
+    static showToastMessage(
+        messageObject: MessageObject,
+        messageComponent: Node,
+    ) {
         if (masterRef) {
             masterRef.showToastMessage(messageObject, messageComponent);
         }
     }
 
-    static setAdditionalInset(key, inset) {
+    static setAdditionalInset(key: string, inset: number) {
         if (masterRef) {
             masterRef.setAdditionalInset(key, inset);
         }
     }
 
-    static removeAdditionalInset(key) {
+    static removeAdditionalInset(key: string) {
         if (masterRef) {
             masterRef.removeAdditionalInset(key);
         }
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
-            marginLeft: 0,
+            marginLeft: new Animated.Value(0),
             pageWidth: 0,
 
             insets: {},
@@ -110,7 +155,7 @@ export default class UINotice extends UIComponent {
     }
 
     // Events
-    onWindowContainerLayout(e) {
+    onWindowContainerLayout(e: ViewLayoutEvent) {
         const { width } = e.nativeEvent.layout;
         if (width !== this.getPageWidth()) {
             this.setPageWidth(width);
@@ -118,28 +163,28 @@ export default class UINotice extends UIComponent {
     }
 
     // Setters
-    setMarginLeft(marginLeft, callback) {
+    setMarginLeft(marginLeft: AnimatedValue, callback?: () => void) {
         this.setStateSafely({ marginLeft }, callback);
     }
 
-    setPageWidth(pageWidth) {
+    setPageWidth(pageWidth: number) {
         this.setStateSafely({ pageWidth });
     }
 
-    setExternalMessageComponent(externalMessageComponent) {
+    setExternalMessageComponent(externalMessageComponent: Node) {
         this.setStateSafely({ externalMessageComponent });
     }
 
-    setInsets(insets) {
+    setInsets(insets: Insets) {
         this.setStateSafely({ insets });
     }
 
     // Getters
-    getMarginLeft() {
+    getMarginLeft(): AnimatedValue {
         return this.state.marginLeft;
     }
 
-    getPageWidth() {
+    getPageWidth(): number {
         return this.state.pageWidth;
     }
 
@@ -158,7 +203,7 @@ export default class UINotice extends UIComponent {
     }
 
     getMaxInset() {
-        const insets = this.getInsets();
+        const insets: Insets = this.getInsets();
         let maxInset = 0;
         Object.keys(insets).forEach((key) => {
             maxInset = Math.max(insets[key], maxInset);
@@ -166,13 +211,21 @@ export default class UINotice extends UIComponent {
         return maxInset;
     }
 
+    // Internals
+    subComponent: Node;
+    title: string;
+    message: string;
+    action: NoticeAction;
+    onCancel: () => void;
+
     // Actions
-    showMessage({
-        title, subComponent, message, action,
-        placement = UINotice.Place.Bottom,
-        autoHide = true,
-        onCancel = () => {},
-    }) {
+    showMessage(args: NoticeObject) {
+        const {
+            title, subComponent, message, action,
+            placement = UINotice.Place.Bottom,
+            autoHide = true,
+            onCancel = () => {},
+        } = args;
         this.subComponent = subComponent || null;
         this.title = title || '';
         this.message = message || '';
@@ -189,17 +242,11 @@ export default class UINotice extends UIComponent {
         this.animateOpening();
     }
 
-    showToastMessage({
-        position, animated, duration, autoHide,
-    }, messageComponent) {
+    showToastMessage(messageObject: MessageObject, messageComponent: Node) {
         this.setExternalMessageComponent(messageComponent);
         showMessage({
-            message: '', // unused but required param
             animationDuration: UIConstant.animationDuration(),
-            animated,
-            position,
-            duration,
-            autoHide,
+            ...messageObject,
         });
     }
 
@@ -231,13 +278,13 @@ export default class UINotice extends UIComponent {
         }).start(() => hideMessage());
     }
 
-    setAdditionalInset(key, inset) {
+    setAdditionalInset(key: string, inset: number) {
         const insets = this.getInsets();
         insets[key] = inset;
         this.setInsets(insets);
     }
 
-    removeAdditionalInset(key) {
+    removeAdditionalInset(key: string) {
         const insets = this.getInsets();
         delete insets[key];
         this.setInsets(insets);

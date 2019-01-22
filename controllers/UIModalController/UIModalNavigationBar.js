@@ -7,14 +7,11 @@ import UILocalized from '../../helpers/UILocalized';
 import UIConstant from '../../helpers/UIConstant';
 import UIComponent from '../../components/UIComponent';
 
-const navigationBarHeight = 48.0;
-
 const styles = StyleSheet.create({
     navigationView: {
         borderTopLeftRadius: UIConstant.borderRadius(),
         borderTopRightRadius: UIConstant.borderRadius(),
         paddingHorizontal: 15,
-        height: navigationBarHeight,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -35,8 +32,8 @@ const styles = StyleSheet.create({
 });
 
 export default class UIModalNavigationBar extends UIComponent {
-    static getBarHeight() {
-        return navigationBarHeight;
+    static getBarHeight(shouldSwipeToDismiss = false) {
+        return shouldSwipeToDismiss ? 30 : 48;
     }
 
     constructor(props) {
@@ -91,16 +88,28 @@ export default class UIModalNavigationBar extends UIComponent {
         );
     }
 
+    renderNavigationTitle() {
+        const { swipeToDismiss, title } = this.props;
+        if (swipeToDismiss) {
+            return null;
+        }
+        return (
+            <Text style={UIStyle.navigatorHeaderTitle}>
+                {title}
+            </Text>
+        );
+    }
+
     render() {
         return (
             <View
-                style={styles.navigationView}
+                style={[
+                    styles.navigationView,
+                    { height: UIModalNavigationBar.getBarHeight(this.props.swipeToDismiss) },
+                ]}
                 {...this.panResponder.panHandlers}
             >
                 {this.renderCancelButton()}
-                <Text style={UIStyle.navigatorHeaderTitle}>
-                    {this.props.title}
-                </Text>
             </View>
         );
     }

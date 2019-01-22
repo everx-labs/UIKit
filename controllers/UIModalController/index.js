@@ -146,7 +146,7 @@ export default class UIModalController<Props, State>
         height -= statusBarHeight + navBarHeight;
 
         const contentHeight =
-            (height - UIModalNavigationBar.getBarHeight()) +
+            (height - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss())) +
             UIConstant.coverBounceOffset();
 
         return {
@@ -158,9 +158,15 @@ export default class UIModalController<Props, State>
         };
     }
 
+    // Override if needed!
+    shouldSwipeToDismiss() {
+        return Platform.OS !== 'web';
+    }
+
     interpolateColor(): ColorValue {
         const { height } = Dimensions.get('window');
-        const maxValue = height - UIDevice.statusBarHeight() - UIModalNavigationBar.getBarHeight();
+        const maxValue = height - UIDevice.statusBarHeight()
+            - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
         const { dy } = this.state;
         if (!dy) {
             return UIColor.overlay60();
@@ -255,7 +261,7 @@ export default class UIModalController<Props, State>
                 dialogAnimation={slideAnimation}
                 dialogTitle={
                     <UIModalNavigationBar
-                        swipeToDismiss={Platform.OS !== 'web'}
+                        swipeToDismiss={this.shouldSwipeToDismiss()}
                         onMove={Animated.event([
                             null,
                             { dy: (this.state.dy || new Animated.Value(0)) },

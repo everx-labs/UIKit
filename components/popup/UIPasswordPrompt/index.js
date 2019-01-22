@@ -435,7 +435,7 @@ export default class UIPasswordPrompt extends UIController {
         if (!this.isPromptVisible()) {
             return null;
         }
-        if (Platform.OS === 'web') {
+        if (Platform.OS === 'web' || !this.props.modal) {
             return this.renderContainer();
         }
         return (
@@ -452,8 +452,10 @@ export default class UIPasswordPrompt extends UIController {
 
 UIPasswordPrompt.defaultProps = {
     masterPrompt: true,
+    modal: false,
 };
 
 UIPasswordPrompt.propTypes = {
     masterPrompt: PropTypes.bool,
+    modal: PropTypes.bool,
 };

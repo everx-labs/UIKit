@@ -1,5 +1,5 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
@@ -16,7 +16,14 @@ const styles = StyleSheet.create({
     },
 });
 
-const MenuItem = (props) => {
+type Props = {
+    titleStyle?: StylePropType,
+    title: string,
+    disabled?: boolean,
+    onSelect: () => void,
+};
+
+const MenuItem = (props: Props) => {
     const textStyle = props.disabled
         ? UIStyle.textSecondarySmallRegular
         : UIStyle.textPrimarySmallRegular;
@@ -35,15 +42,5 @@ export default MenuItem;
 
 MenuItem.defaultProps = {
     titleStyle: {},
-    title: '',
     disabled: false,
-    onSelect: () => {
-    },
-};
-
-MenuItem.propTypes = {
-    titleStyle: StylePropType,
-    title: PropTypes.string,
-    disabled: PropTypes.bool,
-    onSelect: PropTypes.func,
 };

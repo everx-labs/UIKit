@@ -1,5 +1,5 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, StatusBar } from 'react-native';
 
 import { NetInfoProvider } from 'react-native-netinfo';
@@ -22,8 +22,14 @@ const styles = StyleSheet.create({
 
 let connected;
 
-export default class UINetworkStatus extends UIComponent {
-    static setIsConnected(isConnected) {
+type Props = {
+    isConnected: (boolean) => void,
+}
+
+type State = {};
+
+export default class UINetworkStatus extends UIComponent<Props, State> {
+    static setIsConnected(isConnected: boolean) {
         connected = isConnected;
         // Change status bar color style
         const statusBarStyle = connected ? 'dark-content' : 'light-content';
@@ -32,15 +38,15 @@ export default class UINetworkStatus extends UIComponent {
         StatusBar.setBackgroundColor(statusBarColor, true);
     }
 
-    static isConnected() {
+    static isConnected(): boolean {
         return connected;
     }
 
-    static statusHeight() {
+    static statusHeight(): number {
         return STATUS_HEIGHT;
     }
 
-    static renderSnack(isConnected) {
+    static renderSnack(isConnected: boolean) {
         if (isConnected) {
             return null;
         }
@@ -71,12 +77,11 @@ export default class UINetworkStatus extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UINetworkStatus.defaultProps = {
     isConnected: () => {},
 };
 
-UINetworkStatus.propTypes = {
-    isConnected: PropTypes.func,
-};
