@@ -2,8 +2,8 @@ import React from 'react';
 import { Animated } from 'react-native';
 
 import UIDevice from '../../../helpers/UIDevice';
-import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
+import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
 class UIDummyNavigationBar extends UIComponent {
@@ -20,10 +20,12 @@ class UIDummyNavigationBar extends UIComponent {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         this.animateRollUp();
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         this.animateRollDown();
     }
 
