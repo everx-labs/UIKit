@@ -376,8 +376,8 @@ export default class UINotice
             component = this.renderMessageComponent();
         }
         return (
-            <SafeAreaView style={{ flex: 1 }} pointerEvents="none">
-                <View style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }} pointerEvents="box-none">
+                <View style={{ flex: 1 }} pointerEvents="box-none">
                     <FlashMessage
                         MessageComponent={() => component}
                     />
