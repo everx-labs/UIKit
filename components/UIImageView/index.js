@@ -64,9 +64,15 @@ type PhotoURI = {
     uri: string,
 };
 
+type MenuItem = {
+    key: string,
+    title: string,
+    onPress: () => void,
+}
+
 export default class UIImageView extends UIComponent<Props, State> {
     // Internals
-    menuItemsList: { key: string, title: string, onPress: () => void }[];
+    menuItemsList: MenuItem[];
 
     // constructor
     constructor(props: Props) {

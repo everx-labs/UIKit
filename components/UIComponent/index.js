@@ -14,7 +14,7 @@ export default class UIComponent<Props, State> extends Component<Props, State> {
     }
 
     setStateSafely(
-        state: $Shape<State> | StateUpdate<State, Props>,
+        state: $Shape<State> | StateUpdate<Props, State>,
         callback?: () => mixed,
     ) {
         if (!this.mounted) {
