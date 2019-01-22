@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
@@ -8,6 +9,7 @@ import UIFont from '../../../helpers/UIFont';
 import UINotice from '../UINotice';
 
 import icoClose from '../../../assets/ico-close/close-light.png';
+import type { MessageObject, NoticeAction } from '../UINotice';
 
 const { width } = Dimensions.get('window');
 const pageToastWidth = width - (UIConstant.contentOffset() * 2);
@@ -37,6 +39,15 @@ const styles = StyleSheet.create({
     },
 });
 
+
+type ToastObject = {
+    message: string,
+    type?: string,
+    placement?: string,
+    autoHide?: boolean,
+    action?: NoticeAction,
+}
+
 export default class UIToastMessage {
     static Type = {
         Default: 'default',
@@ -48,7 +59,7 @@ export default class UIToastMessage {
         Left: 'flex-start',
     }
 
-    static showMessage(args) {
+    static showMessage(args: string | ToastObject) {
         if (typeof args === 'string') {
             this.prepareAndShowMessage({ message: args });
         } else {
@@ -56,16 +67,24 @@ export default class UIToastMessage {
         }
     }
 
+    // Internals
+    static message: string;
+    static type: string;
+    static placement: string;
+    static action: NoticeAction;
+
     // Actions
-    static prepareAndShowMessage({
-        message, type, placement, autoHide = true, action,
-    }) {
+    static prepareAndShowMessage(args: ToastObject) {
+        const {
+            message, type, placement, autoHide = true, action,
+        } = args;
         this.message = message || '';
         this.type = type || this.Type.Default;
         this.placement = placement || this.Place.Center;
         this.action = action || { title: '', onPress: () => {} };
         const messageComponent = this.renderMessageComponent();
-        const messageObject = {
+        const messageObject: MessageObject = {
+            message: '', // unused but required param
             position: UINotice.Place.Bottom,
             animated: true,
             duration: 5000,
