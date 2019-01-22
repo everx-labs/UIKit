@@ -3,7 +3,7 @@ import React from 'react';
 import type { Node } from 'react';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, SafeAreaView } from 'react-native';
 import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 
 import UIConstant from '../../../helpers/UIConstant';
@@ -376,9 +376,13 @@ export default class UINotice
             component = this.renderMessageComponent();
         }
         return (
-            <FlashMessage
-                MessageComponent={() => component}
-            />
+            <SafeAreaView style={{ flex: 1 }} pointerEvents="none">
+                <View style={{ flex: 1 }}>
+                    <FlashMessage
+                        MessageComponent={() => component}
+                    />
+                </View>
+            </SafeAreaView>
         );
     }
 }
