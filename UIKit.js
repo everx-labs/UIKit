@@ -38,6 +38,7 @@ import UIPureComponent from './components/UIPureComponent';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
 import UISearchBar from './components/text/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
+import UISeparator from './components/design/UISeparator';
 import UIShareManager from './helpers/UIShareManager';
 import UISpinnerOverlay from './components/UISpinnerOverlay';
 import UISplitViewController from './controllers/UISplitViewController';
@@ -93,6 +94,7 @@ export {
     UIRadioButtonList,
     UISearchBar,
     UISectionHeader,
+    UISeparator,
     UIShareManager,
     UISpinnerOverlay,
     UISplitViewController,
