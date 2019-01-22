@@ -26,6 +26,11 @@ const textSecondary = {
     color: UIColor.textSecondary(),
 };
 
+const textError = {
+    ...text,
+    color: UIColor.error(),
+};
+
 const textSuccess = {
     ...text,
     color: UIColor.success(),
@@ -230,6 +235,12 @@ const UIStyle = StyleSheet.create({
     textActionSmallMedium: {
         ...textAction,
         ...UIFont.smallMedium(),
+    },
+
+    // [Text Error]
+    textErrorCaptionMedium: {
+        ...textError,
+        ...UIFont.captionMedium(),
     },
 
     // offsets
