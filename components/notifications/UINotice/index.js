@@ -64,16 +64,6 @@ export type NoticeAction = {
     onPress: () => void,
 };
 
-type NoticeObject = {
-    title?: string,
-    message: string,
-    subComponent?: Node,
-    placement?: Placement,
-    autoHide?: boolean,
-    action?: NoticeAction,
-    onCancel?: () => void,
-};
-
 type Insets = { [string]: number };
 
 type State = {
@@ -86,6 +76,16 @@ type State = {
 type Props = {};
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
+
+type NoticeObject = {
+    title?: string,
+    message: string,
+    subComponent?: Node,
+    placement?: Placement,
+    autoHide?: boolean,
+    action?: NoticeAction,
+    onCancel?: () => void,
+};
 
 let masterRef = null;
 
@@ -220,9 +220,10 @@ export default class UINotice
 
     // Actions
     showMessage(args: NoticeObject) {
+        const { Bottom } = UINotice.Place;
         const {
             title, subComponent, message, action,
-            placement = UINotice.Place.Bottom,
+            placement = Bottom,
             autoHide = true,
             onCancel = () => {},
         } = args;
@@ -232,20 +233,23 @@ export default class UINotice
         this.action = action || { title: '', onPress: () => {} };
         this.onCancel = onCancel;
         this.setExternalMessageComponent(null);
+        const position = placement === Bottom ? { bottom: this.getMaxInset() } : placement;
         showMessage({
-            position: placement,
-            animated: false,
             message: '', // unused but required param
+            animated: false,
             duration: 10000,
             autoHide,
+            position,
         });
         this.animateOpening();
     }
 
     showToastMessage(messageObject: MessageObject, messageComponent: Node) {
         this.setExternalMessageComponent(messageComponent);
+        const bottom = this.getMaxInset();
         showMessage({
             animationDuration: UIConstant.animationDuration(),
+            position: { bottom },
             ...messageObject,
         });
     }
@@ -343,18 +347,13 @@ export default class UINotice
         const marginLeft = this.getMarginLeft();
         const containerWidth = this.getContainerWidth();
         const noticeWidth = containerWidth - doubleOffset;
-        const marginBottom = this.getMaxInset();
 
         return (
             <View
-                style={{ alignItems, marginBottom }}
+                style={{ alignItems }}
                 onLayout={e => this.onWindowContainerLayout(e)}
-                pointerEvents="box-none"
             >
-                <View
-                    style={[styles.container, { width: containerWidth }]}
-                    pointerEvents="box-none"
-                >
+                <View style={[styles.container, { width: containerWidth }]}>
                     <Animated.View style={[styles.noticeStyle, { width: noticeWidth, marginLeft }]}>
                         <View style={styles.contentContainer}>
                             {this.renderHeader()}
@@ -371,18 +370,7 @@ export default class UINotice
     }
 
     render() {
-        const marginBottom = this.getMaxInset();
-        let component = null;
-        const externalComponent = this.getExternalMessageComponent();
-        if (externalComponent) {
-            component = (
-                <View style={{ marginBottom }} pointerEvents="box-none">
-                    {externalComponent}
-                </View>
-            );
-        } else {
-            component = this.renderMessageComponent();
-        }
+        const component = this.getExternalMessageComponent() || this.renderMessageComponent();
         return (
             <SafeAreaView style={{ flex: 1 }} pointerEvents="box-none">
                 <View style={{ flex: 1 }} pointerEvents="box-none">

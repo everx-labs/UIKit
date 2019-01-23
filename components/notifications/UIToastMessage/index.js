@@ -85,7 +85,6 @@ export default class UIToastMessage {
         const messageComponent = this.renderMessageComponent();
         const messageObject: MessageObject = {
             message: '', // unused but required param
-            position: UINotice.Place.Bottom,
             animated: true,
             duration: 5000,
             autoHide,
