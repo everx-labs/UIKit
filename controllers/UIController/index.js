@@ -6,6 +6,7 @@ import type { ReactNavigation } from '../../components/navigation/UINavigationBa
 
 import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized/';
+import UIAlertView from '../../components/popup/UIAlertView';
 import UISpinnerOverlay from '../../components/UISpinnerOverlay';
 import UIComponent from '../../components/UIComponent';
 
@@ -50,6 +51,8 @@ export type ControllerState = {
     spinnerVisible?: boolean,
 };
 
+const keyboardPanningScreens = [];
+
 export default class UIController<Props, State>
     extends UIComponent<Props & ControllerProps, State & ControllerState> {
     static AndroidKeyboardAdjust = {
@@ -57,30 +60,30 @@ export default class UIController<Props, State>
         Resize: 'resize',
     };
 
+    static addKeyboardPanningScreen(screen: UIController<Props, State>) {
+        keyboardPanningScreens.push(screen);
+    }
+
+    static removeKeyboardPanningScreen(screen: UIController<Props, State>) {
+        const index = keyboardPanningScreens.indexOf(screen);
+        if (index >= 0) {
+            keyboardPanningScreens.splice(index, 1);
+        }
+    }
+
+    static isKeyboardPanning() {
+        return keyboardPanningScreens.length > 0;
+    }
+
     static showAlertWithTitleAndMessage(title: string, message: string, callback?: () => void) {
-        if (Platform.OS === 'web') {
-            alert(message);
-            setTimeout(() => {
+        UIAlertView.showAlert(title, message, [{
+            title: UILocalized.OK,
+            onPress: () => {
                 if (callback) {
                     callback();
                 }
-            }, 100); // need to wait
-        } else {
-            Alert.alert(
-                title,
-                message,
-                [{
-                    text: UILocalized.OK,
-                    style: 'cancel',
-                    onPress: () => {
-                        if (callback) {
-                            callback();
-                        }
-                    },
-                }],
-                { cancelable: false },
-            );
-        }
+            },
+        }]);
     }
 
     static showErrorWithMessage(message: string, callback?: () => void) {
@@ -294,6 +297,9 @@ export default class UIController<Props, State>
             );
         } else if (Platform.OS === 'android') {
             if (this.androidKeyboardAdjust === UIController.AndroidKeyboardAdjust.Pan) {
+                // Add this screen as keyboard panning
+                UIController.addKeyboardPanningScreen(this);
+                // Adjust keyboard mode
                 AndroidKeyboardAdjust.setAdjustPan();
                 // Android only responds to `Did` events
                 this.keyboardWillShowListener = Keyboard.addListener(
@@ -305,20 +311,22 @@ export default class UIController<Props, State>
                     e => this.onKeyboardWillHide(e),
                 );
             } else if (this.androidKeyboardAdjust === UIController.AndroidKeyboardAdjust.Resize) {
-                AndroidKeyboardAdjust.setAdjustResize();
+                if (!UIController.isKeyboardPanning()) { // Make it resizable only if not panning!
+                    AndroidKeyboardAdjust.setAdjustResize();
+                }
             }
         }
     }
 
     deinitKeyboardListeners() {
-        if (Platform.OS === 'ios') {
+        // Remove this screen from keyboard panning if it is
+        UIController.removeKeyboardPanningScreen(this);
+        // Remove keyboard listeners
+        if (this.keyboardWillShowListener) {
             this.keyboardWillShowListener.remove();
+        }
+        if (this.keyboardWillHideListener) {
             this.keyboardWillHideListener.remove();
-        } else if (Platform.OS === 'android') {
-            if (this.androidKeyboardAdjust === UIController.AndroidKeyboardAdjust.Pan) {
-                this.keyboardWillShowListener.remove();
-                this.keyboardWillHideListener.remove();
-            }
         }
     }
 
@@ -370,4 +378,3 @@ export default class UIController<Props, State>
     path: string;
     params: Params;
 }
-

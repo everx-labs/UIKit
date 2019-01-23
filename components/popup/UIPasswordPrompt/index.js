@@ -102,6 +102,8 @@ export default class UIPasswordPrompt extends UIController {
     constructor(props) {
         super(props);
 
+        this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
+
         this.state = {
             ...initialPasswordState,
             promptVisible: false,
