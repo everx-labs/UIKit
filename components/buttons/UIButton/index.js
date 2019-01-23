@@ -137,14 +137,11 @@ export default class UIButton extends UIComponent {
 
     // Actions
     setInsetIfFooter() {
-        const { footer, bottomExtend } = this.props;
+        const { footer } = this.props;
         if (!footer) {
             return;
         }
-        let height = this.getButtonHeight();
-        if (bottomExtend) {
-            height *= 2;
-        }
+        const height = this.getButtonHeight();
         this.insetKey = `UIButton~key~${new Date()}`;
         UINotice.setAdditionalInset(this.insetKey, height);
     }
