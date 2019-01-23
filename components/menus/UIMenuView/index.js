@@ -174,6 +174,11 @@ export default class UIMenuView extends UIComponent<Props, State> {
     }
 
     render() {
+        // This trick with class name required to suppress flow warning
+        // on undeclared className prop.
+        const setClassNameTrick: {} = {
+            className: MENU_TRIGGER,
+        };
         return (
             <View style={{ flexDirection: 'row' }}>
                 <Popover
@@ -185,7 +190,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                     component={() => this.renderMenu()}
                 >
                     <TouchableOpacity
-                        className={MENU_TRIGGER}
+                        {...setClassNameTrick}
                         onPress={() => this.openMenu()}
                         onLayout={e => this.onTriggerLayout(e)}
                     >
@@ -198,7 +203,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
         );
     }
 
-    clickListener: (e: any) => void
+    clickListener: (e: any) => void;
     static defaultProps: Props;
 }
 
@@ -206,5 +211,6 @@ UIMenuView.defaultProps = {
     menuItemsList: [],
     placement: 'bottom',
     needCancelItem: true, // for iOS and Android only
-    onCancelCallback: () => {}, // for iOS and Android only
+    onCancelCallback: () => {
+    }, // for iOS and Android only
 };

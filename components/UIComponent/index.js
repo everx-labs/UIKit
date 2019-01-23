@@ -2,7 +2,8 @@
 import { Component } from 'react';
 import type { Node } from 'react';
 
-type StateUpdate<Props, State> = ((Props, State) => $Shape<State> | void);
+type UpdateState<Props, State> = ((State, Props) => $Shape<State> | void);
+type StateUpdates<Props, State> = $Shape<State> | UpdateState<Props, State> | void;
 
 export default class UIComponent<Props, State> extends Component<Props, State> {
     componentDidMount() {
@@ -13,10 +14,7 @@ export default class UIComponent<Props, State> extends Component<Props, State> {
         this.mounted = false;
     }
 
-    setStateSafely(
-        state: $Shape<State> | StateUpdate<Props, State>,
-        callback?: () => mixed,
-    ) {
+    setStateSafely(state: StateUpdates<Props, State>, callback?: () => mixed) {
         if (!this.mounted) {
             return;
         }
