@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Platform, Modal, View, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Platform, Modal, View, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type { ControllerProps, ControllerState } from '../UIController';
@@ -39,6 +39,18 @@ type ModalControllerState = ControllerState & {
     height?: ?number,
     controllerVisible?: boolean,
 };
+
+const styles = StyleSheet.create({
+    dialogOverflow: {
+        overflow: 'hidden',
+    },
+    dialogBorders: {
+        borderTopLeftRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
+        borderTopRightRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+    },
+});
 
 export default class UIModalController<Props, State>
     extends UIController<Props & ModalControllerProps, State & ModalControllerState> {
@@ -126,28 +138,28 @@ export default class UIModalController<Props, State>
             height,
         };
 
-        let dialogStyle = {
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            borderTopLeftRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
-            borderTopRightRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
-            overflow: 'hidden',
-        };
+        let dialogStyle = [styles.dialogOverflow, styles.dialogBorders];
 
+        let enlargeHeightForBounce = true;
         if (Platform.OS === 'web'
             && !UIDevice.isMobile() && !this.fullscreen) {
             width = Math.min(width, fullScreenDialogWidth);
             height = Math.min(height, fullScreenDialogHeight);
             if (width === fullScreenDialogWidth && height === fullScreenDialogHeight) {
-                dialogStyle = { overflow: 'hidden' };
+                dialogStyle = styles.dialogOverflow;
+                enlargeHeightForBounce = false;
             }
         }
 
         height -= statusBarHeight + navBarHeight;
 
         const contentHeight =
-            (height - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss())) +
-            UIConstant.coverBounceOffset();
+            height - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
+
+        if (enlargeHeightForBounce) {
+            height += UIConstant.coverBounceOffset();
+            containerStyle.paddingTop += UIConstant.coverBounceOffset();
+        }
 
         return {
             width,
