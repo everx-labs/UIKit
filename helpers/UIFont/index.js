@@ -2,7 +2,11 @@ import { Platform } from 'react-native';
 
 const UI_FONT_FAMILY = {
     fontFamily: Platform.select({ web: 'IBM Plex Sans' }),
-    textShadowRadius: 0, // Disable Text Shadow Globaly as it's broken for Android started RN0.57.2: https://github.com/facebook/react-native/issues/21507
+    ...Platform.select({
+        android: {
+            textShadowRadius: 0, // Disable Text Shadow Globally as it's broken for Android started RN0.57.2: https://github.com/facebook/react-native/issues/21507
+        },
+    }),
 };
 
 // const UI_FONT_THIN = { fontWeight: '100' };
@@ -16,40 +20,76 @@ const UI_FONT_BOLD = { fontWeight: '700' };
 // const UI_FONT_BLACK = { fontWeight: '900' };
 
 const UI_FONT_KEY = {
-    fontSize: 96, lineHeight: 128, letterSpacing: -1.5, ...UI_FONT_FAMILY,
+    fontSize: 96,
+    lineHeight: 128,
+    letterSpacing: -1.5,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_HEADLINE = {
-    fontSize: 64, lineHeight: 84, letterSpacing: -0.5, ...UI_FONT_FAMILY,
+    fontSize: 64,
+    lineHeight: 84,
+    letterSpacing: -0.5,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_SUBHEAD = {
-    fontSize: 48, lineHeight: 64, letterSpacing: 0, ...UI_FONT_FAMILY,
+    fontSize: 48,
+    lineHeight: 64,
+    letterSpacing: 0,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_TITLE = {
-    fontSize: 36, lineHeight: 48, letterSpacing: 0.25, ...UI_FONT_FAMILY,
+    fontSize: 36,
+    lineHeight: 48,
+    letterSpacing: 0.25,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_SUBTITLE = {
-    fontSize: 24, lineHeight: 32, letterSpacing: 0, ...UI_FONT_FAMILY,
+    fontSize: 24,
+    lineHeight: 32,
+    letterSpacing: 0,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_ACCENT = {
-    fontSize: 20, lineHeight: 28, letterSpacing: 0.15, ...UI_FONT_FAMILY,
+    fontSize: 20,
+    lineHeight: 28,
+    letterSpacing: 0.15,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_BODY = {
-    fontSize: 18, lineHeight: 24, letterSpacing: 0.5, ...UI_FONT_FAMILY,
+    fontSize: 18,
+    lineHeight: 24,
+    letterSpacing: 0.5,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_SMALL = {
-    fontSize: 16, lineHeight: 20, letterSpacing: 0.25, ...UI_FONT_FAMILY,
+    fontSize: 16,
+    lineHeight: 20,
+    letterSpacing: 0.25,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_CAPTION = {
-    fontSize: 14, lineHeight: 20, letterSpacing: 0.75, ...UI_FONT_FAMILY,
+    fontSize: 14,
+    lineHeight: 20,
+    letterSpacing: 0.75,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_TINY = {
-    fontSize: 12, lineHeight: 16, letterSpacing: 0.4, ...UI_FONT_FAMILY,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.4,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_MENU = {
-    fontSize: 13, lineHeight: 16, letterSpacing: 2, ...UI_FONT_FAMILY,
+    fontSize: 13,
+    lineHeight: 16,
+    letterSpacing: 2,
+    ...UI_FONT_FAMILY,
 };
 const UI_FONT_ICON = {
-    fontSize: 10, lineHeight: 16, letterSpacing: 0.2, ...UI_FONT_FAMILY,
+    fontSize: 10,
+    lineHeight: 16,
+    letterSpacing: 0.2,
+    ...UI_FONT_FAMILY,
 };
 
 const UI_FONT_KEY_BOLD = { ...UI_FONT_KEY, ...UI_FONT_BOLD };
