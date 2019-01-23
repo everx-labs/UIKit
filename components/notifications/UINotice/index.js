@@ -349,8 +349,12 @@ export default class UINotice
             <View
                 style={{ alignItems, marginBottom }}
                 onLayout={e => this.onWindowContainerLayout(e)}
+                pointerEvents="box-none"
             >
-                <View style={[styles.container, { width: containerWidth }]}>
+                <View
+                    style={[styles.container, { width: containerWidth }]}
+                    pointerEvents="box-none"
+                >
                     <Animated.View style={[styles.noticeStyle, { width: noticeWidth, marginLeft }]}>
                         <View style={styles.contentContainer}>
                             {this.renderHeader()}
@@ -371,7 +375,11 @@ export default class UINotice
         let component = null;
         const externalComponent = this.getExternalMessageComponent();
         if (externalComponent) {
-            component = <View style={{ marginBottom }}>{externalComponent}</View>;
+            component = (
+                <View style={{ marginBottom }} pointerEvents="box-none">
+                    {externalComponent}
+                </View>
+            );
         } else {
             component = this.renderMessageComponent();
         }
