@@ -154,7 +154,8 @@ export default class UIModalController<Props, State>
         height -= statusBarHeight + navBarHeight;
 
         const contentHeight =
-            height - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
+            height - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss())
+            - UIDevice.safeAreaInsets().bottom;
 
         if (enlargeHeightForBounce) {
             height += UIConstant.coverBounceOffset();
@@ -286,7 +287,12 @@ export default class UIModalController<Props, State>
                 onShown={() => this.onDidAppear()}
                 overlayBackgroundColor="transparent"
             >
-                <View style={{ height: contentHeight }}>
+                <View
+                    style={{
+                        height: contentHeight + UIDevice.safeAreaInsets().bottom,
+                        paddingBottom: UIDevice.safeAreaInsets().bottom,
+                    }}
+                >
                     {this.renderContentView(contentHeight)}
                 </View>
             </PopupDialog>
