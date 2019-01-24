@@ -28,6 +28,10 @@ export default class UIDevice {
         return UI_NAVIGATION_BAR_HEIGHT;
     }
 
+    static safeAreaInsets() {
+        return { bottom: 34 }; // TODO: use some library for this!
+    }
+
     static isDesktopWeb() {
         return UI_IS_DESKTOP_WEB;
     }
