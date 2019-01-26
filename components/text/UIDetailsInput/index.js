@@ -65,6 +65,7 @@ export default class UIDetailsInput extends UIComponent {
             returnKeyType,
         } = this.props;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const maxLengthProp = maxLength ? { maxLength } : null;
         return (<TextInput
             ref={(component) => { this.textInput = component; }}
             value={details}
@@ -81,7 +82,7 @@ export default class UIDetailsInput extends UIComponent {
             onSubmitEditing={() => onSubmitEditing()}
             style={[UIStyle.textPrimaryBodyRegular, { flex: 1, lineHeight: null }]}
             selectionColor={UIColor.primary()}
-            maxLength={maxLength}
+            {...maxLengthProp}
         />);
     }
 
@@ -159,11 +160,11 @@ UIDetailsInput.defaultProps = {
     details: '',
     comment: '',
     placeholder: UILocalized.Details,
-    maxLength: 100,
+    maxLength: null,
     showSymbolsLeft: false,
     token: null,
     hideBottomLine: false,
-    autoCapitalize: 'words',
+    autoCapitalize: 'sentences',
     keyboardType: 'default',
     returnKeyType: null,
     editable: true,
