@@ -17,25 +17,30 @@ const UI_NORMAL_CONTENT_OFFSET = 12;
 const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
+const UI_HUGE_CONTENT_OFFSET = 32;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 6;
 
 const UI_TINY_BUTTON_HEIGHT = 20;
 const UI_SMALL_BUTTON_HEIGHT = 32;
-const UI_DEFAULT_BUTTON_HEIGHT = 48;
 const UI_MEDIUM_BUTTON_HEIGHT = 40;
+const UI_DEFAULT_BUTTON_HEIGHT = 48;
 const UI_LARGE_BUTTON_HEIGHT = 56;
 
 const UI_SMALL_CELL_HEIGHT = 24;
 const UI_MEDIUM_CELL_HEIGHT = 40;
 const UI_DEFAULT_CELL_HEIGHT = 48;
+const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
 const UI_HUGE_CELL_HEIGHT = 96;
 
-const UI_LARGE_AVATAR_SIZE = 64;
-const UI_MEDIUM_AVATAR_SIZE = 40;
+const UI_DATA_CAPTION_HEIGHT = 104;
+
 const UI_SMALL_AVATAR_SIZE = 20;
+const UI_MEDIUM_AVATAR_SIZE = 40;
+const UI_LARGE_AVATAR_SIZE = 64;
+
 const UI_ICON_SIZE = 24;
 
 const UI_DISABLED_OUTLINE = Platform.OS === 'web' ? { outline: '0' } : null;
@@ -51,6 +56,7 @@ const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 
 const UI_PASSWORD_PROMPT_WIDTH = 416;
+// const UI_SEARCH_FIELD_WIDTH = 564;
 
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
@@ -138,6 +144,10 @@ export default class UIConstant {
         return UI_LARGE_CONTENT_OFFSET;
     }
 
+    static hugeContentOffset() {
+        return UI_HUGE_CONTENT_OFFSET;
+    }
+
     static horizontalContentOffset() {
         return UI_HORIZONTAL_CONTENT_OFFSET;
     }
@@ -196,12 +206,20 @@ export default class UIConstant {
         return UI_MEDIUM_CELL_HEIGHT;
     }
 
+    static bigCellHeight() {
+        return UI_BIG_CELL_HEIGHT;
+    }
+
     static largeCellHeight() {
         return UI_LARGE_CELL_HEIGHT;
     }
 
     static hugeCellHeight() {
         return UI_HUGE_CELL_HEIGHT;
+    }
+
+    static dataCaptionHeight() {
+        return UI_DATA_CAPTION_HEIGHT;
     }
 
     static largeAvatarSize() {
@@ -253,6 +271,10 @@ export default class UIConstant {
     static passwordPromptWidth() {
         return UI_PASSWORD_PROMPT_WIDTH;
     }
+
+    // static searchFieldWidth() {
+    //     return UI_SEARCH_FIELD_WIDTH;
+    // }
 
     static noticeWidth() {
         return UI_NOTICE_WIDTH;
