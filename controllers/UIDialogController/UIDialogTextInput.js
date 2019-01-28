@@ -112,6 +112,7 @@ export default class UIDialogTextInput extends UIComponent {
         } = this.props;
         const input = value ? `${beginningTag}${value}` : ''; // ${tagSeparator} between was removed
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: "transparent" };
         return (
             <View
                 style={[
@@ -123,7 +124,7 @@ export default class UIDialogTextInput extends UIComponent {
                 {this.renderBeginningTag()}
                 <TextInput
                     ref={(component) => { this.textInput = component; }}
-                    underlineColorAndroid="transparent"
+                    {...underlineColorAndroid}
                     autoCapitalize={autoCapitalize}
                     secureTextEntry={secureTextEntry}
                     autoCorrect={false}
