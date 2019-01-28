@@ -6,6 +6,7 @@ class ModalExample extends React.Component {
         super();
         this.state = {
             details: '',
+            multilineDetails: '',
         }
     }
 
@@ -13,11 +14,21 @@ class ModalExample extends React.Component {
         return (
             <div>
                 <UIDetailsInput
-                    details={this.state.details}
+                    value={this.state.details}
                     placeholder="Details"
                     comment="Some comment here"
                     onChangeText={(newText) => this.setState({ 
                         details: newText 
+                    })}
+                />
+                <UIDetailsInput
+                    value={this.state.multilineDetails}
+                    placeholder="Multiline details"
+                    comment="Some comment here"
+                    maxLines={3}
+                    containerStyle={{ marginTop: 16 }}
+                    onChangeText={(newText) => this.setState({ 
+                        multilineDetails: newText 
                     })}
                 />
             </div>

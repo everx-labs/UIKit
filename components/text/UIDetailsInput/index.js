@@ -1,8 +1,10 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
+import type { Node } from 'react';
 import StylePropType from 'react-style-proptype';
 
 import { TextInput, Text, View, StyleSheet } from 'react-native';
+import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
@@ -22,7 +24,32 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIDetailsInput extends UIComponent {
+type Props = {
+    containerStyle: StylePropType,
+    floatingTitle: boolean,
+    value: string,
+    comment: string,
+    placeholder: string,
+    maxLength: number | null,
+    maxLines: number,
+    showSymbolsLeft: boolean,
+    token: string | null,
+    hideBottomLine: boolean,
+    autoCapitalize: AutoCapitalize,
+    keyboardType: KeyboardType,
+    returnKeyType: ReturnKeyType | null,
+    editable: boolean,
+    commentStyle: StylePropType,
+    onFocus: () => void,
+    onBlur: () => void,
+    onChangeText: (text: string) => void,
+    onSubmitEditing: () => void,
+};
+type State = {};
+
+export default class UIDetailsInput extends UIComponent<Props, State> {
+    textInput: Node;
+
     // Getters
     isFocused() {
         return this.textInput && this.textInput.isFocused();
@@ -39,20 +66,19 @@ export default class UIDetailsInput extends UIComponent {
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, placeholder, details } = this.props;
-
-        if (!floatingTitle || !details || !details.length) return null;
+        const { floatingTitle, placeholder, value } = this.props;
+        const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
 
         return (
             <Text style={UIStyle.textTertiaryTinyRegular}>
-                {placeholder}
+                {text}
             </Text>
         );
     }
 
     renderTextInput() {
         const {
-            details,
+            value,
             placeholder,
             onFocus,
             onBlur,
@@ -63,19 +89,24 @@ export default class UIDetailsInput extends UIComponent {
             autoCapitalize,
             keyboardType,
             returnKeyType,
+            maxLines,
         } = this.props;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
+        const multiline = maxLines > 1;
         return (<TextInput
             ref={(component) => { this.textInput = component; }}
-            value={details}
+            value={value}
             placeholder={placeholder}
+            placeholderTextColor={UIColor.textTertiary()}
             editable={editable}
             autoCorrect={false}
             underlineColorAndroid="transparent"
             autoCapitalize={autoCapitalize}
             keyboardType={keyboardType}
             {...returnKeyTypeProp}
+            multiline={multiline}
+            numberOfLines={maxLines}
             onFocus={() => onFocus()}
             onBlur={() => onBlur()}
             onChangeText={text => onChangeText(text)}
@@ -89,7 +120,10 @@ export default class UIDetailsInput extends UIComponent {
     renderCounter() {
         if (!this.props.showSymbolsLeft) return null;
 
-        const { details, maxLength } = this.props;
+        const { value, maxLength } = this.props;
+        if (!maxLength) {
+            return null;
+        }
         return (
             <Text
                 style={[
@@ -97,7 +131,7 @@ export default class UIDetailsInput extends UIComponent {
                     { marginRight: UIConstant.smallContentOffset() },
                 ]}
             >
-                {maxLength - details.length}
+                {maxLength - value.length}
             </Text>
         );
     }
@@ -152,15 +186,18 @@ export default class UIDetailsInput extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UIDetailsInput.defaultProps = {
     containerStyle: {},
     floatingTitle: true,
-    details: '',
+    value: '',
     comment: '',
     placeholder: UILocalized.Details,
     maxLength: null,
+    maxLines: 1,
     showSymbolsLeft: false,
     token: null,
     hideBottomLine: false,
@@ -173,25 +210,4 @@ UIDetailsInput.defaultProps = {
     onBlur: () => {},
     onChangeText: () => {},
     onSubmitEditing: () => {},
-};
-
-UIDetailsInput.propTypes = {
-    containerStyle: StylePropType,
-    floatingTitle: PropTypes.bool,
-    details: PropTypes.string,
-    comment: PropTypes.string,
-    placeholder: PropTypes.string,
-    maxLength: PropTypes.number,
-    showSymbolsLeft: PropTypes.bool,
-    token: PropTypes.string,
-    hideBottomLine: PropTypes.bool,
-    autoCapitalize: PropTypes.string,
-    keyboardType: PropTypes.string,
-    returnKeyType: PropTypes.string,
-    editable: PropTypes.bool,
-    commentStyle: StylePropType,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onChangeText: PropTypes.func,
-    onSubmitEditing: PropTypes.func,
 };
