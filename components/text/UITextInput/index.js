@@ -81,6 +81,7 @@ class UITextInput extends UIComponent {
             secureTextEntry,
         } = this.props;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: "transparent" };
         return (<TextInput
             ref={(component) => { this.textInput = component; }}
             {...this.props}
@@ -91,7 +92,7 @@ class UITextInput extends UIComponent {
             editable={editable}
             disabled={disabled}
             multiline={multiline}
-            underlineColorAndroid="transparent"
+            {...underlineColorAndroid}
             autoCapitalize={autoCapitalize}
             secureTextEntry={secureTextEntry}
             style={[
