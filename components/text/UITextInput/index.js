@@ -1,10 +1,9 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import type { Ref } from 'react';
 
 import { TextInput, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import type TypedTextInput, { ReturnKeyType, AutoCapitalize, KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
+import type { ReturnKeyType, AutoCapitalize, KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 import type { PointerEvents } from '../../../types';
 
 import UIColor from '../../../helpers/UIColor';

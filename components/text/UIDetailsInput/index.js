@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import type { Ref } from 'react';
 import StylePropType from 'react-style-proptype';
 
 import { TextInput, Text, View, StyleSheet } from 'react-native';
