@@ -88,12 +88,12 @@ const UIStyle = StyleSheet.create({
     },
 
     // [Text Primary]
-    // Title
+    // Title - fontSize: 36, lineHeight: 48
     textPrimaryTitleLight: {
         ...textPrimary,
         ...UIFont.titleLight(),
     },
-    // Subtitle
+    // Subtitle - fontSize: 24, lineHeight: 32
     textPrimarySubtitleLight: {
         ...textPrimary,
         ...UIFont.subtitleLight(),
@@ -102,11 +102,7 @@ const UIStyle = StyleSheet.create({
         ...textPrimary,
         ...UIFont.subtitleRegular(),
     },
-    textPrimarySubtitleBold: {
-        ...textPrimary,
-        ...UIFont.subtitleBold(),
-    },
-    // Accent
+    // Accent - fontSize: 20, lineHeight: 28
     textPrimaryAccentRegular: {
         ...textPrimary,
         ...UIFont.accentRegular(),
@@ -128,7 +124,7 @@ const UIStyle = StyleSheet.create({
         ...textPrimary,
         ...UIFont.bodyBold(),
     },
-    // Small
+    // Small - fontSize: 16, lineHeight: 20
     textPrimarySmallMedium: {
         ...textPrimary,
         ...UIFont.smallMedium(),
@@ -141,7 +137,7 @@ const UIStyle = StyleSheet.create({
         ...textPrimary,
         ...UIFont.smallBold(),
     },
-    // Caption
+    // Caption - fontSize: 14, lineHeight: 20
     textPrimaryCaptionRegular: {
         ...textPrimary,
         ...UIFont.captionRegular(),
@@ -150,7 +146,7 @@ const UIStyle = StyleSheet.create({
         ...textPrimary,
         ...UIFont.captionMedium(),
     },
-    // Tiny
+    // Tiny - fontSize: 12, lineHeight: 16
     textPrimaryTinyRegular: {
         ...textPrimary,
         ...UIFont.tinyRegular(),
@@ -161,12 +157,12 @@ const UIStyle = StyleSheet.create({
     },
 
     // [Text Secondary]
-    // Accent
+    // Accent - fontSize: 20, lineHeight: 28
     textSecondaryAccentRegular: {
         ...textSecondary,
         ...UIFont.accentRegular(),
     },
-    // Body
+    // Body - fontSize: 18, lineHeight: 24
     textSecondaryBodyRegular: {
         ...textSecondary,
         ...UIFont.bodyRegular(),
@@ -179,7 +175,7 @@ const UIStyle = StyleSheet.create({
         ...textSecondary,
         ...UIFont.bodyBold(),
     },
-    // Small
+    // Small - fontSize: 16, lineHeight: 20
     textSecondarySmallRegular: {
         ...textSecondary,
         ...UIFont.smallRegular(),
@@ -188,7 +184,7 @@ const UIStyle = StyleSheet.create({
         ...textSecondary,
         ...UIFont.smallRegular(),
     },
-    // Caption
+    // Caption - fontSize: 14, lineHeight: 20
     textSecondaryCaptionRegular: {
         ...textSecondary,
         ...UIFont.captionRegular(),
@@ -197,7 +193,7 @@ const UIStyle = StyleSheet.create({
         ...textSecondary,
         ...UIFont.captionMedium(),
     },
-    // Tiny
+    // Tiny - fontSize: 12, lineHeight: 16
     textSecondaryTinyRegular: {
         ...textSecondary,
         ...UIFont.tinyRegular(),
@@ -208,38 +204,50 @@ const UIStyle = StyleSheet.create({
     },
 
     // [Text Caution]
+    // Caption - fontSize: 14, lineHeight: 20
     textCautionCaptionRegular: {
         ...textCaution,
         ...UIFont.captionRegular(),
     },
 
     // [Text success]
+    // Caption - fontSize: 14, lineHeight: 20
     textSuccessCaptionRegular: {
         ...textSuccess,
         ...UIFont.captionRegular(),
     },
 
     // [Text tertiary]
+    // Body - fontSize: 18, lineHeight: 24
+    textTertiaryBodyRegular: {
+        ...textTertiary,
+        ...UIFont.bodyRegular(),
+    },
+    // Tiny - fontSize: 12, lineHeight: 16
     textTertiaryTinyRegular: {
         ...textTertiary,
         ...UIFont.tinyRegular(),
     },
+    // Tiny - fontSize: 12, lineHeight: 16
     textTertiaryTinyMedium: {
         ...textTertiary,
         ...UIFont.tinyMedium(),
     },
+    // Tiny - fontSize: 12, lineHeight: 16
     textTertiaryTinyBold: {
         ...textTertiary,
         ...UIFont.tinyBold(),
     },
 
     // [Text white]
+    // Tiny - fontSize: 12, lineHeight: 16
     textWhiteTinyRegular: {
         ...textWhite,
         ...UIFont.tinyRegular(),
     },
 
     // [Text Action]
+    // Small - fontSize: 16, lineHeight: 20
     textActionSmallMedium: {
         ...textAction,
         ...UIFont.smallMedium(),

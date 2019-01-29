@@ -56,6 +56,7 @@ import UITopBar from './components/ton-scan/UITopBar';
 // Types
 import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';
 import type { NavigationProps } from './helpers/UINavigator';
+import type { PointerEvents, PositionObject } from './types';
 
 export {
     UIActionSheet,
@@ -116,6 +117,8 @@ export {
 
 export type {
     CreateNavigationOptions,
-    ReactNavigation,
     NavigationProps,
+    PointerEvents,
+    PositionObject,
+    ReactNavigation,
 };

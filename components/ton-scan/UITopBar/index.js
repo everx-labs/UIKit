@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -111,11 +111,11 @@ export default class UITopBar extends UIComponent {
     renderExpandedMenu() {
         const menu = this.props.menuItems.map(({ title, path }) => {
             return (
-                <Link to={path} key={`top~bar~right~menu~item~${title}`}>
-                    <Text style={[UIStyle.textPrimarySmallMedium, styles.marginDefault]}>
-                        {title}
-                    </Text>
-                </Link>
+                // <Link to={path} key={`top~bar~right~menu~item~${title}`}>
+                <Text style={[UIStyle.textPrimarySmallMedium, styles.marginDefault]}>
+                    {title}
+                </Text>
+                // </Link>
             );
         });
         return (

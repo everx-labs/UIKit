@@ -1,10 +1,12 @@
 // @flow
 import React from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, SafeAreaView } from 'react-native';
+import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+
 import type { Node } from 'react';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, SafeAreaView } from 'react-native';
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import type { PositionObject } from '../../../types';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -50,8 +52,9 @@ const styles = StyleSheet.create({
     },
 });
 
+
 export type MessageObject = {
-    position?: string,
+    position?: string | PositionObject,
     animated?: boolean,
     message: string,
     duration?: number,
@@ -249,7 +252,7 @@ export default class UINotice
         const bottom = this.getMaxInset();
         showMessage({
             animationDuration: UIConstant.animationDuration(),
-            position: { bottom },
+            position: ({ bottom }: any),
             ...messageObject,
         });
     }

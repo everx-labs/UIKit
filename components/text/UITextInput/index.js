@@ -1,8 +1,10 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
 import { TextInput, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import type { ReturnKeyType, AutoCapitalize, KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
+import type { PointerEvents } from '../../../types';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
@@ -25,11 +27,44 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 0,
         padding: 0,
+        // $FlowExpectedError
         lineHeight: null,
     },
 });
 
-class UITextInput extends UIComponent {
+type TextInputTransitProps = {
+    value: string,
+    placeholder?: string,
+    editable?: boolean,
+    multiline?: boolean,
+    secureTextEntry?: boolean,
+    autoFocus?: boolean,
+    autoCapitalize?: AutoCapitalize,
+    keyboardType?: KeyboardType,
+    returnKeyType?: ReturnKeyType | null,
+    maxLength?: number | null,
+    onFocus?: () => void,
+    onBlur?: () => void,
+    onChangeText: (text: string) => void,
+    onSubmitEditing?: () => void,
+};
+
+type UITextInputProps = {
+    beginningTag?: string,
+    containerStyle?: StylePropType,
+    disabled?: boolean,
+    needBorderBottom?: boolean,
+    onPress?: (() => void) | null,
+    textStyle?: StylePropType,
+    className?: string,
+};
+
+type Props = TextInputTransitProps & UITextInputProps;
+type State = {};
+
+class UITextInput extends UIComponent<Props, State> {
+    textInput: ?TextInput;
+
     // Getters
     isFocused() {
         return this.textInput && this.textInput.isFocused();
@@ -37,11 +72,15 @@ class UITextInput extends UIComponent {
 
     // Actions
     focus() {
-        this.textInput.focus();
+        if (this.textInput) {
+            this.textInput.focus();
+        }
     }
 
     blur() {
-        this.textInput.blur();
+        if (this.textInput) {
+            this.textInput.blur();
+        }
     }
 
     //  Render
@@ -72,7 +111,6 @@ class UITextInput extends UIComponent {
             onSubmitEditing,
             textStyle,
             editable,
-            disabled,
             autoFocus,
             autoCapitalize,
             returnKeyType,
@@ -81,16 +119,16 @@ class UITextInput extends UIComponent {
             secureTextEntry,
         } = this.props;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
-        const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: "transparent" };
+        const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
         return (<TextInput
             ref={(component) => { this.textInput = component; }}
-            {...this.props}
+            {...(this.props: TextInputTransitProps)}
             value={value}
             placeholder={placeholder}
+            placeholderTextColor={UIColor.textTertiary()}
             autoCorrect={false}
             autoFocus={autoFocus}
             editable={editable}
-            disabled={disabled}
             multiline={multiline}
             {...underlineColorAndroid}
             autoCapitalize={autoCapitalize}
@@ -103,14 +141,17 @@ class UITextInput extends UIComponent {
             selectionColor={UIColor.primary()}
             keyboardType={keyboardType}
             {...returnKeyTypeProp}
-            onFocus={() => onFocus()}
-            onBlur={() => onBlur()}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onChangeText={newValue => onChangeText(newValue)}
-            onSubmitEditing={() => onSubmitEditing()}
+            onSubmitEditing={onSubmitEditing}
         />);
     }
 
-    renderInputView(pointerEvents = 'auto') {
+    renderInputView(pointerEvents: PointerEvents = 'auto') {
+        const setClassNameTrick: {} = {
+            className: this.props.className,
+        };
         return (
             <View
                 style={[
@@ -119,7 +160,7 @@ class UITextInput extends UIComponent {
                     this.props.containerStyle,
                 ]}
                 pointerEvents={pointerEvents}
-                className={this.props.className}
+                {...setClassNameTrick}
             >
                 {this.renderBeginningTag()}
                 {this.renderTextInput()}
@@ -138,6 +179,8 @@ class UITextInput extends UIComponent {
         }
         return this.renderInputView();
     }
+
+    static defaultProps: Props;
 }
 
 export default UITextInput;
@@ -164,28 +207,4 @@ UITextInput.defaultProps = {
     onBlur: () => {},
     onChangeText: () => {},
     onSubmitEditing: () => {},
-};
-
-UITextInput.propTypes = {
-    textStyle: StylePropType,
-    containerStyle: StylePropType,
-    value: PropTypes.string,
-    placeholder: PropTypes.string,
-    beginningTag: PropTypes.string,
-    needBorderBottom: PropTypes.bool,
-    disabled: PropTypes.bool,
-    editable: PropTypes.bool,
-    multiline: PropTypes.bool,
-    secureTextEntry: PropTypes.bool,
-    autoFocus: PropTypes.bool,
-    autoCapitalize: PropTypes.string,
-    keyboardType: PropTypes.string,
-    returnKeyType: PropTypes.string,
-    className: PropTypes.string,
-    maxLength: PropTypes.number,
-    onPress: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onChangeText: PropTypes.func,
-    onSubmitEditing: PropTypes.func,
 };
