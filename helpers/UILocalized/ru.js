@@ -2,6 +2,7 @@ const ru = {
     // TON
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
+    CopyRight: '© 2018–2019 Команда TON.Labs. Сделаем Блокчейн Великим снова.',
 
     // Terms
     TermsText: 'Отправляя это предложение, Вы подтверждаете, что Вы ознакомились и согласны с политикой конфиденциальности и условиями использования TON Wallet, которые можно найти',
@@ -494,6 +495,10 @@ const ru = {
     TransactionError: ['-', 'Превышен лимит операции', 'Доступ запрещен', 'Неизвестная ошибка'],
     LimitSetSuccess: 'Лимит был успешно установлен',
     LimitRemoveSuccess: 'Лимит был удален',
+
+    // TON-Scan
+    EnterHashTransactionAccountOrBlock: 'Введите Хэш транзакции, аккаунта или блока',
+    Blocks: 'Блоки',
 };
 
 export default ru;

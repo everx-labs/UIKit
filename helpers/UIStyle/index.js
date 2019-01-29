@@ -107,7 +107,11 @@ const UIStyle = StyleSheet.create({
         ...textPrimary,
         ...UIFont.accentRegular(),
     },
-    // Body - fontSize: 18, lineHeight: 24
+    textPrimaryAccentBold: {
+        ...textPrimary,
+        ...UIFont.accentBold(),
+    },
+    // Body
     textPrimaryBodyRegular: {
         ...textPrimary,
         ...UIFont.bodyRegular(),
@@ -271,6 +275,9 @@ const UIStyle = StyleSheet.create({
     marginTopMedium: {
         marginTop: UIConstant.mediumContentOffset(),
     },
+    marginTopHuge: {
+        marginTop: UIConstant.hugeContentOffset(),
+    },
 
     marginBottomTiny: {
         marginBottom: UIConstant.tinyContentOffset(),
@@ -290,6 +297,9 @@ const UIStyle = StyleSheet.create({
 
     marginRightDefault: {
         marginRight: UIConstant.contentOffset(),
+    },
+    marginRightSmall: {
+        marginRight: UIConstant.smallContentOffset(),
     },
     marginRightTiny: {
         marginRight: UIConstant.tinyContentOffset(),
@@ -410,6 +420,16 @@ const UIStyle = StyleSheet.create({
         left: '50%',
         width: 320,
         marginLeft: -160,
+    },
+
+    // TON-Scan
+    fullScreenCenterContainer: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    halfWidthContainer: {
+        width: '50%',
+        paddingHorizontal: UIConstant.contentOffset(),
     },
 
     // navigator
