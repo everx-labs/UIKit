@@ -137,7 +137,8 @@ class ModalExample extends React.Component {
         return (
             <View style={containerStyle}>
                 {this.renderToggle()} 
-                {this.renderNoticeButtons()}
+                {this.renderNoticeButtons()}        
+                {this.renderToastButtons()}
                 <UINotice />
                 {this.renderFooter()}
             </View>
