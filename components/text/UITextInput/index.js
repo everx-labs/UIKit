@@ -32,14 +32,9 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
-    textStyle?: StylePropType,
-    containerStyle?: StylePropType,
+type TextInputTransitProps = {
     value: string,
     placeholder?: string,
-    beginningTag?: string,
-    needBorderBottom?: boolean,
-    disabled?: boolean,
     editable?: boolean,
     multiline?: boolean,
     secureTextEntry?: boolean,
@@ -47,14 +42,24 @@ type Props = {
     autoCapitalize?: AutoCapitalize,
     keyboardType?: KeyboardType,
     returnKeyType?: ReturnKeyType | null,
-    className?: string,
     maxLength?: number | null,
-    onPress?: (() => void) | null,
     onFocus?: () => void,
     onBlur?: () => void,
     onChangeText: (text: string) => void,
     onSubmitEditing?: () => void,
 };
+
+type UITextInputProps = {
+    beginningTag?: string,
+    containerStyle?: StylePropType,
+    disabled?: boolean,
+    needBorderBottom?: boolean,
+    onPress?: (() => void) | null,
+    textStyle?: StylePropType,
+    className?: string,
+};
+
+type Props = TextInputTransitProps & UITextInputProps;
 type State = {};
 
 class UITextInput extends UIComponent<Props, State> {
@@ -118,7 +123,7 @@ class UITextInput extends UIComponent<Props, State> {
         const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
         return (<TextInput
             ref={(component) => { this.textInput = component; }}
-            {...this.props}
+            {...(this.props: TextInputTransitProps)}
             value={value}
             placeholder={placeholder}
             placeholderTextColor={UIColor.textTertiary()}

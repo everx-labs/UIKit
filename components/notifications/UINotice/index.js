@@ -252,7 +252,7 @@ export default class UINotice
         const bottom = this.getMaxInset();
         showMessage({
             animationDuration: UIConstant.animationDuration(),
-            position: { bottom },
+            position: ({ bottom }: any),
             ...messageObject,
         });
     }
