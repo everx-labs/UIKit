@@ -375,13 +375,15 @@ export default class UINotice
     render() {
         const component = this.getExternalMessageComponent() || this.renderMessageComponent();
         return (
-            <SafeAreaView style={{ flex: 1 }} pointerEvents="box-none">
-                <View style={{ flex: 1 }} pointerEvents="box-none">
-                    <FlashMessage
-                        MessageComponent={() => component}
-                    />
-                </View>
-            </SafeAreaView>
+            <View style={UIStyle.absoluteFillObject} pointerEvents="box-none">
+                <SafeAreaView style={{ flex: 1 }} pointerEvents="box-none">
+                    <View style={{ flex: 1 }} pointerEvents="box-none">
+                        <FlashMessage
+                            MessageComponent={() => component}
+                        />
+                    </View>
+                </SafeAreaView>
+            </View>
         );
     }
 }
