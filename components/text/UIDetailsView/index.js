@@ -28,7 +28,7 @@ export default class UIDetailsView extends UIComponent {
                 <Text style={[textPrimarySmallMedium, textStyle]}>
                     {value}
                 </Text>
-                <Text style={textSecondaryCaptionRegular, commentsStyle}>
+                <Text style={[textSecondaryCaptionRegular, commentsStyle]}>
                     {comments}
                 </Text>
             </View>

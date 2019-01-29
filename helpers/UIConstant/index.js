@@ -56,7 +56,6 @@ const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 
 const UI_PASSWORD_PROMPT_WIDTH = 416;
-// const UI_SEARCH_FIELD_WIDTH = 564;
 
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
@@ -271,10 +270,6 @@ export default class UIConstant {
     static passwordPromptWidth() {
         return UI_PASSWORD_PROMPT_WIDTH;
     }
-
-    // static searchFieldWidth() {
-    //     return UI_SEARCH_FIELD_WIDTH;
-    // }
 
     static noticeWidth() {
         return UI_NOTICE_WIDTH;
