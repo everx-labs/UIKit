@@ -111,7 +111,6 @@ class UITextInput extends UIComponent<Props, State> {
             onSubmitEditing,
             textStyle,
             editable,
-            disabled,
             autoFocus,
             autoCapitalize,
             returnKeyType,
@@ -130,7 +129,6 @@ class UITextInput extends UIComponent<Props, State> {
             autoCorrect={false}
             autoFocus={autoFocus}
             editable={editable}
-            disabled={disabled}
             multiline={multiline}
             {...underlineColorAndroid}
             autoCapitalize={autoCapitalize}
