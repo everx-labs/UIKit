@@ -2,6 +2,7 @@ const en = {
     // TON
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
+    CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
 
     // Terms
     TermsText: 'By submitting your offer, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
@@ -495,6 +496,10 @@ const en = {
     TransactionError: ['-', 'The transfer limit has been reached', 'Access denied', 'Unknow error'],
     LimitSetSuccess: 'The limit has been set successfully',
     LimitRemoveSuccess: 'The limit has been deleted',
+
+    // TON-Scan
+    EnterHashTransactionAccountOrBlock: 'Enter Hash transaction, account or block',
+    Blocks: 'Blocks',
 };
 
 export default en;

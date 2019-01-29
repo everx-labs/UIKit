@@ -21,14 +21,14 @@ export default class UIDetailsView extends UIComponent {
     renderContentView() {
         const { textSecondaryCaptionRegular, textPrimarySmallMedium } = UIStyle;
         const {
-            value, comments, textStyle,
+            value, comments, textStyle, commentsStyle,
         } = this.props;
         return (
             <View>
                 <Text style={[textPrimarySmallMedium, textStyle]}>
                     {value}
                 </Text>
-                <Text style={textSecondaryCaptionRegular}>
+                <Text style={[textSecondaryCaptionRegular, commentsStyle]}>
                     {comments}
                 </Text>
             </View>
@@ -55,6 +55,7 @@ UIDetailsView.defaultProps = {
     onPress: null,
     containerStyle: {},
     textStyle: {},
+    commentsStyle: {},
 };
 
 UIDetailsView.propTypes = {
@@ -63,4 +64,5 @@ UIDetailsView.propTypes = {
     onPress: PropTypes.func,
     containerStyle: StylePropType,
     textStyle: StylePropType,
+    commentsStyle: StylePropType,
 };
