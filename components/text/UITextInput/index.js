@@ -59,7 +59,7 @@ type Props = {
 type State = {};
 
 class UITextInput extends UIComponent<Props, State> {
-    textInput: Ref<TypedTextInput>;
+    textInput: ?TextInput;
 
     // Getters
     isFocused() {
@@ -68,11 +68,15 @@ class UITextInput extends UIComponent<Props, State> {
 
     // Actions
     focus() {
-        this.textInput.focus();
+        if (this.textInput) {
+            this.textInput.focus();
+        }
     }
 
     blur() {
-        this.textInput.blur();
+        if (this.textInput) {
+            this.textInput.blur();
+        }
     }
 
     //  Render
@@ -135,10 +139,10 @@ class UITextInput extends UIComponent<Props, State> {
             selectionColor={UIColor.primary()}
             keyboardType={keyboardType}
             {...returnKeyTypeProp}
-            onFocus={() => onFocus()}
-            onBlur={() => onBlur()}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onChangeText={newValue => onChangeText(newValue)}
-            onSubmitEditing={() => onSubmitEditing()}
+            onSubmitEditing={onSubmitEditing}
         />);
     }
 

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { Node } from 'react';
+import type { Ref } from 'react';
 import StylePropType from 'react-style-proptype';
 
 import { TextInput, Text, View, StyleSheet } from 'react-native';
@@ -48,7 +48,7 @@ type Props = {
 type State = {};
 
 export default class UIDetailsInput extends UIComponent<Props, State> {
-    textInput: Node;
+    textInput: ?TextInput;
 
     // Getters
     isFocused() {
@@ -57,11 +57,15 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
 
     // Actions
     focus() {
-        this.textInput.focus();
+        if (this.textInput) {
+            this.textInput.focus();
+        }
     }
 
     blur() {
-        this.textInput.blur();
+        if (this.textInput) {
+            this.textInput.blur();
+        }
     }
 
     // Render
@@ -93,7 +97,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         } = this.props;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const multiline = maxLines > 1;
+        const multiline = !!maxLines && maxLines > 1;
         return (<TextInput
             ref={(component) => { this.textInput = component; }}
             value={value}
@@ -107,10 +111,10 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             {...returnKeyTypeProp}
             multiline={multiline}
             numberOfLines={maxLines}
-            onFocus={() => onFocus()}
-            onBlur={() => onBlur()}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onChangeText={text => onChangeText(text)}
-            onSubmitEditing={() => onSubmitEditing()}
+            onSubmitEditing={onSubmitEditing}
             style={[UIStyle.textPrimaryBodyRegular, { flex: 1, lineHeight: null }]}
             selectionColor={UIColor.primary()}
             {...maxLengthProp}
