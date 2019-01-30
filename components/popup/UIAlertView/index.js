@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import UIColor from '../../../helpers/UIColor';
-import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -102,7 +102,7 @@ export default class UIAlertView extends UIComponent {
     render() {
         const cancelButton = this.state.alertButtons[0];
         const confirmButton = this.state.alertButtons[1];
-        const { textPrimaryBodyBold, textSecondarySmallRegular, textActionSmallMedium } = UIStyle;
+        const { primaryBodyBold, secondarySmallRegular, actionSmallMedium } = UITextStyle;
         const {
             overlayStyle, containerStyle, titleStyle, messageStyle, buttonStyle, buttonTextStyle,
         } = styles;
@@ -116,8 +116,8 @@ export default class UIAlertView extends UIComponent {
             message={this.state.alertMessage}
             closeOnTouchOutside={false}
             closeOnHardwareBackPress={false}
-            titleStyle={[textPrimaryBodyBold, titleStyle]}
-            messageStyle={[textSecondarySmallRegular, messageStyle]}
+            titleStyle={[primaryBodyBold, titleStyle]}
+            messageStyle={[secondarySmallRegular, messageStyle]}
             // closeOnTouchOutside={false}
             // closeOnHardwareBackPress={false}
             showCancelButton={!!cancelButton}
@@ -127,12 +127,12 @@ export default class UIAlertView extends UIComponent {
             cancelButtonStyle={buttonStyle}
             confirmButtonStyle={buttonStyle}
             cancelButtonTextStyle={[
-                textActionSmallMedium,
+                actionSmallMedium,
                 buttonTextStyle,
                 (cancelButton && cancelButton.color ? { color: cancelButton.color } : {}),
             ]}
             confirmButtonTextStyle={[
-                textActionSmallMedium,
+                actionSmallMedium,
                 buttonTextStyle,
                 (confirmButton && confirmButton.color ? { color: confirmButton.color } : {}),
             ]}

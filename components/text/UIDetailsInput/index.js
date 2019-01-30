@@ -9,6 +9,7 @@ import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
@@ -73,7 +74,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
 
         return (
-            <Text style={UIStyle.textTertiaryTinyRegular}>
+            <Text style={UITextStyle.tertiaryTinyRegular}>
                 {text}
             </Text>
         );
@@ -114,7 +115,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             onBlur={onBlur}
             onChangeText={text => onChangeText(text)}
             onSubmitEditing={onSubmitEditing}
-            style={[UIStyle.textPrimaryBodyRegular, { flex: 1, lineHeight: null }]}
+            style={[UITextStyle.primaryBodyRegular, { flex: 1, lineHeight: null }]}
             selectionColor={UIColor.primary()}
             {...maxLengthProp}
         />);
@@ -130,7 +131,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         return (
             <Text
                 style={[
-                    UIStyle.textSecondaryBodyRegular,
+                    UITextStyle.secondaryBodyRegular,
                     { marginRight: UIConstant.smallContentOffset() },
                 ]}
             >
@@ -143,7 +144,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const { token } = this.props;
         if (!token) return null;
         return (
-            <Text style={UIStyle.textSecondaryBodyRegular}>
+            <Text style={UITextStyle.secondaryBodyRegular}>
                 {token}
             </Text>
         );
@@ -169,7 +170,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         return (
             <Text
                 style={[
-                    UIStyle.textSecondaryCaptionRegular,
+                    UITextStyle.secondaryCaptionRegular,
                     UIStyle.marginTopTiny,
                     UIStyle.marginBottomSmall,
                     commentStyle,

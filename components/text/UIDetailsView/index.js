@@ -4,7 +4,7 @@ import StylePropType from 'react-style-proptype';
 
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
-import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -19,16 +19,16 @@ const styles = StyleSheet.create({
 export default class UIDetailsView extends UIComponent {
     // Render
     renderContentView() {
-        const { textSecondaryCaptionRegular, textPrimarySmallMedium } = UIStyle;
+        const { secondaryCaptionRegular, primarySmallMedium } = UITextStyle;
         const {
             value, comments, textStyle, commentsStyle,
         } = this.props;
         return (
             <View>
-                <Text style={[textPrimarySmallMedium, textStyle]}>
+                <Text style={[primarySmallMedium, textStyle]}>
                     {value}
                 </Text>
-                <Text style={[textSecondaryCaptionRegular, commentsStyle]}>
+                <Text style={[secondaryCaptionRegular, commentsStyle]}>
                     {comments}
                 </Text>
             </View>

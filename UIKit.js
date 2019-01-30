@@ -18,6 +18,7 @@ import UIDot from './components/design/UIDot';
 import UIDropdownAlert from './components/popup/UIDropdownAlert';
 import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
+import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/UIImageView';
@@ -79,6 +80,7 @@ export {
     UIDropdownAlert,
     UIFlashMessage,
     UIFont,
+    UITextStyle,
     UIFunction,
     UIImageButton,
     UIImageView,

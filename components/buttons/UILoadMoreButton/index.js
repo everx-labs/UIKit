@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
@@ -54,7 +54,7 @@ export default class UILoadMoreButton extends UIComponent {
                 <View style={[styles.wrapper, this.props.wrapperStyle]}>
                     <Text
                         style={[
-                            UIStyle.textSecondaryTinyRegular,
+                            UITextStyle.secondaryTinyRegular,
                             this.props.textStyle,
                             { opacity: this.props.isLoadingMore ? 0 : 1 },
                         ]}

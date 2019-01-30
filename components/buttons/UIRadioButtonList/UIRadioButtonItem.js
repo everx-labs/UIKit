@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 class UIRadioButtonItem extends UIComponent {
     renderActiveItem() {
-        const { textPrimaryBodyRegular, marginRightDefault, centerLeftContainer } = UIStyle;
+        const { marginRightDefault, centerLeftContainer } = UIStyle;
         return (
             <TouchableWithoutFeedback onPress={() => this.props.onPress()}>
                 <View style={[styles.radiobuttonItem, centerLeftContainer]}>
@@ -26,7 +26,7 @@ class UIRadioButtonItem extends UIComponent {
                         source={icoRadiobuttonActive}
                         style={marginRightDefault}
                     />
-                    <Text style={textPrimaryBodyRegular}>
+                    <Text style={UITextStyle.primaryBodyRegular}>
                         {this.props.title}
                     </Text>
                 </View>
@@ -35,7 +35,7 @@ class UIRadioButtonItem extends UIComponent {
     }
 
     renderInactiveItem() {
-        const { textPrimaryBodyRegular, marginRightDefault, centerLeftContainer } = UIStyle;
+        const { marginRightDefault, centerLeftContainer } = UIStyle;
         return (
             <TouchableWithoutFeedback onPress={() => this.props.onPress()}>
                 <View style={[styles.radiobuttonItem, centerLeftContainer]}>
@@ -43,7 +43,7 @@ class UIRadioButtonItem extends UIComponent {
                         source={icoRadiobuttonInactive}
                         style={marginRightDefault}
                     />
-                    <Text style={textPrimaryBodyRegular}>
+                    <Text style={UITextStyle.primaryBodyRegular}>
                         {this.props.title}
                     </Text>
                 </View>

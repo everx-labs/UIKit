@@ -5,6 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, Text } from 'react-native';
 
 import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
@@ -45,7 +46,7 @@ class UISectionHeader extends UIComponent {
                         this.props.containerStyle,
                     ]}
                 >
-                    <Text style={UIStyle.textTertiaryTinyBold}>
+                    <Text style={UITextStyle.tertiaryTinyBold}>
                         {this.getTitle()}
                     </Text>
                 </View>
