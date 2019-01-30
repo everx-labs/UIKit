@@ -11,8 +11,9 @@ import searchIcon from '../../../assets/ico-search/ico-search.png';
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: UIConstant.mediumContentOffset(),
-        // width: '100%',
+        // marginTop: UIConstant.mediumContentOffset(),
+        width: '50%',
+        paddingHorizontal: UIConstant.contentOffset(),
         height: UIConstant.bigCellHeight(),
         // alignItems: 'center',
         justifyContent: 'center',
@@ -25,16 +26,32 @@ const searchField = [
 ];
 
 export default class SearchField extends UIComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchExpression: '',
+        };
+    }
+
+    getSearchExpression() {
+        return this.state.searchExpression;
+    }
+
+    setSearchExpression(searchExpression) {
+        this.setStateSafely({ searchExpression });
+        this.props.onChangeSearchExpression(searchExpression);
+    }
+
     render() {
-        const { searchExpression, onChangeSearchExpression } = this.props;
         return (
             <View style={styles.container}>
                 <View style={searchField}>
                     <Image source={searchIcon} style={UIStyle.marginRightSmall} />
                     <UITextInput
-                        value={searchExpression}
+                        value={this.getSearchExpression()}
                         placeholder={UILocalized.EnterHashTransactionAccountOrBlock}
-                        onChangeText={newValue => onChangeSearchExpression(newValue)}
+                        onChangeText={newValue => this.setSearchExpression(newValue)}
                     />
                 </View>
             </View>

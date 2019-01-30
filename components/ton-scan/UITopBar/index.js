@@ -7,6 +7,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIDot from '../../design/UIDot';
 import UIMenuView from '../../menus/UIMenuView';
 import UIFontStyle from '../../../helpers/UIFontStyle';
+import UISearchField from '../UISearchField';
 
 import menuIcon from '../../../assets/ico-open-menu/open-menu.png';
 
@@ -126,10 +127,26 @@ export default class UITopBar extends UIComponent {
         );
     }
 
+    renderSearchField() {
+        const { searchExpression, onChangeSearchExpression } = this.props;
+        if (!onChangeSearchExpression) {
+            return null;
+        }
+        return (
+            <View style={[UIStyle.absoluteFillObject, { alignItems: 'center' }]}>
+                <UISearchField
+                    searchExpression={searchExpression}
+                    onChangeSearchExpression={onChangeSearchExpression}
+                />
+            </View>
+        );
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 {this.renderLeftPart()}
+                {this.renderSearchField()}
                 {this.renderMenu()}
             </View>
         );
@@ -139,4 +156,6 @@ export default class UITopBar extends UIComponent {
 UITopBar.defaultProps = {
     menuExpanded: false,
     menuItems: [],
+    searchExpression: '',
+    onChangeSearchExpression: null,
 };
