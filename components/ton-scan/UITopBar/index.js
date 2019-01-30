@@ -6,7 +6,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIDot from '../../design/UIDot';
 import UIMenuView from '../../menus/UIMenuView';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UISearchField from '../UISearchField';
 
 import menuIcon from '../../../assets/ico-open-menu/open-menu.png';
@@ -75,7 +75,7 @@ export default class UITopBar extends UIComponent {
     renderNetworkMenu() {
         const menuTrigger = (
             <View style={[UIStyle.centerLeftContainer, styles.menuTrigger]}>
-                <Text style={[UIFontStyle.primarySmallMedium, UIStyle.marginRightSmall]}>
+                <Text style={[UITextStyle.primarySmallMedium, UIStyle.marginRightSmall]}>
                     {this.getSelectedNetwork()}
                 </Text>
                 <UIDot />
@@ -114,7 +114,7 @@ export default class UITopBar extends UIComponent {
         const menu = this.props.menuItems.map(({ title, path }) => {
             return (
                 <Text
-                    style={[UIFontStyle.primarySmallMedium, styles.marginDefault]}
+                    style={[UITextStyle.primarySmallMedium, styles.marginDefault]}
                     key={`top~bar~right~menu~item~${title}`}
                 >
                     {title}

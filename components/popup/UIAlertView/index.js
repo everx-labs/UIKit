@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import UIColor from '../../../helpers/UIColor';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -102,7 +102,7 @@ export default class UIAlertView extends UIComponent {
     render() {
         const cancelButton = this.state.alertButtons[0];
         const confirmButton = this.state.alertButtons[1];
-        const { primaryBodyBold, secondarySmallRegular, actionSmallMedium } = UIFontStyle;
+        const { primaryBodyBold, secondarySmallRegular, actionSmallMedium } = UITextStyle;
         const {
             overlayStyle, containerStyle, titleStyle, messageStyle, buttonStyle, buttonTextStyle,
         } = styles;

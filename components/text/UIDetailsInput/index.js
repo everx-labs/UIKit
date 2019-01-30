@@ -9,7 +9,7 @@ import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
@@ -74,7 +74,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
 
         return (
-            <Text style={UIFontStyle.tertiaryTinyRegular}>
+            <Text style={UITextStyle.tertiaryTinyRegular}>
                 {text}
             </Text>
         );
@@ -115,7 +115,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             onBlur={onBlur}
             onChangeText={text => onChangeText(text)}
             onSubmitEditing={onSubmitEditing}
-            style={[UIFontStyle.primaryBodyRegular, { flex: 1, lineHeight: null }]}
+            style={[UITextStyle.primaryBodyRegular, { flex: 1, lineHeight: null }]}
             selectionColor={UIColor.primary()}
             {...maxLengthProp}
         />);
@@ -131,7 +131,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         return (
             <Text
                 style={[
-                    UIFontStyle.secondaryBodyRegular,
+                    UITextStyle.secondaryBodyRegular,
                     { marginRight: UIConstant.smallContentOffset() },
                 ]}
             >
@@ -144,7 +144,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const { token } = this.props;
         if (!token) return null;
         return (
-            <Text style={UIFontStyle.secondaryBodyRegular}>
+            <Text style={UITextStyle.secondaryBodyRegular}>
                 {token}
             </Text>
         );
@@ -170,7 +170,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         return (
             <Text
                 style={[
-                    UIFontStyle.secondaryCaptionRegular,
+                    UITextStyle.secondaryCaptionRegular,
                     UIStyle.marginTopTiny,
                     UIStyle.marginBottomSmall,
                     commentStyle,

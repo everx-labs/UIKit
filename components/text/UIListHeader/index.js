@@ -5,7 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, Text } from 'react-native';
 
 import UIStyle from '../../../helpers/UIStyle';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -28,7 +28,7 @@ class UIListHeader extends UIComponent {
             <View
                 style={[UIStyle.centerLeftContainer, styles.listHeader, this.props.containerStyle]}
             >
-                <Text style={UIFontStyle.primarySmallBold}>
+                <Text style={UITextStyle.primarySmallBold}>
                     {this.getTitle()}
                 </Text>
             </View>

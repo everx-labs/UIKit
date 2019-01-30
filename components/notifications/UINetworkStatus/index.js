@@ -7,7 +7,7 @@ import { NetInfoProvider } from 'react-native-netinfo';
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIDevice from '../../../helpers/UIDevice';
 import UIComponent from '../../UIComponent';
 
@@ -53,7 +53,7 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
         }
         return (
             <View style={[styles.connectionSnack, UIStyle.centerContainer]}>
-                <Text style={UIFontStyle.WhiteTinyRegular}>
+                <Text style={UITextStyle.whiteTinyRegular}>
                     {`${UILocalized.Warning}! ${UILocalized.ConnectionHasBeenLost}`}
                 </Text>
             </View>

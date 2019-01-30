@@ -50,7 +50,7 @@ const action = {
     color: UIColor.primary(),
 };
 
-const UIFontStyle = StyleSheet.create({
+const UITextStyle = StyleSheet.create({
     // [Text Primary]
     // Title - fontSize: 36, lineHeight: 48
     primaryTitleLight: {
@@ -228,4 +228,4 @@ const UIFontStyle = StyleSheet.create({
     },
 });
 
-export default UIFontStyle;
+export default UITextStyle;
