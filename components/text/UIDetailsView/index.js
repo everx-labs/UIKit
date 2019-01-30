@@ -19,16 +19,16 @@ const styles = StyleSheet.create({
 export default class UIDetailsView extends UIComponent {
     // Render
     renderContentView() {
-        const { textSecondaryCaptionRegular, textPrimarySmallMedium } = UIStyle;
+        const { secondaryCaptionRegular, primarySmallMedium } = UIFontStyle;
         const {
             value, comments, textStyle, commentsStyle,
         } = this.props;
         return (
             <View>
-                <Text style={[textPrimarySmallMedium, textStyle]}>
+                <Text style={[primarySmallMedium, textStyle]}>
                     {value}
                 </Text>
-                <Text style={[textSecondaryCaptionRegular, commentsStyle]}>
+                <Text style={[secondaryCaptionRegular, commentsStyle]}>
                     {comments}
                 </Text>
             </View>

@@ -40,21 +40,23 @@ const styles = StyleSheet.create({
 });
 
 const {
-    marginTopMedium, textSecondarySmallRegular,
-    marginBottomSmall, marginTopTiny, marginTopSmall,
-    marginHorizontalOffset, textSecondaryTinyRegular, borderBottom,
+    marginTopMedium, marginBottomSmall,
+    marginTopTiny, marginTopSmall,
+    marginHorizontalOffset, borderBottom,
 } = UIStyle;
+
+const { secondarySmallRegular, secondaryTinyRegular } = UIFontStyle;
 
 const titleContainer = [
     marginBottomSmall,
     marginHorizontalOffset,
-    textSecondarySmallRegular,
+    secondarySmallRegular,
 ];
 
 const passwordTitleStyle = [
     marginTopTiny,
     marginHorizontalOffset,
-    textSecondaryTinyRegular,
+    secondaryTinyRegular,
 ];
 
 const buttonsContainer = [
