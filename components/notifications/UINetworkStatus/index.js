@@ -53,7 +53,7 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
         }
         return (
             <View style={[styles.connectionSnack, UIStyle.centerContainer]}>
-                <Text style={UIFontStyle.WhiteTinyRegular}>
+                <Text style={UIFontStyle.whiteTinyRegular}>
                     {`${UILocalized.Warning}! ${UILocalized.ConnectionHasBeenLost}`}
                 </Text>
             </View>
