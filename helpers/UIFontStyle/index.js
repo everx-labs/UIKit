@@ -37,7 +37,7 @@ const success = {
 
 const tertiary = {
     ...text,
-    color: UIColor.tertiary(),
+    color: UIColor.textTertiary(),
 };
 
 const white = {
