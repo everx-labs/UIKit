@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
-import UIStyle from '../../../helpers/UIStyle';
+import UIFontStyle from '../../../helpers/UIFontStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -33,7 +33,7 @@ class UITextButton extends UIComponent {
         const {
             title, textStyle, details, disabled,
         } = this.props;
-        const defaultTitleStyle = disabled ? UIStyle.textSecondarySmallMedium : styles.titleText;
+        const defaultTitleStyle = disabled ? UIFontStyle.secondarySmallMedium : styles.titleText;
         return (
             <Text style={[defaultTitleStyle, textStyle, { flexGrow: details ? 1 : 0 }]}>
                 {title}
@@ -47,7 +47,7 @@ class UITextButton extends UIComponent {
             return null;
         }
         return (
-            <Text style={[UIStyle.textSecondarySmallRegular, detailsStyle]}>
+            <Text style={[UIFontStyle.secondarySmallRegular, detailsStyle]}>
                 {details}
             </Text>
         );

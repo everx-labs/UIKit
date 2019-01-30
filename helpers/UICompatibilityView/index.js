@@ -4,6 +4,7 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import Bowser from 'bowser';
 
 import UIStyle from '../UIStyle';
+import UIFontStyle from '../../helpers/UIFontStyle';
 import UILocalized from '../UILocalized';
 import UIComponent from '../../components/UIComponent';
 
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 export default class UICompatibilityView extends UIComponent {
     static renderNotCompatible() {
         return (
-            <Text style={UIStyle.textPrimaryBodyRegular}>
+            <Text style={UIFontStyle.primaryBodyRegular}>
                 {UILocalized.WeAreSorryButYourBrowserVersionIsNotCompatible}
             </Text>
         );

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-import UIStyle from '../../../helpers/UIStyle';
+import UIFontStyle from '../../../helpers/UIFontStyle';
 import UIConstant from '../../../helpers/UIConstant';
 
 const styles = StyleSheet.create({
@@ -22,7 +22,7 @@ const MenuItem = (props) => {
             onPress={() => onPress()}
         >
             <Text style={[
-                UIStyle.textPrimarySmallMedium,
+                UIFontStyle.primarySmallMedium,
                 textStyle,
             ]}
             >

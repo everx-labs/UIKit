@@ -8,7 +8,7 @@ import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
-import UIStyle from '../../../helpers/UIStyle';
+import UIFontStyle from '../../../helpers/UIFontStyle';
 import UIComponent from '../../UIComponent';
 
 type PageScreen = ComponentType<*>;
@@ -71,7 +71,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
                 width: tabWidth,
                 paddingHorizontal: 0,
             },
-            labelStyle: UIStyle.textPrimarySmallBold,
+            labelStyle: UIFontStyle.primarySmallBold,
             scrollEnabled: false,
             upperCaseLabel: false,
             indicatorStyle: {

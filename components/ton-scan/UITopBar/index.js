@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-// import { Link } from 'react-router-dom';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIDot from '../../design/UIDot';
 import UIMenuView from '../../menus/UIMenuView';
+import UIFontStyle from '../../../helpers/UIFontStyle';
 
 import menuIcon from '../../../assets/ico-open-menu/open-menu.png';
 
@@ -73,7 +73,7 @@ export default class UITopBar extends UIComponent {
     renderNetworkMenu() {
         const menuTrigger = (
             <View style={[UIStyle.centerLeftContainer, styles.menuTrigger]}>
-                <Text style={[UIStyle.textPrimarySmallMedium, UIStyle.marginRightSmall]}>
+                <Text style={[UIFontStyle.primarySmallMedium, UIStyle.marginRightSmall]}>
                     {this.getSelectedNetwork()}
                 </Text>
                 <UIDot />
@@ -111,11 +111,12 @@ export default class UITopBar extends UIComponent {
     renderExpandedMenu() {
         const menu = this.props.menuItems.map(({ title, path }) => {
             return (
-                // <Link to={path} key={`top~bar~right~menu~item~${title}`}>
-                <Text style={[UIStyle.textPrimarySmallMedium, styles.marginDefault]}>
+                <Text
+                    style={[UIFontStyle.primarySmallMedium, styles.marginDefault]}
+                    key={`top~bar~right~menu~item~${title}`}
+                >
                     {title}
                 </Text>
-                // </Link>
             );
         });
         return (

@@ -5,6 +5,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIFontStyle from '../../../helpers/UIFontStyle';
 import UIProfileInitials from '../UIProfileInitials';
 import UIProfilePhoto from '../UIProfilePhoto';
 import UITextInput from '../../text/UITextInput';
@@ -104,7 +105,7 @@ export default class UIProfileView extends UIComponent {
             return null;
         }
         return (
-            <Text style={[UIStyle.textSecondaryTinyRegular, UIStyle.marginTopTiny]}>
+            <Text style={[UIFontStyle.secondaryTinyRegular, UIStyle.marginTopTiny]}>
                 {details}
             </Text>
         );

@@ -8,6 +8,7 @@ import type { PointerEvents } from '../../../types';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
+import UIFontStyle from '../../../helpers/UIFontStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -92,7 +93,7 @@ class UITextInput extends UIComponent<Props, State> {
         return (
             <Text
                 style={[
-                    UIStyle.textSecondaryBodyRegular,
+                    UIFontStyle.secondaryBodyRegular,
                     styles.beginningTag,
                     textStyle,
                 ]}
@@ -134,7 +135,7 @@ class UITextInput extends UIComponent<Props, State> {
             autoCapitalize={autoCapitalize}
             secureTextEntry={secureTextEntry}
             style={[
-                UIStyle.textPrimaryBodyRegular,
+                UIFontStyle.primaryBodyRegular,
                 styles.textInput,
                 textStyle,
             ]}
