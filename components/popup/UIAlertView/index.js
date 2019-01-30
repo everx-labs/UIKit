@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import UIColor from '../../../helpers/UIColor';
-import UIStyle from '../../../helpers/UIStyle';
+import UIFontStyle from '../../../helpers/UIFontStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
