@@ -5,7 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 
 const styles = StyleSheet.create({
     itemContainer: {
@@ -25,8 +25,8 @@ type Props = {
 
 const MenuItem = (props: Props) => {
     const textStyle = props.disabled
-        ? UIFontStyle.secondarySmallRegular
-        : UIFontStyle.primarySmallRegular;
+        ? UITextStyle.secondarySmallRegular
+        : UITextStyle.primarySmallRegular;
     return (
         <TouchableOpacity
             style={styles.itemContainer}

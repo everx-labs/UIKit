@@ -4,7 +4,7 @@ import StylePropType from 'react-style-proptype';
 
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 export default class UIDetailsView extends UIComponent {
     // Render
     renderContentView() {
-        const { secondaryCaptionRegular, primarySmallMedium } = UIFontStyle;
+        const { secondaryCaptionRegular, primarySmallMedium } = UITextStyle;
         const {
             value, comments, textStyle, commentsStyle,
         } = this.props;

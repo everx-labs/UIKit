@@ -4,7 +4,7 @@ import StylePropType from 'react-style-proptype';
 import { StyleSheet, TextInput, Text, View } from 'react-native';
 
 import UIStyle from '../../helpers/UIStyle';
-import UIFontStyle from '../../helpers/UIFontStyle';
+import UITextStyle from '../../helpers/UITextStyle';
 import UIColor from '../../helpers/UIColor';
 import UIComponent from '../../components/UIComponent';
 
@@ -75,7 +75,7 @@ export default class UIDialogTextInput extends UIComponent {
             beginningTag, tagSeparator, placeholder,
         } = this.props;
         return (
-            <Text style={[UIFontStyle.primarySubtitleLight, { color: 'transparent' }]}>
+            <Text style={[UITextStyle.primarySubtitleLight, { color: 'transparent' }]}>
                 {`${tagSeparator}${placeholder.trim()}${tagSeparator}${tagSeparator}${beginningTag}`}
             </Text>
         );
@@ -91,7 +91,7 @@ export default class UIDialogTextInput extends UIComponent {
         return (
             <Text
                 style={[
-                    UIFontStyle.primarySubtitleLight,
+                    UITextStyle.primarySubtitleLight,
                     styles.textInput,
                     textStyle,
                     this.getTextAlign(),
@@ -133,8 +133,8 @@ export default class UIDialogTextInput extends UIComponent {
                     {...returnKeyTypeProp}
                     style={[
                         input.length
-                            ? UIFontStyle.primarySubtitleRegular
-                            : UIFontStyle.primarySubtitleLight,
+                            ? UITextStyle.primarySubtitleRegular
+                            : UITextStyle.primarySubtitleLight,
                         styles.textInput,
                         textStyle,
                         this.getTextAlign(),

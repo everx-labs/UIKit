@@ -4,7 +4,7 @@ import { Platform, StyleSheet, View, Text, Modal } from 'react-native';
 import StylePropType from 'react-style-proptype';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import UIFontStyle from '../../helpers/UIFontStyle';
+import UITextStyle from '../../helpers/UITextStyle';
 import UIColor from '../../helpers/UIColor';
 
 const styles = StyleSheet.create({
@@ -144,7 +144,7 @@ export default class UISpinnerOverlay extends Component {
         return (
             <Text
                 style={[
-                    UIFontStyle.primaryBodyRegular,
+                    UITextStyle.primaryBodyRegular,
                     styles.titleContent,
                     this.props.titleStyle,
                     {
@@ -163,7 +163,7 @@ export default class UISpinnerOverlay extends Component {
         return (
             <Text
                 style={[
-                    UIFontStyle.primaryBodyRegular,
+                    UITextStyle.primaryBodyRegular,
                     styles.textContent,
                     this.props.textStyle,
                     {

@@ -13,7 +13,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIFont from '../../../helpers/UIFont';
 import UIDevice from '../../../helpers/UIDevice';
 import UIStyle from '../../../helpers/UIStyle';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 
 import icoCloseBlue from '../../../assets/ico-close/close-blue.png';
@@ -310,7 +310,7 @@ export default class UINotice
 
     renderHeader() {
         const title = (
-            <Text style={UIFontStyle.primaryBodyBold}>
+            <Text style={UITextStyle.primaryBodyBold}>
                 {this.title}
             </Text>
         );

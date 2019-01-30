@@ -26,7 +26,7 @@ class UIRadioButtonItem extends UIComponent {
                         source={icoRadiobuttonActive}
                         style={marginRightDefault}
                     />
-                    <Text style={UIFontStyle.primaryBodyRegular}>
+                    <Text style={UITextStyle.primaryBodyRegular}>
                         {this.props.title}
                     </Text>
                 </View>
@@ -43,7 +43,7 @@ class UIRadioButtonItem extends UIComponent {
                         source={icoRadiobuttonInactive}
                         style={marginRightDefault}
                     />
-                    <Text style={UIFontStyle.primaryBodyRegular}>
+                    <Text style={UITextStyle.primaryBodyRegular}>
                         {this.props.title}
                     </Text>
                 </View>

@@ -11,7 +11,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIDevice from '../../../helpers/UIDevice';
 import UITextButton from '../../buttons/UITextButton';
 import UITextInput from '../../text/UITextInput';
-import UIFontStyle from '../../../helpers/UIFontStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 
 const statusBarHeight = UIDevice.statusBarHeight();
 
@@ -45,7 +45,7 @@ const {
     marginHorizontalOffset, borderBottom,
 } = UIStyle;
 
-const { secondarySmallRegular, secondaryTinyRegular } = UIFontStyle;
+const { secondarySmallRegular, secondaryTinyRegular } = UITextStyle;
 
 const titleContainer = [
     marginBottomSmall,
@@ -278,7 +278,7 @@ export default class UIPasswordPrompt extends UIController {
     // Actions
     showPrompt({ title, titleStyle, shouldConfirm }, onDone, onCancel) {
         this.title = title || UILocalized.WeNeedYourPassword;
-        this.titleStyle = titleStyle || UIFontStyle.secondarySmallRegular;
+        this.titleStyle = titleStyle || UITextStyle.secondarySmallRegular;
         this.shouldConfirm = shouldConfirm || false;
         this.onDoneCallback = onDone;
         this.onCancelCallback = onCancel;
