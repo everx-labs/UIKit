@@ -13,13 +13,14 @@ import menuIcon from '../../../assets/ico-open-menu/open-menu.png';
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        top: UIConstant.mediumContentOffset(),
-        left: 0,
-        right: 0,
+        // position: 'absolute',
+        marginTop: UIConstant.mediumContentOffset(),
+        // left: 0,
+        // right: 0,
         height: UIConstant.bigCellHeight(),
         flexDirection: 'row',
         justifyContent: 'space-between',
+        // backgroundColor: 'transparent',
     },
     iconContainer: {
         width: UIConstant.iconSize(),
