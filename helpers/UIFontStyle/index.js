@@ -12,7 +12,7 @@ const text = {
 
 const primary = {
     ...text,
-    color: UIColor.primary(),
+    color: UIColor.textPrimary(),
 };
 
 const caution = {
@@ -22,7 +22,7 @@ const caution = {
 
 const secondary = {
     ...text,
-    color: UIColor.secondary(),
+    color: UIColor.textSecondary(),
 };
 
 const error = {
@@ -61,6 +61,10 @@ const UIFontStyle = StyleSheet.create({
     primarySubtitleLight: {
         ...primary,
         ...UIFont.subtitleLight(),
+    },
+    primarySubtitleBold: {
+        ...primary,
+        ...UIFont.subtitleBold(),
     },
     primarySubtitleRegular: {
         ...primary,
