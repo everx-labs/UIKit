@@ -91,7 +91,7 @@ export default class UIController<Props, State>
     }
 
     static showSuccessWithMessage(message: string, callback?: () => void) {
-        this.showAlertWithTitleAndMessage(UILocalized.success, message, callback);
+        this.showAlertWithTitleAndMessage(UILocalized.Success, message, callback);
     }
 
     static showCannotDoActionError(action: string, error: any) {
