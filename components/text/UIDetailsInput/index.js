@@ -2,7 +2,8 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+
+import { TextInput, Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIColor from '../../../helpers/UIColor';
@@ -11,16 +12,27 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
+import UIFont from '../../../helpers/UIFont';
 
 const styles = StyleSheet.create({
     container: {
-        //
+        flex: 1,
     },
     textView: {
         paddingTop: UIConstant.tinyContentOffset(),
         paddingBottom: UIConstant.smallContentOffset(),
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    titleText: {
+        color: UIColor.primary(),
+        ...UIFont.smallMedium(),
+    },
+    hiddenTextInput: {
+        zIndex: 1000,
+        position: 'absolute',
+        color: 'transparent',
+        backgroundColor: 'transparent',
     },
 });
 
@@ -40,10 +52,14 @@ type Props = {
     returnKeyType?: ReturnKeyType | null,
     editable?: boolean,
     commentStyle?: StylePropType,
+    rightButton?: string,
+    rightButtonDisabled: boolean,
+    complementaryValue: string,
     onFocus?: () => void,
     onBlur?: () => void,
     onChangeText: (text: string) => void,
     onSubmitEditing?: () => void,
+    onRightButtonPress?: () => void,
 };
 type State = {};
 
@@ -94,31 +110,61 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             keyboardType,
             returnKeyType,
             maxLines,
+            complementaryValue,
         } = this.props;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
-        return (<TextInput
-            ref={(component) => { this.textInput = component; }}
-            value={value}
-            placeholder={placeholder}
-            placeholderTextColor={UIColor.textTertiary()}
-            editable={editable}
-            autoCorrect={false}
-            underlineColorAndroid="transparent"
-            autoCapitalize={autoCapitalize}
-            keyboardType={keyboardType}
-            {...returnKeyTypeProp}
-            multiline={multiline}
-            numberOfLines={maxLines}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onChangeText={text => onChangeText(text)}
-            onSubmitEditing={onSubmitEditing}
-            style={[UITextStyle.primaryBodyRegular, { flex: 1, lineHeight: null }]}
-            selectionColor={UIColor.primary()}
-            {...maxLengthProp}
-        />);
+        const pos = !value || value.length === 0 ? { position: 'relative' } : null;
+        return (
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+                <TextInput
+                    ref={(component) => { this.textInput = component; }}
+                    value={value}
+                    placeholder={placeholder}
+                    placeholderTextColor={UIColor.textTertiary()}
+                    editable={editable}
+                    autoCorrect={false}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize={autoCapitalize}
+                    keyboardType={keyboardType}
+                    {...returnKeyTypeProp}
+                    multiline={multiline}
+                    numberOfLines={maxLines}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onChangeText={text => onChangeText(text)}
+                    onSubmitEditing={onSubmitEditing}
+                    style={[
+                        UITextStyle.primaryBodyRegular,
+                        styles.hiddenTextInput,
+                        pos, {
+                            flex: 1,
+                            lineHeight: null,
+                        }]}
+                    selectionColor={UIColor.primary()}
+                    {...maxLengthProp}
+                />
+                <ScrollView horizontal style={{ marginRight: UIConstant.contentOffset() }}>
+                    <Text
+                        style={[UITextStyle.primaryBodyRegular, {
+                            zIndex: -1000,
+                        }]}
+                        selectable={false}
+                    >
+                        {value}
+                    </Text>
+                    <Text
+                        style={[UITextStyle.secondaryBodyRegular, {
+                            zIndex: -1000,
+                        }]}
+                        selectable={false}
+                    >
+                        {complementaryValue}
+                    </Text>
+                </ScrollView>
+            </View>
+        );
     }
 
     renderCounter() {
@@ -150,14 +196,52 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         );
     }
 
+    renderComplementaryValue() {
+        const { complementaryValue } = this.props;
+
+        if (!complementaryValue || complementaryValue.length === 0) {
+            return null;
+        }
+
+        return (
+            <Text style={{ backgroundColor: 'green' }}>
+                {complementaryValue}
+            </Text>
+        );
+    }
+
+    renderRightButton() {
+        const {
+            rightButton,
+            onRightButtonPress, rightButtonDisabled,
+        } = this.props;
+        if (!rightButton || rightButton.length === 0) {
+            return null;
+        }
+
+        const defaultTitleStyle = rightButtonDisabled ?
+            UITextStyle.secondarySmallMedium : styles.titleText;
+        return (
+            <TouchableOpacity
+                disabled={rightButtonDisabled}
+                onPress={onRightButtonPress}
+            >
+                <Text style={[UITextStyle.secondaryBodyRegular, defaultTitleStyle]}>
+                    {rightButton}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
+
     renderTextView() {
         const { hideBottomLine } = this.props;
         const bottomLine = hideBottomLine ? {} : UIStyle.borderBottom;
         return (
-            <View style={[styles.textView, bottomLine]}>
+            <View style={[styles.textView, bottomLine, { flex: 1, justifyContent: 'space-between' }]}>
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
+                {this.renderRightButton()}
             </View>
         );
     }
@@ -210,8 +294,12 @@ UIDetailsInput.defaultProps = {
     returnKeyType: null,
     editable: true,
     commentStyle: {},
+    rightButton: '',
+    rightButtonDisabled: false,
+    complementaryValue: '',
     onFocus: () => {},
     onBlur: () => {},
     onChangeText: () => {},
     onSubmitEditing: () => {},
+    onRightButtonPress: () => {},
 };
