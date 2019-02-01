@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import SafeArea from 'react-native-safe-area';
 import MobileDetect from 'mobile-detect';
 import DeviceInfo from 'react-native-device-info';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -28,8 +29,10 @@ export default class UIDevice {
         return UI_NAVIGATION_BAR_HEIGHT;
     }
 
-    static safeAreaInsets() {
-        return { bottom: 34 }; // TODO: use some library for this!
+    // eslint-disable-next-line class-methods-use-this
+    async safeAreaInsets() {
+        const result = await SafeArea.getSafeAreaInsetsForRootView();
+        return result;
     }
 
     static isDesktopWeb() {
