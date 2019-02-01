@@ -29,7 +29,6 @@ export default class UIDevice {
         return UI_NAVIGATION_BAR_HEIGHT;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     static safeAreaInsets() {
         return SafeArea.getSafeAreaInsetsForRootView().then((result) => {
             return result.safeAreaInsets;
