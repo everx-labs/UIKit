@@ -64,10 +64,21 @@ export default class UIModalController<Props, State>
         this.fullscreen = false;
         this.dialog = null;
         this.onCancel = null;
+
+        this.state = {
+            // Default value copied from the react-native-safe-area package website
+            safeArea: {
+                top: 44,
+                left: 0,
+                bottom: 34,
+                right: 0,
+            },
+        };
     }
 
     componentDidMount() {
         super.componentDidMount();
+        this.loadSafeAreaInsets();
     }
 
     componentWillReceiveProps(nextProps: Props & ModalControllerProps) {
@@ -78,6 +89,11 @@ export default class UIModalController<Props, State>
         super.componentWillUnmount();
     }
 
+    loadSafeAreaInsets() {
+        UIDevice.safeAreaInsets().then((safeArea) => {
+            this.setStateSafely({ safeArea });
+        });
+    }
     // Events
     onWillAppear() {
         // Method needs to be overriden in order to be used.
@@ -119,6 +135,10 @@ export default class UIModalController<Props, State>
     }
 
     // Getters
+    getSafeAreaInsets() {
+        return this.state.safeArea;
+    }
+    
     getDialogStyle() {
         let { width, height } = this.state;
         if (!width || !height) {
@@ -155,7 +175,7 @@ export default class UIModalController<Props, State>
 
         const contentHeight =
             height - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss())
-            - UIDevice.safeAreaInsets().bottom;
+            - this.getSafeAreaInsets().bottom;
 
         if (enlargeHeightForBounce) {
             height += UIConstant.coverBounceOffset();
@@ -289,8 +309,8 @@ export default class UIModalController<Props, State>
             >
                 <View
                     style={{
-                        height: contentHeight + UIDevice.safeAreaInsets().bottom,
-                        paddingBottom: UIDevice.safeAreaInsets().bottom,
+                        height: contentHeight + this.getSafeAreaInsets().bottom,
+                        paddingBottom: this.getSafeAreaInsets().bottom,
                     }}
                 >
                     {this.renderContentView(contentHeight)}
