@@ -66,11 +66,10 @@ export default class UIModalController<Props, State>
         this.onCancel = null;
 
         this.state = {
-            // Default value copied from the react-native-safe-area package website
             safeArea: {
-                top: 44,
+                top: 0,
                 left: 0,
-                bottom: 34,
+                bottom: 0,
                 right: 0,
             },
         };
