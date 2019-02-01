@@ -62,7 +62,7 @@ export default class UITopBar extends UIComponent {
 
     // Setters
     setSelectedIndex(selectedIndex) {
-        this.state.selectedIndex = selectedIndex;
+        this.setStateSafely({ selectedIndex });
     }
 
     // Getters
