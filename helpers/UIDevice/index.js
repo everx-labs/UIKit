@@ -30,9 +30,10 @@ export default class UIDevice {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    async safeAreaInsets() {
-        const result = await SafeArea.getSafeAreaInsetsForRootView();
-        return result;
+    static safeAreaInsets() {
+        return SafeArea.getSafeAreaInsetsForRootView().then((result) => {
+            return result.safeAreaInsets;
+        });
     }
 
     static isDesktopWeb() {
