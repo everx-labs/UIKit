@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -8,19 +8,16 @@ import UIDot from '../../design/UIDot';
 import UIMenuView from '../../menus/UIMenuView';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UISearchField from '../UISearchField';
-
-import menuIcon from '../../../assets/ico-open-menu/open-menu.png';
+import UIImageButton from '../../buttons/UIImageButton';
+import UITextButton from '../../buttons/UITextButton';
 
 const styles = StyleSheet.create({
     container: {
-        // position: 'absolute',
         marginTop: UIConstant.mediumContentOffset(),
-        // left: 0,
-        // right: 0,
         height: UIConstant.bigCellHeight(),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // backgroundColor: 'transparent',
+        backgroundColor: 'transparent',
     },
     iconContainer: {
         width: UIConstant.iconSize(),
@@ -54,6 +51,13 @@ export default class UITopBar extends UIComponent {
         this.state = {
             selectedIndex: 0,
         };
+    }
+
+    // Events
+    onNavigationMenuItemPress(screenName) {
+        if (screenName) {
+            this.props.navigation.navigate(screenName);
+        }
     }
 
     // Setters
@@ -90,35 +94,49 @@ export default class UITopBar extends UIComponent {
         );
     }
 
+    renderIcon() {
+        return (
+            <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('MainScreen')}
+            >
+                <View style={styles.iconContainer} />
+            </TouchableOpacity>
+        );
+    }
+
     renderLeftPart() {
-        const icon = <View style={styles.iconContainer} />;
         return (
             <View style={{ flexDirection: 'row' }}>
-                {icon}
-                {icon}
+                {this.renderIcon()}
+                {this.renderIcon()}
                 {this.renderNetworkMenu()}
             </View>
         );
     }
 
     renderMenu() {
-        if (this.props.menuExpanded) {
-            return this.renderExpandedMenu();
+        if (this.props.menuItemsInRow) {
+            return this.renderRowMenu();
         }
         return (
-            <Image source={menuIcon} style={styles.marginDefault} />
+            <UIImageButton
+                image="menu"
+                buttonStyle={styles.marginDefault}
+                onPress={() => this.props.onPressShowMenu()}
+            />
         );
     }
 
-    renderExpandedMenu() {
-        const menu = this.props.menuItems.map(({ title, path }) => {
+    renderRowMenu() {
+        const menu = this.props.menuItems.map(({ title, screenName }) => {
             return (
-                <Text
-                    style={[UITextStyle.primarySmallMedium, styles.marginDefault]}
+                <UITextButton
                     key={`top~bar~right~menu~item~${title}`}
-                >
-                    {title}
-                </Text>
+                    buttonStyle={styles.marginDefault}
+                    textStyle={UITextStyle.primarySmallMedium}
+                    title={title}
+                    onPress={() => this.onNavigationMenuItemPress(screenName)}
+                />
             );
         });
         return (
@@ -144,10 +162,13 @@ export default class UITopBar extends UIComponent {
     }
 
     render() {
+        if (this.props.hidden) {
+            return null;
+        }
         return (
             <View style={styles.container}>
-                {this.renderLeftPart()}
                 {this.renderSearchField()}
+                {this.renderLeftPart()}
                 {this.renderMenu()}
             </View>
         );
@@ -155,8 +176,11 @@ export default class UITopBar extends UIComponent {
 }
 
 UITopBar.defaultProps = {
-    menuExpanded: false,
+    navigation: null,
+    hidden: false,
+    menuItemsInRow: false,
     menuItems: [],
     searchExpression: '',
     onChangeSearchExpression: null,
+    onPressShowMenu: () => {},
 };

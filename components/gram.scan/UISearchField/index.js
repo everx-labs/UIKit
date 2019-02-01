@@ -11,11 +11,9 @@ import searchIcon from '../../../assets/ico-search/ico-search.png';
 
 const styles = StyleSheet.create({
     container: {
-        // marginTop: UIConstant.mediumContentOffset(),
         width: '50%',
         paddingHorizontal: UIConstant.contentOffset(),
         height: UIConstant.bigCellHeight(),
-        // alignItems: 'center',
         justifyContent: 'center',
     },
 });

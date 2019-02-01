@@ -52,6 +52,12 @@ const action = {
 
 const UITextStyle = StyleSheet.create({
     // [Text Primary]
+    // HeadLine - fontSize: 64, lineHeight: 84
+    primaryHeadlineLight: {
+        ...primary,
+        ...UIFont.headlineLight(),
+    },
+
     // Title - fontSize: 36, lineHeight: 48
     primaryTitleLight: {
         ...primary,

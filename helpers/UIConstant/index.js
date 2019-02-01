@@ -34,6 +34,7 @@ const UI_DEFAULT_CELL_HEIGHT = 48;
 const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
 const UI_HUGE_CELL_HEIGHT = 96;
+const UI_GIANT_CELL_HEIGHT = 128;
 
 const UI_DATA_CAPTION_HEIGHT = 104;
 
@@ -55,8 +56,10 @@ const UI_ELASTIC_WIDTH_MEDIUM = 592;
 const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 
-const UI_PASSWORD_PROMPT_WIDTH = 416;
+const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
+const BACKGROUND_IMAGE_CONTAINER_HEIGHT = 594;
 
+const UI_PASSWORD_PROMPT_WIDTH = 416;
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
 
@@ -217,6 +220,10 @@ export default class UIConstant {
         return UI_HUGE_CELL_HEIGHT;
     }
 
+    static giantCellHeight() {
+        return UI_GIANT_CELL_HEIGHT;
+    }
+
     static dataCaptionHeight() {
         return UI_DATA_CAPTION_HEIGHT;
     }
@@ -265,6 +272,14 @@ export default class UIConstant {
 
     static elasticWidthMax() {
         return UI_ELASTIC_WIDTH_MAX;
+    }
+
+    static backgroundImageContainerWidth() {
+        return BACKGROUND_IMAGE_CONTAINER_WIDTH;
+    }
+
+    static backgroundImageContainerHeight() {
+        return BACKGROUND_IMAGE_CONTAINER_HEIGHT;
     }
 
     static passwordPromptWidth() {
