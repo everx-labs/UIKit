@@ -12,6 +12,7 @@ export default class UIBackgroundView extends UIComponent {
         SecondaryImageTopRight: 'SecondaryImageTopRight',
         SecondaryImageBottomLeft: 'SecondaryImageBottomLeft',
         SecondaryImageCenterRightNoBottomBar: 'SecondaryImageCenterRightNoBottomBar',
+        SecondaryImageBottomRight: 'SecondaryImageBottomRight',
     }
 
     static Presets = {
@@ -38,6 +39,14 @@ export default class UIBackgroundView extends UIComponent {
             bottomBarDisabled: true,
             image: '',
         },
+        [UIBackgroundView.PresetNames.SecondaryImageBottomRight]: {
+            backgroundStyle: {
+                backgroundColor: UIColor.fa(),
+                alignItems: 'flex-end',
+                justifyContent: 'flex-end',
+            },
+            image: '',
+        }
     };
 
     renderBottomBar(bottomBarDisabled) {
