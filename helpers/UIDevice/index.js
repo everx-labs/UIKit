@@ -29,17 +29,21 @@ export default class UIDevice {
         return UI_NAVIGATION_BAR_HEIGHT;
     }
 
-    static safeAreaInsets() {
-        return SafeArea.getSafeAreaInsetsForRootView().then((result) => {
-            return Promise.resolve(result.safeAreaInsets);
-        }).catch(() => {
-            return Promise.resolve({
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-            });
-        });
+    static async safeAreaInsets() {
+        if (SafeArea.getSafeAreaInsetsForRootView) {
+            try {
+                const { safeAreaInsets } = await SafeArea.getSafeAreaInsetsForRootView();
+                return safeAreaInsets;
+            } catch (error) {
+                console.warn('Failed to get safe area insets with error:', error);
+            }
+        }
+        return {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+        };
     }
 
     static isDesktopWeb() {
