@@ -71,6 +71,15 @@ export default class UIModalController
         this.fullscreen = false;
         this.dialog = null;
         this.onCancel = null;
+
+        this.state = {
+            safeArea: {
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+            },
+        };
     }
 
     componentDidMount() {
