@@ -8,7 +8,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 
-type ButtonImage = 'back' | 'close-primary' | 'close-secondary' | 'close-light' | 'custom';
+type ButtonImage = 'back' | 'close-primary' | 'close-secondary' | 'close-light' | 'custom' | 'menu';
 
 const assets = {
     back: () => require('../../../assets/ico-arrow-left/ico-arrow-left.png'),

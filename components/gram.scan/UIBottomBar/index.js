@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
@@ -18,7 +19,11 @@ const bottomBarStyles = [
     UIStyle.bottomScreenContainer,
 ];
 
-export default class UIBottomBar extends UIComponent {
+type Props = {};
+
+type State = {};
+
+export default class UIBottomBar extends UIComponent<Props, State> {
     render() {
         return (
             <View style={bottomBarStyles}>

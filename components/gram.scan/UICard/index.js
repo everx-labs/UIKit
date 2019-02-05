@@ -1,4 +1,5 @@
 import React from 'react';
+import StylePropType from 'react-style-proptype';
 
 import { View, StyleSheet, Text, Image } from 'react-native';
 
@@ -9,6 +10,16 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
+
+type Props = {
+    containerStyle: StylePropType,
+    progress: boolean,
+    title: string,
+    caption: string,
+    details: string,
+};
+
+type State = {};
 
 const styles = StyleSheet.create({
     container: {
@@ -26,7 +37,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UICard extends UIComponent {
+export default class UICard extends UIComponent<Props, State> {
     renderProgressCard() {
         if (!this.props.progress) {
             return null;
@@ -68,6 +79,8 @@ export default class UICard extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UICard.defaultProps = {

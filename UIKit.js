@@ -60,6 +60,8 @@ import UITopBar from './components/gram.scan/UITopBar';
 import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';
 import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
+import type { NavigationMenuList } from './components/gram.scan/UITopBar';
+
 
 export {
     UIActionSheet,
@@ -123,6 +125,7 @@ export {
 
 export type {
     CreateNavigationOptions,
+    NavigationMenuList,
     NavigationProps,
     PointerEvents,
     PositionObject,

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 
@@ -9,6 +10,13 @@ import UITextInput from '../../text/UITextInput';
 
 import searchIcon from '../../../assets/ico-search/ico-search.png';
 
+type Props = {
+    onChangeSearchExpression: (string) => void,
+};
+type State = {
+    searchExpression: string,
+};
+
 const styles = StyleSheet.create({
     container: {
         width: '50%',
@@ -18,13 +26,12 @@ const styles = StyleSheet.create({
     },
 });
 
-const searchField = [
-    styles.searchField,
+const searchFieldStyle = [
     UIStyle.centerLeftContainer,
 ];
 
-export default class SearchField extends UIComponent {
-    constructor(props) {
+export default class UISearchField extends UIComponent<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -36,7 +43,7 @@ export default class SearchField extends UIComponent {
         return this.state.searchExpression;
     }
 
-    setSearchExpression(searchExpression) {
+    setSearchExpression(searchExpression: string) {
         this.setStateSafely({ searchExpression });
         this.props.onChangeSearchExpression(searchExpression);
     }
@@ -44,7 +51,7 @@ export default class SearchField extends UIComponent {
     render() {
         return (
             <View style={styles.container}>
-                <View style={searchField}>
+                <View style={searchFieldStyle}>
                     <Image source={searchIcon} style={UIStyle.marginRightSmall} />
                     <UITextInput
                         value={this.getSearchExpression()}
@@ -55,4 +62,11 @@ export default class SearchField extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
+
+UISearchField.defaultProps = {
+    onChangeSearchExpression: () => {},
+};
+

@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 export interface ReactNavigation {
-    navigate(): void;
+    navigate(string): void;
 
     goBack(): void;
 

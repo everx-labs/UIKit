@@ -1,5 +1,7 @@
+// @flow
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import type { MenuItemType } from '../../menus/UIMenuView';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -10,6 +12,8 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UISearchField from '../UISearchField';
 import UIImageButton from '../../buttons/UIImageButton';
 import UITextButton from '../../buttons/UITextButton';
+
+import type { ReactNavigation } from '../../navigation/UINavigationBar';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,8 +38,28 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UITopBar extends UIComponent {
-    constructor(props) {
+export type NavigationMenuList = { title: string, screenName: string }[];
+
+type NetworksList = MenuItemType[];
+
+type Props = {
+    navigation?: ReactNavigation,
+    hidden: boolean,
+    menuItemsInRow: boolean,
+    menuItems: NavigationMenuList,
+    searchExpression: string,
+    onChangeSearchExpression: ((string) => void) | null,
+    onPressShowMenu: () => void,
+};
+
+type State = {
+    selectedIndex: number,
+};
+
+export default class UITopBar extends UIComponent<Props, State> {
+    networksList: NetworksList;
+
+    constructor(props: Props) {
         super(props);
         this.networksList = [
             {
@@ -54,14 +78,9 @@ export default class UITopBar extends UIComponent {
     }
 
     // Events
-    onNavigationMenuItemPress(screenName) {
-        if (screenName) {
-            this.props.navigation.navigate(screenName);
-        }
-    }
 
     // Setters
-    setSelectedIndex(selectedIndex) {
+    setSelectedIndex(selectedIndex: number) {
         this.setStateSafely({ selectedIndex });
     }
 
@@ -73,6 +92,14 @@ export default class UITopBar extends UIComponent {
     getSelectedNetwork() {
         const index = this.getSelectedIndex();
         return this.networksList[index].title;
+    }
+
+    // Actions
+    navigateTo(screenName: string) {
+        const { navigation } = this.props;
+        if (screenName && navigation) {
+            navigation.navigate(screenName);
+        }
     }
 
     // Render
@@ -97,7 +124,7 @@ export default class UITopBar extends UIComponent {
     renderIcon() {
         return (
             <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('MainScreen')}
+                onPress={() => this.navigateTo('MainScreen')}
             >
                 <View style={styles.iconContainer} />
             </TouchableOpacity>
@@ -118,6 +145,9 @@ export default class UITopBar extends UIComponent {
         if (this.props.menuItemsInRow) {
             return this.renderRowMenu();
         }
+        if (!this.props.onPressShowMenu) {
+            return null;
+        }
         return (
             <UIImageButton
                 image="menu"
@@ -128,6 +158,9 @@ export default class UITopBar extends UIComponent {
     }
 
     renderRowMenu() {
+        if (!this.props.menuItems) {
+            return null;
+        }
         const menu = this.props.menuItems.map(({ title, screenName }) => {
             return (
                 <UITextButton
@@ -135,7 +168,7 @@ export default class UITopBar extends UIComponent {
                     buttonStyle={styles.marginDefault}
                     textStyle={UITextStyle.primarySmallMedium}
                     title={title}
-                    onPress={() => this.onNavigationMenuItemPress(screenName)}
+                    onPress={() => this.navigateTo(screenName)}
                 />
             );
         });
@@ -173,10 +206,11 @@ export default class UITopBar extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UITopBar.defaultProps = {
-    navigation: null,
     hidden: false,
     menuItemsInRow: false,
     menuItems: [],

@@ -7,13 +7,19 @@ import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIBottomBar from '../../gram.scan/UIBottomBar';
 
-export default class UIBackgroundView extends UIComponent {
+type Props = {
+    presetName: string,
+};
+
+type State = {};
+
+export default class UIBackgroundView extends UIComponent<Props, State> {
     static PresetNames = {
         SecondaryImageTopRight: 'SecondaryImageTopRight',
         SecondaryImageBottomLeft: 'SecondaryImageBottomLeft',
         SecondaryImageCenterRightNoBottomBar: 'SecondaryImageCenterRightNoBottomBar',
         SecondaryImageBottomRight: 'SecondaryImageBottomRight',
-    }
+    };
 
     static Presets = {
         [UIBackgroundView.PresetNames.SecondaryImageTopRight]: {
@@ -46,10 +52,10 @@ export default class UIBackgroundView extends UIComponent {
                 justifyContent: 'flex-end',
             },
             image: '',
-        }
+        },
     };
 
-    renderBottomBar(bottomBarDisabled) {
+    renderBottomBar(bottomBarDisabled: boolean) {
         return !bottomBarDisabled ? <UIBottomBar /> : null;
     }
 
@@ -66,6 +72,8 @@ export default class UIBackgroundView extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UIBackgroundView.defaultProps = {

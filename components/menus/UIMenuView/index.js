@@ -19,7 +19,7 @@ const MENU_TRIGGER = 'menu-trigger';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
-type MenuItemType = {
+export type MenuItemType = {
     title: string,
     disabled?: boolean,
     onPress: () => void
