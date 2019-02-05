@@ -52,6 +52,7 @@ import UITextInput from './components/text/UITextInput';
 import UIToastMessage from './components/notifications/UIToastMessage';
 import UIToggle from './components/buttons/UIToggle';
 import UITopBar from './components/ton-scan/UITopBar';
+import UITooltip from './components/notifications/UITooltip';
 
 // Types
 import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';
@@ -113,6 +114,7 @@ export {
     UIToastMessage,
     UITopBar,
     UIToggle,
+    UITooltip,
 };
 
 export type {
