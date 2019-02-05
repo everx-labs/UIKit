@@ -183,6 +183,10 @@ const UIStyle = StyleSheet.create({
         right: 0,
         top: 0,
     },
+    flexAlignCenterContainer: {
+        flex: 1,
+        alignItems: 'center',
+    },
     centerContainer: {
         flex: 1,
         flexDirection: 'row',
