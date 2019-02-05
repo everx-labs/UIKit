@@ -140,10 +140,6 @@ const UIStyle = StyleSheet.create({
         ...absoluteFillObject,
         backgroundColor: UIColor.backgroundPrimary(),
     },
-    screenBackgroundFA: {
-        ...absoluteFillObject,
-        backgroundColor: UIColor.fa(),
-    },
     screenContainer: {
         flex: 1,
         flexDirection: 'column',
@@ -206,6 +202,11 @@ const UIStyle = StyleSheet.create({
         left: '50%',
         width: 320,
         marginLeft: -160,
+    },
+    backgroundImageContainer: {
+        width: UIConstant.backgroundImageContainerWidth(),
+        height: UIConstant.backgroundImageContainerHeight(),
+        backgroundColor: UIColor.backgroundQuinary(),
     },
 
     // TON-Scan

@@ -5,15 +5,17 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/jsx-indent-props": [1, 4],
     "react/jsx-indent": ["error", 4],
+    "react/prefer-stateless-function": "off",
     "indent": ["error", 4],
     "arrow-body-style": "off",
     "no-console": "off",
     "no-continue": "off",
+    "class-methods-use-this": "off",
     "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }]
   },
   "env": {
     "browser": true,
-    "node": true,
+    "node": true
   }
 }
