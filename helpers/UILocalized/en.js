@@ -497,9 +497,8 @@ const en = {
     LimitSetSuccess: 'The limit has been set successfully',
     LimitRemoveSuccess: 'The limit has been deleted',
 
-    // TON-Scan
+    // Gram.Scan
     EnterHashTransactionAccountOrBlock: 'Enter Hash transaction, account or block',
-    Blocks: 'Blocks',
 };
 
 export default en;
