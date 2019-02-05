@@ -37,6 +37,7 @@ const UI_HUGE_CELL_HEIGHT = 96;
 const UI_GIANT_CELL_HEIGHT = 128;
 
 const UI_DATA_CAPTION_HEIGHT = 104;
+const UI_NAVIGATION_BAR_HEIGHT = 80;
 
 const UI_SMALL_AVATAR_SIZE = 20;
 const UI_MEDIUM_AVATAR_SIZE = 40;
@@ -226,6 +227,10 @@ export default class UIConstant {
 
     static dataCaptionHeight() {
         return UI_DATA_CAPTION_HEIGHT;
+    }
+
+    static navBarHeight() {
+        return UI_NAVIGATION_BAR_HEIGHT;
     }
 
     static largeAvatarSize() {
