@@ -15,10 +15,9 @@ import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        //
     },
     textView: {
-        flex: 1,
         flexGrow: 1,
         paddingTop: UIConstant.tinyContentOffset(),
         paddingBottom: UIConstant.smallContentOffset(),
@@ -32,12 +31,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         lineHeight: null,
     },
+    textInputDefault: {
+        flex: 1,
+        lineHeight: null,
+    },
     textInputView: {
-        flexGrow: 1,
+        zIndex: -1,
+        flex: 1,
         position: 'absolute',
         flexDirection: 'row',
+        backgroundColor: 'transparent',
         overflow: 'scroll',
-        zIndex: -1,
     },
 });
 
@@ -115,11 +119,13 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             keyboardType,
             returnKeyType,
             maxLines,
+            complementaryValue,
         } = this.props;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
         const position = !value || value === 0 ? { position: 'relative' } : null;
+        const currentStyle = complementaryValue.length > 0 ? styles.textInput : styles.textInputDefault;
         return (
             <TextInput
                 ref={(component) => { this.textInput = component; }}
@@ -140,7 +146,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
                 onSubmitEditing={onSubmitEditing}
                 style={[
                     UITextStyle.primaryBodyRegular,
-                    styles.textInput,
+                    currentStyle,
                     position]}
                 selectionColor={UIColor.primary()}
                 {...maxLengthProp}
@@ -150,6 +156,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
 
     renderComplementaryText() {
         const { value, complementaryValue } = this.props;
+        if (complementaryValue.length === 0) return null;
         return (
             <View style={styles.textInputView}>
                 <Text
@@ -222,8 +229,8 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const bottomLine = hideBottomLine ? {} : UIStyle.borderBottom;
         return (
             <View style={[styles.textView, bottomLine]}>
-                {this.renderComplementaryText()}
                 {this.renderTextInput()}
+                {this.renderComplementaryText()}
                 {this.renderCounter()}
                 {this.renderToken()}
                 {this.renderRightButton()}
@@ -251,8 +258,10 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
     }
 
     render() {
+        const { rightButton } = this.props;
+        const flex = rightButton.length > 0 ? { flex: 1 } : null;
         return (
-            <View style={[styles.container, this.props.containerStyle]}>
+            <View style={[styles.container, this.props.containerStyle, flex]}>
                 {this.renderFloatingTitle()}
                 {this.renderTextView()}
                 {this.renderComment()}
