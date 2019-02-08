@@ -9,6 +9,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
 import UIMenuBackground from '../../../helpers/UIMenuBackground';
 import UIDevice from '../../../helpers/UIDevice';
+import UIEventHelper from '../../../helpers/UIEventHelper';
 import UIActionSheet from '../../menus/UIActionSheet';
 import UIComponent from '../../UIComponent';
 
@@ -123,17 +124,9 @@ export default class UIMenuView extends UIComponent<Props, State> {
         }
         const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
         this.clickListener = (e: any) => {
-            const triggers = Array.from(document.getElementsByClassName(MENU_TRIGGER));
-            if (triggers && triggers.length) {
-                const clickOnTrigger = triggers.reduce((contains, trigger) => {
-                    if (!contains) {
-                        return trigger.contains(e.target);
-                    }
-                    return contains;
-                }, false);
-                if (!clickOnTrigger) {
-                    this.hideMenu();
-                }
+            const eventResult = UIEventHelper.checkEventTarget(e, MENU_TRIGGER);
+            if (!eventResult) {
+                this.hideMenu();
             }
         };
         window.addEventListener(listenerType, this.clickListener);
