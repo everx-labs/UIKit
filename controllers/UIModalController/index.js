@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import { StyleSheet, Platform, Modal, View, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
@@ -33,11 +32,19 @@ type OnLayoutEventArgs = {
 
 type ModalControllerProps = ControllerProps;
 
+type SafeAreaInset = {
+    top: number,
+    left: number,
+    bottom: number,
+    right: number,
+};
+
 type ModalControllerState = ControllerState & {
     dy?: ?Animated.Value;
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
+    safeArea?: SafeAreaInset,
 };
 
 const styles = StyleSheet.create({
@@ -52,14 +59,14 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIModalController<Props, State>
-    extends UIController<Props & ModalControllerProps, State & ModalControllerState> {
+export default class UIModalController
+    extends UIController<ModalControllerProps, ModalControllerState> {
     fullscreen: boolean;
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
 
-    constructor(props: Props & ModalControllerProps) {
+    constructor(props: ModalControllerProps) {
         super(props);
         this.fullscreen = false;
         this.dialog = null;
@@ -80,7 +87,7 @@ export default class UIModalController<Props, State>
         this.loadSafeAreaInsets();
     }
 
-    componentWillReceiveProps(nextProps: Props & ModalControllerProps) {
+    componentWillReceiveProps(nextProps: ModalControllerProps) {
         super.componentWillReceiveProps(nextProps);
     }
 
@@ -134,10 +141,15 @@ export default class UIModalController<Props, State>
     }
 
     // Getters
-    getSafeAreaInsets() {
-        return this.state.safeArea;
+    getSafeAreaInsets(): SafeAreaInset {
+        return this.state.safeArea || {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+        };
     }
-    
+
     getDialogStyle() {
         let { width, height } = this.state;
         if (!width || !height) {
@@ -172,8 +184,8 @@ export default class UIModalController<Props, State>
 
         height -= statusBarHeight + navBarHeight;
 
-        const contentHeight =
-            height - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss())
+        const contentHeight = height
+            - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss())
             - this.getSafeAreaInsets().bottom;
 
         if (enlargeHeightForBounce) {
@@ -211,27 +223,18 @@ export default class UIModalController<Props, State>
 
     // Setters
     setControllerVisible(controllerVisible: boolean, callback?: () => void) {
-        if (!this.mounted) {
-            return;
-        }
-        this.setState({ controllerVisible }, callback);
+        this.setStateSafely({ controllerVisible }, callback);
     }
 
     setSize(width: number, height: number) {
-        if (!this.mounted) {
-            return;
-        }
-        this.setState({
+        this.setStateSafely({
             width,
             height,
         });
     }
 
     setDy(dy: ?Animated.Value, callback?: () => void) {
-        if (!this.mounted) {
-            return;
-        }
-        this.setState({ dy }, callback);
+        this.setStateSafely({ dy }, callback);
     }
 
     setInitialSwipeState() {

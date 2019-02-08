@@ -496,9 +496,8 @@ const ru = {
     LimitSetSuccess: 'Лимит был успешно установлен',
     LimitRemoveSuccess: 'Лимит был удален',
 
-    // TON-Scan
+    // Gram.Scan
     EnterHashTransactionAccountOrBlock: 'Введите Хэш транзакции, аккаунта или блока',
-    Blocks: 'Блоки',
 };
 
 export default ru;
