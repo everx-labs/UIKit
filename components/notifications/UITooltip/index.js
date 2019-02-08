@@ -313,12 +313,15 @@ export default class UITooltip extends UIComponent<Props, State> {
         const setClassNameTrick: {} = {
             className: this.triggerClassName,
         };
+        // need external view to restrict trigger view
         return (
-            <View
-                ref={(component) => { this.trigger = component; }}
-                {...setClassNameTrick}
-            >
-                {this.props.children}
+            <View>
+                <View
+                    ref={(component) => { this.trigger = component; }}
+                    {...setClassNameTrick}
+                >
+                    {this.props.children}
+                </View>
             </View>
         );
     }
@@ -346,6 +349,6 @@ export default class UITooltip extends UIComponent<Props, State> {
 UITooltip.defaultProps = {
     message: '',
     classNameKey: '',
-    active: false,
+    active: true,
     children: null,
 };

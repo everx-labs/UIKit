@@ -98,13 +98,12 @@ export default class UILayoutManager extends UIComponent {
 
     // Actions
     showComponent({ component, animation, position }) {
-        const determinedPosition = position || this.getPosition();
         this.animation = animation;
         this.setParams({
             visible: true,
-            component,
-            position: determinedPosition,
             opacity: new Animated.Value(0),
+            component,
+            position,
         }, () => this.animateShow(animation));
     }
 
@@ -120,7 +119,7 @@ export default class UILayoutManager extends UIComponent {
         this.animateHide(this.animation, () => {
             this.setParams({
                 component: null,
-                position: { x: 0, y: 0 },
+                position: null,
                 visible: false,
                 opacity: new Animated.Value(0),
             });
@@ -139,7 +138,7 @@ export default class UILayoutManager extends UIComponent {
 
     // Render
     render() {
-        if (!this.isVisible()) {
+        if (!this.isVisible() || !this.getPosition()) {
             return null;
         }
         const { top, left } = this.getPosition();
@@ -147,7 +146,7 @@ export default class UILayoutManager extends UIComponent {
         return (
             <Animated.View
                 style={[UIStyle.absoluteFillObject, { opacity }]}
-                pointerEvents="box-none"
+                pointerEvents="none"
             >
                 <View style={{ position: 'absolute', top, left }}>
                     {this.getComponent()}
