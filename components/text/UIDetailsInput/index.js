@@ -30,8 +30,10 @@ const styles = StyleSheet.create({
         flex: 1,
         color: 'transparent',
         backgroundColor: 'transparent',
+        lineHeight: null,
     },
     textInputView: {
+        flexGrow: 1,
         position: 'absolute',
         flexDirection: 'row',
         overflow: 'scroll',
@@ -139,10 +141,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
                 style={[
                     UITextStyle.primaryBodyRegular,
                     styles.textInput,
-                    position, {
-                        flex: 1,
-                        lineHeight: null,
-                    }]}
+                    position]}
                 selectionColor={UIColor.primary()}
                 {...maxLengthProp}
             />
@@ -152,16 +151,17 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
     renderComplementaryText() {
         const { value, complementaryValue } = this.props;
         return (
-            <Text
-                style={[UITextStyle.primaryBodyRegular]}
-                selectable={false}
-                numberOfLines={1}
-            >
-                {value}
-                <Text style={[UITextStyle.secondaryBodyRegular]} selectable={false}>
-                    {complementaryValue}
+            <View style={styles.textInputView}>
+                <Text
+                    style={UITextStyle.primaryBodyRegular}
+                    selectable={false}
+                >
+                    {value}
+                    <Text style={UITextStyle.secondaryBodyRegular} selectable={false}>
+                        {complementaryValue}
+                    </Text>
                 </Text>
-            </Text>
+            </View>
         );
     }
 
@@ -222,10 +222,8 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const bottomLine = hideBottomLine ? {} : UIStyle.borderBottom;
         return (
             <View style={[styles.textView, bottomLine]}>
+                {this.renderComplementaryText()}
                 {this.renderTextInput()}
-                <View style={[styles.textInputView]}>
-                    {this.renderComplementaryText()}
-                </View>
                 {this.renderCounter()}
                 {this.renderToken()}
                 {this.renderRightButton()}
