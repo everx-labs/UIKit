@@ -1,6 +1,9 @@
 // @flow
 import React from 'react';
 import { View, TouchableOpacity, Platform, Text, StyleSheet, Dimensions } from 'react-native';
+import StylePropType from 'react-style-proptype';
+import type { Node } from 'react';
+import type { ReactFabricType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -9,20 +12,18 @@ import UILayoutManager from '../../../helpers/UILayoutManager';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIDevice from '../../../helpers/UIDevice';
 
-type Placement = 'top' | 'bottom' | 'left' | 'right';
-
 type Props = {
-    placement?: Placement,
-    needCancelItem?: boolean,
-    children?: Node,
-    onCancelCallback?: () => void,
+    message: string,
+    classNameKey: string,
+    active: boolean,
+    children: Node,
 };
 
-type State = {
-    isVisible: boolean,
-    triggerWidth: number,
-    menuMarginLeft: number,
-};
+type State = {};
+
+type Point = { x: number, y: number };
+type Position = { left: number, top: number };
+type Preset = { position: Position, containerStyle: StylePropType };
 
 const tooltipDelay = 200;
 const tooltipFadein = 200;
@@ -73,14 +74,7 @@ const styles = StyleSheet.create({
 let masterMouseMoveListener = null;
 
 export default class UITooltip extends UIComponent<Props, State> {
-    static Placement = {
-        Top: 'top',
-        Bottom: 'bottom',
-        Left: 'left',
-        Right: 'right',
-    };
-
-    static showOnMouseForWeb(message) {
+    static showOnMouseForWeb(message: string) {
         UITooltip.initMouseMoveListenerForWeb();
         UILayoutManager.showComponent({
             component: UITooltip.renderTooltip(message, styles.onMouseContainer),
@@ -115,7 +109,7 @@ export default class UITooltip extends UIComponent<Props, State> {
         masterMouseMoveListener = null;
     }
 
-    static renderTooltip(message, containerStyle) {
+    static renderTooltip(message: string, containerStyle: StylePropType) {
         return (
             <View style={[styles.tooltipContainer, containerStyle]}>
                 <View style={styles.tooltip}>
@@ -131,16 +125,16 @@ export default class UITooltip extends UIComponent<Props, State> {
         );
     }
 
-    static calcPlacement(width, height, ax, ay) {
+    static calcPreset(width: number, height: number, ax: number, ay: number): Preset {
         const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
-        const areBothOnScreen = (side) => {
+        const areBothOnScreen = (side: Point[]) => {
             let result = true;
-            const isPointOnScreen = ({ x, y }) => {
+            const isPointOnScreen = ({ x, y }: Point) => {
                 return x >= 0 && x <= windowWidth && y >= 0 && y <= windowHeight;
             };
-            Object.keys(side).forEach((pointName) => {
-                result = result && isPointOnScreen(side[pointName]);
+            side.forEach((point: Point) => {
+                result = result && isPointOnScreen(point);
             });
             return result;
         };
@@ -148,13 +142,12 @@ export default class UITooltip extends UIComponent<Props, State> {
         const leftX = ax + Math.floor((width - tooltipMaxWidth) / 2);
         const rightX = ax + Math.floor((width + tooltipMaxWidth) / 2);
         const southY = ay + height + tooltipOffset + tooltipMaxHeight;
-        const bottom = {
-            leftBottomPoint: { x: leftX, y: southY },
-            rightBottomPoint: { x: rightX, y: southY },
-        };
-        if (areBothOnScreen(bottom)) {
+        const bottomSide = [
+            { x: leftX, y: southY },
+            { x: rightX, y: southY },
+        ];
+        if (areBothOnScreen(bottomSide)) {
             return {
-                placement: UITooltip.Placement.Bottom,
                 containerStyle: styles.bottomContainer,
                 position: {
                     left: leftX,
@@ -165,13 +158,12 @@ export default class UITooltip extends UIComponent<Props, State> {
         const westX = ax - tooltipOffset - tooltipMaxWidth;
         const bottomY = ay + Math.floor((height + tooltipMaxHeight) / 2);
         const topY = ay + Math.floor((height - tooltipMaxHeight) / 2);
-        const left = {
-            leftBottomPoint: { x: westX, y: bottomY },
-            leftTopPoint: { x: westX, y: topY },
-        };
-        if (areBothOnScreen(left)) {
+        const leftSide = [
+            { x: westX, y: bottomY },
+            { x: westX, y: topY },
+        ];
+        if (areBothOnScreen(leftSide)) {
             return {
-                placement: UITooltip.Placement.Left,
                 containerStyle: styles.leftContainer,
                 position: {
                     left: westX,
@@ -180,13 +172,12 @@ export default class UITooltip extends UIComponent<Props, State> {
             };
         }
         const northY = ay - tooltipOffset - tooltipMaxHeight;
-        const top = {
-            leftTopPoint: { x: leftX, y: northY },
-            rightTopPoint: { x: rightX, y: northY },
-        };
-        if (areBothOnScreen(top)) {
+        const topSide = [
+            { x: leftX, y: northY },
+            { x: rightX, y: northY },
+        ];
+        if (areBothOnScreen(topSide)) {
             return {
-                placement: UITooltip.Placement.Top,
                 containerStyle: styles.topContainer,
                 position: {
                     left: leftX,
@@ -195,23 +186,38 @@ export default class UITooltip extends UIComponent<Props, State> {
             };
         }
 
-        // const eastX = ax + width + tooltipOffset + tooltipMaxWidth;
-        // const right = {
-        //     rightBottomPoint: { x: eastX, y: bottomY },
-        //     rightTopPoint: { x: eastX, y: topY },
-        // };
-        // if (areBothOnScreen(right)) {
+        const eastX = ax + width + tooltipOffset + tooltipMaxWidth;
+        const rightSide = [
+            { x: eastX, y: bottomY },
+            { x: eastX, y: topY },
+        ];
+        if (areBothOnScreen(rightSide)) {
+            return {
+                containerStyle: styles.rightContainer,
+                position: {
+                    left: ax + width + tooltipOffset,
+                    top: topY,
+                },
+            };
+        }
 
-        // right as a default
+        // bottom center of screen as default
+        const leftDefault = (windowWidth - tooltipMaxWidth) / 2;
+        const topDefault = windowHeight - UIConstant.contentOffset() - tooltipMaxHeight;
         return {
-            placement: UITooltip.Placement.Right,
-            containerStyle: styles.rightContainer,
+            containerStyle: styles.topContainer,
             position: {
-                left: ax + width + tooltipOffset,
-                top: topY,
+                left: leftDefault,
+                top: topDefault,
             },
         };
     }
+
+    mouseOverListener: () => void;
+    mouseOutListener: () => void;
+    trigger: ?ReactFabricType;
+    isVisible: boolean;
+    triggerClassName: string;
 
     constructor(props: Props) {
         super(props);
@@ -221,32 +227,17 @@ export default class UITooltip extends UIComponent<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
-        if (Platform.OS === 'web') {
-            setTimeout(() => {
-                this.initMouseOverListenerForWeb();
-            }, 0);
-        }
+        setTimeout(() => {
+            this.initMouseOverListenerForWeb();
+        }, 0);
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
-        if (Platform.OS === 'web') {
-            this.deinitMouseOverListenerForWeb();
-        }
+        this.deinitMouseOverListenerForWeb();
     }
 
     // Events
-    onLongPress() {
-        if (UIDevice.isMobile() || UIDevice.isTablet()) {
-            this.show();
-        }
-    }
-
-    onPressOut() {
-        if (UIDevice.isMobile() || UIDevice.isTablet()) {
-            this.hide();
-        }
-    }
 
     // Setters
 
@@ -254,11 +245,13 @@ export default class UITooltip extends UIComponent<Props, State> {
 
     // Actions
     calcPreset() {
-        return new Promise((resolve) => {
-            this.trigger.measure((rx, ry, width, height, ax, ay) => {
-                const result = UITooltip.calcPlacement(width, height, ax, ay);
-                resolve(result);
-            });
+        return new Promise((resolve: (result: any) => void) => {
+            if (this.trigger) {
+                this.trigger.measure((rx, ry, width, height, ax, ay) => {
+                    const result = UITooltip.calcPreset(width, height, ax, ay);
+                    resolve(result);
+                });
+            }
         });
     }
 
@@ -266,10 +259,10 @@ export default class UITooltip extends UIComponent<Props, State> {
         if (!this.props.active) {
             return;
         }
-        this.isVisible = true;
         if (masterMouseMoveListener) {
             UITooltip.deinitMouseMoveListenerForWeb();
         }
+        this.isVisible = true;
         const { containerStyle, position } = await this.calcPreset();
         const component = UITooltip.renderTooltip(this.props.message, containerStyle);
         UILayoutManager.showComponent({
@@ -316,28 +309,35 @@ export default class UITooltip extends UIComponent<Props, State> {
     }
 
     // Render
-    render() {
-        // This trick with class name required to suppress flow warning
-        // on undeclared className prop.
+    renderTrigger() {
         const setClassNameTrick: {} = {
             className: this.triggerClassName,
         };
         return (
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                    {...setClassNameTrick}
-                    onLongPress={() => this.onLongPress()}
-                    onPressOut={() => this.onPressOut()}
-                >
-                    <View
-                        ref={(component) => { this.trigger = component; }}
-                        pointerEvents="none"
-                    >
-                        {this.props.children}
-                    </View>
-                </TouchableOpacity>
+            <View
+                ref={(component) => { this.trigger = component; }}
+                {...setClassNameTrick}
+            >
+                {this.props.children}
             </View>
         );
+    }
+
+
+    render() {
+        // This trick with class name required to suppress flow warning
+        // on undeclared className prop.
+        if (UIDevice.isMobile() || UIDevice.isTablet()) {
+            return (
+                <TouchableOpacity
+                    onLongPress={() => this.show()}
+                    onPressOut={() => this.hide()}
+                >
+                    {this.renderTrigger()}
+                </TouchableOpacity>
+            );
+        }
+        return this.renderTrigger();
     }
 
     static defaultProps: Props;
@@ -347,4 +347,5 @@ UITooltip.defaultProps = {
     message: '',
     classNameKey: '',
     active: false,
+    children: null,
 };

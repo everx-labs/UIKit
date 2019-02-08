@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    textInput: {
+        flex: 1,
+        // $FlowExpectedError
+        lineHeight: null,
+    },
 });
 
 type Props = {
@@ -115,7 +120,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             onBlur={onBlur}
             onChangeText={text => onChangeText(text)}
             onSubmitEditing={onSubmitEditing}
-            style={[UITextStyle.primaryBodyRegular, { flex: 1, lineHeight: null }]}
+            style={[UITextStyle.primaryBodyRegular, styles.textInput]}
             selectionColor={UIColor.primary()}
             {...maxLengthProp}
         />);
