@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         flex: 1,
         color: 'transparent',
         backgroundColor: 'transparent',
+        // $FlowExpectedError
         lineHeight: null,
     },
     textInputView: {
@@ -122,7 +123,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         return (
             <TextInput
                 ref={(component) => { this.textInput = component; }}
-                value={value}
+                value={`${value}`}
                 placeholder={placeholder}
                 placeholderTextColor={UIColor.textTertiary()}
                 editable={editable}

@@ -23,7 +23,8 @@ export default class UIComponent<Props, State> extends Component<Props, State> {
 
     mounted: boolean;
 
-    render(): ?Node {
+    // don't know why : ?Node doesn't work
+    render(): any {
         return null;
     }
 }
