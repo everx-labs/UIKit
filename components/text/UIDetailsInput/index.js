@@ -2,7 +2,7 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+import { TextInput, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIColor from '../../../helpers/UIColor';
@@ -14,18 +14,29 @@ import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
-        //
+        flex: 1,
     },
     textView: {
+        flex: 1,
+        flexGrow: 1,
         paddingTop: UIConstant.tinyContentOffset(),
         paddingBottom: UIConstant.smallContentOffset(),
         flexDirection: 'row',
         alignItems: 'center',
     },
     textInput: {
+        zIndex: 1,
         flex: 1,
-        // $FlowExpectedError
+        color: 'transparent',
+        backgroundColor: 'transparent',
         lineHeight: null,
+    },
+    textInputView: {
+        flexGrow: 1,
+        position: 'absolute',
+        flexDirection: 'row',
+        overflow: 'scroll',
+        zIndex: -1,
     },
 });
 
@@ -45,10 +56,14 @@ type Props = {
     returnKeyType?: ReturnKeyType | null,
     editable?: boolean,
     commentStyle?: StylePropType,
+    rightButton?: string,
+    rightButtonDisabled: boolean,
+    complementaryValue: string,
     onFocus?: () => void,
     onBlur?: () => void,
     onChangeText: (text: string) => void,
     onSubmitEditing?: () => void,
+    onRightButtonPress?: () => void,
 };
 type State = {};
 
@@ -103,27 +118,50 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
-        return (<TextInput
-            ref={(component) => { this.textInput = component; }}
-            value={value}
-            placeholder={placeholder}
-            placeholderTextColor={UIColor.textTertiary()}
-            editable={editable}
-            autoCorrect={false}
-            underlineColorAndroid="transparent"
-            autoCapitalize={autoCapitalize}
-            keyboardType={keyboardType}
-            {...returnKeyTypeProp}
-            multiline={multiline}
-            numberOfLines={maxLines}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onChangeText={text => onChangeText(text)}
-            onSubmitEditing={onSubmitEditing}
-            style={[UITextStyle.primaryBodyRegular, styles.textInput]}
-            selectionColor={UIColor.primary()}
-            {...maxLengthProp}
-        />);
+        const position = !value || value === 0 ? { position: 'relative' } : null;
+        return (
+            <TextInput
+                ref={(component) => { this.textInput = component; }}
+                value={value}
+                placeholder={placeholder}
+                placeholderTextColor={UIColor.textTertiary()}
+                editable={editable}
+                autoCorrect={false}
+                underlineColorAndroid="transparent"
+                autoCapitalize={autoCapitalize}
+                keyboardType={keyboardType}
+                {...returnKeyTypeProp}
+                multiline={multiline}
+                numberOfLines={maxLines}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onChangeText={text => onChangeText(text)}
+                onSubmitEditing={onSubmitEditing}
+                style={[
+                    UITextStyle.primaryBodyRegular,
+                    styles.textInput,
+                    position]}
+                selectionColor={UIColor.primary()}
+                {...maxLengthProp}
+            />
+        );
+    }
+
+    renderComplementaryText() {
+        const { value, complementaryValue } = this.props;
+        return (
+            <View style={styles.textInputView}>
+                <Text
+                    style={UITextStyle.primaryBodyRegular}
+                    selectable={false}
+                >
+                    {value}
+                    <Text style={UITextStyle.secondaryBodyRegular} selectable={false}>
+                        {complementaryValue}
+                    </Text>
+                </Text>
+            </View>
+        );
     }
 
     renderCounter() {
@@ -155,14 +193,39 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         );
     }
 
+    renderRightButton() {
+        const {
+            rightButton,
+            onRightButtonPress, rightButtonDisabled,
+        } = this.props;
+        if (!rightButton || rightButton.length === 0) {
+            return null;
+        }
+
+        const defaultTitleStyle = rightButtonDisabled ?
+            UITextStyle.secondarySmallMedium : UITextStyle.actionSmallMedium;
+        return (
+            <TouchableOpacity
+                disabled={rightButtonDisabled}
+                onPress={onRightButtonPress}
+            >
+                <Text style={[UITextStyle.secondaryBodyRegular, defaultTitleStyle]}>
+                    {rightButton}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
+
     renderTextView() {
         const { hideBottomLine } = this.props;
         const bottomLine = hideBottomLine ? {} : UIStyle.borderBottom;
         return (
             <View style={[styles.textView, bottomLine]}>
+                {this.renderComplementaryText()}
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
+                {this.renderRightButton()}
             </View>
         );
     }
@@ -215,8 +278,12 @@ UIDetailsInput.defaultProps = {
     returnKeyType: null,
     editable: true,
     commentStyle: {},
+    rightButton: '',
+    rightButtonDisabled: false,
+    complementaryValue: '',
     onFocus: () => {},
     onBlur: () => {},
     onChangeText: () => {},
     onSubmitEditing: () => {},
+    onRightButtonPress: () => {},
 };
