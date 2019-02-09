@@ -3,7 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity, Platform, Text, StyleSheet, Dimensions } from 'react-native';
 import StylePropType from 'react-style-proptype';
 import type { Node } from 'react';
-import type { ReactFabricType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
+import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -269,7 +269,7 @@ export default class UITooltip extends UIComponent<Props, State> {
 
     mouseOverListener: () => void;
     mouseOutListener: () => void;
-    trigger: ?ReactFabricType;
+    trigger: ?NativeMethodsMixinType;
     isVisible: boolean;
     triggerClassName: string;
 
@@ -298,8 +298,8 @@ export default class UITooltip extends UIComponent<Props, State> {
     // Getters
 
     // Actions
-    calcPreset() {
-        return new Promise((resolve: (result: any) => void) => {
+    calcPreset(): Promise<Preset> {
+        return new Promise((resolve: (result: Preset) => void) => {
             if (this.trigger) {
                 this.trigger.measure((rx, ry, width, height, ax, ay) => {
                     const result = UITooltip.calcPreset(width, height, ax, ay);
