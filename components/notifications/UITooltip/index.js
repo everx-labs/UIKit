@@ -14,7 +14,7 @@ import UIDevice from '../../../helpers/UIDevice';
 
 type Props = {
     message: string,
-    key: string,
+    triggerKey: string,
     active: boolean,
     children: Node,
     containerStyle: ?StylePropType,
@@ -275,7 +275,7 @@ export default class UITooltip extends UIComponent<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        this.triggerClassName = `tooltip-trigger-${this.props.key}`;
+        this.triggerClassName = `tooltip-trigger-${this.props.triggerKey}`;
         this.isVisible = false;
     }
 
@@ -409,7 +409,7 @@ export default class UITooltip extends UIComponent<Props, State> {
 UITooltip.defaultProps = {
     containerStyle: null,
     message: '',
-    key: '',
+    triggerKey: '',
     active: true,
     children: null,
 };
