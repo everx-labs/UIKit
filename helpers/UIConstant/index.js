@@ -67,6 +67,9 @@ const UI_TOAST_WIDTH = 328;
 const UI_ACTIONSHEET_ITEM_HEIGHT = 48;
 const UI_MENU_WIDTH = 176; // menu for web
 
+const UI_TOOLTIP_MAX_WIDTH = 288;
+const UI_TOOLTIP_MAX_HEIGHT = 96;
+
 const UI_TEXT_INPUT_HEIGHT = 48;
 const UI_FLOATING_LABEL_HEIGHT = 40;
 
@@ -307,6 +310,14 @@ export default class UIConstant {
     // Menu for web
     static menuWidth() {
         return UI_MENU_WIDTH;
+    }
+
+    static tooltipMaxWidth() {
+        return UI_TOOLTIP_MAX_WIDTH;
+    }
+
+    static tooltipMaxHeight() {
+        return UI_TOOLTIP_MAX_HEIGHT;
     }
 
     // Symbols

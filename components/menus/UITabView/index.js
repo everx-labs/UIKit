@@ -57,6 +57,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
             });
             screens[key] = page.screen;
         });
+        // $FlowExpectedError
         this.renderScene = SceneMap(screens);
         const tabWidth = props.tabWidth || UITabView.defaultProps.tabWidth;
         this.tabBarProps = {
@@ -103,7 +104,8 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
     renderScene: (props: SceneRendererProps<*> & Scene<*>) => Node;
 
     // Render
-    renderLabel(props: { route: { title: string } }) {
+    // don't know why Scene<string> doesn't work
+    renderLabel(props: any) {
         const { route } = props;
         const {
             activeTintColor,

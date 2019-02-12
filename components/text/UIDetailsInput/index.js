@@ -2,8 +2,7 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 
-
-import { TextInput, Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { TextInput, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIColor from '../../../helpers/UIColor';
@@ -29,6 +28,7 @@ const styles = StyleSheet.create({
         flex: 1,
         color: 'transparent',
         backgroundColor: 'transparent',
+        // $FlowExpectedError
         lineHeight: null,
     },
     textInputDefault: {
@@ -129,7 +129,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         return (
             <TextInput
                 ref={(component) => { this.textInput = component; }}
-                value={value}
+                value={`${value}`}
                 placeholder={placeholder}
                 placeholderTextColor={UIColor.textTertiary()}
                 editable={editable}

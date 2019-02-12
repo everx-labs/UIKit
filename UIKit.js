@@ -18,6 +18,7 @@ import UIDevice from './helpers/UIDevice';
 import UIDialogController from './controllers/UIDialogController';
 import UIDot from './components/design/UIDot';
 import UIDropdownAlert from './components/popup/UIDropdownAlert';
+import UIEventHelper from './helpers/UIEventHelper';
 import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
@@ -55,6 +56,8 @@ import UITextInput from './components/text/UITextInput';
 import UIToastMessage from './components/notifications/UIToastMessage';
 import UIToggle from './components/buttons/UIToggle';
 import UITopBar from './components/gram.scan/UITopBar';
+import UITooltip from './components/notifications/UITooltip';
+import UILayoutManager from './helpers/UILayoutManager';
 
 // Types
 import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';
@@ -84,6 +87,7 @@ export {
     UIDialogController,
     UIDot,
     UIDropdownAlert,
+    UIEventHelper,
     UIFlashMessage,
     UIFont,
     UITextStyle,
@@ -121,6 +125,8 @@ export {
     UIToastMessage,
     UITopBar,
     UIToggle,
+    UITooltip,
+    UILayoutManager,
 };
 
 export type {

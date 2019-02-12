@@ -39,11 +39,12 @@ const styles = StyleSheet.create({
     },
 });
 
+type Placement = 'center' | 'flex-start';
 
 type ToastObject = {
     message: string,
     type?: string,
-    placement?: string,
+    placement?: Placement,
     autoHide?: boolean,
     action?: NoticeAction,
 }
@@ -70,7 +71,7 @@ export default class UIToastMessage {
     // Internals
     static message: string;
     static type: string;
-    static placement: string;
+    static placement: Placement;
     static action: NoticeAction;
 
     // Actions
