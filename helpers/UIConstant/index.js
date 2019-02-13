@@ -77,6 +77,9 @@ const UI_INFINITE_SCROLL_TRESHOLD = 0.25; // quarter of the visible page (before
 
 const UI_PROFILE_PHOTO_SIZE = 72;
 
+const MAX_DECIMAL_DIGITS = 8;
+const MAX_NUMBER_DIGITS = 9;
+
 const MAX_TEXT_LINE_LENGTH = 200;
 
 const INITIAL_RENDER_DATA_COUNT = 12; // good for displaying a tables of 1,2,3,4 columns
@@ -363,4 +366,14 @@ export default class UIConstant {
     static initialRenderDataCount() {
         return INITIAL_RENDER_DATA_COUNT;
     }
+
+    static maxNumberDigits() {
+        return MAX_NUMBER_DIGITS;
+    }
+
+    static maxDecimalDigits() {
+        return MAX_DECIMAL_DIGITS;
+    }
+
+    static max
 }
