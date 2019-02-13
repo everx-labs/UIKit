@@ -12,6 +12,9 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 
+const textInputFont = StyleSheet.flatten(UITextStyle.primaryBodyRegular) || {};
+delete textInputFont.lineHeight;
+
 const styles = StyleSheet.create({
     container: {
         //
@@ -24,16 +27,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textInput: {
+        ...textInputFont,
         zIndex: 1,
         flex: 1,
         color: 'transparent',
         backgroundColor: 'transparent',
-        // $FlowExpectedError
-        lineHeight: null,
     },
     textInputDefault: {
+        ...textInputFont,
         flex: 1,
-        lineHeight: null,
     },
     textInputView: {
         zIndex: -1,
@@ -125,7 +127,9 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
         const position = !value || value === 0 ? { position: 'relative' } : null;
-        const currentStyle = complementaryValue.length > 0 ? styles.textInput : styles.textInputDefault;
+        const currentStyle = complementaryValue.length > 0
+            ? styles.textInput
+            : styles.textInputDefault;
         return (
             <TextInput
                 ref={(component) => { this.textInput = component; }}
@@ -144,10 +148,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
                 onBlur={onBlur}
                 onChangeText={text => onChangeText(text)}
                 onSubmitEditing={onSubmitEditing}
-                style={[
-                    UITextStyle.primaryBodyRegular,
-                    currentStyle,
-                    position]}
+                style={[currentStyle, position]}
                 selectionColor={UIColor.primary()}
                 {...maxLengthProp}
             />
@@ -259,7 +260,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
 
     render() {
         const { rightButton } = this.props;
-        const flex = rightButton.length > 0 ? { flex: 1 } : null;
+        const flex = rightButton && rightButton.length > 0 ? { flex: 1 } : null;
         return (
             <View style={[styles.container, this.props.containerStyle, flex]}>
                 {this.renderFloatingTitle()}
