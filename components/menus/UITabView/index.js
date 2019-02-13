@@ -2,7 +2,7 @@
 import type { ComponentType, Node } from 'react';
 import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
-import type { NavigationState, Scene, SceneRendererProps } from 'react-native-tab-view';
+// import type { NavigationState, Scene, SceneRendererProps } from 'react-native-tab-view';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -19,10 +19,23 @@ type PageCollection = {
     },
 };
 
+type RouteType = {
+    key: string,
+    title: string,
+    testID?: string,
+}
+
+type SceneProps = any; /* & SceneRendererProps<*> & Scene<*> */
+
 type UITabViewProps = {
     tabWidth?: number,
     pages: PageCollection,
 };
+
+type UITypeViewState = {
+    index: number,
+    routes: RouteType[],
+}; // & NavigationState<*>;
 
 const styles = StyleSheet.create({
     icon: {
@@ -36,7 +49,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UITabView extends UIComponent<UITabViewProps, NavigationState<*>> {
+export default class UITabView extends UIComponent<UITabViewProps, UITypeViewState> {
     static defaultProps = {
         tabWidth: 80,
     };
@@ -101,7 +114,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
         inactiveTintColor: string,
         labelStyle: TextStyleProp,
     };
-    renderScene: (props: SceneRendererProps<*> & Scene<*>) => Node;
+    renderScene: (props: SceneProps) => Node;
 
     // Render
     // don't know why Scene<string> doesn't work
@@ -122,7 +135,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
             </Animated.Text>);
     }
 
-    renderHeader(props: SceneRendererProps<*>) {
+    renderHeader = (props: any) => {
         return (
             <TabBar
                 {...props}
@@ -141,7 +154,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
             <TabView
                 navigationState={navigationState}
                 renderScene={this.renderScene}
-                renderTabBar={(props: SceneRendererProps<*>) => this.renderHeader(props)}
+                renderTabBar={this.renderHeader}
                 onIndexChange={index => this.onIndexChange(index)}
             />
         );
