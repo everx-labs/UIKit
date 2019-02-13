@@ -101,6 +101,18 @@ export default class UIFunction {
         return newCaretPos;
     }
 
+    // Returns a string that represents the formatted number using the locale configuration.
+    static amountToLocale(
+        number,
+        locale,
+        options = {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 8,
+        },
+    ) {
+        return Number(number).toLocaleString(locale, options);
+    }
+
     // Used for numeric money representation as well may be used for exporting digits from phones
     static numericText(text, currency = {
         code: 'USD',
