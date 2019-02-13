@@ -2,7 +2,7 @@
 import type { ComponentType, Node } from 'react';
 import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
-// import type { NavigationState, Scene, SceneRendererProps } from 'react-native-tab-view';
+import type { NavigationState, Scene, SceneRendererProps } from 'react-native-tab-view';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -25,7 +25,9 @@ type RouteType = {
     testID?: string,
 }
 
-type SceneProps = any; /* & SceneRendererProps<*> & Scene<*> */
+type SceneProps = SceneRendererProps<*> & Scene<*>;
+
+type TabBarProps = SceneRendererProps<*>;
 
 type UITabViewProps = {
     tabWidth?: number,
@@ -35,7 +37,7 @@ type UITabViewProps = {
 type UITypeViewState = {
     index: number,
     routes: RouteType[],
-}; // & NavigationState<*>;
+} & NavigationState<*>;
 
 const styles = StyleSheet.create({
     icon: {
@@ -135,7 +137,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
             </Animated.Text>);
     }
 
-    renderHeader = (props: any) => {
+    renderTabBar = (props: TabBarProps) => {
         return (
             <TabBar
                 {...props}
@@ -154,7 +156,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
             <TabView
                 navigationState={navigationState}
                 renderScene={this.renderScene}
-                renderTabBar={this.renderHeader}
+                renderTabBar={this.renderTabBar}
                 onIndexChange={index => this.onIndexChange(index)}
             />
         );
