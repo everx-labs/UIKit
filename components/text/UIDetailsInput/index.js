@@ -28,14 +28,12 @@ const styles = StyleSheet.create({
     },
     textInput: {
         ...textInputFont,
-        zIndex: 1,
         flex: 1,
-        color: 'transparent',
         backgroundColor: 'transparent',
     },
-    textInputDefault: {
-        ...textInputFont,
-        flex: 1,
+    complementaryInput: {
+        zIndex: 1,
+        color: 'transparent',
     },
     textInputView: {
         zIndex: -1,
@@ -48,29 +46,32 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+    accessibilityLabel?: string,
+    autoCapitalize?: AutoCapitalize,
+    autoFocus?: boolean,
     containerStyle?: StylePropType,
-    floatingTitle?: boolean,
-    value: string,
     comment?: string,
-    placeholder?: string,
+    commentColor?: string,
+    complementaryValue: string,
+    editable?: boolean,
+    floatingTitle?: boolean,
+    hideBottomLine?: boolean,
+    keyboardType?: KeyboardType,
     maxLength?: number | null,
     maxLines?: number,
-    showSymbolsLeft?: boolean,
-    token?: string | null,
-    hideBottomLine?: boolean,
-    autoCapitalize?: AutoCapitalize,
-    keyboardType?: KeyboardType,
-    returnKeyType?: ReturnKeyType | null,
-    editable?: boolean,
-    commentStyle?: StylePropType,
-    rightButton?: string,
-    rightButtonDisabled: boolean,
-    complementaryValue: string,
     onFocus?: () => void,
     onBlur?: () => void,
     onChangeText: (text: string) => void,
     onSubmitEditing?: () => void,
     onRightButtonPress?: () => void,
+    placeholder?: string,
+    returnKeyType?: ReturnKeyType | null,
+    rightButton?: string,
+    rightButtonDisabled: boolean,
+    secureTextEntry?: boolean,
+    showSymbolsLeft?: boolean,
+    token?: string | null,
+    value: string,
 };
 type State = {};
 
@@ -99,7 +100,6 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
     renderFloatingTitle() {
         const { floatingTitle, placeholder, value } = this.props;
         const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
-
         return (
             <Text style={UITextStyle.tertiaryTinyRegular}>
                 {text}
@@ -109,48 +109,55 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
 
     renderTextInput() {
         const {
-            value,
-            placeholder,
+            accessibilityLabel,
+            autoCapitalize,
+            autoFocus,
+            complementaryValue,
+            editable,
+            keyboardType,
+            maxLength,
+            maxLines,
             onFocus,
             onBlur,
             onChangeText,
             onSubmitEditing,
-            maxLength,
-            editable,
-            autoCapitalize,
-            keyboardType,
+            placeholder,
             returnKeyType,
-            maxLines,
-            complementaryValue,
+            secureTextEntry,
+            value,
         } = this.props;
-        const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
         const position = !value || value === 0 ? { position: 'relative' } : null;
-        const currentStyle = complementaryValue.length > 0
-            ? styles.textInput
-            : styles.textInputDefault;
+        const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const complementaryStyle = complementaryValue.length > 0
+            ? styles.complementaryInput
+            : null;
         return (
             <TextInput
-                ref={(component) => { this.textInput = component; }}
-                value={`${value}`}
-                placeholder={placeholder}
-                placeholderTextColor={UIColor.textTertiary()}
-                editable={editable}
-                autoCorrect={false}
-                underlineColorAndroid="transparent"
+                {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
+                autoCorrect={false}
+                autoFocus={autoFocus}
+                editable={editable}
                 keyboardType={keyboardType}
-                {...returnKeyTypeProp}
+                {...maxLengthProp}
                 multiline={multiline}
                 numberOfLines={maxLines}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={text => onChangeText(text)}
                 onSubmitEditing={onSubmitEditing}
-                style={[currentStyle, position]}
+                placeholder={placeholder}
+                placeholderTextColor={UIColor.textTertiary()}
+                ref={(component) => { this.textInput = component; }}
+                {...returnKeyTypeProp}
+                style={[styles.textInput, complementaryStyle, position]}
                 selectionColor={UIColor.primary()}
-                {...maxLengthProp}
+                underlineColorAndroid="transparent"
+                secureTextEntry={secureTextEntry}
+                value={`${value}`}
             />
         );
     }
@@ -226,10 +233,11 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
     }
 
     renderTextView() {
-        const { hideBottomLine } = this.props;
-        const bottomLine = hideBottomLine ? {} : UIStyle.borderBottom;
+        const { hideBottomLine, commentColor } = this.props;
+        const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
+        const bottomLineColor = commentColor ? { borderBottomColor: commentColor } : null;
         return (
-            <View style={[styles.textView, bottomLine]}>
+            <View style={[styles.textView, bottomLine, bottomLineColor]}>
                 {this.renderTextInput()}
                 {this.renderComplementaryText()}
                 {this.renderCounter()}
@@ -240,17 +248,18 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
     }
 
     renderComment() {
-        const { comment, commentStyle } = this.props;
+        const { comment, commentColor } = this.props;
         if (!comment) {
             return null;
         }
+        const color = commentColor ? { color: commentColor } : null;
         return (
             <Text
                 style={[
                     UITextStyle.secondaryCaptionRegular,
                     UIStyle.marginTopTiny,
                     UIStyle.marginBottomSmall,
-                    commentStyle,
+                    color,
                 ]}
             >
                 {comment}
@@ -274,27 +283,28 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
 }
 
 UIDetailsInput.defaultProps = {
+    autoCapitalize: 'sentences',
+    autoFocus: false,
     containerStyle: {},
+    complementaryValue: '',
     floatingTitle: true,
-    value: '',
     comment: '',
-    placeholder: UILocalized.Details,
+    editable: true,
+    hideBottomLine: false,
+    keyboardType: 'default',
     maxLength: null,
     maxLines: 1,
-    showSymbolsLeft: false,
-    token: null,
-    hideBottomLine: false,
-    autoCapitalize: 'sentences',
-    keyboardType: 'default',
-    returnKeyType: null,
-    editable: true,
-    commentStyle: {},
-    rightButton: '',
-    rightButtonDisabled: false,
-    complementaryValue: '',
     onFocus: () => {},
     onBlur: () => {},
     onChangeText: () => {},
     onSubmitEditing: () => {},
     onRightButtonPress: () => {},
+    placeholder: UILocalized.Details,
+    returnKeyType: null,
+    rightButton: '',
+    rightButtonDisabled: false,
+    secureTextEntry: false,
+    showSymbolsLeft: false,
+    token: null,
+    value: '',
 };
