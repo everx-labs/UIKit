@@ -177,14 +177,15 @@ export default class UIModalController
 
         let dialogStyle = [styles.dialogOverflow, styles.dialogBorders];
 
-        let enlargeHeightForBounce = true;
-        if (Platform.OS === 'web'
-            && !UIDevice.isMobile() && !this.fullscreen) {
+        // Need to enlarge the controller in order to hide a "bouncing" bottom border.
+        // It works for PopupDialog ONLY in case we have some space above the dialog!
+        let enlargeHeightForBounce = navBarHeight > UIConstant.coverBounceOffset();
+        if (!this.fullscreen && (UIDevice.isDesktop() || UIDevice.isTablet())) {
             width = Math.min(width, fullScreenDialogWidth);
             height = Math.min(height, fullScreenDialogHeight);
             if (width === fullScreenDialogWidth && height === fullScreenDialogHeight) {
                 dialogStyle = styles.dialogOverflow;
-                enlargeHeightForBounce = false;
+                enlargeHeightForBounce = false; // no need to enlarge centered modal controller
             }
         }
 
