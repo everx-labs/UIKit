@@ -32,7 +32,7 @@ const pathAndParamsForScreens: {
     [string]: PathAndParams,
 } = {};
 
-type ContentInset = {
+export type ContentInset = {
     left: number,
     right: number,
     top: number,
