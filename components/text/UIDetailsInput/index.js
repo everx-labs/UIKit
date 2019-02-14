@@ -286,7 +286,6 @@ UIDetailsInput.defaultProps = {
     autoCapitalize: 'sentences',
     autoFocus: false,
     containerStyle: {},
-    commentColor: null,
     complementaryValue: '',
     floatingTitle: true,
     comment: '',
