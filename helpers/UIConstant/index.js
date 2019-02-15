@@ -18,6 +18,7 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
+const UI_GIANT_CONTENT_OFFSET = 80;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 6;
@@ -155,6 +156,10 @@ export default class UIConstant {
 
     static hugeContentOffset() {
         return UI_HUGE_CONTENT_OFFSET;
+    }
+
+    static giantContentOffset() {
+        return UI_GIANT_CONTENT_OFFSET;
     }
 
     static horizontalContentOffset() {

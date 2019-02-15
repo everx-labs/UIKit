@@ -14,6 +14,7 @@ import UIController from './controllers/UIController';
 import UIDetailsInput from './components/text/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
 import UIDetailsView from './components/text/UIDetailsView';
+import UIDetailsTable from './components/gram.scan/UIDetailsTable';
 import UIDevice from './helpers/UIDevice';
 import UIDialogController from './controllers/UIDialogController';
 import UIDot from './components/design/UIDot';
@@ -50,6 +51,7 @@ import UIShareManager from './helpers/UIShareManager';
 import UISpinnerOverlay from './components/UISpinnerOverlay';
 import UISplitViewController from './controllers/UISplitViewController';
 import UIStyle from './helpers/UIStyle';
+import UISubtitle from './components/gram.scan/UISubtitle';
 import UITabView from './components/menus/UITabView';
 import UITextButton from './components/buttons/UITextButton';
 import UITextInput from './components/text/UITextInput';
@@ -64,7 +66,6 @@ import type { CreateNavigationOptions, ReactNavigation } from './components/navi
 import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
 import type { NavigationMenuList } from './components/gram.scan/UITopBar';
-
 
 export {
     UIActionSheet,
@@ -83,6 +84,7 @@ export {
     UIDetailsInput,
     UIDetailsToggle,
     UIDetailsView,
+    UIDetailsTable,
     UIDevice,
     UIDialogController,
     UIDot,
@@ -119,6 +121,7 @@ export {
     UISpinnerOverlay,
     UISplitViewController,
     UIStyle,
+    UISubtitle,
     UITabView,
     UITextButton,
     UITextInput,

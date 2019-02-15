@@ -40,6 +40,9 @@ const UIStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
+    alignCenter: {
+        alignItems: 'center',
+    },
 
     // offsets
     marginTopTiny: {

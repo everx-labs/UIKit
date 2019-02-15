@@ -17,8 +17,9 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
     static PresetNames = {
         SecondaryImageTopRight: 'SecondaryImageTopRight',
         SecondaryImageBottomLeft: 'SecondaryImageBottomLeft',
-        SecondaryImageCenterRightNoBottomBar: 'SecondaryImageCenterRightNoBottomBar',
+        SecondaryImageCenterRight: 'SecondaryImageCenterRight',
         SecondaryImageBottomRight: 'SecondaryImageBottomRight',
+        Primary: 'Primary',
     };
 
     static Presets = {
@@ -27,23 +28,22 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
                 backgroundColor: UIColor.fa(),
                 alignItems: 'flex-end',
             },
-            image: '',
+            image: 'image',
         },
         [UIBackgroundView.PresetNames.SecondaryImageBottomLeft]: {
             backgroundStyle: {
                 backgroundColor: UIColor.fa(),
                 justifyContent: 'flex-end',
             },
-            image: '',
+            image: 'image',
         },
-        [UIBackgroundView.PresetNames.SecondaryImageCenterRightNoBottomBar]: {
+        [UIBackgroundView.PresetNames.SecondaryImageCenterRight]: {
             backgroundStyle: {
                 backgroundColor: UIColor.fa(),
                 alignItems: 'flex-end',
                 justifyContent: 'center',
             },
-            bottomBarDisabled: true,
-            image: '',
+            image: 'image',
         },
         [UIBackgroundView.PresetNames.SecondaryImageBottomRight]: {
             backgroundStyle: {
@@ -51,24 +51,26 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
                 alignItems: 'flex-end',
                 justifyContent: 'flex-end',
             },
-            image: '',
+            image: 'image',
+        },
+        [UIBackgroundView.PresetNames.Primary]: {
+            backgroundStyle: {
+                backgroundColor: UIColor.backgroundPrimary(),
+            },
+            image: null,
         },
     };
-
-    renderBottomBar(bottomBarDisabled: boolean) {
-        return !bottomBarDisabled ? <UIBottomBar /> : null;
-    }
 
     render() {
         const preset = UIBackgroundView.Presets[this.props.presetName];
         if (!preset) {
             return null;
         }
-        const { backgroundStyle, bottomBarDisabled } = preset;
+        const { backgroundStyle, image } = preset;
+        const imageView = image ? <View style={UIStyle.backgroundImageContainer} /> : null;
         return (
             <View style={[UIStyle.absoluteFillObject, { ...backgroundStyle }]}>
-                <View style={UIStyle.backgroundImageContainer} />
-                {this.renderBottomBar(bottomBarDisabled)}
+                {imageView}
             </View>
         );
     }

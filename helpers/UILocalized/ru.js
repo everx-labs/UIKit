@@ -2,7 +2,7 @@ const ru = {
     // TON
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
-    CopyRight: '© 2018–2019 Команда TON.Labs. Сделаем Блокчейн Великим снова.',
+    CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
 
     // Terms
     TermsText: 'Отправляя это предложение, Вы подтверждаете, что Вы ознакомились и согласны с политикой конфиденциальности и условиями использования TON Wallet, которые можно найти',
@@ -368,6 +368,7 @@ const ru = {
     Date: 'Дата',
     Balance: 'Баланс',
     Gram: 'ГРАМ',
+    gram: 'Gram',
     Send: 'Отправить',
     UserHasNoWallet: 'У этого пользователя кошелёк ещё не создан, но мы вышлем ему ссылку, чтобы он смог его создать и получить данный перевод.',
     TransactionFrom: 'You have received a transaction from',
@@ -497,7 +498,7 @@ const ru = {
     LimitRemoveSuccess: 'Лимит был удален',
 
     // Gram.Scan
-    EnterHashTransactionAccountOrBlock: 'Введите Хэш транзакции, аккаунта или блока',
+    EnterHashTransactionAccountOrBlock: 'Enter Hash transaction, account or block',
 };
 
 export default ru;

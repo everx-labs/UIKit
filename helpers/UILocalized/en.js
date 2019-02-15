@@ -369,6 +369,7 @@ const en = {
     Date: 'Date',
     Balance: 'Balance',
     Gram: 'GRAM',
+    gram: 'Gram',
     Send: 'Send',
     UserHasNoWallet: 'The user does not have a wallet yet, but we will send a link to create one in order to receive this transaction.',
     TransactionFrom: 'You have received a transaction from',

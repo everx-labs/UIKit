@@ -190,6 +190,10 @@ const UITextStyle = StyleSheet.create({
         ...success,
         ...UIFont.captionRegular(),
     },
+    successSmallRegular: {
+        ...success,
+        ...UIFont.smallRegular(),
+    },
 
     // [Text tertiary]
     // Body - fontSize: 18, lineHeight: 24
