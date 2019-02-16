@@ -18,7 +18,7 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
-const UI_GIANT_CONTENT_OFFSET = 80;
+const UI_GIANT_CONTENT_OFFSET = 136;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 6;
@@ -61,6 +61,7 @@ const UI_ELASTIC_WIDTH_MAX = 1280;
 const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
 const BACKGROUND_IMAGE_CONTAINER_HEIGHT = 594;
 
+const UI_TAB_WIDTH = 96;
 const UI_PASSWORD_PROMPT_WIDTH = 416;
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
@@ -298,6 +299,10 @@ export default class UIConstant {
         return BACKGROUND_IMAGE_CONTAINER_HEIGHT;
     }
 
+    static tabWidth() {
+        return UI_TAB_WIDTH;
+    }
+
     static passwordPromptWidth() {
         return UI_PASSWORD_PROMPT_WIDTH;
     }
@@ -380,5 +385,5 @@ export default class UIConstant {
         return MAX_DECIMAL_DIGITS;
     }
 
-    static max
+    static max;
 }

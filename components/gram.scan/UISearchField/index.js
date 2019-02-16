@@ -12,6 +12,8 @@ import searchIcon from '../../../assets/ico-search/ico-search.png';
 
 type Props = {
     onChangeSearchExpression: (string) => void,
+    onFocus: () => void,
+    onBlur: () => void,
 };
 type State = {
     searchExpression: string,
@@ -57,6 +59,8 @@ export default class UISearchField extends UIComponent<Props, State> {
                         value={this.getSearchExpression()}
                         placeholder={UILocalized.EnterHashTransactionAccountOrBlock}
                         onChangeText={newValue => this.setSearchExpression(newValue)}
+                        onFocus={this.props.onFocus}
+                        onBlur={this.props.onBlur}
                     />
                 </View>
             </View>
@@ -68,5 +72,7 @@ export default class UISearchField extends UIComponent<Props, State> {
 
 UISearchField.defaultProps = {
     onChangeSearchExpression: () => {},
+    onFocus: () => {},
+    onBlur: () => {},
 };
 

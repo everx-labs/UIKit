@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UIBottomBar from '../../gram.scan/UIBottomBar';
 
 type Props = {
     presetName: string,
@@ -15,6 +14,7 @@ type State = {};
 
 export default class UIBackgroundView extends UIComponent<Props, State> {
     static PresetNames = {
+        Secondary: 'Secondary',
         SecondaryImageTopRight: 'SecondaryImageTopRight',
         SecondaryImageBottomLeft: 'SecondaryImageBottomLeft',
         SecondaryImageCenterRight: 'SecondaryImageCenterRight',
@@ -23,6 +23,12 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
     };
 
     static Presets = {
+        [UIBackgroundView.PresetNames.Secondary]: {
+            backgroundStyle: {
+                backgroundColor: UIColor.fa(),
+            },
+            image: null,
+        },
         [UIBackgroundView.PresetNames.SecondaryImageTopRight]: {
             backgroundStyle: {
                 backgroundColor: UIColor.fa(),

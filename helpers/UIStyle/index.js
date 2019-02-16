@@ -190,6 +190,10 @@ const UIStyle = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    flexJustifyEndContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
     centerContainer: {
         flex: 1,
         flexDirection: 'row',

@@ -50,6 +50,8 @@ type Props = {
     searchExpression: string,
     onChangeSearchExpression: ((string) => void) | null,
     onPressShowMenu: () => void,
+    onFocus: () => void,
+    onBlur: () => void,
 };
 
 type State = {
@@ -180,7 +182,9 @@ export default class UITopBar extends UIComponent<Props, State> {
     }
 
     renderSearchField() {
-        const { searchExpression, onChangeSearchExpression } = this.props;
+        const {
+            searchExpression, onChangeSearchExpression, onFocus, onBlur,
+        } = this.props;
         if (!onChangeSearchExpression) {
             return null;
         }
@@ -189,6 +193,8 @@ export default class UITopBar extends UIComponent<Props, State> {
                 <UISearchField
                     searchExpression={searchExpression}
                     onChangeSearchExpression={onChangeSearchExpression}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                 />
             </View>
         );
@@ -216,5 +222,7 @@ UITopBar.defaultProps = {
     menuItems: [],
     searchExpression: '',
     onChangeSearchExpression: null,
+    onFocus: () => {},
+    onBlur: () => {},
     onPressShowMenu: () => {},
 };
