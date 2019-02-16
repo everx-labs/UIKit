@@ -66,6 +66,7 @@ import type { CreateNavigationOptions, ReactNavigation } from './components/navi
 import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
 import type { NavigationMenuList } from './components/gram.scan/UITopBar';
+import type { ContentInset } from './controllers/UIController';
 
 export {
     UIActionSheet,
@@ -139,4 +140,5 @@ export type {
     PointerEvents,
     PositionObject,
     ReactNavigation,
+    ContentInset,
 };

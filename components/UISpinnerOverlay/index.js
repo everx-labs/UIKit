@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        elevation: Number.MAX_VALUE, // Overlay all the views which use elevation property > 0
+        elevation: Number.MAX_SAFE_INTEGER, // Overlay all views which use elevation property > 0
     },
     background: {
         position: 'absolute',
@@ -129,7 +129,7 @@ export default class UISpinnerOverlay extends Component {
 
     // Getters
     getVisible() {
-        return this.state.visible; 
+        return this.state.visible;
     }
 
     // Processing
@@ -229,7 +229,7 @@ export default class UISpinnerOverlay extends Component {
 
 UISpinnerOverlay.defaultProps = {
     visible: false,
-    modal: false, // true,
+    modal: false,
     titleContent: '',
     textContent: '',
     color: 'white',

@@ -62,6 +62,8 @@ const styles = StyleSheet.create({
 export default class UIModalController
     extends UIController<ModalControllerProps, ModalControllerState> {
     fullscreen: boolean;
+    dismissable: boolean;
+    modal: boolean;
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
@@ -69,6 +71,8 @@ export default class UIModalController
     constructor(props: ModalControllerProps) {
         super(props);
         this.fullscreen = false;
+        this.dismissable = true;
+        this.modal = true;
         this.dialog = null;
         this.onCancel = null;
 
@@ -160,7 +164,9 @@ export default class UIModalController
         }
 
         const statusBarHeight = UIDevice.statusBarHeight();
-        const navBarHeight = Platform.OS === 'web' ? 0 : UIDevice.navigationBarHeight();
+        const navBarHeight = Platform.OS === 'web' || !this.modal
+            ? 0
+            : UIDevice.navigationBarHeight(); // navigation bar height above the modal controller
 
         const containerStyle = {
             top: -1, // fix for 1px top offset
@@ -171,22 +177,24 @@ export default class UIModalController
 
         let dialogStyle = [styles.dialogOverflow, styles.dialogBorders];
 
-        let enlargeHeightForBounce = true;
-        if (Platform.OS === 'web'
-            && !UIDevice.isMobile() && !this.fullscreen) {
+        // Need to enlarge the controller in order to hide a "bouncing" bottom border.
+        // It works for PopupDialog ONLY in case we have some space above the dialog!
+        let enlargeHeightForBounce = navBarHeight > UIConstant.coverBounceOffset();
+        if (!this.fullscreen && (UIDevice.isDesktop() || UIDevice.isTablet())) {
             width = Math.min(width, fullScreenDialogWidth);
             height = Math.min(height, fullScreenDialogHeight);
             if (width === fullScreenDialogWidth && height === fullScreenDialogHeight) {
                 dialogStyle = styles.dialogOverflow;
-                enlargeHeightForBounce = false;
+                enlargeHeightForBounce = false; // no need to enlarge centered modal controller
             }
         }
 
         height -= statusBarHeight + navBarHeight;
 
-        const contentHeight = height
-            - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss())
-            - this.getSafeAreaInsets().bottom;
+        let contentHeight = height - this.getSafeAreaInsets().bottom;
+        if (this.dismissable) {
+            contentHeight -= UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
+        }
 
         if (enlargeHeightForBounce) {
             height += UIConstant.coverBounceOffset();
@@ -280,6 +288,21 @@ export default class UIModalController
     }
 
     // Render
+    getModalNavigationBar() {
+        if (!this.dismissable) {
+            return null;
+        }
+        return (<UIModalNavigationBar
+            swipeToDismiss={this.shouldSwipeToDismiss()}
+            onMove={Animated.event([
+                null,
+                { dy: (this.state.dy || new Animated.Value(0)) },
+            ])}
+            onRelease={dy => this.onReleaseSwipe(dy)}
+            onCancel={() => this.onCancelPress()}
+        />);
+    }
+
     renderDialog() {
         const {
             width, height, contentHeight, containerStyle, dialogStyle,
@@ -294,16 +317,7 @@ export default class UIModalController
                 containerStyle={containerStyle}
                 dialogStyle={dialogStyle}
                 dialogAnimation={slideAnimation}
-                dialogTitle={
-                    <UIModalNavigationBar
-                        swipeToDismiss={this.shouldSwipeToDismiss()}
-                        onMove={Animated.event([
-                            null,
-                            { dy: (this.state.dy || new Animated.Value(0)) },
-                        ])}
-                        onRelease={dy => this.onReleaseSwipe(dy)}
-                        onCancel={() => this.onCancelPress()}
-                    />}
+                dialogTitle={this.getModalNavigationBar()}
                 dismissOnTouchOutside={false}
                 onDismissed={() => this.onDidHide()}
                 onShown={() => this.onDidAppear()}
@@ -348,7 +362,7 @@ export default class UIModalController
         if (!this.state.controllerVisible) {
             return null;
         }
-        if (Platform.OS === 'web') {
+        if (Platform.OS === 'web' || !this.modal) {
             return this.renderContainer();
         }
         return (
