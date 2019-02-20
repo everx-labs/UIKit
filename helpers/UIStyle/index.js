@@ -229,6 +229,10 @@ const UIStyle = StyleSheet.create({
         width: '50%',
         paddingHorizontal: UIConstant.contentOffset(),
     },
+    fullWidthContainer: {
+        width: '100%',
+        paddingHorizontal: UIConstant.contentOffset(),
+    },
 
     // navigator
     navigatorHeader: {

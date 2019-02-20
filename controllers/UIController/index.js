@@ -362,7 +362,7 @@ export default class UIController<Props, State>
         />);
     }
 
-    render(): ?Node {
+    render(): React$Node {
         return (
             <SafeAreaView style={UIStyle.screenBackground}>
                 {this.renderSafely()}

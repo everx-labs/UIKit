@@ -67,6 +67,7 @@ import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
 import type { NavigationMenuList } from './components/gram.scan/UITopBar';
 import type { ContentInset } from './controllers/UIController';
+import type { DetailsList } from './components/gram.scan/UIDetailsTable';
 
 export {
     UIActionSheet,
@@ -141,4 +142,5 @@ export type {
     PositionObject,
     ReactNavigation,
     ContentInset,
+    DetailsList,
 };

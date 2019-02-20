@@ -1,10 +1,16 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
+
+const styles = StyleSheet.create({
+    container: {
+        height: UIConstant.bigCellHeight(),
+    },
+});
 
 class UISubtitle extends UIComponent {
     render() {
@@ -12,7 +18,7 @@ class UISubtitle extends UIComponent {
             <View style={[
                 UIStyle.centerLeftContainer,
                 UIStyle.marginTopHuge,
-                { height: UIConstant.bigCellHeight() },
+                styles.container,
             ]}
             >
                 <Text style={UITextStyle.primaryAccentBold}>

@@ -18,12 +18,16 @@ const styles = StyleSheet.create({
     detailsText: {
         marginRight: UIConstant.contentOffset(),
     },
+    flexGrow1: {
+        flexGrow: 1,
+    },
+    flexGrow0: {
+        flexGrow: 0,
+    },
 });
 
 class UITextButton extends UIComponent {
     // Render
-    textSecondary;
-
     renderTitle() {
         const {
             title, textStyle, details, disabled,
@@ -31,8 +35,9 @@ class UITextButton extends UIComponent {
         const defaultTitleStyle = disabled
             ? UITextStyle.secondarySmallMedium
             : UITextStyle.actionSmallMedium;
+        const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
-            <Text style={[defaultTitleStyle, textStyle, { flexGrow: details ? 1 : 0 }]}>
+            <Text style={[defaultTitleStyle, textStyle, flexGrow]}>
                 {title}
             </Text>
         );

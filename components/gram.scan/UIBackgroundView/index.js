@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
@@ -22,53 +22,76 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         Primary: 'Primary',
     };
 
-    static Presets = {
+    static PresetStyles = StyleSheet.create({
         [UIBackgroundView.PresetNames.Secondary]: {
-            backgroundStyle: {
-                backgroundColor: UIColor.fa(),
-            },
-            image: null,
+            backgroundColor: UIColor.fa(),
         },
         [UIBackgroundView.PresetNames.SecondaryImageTopRight]: {
-            backgroundStyle: {
-                backgroundColor: UIColor.fa(),
-                alignItems: 'flex-end',
-            },
-            image: 'image',
+            backgroundColor: UIColor.fa(),
+            alignItems: 'flex-end',
         },
         [UIBackgroundView.PresetNames.SecondaryImageBottomLeft]: {
-            backgroundStyle: {
-                backgroundColor: UIColor.fa(),
-                justifyContent: 'flex-end',
-            },
-            image: 'image',
+            backgroundColor: UIColor.fa(),
+            justifyContent: 'flex-end',
         },
         [UIBackgroundView.PresetNames.SecondaryImageCenterRight]: {
-            backgroundStyle: {
-                backgroundColor: UIColor.fa(),
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-            },
-            image: 'image',
+            backgroundColor: UIColor.fa(),
+            alignItems: 'flex-end',
+            justifyContent: 'center',
         },
         [UIBackgroundView.PresetNames.SecondaryImageBottomRight]: {
-            backgroundStyle: {
-                backgroundColor: UIColor.fa(),
-                alignItems: 'flex-end',
-                justifyContent: 'flex-end',
-            },
-            image: 'image',
+            backgroundColor: UIColor.fa(),
+            alignItems: 'flex-end',
+            justifyContent: 'flex-end',
         },
         [UIBackgroundView.PresetNames.Primary]: {
-            backgroundStyle: {
-                backgroundColor: UIColor.backgroundPrimary(),
-            },
-            image: null,
+            backgroundColor: UIColor.backgroundPrimary(),
         },
-    };
+    });
+
+    static getPreset(presetName) {
+        const {
+            Secondary,
+            SecondaryImageTopRight,
+            SecondaryImageBottomLeft,
+            SecondaryImageCenterRight,
+            SecondaryImageBottomRight,
+            Primary,
+        } = UIBackgroundView.PresetNames;
+        const { PresetStyles } = UIBackgroundView;
+
+        const presets = {
+            [Secondary]: {
+                backgroundStyle: PresetStyles[Secondary],
+                image: null,
+            },
+            [SecondaryImageTopRight]: {
+                backgroundStyle: PresetStyles[SecondaryImageTopRight],
+                image: 'image',
+            },
+            [SecondaryImageBottomLeft]: {
+                backgroundStyle: PresetStyles[SecondaryImageBottomLeft],
+                image: 'image',
+            },
+            [SecondaryImageCenterRight]: {
+                backgroundStyle: PresetStyles[SecondaryImageCenterRight],
+                image: 'image',
+            },
+            [SecondaryImageBottomRight]: {
+                backgroundStyle: PresetStyles[SecondaryImageBottomRight],
+                image: 'image',
+            },
+            [Primary]: {
+                backgroundStyle: PresetStyles[Primary],
+                image: null,
+            },
+        };
+
+        return presets[presetName];
+    }
 
     render() {
-        const preset = UIBackgroundView.Presets[this.props.presetName];
+        const preset = UIBackgroundView.getPreset(this.props.presetName);
         if (!preset) {
             return null;
         }

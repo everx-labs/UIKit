@@ -55,6 +55,7 @@ const UI_INITIAL_STYLE_FOR_ALL = Platform.OS === 'web' ? { all: 'initial' } : nu
 const UI_ELASTIC_WIDTH_NARROW = 80;
 const UI_ELASTIC_WIDTH_REGULAR = 304;
 const UI_ELASTIC_WIDTH_MEDIUM = 592;
+const UI_ELASTIC_WIDTH_BROAD = 768;
 const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 
@@ -283,6 +284,10 @@ export default class UIConstant {
         return UI_ELASTIC_WIDTH_MEDIUM;
     }
 
+    static elasticWidthBroad() {
+        return UI_ELASTIC_WIDTH_BROAD;
+    }
+
     static elasticWidthWide() {
         return UI_ELASTIC_WIDTH_WIDE;
     }
@@ -384,6 +389,4 @@ export default class UIConstant {
     static maxDecimalDigits() {
         return MAX_DECIMAL_DIGITS;
     }
-
-    static max;
 }
