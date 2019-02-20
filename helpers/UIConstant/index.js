@@ -34,6 +34,7 @@ const UI_MEDIUM_CELL_HEIGHT = 40;
 const UI_DEFAULT_CELL_HEIGHT = 48;
 const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
+const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
 const UI_GIANT_CELL_HEIGHT = 128;
 
@@ -228,6 +229,10 @@ export default class UIConstant {
 
     static largeCellHeight() {
         return UI_LARGE_CELL_HEIGHT;
+    }
+
+    static majorCellHeight() {
+        return UI_MAJOR_CELL_HEIGHT;
     }
 
     static hugeCellHeight() {

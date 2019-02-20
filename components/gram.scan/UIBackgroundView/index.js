@@ -49,7 +49,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         },
     });
 
-    static getPreset(presetName) {
+    static getPreset(presetName: string) {
         const {
             Secondary,
             SecondaryImageTopRight,

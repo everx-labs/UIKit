@@ -56,6 +56,7 @@ import UITabView from './components/menus/UITabView';
 import UITextButton from './components/buttons/UITextButton';
 import UITextInput from './components/text/UITextInput';
 import UIToastMessage from './components/notifications/UIToastMessage';
+import UITokenCell from './components/gram.scan/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITopBar from './components/gram.scan/UITopBar';
 import UITooltip from './components/notifications/UITooltip';
@@ -128,6 +129,7 @@ export {
     UITextButton,
     UITextInput,
     UIToastMessage,
+    UITokenCell,
     UITopBar,
     UIToggle,
     UITooltip,

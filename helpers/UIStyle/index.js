@@ -43,6 +43,9 @@ const UIStyle = StyleSheet.create({
     alignCenter: {
         alignItems: 'center',
     },
+    justifyEnd: {
+        justifyContent: 'flex-end',
+    },
 
     // offsets
     marginTopTiny: {

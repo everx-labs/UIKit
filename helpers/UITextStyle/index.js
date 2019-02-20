@@ -85,7 +85,7 @@ const UITextStyle = StyleSheet.create({
         ...primary,
         ...UIFont.accentBold(),
     },
-    // Body
+    // Body - fontSize: 18, lineHeight: 24
     primaryBodyRegular: {
         ...primary,
         ...UIFont.bodyRegular(),

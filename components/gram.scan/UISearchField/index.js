@@ -11,9 +11,11 @@ import UITextInput from '../../text/UITextInput';
 import searchIcon from '../../../assets/ico-search/ico-search.png';
 
 type Props = {
+    screenWidth: number,
     onChangeSearchExpression: (string) => void,
     onFocus: () => void,
     onBlur: () => void,
+    onLayout: (e: ?any) => void,
 };
 type State = {
     searchExpression: string,
@@ -21,8 +23,6 @@ type State = {
 
 const styles = StyleSheet.create({
     container: {
-        width: '50%',
-        paddingHorizontal: UIConstant.contentOffset(),
         height: UIConstant.bigCellHeight(),
         justifyContent: 'center',
     },
@@ -41,18 +41,30 @@ export default class UISearchField extends UIComponent<Props, State> {
         };
     }
 
-    getSearchExpression() {
-        return this.state.searchExpression;
-    }
-
+    // Setters
     setSearchExpression(searchExpression: string) {
         this.setStateSafely({ searchExpression });
         this.props.onChangeSearchExpression(searchExpression);
     }
 
+    // Getters
+    getSearchExpression() {
+        return this.state.searchExpression;
+    }
+
+    getContentStyle() {
+        return this.props.screenWidth >= UIConstant.elasticWidthBroad()
+            ? UIStyle.halfWidthContainer
+            : UIStyle.fullWidthContainer;
+    }
+
     render() {
+        const contentStyle = this.getContentStyle();
         return (
-            <View style={styles.container}>
+            <View
+                onLayout={e => this.props.onLayout(e)}
+                style={[styles.container, contentStyle]}
+            >
                 <View style={searchFieldStyle}>
                     <Image source={searchIcon} style={UIStyle.marginRightSmall} />
                     <UITextInput
@@ -71,8 +83,10 @@ export default class UISearchField extends UIComponent<Props, State> {
 }
 
 UISearchField.defaultProps = {
+    screenWidth: 0,
     onChangeSearchExpression: () => {},
     onFocus: () => {},
     onBlur: () => {},
+    onLayout: () => {},
 };
 
