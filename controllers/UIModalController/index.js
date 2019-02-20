@@ -32,19 +32,11 @@ type OnLayoutEventArgs = {
 
 type ModalControllerProps = ControllerProps;
 
-type SafeAreaInset = {
-    top: number,
-    left: number,
-    bottom: number,
-    right: number,
-};
-
 type ModalControllerState = ControllerState & {
     dy?: ?Animated.Value;
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
-    safeArea?: SafeAreaInset,
 };
 
 const styles = StyleSheet.create({
@@ -77,18 +69,12 @@ export default class UIModalController
         this.onCancel = null;
 
         this.state = {
-            safeArea: {
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-            },
+            ...this.state,
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
-        this.loadSafeAreaInsets();
     }
 
     componentWillReceiveProps(nextProps: ModalControllerProps) {
@@ -99,11 +85,6 @@ export default class UIModalController
         super.componentWillUnmount();
     }
 
-    loadSafeAreaInsets() {
-        UIDevice.safeAreaInsets().then((safeArea) => {
-            this.setStateSafely({ safeArea });
-        });
-    }
     // Events
     onWillAppear() {
         // Method needs to be overriden in order to be used.
@@ -145,14 +126,6 @@ export default class UIModalController
     }
 
     // Getters
-    getSafeAreaInsets(): SafeAreaInset {
-        return this.state.safeArea || {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-        };
-    }
 
     getDialogStyle() {
         let { width, height } = this.state;

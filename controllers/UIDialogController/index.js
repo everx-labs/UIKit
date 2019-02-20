@@ -1,5 +1,13 @@
+import type { Node } from 'react';
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet, Animated } from 'react-native';
+import {
+    SafeAreaView,
+    ScrollView,
+    View,
+    Text,
+    StyleSheet,
+    Animated,
+} from 'react-native';
 
 import UIController from '../UIController';
 import UIColor from '../../helpers/UIColor';
@@ -48,6 +56,11 @@ const styles = StyleSheet.create({
     },
 });
 
+/**
+ this.textInputAutoFocus = true;
+ this.textInputSecureTextEntry = false;
+ this.auxTextInput
+ */
 class UIDialogController extends UIController {
     static styles() {
         return styles;
@@ -58,6 +71,7 @@ class UIDialogController extends UIController {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
+        this.hasTextInput = false;
         this.textInputAutoFocus = true;
         this.textInputSecureTextEntry = false;
 
@@ -67,8 +81,8 @@ class UIDialogController extends UIController {
             }
         };
 
+        this.marginBottom = new Animated.Value(0);
         this.state = {
-            marginBottom: new Animated.Value(0),
             input: '',
             auxInput: '',
             photo: null,
@@ -102,15 +116,15 @@ class UIDialogController extends UIController {
 
     setContentInset(contentInset) {
         super.setContentInset(contentInset);
-        Animated.spring(this.state.marginBottom, {
-            toValue: contentInset.bottom,
+        Animated.spring(this.marginBottom, {
+            toValue: Math.max(0, contentInset.bottom - this.getSafeAreaInsets().bottom),
             duration: UIConstant.animationDuration(),
         }).start();
     }
 
     // Getters
     getMarginBottom() {
-        return this.state.marginBottom;
+        return this.marginBottom;
     }
 
     getInput() {
@@ -127,6 +141,9 @@ class UIDialogController extends UIController {
 
     // Render
     renderTitleView() {
+        if (!this.title) {
+            return null;
+        }
         return (
             <View style={styles.titleView}>
                 <Text
@@ -157,6 +174,9 @@ class UIDialogController extends UIController {
 
     renderTextInput() {
         if (this.hasPhotoView) {
+            return null;
+        }
+        if (!this.hasTextInput) {
             return null;
         }
         const keyboardTypeProp = this.textInputKeyboardType
@@ -203,26 +223,22 @@ class UIDialogController extends UIController {
         />);
     }
 
+    renderSubtitle() {
+        return null;
+    }
+
     renderSubtitleView() {
-        if (!this.renderSubtitle) {
-            return null;
-        }
-        return (
-            <View style={styles.subtitleView}>
-                {this.renderSubtitle()}
-            </View>
-        );
+        const subtitle = this.renderSubtitle();
+        return subtitle ? <View style={styles.subtitleView}>{subtitle}</View> : null;
+    }
+
+    renderBottom() {
+        return null;
     }
 
     renderBottomView() {
-        if (!this.renderBottom) {
-            return null;
-        }
-        return (
-            <View style={styles.bottomView}>
-                {this.renderBottom()}
-            </View>
-        );
+        const bottom = this.renderBottom();
+        return bottom ? <View style={styles.bottomView}>{bottom}</View> : null;
     }
 
     renderSafely() {
