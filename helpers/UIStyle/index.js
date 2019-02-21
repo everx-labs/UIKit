@@ -40,6 +40,12 @@ const UIStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
+    alignCenter: {
+        alignItems: 'center',
+    },
+    justifyEnd: {
+        justifyContent: 'flex-end',
+    },
 
     // offsets
     marginTopTiny: {
@@ -187,6 +193,10 @@ const UIStyle = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    flexJustifyEndContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
     centerContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -220,6 +230,10 @@ const UIStyle = StyleSheet.create({
     },
     halfWidthContainer: {
         width: '50%',
+        paddingHorizontal: UIConstant.contentOffset(),
+    },
+    fullWidthContainer: {
+        width: '100%',
         paddingHorizontal: UIConstant.contentOffset(),
     },
 

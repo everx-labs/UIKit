@@ -2,7 +2,7 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
@@ -18,6 +18,7 @@ type Props = {
     title: string,
     caption: string,
     details: string,
+    onPress: () => void,
 };
 
 type State = {};
@@ -45,7 +46,7 @@ export default class UICard extends UIComponent<Props, State> {
         }
         return (
             <View style={{ alignItems: 'center' }}>
-                <Image source={icoProgress} />
+                <Image source={icoProgress}/>
             </View>
         );
     }
@@ -74,10 +75,14 @@ export default class UICard extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={[styles.container, this.props.containerStyle]}>
-                {this.renderProgressCard()}
-                {this.renderContentCard()}
-            </View>
+            <TouchableOpacity
+                onPress={this.props.onPress}
+            >
+                <View style={[styles.container, this.props.containerStyle]}>
+                    {this.renderProgressCard()}
+                    {this.renderContentCard()}
+                </View>
+            </TouchableOpacity>
         );
     }
 
@@ -90,5 +95,6 @@ UICard.defaultProps = {
     title: '',
     caption: '',
     details: '',
+    onPress: () => {},
 };
 

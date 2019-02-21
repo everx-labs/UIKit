@@ -166,6 +166,7 @@ export default class UIButton extends UIComponent {
             <Text
                 style={[
                     styles.title,
+                    this.props.textStyle,
                     { color: this.getTitleColor() },
                 ]}
             >
@@ -230,6 +231,7 @@ export default class UIButton extends UIComponent {
 
 UIButton.defaultProps = {
     style: {},
+    textStyle: {},
     buttonSize: UIButton.ButtonSize.Default,
     buttonShape: UIButton.ButtonShape.Default,
     title: '',
@@ -243,6 +245,7 @@ UIButton.defaultProps = {
 
 UIButton.propTypes = {
     style: StylePropType,
+    textStyle: StylePropType,
     buttonSize: PropTypes.string,
     buttonShape: PropTypes.string,
     title: PropTypes.string,
