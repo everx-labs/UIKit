@@ -65,6 +65,7 @@ type Props = {
     onSubmitEditing?: () => void,
     onRightButtonPress?: () => void,
     placeholder?: string,
+    hidePlaceholder?: boolean,
     returnKeyType?: ReturnKeyType | null,
     rightButton?: string,
     rightButtonDisabled: boolean,
@@ -122,6 +123,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             onChangeText,
             onSubmitEditing,
             placeholder,
+            hidePlaceholder,
             returnKeyType,
             secureTextEntry,
             value,
@@ -134,6 +136,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         const complementaryStyle = complementaryValue.length > 0
             ? styles.complementaryInput
             : null;
+        const ph = hidePlaceholder ? '' : placeholder;
         return (
             <TextInput
                 {...accessibilityLabelProp}
@@ -149,7 +152,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
                 onBlur={onBlur}
                 onChangeText={text => onChangeText(text)}
                 onSubmitEditing={onSubmitEditing}
-                placeholder={placeholder}
+                placeholder={ph}
                 placeholderTextColor={UIColor.textTertiary()}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
@@ -300,6 +303,7 @@ UIDetailsInput.defaultProps = {
     onSubmitEditing: () => {},
     onRightButtonPress: () => {},
     placeholder: UILocalized.Details,
+    hidePlaceholder: false,
     returnKeyType: null,
     rightButton: '',
     rightButtonDisabled: false,
