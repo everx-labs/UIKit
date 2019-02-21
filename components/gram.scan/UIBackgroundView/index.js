@@ -17,6 +17,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         Secondary: 'Secondary',
         SecondaryImageTopRight: 'SecondaryImageTopRight',
         SecondaryImageBottomLeft: 'SecondaryImageBottomLeft',
+        SecondaryImageTopLeft: 'SecondaryImageTopLeft',
         SecondaryImageCenterRight: 'SecondaryImageCenterRight',
         SecondaryImageBottomRight: 'SecondaryImageBottomRight',
         Primary: 'Primary',
@@ -29,6 +30,9 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         [UIBackgroundView.PresetNames.SecondaryImageTopRight]: {
             backgroundColor: UIColor.fa(),
             alignItems: 'flex-end',
+        },
+        [UIBackgroundView.PresetNames.SecondaryImageTopLeft]: {
+            backgroundColor: UIColor.fa(),
         },
         [UIBackgroundView.PresetNames.SecondaryImageBottomLeft]: {
             backgroundColor: UIColor.fa(),
@@ -53,6 +57,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         const {
             Secondary,
             SecondaryImageTopRight,
+            SecondaryImageTopLeft,
             SecondaryImageBottomLeft,
             SecondaryImageCenterRight,
             SecondaryImageBottomRight,
@@ -67,6 +72,10 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
             },
             [SecondaryImageTopRight]: {
                 backgroundStyle: PresetStyles[SecondaryImageTopRight],
+                image: 'image',
+            },
+            [SecondaryImageTopLeft]: {
+                backgroundStyle: PresetStyles[SecondaryImageTopLeft],
                 image: 'image',
             },
             [SecondaryImageBottomLeft]: {

@@ -137,7 +137,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 return (
                     <View style={styles.row} key={`details-table-row-${name}-${value || ''}`}>
                         <View style={[styles.leftCell, UIStyle.marginRightDefault]}>
-                            <Text style={secondarySmallRegular}>
+                            <Text
+                                numberOfLines={1}
+                                style={secondarySmallRegular}
+                            >
                                 {caption}
                             </Text>
                         </View>

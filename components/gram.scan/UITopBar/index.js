@@ -129,6 +129,12 @@ export default class UITopBar extends UIComponent<Props, State> {
         return this.state.centerLeftEdge;
     }
 
+    getLeftOverlap() {
+        const leftPartRightEdge = this.getLeftPartRightEdge();
+        const centerLeftEdge = this.getCenterLeftEdge();
+        return leftPartRightEdge && leftPartRightEdge > centerLeftEdge;
+    }
+
     // Actions
     navigateTo(screenName: string) {
         const { navigation } = this.props;
@@ -244,7 +250,7 @@ export default class UITopBar extends UIComponent<Props, State> {
         if (this.props.hidden) {
             return null;
         }
-        const leftOverlap = this.getLeftPartRightEdge() > this.getCenterLeftEdge();
+        const leftOverlap = this.getLeftOverlap();
         const heightStyle = leftOverlap ? styles.doubleHeight : styles.singleHeight;
         return (
             <View style={[styles.container, heightStyle]}>
