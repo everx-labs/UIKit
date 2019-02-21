@@ -132,7 +132,8 @@ export default class UITopBar extends UIComponent<Props, State> {
     getLeftOverlap() {
         const leftPartRightEdge = this.getLeftPartRightEdge();
         const centerLeftEdge = this.getCenterLeftEdge();
-        return leftPartRightEdge && leftPartRightEdge > centerLeftEdge;
+        return this.props.onChangeSearchExpression
+            && leftPartRightEdge > centerLeftEdge;
     }
 
     // Actions
