@@ -326,6 +326,7 @@ export default class UIModalController
             >
                 <Animated.View style={{ marginTop: this.state.dy }}>
                     {this.renderDialog()}
+                    {this.renderSpinnerOverlay()}
                 </Animated.View>
             </Animated.View>
         );
