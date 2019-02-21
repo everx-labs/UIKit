@@ -369,6 +369,7 @@ const en = {
     Date: 'Date',
     Balance: 'Balance',
     Gram: 'GRAM',
+    gram: 'Gram',
     Send: 'Send',
     UserHasNoWallet: 'The user does not have a wallet yet, but we will send a link to create one in order to receive this transaction.',
     TransactionFrom: 'You have received a transaction from',
@@ -499,6 +500,10 @@ const en = {
 
     // Gram.Scan
     EnterHashTransactionAccountOrBlock: 'Enter Hash transaction, account or block',
+    Gram01: 'Gram', // 01 gram
+    Gram11: 'Grams', // 21 grams
+    Gram24: 'Grams', // 22,23,24 grams
+    Gram50: 'Grams', // 25,26,27,28,29,30 grams
 };
 
 export default en;

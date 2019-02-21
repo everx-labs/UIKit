@@ -18,6 +18,7 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
+const UI_GIANT_CONTENT_OFFSET = 136;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 6;
@@ -33,6 +34,7 @@ const UI_MEDIUM_CELL_HEIGHT = 40;
 const UI_DEFAULT_CELL_HEIGHT = 48;
 const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
+const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
 const UI_GIANT_CELL_HEIGHT = 128;
 
@@ -54,12 +56,14 @@ const UI_INITIAL_STYLE_FOR_ALL = Platform.OS === 'web' ? { all: 'initial' } : nu
 const UI_ELASTIC_WIDTH_NARROW = 80;
 const UI_ELASTIC_WIDTH_REGULAR = 304;
 const UI_ELASTIC_WIDTH_MEDIUM = 592;
+const UI_ELASTIC_WIDTH_BROAD = 768;
 const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 
 const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
 const BACKGROUND_IMAGE_CONTAINER_HEIGHT = 594;
 
+const UI_TAB_WIDTH = 96;
 const UI_PASSWORD_PROMPT_WIDTH = 416;
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
@@ -157,6 +161,10 @@ export default class UIConstant {
         return UI_HUGE_CONTENT_OFFSET;
     }
 
+    static giantContentOffset() {
+        return UI_GIANT_CONTENT_OFFSET;
+    }
+
     static horizontalContentOffset() {
         return UI_HORIZONTAL_CONTENT_OFFSET;
     }
@@ -223,6 +231,10 @@ export default class UIConstant {
         return UI_LARGE_CELL_HEIGHT;
     }
 
+    static majorCellHeight() {
+        return UI_MAJOR_CELL_HEIGHT;
+    }
+
     static hugeCellHeight() {
         return UI_HUGE_CELL_HEIGHT;
     }
@@ -277,6 +289,10 @@ export default class UIConstant {
         return UI_ELASTIC_WIDTH_MEDIUM;
     }
 
+    static elasticWidthBroad() {
+        return UI_ELASTIC_WIDTH_BROAD;
+    }
+
     static elasticWidthWide() {
         return UI_ELASTIC_WIDTH_WIDE;
     }
@@ -291,6 +307,10 @@ export default class UIConstant {
 
     static backgroundImageContainerHeight() {
         return BACKGROUND_IMAGE_CONTAINER_HEIGHT;
+    }
+
+    static tabWidth() {
+        return UI_TAB_WIDTH;
     }
 
     static passwordPromptWidth() {
@@ -374,6 +394,4 @@ export default class UIConstant {
     static maxDecimalDigits() {
         return MAX_DECIMAL_DIGITS;
     }
-
-    static max
 }
