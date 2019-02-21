@@ -98,7 +98,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         const { backgroundStyle, image } = preset;
         const imageView = image ? <View style={UIStyle.backgroundImageContainer} /> : null;
         return (
-            <View style={[UIStyle.absoluteFillObject, { ...backgroundStyle }]}>
+            <View style={[UIStyle.absoluteFillObject, backgroundStyle]}>
                 {imageView}
             </View>
         );
