@@ -66,14 +66,14 @@ const styles = StyleSheet.create({
  * this.hasPhotoView = false
  * this.hasTextInput = false
  * this.hasAuxTextInput = false
- * this.textInputPlaceholder = null
+ * this.textInputPlaceholder = undefined
  * this.textInputAutoFocus = true
  * this.textInputSecureTextEntry = false
- * this.textInputKeyboardType = null
- * this.textInputMaxLength = null
- * this.textInputBeginningTag = null
- * this.textInputTagSeparator = null
- * this.auxTextInputPlaceholder: ?string = null
+ * this.textInputKeyboardType = undefined
+ * this.textInputMaxLength = undefined
+ * this.textInputBeginningTag = undefined
+ * this.textInputTagSeparator = undefined
+ * this.auxTextInputPlaceholder = undefined
  *
  * Overridable
  * -----------
@@ -92,18 +92,18 @@ class UIDialogController extends UIController {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
-        this.title = null;
+        this.title = undefined;
         this.hasPhotoView = false;
         this.hasTextInput = false;
         this.hasAuxTextInput = false;
-        this.textInputPlaceholder = null;
+        this.textInputPlaceholder = undefined;
         this.textInputAutoFocus = true;
         this.textInputSecureTextEntry = false;
-        this.textInputKeyboardType = null;
-        this.textInputMaxLength = null;
-        this.textInputBeginningTag = null;
-        this.textInputTagSeparator = null;
-        this.auxTextInputPlaceholder = null;
+        this.textInputKeyboardType = undefined;
+        this.textInputMaxLength = undefined;
+        this.textInputBeginningTag = undefined;
+        this.textInputTagSeparator = undefined;
+        this.auxTextInputPlaceholder = undefined;
 
         this.onSubmitEditingTextInput = () => {
             if (this.auxTextInput) {
