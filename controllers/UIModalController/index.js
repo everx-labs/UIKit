@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 export default class UIModalController
     extends UIController<ModalControllerProps, ModalControllerState> {
     fullscreen: boolean;
-    dismissable: boolean;
+    dismissible: boolean;
     modal: boolean;
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
@@ -62,8 +62,9 @@ export default class UIModalController
 
     constructor(props: ModalControllerProps) {
         super(props);
+        this.hasSpinnerOverlay = true;
         this.fullscreen = false;
-        this.dismissable = true;
+        this.dismissible = true;
         this.modal = true;
         this.dialog = null;
         this.onCancel = null;
@@ -165,7 +166,7 @@ export default class UIModalController
         height -= statusBarHeight + navBarHeight;
 
         let contentHeight = height - this.getSafeAreaInsets().bottom;
-        if (this.dismissable) {
+        if (this.dismissible) {
             contentHeight -= UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
         }
 
@@ -262,7 +263,7 @@ export default class UIModalController
 
     // Render
     getModalNavigationBar() {
-        if (!this.dismissable) {
+        if (!this.dismissible) {
             return null;
         }
         return (<UIModalNavigationBar

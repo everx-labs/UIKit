@@ -1,10 +1,16 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { Platform, Keyboard, SafeAreaView } from 'react-native';
-import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
-import UIDevice from '../../helpers/UIDevice';
+import {
+    View,
+    Platform,
+    Keyboard,
+    SafeAreaView,
+} from 'react-native';
 
+import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
+
+import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized/';
 import UIAlertView from '../../components/popup/UIAlertView';
@@ -135,10 +141,13 @@ export default class UIController<Props, State>
     }
 
     // constructor
+    hasSpinnerOverlay: boolean;
+
     constructor(props: Props & ControllerProps) {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
+        this.hasSpinnerOverlay = false;
 
         this.handlePathAndParams();
         this.listenToNavigation();
@@ -171,6 +180,10 @@ export default class UIController<Props, State>
     }
 
     // Virtual
+    renderOverlay(): React$Node {
+        return null;
+    }
+
     renderSafely() {
         return null;
     }
@@ -383,10 +396,23 @@ export default class UIController<Props, State>
     }
 
     render(): React$Node {
-        return (
+        const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
                 {this.renderSafely()}
             </SafeAreaView>
+        );
+        const overlays = [].concat(
+            this.renderOverlay() || [],
+            this.hasSpinnerOverlay ? this.renderSpinnerOverlay() : [],
+        );
+        if (overlays.length === 0) {
+            return main;
+        }
+        return (
+            <View style={UIStyle.flex}>
+                {main}
+                {overlays.length > 1 ? <React.Fragment>{overlays}</React.Fragment> : overlays[0]}
+            </View>
         );
     }
 

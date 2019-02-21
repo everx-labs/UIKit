@@ -62,6 +62,8 @@ type Props = {
 
 type State = {
     selectedIndex: number,
+    leftPartRightEdge: number,
+    centerLeftEdge: number,
 };
 
 export default class UITopBar extends UIComponent<Props, State> {
@@ -103,11 +105,11 @@ export default class UITopBar extends UIComponent<Props, State> {
         this.setStateSafely({ selectedIndex });
     }
 
-    setLeftPartRightEdge(leftPartRightEdge) {
+    setLeftPartRightEdge(leftPartRightEdge: number) {
         this.setStateSafely({ leftPartRightEdge });
     }
 
-    setCenterLeftEdge(centerLeftEdge) {
+    setCenterLeftEdge(centerLeftEdge: number) {
         this.setStateSafely({ centerLeftEdge });
     }
 

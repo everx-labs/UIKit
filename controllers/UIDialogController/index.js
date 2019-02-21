@@ -272,7 +272,10 @@ class UIDialogController extends UIController {
     }
 
     renderContentContainer() {
-        const content = this.renderContent();
+        let content = this.renderContent();
+        if (Array.isArray(content)) {
+            content = <React.Fragment>{content}</React.Fragment>;
+        }
         return content ? <View style={styles.contentContainer}>{content}</View> : null;
     }
 
@@ -303,12 +306,6 @@ class UIDialogController extends UIController {
                 {this.renderBottomContainer()}
             </Animated.View>
         );
-    }
-
-    render() {
-        const main = super.render();
-        const overlay = this.renderOverlay();
-        return overlay ? <View style={UIStyle.flex}>{main}{overlay}</View> : main;
     }
 }
 
