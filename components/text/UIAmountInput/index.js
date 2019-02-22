@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         overflow: 'scroll',
     },
+    textInput: {
+        ...textInputFont,
+        flex: 1,
+    },
 });
 
 type Props = DetailsProps & {
@@ -48,6 +52,10 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         const flex = rightButton && rightButton.length > 0 ? { flex: 1 } : null;
 
         return flex;
+    }
+
+    textInputStyle() {
+        return styles.textInput;
     }
 
     renderRightButton() {
