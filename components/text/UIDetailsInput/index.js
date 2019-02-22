@@ -170,7 +170,7 @@ export default class UIDetailsInput<Props, State>
                 placeholderTextColor={UIColor.textTertiary()}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
-                style={styles.textInput}
+                style={this.textInputStyle()}
                 selectionColor={UIColor.primary()}
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
