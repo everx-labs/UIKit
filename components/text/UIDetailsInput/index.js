@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
+export type DetailsProps = {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
@@ -57,12 +57,13 @@ type Props = {
     value: string,
     testID?: string,
 };
-type State = {};
+export type DetailsState = {};
 
-export default class UIDetailsInput extends UIComponent<Props, State> {
+export default class UIDetailsInput<Props, State>
+    extends UIComponent<Props & DetailsProps, State & DetailsState> {
     textInput: ?TextInput;
-  
-    static defaultProps = {
+
+    static defaultProps: DetailsProps = {
         autoCapitalize: 'sentences',
         autoFocus: false,
         containerStyle: {},
@@ -80,7 +81,6 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
         placeholder: UILocalized.Details,
         secureTextEntry: false,
         showSymbolsLeft: false,
-        token,
         value: '',
     };
 
@@ -170,7 +170,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
                 placeholderTextColor={UIColor.textTertiary()}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
-                style={[styles.textInput, complementaryStyle, position]}
+                style={styles.textInput}
                 selectionColor={UIColor.primary()}
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}

@@ -3,10 +3,12 @@ import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import UIDetailsInput from '../text/UIDetailsInput';
+import UIDetailsInput from '../UIDetailsInput';
 
-import UIStyle from '../../helpers/UIStyle';
-import UITextStyle from '../../helpers/UITextStyle';
+import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
+
+import type { DetailsProps, DetailsState } from '../UIDetailsInput';
 
 const textInputFont = StyleSheet.flatten(UITextStyle.primaryBodyRegular) || {};
 delete textInputFont.lineHeight;
@@ -22,16 +24,25 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
+type Props = DetailsProps & {
     containerStyle?: StylePropType,
     decimalValue?: string,
     rightButton?: string,
     rightButtonDisabled: boolean,
     onRightButtonPress?: () => void,
 };
-type State = {};
+type State = DetailsState & {};
 
 export default class UIAmountInput extends UIDetailsInput<Props, State> {
+    static defaultProps = {
+        ...UIDetailsInput.defaultProps,
+        containerStyle: {},
+        decimalValue: '',
+        rightButton: '',
+        rightButtonDisabled: false,
+        onRightButtonPress: () => {},
+    };
+
     containerStyle() {
         const { rightButton } = this.props;
         const flex = rightButton && rightButton.length > 0 ? { flex: 1 } : null;
@@ -64,8 +75,9 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     renderDecimalValue() {
         const { value, decimalValue } = this.props;
-        if (decimalValue.length === 0) return null;
-
+        if ((decimalValue?.length || 0) === 0) {
+            return null;
+        }
         return (
             <View style={styles.textInputView}>
                 <Text
@@ -95,12 +107,3 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         );
     }
 }
-
-UIAmountInput.defaultProps = {
-    containerStyle: {},
-    decimalValue: '',
-    rightButton: '',
-    rightButtonDisabled: false,
-    onRightButtonPress: () => {},
-};
-
