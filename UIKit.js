@@ -1,6 +1,6 @@
 import UIActionSheet from './components/menus/UIActionSheet';
 import UIAlertView from './components/popup/UIAlertView';
-import UIAmountInput from './components/UIAmountInput';
+import UIAmountInput from './components/text/UIAmountInput';
 import UIBackgroundView from './components/gram.scan/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
 import UIBottomBar from './components/gram.scan/UIBottomBar';
