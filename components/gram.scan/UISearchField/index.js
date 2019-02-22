@@ -15,7 +15,6 @@ type Props = {
     onChangeSearchExpression: (string) => void,
     onFocus: () => void,
     onBlur: () => void,
-    onLayout: (e: ?any) => void,
 };
 type State = {
     searchExpression: string,
@@ -24,13 +23,8 @@ type State = {
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.bigCellHeight(),
-        justifyContent: 'center',
     },
 });
-
-const searchFieldStyle = [
-    UIStyle.centerLeftContainer,
-];
 
 export default class UISearchField extends UIComponent<Props, State> {
     constructor(props: Props) {
@@ -60,21 +54,20 @@ export default class UISearchField extends UIComponent<Props, State> {
 
     render() {
         const contentStyle = this.getContentStyle();
+        const { onFocus, onBlur, screenWidth } = this.props;
+        if (!screenWidth) {
+            return null;
+        }
         return (
-            <View
-                onLayout={e => this.props.onLayout(e)}
-                style={[styles.container, contentStyle]}
-            >
-                <View style={searchFieldStyle}>
-                    <Image source={searchIcon} style={UIStyle.marginRightSmall} />
-                    <UITextInput
-                        value={this.getSearchExpression()}
-                        placeholder={UILocalized.EnterHashTransactionAccountOrBlock}
-                        onChangeText={newValue => this.setSearchExpression(newValue)}
-                        onFocus={this.props.onFocus}
-                        onBlur={this.props.onBlur}
-                    />
-                </View>
+            <View style={[styles.container, contentStyle, UIStyle.centerLeftContainer]}>
+                <Image source={searchIcon} style={UIStyle.marginRightSmall} />
+                <UITextInput
+                    value={this.getSearchExpression()}
+                    placeholder={UILocalized.EnterHashTransactionAccountOrBlock}
+                    onChangeText={newValue => this.setSearchExpression(newValue)}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                />
             </View>
         );
     }
@@ -87,6 +80,5 @@ UISearchField.defaultProps = {
     onChangeSearchExpression: () => {},
     onFocus: () => {},
     onBlur: () => {},
-    onLayout: () => {},
 };
 

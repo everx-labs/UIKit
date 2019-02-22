@@ -40,8 +40,14 @@ const UIStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
+    flexRow: {
+        flexDirection: 'row',
+    },
     alignCenter: {
         alignItems: 'center',
+    },
+    justifyCenter: {
+        justifyContent: 'center',
     },
     justifyEnd: {
         justifyContent: 'flex-end',
@@ -207,6 +213,10 @@ const UIStyle = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    rowSpaceContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     centerOnScreenContainer: {
         position: 'absolute',
         backgroundColor: 'transparent',
@@ -230,7 +240,6 @@ const UIStyle = StyleSheet.create({
     },
     halfWidthContainer: {
         width: '50%',
-        paddingHorizontal: UIConstant.contentOffset(),
     },
     fullWidthContainer: {
         width: '100%',

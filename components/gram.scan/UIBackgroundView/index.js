@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
+import UIConstant from '../../../helpers/UIConstant';
 
 type Props = {
     presetName: string,
@@ -99,6 +100,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         return presets[presetName];
     }
 
+    // Render
     render() {
         const preset = UIBackgroundView.getPreset(this.props.presetName);
         if (!preset) {
