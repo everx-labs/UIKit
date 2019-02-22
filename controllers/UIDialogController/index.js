@@ -1,5 +1,11 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet, Animated } from 'react-native';
+import {
+    ScrollView,
+    View,
+    Text,
+    StyleSheet,
+    Animated,
+} from 'react-native';
 
 import UIController from '../UIController';
 import UIColor from '../../helpers/UIColor';
@@ -14,6 +20,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
         justifyContent: 'center',
+        paddingTop: UIConstant.normalContentOffset(),
         paddingBottom: UIDevice.statusBarHeight() + UIDevice.navigationBarHeight(),
     },
     titleView: {
@@ -27,7 +34,7 @@ const styles = StyleSheet.create({
         color: UIColor.textPrimary(),
         // width: '100%', // Fix for Firefox (UPD: breaks layout on the phone)
     },
-    subtitleView: {
+    subtitleContainer: {
         marginTop: UIConstant.mediumContentOffset(),
         minHeight: 72,
         alignItems: 'center',
@@ -39,7 +46,12 @@ const styles = StyleSheet.create({
         color: UIColor.primary(),
         // width: '100%', // Fix for Firefox (UPD: breaks layout on the phone)
     },
-    bottomView: {
+    contentContainer: {
+        flex: 1,
+        alignItems: 'stretch',
+        backgroundColor: UIColor.white(),
+    },
+    bottomContainer: {
         position: 'absolute',
         alignSelf: 'center',
         bottom: 0,
@@ -48,6 +60,29 @@ const styles = StyleSheet.create({
     },
 });
 
+/**
+ * Configuration Options
+ * ---------------------
+ * this.title = null
+ * this.hasPhotoView = false
+ * this.hasTextInput = false
+ * this.hasAuxTextInput = false
+ * this.textInputPlaceholder = undefined
+ * this.textInputAutoFocus = true
+ * this.textInputSecureTextEntry = false
+ * this.textInputKeyboardType = undefined
+ * this.textInputMaxLength = undefined
+ * this.textInputBeginningTag = undefined
+ * this.textInputTagSeparator = undefined
+ * this.auxTextInputPlaceholder = undefined
+ *
+ * Overridable
+ * -----------
+ * renderSubtitle()
+ * renderContent()
+ * renderBottom()
+ * renderOverlay()
+ */
 class UIDialogController extends UIController {
     static styles() {
         return styles;
@@ -58,8 +93,18 @@ class UIDialogController extends UIController {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
+        this.title = undefined;
+        this.hasPhotoView = false;
+        this.hasTextInput = false;
+        this.hasAuxTextInput = false;
+        this.textInputPlaceholder = undefined;
         this.textInputAutoFocus = true;
         this.textInputSecureTextEntry = false;
+        this.textInputKeyboardType = undefined;
+        this.textInputMaxLength = undefined;
+        this.textInputBeginningTag = undefined;
+        this.textInputTagSeparator = undefined;
+        this.auxTextInputPlaceholder = undefined;
 
         this.onSubmitEditingTextInput = () => {
             if (this.auxTextInput) {
@@ -67,8 +112,8 @@ class UIDialogController extends UIController {
             }
         };
 
+        this.marginBottom = new Animated.Value(0);
         this.state = {
-            marginBottom: new Animated.Value(0),
             input: '',
             auxInput: '',
             photo: null,
@@ -102,15 +147,15 @@ class UIDialogController extends UIController {
 
     setContentInset(contentInset) {
         super.setContentInset(contentInset);
-        Animated.spring(this.state.marginBottom, {
-            toValue: contentInset.bottom,
+        Animated.spring(this.marginBottom, {
+            toValue: Math.max(0, contentInset.bottom - this.getSafeAreaInsets().bottom),
             duration: UIConstant.animationDuration(),
         }).start();
     }
 
     // Getters
     getMarginBottom() {
-        return this.state.marginBottom;
+        return this.marginBottom;
     }
 
     getInput() {
@@ -126,20 +171,18 @@ class UIDialogController extends UIController {
     }
 
     // Render
-    renderTitleView() {
+    renderTitle() {
+        if (!this.title) {
+            return null;
+        }
         return (
             <View style={styles.titleView}>
-                <Text
-                    style={styles.titleText}
-                    numberOfLines={3}
-                >
-                    {this.title}
-                </Text>
+                <Text style={styles.titleText} numberOfLines={3}>{this.title}</Text>
             </View>
         );
     }
 
-    renderPhotoView() {
+    renderPhoto() {
         if (!this.hasPhotoView) {
             return null;
         }
@@ -156,7 +199,7 @@ class UIDialogController extends UIController {
     }
 
     renderTextInput() {
-        if (this.hasPhotoView) {
+        if (!this.hasTextInput || this.hasPhotoView) {
             return null;
         }
         const keyboardTypeProp = this.textInputKeyboardType
@@ -166,7 +209,9 @@ class UIDialogController extends UIController {
             ? { maxLength: this.textInputMaxLength }
             : null;
         return (<UIDialogTextInput
-            ref={(component) => { this.textInput = component; }}
+            ref={(component) => {
+                this.textInput = component;
+            }}
             style={UIStyle.marginTopMedium}
             editable={!this.shouldShowIndicator()}
             autoFocus={this.textInputAutoFocus}
@@ -190,7 +235,9 @@ class UIDialogController extends UIController {
             return null;
         }
         return (<UIDialogTextInput
-            ref={(component) => { this.auxTextInput = component; }}
+            ref={(component) => {
+                this.auxTextInput = component;
+            }}
             style={UIStyle.marginTopDefault}
             editable={!this.shouldShowIndicator()}
             autoCapitalize="words"
@@ -203,46 +250,61 @@ class UIDialogController extends UIController {
         />);
     }
 
-    renderSubtitleView() {
-        if (!this.renderSubtitle) {
-            return null;
-        }
-        return (
-            <View style={styles.subtitleView}>
-                {this.renderSubtitle()}
-            </View>
-        );
+    renderSubtitle() {
+        return null;
     }
 
-    renderBottomView() {
-        if (!this.renderBottom) {
-            return null;
+    renderSubtitleContainer() {
+        const subtitle = this.renderSubtitle();
+        return subtitle ? <View style={styles.subtitleContainer}>{subtitle}</View> : null;
+    }
+
+    renderBottom() {
+        return null;
+    }
+
+    renderBottomContainer() {
+        const bottom = this.renderBottom();
+        return bottom ? <View style={styles.bottomContainer}>{bottom}</View> : null;
+    }
+
+    renderContent() {
+        return null;
+    }
+
+    renderContentContainer() {
+        let content = this.renderContent();
+        if (Array.isArray(content)) {
+            content = <React.Fragment>{content}</React.Fragment>;
         }
-        return (
-            <View style={styles.bottomView}>
-                {this.renderBottom()}
-            </View>
-        );
+        return content ? <View style={styles.contentContainer}>{content}</View> : null;
+    }
+
+    renderOverlay() {
+        return null;
     }
 
     renderSafely() {
+        const animatedContainerStyle = {
+            flex: 1,
+            marginBottom: this.getMarginBottom(),
+        };
         return (
-            <Animated.View
-                style={{ flex: 1, marginBottom: this.getMarginBottom() }}
-            >
+            <Animated.View style={animatedContainerStyle}>
                 <ScrollView
                     style={UIStyle.screenContainer}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={[UIStyle.pageContainer, styles.scrollContainer]}
                     keyboardShouldPersistTaps="handled"
                 >
-                    {this.renderTitleView()}
-                    {this.renderPhotoView()}
+                    {this.renderTitle()}
+                    {this.renderPhoto()}
                     {this.renderTextInput()}
                     {this.renderAuxTextInput()}
-                    {this.renderSubtitleView()}
+                    {this.renderSubtitleContainer()}
+                    {this.renderContentContainer()}
                 </ScrollView>
-                {this.renderBottomView()}
+                {this.renderBottomContainer()}
             </Animated.View>
         );
     }

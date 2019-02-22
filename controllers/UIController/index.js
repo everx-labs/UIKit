@@ -1,9 +1,16 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import { Platform, Keyboard, Alert, SafeAreaView } from 'react-native';
+import {
+    View,
+    Platform,
+    Keyboard,
+    SafeAreaView,
+} from 'react-native';
+
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
+import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized/';
 import UIAlertView from '../../components/popup/UIAlertView';
@@ -45,11 +52,19 @@ export type ControllerProps = {
 
 export type ControllerState = {
     contentInset?: ContentInset,
+    safeArea?: ContentInset,
     showIndicator?: boolean,
     spinnerTextContent?: string,
     spinnerTitleContent?: string,
     spinnerVisible?: boolean,
 };
+
+const EmptyInset: ContentInset = Object.freeze({
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+});
 
 const keyboardPanningScreens = [];
 
@@ -126,10 +141,13 @@ export default class UIController<Props, State>
     }
 
     // constructor
+    hasSpinnerOverlay: boolean;
+
     constructor(props: Props & ControllerProps) {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
+        this.hasSpinnerOverlay = false;
 
         this.handlePathAndParams();
         this.listenToNavigation();
@@ -138,6 +156,7 @@ export default class UIController<Props, State>
     componentDidMount() {
         super.componentDidMount();
         this.initKeyboardListeners();
+        this.loadSafeAreaInsets();
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -153,8 +172,18 @@ export default class UIController<Props, State>
         this.pushStateIfNeeded();
     }
 
+    loadSafeAreaInsets() {
+        (async () => {
+            const safeArea = await UIDevice.safeAreaInsets();
+            this.setStateSafely({ safeArea });
+        })();
+    }
+
     // Virtual
-    // eslint-disable-next-line class-methods-use-this
+    renderOverlay(): React$Node {
+        return null;
+    }
+
     renderSafely() {
         return null;
     }
@@ -193,6 +222,14 @@ export default class UIController<Props, State>
     }
 
     // Getters
+    getSafeAreaInsets(): ContentInset {
+        return this.state.safeArea || EmptyInset;
+    }
+
+    getContentInset(): ContentInset {
+        return this.state.contentInset || EmptyInset;
+    }
+
     getNavigationState() {
         const { navigation } = this.props;
         if (navigation) {
@@ -207,10 +244,6 @@ export default class UIController<Props, State>
             return state.params || {};
         }
         return {};
-    }
-
-    getContentInset(): ?ContentInset {
-        return this.state.contentInset;
     }
 
     shouldShowIndicator(): ?boolean {
@@ -363,10 +396,23 @@ export default class UIController<Props, State>
     }
 
     render(): React$Node {
-        return (
+        const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
                 {this.renderSafely()}
             </SafeAreaView>
+        );
+        const overlays = [].concat(
+            this.renderOverlay() || [],
+            this.hasSpinnerOverlay ? this.renderSpinnerOverlay() : [],
+        );
+        if (overlays.length === 0) {
+            return main;
+        }
+        return (
+            <View style={UIStyle.flex}>
+                {main}
+                {overlays.length > 1 ? <React.Fragment>{overlays}</React.Fragment> : overlays[0]}
+            </View>
         );
     }
 

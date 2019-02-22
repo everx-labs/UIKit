@@ -56,9 +56,12 @@ class UITextButton extends UIComponent {
     }
 
     render() {
-        const { buttonStyle, onPress, disabled } = this.props;
+        const {
+            testID, buttonStyle, onPress, disabled,
+        } = this.props;
         return (
             <TouchableOpacity
+                testID={testID}
                 style={[
                     styles.textButton,
                     buttonStyle,
@@ -87,6 +90,7 @@ UITextButton.defaultProps = {
 };
 
 UITextButton.propTypes = {
+    testID: String,
     buttonStyle: StylePropType,
     textStyle: StylePropType,
     detailsStyle: StylePropType,

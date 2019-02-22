@@ -32,19 +32,11 @@ type OnLayoutEventArgs = {
 
 type ModalControllerProps = ControllerProps;
 
-type SafeAreaInset = {
-    top: number,
-    left: number,
-    bottom: number,
-    right: number,
-};
-
 type ModalControllerState = ControllerState & {
     dy?: ?Animated.Value;
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
-    safeArea?: SafeAreaInset,
 };
 
 const styles = StyleSheet.create({
@@ -62,7 +54,7 @@ const styles = StyleSheet.create({
 export default class UIModalController
     extends UIController<ModalControllerProps, ModalControllerState> {
     fullscreen: boolean;
-    dismissable: boolean;
+    dismissible: boolean;
     modal: boolean;
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
@@ -70,25 +62,20 @@ export default class UIModalController
 
     constructor(props: ModalControllerProps) {
         super(props);
+        this.hasSpinnerOverlay = true;
         this.fullscreen = false;
-        this.dismissable = true;
+        this.dismissible = true;
         this.modal = true;
         this.dialog = null;
         this.onCancel = null;
 
         this.state = {
-            safeArea: {
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-            },
+            ...this.state,
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
-        this.loadSafeAreaInsets();
     }
 
     componentWillReceiveProps(nextProps: ModalControllerProps) {
@@ -99,11 +86,6 @@ export default class UIModalController
         super.componentWillUnmount();
     }
 
-    loadSafeAreaInsets() {
-        UIDevice.safeAreaInsets().then((safeArea) => {
-            this.setStateSafely({ safeArea });
-        });
-    }
     // Events
     onWillAppear() {
         // Method needs to be overriden in order to be used.
@@ -145,14 +127,6 @@ export default class UIModalController
     }
 
     // Getters
-    getSafeAreaInsets(): SafeAreaInset {
-        return this.state.safeArea || {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-        };
-    }
 
     getDialogStyle() {
         let { width, height } = this.state;
@@ -192,7 +166,7 @@ export default class UIModalController
         height -= statusBarHeight + navBarHeight;
 
         let contentHeight = height - this.getSafeAreaInsets().bottom;
-        if (this.dismissable) {
+        if (this.dismissible) {
             contentHeight -= UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
         }
 
@@ -289,7 +263,7 @@ export default class UIModalController
 
     // Render
     getModalNavigationBar() {
-        if (!this.dismissable) {
+        if (!this.dismissible) {
             return null;
         }
         return (<UIModalNavigationBar
