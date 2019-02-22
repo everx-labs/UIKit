@@ -73,7 +73,7 @@ type Props = {
     showSymbolsLeft?: boolean,
     token?: string | null,
     value: string,
-    testID: ?string,
+    testID?: string,
 };
 type State = {};
 
