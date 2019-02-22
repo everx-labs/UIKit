@@ -1,5 +1,6 @@
 import UIActionSheet from './components/menus/UIActionSheet';
 import UIAlertView from './components/popup/UIAlertView';
+import UIAmountInput from './components/UIAmountInput';
 import UIBackgroundView from './components/gram.scan/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
 import UIBottomBar from './components/gram.scan/UIBottomBar';
@@ -73,6 +74,7 @@ import type { DetailsList } from './components/gram.scan/UIDetailsTable';
 export {
     UIActionSheet,
     UIAlertView,
+    UIAmountInput,
     UIBadge,
     UIBackgroundView,
     UIBottomBar,
