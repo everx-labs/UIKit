@@ -73,6 +73,7 @@ type Props = {
     showSymbolsLeft?: boolean,
     token?: string | null,
     value: string,
+    testID: ?string,
 };
 type State = {};
 
@@ -127,6 +128,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             returnKeyType,
             secureTextEntry,
             value,
+            testID,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
@@ -161,6 +163,7 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
                 value={`${value}`}
+                testID={testID}
             />
         );
     }
