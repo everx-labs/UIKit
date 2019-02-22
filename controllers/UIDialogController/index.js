@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
         justifyContent: 'center',
+        paddingTop: UIConstant.normalContentOffset(),
         paddingBottom: UIDevice.statusBarHeight() + UIDevice.navigationBarHeight(),
     },
     titleView: {
