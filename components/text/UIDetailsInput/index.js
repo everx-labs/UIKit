@@ -33,34 +33,56 @@ const styles = StyleSheet.create({
 
 type Props = {
     accessibilityLabel?: string,
-    autoCapitalize?: AutoCapitalize,
-    autoFocus?: boolean,
-    containerStyle?: StylePropType,
-    floatingTitle?: boolean,
-    value: string,
-    comment?: string,
-    placeholder?: string,
-    hidePlaceholder?: boolean,
-    maxLength?: number | null,
-    maxLines?: number,
-    showSymbolsLeft?: boolean,
-    token?: string | null,
+    autoCapitalize: AutoCapitalize,
+    autoFocus: boolean,
+    containerStyle: StylePropType,
+    comment: string,
     commentColor?: string,
-    hideBottomLine?: boolean,
-    autoCapitalize?: AutoCapitalize,
-    keyboardType?: KeyboardType,
-    returnKeyType?: ReturnKeyType | null,
-    editable?: boolean,
-    commentStyle?: StylePropType,
-    onFocus?: () => void,
+    editable: boolean,
+    floatingTitle: boolean,
+    hideBottomLine: boolean,
+    hidePlaceholder: boolean,
+    keyboardType: KeyboardType,
+    maxLength?: number,
+    maxLines: number,
     onBlur?: () => void,
     onChangeText: (text: string) => void,
+    onFocus?: () => void,
     onSubmitEditing?: () => void,
+    placeholder?: string,
+    returnKeyType?: ReturnKeyType,
+    secureTextEntry: boolean,
+    showSymbolsLeft: boolean,
+    token?: string,
+    value: string,
+    testID?: string,
 };
 type State = {};
 
 export default class UIDetailsInput extends UIComponent<Props, State> {
     textInput: ?TextInput;
+  
+    static defaultProps = {
+        autoCapitalize: 'sentences',
+        autoFocus: false,
+        containerStyle: {},
+        comment: '',
+        editable: true,
+        floatingTitle: true,
+        hideBottomLine: false,
+        hidePlaceholder: false,
+        keyboardType: 'default',
+        maxLines: 1,
+        onBlur: () => {},
+        onChangeText: () => {},
+        onFocus: () => {},
+        onSubmitEditing: () => {},
+        placeholder: UILocalized.Details,
+        secureTextEntry: false,
+        showSymbolsLeft: false,
+        token,
+        value: '',
+    };
 
     // Getters
     isFocused() {
@@ -107,52 +129,55 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
     renderTextInput() {
         const {
             accessibilityLabel,
+            autoCapitalize,
             autoFocus,
-            value,
-            placeholder,
+            editable,
+            keyboardType,
+            maxLength,
+            maxLines,
             onFocus,
             onBlur,
             onChangeText,
             onSubmitEditing,
-            maxLength,
-            editable,
-            autoCapitalize,
-            keyboardType,
-            returnKeyType,
-            maxLines,
-            secureTextEntry,
+            placeholder,
             hidePlaceholder,
+            returnKeyType,
+            secureTextEntry,
+            value,
+            testID,
         } = this.props;
 
-        const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
-        const ph = hidePlaceholder ? '' : placeholder;
-        return (<TextInput
-            ref={(component) => { this.textInput = component; }}
-            value={`${value}`}
-            placeholder={ph}
-            placeholderTextColor={UIColor.textTertiary()}
-            editable={editable}
-            {...accessibilityLabelProp}
-            autoCorrect={false}
-            autoFocus={autoFocus}
-            underlineColorAndroid="transparent"
-            autoCapitalize={autoCapitalize}
-            keyboardType={keyboardType}
-            {...returnKeyTypeProp}
-            multiline={multiline}
-            numberOfLines={maxLines}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onChangeText={text => onChangeText(text)}
-            onSubmitEditing={onSubmitEditing}
-            style={[UITextStyle.primaryBodyRegular, this.textInputStyle()]}
-            secureTextEntry={secureTextEntry}
-            selectionColor={UIColor.primary()}
-            {...maxLengthProp}
-        />);
+        const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        return (
+            <TextInput
+                {...accessibilityLabelProp}
+                autoCapitalize={autoCapitalize}
+                autoCorrect={false}
+                autoFocus={autoFocus}
+                editable={editable}
+                keyboardType={keyboardType}
+                {...maxLengthProp}
+                multiline={multiline}
+                numberOfLines={maxLines}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onChangeText={text => onChangeText(text)}
+                onSubmitEditing={onSubmitEditing}
+                placeholder={hidePlaceholder ? '' : placeholder}
+                placeholderTextColor={UIColor.textTertiary()}
+                ref={(component) => { this.textInput = component; }}
+                {...returnKeyTypeProp}
+                style={[styles.textInput, complementaryStyle, position]}
+                selectionColor={UIColor.primary()}
+                underlineColorAndroid="transparent"
+                secureTextEntry={secureTextEntry}
+                value={`${value}`}
+                testID={testID}
+            />
+        );
     }
 
     renderCounter() {
@@ -226,31 +251,4 @@ export default class UIDetailsInput extends UIComponent<Props, State> {
             </View>
         );
     }
-
-    static defaultProps: Props;
 }
-
-UIDetailsInput.defaultProps = {
-    autoFocus: false,
-    containerStyle: {},
-    floatingTitle: true,
-    value: '',
-    comment: '',
-    placeholder: UILocalized.Details,
-    hidePlaceholder: false,
-    maxLength: null,
-    maxLines: 1,
-    showSymbolsLeft: false,
-    token: null,
-    hideBottomLine: false,
-    autoCapitalize: 'sentences',
-    keyboardType: 'default',
-    secureTextEntry: false,
-    returnKeyType: null,
-    editable: true,
-    commentStyle: {},
-    onFocus: () => {},
-    onBlur: () => {},
-    onChangeText: () => {},
-    onSubmitEditing: () => {},
-};

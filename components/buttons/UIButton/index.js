@@ -190,7 +190,7 @@ export default class UIButton extends UIComponent {
     }
 
     render() {
-        const { bottomExtend, style } = this.props;
+        const { testID, bottomExtend, style } = this.props;
         let height = this.getButtonHeight();
         if (bottomExtend) {
             height *= 2;
@@ -206,6 +206,7 @@ export default class UIButton extends UIComponent {
                 ]}
             >
                 <TouchableWithoutFeedback
+                    testID={testID}
                     style={styles.button}
                     disabled={this.isDisabled() || this.shouldShowIndicator()}
                     onPress={() => this.onPress()}
@@ -244,6 +245,7 @@ UIButton.defaultProps = {
 };
 
 UIButton.propTypes = {
+    testID: String,
     style: StylePropType,
     textStyle: StylePropType,
     buttonSize: PropTypes.string,
