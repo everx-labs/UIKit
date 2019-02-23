@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 
 type Props = DetailsProps & {
     containerStyle?: StylePropType,
-    decimalValue?: string,
+    trailingValue?: string,
     rightButton?: string,
     rightButtonDisabled: boolean,
     onRightButtonPress?: () => void,
@@ -41,7 +41,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
         containerStyle: {},
-        decimalValue: '',
+        trailingValue: '',
         rightButton: '',
         rightButtonDisabled: false,
         onRightButtonPress: () => {},
@@ -81,9 +81,9 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderDecimalValue() {
-        const { value, decimalValue } = this.props;
-        if ((decimalValue?.length || 0) === 0) {
+    renderTrailingValue() {
+        const { value, trailingValue } = this.props;
+        if ((trailingValue?.length || 0) === 0) {
             return null;
         }
         return (
@@ -94,7 +94,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
                 >
                     {value}
                     <Text style={UITextStyle.secondaryBodyRegular} selectable={false}>
-                        {decimalValue}
+                        {trailingValue}
                     </Text>
                 </Text>
             </View>
@@ -109,7 +109,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         return (
             <View style={[this.textViewStyle(), bottomLine, bottomLineColor]}>
                 {this.renderTextInput()}
-                {this.renderDecimalValue()}
+                {this.renderTrailingValue()}
                 {this.renderRightButton()}
             </View>
         );

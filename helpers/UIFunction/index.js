@@ -65,7 +65,7 @@ export default class UIFunction {
     static toFixedDown(number, fixed = 2) {
         const reg = new RegExp(`(^-?\\d+\\.\\d{${fixed}})`);
         const match = number.toString().match(reg);
-        return match ? match[0] : number.toFixed(fixed);
+        return match ? match[0] : Number(number).toFixed(fixed);
     }
 
     // Functions to determine a new caret position for numeric formatted text !!!
