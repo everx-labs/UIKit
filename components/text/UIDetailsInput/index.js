@@ -49,6 +49,7 @@ export type DetailsProps = {
     onChangeText: (text: string) => void,
     onFocus?: () => void,
     onSubmitEditing?: () => void,
+    onKeyPress?: (e: any) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
     secureTextEntry: boolean,
@@ -78,6 +79,7 @@ export default class UIDetailsInput<Props, State>
         onChangeText: () => {},
         onFocus: () => {},
         onSubmitEditing: () => {},
+        onKeyPress: () => {},
         placeholder: UILocalized.Details,
         secureTextEntry: false,
         showSymbolsLeft: false,
@@ -101,6 +103,15 @@ export default class UIDetailsInput<Props, State>
         return styles.textView;
     }
 
+    hidePlaceholder() {
+        return this.props.hidePlaceholder;
+    }
+
+    getValue() {
+        const { value } = this.props;
+        return `${value}`;
+    }
+
     // Actions
     focus() {
         if (this.textInput) {
@@ -111,6 +122,27 @@ export default class UIDetailsInput<Props, State>
     blur() {
         if (this.textInput) {
             this.textInput.blur();
+        }
+    }
+
+    clear() {
+        if (this.textInput) {
+            this.textInput.clear();
+        }
+    }
+
+    // Events
+    onChangeText(text: string) {
+        const { onChangeText } = this.props;
+        if (onChangeText) {
+            onChangeText(text);
+        }
+    }
+
+    onKeyPress(e: any) {
+        const { onKeyPress } = this.props;
+        if (onKeyPress) {
+            onKeyPress(e);
         }
     }
 
@@ -137,13 +169,10 @@ export default class UIDetailsInput<Props, State>
             maxLines,
             onFocus,
             onBlur,
-            onChangeText,
             onSubmitEditing,
             placeholder,
-            hidePlaceholder,
             returnKeyType,
             secureTextEntry,
-            value,
             testID,
         } = this.props;
 
@@ -164,9 +193,10 @@ export default class UIDetailsInput<Props, State>
                 numberOfLines={maxLines}
                 onFocus={onFocus}
                 onBlur={onBlur}
-                onChangeText={text => onChangeText(text)}
+                onChangeText={text => this.onChangeText(text)}
                 onSubmitEditing={onSubmitEditing}
-                placeholder={hidePlaceholder ? '' : placeholder}
+                onKeyPress={e => this.onKeyPress(e)}
+                placeholder={this.hidePlaceholder() ? '' : placeholder}
                 placeholderTextColor={UIColor.textTertiary()}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
@@ -174,7 +204,7 @@ export default class UIDetailsInput<Props, State>
                 selectionColor={UIColor.primary()}
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
-                value={`${value}`}
+                value={this.getValue()}
                 testID={testID}
             />
         );
