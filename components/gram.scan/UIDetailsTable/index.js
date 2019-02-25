@@ -52,7 +52,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     navigateTo(screen: ?string) {
         const { navigation } = this.props;
         if (navigation && screen) {
-            navigation.navigate(screen);
+            navigation.push(screen);
         }
     }
 

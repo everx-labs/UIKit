@@ -18,8 +18,6 @@ import type { ReactNavigation } from '../../navigation/UINavigationBar';
 const styles = StyleSheet.create({
     container: {
         marginTop: UIConstant.mediumContentOffset(),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         backgroundColor: 'transparent',
     },
     singleHeight: {
@@ -35,11 +33,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#E7EBED',
     },
     marginDefault: {
-        margin: UIConstant.contentOffset(),
+        marginHorizontal: UIConstant.contentOffset(),
     },
     menuTrigger: {
         paddingHorizontal: UIConstant.contentOffset(),
-        height: UIConstant.bigCellHeight(),
+        height: UIConstant.defaultCellHeight(),
     },
 });
 
@@ -51,7 +49,6 @@ type Props = {
     navigation?: ReactNavigation,
     screenWidth: number,
     hidden: boolean,
-    menuItemsInRow: boolean,
     menuItems: NavigationMenuList,
     searchExpression: string,
     onChangeSearchExpression: ((string) => void) | null,
@@ -62,8 +59,8 @@ type Props = {
 
 type State = {
     selectedIndex: number,
-    leftPartRightEdge: number,
-    centerLeftEdge: number,
+    leftWidth: number,
+    rightWidth: number,
 };
 
 export default class UITopBar extends UIComponent<Props, State> {
@@ -84,20 +81,20 @@ export default class UITopBar extends UIComponent<Props, State> {
 
         this.state = {
             selectedIndex: 0,
-            leftPartRightEdge: 0,
-            centerLeftEdge: 0,
+            leftWidth: 0,
+            rightWidth: 0,
         };
     }
 
     // Events
-    onLeftMenuLayout(e: any) {
+    onLeftLayout(e: any) {
         const { width } = e.nativeEvent.layout;
-        this.setLeftPartRightEdge(width);
+        this.setLeftWidth(width);
     }
 
-    onSearchFieldLayout(e: any) {
-        const { x } = e.nativeEvent.layout;
-        this.setCenterLeftEdge(x);
+    onRightLayout(e: any) {
+        const { width } = e.nativeEvent.layout;
+        this.setRightWidth(width);
     }
 
     // Setters
@@ -105,12 +102,12 @@ export default class UITopBar extends UIComponent<Props, State> {
         this.setStateSafely({ selectedIndex });
     }
 
-    setLeftPartRightEdge(leftPartRightEdge: number) {
-        this.setStateSafely({ leftPartRightEdge });
+    setLeftWidth(leftWidth: number) {
+        this.setStateSafely({ leftWidth });
     }
 
-    setCenterLeftEdge(centerLeftEdge: number) {
-        this.setStateSafely({ centerLeftEdge });
+    setRightWidth(rightWidth: number) {
+        this.setStateSafely({ rightWidth });
     }
 
     // Getters
@@ -123,26 +120,25 @@ export default class UITopBar extends UIComponent<Props, State> {
         return this.networksList[index].title;
     }
 
-    getLeftPartRightEdge() {
-        return this.state.leftPartRightEdge;
+    getLeftWidth() {
+        return this.state.leftWidth;
     }
 
-    getCenterLeftEdge() {
-        return this.state.centerLeftEdge;
+    getRightWidth() {
+        return this.state.rightWidth;
     }
 
-    getLeftOverlap() {
-        const leftPartRightEdge = this.getLeftPartRightEdge();
-        const centerLeftEdge = this.getCenterLeftEdge();
-        return this.props.onChangeSearchExpression
-            && leftPartRightEdge > centerLeftEdge;
+    isDoubleHeightNeeded() {
+        const { screenWidth, onChangeSearchExpression } = this.props;
+        const leftWidth = this.getLeftWidth();
+        return onChangeSearchExpression && leftWidth > (screenWidth / 4);
     }
 
     // Actions
     navigateTo(screenName: string) {
         const { navigation } = this.props;
         if (screenName && navigation) {
-            navigation.navigate(screenName);
+            navigation.push(screenName);
         }
     }
 
@@ -178,8 +174,8 @@ export default class UITopBar extends UIComponent<Props, State> {
     renderLeftPart() {
         return (
             <View
-                onLayout={e => this.onLeftMenuLayout(e)}
-                style={{ flexDirection: 'row' }}
+                onLayout={e => this.onLeftLayout(e)}
+                style={UIStyle.centerLeftContainer}
             >
                 {this.renderIcon()}
                 {this.renderIcon()}
@@ -189,18 +185,24 @@ export default class UITopBar extends UIComponent<Props, State> {
     }
 
     renderMenu() {
-        if (this.props.menuItemsInRow) {
+        const { onPressShowMenu, onChangeSearchExpression, screenWidth } = this.props;
+        const isDoubleHeightNeeded = this.isDoubleHeightNeeded();
+        const rightWidth = this.getRightWidth();
+        const shareOfWidth = !onChangeSearchExpression || isDoubleHeightNeeded ? 1 / 2 : 1 / 4;
+        if (screenWidth * shareOfWidth >= rightWidth) {
             return this.renderRowMenu();
         }
-        if (!this.props.onPressShowMenu) {
+        if (!onPressShowMenu) {
             return null;
         }
         return (
-            <UIImageButton
-                image="menu"
-                buttonStyle={styles.marginDefault}
-                onPress={() => this.props.onPressShowMenu()}
-            />
+            <View style={UIStyle.justifyCenter}>
+                <UIImageButton
+                    image="menu"
+                    buttonStyle={styles.marginDefault}
+                    onPress={() => onPressShowMenu()}
+                />
+            </View>
         );
     }
 
@@ -220,7 +222,10 @@ export default class UITopBar extends UIComponent<Props, State> {
             );
         });
         return (
-            <View style={UIStyle.centerLeftContainer}>
+            <View
+                onLayout={e => this.onRightLayout(e)}
+                style={UIStyle.centerLeftContainer}
+            >
                 {menu}
             </View>
         );
@@ -243,7 +248,6 @@ export default class UITopBar extends UIComponent<Props, State> {
                     onChangeSearchExpression={onChangeSearchExpression}
                     onFocus={onFocus}
                     onBlur={onBlur}
-                    onLayout={e => this.onSearchFieldLayout(e)}
                 />
             </View>
         );
@@ -253,13 +257,18 @@ export default class UITopBar extends UIComponent<Props, State> {
         if (this.props.hidden) {
             return null;
         }
-        const leftOverlap = this.getLeftOverlap();
-        const heightStyle = leftOverlap ? styles.doubleHeight : styles.singleHeight;
+        const isDoubleNeeded = this.isDoubleHeightNeeded();
+        const heightStyle = isDoubleNeeded ? styles.doubleHeight : styles.singleHeight;
+        const topSearchField = isDoubleNeeded ? null : this.renderSearchField();
+        const bottomSearchField = isDoubleNeeded ? this.renderSearchField() : null;
         return (
             <View style={[styles.container, heightStyle]}>
-                {this.renderSearchField()}
-                {this.renderLeftPart()}
-                {this.renderMenu()}
+                {bottomSearchField}
+                <View style={UIStyle.rowSpaceContainer}>
+                    {topSearchField}
+                    {this.renderLeftPart()}
+                    {this.renderMenu()}
+                </View>
             </View>
         );
     }
@@ -270,7 +279,6 @@ export default class UITopBar extends UIComponent<Props, State> {
 UITopBar.defaultProps = {
     hidden: false,
     screenWidth: 0,
-    menuItemsInRow: false,
     menuItems: [],
     searchExpression: '',
     onChangeSearchExpression: null,
