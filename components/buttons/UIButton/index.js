@@ -195,6 +195,7 @@ export default class UIButton extends UIComponent {
         if (bottomExtend) {
             height *= 2;
         }
+        const testIDProp = testID ? { testID } : null;
         return (
             <View
                 style={[
@@ -206,7 +207,7 @@ export default class UIButton extends UIComponent {
                 ]}
             >
                 <TouchableWithoutFeedback
-                    testID={testID}
+                    {...testIDProp}
                     style={styles.button}
                     disabled={this.isDisabled() || this.shouldShowIndicator()}
                     onPress={() => this.onPress()}

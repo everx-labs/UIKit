@@ -89,6 +89,10 @@ export default class UIDetailsInput<Props, State>
         return this.textInput && this.textInput.isFocused();
     }
 
+    keyboardType() {
+        return this.props.keyboardType;
+    }
+
     containerStyle() {
         return styles.container;
     }
@@ -132,7 +136,6 @@ export default class UIDetailsInput<Props, State>
             autoCapitalize,
             autoFocus,
             editable,
-            keyboardType,
             maxLength,
             maxLines,
             onFocus,
@@ -151,6 +154,7 @@ export default class UIDetailsInput<Props, State>
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const testIDProp = testID ? { testID } : null;
         return (
             <TextInput
                 {...accessibilityLabelProp}
@@ -158,7 +162,7 @@ export default class UIDetailsInput<Props, State>
                 autoCorrect={false}
                 autoFocus={autoFocus}
                 editable={editable}
-                keyboardType={keyboardType}
+                keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={multiline}
                 numberOfLines={maxLines}
@@ -175,7 +179,7 @@ export default class UIDetailsInput<Props, State>
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
                 value={`${value}`}
-                testID={testID}
+                {...testIDProp}
             />
         );
     }
