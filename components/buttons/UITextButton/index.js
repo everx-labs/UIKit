@@ -59,9 +59,10 @@ class UITextButton extends UIComponent {
         const {
             testID, buttonStyle, onPress, disabled,
         } = this.props;
+        const testIDProp = testID ? { testID } : null;
         return (
             <TouchableOpacity
-                testID={testID}
+                {...testIDProp}
                 style={[
                     styles.textButton,
                     buttonStyle,
