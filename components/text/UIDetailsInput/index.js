@@ -37,7 +37,7 @@ export type DetailsProps = {
     autoFocus: boolean,
     containerStyle: StylePropType,
     comment: string,
-    commentColor?: string,
+    commentColor?: string | null,
     editable: boolean,
     floatingTitle: boolean,
     hideBottomLine: boolean,
@@ -91,6 +91,10 @@ export default class UIDetailsInput<Props, State>
         return this.textInput && this.textInput.isFocused();
     }
 
+    keyboardType() {
+        return this.props.keyboardType;
+    }
+
     containerStyle() {
         return styles.container;
     }
@@ -101,6 +105,10 @@ export default class UIDetailsInput<Props, State>
 
     textViewStyle() {
         return styles.textView;
+    }
+
+    commentColor() {
+        return this.props.commentColor;
     }
 
     hidePlaceholder() {
@@ -164,7 +172,6 @@ export default class UIDetailsInput<Props, State>
             autoCapitalize,
             autoFocus,
             editable,
-            keyboardType,
             maxLength,
             maxLines,
             onFocus,
@@ -180,6 +187,7 @@ export default class UIDetailsInput<Props, State>
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const testIDProp = testID ? { testID } : null;
         return (
             <TextInput
                 {...accessibilityLabelProp}
@@ -187,7 +195,7 @@ export default class UIDetailsInput<Props, State>
                 autoCorrect={false}
                 autoFocus={autoFocus}
                 editable={editable}
-                keyboardType={keyboardType}
+                keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={multiline}
                 numberOfLines={maxLines}
@@ -206,6 +214,7 @@ export default class UIDetailsInput<Props, State>
                 secureTextEntry={secureTextEntry}
                 value={this.getValue()}
                 testID={testID}
+                {...testIDProp}
             />
         );
     }
@@ -239,25 +248,33 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
-    renderTextView() {
-        const { hideBottomLine, commentColor } = this.props;
-        const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
-        const bottomLineColor = commentColor ? { borderBottomColor: commentColor } : null;
+    renderTexFragment() {
         return (
-            <View style={[this.textViewStyle(), bottomLine, bottomLineColor]}>
+            <React.Fragment>
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
+            </React.Fragment>
+        );
+    }
+
+    renderTextView() {
+        const { hideBottomLine } = this.props;
+        const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
+        const bottomLineColor = this.commentColor() ? { borderBottomColor: this.commentColor() } : null;
+        return (
+            <View style={[this.textViewStyle(), bottomLine, bottomLineColor]}>
+                {this.renderTexFragment()}
             </View>
         );
     }
 
     renderComment() {
-        const { comment, commentColor } = this.props;
+        const { comment } = this.props;
         if (!comment) {
             return null;
         }
-        const color = commentColor ? { color: commentColor } : null;
+        const color = this.commentColor() ? { color: this.commentColor() } : null;
         return (
             <Text
                 style={[

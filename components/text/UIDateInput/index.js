@@ -6,8 +6,8 @@ import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/T
 
 import UIDetailsInput from '../UIDetailsInput';
 
-import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
+import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
@@ -16,20 +16,21 @@ import type { DetailsProps, DetailsState } from '../UIDetailsInput';
 
 import Moment from 'moment';
 
-const textInputFont = StyleSheet.flatten(UITextStyle.primaryBodyRegular) || {};
-delete textInputFont.lineHeight;
-
 const styles = StyleSheet.create({
-    textInputView: {
+    missingValueView: {
         zIndex: -1,
-        flex: 1,
         position: 'absolute',
+        top: null,
+        left: 0,
+        bottom: null,
         flexDirection: 'row',
         backgroundColor: 'transparent',
     },
-    textInput: {
-        ...textInputFont,
-        flex: 1,
+    transparentValue: {
+        color: 'transparent',
+    },
+    trailingValue: {
+        color: UIColor.textSecondary(),
     },
 });
 
@@ -38,7 +39,6 @@ type Props = DetailsProps & {
     dateComponents?: string[],
     initialEpochTime?: number | null,
     separator?: string,
-    keyboardType?: KeyboardType,
     maxLength?: number,
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
@@ -53,7 +53,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         dateComponents: ['year', 'month', 'day'],
         separator: '.',
         initialEpochTime: null,
-        keyboardType: Platform.OS === 'web' ? 'default' : 'number-pad',
         maxLength: UIConstant.shortDateLength(),
         onChangeDate: () => {},
     };
@@ -103,8 +102,12 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     // Getters
-    textInputStyle() {
-        return styles.textInput;
+    commentColor() {
+        return this.isValidDate() ? null : UIColor.error();
+    }
+
+    keyboardType() {
+        return Platform.OS === 'web' ? 'default' : 'number-pad';
     }
 
     isValidDate() {
@@ -192,13 +195,16 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         const missing = this.getPattern().substring(date.length);
         return (
-            <View style={styles.textInputView}>
+            <View style={styles.missingValueView}>
                 <Text
-                    style={UITextStyle.primaryBodyRegular}
+                    style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
                 >
                     {date}
-                    <Text style={UITextStyle.secondaryBodyRegular} selectable={false}>
+                    <Text
+                        style={[this.textInputStyle(), styles.trailingValue]}
+                        selectable={false}
+                    >
                         {missing}
                     </Text>
                 </Text>
@@ -206,16 +212,12 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTextView() {
-        const { hideBottomLine } = this.props;
-        const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
-        const bottomLineColor = !this.isValidDate() ? { borderBottomColor: UIColor.error() } : null;
-
+    renderTexFragment() {
         return (
-            <View style={[this.textViewStyle(), bottomLine, bottomLineColor]}>
+            <React.Fragment>
                 {this.renderTextInput()}
                 {this.renderMissingValue()}
-            </View>
+            </React.Fragment>
         );
     }
 }

@@ -505,7 +505,7 @@ const ru = {
     Gram50: 'Grams', // 25,26,27,28,29,30 grams
 
     // Dates
-    DateSymbols: { year: 'YYYY', month: 'MM', day: 'DD' }, // TODO: Translate
+    DateSymbols: { year: 'ГГГГ', month: 'ММ', day: 'ДД' },
 };
 
 export default ru;

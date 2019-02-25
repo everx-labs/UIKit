@@ -5,26 +5,26 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import UIDetailsInput from '../UIDetailsInput';
 
-import UIStyle from '../../../helpers/UIStyle';
+import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 
 import type { DetailsProps, DetailsState } from '../UIDetailsInput';
 
-const textInputFont = StyleSheet.flatten(UITextStyle.primaryBodyRegular) || {};
-delete textInputFont.lineHeight;
-
 const styles = StyleSheet.create({
-    textInputView: {
+    trailingValueView: {
         zIndex: -1,
-        flex: 1,
         position: 'absolute',
+        top: null,
+        left: 0,
+        bottom: null,
         flexDirection: 'row',
         backgroundColor: 'transparent',
-        overflow: 'scroll',
     },
-    textInput: {
-        ...textInputFont,
-        flex: 1,
+    transparentValue: {
+        color: 'transparent',
+    },
+    trailingValue: {
+        color: UIColor.textSecondary(),
     },
 });
 
@@ -47,17 +47,18 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         onRightButtonPress: () => {},
     };
 
+    // Getters
     containerStyle() {
         const { rightButton } = this.props;
         const flex = rightButton && rightButton.length > 0 ? { flex: 1 } : null;
-
         return flex;
     }
 
-    textInputStyle() {
-        return styles.textInput;
+    keyboardType() {
+        return 'decimal-pad';
     }
 
+    // Render
     renderRightButton() {
         const {
             rightButton,
@@ -86,14 +87,18 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         if ((trailingValue?.length || 0) === 0) {
             return null;
         }
+
         return (
-            <View style={styles.textInputView}>
+            <View style={styles.trailingValueView}>
                 <Text
-                    style={UITextStyle.primaryBodyRegular}
+                    style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
                 >
                     {value}
-                    <Text style={UITextStyle.secondaryBodyRegular} selectable={false}>
+                    <Text
+                        style={[this.textInputStyle(), styles.trailingValue]}
+                        selectable={false}
+                    >
                         {trailingValue}
                     </Text>
                 </Text>
@@ -101,17 +106,13 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTextView() {
-        const { hideBottomLine, commentColor } = this.props;
-        const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
-        const bottomLineColor = commentColor ? { borderBottomColor: commentColor } : null;
-
+    renderTexFragment() {
         return (
-            <View style={[this.textViewStyle(), bottomLine, bottomLineColor]}>
+            <React.Fragment>
                 {this.renderTextInput()}
                 {this.renderTrailingValue()}
                 {this.renderRightButton()}
-            </View>
+            </React.Fragment>
         );
     }
 }
