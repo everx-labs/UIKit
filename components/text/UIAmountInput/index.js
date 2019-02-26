@@ -6,7 +6,6 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import UIDetailsInput from '../UIDetailsInput';
 
 import UIColor from '../../../helpers/UIColor';
-import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 
 import type { DetailsProps, DetailsState } from '../UIDetailsInput';
@@ -88,6 +87,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         if ((trailingValue?.length || 0) === 0) {
             return null;
         }
+
         return (
             <View style={styles.trailingValueView}>
                 <Text
@@ -106,17 +106,13 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTextView() {
-        const { hideBottomLine, commentColor } = this.props;
-        const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
-        const bottomLineColor = commentColor ? { borderBottomColor: commentColor } : null;
-
+    renderTexFragment() {
         return (
-            <View style={[this.textViewStyle(), bottomLine, bottomLineColor]}>
+            <React.Fragment>
                 {this.renderTextInput()}
                 {this.renderTrailingValue()}
                 {this.renderRightButton()}
-            </View>
+            </React.Fragment>
         );
     }
 }
