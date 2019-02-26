@@ -9,6 +9,7 @@ import UIConstant from '../../../helpers/UIConstant';
 
 type Props = {
     presetName: string,
+    screenWidth: number,
 };
 
 type State = {};
@@ -102,12 +103,15 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
 
     // Render
     render() {
-        const preset = UIBackgroundView.getPreset(this.props.presetName);
+        const { screenWidth, presetName } = this.props;
+        const preset = UIBackgroundView.getPreset(presetName);
         if (!preset) {
             return null;
         }
         const { backgroundStyle, image } = preset;
-        const imageView = image ? <View style={UIStyle.backgroundImageContainer} /> : null;
+        const imageView = image && screenWidth > UIConstant.elasticWidthBroad()
+            ? <View style={UIStyle.backgroundImageContainer} />
+            : null;
         return (
             <View style={[UIStyle.absoluteFillObject, backgroundStyle]}>
                 {imageView}
@@ -119,5 +123,6 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
 }
 
 UIBackgroundView.defaultProps = {
+    screenWidth: 0,
     presetName: '',
 };

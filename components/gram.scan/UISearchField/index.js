@@ -58,12 +58,15 @@ export default class UISearchField extends UIComponent<Props, State> {
         if (!screenWidth) {
             return null;
         }
+        const placeholder = screenWidth > UIConstant.elasticWidthBroad()
+            ? UILocalized.EnterHashTransactionAccountOrBlock
+            : `${UILocalized.SearchByHash}...`;
         return (
             <View style={[styles.container, contentStyle, UIStyle.centerLeftContainer]}>
                 <Image source={searchIcon} style={UIStyle.marginRightSmall} />
                 <UITextInput
                     value={this.getSearchExpression()}
-                    placeholder={UILocalized.EnterHashTransactionAccountOrBlock}
+                    placeholder={placeholder}
                     onChangeText={newValue => this.setSearchExpression(newValue)}
                     onFocus={onFocus}
                     onBlur={onBlur}
