@@ -48,6 +48,7 @@ const UI_COLOR_OVERLAY_20 = 'rgba(16, 32, 39, 0.2)';
 const UI_COLOR_OVERLAY_0 = 'rgba(16, 32, 39, 0)';
 
 const UI_COLOR_UNCONFIRMED_PASSPORT = '#FF9800';
+const UI_COLOR_WALLET_VERSION = '#BEC4C8';
 
 const UIColorDefaultAvatar =
   [
@@ -248,5 +249,9 @@ export default class UIColor {
     // Passport
     static unconfirmedPassport() {
         return UI_COLOR_UNCONFIRMED_PASSPORT;
+    }
+
+    static walletVersion() {
+        return UI_COLOR_WALLET_VERSION;
     }
 }
