@@ -69,4 +69,14 @@ export default class UIDevice {
     static isMobile() {
         return UI_IS_MOBILE;
     }
+
+    static appName(): string {
+        return Platform.OS === 'web' ? null : DeviceInfo.getApplicationName();
+    }
+
+    static appVersion(): string {
+        return Platform.OS === 'web' ?
+            null
+            : `${DeviceInfo.getVersion()}.${DeviceInfo.getBuildNumber()}`;
+    }
 }
