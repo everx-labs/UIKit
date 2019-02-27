@@ -49,6 +49,7 @@ import UISearchField from './components/gram.scan/UISearchField';
 import UISectionHeader from './components/text/UISectionHeader';
 import UISeparator from './components/design/UISeparator';
 import UIShareManager from './helpers/UIShareManager';
+import UISlider from './components/gram.scan/UISlider';
 import UISpinnerOverlay from './components/UISpinnerOverlay';
 import UISplitViewController from './controllers/UISplitViewController';
 import UIStyle from './helpers/UIStyle';
@@ -123,6 +124,7 @@ export {
     UISectionHeader,
     UISeparator,
     UIShareManager,
+    UISlider,
     UISpinnerOverlay,
     UISplitViewController,
     UIStyle,

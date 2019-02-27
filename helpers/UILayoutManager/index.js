@@ -1,35 +1,63 @@
+// @flow
 import React from 'react';
 import { Animated, View } from 'react-native';
+import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
 import UIStyle from '../../helpers/UIStyle';
 import UIComponent from '../../components/UIComponent';
 
 let masterRef = null;
 
-export default class UILayoutManager extends UIComponent {
+export type Position = ?{ left: number, top: number };
+
+type AnimationParams = ?{
+    type?: string,
+    showDuration?: number,
+    hideDuration?: number,
+    delay?: number,
+}
+
+type ShowParams = {
+    component: React$Node,
+    animation: AnimationParams,
+    position?: Position,
+};
+
+type Props = {};
+
+type State = {
+    visible: boolean,
+    position: Position,
+    component: ?React$Node,
+    opacity: AnimatedValue,
+};
+
+export default class UILayoutManager extends UIComponent<Props, State> {
     static Animation = {
         Fade: 'fade',
     };
 
-    static showComponent(args) {
+    static showComponent(args: ShowParams) {
         if (masterRef) {
             masterRef.showComponent(args);
         }
     }
 
-    static hideComponent(args) {
+    static hideComponent() {
         if (masterRef) {
-            masterRef.hideComponent(args);
+            masterRef.hideComponent();
         }
     }
 
-    static setPosition(position) {
+    static setPosition(position: Position) {
         if (masterRef) {
             masterRef.setPosition(position);
         }
     }
 
-    constructor(props) {
+    animation: AnimationParams;
+
+    constructor(props: Props) {
         super(props);
         this.animation = null;
 
@@ -55,25 +83,25 @@ export default class UILayoutManager extends UIComponent {
     }
 
     // Setters
-    setVisible(visible = true, callback) {
+    setVisible(visible: boolean = true, callback?: () => void) {
         this.setStateSafely({ visible }, callback);
     }
 
-    setComponent(component) {
+    setComponent(component: React$Node) {
         this.setStateSafely({ component });
     }
 
-    setPosition(position) {
+    setPosition(position: Position) {
         this.setStateSafely({ position });
     }
 
-    setOpacity(opacity) {
+    setOpacity(opacity: AnimatedValue) {
         this.setStateSafely({ opacity });
     }
 
     setParams({
         component, position, visible, opacity,
-    }, callback) {
+    }: State, callback?: () => void) {
         this.setStateSafely({
             component, position, visible, opacity,
         }, callback);
@@ -97,7 +125,7 @@ export default class UILayoutManager extends UIComponent {
     }
 
     // Actions
-    showComponent({ component, animation, position }) {
+    showComponent({ component, animation, position }: ShowParams) {
         this.animation = animation;
         this.setParams({
             visible: true,
@@ -107,12 +135,15 @@ export default class UILayoutManager extends UIComponent {
         }, () => this.animateShow(animation));
     }
 
-    animateShow({ showDuration, delay }) {
-        Animated.timing(this.state.opacity, {
-            toValue: 1,
-            duration: showDuration,
-            delay,
-        }).start();
+    animateShow(animationParams: AnimationParams) {
+        if (animationParams) {
+            const { showDuration, delay } = animationParams;
+            Animated.timing(this.state.opacity, {
+                toValue: 1,
+                duration: showDuration,
+                delay,
+            }).start();
+        }
     }
 
     hideComponent() {
@@ -126,7 +157,7 @@ export default class UILayoutManager extends UIComponent {
         });
     }
 
-    animateHide(animation, callback) {
+    animateHide(animation: AnimationParams, callback?: () => void) {
         if (!animation) {
             return;
         }
@@ -138,10 +169,11 @@ export default class UILayoutManager extends UIComponent {
 
     // Render
     render() {
-        if (!this.isVisible() || !this.getPosition()) {
+        const position = this.getPosition();
+        if (!this.isVisible() || !position) {
             return null;
         }
-        const { top, left } = this.getPosition();
+        const { top, left } = position;
         const opacity = this.getOpacity();
         return (
             <Animated.View

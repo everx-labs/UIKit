@@ -6,6 +6,7 @@ const UI_COLOR_WHITE = '#FFFFFF';
 const UI_COLOR_FA = '#FAFAFA';
 const UI_COLOR_DARK = '#102027';
 const UI_COLOR_GREY = '#727C81';
+const UI_COLOR_GREY_1 = '#EBEDEE';
 const UI_COLOR_LIGHT = '#CFD8DC';
 const UI_COLOR_BLACK_80 = 'rgba(0,0,0,0.8)';
 const UI_COLOR_WHITE_80 = 'rgba(255,255,255,0.8)';
@@ -92,6 +93,10 @@ export default class UIColor {
 
     static grey() {
         return UI_COLOR_GREY;
+    }
+
+    static colorGrey1() {
+        return UI_COLOR_GREY_1;
     }
 
     static msgSeparator() {

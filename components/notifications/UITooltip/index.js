@@ -12,6 +12,8 @@ import UILayoutManager from '../../../helpers/UILayoutManager';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIDevice from '../../../helpers/UIDevice';
 
+import type { Position } from '../../../helpers/UILayoutManager';
+
 type Props = {
     message: string,
     triggerKey: string,
@@ -23,7 +25,6 @@ type Props = {
 type State = {};
 
 type Point = { x: number, y: number };
-type Position = { left: number, top: number };
 type Preset = { position: Position, containerStyle: StylePropType };
 
 const tooltipDelay = 200;

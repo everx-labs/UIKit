@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
-const UI_SWIPE_TO_DISMISS_TRESHOLD = 100;
+const UI_SWIPE_TRESHOLD = 100;
 const UI_COVER_BOUNCE_OFFSET = 20;
 
 const UI_TINY_BORDER_RADIUS = 2;
@@ -22,6 +22,8 @@ const UI_GIANT_CONTENT_OFFSET = 136;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 6;
+
+const UI_TINY_ICON_SIZE = 4;
 
 const UI_TINY_BUTTON_HEIGHT = 20;
 const UI_SMALL_BUTTON_HEIGHT = 32;
@@ -67,6 +69,7 @@ const UI_TAB_WIDTH = 96;
 const UI_PASSWORD_PROMPT_WIDTH = 416;
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
+const UI_STATUS_CARD_WIDTH = 240;
 
 const UI_ACTIONSHEET_ITEM_HEIGHT = 48;
 const UI_MENU_WIDTH = 176; // menu for web
@@ -124,8 +127,8 @@ export default class UIConstant {
         return UI_ANIMATION_DURATION;
     }
 
-    static swipeToDismissTreshold() {
-        return UI_SWIPE_TO_DISMISS_TRESHOLD;
+    static swipeTreshold() {
+        return UI_SWIPE_TRESHOLD;
     }
 
     static coverBounceOffset() {
@@ -191,6 +194,10 @@ export default class UIConstant {
     }
 
     // Button heights
+    static tinyIconSize() {
+        return UI_TINY_ICON_SIZE;
+    }
+
     static tinyButtonHeight() {
         return UI_TINY_BUTTON_HEIGHT;
     }
@@ -323,6 +330,10 @@ export default class UIConstant {
 
     static toastWidth() {
         return UI_TOAST_WIDTH;
+    }
+
+    static statusCardWidth() {
+        return UI_STATUS_CARD_WIDTH;
     }
 
     // Action sheet

@@ -501,6 +501,7 @@ const en = {
     // Gram.Scan
     EnterHashTransactionAccountOrBlock: 'Enter Hash transaction, account or block',
     SearchByHash: 'Search by hash',
+    PasteFromClipboard: 'Paste from clipboard',
     Gram01: 'Gram', // 01 gram
     Gram11: 'Grams', // 21 grams
     Gram24: 'Grams', // 22,23,24 grams

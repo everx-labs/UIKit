@@ -1,17 +1,18 @@
 // @flow
 import React from 'react';
+import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, Image } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UILocalized from '../../../helpers/UILocalized';
 import UITextInput from '../../text/UITextInput';
 
 import searchIcon from '../../../assets/ico-search/ico-search.png';
 
 type Props = {
-    screenWidth: number,
+    containerStyle?: StylePropType,
+    placeholder: string,
     onChangeSearchExpression: (string) => void,
     onFocus: () => void,
     onBlur: () => void,
@@ -46,27 +47,19 @@ export default class UISearchField extends UIComponent<Props, State> {
         return this.state.searchExpression;
     }
 
-    getContentStyle() {
-        return this.props.screenWidth >= UIConstant.elasticWidthBroad()
-            ? UIStyle.halfWidthContainer
-            : UIStyle.fullWidthContainer;
-    }
-
     render() {
-        const contentStyle = this.getContentStyle();
-        const { onFocus, onBlur, screenWidth } = this.props;
-        if (!screenWidth) {
-            return null;
-        }
-        const placeholder = screenWidth > UIConstant.elasticWidthBroad()
-            ? UILocalized.EnterHashTransactionAccountOrBlock
-            : `${UILocalized.SearchByHash}...`;
+        const { onFocus, onBlur } = this.props;
         return (
-            <View style={[styles.container, contentStyle, UIStyle.centerLeftContainer]}>
+            <View style={[
+                styles.container,
+                UIStyle.centerLeftContainer,
+                this.props.containerStyle,
+            ]}
+            >
                 <Image source={searchIcon} style={UIStyle.marginRightSmall} />
                 <UITextInput
                     value={this.getSearchExpression()}
-                    placeholder={placeholder}
+                    placeholder={this.props.placeholder}
                     onChangeText={newValue => this.setSearchExpression(newValue)}
                     onFocus={onFocus}
                     onBlur={onBlur}
@@ -79,7 +72,7 @@ export default class UISearchField extends UIComponent<Props, State> {
 }
 
 UISearchField.defaultProps = {
-    screenWidth: 0,
+    placeholder: '',
     onChangeSearchExpression: () => {},
     onFocus: () => {},
     onBlur: () => {},

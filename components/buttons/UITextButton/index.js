@@ -11,9 +11,14 @@ const styles = StyleSheet.create({
     textButton: {
         height: UIConstant.buttonHeight(),
         backgroundColor: 'transparent',
-        justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row',
+    },
+    alignLeft: {
+        justifyContent: 'flex-start',
+    },
+    alignCenter: {
+        justifyContent: 'center',
     },
     detailsText: {
         marginRight: UIConstant.contentOffset(),
@@ -31,6 +36,7 @@ type Props = {
     buttonStyle?: StylePropType,
     textStyle?: StylePropType,
     detailsStyle?: StylePropType,
+    align: StylePropType,
     title: string,
     details: string,
     disabled: boolean,
@@ -40,6 +46,11 @@ type Props = {
 type State = {};
 
 class UITextButton extends UIComponent<Props, State> {
+    static Align = {
+        Left: styles.alignLeft,
+        Center: styles.alignCenter,
+    };
+
     // Render
     renderTitle() {
         const {
@@ -50,7 +61,9 @@ class UITextButton extends UIComponent<Props, State> {
             : UITextStyle.actionSmallMedium;
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
-            <Text style={[defaultTitleStyle, textStyle, flexGrow]}>
+            <Text
+                style={[defaultTitleStyle, textStyle, flexGrow]}
+            >
                 {title}
             </Text>
         );
@@ -70,7 +83,7 @@ class UITextButton extends UIComponent<Props, State> {
 
     render() {
         const {
-            testID, buttonStyle, onPress, disabled,
+            testID, buttonStyle, onPress, disabled, align,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
         return (
@@ -78,6 +91,7 @@ class UITextButton extends UIComponent<Props, State> {
                 {...testIDProp}
                 style={[
                     styles.textButton,
+                    align,
                     buttonStyle,
                 ]}
                 disabled={disabled}
@@ -98,6 +112,7 @@ UITextButton.defaultProps = {
     title: '',
     details: '',
     disabled: false,
+    align: UITextButton.Align.Left,
     onPress: () => {
     },
 };

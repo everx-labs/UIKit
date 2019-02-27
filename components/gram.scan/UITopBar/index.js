@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import type { MenuItemType } from '../../menus/UIMenuView';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIColor from '../../../helpers/UIColor';
 import UIDot from '../../design/UIDot';
 import UIMenuView from '../../menus/UIMenuView';
 import UITextStyle from '../../../helpers/UITextStyle';
@@ -14,6 +15,7 @@ import UIImageButton from '../../buttons/UIImageButton';
 import UITextButton from '../../buttons/UITextButton';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
+import UILocalized from '../../../helpers/UILocalized';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,10 +29,7 @@ const styles = StyleSheet.create({
         height: UIConstant.bigCellHeight() * 2,
     },
     iconContainer: {
-        width: UIConstant.iconSize(),
-        height: UIConstant.iconSize(),
         margin: UIConstant.contentOffset(),
-        backgroundColor: '#E7EBED',
     },
     marginDefault: {
         marginHorizontal: UIConstant.contentOffset(),
@@ -128,6 +127,18 @@ export default class UITopBar extends UIComponent<Props, State> {
         return this.state.rightWidth;
     }
 
+    getContentStyle() {
+        return this.props.screenWidth >= UIConstant.elasticWidthBroad()
+            ? UIStyle.halfWidthContainer
+            : UIStyle.fullWidthContainer;
+    }
+
+    getPlaceHolder() {
+        return this.props.screenWidth > UIConstant.elasticWidthBroad()
+            ? UILocalized.EnterHashTransactionAccountOrBlock
+            : `${UILocalized.SearchByHash}...`;
+    }
+
     isDoubleHeightNeeded() {
         const { screenWidth, onChangeSearchExpression } = this.props;
         const leftWidth = this.getLeftWidth();
@@ -149,7 +160,7 @@ export default class UITopBar extends UIComponent<Props, State> {
                 <Text style={[UITextStyle.primarySmallMedium, UIStyle.marginRightSmall]}>
                     {this.getSelectedNetwork()}
                 </Text>
-                <UIDot />
+                <UIDot color={UIColor.success()} />
             </View>
         );
         return (
@@ -161,24 +172,22 @@ export default class UITopBar extends UIComponent<Props, State> {
         );
     }
 
-    renderIcon() {
-        return (
-            <TouchableOpacity
-                onPress={() => this.navigateTo('MainScreen')}
-            >
-                <View style={styles.iconContainer} />
-            </TouchableOpacity>
-        );
-    }
-
     renderLeftPart() {
         return (
             <View
                 onLayout={e => this.onLeftLayout(e)}
                 style={UIStyle.centerLeftContainer}
             >
-                {this.renderIcon()}
-                {this.renderIcon()}
+                <UIImageButton
+                    onPress={() => this.navigateTo('MainScreen')}
+                    buttonStyle={styles.iconContainer}
+                    image={UIImageButton.Images.menuContained}
+                />
+                <UIImageButton
+                    onPress={() => this.navigateTo('MainScreen')}
+                    buttonStyle={styles.iconContainer}
+                    image={UIImageButton.Images.gramscan}
+                />
                 {this.renderNetworkMenu()}
             </View>
         );
@@ -198,7 +207,7 @@ export default class UITopBar extends UIComponent<Props, State> {
         return (
             <View style={UIStyle.justifyCenter}>
                 <UIImageButton
-                    image="menu"
+                    image={UIImageButton.Images.menu}
                     buttonStyle={styles.marginDefault}
                     onPress={() => onPressShowMenu()}
                 />
@@ -238,17 +247,24 @@ export default class UITopBar extends UIComponent<Props, State> {
         if (!onChangeSearchExpression) {
             return null;
         }
+        const contentStyle = this.getContentStyle();
         return (
             <View
-                style={[UIStyle.absoluteFillObject, UIStyle.alignCenter, UIStyle.justifyEnd]}
+                style={[
+                    UIStyle.absoluteFillObject,
+                    UIStyle.alignCenter,
+                    UIStyle.justifyEnd,
+                ]}
             >
-                <UISearchField
-                    screenWidth={this.props.screenWidth}
-                    searchExpression={searchExpression}
-                    onChangeSearchExpression={onChangeSearchExpression}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                />
+                <View style={contentStyle}>
+                    <UISearchField
+                        placeholder={this.getPlaceHolder()}
+                        searchExpression={searchExpression}
+                        onChangeSearchExpression={onChangeSearchExpression}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                    />
+                </View>
             </View>
         );
     }
