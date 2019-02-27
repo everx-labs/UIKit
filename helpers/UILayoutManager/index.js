@@ -15,7 +15,7 @@ type AnimationParams = ?{
     showDuration?: number,
     hideDuration?: number,
     delay?: number,
-}
+};
 
 type ShowParams = {
     component: React$Node,
