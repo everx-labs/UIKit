@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 // @flow
 import React from 'react';
 import { StyleSheet, Platform, Modal, View, Dimensions, Animated } from 'react-native';
@@ -127,6 +128,10 @@ export default class UIModalController
     }
 
     // Getters
+
+    isControllerVisible(): boolean {
+        return this.state.controllerVisible || false;
+    }
 
     getDialogStyle() {
         let { width, height } = this.state;
