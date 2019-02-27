@@ -309,7 +309,6 @@ export default class UIModalController
         );
     }
 
-    // eslint-disable-next-line class-methods-use-this
     renderContentView(contentHeight: number): ?React$Element<*> {
         return null;
     }
