@@ -6,15 +6,16 @@ import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
 
 export default class UISplitViewController extends UIController {
+    static shouldSplitView() {
+        // TODO: make it dynamic by listening to the shared split view instance
+        return !UIDevice.isMobile();
+    }
+
     // constructor
     constructor(props) {
         super(props);
-
         this.state = {
-            shouldSplitView: !UIDevice.isMobile(),
-            fbLoginPhone: '',
-            fbLoginVisible: false,
-            fbLoginCallback: () => {},
+            shouldSplitView: UISplitViewController.shouldSplitView(),
         };
     }
 
