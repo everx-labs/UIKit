@@ -14,6 +14,7 @@ import UIDetailsView from '../../text/UIDetailsView';
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
 type Props = {
+    width: number,
     containerStyle: StylePropType,
     progress: boolean,
     transparent: boolean,
@@ -41,15 +42,22 @@ const styles = StyleSheet.create({
     defaultCard: {
         height: UIConstant.largeCellHeight(),
     },
-    statusCard: {
-        width: UIConstant.statusCardWidth(),
-    },
     statusContentContainer: {
         margin: 0,
     },
 });
 
 export default class UICard extends UIComponent<Props, State> {
+    // Getters
+    getCardStyle() {
+        return StyleSheet.create({
+            cardContainer: {
+                width: this.props.width,
+            },
+        });
+    }
+
+    // Render
     renderProgressCard() {
         return (
             <View style={{ alignItems: 'center' }}>
@@ -101,7 +109,8 @@ export default class UICard extends UIComponent<Props, State> {
             cardStyle = styles.defaultCard;
         } else if (!caption) {
             card = this.renderStatusCard();
-            cardStyle = styles.statusCard;
+            const { cardContainer } = this.getCardStyle();
+            cardStyle = cardContainer;
         } else {
             card = this.renderContentCard();
             cardStyle = styles.defaultCard;
@@ -121,6 +130,7 @@ export default class UICard extends UIComponent<Props, State> {
 }
 
 UICard.defaultProps = {
+    width: 0,
     containerStyle: {},
     progress: false,
     transparent: false,

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { PanResponder, View, Animated } from 'react-native';
+import { PanResponder, Animated, TouchableWithoutFeedback, View } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
@@ -67,6 +67,12 @@ export default class UISlider extends UIComponent<Props, State> {
         }
     }
 
+    onDotsPress() {
+        const activeIndex = this.getActiveIndex();
+        const newActiveIndex = (activeIndex + 1) % this.props.itemsList.length;
+        this.animateMoving(newActiveIndex);
+    }
+
     // Setters
     setActiveIndex(activeIndex: number) {
         this.setStateSafely({ activeIndex });
@@ -119,9 +125,11 @@ export default class UISlider extends UIComponent<Props, State> {
             return <UIDot key={`slider-dot-${Math.random()}`} />;
         });
         return (
-            <View style={[UIStyle.centerContainer, UIStyle.marginTopDefault]}>
-                {dots}
-            </View>
+            <TouchableWithoutFeedback onPress={() => this.onDotsPress()}>
+                <View style={[UIStyle.centerContainer, UIStyle.marginTopDefault]}>
+                    {dots}
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 
@@ -130,14 +138,15 @@ export default class UISlider extends UIComponent<Props, State> {
         const cards = itemsList.map(itemRenderer);
         const marginLeft = this.getMarginLeft();
         return (
-            <View {...this.panResponder.panHandlers}>
+            <React.Fragment>
                 <Animated.View
+                    {...this.panResponder.panHandlers}
                     style={[UIStyle.flexRow, UIStyle.marginTopDefault, { marginLeft }]}
                 >
                     {cards}
                 </Animated.View>
                 {this.renderDots()}
-            </View>
+            </React.Fragment>
         );
     }
 
