@@ -1,5 +1,5 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
@@ -26,7 +26,20 @@ const styles = StyleSheet.create({
     },
 });
 
-class UITextButton extends UIComponent {
+type Props = {
+    testID?: string,
+    buttonStyle?: StylePropType,
+    textStyle?: StylePropType,
+    detailsStyle?: StylePropType,
+    title: string,
+    details: string,
+    disabled: boolean,
+    onPress: () => void,
+};
+
+type State = {};
+
+class UITextButton extends UIComponent<Props, State> {
     // Render
     renderTitle() {
         const {
@@ -75,28 +88,16 @@ class UITextButton extends UIComponent {
             </TouchableOpacity>
         );
     }
+
+    static defaultProps: Props;
 }
 
 export default UITextButton;
 
 UITextButton.defaultProps = {
-    buttonStyle: {},
-    textStyle: {},
-    detailsStyle: {},
     title: '',
     details: '',
     disabled: false,
     onPress: () => {
     },
-};
-
-UITextButton.propTypes = {
-    testID: String,
-    buttonStyle: StylePropType,
-    textStyle: StylePropType,
-    detailsStyle: StylePropType,
-    title: PropTypes.string,
-    details: PropTypes.string,
-    disabled: PropTypes.bool,
-    onPress: PropTypes.func,
 };
