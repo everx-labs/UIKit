@@ -240,6 +240,7 @@ const UIStyle = StyleSheet.create({
     },
     halfWidthContainer: {
         width: '50%',
+        maxWidth: UIConstant.elasticWidthMax() / 2,
     },
     fullWidthContainer: {
         width: '100%',
