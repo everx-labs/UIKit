@@ -61,6 +61,7 @@ const UI_ELASTIC_WIDTH_MEDIUM = 592;
 const UI_ELASTIC_WIDTH_BROAD = 768;
 const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_MAX = 1280;
+const UI_ELASTIC_WIDTH_HUGE = 1600;
 
 const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
 const BACKGROUND_IMAGE_CONTAINER_HEIGHT = 594;
@@ -305,6 +306,10 @@ export default class UIConstant {
 
     static elasticWidthMax() {
         return UI_ELASTIC_WIDTH_MAX;
+    }
+
+    static elasticWidthHuge() {
+        return UI_ELASTIC_WIDTH_HUGE;
     }
 
     static backgroundImageContainerWidth() {
