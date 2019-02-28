@@ -45,7 +45,7 @@ export default class UISlider extends UIComponent<Props, State> {
 
             // Handling responder events
             onPanResponderMove: (evt, { dx }) => {
-                if (Math.abs(dx) > UIConstant.swipeTreshold()) {
+                if (Math.abs(dx) > UIConstant.swipeThreshold()) {
                     this.onSwipe(dx);
                 }
             },

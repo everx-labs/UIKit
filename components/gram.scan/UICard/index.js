@@ -49,13 +49,6 @@ const styles = StyleSheet.create({
 
 export default class UICard extends UIComponent<Props, State> {
     // Getters
-    getCardStyle() {
-        return StyleSheet.create({
-            cardContainer: {
-                width: this.props.width,
-            },
-        });
-    }
 
     // Render
     renderProgressCard() {
@@ -109,8 +102,7 @@ export default class UICard extends UIComponent<Props, State> {
             cardStyle = styles.defaultCard;
         } else if (!caption) {
             card = this.renderStatusCard();
-            const { cardContainer } = this.getCardStyle();
-            cardStyle = cardContainer;
+            cardStyle = { width: this.props.width };
         } else {
             card = this.renderContentCard();
             cardStyle = styles.defaultCard;

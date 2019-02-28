@@ -56,6 +56,9 @@ const UIColorDefaultAvatar =
       '#0097A7', '#009688', '#43A047', '#558B2F', '#F4511E', '#8D6E63', '#78909C',
   ];
 
+const colorStyleSheets = {};
+const backgroundColorStyleSheets = {};
+
 export default class UIColor {
     static Theme = {
         Light: 'light',
@@ -253,5 +256,31 @@ export default class UIColor {
     // Passport
     static unconfirmedPassport() {
         return UI_COLOR_UNCONFIRMED_PASSPORT;
+    }
+
+    static getColorStyle(color) {
+        let sheet = colorStyleSheets[color];
+        if (!sheet) {
+            sheet = StyleSheet.create({
+                style: {
+                    color,
+                },
+            });
+            colorStyleSheets[color] = sheet;
+        }
+        return sheet.style;
+    }
+
+    static getBackgroundColorStyle(color) {
+        let sheet = backgroundColorStyleSheets[color];
+        if (!sheet) {
+            sheet = StyleSheet.create({
+                style: {
+                    backgroundColor: color,
+                },
+            });
+            backgroundColorStyleSheets[color] = sheet;
+        }
+        return sheet.style;
     }
 }

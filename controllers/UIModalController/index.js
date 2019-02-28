@@ -119,7 +119,7 @@ export default class UIModalController
     }
 
     onReleaseSwipe(dy: number) {
-        if (dy > UIConstant.swipeTreshold()) {
+        if (dy > UIConstant.swipeThreshold()) {
             this.onCancelPress();
         } else {
             this.returnToTop();
