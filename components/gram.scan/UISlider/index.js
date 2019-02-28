@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { PanResponder, Animated, TouchableWithoutFeedback, View } from 'react-native';
+import { PanResponder, Animated, TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
@@ -24,6 +24,12 @@ type State = {
     moving: boolean,
 };
 
+const styles = StyleSheet.create({
+    cardsContainer: {
+        marginVertical: UIConstant.contentOffset(),
+    },
+});
+
 export default class UISlider extends UIComponent<Props, State> {
     panResponder: PanResponderInstance;
 
@@ -45,7 +51,7 @@ export default class UISlider extends UIComponent<Props, State> {
 
             // Handling responder events
             onPanResponderMove: (evt, { dx }) => {
-                if (Math.abs(dx) > UIConstant.swipeThreshold()) {
+                if (Math.abs(dx) > UIConstant.smallSwipeThreshold()) {
                     this.onSwipe(dx);
                 }
             },
@@ -126,7 +132,7 @@ export default class UISlider extends UIComponent<Props, State> {
         });
         return (
             <TouchableWithoutFeedback onPress={() => this.onDotsPress()}>
-                <View style={[UIStyle.centerContainer, UIStyle.marginTopDefault]}>
+                <View style={UIStyle.centerContainer}>
                     {dots}
                 </View>
             </TouchableWithoutFeedback>
@@ -141,7 +147,7 @@ export default class UISlider extends UIComponent<Props, State> {
             <React.Fragment>
                 <Animated.View
                     {...this.panResponder.panHandlers}
-                    style={[UIStyle.flexRow, UIStyle.marginTopDefault, { marginLeft }]}
+                    style={[UIStyle.flexRow, styles.cardsContainer, { marginLeft }]}
                 >
                     {cards}
                 </Animated.View>

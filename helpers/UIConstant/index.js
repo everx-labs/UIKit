@@ -4,6 +4,7 @@ import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
 const UI_SWIPE_THRESHOLD = 100;
+const UI_SMALL_SWIPE_THRESHOLD = 20;
 const UI_COVER_BOUNCE_OFFSET = 20;
 
 const UI_TINY_BORDER_RADIUS = 2;
@@ -126,6 +127,10 @@ export default class UIConstant {
     // Animations
     static animationDuration() {
         return UI_ANIMATION_DURATION;
+    }
+
+    static smallSwipeThreshold() {
+        return UI_SMALL_SWIPE_THRESHOLD;
     }
 
     static swipeThreshold() {
