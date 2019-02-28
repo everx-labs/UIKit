@@ -9,12 +9,15 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
+import UIDetailsView from '../../text/UIDetailsView';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
 type Props = {
+    width: number,
     containerStyle: StylePropType,
     progress: boolean,
+    transparent: boolean,
     title: string,
     caption: string,
     details: string,
@@ -25,7 +28,6 @@ type State = {};
 
 const styles = StyleSheet.create({
     container: {
-        height: UIConstant.largeCellHeight(),
         backgroundColor: UIColor.backgroundPrimary(),
         borderRadius: UIConstant.smallBorderRadius(),
         paddingHorizontal: UIConstant.contentOffset(),
@@ -37,24 +39,40 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    defaultCard: {
+        height: UIConstant.largeCellHeight(),
+    },
+    statusContentContainer: {
+        margin: 0,
+    },
 });
 
 export default class UICard extends UIComponent<Props, State> {
+    // Getters
+
+    // Render
     renderProgressCard() {
-        if (!this.props.progress) {
-            return null;
-        }
         return (
             <View style={{ alignItems: 'center' }}>
-                <Image source={icoProgress}/>
+                <Image source={icoProgress} />
             </View>
         );
     }
 
+    renderStatusCard() {
+        const { title, details } = this.props;
+        return (
+            <UIDetailsView
+                value={title}
+                comments={details}
+                containerStyle={styles.statusContentContainer}
+                textStyle={UITextStyle.primaryTitleLight}
+                commentsStyle={UITextStyle.secondaryCaptionRegular}
+            />
+        );
+    }
+
     renderContentCard() {
-        if (this.props.progress) {
-            return null;
-        }
         const { title, caption, details } = this.props;
         return (
             <React.Fragment>
@@ -74,13 +92,27 @@ export default class UICard extends UIComponent<Props, State> {
     }
 
     render() {
+        const {
+            progress, caption, onPress, containerStyle,
+        } = this.props;
+        let card;
+        let cardStyle;
+        if (progress) {
+            card = this.renderProgressCard();
+            cardStyle = styles.defaultCard;
+        } else if (!caption) {
+            card = this.renderStatusCard();
+            cardStyle = { width: this.props.width };
+        } else {
+            card = this.renderContentCard();
+            cardStyle = styles.defaultCard;
+        }
         return (
             <TouchableOpacity
-                onPress={this.props.onPress}
+                onPress={onPress}
             >
-                <View style={[styles.container, this.props.containerStyle]}>
-                    {this.renderProgressCard()}
-                    {this.renderContentCard()}
+                <View style={[styles.container, cardStyle, containerStyle]}>
+                    {card}
                 </View>
             </TouchableOpacity>
         );
@@ -90,8 +122,10 @@ export default class UICard extends UIComponent<Props, State> {
 }
 
 UICard.defaultProps = {
+    width: 0,
     containerStyle: {},
     progress: false,
+    transparent: false,
     title: '',
     caption: '',
     details: '',

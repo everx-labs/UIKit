@@ -51,11 +51,21 @@ const action = {
 };
 
 const UITextStyle = StyleSheet.create({
+    alignCenter: {
+        textAlign: 'center',
+    },
+
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
     primaryHeadlineLight: {
         ...primary,
         ...UIFont.headlineLight(),
+    },
+
+    // HeadLine - fontSize: 48, lineHeight: 64
+    primarySubheadBold: {
+        ...primary,
+        ...UIFont.subheadBold(),
     },
 
     // Title - fontSize: 36, lineHeight: 48

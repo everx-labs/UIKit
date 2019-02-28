@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
-const UI_SWIPE_TO_DISMISS_TRESHOLD = 100;
+const UI_SWIPE_THRESHOLD = 100;
 const UI_COVER_BOUNCE_OFFSET = 20;
 
 const UI_TINY_BORDER_RADIUS = 2;
@@ -22,6 +22,8 @@ const UI_GIANT_CONTENT_OFFSET = 136;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 6;
+
+const UI_TINY_ICON_SIZE = 4;
 
 const UI_TINY_BUTTON_HEIGHT = 20;
 const UI_SMALL_BUTTON_HEIGHT = 32;
@@ -56,9 +58,10 @@ const UI_INITIAL_STYLE_FOR_ALL = Platform.OS === 'web' ? { all: 'initial' } : nu
 const UI_ELASTIC_WIDTH_NARROW = 80;
 const UI_ELASTIC_WIDTH_REGULAR = 304;
 const UI_ELASTIC_WIDTH_MEDIUM = 592;
-const UI_ELASTIC_WIDTH_BROAD = 768;
 const UI_ELASTIC_WIDTH_WIDE = 880;
+const UI_ELASTIC_WIDTH_BROAD = 1000;
 const UI_ELASTIC_WIDTH_MAX = 1280;
+const UI_ELASTIC_WIDTH_HUGE = 1600;
 
 const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
 const BACKGROUND_IMAGE_CONTAINER_HEIGHT = 594;
@@ -125,8 +128,8 @@ export default class UIConstant {
         return UI_ANIMATION_DURATION;
     }
 
-    static swipeToDismissTreshold() {
-        return UI_SWIPE_TO_DISMISS_TRESHOLD;
+    static swipeThreshold() {
+        return UI_SWIPE_THRESHOLD;
     }
 
     static coverBounceOffset() {
@@ -192,6 +195,10 @@ export default class UIConstant {
     }
 
     // Button heights
+    static tinyIconSize() {
+        return UI_TINY_ICON_SIZE;
+    }
+
     static tinyButtonHeight() {
         return UI_TINY_BUTTON_HEIGHT;
     }
@@ -290,16 +297,20 @@ export default class UIConstant {
         return UI_ELASTIC_WIDTH_MEDIUM;
     }
 
-    static elasticWidthBroad() {
-        return UI_ELASTIC_WIDTH_BROAD;
-    }
-
     static elasticWidthWide() {
         return UI_ELASTIC_WIDTH_WIDE;
     }
 
+    static elasticWidthBroad() {
+        return UI_ELASTIC_WIDTH_BROAD;
+    }
+
     static elasticWidthMax() {
         return UI_ELASTIC_WIDTH_MAX;
+    }
+
+    static elasticWidthHuge() {
+        return UI_ELASTIC_WIDTH_HUGE;
     }
 
     static backgroundImageContainerWidth() {

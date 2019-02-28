@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 const UI_COLOR_PRIMARY = '#0088CC';
 const UI_COLOR_SECONDARY = '#FFFFFF';
 const UI_COLOR_TERTIARY = '#FFFFFF';
@@ -6,6 +8,7 @@ const UI_COLOR_WHITE = '#FFFFFF';
 const UI_COLOR_FA = '#FAFAFA';
 const UI_COLOR_DARK = '#102027';
 const UI_COLOR_GREY = '#727C81';
+const UI_COLOR_GREY_1 = '#EBEDEE';
 const UI_COLOR_LIGHT = '#CFD8DC';
 const UI_COLOR_BLACK_80 = 'rgba(0,0,0,0.8)';
 const UI_COLOR_WHITE_80 = 'rgba(255,255,255,0.8)';
@@ -56,6 +59,9 @@ const UIColorDefaultAvatar =
       '#0097A7', '#009688', '#43A047', '#558B2F', '#F4511E', '#8D6E63', '#78909C',
   ];
 
+const colorStyleSheets = {};
+const backgroundColorStyleSheets = {};
+
 export default class UIColor {
     static Theme = {
         Light: 'light',
@@ -93,6 +99,10 @@ export default class UIColor {
 
     static grey() {
         return UI_COLOR_GREY;
+    }
+
+    static colorGrey1() {
+        return UI_COLOR_GREY_1;
     }
 
     static msgSeparator() {
@@ -253,5 +263,31 @@ export default class UIColor {
 
     static walletVersion() {
         return UI_COLOR_WALLET_VERSION;
+    }
+
+    static getColorStyle(color) {
+        let sheet = colorStyleSheets[color];
+        if (!sheet) {
+            sheet = StyleSheet.create({
+                style: {
+                    color,
+                },
+            });
+            colorStyleSheets[color] = sheet;
+        }
+        return sheet.style;
+    }
+
+    static getBackgroundColorStyle(color) {
+        let sheet = backgroundColorStyleSheets[color];
+        if (!sheet) {
+            sheet = StyleSheet.create({
+                style: {
+                    backgroundColor: color,
+                },
+            });
+            backgroundColorStyleSheets[color] = sheet;
+        }
+        return sheet.style;
     }
 }
