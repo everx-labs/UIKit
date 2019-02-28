@@ -86,6 +86,7 @@ const UI_PROFILE_PHOTO_SIZE = 72;
 
 const MAX_DECIMAL_DIGITS = 8;
 const MAX_NUMBER_DIGITS = 9;
+const SHORT_DATE_LENGTH = 10;
 
 const MAX_TEXT_LINE_LENGTH = 200;
 
@@ -404,5 +405,9 @@ export default class UIConstant {
 
     static maxDecimalDigits() {
         return MAX_DECIMAL_DIGITS;
+    }
+
+    static shortDateLength() {
+        return SHORT_DATE_LENGTH;
     }
 }

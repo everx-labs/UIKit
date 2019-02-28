@@ -1,13 +1,18 @@
+/* eslint-disable class-methods-use-this */
 // @flow
 import React from 'react';
-import type { Node } from 'react';
 import {
     View,
     Platform,
     Keyboard,
     SafeAreaView,
+    Dimensions,
+    LayoutAnimation,
+    Easing,
 } from 'react-native';
 
+import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
+import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
 import UIDevice from '../../helpers/UIDevice';
@@ -44,6 +49,11 @@ export type ContentInset = {
     right: number,
     top: number,
     bottom: number,
+};
+
+export type AnimationParameters = {
+    duration: number,
+    easing: string,
 };
 
 export type ControllerProps = {
@@ -140,6 +150,41 @@ export default class UIController<Props, State>
         return null;
     }
 
+    static getEasingFunction(easing: string): (t: number) => number {
+        switch (easing) {
+        case LayoutAnimation.Types.spring:
+            return Easing.elastic();
+        case LayoutAnimation.Types.linear:
+            return Easing.linear;
+        case LayoutAnimation.Types.easeIn:
+            return Easing.in(Easing.ease);
+        case LayoutAnimation.Types.easeOut:
+            return Easing.out(Easing.ease);
+        case LayoutAnimation.Types.easeInEaseOut:
+            return Easing.inOut(Easing.ease);
+        case LayoutAnimation.Types.keyboard:
+            // There is no information about real easing function for keyboard animation.
+            // But people on Internet try to find closely easing functions.
+            return Easing.bezier(0.17, 0.59, 0.4, 0.77);
+            // return Easing.bezier(0.19, 0.35, 0.0625, 0.5);
+        default:
+            return Easing.out(Easing.ease);
+        }
+    }
+
+    static getKeyboardAnimation(event: KeyboardEvent): ?AnimationParameters {
+        const {
+            duration,
+            easing,
+        } = event;
+        return (duration && easing)
+            ? {
+                duration,
+                easing,
+            }
+            : null;
+    }
+
     // constructor
     hasSpinnerOverlay: boolean;
 
@@ -189,27 +234,43 @@ export default class UIController<Props, State>
     }
 
     // Events
-    onKeyboardWillShow(e: any) {
-        const keyboardHeight = e.endCoordinates ? e.endCoordinates.height : e.end.height;
-        this.setContentInset({
-            top: 0,
-            left: 0,
-            bottom: keyboardHeight,
-            right: 0,
+    onKeyboardWillShow(event: KeyboardEvent) {
+        const end = event.endCoordinates;
+        const animation = UIController.getKeyboardAnimation(event);
+        const { container } = this;
+        if (!(container && container.measure)) {
+            this.setBottomInset(end.height, animation);
+            return;
+        }
+        container.measure((
+            x: number,
+            y: number,
+            width: number,
+            height: number,
+            screenX: number,
+            screenY: number,
+        ) => {
+            const screen = Dimensions.get('window');
+            const bottomInset = (screenY + height) - (screen.height - end.height);
+            this.setBottomInset(Math.max(0, bottomInset), animation);
         });
     }
 
-    onKeyboardWillHide(e: any) {
-        this.setContentInset({
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-        });
+    onKeyboardWillHide(event: KeyboardEvent) {
+        this.setContentInset(EmptyInset, UIController.getKeyboardAnimation(event));
     }
 
     // Setters
-    setContentInset(contentInset: ContentInset) {
+    setBottomInset(bottom: number, animation: ?AnimationParameters) {
+        this.setContentInset({
+            top: 0,
+            left: 0,
+            bottom,
+            right: 0,
+        }, animation);
+    }
+
+    setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
         this.setStateSafely({ contentInset });
     }
 
@@ -398,7 +459,9 @@ export default class UIController<Props, State>
     render(): React$Node {
         const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
-                {this.renderSafely()}
+                <View style={UIStyle.flex} ref={this.onSetContainer}>
+                    {this.renderSafely()}
+                </View>
             </SafeAreaView>
         );
         const overlays = [].concat(
@@ -423,4 +486,9 @@ export default class UIController<Props, State>
     keyboardWillHideListener: { remove(): void };
     path: string;
     params: Params;
+    container: ?(React$Component<*> & NativeMethodsMixinType);
+
+    onSetContainer = (container: ?(React$Component<*> & NativeMethodsMixinType)) => {
+        this.container = container;
+    };
 }

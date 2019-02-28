@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import {
     ScrollView,
@@ -145,12 +146,20 @@ class UIDialogController extends UIController {
         this.setStateSafely({ auxInput });
     }
 
-    setContentInset(contentInset) {
+    setContentInset(contentInset, animation) {
         super.setContentInset(contentInset);
-        Animated.spring(this.marginBottom, {
-            toValue: Math.max(0, contentInset.bottom - this.getSafeAreaInsets().bottom),
-            duration: UIConstant.animationDuration(),
-        }).start();
+        if (animation) {
+            Animated.timing(this.marginBottom, {
+                toValue: Math.max(0, contentInset.bottom - this.getSafeAreaInsets().bottom),
+                duration: animation.duration,
+                easing: UIController.getEasingFunction(animation.easing),
+            }).start();
+        } else {
+            Animated.spring(this.marginBottom, {
+                toValue: Math.max(0, contentInset.bottom - this.getSafeAreaInsets().bottom),
+                duration: UIConstant.animationDuration(),
+            }).start();
+        }
     }
 
     // Getters

@@ -12,6 +12,7 @@ import UICompatibilityView from './helpers/UICompatibilityView';
 import UIComponent from './components/UIComponent';
 import UIConstant from './helpers/UIConstant';
 import UIController from './controllers/UIController';
+import UIDateInput from './components/text/UIDateInput';
 import UIDetailsInput from './components/text/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
 import UIDetailsView from './components/text/UIDetailsView';
@@ -87,6 +88,7 @@ export {
     UIComponent,
     UIConstant,
     UIController,
+    UIDateInput,
     UIDetailsInput,
     UIDetailsToggle,
     UIDetailsView,
