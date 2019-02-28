@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 const UI_COLOR_PRIMARY = '#0088CC';
 const UI_COLOR_SECONDARY = '#FFFFFF';
 const UI_COLOR_TERTIARY = '#FFFFFF';
