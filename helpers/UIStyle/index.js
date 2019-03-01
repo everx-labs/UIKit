@@ -53,6 +53,16 @@ const UIStyle = StyleSheet.create({
         justifyContent: 'flex-end',
     },
 
+    commonShadow: {
+        ...UIConstant.commonShadow(),
+    },
+    shadow40: {
+        ...UIConstant.shadow40(),
+    },
+    cardShadow: {
+        ...UIConstant.cardShadow(),
+    },
+
     // offsets
     marginTopTiny: {
         marginTop: UIConstant.tinyContentOffset(),
@@ -110,6 +120,9 @@ const UIStyle = StyleSheet.create({
         marginLeft: UIConstant.contentOffset(),
         marginRight: UIConstant.contentOffset(),
     },
+    marginHorizontalNegativeOffset: {
+        marginHorizontal: -UIConstant.contentOffset(),
+    },
     marginHorizontalMediumOffset: {
         marginLeft: UIConstant.mediumContentOffset(),
         marginRight: UIConstant.mediumContentOffset(),
@@ -117,6 +130,10 @@ const UIStyle = StyleSheet.create({
     marginHorizontalSmallOffset: {
         marginLeft: UIConstant.smallContentOffset(),
         marginRight: UIConstant.smallContentOffset(),
+    },
+
+    marginDefault: {
+        margin: UIConstant.contentOffset(),
     },
 
     // borders
