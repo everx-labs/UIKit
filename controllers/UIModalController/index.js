@@ -314,7 +314,7 @@ export default class UIModalController
         );
     }
 
-    renderContentView(contentHeight: number): ?React$Element<*> {
+    renderContentView(contentHeight: number): React$Node {
         return null;
     }
 
