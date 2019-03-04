@@ -107,6 +107,20 @@ const UI_COMMON_SHADOW = Platform.OS === 'android'
         },
     };
 
+const UI_SHADOW_40 = Platform.OS === 'android'
+    ? {
+        elevation: 1,
+    }
+    : {
+        shadowColor: UIColor.dark(),
+        shadowOpacity: 0.12,
+        shadowRadius: 20,
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+    };
+
 const UI_CARD_SHADOW = Platform.OS === 'android'
     ? {
         elevation: 8,
@@ -368,6 +382,10 @@ export default class UIConstant {
     // Shadows
     static commonShadow() {
         return UI_COMMON_SHADOW;
+    }
+
+    static shadow40() {
+        return UI_SHADOW_40;
     }
 
     static cardShadow() {

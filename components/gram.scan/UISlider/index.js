@@ -28,6 +28,15 @@ const styles = StyleSheet.create({
     cardsContainer: {
         marginVertical: UIConstant.contentOffset(),
     },
+    sliderContainer: {
+        margin: -(UIConstant.hugeContentOffset() * 2),
+    },
+    dotsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: UIConstant.iconSize(),
+    },
 });
 
 export default class UISlider extends UIComponent<Props, State> {
@@ -121,7 +130,7 @@ export default class UISlider extends UIComponent<Props, State> {
     // Render
     renderDots() {
         const { screenWidth, itemWidth, itemsList } = this.props;
-        if (screenWidth > itemWidth * itemsList.length) {
+        if (screenWidth && screenWidth > itemWidth * itemsList.length) {
             return null;
         }
         const dots = itemsList.map((item, index) => {
@@ -132,7 +141,7 @@ export default class UISlider extends UIComponent<Props, State> {
         });
         return (
             <TouchableWithoutFeedback onPress={() => this.onDotsPress()}>
-                <View style={UIStyle.centerContainer}>
+                <View style={styles.dotsContainer}>
                     {dots}
                 </View>
             </TouchableWithoutFeedback>
@@ -146,10 +155,13 @@ export default class UISlider extends UIComponent<Props, State> {
         return (
             <React.Fragment>
                 <Animated.View
-                    {...this.panResponder.panHandlers}
                     style={[UIStyle.flexRow, styles.cardsContainer, { marginLeft }]}
                 >
                     {cards}
+                    <View
+                        {...this.panResponder.panHandlers}
+                        style={[UIStyle.absoluteFillObject, styles.sliderContainer]}
+                    />
                 </Animated.View>
                 {this.renderDots()}
             </React.Fragment>

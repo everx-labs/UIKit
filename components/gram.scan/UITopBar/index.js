@@ -16,6 +16,7 @@ import UITextButton from '../../buttons/UITextButton';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 import UILocalized from '../../../helpers/UILocalized';
+import UISeparator from '../../design/UISeparator';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,12 +28,6 @@ const styles = StyleSheet.create({
     },
     doubleHeight: {
         height: UIConstant.bigCellHeight() * 2,
-    },
-    iconContainer: {
-        margin: UIConstant.contentOffset(),
-    },
-    marginDefault: {
-        marginHorizontal: UIConstant.contentOffset(),
     },
     menuTrigger: {
         paddingHorizontal: UIConstant.contentOffset(),
@@ -180,12 +175,12 @@ export default class UITopBar extends UIComponent<Props, State> {
             >
                 <UIImageButton
                     onPress={() => this.navigateTo('MainScreen')}
-                    buttonStyle={styles.iconContainer}
+                    buttonStyle={UIStyle.marginDefault}
                     image={UIImageButton.Images.menuContained}
                 />
                 <UIImageButton
                     onPress={() => this.navigateTo('MainScreen')}
-                    buttonStyle={styles.iconContainer}
+                    buttonStyle={UIStyle.marginDefault}
                     image={UIImageButton.Images.gramscan}
                 />
                 {this.renderNetworkMenu()}
@@ -208,7 +203,7 @@ export default class UITopBar extends UIComponent<Props, State> {
             <View style={UIStyle.justifyCenter}>
                 <UIImageButton
                     image={UIImageButton.Images.menu}
-                    buttonStyle={styles.marginDefault}
+                    buttonStyle={UIStyle.marginHorizontalOffset}
                     onPress={() => onPressShowMenu()}
                 />
             </View>
@@ -223,7 +218,7 @@ export default class UITopBar extends UIComponent<Props, State> {
             return (
                 <UITextButton
                     key={`top~bar~right~menu~item~${title}`}
-                    buttonStyle={styles.marginDefault}
+                    buttonStyle={UIStyle.marginHorizontalOffset}
                     textStyle={UITextStyle.primarySmallMedium}
                     title={title}
                     onPress={() => this.navigateTo(screenName)}
@@ -240,7 +235,7 @@ export default class UITopBar extends UIComponent<Props, State> {
         );
     }
 
-    renderSearchField() {
+    renderSearchField(bottomLine: boolean = false) {
         const {
             searchExpression, onChangeSearchExpression, onFocus, onBlur,
         } = this.props;
@@ -248,6 +243,9 @@ export default class UITopBar extends UIComponent<Props, State> {
             return null;
         }
         const contentStyle = this.getContentStyle();
+        const separator = bottomLine
+            ? <UISeparator style={UIStyle.marginHorizontalNegativeOffset} />
+            : null;
         return (
             <View
                 style={[
@@ -264,6 +262,7 @@ export default class UITopBar extends UIComponent<Props, State> {
                         onFocus={onFocus}
                         onBlur={onBlur}
                     />
+                    {separator}
                 </View>
             </View>
         );
@@ -276,7 +275,7 @@ export default class UITopBar extends UIComponent<Props, State> {
         const isDoubleNeeded = this.isDoubleHeightNeeded();
         const heightStyle = isDoubleNeeded ? styles.doubleHeight : styles.singleHeight;
         const topSearchField = isDoubleNeeded ? null : this.renderSearchField();
-        const bottomSearchField = isDoubleNeeded ? this.renderSearchField() : null;
+        const bottomSearchField = isDoubleNeeded ? this.renderSearchField(true) : null;
         return (
             <View style={[styles.container, heightStyle]}>
                 {bottomSearchField}
