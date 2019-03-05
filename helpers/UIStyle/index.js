@@ -63,6 +63,10 @@ const UIStyle = StyleSheet.create({
         ...UIConstant.cardShadow(),
     },
 
+    fullWidth: {
+        width: '100%',
+    },
+
     // offsets
     marginTopTiny: {
         marginTop: UIConstant.tinyContentOffset(),
@@ -250,7 +254,7 @@ const UIStyle = StyleSheet.create({
         backgroundColor: UIColor.backgroundQuinary(),
     },
 
-    // TON-Scan
+    // Gram-Scan
     fullScreenCenterContainer: {
         width: '100%',
         alignItems: 'center',
