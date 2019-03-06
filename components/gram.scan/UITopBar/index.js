@@ -53,7 +53,6 @@ type Props = {
 
 type State = {
     selectedIndex: number,
-    leftWidth: number,
     rightWidth: number,
 };
 
@@ -75,17 +74,11 @@ export default class UITopBar extends UIComponent<Props, State> {
 
         this.state = {
             selectedIndex: 0,
-            leftWidth: 0,
             rightWidth: 0,
         };
     }
 
     // Events
-    onLeftLayout(e: any) {
-        const { width } = e.nativeEvent.layout;
-        this.setLeftWidth(width);
-    }
-
     onRightLayout(e: any) {
         const { width } = e.nativeEvent.layout;
         this.setRightWidth(width);
@@ -94,10 +87,6 @@ export default class UITopBar extends UIComponent<Props, State> {
     // Setters
     setSelectedIndex(selectedIndex: number) {
         this.setStateSafely({ selectedIndex });
-    }
-
-    setLeftWidth(leftWidth: number) {
-        this.setStateSafely({ leftWidth });
     }
 
     setRightWidth(rightWidth: number) {
@@ -112,10 +101,6 @@ export default class UITopBar extends UIComponent<Props, State> {
     getSelectedNetwork() {
         const index = this.getSelectedIndex();
         return this.networksList[index].title;
-    }
-
-    getLeftWidth() {
-        return this.state.leftWidth;
     }
 
     getRightWidth() {
@@ -136,8 +121,7 @@ export default class UITopBar extends UIComponent<Props, State> {
 
     isDoubleHeightNeeded() {
         const { screenWidth, onChangeSearchExpression } = this.props;
-        const leftWidth = this.getLeftWidth();
-        return onChangeSearchExpression && leftWidth > (screenWidth / 4);
+        return onChangeSearchExpression && screenWidth < UIConstant.elasticWidthBroad();
     }
 
     // Actions
@@ -169,10 +153,7 @@ export default class UITopBar extends UIComponent<Props, State> {
 
     renderLeftPart() {
         return (
-            <View
-                onLayout={e => this.onLeftLayout(e)}
-                style={UIStyle.centerLeftContainer}
-            >
+            <View style={UIStyle.centerLeftContainer}>
                 <UIImageButton
                     onPress={() => this.navigateTo('MainScreen')}
                     buttonStyle={UIStyle.marginDefault}

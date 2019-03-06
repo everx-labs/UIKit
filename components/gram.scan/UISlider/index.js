@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { PanResponder, Animated, TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
+import StylePropType from 'react-style-proptype';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
@@ -11,7 +12,7 @@ import UIComponent from '../../UIComponent';
 import UIDot from '../../design/UIDot';
 
 type Props = {
-    screenWidth: number,
+    containerStyle: StylePropType,
     maxWidth: number,
     itemsList: [],
     itemRenderer: (item: any) => ?React$Node,
@@ -20,8 +21,8 @@ type Props = {
 
 type State = {
     activeIndex: number,
-    marginLeft: AnimatedValue,
-    moving: boolean,
+    marginLeft: number,
+    dx: AnimatedValue,
 };
 
 const styles = StyleSheet.create({
@@ -47,8 +48,8 @@ export default class UISlider extends UIComponent<Props, State> {
 
         this.state = {
             activeIndex: 0,
-            marginLeft: new Animated.Value(0),
-            moving: false,
+            marginLeft: 0,
+            dx: new Animated.Value(0),
         };
 
         this.panResponder = PanResponder.create({
@@ -59,33 +60,66 @@ export default class UISlider extends UIComponent<Props, State> {
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
             // Handling responder events
-            onPanResponderMove: (evt, { dx }) => {
-                if (Math.abs(dx) > UIConstant.smallSwipeThreshold()) {
-                    this.onSwipe(dx);
-                }
+            onPanResponderMove: Animated.event(
+                [null, { dx: this.state.dx }],
+                {
+                    useNativeDriver: true,
+                    listener: (event, { dx }) => this.onMove(dx),
+                },
+            ),
+            onPanResponderRelease: (evt, { dx }) => {
+                this.onSwipeRelease(dx);
             },
         });
     }
 
     // Events
-    onSwipe(dx: number) {
-        if (this.isMoving()) {
-            return;
-        }
+    onDotsPress() {
+        const { itemsList, itemWidth } = this.props;
         const activeIndex = this.getActiveIndex();
-        if (dx > 0) {
-            if (activeIndex > 0) {
-                this.animateMoving(activeIndex - 1);
-            }
-        } else if (activeIndex < this.props.itemsList.length - 1) {
-            this.animateMoving(activeIndex + 1);
-        }
+        const newActiveIndex = (activeIndex + 1) % itemsList.length;
+        this.setActiveIndex(newActiveIndex);
+
+        const deltaX = (newActiveIndex - activeIndex) * itemWidth;
+        this.setMarginLeft(-newActiveIndex * itemWidth);
+        Animated.sequence([
+            Animated.timing(this.state.dx, {
+                toValue: deltaX,
+                duration: 0,
+            }),
+            Animated.timing(this.state.dx, {
+                toValue: 0,
+                duration: UIConstant.animationDuration(),
+            }),
+        ]).start();
     }
 
-    onDotsPress() {
-        const activeIndex = this.getActiveIndex();
-        const newActiveIndex = (activeIndex + 1) % this.props.itemsList.length;
-        this.animateMoving(newActiveIndex);
+    onSwipeRelease(dx: number) {
+        const marginLeft = this.getMarginLeft();
+        const currDx = marginLeft + dx;
+        const { itemWidth } = this.props;
+
+        const rounding = this.getRounding(dx);
+        const newIndex = this.getIndex(currDx, rounding);
+        const newDx = -newIndex * itemWidth;
+        this.setMarginLeft(newDx);
+        this.setActiveIndex(newIndex);
+        Animated.sequence([
+            Animated.timing(this.state.dx, {
+                toValue: currDx - newDx,
+                duration: 0,
+            }),
+            Animated.timing(this.state.dx, {
+                toValue: 0,
+                duration: UIConstant.animationDuration() / 2,
+            }),
+        ]).start();
+    }
+
+    onMove(dx: number) {
+        const currDx = this.getMarginLeft() + dx;
+        const newIndex = this.getIndex(currDx);
+        this.setActiveIndex(newIndex);
     }
 
     // Setters
@@ -93,12 +127,12 @@ export default class UISlider extends UIComponent<Props, State> {
         this.setStateSafely({ activeIndex });
     }
 
-    setMoving(moving: boolean = true) {
-        this.setStateSafely({ moving });
+    setMarginLeft(marginLeft: number) {
+        this.setStateSafely({ marginLeft });
     }
 
-    setMarginLeft(marginLeft: AnimatedValue) {
-        this.setStateSafely({ marginLeft });
+    setDx(dx: AnimatedValue) {
+        this.setStateSafely({ dx });
     }
 
     // Getters
@@ -110,29 +144,41 @@ export default class UISlider extends UIComponent<Props, State> {
         return this.state.marginLeft;
     }
 
-    isMoving() {
-        return this.state.moving;
+    getDx() {
+        return this.state.dx;
+    }
+
+    getMarginLeftFromDx() {
+        const marginLeft = this.getMarginLeft();
+        return Animated.add(new Animated.Value(marginLeft), this.getDx());
+    }
+
+    getIndex(currDx: number, rounding: ((number) => number) = Math.round) {
+        const { itemsList, itemWidth } = this.props;
+        let result = rounding(-currDx / itemWidth);
+        if (result > itemsList.length - 1) {
+            result = itemsList.length - 1;
+        } else if (result < 0) {
+            result = 0;
+        }
+        return result;
+    }
+
+    getRounding(dx: number) {
+        if (dx > UIConstant.smallSwipeThreshold()) {
+            return Math.floor;
+        }
+        if (dx < -UIConstant.smallSwipeThreshold()) {
+            return Math.ceil;
+        }
+        return Math.round;
     }
 
     // Actions
-    animateMoving(newActiveIndex: number) {
-        this.setMoving();
-        this.setActiveIndex(newActiveIndex);
-        const newValue = -(newActiveIndex * this.props.itemWidth);
-        Animated.timing(this.state.marginLeft, {
-            toValue: newValue,
-            duration: UIConstant.animationDuration(),
-        }).start(() => {
-            this.setMoving(false);
-        });
-    }
 
     // Render
     renderDots() {
-        const { screenWidth, itemWidth, itemsList } = this.props;
-        if (screenWidth && screenWidth > itemWidth * itemsList.length) {
-            return null;
-        }
+        const { itemsList } = this.props;
         const dots = itemsList.map((item, index) => {
             if (index === this.getActiveIndex()) {
                 return <UIDot key={`slider-dot-${Math.random()}`} type={UIDot.Type.Line} />;
@@ -151,9 +197,9 @@ export default class UISlider extends UIComponent<Props, State> {
     render() {
         const { itemsList, itemRenderer } = this.props;
         const cards = itemsList.map(itemRenderer);
-        const marginLeft = this.getMarginLeft();
+        const marginLeft = this.getMarginLeftFromDx();
         return (
-            <React.Fragment>
+            <View style={this.props.containerStyle}>
                 <Animated.View
                     style={[UIStyle.flexRow, styles.cardsContainer, { marginLeft }]}
                 >
@@ -164,7 +210,7 @@ export default class UISlider extends UIComponent<Props, State> {
                     />
                 </Animated.View>
                 {this.renderDots()}
-            </React.Fragment>
+            </View>
         );
     }
 
@@ -172,7 +218,7 @@ export default class UISlider extends UIComponent<Props, State> {
 }
 
 UISlider.defaultProps = {
-    screenWidth: 0,
+    containerStyle: {},
     maxWidth: 0,
     itemsList: [],
     itemRenderer: () => {},
