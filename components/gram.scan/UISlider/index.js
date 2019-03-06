@@ -1,6 +1,13 @@
 // @flow
 import React from 'react';
-import { PanResponder, Animated, TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
+import {
+    PanResponder,
+    Animated,
+    TouchableWithoutFeedback,
+    View,
+    StyleSheet,
+    Platform,
+} from 'react-native';
 import StylePropType from 'react-style-proptype';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
@@ -10,6 +17,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 import UIDot from '../../design/UIDot';
+import UIDevice from '../../../helpers/UIDevice';
 
 type Props = {
     containerStyle: StylePropType,
@@ -20,6 +28,7 @@ type Props = {
 };
 
 type State = {
+    mouseDown: boolean,
     activeIndex: number,
     marginLeft: number,
     dx: AnimatedValue,
@@ -30,7 +39,7 @@ const styles = StyleSheet.create({
         marginVertical: UIConstant.contentOffset(),
     },
     sliderContainer: {
-        margin: -(UIConstant.hugeContentOffset() * 2),
+        margin: -UIConstant.contentOffset(),
     },
     dotsContainer: {
         flexDirection: 'row',
@@ -47,6 +56,7 @@ export default class UISlider extends UIComponent<Props, State> {
         super(props);
 
         this.state = {
+            mouseDown: false,
             activeIndex: 0,
             marginLeft: 0,
             dx: new Animated.Value(0),
@@ -60,13 +70,18 @@ export default class UISlider extends UIComponent<Props, State> {
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
             // Handling responder events
-            onPanResponderMove: Animated.event(
-                [null, { dx: this.state.dx }],
-                {
-                    useNativeDriver: true,
-                    listener: (event, { dx }) => this.onMove(dx),
-                },
-            ),
+            onPanResponderMove: (evt, gestureState) => {
+                if (!UIDevice.isDesktopWeb() || this.isMouseDown()) {
+                    return Animated.event(
+                        [null, { dx: this.state.dx }],
+                        {
+                            useNativeDriver: true,
+                            listener: (event, { dx }) => this.onMove(dx),
+                        },
+                    )(evt, gestureState);
+                }
+                return true;
+            },
             onPanResponderRelease: (evt, { dx }) => {
                 this.onSwipeRelease(dx);
             },
@@ -123,6 +138,10 @@ export default class UISlider extends UIComponent<Props, State> {
     }
 
     // Setters
+    setMouseDown(mouseDown: boolean = true) {
+        this.setStateSafely({ mouseDown });
+    }
+
     setActiveIndex(activeIndex: number) {
         this.setStateSafely({ activeIndex });
     }
@@ -146,6 +165,10 @@ export default class UISlider extends UIComponent<Props, State> {
 
     getDx() {
         return this.state.dx;
+    }
+
+    isMouseDown() {
+        return this.state.mouseDown;
     }
 
     getMarginLeftFromDx() {
@@ -174,6 +197,21 @@ export default class UISlider extends UIComponent<Props, State> {
         return Math.round;
     }
 
+    getResponder() {
+        let webResponder = null;
+        if (UIDevice.isDesktopWeb()) {
+            webResponder = {
+                onMouseDown: () => this.setMouseDown(),
+                onMouseUp: () => this.setMouseDown(false),
+            };
+        }
+
+        return {
+            ...this.panResponder.panHandlers,
+            ...webResponder,
+        };
+    }
+
     // Actions
 
     // Render
@@ -198,6 +236,8 @@ export default class UISlider extends UIComponent<Props, State> {
         const { itemsList, itemRenderer } = this.props;
         const cards = itemsList.map(itemRenderer);
         const marginLeft = this.getMarginLeftFromDx();
+        const responder: any = this.getResponder();
+
         return (
             <View style={this.props.containerStyle}>
                 <Animated.View
@@ -205,7 +245,7 @@ export default class UISlider extends UIComponent<Props, State> {
                 >
                     {cards}
                     <View
-                        {...this.panResponder.panHandlers}
+                        {...responder}
                         style={[UIStyle.absoluteFillObject, styles.sliderContainer]}
                     />
                 </Animated.View>
