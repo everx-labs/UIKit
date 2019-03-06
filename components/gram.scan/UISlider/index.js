@@ -17,6 +17,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 import UIDot from '../../design/UIDot';
+import UIDevice from '../../../helpers/UIDevice';
 
 type Props = {
     containerStyle: StylePropType,
@@ -70,7 +71,7 @@ export default class UISlider extends UIComponent<Props, State> {
 
             // Handling responder events
             onPanResponderMove: (evt, gestureState) => {
-                if (Platform.OS !== 'web' || this.isMouseDown()) {
+                if (!UIDevice.isDesktopWeb() || this.isMouseDown()) {
                     return Animated.event(
                         [null, { dx: this.state.dx }],
                         {
@@ -197,12 +198,13 @@ export default class UISlider extends UIComponent<Props, State> {
     }
 
     getResponder() {
-        const webResponder = Platform.OS === 'web'
-            ? {
+        let webResponder = null;
+        if (UIDevice.isDesktopWeb()) {
+            webResponder = {
                 onMouseDown: () => this.setMouseDown(),
                 onMouseUp: () => this.setMouseDown(false),
-            }
-            : null;
+            };
+        }
 
         return {
             ...this.panResponder.panHandlers,
