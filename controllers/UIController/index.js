@@ -457,9 +457,11 @@ export default class UIController<Props, State>
     }
 
     render(): React$Node {
+        // We must set the 'collapsible' to 'false'
+        // for the containers 'measure' works well on Android.
         const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
-                <View style={UIStyle.flex} ref={this.onSetContainer}>
+                <View style={UIStyle.flex} collapsable={false} ref={this.onSetContainer}>
                     {this.renderSafely()}
                 </View>
             </SafeAreaView>

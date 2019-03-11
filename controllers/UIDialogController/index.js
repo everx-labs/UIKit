@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         bottom: 0,
         width: '100%',
+        backgroundColor: UIColor.backgroundPrimary(),
         maxWidth: UIConstant.elasticWidthMax(),
     },
 });
