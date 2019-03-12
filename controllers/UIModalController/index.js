@@ -1,10 +1,15 @@
 /* eslint-disable class-methods-use-this */
 // @flow
 import React from 'react';
-import { StyleSheet, Platform, Modal, View, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Platform, Modal, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
-import type { ControllerProps, ControllerState } from '../UIController';
+import type {
+    AnimationParameters,
+    ContentInset,
+    ControllerProps,
+    ControllerState,
+} from '../UIController';
 
 import UIController from '../UIController';
 import UIDevice from '../../helpers/UIDevice';
@@ -60,6 +65,7 @@ export default class UIModalController
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
+    marginBottom: Animated.Value;
 
     constructor(props: ModalControllerProps) {
         super(props);
@@ -69,6 +75,7 @@ export default class UIModalController
         this.modal = true;
         this.dialog = null;
         this.onCancel = null;
+        this.marginBottom = new Animated.Value(0);
 
         this.state = {
             ...this.state,
@@ -209,6 +216,23 @@ export default class UIModalController
     }
 
     // Setters
+    setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
+        super.setContentInset(contentInset);
+        const bottomInset = Math.max(0, contentInset.bottom, this.getSafeAreaInsets().bottom);
+        if (animation) {
+            Animated.timing(this.marginBottom, {
+                toValue: Math.max(0, bottomInset),
+                duration: animation.duration,
+                easing: UIController.getEasingFunction(animation.easing),
+            }).start();
+        } else {
+            Animated.spring(this.marginBottom, {
+                toValue: Math.max(0, bottomInset),
+                duration: UIConstant.animationDuration(),
+            }).start();
+        }
+    }
+
     setControllerVisible(controllerVisible: boolean, callback?: () => void) {
         this.setStateSafely({ controllerVisible }, callback);
     }
@@ -302,14 +326,14 @@ export default class UIModalController
                 onShown={() => this.onDidAppear()}
                 overlayBackgroundColor="transparent"
             >
-                <View
+                <Animated.View
                     style={{
                         height: contentHeight + this.getSafeAreaInsets().bottom,
-                        paddingBottom: this.getSafeAreaInsets().bottom,
+                        paddingBottom: this.marginBottom,
                     }}
                 >
                     {this.renderContentView(contentHeight)}
-                </View>
+                </Animated.View>
             </PopupDialog>
         );
     }
