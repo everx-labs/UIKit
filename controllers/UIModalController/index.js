@@ -221,13 +221,13 @@ export default class UIModalController
         const bottomInset = Math.max(0, contentInset.bottom, this.getSafeAreaInsets().bottom);
         if (animation) {
             Animated.timing(this.marginBottom, {
-                toValue: Math.max(0, bottomInset),
+                toValue: bottomInset,
                 duration: animation.duration,
                 easing: UIController.getEasingFunction(animation.easing),
             }).start();
         } else {
             Animated.spring(this.marginBottom, {
-                toValue: Math.max(0, bottomInset),
+                toValue: bottomInset,
                 duration: UIConstant.animationDuration(),
             }).start();
         }

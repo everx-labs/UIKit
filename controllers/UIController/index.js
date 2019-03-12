@@ -6,7 +6,6 @@ import {
     Platform,
     Keyboard,
     SafeAreaView,
-    Dimensions,
     LayoutAnimation,
     Easing,
 } from 'react-native';
@@ -172,7 +171,10 @@ export default class UIController<Props, State>
         }
     }
 
-    static getKeyboardAnimation(event: KeyboardEvent): ?AnimationParameters {
+    static getKeyboardAnimation(event: ?KeyboardEvent): ?AnimationParameters {
+        if (!event) {
+            return null;
+        }
         const {
             duration,
             easing,
@@ -250,8 +252,9 @@ export default class UIController<Props, State>
             screenX: number,
             screenY: number,
         ) => {
-            const screen = Dimensions.get('window');
-            const bottomInset = (screenY + height) - (screen.height - end.height);
+            const bottomInset = Platform.OS === 'ios'
+                ? (screenY + height) - (end.screenY)
+                : end.height;
             this.setBottomInset(Math.max(0, bottomInset), animation);
         });
     }
