@@ -73,6 +73,11 @@ const UITextStyle = StyleSheet.create({
         ...primary,
         ...UIFont.titleLight(),
     },
+    // Title - fontSize: 36, lineHeight: 48
+    secondaryTitleLight: {
+        ...secondary,
+        ...UIFont.titleLight(),
+    },
     // Subtitle - fontSize: 24, lineHeight: 32
     primarySubtitleLight: {
         ...primary,
