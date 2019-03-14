@@ -21,9 +21,6 @@ import UIModalNavigationBar from './UIModalNavigationBar';
 const fullScreenDialogWidth = 600;
 const fullScreenDialogHeight = 600;
 
-const slideAnimation = new SlideAnimation({
-    slideFrom: 'bottom',
-});
 
 type OnLayoutEventArgs = {
     nativeEvent: {
@@ -39,7 +36,6 @@ type OnLayoutEventArgs = {
 type ModalControllerProps = ControllerProps;
 
 type ModalControllerState = ControllerState & {
-    dy?: ?Animated.Value;
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
@@ -66,6 +62,8 @@ export default class UIModalController
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
     marginBottom: Animated.Value;
+    dy: Animated.Value;
+    slideAnimation: SlideAnimation;
 
     constructor(props: ModalControllerProps) {
         super(props);
@@ -76,6 +74,10 @@ export default class UIModalController
         this.dialog = null;
         this.onCancel = null;
         this.marginBottom = new Animated.Value(0);
+        this.dy = new Animated.Value(0);
+        this.slideAnimation = new SlideAnimation({
+            slideFrom: 'bottom',
+        });
 
         this.state = {
             ...this.state,
@@ -96,20 +98,20 @@ export default class UIModalController
 
     // Events
     onWillAppear() {
-        // Method needs to be overriden in order to be used.
+        // Method needs to be overridden in order to be used.
     }
 
     onDidAppear() {
-        // Method needs to be overriden in order to be used.
+        // Method needs to be overridden in order to be used.
     }
 
     onWillHide() {
-        // Method needs to be overriden in order to be used.
+        // Method needs to be overridden in order to be used.
     }
 
     onDidHide() {
         this.setControllerVisible(false, () => {
-            this.setDy(null);
+            this.dy.setValue(0);
         });
     }
 
@@ -205,11 +207,7 @@ export default class UIModalController
         const { height } = Dimensions.get('window');
         const maxValue = height - UIDevice.statusBarHeight()
             - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
-        const { dy } = this.state;
-        if (!dy) {
-            return UIColor.overlay60();
-        }
-        return (dy: any).interpolate({
+        return (this.dy: any).interpolate({
             inputRange: [0, maxValue],
             outputRange: [UIColor.overlay60(), UIColor.overlay0()],
         });
@@ -244,14 +242,9 @@ export default class UIModalController
         });
     }
 
-    setDy(dy: ?Animated.Value, callback?: () => void) {
-        this.setStateSafely({ dy }, callback);
-    }
-
     setInitialSwipeState() {
-        this.setDy(new Animated.Value(0), () => {
-            this.bgAlpha = this.interpolateColor();
-        });
+        this.dy.setValue(0);
+        this.bgAlpha = this.interpolateColor();
     }
 
     // Events
@@ -277,10 +270,7 @@ export default class UIModalController
     }
 
     returnToTop() {
-        if (!this.state.dy) {
-            return;
-        }
-        Animated.spring(this.state.dy, {
+        Animated.spring(this.dy, {
             toValue: 0,
             // Use same options as in popup-dialog animation module
             // may delete them for more standard anim and bounciness
@@ -297,10 +287,7 @@ export default class UIModalController
         }
         return (<UIModalNavigationBar
             swipeToDismiss={this.shouldSwipeToDismiss()}
-            onMove={Animated.event([
-                null,
-                { dy: (this.state.dy || new Animated.Value(0)) },
-            ])}
+            onMove={Animated.event([null, { dy: this.dy }])}
             onRelease={dy => this.onReleaseSwipe(dy)}
             onCancel={() => this.onCancelPress()}
         />);
@@ -319,7 +306,7 @@ export default class UIModalController
                 height={height}
                 containerStyle={containerStyle}
                 dialogStyle={dialogStyle}
-                dialogAnimation={slideAnimation}
+                dialogAnimation={this.slideAnimation}
                 dialogTitle={this.getModalNavigationBar()}
                 dismissOnTouchOutside={false}
                 onDismissed={() => this.onDidHide()}
@@ -352,7 +339,7 @@ export default class UIModalController
                 style={[UIStyle.absoluteFillObject, { backgroundColor }]}
                 onLayout={e => this.onLayout(e)}
             >
-                <Animated.View style={{ marginTop: this.state.dy }}>
+                <Animated.View style={{ marginTop: this.dy }}>
                     {this.renderDialog()}
                     {this.renderSpinnerOverlay()}
                 </Animated.View>

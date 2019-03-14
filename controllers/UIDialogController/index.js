@@ -149,7 +149,7 @@ class UIDialogController extends UIController {
 
     setContentInset(contentInset, animation) {
         super.setContentInset(contentInset);
-        const bottomInset = Math.max(0, contentInset.bottom, this.getSafeAreaInsets().bottom);
+        const bottomInset = Math.max(0, contentInset.bottom);
         if (animation) {
             Animated.timing(this.marginBottom, {
                 toValue: bottomInset,
