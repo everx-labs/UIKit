@@ -58,6 +58,20 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         return 'decimal-pad';
     }
 
+    // Events
+    onChangeText(newValue: string) {
+        const { onChangeText } = this.props;
+
+        // This prevents to type the symbols: + - / * =
+        if (newValue.match(/\+|-|\/|\*|=/)) {
+            return;
+        }
+
+        if (onChangeText) {
+            onChangeText(newValue);
+        }
+    }
+
     // Render
     renderRightButton() {
         const {
