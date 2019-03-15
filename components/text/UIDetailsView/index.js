@@ -49,9 +49,12 @@ export default class UIDetailsView extends UIComponent {
 
     render() {
         const { onPress } = this.props;
+        const { testID } = this.props;
+        const testIDProp = testID ? { testID } : null;
         const Wrapper = onPress ? TouchableOpacity : View;
         return (
             <Wrapper
+                {...testIDProp}
                 style={[styles.container, this.props.containerStyle]}
                 onPress={() => onPress()}
             >
