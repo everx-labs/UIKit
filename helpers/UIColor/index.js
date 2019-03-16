@@ -7,6 +7,7 @@ const UI_COLOR_BLACK = '#000000';
 const UI_COLOR_WHITE = '#FFFFFF';
 const UI_COLOR_FA = '#FAFAFA';
 const UI_COLOR_DARK = '#102027';
+const UI_COLOR_DARK_1 = '#364046';
 const UI_COLOR_GREY = '#727C81';
 const UI_COLOR_GREY_1 = '#EBEDEE';
 const UI_COLOR_LIGHT = '#CFD8DC';
@@ -95,6 +96,10 @@ export default class UIColor {
 
     static dark() {
         return UI_COLOR_DARK;
+    }
+
+    static colorDark1() {
+        return UI_COLOR_DARK_1;
     }
 
     static grey() {
