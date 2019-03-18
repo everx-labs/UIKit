@@ -69,9 +69,10 @@ export default class UIModalNavigationBar extends UIComponent {
         } = this.props;
         if (swipeToDismiss) {
             return (
-                <View 
-                    testID={'swipe_to_dismiss'}
-                    style={UIStyle.dismissStripe} />
+                <View
+                    testID="swipe_to_dismiss"
+                    style={UIStyle.dismissStripe}
+                />
             );
         }
         if (!onCancel) {
