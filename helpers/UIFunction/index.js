@@ -8,6 +8,13 @@ const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
 
 export default class UIFunction {
+    // 'No operation' closure. Useful in case when callback/handler must be specified but
+    // without real work.
+    // Instead of <Component onEvent={() => {}} >
+    // preferable way is: <Component onEvent={UIFunction.NOP} >
+    static NOP = () => {
+    };
+
     // Async Helpers
     /** Converts callback style function into Promise */
     static makeAsync(original) {
@@ -136,7 +143,10 @@ export default class UIFunction {
             const parseResult = parseNumber(`+${phone}`, { extended: true });
             ({ valid } = parseResult);
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone code ${phone} with exception`,
+                exception,
+            );
         }
         return valid;
     }
@@ -163,7 +173,10 @@ export default class UIFunction {
                 phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
             }
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone ${phone} with exception`,
+                exception,
+            );
             if (cleanIfFailed) {
                 phone = '';
             }
@@ -214,7 +227,10 @@ export default class UIFunction {
                 }
             }
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone code ${phone} with exception`,
+                exception,
+            );
         }
         return countryCode;
     }
