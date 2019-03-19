@@ -321,6 +321,7 @@ export default class UIModalController
                 >
                     {this.renderContentView(contentHeight)}
                 </Animated.View>
+                {this.renderSpinnerOverlay()}
             </PopupDialog>
         );
     }
@@ -341,7 +342,6 @@ export default class UIModalController
             >
                 <Animated.View style={{ marginTop: this.dy }}>
                     {this.renderDialog()}
-                    {this.renderSpinnerOverlay()}
                 </Animated.View>
             </Animated.View>
         );
