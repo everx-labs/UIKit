@@ -221,13 +221,16 @@ export default class UIFunction {
 
     // International phone
     static internationalPhone(phone) {
-        let parsedPhone = parseNumber(phone, 'RU'); // It parses 8 (000) kind of phones
+        if (!phone) {
+            return null;
+        }
+        const phoneNumber = phone.trim();
+        let parsedPhone = parseNumber(phoneNumber, 'RU'); // It parses 8 (000) kind of phones
         if (Object.keys(parsedPhone).length === 0) {
-            parsedPhone = parseNumber(phone, 'US'); // It parses all the rest mobile phones
+            parsedPhone = parseNumber(phoneNumber, 'US'); // It parses all the rest mobile phones
         }
         if (Object.keys(parsedPhone).length === 0) {
-            console.log('[UIFunction] Failed to parse phone:', phone); // Usually short phones
-            return null;
+            return phoneNumber.startsWith('+') ? null : this.internationalPhone(`+${phoneNumber}`);
         }
         const internationalPhone = formatNumber(parsedPhone, 'International');
         return UIFunction.numericText(internationalPhone);
@@ -355,4 +358,3 @@ export default class UIFunction {
         return this.normalizeKeyPhrase(a) === this.normalizeKeyPhrase(b);
     }
 }
-
