@@ -152,7 +152,7 @@ export default class UIModalController
         }
 
         const statusBarHeight = UIDevice.statusBarHeight();
-        const navBarHeight = Platform.OS === 'web' || !this.modal
+        const navBarHeight = Platform.OS === 'web' || !this.dismissible
             ? 0
             : UIDevice.navigationBarHeight(); // navigation bar height above the modal controller
 
