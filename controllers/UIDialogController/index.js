@@ -181,6 +181,10 @@ class UIDialogController extends UIController {
         return this.state.photo;
     }
 
+    getScrollContainerStyle() {
+        return null;
+    }
+
     // Render
     renderTitle() {
         if (!this.title) {
@@ -305,7 +309,11 @@ class UIDialogController extends UIController {
                 <ScrollView
                     style={UIStyle.screenContainer}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={[UIStyle.pageContainer, styles.scrollContainer]}
+                    contentContainerStyle={[
+                        UIStyle.pageContainer,
+                        styles.scrollContainer,
+                        this.getScrollContainerStyle(),
+                    ]}
                     keyboardShouldPersistTaps="handled"
                 >
                     {this.renderTitle()}
