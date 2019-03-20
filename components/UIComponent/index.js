@@ -1,6 +1,5 @@
 // @flow
 import { Component } from 'react';
-import type { Node } from 'react';
 
 type UpdateState<Props, State> = ((State, Props) => $Shape<State> | void);
 type StateUpdates<Props, State> = $Shape<State> | UpdateState<Props, State> | void;
@@ -23,7 +22,8 @@ export default class UIComponent<Props, State> extends Component<Props, State> {
 
     mounted: boolean;
 
-    render(): ?Node {
+    // don't know why : ?Node doesn't work
+    render(): React$Node {
         return null;
     }
 }

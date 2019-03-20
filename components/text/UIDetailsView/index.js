@@ -4,7 +4,7 @@ import StylePropType from 'react-style-proptype';
 
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
-import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -19,16 +19,28 @@ const styles = StyleSheet.create({
 export default class UIDetailsView extends UIComponent {
     // Render
     renderContentView() {
-        const { textSecondaryCaptionRegular, textPrimarySmallMedium } = UIStyle;
+        const { secondaryCaptionRegular, primarySmallMedium } = UITextStyle;
         const {
-            value, comments, textStyle, commentsStyle,
+            value, comments, textStyle, commentsStyle, reversed,
         } = this.props;
+        if (reversed) {
+            return (
+                <View>
+                    <Text style={[secondaryCaptionRegular, commentsStyle]}>
+                        {comments}
+                    </Text>
+                    <Text style={[primarySmallMedium, textStyle]}>
+                        {value}
+                    </Text>
+                </View>
+            );
+        }
         return (
             <View>
-                <Text style={[textPrimarySmallMedium, textStyle]}>
+                <Text style={[primarySmallMedium, textStyle]}>
                     {value}
                 </Text>
-                <Text style={[textSecondaryCaptionRegular, commentsStyle]}>
+                <Text style={[secondaryCaptionRegular, commentsStyle]}>
                     {comments}
                 </Text>
             </View>
@@ -36,10 +48,12 @@ export default class UIDetailsView extends UIComponent {
     }
 
     render() {
-        const { onPress } = this.props;
+        const { onPress, testID } = this.props;
         const Wrapper = onPress ? TouchableOpacity : View;
+        const testIDProp = testID ? { testID } : null;
         return (
             <Wrapper
+                {...testIDProp}
                 style={[styles.container, this.props.containerStyle]}
                 onPress={() => onPress()}
             >
@@ -52,6 +66,7 @@ export default class UIDetailsView extends UIComponent {
 UIDetailsView.defaultProps = {
     value: '',
     comments: '',
+    reversed: false,
     onPress: null,
     containerStyle: {},
     textStyle: {},
@@ -61,6 +76,7 @@ UIDetailsView.defaultProps = {
 UIDetailsView.propTypes = {
     value: PropTypes.string,
     comments: PropTypes.string,
+    reversed: PropTypes.bool,
     onPress: PropTypes.func,
     containerStyle: StylePropType,
     textStyle: StylePropType,

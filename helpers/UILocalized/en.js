@@ -369,6 +369,7 @@ const en = {
     Date: 'Date',
     Balance: 'Balance',
     Gram: 'GRAM',
+    gram: 'Gram',
     Send: 'Send',
     UserHasNoWallet: 'The user does not have a wallet yet, but we will send a link to create one in order to receive this transaction.',
     TransactionFrom: 'You have received a transaction from',
@@ -497,9 +498,17 @@ const en = {
     LimitSetSuccess: 'The limit has been set successfully',
     LimitRemoveSuccess: 'The limit has been deleted',
 
-    // TON-Scan
+    // Gram.Scan
     EnterHashTransactionAccountOrBlock: 'Enter Hash transaction, account or block',
-    Blocks: 'Blocks',
+    SearchByHash: 'Search by hash',
+    PasteFromClipboard: 'Paste from clipboard',
+    Gram01: 'Gram', // 01 gram
+    Gram11: 'Grams', // 21 grams
+    Gram24: 'Grams', // 22,23,24 grams
+    Gram50: 'Grams', // 25,26,27,28,29,30 grams
+
+    // Dates
+    DateSymbols: { year: 'YYYY', month: 'MM', day: 'DD' },
 };
 
 export default en;

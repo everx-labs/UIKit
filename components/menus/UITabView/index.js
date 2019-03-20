@@ -8,7 +8,7 @@ import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
-import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 
 type PageScreen = ComponentType<*>;
@@ -19,10 +19,25 @@ type PageCollection = {
     },
 };
 
+type RouteType = {
+    key: string,
+    title: string,
+    testID?: string,
+}
+
+type SceneProps = SceneRendererProps<*> & Scene<*>;
+
+type TabBarProps = SceneRendererProps<*>;
+
 type UITabViewProps = {
     tabWidth?: number,
     pages: PageCollection,
 };
+
+type UITypeViewState = {
+    index: number,
+    routes: RouteType[],
+} & NavigationState<*>;
 
 const styles = StyleSheet.create({
     icon: {
@@ -36,7 +51,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UITabView extends UIComponent<UITabViewProps, NavigationState<*>> {
+export default class UITabView extends UIComponent<UITabViewProps, UITypeViewState> {
     static defaultProps = {
         tabWidth: 80,
     };
@@ -57,6 +72,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
             });
             screens[key] = page.screen;
         });
+        // $FlowExpectedError
         this.renderScene = SceneMap(screens);
         const tabWidth = props.tabWidth || UITabView.defaultProps.tabWidth;
         this.tabBarProps = {
@@ -71,7 +87,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
                 width: tabWidth,
                 paddingHorizontal: 0,
             },
-            labelStyle: UIStyle.textPrimarySmallBold,
+            labelStyle: UITextStyle.primarySmallBold,
             scrollEnabled: false,
             upperCaseLabel: false,
             indicatorStyle: {
@@ -100,10 +116,11 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
         inactiveTintColor: string,
         labelStyle: TextStyleProp,
     };
-    renderScene: (props: SceneRendererProps<*> & Scene<*>) => Node;
+    renderScene: (props: SceneProps) => Node;
 
     // Render
-    renderLabel(props: { route: { title: string } }) {
+    // don't know why Scene<string> doesn't work
+    renderLabel(props: any) {
         const { route } = props;
         const {
             activeTintColor,
@@ -120,7 +137,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
             </Animated.Text>);
     }
 
-    renderHeader(props: SceneRendererProps<*>) {
+    renderTabBar = (props: TabBarProps) => {
         return (
             <TabBar
                 {...props}
@@ -139,7 +156,7 @@ export default class UITabView extends UIComponent<UITabViewProps, NavigationSta
             <TabView
                 navigationState={navigationState}
                 renderScene={this.renderScene}
-                renderTabBar={(props: SceneRendererProps<*>) => this.renderHeader(props)}
+                renderTabBar={this.renderTabBar}
                 onIndexChange={index => this.onIndexChange(index)}
             />
         );

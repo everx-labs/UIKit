@@ -8,13 +8,19 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 
-type ButtonImage = 'back' | 'close-primary' | 'close-secondary' | 'close-light' | 'custom';
+type ButtonImage = 'back' | 'close-primary' | 'close-secondary'
+                    | 'close-light' | 'custom' | 'menu'
+                    | 'menu-contained' | 'gramscan';
 
 const assets = {
     back: () => require('../../../assets/ico-arrow-left/ico-arrow-left.png'),
     'close-primary': () => require('../../../assets/ico-close/close-blue.png'),
     'close-secondary': () => require('../../../assets/ico-close/close-grey.png'),
     'close-light': () => require('../../../assets/ico-close/close-light.png'),
+    'close-black': () => require('../../../assets/ico-close/close-black.png'),
+    menu: () => require('../../../assets/ico-open-menu/open-menu.png'),
+    'menu-contained': () => require('../../../assets/ico-menu-contained/menu.png'),
+    gramscan: () => require('../../../assets/ico-gramscan/gramscan.png'),
     custom: () => null,
 };
 
@@ -23,8 +29,8 @@ type Props = {
     customImage?: ImageSource,
     onPress: () => void,
     buttonStyle?: ViewStyleProp,
-
 };
+
 type State = {};
 
 export default class UIImageButton extends UIComponent<Props, State> {
@@ -33,6 +39,9 @@ export default class UIImageButton extends UIComponent<Props, State> {
         closePrimary: 'close-primary',
         closeSecondary: 'close-secondary',
         closeLight: 'close-light',
+        menu: 'menu',
+        menuContained: 'menu-contained',
+        gramscan: 'gramscan',
         custom: 'custom',
     };
 

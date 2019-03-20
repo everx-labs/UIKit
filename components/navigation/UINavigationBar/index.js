@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 export interface ReactNavigation {
-    navigate(): void;
+    navigate(string): void;
 
     goBack(): void;
 
@@ -136,9 +136,14 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
 
     // Component
     render() {
+        const title = this.getTitle();
+        const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
         return (
             <View style={styles.container}>
-                <View style={styles.buttonsContainer}>
+                <View
+                    {...testIDProp}
+                    style={styles.buttonsContainer}
+                >
                     {this.getHeaderLeft()}
                     {this.getHeaderRight()}
                 </View>

@@ -4,7 +4,7 @@ import { Platform, StyleSheet, View, Text, Modal } from 'react-native';
 import StylePropType from 'react-style-proptype';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import UIStyle from '../../helpers/UIStyle';
+import UITextStyle from '../../helpers/UITextStyle';
 import UIColor from '../../helpers/UIColor';
 
 const styles = StyleSheet.create({
@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        elevation: Number.MAX_VALUE, // Overlay all the views which use elevation property > 0
     },
     background: {
         position: 'absolute',
@@ -129,7 +128,7 @@ export default class UISpinnerOverlay extends Component {
 
     // Getters
     getVisible() {
-        return this.state.visible; 
+        return this.state.visible;
     }
 
     // Processing
@@ -144,7 +143,7 @@ export default class UISpinnerOverlay extends Component {
         return (
             <Text
                 style={[
-                    UIStyle.textPrimaryBodyRegular,
+                    UITextStyle.primaryBodyRegular,
                     styles.titleContent,
                     this.props.titleStyle,
                     {
@@ -163,7 +162,7 @@ export default class UISpinnerOverlay extends Component {
         return (
             <Text
                 style={[
-                    UIStyle.textPrimaryBodyRegular,
+                    UITextStyle.primaryBodyRegular,
                     styles.textContent,
                     this.props.textStyle,
                     {
@@ -229,7 +228,7 @@ export default class UISpinnerOverlay extends Component {
 
 UISpinnerOverlay.defaultProps = {
     visible: false,
-    modal: false, // true,
+    modal: false,
     titleContent: '',
     textContent: '',
     color: 'white',

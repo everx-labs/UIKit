@@ -3,7 +3,8 @@ import { Platform } from 'react-native';
 import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
-const UI_SWIPE_TO_DISMISS_TRESHOLD = 100;
+const UI_SWIPE_THRESHOLD = 100;
+const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
 
 const UI_TINY_BORDER_RADIUS = 2;
@@ -18,9 +19,12 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
+const UI_GIANT_CONTENT_OFFSET = 136;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 6;
+
+const UI_TINY_ICON_SIZE = 4;
 
 const UI_TINY_BUTTON_HEIGHT = 20;
 const UI_SMALL_BUTTON_HEIGHT = 32;
@@ -33,9 +37,12 @@ const UI_MEDIUM_CELL_HEIGHT = 40;
 const UI_DEFAULT_CELL_HEIGHT = 48;
 const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
+const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
+const UI_GIANT_CELL_HEIGHT = 128;
 
 const UI_DATA_CAPTION_HEIGHT = 104;
+const UI_NAVIGATION_BAR_HEIGHT = 80;
 
 const UI_SMALL_AVATAR_SIZE = 20;
 const UI_MEDIUM_AVATAR_SIZE = 40;
@@ -53,15 +60,23 @@ const UI_ELASTIC_WIDTH_NARROW = 80;
 const UI_ELASTIC_WIDTH_REGULAR = 304;
 const UI_ELASTIC_WIDTH_MEDIUM = 592;
 const UI_ELASTIC_WIDTH_WIDE = 880;
+const UI_ELASTIC_WIDTH_BROAD = 1000;
 const UI_ELASTIC_WIDTH_MAX = 1280;
+const UI_ELASTIC_WIDTH_HUGE = 1600;
 
+const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
+const BACKGROUND_IMAGE_CONTAINER_HEIGHT = 594;
+
+const UI_TAB_WIDTH = 96;
 const UI_PASSWORD_PROMPT_WIDTH = 416;
-
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
 
 const UI_ACTIONSHEET_ITEM_HEIGHT = 48;
 const UI_MENU_WIDTH = 176; // menu for web
+
+const UI_TOOLTIP_MAX_WIDTH = 288;
+const UI_TOOLTIP_MAX_HEIGHT = 96;
 
 const UI_TEXT_INPUT_HEIGHT = 48;
 const UI_FLOATING_LABEL_HEIGHT = 40;
@@ -69,6 +84,10 @@ const UI_FLOATING_LABEL_HEIGHT = 40;
 const UI_INFINITE_SCROLL_TRESHOLD = 0.25; // quarter of the visible page (before was: 64);
 
 const UI_PROFILE_PHOTO_SIZE = 72;
+
+const MAX_DECIMAL_DIGITS = 8;
+const MAX_NUMBER_DIGITS = 9;
+const SHORT_DATE_LENGTH = 10;
 
 const MAX_TEXT_LINE_LENGTH = 200;
 
@@ -85,6 +104,20 @@ const UI_COMMON_SHADOW = Platform.OS === 'android'
         shadowOffset: {
             width: 0,
             height: 4,
+        },
+    };
+
+const UI_SHADOW_40 = Platform.OS === 'android'
+    ? {
+        elevation: 1,
+    }
+    : {
+        shadowColor: UIColor.dark(),
+        shadowOpacity: 0.12,
+        shadowRadius: 20,
+        shadowOffset: {
+            width: 0,
+            height: 12,
         },
     };
 
@@ -110,8 +143,12 @@ export default class UIConstant {
         return UI_ANIMATION_DURATION;
     }
 
-    static swipeToDismissTreshold() {
-        return UI_SWIPE_TO_DISMISS_TRESHOLD;
+    static smallSwipeThreshold() {
+        return UI_SMALL_SWIPE_THRESHOLD;
+    }
+
+    static swipeThreshold() {
+        return UI_SWIPE_THRESHOLD;
     }
 
     static coverBounceOffset() {
@@ -147,6 +184,10 @@ export default class UIConstant {
         return UI_HUGE_CONTENT_OFFSET;
     }
 
+    static giantContentOffset() {
+        return UI_GIANT_CONTENT_OFFSET;
+    }
+
     static horizontalContentOffset() {
         return UI_HORIZONTAL_CONTENT_OFFSET;
     }
@@ -173,6 +214,10 @@ export default class UIConstant {
     }
 
     // Button heights
+    static tinyIconSize() {
+        return UI_TINY_ICON_SIZE;
+    }
+
     static tinyButtonHeight() {
         return UI_TINY_BUTTON_HEIGHT;
     }
@@ -213,12 +258,24 @@ export default class UIConstant {
         return UI_LARGE_CELL_HEIGHT;
     }
 
+    static majorCellHeight() {
+        return UI_MAJOR_CELL_HEIGHT;
+    }
+
     static hugeCellHeight() {
         return UI_HUGE_CELL_HEIGHT;
     }
 
+    static giantCellHeight() {
+        return UI_GIANT_CELL_HEIGHT;
+    }
+
     static dataCaptionHeight() {
         return UI_DATA_CAPTION_HEIGHT;
+    }
+
+    static navBarHeight() {
+        return UI_NAVIGATION_BAR_HEIGHT;
     }
 
     static largeAvatarSize() {
@@ -263,8 +320,28 @@ export default class UIConstant {
         return UI_ELASTIC_WIDTH_WIDE;
     }
 
+    static elasticWidthBroad() {
+        return UI_ELASTIC_WIDTH_BROAD;
+    }
+
     static elasticWidthMax() {
         return UI_ELASTIC_WIDTH_MAX;
+    }
+
+    static elasticWidthHuge() {
+        return UI_ELASTIC_WIDTH_HUGE;
+    }
+
+    static backgroundImageContainerWidth() {
+        return BACKGROUND_IMAGE_CONTAINER_WIDTH;
+    }
+
+    static backgroundImageContainerHeight() {
+        return BACKGROUND_IMAGE_CONTAINER_HEIGHT;
+    }
+
+    static tabWidth() {
+        return UI_TAB_WIDTH;
     }
 
     static passwordPromptWidth() {
@@ -289,6 +366,14 @@ export default class UIConstant {
         return UI_MENU_WIDTH;
     }
 
+    static tooltipMaxWidth() {
+        return UI_TOOLTIP_MAX_WIDTH;
+    }
+
+    static tooltipMaxHeight() {
+        return UI_TOOLTIP_MAX_HEIGHT;
+    }
+
     // Symbols
     static separatorSymbol() {
         return UI_SEPARATOR_SYMBOL;
@@ -297,6 +382,10 @@ export default class UIConstant {
     // Shadows
     static commonShadow() {
         return UI_COMMON_SHADOW;
+    }
+
+    static shadow40() {
+        return UI_SHADOW_40;
     }
 
     static cardShadow() {
@@ -331,5 +420,17 @@ export default class UIConstant {
 
     static initialRenderDataCount() {
         return INITIAL_RENDER_DATA_COUNT;
+    }
+
+    static maxNumberDigits() {
+        return MAX_NUMBER_DIGITS;
+    }
+
+    static maxDecimalDigits() {
+        return MAX_DECIMAL_DIGITS;
+    }
+
+    static shortDateLength() {
+        return SHORT_DATE_LENGTH;
     }
 }

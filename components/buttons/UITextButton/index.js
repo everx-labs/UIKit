@@ -1,11 +1,9 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-import UIFont from '../../../helpers/UIFont';
-import UIColor from '../../../helpers/UIColor';
-import UIStyle from '../../../helpers/UIStyle';
+import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -13,29 +11,59 @@ const styles = StyleSheet.create({
     textButton: {
         height: UIConstant.buttonHeight(),
         backgroundColor: 'transparent',
-        justifyContent: 'flex-start',
         alignItems: 'center',
         flexDirection: 'row',
     },
-    titleText: {
-        color: UIColor.primary(),
-        ...UIFont.smallMedium(),
+    alignLeft: {
+        justifyContent: 'flex-start',
+    },
+    alignCenter: {
+        justifyContent: 'center',
     },
     detailsText: {
         marginRight: UIConstant.contentOffset(),
     },
+    flexGrow1: {
+        flexGrow: 1,
+    },
+    flexGrow0: {
+        flexGrow: 0,
+    },
 });
 
-class UITextButton extends UIComponent {
+type Props = {
+    testID?: string,
+    buttonStyle?: StylePropType,
+    textStyle?: StylePropType,
+    detailsStyle?: StylePropType,
+    align: StylePropType,
+    title: string,
+    details: string,
+    disabled: boolean,
+    onPress: () => void,
+};
+
+type State = {};
+
+class UITextButton extends UIComponent<Props, State> {
+    static Align = {
+        Left: styles.alignLeft,
+        Center: styles.alignCenter,
+    };
+
     // Render
-    textSecondary
     renderTitle() {
         const {
             title, textStyle, details, disabled,
         } = this.props;
-        const defaultTitleStyle = disabled ? UIStyle.textSecondarySmallMedium : styles.titleText;
+        const defaultTitleStyle = disabled
+            ? UITextStyle.secondarySmallMedium
+            : UITextStyle.actionSmallMedium;
+        const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
-            <Text style={[defaultTitleStyle, textStyle, { flexGrow: details ? 1 : 0 }]}>
+            <Text
+                style={[defaultTitleStyle, textStyle, flexGrow]}
+            >
                 {title}
             </Text>
         );
@@ -47,18 +75,23 @@ class UITextButton extends UIComponent {
             return null;
         }
         return (
-            <Text style={[UIStyle.textSecondarySmallRegular, detailsStyle]}>
+            <Text style={[UITextStyle.secondarySmallRegular, detailsStyle]}>
                 {details}
             </Text>
         );
     }
 
     render() {
-        const { buttonStyle, onPress, disabled } = this.props;
+        const {
+            testID, buttonStyle, onPress, disabled, align,
+        } = this.props;
+        const testIDProp = testID ? { testID } : null;
         return (
             <TouchableOpacity
+                {...testIDProp}
                 style={[
                     styles.textButton,
+                    align,
                     buttonStyle,
                 ]}
                 disabled={disabled}
@@ -69,26 +102,17 @@ class UITextButton extends UIComponent {
             </TouchableOpacity>
         );
     }
+
+    static defaultProps: Props;
 }
 
 export default UITextButton;
 
 UITextButton.defaultProps = {
-    buttonStyle: {},
-    textStyle: {},
-    detailsStyle: {},
     title: '',
     details: '',
     disabled: false,
-    onPress: () => {},
-};
-
-UITextButton.propTypes = {
-    buttonStyle: StylePropType,
-    textStyle: StylePropType,
-    detailsStyle: StylePropType,
-    title: PropTypes.string,
-    details: PropTypes.string,
-    disabled: PropTypes.bool,
-    onPress: PropTypes.func,
+    align: UITextButton.Align.Left,
+    onPress: () => {
+    },
 };

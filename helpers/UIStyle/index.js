@@ -5,52 +5,6 @@ import UIFont from '../UIFont';
 import UIConstant from '../UIConstant';
 import UIDevice from '../UIDevice';
 
-const text = {
-    ...UIConstant.disabledOutline(),
-    backgroundColor: 'transparent',
-    textAlign: 'left',
-};
-
-const textPrimary = {
-    ...text,
-    color: UIColor.textPrimary(),
-};
-
-const textCaution = {
-    ...text,
-    color: UIColor.textCaution(),
-};
-
-const textSecondary = {
-    ...text,
-    color: UIColor.textSecondary(),
-};
-
-const textError = {
-    ...text,
-    color: UIColor.error(),
-};
-
-const textSuccess = {
-    ...text,
-    color: UIColor.success(),
-};
-
-const textTertiary = {
-    ...text,
-    color: UIColor.textTertiary(),
-};
-
-const textWhite = {
-    ...text,
-    color: UIColor.white(),
-};
-
-const textAction = {
-    ...text,
-    color: UIColor.primary(),
-};
-
 const absoluteFillObject = {
     position: 'absolute',
     top: 0,
@@ -86,177 +40,31 @@ const UIStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
-
-    // [Text Primary]
-    // Title - fontSize: 36, lineHeight: 48
-    textPrimaryTitleLight: {
-        ...textPrimary,
-        ...UIFont.titleLight(),
+    flexRow: {
+        flexDirection: 'row',
     },
-    // Subtitle - fontSize: 24, lineHeight: 32
-    textPrimarySubtitleLight: {
-        ...textPrimary,
-        ...UIFont.subtitleLight(),
+    alignCenter: {
+        alignItems: 'center',
     },
-    textPrimarySubtitleRegular: {
-        ...textPrimary,
-        ...UIFont.subtitleRegular(),
+    justifyCenter: {
+        justifyContent: 'center',
     },
-    // Accent - fontSize: 20, lineHeight: 28
-    textPrimaryAccentRegular: {
-        ...textPrimary,
-        ...UIFont.accentRegular(),
-    },
-    textPrimaryAccentBold: {
-        ...textPrimary,
-        ...UIFont.accentBold(),
-    },
-    // Body
-    textPrimaryBodyRegular: {
-        ...textPrimary,
-        ...UIFont.bodyRegular(),
-    },
-    textPrimaryBodyMedium: {
-        ...textPrimary,
-        ...UIFont.bodyMedium(),
-    },
-    textPrimaryBodyBold: {
-        ...textPrimary,
-        ...UIFont.bodyBold(),
-    },
-    // Small - fontSize: 16, lineHeight: 20
-    textPrimarySmallMedium: {
-        ...textPrimary,
-        ...UIFont.smallMedium(),
-    },
-    textPrimarySmallRegular: {
-        ...textPrimary,
-        ...UIFont.smallRegular(),
-    },
-    textPrimarySmallBold: {
-        ...textPrimary,
-        ...UIFont.smallBold(),
-    },
-    // Caption - fontSize: 14, lineHeight: 20
-    textPrimaryCaptionRegular: {
-        ...textPrimary,
-        ...UIFont.captionRegular(),
-    },
-    textPrimaryCaptionMedium: {
-        ...textPrimary,
-        ...UIFont.captionMedium(),
-    },
-    // Tiny - fontSize: 12, lineHeight: 16
-    textPrimaryTinyRegular: {
-        ...textPrimary,
-        ...UIFont.tinyRegular(),
-    },
-    textPrimaryTinyMedium: {
-        ...textPrimary,
-        ...UIFont.tinyMedium(),
+    justifyEnd: {
+        justifyContent: 'flex-end',
     },
 
-    // [Text Secondary]
-    // Accent - fontSize: 20, lineHeight: 28
-    textSecondaryAccentRegular: {
-        ...textSecondary,
-        ...UIFont.accentRegular(),
+    commonShadow: {
+        ...UIConstant.commonShadow(),
     },
-    // Body - fontSize: 18, lineHeight: 24
-    textSecondaryBodyRegular: {
-        ...textSecondary,
-        ...UIFont.bodyRegular(),
+    shadow40: {
+        ...UIConstant.shadow40(),
     },
-    textSecondaryBodyMedium: {
-        ...textSecondary,
-        ...UIFont.bodyMedium(),
-    },
-    textSecondaryBodyBold: {
-        ...textSecondary,
-        ...UIFont.bodyBold(),
-    },
-    // Small - fontSize: 16, lineHeight: 20
-    textSecondarySmallRegular: {
-        ...textSecondary,
-        ...UIFont.smallRegular(),
-    },
-    textSecondarySmallMedium: {
-        ...textSecondary,
-        ...UIFont.smallRegular(),
-    },
-    // Caption - fontSize: 14, lineHeight: 20
-    textSecondaryCaptionRegular: {
-        ...textSecondary,
-        ...UIFont.captionRegular(),
-    },
-    textSecondaryCaptionMedium: {
-        ...textSecondary,
-        ...UIFont.captionMedium(),
-    },
-    // Tiny - fontSize: 12, lineHeight: 16
-    textSecondaryTinyRegular: {
-        ...textSecondary,
-        ...UIFont.tinyRegular(),
-    },
-    textSecondaryTinyMedium: {
-        ...textSecondary,
-        ...UIFont.tinyMedium(),
+    cardShadow: {
+        ...UIConstant.cardShadow(),
     },
 
-    // [Text Caution]
-    // Caption - fontSize: 14, lineHeight: 20
-    textCautionCaptionRegular: {
-        ...textCaution,
-        ...UIFont.captionRegular(),
-    },
-
-    // [Text success]
-    // Caption - fontSize: 14, lineHeight: 20
-    textSuccessCaptionRegular: {
-        ...textSuccess,
-        ...UIFont.captionRegular(),
-    },
-
-    // [Text tertiary]
-    // Body - fontSize: 18, lineHeight: 24
-    textTertiaryBodyRegular: {
-        ...textTertiary,
-        ...UIFont.bodyRegular(),
-    },
-    // Tiny - fontSize: 12, lineHeight: 16
-    textTertiaryTinyRegular: {
-        ...textTertiary,
-        ...UIFont.tinyRegular(),
-    },
-    // Tiny - fontSize: 12, lineHeight: 16
-    textTertiaryTinyMedium: {
-        ...textTertiary,
-        ...UIFont.tinyMedium(),
-    },
-    // Tiny - fontSize: 12, lineHeight: 16
-    textTertiaryTinyBold: {
-        ...textTertiary,
-        ...UIFont.tinyBold(),
-    },
-
-    // [Text white]
-    // Tiny - fontSize: 12, lineHeight: 16
-    textWhiteTinyRegular: {
-        ...textWhite,
-        ...UIFont.tinyRegular(),
-    },
-
-    // [Text Action]
-    // Small - fontSize: 16, lineHeight: 20
-    textActionSmallMedium: {
-        ...textAction,
-        ...UIFont.smallMedium(),
-    },
-
-    // [Text Error]
-    textErrorCaptionMedium: {
-        ...textError,
-        ...UIFont.captionMedium(),
+    fullWidth: {
+        width: '100%',
     },
 
     // offsets
@@ -316,6 +124,9 @@ const UIStyle = StyleSheet.create({
         marginLeft: UIConstant.contentOffset(),
         marginRight: UIConstant.contentOffset(),
     },
+    marginHorizontalNegativeOffset: {
+        marginHorizontal: -UIConstant.contentOffset(),
+    },
     marginHorizontalMediumOffset: {
         marginLeft: UIConstant.mediumContentOffset(),
         marginRight: UIConstant.mediumContentOffset(),
@@ -323,6 +134,10 @@ const UIStyle = StyleSheet.create({
     marginHorizontalSmallOffset: {
         marginLeft: UIConstant.smallContentOffset(),
         marginRight: UIConstant.smallContentOffset(),
+    },
+
+    marginDefault: {
+        margin: UIConstant.contentOffset(),
     },
 
     // borders
@@ -401,6 +216,14 @@ const UIStyle = StyleSheet.create({
         right: 0,
         top: 0,
     },
+    flexAlignCenterContainer: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    flexJustifyEndContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
     centerContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -410,6 +233,10 @@ const UIStyle = StyleSheet.create({
     centerLeftContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    rowSpaceContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     centerOnScreenContainer: {
         position: 'absolute',
@@ -421,14 +248,23 @@ const UIStyle = StyleSheet.create({
         width: 320,
         marginLeft: -160,
     },
+    backgroundImageContainer: {
+        width: UIConstant.backgroundImageContainerWidth(),
+        height: UIConstant.backgroundImageContainerHeight(),
+        backgroundColor: UIColor.backgroundQuinary(),
+    },
 
-    // TON-Scan
+    // Gram-Scan
     fullScreenCenterContainer: {
         width: '100%',
         alignItems: 'center',
     },
     halfWidthContainer: {
         width: '50%',
+        maxWidth: UIConstant.elasticWidthHuge() / 2,
+    },
+    fullWidthContainer: {
+        width: '100%',
         paddingHorizontal: UIConstant.contentOffset(),
     },
 

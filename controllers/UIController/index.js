@@ -1,9 +1,20 @@
+/* eslint-disable class-methods-use-this */
 // @flow
 import React from 'react';
-import type { Node } from 'react';
-import { Platform, Keyboard, Alert, SafeAreaView } from 'react-native';
+import {
+    View,
+    Platform,
+    Keyboard,
+    SafeAreaView,
+    LayoutAnimation,
+    Easing,
+} from 'react-native';
+
+import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
+import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
+import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized/';
 import UIAlertView from '../../components/popup/UIAlertView';
@@ -32,11 +43,16 @@ const pathAndParamsForScreens: {
     [string]: PathAndParams,
 } = {};
 
-type ContentInset = {
+export type ContentInset = {
     left: number,
     right: number,
     top: number,
     bottom: number,
+};
+
+export type AnimationParameters = {
+    duration: number,
+    easing: string,
 };
 
 export type ControllerProps = {
@@ -45,11 +61,19 @@ export type ControllerProps = {
 
 export type ControllerState = {
     contentInset?: ContentInset,
+    safeArea?: ContentInset,
     showIndicator?: boolean,
     spinnerTextContent?: string,
     spinnerTitleContent?: string,
     spinnerVisible?: boolean,
 };
+
+const EmptyInset: ContentInset = Object.freeze({
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+});
 
 const keyboardPanningScreens = [];
 
@@ -125,11 +149,52 @@ export default class UIController<Props, State>
         return null;
     }
 
+    static getEasingFunction(easing: string): (t: number) => number {
+        switch (easing) {
+        case LayoutAnimation.Types.spring:
+            return Easing.elastic();
+        case LayoutAnimation.Types.linear:
+            return Easing.linear;
+        case LayoutAnimation.Types.easeIn:
+            return Easing.in(Easing.ease);
+        case LayoutAnimation.Types.easeOut:
+            return Easing.out(Easing.ease);
+        case LayoutAnimation.Types.easeInEaseOut:
+            return Easing.inOut(Easing.ease);
+        case LayoutAnimation.Types.keyboard:
+            // There is no information about real easing function for keyboard animation.
+            // But people on Internet try to find closely easing functions.
+            return Easing.bezier(0.17, 0.59, 0.4, 0.77);
+            // return Easing.bezier(0.19, 0.35, 0.0625, 0.5);
+        default:
+            return Easing.out(Easing.ease);
+        }
+    }
+
+    static getKeyboardAnimation(event: ?KeyboardEvent): ?AnimationParameters {
+        if (!event) {
+            return null;
+        }
+        const {
+            duration,
+            easing,
+        } = event;
+        return (duration && easing)
+            ? {
+                duration,
+                easing,
+            }
+            : null;
+    }
+
     // constructor
+    hasSpinnerOverlay: boolean;
+
     constructor(props: Props & ControllerProps) {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
+        this.hasSpinnerOverlay = false;
 
         this.handlePathAndParams();
         this.listenToNavigation();
@@ -138,6 +203,7 @@ export default class UIController<Props, State>
     componentDidMount() {
         super.componentDidMount();
         this.initKeyboardListeners();
+        this.loadSafeAreaInsets();
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -153,34 +219,61 @@ export default class UIController<Props, State>
         this.pushStateIfNeeded();
     }
 
+    loadSafeAreaInsets() {
+        (async () => {
+            const safeArea = await UIDevice.safeAreaInsets();
+            this.setStateSafely({ safeArea });
+        })();
+    }
+
     // Virtual
-    // eslint-disable-next-line class-methods-use-this
+    renderOverlay(): React$Node {
+        return null;
+    }
+
     renderSafely() {
         return null;
     }
 
     // Events
-    onKeyboardWillShow(e: any) {
-        const keyboardHeight = e.endCoordinates ? e.endCoordinates.height : e.end.height;
-        this.setContentInset({
-            top: 0,
-            left: 0,
-            bottom: keyboardHeight,
-            right: 0,
+    onKeyboardWillShow(event: KeyboardEvent) {
+        const end = event.endCoordinates;
+        const animation = UIController.getKeyboardAnimation(event);
+        const { container } = this;
+        if (!(container && container.measure)) {
+            this.setBottomInset(end.height, animation);
+            return;
+        }
+        container.measure((
+            x: number,
+            y: number,
+            width: number,
+            height: number,
+            screenX: number,
+            screenY: number,
+        ) => {
+            const bottomInset = Platform.OS === 'ios'
+                ? (screenY + height) - (end.screenY)
+                : end.height;
+            this.setBottomInset(Math.max(0, bottomInset), animation);
         });
     }
 
-    onKeyboardWillHide(e: any) {
-        this.setContentInset({
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-        });
+    onKeyboardWillHide(event: KeyboardEvent) {
+        this.setContentInset(EmptyInset, UIController.getKeyboardAnimation(event));
     }
 
     // Setters
-    setContentInset(contentInset: ContentInset) {
+    setBottomInset(bottom: number, animation: ?AnimationParameters) {
+        this.setContentInset({
+            top: 0,
+            left: 0,
+            bottom,
+            right: 0,
+        }, animation);
+    }
+
+    setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
         this.setStateSafely({ contentInset });
     }
 
@@ -193,6 +286,14 @@ export default class UIController<Props, State>
     }
 
     // Getters
+    getSafeAreaInsets(): ContentInset {
+        return this.state.safeArea || EmptyInset;
+    }
+
+    getContentInset(): ContentInset {
+        return this.state.contentInset || EmptyInset;
+    }
+
     getNavigationState() {
         const { navigation } = this.props;
         if (navigation) {
@@ -207,10 +308,6 @@ export default class UIController<Props, State>
             return state.params || {};
         }
         return {};
-    }
-
-    getContentInset(): ?ContentInset {
-        return this.state.contentInset;
     }
 
     shouldShowIndicator(): ?boolean {
@@ -362,11 +459,28 @@ export default class UIController<Props, State>
         />);
     }
 
-    render(): ?Node {
-        return (
+    render(): React$Node {
+        // We must set the 'collapsible' to 'false'
+        // for the containers 'measure' works well on Android.
+        const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
-                {this.renderSafely()}
+                <View style={UIStyle.flex} collapsable={false} ref={this.onSetContainer}>
+                    {this.renderSafely()}
+                </View>
             </SafeAreaView>
+        );
+        const overlays = [].concat(
+            this.renderOverlay() || [],
+            this.hasSpinnerOverlay ? this.renderSpinnerOverlay() : [],
+        );
+        if (overlays.length === 0) {
+            return main;
+        }
+        return (
+            <View style={UIStyle.flex}>
+                {main}
+                {overlays.length > 1 ? <React.Fragment>{overlays}</React.Fragment> : overlays[0]}
+            </View>
         );
     }
 
@@ -377,4 +491,9 @@ export default class UIController<Props, State>
     keyboardWillHideListener: { remove(): void };
     path: string;
     params: Params;
+    container: ?(React$Component<*> & NativeMethodsMixinType);
+
+    onSetContainer = (container: ?(React$Component<*> & NativeMethodsMixinType)) => {
+        this.container = container;
+    };
 }

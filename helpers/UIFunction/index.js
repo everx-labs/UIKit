@@ -8,6 +8,13 @@ const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
 
 export default class UIFunction {
+    // 'No operation' closure. Useful in case when callback/handler must be specified but
+    // without real work.
+    // Instead of <Component onEvent={() => {}} >
+    // preferable way is: <Component onEvent={UIFunction.NOP} >
+    static NOP = () => {
+    };
+
     // Async Helpers
     /** Converts callback style function into Promise */
     static makeAsync(original) {
@@ -65,7 +72,7 @@ export default class UIFunction {
     static toFixedDown(number, fixed = 2) {
         const reg = new RegExp(`(^-?\\d+\\.\\d{${fixed}})`);
         const match = number.toString().match(reg);
-        return match ? match[0] : number.toFixed(fixed);
+        return match ? match[0] : Number(number).toFixed(fixed);
     }
 
     // Functions to determine a new caret position for numeric formatted text !!!
@@ -101,6 +108,18 @@ export default class UIFunction {
         return newCaretPos;
     }
 
+    // Returns a string that represents the formatted number using the locale configuration.
+    static amountToLocale(
+        number,
+        locale,
+        options = {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 8,
+        },
+    ) {
+        return Number(number).toLocaleString(locale, options);
+    }
+
     // Used for numeric money representation as well may be used for exporting digits from phones
     static numericText(text, currency = {
         code: 'USD',
@@ -124,7 +143,10 @@ export default class UIFunction {
             const parseResult = parseNumber(`+${phone}`, { extended: true });
             ({ valid } = parseResult);
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone code ${phone} with exception`,
+                exception,
+            );
         }
         return valid;
     }
@@ -151,7 +173,10 @@ export default class UIFunction {
                 phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
             }
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone ${phone} with exception`,
+                exception,
+            );
             if (cleanIfFailed) {
                 phone = '';
             }
@@ -202,20 +227,26 @@ export default class UIFunction {
                 }
             }
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone code ${phone} with exception`,
+                exception,
+            );
         }
         return countryCode;
     }
 
     // International phone
     static internationalPhone(phone) {
-        let parsedPhone = parseNumber(phone, 'RU'); // It parses 8 (000) kind of phones
+        if (!phone) {
+            return null;
+        }
+        const phoneNumber = phone.trim();
+        let parsedPhone = parseNumber(phoneNumber, 'RU'); // It parses 8 (000) kind of phones
         if (Object.keys(parsedPhone).length === 0) {
-            parsedPhone = parseNumber(phone, 'US'); // It parses all the rest mobile phones
+            parsedPhone = parseNumber(phoneNumber, 'US'); // It parses all the rest mobile phones
         }
         if (Object.keys(parsedPhone).length === 0) {
-            console.log('[UIFunction] Failed to parse phone:', phone); // Usually short phones
-            return null;
+            return phoneNumber.startsWith('+') ? null : this.internationalPhone(`+${phoneNumber}`);
         }
         const internationalPhone = formatNumber(parsedPhone, 'International');
         return UIFunction.numericText(internationalPhone);
@@ -343,4 +374,3 @@ export default class UIFunction {
         return this.normalizeKeyPhrase(a) === this.normalizeKeyPhrase(b);
     }
 }
-

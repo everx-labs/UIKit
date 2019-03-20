@@ -1,5 +1,5 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, TouchableWithoutFeedback, View, Text } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
@@ -16,9 +16,6 @@ const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
     },
-    button: {
-        flex: 1,
-    },
     badgeContainer: {
         marginRight: UIConstant.smallContentOffset(),
     },
@@ -32,23 +29,43 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIButton extends UIComponent {
+type Props = {
+    testID?: string,
+    style?: StylePropType,
+    textStyle?: StylePropType,
+    buttonSize: string,
+    buttonShape: string,
+    title: string,
+    badge: number,
+    disabled: boolean,
+    bottomExtend: boolean,
+    showIndicator: boolean,
+    footer: boolean,
+    onPress: () => void,
+};
+
+type State = {
+    overlayColor: string
+};
+
+export default class UIButton extends UIComponent<Props, State> {
     static ButtonSize = {
         Default: 'default',
         Large: 'large',
         Medium: 'medium',
         Small: 'small',
-    }
+    };
 
     static ButtonShape = {
         Default: 'default',
         Radius: 'radius',
         Rounded: 'rounded',
         Full: 'full',
-    }
+    };
 
+    insetKey: string;
     // constructor
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -80,7 +97,7 @@ export default class UIButton extends UIComponent {
     }
 
     // Setters
-    setOverlayColor(overlayColor) {
+    setOverlayColor(overlayColor: string) {
         this.setStateSafely({
             overlayColor,
         });
@@ -137,12 +154,11 @@ export default class UIButton extends UIComponent {
 
     // Actions
     setInsetIfFooter() {
-        const { footer } = this.props;
-        if (!footer) {
+        if (!this.props.footer) {
             return;
         }
         const height = this.getButtonHeight();
-        this.insetKey = `UIButton~key~${new Date()}`;
+        this.insetKey = `UIButton~key~${new Date().toLocaleString()}`;
         UINotice.setAdditionalInset(this.insetKey, height);
     }
 
@@ -155,7 +171,13 @@ export default class UIButton extends UIComponent {
 
     // render
     renderBadge() {
-        return (<UIBadge style={styles.badgeContainer} badge={this.props.badge} inverted />);
+        return (
+            <UIBadge
+                style={styles.badgeContainer}
+                badge={this.props.badge}
+                inverted
+            />
+        );
     }
 
     renderTitle() {
@@ -166,6 +188,7 @@ export default class UIButton extends UIComponent {
             <Text
                 style={[
                     styles.title,
+                    this.props.textStyle,
                     { color: this.getTitleColor() },
                 ]}
             >
@@ -189,11 +212,12 @@ export default class UIButton extends UIComponent {
     }
 
     render() {
-        const { bottomExtend, style } = this.props;
+        const { testID, bottomExtend, style } = this.props;
         let height = this.getButtonHeight();
         if (bottomExtend) {
             height *= 2;
         }
+        const testIDProp = testID ? { testID } : null;
         return (
             <View
                 style={[
@@ -205,7 +229,7 @@ export default class UIButton extends UIComponent {
                 ]}
             >
                 <TouchableWithoutFeedback
-                    style={styles.button}
+                    {...testIDProp}
                     disabled={this.isDisabled() || this.shouldShowIndicator()}
                     onPress={() => this.onPress()}
                     onPressIn={() => this.onPressIn()}
@@ -213,6 +237,7 @@ export default class UIButton extends UIComponent {
                 >
                     <View
                         style={[
+                            UIStyle.flex,
                             UIStyle.centerContainer,
                             { backgroundColor: this.getOverlayColor() },
                         ]}
@@ -226,10 +251,11 @@ export default class UIButton extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UIButton.defaultProps = {
-    style: {},
     buttonSize: UIButton.ButtonSize.Default,
     buttonShape: UIButton.ButtonShape.Default,
     title: '',
@@ -239,17 +265,4 @@ UIButton.defaultProps = {
     showIndicator: false,
     footer: false,
     onPress: () => {},
-};
-
-UIButton.propTypes = {
-    style: StylePropType,
-    buttonSize: PropTypes.string,
-    buttonShape: PropTypes.string,
-    title: PropTypes.string,
-    badge: PropTypes.number,
-    disabled: PropTypes.bool,
-    bottomExtend: PropTypes.bool,
-    showIndicator: PropTypes.bool,
-    footer: PropTypes.bool,
-    onPress: PropTypes.func,
 };
