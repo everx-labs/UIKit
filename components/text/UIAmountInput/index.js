@@ -121,12 +121,12 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
                     selectable={false}
                 >
                     {value}
-                </Text>
-                <Text
-                    style={[this.textInputStyle(), styles.trailingValue]}
-                    selectable={false}
-                >
-                    {trailingValue}
+                    <Text
+                        style={styles.trailingValue}
+                        selectable={false}
+                    >
+                        {trailingValue}
+                    </Text>
                 </Text>
             </View>
         );
