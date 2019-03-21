@@ -6,7 +6,6 @@ import {
     Text,
     StyleSheet,
     Animated,
-    Platform,
 } from 'react-native';
 
 import UIController from '../UIController';
