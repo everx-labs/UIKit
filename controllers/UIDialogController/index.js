@@ -6,6 +6,7 @@ import {
     Text,
     StyleSheet,
     Animated,
+    Platform,
 } from 'react-native';
 
 import UIController from '../UIController';
@@ -19,6 +20,7 @@ import UIDialogTextInput from './UIDialogTextInput';
 const styles = StyleSheet.create({
     scrollContainer: {
         justifyContent: 'center',
+        paddingTop: UIConstant.normalContentOffset(),
     },
     titleView: {
         minHeight: 72,
@@ -187,6 +189,28 @@ class UIDialogController extends UIController {
         return this.state.bottomPanelHeight || 0;
     }
 
+    getScrollViewAdjustments(): { props: {}, contentContainerStyle: any } {
+        const bottomInset = this.getBottomPanelHeight();
+        return Platform.OS === 'ios'
+            ? {
+                props: {
+                    contentInset: {
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: bottomInset,
+                    },
+                },
+                contentContainerStyle: null,
+            }
+            : {
+                props: null,
+                contentContainerStyle: {
+                    paddingBottom: bottomInset,
+                },
+            };
+    }
+
     // Render
     renderTitle() {
         if (!this.title) {
@@ -322,12 +346,7 @@ class UIDialogController extends UIController {
             flex: 1,
             marginBottom: this.getMarginBottom(),
         };
-        const contentInset = {
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: this.getBottomPanelHeight(),
-        };
+        const scrollAdjustments = this.getScrollViewAdjustments();
         const wrappedContent = this.wrapContentInScrollView
             ? (
                 <ScrollView
@@ -337,8 +356,9 @@ class UIDialogController extends UIController {
                         UIStyle.pageContainer,
                         styles.scrollContainer,
                         this.getScrollContainerStyle(),
+                        scrollAdjustments.contentContainerStyle,
                     ]}
-                    contentInset={contentInset}
+                    {...scrollAdjustments}
                     keyboardShouldPersistTaps="handled"
                 >
                     {this.renderTitle()}
