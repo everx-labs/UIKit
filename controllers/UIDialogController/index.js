@@ -180,7 +180,7 @@ class UIDialogController extends UIController {
         return this.state.photo;
     }
 
-    getScrollContainerStyle() {
+    getContentContainerStyle() {
         return null;
     }
 
@@ -331,7 +331,7 @@ class UIDialogController extends UIController {
                     contentContainerStyle={[
                         UIStyle.pageContainer,
                         styles.scrollContainer,
-                        this.getScrollContainerStyle(),
+                        this.getContentContainerStyle(),
                         { paddingBottom: this.getBottomPanelHeight() },
                     ]}
                     keyboardShouldPersistTaps="handled"
@@ -349,6 +349,7 @@ class UIDialogController extends UIController {
                     style={[
                         UIStyle.screenContainer,
                         UIStyle.pageContainer,
+                        this.getContentContainerStyle(),
                     ]}
                     keyboardShouldPersistTaps="handled"
                 >
