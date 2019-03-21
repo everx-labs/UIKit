@@ -11,7 +11,6 @@ import {
 import UIController from '../UIController';
 import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
-import UIDevice from '../../helpers/UIDevice';
 import UIFont from '../../helpers/UIFont';
 import UIStyle from '../../helpers/UIStyle';
 import UIProfilePhoto from '../../components/profile/UIProfilePhoto';
@@ -21,7 +20,6 @@ const styles = StyleSheet.create({
     scrollContainer: {
         justifyContent: 'center',
         paddingTop: UIConstant.normalContentOffset(),
-        paddingBottom: UIDevice.statusBarHeight() + UIDevice.navigationBarHeight(),
     },
     titleView: {
         minHeight: 72,
@@ -93,6 +91,7 @@ class UIDialogController extends UIController {
     constructor(props) {
         super(props);
 
+        this.wrapContentInScrollView = true;
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
         this.title = undefined;
         this.hasPhotoView = false;
@@ -119,6 +118,7 @@ class UIDialogController extends UIController {
             auxInput: '',
             photo: null,
             showIndicator: false,
+            bottomPanelHeight: 0,
         };
     }
 
@@ -182,6 +182,10 @@ class UIDialogController extends UIController {
 
     getScrollContainerStyle() {
         return null;
+    }
+
+    getBottomPanelHeight() {
+        return this.state.bottomPanelHeight || 0;
     }
 
     // Render
@@ -278,13 +282,29 @@ class UIDialogController extends UIController {
     }
 
     renderBottomContainer() {
-        const bottom = this.renderBottom();
-        return bottom ? <View style={styles.bottomContainer}>{bottom}</View> : null;
+        let bottom = this.renderBottom();
+        if (Array.isArray(bottom)) {
+            bottom = <React.Fragment>{bottom}</React.Fragment>;
+        }
+        return (
+            <View
+                style={styles.bottomContainer}
+                onLayout={this.onLayoutBottomContainer}
+            >
+                {bottom}
+            </View>
+        );
     }
 
     renderContent() {
         return null;
     }
+
+    onLayoutBottomContainer = (e) => {
+        this.setStateSafely({
+            bottomPanelHeight: e.nativeEvent.layout.height,
+        });
+    };
 
     renderContentContainer() {
         let content = this.renderContent();
@@ -303,8 +323,8 @@ class UIDialogController extends UIController {
             flex: 1,
             marginBottom: this.getMarginBottom(),
         };
-        return (
-            <Animated.View style={animatedContainerStyle}>
+        const wrappedContent = this.wrapContentInScrollView
+            ? (
                 <ScrollView
                     style={UIStyle.screenContainer}
                     showsVerticalScrollIndicator={false}
@@ -312,6 +332,7 @@ class UIDialogController extends UIController {
                         UIStyle.pageContainer,
                         styles.scrollContainer,
                         this.getScrollContainerStyle(),
+                        { paddingBottom: this.getBottomPanelHeight() },
                     ]}
                     keyboardShouldPersistTaps="handled"
                 >
@@ -322,6 +343,26 @@ class UIDialogController extends UIController {
                     {this.renderSubtitleContainer()}
                     {this.renderContentContainer()}
                 </ScrollView>
+            )
+            : (
+                <View
+                    style={[
+                        UIStyle.screenContainer,
+                        UIStyle.pageContainer,
+                    ]}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    {this.renderTitle()}
+                    {this.renderPhoto()}
+                    {this.renderTextInput()}
+                    {this.renderAuxTextInput()}
+                    {this.renderSubtitleContainer()}
+                    {this.renderContentContainer()}
+                </View>
+            );
+        return (
+            <Animated.View style={animatedContainerStyle}>
+                {wrappedContent}
                 {this.renderBottomContainer()}
             </Animated.View>
         );
