@@ -19,6 +19,10 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
+const UI_GREAT_CONTENT_OFFSET = 48;
+const UI_MAJOR_CONTENT_OFFSET = 64;
+const UI_VAST_CONTENT_OFFSET = 80;
+const UI_ENORMOUS_CONTENT_OFFSET = 104;
 const UI_GIANT_CONTENT_OFFSET = 136;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
@@ -33,10 +37,12 @@ const UI_DEFAULT_BUTTON_HEIGHT = 48;
 const UI_LARGE_BUTTON_HEIGHT = 56;
 
 const UI_SMALL_CELL_HEIGHT = 24;
+const UI_NORMAL_CELL_HEIGHT = 32;
 const UI_MEDIUM_CELL_HEIGHT = 40;
 const UI_DEFAULT_CELL_HEIGHT = 48;
 const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
+const UI_GREAT_CELL_HEIGHT = 72;
 const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
 const UI_GIANT_CELL_HEIGHT = 128;
@@ -58,7 +64,9 @@ const UI_INITIAL_STYLE_FOR_ALL = Platform.OS === 'web' ? { all: 'initial' } : nu
 
 const UI_ELASTIC_WIDTH_NARROW = 80;
 const UI_ELASTIC_WIDTH_REGULAR = 304;
+const UI_ELASTIC_WIDTH_HALF_NORMAL = 376;
 const UI_ELASTIC_WIDTH_MEDIUM = 592;
+const UI_ELASTIC_WIDTH_NORMAL = 768;
 const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_BROAD = 1000;
 const UI_ELASTIC_WIDTH_MAX = 1280;
@@ -184,6 +192,22 @@ export default class UIConstant {
         return UI_HUGE_CONTENT_OFFSET;
     }
 
+    static greatContentOffset() {
+        return UI_GREAT_CONTENT_OFFSET;
+    }
+
+    static majorContentOffset() {
+        return UI_MAJOR_CONTENT_OFFSET;
+    }
+
+    static vastContentOffset() {
+        return UI_VAST_CONTENT_OFFSET;
+    }
+
+    static enormousContentOffset() {
+        return UI_ENORMOUS_CONTENT_OFFSET;
+    }
+
     static giantContentOffset() {
         return UI_GIANT_CONTENT_OFFSET;
     }
@@ -242,6 +266,10 @@ export default class UIConstant {
         return UI_SMALL_CELL_HEIGHT;
     }
 
+    static normalCellHeight() {
+        return UI_NORMAL_CELL_HEIGHT;
+    }
+
     static defaultCellHeight() {
         return UI_DEFAULT_CELL_HEIGHT;
     }
@@ -256,6 +284,10 @@ export default class UIConstant {
 
     static largeCellHeight() {
         return UI_LARGE_CELL_HEIGHT;
+    }
+
+    static greatCellHeight() {
+        return UI_GREAT_CELL_HEIGHT;
     }
 
     static majorCellHeight() {
@@ -314,6 +346,14 @@ export default class UIConstant {
 
     static elasticWidthMedium() {
         return UI_ELASTIC_WIDTH_MEDIUM;
+    }
+
+    static elasticWidthHalfNormal() {
+        return UI_ELASTIC_WIDTH_HALF_NORMAL;
+    }
+
+    static elasticWidthNormal() {
+        return UI_ELASTIC_WIDTH_NORMAL;
     }
 
     static elasticWidthWide() {

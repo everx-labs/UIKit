@@ -8,13 +8,6 @@ const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
 
 export default class UIFunction {
-    // 'No operation' closure. Useful in case when callback/handler must be specified but
-    // without real work.
-    // Instead of <Component onEvent={() => {}} >
-    // preferable way is: <Component onEvent={UIFunction.NOP} >
-    static NOP = () => {
-    };
-
     // Async Helpers
     /** Converts callback style function into Promise */
     static makeAsync(original) {
@@ -143,10 +136,7 @@ export default class UIFunction {
             const parseResult = parseNumber(`+${phone}`, { extended: true });
             ({ valid } = parseResult);
         } catch (exception) {
-            console.log(
-                `[UIFunction] Failed to parse phone code ${phone} with exception`,
-                exception,
-            );
+            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
         }
         return valid;
     }
@@ -173,10 +163,7 @@ export default class UIFunction {
                 phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
             }
         } catch (exception) {
-            console.log(
-                `[UIFunction] Failed to parse phone ${phone} with exception`,
-                exception,
-            );
+            console.log(`[UIFunction] Failed to parse phone ${phone} with excepetion`, exception);
             if (cleanIfFailed) {
                 phone = '';
             }
@@ -227,26 +214,20 @@ export default class UIFunction {
                 }
             }
         } catch (exception) {
-            console.log(
-                `[UIFunction] Failed to parse phone code ${phone} with exception`,
-                exception,
-            );
+            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
         }
         return countryCode;
     }
 
     // International phone
     static internationalPhone(phone) {
-        if (!phone) {
+        let parsedPhone = parseNumber(phone, 'RU'); // It parses 8 (000) kind of phones
+        if (Object.keys(parsedPhone).length === 0) {
+            parsedPhone = parseNumber(phone, 'US'); // It parses all the rest mobile phones
+        }
+        if (Object.keys(parsedPhone).length === 0) {
+            console.log('[UIFunction] Failed to parse phone:', phone); // Usually short phones
             return null;
-        }
-        const phoneNumber = phone.trim();
-        let parsedPhone = parseNumber(phoneNumber, 'RU'); // It parses 8 (000) kind of phones
-        if (Object.keys(parsedPhone).length === 0) {
-            parsedPhone = parseNumber(phoneNumber, 'US'); // It parses all the rest mobile phones
-        }
-        if (Object.keys(parsedPhone).length === 0) {
-            return phoneNumber.startsWith('+') ? null : this.internationalPhone(`+${phoneNumber}`);
         }
         const internationalPhone = formatNumber(parsedPhone, 'International');
         return UIFunction.numericText(internationalPhone);
@@ -370,7 +351,24 @@ export default class UIFunction {
             .toLowerCase();
     }
 
+    static formatLowerLetters(str: string): string {
+        const normalizedStr = UIFunction.normalizeKeyPhrase(str);
+        return normalizedStr
+            .replace(/[^\s-_0-9a-zA-Zа-яА-ЯёЁ]/g, '');
+    }
+
+    static hasLetters(str) {
+        return str.search(/[a-zа-яё]/i) !== -1;
+    }
+
     static isSameKeyPhrases(a: string, b: string): boolean {
         return this.normalizeKeyPhrase(a) === this.normalizeKeyPhrase(b);
     }
+
+    static isEmailAddress(expression: string) {
+        // eslint-disable-next-line
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(expression).toLowerCase());
+    }
 }
+

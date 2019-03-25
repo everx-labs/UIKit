@@ -17,6 +17,7 @@
         "react-native-safe-area": "^0.5.0"
     },
     "dependencies": {
+        "@quentin-sommer/react-useragent": "^2.0.0",
         "bowser": "^1.9.4",
         "currency-formatter": "^1.4.3",
         "libphonenumber-js": "1.5.2",

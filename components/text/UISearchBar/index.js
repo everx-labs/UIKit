@@ -130,9 +130,9 @@ class UISearchBar extends UIComponent {
 
     render() {
         const {
-            value, placeholder, onChangeExpression, testID,
+            value, placeholder, onChangeExpression,
         } = this.props;
-        const testIDProp = testID ? { testID } : null;
+
         return (
             <View>
                 <View
@@ -141,7 +141,6 @@ class UISearchBar extends UIComponent {
                     ]}
                 >
                     <UITextInput
-                        {...testIDProp}
                         ref={(component) => { this.textInput = component; }}
                         value={value}
                         placeholder={placeholder}

@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
+        elevation: Number.MAX_SAFE_INTEGER, // Overlay all views which use elevation property > 0
     },
     background: {
         position: 'absolute',

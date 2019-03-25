@@ -6,6 +6,7 @@ import {
     Platform,
     Keyboard,
     SafeAreaView,
+    Dimensions,
     LayoutAnimation,
     Easing,
 } from 'react-native';
@@ -171,10 +172,7 @@ export default class UIController<Props, State>
         }
     }
 
-    static getKeyboardAnimation(event: ?KeyboardEvent): ?AnimationParameters {
-        if (!event) {
-            return null;
-        }
+    static getKeyboardAnimation(event: KeyboardEvent): ?AnimationParameters {
         const {
             duration,
             easing,
@@ -252,9 +250,8 @@ export default class UIController<Props, State>
             screenX: number,
             screenY: number,
         ) => {
-            const bottomInset = Platform.OS === 'ios'
-                ? (screenY + height) - (end.screenY)
-                : end.height;
+            const screen = Dimensions.get('window');
+            const bottomInset = (screenY + height) - (screen.height - end.height);
             this.setBottomInset(Math.max(0, bottomInset), animation);
         });
     }
@@ -460,11 +457,9 @@ export default class UIController<Props, State>
     }
 
     render(): React$Node {
-        // We must set the 'collapsible' to 'false'
-        // for the containers 'measure' works well on Android.
         const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
-                <View style={UIStyle.flex} collapsable={false} ref={this.onSetContainer}>
+                <View style={UIStyle.flex} ref={this.onSetContainer}>
                     {this.renderSafely()}
                 </View>
             </SafeAreaView>

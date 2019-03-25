@@ -136,14 +136,9 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
 
     // Component
     render() {
-        const title = this.getTitle();
-        const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
         return (
             <View style={styles.container}>
-                <View
-                    {...testIDProp}
-                    style={styles.buttonsContainer}
-                >
+                <View style={styles.buttonsContainer}>
                     {this.getHeaderLeft()}
                     {this.getHeaderRight()}
                 </View>

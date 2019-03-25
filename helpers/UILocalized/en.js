@@ -509,6 +509,12 @@ const en = {
 
     // Dates
     DateSymbols: { year: 'YYYY', month: 'MM', day: 'DD' },
+
+    // Stub page
+    GetNotifiedWhenWeLaunch: 'Get notified when we launch',
+    EmailAddress: 'Email address',
+    WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
+    ThanksForCooperation: 'Thanks for cooperation.',
 };
 
 export default en;

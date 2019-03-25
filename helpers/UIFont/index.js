@@ -99,7 +99,6 @@ const UI_FONT_HEADLINE_LIGHT = { ...UI_FONT_HEADLINE, ...UI_FONT_LIGHT };
 const UI_FONT_SUBHEAD_BOLD = { ...UI_FONT_SUBHEAD, ...UI_FONT_BOLD };
 const UI_FONT_SUBHEAD_LIGHT = { ...UI_FONT_LIGHT, ...UI_FONT_LIGHT };
 const UI_FONT_TITLE_BOLD = { ...UI_FONT_TITLE, ...UI_FONT_BOLD };
-const UI_FONT_TITLE_REGULAR = { ...UI_FONT_TITLE, ...UI_FONT_REGULAR };
 const UI_FONT_TITLE_LIGHT = { ...UI_FONT_TITLE, ...UI_FONT_LIGHT };
 const UI_FONT_SUBTITLE_BOLD = { ...UI_FONT_SUBTITLE, ...UI_FONT_BOLD };
 const UI_FONT_SUBTITLE_REGULAR = { ...UI_FONT_SUBTITLE, ...UI_FONT_REGULAR };
@@ -150,10 +149,6 @@ export default class UIFont {
 
     static titleBold() {
         return UI_FONT_TITLE_BOLD;
-    }
-
-    static titleRegular() {
-        return UI_FONT_TITLE_REGULAR;
     }
 
     static titleLight() {

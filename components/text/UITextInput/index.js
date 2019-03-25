@@ -106,6 +106,7 @@ class UITextInput extends UIComponent<Props, State> {
         const {
             value,
             placeholder,
+            placeholderTextColor,
             onChangeText,
             onFocus,
             onBlur,
@@ -126,7 +127,7 @@ class UITextInput extends UIComponent<Props, State> {
             {...(this.props: TextInputTransitProps)}
             value={value}
             placeholder={placeholder}
-            placeholderTextColor={UIColor.textTertiary()}
+            placeholderTextColor={placeholderTextColor}
             autoCorrect={false}
             autoFocus={autoFocus}
             editable={editable}
@@ -191,6 +192,7 @@ UITextInput.defaultProps = {
     containerStyle: {},
     value: '',
     placeholder: '',
+    placeholderTextColor: UIColor.textTertiary(),
     beginningTag: '',
     needBorderBottom: false,
     disabled: false,

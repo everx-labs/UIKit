@@ -9,6 +9,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 
 type ButtonImage = 'back' | 'close-primary' | 'close-secondary'
+                    | 'close-dark-theme-secondary'
                     | 'close-light' | 'custom' | 'menu'
                     | 'menu-contained' | 'gramscan';
 
@@ -16,6 +17,7 @@ const assets = {
     back: () => require('../../../assets/ico-arrow-left/ico-arrow-left.png'),
     'close-primary': () => require('../../../assets/ico-close/close-blue.png'),
     'close-secondary': () => require('../../../assets/ico-close/close-grey.png'),
+    'close-dark-theme-secondary': () => require('../../../assets/ico-close/close-dark-theme-secondary.png'),
     'close-light': () => require('../../../assets/ico-close/close-light.png'),
     'close-black': () => require('../../../assets/ico-close/close-black.png'),
     menu: () => require('../../../assets/ico-open-menu/open-menu.png'),
@@ -38,6 +40,7 @@ export default class UIImageButton extends UIComponent<Props, State> {
         back: 'back',
         closePrimary: 'close-primary',
         closeSecondary: 'close-secondary',
+        closeDarkThemeSecondary: 'close-dark-theme-secondary',
         closeLight: 'close-light',
         menu: 'menu',
         menuContained: 'menu-contained',

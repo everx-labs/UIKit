@@ -1,8 +1,9 @@
+/* eslint-disable global-require */
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+import { TextInput, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIColor from '../../../helpers/UIColor';
@@ -11,23 +12,21 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
+import UIFunction from '../../../helpers/UIFunction';
 
-const textInputFont = StyleSheet.flatten(UITextStyle.primaryBodyRegular) || {};
-delete textInputFont.lineHeight;
+import icoDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
+import icoAbled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
+import icoAbledHover from '../../../assets/ico-arrow-right/arrow-right-white.png';
 
 const styles = StyleSheet.create({
     container: {
-        //
+        justifyContent: 'center',
     },
     textView: {
         paddingTop: UIConstant.tinyContentOffset(),
         paddingBottom: UIConstant.smallContentOffset(),
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    textInput: {
-        ...textInputFont,
-        flex: 1,
     },
 });
 
@@ -38,6 +37,7 @@ export type DetailsProps = {
     containerStyle: StylePropType,
     comment: string,
     commentColor?: string | null,
+    dark?: boolean,
     editable: boolean,
     floatingTitle: boolean,
     hideBottomLine: boolean,
@@ -45,6 +45,7 @@ export type DetailsProps = {
     keyboardType: KeyboardType,
     maxLength?: number,
     maxLines: number,
+    needArrow?: boolean,
     onBlur?: () => void,
     onChangeText: (text: string) => void,
     onFocus?: () => void,
@@ -56,6 +57,7 @@ export type DetailsProps = {
     showSymbolsLeft: boolean,
     token?: string,
     value: string,
+    valueType?: string,
     testID?: string,
 };
 export type DetailsState = {};
@@ -63,6 +65,11 @@ export type DetailsState = {};
 export default class UIDetailsInput<Props, State>
     extends UIComponent<Props & DetailsProps, State & DetailsState> {
     textInput: ?TextInput;
+
+    static ValueType = {
+        Default: 'default',
+        Email: 'email',
+    };
 
     static defaultProps: DetailsProps = {
         autoCapitalize: 'sentences',
@@ -75,6 +82,7 @@ export default class UIDetailsInput<Props, State>
         hidePlaceholder: false,
         keyboardType: 'default',
         maxLines: 1,
+        needArrow: false,
         onBlur: () => {},
         onChangeText: () => {},
         onFocus: () => {},
@@ -83,12 +91,48 @@ export default class UIDetailsInput<Props, State>
         placeholder: UILocalized.Details,
         secureTextEntry: false,
         showSymbolsLeft: false,
+        valueType: UIDetailsInput.ValueType.Default,
         value: '',
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            focused: false,
+            arrowHover: false,
+        };
+    }
+
+    // Setters
+    setFocused(focused = true) {
+        this.setStateSafely({ focused });
+    }
+
+    setArrowHover(arrowHover = true) {
+        this.setStateSafely({ arrowHover });
+    }
+
     // Getters
+    // isFocused() {
+    //     return this.textInput && this.textInput.isFocused();
+    // }
+
+    // previous worked only after onChangeText event
     isFocused() {
-        return this.textInput && this.textInput.isFocused();
+        return this.state.focused;
+    }
+
+    isArrowHover() {
+        return this.state.arrowHover;
+    }
+
+    isSubmitDisabled() {
+        const { valueType, value } = this.props;
+        if (valueType === UIDetailsInput.ValueType.Email) {
+            return !UIFunction.isEmailAddress(value);
+        }
+        return !value;
     }
 
     keyboardType() {
@@ -100,7 +144,11 @@ export default class UIDetailsInput<Props, State>
     }
 
     textInputStyle() {
-        return styles.textInput;
+        const textInputFont = this.props.theme === UIColor.Theme.Dark
+            ? UITextStyle.whiteBodyRegular
+            : UITextStyle.primaryBodyRegular;
+        delete textInputFont.lineHeight;
+        return [UIStyle.flex, textInputFont];
     }
 
     textViewStyle() {
@@ -154,13 +202,29 @@ export default class UIDetailsInput<Props, State>
         }
     }
 
+    onFocus() {
+        this.setFocused();
+        this.props.onFocus();
+    }
+
+    onBlur() {
+        this.setFocused(false);
+        this.props.onBlur();
+    }
+
+
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, placeholder, value } = this.props;
+        const {
+            floatingTitle, placeholder, theme, value,
+        } = this.props;
         const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
+        const textStyle = theme === UIColor.Theme.Dark
+            ? UITextStyle.whiteTinyRegular
+            : UITextStyle.tertiaryTinyRegular;
 
         return (
-            <Text style={UITextStyle.tertiaryTinyRegular}>
+            <Text style={textStyle}>
                 {text}
             </Text>
         );
@@ -174,13 +238,12 @@ export default class UIDetailsInput<Props, State>
             editable,
             maxLength,
             maxLines,
-            onFocus,
-            onBlur,
             onSubmitEditing,
             placeholder,
             returnKeyType,
             secureTextEntry,
             testID,
+            theme,
         } = this.props;
 
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
@@ -188,6 +251,9 @@ export default class UIDetailsInput<Props, State>
         const multiline = !!maxLines && maxLines > 1;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
+        const placeholderColor = theme === UIColor.Theme.Dark
+            ? UIColor.white40()
+            : UIColor.textTertiary();
         return (
             <TextInput
                 {...accessibilityLabelProp}
@@ -199,13 +265,13 @@ export default class UIDetailsInput<Props, State>
                 {...maxLengthProp}
                 multiline={multiline}
                 numberOfLines={maxLines}
-                onFocus={onFocus}
-                onBlur={onBlur}
+                onFocus={() => this.onFocus()}
+                onBlur={() => this.onBlur()}
                 onChangeText={text => this.onChangeText(text)}
                 onSubmitEditing={onSubmitEditing}
                 onKeyPress={e => this.onKeyPress(e)}
                 placeholder={this.hidePlaceholder() ? '' : placeholder}
-                placeholderTextColor={UIColor.textTertiary()}
+                placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
                 style={this.textInputStyle()}
@@ -248,22 +314,65 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
+    renderArrow() {
+        const { theme, onSubmitEditing } = this.props;
+        let source;
+        if (theme === UIColor.Theme.Dark) {
+            if (this.isSubmitDisabled()) {
+                source = icoDisabled;
+            } else if (this.isArrowHover()) {
+                source = icoAbled;
+            } else {
+                source = icoAbledHover;
+            }
+        }
+        const image = (
+            <Image
+                source={source}
+                onMouseEnter={() => this.setArrowHover()}
+                onMouseLeave={() => this.setArrowHover(false)}
+            />
+        );
+
+        if (this.isSubmitDisabled()) {
+            return image;
+        }
+        return (
+            <TouchableOpacity onPress={onSubmitEditing}>
+                {image}
+            </TouchableOpacity>
+        );
+    }
+
     renderTexFragment() {
         return (
             <React.Fragment>
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
+                {this.renderArrow()}
             </React.Fragment>
         );
     }
 
     renderTextView() {
-        const { hideBottomLine } = this.props;
+        const { hideBottomLine, theme, value } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
-        const bottomLineColor = this.commentColor() ? { borderBottomColor: this.commentColor() } : null;
+        let bottomLineColor;
+        if (this.commentColor()) {
+            bottomLineColor = this.commentColor();
+        } else if (theme === UIColor.Theme.Dark) {
+            if (this.isFocused() || value) {
+                bottomLineColor = UIColor.primary3();
+            } else {
+                bottomLineColor = UIColor.primaryMinus();
+            }
+        } else {
+            bottomLineColor = UIColor.light();
+        }
+        const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (
-            <View style={[this.textViewStyle(), bottomLine, bottomLineColor]}>
+            <View style={[this.textViewStyle(), bottomLine, bottomLineColorStyle]}>
                 {this.renderTexFragment()}
             </View>
         );
@@ -274,14 +383,15 @@ export default class UIDetailsInput<Props, State>
         if (!comment) {
             return null;
         }
-        const color = this.commentColor() ? { color: this.commentColor() } : null;
+        const commentColor = this.commentColor();
+        const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
                 style={[
                     UITextStyle.secondaryCaptionRegular,
                     UIStyle.marginTopTiny,
                     UIStyle.marginBottomSmall,
-                    color,
+                    colorStyle,
                 ]}
             >
                 {comment}

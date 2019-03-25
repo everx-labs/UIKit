@@ -124,5 +124,5 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
 
 UIBackgroundView.defaultProps = {
     screenWidth: 0,
-    presetName: '',
+    presetName: UIBackgroundView.PresetNames.Primary,
 };

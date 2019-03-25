@@ -202,7 +202,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
                 >
                     {date}
                     <Text
-                        style={styles.trailingValue}
+                        style={[this.textInputStyle(), styles.trailingValue]}
                         selectable={false}
                     >
                         {missing}
