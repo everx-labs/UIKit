@@ -59,6 +59,11 @@ export default class UIStubPage extends UIComponent<Props, State> {
         };
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+        this.detailsInput.focus();
+    }
+
     // Events
     onLayout(e) {
         const { width } = e.nativeEvent.layout;
@@ -70,6 +75,8 @@ export default class UIStubPage extends UIComponent<Props, State> {
     onSubmit() {
         this.setSubmitted();
         UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
+        const email = this.getEmail();
+        this.props.onSubmit(email);
     }
 
     // Setters
@@ -136,6 +143,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         }
         return (
             <UIDetailsInput
+                ref={(component) => { this.detailsInput = component; }}
                 theme={UIColor.Theme.Dark}
                 value={this.getEmail()}
                 valueType={UIDetailsInput.ValueType.Email}
@@ -181,5 +189,6 @@ UIStubPage.defaultProps = {
     icon: icoTonLabel,
     title: 'dev.',
     description: UILocalized.GetNotifiedWhenWeLaunch,
+    onSubmit: () => {},
 };
 
