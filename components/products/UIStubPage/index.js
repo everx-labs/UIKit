@@ -156,7 +156,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
     }
 
     render() {
-        const { title, description } = this.props;
+        const { title, icon, description } = this.props;
         const widthStyle = this.getWidthStyle();
         return (
             <View
@@ -165,7 +165,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
             >
                 <View style={[...customStyles.contentContainer, widthStyle]}>
                     <View>
-                        <Image source={icoTonLabel} style={UIStyle.positionAbsolute} />
+                        <Image source={icon} style={UIStyle.positionAbsolute} />
                         <Text style={UITextStyle.whiteKeyBold}>
                             {title}
                         </Text>
