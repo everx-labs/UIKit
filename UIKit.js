@@ -3,7 +3,7 @@ import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/text/UIAmountInput';
 import UIBackgroundView from './components/gram.scan/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
-import UIBottomBar from './components/gram.scan/UIBottomBar';
+import UIBottomBar from './components/products/UIBottomBar';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UICard from './components/gram.scan/UICard';
@@ -28,6 +28,7 @@ import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/UIImageView';
+import UILayoutManager from './helpers/UILayoutManager';
 import UIListHeader from './components/text/UIListHeader';
 import UILoadMoreButton from './components/buttons/UILoadMoreButton';
 import UILocalized from './helpers/UILocalized';
@@ -53,6 +54,8 @@ import UIShareManager from './helpers/UIShareManager';
 import UISlider from './components/gram.scan/UISlider';
 import UISpinnerOverlay from './components/UISpinnerOverlay';
 import UISplitViewController from './controllers/UISplitViewController';
+import UIStepBar from './components/navigation/UIStepBar';
+import UIStubPage from './components/products/UIStubPage';
 import UIStyle from './helpers/UIStyle';
 import UISubtitle from './components/gram.scan/UISubtitle';
 import UITabView from './components/menus/UITabView';
@@ -63,7 +66,7 @@ import UITokenCell from './components/gram.scan/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITopBar from './components/gram.scan/UITopBar';
 import UITooltip from './components/notifications/UITooltip';
-import UILayoutManager from './helpers/UILayoutManager';
+import UIUserAgent from './helpers/UIUserAgent';
 
 // Types
 import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';
@@ -104,6 +107,7 @@ export {
     UIFunction,
     UIImageButton,
     UIImageView,
+    UILayoutManager,
     UIListHeader,
     UILoadMoreButton,
     UILocalized,
@@ -129,6 +133,8 @@ export {
     UISlider,
     UISpinnerOverlay,
     UISplitViewController,
+    UIStepBar,
+    UIStubPage,
     UIStyle,
     UISubtitle,
     UITabView,
@@ -139,7 +145,7 @@ export {
     UITopBar,
     UIToggle,
     UITooltip,
-    UILayoutManager,
+    UIUserAgent,
 };
 
 export type {

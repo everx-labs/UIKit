@@ -179,7 +179,6 @@ export default class UIMenuView extends UIComponent<Props, State> {
                     arrowWidth={0}
                     arrowHeight={0}
                     isVisible={this.isVisible()}
-                    // pointerEvents="auto" // doesn't works for some reason
                     component={() => this.renderMenu()}
                 >
                     <TouchableOpacity

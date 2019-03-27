@@ -1,29 +1,39 @@
 import { StyleSheet } from 'react-native';
 
+const UI_COLOR_PRIMARY_3 = '#7AC1E4';
+const UI_COLOR_PRIMARY_MINUS = '#47A9DA';
 const UI_COLOR_PRIMARY = '#0088CC';
+const UI_COLOR_PRIMARY_PLUS = '#007AB8';
+const UI_COLOR_PRIMARY_4 = '#006BA1';
+const UI_COLOR_PRIMARY_5 = '#005885';
+const UI_COLOR_PRIMARY_6 = '#003F5E';
 const UI_COLOR_SECONDARY = '#FFFFFF';
 const UI_COLOR_TERTIARY = '#FFFFFF';
 const UI_COLOR_BLACK = '#000000';
+const UI_COLOR_BLACK_LIGHT = '#2B3338';
 const UI_COLOR_WHITE = '#FFFFFF';
 const UI_COLOR_FA = '#FAFAFA';
 const UI_COLOR_DARK = '#102027';
 const UI_COLOR_GREY = '#727C81';
 const UI_COLOR_GREY_1 = '#EBEDEE';
+const UI_COLOR_GREY_2 = '#DDE1E2';
+const UI_COLOR_GREY_3 = '#CED3D6';
 const UI_COLOR_LIGHT = '#CFD8DC';
 const UI_COLOR_BLACK_80 = 'rgba(0,0,0,0.8)';
+const UI_COLOR_WHITE_40 = 'rgba(255,255,255,0.4)';
 const UI_COLOR_WHITE_80 = 'rgba(255,255,255,0.8)';
 const UI_COLOR_SUCCESS = '#27AE60';
 const UI_COLOR_WARNING = '#F2C94C';
 const UI_COLOR_ERROR = '#EB5757';
 
-const UI_COLOR_TEXT_LPRIMARY = '#102027';
-const UI_COLOR_TEXT_DPRIMARY = '#FAFAFA';
+const UI_COLOR_TEXT_LPRIMARY = '#000000';
+const UI_COLOR_TEXT_DPRIMARY = '#FFFFFF';
 const UI_COLOR_TEXT_LPARAGRAPH = '#000000';
 const UI_COLOR_TEXT_DPARAGRAPH = '#FFFFFF';
-const UI_COLOR_TEXT_LSECONDARY = '#727C81';
-const UI_COLOR_TEXT_DSECONDARY = '#CFD8DC';
-const UI_COLOR_TEXT_LTERTIARY = '#CFD8DC';
-const UI_COLOR_TEXT_DTERTIARY = '#727C81';
+const UI_COLOR_TEXT_LSECONDARY = '#364046';
+const UI_COLOR_TEXT_DSECONDARY = '#DADADA';
+const UI_COLOR_TEXT_LTERTIARY = '#96A1A7';
+const UI_COLOR_TEXT_DTERTIARY = '#BEC4C8';
 const UI_COLOR_TEXT_LTCAUTION = '#FF9800';
 const UI_COLOR_TEXT_DTCAUTION = '#FF9800';
 
@@ -61,6 +71,7 @@ const UIColorDefaultAvatar =
 
 const colorStyleSheets = {};
 const backgroundColorStyleSheets = {};
+const borderBottomColorStyleSheets = {};
 
 export default class UIColor {
     static Theme = {
@@ -69,8 +80,32 @@ export default class UIColor {
     };
 
     // Base colors
+    static primary3() {
+        return UI_COLOR_PRIMARY_3;
+    }
+
+    static primaryMinus() {
+        return UI_COLOR_PRIMARY_MINUS;
+    }
+
     static primary() {
         return UI_COLOR_PRIMARY;
+    }
+
+    static primaryPlus() {
+        return UI_COLOR_PRIMARY_PLUS;
+    }
+
+    static primary4() {
+        return UI_COLOR_PRIMARY_4;
+    }
+
+    static primary5() {
+        return UI_COLOR_PRIMARY_5;
+    }
+
+    static primary6() {
+        return UI_COLOR_PRIMARY_6;
     }
 
     static secondary() {
@@ -83,6 +118,10 @@ export default class UIColor {
 
     static black() {
         return UI_COLOR_BLACK;
+    }
+
+    static blackLight() {
+        return UI_COLOR_BLACK_LIGHT;
     }
 
     static white() {
@@ -101,8 +140,16 @@ export default class UIColor {
         return UI_COLOR_GREY;
     }
 
-    static colorGrey1() {
+    static grey1() {
         return UI_COLOR_GREY_1;
+    }
+
+    static grey2() {
+        return UI_COLOR_GREY_2;
+    }
+
+    static grey3() {
+        return UI_COLOR_GREY_3;
     }
 
     static msgSeparator() {
@@ -115,6 +162,10 @@ export default class UIColor {
 
     static black80() {
         return UI_COLOR_BLACK_80;
+    }
+
+    static white40() {
+        return UI_COLOR_WHITE_40;
     }
 
     static white80() {
@@ -287,6 +338,19 @@ export default class UIColor {
                 },
             });
             backgroundColorStyleSheets[color] = sheet;
+        }
+        return sheet.style;
+    }
+
+    static getBorderBottomColorStyle(color) {
+        let sheet = borderBottomColorStyleSheets[color];
+        if (!sheet) {
+            sheet = StyleSheet.create({
+                style: {
+                    borderBottomColor: color,
+                },
+            });
+            borderBottomColorStyleSheets[color] = sheet;
         }
         return sheet.style;
     }

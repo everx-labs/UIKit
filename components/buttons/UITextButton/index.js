@@ -1,11 +1,14 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Text, Image, View } from 'react-native';
 
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
+import UIStyle from '../../../helpers/UIStyle';
+import UIFont from '../../../helpers/UIFont';
+import UIColor from '../../../helpers/UIColor';
 
 const styles = StyleSheet.create({
     textButton: {
@@ -51,18 +54,62 @@ class UITextButton extends UIComponent<Props, State> {
         Center: styles.alignCenter,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            tap: false,
+            hover: false,
+        };
+    }
+
+    // Setters
+    setTap(tap = true) {
+        this.setStateSafely({ tap });
+    }
+
+    setHover(hover = true) {
+        this.setStateSafely({ hover });
+    }
+
+    // Getters
+    isTap() {
+        return this.state.tap;
+    }
+
+    isHover() {
+        return this.state.hover;
+    }
+
     // Render
+    renderIcon() {
+        const { icon } = this.props;
+        if (!icon) {
+            return null;
+        }
+        return <Image source={icon} style={UIStyle.marginRightDefault} />;
+    }
+
     renderTitle() {
         const {
             title, textStyle, details, disabled,
         } = this.props;
-        const defaultTitleStyle = disabled
-            ? UITextStyle.secondarySmallMedium
-            : UITextStyle.actionSmallMedium;
+        const defaultFontStyle = UIFont.smallMedium();
+        let color;
+        if (disabled) {
+            color = UIColor.textSecondary();
+        } else if (this.isTap()) {
+            color = UIColor.primary5();
+        } else if (this.isHover()) {
+            color = UIColor.primary4();
+        } else {
+            color = UIColor.primary();
+        }
+        const defaultColorStyle = UIColor.getColorStyle(color);
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
             <Text
-                style={[defaultTitleStyle, textStyle, flexGrow]}
+                style={[defaultFontStyle, defaultColorStyle, textStyle, flexGrow]}
             >
                 {title}
             </Text>
@@ -87,19 +134,26 @@ class UITextButton extends UIComponent<Props, State> {
         } = this.props;
         const testIDProp = testID ? { testID } : null;
         return (
-            <TouchableOpacity
+            <TouchableWithoutFeedback
                 {...testIDProp}
-                style={[
+                disabled={disabled}
+                onPress={() => onPress()}
+                onMouseEnter={() => this.setHover()}
+                onMouseLeave={() => this.setHover(false)}
+                onPressIn={() => this.setTap()}
+                onPressOut={() => this.setTap(false)}
+            >
+                <View style={[
                     styles.textButton,
                     align,
                     buttonStyle,
                 ]}
-                disabled={disabled}
-                onPress={() => onPress()}
-            >
-                {this.renderTitle()}
-                {this.renderDetails()}
-            </TouchableOpacity>
+                >
+                    {this.renderIcon()}
+                    {this.renderTitle()}
+                    {this.renderDetails()}
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 
@@ -111,8 +165,8 @@ export default UITextButton;
 UITextButton.defaultProps = {
     title: '',
     details: '',
+    icon: null,
     disabled: false,
     align: UITextButton.Align.Left,
-    onPress: () => {
-    },
+    onPress: () => {},
 };

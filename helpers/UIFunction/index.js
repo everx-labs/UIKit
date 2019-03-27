@@ -351,8 +351,24 @@ export default class UIFunction {
             .toLowerCase();
     }
 
+    static formatLowerLetters(str: string): string {
+        const normalizedStr = UIFunction.normalizeKeyPhrase(str);
+        return normalizedStr
+            .replace(/[^\s-_0-9a-zA-Zа-яА-ЯёЁ]/g, '');
+    }
+
+    static hasLetters(str) {
+        return str.search(/[a-zа-яё]/i) !== -1;
+    }
+
     static isSameKeyPhrases(a: string, b: string): boolean {
         return this.normalizeKeyPhrase(a) === this.normalizeKeyPhrase(b);
+    }
+
+    static isEmailAddress(expression: string) {
+        // eslint-disable-next-line
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(expression).toLowerCase());
     }
 }
 

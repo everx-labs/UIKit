@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TouchableWithoutFeedback, View, Text } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View, Text, Image } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import UIFont from '../../../helpers/UIFont';
@@ -69,7 +69,8 @@ export default class UIButton extends UIComponent<Props, State> {
         super(props);
 
         this.state = {
-            overlayColor: 'transparent',
+            hover: false,
+            tap: false,
         };
     }
 
@@ -89,21 +90,31 @@ export default class UIButton extends UIComponent<Props, State> {
     }
 
     onPressIn() {
-        this.setOverlayColor(UIColor.overlayWithAlpha(0.32));
+        this.setTap();
     }
 
     onPressOut() {
-        this.setOverlayColor('transparent');
+        this.setTap(false);
     }
 
     // Setters
-    setOverlayColor(overlayColor: string) {
-        this.setStateSafely({
-            overlayColor,
-        });
+    setHover(hover = true) {
+        this.setStateSafely({ hover });
+    }
+
+    setTap(tap = true) {
+        this.setStateSafely({ tap });
     }
 
     // Getters
+    isHover() {
+        return this.state.hover;
+    }
+
+    isTap() {
+        return this.state.tap;
+    }
+
     getButtonHeight() {
         switch (this.props.buttonSize) {
         case UIButton.ButtonSize.Large:
@@ -130,18 +141,38 @@ export default class UIButton extends UIComponent<Props, State> {
         }
     }
 
-    getButtonColor() {
-        return !this.isDisabled()
-            ? UIColor.primary()
-            : UIColor.backgroundQuarter(UIColor.Theme.Light); // force light theme
+    getButtonColorStyle() {
+        let color;
+        if (this.props.theme === UIColor.Theme.Dark) {
+            if (this.isDisabled()) {
+                color = UIColor.primaryPlus();
+            } else if (this.isTap()) {
+                color = UIColor.primary6();
+            } else if (this.isHover()) {
+                color = UIColor.primary4();
+            } else {
+                color = UIColor.primaryPlus();
+            }
+        } else if (this.isDisabled()) {
+            color = UIColor.backgroundQuarter(UIColor.Theme.Light);
+        } else if (this.isTap()) {
+            color = UIColor.primary5();
+        } else if (this.isHover()) {
+            color = UIColor.primary4();
+        } else {
+            color = UIColor.primary();
+        }
+        return UIColor.getBackgroundColorStyle(color);
     }
 
-    getTitleColor() {
-        return !this.isDisabled() ? UIColor.white() : UIColor.light();
-    }
-
-    getOverlayColor() {
-        return this.state.overlayColor;
+    getTitleColorStyle() {
+        let color;
+        if (this.props.theme === UIColor.Theme.Dark) {
+            color = this.isDisabled() ? UIColor.primary() : UIColor.grey1();
+        } else {
+            color = this.isDisabled() ? UIColor.light() : UIColor.white();
+        }
+        return UIColor.getColorStyle(color);
     }
 
     isDisabled() {
@@ -170,6 +201,14 @@ export default class UIButton extends UIComponent<Props, State> {
     }
 
     // render
+    renderIcon() {
+        const { icon } = this.props;
+        if (!icon) {
+            return null;
+        }
+        return <Image source={icon} style={UIStyle.marginRightSmall} />;
+    }
+
     renderBadge() {
         return (
             <UIBadge
@@ -184,12 +223,13 @@ export default class UIButton extends UIComponent<Props, State> {
         if (this.shouldShowIndicator()) {
             return null;
         }
+        const titleStyle = this.getTitleColorStyle();
         return (
             <Text
                 style={[
                     styles.title,
                     this.props.textStyle,
-                    { color: this.getTitleColor() },
+                    titleStyle,
                 ]}
             >
                 {this.props.title}
@@ -218,13 +258,16 @@ export default class UIButton extends UIComponent<Props, State> {
             height *= 2;
         }
         const testIDProp = testID ? { testID } : null;
+        const backgroundColorStyle = this.getButtonColorStyle();
         return (
             <View
+                onMouseEnter={() => this.setHover()}
+                onMouseLeave={() => this.setHover(false)}
                 style={[
                     styles.container,
-                    { height },
-                    { backgroundColor: this.getButtonColor() },
+                    backgroundColorStyle,
                     { borderRadius: this.getButtonRadius() },
+                    { height },
                     style,
                 ]}
             >
@@ -236,12 +279,9 @@ export default class UIButton extends UIComponent<Props, State> {
                     onPressOut={() => this.onPressOut()}
                 >
                     <View
-                        style={[
-                            UIStyle.flex,
-                            UIStyle.centerContainer,
-                            { backgroundColor: this.getOverlayColor() },
-                        ]}
+                        style={[UIStyle.flex, UIStyle.centerContainer]}
                     >
+                        {this.renderIcon()}
                         {this.renderBadge()}
                         {this.renderTitle()}
                         {this.renderIndicator()}
@@ -256,10 +296,12 @@ export default class UIButton extends UIComponent<Props, State> {
 }
 
 UIButton.defaultProps = {
+    theme: UIColor.Theme.Light,
     buttonSize: UIButton.ButtonSize.Default,
     buttonShape: UIButton.ButtonShape.Default,
     title: '',
     badge: 0,
+    icon: null,
     disabled: false,
     bottomExtend: false, // useful for iPhone X (SafeArea)
     showIndicator: false,

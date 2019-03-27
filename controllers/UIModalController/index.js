@@ -3,6 +3,7 @@
 import React from 'react';
 import { StyleSheet, Platform, Modal, View, Dimensions, Animated } from 'react-native';
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
+
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type { ControllerProps, ControllerState } from '../UIController';
 
@@ -69,6 +70,7 @@ export default class UIModalController
         this.modal = true;
         this.dialog = null;
         this.onCancel = null;
+        this.animation = slideAnimation;
 
         this.state = {
             ...this.state,
@@ -295,7 +297,7 @@ export default class UIModalController
                 height={height}
                 containerStyle={containerStyle}
                 dialogStyle={dialogStyle}
-                dialogAnimation={slideAnimation}
+                dialogAnimation={this.animation}
                 dialogTitle={this.getModalNavigationBar()}
                 dismissOnTouchOutside={false}
                 onDismissed={() => this.onDidHide()}
