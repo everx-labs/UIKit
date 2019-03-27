@@ -254,8 +254,7 @@ const UIStyle = StyleSheet.create({
         backgroundColor: UIColor.backgroundQuinary(),
     },
 
-    // Gram-Scan
-    fullScreenCenterContainer: {
+    fullWidthCenterContainer: {
         width: '100%',
         alignItems: 'center',
     },
@@ -263,7 +262,7 @@ const UIStyle = StyleSheet.create({
         width: '50%',
         maxWidth: UIConstant.elasticWidthHuge() / 2,
     },
-    fullWidthContainer: {
+    fullWidthPaddingContainer: {
         width: '100%',
         paddingHorizontal: UIConstant.contentOffset(),
     },
