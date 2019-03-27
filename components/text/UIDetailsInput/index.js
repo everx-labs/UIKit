@@ -321,9 +321,9 @@ export default class UIDetailsInput<Props, State>
             if (this.isSubmitDisabled()) {
                 source = icoDisabled;
             } else if (this.isArrowHover()) {
-                source = icoAbled;
-            } else {
                 source = icoAbledHover;
+            } else {
+                source = icoAbled;
             }
         }
         const image = (
