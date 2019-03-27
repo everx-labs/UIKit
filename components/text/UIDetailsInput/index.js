@@ -315,7 +315,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderArrow() {
-        const { theme, onSubmitEditing } = this.props;
+        const { theme, needArrow, onSubmitEditing } = this.props;
+        if (!needArrow) {
+            return null;
+        }
         let source;
         if (theme === UIColor.Theme.Dark) {
             if (this.isSubmitDisabled()) {

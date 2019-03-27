@@ -6,6 +6,7 @@ import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
+import UIColor from '../../../helpers/UIColor';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,6 +19,12 @@ const styles = StyleSheet.create({
     },
 });
 
+const bottomTextStyle = [
+    UIStyle.alignJustifyCenter,
+    UIStyle.bigCellHeight,
+    UIStyle.pageSlimContainer,
+];
+
 type Props = {
     text: string,
     screenWidth: number,
@@ -26,6 +33,33 @@ type Props = {
 type State = {};
 
 export default class UIBottomBar extends UIComponent<Props, State> {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            emailHover: false,
+            emailTap: false,
+        };
+    }
+
+    // Setters
+    setEmailHover(emailHover = true) {
+        this.setStateSafely({ emailHover });
+    }
+
+    setEmailTap(emailTap = true) {
+        this.setStateSafely({ emailTap });
+    }
+
+    // Getters
+    isEmailHover() {
+        return this.state.emailHover;
+    }
+
+    isEmailTap() {
+        return this.state.emailTap;
+    }
+
     isMobile() {
         const { screenWidth, mobile } = this.props;
         if (!screenWidth) {
@@ -34,24 +68,66 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return screenWidth < UIConstant.elasticWidthWide();
     }
 
-    renderCenterText() {
-        const { bottomText, textStyle } = this.props;
-        if (!bottomText) {
-            return null;
-        }
-        const textComponent = (
-            <View style={[
-                UIStyle.alignJustifyCenter,
-                UIStyle.bigCellHeight,
-                UIStyle.marginHorizontalOffset,
-                UIStyle.pageSlimContainer,
-            ]}
+    renderEmail() {
+        const { email } = this.props;
+        const primatyColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
+        const colorStyle = this.isEmailHover() || this.isEmailTap() ? primatyColorStyle : null;
+        return (
+            <Text
+                accessibilityRole="link"
+                href={`mailto:${email}`}
+                onPressIn={() => this.setEmailTap()}
+                onPressOut={() => this.setEmailTap(false)}
+                onMouseEnter={() => this.setEmailHover()}
+                onMouseLeave={() => this.setEmailHover(false)}
+                style={colorStyle}
             >
+                {email}
+            </Text>
+        );
+    }
+
+
+    renderCenterTextComponent() {
+        const {
+            companyName, address, phoneNumber, postalCode, textStyle,
+        } = this.props;
+        return (
+            <View style={bottomTextStyle} itemScope itemType="http://schema.org/Organization" className="contacts">
                 <Text style={[textStyle, UIStyle.textAlignCenter]}>
-                    {bottomText}
+                    <Text itemProp="name" className="company">{companyName}</Text>
+                    {', '}
+                    <Text
+                        itemProp="address"
+                        itemScope
+                        itemType="http://schema.org/PostalAddress"
+                        className="address"
+                    >
+                        <Text itemProp="streetAddress" className="street">
+                            {address}
+                        </Text>
+                        {', '}
+                        <Text itemProp="postalCode">
+                            {postalCode}
+                        </Text>
+                        {' '}
+                        {this.renderEmail()}
+                        {'  ·  '}
+                    </Text>
+                    <Text itemProp="telephone">{phoneNumber}</Text>
                 </Text>
             </View>
         );
+    }
+
+    renderCenterText() {
+        const {
+            address, phoneNumber, email, companyName, postalCode,
+        } = this.props;
+        if (!address && !phoneNumber && !email && !companyName && !postalCode) {
+            return null;
+        }
+        const textComponent = this.renderCenterTextComponent();
         return this.isMobile()
             ? textComponent
             : (
@@ -66,15 +142,17 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         const copyRight = this.isMobile() ? '©' : '2018–2019 © TON Labs';
         return (
             <View style={UIStyle.bottomScreenContainer}>
-                <View style={styles.container}>
-                    <Text style={textStyle}>
-                        {text}
-                    </Text>
-                    <Text style={textStyle}>
-                        {copyRight}
-                    </Text>
+                <View style={UIStyle.marginBottomHuge}>
+                    <View style={styles.container}>
+                        <Text style={textStyle}>
+                            {text}
+                        </Text>
+                        <Text style={textStyle}>
+                            {copyRight}
+                        </Text>
+                    </View>
+                    {this.renderCenterText()}
                 </View>
-                {this.renderCenterText()}
             </View>
         );
     }
@@ -85,8 +163,10 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 UIBottomBar.defaultProps = {
     textStyle: UITextStyle.tertiaryTinyRegular,
     text: '',
-    bottomText: '',
+    companyName: '',
+    address: '',
+    phoneNumber: '',
+    email: '',
     mobile: true,
     screenWidth: 0,
 };
-
