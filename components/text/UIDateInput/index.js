@@ -73,7 +73,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const { initialEpochTime } = this.props;
 
         if (initialEpochTime) {
-            const dateStr = Moment(initialEpochTime).format(this.getPattern(true));
+            const dateStr = Moment(initialEpochTime).format(this.getPattern());
             const value = dateStr.split(this.getSeparator()).join('');
             this.setStateSafely({ date: value });
         }
@@ -94,7 +94,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         this.setStateSafely({ date: newDate }, () => {
             if (onChangeDate) {
-                const dateObj = Moment(date, this.getPattern(true)).toDate();
+                const dateObj = Moment(date, this.getPattern()).toDate();
                 onChangeDate(dateObj, this.isValidDate());
             }
         });
@@ -111,7 +111,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     isValidDate() {
         const date = this.getValue();
-        const validDate = Moment(date, this.getPattern(true)).isValid();
+        const validDate = Moment(date, this.getPattern()).isValid();
         const validLength = date.length === UIConstant.shortDateLength() || date.length === 0;
 
         return (validDate && validLength);
@@ -119,13 +119,13 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     // This method returns a localized string that will be rendered
     // in order to indicate the date component that has to be entered.
-    // However, internally (programming language), in order to parse/localized
-    // a date, patter symbols have to be provided in English.
-    getPattern(internalPattern: boolean = false) {
+    // However, internally (programming language), in order to parse/localize
+    // a date, pattern symbols have to be provided in English.
+    getPattern(localizedPattern: boolean = false) {
         const { dateComponents, separator } = this.props;
-        const dateSymbols = internalPattern ?
-            { year: 'YYYY', month: 'MM', day: 'DD' }
-            : UILocalized.DateSymbols;
+        const dateSymbols = localizedPattern ?
+            UILocalized.DateSymbols
+            : { year: 'YYYY', month: 'MM', day: 'DD' };
         const defaultPattern = 'YYYY.MM.DD';
 
         if (!dateComponents || !separator) return defaultPattern;
@@ -139,7 +139,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     getSeparatorPositionsForDate() {
         const date = this.getDate();
-        const pattern = this.getPattern();
+        const pattern = this.getPattern(true);
         const pos = [];
 
         let pad = 0;
@@ -198,7 +198,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             return null;
         }
 
-        const missing = this.getPattern().substring(date.length);
+        const missing = this.getPattern(true).substring(date.length);
         return (
             <View style={styles.missingValueView}>
                 <Text
