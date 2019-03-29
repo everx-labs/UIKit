@@ -92,7 +92,7 @@ class UIDialogController extends UIController {
         super(props);
 
         this.wrapContentInScrollView = true;
-        this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
+        this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
         this.title = undefined;
         this.hasPhotoView = false;
         this.hasTextInput = false;
