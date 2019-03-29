@@ -74,7 +74,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const { initialEpochTime } = this.props;
 
         if (initialEpochTime) {
-            const dateStr = Moment(initialEpochTime).format(this.getPattern());
+            const dateStr = Moment(initialEpochTime).format(this.getPattern(true));
             const value = dateStr.split(this.getSeparator()).join('');
             this.setStateSafely({ date: value });
         }
@@ -95,7 +95,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         this.setStateSafely({ date: newDate }, () => {
             if (onChangeDate) {
-                const dateObj = Moment(date, this.getPattern()).toDate();
+                const dateObj = Moment(date, this.getPattern(true)).toDate();
                 onChangeDate(dateObj, this.isValidDate());
             }
         });
@@ -112,15 +112,21 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     isValidDate() {
         const date = this.getValue();
-        const validDate = Moment(date, this.getPattern()).isValid();
+        const validDate = Moment(date, this.getPattern(true)).isValid();
         const validLength = date.length === UIConstant.shortDateLength() || date.length === 0;
 
         return (validDate && validLength);
     }
 
-    getPattern() {
+    // This method returns a localized string that will be rendered
+    // in order to indicate the date component that has to be entered.
+    // However, internally (programming language), in order to parse/localized
+    // a date, patter symbols have to be provided in English.
+    getPattern(internalPattern: boolean = false) {
         const { dateComponents, separator } = this.props;
-        const dateSymbols = UILocalized.DateSymbols;
+        const dateSymbols = internalPattern ?
+            { year: 'YYYY', month: 'MM', day: 'DD' }
+            : UILocalized.DateSymbols;
         const defaultPattern = 'YYYY.MM.DD';
 
         if (!dateComponents || !separator) return defaultPattern;
