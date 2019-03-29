@@ -17,6 +17,7 @@ import UIFunction from '../../../helpers/UIFunction';
 import icoDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import icoAbled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import icoAbledHover from '../../../assets/ico-arrow-right/arrow-right-white.png';
+import type { EventProps } from '../../../types';
 
 const styles = StyleSheet.create({
     container: {
@@ -37,7 +38,6 @@ export type DetailsProps = {
     containerStyle: StylePropType,
     comment: string,
     commentColor?: string | null,
-    dark?: boolean,
     editable: boolean,
     floatingTitle: boolean,
     hideBottomLine: boolean,
@@ -46,9 +46,9 @@ export type DetailsProps = {
     maxLength?: number,
     maxLines: number,
     needArrow?: boolean,
-    onBlur?: () => void,
+    onBlur: () => void,
     onChangeText: (text: string) => void,
-    onFocus?: () => void,
+    onFocus: () => void,
     onSubmitEditing?: () => void,
     onKeyPress?: (e: any) => void,
     placeholder?: string,
@@ -56,14 +56,19 @@ export type DetailsProps = {
     secureTextEntry: boolean,
     showSymbolsLeft: boolean,
     token?: string,
+    theme?: string,
     value: string,
     valueType?: string,
     testID?: string,
 };
-export type DetailsState = {};
+
+export type DetailsState = {
+    focused: boolean,
+    arrowHover: boolean,
+};
 
 export default class UIDetailsInput<Props, State>
-    extends UIComponent<Props & DetailsProps, State & DetailsState> {
+    extends UIComponent<Props & DetailsProps, ?State & DetailsState> {
     textInput: ?TextInput;
 
     static ValueType = {
@@ -91,11 +96,12 @@ export default class UIDetailsInput<Props, State>
         placeholder: UILocalized.Details,
         secureTextEntry: false,
         showSymbolsLeft: false,
+        theme: UIColor.Theme.Dark,
         valueType: UIDetailsInput.ValueType.Default,
         value: '',
     };
 
-    constructor(props) {
+    constructor(props: Props & DetailsProps) {
         super(props);
 
         this.state = {
@@ -105,11 +111,11 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Setters
-    setFocused(focused = true) {
+    setFocused(focused: boolean = true) {
         this.setStateSafely({ focused });
     }
 
-    setArrowHover(arrowHover = true) {
+    setArrowHover(arrowHover: boolean = true) {
         this.setStateSafely({ arrowHover });
     }
 
@@ -329,11 +335,14 @@ export default class UIDetailsInput<Props, State>
                 source = icoAbled;
             }
         }
+        const mouseEvents: EventProps = {
+            onMouseEnter: () => this.setArrowHover(),
+            onMouseLeave: () => this.setArrowHover(false),
+        };
         const image = (
             <Image
                 source={source}
-                onMouseEnter={() => this.setArrowHover()}
-                onMouseLeave={() => this.setArrowHover(false)}
+                {...mouseEvents}
             />
         );
 

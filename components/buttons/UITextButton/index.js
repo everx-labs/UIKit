@@ -35,18 +35,22 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    testID?: string,
-    buttonStyle?: StylePropType,
-    textStyle?: StylePropType,
-    detailsStyle?: StylePropType,
     align: StylePropType,
-    title: string,
+    buttonStyle?: StylePropType,
     details: string,
+    detailsStyle?: StylePropType,
     disabled: boolean,
+    icon: ?string,
     onPress: () => void,
+    testID?: string,
+    textStyle?: StylePropType,
+    title: string,
 };
 
-type State = {};
+type State = {
+    tap: boolean,
+    hover: boolean,
+};
 
 class UITextButton extends UIComponent<Props, State> {
     static Align = {
@@ -54,7 +58,7 @@ class UITextButton extends UIComponent<Props, State> {
         Center: styles.alignCenter,
     };
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -64,11 +68,11 @@ class UITextButton extends UIComponent<Props, State> {
     }
 
     // Setters
-    setTap(tap = true) {
+    setTap(tap: boolean = true) {
         this.setStateSafely({ tap });
     }
 
-    setHover(hover = true) {
+    setHover(hover: boolean = true) {
         this.setStateSafely({ hover });
     }
 
@@ -133,13 +137,16 @@ class UITextButton extends UIComponent<Props, State> {
             testID, buttonStyle, onPress, disabled, align,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
+        const onMouseEvents: { [string]: () => void } = {
+            onMouseEnter: () => this.setHover(),
+            onMouseLeave: () => this.setHover(false),
+        };
         return (
             <TouchableWithoutFeedback
                 {...testIDProp}
                 disabled={disabled}
                 onPress={() => onPress()}
-                onMouseEnter={() => this.setHover()}
-                onMouseLeave={() => this.setHover(false)}
+                {...onMouseEvents}
                 onPressIn={() => this.setTap()}
                 onPressOut={() => this.setTap(false)}
             >

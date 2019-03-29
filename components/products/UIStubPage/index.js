@@ -13,6 +13,7 @@ import UIDetailsInput from '../../text/UIDetailsInput';
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
 import icoTonLabel from '../../../assets/logo/ton-label/ton-label-white.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
+import type { DetailsProps, DetailsState } from '../../text/UIDetailsInput';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,12 +45,23 @@ const customStyles = {
     ],
 };
 
-type Props = {};
+type Props = {
+    icon: string | number,
+    title: string,
+    description: string,
+    onSubmit: (string) => void,
+};
 
-type State = {};
+type State = {
+    screenWidth: number,
+    email: string,
+    submitted: boolean,
+};
 
 export default class UIStubPage extends UIComponent<Props, State> {
-    constructor(props) {
+    detailsInput: ?UIDetailsInput<DetailsProps, DetailsState>;
+
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -61,11 +73,13 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
-        this.detailsInput.focus();
+        if (this.detailsInput) {
+            this.detailsInput.focus();
+        }
     }
 
     // Events
-    onLayout(e) {
+    onLayout(e: any) {
         const { width } = e.nativeEvent.layout;
         if (width !== this.getScreenWidth()) {
             this.setScreenWidth(width);
@@ -80,15 +94,15 @@ export default class UIStubPage extends UIComponent<Props, State> {
     }
 
     // Setters
-    setScreenWidth(screenWidth) {
+    setScreenWidth(screenWidth: number) {
         this.setStateSafely({ screenWidth });
     }
 
-    setEmail(email) {
+    setEmail(email: string) {
         this.setStateSafely({ email });
     }
 
-    setSubmitted(submitted = true) {
+    setSubmitted(submitted: boolean = true) {
         this.setStateSafely({ submitted });
     }
 

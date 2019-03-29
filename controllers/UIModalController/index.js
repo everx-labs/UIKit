@@ -61,6 +61,7 @@ export default class UIModalController
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
+    animation: ?SlideAnimation;
 
     constructor(props: ModalControllerProps) {
         super(props);

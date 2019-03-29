@@ -11,6 +11,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
 import UIComponent from '../../UIComponent';
+import type { EventProps } from '../../../types';
 
 const styles = StyleSheet.create({
     container: {
@@ -30,22 +31,25 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    testID?: string,
-    style?: StylePropType,
-    textStyle?: StylePropType,
+    badge: number,
+    bottomExtend: boolean,
     buttonSize: string,
     buttonShape: string,
-    title: string,
-    badge: number,
     disabled: boolean,
-    bottomExtend: boolean,
-    showIndicator: boolean,
     footer: boolean,
+    icon: ?string,
     onPress: () => void,
+    showIndicator: boolean,
+    style?: StylePropType,
+    testID?: string,
+    textStyle?: StylePropType,
+    title: string,
+    theme: string,
 };
 
 type State = {
-    overlayColor: string
+    hover: boolean,
+    tap: boolean,
 };
 
 export default class UIButton extends UIComponent<Props, State> {
@@ -98,11 +102,11 @@ export default class UIButton extends UIComponent<Props, State> {
     }
 
     // Setters
-    setHover(hover = true) {
+    setHover(hover: boolean = true) {
         this.setStateSafely({ hover });
     }
 
-    setTap(tap = true) {
+    setTap(tap: boolean = true) {
         this.setStateSafely({ tap });
     }
 
@@ -259,10 +263,13 @@ export default class UIButton extends UIComponent<Props, State> {
         }
         const testIDProp = testID ? { testID } : null;
         const backgroundColorStyle = this.getButtonColorStyle();
+        const mouseEvents: EventProps = {
+            onMouseEnter: () => this.setHover(),
+            onMouseLeave: () => this.setHover(false),
+        };
         return (
             <View
-                onMouseEnter={() => this.setHover()}
-                onMouseLeave={() => this.setHover(false)}
+                {...mouseEvents}
                 style={[
                     styles.container,
                     backgroundColorStyle,
@@ -296,15 +303,15 @@ export default class UIButton extends UIComponent<Props, State> {
 }
 
 UIButton.defaultProps = {
-    theme: UIColor.Theme.Light,
+    badge: 0,
+    bottomExtend: false, // useful for iPhone X (SafeArea)
     buttonSize: UIButton.ButtonSize.Default,
     buttonShape: UIButton.ButtonShape.Default,
-    title: '',
-    badge: 0,
-    icon: null,
     disabled: false,
-    bottomExtend: false, // useful for iPhone X (SafeArea)
-    showIndicator: false,
     footer: false,
+    icon: null,
     onPress: () => {},
+    showIndicator: false,
+    theme: UIColor.Theme.Light,
+    title: '',
 };

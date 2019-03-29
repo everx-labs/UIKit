@@ -3,18 +3,15 @@ import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
+import Moment from 'moment';
 
 import UIDetailsInput from '../UIDetailsInput';
-
-import UIStyle from '../../../helpers/UIStyle';
 import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 
 import type { DetailsProps, DetailsState } from '../UIDetailsInput';
-
-import Moment from 'moment';
 
 const styles = StyleSheet.create({
     missingValueView: {
@@ -43,7 +40,7 @@ type Props = DetailsProps & {
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
 type State = DetailsState & {
-    date: string
+    date?: string
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -56,14 +53,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         maxLength: UIConstant.shortDateLength(),
         onChangeDate: () => {},
     };
-
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            date: '',
-        };
-    }
 
     componentDidMount() {
         super.componentDidMount();
