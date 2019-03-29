@@ -6,7 +6,6 @@ import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/T
 
 import UIDetailsInput from '../UIDetailsInput';
 
-import UIStyle from '../../../helpers/UIStyle';
 import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
