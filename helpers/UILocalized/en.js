@@ -68,6 +68,7 @@ const en = {
     Copy: 'Copy',
     Select: 'Select',
     SelectAll: 'Select All',
+    DeselectAll: 'Deselect All',
     TakePhoto: 'Take photo',
     TakeVideo: 'Take video',
     ChooseFromLibrary: 'Choose from Library',

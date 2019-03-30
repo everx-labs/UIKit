@@ -40,7 +40,7 @@ type Props = DetailsProps & {
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
 type State = DetailsState & {
-    date?: string
+    date: string
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -53,6 +53,15 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         maxLength: UIConstant.shortDateLength(),
         onChangeDate: () => {},
     };
+
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            ...this.state,
+            date: '',
+        };
+    }
 
     componentDidMount() {
         super.componentDidMount();
@@ -107,9 +116,15 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return (validDate && validLength);
     }
 
-    getPattern() {
+    // This method returns a localized string that will be rendered
+    // in order to indicate the date component that has to be entered.
+    // However, internally (programming language), in order to parse/localize
+    // a date, pattern symbols have to be provided in English.
+    getPattern(localizedPattern: boolean = false) {
         const { dateComponents, separator } = this.props;
-        const dateSymbols = UILocalized.DateSymbols;
+        const dateSymbols = localizedPattern ?
+            UILocalized.DateSymbols
+            : { year: 'YYYY', month: 'MM', day: 'DD' };
         const defaultPattern = 'YYYY.MM.DD';
 
         if (!dateComponents || !separator) return defaultPattern;
@@ -123,7 +138,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     getSeparatorPositionsForDate() {
         const date = this.getDate();
-        const pattern = this.getPattern();
+        const pattern = this.getPattern(true);
         const pos = [];
 
         let pad = 0;
@@ -137,7 +152,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return pos;
     }
 
-    getValue(): string {
+    getValue() {
         const separatorsAt = this.getSeparatorPositionsForDate();
         const current = this.getDate();
         let newDate = separatorsAt.length > 0 ? '' : this.getDate();
@@ -177,12 +192,12 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     renderMissingValue() {
-        const date: string = this.getValue();
+        const date = this.getValue();
         if (date.length === 0 && !this.isFocused()) {
             return null;
         }
 
-        const missing = this.getPattern().substring(date.length);
+        const missing = this.getPattern(true).substring(date.length);
         return (
             <View style={styles.missingValueView}>
                 <Text
@@ -191,7 +206,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
                 >
                     {date}
                     <Text
-                        style={[this.textInputStyle(), styles.trailingValue]}
+                        style={styles.trailingValue}
                         selectable={false}
                     >
                         {missing}
