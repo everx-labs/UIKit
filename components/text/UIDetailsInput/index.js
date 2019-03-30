@@ -68,7 +68,7 @@ export type DetailsState = {
 };
 
 export default class UIDetailsInput<Props, State>
-    extends UIComponent<Props & DetailsProps, ?State & DetailsState> {
+    extends UIComponent<Props & DetailsProps, any & DetailsState> {
     textInput: ?TextInput;
 
     static ValueType = {

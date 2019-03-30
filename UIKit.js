@@ -27,6 +27,7 @@ import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
+import UIImage from './components/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/UIImageView';
 import UILayoutManager from './helpers/UILayoutManager';
@@ -107,6 +108,7 @@ export {
     UIFont,
     UITextStyle,
     UIFunction,
+    UIImage,
     UIImageButton,
     UIImageView,
     UILayoutManager,

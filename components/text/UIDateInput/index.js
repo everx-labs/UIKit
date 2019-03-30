@@ -137,7 +137,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return pos;
     }
 
-    getValue() {
+    getValue(): string {
         const separatorsAt = this.getSeparatorPositionsForDate();
         const current = this.getDate();
         let newDate = separatorsAt.length > 0 ? '' : this.getDate();
@@ -177,7 +177,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     renderMissingValue() {
-        const date = this.getValue();
+        const date: string = this.getValue();
         if (date.length === 0 && !this.isFocused()) {
             return null;
         }

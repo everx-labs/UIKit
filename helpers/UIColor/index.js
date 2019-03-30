@@ -69,14 +69,24 @@ const UIColorDefaultAvatar =
       '#0097A7', '#009688', '#43A047', '#558B2F', '#F4511E', '#8D6E63', '#78909C',
   ];
 
-const colorStyleSheets = {};
-const backgroundColorStyleSheets = {};
-const borderBottomColorStyleSheets = {};
+const colorStyleSheets = {
+    color: {},
+    backgroundColor: {},
+    borderBottomColor: {},
+    tintColor: {},
+};
 
 export default class UIColor {
     static Theme = {
         Light: 'light',
         Dark: 'dark',
+    };
+
+    static Styles = {
+        Color: 'color',
+        BackgroundColor: 'backgroundColor',
+        BorderBottomColor: 'borderBottomColor',
+        TintColor: 'tintColor',
     };
 
     // Base colors
@@ -316,42 +326,32 @@ export default class UIColor {
         return UI_COLOR_WALLET_VERSION;
     }
 
-    static getColorStyle(color) {
-        let sheet = colorStyleSheets[color];
+    static getStyle(color, colorStyle) {
+        let sheet = colorStyleSheets[colorStyle][color];
         if (!sheet) {
             sheet = StyleSheet.create({
                 style: {
-                    color,
+                    [colorStyle]: color,
                 },
             });
-            colorStyleSheets[color] = sheet;
+            colorStyleSheets[colorStyle][color] = sheet;
         }
         return sheet.style;
+    }
+
+    static getColorStyle(color) {
+        return UIColor.getStyle(color, UIColor.Styles.Color);
     }
 
     static getBackgroundColorStyle(color) {
-        let sheet = backgroundColorStyleSheets[color];
-        if (!sheet) {
-            sheet = StyleSheet.create({
-                style: {
-                    backgroundColor: color,
-                },
-            });
-            backgroundColorStyleSheets[color] = sheet;
-        }
-        return sheet.style;
+        return UIColor.getStyle(color, UIColor.Styles.BackgroundColor);
     }
 
     static getBorderBottomColorStyle(color) {
-        let sheet = borderBottomColorStyleSheets[color];
-        if (!sheet) {
-            sheet = StyleSheet.create({
-                style: {
-                    borderBottomColor: color,
-                },
-            });
-            borderBottomColorStyleSheets[color] = sheet;
-        }
-        return sheet.style;
+        return UIColor.getStyle(color, UIColor.Styles.BorderBottomColor);
+    }
+
+    static getTintColorStyle(color) {
+        return UIColor.getStyle(color, UIColor.Styles.TintColor);
     }
 }

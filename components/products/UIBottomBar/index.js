@@ -33,6 +33,7 @@ type Props = {
     textStyle: StylePropType,
     companyName: string,
     address: string,
+    location: string,
     postalCode: string,
     phoneNumber: string,
     email: string,
@@ -103,7 +104,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 
     renderCenterTextComponent() {
         const {
-            companyName, address, phoneNumber, postalCode, textStyle,
+            companyName, address, phoneNumber, postalCode, textStyle, location,
         } = this.props;
         const classNameProp: ClassNameProp = { className: 'contacts' };
         return (
@@ -129,6 +130,10 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                         <Text itemProp="postalCode">
                             {postalCode}
                         </Text>
+                        {', '}
+                        <Text itemProp="addressLocality">
+                            {location}
+                        </Text>
                         {' '}
                         {this.renderEmail()}
                         {'  ·  '}
@@ -141,9 +146,9 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 
     renderCenterText() {
         const {
-            address, phoneNumber, email, companyName, postalCode,
+            address, phoneNumber, email, companyName, postalCode, location,
         } = this.props;
-        if (!address && !phoneNumber && !email && !companyName && !postalCode) {
+        if (!address && !phoneNumber && !email && !companyName && !postalCode && !location) {
             return null;
         }
         const textComponent = this.renderCenterTextComponent();
@@ -184,6 +189,7 @@ UIBottomBar.defaultProps = {
     text: '',
     companyName: '',
     address: '',
+    location: '',
     postalCode: '',
     phoneNumber: '',
     email: '',

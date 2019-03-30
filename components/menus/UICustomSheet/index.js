@@ -58,7 +58,8 @@ export type CustomSheetState = {
     height: number,
 };
 
-class UICustomSheet<Props, State> extends UIComponent<CustomSheetProps & Props, CustomSheetState> {
+export default class UICustomSheet<Props, State>
+    extends UIComponent<any & CustomSheetProps, CustomSheetState> {
     static showCustom(
         component: React$Node,
         onShowCallback: () => void,
@@ -81,7 +82,7 @@ class UICustomSheet<Props, State> extends UIComponent<CustomSheetProps & Props, 
     onCancelCallback: () => void;
 
     // constructor
-    constructor(props: CustomSheetProps & Props) {
+    constructor(props: any & CustomSheetProps) {
         super(props);
         this.component = null;
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
@@ -213,7 +214,7 @@ class UICustomSheet<Props, State> extends UIComponent<CustomSheetProps & Props, 
         );
     }
 
-    renderCustomContent() {
+    renderContent() {
         if (!this.component) {
             return null;
         }
@@ -234,7 +235,7 @@ class UICustomSheet<Props, State> extends UIComponent<CustomSheetProps & Props, 
                 <TouchableWithoutFeedback onPress={() => this.hide(() => this.onCancelCallback())}>
                     <View style={[UIStyle.absoluteFillObject, styles.container]} />
                 </TouchableWithoutFeedback>
-                {this.renderCustomContent()}
+                {this.renderContent()}
             </React.Fragment>
         );
     }
@@ -259,8 +260,6 @@ class UICustomSheet<Props, State> extends UIComponent<CustomSheetProps & Props, 
 
     static defaultProps: CustomSheetProps;
 }
-
-export default UICustomSheet;
 
 UICustomSheet.defaultProps = {
     component: null,

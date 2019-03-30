@@ -135,7 +135,8 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
         );
     }
 
-    renderMenuContent() {
+    renderContent() {
+        console.log(111);
         const content = (
             <React.Fragment>
                 <FlatList
@@ -149,17 +150,7 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
         return this.renderSheet(content);
     }
 
-    renderContainer() {
-        return (
-            <TouchableWithoutFeedback onPress={() => this.hide(() => this.onCancelCallback())}>
-                <View style={[UIStyle.absoluteFillObject, styles.container]}>
-                    {this.renderMenuContent()}
-                </View>
-            </TouchableWithoutFeedback>
-        );
-    }
-
-    static defaultProps: Props;
+    static defaultProps: CustomSheetProps;
 }
 
 export default UIActionSheet;
@@ -168,8 +159,5 @@ UIActionSheet.defaultProps = {
     masterActionSheet: true,
     menuItemsList: [],
     needCancelItem: true,
-
-    component: null,
-    masterSheet: true,
-    onCancelCallback: () => {},
+    ...UICustomSheet.defaultProps,
 };
