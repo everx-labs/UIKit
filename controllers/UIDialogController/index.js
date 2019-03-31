@@ -92,7 +92,7 @@ class UIDialogController extends UIController {
         super(props);
 
         this.wrapContentInScrollView = true;
-        this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
+        this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
         this.title = undefined;
         this.hasPhotoView = false;
         this.hasTextInput = false;
@@ -319,10 +319,6 @@ class UIDialogController extends UIController {
     }
 
     renderSafely() {
-        const animatedContainerStyle = {
-            flex: 1,
-            marginBottom: this.getMarginBottom(),
-        };
         const wrappedContent = this.wrapContentInScrollView
             ? (
                 <ScrollView
@@ -361,6 +357,10 @@ class UIDialogController extends UIController {
                     {this.renderContentContainer()}
                 </View>
             );
+        const animatedContainerStyle = {
+            flex: 1,
+            marginBottom: this.getMarginBottom(),
+        };
         return (
             <Animated.View style={animatedContainerStyle}>
                 {wrappedContent}

@@ -8,6 +8,7 @@ import {
     SafeAreaView,
     LayoutAnimation,
     Easing,
+    PixelRatio,
 } from 'react-native';
 
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
@@ -79,6 +80,14 @@ const keyboardPanningScreens = [];
 
 export default class UIController<Props, State>
     extends UIComponent<Props & ControllerProps, State & ControllerState> {
+    static onGetAndroidDisplayCutout = async (): Promise<*> => {
+        return {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+        };
+    };
     static AndroidKeyboardAdjust = {
         Pan: 'pan',
         Resize: 'resize',
@@ -237,26 +246,31 @@ export default class UIController<Props, State>
 
     // Events
     onKeyboardWillShow(event: KeyboardEvent) {
-        const end = event.endCoordinates;
+        const keyboardFrame = event.endCoordinates;
         const animation = UIController.getKeyboardAnimation(event);
-        const { container } = this;
-        if (!(container && container.measure)) {
-            this.setBottomInset(end.height, animation);
-            return;
-        }
-        container.measure((
-            x: number,
-            y: number,
-            width: number,
-            height: number,
-            screenX: number,
-            screenY: number,
-        ) => {
-            const bottomInset = Platform.OS === 'ios'
-                ? (screenY + height) - (end.screenY)
-                : end.height;
-            this.setBottomInset(Math.max(0, bottomInset), animation);
-        });
+        (async () => {
+            const topCutout = Platform.OS === 'android'
+                ? (await UIController.onGetAndroidDisplayCutout()).top / PixelRatio.get()
+                : 0;
+            const { container } = this;
+            if (!(container && container.measure && this.containerLayoutComplete)) {
+                this.setBottomInset(keyboardFrame.height + topCutout, animation);
+                return;
+            }
+            container.measure((
+                x: number,
+                y: number,
+                width: number,
+                height: number,
+                screenX: number,
+                screenY: number,
+            ) => {
+                const screenBottom = screenY + height;
+                const keyboardOverlapHeight = screenBottom - keyboardFrame.screenY;
+                const bottomInset = keyboardOverlapHeight + topCutout;
+                this.setBottomInset(Math.max(0, bottomInset), animation);
+            });
+        })();
     }
 
     onKeyboardWillHide(event: KeyboardEvent) {
@@ -464,7 +478,12 @@ export default class UIController<Props, State>
         // for the containers 'measure' works well on Android.
         const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
-                <View style={UIStyle.flex} collapsable={false} ref={this.onSetContainer}>
+                <View
+                    style={UIStyle.flex}
+                    collapsable={false}
+                    ref={this.onSetContainer}
+                    onLayout={this.onLayoutContainer}
+                >
                     {this.renderSafely()}
                 </View>
             </SafeAreaView>
@@ -492,8 +511,13 @@ export default class UIController<Props, State>
     path: string;
     params: Params;
     container: ?(React$Component<*> & NativeMethodsMixinType);
+    containerLayoutComplete: boolean;
 
     onSetContainer = (container: ?(React$Component<*> & NativeMethodsMixinType)) => {
         this.container = container;
+    };
+
+    onLayoutContainer = () => {
+        this.containerLayoutComplete = true;
     };
 }
