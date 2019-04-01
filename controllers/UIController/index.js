@@ -14,6 +14,7 @@ import {
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
+import UIConstant from '../../helpers/UIConstant';
 
 import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
@@ -281,7 +282,12 @@ export default class UIController<Props, State>
         const animation = UIController.getKeyboardAnimation(event);
         const { container } = this;
         if (!!container && !!container.measure) {
-            this.adjustBottomInset(container, keyboardFrame, animation, 300);
+            this.adjustBottomInset(
+                container,
+                keyboardFrame,
+                animation,
+                UIConstant.animationDuration(),
+            );
         } else {
             this.setBottomInset(
                 keyboardFrame.height + this.getBottomInsetAdjustment(),
