@@ -80,7 +80,7 @@ const keyboardPanningScreens = [];
 
 export default class UIController<Props, State>
     extends UIComponent<Props & ControllerProps, State & ControllerState> {
-    static onGetAndroidDisplayCutout = async (): Promise<*> => {
+    static onGetAndroidDisplayCutout = (): * => {
         return {
             left: 0,
             top: 0,
@@ -245,32 +245,49 @@ export default class UIController<Props, State>
     }
 
     // Events
+    getBottomInsetAdjustment() {
+        let adjustment;
+        if (Platform.OS === 'android') {
+            adjustment = UIController.onGetAndroidDisplayCutout().top / PixelRatio.get();
+        } else if (Platform.OS === 'ios') {
+            adjustment = -this.getSafeAreaInsets().bottom;
+        }
+        return adjustment;
+    }
+
+    adjustBottomInset(
+        container: NativeMethodsMixinType,
+        keyboardFrame: $ReadOnly<{ screenY: number, height: number }>,
+        animation: ?AnimationParameters,
+        readjustTimeout: number,
+    ) {
+        container.measure((relX, relY, w, h, x, y) => {
+            const keyboardOverlapHeight = Math.max(
+                (y + h) - keyboardFrame.screenY,
+                keyboardFrame.height,
+            );
+            const bottomInset = keyboardOverlapHeight + this.getBottomInsetAdjustment();
+            this.setBottomInset(Math.max(0, bottomInset), animation);
+            if (Platform.OS === 'android' && (readjustTimeout > 0)) {
+                setTimeout(() => {
+                    this.adjustBottomInset(container, keyboardFrame, animation, 0);
+                }, readjustTimeout);
+            }
+        });
+    }
+
     onKeyboardWillShow(event: KeyboardEvent) {
         const keyboardFrame = event.endCoordinates;
         const animation = UIController.getKeyboardAnimation(event);
-        (async () => {
-            const topCutout = Platform.OS === 'android'
-                ? (await UIController.onGetAndroidDisplayCutout()).top / PixelRatio.get()
-                : 0;
-            const { container } = this;
-            if (!(container && container.measure && this.containerLayoutComplete)) {
-                this.setBottomInset(keyboardFrame.height + topCutout, animation);
-                return;
-            }
-            container.measure((
-                x: number,
-                y: number,
-                width: number,
-                height: number,
-                screenX: number,
-                screenY: number,
-            ) => {
-                const screenBottom = screenY + height;
-                const keyboardOverlapHeight = screenBottom - keyboardFrame.screenY;
-                const bottomInset = keyboardOverlapHeight + topCutout;
-                this.setBottomInset(Math.max(0, bottomInset), animation);
-            });
-        })();
+        const { container } = this;
+        if (!!container && !!container.measure) {
+            this.adjustBottomInset(container, keyboardFrame, animation, 300);
+        } else {
+            this.setBottomInset(
+                keyboardFrame.height + this.getBottomInsetAdjustment(),
+                animation,
+            );
+        }
     }
 
     onKeyboardWillHide(event: KeyboardEvent) {
@@ -482,7 +499,6 @@ export default class UIController<Props, State>
                     style={UIStyle.flex}
                     collapsable={false}
                     ref={this.onSetContainer}
-                    onLayout={this.onLayoutContainer}
                 >
                     {this.renderSafely()}
                 </View>
@@ -511,13 +527,8 @@ export default class UIController<Props, State>
     path: string;
     params: Params;
     container: ?(React$Component<*> & NativeMethodsMixinType);
-    containerLayoutComplete: boolean;
 
     onSetContainer = (container: ?(React$Component<*> & NativeMethodsMixinType)) => {
         this.container = container;
-    };
-
-    onLayoutContainer = () => {
-        this.containerLayoutComplete = true;
     };
 }
