@@ -6,6 +6,7 @@ import {
     Text,
     StyleSheet,
     Animated,
+    LayoutAnimation,
 } from 'react-native';
 
 import UIController from '../UIController';
@@ -149,18 +150,15 @@ class UIDialogController extends UIController {
     setContentInset(contentInset, animation) {
         super.setContentInset(contentInset);
         const bottomInset = Math.max(0, contentInset.bottom);
-        if (animation) {
-            Animated.timing(this.marginBottom, {
-                toValue: bottomInset,
-                duration: animation.duration,
-                easing: UIController.getEasingFunction(animation.easing),
-            }).start();
-        } else {
-            Animated.spring(this.marginBottom, {
-                toValue: bottomInset,
-                duration: UIConstant.animationDuration(),
-            }).start();
-        }
+        const { duration, easing } = animation || {
+            duration: UIConstant.animationDuration(),
+            easing: LayoutAnimation.Types.keyboard,
+        };
+        Animated.timing(this.marginBottom, {
+            toValue: bottomInset,
+            duration,
+            easing: UIController.getEasingFunction(easing),
+        }).start();
     }
 
     // Getters
@@ -319,10 +317,6 @@ class UIDialogController extends UIController {
     }
 
     renderSafely() {
-        const animatedContainerStyle = {
-            flex: 1,
-            marginBottom: this.getMarginBottom(),
-        };
         const wrappedContent = this.wrapContentInScrollView
             ? (
                 <ScrollView
@@ -361,6 +355,10 @@ class UIDialogController extends UIController {
                     {this.renderContentContainer()}
                 </View>
             );
+        const animatedContainerStyle = {
+            flex: 1,
+            marginBottom: this.getMarginBottom(),
+        };
         return (
             <Animated.View style={animatedContainerStyle}>
                 {wrappedContent}
