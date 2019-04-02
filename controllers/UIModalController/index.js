@@ -315,7 +315,7 @@ export default class UIModalController
             >
                 <Animated.View
                     style={{
-                        height: contentHeight + this.getSafeAreaInsets().bottom,
+                        height: contentHeight,
                         paddingBottom: this.marginBottom,
                     }}
                 >
