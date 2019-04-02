@@ -216,7 +216,12 @@ export default class UIModalController
     // Setters
     setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
         super.setContentInset(contentInset);
-        const bottomInset = Math.max(0, contentInset.bottom, this.getSafeAreaInsets().bottom);
+        let bottomInset = contentInset.bottom;
+        // If bottom inset is more than zero, then keyboard is visible
+        // so append safe area
+        if (bottomInset > 0) {
+            bottomInset += this.getSafeAreaInsets().bottom;
+        }
         if (animation) {
             Animated.timing(this.marginBottom, {
                 toValue: bottomInset,
@@ -315,7 +320,7 @@ export default class UIModalController
             >
                 <Animated.View
                     style={{
-                        height: contentHeight,
+                        height: contentHeight + this.getSafeAreaInsets().bottom,
                         paddingBottom: this.marginBottom,
                     }}
                 >

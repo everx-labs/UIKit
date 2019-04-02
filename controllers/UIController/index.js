@@ -526,9 +526,9 @@ export default class UIController<Props, State>
     renderSpinnerOverlay() {
         return (<UISpinnerOverlay
             key="SpinnerOverlay"
-            visible={this.state.spinnerVisible}
-            titleContent={this.state.spinnerTitleContent}
-            textContent={this.state.spinnerTextContent}
+            visible={this.state?.spinnerVisible}
+            titleContent={this.state?.spinnerTitleContent || ''}
+            textContent={this.state?.spinnerTextContent || ''}
         />);
     }
 
