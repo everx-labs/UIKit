@@ -68,6 +68,7 @@ export type ControllerState = {
     spinnerTextContent?: string,
     spinnerTitleContent?: string,
     spinnerVisible?: boolean,
+    runningAsyncOperation?: string,
 };
 
 const EmptyInset: ContentInset = Object.freeze({
@@ -486,13 +487,48 @@ export default class UIController<Props, State>
         this.showIndicator(false);
     }
 
+    // Async Operations
+    getRunningAsyncOperation(): string {
+        return this.state.runningAsyncOperation || '';
+    }
+
+    guardedAsyncRun(operation: () => Promise<void>, name?: string) {
+        (async () => {
+            try {
+                if (this.getRunningAsyncOperation() !== '') {
+                    return;
+                }
+                this.setStateSafely({ runningAsyncOperation: name || 'operation' });
+                try {
+                    await operation();
+                } finally {
+                    this.setStateSafely({ runningAsyncOperation: '' });
+                }
+            } catch (error) {
+                console.log(
+                    `Async operation [${name || ''}] failed: `,
+                    error.message || error,
+                );
+            }
+        })();
+    }
+
+    guardedAsyncNavigation(operation: () => void, name?: string): void {
+        this.guardedAsyncRun(async () => {
+            operation();
+            await new Promise((resolve) => {
+                setTimeout(() => resolve(), 1000);
+            });
+        }, name || 'navigation');
+    }
+
     // Render
     renderSpinnerOverlay() {
         return (<UISpinnerOverlay
             key="SpinnerOverlay"
-            visible={this.state.spinnerVisible}
-            titleContent={this.state.spinnerTitleContent}
-            textContent={this.state.spinnerTextContent}
+            visible={this.state?.spinnerVisible}
+            titleContent={this.state?.spinnerTitleContent || ''}
+            textContent={this.state?.spinnerTextContent || ''}
         />);
     }
 
