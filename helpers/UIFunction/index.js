@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { AsYouType, formatNumber, parseNumber } from 'libphonenumber-js';
+import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
 
@@ -120,33 +120,17 @@ export default class UIFunction {
         return Number(number).toLocaleString(locale, options);
     }
 
-    // Used for numeric money representation as well may be used for exporting digits from phones
-    static numericText(text, currency = {
-        code: 'USD',
-        symbol: '$',
-        precision: 0,
-    }) {
-        const separator = currencies[currency.code].decimalSeparator;
-        const number = text.trim();
-        const split = number.split(separator);
-        const integer = split[0].replace(/\D/g, '');
-        if (split.length < 2) {
-            return integer;
-        }
-        const quotient = (split[1] || '').substring(0, currency.precision);
-        return `${integer}${separator}${quotient}`;
+    static numericText(text) {
+        return parseDigits(text);
     }
 
-    static isPhoneValid(phone) {
+    static isPhoneValid(phone: ?string) {
         let valid = false;
         try {
-            const parseResult = parseNumber(`+${phone}`, { extended: true });
-            ({ valid } = parseResult);
+            const parseResult = parsePhoneNumberFromString(`+${phone || ''}`);
+            valid = parseResult.isValid();
         } catch (exception) {
-            console.log(
-                `[UIFunction] Failed to parse phone code ${phone} with exception`,
-                exception,
-            );
+            console.error(`[UIFunction] Failed to parse phone code ${phone || ''} with exception`, exception);
         }
         return valid;
     }
@@ -166,9 +150,8 @@ export default class UIFunction {
         // a profile without phone number to UserInfoScreen.
         let phone = text ? `+${this.numericText(text)}` : '';
         try {
-            const parsedPhone
-                = parseNumber(phone, { extended: true });
-            phone = formatNumber(parsedPhone, 'International');
+            const parsedPhone = parsePhoneNumberFromString(phone);
+            phone = parsedPhone.formatInternational();
             if (removeCountryCode) {
                 phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
             }
@@ -212,7 +195,7 @@ export default class UIFunction {
     static countryISOFromPhone(phone) {
         let countryCode = null;
         try {
-            const parsedResult = parseNumber(`+${phone}`, { extended: true });
+            const parsedResult = parsePhoneNumberFromString(`+${phone}`);
             if (parsedResult.country) {
                 countryCode = parsedResult.country;
             } else if (parsedResult.countryCallingCode) {
@@ -236,20 +219,22 @@ export default class UIFunction {
     }
 
     // International phone
-    static internationalPhone(phone) {
+    static internationalPhone(phone: string): ?string {
         if (!phone) {
             return null;
         }
-        const phoneNumber = phone.trim();
-        let parsedPhone = parseNumber(phoneNumber, 'RU'); // It parses 8 (000) kind of phones
-        if (Object.keys(parsedPhone).length === 0) {
-            parsedPhone = parseNumber(phoneNumber, 'US'); // It parses all the rest mobile phones
+        const phoneNumber = this.numericText(phone);
+        let parsedPhone = parsePhoneNumberFromString(`+${phoneNumber}`);
+        if (!parsedPhone) {
+            parsedPhone = parsePhoneNumberFromString(phoneNumber, 'RU'); // parse 8 prefixed phones
         }
-        if (Object.keys(parsedPhone).length === 0) {
-            return phoneNumber.startsWith('+') ? null : this.internationalPhone(`+${phoneNumber}`);
+        if (!parsedPhone) {
+            parsedPhone = parsePhoneNumberFromString(phoneNumber, 'US'); // parse the rest
         }
-        const internationalPhone = formatNumber(parsedPhone, 'International');
-        return UIFunction.numericText(internationalPhone);
+        if (!parsedPhone) {
+            return null;
+        }
+        return parsedPhone.formatInternational();
     }
 
     static formatMessageDate(date, shortFormat = true) {
