@@ -55,6 +55,11 @@ const action = {
     color: UIColor.primary(),
 };
 
+const actionMinus = {
+    ...text,
+    color: UIColor.primaryMinus(),
+};
+
 const UITextStyle = StyleSheet.create({
     alignCenter: {
         textAlign: 'center',
@@ -261,6 +266,11 @@ const UITextStyle = StyleSheet.create({
         ...tertiary,
         ...UIFont.smallRegular(),
     },
+    // Caption - fontSize: 14, lineHeight: 20
+    tertiaryCaptionRegular: {
+        ...tertiary,
+        ...UIFont.captionRegular(),
+    },
     // Tiny - fontSize: 12, lineHeight: 16
     tertiaryTinyRegular: {
         ...tertiary,
@@ -302,6 +312,12 @@ const UITextStyle = StyleSheet.create({
         ...UIFont.bodyRegular(),
     },
 
+    // Small - fontSize: 16, lineHeight: 20
+    whiteSmallMedium: {
+        ...white,
+        ...UIFont.smallMedium(),
+    },
+
     // Tiny - fontSize: 12, lineHeight: 16
     whiteTinyRegular: {
         ...white,
@@ -309,10 +325,23 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Action]
+    // Body - fontSize: 18, lineHeight: 24
+    actionBodyMedium: {
+        ...action,
+        ...UIFont.bodyMedium(),
+    },
+
     // Small - fontSize: 16, lineHeight: 20
     actionSmallMedium: {
         ...action,
         ...UIFont.smallMedium(),
+    },
+
+    // [Text Action minus (primary minus)]
+    // Small - fontSize: 12, lineHeight: 16
+    actionMinusTinyMedium: {
+        ...actionMinus,
+        ...UIFont.tinyMedium(),
     },
 
     // [Text Error]

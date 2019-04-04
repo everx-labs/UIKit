@@ -68,6 +68,9 @@ const UIStyle = StyleSheet.create({
     textAlignCenter: {
         textAlign: 'center',
     },
+    textAlignRight: {
+        textAlign: 'right',
+    },
     justifyCenter: {
         justifyContent: 'center',
     },
@@ -139,6 +142,9 @@ const UIStyle = StyleSheet.create({
     mediumCellHeight: { // 40
         height: UIConstant.mediumCellHeight(),
     },
+    defaultCellHeight: { // 48
+        height: UIConstant.defaultCellHeight(),
+    },
     bigCellHeight: { // 56
         height: UIConstant.bigCellHeight(),
     },
@@ -171,6 +177,18 @@ const UIStyle = StyleSheet.create({
     },
     marginTopHuge: { // 32
         marginTop: UIConstant.hugeContentOffset(),
+    },
+    marginTopGreat: { // 48
+        marginTop: UIConstant.greatContentOffset(),
+    },
+    marginTopMajor: { // 64
+        marginTop: UIConstant.majorContentOffset(),
+    },
+    marginTopVast: { // 80
+        marginTop: UIConstant.vastContentOffset(),
+    },
+    marginTopEnormous: { // 104
+        marginTop: UIConstant.enormousContentOffset(),
     },
 
     marginBottomTiny: {
@@ -247,8 +265,17 @@ const UIStyle = StyleSheet.create({
     paddingHorizontal: {
         paddingHorizontal: UIConstant.contentOffset(),
     },
+    paddingTopDefault: {
+        paddingTop: UIConstant.contentOffset(),
+    },
+    paddingBottomDefault: {
+        paddingBottom: UIConstant.contentOffset(),
+    },
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
+    },
+    paddingBottomMajor: {
+        paddingBottom: UIConstant.majorContentOffset(),
     },
 
     // borders
@@ -355,6 +382,7 @@ const UIStyle = StyleSheet.create({
     halfWidthContainer: {
         width: '50%',
         maxWidth: UIConstant.elasticWidthHuge() / 2,
+        alignSelf: 'center',
     },
     fullWidthPaddingContainer: {
         width: '100%',

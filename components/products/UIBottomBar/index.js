@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import StylePropType from 'react-style-proptype';
 
 import UIComponent from '../../UIComponent';
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
     },
 });
 
@@ -82,6 +81,18 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return screenWidth < UIConstant.elasticWidthWide();
     }
 
+    hasNoContacts() {
+        const {
+            companyName, address, phoneNumber, postalCode, location,
+        } = this.props;
+        return !companyName && !address && !phoneNumber && !postalCode && !location;
+    }
+
+    hasNoLeftPart() {
+        const { text, menuItems } = this.props;
+        return !text && menuItems.length === 0;
+    }
+
     renderEmail() {
         const { email } = this.props;
         const primatyColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
@@ -101,14 +112,17 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         );
     }
 
-
-    renderCenterTextComponent() {
+    renderCenterTextComponent(able) {
         const {
             companyName, address, phoneNumber, postalCode, textStyle, location,
         } = this.props;
+        if (!able || this.hasNoContacts()) {
+            return null;
+        }
         const classNameProp: ClassNameProp = { className: 'contacts' };
         return (
             <View
+                testID="bottomBar"
                 style={bottomTextStyle}
                 itemScope
                 itemType="http://schema.org/Organization"
@@ -144,38 +158,90 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         );
     }
 
-    renderCenterText() {
-        const {
-            address, phoneNumber, email, companyName, postalCode, location,
-        } = this.props;
-        if (!address && !phoneNumber && !email && !companyName && !postalCode && !location) {
+    renderLeft() {
+        const { text, textStyle } = this.props;
+        if (this.hasNoLeftPart()) {
             return null;
         }
-        const textComponent = this.renderCenterTextComponent();
-        return this.isMobile()
-            ? textComponent
-            : (
-                <View style={UIStyle.absoluteFillObject}>
-                    {textComponent}
-                </View>
-            );
+        return (
+            <View style={UIStyle.flex} testID="left text >>">
+                <Text style={textStyle}>
+                    {text}
+                </Text>
+                {this.renderMenu()}
+            </View>
+        );
+    }
+
+    renderMenu() {
+        const { menuItems, textStyle } = this.props;
+        if (menuItems.length === 0) {
+            return null;
+        }
+        const dot = (
+            <Text style={textStyle}>
+                {'  ·  '}
+            </Text>
+        );
+        const menu = menuItems.map((item, index) => (
+            <React.Fragment key={`bottom-bar-menu-item-${item.title}`}>
+                <TouchableOpacity
+                    onPress={item.onPress}
+                >
+                    <Text style={textStyle}>
+                        {item.title}
+                    </Text>
+                </TouchableOpacity>
+                {index === menuItems.length - 1 ? null : dot}
+            </React.Fragment>
+        ));
+
+        return (
+            <View style={UIStyle.flexRow}>
+                {menu}
+            </View>
+        );
+    }
+
+    renderDesktopCenterText() {
+        if (this.hasNoContacts()) {
+            return null;
+        }
+        const mobile = this.isMobile();
+        return (
+            <View style={UIStyle.flex} testID="center text >>">
+                {this.renderCenterTextComponent(!mobile)}
+            </View>
+        );
+    }
+
+    renderCopyRight() {
+        const { textStyle, copyRight } = this.props;
+        const isShort = this.hasNoLeftPart() && this.hasNoContacts();
+        const copyRightText = this.isMobile() && !isShort ? '©' : copyRight;
+        const align = isShort ? UIStyle.alignCenter : UIStyle.alignEnd;
+        return (
+            <View style={[UIStyle.flex, align]}>
+                <Text style={textStyle}>
+                    {copyRightText}
+                </Text>
+            </View>
+        );
     }
 
     render() {
-        const { text, textStyle } = this.props;
-        const copyRight = this.isMobile() ? '©' : '2018–2019 © TON Labs';
+        const mobile = this.isMobile();
         return (
             <View style={UIStyle.bottomScreenContainer}>
-                <View style={UIStyle.marginBottomHuge}>
+                <View style={this.props.containerStyle}>
                     <View style={styles.container}>
-                        <Text style={textStyle}>
-                            {text}
-                        </Text>
-                        <Text style={textStyle}>
-                            {copyRight}
-                        </Text>
+
+                        {this.renderLeft()}
+                        {this.renderDesktopCenterText()}
+                        {this.renderCopyRight()}
+
                     </View>
-                    {this.renderCenterText()}
+                    {this.renderCenterTextComponent(mobile)}
                 </View>
             </View>
         );
@@ -186,6 +252,8 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 
 UIBottomBar.defaultProps = {
     textStyle: UITextStyle.tertiaryTinyRegular,
+    containerStyle: {},
+    menuItems: [],
     text: '',
     companyName: '',
     address: '',
@@ -193,6 +261,7 @@ UIBottomBar.defaultProps = {
     postalCode: '',
     phoneNumber: '',
     email: '',
+    copyRight: '',
     mobile: true,
     screenWidth: 0,
 };

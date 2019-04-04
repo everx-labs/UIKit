@@ -163,6 +163,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 valueType={UIDetailsInput.ValueType.Email}
                 placeholder={UILocalized.EmailAddress}
                 containerStyle={UIStyle.greatCellHeight}
+                needArrow
                 onChangeText={text => this.setEmail(text)}
                 onSubmitEditing={() => this.onSubmit()}
             />
@@ -170,8 +171,13 @@ export default class UIStubPage extends UIComponent<Props, State> {
     }
 
     render() {
-        const { title, icon, description } = this.props;
+        const {
+            title, icon, needBottomIcon, description,
+        } = this.props;
         const widthStyle = this.getWidthStyle();
+        const bottomIcon = needBottomIcon
+            ? <Image source={icoTonLabs} style={styles.bottomIcon} />
+            : null;
         return (
             <View
                 onLayout={e => this.onLayout(e)}
@@ -191,7 +197,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                     </View>
                     {this.renderInput()}
                 </View>
-                <Image source={icoTonLabs} style={styles.bottomIcon} />
+                {bottomIcon}
             </View>
         );
     }
@@ -201,6 +207,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
 UIStubPage.defaultProps = {
     icon: icoTonLabel,
+    bottomIcon: true,
     title: 'dev.',
     description: UILocalized.GetNotifiedWhenWeLaunch,
     onSubmit: () => {},

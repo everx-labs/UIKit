@@ -96,7 +96,7 @@ export default class UIDetailsInput<Props, State>
         placeholder: UILocalized.Details,
         secureTextEntry: false,
         showSymbolsLeft: false,
-        theme: UIColor.Theme.Dark,
+        theme: UIColor.Theme.Light,
         valueType: UIDetailsInput.ValueType.Default,
         value: '',
     };
