@@ -225,10 +225,10 @@ export default class UIFunction {
         }
         const phoneNumber = this.numericText(phone);
         let parsedPhone = parsePhoneNumberFromString(`+${phoneNumber}`);
-        if (!parsedPhone) {
+        if (!parsedPhone || !parsedPhone.isValid()) {
             parsedPhone = parsePhoneNumberFromString(phoneNumber, 'RU'); // parse 8 prefixed phones
         }
-        if (!parsedPhone) {
+        if (!parsedPhone || !parsedPhone.isValid()) {
             parsedPhone = parsePhoneNumberFromString(phoneNumber, 'US'); // parse the rest
         }
         if (!parsedPhone) {
