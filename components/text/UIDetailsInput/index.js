@@ -18,6 +18,7 @@ import icoDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-min
 import icoAbled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import icoAbledHover from '../../../assets/ico-arrow-right/arrow-right-white.png';
 import type { EventProps } from '../../../types';
+import UIToastMessage from '../../notifications/UIToastMessage';
 
 const styles = StyleSheet.create({
     container: {
@@ -218,6 +219,16 @@ export default class UIDetailsInput<Props, State>
         this.props.onBlur();
     }
 
+    onSubmitEditing() {
+        if (this.isSubmitDisabled()) {
+            setTimeout(() => {
+                UIToastMessage.showMessage(UILocalized.EnterCorrectDataToField);
+                this.focus();
+            }, UIConstant.feedbackDelay());
+        } else {
+            this.props.onSubmitEditing();
+        }
+    }
 
     // Render
     renderFloatingTitle() {
@@ -226,7 +237,7 @@ export default class UIDetailsInput<Props, State>
         } = this.props;
         const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
         const textStyle = theme === UIColor.Theme.Dark
-            ? UITextStyle.whiteTinyRegular
+            ? UITextStyle.action3TinyRegular
             : UITextStyle.tertiaryTinyRegular;
 
         return (
@@ -274,7 +285,7 @@ export default class UIDetailsInput<Props, State>
                 onFocus={() => this.onFocus()}
                 onBlur={() => this.onBlur()}
                 onChangeText={text => this.onChangeText(text)}
-                onSubmitEditing={onSubmitEditing}
+                onSubmitEditing={() => this.onSubmitEditing()}
                 onKeyPress={e => this.onKeyPress(e)}
                 placeholder={this.hidePlaceholder() ? '' : placeholder}
                 placeholderTextColor={placeholderColor}

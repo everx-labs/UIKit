@@ -60,6 +60,11 @@ const actionMinus = {
     color: UIColor.primaryMinus(),
 };
 
+const action3 = {
+    ...text,
+    color: UIColor.primary3(),
+};
+
 const UITextStyle = StyleSheet.create({
     alignCenter: {
         textAlign: 'center',
@@ -293,31 +298,30 @@ const UITextStyle = StyleSheet.create({
         ...white,
         ...UIFont.keyBold(),
     },
-
     // Title - fontSize: 36, lineHeight: 48
     whiteTitleBold: {
         ...white,
         ...UIFont.titleBold(),
     },
-
     // Subtitle - fontSize: 24, lineHeight: 32
     whiteSubtitleBold: {
         ...white,
         ...UIFont.subtitleBold(),
     },
-
+    whiteAccentBold: {
+        ...white,
+        ...UIFont.accentBold(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     whiteBodyRegular: {
         ...white,
         ...UIFont.bodyRegular(),
     },
-
     // Small - fontSize: 16, lineHeight: 20
     whiteSmallMedium: {
         ...white,
         ...UIFont.smallMedium(),
     },
-
     // Tiny - fontSize: 12, lineHeight: 16
     whiteTinyRegular: {
         ...white,
@@ -341,6 +345,13 @@ const UITextStyle = StyleSheet.create({
     // Small - fontSize: 12, lineHeight: 16
     actionMinusTinyMedium: {
         ...actionMinus,
+        ...UIFont.tinyMedium(),
+    },
+
+    // [Text Action 3 (primary 3)]
+    // Small - fontSize: 12, lineHeight: 16
+    action3TinyRegular: {
+        ...action3,
         ...UIFont.tinyMedium(),
     },
 

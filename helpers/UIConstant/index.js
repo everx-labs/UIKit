@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
+const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 100;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
@@ -151,6 +152,10 @@ export default class UIConstant {
     // Animations
     static animationDuration() {
         return UI_ANIMATION_DURATION;
+    }
+
+    static feedbackDelay() {
+        return UI_FEEDBACK_DELAY;
     }
 
     static smallSwipeThreshold() {

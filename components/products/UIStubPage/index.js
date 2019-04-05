@@ -14,6 +14,8 @@ import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
 import icoTonLabel from '../../../assets/logo/ton-label/ton-label-white.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
 import type { DetailsProps, DetailsState } from '../../text/UIDetailsInput';
+import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
+import TONLocalized from '../../../../../helpers/TONLocalized';
 
 const styles = StyleSheet.create({
     container: {
@@ -162,7 +164,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 value={this.getEmail()}
                 valueType={UIDetailsInput.ValueType.Email}
                 placeholder={UILocalized.EmailAddress}
-                containerStyle={UIStyle.greatCellHeight}
+                containerStyle={StyleSheet.flatten([UIStyle.greatCellHeight, UIStyle.marginTopSmall])}
                 needArrow
                 onChangeText={text => this.setEmail(text)}
                 onSubmitEditing={() => this.onSubmit()}
@@ -170,9 +172,21 @@ export default class UIStubPage extends UIComponent<Props, State> {
         );
     }
 
+    renderBottomBar() {
+        const textStyleProp = this.props.presetName === UIBackgroundView.PresetNames.Action
+            ? { textStyle: UITextStyle.actionMinusTinyMedium }
+            : null;
+        return (
+            <UIBottomBar
+                {...textStyleProp}
+                copyRight={TONLocalized.Copyright}
+            />
+        );
+    }
+
     render() {
         const {
-            title, icon, needBottomIcon, description,
+            title, needBottomIcon, description,
         } = this.props;
         const widthStyle = this.getWidthStyle();
         const bottomIcon = needBottomIcon
@@ -184,12 +198,12 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 style={styles.container}
             >
                 <View style={[...customStyles.contentContainer, widthStyle]}>
-                    <View>
-                        <Image source={icon} style={UIStyle.positionAbsolute} />
-                        <Text style={UITextStyle.whiteKeyBold}>
-                            {title}
-                        </Text>
-                    </View>
+                    <Text style={UITextStyle.whiteAccentBold}>
+                        {UILocalized.TONLabel}
+                    </Text>
+                    <Text style={UITextStyle.whiteKeyBold}>
+                        {title}
+                    </Text>
                     <View style={customStyles.description}>
                         <Text style={UITextStyle.grey1SubtitleBold}>
                             {description}
@@ -197,6 +211,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                     </View>
                     {this.renderInput()}
                 </View>
+                {this.renderBottomBar()}
                 {bottomIcon}
             </View>
         );
@@ -206,7 +221,6 @@ export default class UIStubPage extends UIComponent<Props, State> {
 }
 
 UIStubPage.defaultProps = {
-    icon: icoTonLabel,
     bottomIcon: true,
     title: 'dev.',
     description: UILocalized.GetNotifiedWhenWeLaunch,

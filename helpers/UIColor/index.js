@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-const UI_COLOR_PRIMARY_3 = '#7AC1E4';
 const UI_COLOR_PRIMARY_MINUS = '#47A9DA';
 const UI_COLOR_PRIMARY = '#0088CC';
 const UI_COLOR_PRIMARY_PLUS = '#007AB8';
+const UI_COLOR_PRIMARY_1 = '#C5E4F3';
+const UI_COLOR_PRIMARY_2 = '#A2D4EC';
+const UI_COLOR_PRIMARY_3 = '#7AC1E4';
 const UI_COLOR_PRIMARY_4 = '#006BA1';
 const UI_COLOR_PRIMARY_5 = '#005885';
 const UI_COLOR_PRIMARY_6 = '#003F5E';
@@ -90,10 +92,6 @@ export default class UIColor {
     };
 
     // Base colors
-    static primary3() {
-        return UI_COLOR_PRIMARY_3;
-    }
-
     static primaryMinus() {
         return UI_COLOR_PRIMARY_MINUS;
     }
@@ -104,6 +102,18 @@ export default class UIColor {
 
     static primaryPlus() {
         return UI_COLOR_PRIMARY_PLUS;
+    }
+
+    static primary1() {
+        return UI_COLOR_PRIMARY_1;
+    }
+
+    static primary2() {
+        return UI_COLOR_PRIMARY_2;
+    }
+
+    static primary3() {
+        return UI_COLOR_PRIMARY_3;
     }
 
     static primary4() {

@@ -1,5 +1,6 @@
 const ru = {
     // TON
+    TONLabel: 'TON',
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
     CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
@@ -512,9 +513,12 @@ const ru = {
 
     // Stub page
     GetNotifiedWhenWeLaunch: 'Get notified when we launch',
-    EmailAddress: 'Email address',
+    EmailAddress: 'Email',
     WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
     ThanksForCooperation: 'Thanks for cooperation.',
+
+    // Toasts
+    EnterCorrectDataToField: 'Enter correct data to field',
 };
 
 export default ru;
