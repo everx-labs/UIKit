@@ -20,7 +20,7 @@
         "@quentin-sommer/react-useragent": "^2.0.0",
         "bowser": "^1.9.4",
         "currency-formatter": "^1.4.3",
-        "libphonenumber-js": "1.5.2",
+        "libphonenumber-js": "1.7.14",
         "mobile-detect": "^1.4.2",
         "moment": "^2.22.2",
         "prop-types": "15.6.2",
