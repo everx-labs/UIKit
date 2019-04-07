@@ -7,7 +7,7 @@ import UIColor from '../../../helpers/UIColor';
 
 type Props = {
     error?: boolean,
-    color: ?string,
+    color?: string,
     style?: StylePropType,
 }
 
@@ -27,6 +27,5 @@ export default UISeparator;
 
 UISeparator.defaultProps = {
     error: false,
-    color: null,
     style: {},
 };

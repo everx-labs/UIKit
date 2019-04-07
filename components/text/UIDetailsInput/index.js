@@ -30,12 +30,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    beginningTag: {
+        margin: 0,
+        padding: 0,
+        textAlign: 'center',
+    },
 });
 
 export type DetailsProps = {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
+    beginningTag: string,
     containerStyle: StylePropType,
     comment: string,
     commentColor?: string | null,
@@ -75,11 +81,14 @@ export default class UIDetailsInput<Props, State>
     static ValueType = {
         Default: 'default',
         Email: 'email',
+        PhoneNumber: 'phone-number',
+        Link: 'link',
     };
 
     static defaultProps: DetailsProps = {
         autoCapitalize: 'sentences',
         autoFocus: false,
+        beginningTag: '',
         containerStyle: {},
         comment: '',
         editable: true,
@@ -139,6 +148,10 @@ export default class UIDetailsInput<Props, State>
         if (valueType === UIDetailsInput.ValueType.Email) {
             return !UIFunction.isEmailAddress(value);
         }
+        console.log(value);
+        if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
+            return !UIFunction.numericText(value);
+        }
         return !value;
     }
 
@@ -196,9 +209,14 @@ export default class UIDetailsInput<Props, State>
 
     // Events
     onChangeText(text: string) {
-        const { onChangeText } = this.props;
+        const { onChangeText, valueType } = this.props;
         if (onChangeText) {
-            onChangeText(text);
+            if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
+                // const input = UIFunction.formatPhoneText(text);
+                onChangeText(text);
+            } else {
+                onChangeText(text);
+            }
         }
     }
 
@@ -226,7 +244,10 @@ export default class UIDetailsInput<Props, State>
                 this.focus();
             }, UIConstant.feedbackDelay());
         } else {
-            this.props.onSubmitEditing();
+            const { onSubmitEditing } = this.props;
+            if (onSubmitEditing) {
+                onSubmitEditing();
+            }
         }
     }
 
@@ -243,6 +264,28 @@ export default class UIDetailsInput<Props, State>
         return (
             <Text style={textStyle}>
                 {text}
+            </Text>
+        );
+    }
+
+    renderBeginningTag() {
+        const { beginningTag, valueType } = this.props;
+        let tag;
+        if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
+            tag = '+';
+        } else if (valueType === UIDetailsInput.ValueType.Link) {
+            tag = 'https://';
+        } else if (!beginningTag) {
+            return null;
+        }
+        return (
+            <Text
+                style={[
+                    UITextStyle.quaternaryBodyRegular,
+                    styles.beginningTag,
+                ]}
+            >
+                {tag}
             </Text>
         );
     }
@@ -332,7 +375,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderArrow() {
-        const { theme, needArrow, onSubmitEditing } = this.props;
+        const { theme, needArrow } = this.props;
         if (!needArrow) {
             return null;
         }
@@ -361,7 +404,7 @@ export default class UIDetailsInput<Props, State>
             return image;
         }
         return (
-            <TouchableOpacity onPress={onSubmitEditing}>
+            <TouchableOpacity onPress={() => this.onSubmitEditing()}>
                 {image}
             </TouchableOpacity>
         );
@@ -370,6 +413,7 @@ export default class UIDetailsInput<Props, State>
     renderTexFragment() {
         return (
             <React.Fragment>
+                {this.renderBeginningTag()}
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
@@ -391,7 +435,11 @@ export default class UIDetailsInput<Props, State>
                 bottomLineColor = UIColor.primaryMinus();
             }
         } else {
-            bottomLineColor = UIColor.light();
+            if (this.isFocused()) {
+                bottomLineColor = UIColor.primary();
+            } else {
+                bottomLineColor = UIColor.light();
+            }
         }
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (

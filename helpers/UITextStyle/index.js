@@ -25,6 +25,11 @@ const secondary = {
     color: UIColor.textSecondary(),
 };
 
+const quaternary = {
+    ...text,
+    color: UIColor.textQuaternary(),
+}
+
 const grey1 = {
     ...text,
     color: UIColor.grey1(),
@@ -205,6 +210,13 @@ const UITextStyle = StyleSheet.create({
     secondaryTinyMedium: {
         ...secondary,
         ...UIFont.tinyMedium(),
+    },
+
+    // [Text Quaternary]
+    // Body - fontSize: 18, lineHeight: 24
+    quaternaryBodyRegular: {
+        ...secondary,
+        ...UIFont.bodyRegular(),
     },
 
     // [Text Grey 1]

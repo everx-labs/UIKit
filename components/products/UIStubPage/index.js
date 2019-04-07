@@ -48,7 +48,8 @@ const customStyles = {
 };
 
 type Props = {
-    icon: string | number,
+    presetName: string,
+    needBottomIcon: boolean,
     title: string,
     description: string,
     onSubmit: (string) => void,
@@ -90,7 +91,9 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
     onSubmit() {
         this.setSubmitted();
-        UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
+        setTimeout(() => {
+            UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
+        }, UIConstant.feedbackDelay());
         const email = this.getEmail();
         this.props.onSubmit(email);
     }
@@ -164,7 +167,10 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 value={this.getEmail()}
                 valueType={UIDetailsInput.ValueType.Email}
                 placeholder={UILocalized.EmailAddress}
-                containerStyle={StyleSheet.flatten([UIStyle.greatCellHeight, UIStyle.marginTopSmall])}
+                containerStyle={StyleSheet.flatten([
+                    UIStyle.greatCellHeight,
+                    UIStyle.marginTopSmall,
+                ])}
                 needArrow
                 onChangeText={text => this.setEmail(text)}
                 onSubmitEditing={() => this.onSubmit()}
@@ -221,7 +227,8 @@ export default class UIStubPage extends UIComponent<Props, State> {
 }
 
 UIStubPage.defaultProps = {
-    bottomIcon: true,
+    presetName: UIBackgroundView.PresetNames.Primary,
+    needBottomIcon: true,
     title: 'dev.',
     description: UILocalized.GetNotifiedWhenWeLaunch,
     onSubmit: () => {},

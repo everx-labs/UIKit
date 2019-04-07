@@ -27,9 +27,16 @@ const bottomTextStyle = [
     UIStyle.pageSlimContainer,
 ];
 
+type MenuItem = {
+    title: string,
+    onPress?: () => void,
+}
+
 type Props = {
     text: string,
     textStyle: StylePropType,
+    copyRight: string,
+    menuItems: MenuItem[],
     companyName: string,
     address: string,
     location: string,
@@ -38,6 +45,7 @@ type Props = {
     email: string,
     mobile: boolean,
     screenWidth: number,
+    containerStyle: StylePropType,
 };
 
 type State = {
@@ -112,7 +120,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         );
     }
 
-    renderCenterTextComponent(able) {
+    renderCenterTextComponent(able: boolean) {
         const {
             companyName, address, phoneNumber, postalCode, textStyle, location,
         } = this.props;

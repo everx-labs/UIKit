@@ -5,10 +5,12 @@ import { StyleSheet, TouchableWithoutFeedback, Text, Image, View } from 'react-n
 
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
-import UIComponent from '../../UIComponent';
+import UIActionComponent from '../../UIActionComponent';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
+
+import type EventProps from '../../../types';
 
 const styles = StyleSheet.create({
     textButton: {
@@ -44,6 +46,7 @@ type Props = {
     onPress: () => void,
     testID?: string,
     textStyle?: StylePropType,
+    theme: string,
     title: string,
 };
 
@@ -52,38 +55,11 @@ type State = {
     hover: boolean,
 };
 
-class UITextButton extends UIComponent<Props, State> {
+class UITextButton extends UIActionComponent<Props, State> {
     static Align = {
         Left: styles.alignLeft,
         Center: styles.alignCenter,
     };
-
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            tap: false,
-            hover: false,
-        };
-    }
-
-    // Setters
-    setTap(tap: boolean = true) {
-        this.setStateSafely({ tap });
-    }
-
-    setHover(hover: boolean = true) {
-        this.setStateSafely({ hover });
-    }
-
-    // Getters
-    isTap() {
-        return this.state.tap;
-    }
-
-    isHover() {
-        return this.state.hover;
-    }
 
     // Render
     renderIcon() {
@@ -96,24 +72,17 @@ class UITextButton extends UIComponent<Props, State> {
 
     renderTitle() {
         const {
-            title, textStyle, details, disabled,
+            title, textStyle, details, theme, disabled,
         } = this.props;
         const defaultFontStyle = UIFont.smallMedium();
-        let color;
-        if (disabled) {
-            color = UIColor.textSecondary();
-        } else if (this.isTap()) {
-            color = UIColor.primary5();
-        } else if (this.isHover()) {
-            color = UIColor.primary4();
-        } else {
-            color = UIColor.primary();
-        }
-        const defaultColorStyle = UIColor.getColorStyle(color);
+        const tapped = this.isTapped();
+        const hover = this.isHover();
+        const defaultColorStyle = UIColor.actionTextPrimaryStyle(theme);
+        const stateColorStyle = UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover);
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
             <Text
-                style={[defaultFontStyle, defaultColorStyle, textStyle, flexGrow]}
+                style={[defaultFontStyle, defaultColorStyle, textStyle, stateColorStyle, flexGrow]}
             >
                 {title}
             </Text>
@@ -132,12 +101,12 @@ class UITextButton extends UIComponent<Props, State> {
         );
     }
 
-    render() {
+    render(): React$Node {
         const {
             testID, buttonStyle, onPress, disabled, align,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
-        const onMouseEvents: { [string]: () => void } = {
+        const onMouseEvents: EventProps = {
             onMouseEnter: () => this.setHover(),
             onMouseLeave: () => this.setHover(false),
         };
@@ -147,8 +116,8 @@ class UITextButton extends UIComponent<Props, State> {
                 disabled={disabled}
                 onPress={() => onPress()}
                 {...onMouseEvents}
-                onPressIn={() => this.setTap()}
-                onPressOut={() => this.setTap(false)}
+                onPressIn={() => this.setTapped()}
+                onPressOut={() => this.setTapped(false)}
             >
                 <View style={[
                     styles.textButton,
@@ -170,10 +139,11 @@ class UITextButton extends UIComponent<Props, State> {
 export default UITextButton;
 
 UITextButton.defaultProps = {
-    title: '',
-    details: '',
-    icon: null,
-    disabled: false,
     align: UITextButton.Align.Left,
+    details: '',
+    disabled: false,
+    icon: null,
     onPress: () => {},
+    theme: UIColor.Theme.Light,
+    title: '',
 };

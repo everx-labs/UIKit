@@ -21,6 +21,7 @@ const UI_COLOR_GREY_1 = '#EBEDEE';
 const UI_COLOR_GREY_2 = '#DDE1E2';
 const UI_COLOR_GREY_3 = '#CED3D6';
 const UI_COLOR_LIGHT = '#CFD8DC';
+const UI_COLOR_NOT_WHITE = '#F8F9F9';
 const UI_COLOR_BLACK_80 = 'rgba(0,0,0,0.8)';
 const UI_COLOR_WHITE_40 = 'rgba(255,255,255,0.4)';
 const UI_COLOR_WHITE_80 = 'rgba(255,255,255,0.8)';
@@ -36,6 +37,9 @@ const UI_COLOR_TEXT_LSECONDARY = '#364046';
 const UI_COLOR_TEXT_DSECONDARY = '#DADADA';
 const UI_COLOR_TEXT_LTERTIARY = '#96A1A7';
 const UI_COLOR_TEXT_DTERTIARY = '#BEC4C8';
+const UI_COLOR_TEXT_LQUARTERNARY = '#BEC4C8';
+const UI_COLOR_TEXT_DQUARTERNARY = '#96A1A7';
+
 const UI_COLOR_TEXT_LTCAUTION = '#FF9800';
 const UI_COLOR_TEXT_DTCAUTION = '#FF9800';
 
@@ -180,6 +184,10 @@ export default class UIColor {
         return UI_COLOR_LIGHT;
     }
 
+    static notWhite() {
+        return UI_COLOR_NOT_WHITE;
+    }
+
     static black80() {
         return UI_COLOR_BLACK_80;
     }
@@ -212,6 +220,42 @@ export default class UIColor {
         return UI_COLOR_TEXT_DPRIMARY;
     }
 
+    static stateTextPrimary(theme, disabled, tapped, hover) {
+        if (disabled) {
+            return UIColor.textSecondary(theme);
+        }
+        if (tapped) {
+            if (theme === UIColor.Theme.Light) {
+                return UIColor.primary5();
+            }
+            return UIColor.primary2();
+        }
+        if (hover) {
+            if (theme === UIColor.Theme.Light) {
+                return UIColor.primary4();
+            }
+            return UIColor.primary1();
+        }
+        return null;
+    }
+
+    static stateTextPrimaryStyle(theme, disabled, tapped, hover) {
+        const color = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
+        return color ? UIColor.getColorStyle(color) : null;
+    }
+
+    static actionTextPrimary(theme) {
+        if (theme === UIColor.Theme.Light) {
+            return UIColor.primary();
+        }
+        return UIColor.white();
+    }
+
+    static actionTextPrimaryStyle(theme) {
+        const color = UIColor.actionTextPrimary(theme);
+        return UIColor.getColorStyle(color);
+    }
+
     static textParagraph(theme = UIColor.Theme.Light) {
         if (theme === UIColor.Theme.Light) {
             return UI_COLOR_TEXT_LPARAGRAPH;
@@ -231,6 +275,13 @@ export default class UIColor {
             return UI_COLOR_TEXT_LTERTIARY;
         }
         return UI_COLOR_TEXT_DTERTIARY;
+    }
+
+    static textQuaternary(theme = UIColor.Theme.Light) {
+        if (theme === UIColor.Theme.Light) {
+            return UI_COLOR_TEXT_LQUARTERNARY;
+        }
+        return UI_COLOR_TEXT_DQUARTERNARY;
     }
 
     static textCaution(theme = UIColor.Theme.Light) {

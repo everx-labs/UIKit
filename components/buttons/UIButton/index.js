@@ -10,7 +10,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
-import UIComponent from '../../UIComponent';
+import UIActionComponent from '../../UIActionComponent';
 import type { EventProps } from '../../../types';
 
 const styles = StyleSheet.create({
@@ -47,12 +47,9 @@ type Props = {
     theme: string,
 };
 
-type State = {
-    hover: boolean,
-    tap: boolean,
-};
+type State = {};
 
-export default class UIButton extends UIComponent<Props, State> {
+export default class UIButton extends UIActionComponent<Props, State> {
     static ButtonSize = {
         Default: 'default',
         Large: 'large',
@@ -68,16 +65,6 @@ export default class UIButton extends UIComponent<Props, State> {
     };
 
     insetKey: string;
-    // constructor
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            hover: false,
-            tap: false,
-        };
-    }
-
     componentDidMount() {
         super.componentDidMount();
         this.setInsetIfFooter();
@@ -93,32 +80,7 @@ export default class UIButton extends UIComponent<Props, State> {
         this.props.onPress();
     }
 
-    onPressIn() {
-        this.setTap();
-    }
-
-    onPressOut() {
-        this.setTap(false);
-    }
-
-    // Setters
-    setHover(hover: boolean = true) {
-        this.setStateSafely({ hover });
-    }
-
-    setTap(tap: boolean = true) {
-        this.setStateSafely({ tap });
-    }
-
     // Getters
-    isHover() {
-        return this.state.hover;
-    }
-
-    isTap() {
-        return this.state.tap;
-    }
-
     getButtonHeight() {
         switch (this.props.buttonSize) {
         case UIButton.ButtonSize.Large:
@@ -150,7 +112,7 @@ export default class UIButton extends UIComponent<Props, State> {
         if (this.props.theme === UIColor.Theme.Dark) {
             if (this.isDisabled()) {
                 color = UIColor.primaryPlus();
-            } else if (this.isTap()) {
+            } else if (this.isTapped()) {
                 color = UIColor.primary6();
             } else if (this.isHover()) {
                 color = UIColor.primary4();
@@ -159,7 +121,7 @@ export default class UIButton extends UIComponent<Props, State> {
             }
         } else if (this.isDisabled()) {
             color = UIColor.backgroundQuarter(UIColor.Theme.Light);
-        } else if (this.isTap()) {
+        } else if (this.isTapped()) {
             color = UIColor.primary5();
         } else if (this.isHover()) {
             color = UIColor.primary4();
@@ -282,8 +244,8 @@ export default class UIButton extends UIComponent<Props, State> {
                     {...testIDProp}
                     disabled={this.isDisabled() || this.shouldShowIndicator()}
                     onPress={() => this.onPress()}
-                    onPressIn={() => this.onPressIn()}
-                    onPressOut={() => this.onPressOut()}
+                    onPressIn={() => this.setTapped()}
+                    onPressOut={() => this.setTapped(false)}
                 >
                     <View
                         style={[UIStyle.flex, UIStyle.centerContainer]}

@@ -100,7 +100,8 @@ class UITextInput extends UIComponent<Props, State> {
                 ]}
             >
                 {beginningTag}
-            </Text>);
+            </Text>
+        );
     }
 
     renderTextInput() {

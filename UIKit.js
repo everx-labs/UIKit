@@ -1,4 +1,5 @@
 import UIActionSheet from './components/menus/UIActionSheet';
+import UIActionComponent from './components/UIActionComponent';
 import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/text/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
@@ -79,6 +80,7 @@ import type { ContentInset } from './controllers/UIController';
 import type { DetailsList } from './components/gram.scan/UIDetailsTable';
 
 export {
+    UIActionComponent,
     UIActionSheet,
     UIAlertView,
     UIAmountInput,
