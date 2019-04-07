@@ -9,7 +9,7 @@ import UIColor from '../../helpers/UIColor';
 type Props = {
     color?: string,
     source: string,
-    style?: StylePropType,
+    style?: ViewStyleProp,
 };
 
 const UIImage = ({ color, source, style }: Props) => {
