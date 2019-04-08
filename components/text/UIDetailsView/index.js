@@ -19,17 +19,22 @@ const styles = StyleSheet.create({
 export default class UIDetailsView extends UIComponent {
     // Render
     renderContentView() {
-        const { secondaryCaptionRegular, primarySmallMedium } = UITextStyle;
+        const {
+            secondaryCaptionRegular,
+            primarySmallMedium,
+            primarySmallRegular,
+        } = UITextStyle;
         const {
             value, comments, textStyle, commentsStyle, reversed,
         } = this.props;
+        const defaultTextStyle = this.props.onPress ? primarySmallMedium : primarySmallRegular;
         if (reversed) {
             return (
                 <View>
                     <Text style={[secondaryCaptionRegular, commentsStyle]}>
                         {comments}
                     </Text>
-                    <Text style={[primarySmallMedium, textStyle]}>
+                    <Text style={[defaultTextStyle, textStyle]}>
                         {value}
                     </Text>
                 </View>
@@ -37,7 +42,7 @@ export default class UIDetailsView extends UIComponent {
         }
         return (
             <View>
-                <Text style={[primarySmallMedium, textStyle]}>
+                <Text style={[defaultTextStyle, textStyle]}>
                     {value}
                 </Text>
                 <Text style={[secondaryCaptionRegular, commentsStyle]}>
