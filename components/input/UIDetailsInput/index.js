@@ -1,24 +1,21 @@
 /* eslint-disable global-require */
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { TextInput, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { TextInput, Text, View, StyleSheet } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIColor from '../../../helpers/UIColor';
-import UILocalized from '../../../helpers/UILocalized';
+import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
-import UIFunction from '../../../helpers/UIFunction';
 
 import icoDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import icoAbled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import icoAbledHover from '../../../assets/ico-arrow-right/arrow-right-white.png';
-import type { EventProps } from '../../../types';
-import UIToastMessage from '../../notifications/UIToastMessage';
 
 const styles = StyleSheet.create({
     container: {
@@ -42,7 +39,7 @@ export type DetailsProps = {
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     comment: string,
     commentColor?: string | null,
     editable: boolean,
@@ -65,25 +62,16 @@ export type DetailsProps = {
     token?: string,
     theme?: string,
     value: string,
-    valueType?: string,
     testID?: string,
 };
 
 export type DetailsState = {
     focused: boolean,
-    arrowHover: boolean,
 };
 
-export default class UIDetailsInput<Props, State>
-    extends UIComponent<Props & DetailsProps, any & DetailsState> {
+export default class UIDetailsInput
+    extends UIComponent<DetailsProps, DetailsState> {
     textInput: ?TextInput;
-
-    static ValueType = {
-        Default: 'default',
-        Email: 'email',
-        PhoneNumber: 'phone-number',
-        Link: 'link',
-    };
 
     static defaultProps: DetailsProps = {
         autoCapitalize: 'sentences',
@@ -103,20 +91,18 @@ export default class UIDetailsInput<Props, State>
         onFocus: () => {},
         onSubmitEditing: () => {},
         onKeyPress: () => {},
-        placeholder: UILocalized.Details,
+        placeholder: '',
         secureTextEntry: false,
         showSymbolsLeft: false,
         theme: UIColor.Theme.Light,
-        valueType: UIDetailsInput.ValueType.Default,
         value: '',
     };
 
-    constructor(props: Props & DetailsProps) {
+    constructor(props: DetailsProps) {
         super(props);
 
         this.state = {
             focused: false,
-            arrowHover: false,
         };
     }
 
@@ -125,33 +111,13 @@ export default class UIDetailsInput<Props, State>
         this.setStateSafely({ focused });
     }
 
-    setArrowHover(arrowHover: boolean = true) {
-        this.setStateSafely({ arrowHover });
-    }
-
     // Getters
-    // isFocused() {
-    //     return this.textInput && this.textInput.isFocused();
-    // }
-
-    // previous worked only after onChangeText event
     isFocused() {
         return this.state.focused;
     }
 
-    isArrowHover() {
-        return this.state.arrowHover;
-    }
-
     isSubmitDisabled() {
-        const { valueType, value } = this.props;
-        if (valueType === UIDetailsInput.ValueType.Email) {
-            return !UIFunction.isEmailAddress(value);
-        }
-        if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
-            return !UIFunction.numericText(value);
-        }
-        return !value;
+        return !this.props.value;
     }
 
     keyboardType() {
@@ -163,19 +129,31 @@ export default class UIDetailsInput<Props, State>
     }
 
     textInputStyle() {
-        const textInputFont = this.props.theme === UIColor.Theme.Dark
-            ? UITextStyle.whiteBodyRegular
-            : UITextStyle.primaryBodyRegular;
-        delete textInputFont.lineHeight;
-        return [UIStyle.flex, textInputFont];
+        const { theme } = this.props;
+        const textColorStyle = UIColor.textPrimaryStyle(theme);
+        const fontStyle = UITextStyle.bodyRegular;
+        delete fontStyle.lineHeight;
+        return [
+            fontStyle,
+            textColorStyle,
+            UIStyle.flex,
+        ];
     }
 
     textViewStyle() {
         return styles.textView;
     }
 
+    beginningTag() {
+        return this.props.beginningTag;
+    }
+
     commentColor() {
         return this.props.commentColor;
+    }
+
+    placeholder() {
+        return this.props.placeholder;
     }
 
     hidePlaceholder() {
@@ -186,6 +164,11 @@ export default class UIDetailsInput<Props, State>
         const { value } = this.props;
         return `${value}`;
     }
+
+    getInlinePlaceholder() {
+        return this.hidePlaceholder() ? '' : this.placeholder();
+    }
+
 
     // Actions
     focus() {
@@ -208,14 +191,9 @@ export default class UIDetailsInput<Props, State>
 
     // Events
     onChangeText(text: string) {
-        const { onChangeText, valueType } = this.props;
+        const { onChangeText } = this.props;
         if (onChangeText) {
-            if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
-                const input = UIFunction.formatPhoneText(text);
-                onChangeText(input);
-            } else {
-                onChangeText(text);
-            }
+            onChangeText(text);
         }
     }
 
@@ -239,7 +217,6 @@ export default class UIDetailsInput<Props, State>
     onSubmitEditing() {
         if (this.isSubmitDisabled()) {
             setTimeout(() => {
-                UIToastMessage.showMessage(UILocalized.EnterCorrectDataToField);
                 this.focus();
             }, UIConstant.feedbackDelay());
         } else {
@@ -252,29 +229,20 @@ export default class UIDetailsInput<Props, State>
 
     // Render
     renderFloatingTitle() {
-        const {
-            floatingTitle, placeholder, theme, value,
-        } = this.props;
-        const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
-        const textStyle = theme === UIColor.Theme.Dark
-            ? UITextStyle.action3TinyRegular
-            : UITextStyle.tertiaryTinyRegular;
+        const { floatingTitle, theme, value } = this.props;
+        const text = !floatingTitle || !value || !value.length ? ' ' : this.placeholder();
+        const colorStyle = UIColor.textTertiaryStyle(theme);
 
         return (
-            <Text style={textStyle}>
+            <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
             </Text>
         );
     }
 
     renderBeginningTag() {
-        const { beginningTag, valueType } = this.props;
-        let tag;
-        if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
-            tag = '+';
-        } else if (valueType === UIDetailsInput.ValueType.Link) {
-            tag = 'https://';
-        } else if (!beginningTag) {
+        const beginningTag = this.beginningTag();
+        if (!beginningTag) {
             return null;
         }
         return (
@@ -284,7 +252,7 @@ export default class UIDetailsInput<Props, State>
                     styles.beginningTag,
                 ]}
             >
-                {tag}
+                {beginningTag}
             </Text>
         );
     }
@@ -297,8 +265,6 @@ export default class UIDetailsInput<Props, State>
             editable,
             maxLength,
             maxLines,
-            onSubmitEditing,
-            placeholder,
             returnKeyType,
             secureTextEntry,
             testID,
@@ -310,9 +276,7 @@ export default class UIDetailsInput<Props, State>
         const multiline = !!maxLines && maxLines > 1;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
-        const placeholderColor = theme === UIColor.Theme.Dark
-            ? UIColor.white40()
-            : UIColor.textTertiary();
+        const placeholderColor = UIColor.textPlaceholder(theme);
         return (
             <TextInput
                 {...accessibilityLabelProp}
@@ -329,7 +293,7 @@ export default class UIDetailsInput<Props, State>
                 onChangeText={text => this.onChangeText(text)}
                 onSubmitEditing={() => this.onSubmitEditing()}
                 onKeyPress={e => this.onKeyPress(e)}
-                placeholder={this.hidePlaceholder() ? '' : placeholder}
+                placeholder={this.getInlinePlaceholder()}
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
@@ -345,10 +309,8 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderCounter() {
-        if (!this.props.showSymbolsLeft) return null;
-
-        const { value, maxLength } = this.props;
-        if (!maxLength) {
+        const { value, maxLength, showSymbolsLeft } = this.props;
+        if (!maxLength || !showSymbolsLeft) {
             return null;
         }
         return (
@@ -378,34 +340,21 @@ export default class UIDetailsInput<Props, State>
         if (!needArrow) {
             return null;
         }
-        let source;
-        if (theme === UIColor.Theme.Dark) {
-            if (this.isSubmitDisabled()) {
-                source = icoDisabled;
-            } else if (this.isArrowHover()) {
-                source = icoAbledHover;
-            } else {
-                source = icoAbled;
-            }
+        let icons = {};
+        if (theme === UIColor.Theme.Action) {
+            icons = {
+                icoAbled,
+                icoAbledHover,
+                icoDisabled,
+            };
         }
-        const mouseEvents: EventProps = {
-            onMouseEnter: () => this.setArrowHover(),
-            onMouseLeave: () => this.setArrowHover(false),
-        };
-        const image = (
-            <Image
-                source={source}
-                {...mouseEvents}
-            />
-        );
 
-        if (this.isSubmitDisabled()) {
-            return image;
-        }
         return (
-            <TouchableOpacity onPress={() => this.onSubmitEditing()}>
-                {image}
-            </TouchableOpacity>
+            <UIActionImage
+                {...icons}
+                disabled={this.isSubmitDisabled()}
+                onPress={() => this.onSubmitEditing()}
+            />
         );
     }
 
@@ -427,18 +376,9 @@ export default class UIDetailsInput<Props, State>
         let bottomLineColor;
         if (this.commentColor()) {
             bottomLineColor = this.commentColor();
-        } else if (theme === UIColor.Theme.Dark) {
-            if (this.isFocused() || value) {
-                bottomLineColor = UIColor.primary3();
-            } else {
-                bottomLineColor = UIColor.primaryMinus();
-            }
         } else {
-            if (this.isFocused()) {
-                bottomLineColor = UIColor.primary();
-            } else {
-                bottomLineColor = UIColor.light();
-            }
+            const focused = this.isFocused() || value;
+            bottomLineColor = UIColor.borderBottomColor(theme, focused);
         }
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (

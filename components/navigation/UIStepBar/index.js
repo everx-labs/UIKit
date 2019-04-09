@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -35,6 +36,11 @@ export default class UIStepBar extends UIComponent {
         this.setInsetIfFooter();
     }
 
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.removeInsetIfFooter();
+    }
+
     // Setters
 
     // Getters
@@ -47,6 +53,13 @@ export default class UIStepBar extends UIComponent {
         const height = UIConstant.defaultCellHeight();
         this.insetKey = `UIStepBar~key~${new Date().toLocaleString()}`;
         UINotice.setAdditionalInset(this.insetKey, height);
+    }
+
+    removeInsetIfFooter() {
+        if (!this.props.footer) {
+            return;
+        }
+        UINotice.removeAdditionalInset(this.insetKey);
     }
 
     // Render

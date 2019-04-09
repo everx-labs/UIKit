@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import UIDetailsInput from '../UIDetailsInput';
 
@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: null,
         flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: 'transparent',
     },
     transparentValue: {
@@ -25,6 +26,12 @@ const styles = StyleSheet.create({
     },
     trailingValue: {
         color: UIColor.textSecondary(),
+    },
+    // TODO: Bad practice – padding was selected by eye.
+    // Need better solution. (Michael V.)
+    androidTextInputPadding: {
+        paddingBottom: 6,
+        paddingLeft: 4,
     },
 });
 
@@ -44,7 +51,8 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         trailingValue: '',
         rightButton: '',
         rightButtonDisabled: false,
-        onRightButtonPress: () => {},
+        onRightButtonPress: () => {
+        },
     };
 
     // Getters
@@ -56,6 +64,20 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     keyboardType() {
         return 'decimal-pad';
+    }
+
+    // Events
+    onChangeText(newValue: string) {
+        const { onChangeText } = this.props;
+
+        // This prevents to type the symbols: + - / * =
+        if (newValue.match(/\+|-|\/|\*|=/)) {
+            return;
+        }
+
+        if (onChangeText) {
+            onChangeText(newValue);
+        }
     }
 
     // Render
@@ -87,16 +109,20 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         if ((trailingValue?.length || 0) === 0) {
             return null;
         }
-
+        // TODO: Bad practice – fast coding.
+        // Need better solution. (Michael V.)
+        const style = Platform.OS === 'android'
+            ? [styles.trailingValueView, styles.androidTextInputPadding]
+            : styles.trailingValueView;
         return (
-            <View style={styles.trailingValueView}>
+            <View style={style}>
                 <Text
                     style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
                 >
                     {value}
                     <Text
-                        style={[this.textInputStyle(), styles.trailingValue]}
+                        style={styles.trailingValue}
                         selectable={false}
                     >
                         {trailingValue}

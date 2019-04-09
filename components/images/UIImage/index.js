@@ -4,7 +4,7 @@ import { Image } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UIColor from '../../helpers/UIColor';
+import UIColor from '../../../helpers/UIColor';
 
 type Props = {
     color?: string,

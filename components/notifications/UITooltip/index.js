@@ -13,10 +13,10 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIDevice from '../../../helpers/UIDevice';
 
 import type { Position } from '../../../helpers/UILayoutManager';
+import UIStyle from '../../../helpers/UIStyle';
 
 type Props = {
     message: string,
-    triggerKey: string,
     active: boolean,
     children: Node,
     containerStyle: ?StylePropType,
@@ -53,9 +53,6 @@ const styles = StyleSheet.create({
         padding: UIConstant.smallContentOffset(),
         overflow: 'hidden',
     },
-    bottomContainer: {
-        alignItems: 'center',
-    },
     leftContainer: {
         alignItems: 'flex-end',
         justifyContent: 'center',
@@ -67,12 +64,6 @@ const styles = StyleSheet.create({
     rightContainer: {
         alignItems: 'flex-start',
         justifyContent: 'center',
-    },
-    bottomRightContainer: {
-        alignItems: 'flex-end',
-    },
-    topLeftContainer: {
-        justifyContent: 'flex-end',
     },
     topRightContainer: {
         justifyContent: 'flex-end',
@@ -161,7 +152,7 @@ export default class UITooltip extends UIComponent<Props, State> {
         ];
         if (arePointsOnScreen(bottomSide)) {
             return {
-                containerStyle: styles.bottomContainer,
+                containerStyle: UIStyle.alignCenter,
                 position: {
                     left: leftX,
                     top: ay + height + tooltipOffset,
@@ -227,7 +218,7 @@ export default class UITooltip extends UIComponent<Props, State> {
                 };
             }
             return {
-                containerStyle: styles.bottomRightContainer,
+                containerStyle: UIStyle.alignEnd,
                 position: {
                     left: windowWidth - tooltipOffset - tooltipMaxWidth,
                     top: ay + height + tooltipOffset,
@@ -240,7 +231,7 @@ export default class UITooltip extends UIComponent<Props, State> {
         if (isPointOnScreen(topPoint)) {
             if (ax < windowWidth / 2) {
                 return {
-                    containerStyle: styles.topLeftContainer,
+                    containerStyle: UIStyle.justifyEnd,
                     position: {
                         left: tooltipOffset,
                         top: northY,
@@ -272,24 +263,10 @@ export default class UITooltip extends UIComponent<Props, State> {
     mouseOutListener: () => void;
     trigger: ?NativeMethodsMixinType;
     isVisible: boolean;
-    triggerClassName: string;
 
     constructor(props: Props) {
         super(props);
-        this.triggerClassName = `tooltip-trigger-${this.props.triggerKey}`;
         this.isVisible = false;
-    }
-
-    componentDidMount() {
-        super.componentDidMount();
-        setTimeout(() => {
-            this.initMouseOverListenerForWeb();
-        }, 0);
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-        this.deinitMouseOverListenerForWeb();
     }
 
     // Events
@@ -311,6 +288,7 @@ export default class UITooltip extends UIComponent<Props, State> {
     }
 
     async show() {
+        console.log(111);
         if (!this.props.active) {
             return;
         }
@@ -335,45 +313,12 @@ export default class UITooltip extends UIComponent<Props, State> {
         UILayoutManager.hideComponent();
     }
 
-    initMouseOverListenerForWeb() {
-        if (Platform.OS !== 'web') {
-            return;
-        }
-        this.mouseOverListener = () => {
-            this.show();
-        };
-        this.mouseOutListener = () => {
-            this.hide();
-        };
-        const trigger = document.getElementsByClassName(this.triggerClassName)[0];
-        if (trigger) {
-            trigger.addEventListener('mouseenter', this.mouseOverListener);
-            trigger.addEventListener('mouseleave', this.mouseOutListener);
-        }
-    }
-
-    deinitMouseOverListenerForWeb() {
-        if (Platform.OS !== 'web') {
-            return;
-        }
-        const trigger = document.getElementsByClassName(this.triggerClassName)[0];
-        if (trigger) {
-            trigger.removeEventListener('mouseenter', this.mouseOverListener);
-            trigger.removeEventListener('mouseleave', this.mouseOutListener);
-        }
-    }
-
     // Render
     renderTrigger() {
-        const setClassNameTrick: {} = {
-            className: this.triggerClassName,
-        };
-        // need external view to restrict trigger view
         return (
             <View style={{ flexDirection: 'row' }}>
                 <View
                     ref={(component) => { this.trigger = component; }}
-                    {...setClassNameTrick}
                 >
                     {this.props.children}
                 </View>
@@ -383,8 +328,6 @@ export default class UITooltip extends UIComponent<Props, State> {
 
 
     render() {
-        // This trick with class name required to suppress flow warning
-        // on undeclared className prop.
         if (UIDevice.isMobile() || UIDevice.isTablet()) {
             return (
                 <View style={this.props.containerStyle}>
@@ -398,7 +341,11 @@ export default class UITooltip extends UIComponent<Props, State> {
             );
         }
         return (
-            <View style={this.props.containerStyle}>
+            <View
+                style={this.props.containerStyle}
+                onMouseEnter={() => this.show()}
+                onMouseLeave={() => this.hide()}
+            >
                 {this.renderTrigger()}
             </View>
         );
@@ -410,7 +357,6 @@ export default class UITooltip extends UIComponent<Props, State> {
 UITooltip.defaultProps = {
     containerStyle: null,
     message: '',
-    triggerKey: '',
     active: true,
     children: null,
 };

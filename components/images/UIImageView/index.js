@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import UISpinnerOverlay from '../UISpinnerOverlay';
-import UILocalized from '../../helpers/UILocalized';
-import UIActionSheet from '../menus/UIActionSheet';
-import UIAlertView from '../popup/UIAlertView';
-import UIColor from '../../helpers/UIColor';
-import UIComponent from '../UIComponent';
+import UISpinnerOverlay from '../../UISpinnerOverlay';
+import UILocalized from '../../../helpers/UILocalized';
+import UIActionSheet from '../../menus/UIActionSheet';
+import UIAlertView from '../../popup/UIAlertView';
+import UIColor from '../../../helpers/UIColor';
+import UIComponent from '../../UIComponent';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -77,7 +77,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     // constructor
     constructor(props: Props) {
         super(props);
-        const { FromCamera, FromGallery, DeletePhoto } = UILocalized;
+        const { FromCamera, FromGallery } = UILocalized;
         this.menuItemsList = [
             {
                 key: 'item 1',
@@ -89,12 +89,6 @@ export default class UIImageView extends UIComponent<Props, State> {
                 title: FromGallery,
                 onPress: () => this.onPickFromGallery(),
             },
-            {
-                key: 'item 3',
-                title: DeletePhoto,
-                textStyle: { color: UIColor.error() },
-                onPress: () => this.onDeletePhoto(),
-            },
         ];
 
         this.state = {
@@ -105,6 +99,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
+        this.needsDeleteOption();
         if (this.props.source) {
             this.hideSpinnerOnPhotoView();
         }
@@ -198,6 +193,17 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     // Actions
+    needsDeleteOption() {
+        if (this.props.onDeletePhoto) {
+            this.menuItemsList.push({
+                key: 'item 3',
+                title: UILocalized.DeletePhoto,
+                textStyle: { color: UIColor.error() },
+                onPress: () => this.onDeletePhoto(),
+            });
+        }
+    }
+
     showSpinnerOnPhotoView = (show: boolean = true, callback?: () => void) => {
         this.setStateSafely({
             showSpinnerOnPhotoView: show,
@@ -422,7 +428,7 @@ UIImageView.defaultProps = {
     resizeMode: 'cover',
     resizeMethod: 'auto',
     onUploadPhoto: () => {},
-    onDeletePhoto: () => {},
+    onDeletePhoto: null,
     onPressPhoto: () => {},
 };
 

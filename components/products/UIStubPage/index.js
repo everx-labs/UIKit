@@ -8,12 +8,11 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
-import UIDetailsInput from '../../text/UIDetailsInput';
+import UIEmailInput from '../../input/UIEmailInput';
 
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
-import icoTonLabel from '../../../assets/logo/ton-label/ton-label-white.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
-import type { DetailsProps, DetailsState } from '../../text/UIDetailsInput';
+import type { DetailsProps, DetailsState } from '../../input/UIDetailsInput';
 import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
 import TONLocalized from '../../../../../helpers/TONLocalized';
 
@@ -161,12 +160,10 @@ export default class UIStubPage extends UIComponent<Props, State> {
             );
         }
         return (
-            <UIDetailsInput
+            <UIEmailInput
                 ref={(component) => { this.detailsInput = component; }}
-                theme={UIColor.Theme.Dark}
+                theme={UIColor.Theme.Action}
                 value={this.getEmail()}
-                valueType={UIDetailsInput.ValueType.Email}
-                placeholder={UILocalized.EmailAddress}
                 containerStyle={StyleSheet.flatten([
                     UIStyle.greatCellHeight,
                     UIStyle.marginTopSmall,

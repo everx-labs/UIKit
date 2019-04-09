@@ -27,5 +27,6 @@ export default UISeparator;
 
 UISeparator.defaultProps = {
     error: false,
+    color: null,
     style: {},
 };

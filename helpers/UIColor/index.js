@@ -86,6 +86,7 @@ export default class UIColor {
     static Theme = {
         Light: 'light',
         Dark: 'dark',
+        Action: 'action',
     };
 
     static Styles = {
@@ -220,6 +221,11 @@ export default class UIColor {
         return UI_COLOR_TEXT_DPRIMARY;
     }
 
+    static textPrimaryStyle(theme) {
+        const textColor = UIColor.textPrimary(theme);
+        return UIColor.getColorStyle(textColor);
+    }
+
     static stateTextPrimary(theme, disabled, tapped, hover) {
         if (disabled) {
             return UIColor.textSecondary(theme);
@@ -274,7 +280,15 @@ export default class UIColor {
         if (theme === UIColor.Theme.Light) {
             return UI_COLOR_TEXT_LTERTIARY;
         }
-        return UI_COLOR_TEXT_DTERTIARY;
+        if (theme === UIColor.Theme.Dark) {
+            return UI_COLOR_TEXT_DTERTIARY;
+        }
+        return UI_COLOR_PRIMARY_3;
+    }
+
+    static textTertiaryStyle(theme) {
+        const textColor = UIColor.textTertiary(theme);
+        return UIColor.getColorStyle(textColor);
     }
 
     static textQuaternary(theme = UIColor.Theme.Light) {
@@ -289,6 +303,13 @@ export default class UIColor {
             return UI_COLOR_TEXT_LTCAUTION;
         }
         return UI_COLOR_TEXT_DTCAUTION;
+    }
+
+    static textPlaceholder(theme = UIColor.Theme.Light) {
+        if (theme === UIColor.Theme.Light) {
+            return UI_COLOR_TEXT_LTERTIARY;
+        }
+        return UIColor.white40();
     }
 
     // Background colors
@@ -325,6 +346,24 @@ export default class UIColor {
             return UI_COLOR_BACKGROUND_LQUINARY;
         }
         return UI_COLOR_BACKGROUND_DQUINARY;
+    }
+
+    // border
+    static borderBottomColor(theme = UIColor.Theme.Light, focused) {
+        if (theme === UIColor.Theme.Action) {
+            if (focused) {
+                return UIColor.primary3();
+            }
+            return UIColor.primaryMinus();
+        } else if (focused) {
+            return UIColor.primary();
+        }
+        return UIColor.light();
+    }
+
+    static borderBottomColorStyle(theme, focused) {
+        const borderColor = UIColor.borderBottomColor(theme, focused);
+        return UIColor.getBorderBottomColorStyle(borderColor);
     }
 
     // Hue colors
@@ -388,14 +427,18 @@ export default class UIColor {
     }
 
     static getStyle(color, colorStyle) {
-        let sheet = colorStyleSheets[colorStyle][color];
+        const colorStyles = colorStyleSheets[colorStyle];
+        if (!colorStyles) {
+            return null;
+        }
+        let sheet = colorStyles[color];
         if (!sheet) {
             sheet = StyleSheet.create({
                 style: {
                     [colorStyle]: color,
                 },
             });
-            colorStyleSheets[colorStyle][color] = sheet;
+            colorStyles[color] = sheet;
         }
         return sheet.style;
     }

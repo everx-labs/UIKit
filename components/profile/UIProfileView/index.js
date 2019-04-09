@@ -8,7 +8,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIProfileInitials from '../UIProfileInitials';
 import UIProfilePhoto from '../UIProfilePhoto';
-import UITextInput from '../../text/UITextInput';
+import UITextInput from '../../input/UITextInput';
 import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({

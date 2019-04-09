@@ -9,8 +9,6 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 
-import type { ClassNameProp } from '../../../types';
-
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.bigCellHeight(),
@@ -81,7 +79,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return this.state.emailTap;
     }
 
-    isMobile() {
+    isNarrow() {
         const { screenWidth, mobile } = this.props;
         if (!screenWidth) {
             return mobile;
@@ -127,25 +125,22 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         if (!able || this.hasNoContacts()) {
             return null;
         }
-        const classNameProp: ClassNameProp = { className: 'contacts' };
         return (
             <View
                 testID="bottomBar"
                 style={bottomTextStyle}
                 itemScope
                 itemType="http://schema.org/Organization"
-                {...classNameProp}
             >
                 <Text style={[textStyle, UIStyle.textAlignCenter]}>
-                    <Text itemProp="name" className="company">{companyName}</Text>
+                    <Text itemProp="name">{companyName}</Text>
                     {', '}
                     <Text
                         itemProp="address"
                         itemScope
                         itemType="http://schema.org/PostalAddress"
-                        className="address"
                     >
-                        <Text itemProp="streetAddress" className="street">
+                        <Text itemProp="streetAddress">
                             {address}
                         </Text>
                         {', '}
@@ -215,7 +210,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         if (this.hasNoContacts()) {
             return null;
         }
-        const mobile = this.isMobile();
+        const mobile = this.isNarrow();
         return (
             <View style={UIStyle.flex} testID="center text >>">
                 {this.renderCenterTextComponent(!mobile)}
@@ -226,7 +221,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     renderCopyRight() {
         const { textStyle, copyRight } = this.props;
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
-        const copyRightText = this.isMobile() && !isShort ? '©' : copyRight;
+        const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
         const align = isShort ? UIStyle.alignCenter : UIStyle.alignEnd;
         return (
             <View style={[UIStyle.flex, align]}>
@@ -238,7 +233,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     render() {
-        const mobile = this.isMobile();
+        const mobile = this.isNarrow();
         return (
             <View style={UIStyle.bottomScreenContainer}>
                 <View style={this.props.containerStyle}>

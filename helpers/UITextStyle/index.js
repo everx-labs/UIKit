@@ -75,6 +75,18 @@ const UITextStyle = StyleSheet.create({
         textAlign: 'center',
     },
 
+    // [Text]
+    // Body - fontSize: 18, lineHeight: 24
+    bodyRegular: {
+        ...text,
+        ...UIFont.bodyRegular(),
+    },
+    // Tiny - fontSize: 12, lineHeight: 16
+    tinyRegular: {
+        ...text,
+        ...UIFont.tinyRegular(),
+    },
+
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
     primaryHeadlineLight: {
@@ -166,6 +178,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Secondary]
+    // Title - fontSize: 36, lineHeight: 48
+    secondaryTitleLight: {
+        ...secondary,
+        ...UIFont.titleLight(),
+    },
     // Accent - fontSize: 20, lineHeight: 28
     secondaryAccentRegular: {
         ...secondary,

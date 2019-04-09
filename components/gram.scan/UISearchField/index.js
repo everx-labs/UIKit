@@ -6,7 +6,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextInput from '../../text/UITextInput';
+import UITextInput from '../../input/UITextInput';
 
 import searchIcon from '../../../assets/ico-search/ico-search.png';
 

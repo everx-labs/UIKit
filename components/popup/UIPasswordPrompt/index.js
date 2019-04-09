@@ -10,7 +10,7 @@ import UIController from '../../../controllers/UIController';
 import UIColor from '../../../helpers/UIColor';
 import UIDevice from '../../../helpers/UIDevice';
 import UITextButton from '../../buttons/UITextButton';
-import UITextInput from '../../text/UITextInput';
+import UITextInput from '../../input/UITextInput';
 import UITextStyle from '../../../helpers/UITextStyle';
 
 const statusBarHeight = UIDevice.statusBarHeight();

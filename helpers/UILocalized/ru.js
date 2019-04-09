@@ -513,12 +513,15 @@ const ru = {
 
     // Stub page
     GetNotifiedWhenWeLaunch: 'Get notified when we launch',
-    EmailAddress: 'Email',
     WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
     ThanksForCooperation: 'Thanks for cooperation.',
 
     // Toasts
     EnterCorrectDataToField: 'Enter correct data to field',
+
+    // Text Fields
+    Phone: 'Phone',
+    EmailAddress: 'Email',
 };
 
 export default ru;
