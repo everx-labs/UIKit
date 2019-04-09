@@ -9,7 +9,7 @@ import UIFont from '../../../helpers/UIFont';
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
-import UITextInput from '../../text/UITextInput';
+import UITextInput from '../UITextInput';
 import UIComponent from '../../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';

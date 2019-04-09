@@ -148,7 +148,6 @@ export default class UIDetailsInput<Props, State>
         if (valueType === UIDetailsInput.ValueType.Email) {
             return !UIFunction.isEmailAddress(value);
         }
-        console.log(value);
         if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
             return !UIFunction.numericText(value);
         }
@@ -212,8 +211,8 @@ export default class UIDetailsInput<Props, State>
         const { onChangeText, valueType } = this.props;
         if (onChangeText) {
             if (valueType === UIDetailsInput.ValueType.PhoneNumber) {
-                // const input = UIFunction.formatPhoneText(text);
-                onChangeText(text);
+                const input = UIFunction.formatPhoneText(text);
+                onChangeText(input);
             } else {
                 onChangeText(text);
             }
