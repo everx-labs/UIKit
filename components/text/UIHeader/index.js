@@ -43,7 +43,6 @@ export default UIHeader;
 
 UIHeader.defaultProps = {
     title: '',
-    type:
     containerStyle: null,
 };
 
