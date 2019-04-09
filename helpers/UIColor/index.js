@@ -25,6 +25,8 @@ const UI_COLOR_TEXT_LSECONDARY = '#727C81';
 const UI_COLOR_TEXT_DSECONDARY = '#CFD8DC';
 const UI_COLOR_TEXT_LTERTIARY = '#CFD8DC';
 const UI_COLOR_TEXT_DTERTIARY = '#727C81';
+const UI_COLOR_TEXT_LQUATERNARY = '#BEC4C8';
+const UI_COLOR_TEXT_DQUATERNARY = '#BEC4C8';
 const UI_COLOR_TEXT_LTCAUTION = '#FF9800';
 const UI_COLOR_TEXT_DTCAUTION = '#FF9800';
 
@@ -38,6 +40,8 @@ const UI_COLOR_BACKGROUND_LQUARTER = '#E7EBED';
 const UI_COLOR_BACKGROUND_DQUARTER = '#5A7684';
 const UI_COLOR_BACKGROUND_LQUINARY = '#F3F5F6';
 const UI_COLOR_BACKGROUND_DQUINARY = '#85AFC4';
+const UI_COLOR_BACKGROUND_LWHITELIGHT = '#F5F5F5';
+const UI_COLOR_BACKGROUND_DWHITELIGHT = '#F5F5F5';
 
 const UI_COLOR_BACKGROUND_SEPARATOR_CHAT = '#9FA6A9';
 
@@ -167,6 +171,12 @@ export default class UIColor {
         return UI_COLOR_TEXT_DTERTIARY;
     }
 
+    static textQuaternary(theme = UIColor.Theme.Light) {
+        return theme === UIColor.Theme.Light
+        ? UI_COLOR_TEXT_LQUATERNARY
+        : UI_COLOR_TEXT_DQUATERNARY;
+    }
+
     static textCaution(theme = UIColor.Theme.Light) {
         if (theme === UIColor.Theme.Light) {
             return UI_COLOR_TEXT_LTCAUTION;
@@ -210,6 +220,11 @@ export default class UIColor {
         return UI_COLOR_BACKGROUND_DQUINARY;
     }
 
+    static backgroundWhiteLight(theme = UIColor.Theme.Light) {
+        return theme === UIColor.Theme.Light
+            ? UI_COLOR_BACKGROUND_LWHITELIGHT
+            : UI_COLOR_BACKGROUND_DWHITELIGHT;
+    }
     // Hue colors
     static hue005D8C() {
         return UI_COLOR_HUE_005D8C;
