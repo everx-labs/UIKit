@@ -10,7 +10,6 @@ export default class UILinkInput extends UIDetailsInput<Props, State> {
     }
 
     beginningTag() {
-        console.log('>>', this.props.beginningTag || 'https://');
         return this.props.beginningTag || 'https://';
     }
 }

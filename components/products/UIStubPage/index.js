@@ -61,7 +61,7 @@ type State = {
 };
 
 export default class UIStubPage extends UIComponent<Props, State> {
-    detailsInput: ?UIDetailsInput<DetailsProps, DetailsState>;
+    emailInput: ?UIDetailsInput<DetailsProps, DetailsState>;
 
     constructor(props: Props) {
         super(props);
@@ -75,8 +75,8 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
-        if (this.detailsInput) {
-            this.detailsInput.focus();
+        if (this.emailInput) {
+            this.emailInput.focus();
         }
     }
 
@@ -161,7 +161,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         }
         return (
             <UIEmailInput
-                ref={(component) => { this.detailsInput = component; }}
+                ref={(component) => { this.emailInput = component; }}
                 theme={UIColor.Theme.Action}
                 value={this.getEmail()}
                 containerStyle={StyleSheet.flatten([
@@ -187,7 +187,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         );
     }
 
-    render() {
+    render(): React$Node {
         const {
             title, needBottomIcon, description,
         } = this.props;

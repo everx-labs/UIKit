@@ -9,7 +9,7 @@ type State = {};
 export default class UIEmailInput extends UIDetailsInput<Props, State> {
     isSubmitDisabled() {
         const { value } = this.props;
-        return !UIFunction.isEmailAddress(value);
+        return !UIFunction.isEmail(value);
     }
 
     keyboardType() {
