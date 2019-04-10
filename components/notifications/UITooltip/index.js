@@ -3,6 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity, Platform, Text, StyleSheet, Dimensions } from 'react-native';
 import StylePropType from 'react-style-proptype';
 import type { Node } from 'react';
+import type { EventProps } from '../../../types';
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 import UIConstant from '../../../helpers/UIConstant';
@@ -340,11 +341,14 @@ export default class UITooltip extends UIComponent<Props, State> {
                 </View>
             );
         }
+        const onMouseEvents: EventProps = {
+            onMouseEnter: () => this.show(),
+            onMouseLeave: () => this.hide(),
+        };
         return (
             <View
                 style={this.props.containerStyle}
-                onMouseEnter={() => this.show()}
-                onMouseLeave={() => this.hide()}
+                {...onMouseEvents}
             >
                 {this.renderTrigger()}
             </View>

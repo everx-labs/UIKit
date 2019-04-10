@@ -2,8 +2,8 @@ import { Platform } from 'react-native';
 import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
-import validator from 'validator';
-import isEmail from 'validator/lib/isEmail';
+// import validator from 'validator';
+// import isEmail from 'validator/lib/isEmail';
 
 const currencies = require('currency-formatter/currencies.json');
 
@@ -372,7 +372,10 @@ export default class UIFunction {
     }
 
     static isEmail(expression: string) {
-        return isEmail(expression);
+        // eslint-disable-next-line
+        // return isEmail(expression);
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(expression).toLowerCase());
     }
 }
 

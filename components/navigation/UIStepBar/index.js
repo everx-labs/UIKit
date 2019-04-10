@@ -23,10 +23,20 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIStepBar extends UIComponent {
-    constructor(props) {
+type Props = {
+    footer: boolean,
+    itemsList: string[],
+    activeIndex: number,
+    onPress: (number) => void,
+};
+type State = {};
+
+export default class UIStepBar extends UIComponent<Props, State> {
+    insetKey: string;
+
+    constructor(props: Props) {
         super(props);
-        this.insetKey = null;
+        this.insetKey = '';
 
         this.state = {};
     }
@@ -86,6 +96,8 @@ export default class UIStepBar extends UIComponent {
             </View>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UIStepBar.defaultProps = {

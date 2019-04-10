@@ -125,12 +125,15 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         if (!able || this.hasNoContacts()) {
             return null;
         }
+        const itemProps: {} = {
+            itemScope: true,
+            itemType: 'http://schema.org/Organization',
+        };
         return (
             <View
                 testID="bottomBar"
                 style={bottomTextStyle}
-                itemScope
-                itemType="http://schema.org/Organization"
+                {...itemProps}
             >
                 <Text style={[textStyle, UIStyle.textAlignCenter]}>
                     <Text itemProp="name">{companyName}</Text>

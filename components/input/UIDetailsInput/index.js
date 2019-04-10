@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 // @flow
 import React from 'react';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import StylePropType from 'react-style-proptype';
 
 import { TextInput, Text, View, StyleSheet } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
@@ -39,7 +39,7 @@ export type DetailsProps = {
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
-    containerStyle: ViewStyleProp,
+    containerStyle: StylePropType,
     comment: string,
     commentColor?: string | null,
     editable: boolean,
@@ -59,6 +59,7 @@ export type DetailsProps = {
     returnKeyType?: ReturnKeyType,
     secureTextEntry: boolean,
     showSymbolsLeft: boolean,
+    submitDisabled?: boolean,
     token?: string,
     theme?: string,
     value: string,
@@ -69,36 +70,39 @@ export type DetailsState = {
     focused: boolean,
 };
 
-export default class UIDetailsInput
-    extends UIComponent<DetailsProps, DetailsState> {
+export const detailsDefaultProps = {
+    autoCapitalize: 'sentences',
+    autoFocus: false,
+    beginningTag: '',
+    containerStyle: {},
+    comment: '',
+    editable: true,
+    floatingTitle: true,
+    hideBottomLine: false,
+    hidePlaceholder: false,
+    keyboardType: 'default',
+    maxLines: 1,
+    needArrow: false,
+    onBlur: () => {},
+    onChangeText: () => {},
+    onFocus: () => {},
+    onSubmitEditing: () => {},
+    onKeyPress: () => {},
+    placeholder: '',
+    secureTextEntry: false,
+    showSymbolsLeft: false,
+    submitDisabled: false,
+    theme: UIColor.Theme.Light,
+    value: '',
+};
+
+export default class UIDetailsInput<Props, State>
+    extends UIComponent<Props & DetailsProps, any & DetailsState> {
     textInput: ?TextInput;
 
-    static defaultProps: DetailsProps = {
-        autoCapitalize: 'sentences',
-        autoFocus: false,
-        beginningTag: '',
-        containerStyle: {},
-        comment: '',
-        editable: true,
-        floatingTitle: true,
-        hideBottomLine: false,
-        hidePlaceholder: false,
-        keyboardType: 'default',
-        maxLines: 1,
-        needArrow: false,
-        onBlur: () => {},
-        onChangeText: () => {},
-        onFocus: () => {},
-        onSubmitEditing: () => {},
-        onKeyPress: () => {},
-        placeholder: '',
-        secureTextEntry: false,
-        showSymbolsLeft: false,
-        theme: UIColor.Theme.Light,
-        value: '',
-    };
+    static defaultProps: DetailsProps = detailsDefaultProps;
 
-    constructor(props: DetailsProps) {
+    constructor(props: Props & DetailsProps) {
         super(props);
 
         this.state = {
@@ -117,7 +121,7 @@ export default class UIDetailsInput
     }
 
     isSubmitDisabled() {
-        return !this.props.value;
+        return !this.props.value || this.props.submitDisabled;
     }
 
     keyboardType() {

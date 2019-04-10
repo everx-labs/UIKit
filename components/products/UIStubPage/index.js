@@ -12,7 +12,6 @@ import UIEmailInput from '../../input/UIEmailInput';
 
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
-import type { DetailsProps, DetailsState } from '../../input/UIDetailsInput';
 import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
 import TONLocalized from '../../../../../helpers/TONLocalized';
 
@@ -61,7 +60,7 @@ type State = {
 };
 
 export default class UIStubPage extends UIComponent<Props, State> {
-    emailInput: ?UIDetailsInput<DetailsProps, DetailsState>;
+    emailInput: ?UIEmailInput;
 
     constructor(props: Props) {
         super(props);
