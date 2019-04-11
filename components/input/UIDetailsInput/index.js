@@ -13,9 +13,9 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 
-import icoDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
-import icoAbled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
-import icoAbledHover from '../../../assets/ico-arrow-right/arrow-right-white.png';
+import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
+import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
+import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
 
 const styles = StyleSheet.create({
     container: {
@@ -347,9 +347,9 @@ export default class UIDetailsInput<Props, State>
         let icons = {};
         if (theme === UIColor.Theme.Action) {
             icons = {
-                icoAbled,
-                icoAbledHover,
-                icoDisabled,
+                icoEnabled: iconEnabled,
+                icoAbledHover: iconHovered,
+                icoDisabled: iconDisabled,
             };
         }
 

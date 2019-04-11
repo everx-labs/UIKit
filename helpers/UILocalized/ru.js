@@ -27,6 +27,7 @@ const ru = {
     InvalidLastName: 'Недопустимая фамилия',
     InvalidUsername: 'Недопустимое имя пользователя',
     InvalidPassword: 'Неверный пароль',
+    InvalidEmail: 'Invalid email address',
     YouHaveEnteredAnInvalidPhoneNumber: 'Вы ввели неверный номер телефона',
     YouHaveEnteredAnEmptyCodeFor: 'Вы ввели пустой код для',
     YouHaveEnteredAnExpiredCodeFor: 'Вы ввели истекший код для',

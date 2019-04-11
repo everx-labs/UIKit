@@ -6,6 +6,7 @@ import UIDetailsInput, { detailsDefaultProps } from '../UIDetailsInput';
 import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
 import type { DetailsProps, DetailsState } from '../UIDetailsInput';
+import UIColor from '../../../helpers/UIColor';
 
 export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState> {
     static defaultProps: DetailsProps = detailsDefaultProps;
@@ -17,8 +18,20 @@ export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState
         return !UIFunction.isEmail(value);
     }
 
+    getCommentColor() {
+        const { value } = this.props;
+        if (value && this.isSubmitDisabled()) {
+            return UIColor.error();
+        }
+        return null;
+    }
+
     placeholder() {
-        return this.props.placeholder || UILocalized.EmailAddress;
+        const { placeholder, value } = this.props;
+        if (value && this.isSubmitDisabled()) {
+            return UILocalized.InvalidEmail;
+        }
+        return placeholder || UILocalized.EmailAddress;
     }
 
     // Actions
@@ -42,10 +55,13 @@ export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState
 
     // Render
     render() {
+        const commentColor = this.getCommentColor();
+        const commentColorProp = commentColor ? { commentColor } : null;
         return (
             <UIDetailsInput
                 ref={(component) => { this.emailInput = component; }}
                 {...this.props}
+                {...commentColorProp}
                 keyboardType="email-address"
                 placeholder={this.placeholder()}
                 submitDisabled={this.isSubmitDisabled()}

@@ -3,7 +3,7 @@ import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 
 import UIComponent from '../UIComponent';
-import type EventProps from '../../types';
+import type { EventProps } from '../../types';
 
 type ActionState = {
     tapped: boolean,
@@ -45,12 +45,14 @@ class UIActionComponent<Props, State> extends UIComponent<Props, any & ActionSta
     }
 
     render(): React$Node {
+        const { onPress } = this.props;
         const eventProps: EventProps = {
             onMouseEnter: () => this.setHover(),
             onMouseLeave: () => this.setHover(false),
         };
         return (
             <TouchableWithoutFeedback
+                onPress={() => onPress()}
                 onPressIn={() => this.setTapped()}
                 onPressOut={() => this.setTapped(false)}
                 {...eventProps}

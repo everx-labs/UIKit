@@ -1,24 +1,15 @@
 // @flow
 import React from 'react';
 
-import { View, StyleSheet, TouchableWithoutFeedback, FlatList, Animated } from 'react-native';
+import { FlatList } from 'react-native';
 
 import UIColor from '../../../helpers/UIColor';
-import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
-import UIStyle from '../../../helpers/UIStyle';
 import UICustomSheet from '../UICustomSheet';
 
 import MenuItem from './MenuItem';
 import type { CustomSheetProps, CustomSheetState } from '../UICustomSheet';
 import type { MenuItemType } from '../UIMenuView';
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: UIColor.overlay60(),
-        justifyContent: 'flex-end',
-    },
-});
 
 let masterRef = null;
 
@@ -45,7 +36,6 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
     // constructor
     constructor(props: Props) {
         super(props);
-        this.marginBottom = new Animated.Value(-this.calculateHeight());
         this.menuItemsList = [];
         this.needCancelItem = true;
     }
@@ -83,34 +73,30 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
             this.needCancelItem = this.props.needCancelItem;
             this.onCancelCallback = this.props.onCancelCallback;
         }
-        this.setModalVisible(true, () => {
-            Animated.spring(this.marginBottom, {
-                toValue: UIConstant.contentOffset(),
-            }).start();
-        });
+        this.setModalVisible(true);
     }
 
-    hide(callback: () => void) {
-        Animated.timing(this.marginBottom, {
-            toValue: -this.calculateHeight(),
-            duration: UIConstant.animationDuration(),
-        }).start(() => {
-            this.setModalVisible(false, () => {
-                setTimeout(() => {
-                    if (callback) {
-                        callback();
-                    }
-                }, 100); // Timeout is required!
-            });
-        });
-    }
+    // hide(callback: () => void) {
+    //     Animated.timing(this.marginBottom, {
+    //         toValue: -this.calculateHeight(),
+    //         duration: UIConstant.animationDuration(),
+    //     }).start(() => {
+    //         this.setModalVisible(false, () => {
+    //             setTimeout(() => {
+    //                 if (callback) {
+    //                     callback();
+    //                 }
+    //             }, 100); // Timeout is required!
+    //         });
+    //     });
+    // }
 
-    calculateHeight() {
-        const height = UIConstant.actionSheetItemHeight();
-        const numberItems = (this.menuItemsList && this.menuItemsList.length) || 0;
-        const actionSheetHeight = height * (numberItems + (this.needCancelItem ? 1 : 0));
-        return actionSheetHeight + UIConstant.contentOffset();
-    }
+    // calculateHeight() {
+    //     const height = UIConstant.actionSheetItemHeight();
+    //     const numberItems = (this.menuItemsList && this.menuItemsList.length) || 0;
+    //     const actionSheetHeight = height * (numberItems + (this.needCancelItem ? 1 : 0));
+    //     return actionSheetHeight + UIConstant.contentOffset();
+    // }
 
     // Render
     renderCancelItem() {
@@ -136,13 +122,13 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
     }
 
     renderContent() {
-        console.log(111);
         const content = (
             <React.Fragment>
                 <FlatList
                     data={this.menuItemsList}
                     renderItem={({ item }) => this.renderMenuItem(item)}
                     scrollEnabled={false}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.renderCancelItem()}
             </React.Fragment>
@@ -156,8 +142,8 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
 export default UIActionSheet;
 
 UIActionSheet.defaultProps = {
+    ...UICustomSheet.defaultProps,
     masterActionSheet: true,
     menuItemsList: [],
     needCancelItem: true,
-    ...UICustomSheet.defaultProps,
 };

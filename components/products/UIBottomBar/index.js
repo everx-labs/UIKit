@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Linking } from 'react-native';
 import StylePropType from 'react-style-proptype';
 
 import UIComponent from '../../UIComponent';
@@ -8,6 +8,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
+import UIActionText from '../../text/UIActionText';
 
 const styles = StyleSheet.create({
     container: {
@@ -52,33 +53,6 @@ type State = {
 };
 
 export default class UIBottomBar extends UIComponent<Props, State> {
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            emailHover: false,
-            emailTap: false,
-        };
-    }
-
-    // Setters
-    setEmailHover(emailHover: boolean = true) {
-        this.setStateSafely({ emailHover });
-    }
-
-    setEmailTap(emailTap: boolean = true) {
-        this.setStateSafely({ emailTap });
-    }
-
-    // Getters
-    isEmailHover() {
-        return this.state.emailHover;
-    }
-
-    isEmailTap() {
-        return this.state.emailTap;
-    }
-
     isNarrow() {
         const { screenWidth, mobile } = this.props;
         if (!screenWidth) {
@@ -101,20 +75,14 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 
     renderEmail() {
         const { email } = this.props;
-        const primatyColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
-        const colorStyle = this.isEmailHover() || this.isEmailTap() ? primatyColorStyle : null;
+        const primaryColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
         return (
-            <Text
-                accessibilityRole="link"
-                href={`mailto:${email}`}
-                onPressIn={() => this.setEmailTap()}
-                onPressOut={() => this.setEmailTap(false)}
-                onMouseEnter={() => this.setEmailHover()}
-                onMouseLeave={() => this.setEmailHover(false)}
-                style={colorStyle}
-            >
-                {email}
-            </Text>
+            <UIActionText
+                value={email}
+                onPress={() => Linking.openURL(`mailto:${email}`)}
+                hoverTextStyle={primaryColorStyle}
+                tappedTextStyle={primaryColorStyle}
+            />
         );
     }
 

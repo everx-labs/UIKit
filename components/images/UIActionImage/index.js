@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, Text } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 
 import UIActionComponent from '../../UIActionComponent';
 
@@ -8,16 +8,16 @@ import type { EventProps } from '../../../types';
 class UIActionImage extends UIActionComponent {
     render() {
         const {
-            icoDisabled, icoAbledHover, icoAbled, disabled, onPress,
+            iconDisabled, iconHovered, iconEnabled, disabled, onPress,
         } = this.props;
 
         let source;
         if (disabled) {
-            source = icoDisabled;
+            source = iconDisabled;
         } else if (this.isHover()) {
-            source = icoAbledHover;
+            source = iconHovered;
         } else {
-            source = icoAbled;
+            source = iconEnabled;
         }
         const mouseEvents: EventProps = {
             onMouseEnter: () => this.setHover(),
@@ -45,8 +45,8 @@ export default UIActionImage;
 
 UIActionImage.defaultProps = {
     disabled: false,
-    icoDisabled: null,
-    icoAbled: null,
-    icoAbledHover: null,
+    iconDisabled: null,
+    iconEnabled: null,
+    iconHovered: null,
     onPress: () => {},
 };
