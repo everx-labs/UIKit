@@ -337,8 +337,10 @@ export default class UIColor {
     static backgroundQuarter(theme = UIColor.Theme.Light) {
         if (theme === UIColor.Theme.Light) {
             return UI_COLOR_BACKGROUND_LQUARTER;
+        } else if (theme === UIColor.Theme.Dark) {
+            return UI_COLOR_BACKGROUND_DQUARTER;
         }
-        return UI_COLOR_BACKGROUND_DQUARTER;
+        return UI_COLOR_PRIMARY_PLUS;
     }
 
     static backgroundQuinary(theme = UIColor.Theme.Light) {
@@ -364,6 +366,37 @@ export default class UIColor {
     static borderBottomColorStyle(theme, focused) {
         const borderColor = UIColor.borderBottomColor(theme, focused);
         return UIColor.getBorderBottomColorStyle(borderColor);
+    }
+
+    // component colors
+    static buttonBackground(theme = UIColor.Theme.Light, tapped, hover) {
+        if (theme === UIColor.Theme.Action) {
+            if (tapped) {
+                return UIColor.primary6();
+            } else if (hover) {
+                return UIColor.primary4();
+            }
+            return UIColor.primaryPlus();
+        } else if (tapped) {
+            return UIColor.primary5();
+        } else if (hover) {
+            return UIColor.primary4();
+        }
+        return UIColor.primary();
+    }
+
+    static buttonTitle(theme, disabled) {
+        if (theme === UIColor.Theme.Action) {
+            return disabled ? UIColor.primary() : UIColor.grey1();
+        }
+        return disabled ? UIColor.light() : UIColor.white();
+    }
+
+    static detailsInputComment(theme = UIColor.Theme.Light) {
+        if (theme === UIColor.Theme.Light) {
+            return UIColor.error();
+        }
+        return UIColor.white();
     }
 
     // Hue colors

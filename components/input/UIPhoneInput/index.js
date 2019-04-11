@@ -14,7 +14,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, DetailsState
 
     isSubmitDisabled() {
         const { value } = this.props;
-        return !UIFunction.isPhoneValid(value);
+        return !UIFunction.numericText(value);
     }
 
     placeholder() {

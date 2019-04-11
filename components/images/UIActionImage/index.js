@@ -1,14 +1,12 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native';
 
 import UIActionComponent from '../../UIActionComponent';
 
-import type { EventProps } from '../../../types';
-
 class UIActionImage extends UIActionComponent {
-    render() {
+    renderContent() {
         const {
-            iconDisabled, iconHovered, iconEnabled, disabled, onPress,
+            iconDisabled, iconHovered, iconEnabled, disabled,
         } = this.props;
 
         let source;
@@ -19,24 +17,10 @@ class UIActionImage extends UIActionComponent {
         } else {
             source = iconEnabled;
         }
-        const mouseEvents: EventProps = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
-        };
-        const image = (
+        return (
             <Image
                 source={source}
-                {...mouseEvents}
             />
-        );
-
-        if (disabled) {
-            return image;
-        }
-        return (
-            <TouchableOpacity onPress={() => onPress()}>
-                {image}
-            </TouchableOpacity>
         );
     }
 }

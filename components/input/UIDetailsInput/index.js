@@ -19,7 +19,7 @@ import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
+        //
     },
     textView: {
         paddingTop: UIConstant.tinyContentOffset(),
@@ -347,9 +347,9 @@ export default class UIDetailsInput<Props, State>
         let icons = {};
         if (theme === UIColor.Theme.Action) {
             icons = {
-                icoEnabled: iconEnabled,
-                icoAbledHover: iconHovered,
-                icoDisabled: iconDisabled,
+                iconEnabled,
+                iconHovered,
+                iconDisabled,
             };
         }
 

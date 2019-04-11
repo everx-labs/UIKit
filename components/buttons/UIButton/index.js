@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TouchableWithoutFeedback, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import UIFont from '../../../helpers/UIFont';
@@ -11,7 +11,6 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
 import UIActionComponent from '../../UIActionComponent';
-import type { EventProps } from '../../../types';
 
 const styles = StyleSheet.create({
     container: {
@@ -109,44 +108,21 @@ export default class UIButton extends UIActionComponent<Props, State> {
 
     getButtonColorStyle() {
         let color;
-        if (this.props.theme === UIColor.Theme.Dark) {
-            if (this.isDisabled()) {
-                color = UIColor.primaryPlus();
-            } else if (this.isTapped()) {
-                color = UIColor.primary6();
-            } else if (this.isHover()) {
-                color = UIColor.primary4();
-            } else {
-                color = UIColor.primaryPlus();
-            }
-        } else if (this.isDisabled()) {
-            color = UIColor.backgroundQuarter(UIColor.Theme.Light);
-        } else if (this.isTapped()) {
-            color = UIColor.primary5();
-        } else if (this.isHover()) {
-            color = UIColor.primary4();
+        const { theme, disabled } = this.props;
+        if (disabled) {
+            color = UIColor.backgroundQuarter(theme);
         } else {
-            color = UIColor.primary();
+            const tapped = this.isTapped();
+            const hover = this.isHover();
+            color = UIColor.buttonBackground(theme, tapped, hover);
         }
         return UIColor.getBackgroundColorStyle(color);
     }
 
     getTitleColorStyle() {
-        let color;
-        if (this.props.theme === UIColor.Theme.Dark) {
-            color = this.isDisabled() ? UIColor.primary() : UIColor.grey1();
-        } else {
-            color = this.isDisabled() ? UIColor.light() : UIColor.white();
-        }
+        const { theme, disabled } = this.props;
+        const color = UIColor.buttonTitle(theme, disabled);
         return UIColor.getColorStyle(color);
-    }
-
-    isDisabled() {
-        return this.props.disabled;
-    }
-
-    shouldShowIndicator() {
-        return this.props.showIndicator;
     }
 
     // Actions
@@ -217,21 +193,15 @@ export default class UIButton extends UIActionComponent<Props, State> {
         return (<View style={styles.extension} />);
     }
 
-    render() {
-        const { testID, bottomExtend, style } = this.props;
+    renderContent() {
+        const { bottomExtend, style } = this.props;
         let height = this.getButtonHeight();
         if (bottomExtend) {
             height *= 2;
         }
-        const testIDProp = testID ? { testID } : null;
         const backgroundColorStyle = this.getButtonColorStyle();
-        const mouseEvents: EventProps = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
-        };
         return (
             <View
-                {...mouseEvents}
                 style={[
                     styles.container,
                     backgroundColorStyle,
@@ -240,22 +210,12 @@ export default class UIButton extends UIActionComponent<Props, State> {
                     style,
                 ]}
             >
-                <TouchableWithoutFeedback
-                    {...testIDProp}
-                    disabled={this.isDisabled() || this.shouldShowIndicator()}
-                    onPress={() => this.onPress()}
-                    onPressIn={() => this.setTapped()}
-                    onPressOut={() => this.setTapped(false)}
-                >
-                    <View
-                        style={[UIStyle.flex, UIStyle.centerContainer]}
-                    >
-                        {this.renderIcon()}
-                        {this.renderBadge()}
-                        {this.renderTitle()}
-                        {this.renderIndicator()}
-                    </View>
-                </TouchableWithoutFeedback>
+                <View style={[UIStyle.flex, UIStyle.centerContainer]}>
+                    {this.renderIcon()}
+                    {this.renderBadge()}
+                    {this.renderTitle()}
+                    {this.renderIndicator()}
+                </View>
                 {this.renderBottomExtension()}
             </View>
         );

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TouchableWithoutFeedback, Text, Image, View } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
@@ -9,8 +9,7 @@ import UIActionComponent from '../../UIActionComponent';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
-
-import type EventProps from '../../../types';
+import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
     textButton: {
@@ -36,26 +35,18 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
+type Props = ActionProps & {
     align: StylePropType,
     buttonStyle?: StylePropType,
     details: string,
     detailsStyle?: StylePropType,
-    disabled: boolean,
     icon: ?string,
-    onPress: () => void,
-    testID?: string,
     textStyle?: StylePropType,
     theme: string,
     title: string,
 };
 
-type State = {
-    tap: boolean,
-    hover: boolean,
-};
-
-class UITextButton extends UIActionComponent<Props, State> {
+class UITextButton extends UIActionComponent<Props, ActionState> {
     static Align = {
         Left: styles.alignLeft,
         Center: styles.alignCenter,
@@ -101,35 +92,19 @@ class UITextButton extends UIActionComponent<Props, State> {
         );
     }
 
-    render(): React$Node {
-        const {
-            testID, buttonStyle, onPress, disabled, align,
-        } = this.props;
-        const testIDProp = testID ? { testID } : null;
-        const onMouseEvents: EventProps = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
-        };
+    renderContent(): React$Node {
+        const { buttonStyle, align } = this.props;
         return (
-            <TouchableWithoutFeedback
-                {...testIDProp}
-                disabled={disabled}
-                onPress={() => onPress()}
-                {...onMouseEvents}
-                onPressIn={() => this.setTapped()}
-                onPressOut={() => this.setTapped(false)}
+            <View style={[
+                styles.textButton,
+                align,
+                buttonStyle,
+            ]}
             >
-                <View style={[
-                    styles.textButton,
-                    align,
-                    buttonStyle,
-                ]}
-                >
-                    {this.renderIcon()}
-                    {this.renderTitle()}
-                    {this.renderDetails()}
-                </View>
-            </TouchableWithoutFeedback>
+                {this.renderIcon()}
+                {this.renderTitle()}
+                {this.renderDetails()}
+            </View>
         );
     }
 
@@ -139,11 +114,10 @@ class UITextButton extends UIActionComponent<Props, State> {
 export default UITextButton;
 
 UITextButton.defaultProps = {
+    ...UIActionComponent.defaultProps,
     align: UITextButton.Align.Left,
     details: '',
-    disabled: false,
     icon: null,
-    onPress: () => {},
     theme: UIColor.Theme.Light,
     title: '',
 };

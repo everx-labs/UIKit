@@ -5,13 +5,21 @@ import { TouchableWithoutFeedback } from 'react-native';
 import UIComponent from '../UIComponent';
 import type { EventProps } from '../../types';
 
-type ActionState = {
+export type ActionState = {
     tapped: boolean,
     hover: boolean,
 }
 
-class UIActionComponent<Props, State> extends UIComponent<Props, any & ActionState> {
-    constructor(props: Props) {
+export type ActionProps = {
+    testId: string,
+    disabled?: boolean,
+    showIndicator?: boolean,
+    onPress: () => void,
+};
+
+export default class UIActionComponent<Props, State>
+    extends UIComponent<any & ActionProps, any & ActionState> {
+    constructor(props: any & ActionProps) {
         super(props);
 
         this.state = {
@@ -38,21 +46,32 @@ class UIActionComponent<Props, State> extends UIComponent<Props, any & ActionSta
         return this.state.hover;
     }
 
+    isDisabled() {
+        return this.props.disabled;
+    }
+
+    shouldShowIndicator() {
+        return this.props.showIndicator;
+    }
+
     // Render
     // Virtual
-    renderContent() {
+    renderContent(): React$Node {
         return null;
     }
 
     render(): React$Node {
-        const { onPress } = this.props;
+        const { onPress, testID } = this.props;
         const eventProps: EventProps = {
             onMouseEnter: () => this.setHover(),
             onMouseLeave: () => this.setHover(false),
         };
+        const testIDProp = testID ? { testID } : null;
         return (
             <TouchableWithoutFeedback
-                onPress={() => onPress()}
+                {...testIDProp}
+                disabled={this.isDisabled() || this.shouldShowIndicator()}
+                onPress={onPress}
                 onPressIn={() => this.setTapped()}
                 onPressOut={() => this.setTapped(false)}
                 {...eventProps}
@@ -61,6 +80,13 @@ class UIActionComponent<Props, State> extends UIComponent<Props, any & ActionSta
             </TouchableWithoutFeedback>
         );
     }
+
+    static defaultProps: Props;
 }
 
-export default UIActionComponent;
+UIActionComponent.defaultProps = {
+    testId: '',
+    disabled: false,
+    showIndicator: false,
+    onPress: () => {},
+};
