@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import UIActionComponent from '../../UIActionComponent';
 
-class UIActionText extends UIActionComponent {
+export default class UIActionText extends UIActionComponent {
     getTextStyle() {
         const { tappedTextStyle, hoverTextStyle, defaultTextStyle } = this.props;
         if (this.isTapped()) {
@@ -31,8 +31,6 @@ class UIActionText extends UIActionComponent {
         );
     }
 }
-
-export default UIActionText;
 
 UIActionText.defaultProps = {
     value: '',

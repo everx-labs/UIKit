@@ -1,9 +1,18 @@
+// @flow
 import React from 'react';
 import { Image } from 'react-native';
 
 import UIActionComponent from '../../UIActionComponent';
+import type { ActionProps } from '../../UIActionComponent';
 
-class UIActionImage extends UIActionComponent {
+type Props = ActionProps & {
+    iconDisabled: string,
+    iconEnabled: string,
+    iconHovered: string,
+};
+type State = {};
+
+export default class UIActionImage extends UIActionComponent<Props, State> {
     renderContent() {
         const {
             iconDisabled, iconHovered, iconEnabled, disabled,
@@ -23,14 +32,13 @@ class UIActionImage extends UIActionComponent {
             />
         );
     }
+
+    static defaultProps: Props;
 }
 
-export default UIActionImage;
-
 UIActionImage.defaultProps = {
-    disabled: false,
+    ...UIActionComponent.defaultProps,
     iconDisabled: null,
     iconEnabled: null,
     iconHovered: null,
-    onPress: () => {},
 };

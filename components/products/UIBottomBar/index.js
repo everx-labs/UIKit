@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Linking } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
 import StylePropType from 'react-style-proptype';
 
 import UIComponent from '../../UIComponent';

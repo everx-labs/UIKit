@@ -298,16 +298,9 @@ export default class UIColor {
     }
 
     static textQuaternary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_TEXT_LQUARTERNARY;
-        }
-        return UI_COLOR_TEXT_DQUARTERNARY;
-    }
-
-    static textQuaternary(theme = UIColor.Theme.Light) {
         return theme === UIColor.Theme.Light
-        ? UI_COLOR_TEXT_LQUATERNARY
-        : UI_COLOR_TEXT_DQUATERNARY;
+            ? UI_COLOR_TEXT_LQUARTERNARY
+            : UI_COLOR_TEXT_DQUARTERNARY;
     }
 
     static textCaution(theme = UIColor.Theme.Light) {

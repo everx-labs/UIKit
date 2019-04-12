@@ -126,13 +126,18 @@ export default class UIFunction {
         return parseDigits(text);
     }
 
+    static isPhoneNumber(expression: string) {
+        const normalizedPhone = this.normalizePhone(expression);
+        return this.isPhoneValid(normalizedPhone);
+    }
+
     static isPhoneValid(phone: ?string) {
         let valid = false;
         try {
             const parseResult = parsePhoneNumberFromString(`+${phone || ''}`);
             valid = parseResult.isValid();
         } catch (exception) {
-            console.error(`[UIFunction] Failed to parse phone code ${phone || ''} with exception`, exception);
+            console.log(`[UIFunction] Failed to parse phone code ${phone || ''} with exception`, exception);
         }
         return valid;
     }
@@ -221,6 +226,14 @@ export default class UIFunction {
     }
 
     // International phone
+    static normalizePhone(phone: string): string {
+        const internationalPhone = this.internationalPhone(phone);
+        if (!internationalPhone) {
+            return this.numericText(phone);
+        }
+        return this.numericText(internationalPhone);
+    }
+
     static internationalPhone(phone: string): ?string {
         if (!phone) {
             return null;
