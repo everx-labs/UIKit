@@ -86,7 +86,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 textStyle={textStyle}
                 textHoverStyle={primaryColorStyle}
                 textTappedStyle={primaryColorStyle}
-                onPress={() => Linking.openURL(`mailto:${email}`)}
+                onPress={() => { Linking.openURL(`mailto:${email}`); }}
             />
         );
     }
