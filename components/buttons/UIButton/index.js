@@ -225,15 +225,13 @@ export default class UIButton extends UIActionComponent<Props, State> {
 }
 
 UIButton.defaultProps = {
+    ...UIActionComponent.defaultProps,
     badge: 0,
     bottomExtend: false, // useful for iPhone X (SafeArea)
     buttonSize: UIButton.ButtonSize.Default,
     buttonShape: UIButton.ButtonShape.Default,
-    disabled: false,
     footer: false,
     icon: null,
-    onPress: () => {},
-    showIndicator: false,
     theme: UIColor.Theme.Light,
     title: '',
 };

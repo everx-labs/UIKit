@@ -105,7 +105,6 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
                 <FlatList
                     data={this.menuItemsList}
                     renderItem={({ item }) => this.renderMenuItem(item)}
-                    scrollEnabled={false}
                     showsVerticalScrollIndicator={false}
                 />
                 {this.renderCancelItem()}
