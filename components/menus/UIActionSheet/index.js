@@ -6,17 +6,62 @@ import { FlatList } from 'react-native';
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 import UICustomSheet from '../UICustomSheet';
+import UIComponent from '../../UIComponent';
 
 import MenuItem from './MenuItem';
 import type { MenuItemType } from '../UIMenuView';
 
-export default class UIActionSheet {
+type Props = {
+    menuItemsList: MenuItemType[],
+    needCancelItem?: boolean,
+    masterActionSheet?: boolean,
+};
+type State = {};
+
+let masterRef = null;
+
+export default class UIActionSheet extends UIComponent<Props, State> {
     static show(
         menuItemsList: MenuItemType[],
-        needCancelItem?: boolean = true,
-        onCancelCallback?: () => void = () => {},
+        needCancelItem?: boolean,
+        onCancelCallback?: () => void,
     ) {
-        this.onCancelCallback = onCancelCallback;
+        if (masterRef) {
+            masterRef.show(menuItemsList, needCancelItem, onCancelCallback);
+        }
+    }
+
+    static hide(callback: () => void) {
+        UICustomSheet.hide(callback);
+    }
+
+    onCancel: () => void;
+
+    componentDidMount() {
+        super.componentDidMount();
+        if (this.props.masterActionSheet) {
+            masterRef = this;
+        }
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        if (this.props.masterActionSheet) {
+            masterRef = null;
+        }
+    }
+
+    // Setters
+
+    // Getters
+
+    // Actions
+    show(
+        menuItemsList: MenuItemType[],
+        needCancelItem?: boolean = true,
+        onCancel?: () => void = () => {},
+    ) {
+        this.onCancel = onCancel;
         const component = this.renderMenu(menuItemsList, needCancelItem);
         UICustomSheet.show({
             component,
@@ -24,32 +69,20 @@ export default class UIActionSheet {
         });
     }
 
-    static hide(callback: () => void) {
-        UICustomSheet.hide(callback);
-    }
-
-    static onCancelCallback: () => void;
-
-    // Setters
-
-    // Getters
-
-    // Actions
-
     // Render
-    static renderCancelItem(needCancelItem: boolean = true) {
+    renderCancelItem(needCancelItem: boolean = true) {
         if (!needCancelItem) {
             return null;
         }
         return (
             <MenuItem
                 title={UILocalized.Cancel}
-                onPress={() => UICustomSheet.hide(() => this.onCancelCallback())}
+                onPress={() => UICustomSheet.hide(() => this.onCancel())}
             />
         );
     }
 
-    static renderMenuItem(item: MenuItemType) {
+    renderMenuItem(item: MenuItemType) {
         return (
             <MenuItem
                 {...item}
@@ -59,7 +92,7 @@ export default class UIActionSheet {
         );
     }
 
-    static renderMenu(menuItemsList: MenuItemType[], needCancelItem: boolean) {
+    renderMenu(menuItemsList: MenuItemType[], needCancelItem: boolean) {
         return (
             <React.Fragment>
                 <FlatList
@@ -71,5 +104,13 @@ export default class UIActionSheet {
             </React.Fragment>
         );
     }
+
+    static defaultProps: Props;
 }
+
+UIActionSheet.defaultProps = {
+    masterActionSheet: true,
+    menuItemsList: [],
+    needCancelItem: true,
+};
 

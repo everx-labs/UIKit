@@ -152,7 +152,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         fullWidth = false,
         onShow = () => {},
         onCancel = () => {},
-    }: CustomSheetProps) {
+    }: CustomSheetProps = {}) {
         if (this.props.masterSheet) {
             this.component = component;
             this.fullWidth = fullWidth;

@@ -5,7 +5,6 @@ import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 
 
 import UISpinnerOverlay from '../../UISpinnerOverlay';
 import UILocalized from '../../../helpers/UILocalized';
-import UICustomSheet from '../../menus/UICustomSheet';
 import UIAlertView from '../../popup/UIAlertView';
 import UIColor from '../../../helpers/UIColor';
 import UIComponent from '../../UIComponent';
@@ -115,7 +114,7 @@ export default class UIImageView extends UIComponent<Props, State> {
             );
             this.setLightboxVisible();
         } else if (this.isEditable() && Platform.OS !== 'web') {
-            this.menuSheet.show();
+            this.actionSheet.show();
         }
     }
 
@@ -368,11 +367,10 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS === 'web') {
             return null;
         }
-        const menuComponent = UIActionSheet.renderMenu(this.menuItemsList);
         return (
-            <UICustomSheet
-                ref={(component) => { this.menuSheet = component; }}
-                component={menuComponent}
+            <UIActionSheet
+                ref={(component) => { this.actionSheet = component; }}
+                menuItemsList={this.menuItemsList}
                 masterSheet={false}
             />
         );
