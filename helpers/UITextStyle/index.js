@@ -251,6 +251,10 @@ const UITextStyle = StyleSheet.create({
         ...error,
         ...UIFont.captionMedium(),
     },
+    errorCaptionRegular: {
+        ...error,
+        ...UIFont.captionRegular(),
+    },
 });
 
 export default UITextStyle;
