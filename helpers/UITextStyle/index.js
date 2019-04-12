@@ -28,7 +28,7 @@ const secondary = {
 const quaternary = {
     ...text,
     color: UIColor.textQuaternary(),
-}
+};
 
 const grey1 = {
     ...text,
@@ -232,7 +232,7 @@ const UITextStyle = StyleSheet.create({
     // [Text Quaternary]
     // Body - fontSize: 18, lineHeight: 24
     quaternaryBodyRegular: {
-        ...secondary,
+        ...quaternary,
         ...UIFont.bodyRegular(),
     },
 

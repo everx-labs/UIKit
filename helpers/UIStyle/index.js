@@ -144,6 +144,9 @@ const UIStyle = StyleSheet.create({
     },
 
     // heights
+    tinyCellHeight: { // 16
+        height: UIConstant.tinyCellHeight(),
+    },
     mediumCellHeight: { // 40
         height: UIConstant.mediumCellHeight(),
     },
@@ -402,7 +405,6 @@ const UIStyle = StyleSheet.create({
         paddingHorizontal: UIConstant.contentOffset(),
         alignItems: 'center',
     },
-
 
     // navigator
     navigatorHeader: {

@@ -42,6 +42,8 @@ type Props = ActionProps & {
     detailsStyle?: StylePropType,
     icon: ?string,
     textStyle?: StylePropType,
+    textHoverStyle?: StylePropType,
+    textTappedStyle?: StylePropType,
     theme: string,
     title: string,
 };
@@ -51,6 +53,16 @@ class UITextButton extends UIActionComponent<Props, ActionState> {
         Left: styles.alignLeft,
         Center: styles.alignCenter,
     };
+
+    getStateCustomColorStyle() {
+        if (this.isTapped()) {
+            return this.props.textTappedStyle;
+        }
+        if (this.isHover()) {
+            return this.props.textHoverStyle;
+        }
+        return null;
+    }
 
     // Render
     renderIcon() {
@@ -70,10 +82,18 @@ class UITextButton extends UIActionComponent<Props, ActionState> {
         const hover = this.isHover();
         const defaultColorStyle = UIColor.actionTextPrimaryStyle(theme);
         const stateColorStyle = UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover);
+        const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
             <Text
-                style={[defaultFontStyle, defaultColorStyle, textStyle, stateColorStyle, flexGrow]}
+                style={[
+                    defaultFontStyle,
+                    defaultColorStyle,
+                    textStyle,
+                    stateColorStyle,
+                    stateCustomColorStyle,
+                    flexGrow,
+                ]}
             >
                 {title}
             </Text>

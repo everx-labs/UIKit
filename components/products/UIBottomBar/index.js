@@ -74,16 +74,18 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     renderEmail() {
-        const { email } = this.props;
+        const { email, textStyle } = this.props;
         if (!email) {
             return null;
         }
-        // const primaryColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
-        // hoverTextStyle={primaryColorStyle}
-        // tappedTextStyle={primaryColorStyle}
+        const primaryColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
         return (
             <UITextButton
-                value={email}
+                title={email}
+                buttonStyle={UIStyle.tinyCellHeight}
+                textStyle={textStyle}
+                textHoverStyle={primaryColorStyle}
+                textTappedStyle={primaryColorStyle}
                 onPress={() => Linking.openURL(`mailto:${email}`)}
             />
         );
