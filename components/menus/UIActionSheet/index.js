@@ -76,28 +76,6 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
         this.setModalVisible(true);
     }
 
-    // hide(callback: () => void) {
-    //     Animated.timing(this.marginBottom, {
-    //         toValue: -this.calculateHeight(),
-    //         duration: UIConstant.animationDuration(),
-    //     }).start(() => {
-    //         this.setModalVisible(false, () => {
-    //             setTimeout(() => {
-    //                 if (callback) {
-    //                     callback();
-    //                 }
-    //             }, 100); // Timeout is required!
-    //         });
-    //     });
-    // }
-
-    // calculateHeight() {
-    //     const height = UIConstant.actionSheetItemHeight();
-    //     const numberItems = (this.menuItemsList && this.menuItemsList.length) || 0;
-    //     const actionSheetHeight = height * (numberItems + (this.needCancelItem ? 1 : 0));
-    //     return actionSheetHeight + UIConstant.contentOffset();
-    // }
-
     // Render
     renderCancelItem() {
         if (!this.needCancelItem) {

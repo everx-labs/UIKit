@@ -21,9 +21,6 @@ const styles = StyleSheet.create({
         backgroundColor: UIColor.overlay60(),
         justifyContent: 'flex-end',
     },
-    contentContainer: {
-        paddingVertical: UIConstant.contentOffset(),
-    },
     downMenu: {
         position: 'absolute',
         backgroundColor: 'white',
@@ -36,6 +33,8 @@ const styles = StyleSheet.create({
         right: UIConstant.contentOffset(),
     },
     slimContainer: {
+        paddingVertical: UIConstant.contentOffset(),
+        width: '100%',
         maxWidth: UIConstant.elasticWidthHalfNormal(),
         alignSelf: 'center',
         left: 'auto',
@@ -207,6 +206,7 @@ export default class UICustomSheet<Props, State>
                         containerStyle,
                         { bottom: this.marginBottom },
                     ]}
+                    onLayout={e => this.onLayout(e)}
                 >
                     {component}
                 </Animated.View>
@@ -218,15 +218,7 @@ export default class UICustomSheet<Props, State>
         if (!this.component) {
             return null;
         }
-        const content = (
-            <View
-                style={styles.contentContainer}
-                onLayout={e => this.onLayout(e)}
-            >
-                {this.component}
-            </View>
-        );
-        return this.renderSheet(content);
+        return this.renderSheet(this.component);
     }
 
     renderContainer() {
