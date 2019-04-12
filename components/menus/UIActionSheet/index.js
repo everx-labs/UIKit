@@ -8,99 +8,63 @@ import UILocalized from '../../../helpers/UILocalized';
 import UICustomSheet from '../UICustomSheet';
 
 import MenuItem from './MenuItem';
-import type { CustomSheetProps, CustomSheetState } from '../UICustomSheet';
 import type { MenuItemType } from '../UIMenuView';
 
-let masterRef = null;
-
-type Props = CustomSheetProps & {
-    menuItemsList: MenuItemType[],
-    needCancelItem: boolean,
-    masterActionSheet: boolean,
-};
-
-class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
+export default class UIActionSheet {
     static show(
         menuItemsList: MenuItemType[],
-        needCancelItem?: boolean,
-        onCancelCallback?: () => void,
+        needCancelItem?: boolean = true,
+        onCancelCallback?: () => void = () => {},
     ) {
-        if (masterRef) {
-            masterRef.show(menuItemsList, needCancelItem, onCancelCallback);
-        }
+        this.menuItemsList = menuItemsList;
+        this.needCancelItem = needCancelItem;
+        this.onCancelCallback = onCancelCallback;
+        const component = this.renderMenu();
+        UICustomSheet.show({
+            component,
+            fullWidth: true,
+        });
     }
 
-    menuItemsList: MenuItemType[];
-    needCancelItem: boolean;
-
-    // constructor
-    constructor(props: Props) {
-        super(props);
-        this.menuItemsList = [];
-        this.needCancelItem = true;
+    static hide(callback: () => void) {
+        UICustomSheet.hide(callback);
     }
 
-    componentDidMount() {
-        super.componentDidMount();
-        if (this.props.masterActionSheet) {
-            masterRef = this;
-        }
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-        if (this.props.masterActionSheet) {
-            masterRef = null;
-        }
-    }
+    static menuItemsList: MenuItemType[];
+    static needCancelItem: boolean;
+    static onCancelCallback: () => void;
 
     // Setters
 
     // Getters
 
     // Actions
-    show(
-        menuItemsList: MenuItemType[] = [],
-        needCancelItem: boolean = true,
-        onCancelCallback: () => void = () => {},
-    ) {
-        if (this.props.masterActionSheet) {
-            this.menuItemsList = menuItemsList;
-            this.needCancelItem = needCancelItem;
-            this.onCancelCallback = onCancelCallback;
-        } else {
-            this.menuItemsList = this.props.menuItemsList;
-            this.needCancelItem = this.props.needCancelItem;
-            this.onCancelCallback = this.props.onCancelCallback;
-        }
-        this.setModalVisible(true);
-    }
 
     // Render
-    renderCancelItem() {
+    static renderCancelItem() {
         if (!this.needCancelItem) {
             return null;
         }
         return (
             <MenuItem
                 title={UILocalized.Cancel}
-                onPress={() => this.hide(() => this.onCancelCallback())}
+                onPress={() => UICustomSheet.hide(() => this.onCancelCallback())}
             />
         );
     }
 
-    renderMenuItem(item: MenuItemType) {
+    static renderMenuItem(item: MenuItemType) {
         return (
             <MenuItem
                 {...item}
-                onPress={() => this.hide(() => item.onPress())}
+                onPress={() => UICustomSheet.hide(() => item.onPress())}
                 textStyle={{ color: UIColor.primary() }}
             />
         );
     }
 
-    renderContent() {
-        const content = (
+    static renderMenu() {
+        return (
             <React.Fragment>
                 <FlatList
                     data={this.menuItemsList}
@@ -110,17 +74,6 @@ class UIActionSheet extends UICustomSheet<Props, CustomSheetState> {
                 {this.renderCancelItem()}
             </React.Fragment>
         );
-        return this.renderSheet(content);
     }
-
-    static defaultProps: CustomSheetProps;
 }
 
-export default UIActionSheet;
-
-UIActionSheet.defaultProps = {
-    ...UICustomSheet.defaultProps,
-    masterActionSheet: true,
-    menuItemsList: [],
-    needCancelItem: true,
-};

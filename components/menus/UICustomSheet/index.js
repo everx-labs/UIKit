@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.contentOffset(),
     },
-    defaultContainer: {
+    fullScreenContainer: {
         left: UIConstant.contentOffset(),
         right: UIConstant.contentOffset(),
     },
@@ -46,26 +46,28 @@ const maxScreenHeight = UIConstant.maxScreenHeight();
 
 let masterRef = null;
 
-export type CustomSheetProps = {
-    component: ?React$Node,
-    masterSheet: boolean,
-    onCancelCallback: () => void,
-};
+export type Props = {};
 
-export type CustomSheetState = {
+export type State = {
     modalVisible: boolean,
     height: number,
 };
 
-export default class UICustomSheet<Props, State>
-    extends UIComponent<any & CustomSheetProps, CustomSheetState> {
-    static showCustom(
-        component: React$Node,
-        onShowCallback: () => void,
-        onCancelCallback: () => void,
-    ) {
+export type CustomSheetArgs = {
+    component: React$Node,
+    fullWidth?: boolean,
+    onShow?: () => void,
+    onCancel?: () => void,
+}
+
+export default class UICustomSheet extends UIComponent<Props, State> {
+    static show(args: CustomSheetArgs | React$Node) {
         if (masterRef) {
-            masterRef.showCustom(component, onShowCallback, onCancelCallback);
+            if (!args.component) {
+                masterRef.show({ component: args });
+            } else {
+                masterRef.show(args);
+            }
         }
     }
 
@@ -77,16 +79,16 @@ export default class UICustomSheet<Props, State>
 
     component: ?React$Node;
     marginBottom: AnimatedValue;
-    onShowCallback: () => void;
-    onCancelCallback: () => void;
+    onShow: () => void;
+    onCancel: () => void;
 
     // constructor
-    constructor(props: any & CustomSheetProps) {
+    constructor(props: Props) {
         super(props);
         this.component = null;
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
-        this.onShowCallback = () => {};
-        this.onCancelCallback = () => {};
+        this.onShow = () => {};
+        this.onCancel = () => {};
 
         this.state = {
             modalVisible: false,
@@ -142,19 +144,16 @@ export default class UICustomSheet<Props, State>
     }
 
     // Actions
-    showCustom(
-        component: ?React$Node = null,
-        onShowCallback: () => void = () => {},
-        onCancelCallback: () => void = () => {},
-    ) {
-        if (this.props.masterSheet) {
-            this.component = component;
-            this.onCancelCallback = onCancelCallback;
-            this.onShowCallback = onShowCallback;
-        } else {
-            this.component = this.props.component;
-            this.onCancelCallback = this.props.onCancelCallback;
-        }
+    show({
+        component = null,
+        fullWidth = false,
+        onShow = () => {},
+        onCancel = () => {},
+    }: CustomSheetArgs) {
+        this.component = component;
+        this.fullWidth = fullWidth;
+        this.onCancel = onCancel;
+        this.onShow = onShow;
         this.setModalVisible(true);
     }
 
@@ -167,7 +166,7 @@ export default class UICustomSheet<Props, State>
     slideFromBottom() {
         Animated.spring(this.marginBottom, {
             toValue: UIConstant.contentOffset(),
-        }).start(() => this.onShowCallback());
+        }).start(() => this.onShow());
     }
 
     slideToBottom(callback: () => void) {
@@ -192,8 +191,8 @@ export default class UICustomSheet<Props, State>
     }
 
     // Render
-    renderSheet(component: ?React$Node) {
-        const containerStyle = this.component ? styles.slimContainer : styles.defaultContainer;
+    renderSheet() {
+        const containerStyle = this.fullWidth ? styles.fullScreenContainer : styles.slimContainer;
         return (
             <View
                 pointerEvents="box-none"
@@ -208,26 +207,19 @@ export default class UICustomSheet<Props, State>
                     ]}
                     onLayout={e => this.onLayout(e)}
                 >
-                    {component}
+                    {this.component}
                 </Animated.View>
             </View>
         );
     }
 
-    renderContent() {
-        if (!this.component) {
-            return null;
-        }
-        return this.renderSheet(this.component);
-    }
-
     renderContainer() {
         return (
             <React.Fragment>
-                <TouchableWithoutFeedback onPress={() => this.hide(() => this.onCancelCallback())}>
+                <TouchableWithoutFeedback onPress={() => this.hide(() => this.onCancel())}>
                     <View style={[UIStyle.absoluteFillObject, styles.container]} />
                 </TouchableWithoutFeedback>
-                {this.renderContent()}
+                {this.renderSheet()}
             </React.Fragment>
         );
     }
