@@ -53,15 +53,16 @@ export type State = {
     height: number,
 };
 
-export type CustomSheetArgs = {
-    component: React$Node,
+export type CustomSheetProps = {
+    component: ?React$Node,
     fullWidth?: boolean,
+    masterSheet?: boolean,
     onShow?: () => void,
     onCancel?: () => void,
-}
+};
 
-export default class UICustomSheet extends UIComponent<Props, State> {
-    static show(args: CustomSheetArgs | React$Node) {
+export default class UICustomSheet extends UIComponent<CustomSheetProps, State> {
+    static show(args: any) {
         if (masterRef) {
             if (!args.component) {
                 masterRef.show({ component: args });
@@ -78,14 +79,16 @@ export default class UICustomSheet extends UIComponent<Props, State> {
     }
 
     component: ?React$Node;
+    fullWidth: ?boolean;
     marginBottom: AnimatedValue;
-    onShow: () => void;
-    onCancel: () => void;
+    onShow: ?() => void;
+    onCancel: ?() => void;
 
     // constructor
-    constructor(props: Props) {
+    constructor(props: CustomSheetProps) {
         super(props);
         this.component = null;
+        this.fullWidth = false;
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
         this.onShow = () => {};
         this.onCancel = () => {};
@@ -145,15 +148,22 @@ export default class UICustomSheet extends UIComponent<Props, State> {
 
     // Actions
     show({
-        component = null,
+        component,
         fullWidth = false,
         onShow = () => {},
         onCancel = () => {},
-    }: CustomSheetArgs) {
-        this.component = component;
-        this.fullWidth = fullWidth;
-        this.onCancel = onCancel;
-        this.onShow = onShow;
+    }: CustomSheetProps) {
+        if (this.props.masterSheet) {
+            this.component = component;
+            this.fullWidth = fullWidth;
+            this.onCancel = onCancel;
+            this.onShow = onShow;
+        } else {
+            this.component = this.props.component;
+            this.fullWidth = this.props.fullWidth;
+            this.onCancel = this.props.onCancel;
+            this.onShow = this.props.onShow;
+        }
         this.setModalVisible(true);
     }
 
@@ -166,7 +176,7 @@ export default class UICustomSheet extends UIComponent<Props, State> {
     slideFromBottom() {
         Animated.spring(this.marginBottom, {
             toValue: UIConstant.contentOffset(),
-        }).start(() => this.onShow());
+        }).start(this.onShow);
     }
 
     slideToBottom(callback: () => void) {
@@ -176,7 +186,7 @@ export default class UICustomSheet extends UIComponent<Props, State> {
         }).start(callback);
     }
 
-    hide(callback: () => void) {
+    hide(callback: ?() => void = () => {}) {
         this.slideToBottom(() => {
             this.setModalVisible(false, () => {
                 this.marginBottom.setValue(-maxScreenHeight);
@@ -216,7 +226,7 @@ export default class UICustomSheet extends UIComponent<Props, State> {
     renderContainer() {
         return (
             <React.Fragment>
-                <TouchableWithoutFeedback onPress={() => this.hide(() => this.onCancel())}>
+                <TouchableWithoutFeedback onPress={() => this.hide(this.onCancel)}>
                     <View style={[UIStyle.absoluteFillObject, styles.container]} />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}
@@ -248,5 +258,7 @@ export default class UICustomSheet extends UIComponent<Props, State> {
 UICustomSheet.defaultProps = {
     component: null,
     masterSheet: true,
-    onCancelCallback: () => {},
+    fullWidth: false,
+    onShow: () => {},
+    onCancel: () => {},
 };

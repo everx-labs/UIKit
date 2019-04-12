@@ -5,10 +5,11 @@ import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 
 
 import UISpinnerOverlay from '../../UISpinnerOverlay';
 import UILocalized from '../../../helpers/UILocalized';
-import UIActionSheet from '../../menus/UIActionSheet';
+import UICustomSheet from '../../menus/UICustomSheet';
 import UIAlertView from '../../popup/UIAlertView';
 import UIColor from '../../../helpers/UIColor';
 import UIComponent from '../../UIComponent';
+import UIActionSheet from '../../menus/UIActionSheet';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -114,7 +115,7 @@ export default class UIImageView extends UIComponent<Props, State> {
             );
             this.setLightboxVisible();
         } else if (this.isEditable() && Platform.OS !== 'web') {
-            this.actionSheet.show();
+            this.menuSheet.show();
         }
     }
 
@@ -367,12 +368,12 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS === 'web') {
             return null;
         }
+        const menuComponent = UIActionSheet.renderMenu(this.menuItemsList);
         return (
-            <UIActionSheet
-                ref={(component) => { this.actionSheet = component; }}
-                needCancelItem
-                menuItemsList={this.menuItemsList}
-                masterActionSheet={false}
+            <UICustomSheet
+                ref={(component) => { this.menuSheet = component; }}
+                component={menuComponent}
+                masterSheet={false}
             />
         );
     }

@@ -16,10 +16,8 @@ export default class UIActionSheet {
         needCancelItem?: boolean = true,
         onCancelCallback?: () => void = () => {},
     ) {
-        this.menuItemsList = menuItemsList;
-        this.needCancelItem = needCancelItem;
         this.onCancelCallback = onCancelCallback;
-        const component = this.renderMenu();
+        const component = this.renderMenu(menuItemsList, needCancelItem);
         UICustomSheet.show({
             component,
             fullWidth: true,
@@ -30,8 +28,6 @@ export default class UIActionSheet {
         UICustomSheet.hide(callback);
     }
 
-    static menuItemsList: MenuItemType[];
-    static needCancelItem: boolean;
     static onCancelCallback: () => void;
 
     // Setters
@@ -41,8 +37,8 @@ export default class UIActionSheet {
     // Actions
 
     // Render
-    static renderCancelItem() {
-        if (!this.needCancelItem) {
+    static renderCancelItem(needCancelItem: boolean = true) {
+        if (!needCancelItem) {
             return null;
         }
         return (
@@ -63,15 +59,15 @@ export default class UIActionSheet {
         );
     }
 
-    static renderMenu() {
+    static renderMenu(menuItemsList: MenuItemType[], needCancelItem: boolean) {
         return (
             <React.Fragment>
                 <FlatList
-                    data={this.menuItemsList}
+                    data={menuItemsList}
                     renderItem={({ item }) => this.renderMenuItem(item)}
                     showsVerticalScrollIndicator={false}
                 />
-                {this.renderCancelItem()}
+                {this.renderCancelItem(needCancelItem)}
             </React.Fragment>
         );
     }
