@@ -317,6 +317,16 @@ class UIDialogController extends UIController {
     }
 
     renderSafely() {
+        const content = (
+            <React.Fragment>
+                {this.renderTitle()}
+                {this.renderPhoto()}
+                {this.renderTextInput()}
+                {this.renderAuxTextInput()}
+                {this.renderSubtitleContainer()}
+                {this.renderContentContainer()}
+            </React.Fragment>
+        );
         const wrappedContent = this.wrapContentInScrollView
             ? (
                 <ScrollView
@@ -330,12 +340,7 @@ class UIDialogController extends UIController {
                     ]}
                     keyboardShouldPersistTaps="handled"
                 >
-                    {this.renderTitle()}
-                    {this.renderPhoto()}
-                    {this.renderTextInput()}
-                    {this.renderAuxTextInput()}
-                    {this.renderSubtitleContainer()}
-                    {this.renderContentContainer()}
+                    {content}
                 </ScrollView>
             )
             : (
@@ -344,15 +349,11 @@ class UIDialogController extends UIController {
                         UIStyle.screenContainer,
                         UIStyle.pageContainer,
                         this.getContentContainerStyle(),
+                        { paddingBottom: this.getBottomPanelHeight() },
                     ]}
                     keyboardShouldPersistTaps="handled"
                 >
-                    {this.renderTitle()}
-                    {this.renderPhoto()}
-                    {this.renderTextInput()}
-                    {this.renderAuxTextInput()}
-                    {this.renderSubtitleContainer()}
-                    {this.renderContentContainer()}
+                    {content}
                 </View>
             );
         const animatedContainerStyle = {

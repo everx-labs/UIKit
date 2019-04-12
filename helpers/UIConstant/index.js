@@ -43,6 +43,7 @@ const UI_MEDIUM_CELL_HEIGHT = 40;
 const UI_DEFAULT_CELL_HEIGHT = 48;
 const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
+const UI_DETAILS_CELL_HEIGHT = 68;
 const UI_GREAT_CELL_HEIGHT = 72;
 const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
@@ -53,6 +54,7 @@ const UI_NAVIGATION_BAR_HEIGHT = 80;
 
 const UI_SMALL_AVATAR_SIZE = 20;
 const UI_MEDIUM_AVATAR_SIZE = 40;
+const UI_DETAILS_AVATAR_SIZE = 44;
 const UI_LARGE_AVATAR_SIZE = 64;
 
 const UI_ICON_SIZE = 24;
@@ -297,6 +299,10 @@ export default class UIConstant {
         return UI_GREAT_CELL_HEIGHT;
     }
 
+    static detailsCellHeight() {
+        return UI_DETAILS_CELL_HEIGHT;
+    }
+
     static majorCellHeight() {
         return UI_MAJOR_CELL_HEIGHT;
     }
@@ -323,6 +329,10 @@ export default class UIConstant {
 
     static mediumAvatarSize() {
         return UI_MEDIUM_AVATAR_SIZE;
+    }
+
+    static detailsAvatarSize() {
+        return UI_DETAILS_AVATAR_SIZE;
     }
 
     static smallAvatarSize() {

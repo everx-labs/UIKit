@@ -16,6 +16,7 @@ const UI_COLOR_BLACK_LIGHT = '#2B3338';
 const UI_COLOR_WHITE = '#FFFFFF';
 const UI_COLOR_FA = '#FAFAFA';
 const UI_COLOR_DARK = '#102027';
+const UI_COLOR_DARK_1 = '#364046';
 const UI_COLOR_GREY = '#727C81';
 const UI_COLOR_GREY_1 = '#EBEDEE';
 const UI_COLOR_GREY_2 = '#DDE1E2';
@@ -34,12 +35,11 @@ const UI_COLOR_TEXT_DPRIMARY = '#FFFFFF';
 const UI_COLOR_TEXT_LPARAGRAPH = '#000000';
 const UI_COLOR_TEXT_DPARAGRAPH = '#FFFFFF';
 const UI_COLOR_TEXT_LSECONDARY = '#364046';
-const UI_COLOR_TEXT_DSECONDARY = '#DADADA';
+const UI_COLOR_TEXT_DSECONDARY = '#EBEDEE';
 const UI_COLOR_TEXT_LTERTIARY = '#96A1A7';
 const UI_COLOR_TEXT_DTERTIARY = '#BEC4C8';
 const UI_COLOR_TEXT_LQUARTERNARY = '#BEC4C8';
 const UI_COLOR_TEXT_DQUARTERNARY = '#96A1A7';
-
 const UI_COLOR_TEXT_LTCAUTION = '#FF9800';
 const UI_COLOR_TEXT_DTCAUTION = '#FF9800';
 
@@ -53,6 +53,8 @@ const UI_COLOR_BACKGROUND_LQUARTER = '#E7EBED';
 const UI_COLOR_BACKGROUND_DQUARTER = '#5A7684';
 const UI_COLOR_BACKGROUND_LQUINARY = '#F3F5F6';
 const UI_COLOR_BACKGROUND_DQUINARY = '#85AFC4';
+const UI_COLOR_BACKGROUND_LWHITELIGHT = '#F5F5F5';
+const UI_COLOR_BACKGROUND_DWHITELIGHT = '#F5F5F5';
 
 const UI_COLOR_BACKGROUND_SEPARATOR_CHAT = '#9FA6A9';
 
@@ -159,6 +161,10 @@ export default class UIColor {
 
     static dark() {
         return UI_COLOR_DARK;
+    }
+
+    static colorDark1() {
+        return UI_COLOR_DARK_1;
     }
 
     static grey() {
@@ -298,6 +304,12 @@ export default class UIColor {
         return UI_COLOR_TEXT_DQUARTERNARY;
     }
 
+    static textQuaternary(theme = UIColor.Theme.Light) {
+        return theme === UIColor.Theme.Light
+        ? UI_COLOR_TEXT_LQUATERNARY
+        : UI_COLOR_TEXT_DQUATERNARY;
+    }
+
     static textCaution(theme = UIColor.Theme.Light) {
         if (theme === UIColor.Theme.Light) {
             return UI_COLOR_TEXT_LTCAUTION;
@@ -348,6 +360,12 @@ export default class UIColor {
             return UI_COLOR_BACKGROUND_LQUINARY;
         }
         return UI_COLOR_BACKGROUND_DQUINARY;
+    }
+
+    static backgroundWhiteLight(theme = UIColor.Theme.Light) {
+        return theme === UIColor.Theme.Light
+            ? UI_COLOR_BACKGROUND_LWHITELIGHT
+            : UI_COLOR_BACKGROUND_DWHITELIGHT;
     }
 
     // border
