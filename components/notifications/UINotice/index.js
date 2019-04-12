@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
         color: UIColor.primary(),
         ...UIFont.smallMedium(),
     },
+    fixTitleOverflow: {
+        overflow: 'hidden',
+    }
 });
 
 
@@ -310,7 +313,7 @@ export default class UINotice
 
     renderHeader() {
         const title = (
-            <Text style={UITextStyle.primaryBodyBold}>
+            <Text style={[UITextStyle.primaryBodyBold, styles.fixTitleOverflow]}>
                 {this.title}
             </Text>
         );
