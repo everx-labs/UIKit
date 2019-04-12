@@ -8,7 +8,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
-import UIActionText from '../../text/UIActionText';
+import UITextButton from '../../buttons/UITextButton';
 
 const styles = StyleSheet.create({
     container: {
@@ -75,13 +75,16 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 
     renderEmail() {
         const { email } = this.props;
-        const primaryColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
+        if (!email) {
+            return null;
+        }
+        // const primaryColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
+        // hoverTextStyle={primaryColorStyle}
+        // tappedTextStyle={primaryColorStyle}
         return (
-            <UIActionText
+            <UITextButton
                 value={email}
                 onPress={() => Linking.openURL(`mailto:${email}`)}
-                hoverTextStyle={primaryColorStyle}
-                tappedTextStyle={primaryColorStyle}
             />
         );
     }
