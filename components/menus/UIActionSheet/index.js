@@ -13,8 +13,9 @@ import type { MenuItemType } from '../UIMenuView';
 
 type Props = {
     menuItemsList: MenuItemType[],
-    needCancelItem?: boolean,
-    masterActionSheet?: boolean,
+    needCancelItem: boolean,
+    masterActionSheet: boolean,
+    onCancel: () => void,
 };
 type State = {};
 
@@ -36,6 +37,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
     }
 
     onCancel: () => void;
+    nonMasterSheet: ?UICustomSheet;
 
     componentDidMount() {
         super.componentDidMount();
@@ -68,13 +70,13 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 component,
                 fullWidth: true,
             });
-        } else {
+        } else if (this.nonMasterSheet) {
             this.nonMasterSheet.show();
         }
     }
 
     // Render
-    renderCancelItem(needCancelItem: boolean = true) {
+    renderCancelItem(needCancelItem: boolean) {
         if (!needCancelItem) {
             return null;
         }
@@ -96,7 +98,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         );
     }
 
-    renderMenu(menuItemsList: MenuItemType[], needCancelItem: boolean) {
+    renderMenu(menuItemsList: MenuItemType[], needCancelItem: boolean = true) {
         return (
             <React.Fragment>
                 <FlatList
@@ -130,5 +132,6 @@ UIActionSheet.defaultProps = {
     masterActionSheet: true,
     menuItemsList: [],
     needCancelItem: true,
+    onCancel: () => {},
 };
 
