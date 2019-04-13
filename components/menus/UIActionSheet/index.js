@@ -37,7 +37,9 @@ export default class UIActionSheet extends UIComponent<Props, State> {
     }
 
     onCancel: () => void;
-    nonMasterSheet: ?UICustomSheet;
+    customSheet: ?UICustomSheet;
+    menuItemsList: MenuItemType[];
+    needCancelItem: boolean;
 
     componentDidMount() {
         super.componentDidMount();
@@ -64,14 +66,16 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         onCancel?: () => void = () => {},
     ) {
         if (this.props.masterActionSheet) {
+            this.menuItemsList = menuItemsList;
+            this.needCancelItem = needCancelItem;
             this.onCancel = onCancel;
-            const component = this.renderMenu(menuItemsList, needCancelItem);
-            UICustomSheet.show({
-                component,
-                fullWidth: true,
-            });
-        } else if (this.nonMasterSheet) {
-            this.nonMasterSheet.show();
+        } else {
+            this.menuItemsList = this.props.menuItemsList;
+            this.needCancelItem = this.props.needCancelItem;
+            this.onCancel = this.props.onCancel;
+        }
+        if (this.customSheet) {
+            this.customSheet.show();
         }
     }
 
@@ -112,15 +116,14 @@ export default class UIActionSheet extends UIComponent<Props, State> {
     }
 
     render() {
-        const { menuItemsList, needCancelItem, onCancel } = this.props;
-        const menuComponent = this.renderMenu(menuItemsList, needCancelItem);
+        const menuComponent = this.renderMenu(this.menuItemsList, this.needCancelItem);
         return (
             <UICustomSheet
-                ref={(component) => { this.nonMasterSheet = component; }}
+                ref={(component) => { this.customSheet = component; }}
                 masterSheet={false}
                 component={menuComponent}
                 fullWidth
-                onCancel={onCancel}
+                onCancel={this.onCancel}
             />
         );
     }
