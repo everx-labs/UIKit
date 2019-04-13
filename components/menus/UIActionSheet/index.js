@@ -61,12 +61,16 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         needCancelItem?: boolean = true,
         onCancel?: () => void = () => {},
     ) {
-        this.onCancel = onCancel;
-        const component = this.renderMenu(menuItemsList, needCancelItem);
-        UICustomSheet.show({
-            component,
-            fullWidth: true,
-        });
+        if (this.props.masterActionSheet) {
+            this.onCancel = onCancel;
+            const component = this.renderMenu(menuItemsList, needCancelItem);
+            UICustomSheet.show({
+                component,
+                fullWidth: true,
+            });
+        } else {
+            this.nonMasterSheet.show();
+        }
     }
 
     // Render
@@ -102,6 +106,20 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 />
                 {this.renderCancelItem(needCancelItem)}
             </React.Fragment>
+        );
+    }
+
+    render() {
+        const { menuItemsList, needCancelItem, onCancel } = this.props;
+        const menuComponent = this.renderMenu(menuItemsList, needCancelItem);
+        return (
+            <UICustomSheet
+                ref={(component) => { this.nonMasterSheet = component; }}
+                masterSheet={false}
+                component={menuComponent}
+                fullWidth
+                onCancel={onCancel}
+            />
         );
     }
 
