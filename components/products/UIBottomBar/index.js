@@ -78,7 +78,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         if (!email) {
             return null;
         }
-        const primaryColorStyle = UIColor.getColorStyle(UIColor.textPrimary());
+        const primaryColorStyle = UIColor.textPrimaryStyle();
         return (
             <UITextButton
                 title={email}
@@ -164,13 +164,14 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         );
         const menu = menuItems.map((item, index) => (
             <React.Fragment key={`bottom-bar-menu-item-${item.title}`}>
-                <TouchableOpacity
+                <UITextButton
+                    title={item.title}
+                    buttonStyle={UIStyle.tinyCellHeight}
+                    textStyle={textStyle}
+                    textHoverStyle={UIColor.textPrimaryStyle()}
+                    textTappedStyle={UIColor.textPrimaryStyle()}
                     onPress={item.onPress}
-                >
-                    <Text style={textStyle}>
-                        {item.title}
-                    </Text>
-                </TouchableOpacity>
+                />
                 {index === menuItems.length - 1 ? null : dot}
             </React.Fragment>
         ));
