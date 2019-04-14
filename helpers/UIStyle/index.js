@@ -14,6 +14,12 @@ const absoluteFillObject = {
     overflow: 'hidden',
 };
 
+const pageContainer = {
+    paddingHorizontal: UIConstant.contentOffset(),
+    width: '100%',
+    alignSelf: 'center',
+};
+
 const borderTop = {
     borderTopColor: UIColor.light(),
     borderTopWidth: 1,
@@ -21,6 +27,11 @@ const borderTop = {
 
 const borderBottom = {
     borderBottomColor: UIColor.light(),
+    borderBottomWidth: 1,
+};
+
+const borderBottomAction = {
+    borderBottomColor: UIColor.primary(),
     borderBottomWidth: 1,
 };
 
@@ -40,17 +51,66 @@ const UIStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
+    flex3: {
+        flex: 3,
+    },
     flexRow: {
         flexDirection: 'row',
+    },
+    flexRowWrap: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     alignCenter: {
         alignItems: 'center',
     },
+    alignSelfCenter: {
+        alignSelf: 'center',
+    },
+    alignEnd: {
+        alignItems: 'flex-end',
+    },
+    textAlignCenter: {
+        textAlign: 'center',
+    },
+    textAlignRight: {
+        textAlign: 'right',
+    },
     justifyCenter: {
+        justifyContent: 'center',
+    },
+    alignJustifyCenter: {
+        alignItems: 'center',
         justifyContent: 'center',
     },
     justifyEnd: {
         justifyContent: 'flex-end',
+    },
+    flexAlignCenter: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    flexJustifyCenter: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    flexJustifyEnd: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+    centerContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    centerLeftContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    rowSpaceContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
 
     commonShadow: {
@@ -66,61 +126,126 @@ const UIStyle = StyleSheet.create({
     fullWidth: {
         width: '100%',
     },
+    threeQuartersWidth: {
+        width: '75%',
+    },
+    halfWidth: {
+        width: '50%',
+    },
+    thirdWidth: {
+        width: '33%',
+    },
+    quarterWidth: {
+        width: '25%',
+    },
+
+    positionAbsolute: {
+        position: 'absolute',
+    },
+
+    // heights
+    tinyCellHeight: { // 16
+        height: UIConstant.tinyCellHeight(),
+    },
+    mediumCellHeight: { // 40
+        height: UIConstant.mediumCellHeight(),
+    },
+    defaultCellHeight: { // 48
+        height: UIConstant.defaultCellHeight(),
+    },
+    bigCellHeight: { // 56
+        height: UIConstant.bigCellHeight(),
+    },
+    greatCellHeight: { // 72
+        height: UIConstant.greatCellHeight(),
+    },
+    majorCellHeight: { // 80
+        height: UIConstant.majorCellHeight(),
+    },
+
+    greatCellMinHeight: {
+        minHeight: UIConstant.greatCellHeight(),
+    },
 
     // offsets
-    marginTopTiny: {
+    marginTopTiny: { // 4
         marginTop: UIConstant.tinyContentOffset(),
     },
-    marginTopSmall: {
+    marginTopSmall: { // 8
         marginTop: UIConstant.smallContentOffset(),
     },
-    marginTopNormal: {
+    marginTopNormal: { // 12
         marginTop: UIConstant.normalContentOffset(),
     },
-    marginTopDefault: {
+    marginTopDefault: { // 16
         marginTop: UIConstant.contentOffset(),
     },
-    marginTopMedium: {
+    marginTopMedium: { // 24
         marginTop: UIConstant.mediumContentOffset(),
     },
-    marginTopHuge: {
+    marginTopHuge: { // 32
         marginTop: UIConstant.hugeContentOffset(),
     },
+    marginTopGreat: { // 48
+        marginTop: UIConstant.greatContentOffset(),
+    },
+    marginTopMajor: { // 64
+        marginTop: UIConstant.majorContentOffset(),
+    },
+    marginTopVast: { // 80
+        marginTop: UIConstant.vastContentOffset(),
+    },
+    marginTopEnormous: { // 104
+        marginTop: UIConstant.enormousContentOffset(),
+    },
 
-    marginBottomTiny: {
+    marginBottomTiny: { // 4
         marginBottom: UIConstant.tinyContentOffset(),
     },
-    marginBottomSmall: {
+    marginBottomSmall: { // 8
         marginBottom: UIConstant.smallContentOffset(),
     },
-    marginBottomNormal: {
+    marginBottomNormal: { // 12
         marginBottom: UIConstant.normalContentOffset(),
     },
-    marginBottomDefault: {
+    marginBottomDefault: { // 16
         marginBottom: UIConstant.contentOffset(),
     },
-    marginBottomMedium: {
+    marginBottomMedium: { // 24
         marginBottom: UIConstant.mediumContentOffset(),
     },
+    marginBottomHuge: { // 32
+        marginBottom: UIConstant.hugeContentOffset(),
+    },
+    marginBottomMajor: { // 64
+        marginBottom: UIConstant.majorContentOffset(),
+    },
 
-    marginRightDefault: {
-        marginRight: UIConstant.contentOffset(),
-    },
-    marginRightSmall: {
-        marginRight: UIConstant.smallContentOffset(),
-    },
-    marginRightTiny: {
+
+    marginRightTiny: { // 4
         marginRight: UIConstant.tinyContentOffset(),
     },
-
-    marginLeftDefault: {
-        marginLeft: UIConstant.contentOffset(),
+    marginRightSmall: { // 8
+        marginRight: UIConstant.smallContentOffset(),
     },
-    marginLeftTiny: {
+    marginRightNormal: { // 12
+        marginRight: UIConstant.normalContentOffset(),
+    },
+    marginRightDefault: { // 16
+        marginRight: UIConstant.contentOffset(),
+    },
+    marginRightHuge: { // 32
+        marginRight: UIConstant.hugeContentOffset(),
+    },
+
+    marginLeftTiny: { // 4
         marginLeft: UIConstant.tinyContentOffset(),
     },
+    marginLeftDefault: { // 16
+        marginLeft: UIConstant.contentOffset(),
+    },
 
-    marginHorizontalOffset: {
+    marginHorizontalOffset: { // 16
         marginLeft: UIConstant.contentOffset(),
         marginRight: UIConstant.contentOffset(),
     },
@@ -136,8 +261,30 @@ const UIStyle = StyleSheet.create({
         marginRight: UIConstant.smallContentOffset(),
     },
 
-    marginDefault: {
+    marginDefault: { // 16
         margin: UIConstant.contentOffset(),
+    },
+
+    paddingDefault: { // 16
+        padding: UIConstant.contentOffset(),
+    },
+    paddingSmall: {
+        padding: UIConstant.smallContentOffset(),
+    },
+    paddingHorizontal: {
+        paddingHorizontal: UIConstant.contentOffset(),
+    },
+    paddingTopDefault: {
+        paddingTop: UIConstant.contentOffset(),
+    },
+    paddingBottomDefault: {
+        paddingBottom: UIConstant.contentOffset(),
+    },
+    paddingRightDefault: {
+        paddingRight: UIConstant.contentOffset(),
+    },
+    paddingBottomMajor: {
+        paddingBottom: UIConstant.majorContentOffset(),
     },
 
     // borders
@@ -155,6 +302,9 @@ const UIStyle = StyleSheet.create({
     },
     borderTop: {
         ...borderTop,
+    },
+    borderBottomAction: {
+        ...borderBottomAction,
     },
 
     // colors
@@ -179,11 +329,16 @@ const UIStyle = StyleSheet.create({
         // alignItems: 'center',
     },
     pageContainer: {
-        // flex: 1,
-        paddingHorizontal: UIConstant.contentOffset(),
-        width: '100%',
+        ...pageContainer,
         maxWidth: UIConstant.elasticWidthMax(),
-        alignSelf: 'center',
+    },
+    pageNormalContainer: {
+        ...pageContainer,
+        maxWidth: UIConstant.elasticWidthNormal(),
+    },
+    pageSlimContainer: {
+        ...pageContainer,
+        maxWidth: UIConstant.elasticWidthHalfNormal(),
     },
     fullScreenController: {
         flex: 1,
@@ -216,28 +371,6 @@ const UIStyle = StyleSheet.create({
         right: 0,
         top: 0,
     },
-    flexAlignCenterContainer: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    flexJustifyEndContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
-    centerContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    centerLeftContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    rowSpaceContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
     centerOnScreenContainer: {
         position: 'absolute',
         backgroundColor: 'transparent',
@@ -254,18 +387,23 @@ const UIStyle = StyleSheet.create({
         backgroundColor: UIColor.backgroundQuinary(),
     },
 
-    // Gram-Scan
-    fullScreenCenterContainer: {
+    fullWidthCenterContainer: {
         width: '100%',
         alignItems: 'center',
     },
     halfWidthContainer: {
         width: '50%',
         maxWidth: UIConstant.elasticWidthHuge() / 2,
+        alignSelf: 'center',
     },
-    fullWidthContainer: {
+    fullWidthPaddingContainer: {
         width: '100%',
         paddingHorizontal: UIConstant.contentOffset(),
+    },
+    fullWidthPaddingCenterContainer: {
+        width: '100%',
+        paddingHorizontal: UIConstant.contentOffset(),
+        alignItems: 'center',
     },
 
     // navigator

@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
+const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 100;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
@@ -19,6 +20,10 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
+const UI_GREAT_CONTENT_OFFSET = 48;
+const UI_MAJOR_CONTENT_OFFSET = 64;
+const UI_VAST_CONTENT_OFFSET = 80;
+const UI_ENORMOUS_CONTENT_OFFSET = 104;
 const UI_GIANT_CONTENT_OFFSET = 136;
 
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
@@ -32,12 +37,15 @@ const UI_MEDIUM_BUTTON_HEIGHT = 40;
 const UI_DEFAULT_BUTTON_HEIGHT = 48;
 const UI_LARGE_BUTTON_HEIGHT = 56;
 
+const UI_TINY_CELL_HEIGHT = 16;
 const UI_SMALL_CELL_HEIGHT = 24;
+const UI_NORMAL_CELL_HEIGHT = 32;
 const UI_MEDIUM_CELL_HEIGHT = 40;
 const UI_DEFAULT_CELL_HEIGHT = 48;
 const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
 const UI_DETAILS_CELL_HEIGHT = 68;
+const UI_GREAT_CELL_HEIGHT = 72;
 const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
 const UI_GIANT_CELL_HEIGHT = 128;
@@ -60,11 +68,15 @@ const UI_INITIAL_STYLE_FOR_ALL = Platform.OS === 'web' ? { all: 'initial' } : nu
 
 const UI_ELASTIC_WIDTH_NARROW = 80;
 const UI_ELASTIC_WIDTH_REGULAR = 304;
+const UI_ELASTIC_WIDTH_HALF_NORMAL = 376;
 const UI_ELASTIC_WIDTH_MEDIUM = 592;
+const UI_ELASTIC_WIDTH_NORMAL = 768;
 const UI_ELASTIC_WIDTH_WIDE = 880;
 const UI_ELASTIC_WIDTH_BROAD = 1000;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 const UI_ELASTIC_WIDTH_HUGE = 1600;
+
+const UI_MAX_SCREEN_HEIGHT = 1280;
 
 const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
 const BACKGROUND_IMAGE_CONTAINER_HEIGHT = 594;
@@ -145,6 +157,10 @@ export default class UIConstant {
         return UI_ANIMATION_DURATION;
     }
 
+    static feedbackDelay() {
+        return UI_FEEDBACK_DELAY;
+    }
+
     static smallSwipeThreshold() {
         return UI_SMALL_SWIPE_THRESHOLD;
     }
@@ -184,6 +200,22 @@ export default class UIConstant {
 
     static hugeContentOffset() {
         return UI_HUGE_CONTENT_OFFSET;
+    }
+
+    static greatContentOffset() {
+        return UI_GREAT_CONTENT_OFFSET;
+    }
+
+    static majorContentOffset() {
+        return UI_MAJOR_CONTENT_OFFSET;
+    }
+
+    static vastContentOffset() {
+        return UI_VAST_CONTENT_OFFSET;
+    }
+
+    static enormousContentOffset() {
+        return UI_ENORMOUS_CONTENT_OFFSET;
     }
 
     static giantContentOffset() {
@@ -240,8 +272,16 @@ export default class UIConstant {
         return UI_LARGE_BUTTON_HEIGHT;
     }
 
+    static tinyCellHeight() {
+        return UI_TINY_CELL_HEIGHT;
+    }
+
     static smallCellHeight() {
         return UI_SMALL_CELL_HEIGHT;
+    }
+
+    static normalCellHeight() {
+        return UI_NORMAL_CELL_HEIGHT;
     }
 
     static defaultCellHeight() {
@@ -258,6 +298,10 @@ export default class UIConstant {
 
     static largeCellHeight() {
         return UI_LARGE_CELL_HEIGHT;
+    }
+
+    static greatCellHeight() {
+        return UI_GREAT_CELL_HEIGHT;
     }
 
     static detailsCellHeight() {
@@ -326,6 +370,14 @@ export default class UIConstant {
         return UI_ELASTIC_WIDTH_MEDIUM;
     }
 
+    static elasticWidthHalfNormal() {
+        return UI_ELASTIC_WIDTH_HALF_NORMAL;
+    }
+
+    static elasticWidthNormal() {
+        return UI_ELASTIC_WIDTH_NORMAL;
+    }
+
     static elasticWidthWide() {
         return UI_ELASTIC_WIDTH_WIDE;
     }
@@ -340,6 +392,10 @@ export default class UIConstant {
 
     static elasticWidthHuge() {
         return UI_ELASTIC_WIDTH_HUGE;
+    }
+
+    static maxScreenHeight() {
+        return UI_MAX_SCREEN_HEIGHT;
     }
 
     static backgroundImageContainerWidth() {

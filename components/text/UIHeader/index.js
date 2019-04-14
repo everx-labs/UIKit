@@ -17,9 +17,6 @@ const styles = StyleSheet.create({
 });
 
 class UIHeader extends UIComponent {
-    Type = {
-        ScreenTitle
-    }
     // Getters
     getTitle() {
         return this.props.title;

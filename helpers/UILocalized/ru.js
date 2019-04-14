@@ -1,5 +1,6 @@
 const ru = {
     // TON
+    TONLabel: 'TON',
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
     CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
@@ -26,6 +27,7 @@ const ru = {
     InvalidLastName: 'Недопустимая фамилия',
     InvalidUsername: 'Недопустимое имя пользователя',
     InvalidPassword: 'Неверный пароль',
+    InvalidEmail: 'Invalid email address',
     YouHaveEnteredAnInvalidPhoneNumber: 'Вы ввели неверный номер телефона',
     YouHaveEnteredAnEmptyCodeFor: 'Вы ввели пустой код для',
     YouHaveEnteredAnExpiredCodeFor: 'Вы ввели истекший код для',
@@ -509,6 +511,18 @@ const ru = {
 
     // Dates
     DateSymbols: { year: 'ГГГГ', month: 'ММ', day: 'ДД' },
+
+    // Stub page
+    GetNotifiedWhenWeLaunch: 'Get notified when we launch',
+    WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
+    ThanksForCooperation: 'Thanks for cooperation.',
+
+    // Toasts
+    EnterCorrectDataToField: 'Enter correct data to field',
+
+    // Text Fields
+    Phone: 'Phone',
+    EmailAddress: 'Email',
 };
 
 export default ru;

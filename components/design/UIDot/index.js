@@ -44,6 +44,6 @@ class UIDot extends UIComponent {
 export default UIDot;
 
 UIDot.defaultProps = {
-    color: UIColor.colorGrey1(),
+    color: UIColor.grey1(),
     type: UIDot.Type.Dot,
 };
