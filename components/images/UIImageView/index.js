@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     photoContainer: {
         width: '100%',
         height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
         overflow: 'hidden',
     },
 });
@@ -401,9 +401,7 @@ export default class UIImageView extends UIComponent<Props, State> {
                     onPress={() => this.onPressPhoto()}
                 >
                     <View style={this.props.containerStyle}>
-                        <View style={[styles.photoContainer, this.props.photoStyle]}>
-                            {this.renderPhotoContent()}
-                        </View>
+                        {this.renderPhotoContent()}
                         {this.props.children}
                     </View>
                     {this.renderLightBox()}
@@ -424,9 +422,7 @@ export default class UIImageView extends UIComponent<Props, State> {
                 onOpen={() => this.onPressPhoto()}
             >
                 <View style={this.props.containerStyle}>
-                    <View style={[styles.photoContainer, this.props.photoStyle]}>
-                        {this.renderPhotoContent()}
-                    </View>
+                    {this.renderPhotoContent()}
                     {this.props.children}
                 </View>
             </LightboxMobile>
@@ -435,7 +431,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={[styles.photoContainer, this.props.photoStyle, this.props.containerStyle]}>
+            <View style={styles.photoContainer}>
                 {this.renderPhoto()}
                 {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
