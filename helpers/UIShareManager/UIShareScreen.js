@@ -6,11 +6,11 @@ import {
     View,
     Clipboard,
 } from 'react-native';
-import UIToastMessage from '../../components/notifications/UIToastMessage';
 
 // Module imports
 
 import UIModalController from '../../controllers/UIModalController';
+import UIToastMessage from '../../components/notifications/UIToastMessage';
 import UIConstant from '../../helpers/UIConstant';
 import UIButton from '../../components/buttons/UIButton';
 import UILocalized from '../../helpers/UILocalized';
