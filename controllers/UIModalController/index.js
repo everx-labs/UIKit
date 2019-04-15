@@ -1,8 +1,17 @@
 /* eslint-disable class-methods-use-this */
 // @flow
 import React from 'react';
-import { StyleSheet, Platform, Modal, Dimensions, Animated } from 'react-native';
-import PopupDialog, { SlideAnimation, FadeAnimation } from 'react-native-popup-dialog';
+import {
+    StyleSheet,
+    Platform,
+    Modal,
+    Dimensions,
+    Animated,
+} from 'react-native';
+import PopupDialog, {
+    SlideAnimation,
+    FadeAnimation,
+} from 'react-native-popup-dialog';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type {
@@ -21,7 +30,6 @@ import UIModalNavigationBar from './UIModalNavigationBar';
 
 const fullScreenDialogWidth = 600;
 const fullScreenDialogHeight = 600;
-
 
 type OnLayoutEventArgs = {
     nativeEvent: {
@@ -79,6 +87,9 @@ export default class UIModalController<Props, State>
         this.animation = new SlideAnimation({
             slideFrom: 'bottom',
         });
+        this.state = {
+            ...(this.state: ModalControllerState & State),
+        };
     }
 
     componentDidMount() {
