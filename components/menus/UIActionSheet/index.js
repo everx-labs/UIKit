@@ -1,51 +1,58 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { Platform, View, Modal, StyleSheet, TouchableWithoutFeedback, FlatList, Animated } from 'react-native';
+import { FlatList } from 'react-native';
 
 import UIColor from '../../../helpers/UIColor';
-import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
-import UIStyle from '../../../helpers/UIStyle';
+import UICustomSheet from '../UICustomSheet';
 import UIComponent from '../../UIComponent';
 
 import MenuItem from './MenuItem';
+import type { MenuItemType } from '../UIMenuView';
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: UIColor.overlay60(),
-        justifyContent: 'flex-end',
-    },
-    downMenu: {
-        position: 'absolute',
-        backgroundColor: 'white',
-        left: UIConstant.contentOffset(),
-        right: UIConstant.contentOffset(),
-        bottom: UIConstant.contentOffset(),
-        borderRadius: UIConstant.borderRadius(),
-        paddingHorizontal: UIConstant.contentOffset(),
-    },
-});
+type Props = {
+    menuItemsList: MenuItemType[],
+    needCancelItem: boolean,
+    masterActionSheet: boolean,
+    onCancel: () => void,
+};
+type State = {
+    menuItemsList: MenuItemType[],
+    needCancelItem: boolean,
+};
 
 let masterRef = null;
 
-class UIActionSheet extends UIComponent {
-    static show(menuItemsList, needCancelItem, onCancelCallback) {
+export default class UIActionSheet extends UIComponent<Props, State> {
+    static show(
+        menuItemsList: MenuItemType[],
+        needCancelItem?: boolean,
+        onCancelCallback?: () => void,
+    ) {
         if (masterRef) {
             masterRef.show(menuItemsList, needCancelItem, onCancelCallback);
         }
     }
 
+    static hide(callback: () => void) {
+        if (masterRef) {
+            masterRef.hide(callback);
+        }
+    }
+
+    onCancel: () => void;
+    customSheet: ?UICustomSheet;
+    menuItemsList: MenuItemType[];
+    needCancelItem: boolean;
+
     // constructor
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
-        this.menuItemsList = [];
-        this.needCancelItem = true;
-        this.onCancelCallback = () => {};
 
         this.state = {
-            marginBottom: new Animated.Value(-this.calculateHeight()),
-            modalVisible: false,
+            menuItemsList: [],
+            needCancelItem: true,
         };
     }
 
@@ -63,141 +70,105 @@ class UIActionSheet extends UIComponent {
         }
     }
 
-    // Events
+    // Setters
 
     // Getters
-    getMarginBottom() {
-        return this.state.marginBottom;
+    getMenuItemsList(): MenuItemType[] {
+        return this.state.menuItemsList;
     }
 
-    getModalVisible() {
-        return this.state.modalVisible;
-    }
-
-    // Setters
-    setModalVisible(modalVisible, callback) {
-        this.setStateSafely({
-            modalVisible,
-        }, callback);
+    getNeedCancelItem(): boolean {
+        return this.state.needCancelItem;
     }
 
     // Actions
-    show(menuItemsList = [], needCancelItem = true, onCancelCallback = () => {}) {
-        if (this.props.masterActionSheet) {
-            this.menuItemsList = menuItemsList;
-            this.needCancelItem = needCancelItem;
-            this.onCancelCallback = onCancelCallback;
-        } else {
-            this.menuItemsList = this.props.menuItemsList;
-            this.needCancelItem = this.props.needCancelItem;
-            this.onCancelCallback = this.props.onCancelCallback;
+    show(
+        menuItemsList?: MenuItemType[],
+        needCancelItem?: boolean,
+        onCancel?: () => void,
+    ) {
+        this.onCancel = onCancel || this.props.onCancel;
+        this.setStateSafely({
+            menuItemsList: menuItemsList || this.props.menuItemsList,
+            needCancelItem: needCancelItem !== undefined
+                ? needCancelItem
+                : this.props.needCancelItem,
+        }, () => {
+            if (this.customSheet) {
+                this.customSheet.show();
+            }
+        });
+    }
+
+    hide(callback: () => void) {
+        if (this.customSheet) {
+            this.customSheet.hide(callback);
         }
-        this.setModalVisible(true, () => {
-            Animated.spring(this.state.marginBottom, {
-                toValue: UIConstant.contentOffset(),
-            }).start();
-        });
-    }
-
-    hide(callback) {
-        Animated.timing(this.state.marginBottom, {
-            toValue: -this.calculateHeight(),
-            duration: UIConstant.animationDuration(),
-        }).start(() => {
-            this.setModalVisible(false, () => {
-                setTimeout(() => {
-                    if (callback) {
-                        callback();
-                    }
-                }, 100); // Timeout is required!
-            });
-        });
-    }
-
-    calculateHeight() {
-        const height = UIConstant.actionSheetItemHeight();
-        const numberItems = this.menuItemsList.length;
-        const actionSheetHeight = height * (numberItems + (this.needCancelItem ? 1 : 0));
-        return actionSheetHeight + UIConstant.contentOffset();
     }
 
     // Render
     renderCancelItem() {
-        if (!this.needCancelItem) {
+        if (!this.getNeedCancelItem()) {
             return null;
         }
         return (
             <MenuItem
                 title={UILocalized.Cancel}
-                onPress={() => this.hide(() => this.onCancelCallback())}
+                onPress={() => {
+                    if (this.customSheet) {
+                        this.customSheet.hide(() => this.onCancel());
+                    }
+                }}
             />
         );
     }
 
-    renderMenuItem(item) {
+    renderMenuItem(item: MenuItemType) {
         return (
             <MenuItem
                 {...item}
-                onPress={() => this.hide(() => item.onPress())}
+                onPress={() => {
+                    if (this.customSheet) {
+                        this.customSheet.hide(() => item.onPress());
+                    }
+                }}
                 textStyle={{ color: UIColor.primary() }}
             />
         );
     }
 
-    renderContainer() {
+    renderMenu() {
         return (
-            <TouchableWithoutFeedback onPress={() => this.hide(() => this.onCancelCallback())}>
-                <View style={[UIStyle.absoluteFillObject, styles.container]}>
-                    <Animated.View
-                        style={[
-                            UIStyle.bottomScreenContainer,
-                            styles.downMenu,
-                            { bottom: this.getMarginBottom() },
-                        ]}
-                    >
-                        <FlatList
-                            data={this.menuItemsList}
-                            renderItem={({ item }) => this.renderMenuItem(item)}
-                            scrollEnabled={false}
-                        />
-                        {this.renderCancelItem()}
-                    </Animated.View>
-                </View>
-            </TouchableWithoutFeedback>
+            <React.Fragment>
+                <FlatList
+                    data={this.getMenuItemsList()}
+                    renderItem={({ item }) => this.renderMenuItem(item)}
+                    scrollEnabled={false}
+                    showsVerticalScrollIndicator={false}
+                />
+                {this.renderCancelItem()}
+            </React.Fragment>
         );
     }
 
     render() {
-        if (!this.getModalVisible()) {
-            return null;
-        }
-        if (Platform.OS === 'web') {
-            return this.renderContainer();
-        }
         return (
-            <Modal
-                animationType="fade"
-                transparent
-                visible={this.getModalVisible()}
-            >
-                {this.renderContainer()}
-            </Modal>
+            <UICustomSheet
+                ref={(component) => { this.customSheet = component; }}
+                masterSheet={false}
+                component={this.renderMenu()}
+                fullWidth
+                onCancel={this.onCancel}
+            />
         );
     }
-}
 
-export default UIActionSheet;
+    static defaultProps: Props;
+}
 
 UIActionSheet.defaultProps = {
     masterActionSheet: true,
     menuItemsList: [],
     needCancelItem: true,
-    onCancelCallback: () => {},
-};
-
-UIActionSheet.propTypes = {
-    menuItemsList: PropTypes.arrayOf(Object),
-    needCancelItem: PropTypes.bool,
-    onCancelCallback: PropTypes.func,
-    masterActionSheet: PropTypes.bool,
+    onCancel: () => {},
 };

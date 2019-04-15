@@ -7,6 +7,7 @@ import UIColor from '../../../helpers/UIColor';
 
 type Props = {
     error?: boolean,
+    color: ?string,
     style?: StylePropType,
 }
 
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 const UISeparator = (props: Props) => {
-    const color = props.error ? UIColor.error() : UIColor.light();
+    const color = props.color || (props.error ? UIColor.error() : UIColor.light());
     const backgroundStyle = UIColor.getBackgroundColorStyle(color);
     return <View style={[styles.container, backgroundStyle, props.style]} />;
 };
@@ -26,5 +27,6 @@ export default UISeparator;
 
 UISeparator.defaultProps = {
     error: false,
+    color: null,
     style: {},
 };

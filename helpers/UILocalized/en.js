@@ -4,6 +4,7 @@ import type { UILocalizedData } from './UILocalizedTypes';
 
 const en: UILocalizedData = {
     // TON
+    TONLabel: 'TON',
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
     CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
@@ -30,6 +31,7 @@ const en: UILocalizedData = {
     InvalidLastName: 'Invalid last name',
     InvalidUsername: 'Invalid username',
     InvalidPassword: 'Invalid password',
+    InvalidEmail: 'Invalid email address',
     YouHaveEnteredAnInvalidPhoneNumber: 'You have entered an invalid phone number',
     YouHaveEnteredAnEmptyCodeFor: 'You have entered an empty code for',
     YouHaveEnteredAnExpiredCodeFor: 'You have entered an expired code for',
@@ -524,11 +526,17 @@ const en: UILocalizedData = {
     Gram50: 'Grams', // 25,26,27,28,29,30 grams
 
     // Dates
-    DateSymbols: {
-        year: 'YYYY',
-        month: 'MM',
-        day: 'DD',
-    },
+    DateSymbols: { year: 'YYYY', month: 'MM', day: 'DD' },
+
+    // Stub page
+    GetNotifiedWhenWeLaunch: 'Get notified when we launch',
+    WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
+    ThanksForCooperation: 'Thanks for cooperation.',
+
+    // Toasts
+    EnterCorrectDataToField: 'Enter correct data to field',
+
+
 };
 
 export default en;

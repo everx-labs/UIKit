@@ -22,7 +22,6 @@ export default class UIComponent<Props, State> extends Component<Props, State> {
 
     mounted: boolean;
 
-    // don't know why : ?Node doesn't work
     render(): React$Node {
         return null;
     }

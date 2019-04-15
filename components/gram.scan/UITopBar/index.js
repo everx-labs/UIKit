@@ -110,7 +110,7 @@ export default class UITopBar extends UIComponent<Props, State> {
     getContentStyle() {
         return this.props.screenWidth >= UIConstant.elasticWidthBroad()
             ? UIStyle.halfWidthContainer
-            : UIStyle.fullWidthContainer;
+            : UIStyle.fullWidthPaddingContainer;
     }
 
     getPlaceHolder() {

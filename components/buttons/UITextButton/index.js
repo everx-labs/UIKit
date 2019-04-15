@@ -1,11 +1,15 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
-import UIComponent from '../../UIComponent';
+import UIActionComponent from '../../UIActionComponent';
+import UIStyle from '../../../helpers/UIStyle';
+import UIFont from '../../../helpers/UIFont';
+import UIColor from '../../../helpers/UIColor';
+import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
     textButton: {
@@ -31,38 +35,65 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
-    testID?: string,
-    buttonStyle?: StylePropType,
-    textStyle?: StylePropType,
-    detailsStyle?: StylePropType,
+type Props = ActionProps & {
     align: StylePropType,
-    title: string,
+    buttonStyle?: StylePropType,
     details: string,
-    disabled: boolean,
-    onPress: () => void,
+    detailsStyle?: StylePropType,
+    icon: ?string,
+    textStyle?: StylePropType,
+    textHoverStyle?: StylePropType,
+    textTappedStyle?: StylePropType,
+    theme: string,
+    title: string,
 };
 
-type State = {};
-
-class UITextButton extends UIComponent<Props, State> {
+class UITextButton extends UIActionComponent<Props, ActionState> {
     static Align = {
         Left: styles.alignLeft,
         Center: styles.alignCenter,
     };
 
+    getStateCustomColorStyle() {
+        if (this.isTapped()) {
+            return this.props.textTappedStyle;
+        }
+        if (this.isHover()) {
+            return this.props.textHoverStyle;
+        }
+        return null;
+    }
+
     // Render
+    renderIcon() {
+        const { icon } = this.props;
+        if (!icon) {
+            return null;
+        }
+        return <Image source={icon} style={UIStyle.marginRightDefault} />;
+    }
+
     renderTitle() {
         const {
-            title, textStyle, details, disabled,
+            title, textStyle, details, theme, disabled,
         } = this.props;
-        const defaultTitleStyle = disabled
-            ? UITextStyle.secondarySmallMedium
-            : UITextStyle.actionSmallMedium;
+        const defaultFontStyle = UIFont.smallMedium();
+        const tapped = this.isTapped();
+        const hover = this.isHover();
+        const defaultColorStyle = UIColor.actionTextPrimaryStyle(theme);
+        const stateColorStyle = UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover);
+        const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
             <Text
-                style={[defaultTitleStyle, textStyle, flexGrow]}
+                style={[
+                    defaultFontStyle,
+                    defaultColorStyle,
+                    textStyle,
+                    stateColorStyle,
+                    stateCustomColorStyle,
+                    flexGrow,
+                ]}
             >
                 {title}
             </Text>
@@ -81,25 +112,19 @@ class UITextButton extends UIComponent<Props, State> {
         );
     }
 
-    render() {
-        const {
-            testID, buttonStyle, onPress, disabled, align,
-        } = this.props;
-        const testIDProp = testID ? { testID } : null;
+    renderContent(): React$Node {
+        const { buttonStyle, align } = this.props;
         return (
-            <TouchableOpacity
-                {...testIDProp}
-                style={[
-                    styles.textButton,
-                    align,
-                    buttonStyle,
-                ]}
-                disabled={disabled}
-                onPress={() => onPress()}
+            <View style={[
+                styles.textButton,
+                align,
+                buttonStyle,
+            ]}
             >
+                {this.renderIcon()}
                 {this.renderTitle()}
                 {this.renderDetails()}
-            </TouchableOpacity>
+            </View>
         );
     }
 
@@ -109,10 +134,10 @@ class UITextButton extends UIComponent<Props, State> {
 export default UITextButton;
 
 UITextButton.defaultProps = {
-    title: '',
-    details: '',
-    disabled: false,
+    ...UIActionComponent.defaultProps,
     align: UITextButton.Align.Left,
-    onPress: () => {
-    },
+    details: '',
+    icon: null,
+    theme: UIColor.Theme.Light,
+    title: '',
 };

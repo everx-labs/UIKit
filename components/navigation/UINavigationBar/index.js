@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import UIColor from '../../../helpers/UIColor';
@@ -8,7 +7,7 @@ import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
 import UIStyle from '../../../helpers/UIStyle';
 import UINavigationBackButton from '../UINavigationBackButton';
-import UISearchBar from '../../text/UISearchBar';
+import UISearchBar from '../../input/UISearchBar';
 import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
