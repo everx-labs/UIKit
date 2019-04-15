@@ -7,9 +7,6 @@ import 'moment/locale/ru';
 import en from './en';
 import ru from './ru';
 import type { UILocalizedData } from './UILocalizedTypes';
-export type UIULocalizedType = {
-
-}
 
 class UILocalized extends LocalizedStrings {
     getLocale() {
