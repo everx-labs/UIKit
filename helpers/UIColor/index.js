@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+const UI_COLOR_PRIMARY_1 = '#C5E4F3';
 const UI_COLOR_PRIMARY = '#0088CC';
 const UI_COLOR_SECONDARY = '#FFFFFF';
 const UI_COLOR_TERTIARY = '#FFFFFF';
@@ -74,6 +75,10 @@ export default class UIColor {
     };
 
     // Base colors
+    static primary1() {
+        return UI_COLOR_PRIMARY_1;
+    }
+
     static primary() {
         return UI_COLOR_PRIMARY;
     }

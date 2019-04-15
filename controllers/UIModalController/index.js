@@ -33,7 +33,7 @@ type OnLayoutEventArgs = {
     },
 };
 
-type ModalControllerProps = ControllerProps;
+export type ModalControllerProps = ControllerProps;
 
 type ModalControllerState = ControllerState & {
     width?: ?number,
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIModalController
-    extends UIController<ModalControllerProps, ModalControllerState> {
+export default class UIModalController<Props, State>
+    extends UIController<ModalControllerProps & Props, ModalControllerState & State> {
     fullscreen: boolean;
     dismissible: boolean;
     modal: boolean;
@@ -65,7 +65,7 @@ export default class UIModalController
     dy: Animated.Value;
     slideAnimation: SlideAnimation;
 
-    constructor(props: ModalControllerProps) {
+    constructor(props: ModalControllerProps & Props) {
         super(props);
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
@@ -78,17 +78,13 @@ export default class UIModalController
         this.slideAnimation = new SlideAnimation({
             slideFrom: 'bottom',
         });
-
-        this.state = {
-            ...this.state,
-        };
     }
 
     componentDidMount() {
         super.componentDidMount();
     }
 
-    componentWillReceiveProps(nextProps: ModalControllerProps) {
+    componentWillReceiveProps(nextProps: ModalControllerProps & Props) {
         super.componentWillReceiveProps(nextProps);
     }
 

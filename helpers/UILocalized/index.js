@@ -1,9 +1,15 @@
+// @flow
+
 import LocalizedStrings from 'react-native-localization';
 import Moment from 'moment';
 import 'moment/locale/ru';
 
 import en from './en';
 import ru from './ru';
+import type { UILocalizedData } from './UILocalizedTypes';
+export type UIULocalizedType = {
+
+}
 
 class UILocalized extends LocalizedStrings {
     getLocale() {
@@ -75,6 +81,14 @@ class UILocalized extends LocalizedStrings {
     }
 }
 
+type LocalizedStringsMethods = {
+    setLanguage(language?: string): void,
+    getInterfaceLanguage(): string,
+    getAvailableLanguages(): string[],
+    formatString(str: string, ...values: any[]): string,
+    getString(key: string, language: string): string | null,
+}
+
 const localizedStrings = {
     en,
     ru,
@@ -82,7 +96,8 @@ const localizedStrings = {
 
 // For debug purposes
 // delete localizedStrings.ru;
-const localized = new UILocalized(localizedStrings);
+const localized: UILocalizedData & UILocalized & LocalizedStringsMethods =
+    new UILocalized(localizedStrings);
 
 Moment.locale(localized.getLocale());
 

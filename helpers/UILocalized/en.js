@@ -1,4 +1,8 @@
-const en = {
+// @flow
+
+import type { UILocalizedData } from './UILocalizedTypes';
+
+const en: UILocalizedData = {
     // TON
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
@@ -86,6 +90,7 @@ const en = {
     In: 'in',
     Sec: 'sec.',
     Description: 'Description',
+    Share: 'Share',
     ShareLink: 'Share Link',
     Report: 'Report',
     PleaseDoNotCloseTheApp: 'Please, do not close the app',
@@ -101,6 +106,7 @@ const en = {
     SorryWeCannotDoActionAtTheMoment: 'Sorry, we cannot {0} at the moment 😿. Please, try again later.',
     NumberCopiedToClipboard: 'Number copied to clipboard.',
     LinkCopiedToClipboard: 'Link copied to clipboard.',
+    MessageCopiedToClipboard: 'Message copied to clipboard.',
     FileIsTooBig: 'Sorry, we cannot process this. File is too big.',
     Important: 'IMPORTANT!',
     UserIsNotAuthorized: 'User is not authorized',
@@ -420,7 +426,11 @@ const en = {
     ReviewAndConfirm: 'Review and Confirm',
     PassportRequestReview: 'Your passport will be reviewded soon',
     PassportFetchingStatus: 'Fetching status...',
-    PassportStatus: ['Not confirmed', 'Pending confirmation', 'Confirmed'],
+    PassportStatus: [
+        'Not confirmed',
+        'Pending confirmation',
+        'Confirmed',
+    ],
     PassportSaveSuccess: 'Your Passport has been updated',
     PassportSaveError: 'An error has occurred while updating your Passport',
     DeleteDocument: 'Delete Document',
@@ -495,7 +505,12 @@ const en = {
     SMSNotice: 'SMS fees may apply',
 
     // Limits
-    TransactionError: ['-', 'The transfer limit has been reached', 'Access denied', 'Unknow error'],
+    TransactionError: [
+        '-',
+        'The transfer limit has been reached',
+        'Access denied',
+        'Unknow error',
+    ],
     LimitSetSuccess: 'The limit has been set successfully',
     LimitRemoveSuccess: 'The limit has been deleted',
 
@@ -509,7 +524,11 @@ const en = {
     Gram50: 'Grams', // 25,26,27,28,29,30 grams
 
     // Dates
-    DateSymbols: { year: 'YYYY', month: 'MM', day: 'DD' },
+    DateSymbols: {
+        year: 'YYYY',
+        month: 'MM',
+        day: 'DD',
+    },
 };
 
 export default en;
