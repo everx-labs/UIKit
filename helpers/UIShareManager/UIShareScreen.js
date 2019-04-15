@@ -129,6 +129,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                     </Text>
                 </View>
                 <UIButton
+                    testId="copy_button"
                     style={styles.button}
                     title={UILocalized.Copy}
                     buttonShape={UIButton.ButtonShape.Radius}

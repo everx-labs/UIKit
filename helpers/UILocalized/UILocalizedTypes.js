@@ -2,6 +2,7 @@
 
 export type UILocalizedData = {
     // TON
+    TONLabel: string,
     TONWallet: string,
     BITFuture: string,
     CopyRight: string,
@@ -28,6 +29,7 @@ export type UILocalizedData = {
     InvalidLastName: string,
     InvalidUsername: string,
     InvalidPassword: string,
+    InvalidEmail: string,
     YouHaveEnteredAnInvalidPhoneNumber: string,
     YouHaveEnteredAnEmptyCodeFor: string,
     YouHaveEnteredAnExpiredCodeFor: string,
@@ -518,4 +520,12 @@ export type UILocalizedData = {
         month: string,
         day: string,
     },
+
+    // Stub page
+    GetNotifiedWhenWeLaunch: string,
+    WillGetInTouchWithYouSoon: string,
+    ThanksForCooperation: string,
+
+    // Toasts
+    EnterCorrectDataToField: string,
 }
