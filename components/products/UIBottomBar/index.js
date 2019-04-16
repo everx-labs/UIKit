@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
+import { View, StyleSheet, Text, Linking } from 'react-native';
 import StylePropType from 'react-style-proptype';
 
 import UIComponent from '../../UIComponent';
@@ -32,7 +32,7 @@ type MenuItem = {
 }
 
 type Props = {
-    text: string,
+    leftText: string,
     textStyle: StylePropType,
     copyRight: string,
     menuItems: MenuItem[],
@@ -42,7 +42,7 @@ type Props = {
     postalCode: string,
     phoneNumber: string,
     email: string,
-    mobile: boolean,
+    isNarrow: boolean,
     screenWidth: number,
     containerStyle: StylePropType,
 };
@@ -53,10 +53,23 @@ type State = {
 };
 
 export default class UIBottomBar extends UIComponent<Props, State> {
+    // Getters
+    textStyle() {
+        const { theme, textStyle } = this.props;
+        const colorStyle = UIColor.textTertiaryStyle(theme);
+        return [UITextStyle.tinyMedium, colorStyle, textStyle];
+    }
+
+    textAccentStyle() {
+        const { theme, textStyle } = this.props;
+        const colorStyle = UIColor.textSecondaryStyle(theme);
+        return [UITextStyle.tinyMedium, colorStyle, textStyle];
+    }
+
     isNarrow() {
-        const { screenWidth, mobile } = this.props;
+        const { screenWidth, isNarrow } = this.props;
         if (!screenWidth) {
-            return mobile;
+            return isNarrow;
         }
         return screenWidth < UIConstant.elasticWidthWide();
     }
@@ -69,12 +82,39 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     hasNoLeftPart() {
-        const { text, menuItems } = this.props;
-        return !text && menuItems.length === 0;
+        const { leftText, menuItems } = this.props;
+        return !leftText && menuItems.length === 0;
+    }
+
+    // Render
+    renderAccentText() {
+        const { accentText, accentEmail } = this.props;
+        if (!accentText && !accentEmail) {
+            return null;
+        }
+        const accentStyle = this.textAccentStyle();
+        return (
+            <View style={[styles.container, UIStyle.justifyCenter]}>
+                <Text>
+                    <Text style={accentStyle}>
+                        {accentText}
+                    </Text>
+                    {' '}
+                    <UITextButton
+                        title={accentEmail}
+                        buttonStyle={UIStyle.tinyCellHeight}
+                        textStyle={accentStyle}
+                        textHoverStyle={accentStyle}
+                        textTappedStyle={accentStyle}
+                        onPress={() => { Linking.openURL(`mailto:${accentEmail}`); }}
+                    />
+                </Text>
+            </View>
+        );
     }
 
     renderEmail() {
-        const { email, textStyle } = this.props;
+        const { email } = this.props;
         if (!email) {
             return null;
         }
@@ -83,7 +123,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             <UITextButton
                 title={email}
                 buttonStyle={UIStyle.tinyCellHeight}
-                textStyle={textStyle}
+                textStyle={this.textStyle()}
                 textHoverStyle={primaryColorStyle}
                 textTappedStyle={primaryColorStyle}
                 onPress={() => { Linking.openURL(`mailto:${email}`); }}
@@ -91,10 +131,11 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         );
     }
 
-    renderCenterTextComponent(able: boolean) {
+    renderContacts(able: boolean) {
         const {
-            companyName, address, phoneNumber, postalCode, textStyle, location,
+            companyName, address, phoneNumber, postalCode, location,
         } = this.props;
+        const textStyle = this.textStyle();
         if (!able || this.hasNoContacts()) {
             return null;
         }
@@ -138,14 +179,15 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     renderLeft() {
-        const { text, textStyle } = this.props;
+        const { leftText } = this.props;
+        const textStyle = this.textStyle();
         if (this.hasNoLeftPart()) {
             return null;
         }
         return (
-            <View style={UIStyle.flex} testID="left text >>">
-                <Text style={textStyle}>
-                    {text}
+            <View style={UIStyle.flex}>
+                <Text style={[UITextStyle.tinyMedium, textStyle]}>
+                    {leftText}
                 </Text>
                 {this.renderMenu()}
             </View>
@@ -153,7 +195,8 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     renderMenu() {
-        const { menuItems, textStyle } = this.props;
+        const { menuItems } = this.props;
+        const textStyle = this.textStyle();
         if (menuItems.length === 0) {
             return null;
         }
@@ -183,20 +226,21 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         );
     }
 
-    renderDesktopCenterText() {
+    renderDesktopContacts() {
         if (this.hasNoContacts()) {
             return null;
         }
         const mobile = this.isNarrow();
         return (
-            <View style={UIStyle.flex} testID="center text >>">
-                {this.renderCenterTextComponent(!mobile)}
+            <View style={UIStyle.flex}>
+                {this.renderContacts(!mobile)}
             </View>
         );
     }
 
     renderCopyRight() {
-        const { textStyle, copyRight } = this.props;
+        const { copyRight } = this.props;
+        const textStyle = this.textStyle();
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
         const align = isShort ? UIStyle.alignCenter : UIStyle.alignEnd;
@@ -214,14 +258,13 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return (
             <View style={UIStyle.bottomScreenContainer}>
                 <View style={this.props.containerStyle}>
+                    {this.renderAccentText()}
                     <View style={styles.container}>
-
                         {this.renderLeft()}
-                        {this.renderDesktopCenterText()}
+                        {this.renderDesktopContacts()}
                         {this.renderCopyRight()}
-
                     </View>
-                    {this.renderCenterTextComponent(mobile)}
+                    {this.renderContacts(mobile)}
                 </View>
             </View>
         );
@@ -231,17 +274,24 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 }
 
 UIBottomBar.defaultProps = {
-    textStyle: UITextStyle.tertiaryTinyRegular,
+    theme: UIColor.Theme.Light,
+    textStyle: {},
     containerStyle: {},
+
     menuItems: [],
-    text: '',
+    leftText: '',
+    accentText: '',
+    accentEmail: '',
+
     companyName: '',
     address: '',
     location: '',
     postalCode: '',
     phoneNumber: '',
     email: '',
+
     copyRight: '',
-    mobile: true,
+
+    isNarrow: true,
     screenWidth: 0,
 };

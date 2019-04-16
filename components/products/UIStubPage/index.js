@@ -175,12 +175,11 @@ export default class UIStubPage extends UIComponent<Props, State> {
     }
 
     renderBottomBar() {
-        const textStyleProp = this.props.presetName === UIBackgroundView.PresetNames.Action
-            ? { textStyle: UITextStyle.actionMinusTinyMedium }
-            : null;
         return (
             <UIBottomBar
-                {...textStyleProp}
+                theme={UIColor.Theme.Action}
+                accentText={TONLocalized.Contact}
+                accentEmail={TONLocalized.PressEmail}
                 copyRight={TONLocalized.Copyright}
             />
         );
