@@ -48,6 +48,7 @@ type ModalControllerState = ControllerState & {
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
+    header?: React$Node,
 };
 
 const styles = StyleSheet.create({
@@ -260,6 +261,10 @@ export default class UIModalController<Props, State>
         this.bgAlpha = this.interpolateColor();
     }
 
+    setHeader(header: React$Node) {
+        this.setStateSafely( { header });
+    }
+
     // Events
 
     // Actions
@@ -297,6 +302,9 @@ export default class UIModalController<Props, State>
     getModalNavigationBar() {
         if (!this.dismissible) {
             return null;
+        }
+        if (this.state.header) {
+            return this.state.header;
         }
         return (<UIModalNavigationBar
             swipeToDismiss={this.shouldSwipeToDismiss()}
