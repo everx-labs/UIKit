@@ -74,7 +74,7 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
         NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
     }
 
-    handleConnectionChange = (connected) => {
+    handleConnectionChange = (connected: boolean) => {
         this.setConnected(connected);
         // Change status bar color style
         const statusBarStyle = connected ? 'dark-content' : 'light-content';
