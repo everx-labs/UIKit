@@ -64,7 +64,7 @@ export interface ReactNavigation {
 
 export type CreateNavigationOptions = (options: { navigation: ReactNavigation }) => {};
 
-type AnyComponent = Object;
+export type AnyComponent = Object;
 
 type UINavigationBarOptions = {
     title?: string,
