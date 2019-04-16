@@ -114,6 +114,7 @@ const en: UILocalizedData = {
     UserIsNotAuthorized: 'User is not authorized',
     WalletIsNotInitialized: 'Wallet is not initialized',
     WeAreSorryButYourBrowserVersionIsNotCompatible: 'We are sorry but your browser version is not compatible with our application.\nPlease use any modern browser instead (Chrome, Safari, Edge, Firefox, etc.).',
+    PleaseGoOnline: 'Please go Online',
 
     // Profile
     Profile: 'Profile',

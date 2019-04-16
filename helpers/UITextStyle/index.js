@@ -25,6 +25,11 @@ const secondary = {
     color: UIColor.textSecondary(),
 };
 
+const secondaryDark = {
+    ...text,
+    color: UIColor.textSecondary(UIColor.Theme.Dark),
+};
+
 const quaternary = {
     ...text,
     color: UIColor.textQuaternary(),
@@ -242,6 +247,10 @@ const UITextStyle = StyleSheet.create({
         ...grey1,
         ...UIFont.titleLight(),
     },
+    secondaryDarkTitleLight: {
+        ...secondaryDark,
+        ...UIFont.titleLight(),
+    },
 
     // Subtitle - fontSize: 24, lineHeight: 32
     grey1SubtitleRegular: {
@@ -252,10 +261,22 @@ const UITextStyle = StyleSheet.create({
         ...grey1,
         ...UIFont.subtitleBold(),
     },
+    secondaryDarkSubtitleRegular: {
+        ...secondaryDark,
+        ...UIFont.subtitleRegular(),
+    },
+    secondaryDarkSubtitleBold: {
+        ...secondaryDark,
+        ...UIFont.subtitleBold(),
+    },
 
     // Small - fontSize: 16, lineHeight: 20
     grey1SmallRegular: {
         ...grey1,
+        ...UIFont.smallRegular(),
+    },
+    secondaryDarkSmallRegular: {
+        ...secondaryDark,
         ...UIFont.smallRegular(),
     },
 
@@ -264,10 +285,18 @@ const UITextStyle = StyleSheet.create({
         ...grey1,
         ...UIFont.captionRegular(),
     },
+    secondaryDarkCaptionRegular: {
+        ...secondaryDark,
+        ...UIFont.captionRegular(),
+    },
 
     // Tiny - fontSize: 12, lineHeight: 16
     grey1TinyRegular: {
         ...grey1,
+        ...UIFont.tinyRegular(),
+    },
+    secondaryDarkTinyRegular: {
+        ...secondaryDark,
         ...UIFont.tinyRegular(),
     },
 
