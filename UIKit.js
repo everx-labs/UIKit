@@ -33,6 +33,7 @@ import UIFunction from './helpers/UIFunction';
 import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/images/UIImageView';
+import UILabel from './components/text/UILabel';
 import UILayoutManager from './helpers/UILayoutManager';
 import UILinkInput from './components/input/UILinkInput';
 import UIListHeader from './components/text/UIListHeader';
@@ -77,7 +78,11 @@ import UITooltip from './components/notifications/UITooltip';
 import UIUserAgent from './helpers/UIUserAgent';
 
 // Types
-import type { CreateNavigationOptions, ReactNavigation } from './components/navigation/UINavigationBar';
+import type {
+    AnyComponent,
+    CreateNavigationOptions,
+    ReactNavigation,
+} from './components/navigation/UINavigationBar';
 import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
 import type { NavigationMenuList } from './components/gram.scan/UITopBar';
@@ -120,6 +125,7 @@ export {
     UIImage,
     UIImageButton,
     UIImageView,
+    UILabel,
     UILayoutManager,
     UILinkInput,
     UIListHeader,
@@ -165,6 +171,7 @@ export {
 };
 
 export type {
+    AnyComponent,
     CreateNavigationOptions,
     NavigationMenuList,
     NavigationProps,
