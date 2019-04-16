@@ -114,6 +114,7 @@ const ru: UILocalizedData = {
     UserIsNotAuthorized: 'Пользователь не авторизован',
     WalletIsNotInitialized: 'Кошелек не инициализирован',
     WeAreSorryButYourBrowserVersionIsNotCompatible: 'Извините, но ваша версия браузера несовместима с нашим приложением.\nВместо этого используйте любой современный браузер (Chrome, Safari, Edge, Firefox и др.).',
+    PleaseGoOnline: 'Пожалуйста, выйдите в онлайн',
 
     // Profile
     Profile: 'Профиль',

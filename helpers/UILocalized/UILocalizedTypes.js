@@ -112,6 +112,7 @@ export type UILocalizedData = {
     UserIsNotAuthorized: string,
     WalletIsNotInitialized: string,
     WeAreSorryButYourBrowserVersionIsNotCompatible: string,
+    PleaseGoOnline: string,
 
     // Profile
     Profile: string,
