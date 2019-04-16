@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     photoContainer: {
         width: '100%',
         height: '100%',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        alignItems: 'center',
+        justifyContent: 'center',
         overflow: 'hidden',
     },
 });
@@ -399,6 +399,7 @@ export default class UIImageView extends UIComponent<Props, State> {
             return (
                 <TouchableOpacity
                     onPress={() => this.onPressPhoto()}
+                    style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
                 >
                     <View style={this.props.containerStyle}>
                         {this.renderPhotoContent()}
@@ -412,7 +413,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         const { width, height } = Dimensions.get('window');
         return (
             <LightboxMobile
-                style={[styles.photoContainer, this.props.photoStyle]}
+                style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
                 underlayColor={UIColor.overlayWithAlpha(0.32)}
                 activeProps={{
                     style: { resizeMode: 'contain', width, height },
@@ -446,6 +447,7 @@ UIImageView.defaultProps = {
     editable: false,
     expandable: true,
     disabled: false,
+    alignItems: 'center',
     photoStyle: null,
     containerStyle: null,
     resizeMode: 'cover',
@@ -461,6 +463,7 @@ UIImageView.propTypes = {
     editable: PropTypes.bool,
     expandable: PropTypes.bool,
     disabled: PropTypes.bool,
+    alignItems: PropTypes.string,
     containerStyle: StylePropType,
     photoStyle: StylePropType,
     resizeMode: PropTypes.string,
