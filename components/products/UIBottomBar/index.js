@@ -10,6 +10,8 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
 
+import type { UIColorThemeNameType } from '../../../helpers/UIColor';
+
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.bigCellHeight(),
@@ -32,7 +34,7 @@ type MenuItem = {
 }
 
 type Props = {
-    theme: string,
+    theme?: UIColorThemeNameType,
     leftText: string,
     accentText: string,
     accentEmail: string,
