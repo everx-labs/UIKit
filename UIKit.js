@@ -164,7 +164,6 @@ export {
 export type {
     AnyComponent,
     CreateNavigationOptions,
-    NavigationMenuList,
     NavigationProps,
     PointerEvents,
     PositionObject,
