@@ -10,7 +10,7 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
 
-import type { UIColorThemeNameType } from '../../../helpers/UIColor';
+import type { UIColorThemeNameType } from '../../../helpers/UIColor/UIColorTypes';
 
 const styles = StyleSheet.create({
     container: {

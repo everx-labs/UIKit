@@ -1,81 +1,17 @@
 // @flow
 import { StyleSheet } from 'react-native';
 
-const PRIMARY_MINUS = '#47A9DA';
-const PRIMARY = '#0088CC';
-const PRIMARY_PLUS = '#007AB8';
-const PRIMARY_1 = '#C5E4F3';
-const PRIMARY_2 = '#A2D4EC';
-const PRIMARY_3 = '#7AC1E4';
-const PRIMARY_4 = '#006BA1';
-const PRIMARY_5 = '#005885';
-const PRIMARY_6 = '#003F5E';
-const SECONDARY = '#FFFFFF';
-const TERTIARY = '#FFFFFF';
-const BLACK = '#000000';
-const BLACK_LIGHT = '#2B3338';
-const WHITE = '#FFFFFF';
-const FA = '#FAFAFA';
-const DARK = '#102027';
-const GREY = '#727C81';
-const GREY_1 = '#EBEDEE';
-const GREY_2 = '#DDE1E2';
-const GREY_3 = '#CED3D6';
-const LIGHT = '#CFD8DC';
-const NOT_WHITE = '#F8F9F9';
-const BLACK_80 = 'rgba(0,0,0,0.8)';
-const WHITE_40 = 'rgba(255,255,255,0.4)';
-const WHITE_80 = 'rgba(255,255,255,0.8)';
-const SUCCESS = '#27AE60';
-const WARNING = '#F2C94C';
-const ERROR = '#EB5757';
+import UIColorPalette from './UIColorPalette';
+import { UIColorThemeName } from './UIColorTypes';
+import UIColorThemeAction from './UIColorThemeAction';
+import UIColorThemeDark from './UIColorThemeDark';
+import UIColorThemeLight from './UIColorThemeLight';
 
-const TEXT_LPRIMARY = '#000000';
-const TEXT_DPRIMARY = '#FFFFFF';
-const TEXT_LPARAGRAPH = '#000000';
-const TEXT_DPARAGRAPH = '#FFFFFF';
-const TEXT_LSECONDARY = '#364046';
-const TEXT_DSECONDARY = '#EBEDEE';
-const TEXT_LTERTIARY = '#96A1A7';
-const TEXT_DTERTIARY = '#BEC4C8';
-const TEXT_LQUARTERNARY = '#BEC4C8';
-const TEXT_DQUARTERNARY = '#96A1A7';
-const TEXT_LCAUTION = '#FF9800';
-const TEXT_DCAUTION = '#FF9800';
-
-const BACKGROUND_LPRIMARY = '#FFFFFF';
-const BACKGROUND_DPRIMARY = '#263238';
-const BACKGROUND_LSECONDARY = '#FAFAFA';
-const BACKGROUND_DSECONDARY = '#232E33';
-const BACKGROUND_LTERTIARY = '#CFD8DC';
-const BACKGROUND_DTERTIARY = '#2F3D45';
-const BACKGROUND_LQUARTER = '#E7EBED';
-const BACKGROUND_DQUARTER = '#5A7684';
-const BACKGROUND_LQUINARY = '#F3F5F6';
-const BACKGROUND_DQUINARY = '#85AFC4';
-const BACKGROUND_LWHITELIGHT = '#F5F5F5';
-const BACKGROUND_DWHITELIGHT = '#F5F5F5';
-
-const BACKGROUND_SEPARATOR_CHAT = '#9FA6A9';
-
-const HUE_005D8C = '#005D8C';
-const HUE_00334C = '#00334C';
-const HUE_0090D9 = '#0090D9';
-const HUE_0077B2 = '#0077B2';
-
-const OVERLAY_60 = 'rgba(16, 32, 39, 0.6)';
-const OVERLAY_40 = 'rgba(16, 32, 39, 0.4)';
-const OVERLAY_20 = 'rgba(16, 32, 39, 0.2)';
-const OVERLAY_0 = 'rgba(16, 32, 39, 0)';
-
-const UNCONFIRMED_PASSPORT = '#FF9800';
-const WALLET_VERSION = '#BEC4C8';
-
-const UIColorDefaultAvatar =
-    [
-        '#EF5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#1E88E5', '#0288D1',
-        '#0097A7', '#009688', '#43A047', '#558B2F', '#F4511E', '#8D6E63', '#78909C',
-    ];
+import type {
+    UIColorData,
+    UIColorThemeData,
+    UIColorThemeNameType,
+} from './UIColorTypes';
 
 const colorStyleSheets = {
     color: {},
@@ -84,196 +20,10 @@ const colorStyleSheets = {
     tintColor: {},
 };
 
-const UIColorThemeName = {
-    light: 'light',
-    dark: 'dark',
-    action: 'action',
-};
-
-export type UIColorThemeNameType = ('light' | 'dark' | 'action');
-
-export type UIColorData = string;
-
-export type UIColorThemeData = {
-    borderBottom: {
-        normal: UIColorData,
-        focused: UIColorData,
-    },
-    text: {
-        primary: {
-            normal: UIColorData,
-            disabled: UIColorData,
-            tapped: UIColorData,
-            hover: UIColorData,
-        },
-        secondary: UIColorData,
-        tertiary: UIColorData,
-        quaternary: UIColorData,
-        action: UIColorData,
-        paragraph: UIColorData,
-        caution: UIColorData,
-        placeholder: UIColorData,
-    },
-    background: {
-        primary: UIColorData,
-        secondary: UIColorData,
-        tertiary: UIColorData,
-        quarter: UIColorData,
-        quinary: UIColorData,
-        whiteLight: UIColorData,
-    },
-    button: {
-        background: {
-            normal: UIColorData,
-            tapped: UIColorData,
-            hover: UIColorData,
-        },
-        title: {
-            normal: UIColorData,
-            disabled: UIColorData,
-        },
-    },
-    detailsInput: {
-        comment: UIColorData,
-    },
-}
-
-const lightTheme: UIColorThemeData = {
-    borderBottom: {
-        normal: LIGHT,
-        focused: PRIMARY,
-    },
-    text: {
-        primary: {
-            normal: TEXT_LPRIMARY,
-            disabled: TEXT_LSECONDARY,
-            tapped: PRIMARY_5,
-            hover: PRIMARY_4,
-        },
-        secondary: TEXT_LSECONDARY,
-        tertiary: TEXT_LTERTIARY,
-        quaternary: TEXT_LQUARTERNARY,
-        action: PRIMARY,
-        paragraph: TEXT_LPARAGRAPH,
-        caution: TEXT_LCAUTION,
-        placeholder: TEXT_LTERTIARY,
-    },
-    background: {
-        primary: BACKGROUND_LPRIMARY,
-        secondary: BACKGROUND_LSECONDARY,
-        tertiary: BACKGROUND_LTERTIARY,
-        quarter: BACKGROUND_LQUARTER,
-        quinary: BACKGROUND_LQUINARY,
-        whiteLight: BACKGROUND_LWHITELIGHT,
-    },
-    button: {
-        background: {
-            normal: PRIMARY,
-            tapped: PRIMARY_5,
-            hover: PRIMARY_4,
-        },
-        title: {
-            normal: WHITE,
-            disabled: LIGHT,
-        },
-    },
-    detailsInput: {
-        comment: ERROR,
-    },
-};
-
-const darkTheme: UIColorThemeData = {
-    borderBottom: {
-        normal: LIGHT,
-        focused: PRIMARY,
-    },
-    text: {
-        primary: {
-            normal: TEXT_DPRIMARY,
-            disabled: TEXT_DSECONDARY,
-            tapped: PRIMARY_2,
-            hover: PRIMARY_1,
-        },
-        secondary: TEXT_DSECONDARY,
-        tertiary: TEXT_DTERTIARY,
-        quaternary: TEXT_DQUARTERNARY,
-        action: WHITE,
-        paragraph: TEXT_DPARAGRAPH,
-        caution: TEXT_DCAUTION,
-        placeholder: PRIMARY_3,
-    },
-    background: {
-        primary: BACKGROUND_DPRIMARY,
-        secondary: BACKGROUND_DSECONDARY,
-        tertiary: BACKGROUND_DTERTIARY,
-        quarter: BACKGROUND_DQUARTER,
-        quinary: BACKGROUND_DQUINARY,
-        whiteLight: BACKGROUND_DWHITELIGHT,
-    },
-    button: {
-        background: {
-            normal: PRIMARY,
-            tapped: PRIMARY_5,
-            hover: PRIMARY_4,
-        },
-        title: {
-            normal: WHITE,
-            disabled: LIGHT,
-        },
-    },
-    detailsInput: {
-        comment: WHITE,
-    },
-};
-
-const actionTheme: UIColorThemeData = {
-    borderBottom: {
-        normal: PRIMARY_MINUS,
-        focused: PRIMARY_3,
-    },
-    text: {
-        primary: {
-            normal: TEXT_DPRIMARY,
-            disabled: TEXT_DSECONDARY,
-            tapped: PRIMARY_2,
-            hover: PRIMARY_1,
-        },
-        secondary: TEXT_DSECONDARY,
-        tertiary: PRIMARY_3,
-        quaternary: TEXT_DQUARTERNARY,
-        action: WHITE,
-        paragraph: TEXT_DPARAGRAPH,
-        caution: TEXT_DCAUTION,
-        placeholder: PRIMARY_3,
-    },
-    background: {
-        primary: BACKGROUND_DPRIMARY,
-        secondary: BACKGROUND_DSECONDARY,
-        tertiary: BACKGROUND_DTERTIARY,
-        quarter: PRIMARY_PLUS,
-        quinary: BACKGROUND_DQUINARY,
-        whiteLight: BACKGROUND_DWHITELIGHT,
-    },
-    button: {
-        background: {
-            normal: PRIMARY_PLUS,
-            tapped: PRIMARY_6,
-            hover: PRIMARY_4,
-        },
-        title: {
-            normal: GREY_1,
-            disabled: PRIMARY,
-        },
-    },
-    detailsInput: {
-        comment: WHITE,
-    },
-};
-
 const themes: { [UIColorThemeNameType]: UIColorThemeData } = {
-    light: lightTheme,
-    dark: darkTheme,
-    action: actionTheme,
+    light: UIColorThemeLight,
+    dark: UIColorThemeDark,
+    action: UIColorThemeAction,
 };
 
 const current = UIColorThemeName.light;
@@ -292,121 +42,155 @@ export default class UIColor {
         TintColor: 'tintColor',
     };
 
-    // Base colors
+    static palette = UIColorPalette;
+
+    // Base palette
     static primaryMinus() {
-        return PRIMARY_MINUS;
+        return UIColorPalette.primaryMinus;
     }
 
     static primary() {
-        return PRIMARY;
+        return UIColorPalette.primary;
     }
 
     static primaryPlus() {
-        return PRIMARY_PLUS;
+        return UIColorPalette.primaryPlus;
     }
 
     static primary1() {
-        return PRIMARY_1;
+        return UIColorPalette.primary1;
     }
 
     static primary2() {
-        return PRIMARY_2;
+        return UIColorPalette.primary2;
     }
 
     static primary3() {
-        return PRIMARY_3;
+        return UIColorPalette.primary3;
     }
 
     static primary4() {
-        return PRIMARY_4;
+        return UIColorPalette.primary4;
     }
 
     static primary5() {
-        return PRIMARY_5;
+        return UIColorPalette.primary5;
     }
 
     static primary6() {
-        return PRIMARY_6;
+        return UIColorPalette.primary6;
     }
 
     static secondary() {
-        return SECONDARY;
+        return UIColorPalette.secondary;
     }
 
     static tertiary() {
-        return TERTIARY;
+        return UIColorPalette.tertiary;
     }
 
     static black() {
-        return BLACK;
+        return UIColorPalette.black;
     }
 
     static blackLight() {
-        return BLACK_LIGHT;
+        return UIColorPalette.blackLight;
     }
 
     static white() {
-        return WHITE;
+        return UIColorPalette.white;
     }
 
     static fa() {
-        return FA;
+        return UIColorPalette.fa;
     }
 
     static dark() {
-        return DARK;
+        return UIColorPalette.dark;
     }
 
     static grey() {
-        return GREY;
+        return UIColorPalette.grey;
     }
 
     static grey1() {
-        return GREY_1;
+        return UIColorPalette.grey1;
     }
 
     static grey2() {
-        return GREY_2;
+        return UIColorPalette.grey2;
     }
 
     static grey3() {
-        return GREY_3;
+        return UIColorPalette.grey3;
     }
 
     static msgSeparator() {
-        return BACKGROUND_SEPARATOR_CHAT;
+        return UIColorPalette.background.separatorChat;
     }
 
     static light() {
-        return LIGHT;
+        return UIColorPalette.light;
     }
 
     static notWhite() {
-        return NOT_WHITE;
+        return UIColorPalette.notWhite;
     }
 
     static black80() {
-        return BLACK_80;
+        return UIColorPalette.black80;
     }
 
     static white40() {
-        return WHITE_40;
+        return UIColorPalette.white40;
     }
 
     static white80() {
-        return WHITE_80;
+        return UIColorPalette.white80;
     }
 
     static success() {
-        return SUCCESS;
+        return UIColorPalette.success;
     }
 
     static warning() {
-        return WARNING;
+        return UIColorPalette.warning;
     }
 
     static error() {
-        return ERROR;
+        return UIColorPalette.error;
+    }
+
+    static hue005D8C() {
+        return UIColorPalette.hue005D8C;
+    }
+
+    static hue00334C() {
+        return UIColorPalette.hue00334C;
+    }
+
+    static hue0090D9() {
+        return UIColorPalette.hue0090D9;
+    }
+
+    static hue0077B2() {
+        return UIColorPalette.hue0077B2;
+    }
+
+    static overlay60() {
+        return UIColorPalette.overlay60;
+    }
+
+    static overlay40() {
+        return UIColorPalette.overlay40;
+    }
+
+    static overlay20() {
+        return UIColorPalette.overlay20;
+    }
+
+    static overlay0() {
+        return UIColorPalette.overlay0;
     }
 
     // Text colors
@@ -549,47 +333,14 @@ export default class UIColor {
         return themes[theme || current].detailsInput.comment;
     }
 
-    // Hue colors
-    static hue005D8C() {
-        return HUE_005D8C;
-    }
-
-    static hue00334C() {
-        return HUE_00334C;
-    }
-
-    static hue0090D9() {
-        return HUE_0090D9;
-    }
-
-    static hue0077B2() {
-        return HUE_0077B2;
-    }
-
-    // Overlays
-    static overlay60() {
-        return OVERLAY_60;
-    }
-
-    static overlay40() {
-        return OVERLAY_40;
-    }
-
-    static overlay20() {
-        return OVERLAY_20;
-    }
-
-    static overlay0() {
-        return OVERLAY_0;
-    }
 
     static overlayWithAlpha(alpha: number = 0.5) {
         return `rgba(16, 32, 39, ${alpha})`;
     }
 
     static defaultAvatarBackground(index: number) {
-        const count = UIColorDefaultAvatar.length;
-        return UIColorDefaultAvatar[index % count];
+        const count = UIColorPalette.avatar.length;
+        return UIColorPalette.avatar[index % count];
     }
 
     static getAvatarBackgroundColor(id: (number | string) = 0) {
@@ -602,11 +353,11 @@ export default class UIColor {
 
     // Passport
     static unconfirmedPassport() {
-        return UNCONFIRMED_PASSPORT;
+        return UIColorPalette.unconfirmedPassport;
     }
 
     static walletVersion() {
-        return WALLET_VERSION;
+        return UIColorPalette.walletVersion;
     }
 
     // Utility

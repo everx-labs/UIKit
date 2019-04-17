@@ -8,7 +8,7 @@ import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/L
 import type {
     UIColorData,
     UIColorThemeNameType,
-} from '../../../helpers/UIColor';
+} from '../../../helpers/UIColor/UIColorTypes';
 
 import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';

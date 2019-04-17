@@ -72,6 +72,7 @@ import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
 import UIUserAgent from './helpers/UIUserAgent';
+import UIColorPalette from './helpers/UIColor/UIColorPalette';
 
 // Types
 import type {
@@ -81,9 +82,9 @@ import type {
 } from './components/navigation/UINavigationBar';
 import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
-import type { NavigationMenuList } from '../../components/TopBar';
 import type { ContentInset } from './controllers/UIController';
 import type { DetailsList } from './components/text/UIDetailsTable';
+import type { UIColorData, UIColorThemeNameType } from './helpers/UIColor/UIColorTypes';
 
 export {
     UIActionComponent,
@@ -160,16 +161,18 @@ export {
     UIToggle,
     UITooltip,
     UIUserAgent,
+    UIColorPalette,
 };
 
 export type {
     AnyComponent,
     CreateNavigationOptions,
-    NavigationMenuList,
     NavigationProps,
     PointerEvents,
     PositionObject,
     ReactNavigation,
     ContentInset,
     DetailsList,
+    UIColorData,
+    UIColorThemeNameType,
 };
