@@ -9,11 +9,11 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
-import UIDetailsInput from '../../text/UIDetailsInput';
+import UIEmailInput from '../../input/UIEmailInput';
 
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
-import icoTonLabel from '../../../assets/logo/ton-label/ton-label-white.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
+import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
 
 const styles = StyleSheet.create({
     container: {
@@ -45,12 +45,24 @@ const customStyles = {
     ],
 };
 
-type Props = {};
+type Props = {
+    presetName: string,
+    needBottomIcon: boolean,
+    title: string,
+    description: string,
+    onSubmit: (string) => void,
+};
 
-type State = {};
+type State = {
+    screenWidth: number,
+    email: string,
+    submitted: boolean,
+};
 
 export default class UIStubPage extends UIComponent<Props, State> {
-    constructor(props) {
+    emailInput: ?UIEmailInput;
+
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -62,11 +74,13 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
-        this.detailsInput.focus();
+        if (this.emailInput) {
+            this.emailInput.focus();
+        }
     }
 
     // Events
-    onLayout(e) {
+    onLayout(e: any) {
         const { width } = e.nativeEvent.layout;
         if (width !== this.getScreenWidth()) {
             this.setScreenWidth(width);
@@ -75,22 +89,24 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
     onSubmit() {
         this.setSubmitted();
-        UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
+        setTimeout(() => {
+            UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
+        }, UIConstant.feedbackDelay());
         const email = this.getEmail();
         // ReactGA.event({ category: 'Form', action: 'onSubmit' });
         this.props.onSubmit(email);
     }
 
     // Setters
-    setScreenWidth(screenWidth) {
+    setScreenWidth(screenWidth: number) {
         this.setStateSafely({ screenWidth });
     }
 
-    setEmail(email) {
+    setEmail(email: string) {
         this.setStateSafely({ email });
     }
 
-    setSubmitted(submitted = true) {
+    setSubmitted(submitted: boolean = true) {
         this.setStateSafely({ submitted });
     }
 
@@ -144,34 +160,52 @@ export default class UIStubPage extends UIComponent<Props, State> {
             );
         }
         return (
-            <UIDetailsInput
-                ref={(component) => { this.detailsInput = component; }}
-                theme={UIColor.Theme.Dark}
+            <UIEmailInput
+                ref={(component) => { this.emailInput = component; }}
+                theme={UIColor.Theme.Action}
                 value={this.getEmail()}
-                valueType={UIDetailsInput.ValueType.Email}
-                placeholder={UILocalized.EmailAddress}
-                containerStyle={UIStyle.greatCellHeight}
+                containerStyle={StyleSheet.flatten([
+                    UIStyle.greatCellHeight,
+                    UIStyle.marginTopSmall,
+                ])}
+                needArrow
                 onChangeText={text => this.setEmail(text)}
                 onSubmitEditing={() => this.onSubmit()}
             />
         );
     }
 
-    render() {
-        const { title, icon, description } = this.props;
+    renderBottomBar() {
+        return (
+            <UIBottomBar
+                theme={UIColor.Theme.Action}
+                accentText={UILocalized.Contact}
+                accentEmail={UILocalized.PressEmail}
+                copyRight={UILocalized.CopyRight}
+            />
+        );
+    }
+
+    render(): React$Node {
+        const {
+            title, needBottomIcon, description,
+        } = this.props;
         const widthStyle = this.getWidthStyle();
+        const bottomIcon = needBottomIcon
+            ? <Image source={icoTonLabs} style={styles.bottomIcon} />
+            : null;
         return (
             <View
                 onLayout={e => this.onLayout(e)}
                 style={styles.container}
             >
                 <View style={[...customStyles.contentContainer, widthStyle]}>
-                    <View>
-                        <Image source={icon} style={UIStyle.positionAbsolute} />
-                        <Text style={UITextStyle.whiteKeyBold}>
-                            {title}
-                        </Text>
-                    </View>
+                    <Text style={UITextStyle.whiteAccentBold}>
+                        {UILocalized.TONLabel}
+                    </Text>
+                    <Text style={UITextStyle.whiteKeyBold}>
+                        {title}
+                    </Text>
                     <View style={customStyles.description}>
                         <Text style={UITextStyle.grey1SubtitleBold}>
                             {description}
@@ -179,7 +213,8 @@ export default class UIStubPage extends UIComponent<Props, State> {
                     </View>
                     {this.renderInput()}
                 </View>
-                <Image source={icoTonLabs} style={styles.bottomIcon} />
+                {this.renderBottomBar()}
+                {bottomIcon}
             </View>
         );
     }
@@ -188,8 +223,9 @@ export default class UIStubPage extends UIComponent<Props, State> {
 }
 
 UIStubPage.defaultProps = {
-    icon: icoTonLabel,
-    title: 'dev.',
+    presetName: UIBackgroundView.PresetNames.Primary,
+    needBottomIcon: true,
+    title: '',
     description: UILocalized.GetNotifiedWhenWeLaunch,
     onSubmit: () => {},
 };

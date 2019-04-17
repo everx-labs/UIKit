@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import UIColor from '../../../helpers/UIColor';
@@ -8,7 +7,7 @@ import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
 import UIStyle from '../../../helpers/UIStyle';
 import UINavigationBackButton from '../UINavigationBackButton';
-import UISearchBar from '../../text/UISearchBar';
+import UISearchBar from '../../input/UISearchBar';
 import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
@@ -65,7 +64,7 @@ export interface ReactNavigation {
 
 export type CreateNavigationOptions = (options: { navigation: ReactNavigation }) => {};
 
-type AnyComponent = Object;
+export type AnyComponent = Object;
 
 type UINavigationBarOptions = {
     title?: string,
@@ -136,9 +135,14 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
 
     // Component
     render() {
+        const title = this.getTitle();
+        const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
         return (
             <View style={styles.container}>
-                <View style={styles.buttonsContainer}>
+                <View
+                    {...testIDProp}
+                    style={styles.buttonsContainer}
+                >
                     {this.getHeaderLeft()}
                     {this.getHeaderRight()}
                 </View>

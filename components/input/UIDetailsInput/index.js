@@ -3,24 +3,23 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 
-import { TextInput, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { TextInput, Text, View, StyleSheet } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIColor from '../../../helpers/UIColor';
-import UILocalized from '../../../helpers/UILocalized';
+import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
-import UIFunction from '../../../helpers/UIFunction';
 
-import icoDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
-import icoAbled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
-import icoAbledHover from '../../../assets/ico-arrow-right/arrow-right-white.png';
+import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
+import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
+import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
+        //
     },
     textView: {
         paddingTop: UIConstant.tinyContentOffset(),
@@ -28,16 +27,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    beginningTag: {
+        margin: 0,
+        padding: 0,
+        textAlign: 'center',
+    },
 });
 
 export type DetailsProps = {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
+    beginningTag: string,
     containerStyle: StylePropType,
     comment: string,
     commentColor?: string | null,
-    dark?: boolean,
     editable: boolean,
     floatingTitle: boolean,
     hideBottomLine: boolean,
@@ -46,93 +50,78 @@ export type DetailsProps = {
     maxLength?: number,
     maxLines: number,
     needArrow?: boolean,
-    onBlur?: () => void,
+    onBlur: () => void,
     onChangeText: (text: string) => void,
-    onFocus?: () => void,
+    onFocus: () => void,
     onSubmitEditing?: () => void,
     onKeyPress?: (e: any) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
     secureTextEntry: boolean,
     showSymbolsLeft: boolean,
+    submitDisabled?: boolean,
     token?: string,
+    theme?: string,
     value: string,
-    valueType?: string,
     testID?: string,
 };
-export type DetailsState = {};
+
+export type DetailsState = {
+    focused: boolean,
+};
+
+export const detailsDefaultProps = {
+    autoCapitalize: 'sentences',
+    autoFocus: false,
+    beginningTag: '',
+    containerStyle: {},
+    comment: '',
+    editable: true,
+    floatingTitle: true,
+    hideBottomLine: false,
+    hidePlaceholder: false,
+    keyboardType: 'default',
+    maxLines: 1,
+    needArrow: false,
+    onBlur: () => {},
+    onChangeText: () => {},
+    onFocus: () => {},
+    onSubmitEditing: () => {},
+    onKeyPress: () => {},
+    placeholder: '',
+    secureTextEntry: false,
+    showSymbolsLeft: false,
+    submitDisabled: false,
+    theme: UIColor.Theme.Light,
+    value: '',
+};
 
 export default class UIDetailsInput<Props, State>
-    extends UIComponent<Props & DetailsProps, State & DetailsState> {
+    extends UIComponent<Props & DetailsProps, any & DetailsState> {
     textInput: ?TextInput;
 
-    static ValueType = {
-        Default: 'default',
-        Email: 'email',
-    };
+    static defaultProps: DetailsProps = detailsDefaultProps;
 
-    static defaultProps: DetailsProps = {
-        autoCapitalize: 'sentences',
-        autoFocus: false,
-        containerStyle: {},
-        comment: '',
-        editable: true,
-        floatingTitle: true,
-        hideBottomLine: false,
-        hidePlaceholder: false,
-        keyboardType: 'default',
-        maxLines: 1,
-        needArrow: false,
-        onBlur: () => {},
-        onChangeText: () => {},
-        onFocus: () => {},
-        onSubmitEditing: () => {},
-        onKeyPress: () => {},
-        placeholder: UILocalized.Details,
-        secureTextEntry: false,
-        showSymbolsLeft: false,
-        valueType: UIDetailsInput.ValueType.Default,
-        value: '',
-    };
-
-    constructor(props) {
+    constructor(props: Props & DetailsProps) {
         super(props);
 
         this.state = {
             focused: false,
-            arrowHover: false,
         };
     }
 
     // Setters
-    setFocused(focused = true) {
+    setFocused(focused: boolean = true) {
         this.setStateSafely({ focused });
     }
 
-    setArrowHover(arrowHover = true) {
-        this.setStateSafely({ arrowHover });
-    }
-
     // Getters
-    // isFocused() {
-    //     return this.textInput && this.textInput.isFocused();
-    // }
-
-    // previous worked only after onChangeText event
     isFocused() {
         return this.state.focused;
     }
 
-    isArrowHover() {
-        return this.state.arrowHover;
-    }
-
     isSubmitDisabled() {
-        const { valueType, value } = this.props;
-        if (valueType === UIDetailsInput.ValueType.Email) {
-            return !UIFunction.isEmailAddress(value);
-        }
-        return !value;
+        return !this.props.value || this.props.submitDisabled;
     }
 
     keyboardType() {
@@ -144,19 +133,31 @@ export default class UIDetailsInput<Props, State>
     }
 
     textInputStyle() {
-        const textInputFont = this.props.theme === UIColor.Theme.Dark
-            ? UITextStyle.whiteBodyRegular
-            : UITextStyle.primaryBodyRegular;
-        delete textInputFont.lineHeight;
-        return [UIStyle.flex, textInputFont];
+        const { theme } = this.props;
+        const textColorStyle = UIColor.textPrimaryStyle(theme);
+        const fontStyle = UITextStyle.bodyRegular;
+        delete fontStyle.lineHeight;
+        return [
+            fontStyle,
+            textColorStyle,
+            UIStyle.flex,
+        ];
     }
 
     textViewStyle() {
         return styles.textView;
     }
 
+    beginningTag() {
+        return this.props.beginningTag;
+    }
+
     commentColor() {
         return this.props.commentColor;
+    }
+
+    placeholder() {
+        return this.props.placeholder;
     }
 
     hidePlaceholder() {
@@ -167,6 +168,11 @@ export default class UIDetailsInput<Props, State>
         const { value } = this.props;
         return `${value}`;
     }
+
+    getInlinePlaceholder() {
+        return this.hidePlaceholder() ? '' : this.placeholder();
+    }
+
 
     // Actions
     focus() {
@@ -212,20 +218,45 @@ export default class UIDetailsInput<Props, State>
         this.props.onBlur();
     }
 
+    onSubmitEditing() {
+        if (this.isSubmitDisabled()) {
+            setTimeout(() => {
+                this.focus();
+            }, UIConstant.feedbackDelay());
+        } else {
+            const { onSubmitEditing } = this.props;
+            if (onSubmitEditing) {
+                onSubmitEditing();
+            }
+        }
+    }
 
     // Render
     renderFloatingTitle() {
-        const {
-            floatingTitle, placeholder, theme, value,
-        } = this.props;
-        const text = !floatingTitle || !value || !value.length ? ' ' : placeholder;
-        const textStyle = theme === UIColor.Theme.Dark
-            ? UITextStyle.whiteTinyRegular
-            : UITextStyle.tertiaryTinyRegular;
+        const { floatingTitle, theme, value } = this.props;
+        const text = !floatingTitle || !value || !value.length ? ' ' : this.placeholder();
+        const colorStyle = UIColor.textTertiaryStyle(theme);
 
         return (
-            <Text style={textStyle}>
+            <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
+            </Text>
+        );
+    }
+
+    renderBeginningTag() {
+        const beginningTag = this.beginningTag();
+        if (!beginningTag) {
+            return null;
+        }
+        return (
+            <Text
+                style={[
+                    UITextStyle.quaternaryBodyRegular,
+                    styles.beginningTag,
+                ]}
+            >
+                {beginningTag}
             </Text>
         );
     }
@@ -238,8 +269,6 @@ export default class UIDetailsInput<Props, State>
             editable,
             maxLength,
             maxLines,
-            onSubmitEditing,
-            placeholder,
             returnKeyType,
             secureTextEntry,
             testID,
@@ -251,9 +280,7 @@ export default class UIDetailsInput<Props, State>
         const multiline = !!maxLines && maxLines > 1;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
-        const placeholderColor = theme === UIColor.Theme.Dark
-            ? UIColor.white40()
-            : UIColor.textTertiary();
+        const placeholderColor = UIColor.textPlaceholder(theme);
         return (
             <TextInput
                 {...accessibilityLabelProp}
@@ -268,9 +295,9 @@ export default class UIDetailsInput<Props, State>
                 onFocus={() => this.onFocus()}
                 onBlur={() => this.onBlur()}
                 onChangeText={text => this.onChangeText(text)}
-                onSubmitEditing={onSubmitEditing}
+                onSubmitEditing={() => this.onSubmitEditing()}
                 onKeyPress={e => this.onKeyPress(e)}
-                placeholder={this.hidePlaceholder() ? '' : placeholder}
+                placeholder={this.getInlinePlaceholder()}
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
@@ -286,10 +313,8 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderCounter() {
-        if (!this.props.showSymbolsLeft) return null;
-
-        const { value, maxLength } = this.props;
-        if (!maxLength) {
+        const { value, maxLength, showSymbolsLeft } = this.props;
+        if (!maxLength || !showSymbolsLeft) {
             return null;
         }
         return (
@@ -315,38 +340,32 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderArrow() {
-        const { theme, onSubmitEditing } = this.props;
-        let source;
-        if (theme === UIColor.Theme.Dark) {
-            if (this.isSubmitDisabled()) {
-                source = icoDisabled;
-            } else if (this.isArrowHover()) {
-                source = icoAbledHover;
-            } else {
-                source = icoAbled;
-            }
+        const { theme, needArrow } = this.props;
+        if (!needArrow) {
+            return null;
         }
-        const image = (
-            <Image
-                source={source}
-                onMouseEnter={() => this.setArrowHover()}
-                onMouseLeave={() => this.setArrowHover(false)}
-            />
-        );
+        let icons = {};
+        if (theme === UIColor.Theme.Action) {
+            icons = {
+                iconEnabled,
+                iconHovered,
+                iconDisabled,
+            };
+        }
 
-        if (this.isSubmitDisabled()) {
-            return image;
-        }
         return (
-            <TouchableOpacity onPress={onSubmitEditing}>
-                {image}
-            </TouchableOpacity>
+            <UIActionImage
+                {...icons}
+                disabled={this.isSubmitDisabled()}
+                onPress={() => this.onSubmitEditing()}
+            />
         );
     }
 
     renderTexFragment() {
         return (
             <React.Fragment>
+                {this.renderBeginningTag()}
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
@@ -356,19 +375,14 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextView() {
-        const { hideBottomLine, theme, value } = this.props;
+        const { hideBottomLine, theme } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor;
         if (this.commentColor()) {
             bottomLineColor = this.commentColor();
-        } else if (theme === UIColor.Theme.Dark) {
-            if (this.isFocused() || value) {
-                bottomLineColor = UIColor.primary3();
-            } else {
-                bottomLineColor = UIColor.primaryMinus();
-            }
         } else {
-            bottomLineColor = UIColor.light();
+            const focused = this.isFocused();
+            bottomLineColor = UIColor.borderBottomColor(theme, focused);
         }
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (

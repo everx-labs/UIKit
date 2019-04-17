@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import UISpinnerOverlay from '../UISpinnerOverlay';
-import UILocalized from '../../helpers/UILocalized';
-import UIActionSheet from '../menus/UIActionSheet';
-import UIAlertView from '../popup/UIAlertView';
-import UIColor from '../../helpers/UIColor';
-import UIComponent from '../UIComponent';
+import UISpinnerOverlay from '../../UISpinnerOverlay';
+import UILocalized from '../../../helpers/UILocalized';
+import UIActionSheet from '../../menus/UIActionSheet';
+import UIAlertView from '../../popup/UIAlertView';
+import UIColor from '../../../helpers/UIColor';
+import UIComponent from '../../UIComponent';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -77,7 +77,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     // constructor
     constructor(props: Props) {
         super(props);
-        const { FromCamera, FromGallery, DeletePhoto } = UILocalized;
+        const { FromCamera, FromGallery } = UILocalized;
         this.menuItemsList = [
             {
                 key: 'item 1',
@@ -89,12 +89,6 @@ export default class UIImageView extends UIComponent<Props, State> {
                 title: FromGallery,
                 onPress: () => this.onPickFromGallery(),
             },
-            {
-                key: 'item 3',
-                title: DeletePhoto,
-                textStyle: { color: UIColor.error() },
-                onPress: () => this.onDeletePhoto(),
-            },
         ];
 
         this.state = {
@@ -105,6 +99,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
+        this.needsDeleteOption();
         if (this.props.source) {
             this.hideSpinnerOnPhotoView();
         }
@@ -134,7 +129,8 @@ export default class UIImageView extends UIComponent<Props, State> {
                     ? response.uri.replace('file://', '')
                     : response.uri;
                 // source = { uri: 'data:image/jpeg;base64,' + response.data };
-                this.uploadPhoto(source);
+                const name = this.extractImageName(source);
+                this.uploadPhoto(source, name);
             }
         });
     }
@@ -150,7 +146,8 @@ export default class UIImageView extends UIComponent<Props, State> {
                     ? response.uri.replace('file://', '')
                     : response.uri;
                 // source = { uri: 'data:image/jpeg;base64,' + response.data };
-                this.uploadPhoto(source);
+                const name = this.extractImageName(source);
+                this.uploadPhoto(source, name);
             }
         });
     }
@@ -198,6 +195,29 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     // Actions
+    extractImageName(e: any): string {
+        const source = Platform.OS === 'web' ? e.target.files[0] : e;
+        let fileName = '';
+        if (Platform.OS === 'web') {
+            fileName = source.name;
+        } else {
+            const tmp = source.split('/');
+            fileName = tmp[tmp.length - 1];
+        }
+
+        return fileName;
+    }
+    needsDeleteOption() {
+        if (this.props.onDeletePhoto) {
+            this.menuItemsList.push({
+                key: 'item 3',
+                title: UILocalized.DeletePhoto,
+                textStyle: { color: UIColor.error() },
+                onPress: () => this.onDeletePhoto(),
+            });
+        }
+    }
+
     showSpinnerOnPhotoView = (show: boolean = true, callback?: () => void) => {
         this.setStateSafely({
             showSpinnerOnPhotoView: show,
@@ -208,12 +228,14 @@ export default class UIImageView extends UIComponent<Props, State> {
         this.showSpinnerOnPhotoView(false);
     }
 
-    uploadPhoto(source: string) {
+    uploadPhoto(source: string, name: string) {
         if (!this.mounted) return;
+
         this.props.onUploadPhoto(
             source,
             this.showSpinnerOnPhotoView,
             this.hideSpinnerOnPhotoView,
+            name,
         );
     }
 
@@ -222,6 +244,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
         const reader = new FileReader();
         const file = e.target.files[0];
+        const name = this.extractImageName(e);
         if (!file) {
             console.log('[UIImageView] Canceled load image from file');
             return;
@@ -238,7 +261,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
         reader.onload = () => {
             console.log('[UIImageView] Image from file was loaded');
-            this.uploadPhoto(reader.result);
+            this.uploadPhoto(reader.result, name);
         };
         reader.readAsDataURL(file);
     }
@@ -375,10 +398,13 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS === 'web' || this.isEditable()) {
             return (
                 <TouchableOpacity
-                    style={[styles.photoContainer, this.props.photoStyle]}
                     onPress={() => this.onPressPhoto()}
+                    style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
                 >
-                    {this.renderPhotoContent()}
+                    <View style={this.props.containerStyle}>
+                        {this.renderPhotoContent()}
+                        {this.props.children}
+                    </View>
                     {this.renderLightBox()}
                     {this.renderPhotoInputForWeb()}
                 </TouchableOpacity>
@@ -387,7 +413,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         const { width, height } = Dimensions.get('window');
         return (
             <LightboxMobile
-                style={[styles.photoContainer, this.props.photoStyle]}
+                style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
                 underlayColor={UIColor.overlayWithAlpha(0.32)}
                 activeProps={{
                     style: { resizeMode: 'contain', width, height },
@@ -396,14 +422,17 @@ export default class UIImageView extends UIComponent<Props, State> {
                 renderContent={() => this.renderLightBoxMobileContent()}
                 onOpen={() => this.onPressPhoto()}
             >
-                {this.renderPhotoContent()}
+                <View style={this.props.containerStyle}>
+                    {this.renderPhotoContent()}
+                    {this.props.children}
+                </View>
             </LightboxMobile>
         );
     }
 
     render() {
         return (
-            <View style={[styles.photoContainer, this.props.photoStyle]}>
+            <View style={styles.photoContainer}>
                 {this.renderPhoto()}
                 {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
@@ -418,11 +447,13 @@ UIImageView.defaultProps = {
     editable: false,
     expandable: true,
     disabled: false,
+    alignItems: 'center',
     photoStyle: null,
+    containerStyle: null,
     resizeMode: 'cover',
     resizeMethod: 'auto',
     onUploadPhoto: () => {},
-    onDeletePhoto: () => {},
+    onDeletePhoto: null,
     onPressPhoto: () => {},
 };
 
@@ -432,6 +463,8 @@ UIImageView.propTypes = {
     editable: PropTypes.bool,
     expandable: PropTypes.bool,
     disabled: PropTypes.bool,
+    alignItems: PropTypes.string,
+    containerStyle: StylePropType,
     photoStyle: StylePropType,
     resizeMode: PropTypes.string,
     resizeMethod: PropTypes.string,

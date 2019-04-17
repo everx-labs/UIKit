@@ -6,7 +6,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
-import UIImageView from '../../UIImageView';
+import UIImageView from '../../images/UIImageView';
 import UIComponent from '../../UIComponent';
 
 const cameraImage = require('../../../assets/ico-camera/ico-camera.png');

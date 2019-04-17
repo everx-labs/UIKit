@@ -1,13 +1,20 @@
 import { Platform } from 'react-native';
-import { AsYouType, formatNumber, parseNumber } from 'libphonenumber-js';
+import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
+import isEmail from 'validator/lib/isEmail';
 
 const currencies = require('currency-formatter/currencies.json');
-
 const countries = require('../../assets/countries/countries.json');
 
 export default class UIFunction {
+    // 'No operation' closure. Useful in case when callback/handler must be specified but
+    // without real work.
+    // Instead of <Component onEvent={() => {}} >
+    // preferable way is: <Component onEvent={UIFunction.NOP} >
+    static NOP = () => {
+    };
+
     // Async Helpers
     /** Converts callback style function into Promise */
     static makeAsync(original) {
@@ -113,30 +120,22 @@ export default class UIFunction {
         return Number(number).toLocaleString(locale, options);
     }
 
-    // Used for numeric money representation as well may be used for exporting digits from phones
-    static numericText(text, currency = {
-        code: 'USD',
-        symbol: '$',
-        precision: 0,
-    }) {
-        const separator = currencies[currency.code].decimalSeparator;
-        const number = text.trim();
-        const split = number.split(separator);
-        const integer = split[0].replace(/\D/g, '');
-        if (split.length < 2) {
-            return integer;
-        }
-        const quotient = (split[1] || '').substring(0, currency.precision);
-        return `${integer}${separator}${quotient}`;
+    static numericText(text) {
+        return parseDigits(text);
     }
 
-    static isPhoneValid(phone) {
+    static isPhoneNumber(expression: string) {
+        const normalizedPhone = this.normalizePhone(expression);
+        return this.isPhoneValid(normalizedPhone);
+    }
+
+    static isPhoneValid(phone: ?string) {
         let valid = false;
         try {
-            const parseResult = parseNumber(`+${phone}`, { extended: true });
-            ({ valid } = parseResult);
+            const parseResult = parsePhoneNumberFromString(`+${phone || ''}`);
+            valid = parseResult.isValid();
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
+            console.log(`[UIFunction] Failed to parse phone code ${phone || ''} with exception`, exception);
         }
         return valid;
     }
@@ -156,14 +155,16 @@ export default class UIFunction {
         // a profile without phone number to UserInfoScreen.
         let phone = text ? `+${this.numericText(text)}` : '';
         try {
-            const parsedPhone
-                = parseNumber(phone, { extended: true });
-            phone = formatNumber(parsedPhone, 'International');
+            const parsedPhone = parsePhoneNumberFromString(phone);
+            phone = parsedPhone.formatInternational();
             if (removeCountryCode) {
                 phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
             }
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone ${phone} with exception`,
+                exception,
+            );
             if (cleanIfFailed) {
                 phone = '';
             }
@@ -199,7 +200,7 @@ export default class UIFunction {
     static countryISOFromPhone(phone) {
         let countryCode = null;
         try {
-            const parsedResult = parseNumber(`+${phone}`, { extended: true });
+            const parsedResult = parsePhoneNumberFromString(`+${phone}`);
             if (parsedResult.country) {
                 countryCode = parsedResult.country;
             } else if (parsedResult.countryCallingCode) {
@@ -214,23 +215,39 @@ export default class UIFunction {
                 }
             }
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone code ${phone} with excepetion`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone code ${phone} with exception`,
+                exception,
+            );
         }
         return countryCode;
     }
 
     // International phone
-    static internationalPhone(phone) {
-        let parsedPhone = parseNumber(phone, 'RU'); // It parses 8 (000) kind of phones
-        if (Object.keys(parsedPhone).length === 0) {
-            parsedPhone = parseNumber(phone, 'US'); // It parses all the rest mobile phones
+    static normalizePhone(phone: string): string {
+        const internationalPhone = this.internationalPhone(phone);
+        if (!internationalPhone) {
+            return this.numericText(phone);
         }
-        if (Object.keys(parsedPhone).length === 0) {
-            console.log('[UIFunction] Failed to parse phone:', phone); // Usually short phones
+        return this.numericText(internationalPhone);
+    }
+
+    static internationalPhone(phone: string): ?string {
+        if (!phone) {
             return null;
         }
-        const internationalPhone = formatNumber(parsedPhone, 'International');
-        return UIFunction.numericText(internationalPhone);
+        const phoneNumber = this.numericText(phone);
+        let parsedPhone = parsePhoneNumberFromString(`+${phoneNumber}`);
+        if (!parsedPhone || !parsedPhone.isValid()) {
+            parsedPhone = parsePhoneNumberFromString(phoneNumber, 'RU'); // parse 8 prefixed phones
+        }
+        if (!parsedPhone || !parsedPhone.isValid()) {
+            parsedPhone = parsePhoneNumberFromString(phoneNumber, 'US'); // parse the rest
+        }
+        if (!parsedPhone) {
+            return null;
+        }
+        return parsedPhone.formatInternational();
     }
 
     static formatMessageDate(date, shortFormat = true) {
@@ -272,9 +289,8 @@ export default class UIFunction {
         const tab = UIFunction.repeat('   ', level);
 
         let str = '';
-        for (key in obj) {
+        for (let key in obj) {
             str += `${tab + key}: ${typeof obj[key] === 'object' ? `\r\n${UIFunction.alertObject(obj[key], level + 1)}` : obj[key]}\r\n`;
-            // console.log(str);
         }
 
         if (level === 0) {
@@ -365,10 +381,8 @@ export default class UIFunction {
         return this.normalizeKeyPhrase(a) === this.normalizeKeyPhrase(b);
     }
 
-    static isEmailAddress(expression: string) {
-        // eslint-disable-next-line
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(expression).toLowerCase());
+    static isEmail(expression: string) {
+        return isEmail(expression);
     }
 }
 

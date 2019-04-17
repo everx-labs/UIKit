@@ -6,12 +6,12 @@ import {
     Text,
     StyleSheet,
     Animated,
+    LayoutAnimation,
 } from 'react-native';
 
 import UIController from '../UIController';
 import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
-import UIDevice from '../../helpers/UIDevice';
 import UIFont from '../../helpers/UIFont';
 import UIStyle from '../../helpers/UIStyle';
 import UIProfilePhoto from '../../components/profile/UIProfilePhoto';
@@ -19,10 +19,8 @@ import UIDialogTextInput from './UIDialogTextInput';
 
 const styles = StyleSheet.create({
     scrollContainer: {
-        flex: 1,
         justifyContent: 'center',
         paddingTop: UIConstant.normalContentOffset(),
-        paddingBottom: UIDevice.statusBarHeight() + UIDevice.navigationBarHeight(),
     },
     titleView: {
         minHeight: 72,
@@ -57,6 +55,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         bottom: 0,
         width: '100%',
+        backgroundColor: UIColor.backgroundPrimary(),
         maxWidth: UIConstant.elasticWidthMax(),
     },
 });
@@ -93,6 +92,7 @@ class UIDialogController extends UIController {
     constructor(props) {
         super(props);
 
+        this.wrapContentInScrollView = true;
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
         this.title = undefined;
         this.hasPhotoView = false;
@@ -119,6 +119,7 @@ class UIDialogController extends UIController {
             auxInput: '',
             photo: null,
             showIndicator: false,
+            bottomPanelHeight: 0,
         };
     }
 
@@ -148,18 +149,16 @@ class UIDialogController extends UIController {
 
     setContentInset(contentInset, animation) {
         super.setContentInset(contentInset);
-        if (animation) {
-            Animated.timing(this.marginBottom, {
-                toValue: Math.max(0, contentInset.bottom),
-                duration: animation.duration,
-                easing: UIController.getEasingFunction(animation.easing),
-            }).start();
-        } else {
-            Animated.spring(this.marginBottom, {
-                toValue: Math.max(0, contentInset.bottom),
-                duration: UIConstant.animationDuration(),
-            }).start();
-        }
+        const bottomInset = Math.max(0, contentInset.bottom);
+        const { duration, easing } = animation || {
+            duration: UIConstant.animationDuration(),
+            easing: LayoutAnimation.Types.keyboard,
+        };
+        Animated.timing(this.marginBottom, {
+            toValue: bottomInset,
+            duration,
+            easing: UIController.getEasingFunction(easing),
+        }).start();
     }
 
     // Getters
@@ -177,6 +176,14 @@ class UIDialogController extends UIController {
 
     getPhoto() {
         return this.state.photo;
+    }
+
+    getContentContainerStyle() {
+        return null;
+    }
+
+    getBottomPanelHeight() {
+        return this.state.bottomPanelHeight || 0;
     }
 
     // Render
@@ -273,13 +280,29 @@ class UIDialogController extends UIController {
     }
 
     renderBottomContainer() {
-        const bottom = this.renderBottom();
-        return bottom ? <View style={styles.bottomContainer}>{bottom}</View> : null;
+        let bottom = this.renderBottom();
+        if (Array.isArray(bottom)) {
+            bottom = <React.Fragment>{bottom}</React.Fragment>;
+        }
+        return (
+            <View
+                style={styles.bottomContainer}
+                onLayout={this.onLayoutBottomContainer}
+            >
+                {bottom}
+            </View>
+        );
     }
 
     renderContent() {
         return null;
     }
+
+    onLayoutBottomContainer = (e) => {
+        this.setStateSafely({
+            bottomPanelHeight: e.nativeEvent.layout.height,
+        });
+    };
 
     renderContentContainer() {
         let content = this.renderContent();
@@ -294,25 +317,52 @@ class UIDialogController extends UIController {
     }
 
     renderSafely() {
+        const content = (
+            <React.Fragment>
+                {this.renderTitle()}
+                {this.renderPhoto()}
+                {this.renderTextInput()}
+                {this.renderAuxTextInput()}
+                {this.renderSubtitleContainer()}
+                {this.renderContentContainer()}
+            </React.Fragment>
+        );
+        const wrappedContent = this.wrapContentInScrollView
+            ? (
+                <ScrollView
+                    style={UIStyle.screenContainer}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={[
+                        UIStyle.pageContainer,
+                        styles.scrollContainer,
+                        this.getContentContainerStyle(),
+                        { paddingBottom: this.getBottomPanelHeight() },
+                    ]}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    {content}
+                </ScrollView>
+            )
+            : (
+                <View
+                    style={[
+                        UIStyle.screenContainer,
+                        UIStyle.pageContainer,
+                        this.getContentContainerStyle(),
+                        { paddingBottom: this.getBottomPanelHeight() },
+                    ]}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    {content}
+                </View>
+            );
         const animatedContainerStyle = {
             flex: 1,
             marginBottom: this.getMarginBottom(),
         };
         return (
             <Animated.View style={animatedContainerStyle}>
-                <ScrollView
-                    style={UIStyle.screenContainer}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={[UIStyle.pageContainer, styles.scrollContainer]}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    {this.renderTitle()}
-                    {this.renderPhoto()}
-                    {this.renderTextInput()}
-                    {this.renderAuxTextInput()}
-                    {this.renderSubtitleContainer()}
-                    {this.renderContentContainer()}
-                </ScrollView>
+                {wrappedContent}
                 {this.renderBottomContainer()}
             </Animated.View>
         );

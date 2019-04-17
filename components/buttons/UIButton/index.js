@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TouchableWithoutFeedback, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import UIFont from '../../../helpers/UIFont';
@@ -10,7 +10,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
-import UIComponent from '../../UIComponent';
+import UIActionComponent from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -30,25 +30,25 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    testID?: string,
-    style?: StylePropType,
-    textStyle?: StylePropType,
+    badge: number,
+    bottomExtend: boolean,
     buttonSize: string,
     buttonShape: string,
-    title: string,
-    badge: number,
     disabled: boolean,
-    bottomExtend: boolean,
-    showIndicator: boolean,
     footer: boolean,
+    icon: ?string,
     onPress: () => void,
+    showIndicator: boolean,
+    style?: StylePropType,
+    testID?: string,
+    textStyle?: StylePropType,
+    title: string,
+    theme: string,
 };
 
-type State = {
-    overlayColor: string
-};
+type State = {};
 
-export default class UIButton extends UIComponent<Props, State> {
+export default class UIButton extends UIActionComponent<Props, State> {
     static ButtonSize = {
         Default: 'default',
         Large: 'large',
@@ -64,16 +64,6 @@ export default class UIButton extends UIComponent<Props, State> {
     };
 
     insetKey: string;
-    // constructor
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            hover: false,
-            tap: false,
-        };
-    }
-
     componentDidMount() {
         super.componentDidMount();
         this.setInsetIfFooter();
@@ -89,32 +79,7 @@ export default class UIButton extends UIComponent<Props, State> {
         this.props.onPress();
     }
 
-    onPressIn() {
-        this.setTap();
-    }
-
-    onPressOut() {
-        this.setTap(false);
-    }
-
-    // Setters
-    setHover(hover = true) {
-        this.setStateSafely({ hover });
-    }
-
-    setTap(tap = true) {
-        this.setStateSafely({ tap });
-    }
-
     // Getters
-    isHover() {
-        return this.state.hover;
-    }
-
-    isTap() {
-        return this.state.tap;
-    }
-
     getButtonHeight() {
         switch (this.props.buttonSize) {
         case UIButton.ButtonSize.Large:
@@ -143,44 +108,21 @@ export default class UIButton extends UIComponent<Props, State> {
 
     getButtonColorStyle() {
         let color;
-        if (this.props.theme === UIColor.Theme.Dark) {
-            if (this.isDisabled()) {
-                color = UIColor.primaryPlus();
-            } else if (this.isTap()) {
-                color = UIColor.primary6();
-            } else if (this.isHover()) {
-                color = UIColor.primary4();
-            } else {
-                color = UIColor.primaryPlus();
-            }
-        } else if (this.isDisabled()) {
-            color = UIColor.backgroundQuarter(UIColor.Theme.Light);
-        } else if (this.isTap()) {
-            color = UIColor.primary5();
-        } else if (this.isHover()) {
-            color = UIColor.primary4();
+        const { theme, disabled } = this.props;
+        if (disabled) {
+            color = UIColor.backgroundQuarter(theme);
         } else {
-            color = UIColor.primary();
+            const tapped = this.isTapped();
+            const hover = this.isHover();
+            color = UIColor.buttonBackground(theme, tapped, hover);
         }
         return UIColor.getBackgroundColorStyle(color);
     }
 
     getTitleColorStyle() {
-        let color;
-        if (this.props.theme === UIColor.Theme.Dark) {
-            color = this.isDisabled() ? UIColor.primary() : UIColor.grey1();
-        } else {
-            color = this.isDisabled() ? UIColor.light() : UIColor.white();
-        }
+        const { theme, disabled } = this.props;
+        const color = UIColor.buttonTitle(theme, disabled);
         return UIColor.getColorStyle(color);
-    }
-
-    isDisabled() {
-        return this.props.disabled;
-    }
-
-    shouldShowIndicator() {
-        return this.props.showIndicator;
     }
 
     // Actions
@@ -251,18 +193,15 @@ export default class UIButton extends UIComponent<Props, State> {
         return (<View style={styles.extension} />);
     }
 
-    render() {
-        const { testID, bottomExtend, style } = this.props;
+    renderContent() {
+        const { bottomExtend, style } = this.props;
         let height = this.getButtonHeight();
         if (bottomExtend) {
             height *= 2;
         }
-        const testIDProp = testID ? { testID } : null;
         const backgroundColorStyle = this.getButtonColorStyle();
         return (
             <View
-                onMouseEnter={() => this.setHover()}
-                onMouseLeave={() => this.setHover(false)}
                 style={[
                     styles.container,
                     backgroundColorStyle,
@@ -271,22 +210,12 @@ export default class UIButton extends UIComponent<Props, State> {
                     style,
                 ]}
             >
-                <TouchableWithoutFeedback
-                    {...testIDProp}
-                    disabled={this.isDisabled() || this.shouldShowIndicator()}
-                    onPress={() => this.onPress()}
-                    onPressIn={() => this.onPressIn()}
-                    onPressOut={() => this.onPressOut()}
-                >
-                    <View
-                        style={[UIStyle.flex, UIStyle.centerContainer]}
-                    >
-                        {this.renderIcon()}
-                        {this.renderBadge()}
-                        {this.renderTitle()}
-                        {this.renderIndicator()}
-                    </View>
-                </TouchableWithoutFeedback>
+                <View style={[UIStyle.flex, UIStyle.centerContainer]}>
+                    {this.renderIcon()}
+                    {this.renderBadge()}
+                    {this.renderTitle()}
+                    {this.renderIndicator()}
+                </View>
                 {this.renderBottomExtension()}
             </View>
         );
@@ -296,15 +225,13 @@ export default class UIButton extends UIComponent<Props, State> {
 }
 
 UIButton.defaultProps = {
-    theme: UIColor.Theme.Light,
+    ...UIActionComponent.defaultProps,
+    badge: 0,
+    bottomExtend: false, // useful for iPhone X (SafeArea)
     buttonSize: UIButton.ButtonSize.Default,
     buttonShape: UIButton.ButtonShape.Default,
-    title: '',
-    badge: 0,
-    icon: null,
-    disabled: false,
-    bottomExtend: false, // useful for iPhone X (SafeArea)
-    showIndicator: false,
     footer: false,
-    onPress: () => {},
+    icon: null,
+    theme: UIColor.Theme.Light,
+    title: '',
 };

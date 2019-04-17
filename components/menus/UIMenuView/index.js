@@ -14,6 +14,7 @@ import UIActionSheet from '../../menus/UIActionSheet';
 import UIComponent from '../../UIComponent';
 
 import MenuItem from './MenuItem';
+import type { ClassNameProp } from '../../../types';
 
 let masterRef = null;
 const MENU_TRIGGER = 'menu-trigger';
@@ -169,7 +170,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
     render() {
         // This trick with class name required to suppress flow warning
         // on undeclared className prop.
-        const setClassNameTrick: {} = {
+        const setClassNameTrick: ClassNameProp = {
             className: MENU_TRIGGER,
         };
         return (

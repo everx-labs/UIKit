@@ -7,6 +7,7 @@ import UIColor from '../../../helpers/UIColor';
 
 type Props = {
     error?: boolean,
+    color: ?string,
     style?: StylePropType,
 }
 

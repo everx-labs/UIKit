@@ -23,6 +23,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         SecondaryImageCenterRight: 'SecondaryImageCenterRight',
         SecondaryImageBottomRight: 'SecondaryImageBottomRight',
         Primary: 'Primary',
+        Action: 'Action',
     };
 
     static PresetStyles = StyleSheet.create({
@@ -53,6 +54,9 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         [UIBackgroundView.PresetNames.Primary]: {
             backgroundColor: UIColor.backgroundPrimary(),
         },
+        [UIBackgroundView.PresetNames.Action]: {
+            backgroundColor: UIColor.primary(),
+        },
     });
 
     static getPreset(presetName: string) {
@@ -64,6 +68,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
             SecondaryImageCenterRight,
             SecondaryImageBottomRight,
             Primary,
+            Action,
         } = UIBackgroundView.PresetNames;
         const { PresetStyles } = UIBackgroundView;
 
@@ -94,6 +99,10 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
             },
             [Primary]: {
                 backgroundStyle: PresetStyles[Primary],
+                image: null,
+            },
+            [Action]: {
+                backgroundStyle: PresetStyles[Action],
                 image: null,
             },
         };

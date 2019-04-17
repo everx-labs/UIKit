@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 type TextInputTransitProps = {
     value: string,
     placeholder?: string,
+    placeholderTextColor? : string,
     editable?: boolean,
     multiline?: boolean,
     secureTextEntry?: boolean,
@@ -99,7 +100,8 @@ class UITextInput extends UIComponent<Props, State> {
                 ]}
             >
                 {beginningTag}
-            </Text>);
+            </Text>
+        );
     }
 
     renderTextInput() {

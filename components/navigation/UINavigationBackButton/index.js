@@ -45,6 +45,7 @@ export default class UINavigationBackButton extends UIComponent {
         }
         return (
             <TouchableOpacity
+                testID="back_btn"
                 style={[UIStyle.navigatorButton, this.getContainerStyle()]}
                 onPress={() => {
                     this.getNavigation().goBack(null);

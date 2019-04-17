@@ -1,7 +1,10 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+// @flow
 
-import PropTypes from 'prop-types';
+import React from 'react';
+import {
+    View,
+    StyleSheet,
+} from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIDevice from '../../../helpers/UIDevice';
@@ -9,7 +12,8 @@ import UIFont from '../../../helpers/UIFont';
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
-import UITextInput from '../../text/UITextInput';
+import type { ReactNavigation } from '../../navigation/UINavigationBar';
+import UITextInput from '../UITextInput';
 import UIComponent from '../../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
@@ -34,14 +38,38 @@ const styles = StyleSheet.create({
     },
 });
 
-class UISearchBar extends UIComponent {
-    static handleHeader(navigation) {
+type Props = {
+    testID?: string,
+    value?: string,
+    placeholder?: string,
+    onChangeExpression?: (text: string) => void,
+    navigation?: ReactNavigation,
+    onSetIntegratedHeader?: (header: React$Node) => React$Node,
+}
+
+type State = {
+    focused: boolean,
+}
+
+export default class UISearchBar extends UIComponent<Props, State> {
+    static defaultProps = {
+        value: '',
+        placeholder: '',
+        onChangeExpression: () => {
+        },
+        navigation: null,
+    };
+
+    static handleHeader(navigation: ReactNavigation) {
         const { params } = navigation.state;
         return params ? params.headerProp : null;
     }
 
     // Constructor
-    constructor(props) {
+    textInput: ?UITextInput;
+    UIDummyNavigationBar: ?UIDummyNavigationBar;
+
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -50,30 +78,36 @@ class UISearchBar extends UIComponent {
     }
 
     // Events
-    onFocusHandler() {
+    onFocusHandler = () => {
         this.setFocused(true);
         this.hideHeader();
-    }
+    };
 
-    onBlurHandler(force = false) {
+    onBlurHandler = (force: boolean = false) => {
         if (this.props.value !== '' && !force) {
             return;
         }
         this.setFocused(false);
         this.showHeader();
-    }
+    };
 
-    onCancel() {
-        this.props.onChangeExpression('');
+    onChangeExpression = (text: string) => {
+        if (this.props.onChangeExpression) {
+            this.props.onChangeExpression(text);
+        }
+    };
+
+    onCancel = () => {
+        this.onChangeExpression('');
         if (this.textInput && this.textInput.isFocused()) {
             this.textInput.blur(); // onBlurHandler will be called when props.value is already ''.
         } else {
             this.onBlurHandler(true);
         }
-    }
+    };
 
     // Setters
-    setFocused(focused) {
+    setFocused(focused: boolean) {
         if (!this.mounted) {
             return;
         }
@@ -81,6 +115,10 @@ class UISearchBar extends UIComponent {
     }
 
     // Getters
+    getValue(): string {
+        return this.props.value || '';
+    }
+
     isFocused() {
         return this.state.focused;
     }
@@ -91,27 +129,42 @@ class UISearchBar extends UIComponent {
     }
 
     hideHeader() {
-        if (UIDevice.isMobile() && this.props.navigation) {
-            const headerProp = { header: this.renderUIDummyNavigationBar() };
-            this.props.navigation.setParams({ headerProp });
+        if (this.hasHeader()) {
+            this.setHeader(this.renderUIDummyNavigationBar());
         }
     }
 
     showHeader() {
-        if (UIDevice.isMobile() && this.props.navigation) {
+        if (this.hasHeader()) {
             if (this.UIDummyNavigationBar) {
                 this.UIDummyNavigationBar.animateRollDown(() => {
-                    this.props.navigation.setParams({ headerProp: null });
+                    this.setHeader(null);
                 });
             } else {
-                this.props.navigation.setParams({ headerProp: null });
+                this.setHeader(null);
             }
+        }
+    }
+
+    hasHeader() {
+        return this.props.onSetIntegratedHeader
+            ? true
+            : UIDevice.isMobile() && this.props.navigation;
+    }
+
+    setHeader(header: React$Node) {
+        if (this.props.onSetIntegratedHeader) {
+            this.props.onSetIntegratedHeader(header);
+        } else if (this.props.navigation) {
+            this.props.navigation.setParams({ headerProp: header ? { header } : null });
         }
     }
 
     // render
     renderCancelButton() {
-        if (!this.isFocused()) return null;
+        if (!this.isFocused()) {
+            return null;
+        }
         return (
             <UITextButton
                 title={UILocalized.Cancel}
@@ -123,16 +176,18 @@ class UISearchBar extends UIComponent {
     renderUIDummyNavigationBar() {
         return (
             <UIDummyNavigationBar
-                ref={(component) => { this.UIDummyNavigationBar = component; }}
+                ref={(component) => {
+                    this.UIDummyNavigationBar = component;
+                }}
             />
         );
     }
 
     render() {
         const {
-            value, placeholder, onChangeExpression,
+            value, placeholder, onChangeExpression, testID,
         } = this.props;
-
+        const testIDProp = testID ? { testID } : null;
         return (
             <View>
                 <View
@@ -141,15 +196,18 @@ class UISearchBar extends UIComponent {
                     ]}
                 >
                     <UITextInput
-                        ref={(component) => { this.textInput = component; }}
+                        {...testIDProp}
+                        ref={(component) => {
+                            this.textInput = component;
+                        }}
                         value={value}
                         placeholder={placeholder}
                         returnKeyType="search"
                         containerStyle={styles.searchInput}
                         textStyle={UIFont.smallRegular()}
-                        onFocus={() => this.onFocusHandler()}
-                        onBlur={() => this.onBlurHandler()}
-                        onChangeText={newExpression => onChangeExpression(newExpression)}
+                        onFocus={this.onFocusHandler}
+                        onBlur={this.onBlurHandler}
+                        onChangeText={this.onChangeExpression}
                     />
                     {this.renderCancelButton()}
                 </View>
@@ -158,19 +216,3 @@ class UISearchBar extends UIComponent {
         );
     }
 }
-
-export default UISearchBar;
-
-UISearchBar.defaultProps = {
-    value: '',
-    placeholder: '',
-    onChangeExpression: () => {},
-    navigation: null,
-};
-
-UISearchBar.propTypes = {
-    value: PropTypes.string,
-    placeholder: PropTypes.string,
-    onChangeExpression: PropTypes.func,
-    navigation: PropTypes.object,
-};

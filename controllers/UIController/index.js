@@ -6,14 +6,15 @@ import {
     Platform,
     Keyboard,
     SafeAreaView,
-    Dimensions,
     LayoutAnimation,
     Easing,
+    PixelRatio,
 } from 'react-native';
 
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
+import UIConstant from '../../helpers/UIConstant';
 
 import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
@@ -67,6 +68,7 @@ export type ControllerState = {
     spinnerTextContent?: string,
     spinnerTitleContent?: string,
     spinnerVisible?: boolean,
+    runningAsyncOperation?: string,
 };
 
 const EmptyInset: ContentInset = Object.freeze({
@@ -80,6 +82,14 @@ const keyboardPanningScreens = [];
 
 export default class UIController<Props, State>
     extends UIComponent<Props & ControllerProps, State & ControllerState> {
+    static onGetAndroidDisplayCutout = (): * => {
+        return {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+        };
+    };
     static AndroidKeyboardAdjust = {
         Pan: 'pan',
         Resize: 'resize',
@@ -172,7 +182,10 @@ export default class UIController<Props, State>
         }
     }
 
-    static getKeyboardAnimation(event: KeyboardEvent): ?AnimationParameters {
+    static getKeyboardAnimation(event: ?KeyboardEvent): ?AnimationParameters {
+        if (!event) {
+            return null;
+        }
         const {
             duration,
             easing,
@@ -234,26 +247,54 @@ export default class UIController<Props, State>
     }
 
     // Events
+    getBottomInsetAdjustment() {
+        let adjustment;
+        if (Platform.OS === 'android') {
+            adjustment = UIController.onGetAndroidDisplayCutout().top / PixelRatio.get();
+        } else if (Platform.OS === 'ios') {
+            adjustment = -this.getSafeAreaInsets().bottom;
+        }
+        return adjustment;
+    }
+
+    adjustBottomInset(
+        container: NativeMethodsMixinType,
+        keyboardFrame: $ReadOnly<{ screenY: number, height: number }>,
+        animation: ?AnimationParameters,
+        readjustTimeout: number,
+    ) {
+        container.measure((relX, relY, w, h, x, y) => {
+            const keyboardOverlapHeight = Math.max(
+                (y + h) - keyboardFrame.screenY,
+                keyboardFrame.height,
+            );
+            const bottomInset = keyboardOverlapHeight + this.getBottomInsetAdjustment();
+            this.setBottomInset(Math.max(0, bottomInset), animation);
+            if (Platform.OS === 'android' && (readjustTimeout > 0)) {
+                setTimeout(() => {
+                    this.adjustBottomInset(container, keyboardFrame, animation, 0);
+                }, readjustTimeout);
+            }
+        });
+    }
+
     onKeyboardWillShow(event: KeyboardEvent) {
-        const end = event.endCoordinates;
+        const keyboardFrame = event.endCoordinates;
         const animation = UIController.getKeyboardAnimation(event);
         const { container } = this;
-        if (!(container && container.measure)) {
-            this.setBottomInset(end.height, animation);
-            return;
+        if (!!container && !!container.measure) {
+            this.adjustBottomInset(
+                container,
+                keyboardFrame,
+                animation,
+                UIConstant.animationDuration(),
+            );
+        } else {
+            this.setBottomInset(
+                keyboardFrame.height + this.getBottomInsetAdjustment(),
+                animation,
+            );
         }
-        container.measure((
-            x: number,
-            y: number,
-            width: number,
-            height: number,
-            screenX: number,
-            screenY: number,
-        ) => {
-            const screen = Dimensions.get('window');
-            const bottomInset = (screenY + height) - (screen.height - end.height);
-            this.setBottomInset(Math.max(0, bottomInset), animation);
-        });
     }
 
     onKeyboardWillHide(event: KeyboardEvent) {
@@ -446,20 +487,61 @@ export default class UIController<Props, State>
         this.showIndicator(false);
     }
 
+    // Async Operations
+    getRunningAsyncOperation(): string {
+        return this.state.runningAsyncOperation || '';
+    }
+
+    guardedAsyncRun(operation: () => Promise<void>, name?: string) {
+        (async () => {
+            try {
+                if (this.getRunningAsyncOperation() !== '') {
+                    return;
+                }
+                this.setStateSafely({ runningAsyncOperation: name || 'operation' });
+                try {
+                    await operation();
+                } finally {
+                    this.setStateSafely({ runningAsyncOperation: '' });
+                }
+            } catch (error) {
+                console.log(
+                    `Async operation [${name || ''}] failed: `,
+                    error.message || error,
+                );
+            }
+        })();
+    }
+
+    guardedAsyncNavigation(operation: () => void, name?: string): void {
+        this.guardedAsyncRun(async () => {
+            operation();
+            await new Promise((resolve) => {
+                setTimeout(() => resolve(), 1000);
+            });
+        }, name || 'navigation');
+    }
+
     // Render
     renderSpinnerOverlay() {
         return (<UISpinnerOverlay
             key="SpinnerOverlay"
-            visible={this.state.spinnerVisible}
-            titleContent={this.state.spinnerTitleContent}
-            textContent={this.state.spinnerTextContent}
+            visible={this.state?.spinnerVisible}
+            titleContent={this.state?.spinnerTitleContent || ''}
+            textContent={this.state?.spinnerTextContent || ''}
         />);
     }
 
     render(): React$Node {
+        // We must set the 'collapsible' to 'false'
+        // for the containers 'measure' works well on Android.
         const main = (
             <SafeAreaView style={UIStyle.screenBackground}>
-                <View style={UIStyle.flex} ref={this.onSetContainer}>
+                <View
+                    style={UIStyle.flex}
+                    collapsable={false}
+                    ref={this.onSetContainer}
+                >
                     {this.renderSafely()}
                 </View>
             </SafeAreaView>

@@ -6,6 +6,7 @@ import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized';
 import UIConstant from '../../helpers/UIConstant';
 import UIComponent from '../../components/UIComponent';
+import UITextStyle from '../../helpers/UITextStyle';
 
 const styles = StyleSheet.create({
     navigationView: {
@@ -69,7 +70,10 @@ export default class UIModalNavigationBar extends UIComponent {
         } = this.props;
         if (swipeToDismiss) {
             return (
-                <View style={UIStyle.dismissStripe} />
+                <View
+                    testID="swipe_to_dismiss"
+                    style={UIStyle.dismissStripe}
+                />
             );
         }
         if (!onCancel) {
@@ -77,7 +81,7 @@ export default class UIModalNavigationBar extends UIComponent {
         }
         const image = (<Image style={styles.cancelImage} source={cancelImage} />);
         const text = (
-            <Text style={UIStyle.navigatorHeaderTitle}>
+            <Text style={UITextStyle.actionSmallMedium}>
                 {cancelText}
             </Text>
         );

@@ -1,10 +1,13 @@
+// @flow
+
 import { Platform, Share, Clipboard } from 'react-native';
 
 import UIToastMessage from '../../components/notifications/UIToastMessage';
+import UIShareScreen from './UIShareScreen';
 
 export default class UIShareManager {
     // Private
-    static copyToClipboard(message, success) {
+    static copyToClipboard(message: string, success: string) {
         if (!message) {
             return;
         }
@@ -12,7 +15,7 @@ export default class UIShareManager {
         UIToastMessage.showMessage(success);
     }
 
-    static shareMessage(message, success) {
+    static shareMessage(message: string, success: string) {
         if (!message) {
             return;
         }
@@ -27,9 +30,9 @@ export default class UIShareManager {
     }
 
     // Public
-    static share(message, success) {
+    static share(message: string, success: string) {
         if (Platform.OS === 'web') {
-            this.copyToClipboard(message, success);
+            UIShareScreen.share({ message });
         } else {
             this.shareMessage(message, success);
         }
