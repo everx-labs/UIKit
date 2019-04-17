@@ -5,6 +5,10 @@ import StylePropType from 'react-style-proptype';
 
 import { TextInput, Text, View, StyleSheet } from 'react-native';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
+import type {
+    UIColorData,
+    UIColorThemeNameType,
+} from '../../../helpers/UIColor/UIColorTypes';
 
 import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';
@@ -61,7 +65,7 @@ export type DetailsProps = {
     showSymbolsLeft: boolean,
     submitDisabled?: boolean,
     token?: string,
-    theme?: string,
+    theme?: UIColorThemeNameType,
     value: string,
     testID?: string,
 };
@@ -377,12 +381,11 @@ export default class UIDetailsInput<Props, State>
     renderTextView() {
         const { hideBottomLine, theme } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
-        let bottomLineColor;
+        let bottomLineColor: UIColorData;
         if (this.commentColor()) {
-            bottomLineColor = this.commentColor();
+            bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
-            const focused = this.isFocused();
-            bottomLineColor = UIColor.borderBottomColor(theme, focused);
+            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused());
         }
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (
