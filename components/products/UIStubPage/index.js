@@ -13,7 +13,6 @@ import UIEmailInput from '../../input/UIEmailInput';
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
 import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
-import TONLocalized from '../../../../../helpers/TONLocalized';
 
 const styles = StyleSheet.create({
     container: {
@@ -178,9 +177,9 @@ export default class UIStubPage extends UIComponent<Props, State> {
         return (
             <UIBottomBar
                 theme={UIColor.Theme.Action}
-                accentText={TONLocalized.Contact}
-                accentEmail={TONLocalized.PressEmail}
-                copyRight={TONLocalized.Copyright}
+                accentText={UILocalized.Contact}
+                accentEmail={UILocalized.PressEmail}
+                copyRight={UILocalized.CopyRight}
             />
         );
     }
@@ -224,7 +223,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
 UIStubPage.defaultProps = {
     presetName: UIBackgroundView.PresetNames.Primary,
     needBottomIcon: true,
-    title: 'dev.',
+    title: '',
     description: UILocalized.GetNotifiedWhenWeLaunch,
     onSubmit: () => {},
 };

@@ -375,13 +375,13 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextView() {
-        const { hideBottomLine, theme, value } = this.props;
+        const { hideBottomLine, theme } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor;
         if (this.commentColor()) {
             bottomLineColor = this.commentColor();
         } else {
-            const focused = this.isFocused() || value;
+            const focused = this.isFocused();
             bottomLineColor = UIColor.borderBottomColor(theme, focused);
         }
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
