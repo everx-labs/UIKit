@@ -6,12 +6,17 @@ class ModalExample extends React.Component {
         super();
         this.state = {
             i: 1,
+            theme: UIColor.Theme.Light,
         }
     }
 
     render() {
+        console.log('>>>', this.state.theme);
         return (
-            <div>
+            <ThemeSwitcher
+                theme={this.state.theme}
+                onChangeTheme={(theme) => this.setState({ theme })}
+            >
                 <UIButton
                     title="Default button"
                     onPress={() => alert('Action was called')}
@@ -22,7 +27,7 @@ class ModalExample extends React.Component {
                     onPress={() => this.setState({ i: this.state.i + 1})}
                     badge={this.state.i}
                 />
-            </div>
+            </ThemeSwitcher>
         );
     }
 };

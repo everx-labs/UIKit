@@ -81,7 +81,6 @@ import type {
 } from './components/navigation/UINavigationBar';
 import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
-import type { NavigationMenuList } from '../../components/TopBar';
 import type { ContentInset } from './controllers/UIController';
 import type { DetailsList } from './components/text/UIDetailsTable';
 

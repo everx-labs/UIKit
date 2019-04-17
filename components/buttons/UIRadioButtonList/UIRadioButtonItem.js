@@ -6,6 +6,7 @@ import { TouchableWithoutFeedback, View, Image, Text, StyleSheet } from 'react-n
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
+import UITextStyle from '../../../helpers/UITextStyle';
 
 import icoRadiobuttonActive from '../../../assets/ico-radiobutton-active/ico-radiobutton-active.png';
 import icoRadiobuttonInactive from '../../../assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
