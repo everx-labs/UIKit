@@ -32,7 +32,10 @@ type MenuItem = {
 }
 
 type Props = {
+    theme: string,
     leftText: string,
+    accentText: string,
+    accentEmail: string,
     textStyle: StylePropType,
     copyRight: string,
     menuItems: MenuItem[],
