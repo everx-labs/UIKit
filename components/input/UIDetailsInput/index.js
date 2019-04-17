@@ -379,7 +379,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextView() {
-        const { hideBottomLine, theme, value } = this.props;
+        const { hideBottomLine, theme } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor: UIColorData;
         if (this.commentColor()) {

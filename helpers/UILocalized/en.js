@@ -7,7 +7,7 @@ const en: UILocalizedData = {
     TONLabel: 'TON',
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
-    CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
+    CopyRight: '2019 © TON Labs',
 
     // Terms
     TermsText: 'By submitting your offer, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
@@ -533,6 +533,8 @@ const en: UILocalizedData = {
     GetNotifiedWhenWeLaunch: 'Get notified when we launch',
     WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
     ThanksForCooperation: 'Thanks for cooperation.',
+    Contact: 'For more information, contact',
+    PressEmail: 'press@tonlabs.io',
 
     // Toasts
     EnterCorrectDataToField: 'Enter correct data to field',

@@ -200,7 +200,7 @@ const darkTheme: UIColorThemeData = {
         action: WHITE,
         paragraph: TEXT_DPARAGRAPH,
         caution: TEXT_DCAUTION,
-        placeholder: WHITE_40,
+        placeholder: PRIMARY_3,
     },
     background: {
         primary: BACKGROUND_DPRIMARY,
@@ -244,7 +244,7 @@ const actionTheme: UIColorThemeData = {
         action: WHITE,
         paragraph: TEXT_DPARAGRAPH,
         caution: TEXT_DCAUTION,
-        placeholder: WHITE_40,
+        placeholder: PRIMARY_3,
     },
     background: {
         primary: BACKGROUND_DPRIMARY,
@@ -461,6 +461,10 @@ export default class UIColor {
 
     static textSecondary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].text.secondary;
+    }
+
+    static textSecondaryStyle(theme?: ?UIColorThemeNameType) {
+        return UIColor.getColorStyle(UIColor.textSecondary(theme));
     }
 
     static textTertiary(theme?: ?UIColorThemeNameType): UIColorData {

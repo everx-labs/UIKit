@@ -91,6 +91,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.tinyRegular(),
     },
+    tinyMedium: {
+        ...text,
+        ...UIFont.tinyMedium(),
+    },
 
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84

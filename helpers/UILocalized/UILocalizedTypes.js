@@ -526,6 +526,8 @@ export type UILocalizedData = {
     GetNotifiedWhenWeLaunch: string,
     WillGetInTouchWithYouSoon: string,
     ThanksForCooperation: string,
+    Contact: string,
+    PressEmail: string,
 
     // Toasts
     EnterCorrectDataToField: string,
