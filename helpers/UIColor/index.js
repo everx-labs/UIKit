@@ -277,6 +277,11 @@ export default class UIColor {
         return UI_COLOR_TEXT_DSECONDARY;
     }
 
+    static textSecondaryStyle(theme = UIColor.Theme.Light) {
+        const textColor = UIColor.textSecondary(theme);
+        return UIColor.getColorStyle(textColor);
+    }
+
     static textTertiary(theme = UIColor.Theme.Light) {
         if (theme === UIColor.Theme.Light) {
             return UI_COLOR_TEXT_LTERTIARY;
@@ -284,7 +289,7 @@ export default class UIColor {
         if (theme === UIColor.Theme.Dark) {
             return UI_COLOR_TEXT_DTERTIARY;
         }
-        return UI_COLOR_PRIMARY_3;
+        return UI_COLOR_PRIMARY_MINUS;
     }
 
     static textTertiaryStyle(theme) {
@@ -309,7 +314,7 @@ export default class UIColor {
         if (theme === UIColor.Theme.Light) {
             return UI_COLOR_TEXT_LTERTIARY;
         }
-        return UIColor.white40();
+        return UIColor.primary3();
     }
 
     // Background colors
