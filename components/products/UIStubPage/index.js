@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
+// import ReactGA from 'react-ga';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -76,6 +77,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         this.setSubmitted();
         UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
         const email = this.getEmail();
+        // ReactGA.event({ category: 'Form', action: 'onSubmit' });
         this.props.onSubmit(email);
     }
 
