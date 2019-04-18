@@ -5,7 +5,6 @@ import { Animated, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIComponent from '../../UIComponent';
-import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 
 type Props = {
@@ -16,6 +15,8 @@ type Props = {
 }
 
 type State = {
+    currentItem: ?React$Node,
+    prevItem: ?React$Node,
     currentItemOpacity: Animated.Value,
     prevItemOpacity: Animated.Value,
 }
@@ -33,14 +34,36 @@ export default class UITransitionView extends UIComponent<Props, State> {
         super(props);
 
         this.state = {
+            currentItem: null,
+            prevItem: null,
             currentItemOpacity: new Animated.Value(1),
             prevItemOpacity: new Animated.Value(0),
         };
     }
 
-    // Events
-
-    // Setter
+    componentWillReceiveProps(nextProps: Props) {
+        const newCurrentItem = nextProps.currentItem;
+        const newPrevItem = nextProps.prevItem;
+        const currentItem = this.getCurrentItem();
+        const prevItem = this.getPrevItem();
+        if (currentItem !== newCurrentItem || prevItem !== newPrevItem) {
+            this.setStateSafely({
+                currentItem,
+                prevItem,
+                currentItemOpacity: new Animated.Value(0),
+                prevItemOpacity: new Animated.Value(1),
+            }, () => {
+                Animated.parallel([
+                    Animated.spring(this.getCurrentItemOpacity(), { // looks better than `timing`
+                        toValue: 1.0,
+                    }),
+                    Animated.spring(this.getPrevItemOpacity(), {
+                        toValue: 0.0,
+                    }),
+                ]).start();
+            });
+        }
+    }
 
     // Getters
     getCurrentItem(): ?React$Node {
@@ -57,28 +80,6 @@ export default class UITransitionView extends UIComponent<Props, State> {
 
     getPrevItemOpacity(): Animated.Value {
         return this.state.prevItemOpacity;
-    }
-
-    // Actions
-    /**
-     * @public
-     */
-    animateTransition() {
-        this.setStateSafely({
-            currentItemOpacity: new Animated.Value(0),
-            prevItemOpacity: new Animated.Value(1),
-        }, () => {
-            Animated.parallel([
-                Animated.timing(this.getCurrentItemOpacity(), {
-                    toValue: 1.0,
-                    duration: UIConstant.animationDuration(),
-                }),
-                Animated.timing(this.getPrevItemOpacity(), {
-                    toValue: 0.0,
-                    duration: UIConstant.animationDuration(),
-                }),
-            ]).start();
-        });
     }
 
     // Render
