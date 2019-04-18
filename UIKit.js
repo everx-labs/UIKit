@@ -75,6 +75,7 @@ import UITokenCell from './components/gram.scan/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITopBar from './components/gram.scan/UITopBar';
 import UITooltip from './components/notifications/UITooltip';
+import UITransitionView from './components/views/UITransitionView';
 import UIUserAgent from './helpers/UIUserAgent';
 
 // Types
@@ -167,6 +168,7 @@ export {
     UITopBar,
     UIToggle,
     UITooltip,
+    UITransitionView,
     UIUserAgent,
 };
 
