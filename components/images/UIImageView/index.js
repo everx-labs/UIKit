@@ -207,6 +207,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
         return fileName;
     }
+
     needsDeleteOption() {
         if (this.props.onDeletePhoto) {
             this.menuItemsList.push({
@@ -398,13 +399,10 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS === 'web' || this.isEditable()) {
             return (
                 <TouchableOpacity
+                    style={[styles.photoContainer, this.props.photoStyle]}
                     onPress={() => this.onPressPhoto()}
-                    style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
                 >
-                    <View style={this.props.containerStyle}>
-                        {this.renderPhotoContent()}
-                        {this.props.children}
-                    </View>
+                    {this.renderPhotoContent()}
                     {this.renderLightBox()}
                     {this.renderPhotoInputForWeb()}
                 </TouchableOpacity>
@@ -413,7 +411,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         const { width, height } = Dimensions.get('window');
         return (
             <LightboxMobile
-                style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
+                style={[styles.photoContainer, this.props.photoStyle]}
                 underlayColor={UIColor.overlayWithAlpha(0.32)}
                 activeProps={{
                     style: { resizeMode: 'contain', width, height },
@@ -422,17 +420,14 @@ export default class UIImageView extends UIComponent<Props, State> {
                 renderContent={() => this.renderLightBoxMobileContent()}
                 onOpen={() => this.onPressPhoto()}
             >
-                <View style={this.props.containerStyle}>
-                    {this.renderPhotoContent()}
-                    {this.props.children}
-                </View>
+                {this.renderPhotoContent()}
             </LightboxMobile>
         );
     }
 
     render() {
         return (
-            <View style={styles.photoContainer}>
+            <View style={[styles.photoContainer, this.props.photoStyle]}>
                 {this.renderPhoto()}
                 {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
@@ -447,9 +442,7 @@ UIImageView.defaultProps = {
     editable: false,
     expandable: true,
     disabled: false,
-    alignItems: 'center',
     photoStyle: null,
-    containerStyle: null,
     resizeMode: 'cover',
     resizeMethod: 'auto',
     onUploadPhoto: () => {},
@@ -463,8 +456,6 @@ UIImageView.propTypes = {
     editable: PropTypes.bool,
     expandable: PropTypes.bool,
     disabled: PropTypes.bool,
-    alignItems: PropTypes.string,
-    containerStyle: StylePropType,
     photoStyle: StylePropType,
     resizeMode: PropTypes.string,
     resizeMethod: PropTypes.string,

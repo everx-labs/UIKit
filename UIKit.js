@@ -71,6 +71,7 @@ import UIToastMessage from './components/notifications/UIToastMessage';
 import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
+import UITransitionView from './components/views/UITransitionView';
 import UIUserAgent from './helpers/UIUserAgent';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
 
@@ -160,6 +161,7 @@ export {
     UITokenCell,
     UIToggle,
     UITooltip,
+    UITransitionView,
     UIUserAgent,
     UIColorPalette,
 };
