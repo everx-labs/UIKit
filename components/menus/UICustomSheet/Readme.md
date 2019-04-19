@@ -87,17 +87,19 @@ const containerStyle = {
     padding: 16,
     borderRadius: 4,
 };
+let sheetRef = null;
 
 <View style={containerStyle}>
     <UITextButton 
         title="Show feedback form"
-        onPress={() => this.customSheet.show()}
+        onPress={() => sheetRef.show()}
     />
     <UITextButton 
         title="Show master feedback form"
         onPress={() => UICustomSheet.show(<FeedbackForm />)}
     />
     <UICustomSheet
+        ref={(component) => { sheetRef = component; }}
         component={<FeedbackForm />}
         masterActionSheet={false}
     />
