@@ -1,6 +1,5 @@
 import UIActionComponent from './components/UIActionComponent';
 import UIActionSheet from './components/menus/UIActionSheet';
-import UIActionText from './components/text/UIActionText';
 import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/input/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
@@ -8,7 +7,7 @@ import UIBadge from './components/design/UIBadge';
 import UIBottomBar from './components/products/UIBottomBar';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
-import UICard from './components/gram.scan/UICard';
+import UICard from './components/text/UICard';
 import UIColor from './helpers/UIColor';
 import UICompatibilityView from './helpers/UICompatibilityView';
 import UIComponent from './components/UIComponent';
@@ -19,7 +18,7 @@ import UIDateInput from './components/input/UIDateInput';
 import UIDetailsInput from './components/input/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
 import UIDetailsView from './components/text/UIDetailsView';
-import UIDetailsTable from './components/gram.scan/UIDetailsTable';
+import UIDetailsTable from './components/text/UIDetailsTable';
 import UIDevice from './helpers/UIDevice';
 import UIDialogController from './controllers/UIDialogController';
 import UIDot from './components/design/UIDot';
@@ -55,27 +54,26 @@ import UIProfileView from './components/profile/UIProfileView';
 import UIPureComponent from './components/UIPureComponent';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
 import UISearchBar from './components/input/UISearchBar';
-import UISearchField from './components/gram.scan/UISearchField';
 import UISectionHeader from './components/text/UISectionHeader';
 import UISeparator from './components/design/UISeparator';
 import UIShareManager from './helpers/UIShareManager';
 import UIShareScreen from './helpers/UIShareManager/UIShareScreen';
-import UISlider from './components/gram.scan/UISlider';
+import UISlider from './components/menus/UISlider';
 import UISpinnerOverlay from './components/UISpinnerOverlay';
 import UISplitViewController from './controllers/UISplitViewController';
 import UIStepBar from './components/navigation/UIStepBar';
 import UIStubPage from './components/products/UIStubPage';
 import UIStyle from './helpers/UIStyle';
-import UISubtitle from './components/gram.scan/UISubtitle';
 import UITabView from './components/menus/UITabView';
 import UITextButton from './components/buttons/UITextButton';
 import UITextInput from './components/input/UITextInput';
 import UIToastMessage from './components/notifications/UIToastMessage';
-import UITokenCell from './components/gram.scan/UITokenCell';
+import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
-import UITopBar from './components/gram.scan/UITopBar';
 import UITooltip from './components/notifications/UITooltip';
+import UITransitionView from './components/views/UITransitionView';
 import UIUserAgent from './helpers/UIUserAgent';
+import UIColorPalette from './helpers/UIColor/UIColorPalette';
 
 // Types
 import type {
@@ -85,14 +83,13 @@ import type {
 } from './components/navigation/UINavigationBar';
 import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
-import type { NavigationMenuList } from './components/gram.scan/UITopBar';
 import type { ContentInset } from './controllers/UIController';
-import type { DetailsList } from './components/gram.scan/UIDetailsTable';
+import type { DetailsList } from './components/text/UIDetailsTable';
+import type { UIColorData, UIColorThemeNameType } from './helpers/UIColor/UIColorTypes';
 
 export {
     UIActionComponent,
     UIActionSheet,
-    UIActionText,
     UIAlertView,
     UIAmountInput,
     UIBadge,
@@ -147,7 +144,6 @@ export {
     UIPureComponent,
     UIRadioButtonList,
     UISearchBar,
-    UISearchField,
     UISectionHeader,
     UISeparator,
     UIShareManager,
@@ -158,26 +154,27 @@ export {
     UIStepBar,
     UIStubPage,
     UIStyle,
-    UISubtitle,
     UITabView,
     UITextButton,
     UITextInput,
     UIToastMessage,
     UITokenCell,
-    UITopBar,
     UIToggle,
     UITooltip,
+    UITransitionView,
     UIUserAgent,
+    UIColorPalette,
 };
 
 export type {
     AnyComponent,
     CreateNavigationOptions,
-    NavigationMenuList,
     NavigationProps,
     PointerEvents,
     PositionObject,
     ReactNavigation,
     ContentInset,
     DetailsList,
+    UIColorData,
+    UIColorThemeNameType,
 };
