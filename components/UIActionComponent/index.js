@@ -11,7 +11,7 @@ export type ActionState = {
 }
 
 export type ActionProps = {
-    testId: string,
+    testID: string,
     disabled?: boolean,
     showIndicator?: boolean,
     onPress: () => void,
@@ -85,7 +85,7 @@ export default class UIActionComponent<Props, State>
 }
 
 UIActionComponent.defaultProps = {
-    testId: '',
+    testID: '',
     disabled: false,
     showIndicator: false,
     onPress: () => {},

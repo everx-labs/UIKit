@@ -1,8 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Text, StatusBar } from 'react-native';
-
-import { NetInfoProvider } from 'react-native-netinfo';
+import { Platform, StyleSheet, View, Text, StatusBar } from 'react-native';
 
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
@@ -11,70 +9,101 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIDevice from '../../../helpers/UIDevice';
 import UIComponent from '../../UIComponent';
 
-const STATUS_HEIGHT = 20; // Same as typical iPhone status bar height before X models
+const NetInfo = Platform.OS === 'web'
+    ? require('react-native').NetInfo
+    : require('@react-native-community/netinfo');
+
+const STATUS_HEIGHT = 24; // Based on Figma design
 
 const styles = StyleSheet.create({
     connectionSnack: {
         paddingTop: UIDevice.statusBarHeight(),
         height: UIDevice.statusBarHeight() + STATUS_HEIGHT,
-        backgroundColor: UIColor.black(),
+        backgroundColor: UIColor.blackLight(),
     },
 });
-
-let connected;
 
 type Props = {
     isConnected: (boolean) => void,
 }
 
-type State = {};
+type State = {
+    connected: boolean,
+};
 
 export default class UINetworkStatus extends UIComponent<Props, State> {
-    static setIsConnected(isConnected: boolean) {
-        connected = isConnected;
+    static statusHeight() {
+        return STATUS_HEIGHT;
+    }
+
+    // constructor
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            connected: true,
+        };
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this.startListeningToConnectionInfo();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.stopListeningToConnectionInfo();
+    }
+
+    // Setters
+    setConnected(connected: boolean) {
+        this.setStateSafely({ connected });
+    }
+
+    // Getters
+    isConnected(): boolean {
+        return this.state.connected;
+    }
+
+    // Actions
+    startListeningToConnectionInfo() {
+        NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+    }
+
+    stopListeningToConnectionInfo() {
+        NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+    }
+
+    handleConnectionChange = (connected: boolean) => {
+        this.setConnected(connected);
         // Change status bar color style
         const statusBarStyle = connected ? 'dark-content' : 'light-content';
         StatusBar.setBarStyle(statusBarStyle, true);
         const statusBarColor = connected ? 'white' : 'black';
         StatusBar.setBackgroundColor(statusBarColor, true);
+        // Pass connection status to props
+        this.props.isConnected(connected);
     }
 
-    static isConnected(): boolean {
-        return connected;
-    }
-
-    static statusHeight(): number {
-        return STATUS_HEIGHT;
-    }
-
-    static renderSnack(isConnected: boolean) {
+    // Render
+    renderSnack() {
+        const isConnected = this.isConnected();
         if (isConnected) {
             return null;
         }
         return (
             <View style={[styles.connectionSnack, UIStyle.centerContainer]}>
-                <Text style={UITextStyle.whiteTinyRegular}>
-                    {`${UILocalized.Warning}! ${UILocalized.ConnectionHasBeenLost}`}
+                <Text style={UITextStyle.secondaryDarkTinyRegular}>
+                    {UILocalized.PleaseGoOnline}
                 </Text>
             </View>
         );
     }
 
-    // Render
     render() {
         return (
-            <View
-                style={UIStyle.topScreenContainer}
-                pointerEvents="none"
-            >
-                <NetInfoProvider
-                    onChange={({ isConnected, connectionInfo }) => {
-                        console.log('[UINetworkStatus] Connection changed with info:', { connected, connectionInfo });
-                        UINetworkStatus.setIsConnected(isConnected);
-                        this.props.isConnected(isConnected);
-                    }}
-                    render={({ isConnected }) => UINetworkStatus.renderSnack(isConnected)}
-                />
+            <View style={UIStyle.topScreenContainer} pointerEvents="none">
+                {this.renderSnack()}
             </View>
         );
     }
@@ -85,4 +114,3 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
 UINetworkStatus.defaultProps = {
     isConnected: () => {},
 };
-

@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
+// import ReactGA from 'react-ga';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -13,7 +14,6 @@ import UIEmailInput from '../../input/UIEmailInput';
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
 import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
-import TONLocalized from '../../../../../helpers/TONLocalized';
 
 const styles = StyleSheet.create({
     container: {
@@ -93,6 +93,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
             UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
         }, UIConstant.feedbackDelay());
         const email = this.getEmail();
+        // ReactGA.event({ category: 'Form', action: 'onSubmit' });
         this.props.onSubmit(email);
     }
 
@@ -175,13 +176,12 @@ export default class UIStubPage extends UIComponent<Props, State> {
     }
 
     renderBottomBar() {
-        const textStyleProp = this.props.presetName === UIBackgroundView.PresetNames.Action
-            ? { textStyle: UITextStyle.actionMinusTinyMedium }
-            : null;
         return (
             <UIBottomBar
-                {...textStyleProp}
-                copyRight={TONLocalized.Copyright}
+                theme={UIColor.Theme.Action}
+                accentText={UILocalized.Contact}
+                accentEmail={UILocalized.PressEmail}
+                copyRight={UILocalized.CopyRight}
             />
         );
     }
@@ -225,7 +225,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
 UIStubPage.defaultProps = {
     presetName: UIBackgroundView.PresetNames.Primary,
     needBottomIcon: true,
-    title: 'dev.',
+    title: '',
     description: UILocalized.GetNotifiedWhenWeLaunch,
     onSubmit: () => {},
 };
