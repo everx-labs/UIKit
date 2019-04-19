@@ -11,7 +11,6 @@ class ModalExample extends React.Component {
     }
 
     render() {
-        console.log('>>>', this.state.theme);
         return (
             <ThemeSwitcher
                 theme={this.state.theme}

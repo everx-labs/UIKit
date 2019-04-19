@@ -14,7 +14,6 @@ import UIEmailInput from '../../input/UIEmailInput';
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
 import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
-import TONLocalized from '../../../../../helpers/TONLocalized';
 
 const styles = StyleSheet.create({
     container: {
