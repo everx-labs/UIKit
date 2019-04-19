@@ -10,7 +10,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
-import UIDetailsView from '../../text/UIDetailsView';
+import UIDetailsView from '../UIDetailsView';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
 

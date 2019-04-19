@@ -81,7 +81,9 @@ class UITextButton extends UIActionComponent<Props, ActionState> {
         const tapped = this.isTapped();
         const hover = this.isHover();
         const defaultColorStyle = UIColor.actionTextPrimaryStyle(theme);
-        const stateColorStyle = UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover);
+        const stateColorStyle = disabled || tapped || hover
+            ? UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover)
+            : null;
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
