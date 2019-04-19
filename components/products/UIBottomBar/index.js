@@ -42,6 +42,7 @@ type Props = {
     accentEmail: string,
     textStyle: StylePropType,
     copyRight: string,
+    disclaimer: string,
     menuItems: MenuItem[],
     companyName: string,
     address: string,

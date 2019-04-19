@@ -50,6 +50,7 @@ type Props = {
     needBottomIcon: boolean,
     title: string,
     caption: string,
+    disclaimer: string,
     onSubmit: (string) => void,
 };
 
@@ -231,4 +232,3 @@ UIStubPage.defaultProps = {
     disclaimer: '',
     onSubmit: () => {},
 };
-
