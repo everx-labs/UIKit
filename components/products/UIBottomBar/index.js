@@ -9,6 +9,8 @@ import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
+import UITooltip from '../../notifications/UITooltip';
+import UILocalized from '../../../helpers/UILocalized';
 
 const styles = StyleSheet.create({
     container: {
@@ -242,7 +244,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     renderCopyRight() {
-        const { copyRight } = this.props;
+        const { copyRight, disclaimer } = this.props;
         const textStyle = this.textStyle();
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
@@ -250,7 +252,12 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return (
             <View style={[UIStyle.flex, align]}>
                 <Text style={textStyle}>
-                    {copyRightText}
+                    {copyRightText}{'. '}
+                    <UITooltip message={disclaimer}>
+                        <Text style={textStyle}>
+                            {UILocalized.Disclaimer}
+                        </Text>
+                    </UITooltip>
                 </Text>
             </View>
         );
@@ -294,6 +301,7 @@ UIBottomBar.defaultProps = {
     email: '',
 
     copyRight: '',
+    disclaimer: '',
 
     isNarrow: true,
     screenWidth: 0,

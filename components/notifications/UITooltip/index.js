@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import { View, TouchableOpacity, Platform, Text, StyleSheet, Dimensions } from 'react-native';
+import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 import StylePropType from 'react-style-proptype';
 import type { Node } from 'react';
 import type { EventProps } from '../../../types';
-import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -333,7 +333,7 @@ export default class UITooltip extends UIComponent<Props, State> {
             return (
                 <View style={this.props.containerStyle}>
                     <TouchableOpacity
-                        onLongPress={() => this.show()}
+                        onPressIn={() => this.show()}
                         onPressOut={() => this.hide()}
                     >
                         {this.renderTrigger()}

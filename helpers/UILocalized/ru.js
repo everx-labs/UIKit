@@ -8,6 +8,7 @@ const ru: UILocalizedData = {
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
     CopyRight: '2019 © TON Labs',
+    Disclaimer: 'Disclaimer',
 
     // Terms
     TermsText: 'Отправляя это предложение, Вы подтверждаете, что Вы ознакомились и согласны с политикой конфиденциальности и условиями использования TON Wallet, которые можно найти',
