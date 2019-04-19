@@ -117,11 +117,12 @@ class UITextButton extends UIActionComponent<Props, ActionState> {
     renderContent(): React$Node {
         const { buttonStyle, align } = this.props;
         return (
-            <View style={[
-                styles.textButton,
-                align,
-                buttonStyle,
-            ]}
+            <View
+                style={[
+                    styles.textButton,
+                    align,
+                    buttonStyle,
+                ]}
             >
                 {this.renderIcon()}
                 {this.renderTitle()}

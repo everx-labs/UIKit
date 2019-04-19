@@ -40,7 +40,6 @@ type Props = {
     onPress: () => void,
     showIndicator: boolean,
     style?: StylePropType,
-    testID?: string,
     textStyle?: StylePropType,
     title: string,
     theme: string,
