@@ -109,7 +109,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     isValidDate() {
         const date = this.getValue();
         const validDate = Moment(date, this.getPattern()).isValid();
-        const validLength = date.length === this.getPattern(true).length;
+        const validLength = date.length === this.getPattern(true).length || date.length === 0;
 
         return (validDate && validLength);
     }
