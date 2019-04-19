@@ -182,7 +182,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 accentText={UILocalized.Contact}
                 accentEmail={UILocalized.PressEmail}
                 copyRight={UILocalized.CopyRight}
-                disclaimer={TONLocalized.Disclaimer}
+                disclaimer={this.props.disclaimer}
             />
         );
     }
