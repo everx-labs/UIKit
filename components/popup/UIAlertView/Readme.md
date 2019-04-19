@@ -1,7 +1,7 @@
 Example:
 
 ```js
-<View style={{ height: 300, margin: -16 }}>
+<div style={{ height: 300, margin: -16 }}>
     <View style={{ padding: 16 }}>
         <UITextButton
             title="Show default AlertView"
@@ -15,5 +15,5 @@ Example:
         />
     </View>
     <UIAlertView />
-</View>
+</div>
 ```

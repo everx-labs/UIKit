@@ -1,19 +1,21 @@
-DetailsInput example:
+Example:
 
 ```js
-class ModalExample extends React.Component {
+class ExampleComponent extends ThemeSwitcherComponent {
     constructor() {
         super();
         this.state = {
             details: '',
+            arrowDetails: '',
             multilineDetails: '',
         }
     }
 
-    render() {
+    renderContent() {
         return (
             <div>
                 <UIDetailsInput
+                    theme={this.getTheme()}
                     value={this.state.details}
                     placeholder="Details"
                     comment="Some comment here"
@@ -22,6 +24,7 @@ class ModalExample extends React.Component {
                     })}
                 />
                 <UIDetailsInput
+                    theme={this.getTheme()}
                     value={this.state.multilineDetails}
                     placeholder="Multiline details"
                     comment="Some comment here"
@@ -35,5 +38,5 @@ class ModalExample extends React.Component {
         );
     }
 };
-<ModalExample />
+<ExampleComponent />
 ```

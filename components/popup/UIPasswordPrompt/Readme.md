@@ -1,5 +1,3 @@
-Open this component on full window mode to see correct example:
-
 ```js
 <div>
     <UITextButton 

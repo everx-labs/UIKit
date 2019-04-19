@@ -1,5 +1,3 @@
-Open UITooltip in a full page mode to see an example.
-
 You can change size of browser window to see different placements of UITooltip.
 
 UITooltip show on hover for web and on long press for iOS and Android

@@ -1,6 +1,6 @@
 Example will be here soon
 
-```js noeditor
+```js
 <View style={{ height: 300, margin: -16 }}>
     <View style={{ padding: 16 }}>
         <UITextButton

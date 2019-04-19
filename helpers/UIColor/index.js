@@ -72,8 +72,20 @@ const UI_COLOR_WALLET_VERSION = '#BEC4C8';
 
 const UIColorDefaultAvatar =
   [
-      '#EF5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#1E88E5', '#0288D1',
-      '#0097A7', '#009688', '#43A047', '#558B2F', '#F4511E', '#8D6E63', '#78909C',
+      '#EF5350',
+      '#EC407A',
+      '#AB47BC',
+      '#7E57C2',
+      '#5C6BC0',
+      '#1E88E5',
+      '#0288D1',
+      '#0097A7',
+      '#009688',
+      '#43A047',
+      '#558B2F',
+      '#F4511E',
+      '#8D6E63',
+      '#78909C',
   ];
 
 const colorStyleSheets = {
