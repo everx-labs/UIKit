@@ -6,7 +6,6 @@ import {
     TouchableWithoutFeedback,
     View,
     StyleSheet,
-    Platform,
 } from 'react-native';
 import StylePropType from 'react-style-proptype';
 
@@ -132,9 +131,20 @@ export default class UISlider extends UIComponent<Props, State> {
     }
 
     onMove(dx: number) {
-        const currDx = this.getMarginLeft() + dx;
-        const newIndex = this.getIndex(currDx);
-        this.setActiveIndex(newIndex);
+        if (!this.isMouseDown()) {
+            this.onSwipeRelease(dx);
+        } else {
+            const currDx = this.getMarginLeft() + dx;
+            const newIndex = this.getIndex(currDx);
+            this.setActiveIndex(newIndex);
+        }
+    }
+
+    onMouseDown() {
+        this.setMouseDown();
+        setTimeout(() => {
+            this.setMouseDown(false);
+        }, 2000);
     }
 
     // Setters
@@ -201,7 +211,7 @@ export default class UISlider extends UIComponent<Props, State> {
         let webResponder = null;
         if (UIDevice.isDesktopWeb()) {
             webResponder = {
-                onMouseDown: () => this.setMouseDown(),
+                onMouseDown: () => this.onMouseDown(),
                 onMouseUp: () => this.setMouseDown(false),
             };
         }

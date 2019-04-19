@@ -1,7 +1,7 @@
 Example:
 
 ```js
-class ExampleComponent extends React.Component {
+class Example extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -13,7 +13,7 @@ class ExampleComponent extends React.Component {
     render() {
         const { selectedSquare, selectedCircle } = this.state;
         return (
-            <View style={{ height: 100, justifyContent: 'space-between' }}>
+            <View style={UIStyle.flexRow}>
                 <UICheckboxItem
                     selected={selectedSquare}
                     onPress={() => this.setState({ 
@@ -31,5 +31,5 @@ class ExampleComponent extends React.Component {
         );
     }
 };
-<ExampleComponent />
+<Example />
 ```

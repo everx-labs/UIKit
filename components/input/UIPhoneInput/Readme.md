@@ -1,7 +1,7 @@
 Example:
 
 ```js
-class ExampleComponent extends ThemeSwitcherComponent {
+class ExampleComponent extends ThemeSwitcher {
     constructor() {
         super();
         this.state = {

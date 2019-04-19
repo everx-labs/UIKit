@@ -1,7 +1,7 @@
 Example:
 
 ```js
-class ExampleComponent extends ThemeSwitcherComponent {
+class ExampleComponent extends ThemeSwitcher {
     constructor() {
         super();
         this.state = {
@@ -11,7 +11,7 @@ class ExampleComponent extends ThemeSwitcherComponent {
 
     renderContent() {
         return (
-            <div>
+            <View style={UIStyle.greatCellHeight}>
                 <UILinkInput
                     theme={this.getTheme()}
                     value={this.state.details}
@@ -20,7 +20,7 @@ class ExampleComponent extends ThemeSwitcherComponent {
                         details: newText 
                     })}
                 />
-            </div>
+            </View>
         );
     }
 };

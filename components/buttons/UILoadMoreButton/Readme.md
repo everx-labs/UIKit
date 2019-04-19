@@ -1,7 +1,7 @@
 Example:
 
 ```js
-class ExampleComponent extends React.Component {
+class Example extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -27,5 +27,5 @@ class ExampleComponent extends React.Component {
         );
     }
 };
-<ExampleComponent />
+<Example />
 ```

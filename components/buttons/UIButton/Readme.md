@@ -3,7 +3,7 @@ Example:
 ```js
 const icon = require('../../../assets/ico-camera/ico-camera.png');
 
-class ExampleComponent extends ThemeSwitcherComponent {
+class Example extends ThemeSwitcher {
     constructor() {
         super();
         this.state = {
@@ -45,5 +45,5 @@ class ExampleComponent extends ThemeSwitcherComponent {
         );
     }
 };
-<ExampleComponent />
+<Example />
 ```

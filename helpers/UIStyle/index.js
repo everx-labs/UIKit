@@ -83,6 +83,9 @@ const UIStyle = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    justifySpaceBetween: {
+        justifyContent: 'space-between',
+    },
     justifyEnd: {
         justifyContent: 'flex-end',
     },

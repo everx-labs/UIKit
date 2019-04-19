@@ -246,8 +246,23 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         );
     }
 
+    renderDisclaimer() {
+        const { disclaimer, textStyle } = this.props;
+        if (!disclaimer) {
+            return null;
+        }
+        return (
+            <UITooltip message={disclaimer}>
+                <Text style={textStyle}>
+                    {'. '}
+                    {UILocalized.Disclaimer}
+                </Text>
+            </UITooltip>
+        );
+    }
+
     renderCopyRight() {
-        const { copyRight, disclaimer } = this.props;
+        const { copyRight } = this.props;
         const textStyle = this.textStyle();
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
@@ -255,12 +270,8 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return (
             <View style={[UIStyle.flex, align]}>
                 <Text style={textStyle}>
-                    {copyRightText}{'. '}
-                    <UITooltip message={disclaimer}>
-                        <Text style={textStyle}>
-                            {UILocalized.Disclaimer}
-                        </Text>
-                    </UITooltip>
+                    {copyRightText}
+                    {this.renderDisclaimer()}
                 </Text>
             </View>
         );
