@@ -81,11 +81,21 @@ import type {
     CreateNavigationOptions,
     ReactNavigation,
 } from './components/navigation/UINavigationBar';
-import type { NavigationProps } from './helpers/UINavigator';
-import type { PointerEvents, PositionObject } from './types';
+import type {
+    NavigationProps,
+    UINavigationRoute,
+    UINavigationRouting,
+} from './helpers/UINavigator';
+import type {
+    PointerEvents,
+    PositionObject,
+} from './types';
 import type { ContentInset } from './controllers/UIController';
 import type { DetailsList } from './components/text/UIDetailsTable';
-import type { UIColorData, UIColorThemeNameType } from './helpers/UIColor/UIColorTypes';
+import type {
+    UIColorData,
+    UIColorThemeNameType,
+} from './helpers/UIColor/UIColorTypes';
 
 export {
     UIActionComponent,
@@ -177,4 +187,6 @@ export type {
     DetailsList,
     UIColorData,
     UIColorThemeNameType,
+    UINavigationRoute,
+    UINavigationRouting,
 };
