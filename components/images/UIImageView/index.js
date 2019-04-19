@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import UISpinnerOverlay from '../../UISpinnerOverlay';
-import UILocalized from '../../../helpers/UILocalized';
-import UIActionSheet from '../../menus/UIActionSheet';
-import UIAlertView from '../../popup/UIAlertView';
-import UIColor from '../../../helpers/UIColor';
-import UIComponent from '../../UIComponent';
+import UISpinnerOverlay from '../UISpinnerOverlay';
+import UILocalized from '../../helpers/UILocalized';
+import UIActionSheet from '../menus/UIActionSheet';
+import UIAlertView from '../popup/UIAlertView';
+import UIColor from '../../helpers/UIColor';
+import UIComponent from '../UIComponent';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-        flexDirection: 'row',
     },
 });
 
@@ -208,6 +207,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
         return fileName;
     }
+
     needsDeleteOption() {
         if (this.props.onDeletePhoto) {
             this.menuItemsList.push({
@@ -425,28 +425,10 @@ export default class UIImageView extends UIComponent<Props, State> {
         );
     }
 
-    renderChildren() {
-        return (
-            this.props.children
-        );
-    }
-
     render() {
-        const children = this.props.children ? this.renderChildren() : null;
-        const styleParentView = children ?
-            { flexDirection: this.props.childrenFlexDirection }
-            : [styles.photoContainer, this.props.photoStyle];
-
-        const photo = children ? (
+        return (
             <View style={[styles.photoContainer, this.props.photoStyle]}>
                 {this.renderPhoto()}
-            </View>)
-            : this.renderPhoto();
-
-        return (
-            <View style={styleParentView}>
-                {photo}
-                {children}
                 {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
             </View>
@@ -460,10 +442,7 @@ UIImageView.defaultProps = {
     editable: false,
     expandable: true,
     disabled: false,
-    childrenFlexDirection: 'row',
-    alignItems: 'center',
     photoStyle: null,
-    containerStyle: null,
     resizeMode: 'cover',
     resizeMethod: 'auto',
     onUploadPhoto: () => {},
@@ -477,9 +456,6 @@ UIImageView.propTypes = {
     editable: PropTypes.bool,
     expandable: PropTypes.bool,
     disabled: PropTypes.bool,
-    childrenFlexDirection: PropTypes.string,
-    alignItems: PropTypes.string,
-    containerStyle: StylePropType,
     photoStyle: StylePropType,
     resizeMode: PropTypes.string,
     resizeMethod: PropTypes.string,
