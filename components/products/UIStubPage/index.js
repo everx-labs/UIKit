@@ -14,6 +14,7 @@ import UIEmailInput from '../../input/UIEmailInput';
 import icoTonLabs from '../../../assets/logo/tonlabs/tonlabs-primary-minus.png';
 import UIToastMessage from '../../notifications/UIToastMessage';
 import { UIBackgroundView, UIBottomBar } from '../../../UIKit';
+import TONLocalized from '../../../../../helpers/TONLocalized';
 
 const styles = StyleSheet.create({
     container: {
@@ -49,7 +50,7 @@ type Props = {
     presetName: string,
     needBottomIcon: boolean,
     title: string,
-    description: string,
+    caption: string,
     onSubmit: (string) => void,
 };
 
@@ -182,13 +183,14 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 accentText={UILocalized.Contact}
                 accentEmail={UILocalized.PressEmail}
                 copyRight={UILocalized.CopyRight}
+                disclaimer={TONLocalized.Disclaimer}
             />
         );
     }
 
     render(): React$Node {
         const {
-            title, needBottomIcon, description,
+            title, needBottomIcon, caption,
         } = this.props;
         const widthStyle = this.getWidthStyle();
         const bottomIcon = needBottomIcon
@@ -208,7 +210,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                     </Text>
                     <View style={customStyles.description}>
                         <Text style={UITextStyle.grey1SubtitleBold}>
-                            {description}
+                            {caption}
                         </Text>
                     </View>
                     {this.renderInput()}
@@ -226,7 +228,8 @@ UIStubPage.defaultProps = {
     presetName: UIBackgroundView.PresetNames.Primary,
     needBottomIcon: true,
     title: '',
-    description: UILocalized.GetNotifiedWhenWeLaunch,
+    caption: UILocalized.GetNotifiedWhenWeLaunch,
+    disclaimer: '',
     onSubmit: () => {},
 };
 
