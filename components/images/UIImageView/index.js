@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import UIComponent from '../../UIComponent';
-import UIAlertView from '../../popup/UIAlertView';
-import UIActionSheet from '../../menus/UIActionSheet';
 import UISpinnerOverlay from '../../UISpinnerOverlay';
-import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
+import UIActionSheet from '../../menus/UIActionSheet';
+import UIAlertView from '../../popup/UIAlertView';
+import UIColor from '../../../helpers/UIColor';
+import UIComponent from '../../UIComponent';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -433,22 +433,20 @@ export default class UIImageView extends UIComponent<Props, State> {
 
     render() {
         const children = this.props.children ? this.renderChildren() : null;
+        const styleParentView = children ?
+            { flexDirection: this.props.childrenFlexDirection }
+            : [styles.photoContainer, this.props.photoStyle];
 
-        if (children) {
-            return (
-                <View style={{ flexDirection: this.props.childrenFlexDirection }}>
-                    <View style={[styles.photoContainer, this.props.photoStyle]}>
-                        {this.renderPhoto()}
-                    </View>
-                    {children}
-                    {this.renderSpinnerOverlay()}
-                    {this.renderActionSheet()}
-                </View>
-            );
-        }
-        return (
+        const photo = children ? (
             <View style={[styles.photoContainer, this.props.photoStyle]}>
                 {this.renderPhoto()}
+            </View>)
+            : this.renderPhoto();
+
+        return (
+            <View style={styleParentView}>
+                {photo}
+                {children}
                 {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
             </View>
