@@ -310,7 +310,6 @@ export default class UIDetailsInput<Props, State>
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
                 value={this.getValue()}
-                testID={testID}
                 {...testIDProp}
             />
         );

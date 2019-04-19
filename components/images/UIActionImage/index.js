@@ -3,14 +3,16 @@ import React from 'react';
 import { Image } from 'react-native';
 
 import UIActionComponent from '../../UIActionComponent';
-import type { ActionProps } from '../../UIActionComponent';
+
+import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 type Props = ActionProps & {
     iconDisabled: string,
     iconEnabled: string,
     iconHovered: string,
 };
-type State = {};
+
+type State = ActionState;
 
 export default class UIActionImage extends UIActionComponent<Props, State> {
     renderContent() {
