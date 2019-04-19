@@ -43,7 +43,7 @@ export default class UIColor {
     };
 
     static palette = UIColorPalette;
-    static theme: UIColorThemeData = themes.light;
+    static current: UIColorThemeData = themes.light;
 
     // Base palette
     static primaryMinus() {

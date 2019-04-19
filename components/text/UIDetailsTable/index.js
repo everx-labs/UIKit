@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 16,
         borderBottomWidth: 1,
-        borderBottomColor: UIColor.theme.background.whiteLight,
+        borderBottomColor: UIColor.current.background.whiteLight,
     },
     leftCell: {
         flex: 1,
