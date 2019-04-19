@@ -2,6 +2,23 @@
 
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
+export type UINavigationRoute = {
+    name: string,
+    screen: any,
+    path?: string,
+}
+
+export type UINavigationRouting = {
+    paths: {
+        [string]: {
+            name: string
+        },
+    },
+    screens: {
+        [string]: any,
+    },
+}
+
 export type NavigationProps = {
     navigation: ReactNavigation,
 };
@@ -17,6 +34,22 @@ export default class UINavigator {
         Master: 'master',
         Detail: 'detail',
     };
+
+    static createRouting(routes: [UINavigationRoute]): UINavigationRouting {
+        const routing: UINavigationRouting = {
+            paths: {},
+            screens: {},
+        };
+        routes.forEach(route => {
+            routing.paths[route.name] = {
+                name: route.path || route.name,
+            };
+            routing.screens[route.name] = {
+                screen: route.screen,
+            };
+        });
+        return routing;
+    }
 
     createNavigator: CreateNavigator;
     navigator: ?Object;
