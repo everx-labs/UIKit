@@ -1,6 +1,8 @@
 Example:
 
 ```js
+let customSheetRef = null;
+
 class FeedbackForm extends UIComponent {
     constructor(props) {
         super(props);
@@ -19,6 +21,7 @@ class FeedbackForm extends UIComponent {
             return;
         }
         UICustomSheet.hide();
+        customSheetRef.hide();
         UIToastMessage.showMessage('Thanks for your feedback');
     }
 
@@ -82,27 +85,27 @@ class FeedbackForm extends UIComponent {
 }
 
 const containerStyle = {
-    height: 300,
+    height: 400,
     margin: -16,
     padding: 16,
     borderRadius: 4,
 };
-let sheetRef = null;
 
 <View style={containerStyle}>
     <UITextButton 
         title="Show feedback form"
-        onPress={() => sheetRef.show()}
+        onPress={() => customSheetRef.show()}
     />
     <UITextButton 
         title="Show master feedback form"
         onPress={() => UICustomSheet.show(<FeedbackForm />)}
     />
     <UICustomSheet
-        ref={(component) => { sheetRef = component; }}
+        ref={(component) => { customSheetRef = component; }}
         component={<FeedbackForm />}
-        masterActionSheet={false}
+        masterSheet={false}
     />
     <UICustomSheet />
+    <UINotice />
 </View>
 ```

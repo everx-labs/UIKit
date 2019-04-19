@@ -9,7 +9,7 @@ import UICustomSheet from '../menus/UICustomSheet';
 import UICompatibilityView from '../../helpers/UICompatibilityView';
 import UILayoutManager from '../../helpers/UILayoutManager';
 
-export default class UIMaster extends UIComponent {
+export default class UISharedComponents extends UIComponent {
     render() {
         return (
             <React.Fragment>

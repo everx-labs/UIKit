@@ -4,7 +4,7 @@ Example:
 const containerStyle = {
     margin: -16,
     padding: 16,
-    height: 550,
+    height: 350,
 }
 
 class ExampleComponent extends React.Component {

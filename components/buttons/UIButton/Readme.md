@@ -22,7 +22,8 @@ class ExampleComponent extends ThemeSwitcherComponent {
                 <UIButton
                     theme={this.getTheme()}
                     style={{ marginTop: 16 }}
-                    title="Badge button"
+                    buttonShape={UIButton.ButtonShape.Radius}
+                    title="Radius badge button"
                     onPress={() => this.setState({ i: this.state.i + 1})}
                     badge={this.state.i}
                 />
