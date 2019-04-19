@@ -9,6 +9,22 @@ import ru from './ru';
 import type { UILocalizedData } from './UILocalizedTypes';
 
 class UILocalized extends LocalizedStrings {
+    setLanguages(languages: string[]) {
+        const props = {};
+        languages.forEach((language) => {
+            let strings = null;
+            if (language === 'en') {
+                strings = en;
+            } else if (language === 'ru') {
+                strings = ru;
+            } else {
+                // not supported
+            }
+            props[language] = strings;
+        });
+        this.setContent(props);
+    }
+
     getLocale() {
         return this.getLanguage(); // this.getInterfaceLanguage().substring(0, 2); // en_US
     }
@@ -86,15 +102,8 @@ type LocalizedStringsMethods = {
     getString(key: string, language: string): string | null,
 }
 
-const localizedStrings = {
-    en,
-    ru,
-};
-
-// For debug purposes
-// delete localizedStrings.ru;
 const localized: UILocalizedData & UILocalized & LocalizedStringsMethods =
-    new UILocalized(localizedStrings);
+    new UILocalized({ en }); // by default only `en` is used
 
 Moment.locale(localized.getLocale());
 
