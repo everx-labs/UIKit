@@ -289,7 +289,6 @@ export default class UITooltip extends UIComponent<Props, State> {
     }
 
     async show() {
-        console.log(111);
         if (!this.props.active) {
             return;
         }
@@ -311,7 +310,11 @@ export default class UITooltip extends UIComponent<Props, State> {
             return;
         }
         this.isVisible = false;
-        UILayoutManager.hideComponent();
+        setTimeout(() => {
+            if (!this.isVisible) {
+                UILayoutManager.hideComponent();
+            }
+        }, UIConstant.animationDuration());
     }
 
     // Render
