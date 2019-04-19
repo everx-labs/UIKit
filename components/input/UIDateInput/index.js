@@ -2,7 +2,6 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text, Platform } from 'react-native';
-import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 import Moment from 'moment';
 
 import UIDetailsInput from '../UIDetailsInput';

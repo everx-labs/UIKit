@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import StylePropType from 'react-style-proptype';
+import UIColor from '../../../helpers/UIColor';
 
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
@@ -15,13 +15,15 @@ export type Details = {
     value: ?string,
     type?: string,
     screen?: string,
+    tag?: any,
 };
 
 export type DetailsList = { [string]: Details };
 
 type Props = {
     navigation?: ReactNavigation,
-    detailsList: ?DetailsList;
+    detailsList: ?DetailsList,
+    onPress?: (details: Details) => void,
 }
 
 type State = {};
@@ -30,6 +32,8 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         paddingVertical: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: UIColor.current.background.whiteLight,
     },
     leftCell: {
         flex: 1,
@@ -49,6 +53,16 @@ class UIDetailsTable extends UIComponent<Props, State> {
         Gram: 'Gram',
     };
 
+    // Events
+    onActionPressed(details: Details) {
+        if (details.screen) {
+            this.navigateTo(details.screen);
+        } else if (this.props.onPress) {
+            this.props.onPress(details);
+        }
+    }
+
+    // Actions
     navigateTo(screen: ?string) {
         const { navigation } = this.props;
         if (navigation && screen) {
@@ -56,6 +70,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
     }
 
+    // Getters
     getTextStyle(type: ?string) {
         const {
             primarySmallRegular,
@@ -86,36 +101,37 @@ class UIDetailsTable extends UIComponent<Props, State> {
         );
     }
 
-    renderCell(type: ?string, textStyle: StylePropType, value: ?string, screen: ?string) {
+    renderCell(details: Details) {
+        const textStyle = this.getTextStyle(details.type);
         const { actionSmallMedium } = UITextStyle;
-        if (!value) {
+        if (!details.value) {
             return null;
         }
-        if (type === UIDetailsTable.CellType.NumberPercent) {
-            const [number, percent] = value.split('(');
+        if (details.type === UIDetailsTable.CellType.NumberPercent) {
+            const [number, percent] = details.value.split('(');
             return this.renderTextCell(
                 number,
                 `(${percent}`,
             );
-        } else if (type === UIDetailsTable.CellType.Gram) {
-            const [integer, fractional] = value.split('.');
+        } else if (details.type === UIDetailsTable.CellType.Gram) {
+            const [integer, fractional] = details.value.split('.');
             return this.renderTextCell(
                 integer,
                 `.${fractional} ${UILocalized.gram}`,
             );
-        } else if (type === UIDetailsTable.CellType.Action) {
+        } else if (details.type === UIDetailsTable.CellType.Action) {
             // actionSmallMedium;
             return (
-                <TouchableOpacity onPress={() => this.navigateTo(screen)}>
+                <TouchableOpacity onPress={() => this.onActionPressed(details)}>
                     <Text style={actionSmallMedium}>
-                        {value}
+                        {details.value}
                     </Text>
                 </TouchableOpacity>
             );
         }
         return (
             <Text style={[textStyle, UIStyle.flex]}>
-                {value}
+                {details.value}
             </Text>
         );
     }
@@ -127,13 +143,13 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
         const cells = Object.keys(detailsList)
             .map<React$Node>((name: string) => {
+                const details = detailsList[name];
                 const {
-                    caption, value, type, screen,
-                } = detailsList[name];
+                    caption, value,
+                } = details;
                 const { secondarySmallRegular } = UITextStyle;
-                const textStyle = this.getTextStyle(type);
 
-                const cell = this.renderCell(type, textStyle, value, screen);
+                const cell = this.renderCell(details);
                 return (
                     <View style={styles.row} key={`details-table-row-${name}-${value || ''}`}>
                         <View style={[styles.leftCell, UIStyle.marginRightDefault]}>

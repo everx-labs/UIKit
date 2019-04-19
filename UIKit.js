@@ -71,7 +71,9 @@ import UIToastMessage from './components/notifications/UIToastMessage';
 import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
+import UITransitionView from './components/views/UITransitionView';
 import UIUserAgent from './helpers/UIUserAgent';
+import UIColorPalette from './helpers/UIColor/UIColorPalette';
 
 // Types
 import type {
@@ -83,6 +85,7 @@ import type { NavigationProps } from './helpers/UINavigator';
 import type { PointerEvents, PositionObject } from './types';
 import type { ContentInset } from './controllers/UIController';
 import type { DetailsList } from './components/text/UIDetailsTable';
+import type { UIColorData, UIColorThemeNameType } from './helpers/UIColor/UIColorTypes';
 
 export {
     UIActionComponent,
@@ -158,7 +161,9 @@ export {
     UITokenCell,
     UIToggle,
     UITooltip,
+    UITransitionView,
     UIUserAgent,
+    UIColorPalette,
 };
 
 export type {
@@ -170,4 +175,6 @@ export type {
     ReactNavigation,
     ContentInset,
     DetailsList,
+    UIColorData,
+    UIColorThemeNameType,
 };

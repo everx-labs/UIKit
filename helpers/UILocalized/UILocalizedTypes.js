@@ -6,6 +6,7 @@ export type UILocalizedData = {
     TONWallet: string,
     BITFuture: string,
     CopyRight: string,
+    Disclaimer: string,
 
     // Terms
     TermsText: string,
