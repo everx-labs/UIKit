@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 
-import UISpinnerOverlay from '../UISpinnerOverlay';
-import UILocalized from '../../helpers/UILocalized';
-import UIActionSheet from '../menus/UIActionSheet';
-import UIAlertView from '../popup/UIAlertView';
-import UIColor from '../../helpers/UIColor';
-import UIComponent from '../UIComponent';
+import UIComponent from '../../UIComponent';
+import UIAlertView from '../../popup/UIAlertView';
+import UIActionSheet from '../../menus/UIActionSheet';
+import UISpinnerOverlay from '../../UISpinnerOverlay';
+import UIColor from '../../../helpers/UIColor';
+import UILocalized from '../../../helpers/UILocalized';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
+        flexDirection: 'row',
     },
 });
 
@@ -398,13 +399,10 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS === 'web' || this.isEditable()) {
             return (
                 <TouchableOpacity
+                    style={[styles.photoContainer, this.props.photoStyle]}
                     onPress={() => this.onPressPhoto()}
-                    style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
                 >
-                    <View style={this.props.containerStyle}>
-                        {this.renderPhotoContent()}
-                        {this.props.children}
-                    </View>
+                    {this.renderPhotoContent()}
                     {this.renderLightBox()}
                     {this.renderPhotoInputForWeb()}
                 </TouchableOpacity>
@@ -413,7 +411,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         const { width, height } = Dimensions.get('window');
         return (
             <LightboxMobile
-                style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
+                style={[styles.photoContainer, this.props.photoStyle]}
                 underlayColor={UIColor.overlayWithAlpha(0.32)}
                 activeProps={{
                     style: { resizeMode: 'contain', width, height },
@@ -422,17 +420,34 @@ export default class UIImageView extends UIComponent<Props, State> {
                 renderContent={() => this.renderLightBoxMobileContent()}
                 onOpen={() => this.onPressPhoto()}
             >
-                <View style={this.props.containerStyle}>
-                    {this.renderPhotoContent()}
-                    {this.props.children}
-                </View>
+                {this.renderPhotoContent()}
             </LightboxMobile>
         );
     }
 
-    render() {
+    renderChildren() {
         return (
-            <View style={styles.photoContainer}>
+            this.props.children
+        );
+    }
+
+    render() {
+        const children = this.props.children ? this.renderChildren() : null;
+
+        if (children) {
+            return (
+                <View style={{ flexDirection: this.props.childrenFlexDirection }}>
+                    <View style={[styles.photoContainer, this.props.photoStyle]}>
+                        {this.renderPhoto()}
+                    </View>
+                    {children}
+                    {this.renderSpinnerOverlay()}
+                    {this.renderActionSheet()}
+                </View>
+            );
+        }
+        return (
+            <View style={[styles.photoContainer, this.props.photoStyle]}>
                 {this.renderPhoto()}
                 {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
@@ -447,6 +462,7 @@ UIImageView.defaultProps = {
     editable: false,
     expandable: true,
     disabled: false,
+    childrenFlexDirection: 'row',
     alignItems: 'center',
     photoStyle: null,
     containerStyle: null,
@@ -463,6 +479,7 @@ UIImageView.propTypes = {
     editable: PropTypes.bool,
     expandable: PropTypes.bool,
     disabled: PropTypes.bool,
+    childrenFlexDirection: PropTypes.string,
     alignItems: PropTypes.string,
     containerStyle: StylePropType,
     photoStyle: StylePropType,
