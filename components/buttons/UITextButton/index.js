@@ -9,6 +9,7 @@ import UIActionComponent from '../../UIActionComponent';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
+
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
@@ -48,7 +49,9 @@ type Props = ActionProps & {
     title: string,
 };
 
-class UITextButton extends UIActionComponent<Props, ActionState> {
+type State = ActionState;
+
+class UITextButton extends UIActionComponent<Props, State> {
     static Align = {
         Left: styles.alignLeft,
         Center: styles.alignCenter,

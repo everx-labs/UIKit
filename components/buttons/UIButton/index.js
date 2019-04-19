@@ -12,6 +12,8 @@ import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
 import UIActionComponent from '../../UIActionComponent';
 
+import type { ActionProps, ActionState } from '../../UIActionComponent';
+
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
+type Props = ActionProps & {
     badge: number,
     bottomExtend: boolean,
     buttonSize: string,
@@ -45,7 +47,7 @@ type Props = {
     theme: string,
 };
 
-type State = {};
+type State = ActionState;
 
 export default class UIButton extends UIActionComponent<Props, State> {
     static ButtonSize = {
