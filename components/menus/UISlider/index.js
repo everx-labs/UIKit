@@ -131,7 +131,7 @@ export default class UISlider extends UIComponent<Props, State> {
     }
 
     onMove(dx: number) {
-        if (!this.isMouseDown()) {
+        if (UIDevice.isDesktopWeb() && !this.isMouseDown()) {
             this.onSwipeRelease(dx);
         } else {
             const currDx = this.getMarginLeft() + dx;
