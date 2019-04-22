@@ -46,6 +46,7 @@ const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
 const UI_DETAILS_CELL_HEIGHT = 68;
 const UI_GREAT_CELL_HEIGHT = 72;
+const UI_CHAT_CELL_HEIGHT = 76;
 const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
 const UI_GIANT_CELL_HEIGHT = 128;
@@ -309,6 +310,10 @@ export default class UIConstant {
 
     static majorCellHeight() {
         return UI_MAJOR_CELL_HEIGHT;
+    }
+
+    static chatCellHeight() {
+        return UI_CHAT_CELL_HEIGHT;
     }
 
     static hugeCellHeight() {
