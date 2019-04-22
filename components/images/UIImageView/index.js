@@ -272,9 +272,12 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS !== 'web' || !this.isEditable()) {
             return null;
         }
+        const { testID } = this.props;
+        const testIDProp = testID ? { testID } : null;
         // TextInput doesn't work here
         return (<input
             ref={(component) => { this.input = component; }}
+            {...testIDProp}
             type="file"
             name="image"
             className="inputClass"
@@ -397,8 +400,11 @@ export default class UIImageView extends UIComponent<Props, State> {
 
     renderPhoto() {
         if (Platform.OS === 'web' || this.isEditable()) {
+            const { testID } = this.props;
+            const testIDProp = testID ? { testID } : null;
             return (
                 <TouchableOpacity
+                    {...testIDProp}
                     style={[styles.photoContainer, this.props.photoStyle]}
                     onPress={() => this.onPressPhoto()}
                 >
@@ -448,6 +454,7 @@ UIImageView.defaultProps = {
     onUploadPhoto: () => {},
     onDeletePhoto: null,
     onPressPhoto: () => {},
+    testID: null,
 };
 
 UIImageView.propTypes = {
@@ -462,4 +469,5 @@ UIImageView.propTypes = {
     onUploadPhoto: PropTypes.func,
     onDeletePhoto: PropTypes.func,
     onPressPhoto: PropTypes.func,
+    testID: PropTypes.string,
 };
