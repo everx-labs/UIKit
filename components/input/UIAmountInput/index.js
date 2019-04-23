@@ -40,6 +40,7 @@ type Props = DetailsProps & {
     trailingValue?: string,
     rightButton?: string,
     rightButtonDisabled: boolean,
+    testID?: string,
     onRightButtonPress?: () => void,
 };
 type State = DetailsState & {};
@@ -94,6 +95,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             UITextStyle.secondarySmallMedium : UITextStyle.actionSmallMedium;
         return (
             <TouchableOpacity
+                testID={'amount_max_btn'}
                 disabled={rightButtonDisabled}
                 onPress={onRightButtonPress}
             >
