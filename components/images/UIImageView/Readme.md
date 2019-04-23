@@ -4,7 +4,7 @@ Right image isn't editable you can press and expand it in lightbox full-size.
 ```js
 const image = require('../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active@3x.png');
 
-class ModalExample extends React.Component {
+class Example extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -33,5 +33,5 @@ class ModalExample extends React.Component {
         );
     }
 };
-<ModalExample />
+<Example />
 ```

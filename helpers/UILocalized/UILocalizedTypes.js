@@ -532,4 +532,5 @@ export type UILocalizedData = {
 
     // Toasts
     EnterCorrectDataToField: string,
+    EmailAddress: string,
 }

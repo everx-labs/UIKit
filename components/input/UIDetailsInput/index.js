@@ -395,18 +395,20 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderComment() {
-        const { comment } = this.props;
+        const { comment, theme } = this.props;
         if (!comment) {
             return null;
         }
+        const defaultColorStyle = UIColor.textSecondaryStyle(theme);
         const commentColor = this.commentColor();
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
                 style={[
-                    UITextStyle.secondaryCaptionRegular,
+                    UITextStyle.captionRegular,
                     UIStyle.marginTopTiny,
                     UIStyle.marginBottomSmall,
+                    defaultColorStyle,
                     colorStyle,
                 ]}
             >

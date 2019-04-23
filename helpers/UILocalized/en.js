@@ -541,8 +541,7 @@ const en: UILocalizedData = {
 
     // Toasts
     EnterCorrectDataToField: 'Enter correct data to field',
-
-
+    EmailAddress: 'Email',
 };
 
 export default en;

@@ -86,6 +86,11 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.bodyRegular(),
     },
+    // Caption - fontSize: 14, lineHeight: 20
+    captionRegular: {
+        ...text,
+        ...UIFont.captionRegular(),
+    },
     // Tiny - fontSize: 12, lineHeight: 16
     tinyRegular: {
         ...text,
@@ -404,6 +409,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Action minus (primary minus)]
+    // Small - fontSize: 16, lineHeight: 20
+    actionMinusSmallMedium: {
+        ...actionMinus,
+        ...UIFont.smallMedium(),
+    },
     // Small - fontSize: 12, lineHeight: 16
     actionMinusTinyMedium: {
         ...actionMinus,
@@ -411,6 +421,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Action 3 (primary 3)]
+    // Small - fontSize: 16, lineHeight: 20
+    action3SmallMedium: {
+        ...action3,
+        ...UIFont.smallMedium(),
+    },
     // Small - fontSize: 12, lineHeight: 16
     action3TinyRegular: {
         ...action3,

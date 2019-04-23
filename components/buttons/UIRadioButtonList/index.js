@@ -9,25 +9,29 @@ import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
 
 class UIRadioButtonList extends UIComponent {
+    renderRadioItem(item, index) {
+        const { selected } = this.props.state;
+        return (
+            <UIRadioButtonItem
+                title={item.title}
+                selected={selected === index}
+                onPress={() => this.props.onSelect(index)}
+            />
+        );
+    }
+
     renderList() {
-        const { selected, radiobuttonList } = this.props.state;
+        const { radiobuttonList } = this.props.state;
         return radiobuttonList.map((item, index) => {
-            const radioItem = (
-                <UIRadioButtonItem
-                    key={`radioButton~${Math.random()}`}
-                    title={item.title}
-                    selected={selected === index}
-                    onPress={() => this.props.onSelect(index)}
-                />
+            const itemStyle = this.props.flexDirection === 'row' ? UIStyle.marginRightHuge : null;
+            return (
+                <View
+                    key={`radioButton-item-${Math.random()}-${item}`}
+                    style={itemStyle}
+                >
+                    {this.renderRadioItem(item, index)}
+                </View>
             );
-            if (this.props.flexDirection === 'row') {
-                return (
-                    <View style={UIStyle.marginRightHuge}>
-                        {radioItem}
-                    </View>
-                );
-            }
-            return radioItem;
         });
     }
 

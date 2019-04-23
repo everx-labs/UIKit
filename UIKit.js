@@ -1,4 +1,5 @@
 import UIActionComponent from './components/UIActionComponent';
+import UIActionImage from './components/images/UIActionImage';
 import UIActionSheet from './components/menus/UIActionSheet';
 import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/input/UIAmountInput';
@@ -61,7 +62,7 @@ import UIShareScreen from './helpers/UIShareManager/UIShareScreen';
 import UISlider from './components/menus/UISlider';
 import UISpinnerOverlay from './components/UISpinnerOverlay';
 import UISplitViewController from './controllers/UISplitViewController';
-import UIStepBar from './components/navigation/UIStepBar';
+import UIStepBar from './components/menus/UIStepBar';
 import UIStubPage from './components/products/UIStubPage';
 import UIStyle from './helpers/UIStyle';
 import UITabView from './components/menus/UITabView';
@@ -99,6 +100,7 @@ import type {
 
 export {
     UIActionComponent,
+    UIActionImage,
     UIActionSheet,
     UIAlertView,
     UIAmountInput,
