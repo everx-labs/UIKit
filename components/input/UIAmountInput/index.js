@@ -94,6 +94,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             UITextStyle.secondarySmallMedium : UITextStyle.actionSmallMedium;
         return (
             <TouchableOpacity
+                testID="amount_input_right_button"
                 disabled={rightButtonDisabled}
                 onPress={onRightButtonPress}
             >
