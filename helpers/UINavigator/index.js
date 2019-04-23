@@ -52,10 +52,16 @@ export default class UINavigator {
             const path: UINavigationPath = {
                 name: route.path || route.name,
             };
-            if (route.section) {
+            if (route.section) { // deprecated
                 path.staticParameters = {
                     section: route.section,
                 };
+            }
+            if (route.staticParameters) {
+                path.staticParameters = route.staticParameters;
+            }
+            if (route.dynamicParameters) {
+                path.dynamicParameters = route.dynamicParameters;
             }
             routing.paths[route.name] = path;
             routing.screens[route.name] = {
@@ -63,6 +69,10 @@ export default class UINavigator {
             };
         });
         return routing;
+    }
+
+    static section(section) {
+        return { section };
     }
 
     createNavigator: CreateNavigator;
