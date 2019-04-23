@@ -12,6 +12,7 @@ const LabelRole = Object.freeze({
     Title: 'title',
     Subtitle: 'subtitle',
     Description: 'description',
+    BoldDescription: 'boldDescription',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -57,8 +58,9 @@ export default class UILabel extends UIComponent<Props, State> {
             return UITextStyle.primarySubtitleBold;
         } else if (role === UILabel.Role.Description) {
             return UITextStyle.primaryBodyRegular;
-        }
-        return {};
+        } else if (role === UILabel.Role.BoldDescription) {
+            return UITextStyle.primaryBodyBold;
+        } return {};
     }
 
     getText(): string {
