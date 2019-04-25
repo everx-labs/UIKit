@@ -1,33 +1,26 @@
 // @flow
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIAccountPickerCell from './components/UIAccountPickerCell';
 
 import UIComponent from '../UIComponent';
+import UIStyle from '../../helpers/UIStyle';
 import UITextStyle from '../../helpers/UITextStyle';
-import UIColor from '../../helpers/UIColor';
 
 import type { UIAccountData } from './types/UIAccountData';
-
-export type {
-    UIAccountData,
-};
 
 type Props = {
     title: string,
     account: UIAccountData,
     onPressAccount?: () => void,
+    containerStyle: ViewStyleProp,
 };
 type State = {
     // Empty
 };
-
-const styles = StyleSheet.create({
-    title: {
-        color: UIColor.grey(),
-    },
-});
 
 export default class UIAccountPicker extends UIComponent<Props, State> {
     static defaultProps = {
@@ -37,19 +30,18 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
     };
 
     renderTitle() {
-        const { title } = this.props;
-
         return (
-            <Text style={[UITextStyle.grey1CaptionRegular, styles.title]}>
-                {title}
+            <Text style={[UITextStyle.tertiaryTinyRegular, UIStyle.marginBottomTiny]}>
+                {this.props.title}
             </Text>
         );
     }
 
     renderAccountCell() {
         const { account, onPressAccount } = this.props;
-        if (!account) return null;
-
+        if (!account) {
+            return null;
+        }
         return (
             <UIAccountPickerCell
                 account={account}
@@ -60,7 +52,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View>
+            <View style={this.props.containerStyle}>
                 {this.renderTitle()}
                 {this.renderAccountCell()}
             </View>

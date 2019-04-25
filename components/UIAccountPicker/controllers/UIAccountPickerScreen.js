@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
 
 import UIModalController from '../../../controllers/UIModalController';
 import UISearchBar from '../../input/UISearchBar';
 import UIAccountPickerCell from '../components/UIAccountPickerCell';
-import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UILocalized from '../../../helpers/UILocalized';
 
@@ -24,12 +23,6 @@ type State = {
     filteredAccounts: ?UIAccountData[],
     expression: string,
 };
-
-const styles = StyleSheet.create({
-    cell: {
-        marginTop: UIConstant.contentOffset(),
-    },
-});
 
 let masterRef = null;
 
@@ -151,14 +144,13 @@ class UIAccountPickerScreen extends UIModalController<Props, State> {
 
     renderCell(account: UIAccountData) {
         return (
-            <View style={styles.cell}>
-                <UIAccountPickerCell
-                    account={account}
-                    onPress={() => {
-                        this.onAccountSelect(account);
-                    }}
-                />
-            </View>
+            <UIAccountPickerCell
+                containerStyle={UIStyle.marginTopDefault}
+                account={account}
+                onPress={() => {
+                    this.onAccountSelect(account);
+                }}
+            />
         );
     }
 
