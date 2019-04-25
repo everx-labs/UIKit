@@ -12,8 +12,10 @@ import UILocalized from '../../../helpers/UILocalized';
 import type { UIAccountData } from '../types/UIAccountData';
 import type { ModalControllerProps } from '../../../controllers/UIModalController';
 
+type SelectAccountCallback = (account: UIAccountData) => void;
+
 type Props = ModalControllerProps & {
-    onAccountSelect: (account: UIAccountData) => {},
+    onAccountSelect?: SelectAccountCallback,
     masterAccountPickerView: boolean,
 };
 
@@ -32,16 +34,13 @@ const styles = StyleSheet.create({
 let masterRef = null;
 
 class UIAccountPickerScreen extends UIModalController<Props, State> {
-    static selectAccount(accounts?: UIAccountData[], onSelectCallback?: () => void) {
+    static selectAccount(accounts?: UIAccountData[], onSelectCallback?: SelectAccountCallback) {
         if (masterRef) {
             masterRef.showAccounts(accounts, onSelectCallback);
         }
     }
 
-    onSelectCallback: (account: UIAccountData) => void;
-
     static defaultProps = {
-        onAccountSelect: () => {},
         masterAccountPickerView: true,
     }
 
@@ -75,8 +74,8 @@ class UIAccountPickerScreen extends UIModalController<Props, State> {
         this.setStateSafely({ expression });
     }
 
-    setSections(sections: SectionsArray) {
-        this.setStateSafely({ sections });
+    setFilteredAccounts(filteredAccounts: UIAccountData) {
+        this.setStateSafely({ filteredAccounts });
     }
 
     // Getters
@@ -94,7 +93,9 @@ class UIAccountPickerScreen extends UIModalController<Props, State> {
 
     // Events
     onAccountSelect(account: UIAccountData) {
-        this.onSelectCallback(account);
+        if (this.onSelectCallback) {
+            this.onSelectCallback(account);
+        }
         this.hide();
     }
 
@@ -106,7 +107,8 @@ class UIAccountPickerScreen extends UIModalController<Props, State> {
     // Processing
 
     // Actions
-    showAccounts(accounts: ?UIAccountData[], onSelectCallback?: () => void) {
+    onSelectCallback: ?SelectAccountCallback;
+    showAccounts(accounts: ?UIAccountData[], onSelectCallback?: SelectAccountCallback) {
         if (!accounts) return;
         this.onSelectCallback = onSelectCallback || this.props.onAccountSelect;
         this.setStateSafely({
