@@ -49,6 +49,7 @@ import UINavigationBar from './components/navigation/UINavigationBar';
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
+import UINumberInput from './components/input/UINumberInput';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
 import UIProfilePhoto from './components/profile/UIProfilePhoto';
@@ -155,6 +156,7 @@ export {
     UINavigator,
     UINetworkStatus,
     UINotice,
+    UINumberInput,
     UIPasswordPrompt,
     UIPhoneInput,
     UIProfilePhoto,
