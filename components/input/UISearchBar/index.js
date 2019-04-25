@@ -55,9 +55,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
     static defaultProps = {
         value: '',
         placeholder: '',
-        onChangeExpression: () => {
-        },
-        navigation: null,
+        onChangeExpression: () => {},
     };
 
     static handleHeader(navigation: ReactNavigation) {

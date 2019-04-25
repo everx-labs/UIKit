@@ -35,6 +35,11 @@ const quaternary = {
     color: UIColor.textQuaternary(),
 };
 
+const grey = {
+    ...text,
+    color: UIColor.grey(),
+};
+
 const grey1 = {
     ...text,
     color: UIColor.grey1(),
@@ -247,6 +252,12 @@ const UITextStyle = StyleSheet.create({
     // Body - fontSize: 18, lineHeight: 24
     quaternaryBodyRegular: {
         ...quaternary,
+        ...UIFont.bodyRegular(),
+    },
+
+    // [Text Grey]
+    greyBodyRegular: {
+        ...grey,
         ...UIFont.bodyRegular(),
     },
 
