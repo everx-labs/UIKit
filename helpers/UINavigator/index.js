@@ -7,12 +7,21 @@ export type UINavigationRoute = {
     screen: any,
     path?: string,
     section?: string,
+    staticParameters?: {
+        section?: string,
+    },
+    dynamicParameters?: {
+        [string]: boolean,
+    },
 }
 
 export type UINavigationPath = {
     name: string,
     staticParameters?: {
         section?: string,
+    },
+    dynamicParameters?: {
+        [string]: boolean,
     },
 }
 
@@ -48,7 +57,7 @@ export default class UINavigator {
             paths: {},
             screens: {},
         };
-        routes.forEach(route => {
+        routes.forEach((route) => {
             const path: UINavigationPath = {
                 name: route.path || route.name,
             };
@@ -71,7 +80,7 @@ export default class UINavigator {
         return routing;
     }
 
-    static section(section) {
+    static section(section: string) {
         return { section };
     }
 

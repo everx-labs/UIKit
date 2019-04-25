@@ -1,24 +1,16 @@
 // @flow
-import { StyleSheet } from 'react-native';
-
 import UIColorPalette from './UIColorPalette';
 import { UIColorThemeName } from './UIColorTypes';
 import UIColorThemeAction from './UIColorThemeAction';
 import UIColorThemeDark from './UIColorThemeDark';
 import UIColorThemeLight from './UIColorThemeLight';
+import UIStyleColor from '../UIStyle/UIStyleColor';
 
 import type {
     UIColorData,
     UIColorThemeData,
     UIColorThemeNameType,
 } from './UIColorTypes';
-
-const colorStyleSheets = {
-    color: {},
-    backgroundColor: {},
-    borderBottomColor: {},
-    tintColor: {},
-};
 
 const themes: { [UIColorThemeNameType]: UIColorThemeData } = {
     light: UIColorThemeLight,
@@ -33,13 +25,6 @@ export default class UIColor {
         Light: UIColorThemeName.light,
         Dark: UIColorThemeName.dark,
         Action: UIColorThemeName.action,
-    };
-
-    static Styles = {
-        Color: 'color',
-        BackgroundColor: 'backgroundColor',
-        BorderBottomColor: 'borderBottomColor',
-        TintColor: 'tintColor',
     };
 
     static palette = UIColorPalette;
@@ -199,8 +184,9 @@ export default class UIColor {
         return themes[theme || current].text.primary.normal;
     }
 
+    // deprecated, moved to UIStyleColor
     static textPrimaryStyle(theme?: ?UIColorThemeNameType) {
-        return UIColor.getColorStyle(UIColor.textPrimary(theme));
+        return UIStyleColor.getColorStyle(UIColor.textPrimary(theme));
     }
 
     static stateTextPrimary(
@@ -209,7 +195,7 @@ export default class UIColor {
         tapped: boolean,
         hover: boolean,
     ): UIColorData {
-        const primary = themes[theme || current].text.primary;
+        const { primary } = themes[theme || current].text;
         if (disabled) {
             return primary.disabled;
         }
@@ -222,6 +208,7 @@ export default class UIColor {
         return primary.normal;
     }
 
+    // deprecated, moved to UIStyleColor
     static stateTextPrimaryStyle(
         theme: ?UIColorThemeNameType,
         disabled: boolean,
@@ -229,7 +216,7 @@ export default class UIColor {
         hover: boolean,
     ) {
         const color = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
-        return UIColor.getColorStyle(color);
+        return UIStyleColor.getColorStyle(color);
     }
 
     static actionTextPrimary(theme?: ?UIColorThemeNameType): UIColorData {
@@ -237,7 +224,7 @@ export default class UIColor {
     }
 
     static actionTextPrimaryStyle(theme?: ?UIColorThemeNameType) {
-        return UIColor.getColorStyle(UIColor.actionTextPrimary(theme));
+        return UIStyleColor.getColorStyle(UIColor.actionTextPrimary(theme));
     }
 
     static textParagraph(theme?: ?UIColorThemeNameType): UIColorData {
@@ -249,7 +236,7 @@ export default class UIColor {
     }
 
     static textSecondaryStyle(theme?: ?UIColorThemeNameType) {
-        return UIColor.getColorStyle(UIColor.textSecondary(theme));
+        return UIStyleColor.getColorStyle(UIColor.textSecondary(theme));
     }
 
     static textTertiary(theme?: ?UIColorThemeNameType): UIColorData {
@@ -257,12 +244,11 @@ export default class UIColor {
     }
 
     static textTertiaryStyle(theme?: ?UIColorThemeNameType) {
-        return UIColor.getColorStyle(UIColor.textTertiary(theme));
+        return UIStyleColor.getColorStyle(UIColor.textTertiary(theme));
     }
 
     static textQuaternary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].text.quaternary;
-
     }
 
     static textCaution(theme?: ?UIColorThemeNameType): UIColorData {
@@ -299,14 +285,19 @@ export default class UIColor {
     }
 
     // border
+    static boderBottomLightColor(theme: ?UIColorThemeNameType) {
+        const { borderBottom } = themes[theme || current];
+        return borderBottom.light;
+    }
+
     static borderBottomColor(theme: ?UIColorThemeNameType, focused: boolean): UIColorData {
-        const borderBottom = themes[theme || current].borderBottom;
+        const { borderBottom } = themes[theme || current];
         return focused ? borderBottom.focused : borderBottom.normal;
     }
 
     static borderBottomColorStyle(theme: ?UIColorThemeNameType, focused: boolean) {
         const borderColor = UIColor.borderBottomColor(theme, focused);
-        return UIColor.getBorderBottomColorStyle(borderColor);
+        return UIStyleColor.getBorderBottomColorStyle(borderColor);
     }
 
     // component colors
@@ -315,7 +306,7 @@ export default class UIColor {
         tapped: boolean,
         hover: boolean,
     ): UIColorData {
-        const background = themes[theme || current].button.background;
+        const { background } = themes[theme || current].button;
         if (tapped) {
             return background.tapped;
         }
@@ -326,7 +317,7 @@ export default class UIColor {
     }
 
     static buttonTitle(theme: ?UIColorThemeNameType, disabled: boolean): UIColorData {
-        const title = themes[theme || current].button.title;
+        const { title } = themes[theme || current].button;
         return disabled ? title.disabled : title.normal;
     }
 
@@ -361,37 +352,23 @@ export default class UIColor {
         return UIColorPalette.walletVersion;
     }
 
-    // Utility
-    static getStyle(color: UIColorData, colorStyle: string) {
-        const colorStyles = colorStyleSheets[colorStyle];
-        if (!colorStyles) {
-            return null;
-        }
-        let sheet = colorStyles[color];
-        if (!sheet) {
-            sheet = StyleSheet.create({
-                style: {
-                    [colorStyle]: color,
-                },
-            });
-            colorStyles[color] = sheet;
-        }
-        return sheet.style;
-    }
-
+    // deprecated, moved to UIStyleColor
     static getColorStyle(color: UIColorData) {
-        return UIColor.getStyle(color, UIColor.Styles.Color);
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.Color);
     }
 
+    // deprecated, moved to UIStyleColor
     static getBackgroundColorStyle(color: UIColorData) {
-        return UIColor.getStyle(color, UIColor.Styles.BackgroundColor);
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BackgroundColor);
     }
 
+    // deprecated, moved to UIStyleColor
     static getBorderBottomColorStyle(color: UIColorData) {
-        return UIColor.getStyle(color, UIColor.Styles.BorderBottomColor);
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BorderBottomColor);
     }
 
+    // deprecated, moved to UIStyleColor
     static getTintColorStyle(color: UIColorData) {
-        return UIColor.getStyle(color, UIColor.Styles.TintColor);
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.TintColor);
     }
 }

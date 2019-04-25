@@ -7,6 +7,7 @@ const UIColorThemeAction: UIColorThemeData = {
     borderBottom: {
         normal: UIColorPalette.primaryMinus,
         focused: UIColorPalette.primary3,
+        light: UIColorPalette.whiteLight,
     },
     text: {
         primary: {

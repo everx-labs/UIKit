@@ -11,6 +11,7 @@ export type UIColorData = string;
 
 export type UIColorThemeData = {
     borderBottom: {
+        light: UIColorData,
         normal: UIColorData,
         focused: UIColorData,
     },

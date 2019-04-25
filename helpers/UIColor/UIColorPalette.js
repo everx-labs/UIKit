@@ -21,6 +21,7 @@ const UIColorPalette = {
     grey2: '#DDE1E2',
     grey3: '#CED3D6',
     light: '#CFD8DC',
+    whiteLight: '#F5F5F5',
     notWhite: '#F8F9F9',
     black80: 'rgba(0,0,0,0.8)',
     white40: 'rgba(255,255,255,0.4)',

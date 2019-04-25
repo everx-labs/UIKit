@@ -6,7 +6,6 @@ import StylePropType from 'react-style-proptype';
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
 import UITooltip from '../../notifications/UITooltip';
@@ -25,9 +24,9 @@ const styles = StyleSheet.create({
 });
 
 const bottomTextStyle = [
-    UIStyle.alignJustifyCenter,
-    UIStyle.bigCellHeight,
-    UIStyle.pageSlimContainer,
+    UIStyle.Common.alignJustifyCenter(),
+    UIStyle.Height.bigCell(),
+    UIStyle.Common.pageSlimContainer(),
 ];
 
 type MenuItem = {
@@ -65,13 +64,13 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     textStyle() {
         const { theme, textStyle } = this.props;
         const colorStyle = UIColor.textTertiaryStyle(theme);
-        return [UITextStyle.tinyMedium, colorStyle, textStyle];
+        return [UIStyle.Text.tinyMedium(), colorStyle, textStyle];
     }
 
     textAccentStyle() {
         const { theme, textStyle } = this.props;
         const colorStyle = UIColor.textSecondaryStyle(theme);
-        return [UITextStyle.tinyMedium, colorStyle, textStyle];
+        return [UIStyle.Text.tinyMedium(), colorStyle, textStyle];
     }
 
     isNarrow() {
@@ -102,7 +101,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         }
         const accentStyle = this.textAccentStyle();
         return (
-            <View style={[styles.container, UIStyle.justifyCenter]}>
+            <View style={[styles.container, UIStyle.Common.justifyCenter()]}>
                 <Text>
                     <Text style={accentStyle}>
                         {accentText}
@@ -110,7 +109,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                     {' '}
                     <UITextButton
                         title={accentEmail}
-                        buttonStyle={UIStyle.tinyCellHeight}
+                        buttonStyle={UIStyle.Height.tinyCell()}
                         textStyle={accentStyle}
                         textHoverStyle={accentStyle}
                         textTappedStyle={accentStyle}
@@ -130,7 +129,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return (
             <UITextButton
                 title={email}
-                buttonStyle={UIStyle.tinyCellHeight}
+                buttonStyle={UIStyle.Height.tinyCell()}
                 textStyle={this.textStyle()}
                 textHoverStyle={primaryColorStyle}
                 textTappedStyle={primaryColorStyle}
@@ -157,7 +156,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 style={bottomTextStyle}
                 {...itemProps}
             >
-                <Text style={[textStyle, UIStyle.textAlignCenter]}>
+                <Text style={[textStyle, UIStyle.Text.alignCenter()]}>
                     <Text itemProp="name">{companyName}</Text>
                     {', '}
                     <Text
@@ -193,8 +192,8 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={UIStyle.flex}>
-                <Text style={[UITextStyle.tinyMedium, textStyle]}>
+            <View style={UIStyle.Common.flex()}>
+                <Text style={[UIStyle.Text.tinyMedium(), textStyle]}>
                     {leftText}
                 </Text>
                 {this.renderMenu()}
@@ -217,7 +216,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             <React.Fragment key={`bottom-bar-menu-item-${item.title}`}>
                 <UITextButton
                     title={item.title}
-                    buttonStyle={UIStyle.tinyCellHeight}
+                    buttonStyle={UIStyle.Height.tinyCell()}
                     textStyle={textStyle}
                     textHoverStyle={UIColor.textPrimaryStyle()}
                     textTappedStyle={UIColor.textPrimaryStyle()}
@@ -228,7 +227,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         ));
 
         return (
-            <View style={UIStyle.flexRow}>
+            <View style={UIStyle.Common.flexRow()}>
                 {menu}
             </View>
         );
@@ -240,7 +239,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         }
         const mobile = this.isNarrow();
         return (
-            <View style={UIStyle.flex}>
+            <View style={UIStyle.Common.flex()}>
                 {this.renderContacts(!mobile)}
             </View>
         );
@@ -266,9 +265,9 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         const textStyle = this.textStyle();
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
-        const align = isShort ? UIStyle.alignCenter : UIStyle.alignEnd;
+        const align = isShort ? UIStyle.Common.alignCenter() : UIStyle.Common.alignEnd();
         return (
-            <View style={[UIStyle.flex, align]}>
+            <View style={[UIStyle.Common.flex(), align]}>
                 <Text style={textStyle}>
                     {copyRightText}
                     {this.renderDisclaimer()}
@@ -280,7 +279,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     render() {
         const mobile = this.isNarrow();
         return (
-            <View style={UIStyle.bottomScreenContainer}>
+            <View style={UIStyle.Common.bottomScreenContainer()}>
                 <View style={this.props.containerStyle}>
                     {this.renderAccentText()}
                     <View style={styles.container}>
