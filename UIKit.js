@@ -1,3 +1,5 @@
+import UIAccountPicker from './components/UIAccountPicker';
+import UIAccountPickerScreen from './components/UIAccountPicker/controllers/UIAccountPickerScreen';
 import UIActionComponent from './components/UIActionComponent';
 import UIActionImage from './components/images/UIActionImage';
 import UIActionSheet from './components/menus/UIActionSheet';
@@ -78,6 +80,7 @@ import UITransitionView from './components/views/UITransitionView';
 import UIUserAgent from './helpers/UIUserAgent';
 
 // Types
+import type { UIAccountData } from './components/UIAccountPicker/types/UIAccountData';
 import type {
     AnyComponent,
     CreateNavigationOptions,
@@ -100,6 +103,8 @@ import type {
 } from './helpers/UIColor/UIColorTypes';
 
 export {
+    UIAccountPicker,
+    UIAccountPickerScreen,
     UIActionComponent,
     UIActionImage,
     UIActionSheet,
@@ -189,6 +194,7 @@ export type {
     ReactNavigation,
     ContentInset,
     DetailsList,
+    UIAccountData,
     UIColorData,
     UIColorThemeNameType,
     UINavigationRoute,
