@@ -79,9 +79,7 @@ import UIUserAgent from './helpers/UIUserAgent';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
 
 // Types
-import type {
-    UIAccountData,
-} from './components/UIAccountPicker/types/UIAccountData';
+import type { UIAccountData } from './components/UIAccountPicker/types/UIAccountData';
 import type {
     AnyComponent,
     CreateNavigationOptions,

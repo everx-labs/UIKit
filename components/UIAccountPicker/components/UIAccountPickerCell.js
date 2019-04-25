@@ -1,33 +1,20 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
-import UIColor from '../../../helpers/UIColor';
+import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 
 import type { UIAccountData } from '../types/UIAccountData';
 
-const styles = StyleSheet.create({
-    mainContainer: {
-        width: '100%',
-        flexDirection: 'column',
-    },
-    accountInfoContainer: {
-        width: '100%',
-        flexDirection: 'row',
-    },
-    accountAddress: {
-        marginRight: UIConstant.contentOffset(),
-    },
-    footer: {
-        color: UIColor.grey(),
-    },
-});
-
 type Props = {
-    account: UIAccountData,
+    containerStyle: ViewStyleProp,
+    account: ?UIAccountData,
+    maxDecimals: number,
     onPress?: () => void,
 };
 
@@ -37,10 +24,13 @@ type State = {
 
 export default class UIAccountPickerCell extends UIComponent<Props, State> {
     static defaultProps = {
+        containerStyle: {},
         account: null,
+        maxDecimals: UIConstant.maxDecimalDigits(),
         onPress: () => {},
     };
 
+    // constructor
     constructor(props: Props) {
         super(props);
 
@@ -49,17 +39,25 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         };
     }
 
+    // Getters
+    getMaxDecimals(): number {
+        return this.props.maxDecimals;
+    }
+
+    // Render
     renderFractional(stringNumber: string) {
         if (!stringNumber) {
             return null;
         }
-        const { primaryBodyRegular, secondaryBodyRegular } = UITextStyle;
+        const { primaryBodyRegular, greyBodyRegular } = UITextStyle;
         const [integer, fractional] = stringNumber.split('.');
-        const decimals = (fractional && fractional.length > 0) ? fractional : '0000';
+        const decimals = (fractional && fractional.length > 0)
+            ? fractional
+            : '0'.repeat(this.getMaxDecimals());
         return (
             <Text style={primaryBodyRegular}>
                 {integer}
-                <Text style={secondaryBodyRegular}>
+                <Text style={greyBodyRegular}>
                     {`.${decimals}`}
                 </Text>
             </Text>
@@ -68,12 +66,17 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
 
     renderAccount() {
         const { account } = this.props;
-        if (!account) return null;
-
+        if (!account) {
+            return null;
+        }
         return (
-            <View style={styles.accountInfoContainer}>
+            <View style={UIStyle.flexRow}>
                 <Text
-                    style={[UITextStyle.actionBodyMedium, styles.accountAddress]}
+                    style={[
+                        UIStyle.flex,
+                        UIStyle.marginRightDefault,
+                        UITextStyle.actionBodyMedium,
+                    ]}
                     numberOfLines={1}
                     ellipsizeMode="middle"
                 >
@@ -86,20 +89,21 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
 
     renderFooter() {
         const { account } = this.props;
-        if (!account) return null;
-
+        if (!account) {
+            return null;
+        }
         return (
-            <Text style={[UITextStyle.grey1CaptionRegular, styles.footer]}>
+            <Text style={[UIStyle.marginTopTiny, UITextStyle.tertiaryCaptionRegular]}>
                 {account.name}
             </Text>
         );
     }
 
     render() {
-        const { onPress } = this.props;
+        const { containerStyle, onPress } = this.props;
         return (
             <TouchableOpacity
-                style={styles.mainContainer}
+                style={containerStyle}
                 onPress={onPress}
             >
                 {this.renderAccount()}
