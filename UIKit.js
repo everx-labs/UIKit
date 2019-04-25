@@ -1,5 +1,5 @@
 import UIAccountPicker from './components/UIAccountPicker';
-import UIAccountPickerView from './components/UIAccountPicker/controllers/UIAccountPickerView';
+import UIAccountPickerScreen from './components/UIAccountPicker/controllers/UIAccountPickerScreen';
 import UIActionComponent from './components/UIActionComponent';
 import UIActionImage from './components/images/UIActionImage';
 import UIActionSheet from './components/menus/UIActionSheet';
@@ -105,7 +105,7 @@ import type {
 
 export {
     UIAccountPicker,
-    UIAccountPickerView,
+    UIAccountPickerScreen,
     UIActionComponent,
     UIActionImage,
     UIActionSheet,

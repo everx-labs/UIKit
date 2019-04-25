@@ -10,9 +10,9 @@ import UIStyle from '../../../helpers/UIStyle';
 import UILocalized from '../../../helpers/UILocalized';
 
 import type { UIAccountData } from '../types/UIAccountData';
-import type { NavigationProps } from '../../../services/UIKit/UIKit';
+import type { ModalControllerProps } from '../../../controllers/UIModalController';
 
-type Props = NavigationProps & {
+type Props = ModalControllerProps & {
     onAccountSelect: (account: UIAccountData) => {},
     masterAccountPickerView: boolean,
 };
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 
 let masterRef = null;
 
-class UIAccountPickerView extends UIModalController<Props, State> {
+class UIAccountPickerScreen extends UIModalController<Props, State> {
     static selectAccount(accounts?: UIAccountData[], onSelectCallback?: () => void) {
         if (masterRef) {
             masterRef.showAccounts(accounts, onSelectCallback);
@@ -178,4 +178,4 @@ class UIAccountPickerView extends UIModalController<Props, State> {
     }
 }
 
-export default UIAccountPickerView;
+export default UIAccountPickerScreen;
