@@ -325,8 +325,8 @@ export default class UIDetailsInput<Props, State>
                 style={[
                     this.textInputStyle(),
                     {
-                        paddingTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
-                            ? 5 // seems to be smth connected to iOS's textContainerInset
+                        paddingTop: Platform.OS !== 'web' && process.env.NODE_ENV === 'production'
+                            ? 5 // seems to be smth connected to native textContainerInset
                             : 0,
                     },
                 ]}
