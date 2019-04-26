@@ -1,13 +1,12 @@
 // @flow
-import React from 'react';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import UIStyle from '../../../helpers/UIStyle';
 import UIDetailsInput from '../UIDetailsInput';
-
 import type { DetailsProps, DetailsState } from '../UIDetailsInput';
 
 type Props = DetailsProps & {
-    containerStyle?: StylePropType,
+    containerStyle?: ViewStyleProp,
 };
 type State = DetailsState & {};
 
@@ -18,13 +17,13 @@ export default class UINumberInput extends UIDetailsInput<Props, State> {
     };
 
     // Getters
-    containerStyle() {
+    containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
-        const flex = rightButton && rightButton.length > 0 ? { flex: 1 } : null;
+        const flex = rightButton && rightButton.length > 0 ? UIStyle.flex : null;
         return flex;
     }
 
-    keyboardType() {
+    keyboardType(): string {
         return 'numeric';
     }
 
@@ -32,18 +31,15 @@ export default class UINumberInput extends UIDetailsInput<Props, State> {
     onChangeText(newValue: string) {
         const { onChangeText } = this.props;
 
-        const isNum = /^\d+$/.test(newValue);
-        if ((isNum || newValue.length === 0) && onChangeText) {
+        if (onChangeText && (!newValue?.length || /^\d+$/.test(newValue))) {
             onChangeText(newValue);
         }
     }
 
     // Render
-    renderTexFragment() {
+    renderTextFragment() {
         return (
-            <React.Fragment>
-                {this.renderTextInput()}
-            </React.Fragment>
+            this.renderTextInput()
         );
     }
 }
