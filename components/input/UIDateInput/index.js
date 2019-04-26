@@ -214,7 +214,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTexFragment() {
+    renderTextFragment() {
         return (
             <React.Fragment>
                 {this.renderTextInput()}

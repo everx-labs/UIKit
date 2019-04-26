@@ -365,7 +365,7 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
-    renderTexFragment() {
+    renderTextFragment() {
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
@@ -389,7 +389,7 @@ export default class UIDetailsInput<Props, State>
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (
             <View style={[this.textViewStyle(), bottomLine, bottomLineColorStyle]}>
-                {this.renderTexFragment()}
+                {this.renderTextFragment()}
             </View>
         );
     }
