@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    textInput: {
+        padding: 0,
+    },
     beginningTag: {
         margin: 0,
         padding: 0,
@@ -195,6 +198,7 @@ export default class UIDetailsInput<Props, State>
         const fontStyle = UITextStyle.bodyRegular;
         delete fontStyle.lineHeight;
         return [
+            styles.textInput,
             fontStyle,
             textColorStyle,
             UIStyle.flex,
@@ -325,8 +329,8 @@ export default class UIDetailsInput<Props, State>
                 style={[
                     this.textInputStyle(),
                     {
-                        paddingTop: Platform.OS !== 'web' && process.env.NODE_ENV === 'production'
-                            ? 5 // seems to be smth connected to native textContainerInset
+                        marginTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
+                            ? 5 // seems to be smth connected to iOS's textContainerInset
                             : 0,
                     },
                 ]}
