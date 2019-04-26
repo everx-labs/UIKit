@@ -36,7 +36,7 @@ export default class UIStyleHeight {
         return styles.tinyCell;
     }
 
-    static smallCell() {
+    static smallCell() { // 24
         return styles.smallCell;
     }
 

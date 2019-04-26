@@ -192,7 +192,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={UIStyle.Common.flex()}>
+            <View style={[UIStyle.Common.flex(), UIStyle.Common.centerLeftContainer()]}>
                 <Text style={[UIStyle.Text.tinyMedium(), textStyle]}>
                     {leftText}
                 </Text>

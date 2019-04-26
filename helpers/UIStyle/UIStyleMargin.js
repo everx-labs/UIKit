@@ -5,7 +5,13 @@ import UIConstant from '../UIConstant';
 
 const styles = StyleSheet.create({
     leftGreat: {
-        marginLeft: UIConstant.greatContentOffset()
+        marginLeft: UIConstant.greatContentOffset(),
+    },
+    leftMajor: {
+        marginLeft: UIConstant.majorContentOffset(),
+    },
+    rightMajor: {
+        marginRight: UIConstant.majorContentOffset(),
     },
 });
 
@@ -84,6 +90,9 @@ export default class UIStyleMargin {
     static rightHuge() { // 32
         return UIStyle.marginRightHuge;
     }
+    static rightMajor() { // 64
+        return styles.rightMajor;
+    }
 
     // Left
     static leftTiny() { // 4
@@ -94,6 +103,9 @@ export default class UIStyleMargin {
     }
     static leftGreat() { // 48
         return styles.leftGreat;
+    }
+    static leftMajor() { // 64
+        return styles.leftMajor;
     }
 
     // Horizontal

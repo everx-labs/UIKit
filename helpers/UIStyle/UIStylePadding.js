@@ -21,6 +21,10 @@ export default class UIStylePadding {
         return UIStyle.paddingBottomDefault;
     }
 
+    static leftDefault() {
+        return UIStyle.paddingLeftDefault;
+    }
+
     static rightDefault() {
         return UIStyle.paddingRightDefault;
     }
