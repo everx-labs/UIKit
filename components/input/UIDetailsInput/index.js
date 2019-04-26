@@ -1,10 +1,11 @@
 /* eslint-disable global-require */
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
+import { Platform, TextInput, Text, View, StyleSheet } from 'react-native';
 
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
+
 import type {
     UIColorData,
     UIColorThemeNameType,
@@ -31,6 +32,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    textInput: {
+        padding: 0,
+    },
     beginningTag: {
         margin: 0,
         padding: 0,
@@ -43,7 +47,7 @@ export type DetailsProps = {
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     comment: string,
     commentColor?: string | null,
     defaultValue?: string,
@@ -194,6 +198,7 @@ export default class UIDetailsInput<Props, State>
         const fontStyle = UITextStyle.bodyRegular;
         delete fontStyle.lineHeight;
         return [
+            styles.textInput,
             fontStyle,
             textColorStyle,
             UIStyle.flex,
@@ -321,7 +326,14 @@ export default class UIDetailsInput<Props, State>
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
-                style={this.textInputStyle()}
+                style={[
+                    this.textInputStyle(),
+                    {
+                        marginTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
+                            ? 5 // seems to be smth connected to iOS's textContainerInset
+                            : 0,
+                    },
+                ]}
                 selectionColor={UIColor.primary()}
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
