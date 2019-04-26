@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { Platform, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import UIDetailsInput from '../UIDetailsInput';
 
@@ -116,20 +116,19 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             ? [styles.trailingValueView, styles.androidTextInputPadding]
             : styles.trailingValueView;
         return (
-            <View style={style}>
+            <Text
+                onPress={() => this.focus()}
+                style={[style, this.textInputStyle(), styles.transparentValue]}
+                selectable={false}
+            >
+                {value}
                 <Text
-                    style={[this.textInputStyle(), styles.transparentValue]}
+                    style={styles.trailingValue}
                     selectable={false}
                 >
-                    {value}
-                    <Text
-                        style={styles.trailingValue}
-                        selectable={false}
-                    >
-                        {trailingValue}
-                    </Text>
+                    {trailingValue}
                 </Text>
-            </View>
+            </Text>
         );
     }
 

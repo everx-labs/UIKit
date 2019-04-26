@@ -1,10 +1,11 @@
 /* eslint-disable global-require */
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
+import { Platform, TextInput, Text, View, StyleSheet } from 'react-native';
 
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
+
 import type {
     UIColorData,
     UIColorThemeNameType,
@@ -43,7 +44,7 @@ export type DetailsProps = {
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     comment: string,
     commentColor?: string | null,
     defaultValue?: string,
@@ -321,7 +322,14 @@ export default class UIDetailsInput<Props, State>
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
-                style={this.textInputStyle()}
+                style={[
+                    this.textInputStyle(),
+                    {
+                        paddingTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
+                            ? 5 // seems to be smth connected to iOS's textContainerInset
+                            : 0,
+                    },
+                ]}
                 selectionColor={UIColor.primary()}
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
