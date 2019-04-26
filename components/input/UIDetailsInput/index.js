@@ -46,6 +46,7 @@ export type DetailsProps = {
     containerStyle: StylePropType,
     comment: string,
     commentColor?: string | null,
+    defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
     hideBottomLine: boolean,
@@ -67,6 +68,7 @@ export type DetailsProps = {
     token?: string,
     theme?: UIColorThemeNameType,
     value: string,
+    visible: boolean,
     testID?: string,
 };
 
@@ -98,6 +100,7 @@ export const detailsDefaultProps = {
     submitDisabled: false,
     theme: UIColor.Theme.Light,
     value: '',
+    visible: true,
 };
 
 export default class UIDetailsInput<Props, State>
@@ -112,6 +115,55 @@ export default class UIDetailsInput<Props, State>
         this.state = {
             focused: false,
         };
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+
+        setTimeout(() => {
+            const defaultValue = this.defaultValue();
+            if (defaultValue) {
+                this.onChangeText(defaultValue);
+            }
+        }, 0);
+    }
+
+    // Events
+    onChangeText(text: string) {
+        const { onChangeText } = this.props;
+        if (onChangeText) {
+            onChangeText(text);
+        }
+    }
+
+    onKeyPress(e: any) {
+        const { onKeyPress } = this.props;
+        if (onKeyPress) {
+            onKeyPress(e);
+        }
+    }
+
+    onFocus() {
+        this.setFocused();
+        this.props.onFocus();
+    }
+
+    onBlur() {
+        this.setFocused(false);
+        this.props.onBlur();
+    }
+
+    onSubmitEditing() {
+        if (this.isSubmitDisabled()) {
+            setTimeout(() => {
+                this.focus();
+            }, UIConstant.feedbackDelay());
+        } else {
+            const { onSubmitEditing } = this.props;
+            if (onSubmitEditing) {
+                onSubmitEditing();
+            }
+        }
     }
 
     // Setters
@@ -160,6 +212,10 @@ export default class UIDetailsInput<Props, State>
         return this.props.commentColor;
     }
 
+    defaultValue() {
+        return this.props.defaultValue;
+    }
+
     placeholder() {
         return this.props.placeholder;
     }
@@ -197,50 +253,11 @@ export default class UIDetailsInput<Props, State>
         }
     }
 
-    // Events
-    onChangeText(text: string) {
-        const { onChangeText } = this.props;
-        if (onChangeText) {
-            onChangeText(text);
-        }
-    }
-
-    onKeyPress(e: any) {
-        const { onKeyPress } = this.props;
-        if (onKeyPress) {
-            onKeyPress(e);
-        }
-    }
-
-    onFocus() {
-        this.setFocused();
-        this.props.onFocus();
-    }
-
-    onBlur() {
-        this.setFocused(false);
-        this.props.onBlur();
-    }
-
-    onSubmitEditing() {
-        if (this.isSubmitDisabled()) {
-            setTimeout(() => {
-                this.focus();
-            }, UIConstant.feedbackDelay());
-        } else {
-            const { onSubmitEditing } = this.props;
-            if (onSubmitEditing) {
-                onSubmitEditing();
-            }
-        }
-    }
-
     // Render
     renderFloatingTitle() {
         const { floatingTitle, theme, value } = this.props;
         const text = !floatingTitle || !value || !value.length ? ' ' : this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
-
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
@@ -278,7 +295,6 @@ export default class UIDetailsInput<Props, State>
             testID,
             theme,
         } = this.props;
-
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
@@ -418,6 +434,9 @@ export default class UIDetailsInput<Props, State>
     }
 
     render() {
+        if (!this.props.visible) {
+            return <View />;
+        }
         return (
             <View style={[this.containerStyle(), this.props.containerStyle]}>
                 {this.renderFloatingTitle()}
