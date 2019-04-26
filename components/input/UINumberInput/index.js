@@ -1,5 +1,7 @@
 // @flow
+import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIDetailsInput from '../UIDetailsInput';
@@ -7,12 +9,14 @@ import type { DetailsProps, DetailsState } from '../UIDetailsInput';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
+    rightButton?: string,
 };
 type State = DetailsState & {};
 
 export default class UINumberInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
+        rightButton: '',
         containerStyle: {},
     };
 
@@ -23,7 +27,7 @@ export default class UINumberInput extends UIDetailsInput<Props, State> {
         return flex;
     }
 
-    keyboardType(): string {
+    keyboardType(): KeyboardType {
         return 'numeric';
     }
 
@@ -39,7 +43,9 @@ export default class UINumberInput extends UIDetailsInput<Props, State> {
     // Render
     renderTextFragment() {
         return (
-            this.renderTextInput()
+            <React.Fragment>
+                {this.renderTextInput()}
+            </React.Fragment>
         );
     }
 }
