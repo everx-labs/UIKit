@@ -165,10 +165,10 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 ref={(component) => { this.emailInput = component; }}
                 theme={UIColor.Theme.Action}
                 value={this.getEmail()}
-                containerStyle={StyleSheet.flatten([
+                containerStyle={[
                     UIStyle.greatCellHeight,
                     UIStyle.marginTopSmall,
-                ])}
+                ]}
                 needArrow
                 onChangeText={text => this.setEmail(text)}
                 onSubmitEditing={() => this.onSubmit()}
