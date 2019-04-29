@@ -118,6 +118,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         return (
             <View style={style}>
                 <Text
+                    onPress={() => this.focus()}
                     style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
                 >
@@ -133,7 +134,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTexFragment() {
+    renderTextFragment() {
         return (
             <React.Fragment>
                 {this.renderTextInput()}

@@ -1,10 +1,11 @@
 /* eslint-disable global-require */
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
+import { Platform, TextInput, Text, View, StyleSheet } from 'react-native';
 
-import { TextInput, Text, View, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
+
 import type {
     UIColorData,
     UIColorThemeNameType,
@@ -31,6 +32,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    textInput: {
+        padding: 0,
+    },
     beginningTag: {
         margin: 0,
         padding: 0,
@@ -43,9 +47,10 @@ export type DetailsProps = {
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     comment: string,
     commentColor?: string | null,
+    defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
     hideBottomLine: boolean,
@@ -67,6 +72,7 @@ export type DetailsProps = {
     token?: string,
     theme?: UIColorThemeNameType,
     value: string,
+    visible: boolean,
     testID?: string,
 };
 
@@ -98,6 +104,7 @@ export const detailsDefaultProps = {
     submitDisabled: false,
     theme: UIColor.Theme.Light,
     value: '',
+    visible: true,
 };
 
 export default class UIDetailsInput<Props, State>
@@ -114,87 +121,15 @@ export default class UIDetailsInput<Props, State>
         };
     }
 
-    // Setters
-    setFocused(focused: boolean = true) {
-        this.setStateSafely({ focused });
-    }
+    componentDidMount() {
+        super.componentDidMount();
 
-    // Getters
-    isFocused() {
-        return this.state.focused;
-    }
-
-    isSubmitDisabled() {
-        return !this.props.value || this.props.submitDisabled;
-    }
-
-    keyboardType() {
-        return this.props.keyboardType;
-    }
-
-    containerStyle() {
-        return styles.container;
-    }
-
-    textInputStyle() {
-        const { theme } = this.props;
-        const textColorStyle = UIColor.textPrimaryStyle(theme);
-        const fontStyle = UITextStyle.bodyRegular;
-        delete fontStyle.lineHeight;
-        return [
-            fontStyle,
-            textColorStyle,
-            UIStyle.flex,
-        ];
-    }
-
-    textViewStyle() {
-        return styles.textView;
-    }
-
-    beginningTag() {
-        return this.props.beginningTag;
-    }
-
-    commentColor() {
-        return this.props.commentColor;
-    }
-
-    placeholder() {
-        return this.props.placeholder;
-    }
-
-    hidePlaceholder() {
-        return this.props.hidePlaceholder;
-    }
-
-    getValue() {
-        const { value } = this.props;
-        return `${value}`;
-    }
-
-    getInlinePlaceholder() {
-        return this.hidePlaceholder() ? '' : this.placeholder();
-    }
-
-
-    // Actions
-    focus() {
-        if (this.textInput) {
-            this.textInput.focus();
-        }
-    }
-
-    blur() {
-        if (this.textInput) {
-            this.textInput.blur();
-        }
-    }
-
-    clear() {
-        if (this.textInput) {
-            this.textInput.clear();
-        }
+        setTimeout(() => {
+            const defaultValue = this.defaultValue();
+            if (defaultValue) {
+                this.onChangeText(defaultValue);
+            }
+        }, 0);
     }
 
     // Events
@@ -235,12 +170,99 @@ export default class UIDetailsInput<Props, State>
         }
     }
 
+    // Setters
+    setFocused(focused: boolean = true) {
+        this.setStateSafely({ focused });
+    }
+
+    // Getters
+    isFocused() {
+        return this.state.focused;
+    }
+
+    isSubmitDisabled() {
+        return !this.props.value || this.props.submitDisabled;
+    }
+
+    keyboardType() {
+        return this.props.keyboardType;
+    }
+
+    containerStyle() {
+        return styles.container;
+    }
+
+    textInputStyle() {
+        const { theme } = this.props;
+        const textColorStyle = UIColor.textPrimaryStyle(theme);
+        const fontStyle = UITextStyle.bodyRegular;
+        delete fontStyle.lineHeight;
+        return [
+            styles.textInput,
+            fontStyle,
+            textColorStyle,
+            UIStyle.flex,
+        ];
+    }
+
+    textViewStyle() {
+        return styles.textView;
+    }
+
+    beginningTag() {
+        return this.props.beginningTag;
+    }
+
+    commentColor() {
+        return this.props.commentColor;
+    }
+
+    defaultValue() {
+        return this.props.defaultValue;
+    }
+
+    placeholder() {
+        return this.props.placeholder;
+    }
+
+    hidePlaceholder() {
+        return this.props.hidePlaceholder;
+    }
+
+    getValue() {
+        const { value } = this.props;
+        return `${value}`;
+    }
+
+    getInlinePlaceholder() {
+        return this.hidePlaceholder() ? '' : this.placeholder();
+    }
+
+
+    // Actions
+    focus() {
+        if (this.textInput) {
+            this.textInput.focus();
+        }
+    }
+
+    blur() {
+        if (this.textInput) {
+            this.textInput.blur();
+        }
+    }
+
+    clear() {
+        if (this.textInput) {
+            this.textInput.clear();
+        }
+    }
+
     // Render
     renderFloatingTitle() {
         const { floatingTitle, theme, value } = this.props;
         const text = !floatingTitle || !value || !value.length ? ' ' : this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
-
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
@@ -278,7 +300,6 @@ export default class UIDetailsInput<Props, State>
             testID,
             theme,
         } = this.props;
-
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const multiline = !!maxLines && maxLines > 1;
@@ -305,7 +326,14 @@ export default class UIDetailsInput<Props, State>
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
-                style={this.textInputStyle()}
+                style={[
+                    this.textInputStyle(),
+                    {
+                        marginTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
+                            ? 5 // seems to be smth connected to iOS's textContainerInset
+                            : 0,
+                    },
+                ]}
                 selectionColor={UIColor.primary()}
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
@@ -365,7 +393,7 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
-    renderTexFragment() {
+    renderTextFragment() {
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
@@ -389,7 +417,7 @@ export default class UIDetailsInput<Props, State>
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (
             <View style={[this.textViewStyle(), bottomLine, bottomLineColorStyle]}>
-                {this.renderTexFragment()}
+                {this.renderTextFragment()}
             </View>
         );
     }
@@ -418,6 +446,9 @@ export default class UIDetailsInput<Props, State>
     }
 
     render() {
+        if (!this.props.visible) {
+            return <View />;
+        }
         return (
             <View style={[this.containerStyle(), this.props.containerStyle]}>
                 {this.renderFloatingTitle()}
