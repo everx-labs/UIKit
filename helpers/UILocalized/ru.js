@@ -541,7 +541,7 @@ const ru: UILocalizedData = {
     // Toasts
     EnterCorrectDataToField: 'Enter correct data to field',
 
-    // Text Fields
+    // Labels
     Phone: 'Phone',
     EmailAddress: 'Email',
 };

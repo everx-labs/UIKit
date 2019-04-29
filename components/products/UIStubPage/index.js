@@ -32,15 +32,15 @@ const styles = StyleSheet.create({
 
 const customStyles = {
     contentContainer: [
-        UIStyle.pageContainer,
-        UIStyle.justifyCenter,
-        UIStyle.flex,
+        UIStyle.Common.pageContainer(),
+        UIStyle.Common.justifyCenter(),
+        UIStyle.Common.flex(),
     ],
     description: [
-        UIStyle.majorCellHeight,
-        UIStyle.justifyEnd,
-        UIStyle.marginTopDefault,
-        UIStyle.threeQuartersWidth,
+        UIStyle.Height.majorCell(),
+        UIStyle.Common.justifyEnd(),
+        UIStyle.Margin.topDefault(),
+        UIStyle.Width.threeQuarters(),
         styles.description,
     ],
 };
@@ -141,20 +141,20 @@ export default class UIStubPage extends UIComponent<Props, State> {
     getWidthStyle() {
         const columns = this.getColumnsNumber();
         if (columns === 12) {
-            return UIStyle.thirdWidth;
+            return UIStyle.Width.third();
         }
         if (columns === 8) {
-            return UIStyle.halfWidth;
+            return UIStyle.Width.half();
         }
-        return UIStyle.fullWidth;
+        return UIStyle.Width.full();
     }
 
     // Render
     renderInput() {
         if (this.isSubmitted()) {
             return (
-                <View style={UIStyle.greatCellHeight}>
-                    <Text style={[UITextStyle.whiteBodyRegular, UIStyle.marginTopHuge]}>
+                <View style={UIStyle.Height.greatCell()}>
+                    <Text style={[UIStyle.Text.whiteBodyRegular(), UIStyle.Margin.topHuge()]}>
                         {UILocalized.WillGetInTouchWithYouSoon}
                     </Text>
                 </View>
@@ -166,8 +166,8 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 theme={UIColor.Theme.Action}
                 value={this.getEmail()}
                 containerStyle={[
-                    UIStyle.greatCellHeight,
-                    UIStyle.marginTopSmall,
+                    UIStyle.Height.greatCell(),
+                    UIStyle.Margin.topSmall(),
                 ]}
                 needArrow
                 onChangeText={text => this.setEmail(text)}

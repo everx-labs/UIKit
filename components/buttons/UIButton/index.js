@@ -149,7 +149,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
         if (!icon) {
             return null;
         }
-        return <Image source={icon} style={UIStyle.marginRightSmall} />;
+        return <Image source={icon} style={UIStyle.Margin.rightSmall()} />;
     }
 
     renderBadge() {
@@ -211,7 +211,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
                     style,
                 ]}
             >
-                <View style={[UIStyle.flex, UIStyle.centerContainer]}>
+                <View style={[UIStyle.Common.flex(), UIStyle.Common.centerContainer()]}>
                     {this.renderIcon()}
                     {this.renderBadge()}
                     {this.renderTitle()}

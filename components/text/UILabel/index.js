@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UITextStyle from '../../../helpers/UITextStyle';
+import UIStyle from '../../../helpers/UIStyle';
 
 import UIComponent from '../../UIComponent';
 
@@ -13,6 +13,7 @@ const LabelRole = Object.freeze({
     Subtitle: 'subtitle',
     Description: 'description',
     BoldDescription: 'boldDescription',
+    Note: 'note',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -34,7 +35,7 @@ export default class UILabel extends UIComponent<Props, State> {
         style: null,
         text: '',
         role: UILabel.Role.Description,
-    }
+    };
 
     // constructor
     constructor(props: Props) {
@@ -53,13 +54,15 @@ export default class UILabel extends UIComponent<Props, State> {
     getStyle(): TextStyleProp {
         const role = this.getRole();
         if (role === UILabel.Role.Title) {
-            return UITextStyle.primaryTitleLight;
+            return UIStyle.Text.primaryTitleBold();
         } else if (role === UILabel.Role.Subtitle) {
-            return UITextStyle.primarySubtitleBold;
+            return UIStyle.Text.primarySubtitleBold();
         } else if (role === UILabel.Role.Description) {
-            return UITextStyle.primaryBodyRegular;
+            return UIStyle.Text.primaryBodyRegular();
         } else if (role === UILabel.Role.BoldDescription) {
-            return UITextStyle.primaryBodyBold;
+            return UIStyle.Text.primaryBodyBold();
+        } else if (role === UILabel.Role.Note) {
+            return UIStyle.Text.secondarySmallRegular();
         } return {};
     }
 
@@ -67,8 +70,19 @@ export default class UILabel extends UIComponent<Props, State> {
         return this.props.text || '';
     }
 
+    // TODO
+    // getHtmlArrayFromText() {
+    //     const str = this.props.text;
+    //     const result = [];
+    //     while (1) {
+    //         const bIndex = str.indexOf('<b>');
+    //         // if (bIndex)
+    //     }
+    // }
+
     // Render
     render() {
+        // const htmlArray = this.getHtmlArrayFromText();
         return (
             <Text style={[this.getStyle(), this.props.style]}>
                 {this.getText()}

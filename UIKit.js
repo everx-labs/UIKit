@@ -12,6 +12,7 @@ import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UICard from './components/text/UICard';
 import UIColor from './helpers/UIColor';
+import UIColorPalette from './helpers/UIColor/UIColorPalette';
 import UICompatibilityView from './helpers/UICompatibilityView';
 import UIComponent from './components/UIComponent';
 import UIConstant from './helpers/UIConstant';
@@ -57,6 +58,7 @@ import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
 import UIPureComponent from './components/UIPureComponent';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
+import UIScreen from './controllers/UIScreen';
 import UISearchBar from './components/input/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
 import UISeparator from './components/design/UISeparator';
@@ -77,7 +79,6 @@ import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
 import UITransitionView from './components/views/UITransitionView';
 import UIUserAgent from './helpers/UIUserAgent';
-import UIColorPalette from './helpers/UIColor/UIColorPalette';
 
 // Types
 import type { UIAccountData } from './components/UIAccountPicker/types/UIAccountData';
@@ -117,6 +118,7 @@ export {
     UICheckboxItem,
     UICard,
     UIColor,
+    UIColorPalette,
     UICompatibilityView,
     UIComponent,
     UIConstant,
@@ -162,6 +164,7 @@ export {
     UIProfileView,
     UIPureComponent,
     UIRadioButtonList,
+    UIScreen,
     UISearchBar,
     UISectionHeader,
     UISeparator,
@@ -182,7 +185,6 @@ export {
     UITooltip,
     UITransitionView,
     UIUserAgent,
-    UIColorPalette,
 };
 
 export type {

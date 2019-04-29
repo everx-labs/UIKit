@@ -7,12 +7,21 @@ export type UINavigationRoute = {
     screen: any,
     path?: string,
     section?: string,
+    staticParameters?: {
+        section?: string,
+    },
+    dynamicParameters?: {
+        [string]: boolean,
+    },
 }
 
 export type UINavigationPath = {
     name: string,
     staticParameters?: {
         section?: string,
+    },
+    dynamicParameters?: {
+        [string]: boolean,
     },
 }
 
@@ -48,14 +57,20 @@ export default class UINavigator {
             paths: {},
             screens: {},
         };
-        routes.forEach(route => {
+        routes.forEach((route) => {
             const path: UINavigationPath = {
                 name: route.path || route.name,
             };
-            if (route.section) {
+            if (route.section) { // deprecated
                 path.staticParameters = {
                     section: route.section,
                 };
+            }
+            if (route.staticParameters) {
+                path.staticParameters = route.staticParameters;
+            }
+            if (route.dynamicParameters) {
+                path.dynamicParameters = route.dynamicParameters;
             }
             routing.paths[route.name] = path;
             routing.screens[route.name] = {
@@ -63,6 +78,10 @@ export default class UINavigator {
             };
         });
         return routing;
+    }
+
+    static section(section: string) {
+        return { section };
     }
 
     createNavigator: CreateNavigator;
