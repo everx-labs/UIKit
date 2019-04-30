@@ -1,8 +1,18 @@
 /* eslint-disable class-methods-use-this */
 // @flow
 import React from 'react';
-import { StyleSheet, Platform, Modal, Dimensions, Animated } from 'react-native';
-import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
+import {
+    StyleSheet,
+    Platform,
+    Modal,
+    Dimensions,
+    Animated,
+} from 'react-native';
+import PopupDialog, {
+    SlideAnimation,
+    FadeAnimation,
+} from 'react-native-popup-dialog';
+
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type {
     AnimationParameters,
@@ -21,7 +31,6 @@ import UIModalNavigationBar from './UIModalNavigationBar';
 const fullScreenDialogWidth = 600;
 const fullScreenDialogHeight = 600;
 
-
 type OnLayoutEventArgs = {
     nativeEvent: {
         layout: {
@@ -33,12 +42,13 @@ type OnLayoutEventArgs = {
     },
 };
 
-type ModalControllerProps = ControllerProps;
+export type ModalControllerProps = ControllerProps;
 
 type ModalControllerState = ControllerState & {
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
+    header?: React$Node,
 };
 
 const styles = StyleSheet.create({
@@ -53,8 +63,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIModalController
-    extends UIController<ModalControllerProps, ModalControllerState> {
+export default class UIModalController<Props, State>
+    extends UIController<ModalControllerProps & Props, ModalControllerState & State> {
     fullscreen: boolean;
     dismissible: boolean;
     modal: boolean;
@@ -63,9 +73,9 @@ export default class UIModalController
     dialog: ?PopupDialog;
     marginBottom: Animated.Value;
     dy: Animated.Value;
-    slideAnimation: SlideAnimation;
+    animation: SlideAnimation | FadeAnimation;
 
-    constructor(props: ModalControllerProps) {
+    constructor(props: ModalControllerProps & Props) {
         super(props);
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
@@ -75,12 +85,11 @@ export default class UIModalController
         this.onCancel = null;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
-        this.slideAnimation = new SlideAnimation({
+        this.animation = new SlideAnimation({
             slideFrom: 'bottom',
         });
-
         this.state = {
-            ...this.state,
+            ...(this.state: ModalControllerState & State),
         };
     }
 
@@ -88,7 +97,7 @@ export default class UIModalController
         super.componentDidMount();
     }
 
-    componentWillReceiveProps(nextProps: ModalControllerProps) {
+    componentWillReceiveProps(nextProps: ModalControllerProps & Props) {
         super.componentWillReceiveProps(nextProps);
     }
 
@@ -252,6 +261,10 @@ export default class UIModalController
         this.bgAlpha = this.interpolateColor();
     }
 
+    setHeader(header: React$Node) {
+        this.setStateSafely( { header });
+    }
+
     // Events
 
     // Actions
@@ -290,6 +303,9 @@ export default class UIModalController
         if (!this.dismissible) {
             return null;
         }
+        if (this.state.header) {
+            return this.state.header;
+        }
         return (<UIModalNavigationBar
             swipeToDismiss={this.shouldSwipeToDismiss()}
             onMove={Animated.event([null, { dy: this.dy }])}
@@ -311,7 +327,7 @@ export default class UIModalController
                 height={height}
                 containerStyle={containerStyle}
                 dialogStyle={dialogStyle}
-                dialogAnimation={this.slideAnimation}
+                dialogAnimation={this.animation}
                 dialogTitle={this.getModalNavigationBar()}
                 dismissOnTouchOutside={false}
                 onDismissed={() => this.onDidHide()}

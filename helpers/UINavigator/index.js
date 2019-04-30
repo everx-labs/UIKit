@@ -2,6 +2,40 @@
 
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
+export type UINavigationRoute = {
+    name: string,
+    screen: any,
+    path?: string,
+    section?: string,
+    staticParameters?: {
+        section?: string,
+    },
+    dynamicParameters?: {
+        [string]: boolean,
+    },
+}
+
+export type UINavigationPath = {
+    name: string,
+    staticParameters?: {
+        section?: string,
+    },
+    dynamicParameters?: {
+        [string]: boolean,
+    },
+}
+
+export type UINavigationRouting = {
+    paths: {
+        [string]: UINavigationPath,
+    },
+    screens: {
+        [string]: {
+            screen: any,
+        },
+    },
+}
+
 export type NavigationProps = {
     navigation: ReactNavigation,
 };
@@ -17,6 +51,38 @@ export default class UINavigator {
         Master: 'master',
         Detail: 'detail',
     };
+
+    static createRouting(routes: [UINavigationRoute]): UINavigationRouting {
+        const routing: UINavigationRouting = {
+            paths: {},
+            screens: {},
+        };
+        routes.forEach((route) => {
+            const path: UINavigationPath = {
+                name: route.path || route.name,
+            };
+            if (route.section) { // deprecated
+                path.staticParameters = {
+                    section: route.section,
+                };
+            }
+            if (route.staticParameters) {
+                path.staticParameters = route.staticParameters;
+            }
+            if (route.dynamicParameters) {
+                path.dynamicParameters = route.dynamicParameters;
+            }
+            routing.paths[route.name] = path;
+            routing.screens[route.name] = {
+                screen: route.screen,
+            };
+        });
+        return routing;
+    }
+
+    static section(section: string) {
+        return { section };
+    }
 
     createNavigator: CreateNavigator;
     navigator: ?Object;

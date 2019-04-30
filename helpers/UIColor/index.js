@@ -1,274 +1,341 @@
-import { StyleSheet } from 'react-native';
+// @flow
+import UIColorPalette from './UIColorPalette';
+import { UIColorThemeName } from './UIColorTypes';
+import UIColorThemeAction from './UIColorThemeAction';
+import UIColorThemeDark from './UIColorThemeDark';
+import UIColorThemeLight from './UIColorThemeLight';
+import UIStyleColor from '../UIStyle/UIStyleColor';
 
-const UI_COLOR_PRIMARY = '#0088CC';
-const UI_COLOR_SECONDARY = '#FFFFFF';
-const UI_COLOR_TERTIARY = '#FFFFFF';
-const UI_COLOR_BLACK = '#000000';
-const UI_COLOR_WHITE = '#FFFFFF';
-const UI_COLOR_FA = '#FAFAFA';
-const UI_COLOR_DARK = '#102027';
-const UI_COLOR_DARK_1 = '#364046';
-const UI_COLOR_GREY = '#727C81';
-const UI_COLOR_GREY_1 = '#EBEDEE';
-const UI_COLOR_LIGHT = '#CFD8DC';
-const UI_COLOR_BLACK_80 = 'rgba(0,0,0,0.8)';
-const UI_COLOR_WHITE_80 = 'rgba(255,255,255,0.8)';
-const UI_COLOR_SUCCESS = '#27AE60';
-const UI_COLOR_WARNING = '#F2C94C';
-const UI_COLOR_ERROR = '#EB5757';
+import type {
+    UIColorData,
+    UIColorThemeData,
+    UIColorThemeNameType,
+} from './UIColorTypes';
 
-const UI_COLOR_TEXT_LPRIMARY = '#102027';
-const UI_COLOR_TEXT_DPRIMARY = '#FAFAFA';
-const UI_COLOR_TEXT_LPARAGRAPH = '#000000';
-const UI_COLOR_TEXT_DPARAGRAPH = '#FFFFFF';
-const UI_COLOR_TEXT_LSECONDARY = '#727C81';
-const UI_COLOR_TEXT_DSECONDARY = '#CFD8DC';
-const UI_COLOR_TEXT_LTERTIARY = '#CFD8DC';
-const UI_COLOR_TEXT_DTERTIARY = '#727C81';
-const UI_COLOR_TEXT_LQUATERNARY = '#BEC4C8';
-const UI_COLOR_TEXT_DQUATERNARY = '#BEC4C8';
-const UI_COLOR_TEXT_LTCAUTION = '#FF9800';
-const UI_COLOR_TEXT_DTCAUTION = '#FF9800';
+const themes: { [UIColorThemeNameType]: UIColorThemeData } = {
+    light: UIColorThemeLight,
+    dark: UIColorThemeDark,
+    action: UIColorThemeAction,
+};
 
-const UI_COLOR_BACKGROUND_LPRIMARY = '#FFFFFF';
-const UI_COLOR_BACKGROUND_DPRIMARY = '#263238';
-const UI_COLOR_BACKGROUND_LSECONDARY = '#FAFAFA';
-const UI_COLOR_BACKGROUND_DSECONDARY = '#232E33';
-const UI_COLOR_BACKGROUND_LTERTIARY = '#CFD8DC';
-const UI_COLOR_BACKGROUND_DTERTIARY = '#2F3D45';
-const UI_COLOR_BACKGROUND_LQUARTER = '#E7EBED';
-const UI_COLOR_BACKGROUND_DQUARTER = '#5A7684';
-const UI_COLOR_BACKGROUND_LQUINARY = '#F3F5F6';
-const UI_COLOR_BACKGROUND_DQUINARY = '#85AFC4';
-const UI_COLOR_BACKGROUND_LWHITELIGHT = '#F5F5F5';
-const UI_COLOR_BACKGROUND_DWHITELIGHT = '#F5F5F5';
-
-const UI_COLOR_BACKGROUND_SEPARATOR_CHAT = '#9FA6A9';
-
-const UI_COLOR_HUE_005D8C = '#005D8C';
-const UI_COLOR_HUE_00334C = '#00334C';
-const UI_COLOR_HUE_0090D9 = '#0090D9';
-const UI_COLOR_HUE_0077B2 = '#0077B2';
-
-const UI_COLOR_OVERLAY_60 = 'rgba(16, 32, 39, 0.6)';
-const UI_COLOR_OVERLAY_40 = 'rgba(16, 32, 39, 0.4)';
-const UI_COLOR_OVERLAY_20 = 'rgba(16, 32, 39, 0.2)';
-const UI_COLOR_OVERLAY_0 = 'rgba(16, 32, 39, 0)';
-
-const UI_COLOR_UNCONFIRMED_PASSPORT = '#FF9800';
-const UI_COLOR_WALLET_VERSION = '#BEC4C8';
-
-const UIColorDefaultAvatar =
-  [
-      '#EF5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#1E88E5', '#0288D1',
-      '#0097A7', '#009688', '#43A047', '#558B2F', '#F4511E', '#8D6E63', '#78909C',
-  ];
-
-const colorStyleSheets = {};
-const backgroundColorStyleSheets = {};
+const current = UIColorThemeName.light;
 
 export default class UIColor {
     static Theme = {
-        Light: 'light',
-        Dark: 'dark',
+        Light: UIColorThemeName.light,
+        Dark: UIColorThemeName.dark,
+        Action: UIColorThemeName.action,
     };
 
-    // Base colors
+    static palette = UIColorPalette;
+    static current: UIColorThemeData = themes.light;
+
+    // Base palette
+    static primaryMinus() {
+        return UIColorPalette.primaryMinus;
+    }
+
     static primary() {
-        return UI_COLOR_PRIMARY;
+        return UIColorPalette.primary;
+    }
+
+    static primaryPlus() {
+        return UIColorPalette.primaryPlus;
+    }
+
+    static primary1() {
+        return UIColorPalette.primary1;
+    }
+
+    static primary2() {
+        return UIColorPalette.primary2;
+    }
+
+    static primary3() {
+        return UIColorPalette.primary3;
+    }
+
+    static primary4() {
+        return UIColorPalette.primary4;
+    }
+
+    static primary5() {
+        return UIColorPalette.primary5;
+    }
+
+    static primary6() {
+        return UIColorPalette.primary6;
     }
 
     static secondary() {
-        return UI_COLOR_SECONDARY;
+        return UIColorPalette.secondary;
     }
 
     static tertiary() {
-        return UI_COLOR_TERTIARY;
+        return UIColorPalette.tertiary;
     }
 
     static black() {
-        return UI_COLOR_BLACK;
+        return UIColorPalette.black;
+    }
+
+    static blackLight() {
+        return UIColorPalette.blackLight;
     }
 
     static white() {
-        return UI_COLOR_WHITE;
+        return UIColorPalette.white;
     }
 
     static fa() {
-        return UI_COLOR_FA;
+        return UIColorPalette.fa;
     }
 
     static dark() {
-        return UI_COLOR_DARK;
-    }
-
-    static colorDark1() {
-        return UI_COLOR_DARK_1;
+        return UIColorPalette.dark;
     }
 
     static grey() {
-        return UI_COLOR_GREY;
+        return UIColorPalette.grey;
     }
 
-    static colorGrey1() {
-        return UI_COLOR_GREY_1;
+    static grey1() {
+        return UIColorPalette.grey1;
+    }
+
+    static grey2() {
+        return UIColorPalette.grey2;
+    }
+
+    static grey3() {
+        return UIColorPalette.grey3;
     }
 
     static msgSeparator() {
-        return UI_COLOR_BACKGROUND_SEPARATOR_CHAT;
+        return UIColorPalette.background.separatorChat;
     }
 
     static light() {
-        return UI_COLOR_LIGHT;
+        return UIColorPalette.light;
+    }
+
+    static notWhite() {
+        return UIColorPalette.notWhite;
     }
 
     static black80() {
-        return UI_COLOR_BLACK_80;
+        return UIColorPalette.black80;
+    }
+
+    static white40() {
+        return UIColorPalette.white40;
     }
 
     static white80() {
-        return UI_COLOR_WHITE_80;
+        return UIColorPalette.white80;
     }
 
     static success() {
-        return UI_COLOR_SUCCESS;
+        return UIColorPalette.success;
     }
 
     static warning() {
-        return UI_COLOR_WARNING;
+        return UIColorPalette.warning;
     }
 
     static error() {
-        return UI_COLOR_ERROR;
+        return UIColorPalette.error;
     }
 
-    // Text colors
-    static textPrimary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_TEXT_LPRIMARY;
-        }
-        return UI_COLOR_TEXT_DPRIMARY;
-    }
-
-    static textParagraph(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_TEXT_LPARAGRAPH;
-        }
-        return UI_COLOR_TEXT_DPARAGRAPH;
-    }
-
-    static textSecondary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_TEXT_LSECONDARY;
-        }
-        return UI_COLOR_TEXT_DSECONDARY;
-    }
-
-    static textTertiary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_TEXT_LTERTIARY;
-        }
-        return UI_COLOR_TEXT_DTERTIARY;
-    }
-
-    static textQuaternary(theme = UIColor.Theme.Light) {
-        return theme === UIColor.Theme.Light
-        ? UI_COLOR_TEXT_LQUATERNARY
-        : UI_COLOR_TEXT_DQUATERNARY;
-    }
-
-    static textCaution(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_TEXT_LTCAUTION;
-        }
-        return UI_COLOR_TEXT_DTCAUTION;
-    }
-
-    // Background colors
-    static backgroundPrimary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_BACKGROUND_LPRIMARY;
-        }
-        return UI_COLOR_BACKGROUND_DPRIMARY;
-    }
-
-    static backgroundSecondary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_BACKGROUND_LSECONDARY;
-        }
-        return UI_COLOR_BACKGROUND_DSECONDARY;
-    }
-
-    static backgroundTertiary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_BACKGROUND_LTERTIARY;
-        }
-        return UI_COLOR_BACKGROUND_DTERTIARY;
-    }
-
-    static backgroundQuarter(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_BACKGROUND_LQUARTER;
-        }
-        return UI_COLOR_BACKGROUND_DQUARTER;
-    }
-
-    static backgroundQuinary(theme = UIColor.Theme.Light) {
-        if (theme === UIColor.Theme.Light) {
-            return UI_COLOR_BACKGROUND_LQUINARY;
-        }
-        return UI_COLOR_BACKGROUND_DQUINARY;
-    }
-
-    static backgroundWhiteLight(theme = UIColor.Theme.Light) {
-        return theme === UIColor.Theme.Light
-            ? UI_COLOR_BACKGROUND_LWHITELIGHT
-            : UI_COLOR_BACKGROUND_DWHITELIGHT;
-    }
-    // Hue colors
     static hue005D8C() {
-        return UI_COLOR_HUE_005D8C;
+        return UIColorPalette.hue005D8C;
     }
 
     static hue00334C() {
-        return UI_COLOR_HUE_00334C;
+        return UIColorPalette.hue00334C;
     }
 
     static hue0090D9() {
-        return UI_COLOR_HUE_0090D9;
+        return UIColorPalette.hue0090D9;
     }
 
     static hue0077B2() {
-        return UI_COLOR_HUE_0077B2;
+        return UIColorPalette.hue0077B2;
     }
 
-    // Overlays
     static overlay60() {
-        return UI_COLOR_OVERLAY_60;
+        return UIColorPalette.overlay60;
     }
 
     static overlay40() {
-        return UI_COLOR_OVERLAY_40;
+        return UIColorPalette.overlay40;
     }
 
     static overlay20() {
-        return UI_COLOR_OVERLAY_20;
+        return UIColorPalette.overlay20;
     }
 
     static overlay0() {
-        return UI_COLOR_OVERLAY_0;
+        return UIColorPalette.overlay0;
     }
 
-    static overlayWithAlpha(alpha = 0.5) {
+    // Text colors
+    static textPrimary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.primary.normal;
+    }
+
+    // deprecated, moved to UIStyleColor
+    static textPrimaryStyle(theme?: ?UIColorThemeNameType) {
+        return UIStyleColor.getColorStyle(UIColor.textPrimary(theme));
+    }
+
+    static stateTextPrimary(
+        theme: ?UIColorThemeNameType,
+        disabled: boolean,
+        tapped: boolean,
+        hover: boolean,
+    ): UIColorData {
+        const { primary } = themes[theme || current].text;
+        if (disabled) {
+            return primary.disabled;
+        }
+        if (tapped) {
+            return primary.tapped;
+        }
+        if (hover) {
+            return primary.hover;
+        }
+        return primary.normal;
+    }
+
+    // deprecated, moved to UIStyleColor
+    static stateTextPrimaryStyle(
+        theme: ?UIColorThemeNameType,
+        disabled: boolean,
+        tapped: boolean,
+        hover: boolean,
+    ) {
+        const color = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
+        return UIStyleColor.getColorStyle(color);
+    }
+
+    static actionTextPrimary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.action;
+    }
+
+    static actionTextPrimaryStyle(theme?: ?UIColorThemeNameType) {
+        return UIStyleColor.getColorStyle(UIColor.actionTextPrimary(theme));
+    }
+
+    static textParagraph(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.paragraph;
+    }
+
+    static textSecondary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.secondary;
+    }
+
+    static textSecondaryStyle(theme?: ?UIColorThemeNameType) {
+        return UIStyleColor.getColorStyle(UIColor.textSecondary(theme));
+    }
+
+    static textTertiary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.tertiary;
+    }
+
+    static textTertiaryStyle(theme?: ?UIColorThemeNameType) {
+        return UIStyleColor.getColorStyle(UIColor.textTertiary(theme));
+    }
+
+    static textQuaternary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.quaternary;
+    }
+
+    static textCaution(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.caution;
+    }
+
+    static textPlaceholder(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.placeholder;
+    }
+
+    // Background colors
+    static backgroundPrimary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.primary;
+    }
+
+    static backgroundSecondary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.secondary;
+    }
+
+    static backgroundTertiary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.tertiary;
+    }
+
+    static backgroundQuarter(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.quarter;
+    }
+
+    static backgroundQuinary(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.quinary;
+    }
+
+    static backgroundWhiteLight(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.whiteLight;
+    }
+
+    // border
+    static boderBottomLightColor(theme: ?UIColorThemeNameType) {
+        const { borderBottom } = themes[theme || current];
+        return borderBottom.light;
+    }
+
+    static borderBottomColor(theme: ?UIColorThemeNameType, focused: boolean): UIColorData {
+        const { borderBottom } = themes[theme || current];
+        return focused ? borderBottom.focused : borderBottom.normal;
+    }
+
+    static borderBottomColorStyle(theme: ?UIColorThemeNameType, focused: boolean) {
+        const borderColor = UIColor.borderBottomColor(theme, focused);
+        return UIStyleColor.getBorderBottomColorStyle(borderColor);
+    }
+
+    // component colors
+    static buttonBackground(
+        theme: ?UIColorThemeNameType,
+        tapped: boolean,
+        hover: boolean,
+    ): UIColorData {
+        const { background } = themes[theme || current].button;
+        if (tapped) {
+            return background.tapped;
+        }
+        if (hover) {
+            return background.hover;
+        }
+        return background.normal;
+    }
+
+    static buttonTitle(theme: ?UIColorThemeNameType, disabled: boolean): UIColorData {
+        const { title } = themes[theme || current].button;
+        return disabled ? title.disabled : title.normal;
+    }
+
+    static detailsInputComment(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].detailsInput.comment;
+    }
+
+
+    static overlayWithAlpha(alpha: number = 0.5) {
         return `rgba(16, 32, 39, ${alpha})`;
     }
 
-    static defaultAvatarBackground(index) {
-        const count = UIColorDefaultAvatar.length;
-        return UIColorDefaultAvatar[index % count];
+    static defaultAvatarBackground(index: number) {
+        const count = UIColorPalette.avatar.length;
+        return UIColorPalette.avatar[index % count];
     }
 
-    static getAvatarBackgroundColor(id = 0) {
+    static getAvatarBackgroundColor(id: (number | string) = 0) {
         if (!id) {
             return UIColor.grey();
         }
@@ -278,36 +345,30 @@ export default class UIColor {
 
     // Passport
     static unconfirmedPassport() {
-        return UI_COLOR_UNCONFIRMED_PASSPORT;
+        return UIColorPalette.unconfirmedPassport;
     }
 
     static walletVersion() {
-        return UI_COLOR_WALLET_VERSION;
+        return UIColorPalette.walletVersion;
     }
 
-    static getColorStyle(color) {
-        let sheet = colorStyleSheets[color];
-        if (!sheet) {
-            sheet = StyleSheet.create({
-                style: {
-                    color,
-                },
-            });
-            colorStyleSheets[color] = sheet;
-        }
-        return sheet.style;
+    // deprecated, moved to UIStyleColor
+    static getColorStyle(color: UIColorData) {
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.Color);
     }
 
-    static getBackgroundColorStyle(color) {
-        let sheet = backgroundColorStyleSheets[color];
-        if (!sheet) {
-            sheet = StyleSheet.create({
-                style: {
-                    backgroundColor: color,
-                },
-            });
-            backgroundColorStyleSheets[color] = sheet;
-        }
-        return sheet.style;
+    // deprecated, moved to UIStyleColor
+    static getBackgroundColorStyle(color: UIColorData) {
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BackgroundColor);
+    }
+
+    // deprecated, moved to UIStyleColor
+    static getBorderBottomColorStyle(color: UIColorData) {
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BorderBottomColor);
+    }
+
+    // deprecated, moved to UIStyleColor
+    static getTintColorStyle(color: UIColorData) {
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.TintColor);
     }
 }

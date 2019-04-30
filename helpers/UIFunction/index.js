@@ -2,9 +2,9 @@ import { Platform } from 'react-native';
 import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
+import isEmail from 'validator/lib/isEmail';
 
 const currencies = require('currency-formatter/currencies.json');
-
 const countries = require('../../assets/countries/countries.json');
 
 export default class UIFunction {
@@ -124,13 +124,18 @@ export default class UIFunction {
         return parseDigits(text);
     }
 
+    static isPhoneNumber(expression: string) {
+        const normalizedPhone = this.normalizePhone(expression);
+        return this.isPhoneValid(normalizedPhone);
+    }
+
     static isPhoneValid(phone: ?string) {
         let valid = false;
         try {
             const parseResult = parsePhoneNumberFromString(`+${phone || ''}`);
             valid = parseResult.isValid();
         } catch (exception) {
-            console.error(`[UIFunction] Failed to parse phone code ${phone || ''} with exception`, exception);
+            console.log(`[UIFunction] Failed to parse phone code ${phone || ''} with exception`, exception);
         }
         return valid;
     }
@@ -219,6 +224,14 @@ export default class UIFunction {
     }
 
     // International phone
+    static normalizePhone(phone: string): string {
+        const internationalPhone = this.internationalPhone(phone);
+        if (!internationalPhone) {
+            return this.numericText(phone);
+        }
+        return this.numericText(internationalPhone);
+    }
+
     static internationalPhone(phone: string): ?string {
         if (!phone) {
             return null;
@@ -276,9 +289,8 @@ export default class UIFunction {
         const tab = UIFunction.repeat('   ', level);
 
         let str = '';
-        for (key in obj) {
+        for (let key in obj) {
             str += `${tab + key}: ${typeof obj[key] === 'object' ? `\r\n${UIFunction.alertObject(obj[key], level + 1)}` : obj[key]}\r\n`;
-            // console.log(str);
         }
 
         if (level === 0) {
@@ -355,7 +367,22 @@ export default class UIFunction {
             .toLowerCase();
     }
 
+    static formatLowerLetters(str: string): string {
+        const normalizedStr = UIFunction.normalizeKeyPhrase(str);
+        return normalizedStr
+            .replace(/[^\s-_0-9a-zA-Zа-яА-ЯёЁ]/g, '');
+    }
+
+    static hasLetters(str) {
+        return str.search(/[a-zа-яё]/i) !== -1;
+    }
+
     static isSameKeyPhrases(a: string, b: string): boolean {
         return this.normalizeKeyPhrase(a) === this.normalizeKeyPhrase(b);
     }
+
+    static isEmail(expression: string) {
+        return isEmail(expression);
+    }
 }
+

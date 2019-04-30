@@ -1,11 +1,30 @@
+// @flow
+
 import LocalizedStrings from 'react-native-localization';
 import Moment from 'moment';
 import 'moment/locale/ru';
 
 import en from './en';
 import ru from './ru';
+import type { UILocalizedData } from './UILocalizedTypes';
 
 class UILocalized extends LocalizedStrings {
+    setLanguages(languages: string[]) {
+        const props = {};
+        languages.forEach((language) => {
+            let strings = null;
+            if (language === 'en') {
+                strings = en;
+            } else if (language === 'ru') {
+                strings = ru;
+            } else {
+                // not supported
+            }
+            props[language] = strings;
+        });
+        this.setContent(props);
+    }
+
     getLocale() {
         return this.getLanguage(); // this.getInterfaceLanguage().substring(0, 2); // en_US
     }
@@ -75,14 +94,16 @@ class UILocalized extends LocalizedStrings {
     }
 }
 
-const localizedStrings = {
-    en,
-    ru,
-};
+type LocalizedStringsMethods = {
+    setLanguage(language?: string): void,
+    getInterfaceLanguage(): string,
+    getAvailableLanguages(): string[],
+    formatString(str: string, ...values: any[]): string,
+    getString(key: string, language: string): string | null,
+}
 
-// For debug purposes
-// delete localizedStrings.ru;
-const localized = new UILocalized(localizedStrings);
+const localized: UILocalizedData & UILocalized & LocalizedStringsMethods =
+    new UILocalized({ en }); // by default only `en` is used
 
 Moment.locale(localized.getLocale());
 

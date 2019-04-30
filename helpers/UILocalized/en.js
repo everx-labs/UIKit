@@ -1,8 +1,14 @@
-const en = {
+// @flow
+
+import type { UILocalizedData } from './UILocalizedTypes';
+
+const en: UILocalizedData = {
     // TON
+    TONLabel: 'TON',
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
-    CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
+    CopyRight: '2019 © TON Labs',
+    Disclaimer: 'Disclaimer',
 
     // Terms
     TermsText: 'By submitting your offer, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
@@ -26,6 +32,7 @@ const en = {
     InvalidLastName: 'Invalid last name',
     InvalidUsername: 'Invalid username',
     InvalidPassword: 'Invalid password',
+    InvalidEmail: 'Invalid email address',
     YouHaveEnteredAnInvalidPhoneNumber: 'You have entered an invalid phone number',
     YouHaveEnteredAnEmptyCodeFor: 'You have entered an empty code for',
     YouHaveEnteredAnExpiredCodeFor: 'You have entered an expired code for',
@@ -86,6 +93,7 @@ const en = {
     In: 'in',
     Sec: 'sec.',
     Description: 'Description',
+    Share: 'Share',
     ShareLink: 'Share Link',
     Report: 'Report',
     PleaseDoNotCloseTheApp: 'Please, do not close the app',
@@ -101,11 +109,13 @@ const en = {
     SorryWeCannotDoActionAtTheMoment: 'Sorry, we cannot {0} at the moment 😿. Please, try again later.',
     NumberCopiedToClipboard: 'Number copied to clipboard.',
     LinkCopiedToClipboard: 'Link copied to clipboard.',
+    MessageCopiedToClipboard: 'Message copied to clipboard.',
     FileIsTooBig: 'Sorry, we cannot process this. File is too big.',
     Important: 'IMPORTANT!',
     UserIsNotAuthorized: 'User is not authorized',
     WalletIsNotInitialized: 'Wallet is not initialized',
     WeAreSorryButYourBrowserVersionIsNotCompatible: 'We are sorry but your browser version is not compatible with our application.\nPlease use any modern browser instead (Chrome, Safari, Edge, Firefox, etc.).',
+    PleaseGoOnline: 'Please go Online',
 
     // Profile
     Profile: 'Profile',
@@ -420,7 +430,13 @@ const en = {
     ReviewAndConfirm: 'Review and Confirm',
     PassportRequestReview: 'Your passport will be reviewded soon',
     PassportFetchingStatus: 'Fetching status...',
-    PassportStatus: ['Not confirmed', 'Pending confirmation', 'Confirmed'],
+    PassportStatus: [
+        'None',
+        'Bad',
+        'Suspicious',
+        'Unknown',
+        'Trusted',
+    ],
     PassportSaveSuccess: 'Your Passport has been updated',
     PassportSaveError: 'An error has occurred while updating your Passport',
     DeleteDocument: 'Delete Document',
@@ -495,7 +511,12 @@ const en = {
     SMSNotice: 'SMS fees may apply',
 
     // Limits
-    TransactionError: ['-', 'The transfer limit has been reached', 'Access denied', 'Unknow error'],
+    TransactionError: [
+        '-',
+        'The transfer limit has been reached',
+        'Access denied',
+        'Unknow error',
+    ],
     LimitSetSuccess: 'The limit has been set successfully',
     LimitRemoveSuccess: 'The limit has been deleted',
 
@@ -510,6 +531,20 @@ const en = {
 
     // Dates
     DateSymbols: { year: 'YYYY', month: 'MM', day: 'DD' },
+
+    // Stub page
+    GetNotifiedWhenWeLaunch: 'Get notified when we launch',
+    WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
+    ThanksForCooperation: 'Thanks for cooperation.',
+    Contact: 'For more information, contact',
+    PressEmail: 'press@tonlabs.io',
+
+    // Toasts
+    EnterCorrectDataToField: 'Enter correct data to field',
+
+    // Labels
+    Phone: 'Phone',
+    EmailAddress: 'Email',
 };
 
 export default en;

@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import UIColor from '../../../helpers/UIColor';
@@ -8,7 +7,7 @@ import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
 import UIStyle from '../../../helpers/UIStyle';
 import UINavigationBackButton from '../UINavigationBackButton';
-import UISearchBar from '../../text/UISearchBar';
+import UISearchBar from '../../input/UISearchBar';
 import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
@@ -26,12 +25,13 @@ const styles = StyleSheet.create({
         height: UIDevice.navigationBarHeight(),
     },
     titleContainer: {
+        marginHorizontal: UIConstant.contentOffset(),
         height: UIDevice.navigationBarHeight(),
-        flexDirection: 'column',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     titleText: {
-        marginHorizontal: UIConstant.contentOffset(),
         ...UIFont.subtitleBold(),
         color: UIColor.black(),
     },
@@ -65,10 +65,11 @@ export interface ReactNavigation {
 
 export type CreateNavigationOptions = (options: { navigation: ReactNavigation }) => {};
 
-type AnyComponent = Object;
+export type AnyComponent = Object;
 
 type UINavigationBarOptions = {
     title?: string,
+    titleRight?: React$Node,
     useDefaultStyle?: boolean,
     searchBar?: boolean,
     headerLeft?: AnyComponent,
@@ -78,6 +79,7 @@ type UINavigationBarOptions = {
 
 type UINavigationBarProps = {
     title?: string,
+    titleRight?: React$Node,
     headerLeft?: AnyComponent,
     headerRight?: AnyComponent,
 }
@@ -107,6 +109,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
                 headerLeft: null, // only way to suppress unattended back button
                 headerTitle: <UINavigationBar
                     title={options.title}
+                    titleRight={options.titleRight}
                     headerLeft={headerLeft}
                     headerRight={options.headerRight}
                 />,
@@ -136,7 +139,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
 
     // Component
     render() {
-        const title = this.getTitle();
+        const { title, titleRight } = this.props;
         const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
         return (
             <View style={styles.container}>
@@ -149,6 +152,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
                 </View>
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>{this.getTitle()}</Text>
+                    {titleRight}
                 </View>
             </View>
         );

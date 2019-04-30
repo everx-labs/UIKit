@@ -1,8 +1,15 @@
 Example:
 
 ```js
-<UIBadge
-    style={{ width: 20 }}
-    badge={1}  
-/>
+<View>
+    <UISeparator />
+    <UISeparator 
+        color={UIColor.success()} 
+        style={UIStyle.marginTopDefault}
+     />
+    <UISeparator 
+        style={{ width: 240, marginTop: 16 }} 
+        error
+    />
+</View>
 ```

@@ -1,8 +1,14 @@
-const ru = {
+// @flow
+
+import type { UILocalizedData } from './UILocalizedTypes';
+
+const ru: UILocalizedData = {
     // TON
+    TONLabel: 'TON',
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
-    CopyRight: '© 2018–2019 TON.Labs Team. Make Blockchain Great Again.',
+    CopyRight: '2019 © TON Labs',
+    Disclaimer: 'Disclaimer',
 
     // Terms
     TermsText: 'Отправляя это предложение, Вы подтверждаете, что Вы ознакомились и согласны с политикой конфиденциальности и условиями использования TON Wallet, которые можно найти',
@@ -26,6 +32,7 @@ const ru = {
     InvalidLastName: 'Недопустимая фамилия',
     InvalidUsername: 'Недопустимое имя пользователя',
     InvalidPassword: 'Неверный пароль',
+    InvalidEmail: 'Invalid email address',
     YouHaveEnteredAnInvalidPhoneNumber: 'Вы ввели неверный номер телефона',
     YouHaveEnteredAnEmptyCodeFor: 'Вы ввели пустой код для',
     YouHaveEnteredAnExpiredCodeFor: 'Вы ввели истекший код для',
@@ -86,6 +93,7 @@ const ru = {
     In: 'через',
     Sec: 'сек.',
     Description: 'Описание',
+    Share: 'Поделиться',
     ShareLink: 'Поделиться ссылкой',
     Report: 'Пожаловаться',
     PleaseDoNotCloseTheApp: 'Пожалуйста, не закрывайте приложение',
@@ -101,11 +109,13 @@ const ru = {
     SorryWeCannotDoActionAtTheMoment: 'К сожалению, мы не можем {0} в данный момент 😿. Пожалуйста, повторите попытку позже.',
     NumberCopiedToClipboard: 'Номер скопирован в буфер.',
     LinkCopiedToClipboard: 'Ссылка скопирована в буфер.',
+    MessageCopiedToClipboard: 'Сообщение скопировано в буфер',
     FileIsTooBig: 'Извините, мы не можем это обработать. Файл слишком большой.',
     Important: 'ВАЖНО!',
     UserIsNotAuthorized: 'Пользователь не авторизован',
     WalletIsNotInitialized: 'Кошелек не инициализирован',
     WeAreSorryButYourBrowserVersionIsNotCompatible: 'Извините, но ваша версия браузера несовместима с нашим приложением.\nВместо этого используйте любой современный браузер (Chrome, Safari, Edge, Firefox и др.).',
+    PleaseGoOnline: 'Пожалуйста, выйдите в онлайн',
 
     // Profile
     Profile: 'Профиль',
@@ -419,7 +429,13 @@ const ru = {
     ReviewAndConfirm: 'Проверить и подтвердить',
     PassportRequestReview: 'Ваш паспорт скоро будет проверен',
     PassportFetchingStatus: 'Получение статуса...',
-    PassportStatus: ['Не подтвержден', 'Ожидает подтверждения', 'Подтвержден'],
+    PassportStatus: [
+        'None',
+        'Bad',
+        'Suspicious',
+        'Unknown',
+        'Trusted',
+    ],
     PassportSaveSuccess: 'Ваш паспорт был обновлен',
     PassportSaveError: 'Произошла ошибка при обновлении паспорта',
     DeleteDocument: 'Удалить документ',
@@ -494,7 +510,12 @@ const ru = {
     SMSNotice: 'Может взиматься плата за SMS',
 
     // Limits
-    TransactionError: ['-', 'Превышен лимит операции', 'Доступ запрещен', 'Неизвестная ошибка'],
+    TransactionError: [
+        '-',
+        'Превышен лимит операции',
+        'Доступ запрещен',
+        'Неизвестная ошибка',
+    ],
     LimitSetSuccess: 'Лимит был успешно установлен',
     LimitRemoveSuccess: 'Лимит был удален',
 
@@ -509,6 +530,20 @@ const ru = {
 
     // Dates
     DateSymbols: { year: 'ГГГГ', month: 'ММ', day: 'ДД' },
+
+    // Stub page
+    GetNotifiedWhenWeLaunch: 'Get notified when we launch',
+    WillGetInTouchWithYouSoon: 'Will get in touch with you soon.',
+    ThanksForCooperation: 'Thanks for cooperation.',
+    Contact: 'For more information, contact',
+    PressEmail: 'press@tonlabs.io',
+
+    // Toasts
+    EnterCorrectDataToField: 'Enter correct data to field',
+
+    // Labels
+    Phone: 'Phone',
+    EmailAddress: 'Email',
 };
 
 export default ru;
