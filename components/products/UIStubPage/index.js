@@ -188,12 +188,13 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
     render(): React$Node {
         const {
-            title, needBottomIcon, description,
+            title, label, needBottomIcon, description,
         } = this.props;
         const widthStyle = this.getWidthStyle();
         const bottomIcon = needBottomIcon
             ? <Image source={icoTonLabs} style={styles.bottomIcon} />
             : null;
+        const labelText = label || UILocalized.TONLabel;
         return (
             <View
                 onLayout={e => this.onLayout(e)}
@@ -201,7 +202,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
             >
                 <View style={[...customStyles.contentContainer, widthStyle]}>
                     <Text style={UITextStyle.whiteAccentBold}>
-                        {UILocalized.TONLabel}
+                        {labelText}
                     </Text>
                     <Text style={UITextStyle.whiteKeyBold}>
                         {title}
@@ -226,6 +227,7 @@ UIStubPage.defaultProps = {
     presetName: UIBackgroundView.PresetNames.Primary,
     needBottomIcon: true,
     title: '',
+    label: '',
     description: UILocalized.GetNotifiedWhenWeLaunch,
     onSubmit: () => {},
 };
