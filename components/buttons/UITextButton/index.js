@@ -9,6 +9,7 @@ import UIActionComponent from '../../UIActionComponent';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
+
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
@@ -48,7 +49,9 @@ type Props = ActionProps & {
     title: string,
 };
 
-class UITextButton extends UIActionComponent<Props, ActionState> {
+type State = ActionState;
+
+class UITextButton extends UIActionComponent<Props, State> {
     static Align = {
         Left: styles.alignLeft,
         Center: styles.alignCenter,
@@ -81,7 +84,9 @@ class UITextButton extends UIActionComponent<Props, ActionState> {
         const tapped = this.isTapped();
         const hover = this.isHover();
         const defaultColorStyle = UIColor.actionTextPrimaryStyle(theme);
-        const stateColorStyle = UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover);
+        const stateColorStyle = disabled || tapped || hover
+            ? UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover)
+            : null;
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
         return (
@@ -115,11 +120,12 @@ class UITextButton extends UIActionComponent<Props, ActionState> {
     renderContent(): React$Node {
         const { buttonStyle, align } = this.props;
         return (
-            <View style={[
-                styles.textButton,
-                align,
-                buttonStyle,
-            ]}
+            <View
+                style={[
+                    styles.textButton,
+                    align,
+                    buttonStyle,
+                ]}
             >
                 {this.renderIcon()}
                 {this.renderTitle()}

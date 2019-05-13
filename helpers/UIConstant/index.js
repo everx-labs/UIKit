@@ -46,6 +46,7 @@ const UI_BIG_CELL_HEIGHT = 56;
 const UI_LARGE_CELL_HEIGHT = 64;
 const UI_DETAILS_CELL_HEIGHT = 68;
 const UI_GREAT_CELL_HEIGHT = 72;
+const UI_CHAT_CELL_HEIGHT = 76;
 const UI_MAJOR_CELL_HEIGHT = 80;
 const UI_HUGE_CELL_HEIGHT = 96;
 const UI_GIANT_CELL_HEIGHT = 128;
@@ -101,7 +102,6 @@ const UI_PROFILE_PHOTO_SIZE = 72;
 
 const MAX_DECIMAL_DIGITS = 8;
 const MAX_NUMBER_DIGITS = 9;
-const SHORT_DATE_LENGTH = 10;
 
 const MAX_TEXT_LINE_LENGTH = 200;
 
@@ -312,6 +312,10 @@ export default class UIConstant {
         return UI_MAJOR_CELL_HEIGHT;
     }
 
+    static chatCellHeight() {
+        return UI_CHAT_CELL_HEIGHT;
+    }
+
     static hugeCellHeight() {
         return UI_HUGE_CELL_HEIGHT;
     }
@@ -494,9 +498,5 @@ export default class UIConstant {
 
     static maxDecimalDigits() {
         return MAX_DECIMAL_DIGITS;
-    }
-
-    static shortDateLength() {
-        return SHORT_DATE_LENGTH;
     }
 }

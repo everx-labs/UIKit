@@ -8,6 +8,7 @@ const en: UILocalizedData = {
     TONWallet: 'TON Wallet',
     BITFuture: 'Bit Future',
     CopyRight: '2019 © TON Labs',
+    Disclaimer: 'Disclaimer',
 
     // Terms
     TermsText: 'By submitting your offer, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
@@ -430,9 +431,11 @@ const en: UILocalizedData = {
     PassportRequestReview: 'Your passport will be reviewded soon',
     PassportFetchingStatus: 'Fetching status...',
     PassportStatus: [
-        'Not confirmed',
-        'Pending confirmation',
-        'Confirmed',
+        'None',
+        'Bad',
+        'Suspicious',
+        'Unknown',
+        'Trusted',
     ],
     PassportSaveSuccess: 'Your Passport has been updated',
     PassportSaveError: 'An error has occurred while updating your Passport',
@@ -539,7 +542,9 @@ const en: UILocalizedData = {
     // Toasts
     EnterCorrectDataToField: 'Enter correct data to field',
 
-
+    // Labels
+    Phone: 'Phone',
+    EmailAddress: 'Email',
 };
 
 export default en;

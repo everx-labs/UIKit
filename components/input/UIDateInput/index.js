@@ -2,14 +2,12 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text, Platform } from 'react-native';
-import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 import Moment from 'moment';
 
 import UIDetailsInput from '../UIDetailsInput';
 
 import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
-import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 
 import type { DetailsProps, DetailsState } from '../UIDetailsInput';
@@ -51,7 +49,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         dateComponents: ['year', 'month', 'day'],
         separator: '.',
         initialEpochTime: null,
-        maxLength: UIConstant.shortDateLength(),
         onChangeDate: () => {},
     };
 
@@ -112,7 +109,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     isValidDate() {
         const date = this.getValue();
         const validDate = Moment(date, this.getPattern()).isValid();
-        const validLength = date.length === UIConstant.shortDateLength() || date.length === 0;
+        const validLength = date.length === this.getPattern(true).length || date.length === 0;
 
         return (validDate && validLength);
     }
@@ -217,7 +214,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTexFragment() {
+    renderTextFragment() {
         return (
             <React.Fragment>
                 {this.renderTextInput()}

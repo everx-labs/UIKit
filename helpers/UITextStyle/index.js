@@ -35,6 +35,11 @@ const quaternary = {
     color: UIColor.textQuaternary(),
 };
 
+const grey = {
+    ...text,
+    color: UIColor.grey(),
+};
+
 const grey1 = {
     ...text,
     color: UIColor.grey1(),
@@ -85,6 +90,11 @@ const UITextStyle = StyleSheet.create({
     bodyRegular: {
         ...text,
         ...UIFont.bodyRegular(),
+    },
+    // Caption - fontSize: 14, lineHeight: 20
+    captionRegular: {
+        ...text,
+        ...UIFont.captionRegular(),
     },
     // Tiny - fontSize: 12, lineHeight: 16
     tinyRegular: {
@@ -242,6 +252,12 @@ const UITextStyle = StyleSheet.create({
     // Body - fontSize: 18, lineHeight: 24
     quaternaryBodyRegular: {
         ...quaternary,
+        ...UIFont.bodyRegular(),
+    },
+
+    // [Text Grey]
+    greyBodyRegular: {
+        ...grey,
         ...UIFont.bodyRegular(),
     },
 
@@ -404,6 +420,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Action minus (primary minus)]
+    // Small - fontSize: 16, lineHeight: 20
+    actionMinusSmallMedium: {
+        ...actionMinus,
+        ...UIFont.smallMedium(),
+    },
     // Small - fontSize: 12, lineHeight: 16
     actionMinusTinyMedium: {
         ...actionMinus,
@@ -411,6 +432,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Action 3 (primary 3)]
+    // Small - fontSize: 16, lineHeight: 20
+    action3SmallMedium: {
+        ...action3,
+        ...UIFont.smallMedium(),
+    },
     // Small - fontSize: 12, lineHeight: 16
     action3TinyRegular: {
         ...action3,

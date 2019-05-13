@@ -4,6 +4,15 @@ import UIColor from '../UIColor';
 import UIFont from '../UIFont';
 import UIConstant from '../UIConstant';
 import UIDevice from '../UIDevice';
+import UIStyleBorder from './UIStyleBorder';
+import UIStyleHeight from './UIStyleHeight';
+import UIStyleMargin from './UIStyleMargin';
+import UIStylePadding from './UIStylePadding';
+import UIStyleClass from './UIStyleClass';
+import UIStyleFlex from './UIStyleFlex';
+import UIStyleText from '../UITextStyle/UIStyleText';
+import UIStyleWidth from './UIStyleWidth';
+import UIStyleColor from './UIStyleColor';
 
 const absoluteFillObject = {
     position: 'absolute',
@@ -83,6 +92,9 @@ const UIStyle = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    justifySpaceBetween: {
+        justifyContent: 'space-between',
+    },
     justifyEnd: {
         justifyContent: 'flex-end',
     },
@@ -141,30 +153,6 @@ const UIStyle = StyleSheet.create({
 
     positionAbsolute: {
         position: 'absolute',
-    },
-
-    // heights
-    tinyCellHeight: { // 16
-        height: UIConstant.tinyCellHeight(),
-    },
-    mediumCellHeight: { // 40
-        height: UIConstant.mediumCellHeight(),
-    },
-    defaultCellHeight: { // 48
-        height: UIConstant.defaultCellHeight(),
-    },
-    bigCellHeight: { // 56
-        height: UIConstant.bigCellHeight(),
-    },
-    greatCellHeight: { // 72
-        height: UIConstant.greatCellHeight(),
-    },
-    majorCellHeight: { // 80
-        height: UIConstant.majorCellHeight(),
-    },
-
-    greatCellMinHeight: {
-        minHeight: UIConstant.greatCellHeight(),
     },
 
     // offsets
@@ -234,6 +222,9 @@ const UIStyle = StyleSheet.create({
     marginRightDefault: { // 16
         marginRight: UIConstant.contentOffset(),
     },
+    marginRightMedium: {
+        marginRight: UIConstant.mediumContentOffset(),
+    },
     marginRightHuge: { // 32
         marginRight: UIConstant.hugeContentOffset(),
     },
@@ -283,6 +274,9 @@ const UIStyle = StyleSheet.create({
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
     },
+    paddingLeftDefault: {
+        paddingLeft: UIConstant.contentOffset(),
+    },
     paddingBottomMajor: {
         paddingBottom: UIConstant.majorContentOffset(),
     },
@@ -313,6 +307,9 @@ const UIStyle = StyleSheet.create({
     },
     backgroundLightColor: {
         backgroundColor: UIColor.light(),
+    },
+    backgroundTransparent: {
+        backgroundColor: 'transparent',
     },
 
     // containers
@@ -468,5 +465,15 @@ const UIStyle = StyleSheet.create({
         overflow: 'hidden',
     },
 });
+
+UIStyle.Border = UIStyleBorder;
+UIStyle.Color = UIStyleColor;
+UIStyle.Common = UIStyleClass;
+UIStyle.Flex = UIStyleFlex;
+UIStyle.Height = UIStyleHeight;
+UIStyle.Margin = UIStyleMargin;
+UIStyle.Padding = UIStylePadding;
+UIStyle.Text = UIStyleText;
+UIStyle.Width = UIStyleWidth;
 
 export default UIStyle;

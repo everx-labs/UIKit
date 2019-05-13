@@ -12,6 +12,8 @@ import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
 import UIActionComponent from '../../UIActionComponent';
 
+import type { ActionProps, ActionState } from '../../UIActionComponent';
+
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
+type Props = ActionProps & {
     badge: number,
     bottomExtend: boolean,
     buttonSize: string,
@@ -40,13 +42,12 @@ type Props = {
     onPress: () => void,
     showIndicator: boolean,
     style?: StylePropType,
-    testID?: string,
     textStyle?: StylePropType,
     title: string,
     theme: string,
 };
 
-type State = {};
+type State = ActionState;
 
 export default class UIButton extends UIActionComponent<Props, State> {
     static ButtonSize = {
@@ -148,7 +149,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
         if (!icon) {
             return null;
         }
-        return <Image source={icon} style={UIStyle.marginRightSmall} />;
+        return <Image source={icon} style={UIStyle.Margin.rightSmall()} />;
     }
 
     renderBadge() {
@@ -210,7 +211,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
                     style,
                 ]}
             >
-                <View style={[UIStyle.flex, UIStyle.centerContainer]}>
+                <View style={[UIStyle.Common.flex(), UIStyle.Common.centerContainer()]}>
                     {this.renderIcon()}
                     {this.renderBadge()}
                     {this.renderTitle()}

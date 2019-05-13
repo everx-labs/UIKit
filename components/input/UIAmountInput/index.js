@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         color: 'transparent',
     },
     trailingValue: {
-        color: UIColor.textSecondary(),
+        color: UIColor.grey(),
     },
     // TODO: Bad practice – padding was selected by eye.
     // Need better solution. (Michael V.)
@@ -94,6 +94,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             UITextStyle.secondarySmallMedium : UITextStyle.actionSmallMedium;
         return (
             <TouchableOpacity
+                testID="amount_input_right_button"
                 disabled={rightButtonDisabled}
                 onPress={onRightButtonPress}
             >
@@ -117,6 +118,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         return (
             <View style={style}>
                 <Text
+                    onPress={() => this.focus()}
                     style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
                 >
@@ -132,7 +134,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTexFragment() {
+    renderTextFragment() {
         return (
             <React.Fragment>
                 {this.renderTextInput()}

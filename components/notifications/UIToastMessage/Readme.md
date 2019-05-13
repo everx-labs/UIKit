@@ -1,11 +1,13 @@
+Example:
+
 ```js
 const containerStyle = {
     margin: -16,
     padding: 16,
-    height: 550,
+    height: 350,
 }
 
-class ModalExample extends React.Component {
+class ExampleComponent extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -30,48 +32,7 @@ class ModalExample extends React.Component {
             </View>
         )
     }
-
-    renderNoticeButtons() {
-        return (
-            <View>
-                <UITextButton 
-                    title="Show default notice with message only"
-                    onPress={() => UINotice.showMessage(
-                        'System is going down at midnight tonight. We’ll notify you when it’s back up.'
-                    )}
-                />
-                <UITextButton 
-                    title="Show default notice on top"
-                    onPress={() => UINotice.showMessage({
-                        message: 'System is going down at midnight tonight. We’ll notify you when it’s back up.',
-                        placement: UINotice.Place.Top,
-                    })}
-                />
-                <UITextButton 
-                    title="Show notice with subcomponent, title, action, cancel callback without autohide"
-                    onPress={() => UINotice.showMessage({
-                        title: 'Hey, Eugene',
-                        subComponent: (
-                            <UIProfileInitials
-                                id="1"
-                                initials="AA"
-                                avatarSize={UIConstant.iconSize()}
-                                textStyle={{...UIFont.iconRegular()}}
-                            />
-                        ),
-                        message: 'Please confirm your Passport to complete transactions in your wallet.',
-                        action: {
-                            title: 'Confirm',
-                            onPress: () => alert('Action was called'),
-                        },
-                        onCancel: () => alert('Notice was canceled'),
-                        autoHide: false,
-                    })}
-                />  
-            </View>
-        )
-    }
-
+    
     renderToastButtons() {
         return (
             <View style={{ marginTop: 16 }}>
@@ -136,7 +97,6 @@ class ModalExample extends React.Component {
         return (
             <View style={containerStyle}>
                 {this.renderToggle()} 
-                {this.renderNoticeButtons()}        
                 {this.renderToastButtons()}
                 <UINotice />
                 {this.renderFooter()}
@@ -144,7 +104,5 @@ class ModalExample extends React.Component {
         );
     }
 };
-<ModalExample />
+<ExampleComponent />
 ```
-
-For web and tablets Notice is shown on left / For mobile devices on center.

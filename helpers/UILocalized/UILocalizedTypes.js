@@ -6,6 +6,7 @@ export type UILocalizedData = {
     TONWallet: string,
     BITFuture: string,
     CopyRight: string,
+    Disclaimer: string,
 
     // Terms
     TermsText: string,
@@ -531,4 +532,5 @@ export type UILocalizedData = {
 
     // Toasts
     EnterCorrectDataToField: string,
+    EmailAddress: string,
 }

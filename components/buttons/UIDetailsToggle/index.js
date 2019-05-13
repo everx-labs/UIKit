@@ -37,8 +37,9 @@ export default class UIDetailsToggle extends UIComponent {
     }
 
     renderToggle() {
-        const { active, onPress } = this.props;
+        const { active, onPress, testID } = this.props;
         return (<UIToggle
+            testID={testID}
             containerStyle={styles.toggle}
             active={active}
             onPress={() => onPress(!active)}
@@ -61,6 +62,7 @@ UIDetailsToggle.defaultProps = {
     comments: '',
     active: false,
     onPress: () => {},
+    testID: null,
 };
 
 UIDetailsToggle.propTypes = {
@@ -69,4 +71,5 @@ UIDetailsToggle.propTypes = {
     comments: PropTypes.string,
     active: PropTypes.bool,
     onPress: PropTypes.func,
+    testID: PropTypes.string,
 };

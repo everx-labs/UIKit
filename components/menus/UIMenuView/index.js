@@ -33,6 +33,7 @@ type Props = {
     needCancelItem?: boolean,
     children?: Node,
     onCancelCallback?: () => void,
+    testID?: string,
 };
 
 type State = {
@@ -173,10 +174,12 @@ export default class UIMenuView extends UIComponent<Props, State> {
         const setClassNameTrick: ClassNameProp = {
             className: MENU_TRIGGER,
         };
+        const { placement, testID } = this.props;
+        const testIDProp = testID ? { testID } : null;
         return (
             <View style={{ flexDirection: 'row' }}>
                 <Popover
-                    placement={this.props.placement}
+                    placement={placement}
                     arrowWidth={0}
                     arrowHeight={0}
                     isVisible={this.isVisible()}
@@ -184,6 +187,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                 >
                     <TouchableOpacity
                         {...setClassNameTrick}
+                        {...testIDProp}
                         onPress={() => this.openMenu()}
                         onLayout={e => this.onTriggerLayout(e)}
                     >
@@ -204,6 +208,5 @@ UIMenuView.defaultProps = {
     menuItemsList: [],
     placement: 'bottom',
     needCancelItem: true, // for iOS and Android only
-    onCancelCallback: () => {
-    }, // for iOS and Android only
+    onCancelCallback: () => {}, // for iOS and Android only
 };

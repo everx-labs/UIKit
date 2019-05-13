@@ -207,6 +207,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
         return fileName;
     }
+
     needsDeleteOption() {
         if (this.props.onDeletePhoto) {
             this.menuItemsList.push({
@@ -271,9 +272,12 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS !== 'web' || !this.isEditable()) {
             return null;
         }
+        const { testID } = this.props;
+        const testIDProp = testID ? { testID } : null;
         // TextInput doesn't work here
         return (<input
             ref={(component) => { this.input = component; }}
+            {...testIDProp}
             type="file"
             name="image"
             className="inputClass"
@@ -396,15 +400,15 @@ export default class UIImageView extends UIComponent<Props, State> {
 
     renderPhoto() {
         if (Platform.OS === 'web' || this.isEditable()) {
+            const { testID } = this.props;
+            const testIDProp = testID ? { testID } : null;
             return (
                 <TouchableOpacity
+                    {...testIDProp}
+                    style={[styles.photoContainer, this.props.photoStyle]}
                     onPress={() => this.onPressPhoto()}
-                    style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
                 >
-                    <View style={this.props.containerStyle}>
-                        {this.renderPhotoContent()}
-                        {this.props.children}
-                    </View>
+                    {this.renderPhotoContent()}
                     {this.renderLightBox()}
                     {this.renderPhotoInputForWeb()}
                 </TouchableOpacity>
@@ -413,7 +417,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         const { width, height } = Dimensions.get('window');
         return (
             <LightboxMobile
-                style={[styles.photoContainer, { alignItems: this.props.alignItems }]}
+                style={[styles.photoContainer, this.props.photoStyle]}
                 underlayColor={UIColor.overlayWithAlpha(0.32)}
                 activeProps={{
                     style: { resizeMode: 'contain', width, height },
@@ -422,17 +426,14 @@ export default class UIImageView extends UIComponent<Props, State> {
                 renderContent={() => this.renderLightBoxMobileContent()}
                 onOpen={() => this.onPressPhoto()}
             >
-                <View style={this.props.containerStyle}>
-                    {this.renderPhotoContent()}
-                    {this.props.children}
-                </View>
+                {this.renderPhotoContent()}
             </LightboxMobile>
         );
     }
 
     render() {
         return (
-            <View style={styles.photoContainer}>
+            <View style={[styles.photoContainer, this.props.photoStyle]}>
                 {this.renderPhoto()}
                 {this.renderSpinnerOverlay()}
                 {this.renderActionSheet()}
@@ -447,14 +448,13 @@ UIImageView.defaultProps = {
     editable: false,
     expandable: true,
     disabled: false,
-    alignItems: 'center',
     photoStyle: null,
-    containerStyle: null,
     resizeMode: 'cover',
     resizeMethod: 'auto',
     onUploadPhoto: () => {},
     onDeletePhoto: null,
     onPressPhoto: () => {},
+    testID: null,
 };
 
 UIImageView.propTypes = {
@@ -463,12 +463,11 @@ UIImageView.propTypes = {
     editable: PropTypes.bool,
     expandable: PropTypes.bool,
     disabled: PropTypes.bool,
-    alignItems: PropTypes.string,
-    containerStyle: StylePropType,
     photoStyle: StylePropType,
     resizeMode: PropTypes.string,
     resizeMethod: PropTypes.string,
     onUploadPhoto: PropTypes.func,
     onDeletePhoto: PropTypes.func,
     onPressPhoto: PropTypes.func,
+    testID: PropTypes.string,
 };
