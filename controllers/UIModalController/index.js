@@ -74,6 +74,7 @@ export default class UIModalController<Props, State>
     marginBottom: Animated.Value;
     dy: Animated.Value;
     animation: SlideAnimation | FadeAnimation;
+    testID: ?string;
 
     constructor(props: ModalControllerProps & Props) {
         super(props);
@@ -318,8 +319,10 @@ export default class UIModalController<Props, State>
         const {
             width, height, contentHeight, containerStyle, dialogStyle,
         } = this.getDialogStyle();
+        const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
         return (
             <PopupDialog
+                {...testIDProp}
                 ref={(popupDialog) => {
                     this.dialog = popupDialog;
                 }}
