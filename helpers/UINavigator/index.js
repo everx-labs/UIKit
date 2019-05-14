@@ -9,6 +9,7 @@ export type UINavigationRoute = {
     section?: string,
     staticParameters?: {
         section?: string,
+        [string]: string,
     },
     dynamicParameters?: {
         [string]: boolean,
@@ -19,6 +20,7 @@ export type UINavigationPath = {
     name: string,
     staticParameters?: {
         section?: string,
+        [string]: string,
     },
     dynamicParameters?: {
         [string]: boolean,
@@ -61,11 +63,6 @@ export default class UINavigator {
             const path: UINavigationPath = {
                 name: route.path || route.name,
             };
-            if (route.section) { // deprecated
-                path.staticParameters = {
-                    section: route.section,
-                };
-            }
             if (route.staticParameters) {
                 path.staticParameters = route.staticParameters;
             }

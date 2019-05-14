@@ -49,6 +49,7 @@ type Props = {
     presetName: string,
     needBottomIcon: boolean,
     title: string,
+    label: string,
     caption: string,
     disclaimer: string,
     onSubmit: (string) => void,
