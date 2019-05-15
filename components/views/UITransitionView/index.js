@@ -10,6 +10,8 @@ import UIStyle from '../../../helpers/UIStyle';
 type Props = {
     currentItem: ?React$Node,
     prevItem: ?React$Node,
+    currentItemKey: ?string,
+    prevItemKey: ?string,
     itemStyle: ViewStyleProp,
     containerStyle: ViewStyleProp,
 }
@@ -25,6 +27,8 @@ export default class UITransitionView extends UIComponent<Props, State> {
     static defaultProps = {
         currentItem: null,
         prevItem: null,
+        currentItemKey: null,
+        prevItemKey: null,
         itemStyle: {},
         containerStyle: {},
     }
@@ -41,15 +45,12 @@ export default class UITransitionView extends UIComponent<Props, State> {
         };
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        const newCurrentItem = nextProps.currentItem;
-        const newPrevItem = nextProps.prevItem;
-        const currentItem = this.getCurrentItem();
-        const prevItem = this.getPrevItem();
-        if (currentItem !== newCurrentItem || prevItem !== newPrevItem) {
+    componentDidUpdate(prevProps: Props) {
+        if (this.props.currentItemKey !== prevProps.currentItemKey
+            || this.props.prevItemKey !== prevProps.prevItemKey) {
             this.setStateSafely({
-                currentItem,
-                prevItem,
+                currentItem: this.props.currentItem,
+                prevItem: this.props.prevItem,
                 currentItemOpacity: new Animated.Value(0),
                 prevItemOpacity: new Animated.Value(1),
             }, () => {
@@ -67,11 +68,11 @@ export default class UITransitionView extends UIComponent<Props, State> {
 
     // Getters
     getCurrentItem(): ?React$Node {
-        return this.props.currentItem;
+        return this.state.currentItem;
     }
 
     getPrevItem(): ?React$Node {
-        return this.props.prevItem;
+        return this.state.prevItem;
     }
 
     getCurrentItemOpacity(): Animated.Value {
