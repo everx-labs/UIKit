@@ -107,6 +107,8 @@ const MAX_TEXT_LINE_LENGTH = 200;
 
 const INITIAL_RENDER_DATA_COUNT = 12; // good for displaying a tables of 1,2,3,4 columns
 
+const MAX_UNKNOWN_IMAGE_CHAT_SIZE = 250;
+
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
         elevation: 1,
@@ -498,5 +500,9 @@ export default class UIConstant {
 
     static maxDecimalDigits() {
         return MAX_DECIMAL_DIGITS;
+    }
+
+    static maxUnknownImageSize() {
+        return MAX_UNKNOWN_IMAGE_CHAT_SIZE;
     }
 }
