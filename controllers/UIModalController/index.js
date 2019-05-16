@@ -68,6 +68,7 @@ export default class UIModalController<Props, State>
     fullscreen: boolean;
     dismissible: boolean;
     modal: boolean;
+    adjustBottomSafeAreaInsetDynamically: boolean;
     onCancel: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
@@ -81,6 +82,7 @@ export default class UIModalController<Props, State>
         this.fullscreen = false;
         this.dismissible = true;
         this.modal = true;
+        this.adjustBottomSafeAreaInsetDynamically = true;
         this.dialog = null;
         this.onCancel = null;
         this.marginBottom = new Animated.Value(0);
@@ -227,8 +229,9 @@ export default class UIModalController<Props, State>
         super.setContentInset(contentInset);
         let bottomInset = contentInset.bottom;
         // If bottom inset is more than zero, then keyboard is visible
+        // OR dynamic adjustment is disabled
         // so append safe area
-        if (bottomInset > 0) {
+        if (bottomInset > 0 || !this.adjustBottomSafeAreaInsetDynamically) {
             bottomInset += this.getSafeAreaInsets().bottom;
         }
         if (animation) {
