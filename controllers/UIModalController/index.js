@@ -262,7 +262,7 @@ export default class UIModalController<Props, State>
     }
 
     setHeader(header: React$Node) {
-        this.setStateSafely( { header });
+        this.setStateSafely({ header });
     }
 
     // Events
@@ -358,7 +358,12 @@ export default class UIModalController<Props, State>
 
         return (
             <Animated.View
-                style={[UIStyle.absoluteFillObject, { backgroundColor }]}
+                style={[
+                    // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
+                    // And this brings a layout bug to Safari
+                    UIStyle.absoluteFillContainer,
+                    { backgroundColor },
+                ]}
                 onLayout={e => this.onLayout(e)}
             >
                 <Animated.View style={{ marginTop: this.dy }}>

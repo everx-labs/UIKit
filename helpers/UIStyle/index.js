@@ -14,12 +14,16 @@ import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
 import UIStyleColor from './UIStyleColor';
 
-const absoluteFillObject = {
+const absoluteFillContainer = {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+};
+
+const absoluteFillObject = {
+    ...absoluteFillContainer,
     overflow: 'hidden',
 };
 
@@ -313,7 +317,10 @@ const UIStyle = StyleSheet.create({
     },
 
     // containers
-    absoluteFillObject: {
+    absoluteFillContainer: {
+        ...absoluteFillContainer,
+    },
+    absoluteFillObject: { // has { overflow: hidden }
         ...absoluteFillObject,
     },
     screenBackground: {
