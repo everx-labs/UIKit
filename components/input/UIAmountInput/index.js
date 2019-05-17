@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
 
 type Props = DetailsProps & {
     containerStyle?: StylePropType,
+    inputPlaceholder?: string,
     trailingValue?: string,
     rightButton?: string,
     rightButtonDisabled: boolean,
@@ -48,14 +49,18 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
         containerStyle: {},
+        inputPlaceholder: '',
         trailingValue: '',
         rightButton: '',
         rightButtonDisabled: false,
-        onRightButtonPress: () => {
-        },
+        onRightButtonPress: () => {},
     };
 
     // Getters
+    getInlinePlaceholder() {
+        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
+    }
+
     containerStyle() {
         const { rightButton } = this.props;
         const flex = rightButton && rightButton.length > 0 ? { flex: 1 } : null;
@@ -105,6 +110,40 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         );
     }
 
+    renderFloatingTitle() {
+        const { floatingTitle, value, theme } = this.props;
+        const text = (!floatingTitle || !value) && !this.isFocused()
+            ? ' '
+            : this.placeholder();
+        const colorStyle = UIColor.textTertiaryStyle(theme);
+        return (
+            <Text style={[UITextStyle.tinyRegular, colorStyle]}>
+                {text}
+            </Text>
+        );
+    }
+
+    renderInputPlaceholder() {
+        if (!this.isFocused() || this.props.value) {
+            return null;
+        }
+        // TODO: Bad practice – fast coding.
+        // Need better solution. (Michael V.)
+        const style = Platform.OS === 'android'
+            ? [styles.trailingValueView, styles.androidTextInputPadding]
+            : styles.trailingValueView;
+        return (
+            <View style={style}>
+                <Text
+                    style={[this.textInputStyle(), styles.trailingValue]}
+                    selectable={false}
+                >
+                    {this.props.inputPlaceholder}
+                </Text>
+            </View>
+        );
+    }
+
     renderTrailingValue() {
         const { value, trailingValue } = this.props;
         if ((trailingValue?.length || 0) === 0) {
@@ -138,7 +177,9 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         return (
             <React.Fragment>
                 {this.renderTextInput()}
+                {this.renderInputPlaceholder()}
                 {this.renderTrailingValue()}
+                {this.renderToken()}
                 {this.renderRightButton()}
             </React.Fragment>
         );

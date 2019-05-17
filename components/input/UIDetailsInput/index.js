@@ -81,6 +81,7 @@ export type DetailsProps = {
 
 export type DetailsState = {
     focused: boolean,
+    hover: boolean,
 };
 
 export const detailsDefaultProps = {
@@ -111,7 +112,7 @@ export const detailsDefaultProps = {
 };
 
 export default class UIDetailsInput<Props, State>
-    extends UIComponent<Props & DetailsProps, any & DetailsState> {
+    extends UIComponent<$Shape<Props & DetailsProps>, $Shape<State & DetailsState>> {
     textInput: ?TextInput;
 
     static defaultProps: DetailsProps = detailsDefaultProps;
@@ -121,6 +122,7 @@ export default class UIDetailsInput<Props, State>
 
         this.state = {
             focused: false,
+            hover: false,
         };
     }
 
@@ -192,7 +194,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     isSubmitDisabled(): boolean {
-        return !this.props.value || this.props.submitDisabled;
+        return !this.props.value || this.props.submitDisabled || false;
     }
 
     keyboardType(): KeyboardType {
@@ -271,8 +273,8 @@ export default class UIDetailsInput<Props, State>
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, theme, value } = this.props;
-        const text = !floatingTitle || !value || !value.length ? ' ' : this.placeholder();
+        const { floatingTitle, value, theme } = this.props;
+        const text = !floatingTitle || !value ? ' ' : this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
