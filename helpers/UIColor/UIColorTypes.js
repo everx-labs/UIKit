@@ -52,5 +52,8 @@ export type UIColorThemeData = {
     },
     detailsInput: {
         comment: UIColorData,
+        amount: {
+            placeholder: UIColorData,
+        },
     },
 }

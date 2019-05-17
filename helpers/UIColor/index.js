@@ -339,6 +339,10 @@ export default class UIColor {
         return themes[theme || current].detailsInput.comment;
     }
 
+    static amountInputPlaceholder(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].detailsInput.amount.placeholder;
+    }
+
 
     static overlayWithAlpha(alpha: number = 0.5) {
         return `rgba(16, 32, 39, ${alpha})`;

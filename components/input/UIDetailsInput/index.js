@@ -186,7 +186,7 @@ export default class UIDetailsInput<Props, State>
 
     // Getters
     isFocused(): boolean {
-        return this.state.focused;
+        return this.state.focused || (this.textInput && this.textInput.isFocused()) || false;
     }
 
     isHover(): boolean {

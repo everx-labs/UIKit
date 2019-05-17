@@ -46,6 +46,9 @@ const UIColorThemeAction: UIColorThemeData = {
     },
     detailsInput: {
         comment: UIColorPalette.white,
+        amount: {
+            placeholder: UIColorPalette.text.lightQuarternary,
+        },
     },
 };
 
