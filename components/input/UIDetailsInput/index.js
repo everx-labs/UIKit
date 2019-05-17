@@ -6,21 +6,24 @@ import { Platform, TextInput, Text, View, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
-import type {
-    UIColorData,
-    UIColorThemeNameType,
-} from '../../../helpers/UIColor/UIColorTypes';
-
 import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
+import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
 import UIComponent from '../../UIComponent';
 
 import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
+
+import type {
+    UIColorData,
+    UIColorThemeNameType,
+} from '../../../helpers/UIColor/UIColorTypes';
+
+import type { EventProps } from '../../../types';
 
 const styles = StyleSheet.create({
     container: {
@@ -175,20 +178,28 @@ export default class UIDetailsInput<Props, State>
         this.setStateSafely({ focused });
     }
 
+    setHover(hover: boolean = true) {
+        this.setStateSafely({ hover });
+    }
+
     // Getters
-    isFocused() {
+    isFocused(): boolean {
         return this.state.focused;
     }
 
-    isSubmitDisabled() {
+    isHover(): boolean {
+        return this.state.hover;
+    }
+
+    isSubmitDisabled(): boolean {
         return !this.props.value || this.props.submitDisabled;
     }
 
-    keyboardType() {
+    keyboardType(): KeyboardType {
         return this.props.keyboardType;
     }
 
-    containerStyle() {
+    containerStyle(): ViewStyleProp {
         return styles.container;
     }
 
@@ -412,9 +423,9 @@ export default class UIDetailsInput<Props, State>
         if (this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
-            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused());
+            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
         }
-        const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
+        const bottomLineColorStyle = UIStyleColor.getBorderBottomColorStyle(bottomLineColor);
         return (
             <View style={[this.textViewStyle(), bottomLine, bottomLineColorStyle]}>
                 {this.renderTextFragment()}
@@ -449,8 +460,15 @@ export default class UIDetailsInput<Props, State>
         if (!this.props.visible) {
             return <View />;
         }
+        const eventProps: EventProps = {
+            onMouseEnter: () => this.setHover(),
+            onMouseLeave: () => this.setHover(false),
+        };
         return (
-            <View style={[this.containerStyle(), this.props.containerStyle]}>
+            <View
+                {...eventProps}
+                style={[this.containerStyle(), this.props.containerStyle]}
+            >
                 {this.renderFloatingTitle()}
                 {this.renderTextView()}
                 {this.renderComment()}

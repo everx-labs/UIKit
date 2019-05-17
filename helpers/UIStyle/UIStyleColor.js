@@ -81,8 +81,12 @@ export default class UIStyleColor {
         return this.getBorderBottomColorStyle(borderColor);
     }
 
-    static borderBottom(theme: ?UIColorThemeNameType, focused: boolean) {
-        const borderColor = UIColor.borderBottomColor(theme, focused);
+    static borderBottom(
+        theme: ?UIColorThemeNameType,
+        focused: boolean,
+        hover: boolean,
+    ) {
+        const borderColor = UIColor.borderBottomColor(theme, focused, hover);
         return this.getBorderBottomColorStyle(borderColor);
     }
 }

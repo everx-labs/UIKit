@@ -14,6 +14,7 @@ export type UIColorThemeData = {
         light: UIColorData,
         normal: UIColorData,
         focused: UIColorData,
+        hover: UIColorData,
     },
     text: {
         primary: {
