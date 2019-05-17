@@ -8,6 +8,7 @@ const UIColorThemeLight: UIColorThemeData = {
         normal: UIColorPalette.light,
         focused: UIColorPalette.primary,
         light: UIColorPalette.whiteLight,
+        hover: UIColorPalette.black,
     },
     text: {
         primary: {
@@ -45,6 +46,9 @@ const UIColorThemeLight: UIColorThemeData = {
     },
     detailsInput: {
         comment: UIColorPalette.error,
+        amount: {
+            placeholder: UIColorPalette.text.lightQuarternary,
+        },
     },
 };
 

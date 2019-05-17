@@ -177,10 +177,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, placeholder } = this.props;
+        const { floatingTitle } = this.props;
         const date = this.getValue();
-        const text = !floatingTitle || !date ? ' ' : placeholder;
-
+        const text = !floatingTitle || !date ? ' ' : this.placeholder();
         const color = !this.isValidDate() ? { color: UIColor.error() } : null;
         return (
             <Text style={[UITextStyle.tertiaryTinyRegular, color]}>

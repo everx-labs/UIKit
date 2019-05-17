@@ -290,13 +290,27 @@ export default class UIColor {
         return borderBottom.light;
     }
 
-    static borderBottomColor(theme: ?UIColorThemeNameType, focused: boolean): UIColorData {
+    static borderBottomColor(
+        theme: ?UIColorThemeNameType,
+        focused: boolean,
+        hover: boolean,
+    ): UIColorData {
         const { borderBottom } = themes[theme || current];
-        return focused ? borderBottom.focused : borderBottom.normal;
+        if (focused) {
+            return borderBottom.focused;
+        }
+        if (hover) {
+            return borderBottom.hover;
+        }
+        return borderBottom.normal;
     }
 
-    static borderBottomColorStyle(theme: ?UIColorThemeNameType, focused: boolean) {
-        const borderColor = UIColor.borderBottomColor(theme, focused);
+    static borderBottomColorStyle(
+        theme: ?UIColorThemeNameType,
+        focused: boolean,
+        hover: boolean,
+    ) {
+        const borderColor = UIColor.borderBottomColor(theme, focused, hover);
         return UIStyleColor.getBorderBottomColorStyle(borderColor);
     }
 
@@ -323,6 +337,10 @@ export default class UIColor {
 
     static detailsInputComment(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].detailsInput.comment;
+    }
+
+    static amountInputPlaceholder(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].detailsInput.amount.placeholder;
     }
 
 
