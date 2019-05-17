@@ -1,5 +1,4 @@
 // @flow
-
 import UIColorPalette from './UIColorPalette';
 import type { UIColorThemeData } from './UIColorTypes';
 
@@ -47,7 +46,7 @@ const UIColorThemeAction: UIColorThemeData = {
     detailsInput: {
         comment: UIColorPalette.white,
         amount: {
-            placeholder: UIColorPalette.text.lightQuarternary,
+            placeholder: UIColorPalette.primary3,
         },
     },
 };
