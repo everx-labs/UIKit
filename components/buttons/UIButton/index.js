@@ -195,14 +195,16 @@ export default class UIButton extends UIActionComponent<Props, State> {
     }
 
     renderContent() {
-        const { bottomExtend, style } = this.props;
+        const { bottomExtend, style, testID } = this.props;
         let height = this.getButtonHeight();
         if (bottomExtend) {
             height *= 2;
         }
         const backgroundColorStyle = this.getButtonColorStyle();
+        const testIDProp = testID ? { testID } : null;
         return (
             <View
+                {...testIDProp}
                 style={[
                     styles.container,
                     backgroundColorStyle,
