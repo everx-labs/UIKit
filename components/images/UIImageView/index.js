@@ -319,7 +319,6 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (!photoBig) {
             photoBig = photo;
         }
-        console.log('[UIImageView] Images:', [{ src: photoBig.uri }]);
         return (
             <Lightbox
                 images={[{ src: photoBig.uri }]}
