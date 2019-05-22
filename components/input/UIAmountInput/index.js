@@ -87,7 +87,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         const { onChangeText } = this.props;
 
         // This prevents to type the symbols: + - / * =
-        if (newValue.match(/\+|-|\/|\*|=/)) {
+        if (newValue.match(/-|\/|\*|=/)) {
             return;
         }
 
