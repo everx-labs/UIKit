@@ -145,6 +145,9 @@ const UIStyle = StyleSheet.create({
     threeQuartersWidth: {
         width: '75%',
     },
+    twoThirdsWidth: {
+        width: '66%',
+    },
     halfWidth: {
         width: '50%',
     },
@@ -178,6 +181,9 @@ const UIStyle = StyleSheet.create({
     marginTopHuge: { // 32
         marginTop: UIConstant.hugeContentOffset(),
     },
+    marginTopSpacious: { // 40
+        marginTop: UIConstant.spaciousContentOffset(),
+    },
     marginTopGreat: { // 48
         marginTop: UIConstant.greatContentOffset(),
     },
@@ -186,6 +192,9 @@ const UIStyle = StyleSheet.create({
     },
     marginTopVast: { // 80
         marginTop: UIConstant.vastContentOffset(),
+    },
+    marginTopTremendous: { // 96
+        marginTop: UIConstant.tremendousContentOffset(),
     },
     marginTopEnormous: { // 104
         marginTop: UIConstant.enormousContentOffset(),
@@ -212,7 +221,9 @@ const UIStyle = StyleSheet.create({
     marginBottomMajor: { // 64
         marginBottom: UIConstant.majorContentOffset(),
     },
-
+    marginBottomVast: { // 80
+        marginBottom: UIConstant.vastContentOffset(),
+    },
 
     marginRightTiny: { // 4
         marginRight: UIConstant.tinyContentOffset(),
@@ -398,6 +409,11 @@ const UIStyle = StyleSheet.create({
     halfWidthContainer: {
         width: '50%',
         maxWidth: UIConstant.elasticWidthHuge() / 2,
+        alignSelf: 'center',
+    },
+    twoThirdsWidthContainer: {
+        width: '66%',
+        maxWidth: UIConstant.elasticWidthHuge() / 3 * 2,
         alignSelf: 'center',
     },
     fullWidthPaddingContainer: {

@@ -15,13 +15,11 @@ type ControllerState = {
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
-    contentContainerStyle: ?ViewStyleProp;
     scrollView: ?ScrollView;
 
     constructor(props: Props & NavigationProps) {
         super(props);
         this.presetName = '';
-        this.contentContainerStyle = {};
 
         this.state = {
             screenWidth: 0,
@@ -65,6 +63,11 @@ export default class UIScreen<Props, State>
         return this.state.screenWidth;
     }
 
+    // Virtual
+    getContentContainerStyle() {
+        return null;
+    }
+
     // Actions
     // Virtual
     dispatchNarrow(narrow: boolean) {
@@ -90,6 +93,10 @@ export default class UIScreen<Props, State>
     renderContent(): React$Node {
         return null;
     }
+    // Virtual
+    renderTopContent() {
+        return null;
+    }
 
     render() {
         return (
@@ -97,10 +104,11 @@ export default class UIScreen<Props, State>
                 style={UIStyle.flex}
                 onLayout={e => this.onScreenLayout(e)}
             >
+                {this.renderTopContent()}
                 <ScrollView
                     ref={(component) => { this.scrollView = component; }}
                     style={[UIStyle.flex]}
-                    contentContainerStyle={this.contentContainerStyle}
+                    contentContainerStyle={this.getContentContainerStyle()}
                 >
                     {this.renderContent()}
                 </ScrollView>

@@ -35,6 +35,9 @@ export default class UIStyleMargin {
     static topHuge() { // 32
         return UIStyle.marginTopHuge;
     }
+    static topSpacious() { // 40
+        return UIStyle.marginTopSpacious;
+    }
     static topGreat() { // 48
         return UIStyle.marginTopGreat;
     }
@@ -43,6 +46,9 @@ export default class UIStyleMargin {
     }
     static topVast() { // 80
         return UIStyle.marginTopVast;
+    }
+    static topTremendous() { // 96
+        return UIStyle.marginTopTremendous;
     }
     static topEnormous() { // 104
         return UIStyle.marginTopEnormous;
@@ -69,6 +75,9 @@ export default class UIStyleMargin {
     }
     static bottomMajor() { // 64
         return UIStyle.marginBottomMajor;
+    }
+    static bottomVast() { // 80
+        return UIStyle.marginBottomVast;
     }
 
     // Right
