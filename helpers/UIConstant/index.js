@@ -20,9 +20,11 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
+const UI_SPACIOUS_CONTENT_OFFSET = 40;
 const UI_GREAT_CONTENT_OFFSET = 48;
 const UI_MAJOR_CONTENT_OFFSET = 64;
 const UI_VAST_CONTENT_OFFSET = 80;
+const UI_TREMENDOUS_CONTENT_OFFSET = 96;
 const UI_ENORMOUS_CONTENT_OFFSET = 104;
 const UI_GIANT_CONTENT_OFFSET = 136;
 
@@ -202,6 +204,10 @@ export default class UIConstant {
         return UI_HUGE_CONTENT_OFFSET;
     }
 
+    static spaciousContentOffset() {
+        return UI_SPACIOUS_CONTENT_OFFSET;
+    }
+
     static greatContentOffset() {
         return UI_GREAT_CONTENT_OFFSET;
     }
@@ -212,6 +218,10 @@ export default class UIConstant {
 
     static vastContentOffset() {
         return UI_VAST_CONTENT_OFFSET;
+    }
+
+    static tremendousContentOffset() {
+        return UI_TREMENDOUS_CONTENT_OFFSET;
     }
 
     static enormousContentOffset() {
