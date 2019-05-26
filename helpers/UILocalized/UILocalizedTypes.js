@@ -12,7 +12,9 @@ export type UILocalizedData = {
     TermsText: string,
     TermsTextHTML: string,
     TermsTextAuth: string,
+    TermsCookiesPolicy: string,
     Here: string,
+    LegalNotes: string,
 
     // Login
     Login: string,
