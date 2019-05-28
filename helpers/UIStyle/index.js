@@ -39,6 +39,16 @@ const borderBottom = {
     borderBottomWidth: 1,
 };
 
+const cellBorderBottom = {
+    borderBottomColor: UIColor.whiteLight(),
+    borderBottomWidth: 1,
+};
+
+const cellBorderTop = {
+    borderTopColor: UIColor.whiteLight(),
+    borderTopWidth: 1,
+};
+
 const borderBottomAction = {
     borderBottomColor: UIColor.primary(),
     borderBottomWidth: 1,
@@ -252,6 +262,10 @@ const UIStyle = StyleSheet.create({
         marginRight: UIConstant.smallContentOffset(),
     },
 
+    marginTopNegativeOffset: {
+        marginTop: -1,
+    },
+
     marginDefault: { // 16
         margin: UIConstant.contentOffset(),
     },
@@ -299,6 +313,12 @@ const UIStyle = StyleSheet.create({
     },
     borderBottomAction: {
         ...borderBottomAction,
+    },
+    cellBorderTop: {
+        ...cellBorderTop,
+    },
+    cellBorderBottom: {
+        ...cellBorderBottom,
     },
 
     // colors
