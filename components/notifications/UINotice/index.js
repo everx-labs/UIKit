@@ -213,7 +213,7 @@ export default class UINotice
         return maxInset;
     }
 
-    getPosition(placement) {
+    getPosition(placement: Placement) {
         const { Bottom, BottomRight } = UINotice.Place;
         if (placement === Bottom) {
             return { bottom: this.getMaxInset() };
