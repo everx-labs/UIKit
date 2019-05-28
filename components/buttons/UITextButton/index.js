@@ -73,7 +73,15 @@ class UITextButton extends UIActionComponent<Props, State> {
         if (!icon) {
             return null;
         }
-        return <Image source={icon} style={UIStyle.marginRightDefault} />;
+
+        const {
+            theme, disabled
+        } = this.props;
+        const tapped = this.isTapped();
+        const hover = this.isHover();
+        const iconColor = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
+        const styleColor = iconColor ? UIColor.getTintColorStyle(iconColor) : null;
+        return <Image source={icon} style={[UIStyle.marginRightDefault, styleColor]} />;
     }
 
     renderTitle() {
