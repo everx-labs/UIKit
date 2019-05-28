@@ -108,6 +108,10 @@ export default class UIStyleClass {
     }
 
     // Containers
+    static absoluteFillContainer() {
+        return UIStyle.absoluteFillContainer;
+    }
+
     static fullWidthPaddingContainer() {
         return UIStyle.fullWidthPaddingContainer;
     }
