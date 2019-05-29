@@ -277,7 +277,8 @@ export default class UIDetailsInput<Props, State>
 
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
-        if (!beginningTag) {
+        const emptyValue = !this.props.value || !this.props.value.length;
+        if (!beginningTag || !this.state.focused && emptyValue) {
             return null;
         }
         return (
