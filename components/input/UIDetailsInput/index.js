@@ -17,6 +17,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
+import UIActionComponent from '../../UIActionComponent';
 
 import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
@@ -110,7 +111,7 @@ export const detailsDefaultProps = {
 };
 
 export default class UIDetailsInput<Props, State>
-    extends UIComponent<Props & DetailsProps, any & DetailsState> {
+    extends UIActionComponent<Props & DetailsProps, any & DetailsState> {
     textInput: ?TextInput;
 
     static defaultProps: DetailsProps = detailsDefaultProps;
@@ -449,7 +450,7 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
-    render() {
+    renderContent() {
         if (!this.props.visible) {
             return <View />;
         }
