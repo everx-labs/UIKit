@@ -53,6 +53,7 @@ export type DetailsProps = {
     defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
+    floatingTitleText: string,
     hideBottomLine: boolean,
     hidePlaceholder: boolean,
     keyboardType: KeyboardType,
@@ -88,6 +89,7 @@ export const detailsDefaultProps = {
     comment: '',
     editable: true,
     floatingTitle: true,
+    floatingTitleText: '',
     hideBottomLine: false,
     hidePlaceholder: false,
     keyboardType: 'default',
@@ -260,9 +262,10 @@ export default class UIDetailsInput<Props, State>
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, theme, value } = this.props;
-        const text = !floatingTitle || !value || !value.length ? ' ' : this.placeholder();
+        const { floatingTitle, floatingTitleText, theme, value } = this.props;
+        const text = !floatingTitle || !value || !value.length ? ' ' : floatingTitleText || this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
+
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
