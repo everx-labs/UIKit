@@ -294,8 +294,9 @@ export default class UIColor {
         return borderBottom.light;
     }
 
-    static borderBottomColor(theme: ?UIColorThemeNameType, focused: boolean): UIColorData {
+    static borderBottomColor(theme: ?UIColorThemeNameType, focused: boolean, hovered?: boolean): UIColorData {
         const { borderBottom } = themes[theme || current];
+        if (hovered && !focused) return borderBottom.hovered;
         return focused ? borderBottom.focused : borderBottom.normal;
     }
 

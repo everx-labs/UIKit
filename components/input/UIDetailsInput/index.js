@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
     },
 });
 
+const webStyles = Platform.OS === 'web' ? StyleSheet.create({
+    container: {
+        cursor: 'default'
+    },
+}): null;
+
 export type DetailsProps = {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
@@ -418,7 +424,7 @@ export default class UIDetailsInput<Props, State>
         if (comment && this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
-            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused());
+            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
         }
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (
@@ -456,7 +462,7 @@ export default class UIDetailsInput<Props, State>
             return <View />;
         }
         return (
-            <View style={[this.containerStyle(), this.props.containerStyle]}>
+            <View style={[this.containerStyle(), this.props.containerStyle, webStyles && webStyles.container]}>
                 {this.renderFloatingTitle()}
                 {this.renderTextView()}
                 {this.renderComment()}
