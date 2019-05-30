@@ -12,14 +12,6 @@ export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState
     static defaultProps: DetailsProps = detailsDefaultProps;
     emailInput: ?UIDetailsInput<DetailsProps, DetailsState>;
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            highlightError: false,
-        };
-    }
-
     // Getters
     isSubmitDisabled() {
         const { value } = this.props;
@@ -51,7 +43,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState
       this.setStateSafely({highlightError: true});
     }
 
-    onChangeText(text) {
+    onChangeText(text: string) {
       this.setStateSafely({highlightError: false});
       this.props.onChangeText && this.props.onChangeText(text);
     }
