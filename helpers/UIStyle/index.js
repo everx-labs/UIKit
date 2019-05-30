@@ -283,6 +283,9 @@ const UIStyle = StyleSheet.create({
     paddingTopDefault: {
         paddingTop: UIConstant.contentOffset(),
     },
+    paddingBottomSmall: {
+        paddingBottom: UIConstant.smallContentOffset(),
+    },
     paddingBottomDefault: {
         paddingBottom: UIConstant.contentOffset(),
     },

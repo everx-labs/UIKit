@@ -17,6 +17,10 @@ export default class UIStylePadding {
         return UIStyle.paddingTopDefault;
     }
 
+    static bottomSmall() {
+        return UIStyle.paddingBottomSmall;
+    }
+
     static bottomDefault() {
         return UIStyle.paddingBottomDefault;
     }
