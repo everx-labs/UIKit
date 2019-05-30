@@ -1,0 +1,149 @@
+/* eslint-disable global-require */
+// @flow
+import React from 'react';
+import { Platform, Text, View, StyleSheet } from 'react-native';
+
+import UIColor from '../../../helpers/UIColor';
+import UIConstant from '../../../helpers/UIConstant';
+import UITextStyle from '../../../helpers/UITextStyle';
+import UIComponent from '../../UIComponent';
+import UITextButton from '../../buttons/UITextButton';
+import UIActionImage from '../../images/UIActionImage';
+
+import iconClose from '../../../assets/ico-close/close-black-8.png';
+
+const styles = StyleSheet.create({
+    container: {
+        paddingTop: UIConstant.tinyContentOffset(),
+        paddingBottom: UIConstant.smallContentOffset(),
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});
+
+//FOR WEB OBLY, TODO: iOS, Android support
+class UIUploadFileInput extends UIComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+          file: null,
+        }
+
+        this.webInput = null;
+        this.deleteFile = this.deleteFile.bind(this);
+        this.onChangeFile = this.onChangeFile.bind(this);
+        this.showFilePicker = this.showFilePicker.bind(this);
+    }
+
+    getFile() {
+      return this.state.file;
+    }
+
+    onChangeFile(e: any) {
+      const file = e.target.files && e.target.files.length && e.target.files[0];
+      file && this.setStateSafely({file});
+      file && this.props.onChangeFile && this.props.onChangeFile(file);
+    }
+
+    renderFloatingTitle() {
+        const { floatingTitleText, theme } = this.props;
+        const text = !this.getFile() ? ' ' : floatingTitleText;
+        const colorStyle = UIColor.textTertiaryStyle(theme);
+
+        return (
+            <Text style={[UITextStyle.tinyRegular, colorStyle]}>
+                {text}
+            </Text>
+        );
+    }
+
+    deleteFile() {
+        this.props.onChangeFile && this.props.onChangeFile(null);
+        this.setStateSafely({file: null});
+    }
+
+    renderAction() {
+        const { theme } = this.props;
+        if (!this.getFile()) {
+            return null;
+        }
+
+        const icons = {
+            iconEnabled: iconClose,
+            iconHovered: iconClose,
+            iconDisabled: iconClose,
+        };
+
+        return (
+          <View style={{marginLeft: 24}} >
+            <UIActionImage {...icons} onPress={this.deleteFile}/>
+          </View>
+        );
+    }
+
+    showFilePicker() {
+      if (Platform.OS !== 'web') return;
+      this.webInput.click();
+    }
+
+    renderTextButton() {
+      return (
+        <UITextButton
+            title={this.getFile() && this.getFile().name || this.props.uploadText}
+            onPress={this.showFilePicker}
+          />
+      );
+    }
+
+    renderUploadInput() {
+        return (
+            <View style={[styles.container]}>
+              {this.renderWebInput()}
+              {this.renderTextButton()}
+              {this.renderAction()}
+            </View>
+        );
+    }
+
+    render() {
+        return (
+            <View style={[this.props.containerStyle]}>
+                {this.renderFloatingTitle()}
+                {this.renderUploadInput()}
+            </View>
+        );
+        return null;
+    }
+
+    renderWebInput() {
+        if (Platform.OS !== 'web') {
+            return null;
+        }
+        const { testID } = this.props;
+        const testIDProp = testID ? { testID } : null;
+
+        const invisibleInputStyle = {
+          opacity: 0,
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
+        }
+        return (<input
+            ref={(component) => { this.webInput = component; }}
+            {...testIDProp}
+            type="file"
+            name="image"
+            className="inputClass"
+            onChange={this.onChangeFile}
+            disabled={false}
+            accept={this.props.fileType === 'document' ? 'application/pdf' : 'image/*'}
+            style={invisibleInputStyle}/>);
+    }
+}
+
+export default UIUploadFileInput;
