@@ -8,6 +8,7 @@ const UIColorThemeAction: UIColorThemeData = {
         normal: UIColorPalette.primaryMinus,
         focused: UIColorPalette.primary3,
         light: UIColorPalette.whiteLight,
+        hovered: UIColorPalette.blackLight,
     },
     text: {
         primary: {

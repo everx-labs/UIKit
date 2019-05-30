@@ -22,6 +22,8 @@ import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-mi
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
 
+import type { EventProps } from '../../../types';
+
 const styles = StyleSheet.create({
     container: {
         //
@@ -42,6 +44,12 @@ const styles = StyleSheet.create({
     },
 });
 
+const webStyles = Platform.OS === 'web' ? StyleSheet.create({
+    container: {
+        cursor: 'default'
+    },
+}): null;
+
 export type DetailsProps = {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
@@ -53,6 +61,7 @@ export type DetailsProps = {
     defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
+    floatingTitleText: string,
     hideBottomLine: boolean,
     hidePlaceholder: boolean,
     keyboardType: KeyboardType,
@@ -78,6 +87,8 @@ export type DetailsProps = {
 
 export type DetailsState = {
     focused: boolean,
+    highlightError: boolean,
+    hover: boolean,
 };
 
 export const detailsDefaultProps = {
@@ -88,6 +99,7 @@ export const detailsDefaultProps = {
     comment: '',
     editable: true,
     floatingTitle: true,
+    floatingTitleText: '',
     hideBottomLine: false,
     hidePlaceholder: false,
     keyboardType: 'default',
@@ -118,7 +130,17 @@ export default class UIDetailsInput<Props, State>
 
         this.state = {
             focused: false,
+            hover: false,
+            highlightError: false,
         };
+    }
+
+    setHover(hover: boolean = true) {
+        this.setStateSafely({ hover });
+    }
+
+    isHover() {
+        return this.state.hover;
     }
 
     componentDidMount() {
@@ -235,7 +257,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
     }
 
 
@@ -260,9 +282,11 @@ export default class UIDetailsInput<Props, State>
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, theme, value } = this.props;
-        const text = !floatingTitle || !value || !value.length ? ' ' : this.placeholder();
+        const { floatingTitle, floatingTitleText, theme, value } = this.props;
+        const emptyValue = !value || !value.length;
+        const text = !floatingTitle || emptyValue && !this.isFocused() ? ' ' : floatingTitleText || this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
+
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
@@ -272,7 +296,8 @@ export default class UIDetailsInput<Props, State>
 
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
-        if (!beginningTag) {
+        const emptyValue = !this.props.value || !this.props.value.length;
+        if (!beginningTag || !this.isFocused() && emptyValue) {
             return null;
         }
         return (
@@ -406,13 +431,13 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextView() {
-        const { hideBottomLine, theme } = this.props;
+        const { comment, hideBottomLine, theme } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor: UIColorData;
-        if (this.commentColor()) {
+        if (comment && this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
-            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused());
+            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
         }
         const bottomLineColorStyle = UIColor.getBorderBottomColorStyle(bottomLineColor);
         return (
@@ -449,8 +474,14 @@ export default class UIDetailsInput<Props, State>
         if (!this.props.visible) {
             return <View />;
         }
+
+        const onMouseEvents: EventProps = {
+            onMouseEnter: () => this.setHover(),
+            onMouseLeave: () => this.setHover(false),
+        };
+
         return (
-            <View style={[this.containerStyle(), this.props.containerStyle]}>
+            <View {...onMouseEvents} style={[this.containerStyle(), this.props.containerStyle, webStyles && webStyles.container]}>
                 {this.renderFloatingTitle()}
                 {this.renderTextView()}
                 {this.renderComment()}

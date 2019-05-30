@@ -33,10 +33,20 @@ export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState
 
     getComment() {
         const { value } = this.props;
-        if (value && this.isSubmitDisabled()) {
+        if (value && this.isSubmitDisabled() && this.state.highlightError) {
             return UILocalized.InvalidEmail;
         }
         return '';
+    }
+
+    onBlur() {
+      this.setStateSafely({highlightError: true});
+      this.props.onBlur && this.props.onBlur();
+    }
+
+    onChangeText(text: string) {
+      this.setStateSafely({highlightError: false});
+      this.props.onChangeText && this.props.onChangeText(text);
     }
 
     // Actions
@@ -67,6 +77,8 @@ export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState
                 ref={(component) => { this.emailInput = component; }}
                 {...this.props}
                 {...commentColorProp}
+                onBlur={this.onBlur.bind(this)}
+                onChangeText={this.onChangeText.bind(this)}
                 keyboardType="email-address"
                 comment={this.getComment()}
                 placeholder={this.getPlaceholder()}
