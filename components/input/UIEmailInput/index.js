@@ -41,6 +41,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState
 
     onBlur() {
       this.setStateSafely({highlightError: true});
+      this.props.onBlur && this.props.onBlur();
     }
 
     onChangeText(text: string) {

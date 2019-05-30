@@ -257,7 +257,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() || this.state.focused ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
     }
 
 
@@ -284,7 +284,7 @@ export default class UIDetailsInput<Props, State>
     renderFloatingTitle() {
         const { floatingTitle, floatingTitleText, theme, value } = this.props;
         const emptyValue = !value || !value.length;
-        const text = !floatingTitle || emptyValue && !this.state.focused ? ' ' : floatingTitleText || this.placeholder();
+        const text = !floatingTitle || emptyValue && !this.isFocused() ? ' ' : floatingTitleText || this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
 
         return (
@@ -297,7 +297,7 @@ export default class UIDetailsInput<Props, State>
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
         const emptyValue = !this.props.value || !this.props.value.length;
-        if (!beginningTag || !this.state.focused && emptyValue) {
+        if (!beginningTag || !this.isFocused() && emptyValue) {
             return null;
         }
         return (

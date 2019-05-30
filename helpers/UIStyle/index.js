@@ -262,10 +262,6 @@ const UIStyle = StyleSheet.create({
         marginRight: UIConstant.smallContentOffset(),
     },
 
-    marginTopNegativeOffset: {
-        marginTop: -1,
-    },
-
     marginDefault: { // 16
         margin: UIConstant.contentOffset(),
     },
