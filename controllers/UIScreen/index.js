@@ -44,6 +44,17 @@ export default class UIScreen<Props, State>
         this.dispatchNarrow(narrow);
     }
 
+    // Virtual
+    onScrollDefault(e) {
+        const { contentOffset, contentSize } = e.nativeEvent;
+        this.onScroll(contentOffset, contentSize);
+    }
+
+    onScroll(contentOffset, contentSize) {
+        // { x, y }, { width, height }
+    }
+
+    // Getters
     isNarrow() {
         const screenWidth = this.getScreenWidth();
         return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
@@ -93,8 +104,12 @@ export default class UIScreen<Props, State>
     renderContent(): React$Node {
         return null;
     }
-    // Virtual
+
     renderTopContent() {
+        return null;
+    }
+
+    renderBottomContent() {
         return null;
     }
 
@@ -109,9 +124,12 @@ export default class UIScreen<Props, State>
                     ref={(component) => { this.scrollView = component; }}
                     style={[UIStyle.flex]}
                     contentContainerStyle={this.getContentContainerStyle()}
+                    scrollEventThrottle={16}
+                    onScroll={e => this.onScrollDefault(e)}
                 >
                     {this.renderContent()}
                 </ScrollView>
+                {this.renderBottomContent()}
             </View>
         );
     }

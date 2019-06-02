@@ -190,6 +190,9 @@ const UIStyle = StyleSheet.create({
     marginTopMajor: { // 64
         marginTop: UIConstant.majorContentOffset(),
     },
+    marginTopMassive: { // 72
+        marginTop: UIConstant.massiveContentOffset(),
+    },
     marginTopVast: { // 80
         marginTop: UIConstant.vastContentOffset(),
     },

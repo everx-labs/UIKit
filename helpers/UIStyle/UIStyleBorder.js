@@ -7,7 +7,7 @@ export default class UIStyleBorder {
     }
 
     static bottom() {
-        return UIStyle.bottom;
+        return UIStyle.borderBottom;
     }
 
     static bottomAction() {

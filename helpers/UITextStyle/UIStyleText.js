@@ -14,6 +14,9 @@ export default class UIStyleText {
     static captionRegular() {
         return UITextStyle.captionRegular;
     }
+    static captionMedium() {
+        return UITextStyle.captionMedium;
+    }
     // Tiny - fontSize: 12, lineHeight: 16
     static tinyRegular() {
         return UITextStyle.tinyRegular;
