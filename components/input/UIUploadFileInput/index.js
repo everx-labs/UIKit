@@ -2,6 +2,7 @@
 // @flow
 import React from 'react';
 import { Platform, Text, View, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -9,6 +10,8 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 import UITextButton from '../../buttons/UITextButton';
 import UIActionImage from '../../images/UIActionImage';
+
+import type {UIColorThemeNameType} from '../../../helpers/UIColor/UIColorTypes';
 
 import iconClose from '../../../assets/ico-close/close-black-8.png';
 
@@ -21,9 +24,39 @@ const styles = StyleSheet.create({
     },
 });
 
+type UploadFileInputProps = {
+    containerStyle: ViewStyleProp,
+    fileType?: string,
+    uploadText: string,
+    floatingTitleText?: string,
+    theme?: UIColorThemeNameType,
+    onChangeFile: (e: any) => void,
+    testID?: string,
+};
+
+const uploadFileDefaultProps = {
+  containerStyle: {},
+  fileType: 'document',
+  uploadText: '',
+  floatingTitleText: '',
+  theme: UIColor.Theme.Light,
+  onChangeFile: (e: any) => {},
+};
+
+type UploadFileState = {
+    file: ?any,
+};
+
+type WebInput = {
+  click: (e: any) => void,
+};
+
 //FOR WEB OBLY, TODO: iOS, Android support
-class UIUploadFileInput extends UIComponent {
-    constructor(props) {
+export default class UIUploadFileInput<Props, State> extends UIComponent<Props & UploadFileInputProps, any & UploadFileState>  {
+    static defaultProps: UploadFileInputProps = uploadFileDefaultProps;
+    webInput: ?HTMLInputElement;
+
+    constructor(props: Props & UploadFileInputProps) {
         super(props);
 
         this.state = {
@@ -31,9 +64,6 @@ class UIUploadFileInput extends UIComponent {
         }
 
         this.webInput = null;
-        this.deleteFile = this.deleteFile.bind(this);
-        this.onChangeFile = this.onChangeFile.bind(this);
-        this.showFilePicker = this.showFilePicker.bind(this);
     }
 
     getFile() {
@@ -41,14 +71,16 @@ class UIUploadFileInput extends UIComponent {
     }
 
     onChangeFile(e: any) {
-      const file = e.target.files && e.target.files.length && e.target.files[0];
-      file && this.setStateSafely({file});
-      file && this.props.onChangeFile && this.props.onChangeFile(file);
+      const [file] = e.target.files || [null];
+      if (file) {
+        this.setStateSafely({file});
+        this.props.onChangeFile && this.props.onChangeFile(file);
+      } //else - means upload was cancelled, so don't need to update anything
     }
 
     renderFloatingTitle() {
-        const { floatingTitleText, theme } = this.props;
-        const text = !this.getFile() ? ' ' : floatingTitleText;
+        const { floatingTitleText, uploadText, theme } = this.props;
+        const text = !this.getFile() ? ' ' : floatingTitleText || uploadText;
         const colorStyle = UIColor.textTertiaryStyle(theme);
 
         return (
@@ -61,6 +93,7 @@ class UIUploadFileInput extends UIComponent {
     deleteFile() {
         this.props.onChangeFile && this.props.onChangeFile(null);
         this.setStateSafely({file: null});
+        this.webInput && (this.webInput.value = '');
     }
 
     renderAction() {
@@ -77,21 +110,21 @@ class UIUploadFileInput extends UIComponent {
 
         return (
           <View style={{marginLeft: 24}} >
-            <UIActionImage {...icons} onPress={this.deleteFile}/>
+            <UIActionImage {...icons} onPress={()=>this.deleteFile()}/>
           </View>
         );
     }
 
     showFilePicker() {
       if (Platform.OS !== 'web') return;
-      this.webInput.click();
+      this.webInput && this.webInput.click();
     }
 
     renderTextButton() {
       return (
         <UITextButton
             title={this.getFile() && this.getFile().name || this.props.uploadText}
-            onPress={this.showFilePicker}
+            onPress={()=>this.showFilePicker()}
           />
       );
     }
@@ -113,7 +146,6 @@ class UIUploadFileInput extends UIComponent {
                 {this.renderUploadInput()}
             </View>
         );
-        return null;
     }
 
     renderWebInput() {
@@ -139,11 +171,9 @@ class UIUploadFileInput extends UIComponent {
             type="file"
             name="image"
             className="inputClass"
-            onChange={this.onChangeFile}
+            onChange={(e)=>this.onChangeFile(e)}
             disabled={false}
             accept={this.props.fileType === 'document' ? 'application/pdf' : 'image/*'}
             style={invisibleInputStyle}/>);
     }
 }
-
-export default UIUploadFileInput;

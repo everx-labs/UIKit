@@ -78,6 +78,7 @@ import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
 import UITransitionView from './components/views/UITransitionView';
+import UIUploadFileInput from './components/input/UIUploadFileInput';
 import UIUserAgent from './helpers/UIUserAgent';
 
 // Types
@@ -184,6 +185,7 @@ export {
     UIToggle,
     UITooltip,
     UITransitionView,
+    UIUploadFileInput,
     UIUserAgent,
 };
 
