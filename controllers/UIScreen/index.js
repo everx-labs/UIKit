@@ -12,6 +12,16 @@ type ControllerState = {
     screenWidth: number
 };
 
+export type ContentOffset = {
+    x: number,
+    y: number,
+}
+
+export type ContentSize = {
+    width: number,
+    height: number,
+}
+
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
@@ -45,13 +55,13 @@ export default class UIScreen<Props, State>
     }
 
     // Virtual
-    onScrollDefault(e) {
+    onScrollDefault(e: any) {
         const { contentOffset, contentSize } = e.nativeEvent;
         this.onScroll(contentOffset, contentSize);
     }
 
-    onScroll(contentOffset, contentSize) {
-        // { x, y }, { width, height }
+    onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
+        //
     }
 
     // Getters
