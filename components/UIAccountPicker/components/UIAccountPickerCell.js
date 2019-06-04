@@ -53,7 +53,9 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         }
         const { primaryBodyRegular, greyBodyRegular } = UITextStyle;
         const [integer, fractional] = stringNumber.split('.');
-        const decimals = (fractional && fractional.length > 0) ? fractional : '000';
+        const decimals = (fractional && fractional.length > 0)
+            ? fractional
+            : '0'.repeat(UIConstant.minDecimalDigits());
         return (
             <Text style={primaryBodyRegular}>
                 {integer}
