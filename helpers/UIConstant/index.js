@@ -102,8 +102,8 @@ const UI_INFINITE_SCROLL_TRESHOLD = 0.25; // quarter of the visible page (before
 
 const UI_PROFILE_PHOTO_SIZE = 72;
 
-const MAX_DECIMAL_DIGITS = 8;
-const MAX_NUMBER_DIGITS = 9;
+const MIN_DECIMAL_DIGITS = 3;
+const MAX_DECIMAL_DIGITS = 9;
 
 const MAX_TEXT_LINE_LENGTH = 200;
 
@@ -502,8 +502,8 @@ export default class UIConstant {
         return INITIAL_RENDER_DATA_COUNT;
     }
 
-    static maxNumberDigits() {
-        return MAX_NUMBER_DIGITS;
+    static minDecimalDigits() {
+        return MIN_DECIMAL_DIGITS;
     }
 
     static maxDecimalDigits() {

@@ -120,6 +120,10 @@ export default class UIFunction {
         return Number(number).toLocaleString(locale, options);
     }
 
+    static getNumberString(number: number): string {
+        return number.toFixed(10).replace(/\.?0+$/, '');
+    }
+
     static numericText(text) {
         return parseDigits(text);
     }
@@ -396,4 +400,3 @@ export default class UIFunction {
         document.cookie = `${key}=${value}; path=/; expires=${date.toUTCString()}`;
     }
 }
-

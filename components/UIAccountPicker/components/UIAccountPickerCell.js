@@ -5,7 +5,9 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIComponent from '../../UIComponent';
+
 import UIConstant from '../../../helpers/UIConstant';
+import UIFunction from '../../../helpers/UIFunction';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 
@@ -51,9 +53,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         }
         const { primaryBodyRegular, greyBodyRegular } = UITextStyle;
         const [integer, fractional] = stringNumber.split('.');
-        const decimals = (fractional && fractional.length > 0)
-            ? fractional
-            : '0'.repeat(this.getMaxDecimals());
+        const decimals = (fractional && fractional.length > 0) ? fractional : '000';
         return (
             <Text style={primaryBodyRegular}>
                 {integer}
@@ -82,7 +82,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                 >
                     {account.address}
                 </Text>
-                {this.renderFractional(account.balance.toString())}
+                {this.renderFractional(UIFunction.getNumberString(account.balance))}
             </View>
         );
     }
