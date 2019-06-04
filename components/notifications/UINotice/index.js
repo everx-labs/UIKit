@@ -283,7 +283,7 @@ export default class UINotice
 
     animateOpening() {
         const containerWidth = this.getContainerWidth();
-        this.setMarginLeft(new Animated.Value(containerWidth + contentOffset), () => {
+        this.setMarginLeft(new Animated.Value(-containerWidth - contentOffset), () => {
             Animated.spring(this.state.marginLeft, {
                 toValue: cardShadowWidth,
                 duration: UIConstant.animationDuration(),
@@ -295,7 +295,7 @@ export default class UINotice
     animateClosing() {
         const containerWidth = this.getContainerWidth();
         Animated.timing(this.state.marginLeft, {
-            toValue: containerWidth + contentOffset,
+            toValue: -containerWidth - contentOffset,
             duration: UIConstant.animationDuration(),
         })
             .start(() => hideMessage());
