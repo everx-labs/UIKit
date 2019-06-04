@@ -120,6 +120,7 @@ export default class UIFunction {
         return Number(number).toLocaleString(locale, options);
     }
 
+    // Allows to print small numbers with "-e" suffix
     static getNumberString(number: number): string {
         return number.toFixed(10).replace(/\.?0+$/, '');
     }
