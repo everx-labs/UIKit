@@ -176,9 +176,9 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                             {location}
                         </Text>
                         {' '}
-                        {this.renderEmail()}
-                        {'  ·  '}
                     </Text>
+                    {this.renderEmail()}
+                    {'  ·  '}
                     <Text itemProp="telephone">{phoneNumber}</Text>
                 </Text>
             </View>
@@ -216,7 +216,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             <React.Fragment key={`bottom-bar-menu-item-${item.title}`}>
                 <UITextButton
                     title={item.title}
-                    buttonStyle={UIStyle.Height.tinyCell()}
+                    buttonStyle={UIStyle.Height.bigCell()}
                     textStyle={textStyle}
                     textHoverStyle={UIColor.textPrimaryStyle()}
                     textTappedStyle={UIColor.textPrimaryStyle()}
