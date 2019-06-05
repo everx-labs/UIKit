@@ -354,6 +354,10 @@ export default class UIController<Props, State>
         return this.state.showIndicator;
     }
 
+    doesPathExist(): boolean {
+        return this.path !== undefined && this.path !== null;
+    }
+
     // Navigation
     handlePathAndParams() {
         const { routeName } = this.getNavigationState();
@@ -383,7 +387,7 @@ export default class UIController<Props, State>
     }
 
     addParametersToPath(parameters: Params) {
-        if (this.path === undefined || this.path === null) {
+        if (!this.doesPathExist()) {
             console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
             return;
         }
@@ -414,7 +418,7 @@ export default class UIController<Props, State>
         if (!this.mounted || Platform.OS !== 'web') {
             return;
         }
-        if (this.path !== undefined && this.path !== null) {
+        if (this.doesPathExist()) {
             UIEventHelper.pushHistory(this.path);
         } else {
             console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
