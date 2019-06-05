@@ -45,6 +45,6 @@ export default class UIEventHelper {
 
     static pushHistory(path: string) {
         prevPath = path; // Path is already normalized
-        window.history.pushState(null, '', path);
+        window.history.pushState(null, '', `/${path}`);
     }
 }

@@ -383,7 +383,7 @@ export default class UIController<Props, State>
     }
 
     addParametersToPath(parameters: Params) {
-        if (!this.path) {
+        if (this.path === undefined || this.path === null) {
             console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
             return;
         }
@@ -414,7 +414,7 @@ export default class UIController<Props, State>
         if (!this.mounted || Platform.OS !== 'web') {
             return;
         }
-        if (this.path) {
+        if (this.path !== undefined && this.path !== null) {
             UIEventHelper.pushHistory(this.path);
         } else {
             console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
