@@ -37,6 +37,7 @@ import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/images/UIImageView';
 import UILabel from './components/text/UILabel';
+import UIHeader from './components/text/UIHeader';
 import UILayoutManager from './helpers/UILayoutManager';
 import UILinkInput from './components/input/UILinkInput';
 import UIListHeader from './components/text/UIListHeader';
@@ -144,6 +145,7 @@ export {
     UIImageButton,
     UIImageView,
     UILabel,
+    UIHeader,
     UILayoutManager,
     UILinkInput,
     UIListHeader,
