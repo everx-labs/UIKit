@@ -12,6 +12,16 @@ type ControllerState = {
     screenWidth: number
 };
 
+export type ContentOffset = {
+    x: number,
+    y: number,
+}
+
+export type ContentSize = {
+    width: number,
+    height: number,
+}
+
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
@@ -44,6 +54,17 @@ export default class UIScreen<Props, State>
         this.dispatchNarrow(narrow);
     }
 
+    // Virtual
+    onScrollDefault(e: any) {
+        const { contentOffset, contentSize } = e.nativeEvent;
+        this.onScroll(contentOffset, contentSize);
+    }
+
+    onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
+        //
+    }
+
+    // Getters
     isNarrow() {
         const screenWidth = this.getScreenWidth();
         return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
@@ -93,8 +114,12 @@ export default class UIScreen<Props, State>
     renderContent(): React$Node {
         return null;
     }
-    // Virtual
+
     renderTopContent() {
+        return null;
+    }
+
+    renderBottomContent() {
         return null;
     }
 
@@ -109,9 +134,12 @@ export default class UIScreen<Props, State>
                     ref={(component) => { this.scrollView = component; }}
                     style={[UIStyle.flex]}
                     contentContainerStyle={this.getContentContainerStyle()}
+                    scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
+                    onScroll={e => this.onScrollDefault(e)}
                 >
                     {this.renderContent()}
                 </ScrollView>
+                {this.renderBottomContent()}
             </View>
         );
     }

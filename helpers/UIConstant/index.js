@@ -7,6 +7,7 @@ const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 100;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
+const UI_MAX_SCROLL_EVENT_THROTTLE = 16;
 
 const UI_TINY_BORDER_RADIUS = 2;
 const UI_SMALL_BORDER_RADIUS = 4;
@@ -23,6 +24,7 @@ const UI_HUGE_CONTENT_OFFSET = 32;
 const UI_SPACIOUS_CONTENT_OFFSET = 40;
 const UI_GREAT_CONTENT_OFFSET = 48;
 const UI_MAJOR_CONTENT_OFFSET = 64;
+const UI_MASSIVE_CONTENT_OFFSET = 72;
 const UI_VAST_CONTENT_OFFSET = 80;
 const UI_TREMENDOUS_CONTENT_OFFSET = 96;
 const UI_ENORMOUS_CONTENT_OFFSET = 104;
@@ -175,6 +177,10 @@ export default class UIConstant {
         return UI_COVER_BOUNCE_OFFSET;
     }
 
+    static maxScrollEventThrottle() {
+        return UI_MAX_SCROLL_EVENT_THROTTLE;
+    }
+
     // Content offsets
     static tinyContentOffset() {
         return UI_TINY_CONTENT_OFFSET;
@@ -214,6 +220,10 @@ export default class UIConstant {
 
     static majorContentOffset() {
         return UI_MAJOR_CONTENT_OFFSET;
+    }
+
+    static massiveContentOffset() {
+        return UI_MASSIVE_CONTENT_OFFSET;
     }
 
     static vastContentOffset() {

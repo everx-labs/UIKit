@@ -96,6 +96,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.captionRegular(),
     },
+    captionMedium: {
+        ...text,
+        ...UIFont.captionMedium(),
+    },
     // Tiny - fontSize: 12, lineHeight: 16
     tinyRegular: {
         ...text,

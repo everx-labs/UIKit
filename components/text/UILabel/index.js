@@ -74,19 +74,8 @@ export default class UILabel extends UIComponent<Props, State> {
         return this.props.text || '';
     }
 
-    // TODO
-    // getHtmlArrayFromText() {
-    //     const str = this.props.text;
-    //     const result = [];
-    //     while (1) {
-    //         const bIndex = str.indexOf('<b>');
-    //         // if (bIndex)
-    //     }
-    // }
-
     // Render
     render() {
-        // const htmlArray = this.getHtmlArrayFromText();
         return (
             <Text style={[this.getStyle(), this.props.style]}>
                 {this.getText()}
