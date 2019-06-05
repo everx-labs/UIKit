@@ -134,7 +134,7 @@ export default class UIScreen<Props, State>
                     ref={(component) => { this.scrollView = component; }}
                     style={[UIStyle.flex]}
                     contentContainerStyle={this.getContentContainerStyle()}
-                    scrollEventThrottle={16}
+                    scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                     onScroll={e => this.onScrollDefault(e)}
                 >
                     {this.renderContent()}

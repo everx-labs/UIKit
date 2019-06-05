@@ -7,6 +7,7 @@ const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 100;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
+const UI_MAX_SCROLL_EVENT_THROTTLE = 16;
 
 const UI_TINY_BORDER_RADIUS = 2;
 const UI_SMALL_BORDER_RADIUS = 4;
@@ -174,6 +175,10 @@ export default class UIConstant {
 
     static coverBounceOffset() {
         return UI_COVER_BOUNCE_OFFSET;
+    }
+
+    static maxScrollEventThrottle() {
+        return UI_MAX_SCROLL_EVENT_THROTTLE;
     }
 
     // Content offsets
