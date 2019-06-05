@@ -42,6 +42,9 @@ type Props = ActionProps & {
     details: string,
     detailsStyle?: StylePropType,
     icon: ?string,
+    backIcon: ?string,
+    iconColor?: string,
+    iconHoverColor?: string,
     textStyle?: StylePropType,
     textHoverStyle?: StylePropType,
     textTappedStyle?: StylePropType,
@@ -68,20 +71,24 @@ class UITextButton extends UIActionComponent<Props, State> {
     }
 
     // Render
-    renderIcon() {
-        const { icon } = this.props;
+    renderIcon(icon, isBack) {
         if (!icon) {
             return null;
         }
 
         const {
-            theme, disabled
+            theme, disabled,
         } = this.props;
         const tapped = this.isTapped();
         const hover = this.isHover();
-        const iconColor = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
+
+        const defaultColor = UIColor.actionTextPrimary(theme);
+        const stateColorStyle = disabled || tapped || hover
+            ? this.props.iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
+            : null;
+        const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
         const styleColor = iconColor ? UIColor.getTintColorStyle(iconColor) : null;
-        return <Image source={icon} style={[UIStyle.marginRightDefault, styleColor]} />;
+        return <Image source={icon} style={[isBack ? UIStyle.marginLeftDefault : UIStyle.marginRightDefault, styleColor]} />;
     }
 
     renderTitle() {
@@ -126,7 +133,9 @@ class UITextButton extends UIActionComponent<Props, State> {
     }
 
     renderContent(): React$Node {
-        const { buttonStyle, align } = this.props;
+        const {
+            buttonStyle, align, icon, backIcon,
+        } = this.props;
         return (
             <View
                 style={[
@@ -135,8 +144,9 @@ class UITextButton extends UIActionComponent<Props, State> {
                     buttonStyle,
                 ]}
             >
-                {this.renderIcon()}
+                {this.renderIcon(icon, false)}
                 {this.renderTitle()}
+                {this.renderIcon(backIcon, true)}
                 {this.renderDetails()}
             </View>
         );
@@ -152,6 +162,7 @@ UITextButton.defaultProps = {
     align: UITextButton.Align.Left,
     details: '',
     icon: null,
+    backIcon: null,
     theme: UIColor.Theme.Light,
     title: '',
 };
