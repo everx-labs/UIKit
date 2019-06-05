@@ -100,10 +100,8 @@ export default class UIStepBar extends UIComponent<Props, State> {
         });
 
         return (
-            <View style={UIStyle.Common.flex(), styles.border}>
-                <View style={[UIStyle.flexRow, styles.container]}>
-                    {items}
-                </View>
+            <View style={[UIStyle.flexRow, styles.container, styles.border]}>
+                {items}
             </View>
         );
     }
