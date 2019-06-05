@@ -14,14 +14,16 @@ import {
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
-import UIConstant from '../../helpers/UIConstant';
 
+import UIConstant from '../../helpers/UIConstant';
 import UIDevice from '../../helpers/UIDevice';
-import UIStyle from '../../helpers/UIStyle';
+import UIEventHelper from '../../helpers/UIEventHelper';
 import UILocalized from '../../helpers/UILocalized/';
+import UIStyle from '../../helpers/UIStyle';
+
 import UIAlertView from '../../components/popup/UIAlertView';
-import UISpinnerOverlay from '../../components/UISpinnerOverlay';
 import UIComponent from '../../components/UIComponent';
+import UISpinnerOverlay from '../../components/UISpinnerOverlay';
 
 const AndroidKeyboardAdjust = Platform.OS === 'android'
     ? require('react-native-android-keyboard-adjust')
@@ -413,7 +415,7 @@ export default class UIController<Props, State>
             return;
         }
         if (this.path) {
-            window.history.pushState(null, '', this.path);
+            UIEventHelper.pushHistory(this.path);
         } else {
             console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
         }
