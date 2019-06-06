@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 //
 });
 
-class UIHeader extends UIComponent {
+class UIBody extends UIComponent {
     // Getters
     getTitle() {
         return this.props.title;
@@ -25,7 +25,7 @@ class UIHeader extends UIComponent {
             <View
                 style={this.props.containerStyle}
             >
-                <Text style={[UITextStyle.primaryTitleBold, UIStyle.Margin.topMedium()]}>
+                <Text style={[UITextStyle.secondaryBodyRegular, UIStyle.Margin.topSmall()]}>
                     {this.getTitle()}
                 </Text>
             </View>
@@ -33,14 +33,14 @@ class UIHeader extends UIComponent {
     }
 }
 
-export default UIHeader;
+export default UIBody;
 
-UIHeader.defaultProps = {
+UIBody.defaultProps = {
     title: '',
     containerStyle: null,
 };
 
-UIHeader.propTypes = {
+UIBody.propTypes = {
     title: PropTypes.string,
     containerStyle: StylePropType,
 };
