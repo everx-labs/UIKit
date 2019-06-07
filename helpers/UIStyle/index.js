@@ -245,6 +245,9 @@ const UIStyle = StyleSheet.create({
     marginLeftDefault: { // 16
         marginLeft: UIConstant.contentOffset(),
     },
+    marginLeftHuge: { // 32
+        marginLeft: UIConstant.hugeContentOffset(),
+    },
 
     marginHorizontalOffset: { // 16
         marginLeft: UIConstant.contentOffset(),
