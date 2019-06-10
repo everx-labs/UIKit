@@ -54,11 +54,11 @@ export default class UIImageButton extends UIComponent<Props, State> {
     };
 
     // Events
-    onPress() {
+    onPress = () => {
         if (this.props.onPress) {
             this.props.onPress();
         }
-    }
+    };
 
     // Getters
     getButtonStyle() {
@@ -79,7 +79,7 @@ export default class UIImageButton extends UIComponent<Props, State> {
         return (
             <TouchableOpacity
                 style={[UIStyle.navigatorButton, this.getButtonStyle()]}
-                onPress={() => this.onPress()}
+                onPress={this.onPress}
             >
                 <Image source={this.getImage()} />
             </TouchableOpacity>

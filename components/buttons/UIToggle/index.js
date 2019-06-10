@@ -11,6 +11,12 @@ import icoOn from '../../../assets/ico-toggle-on/ico-toggle-on.png';
 import icoOff from '../../../assets/ico-toggle-off/ico-toggle-off.png';
 
 export default class UIToggle extends UIComponent {
+    // Events
+    onPress = () => {
+        const { active, onPress } = this.props;
+        onPress(!active);
+    };
+
     // Render
     renderIcon() {
         const { active, colored } = this.props;
@@ -24,15 +30,13 @@ export default class UIToggle extends UIComponent {
     }
 
     render() {
-        const {
-            containerStyle, active, onPress, testID,
-        } = this.props;
+        const { containerStyle, testID } = this.props;
         const testIDProp = testID ? { testID } : null;
         return (
             <View style={containerStyle}>
                 <TouchableWithoutFeedback
                     {...testIDProp}
-                    onPress={() => onPress(!active)}
+                    onPress={this.onPress}
                 >
                     {this.renderIcon()}
                 </TouchableWithoutFeedback>

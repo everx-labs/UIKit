@@ -1,6 +1,10 @@
 Example:
 
 ```js
+const toggleContainer = { 
+	flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', 
+}
+
 class ModalExample extends React.Component {
     constructor() {
         super();
@@ -31,9 +35,7 @@ class ModalExample extends React.Component {
                         value: newText 
                     })}
                 />
-                <View style={{ 
-                    flexDirection: 'row', justifyContent: 'space-between' 
-                }}>
+                <View style={toggleContainer}>
                     <UIDetailsToggle
                         details="Add bottom border"
                         active={needBorderBottom}

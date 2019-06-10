@@ -21,9 +21,11 @@ class UIRadioButtonList extends UIComponent {
     }
 
     renderList() {
-        const { radiobuttonList } = this.props.state;
+        const { state, flexDirection } = this.props;
+        const { radiobuttonList } = state;
         return radiobuttonList.map((item, index) => {
-            const itemStyle = this.props.flexDirection === 'row' ? UIStyle.marginRightHuge : null;
+            const itemStyle = flexDirection === 'row' && index !== radiobuttonList.length - 1
+                ? UIStyle.marginRightHuge : null;
             return (
                 <View
                     key={`radioButton-item-${Math.random()}-${item}`}

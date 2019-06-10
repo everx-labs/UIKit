@@ -124,13 +124,13 @@ class UIDialogController extends UIController {
     }
 
     // Events
-    onChangeInput(text) {
+    onChangeInput = (text) => {
         this.setInput(text);
-    }
+    };
 
-    onChangeAuxInput(text) {
+    onChangeAuxInput = (text) => {
         this.setAuxInput(text);
-    }
+    };
 
     onUploadPhoto(photo) {
         this.setStateSafely({
@@ -241,8 +241,8 @@ class UIDialogController extends UIController {
             {...keyboardTypeProp}
             {...maxLengthProp}
             value={this.getInput()}
-            onChangeText={value => this.onChangeInput(value)}
-            onSubmitEditing={() => this.onSubmitEditingTextInput()}
+            onChangeText={this.onChangeInput}
+            onSubmitEditing={this.onSubmitEditingTextInput}
         />);
     }
 
@@ -261,7 +261,7 @@ class UIDialogController extends UIController {
             returnKeyType="done"
             placeholder={this.auxTextInputPlaceholder}
             value={this.getAuxInput()}
-            onChangeText={value => this.onChangeAuxInput(value)}
+            onChangeText={this.onChangeAuxInput}
             onSubmitEditing={() => this.signUp()}
         />);
     }

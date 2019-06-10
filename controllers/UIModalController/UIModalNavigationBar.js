@@ -86,7 +86,7 @@ export default class UIModalNavigationBar extends UIComponent {
             </Text>
         );
         return (
-            <TouchableOpacity style={styles.navButton} onPress={() => onCancel()}>
+            <TouchableOpacity style={styles.navButton} onPress={onCancel}>
                 {cancelImage ? image : text}
             </TouchableOpacity>
         );

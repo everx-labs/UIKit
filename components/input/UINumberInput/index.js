@@ -32,13 +32,13 @@ export default class UINumberInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onChangeText(newValue: string) {
+    onChangeText = (newValue: string) => {
         const { onChangeText } = this.props;
 
         if (onChangeText && (!newValue?.length || /^\d+$/.test(newValue))) {
             onChangeText(newValue);
         }
-    }
+    };
 
     // Render
     renderTextFragment() {

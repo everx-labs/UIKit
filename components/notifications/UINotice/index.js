@@ -165,12 +165,12 @@ export default class UINotice
     }
 
     // Events
-    onWindowContainerLayout(e: ViewLayoutEvent) {
+    onWindowContainerLayout = (e: ViewLayoutEvent) => {
         const { width } = e.nativeEvent.layout;
         if (width !== this.getPageWidth()) {
             this.setPageWidth(width);
         }
-    }
+    };
 
     // Setters
     setMarginLeft(marginLeft: AnimatedValue, callback?: () => void) {
@@ -358,7 +358,7 @@ export default class UINotice
         return (
             <View
                 style={{ alignItems }}
-                onLayout={e => this.onWindowContainerLayout(e)}
+                onLayout={this.onWindowContainerLayout}
             >
                 <View style={[styles.container, { width: containerWidth }]}>
                     <Animated.View style={[styles.noticeStyle, {

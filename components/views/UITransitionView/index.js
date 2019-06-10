@@ -31,7 +31,7 @@ export default class UITransitionView extends UIComponent<Props, State> {
         prevItemKey: null,
         itemStyle: {},
         containerStyle: {},
-    }
+    };
 
     // Constructor
     constructor(props: Props) {
@@ -53,18 +53,20 @@ export default class UITransitionView extends UIComponent<Props, State> {
                 prevItem: this.props.prevItem,
                 currentItemOpacity: new Animated.Value(0),
                 prevItemOpacity: new Animated.Value(1),
-            }, () => {
-                Animated.parallel([
-                    Animated.spring(this.getCurrentItemOpacity(), { // looks better than `timing`
-                        toValue: 1.0,
-                    }),
-                    Animated.spring(this.getPrevItemOpacity(), {
-                        toValue: 0.0,
-                    }),
-                ]).start();
-            });
+            }, this.updateCallback);
         }
     }
+
+    updateCallback = () => {
+        Animated.parallel([
+            Animated.spring(this.getCurrentItemOpacity(), { // looks better than `timing`
+                toValue: 1.0,
+            }),
+            Animated.spring(this.getPrevItemOpacity(), {
+                toValue: 0.0,
+            }),
+        ]).start();
+    };
 
     // Getters
     getCurrentItem(): ?React$Node {
@@ -109,7 +111,7 @@ export default class UITransitionView extends UIComponent<Props, State> {
         const currentItem = this.getCurrentItem();
         const prevItem = this.getPrevItem();
         return (
-            <View style={[UIStyle.flex, this.props.containerStyle]}>
+            <View style={[UIStyle.Common.flex(), this.props.containerStyle]}>
                 {this.renderItem(prevItem, false)}
                 {this.renderItem(currentItem, true)}
             </View>

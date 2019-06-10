@@ -17,7 +17,7 @@ class ModalExample extends React.Component {
     render() {
         const { name, secondName } = this.state;
         return (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden' }}>
                 <UIProfileView
                     editable
                     containerStyle={{ marginRight: 16 }}

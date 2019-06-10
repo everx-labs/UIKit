@@ -176,7 +176,7 @@ class UITextInput extends UIComponent<Props, State> {
         const { onPress } = this.props;
         if (onPress) {
             return (
-                <TouchableOpacity onPress={() => onPress()}>
+                <TouchableOpacity onPress={onPress}>
                     {this.renderInputView('none')}
                 </TouchableOpacity>
             );

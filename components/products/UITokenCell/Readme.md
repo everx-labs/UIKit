@@ -4,6 +4,6 @@ Example:
 <UITokenCell 
     title="GRAM"
     details="balance"
-    balance="100.00000000"
+    balance="100.0000"
 />
 ```

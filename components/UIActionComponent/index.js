@@ -28,6 +28,23 @@ export default class UIActionComponent<Props, State>
         };
     }
 
+    // Events
+    onPressIn = () => {
+        this.setTapped();
+    };
+
+    onPressOut = () => {
+        this.setTapped(false);
+    };
+
+    onMouseEnter = () => {
+        this.setHover();
+    };
+
+    onMouseLeave = () => {
+        this.setHover(false);
+    };
+
     // Setters
     setTapped(tapped: boolean = true) {
         this.setStateSafely({ tapped });
@@ -63,8 +80,8 @@ export default class UIActionComponent<Props, State>
     render(): React$Node {
         const { onPress, testID } = this.props;
         const eventProps: EventProps = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
+            onMouseEnter: this.onMouseEnter,
+            onMouseLeave: this.onMouseLeave,
         };
         const testIDProp = testID ? { testID } : null;
         return (
@@ -72,8 +89,8 @@ export default class UIActionComponent<Props, State>
                 {...testIDProp}
                 disabled={this.isDisabled() || this.shouldShowIndicator()}
                 onPress={onPress}
-                onPressIn={() => this.setTapped()}
-                onPressOut={() => this.setTapped(false)}
+                onPressIn={this.onPressIn}
+                onPressOut={this.onPressOut}
                 {...eventProps}
             >
                 {this.renderContent()}

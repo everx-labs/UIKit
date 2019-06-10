@@ -75,20 +75,18 @@ export default class UISlider extends UIComponent<Props, State> {
                         [null, { dx: this.state.dx }],
                         {
                             useNativeDriver: true,
-                            listener: (event, { dx }) => this.onMove(dx),
+                            listener: this.onMove,
                         },
                     )(evt, gestureState);
                 }
                 return true;
             },
-            onPanResponderRelease: (evt, { dx }) => {
-                this.onSwipeRelease(dx);
-            },
+            onPanResponderRelease: this.onSwipeRelease,
         });
     }
 
     // Events
-    onDotsPress() {
+    onDotsPress = () => {
         const { itemsList, itemWidth } = this.props;
         const activeIndex = this.getActiveIndex();
         const newActiveIndex = (activeIndex + 1) % itemsList.length;
@@ -106,9 +104,9 @@ export default class UISlider extends UIComponent<Props, State> {
                 duration: UIConstant.animationDuration(),
             }),
         ]).start();
-    }
+    };
 
-    onSwipeRelease(dx: number) {
+    onSwipeRelease = (evt, { dx }: number) => {
         const marginLeft = this.getMarginLeft();
         const currDx = marginLeft + dx;
         const { itemWidth } = this.props;
@@ -128,9 +126,9 @@ export default class UISlider extends UIComponent<Props, State> {
                 duration: UIConstant.animationDuration() / 2,
             }),
         ]).start();
-    }
+    };
 
-    onMove(dx: number) {
+    onMove = (event: any, { dx }: number) => {
         if (UIDevice.isDesktopWeb() && !this.isMouseDown()) {
             this.onSwipeRelease(dx);
         } else {
@@ -138,14 +136,19 @@ export default class UISlider extends UIComponent<Props, State> {
             const newIndex = this.getIndex(currDx);
             this.setActiveIndex(newIndex);
         }
-    }
+    };
 
-    onMouseDown() {
+    onMouseDown = (event) => {
+        event.preventDefault();
         this.setMouseDown();
         setTimeout(() => {
             this.setMouseDown(false);
         }, 2000);
-    }
+    };
+
+    onMouseUp = () => {
+        this.setMouseDown(false);
+    };
 
     // Setters
     setMouseDown(mouseDown: boolean = true) {
@@ -211,8 +214,8 @@ export default class UISlider extends UIComponent<Props, State> {
         let webResponder = null;
         if (UIDevice.isDesktopWeb()) {
             webResponder = {
-                onMouseDown: () => this.onMouseDown(),
-                onMouseUp: () => this.setMouseDown(false),
+                onMouseDown: this.onMouseDown,
+                onMouseUp: this.onMouseUp,
             };
         }
 
@@ -234,7 +237,7 @@ export default class UISlider extends UIComponent<Props, State> {
             return <UIDot key={`slider-dot-${Math.random()}`} />;
         });
         return (
-            <TouchableWithoutFeedback onPress={() => this.onDotsPress()}>
+            <TouchableWithoutFeedback onPress={this.onDotsPress}>
                 <View style={styles.dotsContainer}>
                     {dots}
                 </View>

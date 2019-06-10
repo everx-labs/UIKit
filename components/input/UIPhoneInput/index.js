@@ -21,13 +21,14 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, DetailsState
         return this.props.placeholder || UILocalized.Phone;
     }
 
-    onChangeText(text: string) {
+    // Events
+    onChangeText = (text: string) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             const input = UIFunction.formatPhoneText(text);
             onChangeText(input);
         }
-    }
+    };
 
     // Actions
     focus() {

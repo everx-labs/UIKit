@@ -12,7 +12,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
-import UIComponent from '../../UIComponent';
+import UIActionComponent, { ActionState } from '../../UIActionComponent';
 
 import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
@@ -79,11 +79,6 @@ export type DetailsProps = {
     testID?: string,
 };
 
-export type DetailsState = {
-    focused: boolean,
-    hover: boolean,
-};
-
 export const detailsDefaultProps = {
     autoCapitalize: 'sentences',
     autoFocus: false,
@@ -112,19 +107,10 @@ export const detailsDefaultProps = {
 };
 
 export default class UIDetailsInput<Props, State>
-    extends UIComponent<$Shape<Props & DetailsProps>, $Shape<State & DetailsState>> {
+    extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & DetailsState>> {
     textInput: ?TextInput;
 
     static defaultProps: DetailsProps = detailsDefaultProps;
-
-    constructor(props: Props & DetailsProps) {
-        super(props);
-
-        this.state = {
-            focused: false,
-            hover: false,
-        };
-    }
 
     componentDidMount() {
         super.componentDidMount();
@@ -138,31 +124,31 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Events
-    onChangeText(text: string) {
+    onChangeText = (text: string) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
         }
-    }
+    };
 
-    onKeyPress(e: any) {
+    onKeyPress = (e: any) => {
         const { onKeyPress } = this.props;
         if (onKeyPress) {
             onKeyPress(e);
         }
-    }
+    };
 
-    onFocus() {
+    onFocus = () => {
         this.setFocused();
         this.props.onFocus();
-    }
+    };
 
-    onBlur() {
+    onBlur = () => {
         this.setFocused(false);
         this.props.onBlur();
-    }
+    };
 
-    onSubmitEditing() {
+    onSubmitEditing = () => {
         if (this.isSubmitDisabled()) {
             setTimeout(() => {
                 this.focus();
@@ -173,7 +159,7 @@ export default class UIDetailsInput<Props, State>
                 onSubmitEditing();
             }
         }
-    }
+    };
 
     // Setters
     setFocused(focused: boolean = true) {
@@ -330,11 +316,11 @@ export default class UIDetailsInput<Props, State>
                 {...maxLengthProp}
                 multiline={multiline}
                 numberOfLines={maxLines}
-                onFocus={() => this.onFocus()}
-                onBlur={() => this.onBlur()}
-                onChangeText={text => this.onChangeText(text)}
-                onSubmitEditing={() => this.onSubmitEditing()}
-                onKeyPress={e => this.onKeyPress(e)}
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitEditing}
+                onKeyPress={this.onKeyPress}
                 placeholder={this.getInlinePlaceholder()}
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
@@ -463,8 +449,8 @@ export default class UIDetailsInput<Props, State>
             return <View />;
         }
         const eventProps: EventProps = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
+            onMouseEnter: this.onMouseEnter,
+            onMouseLeave: this.onMouseLeave,
         };
         return (
             <View

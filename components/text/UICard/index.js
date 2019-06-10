@@ -3,9 +3,9 @@ import React from 'react';
 import StylePropType from 'react-style-proptype';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
-import { View, StyleSheet, Text, TouchableWithoutFeedback, Animated } from 'react-native';
+import { View, StyleSheet, Text, Animated } from 'react-native';
 
-import UIComponent from '../../UIComponent';
+import UIActionComponent, { ActionProps, ActionState } from '../../UIActionComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -14,7 +14,7 @@ import UIDetailsView from '../UIDetailsView';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
-type Props = {
+type Props = ActionProps & {
     width: number,
     containerStyle: StylePropType,
     progress: boolean,
@@ -22,12 +22,9 @@ type Props = {
     title: string,
     caption: string,
     details: string,
-    onPress: () => void,
 };
 
-type State = {
-    hover: boolean,
-    tapped: boolean,
+type State = ActionState & {
     spinValue: AnimatedValue,
 };
 
@@ -59,13 +56,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UICard extends UIComponent<Props, State> {
+export default class UICard extends UIActionComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            hover: false,
-            tapped: false,
+            ...this.state,
             spinValue: new Animated.Value(0),
         };
     }
@@ -82,25 +78,9 @@ export default class UICard extends UIComponent<Props, State> {
         this.setStateSafely({ spinValue });
     }
 
-    setHover(hover: boolean = true) {
-        this.setStateSafely({ hover });
-    }
-
-    setTapped(tapped: boolean = true) {
-        this.setState({ tapped });
-    }
-
     // Getters
     getSpinValue() {
         return this.state.spinValue;
-    }
-
-    isHover() {
-        return this.state.hover;
-    }
-
-    isTapped() {
-        return this.state.tapped;
     }
 
     getCardPreset() {
@@ -196,33 +176,22 @@ export default class UICard extends UIComponent<Props, State> {
         );
     }
 
-    render() {
-        const { onPress, containerStyle, transparent } = this.props;
+    renderContent() {
+        const { containerStyle, transparent } = this.props;
         const { card, cardStyle } = this.getCardPreset();
         const backgroundStyle = transparent ? styles.transparent : styles.filled;
         const shadowStyle = this.getShadowStyle();
-        const reactHandlers = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
-        };
         return (
-            <TouchableWithoutFeedback
-                onPress={onPress}
-                onPressIn={() => this.setTapped()}
-                onPressOut={() => this.setTapped(false)}
-                {...(reactHandlers: any)}
+            <View style={[
+                styles.container,
+                cardStyle,
+                containerStyle,
+                backgroundStyle,
+                shadowStyle,
+            ]}
             >
-                <View style={[
-                    styles.container,
-                    cardStyle,
-                    containerStyle,
-                    backgroundStyle,
-                    shadowStyle,
-                ]}
-                >
-                    {card}
-                </View>
-            </TouchableWithoutFeedback>
+                {card}
+            </View>
         );
     }
 
@@ -230,6 +199,7 @@ export default class UICard extends UIComponent<Props, State> {
 }
 
 UICard.defaultProps = {
+    ...UIActionComponent.defaultProps,
     width: 0,
     containerStyle: {},
     progress: false,
@@ -237,6 +207,5 @@ UICard.defaultProps = {
     title: '',
     caption: '',
     details: '',
-    onPress: () => {},
 };
 

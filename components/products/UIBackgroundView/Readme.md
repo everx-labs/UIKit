@@ -4,7 +4,7 @@ Example:
 class Example extends BackgroundContainer {
     renderContent() {
         return (
-            <View style={UIStyle.greatCellHeight}>
+            <View style={UIStyle.Height.greatCell()}>
                 <UIBackgroundView 
                     presetName={UIBackgroundView.PresetNames.Primary}
                 />
@@ -19,7 +19,7 @@ class Example extends BackgroundContainer {
 class Example extends BackgroundContainer {
     renderContent() {
         return (
-            <View style={UIStyle.greatCellHeight}>
+            <View style={UIStyle.Height.greatCell()}>
                 <UIBackgroundView 
                     presetName={UIBackgroundView.PresetNames.Secondary}
                 />
@@ -34,7 +34,7 @@ class Example extends BackgroundContainer {
 class Example extends BackgroundContainer {
     renderContent() {
         return (
-            <View style={UIStyle.greatCellHeight}>
+            <View style={UIStyle.Height.greatCell()}>
                 <UIBackgroundView 
                     presetName={UIBackgroundView.PresetNames.Action}
                 />
