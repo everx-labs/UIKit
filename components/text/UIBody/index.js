@@ -5,6 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, Text } from 'react-native';
 
 import UIStyle from '../../../helpers/UIStyle';
+import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
@@ -21,11 +22,18 @@ class UIBody extends UIComponent {
 
     // Render
     render() {
+        const textStyle = [UIStyle.Margin.topSmall()];
+        if (this.props.theme === UIColor.Theme.Action) {
+            textStyle.push(UIStyle.Text.primaryBodyRegular());
+            textStyle.push(UIStyle.Color.textPrimary(this.props.theme));
+        } else {
+            textStyle.push(UIStyle.Text.secondaryBodyRegular());
+        }
         return (
             <View
                 style={this.props.containerStyle}
             >
-                <Text style={[UITextStyle.secondaryBodyRegular, UIStyle.Margin.topSmall()]}>
+                <Text style={textStyle}>
                     {this.getTitle()}
                 </Text>
             </View>
