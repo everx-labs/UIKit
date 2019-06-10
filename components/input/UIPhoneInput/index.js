@@ -6,11 +6,13 @@ import UIDetailsInput, { detailsDefaultProps } from '../UIDetailsInput';
 import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
 
-import type { DetailsProps, DetailsState } from '../UIDetailsInput';
+import type { DetailsProps } from '../UIDetailsInput';
 
-export default class UIPhoneInput extends UIComponent<DetailsProps, DetailsState> {
+type State = {};
+
+export default class UIPhoneInput extends UIComponent<DetailsProps, State> {
     static defaultProps: DetailsProps = detailsDefaultProps;
-    phoneInput: ?UIDetailsInput<DetailsProps, DetailsState>;
+    phoneInput: ?UIDetailsInput<DetailsProps, State>;
 
     isSubmitDisabled() {
         const { value } = this.props;
@@ -58,7 +60,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, DetailsState
                 keyboardType="phone-pad"
                 placeholder={this.placeholder()}
                 submitDisabled={this.isSubmitDisabled()}
-                onChangeText={newText => this.onChangeText(newText)}
+                onChangeText={this.onChangeText}
             />
         );
     }

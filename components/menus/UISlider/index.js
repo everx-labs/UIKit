@@ -33,6 +33,8 @@ type State = {
     dx: AnimatedValue,
 };
 
+type DXType = { dx: number };
+
 const styles = StyleSheet.create({
     cardsContainer: {
         marginVertical: UIConstant.contentOffset(),
@@ -106,7 +108,7 @@ export default class UISlider extends UIComponent<Props, State> {
         ]).start();
     };
 
-    onSwipeRelease = (evt, { dx }: number) => {
+    onSwipeRelease = (evt: any, { dx }: DXType) => {
         const marginLeft = this.getMarginLeft();
         const currDx = marginLeft + dx;
         const { itemWidth } = this.props;
@@ -128,9 +130,9 @@ export default class UISlider extends UIComponent<Props, State> {
         ]).start();
     };
 
-    onMove = (event: any, { dx }: number) => {
+    onMove = (event: any, { dx }: DXType) => {
         if (UIDevice.isDesktopWeb() && !this.isMouseDown()) {
-            this.onSwipeRelease(dx);
+            this.onSwipeRelease(null, { dx });
         } else {
             const currDx = this.getMarginLeft() + dx;
             const newIndex = this.getIndex(currDx);
@@ -138,7 +140,7 @@ export default class UISlider extends UIComponent<Props, State> {
         }
     };
 
-    onMouseDown = (event) => {
+    onMouseDown = (event: any) => {
         event.preventDefault();
         this.setMouseDown();
         setTimeout(() => {

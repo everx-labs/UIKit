@@ -5,7 +5,7 @@ import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/Animat
 
 import { View, StyleSheet, Text, Animated } from 'react-native';
 
-import UIActionComponent, { ActionProps, ActionState } from '../../UIActionComponent';
+import UIActionComponent from '../../UIActionComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -13,6 +13,8 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIDetailsView from '../UIDetailsView';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
+
+import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 type Props = ActionProps & {
     width: number,

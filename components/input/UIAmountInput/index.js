@@ -9,7 +9,8 @@ import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
 
-import type { DetailsProps, DetailsState } from '../UIDetailsInput';
+import type { DetailsProps } from '../UIDetailsInput';
+import type { ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
     inputPlaceholder: {
@@ -41,7 +42,7 @@ type Props = DetailsProps & {
     rightButtonDisabled: boolean,
     onRightButtonPress?: () => void,
 };
-type State = DetailsState & {};
+type State = ActionState & {};
 
 export default class UIAmountInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
@@ -83,7 +84,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onChangeText(newValue: string) {
+    onChangeText = (newValue: string): void => {
         const { onChangeText } = this.props;
 
         // This prevents to type the symbols: - / * =
@@ -94,7 +95,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         if (onChangeText) {
             onChangeText(newValue);
         }
-    }
+    };
 
     // Render
     renderRightButton() {

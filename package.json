@@ -11,9 +11,9 @@
         "flow"
     ],
     "peerDependencies": {
-        "react": "^16.6.1",
-        "react-dom": "^16.6.1",
-        "react-native": "^0.57.5",
+        "react": "^16.6.3",
+        "react-dom": "^16.6.3",
+        "react-native": "^0.58.4",
         "react-native-safe-area": "^0.5.0"
     },
     "dependencies": {

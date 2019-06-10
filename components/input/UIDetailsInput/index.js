@@ -12,7 +12,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
-import UIActionComponent, { ActionState } from '../../UIActionComponent';
+import UIActionComponent from '../../UIActionComponent';
 
 import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
@@ -24,6 +24,7 @@ import type {
 } from '../../../helpers/UIColor/UIColorTypes';
 
 import type { EventProps } from '../../../types';
+import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export type DetailsProps = {
+export type DetailsProps = ActionProps & {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
@@ -76,7 +77,6 @@ export type DetailsProps = {
     theme?: UIColorThemeNameType,
     value: string,
     visible: boolean,
-    testID?: string,
 };
 
 export const detailsDefaultProps = {
@@ -107,7 +107,7 @@ export const detailsDefaultProps = {
 };
 
 export default class UIDetailsInput<Props, State>
-    extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & DetailsState>> {
+    extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & ActionState>> {
     textInput: ?TextInput;
 
     static defaultProps: DetailsProps = detailsDefaultProps;

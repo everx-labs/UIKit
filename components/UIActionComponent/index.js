@@ -11,10 +11,10 @@ export type ActionState = {
 }
 
 export type ActionProps = {
-    testID: string,
+    testID?: string,
     disabled?: boolean,
     showIndicator?: boolean,
-    onPress: () => void,
+    onPress?: () => void,
 };
 
 export default class UIActionComponent<Props, State>
