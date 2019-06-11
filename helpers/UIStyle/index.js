@@ -76,6 +76,9 @@ const UIStyle = StyleSheet.create({
     flexRow: {
         flexDirection: 'row',
     },
+    flexColumn: {
+        flexDirection: 'column',
+    },
     flexRowWrap: {
         flexDirection: 'row',
         flexWrap: 'wrap',
