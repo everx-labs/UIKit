@@ -140,7 +140,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
     // Component
     render() {
         const {
-            title, titleRight, containerStyles, buttonsContainerStyles,
+            title, titleRight, containerStyle, buttonsContainerStyle,
         } = this.props;
         const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
         const titleView = this.getTitle() ?
@@ -151,10 +151,10 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
             : null;
 
         return (
-            <View style={containerStyles || styles.container}>
+            <View style={containerStyle || styles.container}>
                 <View
                     {...testIDProp}
-                    style={[styles.buttonsContainer, buttonsContainerStyles]}
+                    style={[styles.buttonsContainer, buttonsContainerStyle]}
                 >
                     {this.getHeaderLeft()}
                     {this.getHeaderRight()}
