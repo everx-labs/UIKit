@@ -139,13 +139,13 @@ export default class UIModalController<Props, State>
         this.setSize(width, height);
     };
 
-    onReleaseSwipe(dy: number) {
+    onReleaseSwipe = (dy: number) => {
         if (dy > UIConstant.swipeThreshold()) {
             this.onCancelPress();
         } else {
             this.returnToTop();
         }
-    }
+    };
 
     // Getters
 
@@ -312,7 +312,7 @@ export default class UIModalController<Props, State>
         return (<UIModalNavigationBar
             swipeToDismiss={this.shouldSwipeToDismiss()}
             onMove={Animated.event([null, { dy: this.dy }])}
-            onRelease={dy => this.onReleaseSwipe(dy)}
+            onRelease={this.onReleaseSwipe}
             onCancel={this.onCancelPress}
         />);
     }

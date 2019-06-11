@@ -8,7 +8,7 @@ import UIStyleBorder from './UIStyleBorder';
 import UIStyleHeight from './UIStyleHeight';
 import UIStyleMargin from './UIStyleMargin';
 import UIStylePadding from './UIStylePadding';
-import UIStyleClass from './UIStyleClass';
+import UIStyleCommon from './UIStyleClass';
 import UIStyleFlex from './UIStyleFlex';
 import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
@@ -127,6 +127,9 @@ const UIStyle = StyleSheet.create({
     rowSpaceContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    oferflowHidden: {
+        overflow: 'hidden',
     },
 
     commonShadow: {
@@ -497,7 +500,7 @@ const UIStyle = StyleSheet.create({
 
 UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
-UIStyle.Common = UIStyleClass;
+UIStyle.Common = UIStyleCommon;
 UIStyle.Flex = UIStyleFlex;
 UIStyle.Height = UIStyleHeight;
 UIStyle.Margin = UIStyleMargin;

@@ -25,7 +25,7 @@ class UIRadioButtonList extends UIComponent {
         const { radiobuttonList } = state;
         return radiobuttonList.map((item, index) => {
             const itemStyle = flexDirection === 'row' && index !== radiobuttonList.length - 1
-                ? UIStyle.marginRightHuge : null;
+                ? UIStyle.Margin.rightHuge() : null;
             return (
                 <View
                     key={`radioButton-item-${Math.random()}-${item}`}
