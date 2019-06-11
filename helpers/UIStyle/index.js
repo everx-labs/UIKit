@@ -218,7 +218,9 @@ const UIStyle = StyleSheet.create({
     marginBottomMajor: { // 64
         marginBottom: UIConstant.majorContentOffset(),
     },
-
+    marginBottomVast: { // 80
+        marginBottom: UIConstant.vastContentOffset(),
+    },
 
     marginRightTiny: { // 4
         marginRight: UIConstant.tinyContentOffset(),
