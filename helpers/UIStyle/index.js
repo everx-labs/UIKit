@@ -8,7 +8,7 @@ import UIStyleBorder from './UIStyleBorder';
 import UIStyleHeight from './UIStyleHeight';
 import UIStyleMargin from './UIStyleMargin';
 import UIStylePadding from './UIStylePadding';
-import UIStyleCommon from './UIStyleClass';
+import UIStyleCommon from './UIStyleCommon';
 import UIStyleFlex from './UIStyleFlex';
 import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
