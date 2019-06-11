@@ -21,7 +21,7 @@ class Example extends BackgroundContainer {
                         containerStyle={UIStyle.marginTopHuge}
                         transparent
                         title="Title"
-                        caption="0xea4a6e2f12c4112dd0a164f4564969c3bf2bd410"
+                        caption="100.000000000"
                         details="details"
                     />
                     <UICard

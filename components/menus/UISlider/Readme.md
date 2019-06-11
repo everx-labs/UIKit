@@ -35,6 +35,7 @@ class Example extends BackgroundContainer {
                      itemsList={itemsList}
                      itemRenderer={({title, details}) => (
                          <UICard
+                         	key={`slider-item-${title}-${details}`}
                              containerStyle={UIStyle.marginRightDefault}
                              width={240}
                              title={title}

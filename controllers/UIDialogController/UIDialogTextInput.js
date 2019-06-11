@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 
 export default class UIDialogTextInput extends UIComponent {
     // Events
-    onChangeText(text) {
+    onChangeText = (text) => {
         const { beginningTag, tagSeparator, onChangeText } = this.props;
         let value = text;
         if (beginningTag && value.startsWith(beginningTag)) {
@@ -44,7 +44,7 @@ export default class UIDialogTextInput extends UIComponent {
             value = value.substring(tagSeparator.length);
         }
         onChangeText(value);
-    }
+    };
 
     // Getters
     getTextAlign() {
@@ -146,8 +146,8 @@ export default class UIDialogTextInput extends UIComponent {
                     editable={editable}
                     autoFocus={autoFocus}
                     maxLength={maxLength}
-                    onChangeText={text => this.onChangeText(text)}
-                    onSubmitEditing={() => onSubmitEditing()}
+                    onChangeText={this.onChangeText}
+                    onSubmitEditing={onSubmitEditing}
                 />
             </View>
         );

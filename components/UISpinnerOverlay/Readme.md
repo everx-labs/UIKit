@@ -3,7 +3,7 @@ Example:
 ```js
 const buttonContainer = {
     height: 200,
-    width: 300,
+    width: 280,
     justifyContent: 'flex-end',
     borderWidth: 1,
     borderColor: 'grey',

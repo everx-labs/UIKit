@@ -39,7 +39,6 @@ type Props = ActionProps & {
     disabled: boolean,
     footer: boolean,
     icon: ?string,
-    onPress: () => void,
     showIndicator: boolean,
     style?: StylePropType,
     textStyle?: StylePropType,
@@ -76,9 +75,6 @@ export default class UIButton extends UIActionComponent<Props, State> {
     }
 
     // Events
-    onPress() {
-        this.props.onPress();
-    }
 
     // Getters
     getButtonHeight() {

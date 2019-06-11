@@ -16,5 +16,5 @@ const pages = {
     },
 };
 
-<UITabView tabWidth={105} pages={pages} />;
+<UITabView tabWidth={95} pages={pages} />;
 ```

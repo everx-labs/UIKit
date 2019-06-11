@@ -50,7 +50,7 @@ class ExampleComponent extends React.Component {
                     })}
                 />
                 <UITextButton 
-                    title="Show notice with subcomponent, title, action, cancel callback without autohide"
+                    title="Show notice with subcomponent"
                     onPress={() => UINotice.showMessage({
                         title: 'Hey, Eugene',
                         subComponent: (

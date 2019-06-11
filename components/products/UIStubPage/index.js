@@ -82,14 +82,14 @@ export default class UIStubPage extends UIComponent<Props, State> {
     }
 
     // Events
-    onLayout(e: any) {
+    onLayout = (e: any) => {
         const { width } = e.nativeEvent.layout;
         if (width !== this.getScreenWidth()) {
             this.setScreenWidth(width);
         }
-    }
+    };
 
-    onSubmit() {
+    onSubmit = () => {
         this.setSubmitted();
         setTimeout(() => {
             UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
@@ -97,7 +97,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         const email = this.getEmail();
         // ReactGA.event({ category: 'Form', action: 'onSubmit' });
         this.props.onSubmit(email);
-    }
+    };
 
     // Setters
     setScreenWidth(screenWidth: number) {
@@ -172,7 +172,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 ]}
                 needArrow
                 onChangeText={text => this.setEmail(text)}
-                onSubmitEditing={() => this.onSubmit()}
+                onSubmitEditing={this.onSubmit}
             />
         );
     }
@@ -200,7 +200,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         const labelText = label || UILocalized.TONLabel;
         return (
             <View
-                onLayout={e => this.onLayout(e)}
+                onLayout={this.onLayout}
                 style={styles.container}
             >
                 <View style={[...customStyles.contentContainer, widthStyle]}>

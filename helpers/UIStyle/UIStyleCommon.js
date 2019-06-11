@@ -1,6 +1,6 @@
 import UIStyle from './index';
 
-export default class UIStyleClass {
+export default class UIStyleCommon {
     static flex() {
         return UIStyle.flex;
     }
@@ -75,6 +75,10 @@ export default class UIStyleClass {
 
     static rowSpaceContainer() {
         return UIStyle.rowSpaceContainer;
+    }
+
+    static overflowHidden() {
+        return UIStyle.oferflowHidden;
     }
 
     // shadow

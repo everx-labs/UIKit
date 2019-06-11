@@ -43,12 +43,8 @@ export default class UIProfileView extends UIComponent {
         return (<UIProfilePhoto
             editable={editable}
             source={photo}
-            onUploadPhoto={(newPhoto, showHUD, hideHUD) => {
-                onUploadPhoto(newPhoto, showHUD, hideHUD);
-            }}
-            onDeletePhoto={(showHUD, hideHUD) => {
-                onDeletePhoto(showHUD, hideHUD);
-            }}
+            onUploadPhoto={onUploadPhoto}
+            onDeletePhoto={onDeletePhoto}
         />);
     }
 
@@ -64,8 +60,8 @@ export default class UIProfileView extends UIComponent {
             autoCapitalize={autoCapitalize}
             maxLength={UIConstant.maxTextLineLength()}
             onChangeText={newValue => onChangeName(newValue)}
-            onFocus={() => onFocus()}
-            onBlur={() => onBlur()}
+            onFocus={onFocus}
+            onBlur={onBlur}
             needBorderBottom={hasSecondName}
         />);
     }
@@ -85,8 +81,8 @@ export default class UIProfileView extends UIComponent {
             autoCapitalize={autoCapitalize}
             maxLength={UIConstant.maxTextLineLength()}
             onChangeText={newValue => onChangeSecondName(newValue)}
-            onFocus={() => onFocus()}
-            onBlur={() => onBlur()}
+            onFocus={onFocus}
+            onBlur={onBlur}
         />);
     }
 

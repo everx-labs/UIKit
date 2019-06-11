@@ -82,12 +82,12 @@ export default class UIImageView extends UIComponent<Props, State> {
             {
                 key: 'item 1',
                 title: FromCamera,
-                onPress: () => this.onPickFromCamera(),
+                onPress: this.onPickFromCamera,
             },
             {
                 key: 'item 2',
                 title: FromGallery,
-                onPress: () => this.onPickFromGallery(),
+                onPress: this.onPickFromGallery,
             },
         ];
 
@@ -106,7 +106,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     // Events
-    onPressPhoto() {
+    onPressPhoto = () => {
         if (!this.isEditable() && this.isExpandable()) {
             this.props.onPressPhoto(
                 this.showSpinnerOnPhotoView,
@@ -116,9 +116,9 @@ export default class UIImageView extends UIComponent<Props, State> {
         } else if (this.isEditable() && Platform.OS !== 'web') {
             this.actionSheet.show();
         }
-    }
+    };
 
-    onPickFromCamera() {
+    onPickFromCamera = () => {
         ImagePicker.launchCamera(photoOptions, (response: PickerResponse) => {
             if (response.error) {
                 console.warn('[UIImageView] ImagePicker from camera Error: ', response.error);
@@ -133,9 +133,9 @@ export default class UIImageView extends UIComponent<Props, State> {
                 this.uploadPhoto(source, name);
             }
         });
-    }
+    };
 
-    onPickFromGallery() {
+    onPickFromGallery = () => {
         ImagePicker.launchImageLibrary(photoOptions, (response: PickerResponse) => {
             if (response.error) {
                 console.warn('[UIImageView] ImagePicker from gallery Error: ', response.error);
@@ -150,15 +150,15 @@ export default class UIImageView extends UIComponent<Props, State> {
                 this.uploadPhoto(source, name);
             }
         });
-    }
+    };
 
-    onDeletePhoto() {
+    onDeletePhoto = () => {
         if (!this.mounted) return;
         this.props.onDeletePhoto(
             this.showSpinnerOnPhotoView,
             this.hideSpinnerOnPhotoView,
         );
-    }
+    };
 
     // Setters
     setLightboxVisible(lightboxVisible: boolean = true) {
@@ -214,7 +214,7 @@ export default class UIImageView extends UIComponent<Props, State> {
                 key: 'item 3',
                 title: UILocalized.DeletePhoto,
                 textStyle: { color: UIColor.error() },
-                onPress: () => this.onDeletePhoto(),
+                onPress: this.onDeletePhoto,
             });
         }
     }
@@ -423,7 +423,7 @@ export default class UIImageView extends UIComponent<Props, State> {
                 }}
                 // for render spinner while photo loading
                 renderContent={() => this.renderLightBoxMobileContent()}
-                onOpen={() => this.onPressPhoto()}
+                onOpen={this.onPressPhoto}
             >
                 {this.renderPhotoContent()}
             </LightboxMobile>

@@ -5,12 +5,13 @@ import UIComponent from '../../UIComponent';
 import UIDetailsInput, { detailsDefaultProps } from '../UIDetailsInput';
 import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
-import type { DetailsProps, DetailsState } from '../UIDetailsInput';
+import type { DetailsProps } from '../UIDetailsInput';
+import type { ActionState } from '../../UIActionComponent';
 import UIColor from '../../../helpers/UIColor';
 
-export default class UIEmailInput extends UIComponent<DetailsProps, DetailsState> {
+export default class UIEmailInput extends UIComponent<DetailsProps, ActionState> {
     static defaultProps: DetailsProps = detailsDefaultProps;
-    emailInput: ?UIDetailsInput<DetailsProps, DetailsState>;
+    emailInput: ?UIDetailsInput<DetailsProps, ActionState>;
 
     // Getters
     isSubmitDisabled() {

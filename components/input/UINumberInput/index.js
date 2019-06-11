@@ -5,15 +5,15 @@ import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/T
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps, DetailsState } from '../UIDetailsInput';
+import type { DetailsProps } from '../UIDetailsInput';
+import type { ActionState } from '../../UIActionComponent';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     rightButton?: string,
 };
-type State = DetailsState & {};
 
-export default class UINumberInput extends UIDetailsInput<Props, State> {
+export default class UINumberInput extends UIDetailsInput<Props, ActionState> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
         rightButton: '',
@@ -32,13 +32,13 @@ export default class UINumberInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onChangeText(newValue: string) {
+    onChangeText = (newValue: string): void => {
         const { onChangeText } = this.props;
 
         if (onChangeText && (!newValue?.length || /^\d+$/.test(newValue))) {
             onChangeText(newValue);
         }
-    }
+    };
 
     // Render
     renderTextFragment() {
