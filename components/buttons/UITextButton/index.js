@@ -9,6 +9,7 @@ import UIActionComponent from '../../UIActionComponent';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
+import UITooltip from '../../notifications/UITooltip';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
@@ -50,6 +51,7 @@ type Props = ActionProps & {
     textTappedStyle?: StylePropType,
     theme: string,
     title: string,
+    tooltip?: string,
 };
 
 type State = ActionState;
@@ -95,6 +97,7 @@ class UITextButton extends UIActionComponent<Props, State> {
         const {
             title, textStyle, details, theme, disabled,
         } = this.props;
+        if (!title) return null;
         const defaultFontStyle = UIFont.smallMedium();
         const tapped = this.isTapped();
         const hover = this.isHover();
@@ -104,7 +107,8 @@ class UITextButton extends UIActionComponent<Props, State> {
             : null;
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
-        return (
+
+        const result = (
             <Text
                 style={[
                     defaultFontStyle,
@@ -118,6 +122,7 @@ class UITextButton extends UIActionComponent<Props, State> {
                 {title}
             </Text>
         );
+        return this.props.tooltip ? <UITooltip message={this.props.tooltip}>{result}</UITooltip> : result;
     }
 
     renderDetails() {
@@ -136,6 +141,7 @@ class UITextButton extends UIActionComponent<Props, State> {
         const {
             buttonStyle, align, icon, backIcon,
         } = this.props;
+
         return (
             <View
                 style={[
@@ -165,4 +171,5 @@ UITextButton.defaultProps = {
     backIcon: null,
     theme: UIColor.Theme.Light,
     title: '',
+    tooltip: null,
 };
