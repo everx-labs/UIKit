@@ -122,7 +122,13 @@ class UITextButton extends UIActionComponent<Props, State> {
                 {title}
             </Text>
         );
-        return this.props.tooltip ? <UITooltip message={this.props.tooltip}>{result}</UITooltip> : result;
+
+        const tooltip =
+            (<UITooltip message={this.props.tooltip}>
+                {result}
+             </UITooltip>);
+
+        return this.props.tooltip ? tooltip : result;
     }
 
     renderDetails() {
