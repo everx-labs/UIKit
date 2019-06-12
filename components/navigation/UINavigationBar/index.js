@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import StylePropType from 'react-style-proptype';
+import { StylePropType } from 'react-style-proptype';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -141,7 +141,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         return this.props.headerRight;
     }
 
-    renderTitleView() {
+    renderTitleView(): React$Node {
         const { title, titleRight } = this.props;
         if (!title) {
             return null;
@@ -156,7 +156,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
     }
 
     // Component
-    render() {
+    render(): React$Node {
         const {
             title, containerStyle, buttonsContainerStyle,
         } = this.props;

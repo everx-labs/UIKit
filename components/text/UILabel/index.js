@@ -102,7 +102,7 @@ export default class UILabel extends UIComponent<Props, State> {
     //     }
     // }
 
-    renderText(textStyle) {
+    renderText(textStyle: TextStyleProp[]): React$Node {
         return (
             <Text style={textStyle}>
                 {this.getText()}
@@ -111,7 +111,7 @@ export default class UILabel extends UIComponent<Props, State> {
     }
 
     // Render
-    render() {
+    render(): React$Node {
         // const htmlArray = this.getHtmlArrayFromText();
         const defaultSpaceStyle = this.getDefaultSpaceStyle();
         const textStyle = this.getStyle();
