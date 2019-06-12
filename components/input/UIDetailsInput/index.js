@@ -44,12 +44,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const webStyles = Platform.OS === 'web' ? StyleSheet.create({
-    container: {
-        cursor: 'default'
-    },
-}): null;
-
 export type DetailsProps = {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
@@ -282,7 +276,9 @@ export default class UIDetailsInput<Props, State>
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, floatingTitleText, theme, value } = this.props;
+        const {
+            floatingTitle, floatingTitleText, theme, value,
+        } = this.props;
         const emptyValue = !value || !value.length;
         const text = !floatingTitle || emptyValue && !this.isFocused() ? ' ' : floatingTitleText || this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
@@ -481,7 +477,7 @@ export default class UIDetailsInput<Props, State>
         };
 
         return (
-            <View {...onMouseEvents} style={[this.containerStyle(), this.props.containerStyle, webStyles && webStyles.container]}>
+            <View {...onMouseEvents} style={[this.containerStyle(), this.props.containerStyle]}>
                 {this.renderFloatingTitle()}
                 {this.renderTextView()}
                 {this.renderComment()}

@@ -53,7 +53,7 @@ export default class UILabel extends UIComponent<Props, State> {
         return this.props.role;
     }
 
-    getStyle(): TextStyleProp {
+    getStyle(): TextStyleProp[] {
         const role = this.getRole();
         const result = [];
 

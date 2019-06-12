@@ -9,6 +9,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UINavigationBackButton from '../UINavigationBackButton';
 import UISearchBar from '../../input/UISearchBar';
 import UIComponent from '../../UIComponent';
+import StylePropType from 'react-style-proptype';
 
 const styles = StyleSheet.create({
     container: {
@@ -82,6 +83,8 @@ type UINavigationBarProps = {
     titleRight?: React$Node,
     headerLeft?: AnyComponent,
     headerRight?: AnyComponent,
+    containerStyle?: StylePropType,
+    buttonsContainerStyle?: StylePropType,
 }
 
 export default class UINavigationBar extends UIComponent<UINavigationBarProps, *> {

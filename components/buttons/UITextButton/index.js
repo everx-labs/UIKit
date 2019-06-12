@@ -73,7 +73,7 @@ class UITextButton extends UIActionComponent<Props, State> {
     }
 
     // Render
-    renderIcon(icon, isBack) {
+    renderIcon(icon: string, isBack: bool) {
         if (!icon) {
             return null;
         }
@@ -90,7 +90,12 @@ class UITextButton extends UIActionComponent<Props, State> {
             : null;
         const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
         const styleColor = iconColor ? UIColor.getTintColorStyle(iconColor) : null;
-        return <Image source={icon} style={[isBack ? UIStyle.marginLeftDefault : UIStyle.marginRightDefault, styleColor]} />;
+        return (<Image
+            source={icon}
+            style={[
+                isBack ? UIStyle.marginLeftDefault : UIStyle.marginRightDefault,
+                styleColor]}
+        />);
     }
 
     renderTitle() {
