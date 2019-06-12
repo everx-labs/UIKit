@@ -17,6 +17,7 @@ const LabelRole = Object.freeze({
     Note: 'note',
     Caption: 'caption',
     SecondaryBody: 'secondaryBody',
+    CaptionTertiary: 'captionTertiary',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -75,6 +76,11 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.secondaryCaptionRegular());
         } else if (role === UILabel.Role.SecondaryBody) {
             result.push(UIStyle.Text.secondaryBodyRegular());
+        } else if (role === UILabel.Role.CaptionTertiary) {
+            result.push(
+                UIStyle.Color.textTertiary(),
+                UIStyle.Text.captionRegular(),
+            );
         }
         return result;
     }
