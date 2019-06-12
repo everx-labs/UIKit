@@ -73,7 +73,7 @@ class UITextButton extends UIActionComponent<Props, State> {
     }
 
     // Render
-    renderIcon(icon: string, isBack: bool) {
+    renderIcon(icon: string, isBack: boolean) {
         if (!icon) {
             return null;
         }
@@ -100,7 +100,7 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     renderTitle() {
         const {
-            title, textStyle, details, theme, disabled,
+            title, textStyle, details, theme, disabled, tooltip,
         } = this.props;
         if (!title) return null;
         const defaultFontStyle = UIFont.smallMedium();
@@ -128,12 +128,15 @@ class UITextButton extends UIActionComponent<Props, State> {
             </Text>
         );
 
-        const tooltip =
-            (<UITooltip message={this.props.tooltip}>
-                {result}
-             </UITooltip>);
+        if (tooltip) {
+            return (
+                <UITooltip message={tooltip}>
+                    {result}
+                </UITooltip>
+            );
+        }
 
-        return this.props.tooltip ? tooltip : result;
+        return result;
     }
 
     renderDetails() {

@@ -23,7 +23,7 @@ type Props = {
     style: ?ViewStyleProp,
     text: string,
     role: LabelRoleValue,
-    useDefaultSpace?: bool,
+    useDefaultSpace?: boolean,
 }
 
 type State = {
@@ -102,30 +102,30 @@ export default class UILabel extends UIComponent<Props, State> {
     //     }
     // }
 
+    renderText(textStyle) {
+        return (
+            <Text style={textStyle}>
+                {this.getText()}
+            </Text>
+        );
+    }
+
     // Render
     render() {
         // const htmlArray = this.getHtmlArrayFromText();
         const defaultSpaceStyle = this.getDefaultSpaceStyle();
         const textStyle = this.getStyle();
 
-        let result;
         if (defaultSpaceStyle) {
             textStyle.push(defaultSpaceStyle);
-            result = (
+            return (
                 <View style={this.props.style}>
-                    <Text style={textStyle}>
-                        {this.getText()}
-                    </Text>
+                    {this.renderText(textStyle)}
                 </View>
             );
-        } else {
-            textStyle.push(this.props.style);
-            result = (
-                <Text style={textStyle}>
-                    {this.getText()}
-                </Text>
-            );
         }
-        return result;
+
+        textStyle.push(this.props.style);
+        return this.renderText(textStyle);
     }
 }

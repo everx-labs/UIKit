@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import StylePropType from 'react-style-proptype';
+
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIDevice from '../../../helpers/UIDevice';
@@ -9,7 +11,6 @@ import UIStyle from '../../../helpers/UIStyle';
 import UINavigationBackButton from '../UINavigationBackButton';
 import UISearchBar from '../../input/UISearchBar';
 import UIComponent from '../../UIComponent';
-import StylePropType from 'react-style-proptype';
 
 const styles = StyleSheet.create({
     container: {
@@ -140,19 +141,26 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         return this.props.headerRight;
     }
 
+    renderTitleView() {
+        const { title, titleRight } = this.props;
+        if (!title) {
+            return null;
+        }
+
+        return (
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>{title}</Text>
+                {titleRight}
+            </View>
+        );
+    }
+
     // Component
     render() {
         const {
-            title, titleRight, containerStyle, buttonsContainerStyle,
+            title, containerStyle, buttonsContainerStyle,
         } = this.props;
         const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
-        const titleView = this.getTitle() ?
-            (<View style={styles.titleContainer}>
-                <Text style={styles.titleText}>{this.getTitle()}</Text>
-                {titleRight}
-             </View>)
-            : null;
-
         return (
             <View style={containerStyle || styles.container}>
                 <View
@@ -162,7 +170,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
                     {this.getHeaderLeft()}
                     {this.getHeaderRight()}
                 </View>
-                {titleView}
+                {this.renderTitleView()}
             </View>
         );
     }
