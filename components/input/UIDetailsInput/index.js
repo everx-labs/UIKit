@@ -57,6 +57,7 @@ export type DetailsProps = ActionProps & {
     defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
+    floatingTitleText: string,
     hideBottomLine: boolean,
     hidePlaceholder: boolean,
     keyboardType: KeyboardType,
@@ -77,6 +78,7 @@ export type DetailsProps = ActionProps & {
     theme?: UIColorThemeNameType,
     value: string,
     visible: boolean,
+    testID?: string,
 };
 
 export const detailsDefaultProps = {
@@ -87,6 +89,7 @@ export const detailsDefaultProps = {
     comment: '',
     editable: true,
     floatingTitle: true,
+    floatingTitleText: '',
     hideBottomLine: false,
     hidePlaceholder: false,
     keyboardType: 'default',
@@ -234,7 +237,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
     }
 
 
@@ -259,9 +262,13 @@ export default class UIDetailsInput<Props, State>
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, value, theme } = this.props;
-        const text = !floatingTitle || !value ? ' ' : this.placeholder();
+        const {
+            floatingTitle, floatingTitleText, theme, value,
+        } = this.props;
+        const emptyValue = !value || !value.length;
+        const text = !floatingTitle || emptyValue && !this.isFocused() ? ' ' : floatingTitleText || this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
+
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
@@ -271,7 +278,8 @@ export default class UIDetailsInput<Props, State>
 
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
-        if (!beginningTag) {
+        const emptyValue = !this.props.value || !this.props.value.length;
+        if (!beginningTag || !this.isFocused() && emptyValue) {
             return null;
         }
         return (
@@ -405,10 +413,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextView() {
-        const { hideBottomLine, theme } = this.props;
+        const { comment, hideBottomLine, theme } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor: UIColorData;
-        if (this.commentColor()) {
+        if (comment && this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
             bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
