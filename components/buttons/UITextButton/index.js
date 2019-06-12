@@ -9,6 +9,7 @@ import UIActionComponent from '../../UIActionComponent';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
+import UITooltip from '../../notifications/UITooltip';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
@@ -42,11 +43,15 @@ type Props = ActionProps & {
     details: string,
     detailsStyle?: StylePropType,
     icon: ?string,
+    backIcon: ?string,
+    iconColor?: string,
+    iconHoverColor?: string,
     textStyle?: StylePropType,
     textHoverStyle?: StylePropType,
     textTappedStyle?: StylePropType,
     theme: string,
     title: string,
+    tooltip?: string,
 };
 
 type State = ActionState;
@@ -68,26 +73,36 @@ class UITextButton extends UIActionComponent<Props, State> {
     }
 
     // Render
-    renderIcon() {
-        const { icon } = this.props;
+    renderIcon(icon: string, isBack: boolean) {
         if (!icon) {
             return null;
         }
 
         const {
-            theme, disabled
+            theme, disabled,
         } = this.props;
         const tapped = this.isTapped();
         const hover = this.isHover();
-        const iconColor = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
+
+        const defaultColor = UIColor.actionTextPrimary(theme);
+        const stateColorStyle = disabled || tapped || hover
+            ? this.props.iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
+            : null;
+        const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
         const styleColor = iconColor ? UIColor.getTintColorStyle(iconColor) : null;
-        return <Image source={icon} style={[UIStyle.marginRightDefault, styleColor]} />;
+        return (<Image
+            source={icon}
+            style={[
+                isBack ? UIStyle.marginLeftDefault : UIStyle.marginRightDefault,
+                styleColor]}
+        />);
     }
 
     renderTitle() {
         const {
-            title, textStyle, details, theme, disabled,
+            title, textStyle, details, theme, disabled, tooltip,
         } = this.props;
+        if (!title) return null;
         const defaultFontStyle = UIFont.smallMedium();
         const tapped = this.isTapped();
         const hover = this.isHover();
@@ -97,7 +112,8 @@ class UITextButton extends UIActionComponent<Props, State> {
             : null;
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
-        return (
+
+        const result = (
             <Text
                 style={[
                     defaultFontStyle,
@@ -111,6 +127,16 @@ class UITextButton extends UIActionComponent<Props, State> {
                 {title}
             </Text>
         );
+
+        if (tooltip) {
+            return (
+                <UITooltip message={tooltip}>
+                    {result}
+                </UITooltip>
+            );
+        }
+
+        return result;
     }
 
     renderDetails() {
@@ -126,7 +152,10 @@ class UITextButton extends UIActionComponent<Props, State> {
     }
 
     renderContent(): React$Node {
-        const { buttonStyle, align } = this.props;
+        const {
+            buttonStyle, align, icon, backIcon,
+        } = this.props;
+
         return (
             <View
                 style={[
@@ -135,8 +164,9 @@ class UITextButton extends UIActionComponent<Props, State> {
                     buttonStyle,
                 ]}
             >
-                {this.renderIcon()}
+                {this.renderIcon(icon, false)}
                 {this.renderTitle()}
+                {this.renderIcon(backIcon, true)}
                 {this.renderDetails()}
             </View>
         );
@@ -152,6 +182,8 @@ UITextButton.defaultProps = {
     align: UITextButton.Align.Left,
     details: '',
     icon: null,
+    backIcon: null,
     theme: UIColor.Theme.Light,
     title: '',
+    tooltip: null,
 };

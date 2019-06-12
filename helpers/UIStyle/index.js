@@ -76,6 +76,9 @@ const UIStyle = StyleSheet.create({
     flexRow: {
         flexDirection: 'row',
     },
+    flexColumn: {
+        flexDirection: 'column',
+    },
     flexRowWrap: {
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -218,7 +221,9 @@ const UIStyle = StyleSheet.create({
     marginBottomMajor: { // 64
         marginBottom: UIConstant.majorContentOffset(),
     },
-
+    marginBottomVast: { // 80
+        marginBottom: UIConstant.vastContentOffset(),
+    },
 
     marginRightTiny: { // 4
         marginRight: UIConstant.tinyContentOffset(),
@@ -244,6 +249,9 @@ const UIStyle = StyleSheet.create({
     },
     marginLeftDefault: { // 16
         marginLeft: UIConstant.contentOffset(),
+    },
+    marginLeftHuge: { // 32
+        marginLeft: UIConstant.hugeContentOffset(),
     },
 
     marginHorizontalOffset: { // 16
