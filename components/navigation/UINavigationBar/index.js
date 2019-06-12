@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { StylePropType } from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -84,8 +84,8 @@ type UINavigationBarProps = {
     titleRight?: React$Node,
     headerLeft?: AnyComponent,
     headerRight?: AnyComponent,
-    containerStyle?: StylePropType,
-    buttonsContainerStyle?: StylePropType,
+    containerStyle?: ViewStyleProp,
+    buttonsContainerStyle?: ViewStyleProp,
 }
 
 export default class UINavigationBar extends UIComponent<UINavigationBarProps, *> {
