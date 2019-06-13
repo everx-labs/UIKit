@@ -33,6 +33,7 @@ import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
+import UIIdleDetector from './components/UIIdleDetector';
 import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/images/UIImageView';
@@ -47,9 +48,14 @@ import UIMenuBackground from './helpers/UIMenuBackground';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';
+import UINavigationCloseButton from './components/navigation/UINavigationCloseButton';
+import UINavigationIconButton from './components/navigation/UINavigationIconButton';
+import UINavigationPlusButton from './components/navigation/UINavigationPlusButton';
+import UINavigationTextButton from './components/navigation/UINavigationTextButton';
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
+import UINotificationBadge from './components/notifications/UINotificationBadge';
 import UINumberInput from './components/input/UINumberInput';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
@@ -140,6 +146,7 @@ export {
     UIFont,
     UITextStyle,
     UIFunction,
+    UIIdleDetector,
     UIImage,
     UIImageButton,
     UIImageView,
@@ -154,9 +161,14 @@ export {
     UIModalController,
     UINavigationBackButton,
     UINavigationBar,
+    UINavigationCloseButton,
+    UINavigationIconButton,
+    UINavigationPlusButton,
+    UINavigationTextButton,
     UINavigator,
     UINetworkStatus,
     UINotice,
+    UINotificationBadge,
     UINumberInput,
     UIPasswordPrompt,
     UIPhoneInput,

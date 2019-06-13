@@ -141,7 +141,7 @@ const UIStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    oferflowHidden: {
+    overflowHidden: {
         overflow: 'hidden',
     },
 
