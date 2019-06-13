@@ -116,7 +116,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 title={UILocalized.Cancel}
                 onPress={() => {
                     if (this.customSheet) {
-                        this.customSheet.hide(() => this.onCancel());
+                        this.customSheet.hide(this.onCancel);
                     }
                 }}
             />

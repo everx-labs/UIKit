@@ -60,7 +60,7 @@ export default class UIDetailsView extends UIComponent {
             <Wrapper
                 {...testIDProp}
                 style={[styles.container, this.props.containerStyle]}
-                onPress={() => onPress()}
+                onPress={onPress}
             >
                 {this.renderContentView()}
             </Wrapper>

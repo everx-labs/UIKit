@@ -120,6 +120,11 @@ export default class UIFunction {
         return Number(number).toLocaleString(locale, options);
     }
 
+    // Allows to print small numbers with "-e" suffix
+    static getNumberString(number: number): string {
+        return number.toFixed(10).replace(/\.?0+$/, '');
+    }
+
     static numericText(text) {
         return parseDigits(text);
     }
@@ -289,7 +294,7 @@ export default class UIFunction {
         const tab = UIFunction.repeat('   ', level);
 
         let str = '';
-        for (let key in obj) {
+        for (const key in obj) {
             str += `${tab + key}: ${typeof obj[key] === 'object' ? `\r\n${UIFunction.alertObject(obj[key], level + 1)}` : obj[key]}\r\n`;
         }
 
@@ -384,5 +389,15 @@ export default class UIFunction {
     static isEmail(expression: string) {
         return isEmail(expression);
     }
-}
 
+    static getCookie(name) {
+        const matches = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    static setCookie(key, value, days) {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        document.cookie = `${key}=${value}; path=/; expires=${date.toUTCString()}`;
+    }
+}

@@ -97,9 +97,9 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
     }
 
     // Events
-    onIndexChange(index: number) {
+    onIndexChange = (index: number) => {
         this.setStateSafely({ index });
-    }
+    };
 
     // Getters
     getRoutes() {
@@ -157,7 +157,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
                 navigationState={navigationState}
                 renderScene={this.renderScene}
                 renderTabBar={this.renderTabBar}
-                onIndexChange={index => this.onIndexChange(index)}
+                onIndexChange={this.onIndexChange}
             />
         );
     }

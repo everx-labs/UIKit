@@ -10,6 +10,8 @@ import UIStyle from '../../../helpers/UIStyle';
 type Props = {
     currentItem: ?React$Node,
     prevItem: ?React$Node,
+    currentItemKey: ?string,
+    prevItemKey: ?string,
     itemStyle: ViewStyleProp,
     containerStyle: ViewStyleProp,
 }
@@ -25,9 +27,11 @@ export default class UITransitionView extends UIComponent<Props, State> {
     static defaultProps = {
         currentItem: null,
         prevItem: null,
+        currentItemKey: null,
+        prevItemKey: null,
         itemStyle: {},
         containerStyle: {},
-    }
+    };
 
     // Constructor
     constructor(props: Props) {
@@ -41,37 +45,36 @@ export default class UITransitionView extends UIComponent<Props, State> {
         };
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        const newCurrentItem = nextProps.currentItem;
-        const newPrevItem = nextProps.prevItem;
-        const currentItem = this.getCurrentItem();
-        const prevItem = this.getPrevItem();
-        if (currentItem !== newCurrentItem || prevItem !== newPrevItem) {
+    componentDidUpdate(prevProps: Props) {
+        if (this.props.currentItemKey !== prevProps.currentItemKey
+            || this.props.prevItemKey !== prevProps.prevItemKey) {
             this.setStateSafely({
-                currentItem,
-                prevItem,
+                currentItem: this.props.currentItem,
+                prevItem: this.props.prevItem,
                 currentItemOpacity: new Animated.Value(0),
                 prevItemOpacity: new Animated.Value(1),
-            }, () => {
-                Animated.parallel([
-                    Animated.spring(this.getCurrentItemOpacity(), { // looks better than `timing`
-                        toValue: 1.0,
-                    }),
-                    Animated.spring(this.getPrevItemOpacity(), {
-                        toValue: 0.0,
-                    }),
-                ]).start();
-            });
+            }, this.updateCallback);
         }
     }
 
+    updateCallback = () => {
+        Animated.parallel([
+            Animated.spring(this.getCurrentItemOpacity(), { // looks better than `timing`
+                toValue: 1.0,
+            }),
+            Animated.spring(this.getPrevItemOpacity(), {
+                toValue: 0.0,
+            }),
+        ]).start();
+    };
+
     // Getters
     getCurrentItem(): ?React$Node {
-        return this.props.currentItem;
+        return this.state.currentItem;
     }
 
     getPrevItem(): ?React$Node {
-        return this.props.prevItem;
+        return this.state.prevItem;
     }
 
     getCurrentItemOpacity(): Animated.Value {
@@ -108,7 +111,7 @@ export default class UITransitionView extends UIComponent<Props, State> {
         const currentItem = this.getCurrentItem();
         const prevItem = this.getPrevItem();
         return (
-            <View style={[UIStyle.flex, this.props.containerStyle]}>
+            <View style={[UIStyle.Common.flex(), this.props.containerStyle]}>
                 {this.renderItem(prevItem, false)}
                 {this.renderItem(currentItem, true)}
             </View>

@@ -14,6 +14,7 @@ const LabelRole = Object.freeze({
     Description: 'description',
     BoldDescription: 'boldDescription',
     Note: 'note',
+    Caption: 'caption',
     SecondaryBody: 'secondaryBody',
 });
 
@@ -67,10 +68,11 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryBodyBold());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
+        } else if (role === UILabel.Role.Caption) {
+            result.push(UIStyle.Text.secondaryCaptionRegular());
         } else if (role === UILabel.Role.SecondaryBody) {
             result.push(UIStyle.Text.secondaryBodyRegular());
         }
-
         return result;
     }
 
@@ -92,16 +94,7 @@ export default class UILabel extends UIComponent<Props, State> {
         return this.props.text || '';
     }
 
-    // TODO
-    // getHtmlArrayFromText() {
-    //     const str = this.props.text;
-    //     const result = [];
-    //     while (1) {
-    //         const bIndex = str.indexOf('<b>');
-    //         // if (bIndex)
-    //     }
-    // }
-
+    // Render
     renderText(textStyle: TextStyleProp[]): React$Node {
         return (
             <Text style={textStyle}>

@@ -14,7 +14,9 @@ const en: UILocalizedData = {
     TermsText: 'By submitting your offer, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
     TermsTextHTML: 'By submitting your offer, you verify that you have reviewed and agree to the above Terms and Conditions as well as to TON Wallet\'s privacy policy and legal terms, which can be found',
     TermsTextAuth: 'By pressing "Login" button, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
+    TermsCookiesPolicy: 'By using this website, you agree to our Cookies Policy.',
     Here: 'here',
+    LegalNotes: 'Legal Notes',
 
     // Login
     Login: 'Login',

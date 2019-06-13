@@ -1,6 +1,6 @@
 import UIStyle from './index';
 
-export default class UIStyleClass {
+export default class UIStyleCommon {
     static flex() {
         return UIStyle.flex;
     }
@@ -81,6 +81,10 @@ export default class UIStyleClass {
         return UIStyle.rowSpaceContainer;
     }
 
+    static overflowHidden() {
+        return UIStyle.oferflowHidden;
+    }
+
     // shadow
     static commonShadow() {
         return UIStyle.commonShadow;
@@ -112,6 +116,10 @@ export default class UIStyleClass {
     }
 
     // Containers
+    static absoluteFillContainer() {
+        return UIStyle.absoluteFillContainer;
+    }
+
     static fullWidthPaddingContainer() {
         return UIStyle.fullWidthPaddingContainer;
     }

@@ -7,6 +7,7 @@ const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 100;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
+const UI_MAX_SCROLL_EVENT_THROTTLE = 16;
 
 const UI_TINY_BORDER_RADIUS = 2;
 const UI_SMALL_BORDER_RADIUS = 4;
@@ -20,9 +21,12 @@ const UI_DEFAULT_CONTENT_OFFSET = 16;
 const UI_MEDIUM_CONTENT_OFFSET = 24;
 const UI_LARGE_CONTENT_OFFSET = 28;
 const UI_HUGE_CONTENT_OFFSET = 32;
+const UI_SPACIOUS_CONTENT_OFFSET = 40;
 const UI_GREAT_CONTENT_OFFSET = 48;
 const UI_MAJOR_CONTENT_OFFSET = 64;
+const UI_MASSIVE_CONTENT_OFFSET = 72;
 const UI_VAST_CONTENT_OFFSET = 80;
+const UI_TREMENDOUS_CONTENT_OFFSET = 96;
 const UI_ENORMOUS_CONTENT_OFFSET = 104;
 const UI_GIANT_CONTENT_OFFSET = 136;
 
@@ -100,8 +104,8 @@ const UI_INFINITE_SCROLL_TRESHOLD = 0.25; // quarter of the visible page (before
 
 const UI_PROFILE_PHOTO_SIZE = 72;
 
-const MAX_DECIMAL_DIGITS = 8;
-const MAX_NUMBER_DIGITS = 9;
+const MIN_DECIMAL_DIGITS = 3;
+const MAX_DECIMAL_DIGITS = 9;
 
 const MAX_TEXT_LINE_LENGTH = 200;
 
@@ -173,6 +177,10 @@ export default class UIConstant {
         return UI_COVER_BOUNCE_OFFSET;
     }
 
+    static maxScrollEventThrottle() {
+        return UI_MAX_SCROLL_EVENT_THROTTLE;
+    }
+
     // Content offsets
     static tinyContentOffset() {
         return UI_TINY_CONTENT_OFFSET;
@@ -202,6 +210,10 @@ export default class UIConstant {
         return UI_HUGE_CONTENT_OFFSET;
     }
 
+    static spaciousContentOffset() {
+        return UI_SPACIOUS_CONTENT_OFFSET;
+    }
+
     static greatContentOffset() {
         return UI_GREAT_CONTENT_OFFSET;
     }
@@ -210,8 +222,16 @@ export default class UIConstant {
         return UI_MAJOR_CONTENT_OFFSET;
     }
 
+    static massiveContentOffset() {
+        return UI_MASSIVE_CONTENT_OFFSET;
+    }
+
     static vastContentOffset() {
         return UI_VAST_CONTENT_OFFSET;
+    }
+
+    static tremendousContentOffset() {
+        return UI_TREMENDOUS_CONTENT_OFFSET;
     }
 
     static enormousContentOffset() {
@@ -492,8 +512,8 @@ export default class UIConstant {
         return INITIAL_RENDER_DATA_COUNT;
     }
 
-    static maxNumberDigits() {
-        return MAX_NUMBER_DIGITS;
+    static minDecimalDigits() {
+        return MIN_DECIMAL_DIGITS;
     }
 
     static maxDecimalDigits() {

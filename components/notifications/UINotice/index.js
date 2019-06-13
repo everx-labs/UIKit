@@ -1,9 +1,17 @@
 // @flow
-import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, Platform, SafeAreaView } from 'react-native';
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
-
 import type { Node } from 'react';
+import React from 'react';
+import {
+    Animated,
+    Image,
+    Platform,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import FlashMessage, { hideMessage, showMessage } from 'react-native-flash-message';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 import type { PositionObject } from '../../../types';
@@ -53,9 +61,8 @@ const styles = StyleSheet.create({
     },
     fixTitleOverflow: {
         overflow: 'hidden',
-    }
+    },
 });
-
 
 export type MessageObject = {
     position?: string | PositionObject,
@@ -76,7 +83,6 @@ type Insets = { [string]: number };
 type State = {
     marginLeft: AnimatedValue,
     pageWidth: number,
-    insets: Insets,
     externalMessageComponent: Node,
 };
 
@@ -95,18 +101,20 @@ type NoticeObject = {
 };
 
 let masterRef = null;
+const insets: Insets = {};
 
 export default class UINotice
     extends UIComponent<Props, State> {
     static Type = {
         Default: 'default',
         Alert: 'alert',
-    }
+    };
 
     static Place = {
         Top: 'top',
         Bottom: 'bottom',
-    }
+        BottomRight: 'bottom-right',
+    };
 
     static showMessage(args: string | NoticeObject) {
         if (masterRef) {
@@ -128,15 +136,11 @@ export default class UINotice
     }
 
     static setAdditionalInset(key: string, inset: number) {
-        if (masterRef) {
-            masterRef.setAdditionalInset(key, inset);
-        }
+        insets[key] = inset;
     }
 
     static removeAdditionalInset(key: string) {
-        if (masterRef) {
-            masterRef.removeAdditionalInset(key);
-        }
+        delete insets[key];
     }
 
     constructor(props: Props) {
@@ -146,7 +150,6 @@ export default class UINotice
             marginLeft: new Animated.Value(0),
             pageWidth: 0,
 
-            insets: {},
             externalMessageComponent: null,
         };
     }
@@ -162,12 +165,12 @@ export default class UINotice
     }
 
     // Events
-    onWindowContainerLayout(e: ViewLayoutEvent) {
+    onWindowContainerLayout = (e: ViewLayoutEvent) => {
         const { width } = e.nativeEvent.layout;
         if (width !== this.getPageWidth()) {
             this.setPageWidth(width);
         }
-    }
+    };
 
     // Setters
     setMarginLeft(marginLeft: AnimatedValue, callback?: () => void) {
@@ -180,10 +183,6 @@ export default class UINotice
 
     setExternalMessageComponent(externalMessageComponent: Node) {
         this.setStateSafely({ externalMessageComponent });
-    }
-
-    setInsets(insets: Insets) {
-        this.setStateSafely({ insets });
     }
 
     // Getters
@@ -205,17 +204,25 @@ export default class UINotice
         return this.state.externalMessageComponent;
     }
 
-    getInsets() {
-        return this.state.insets;
+    getMaxInset() {
+        let maxInset = 0;
+        Object.keys(insets)
+            .forEach((key) => {
+                maxInset = Math.max(insets[key], maxInset);
+            });
+        return maxInset;
     }
 
-    getMaxInset() {
-        const insets: Insets = this.getInsets();
-        let maxInset = 0;
-        Object.keys(insets).forEach((key) => {
-            maxInset = Math.max(insets[key], maxInset);
-        });
-        return maxInset;
+    getPosition(placement: Placement) {
+        const { Bottom, BottomRight } = UINotice.Place;
+        if (placement === Bottom) {
+            return { bottom: this.getMaxInset() };
+        }
+        // TODO
+        if (placement === BottomRight) {
+            return { bottom: this.getMaxInset() };
+        }
+        return placement;
     }
 
     // Internals
@@ -237,10 +244,13 @@ export default class UINotice
         this.subComponent = subComponent || null;
         this.title = title || '';
         this.message = message || '';
-        this.action = action || { title: '', onPress: () => {} };
+        this.action = action || {
+            title: '',
+            onPress: () => {},
+        };
         this.onCancel = onCancel;
         this.setExternalMessageComponent(null);
-        const position = placement === Bottom ? { bottom: this.getMaxInset() } : placement;
+        const position = this.getPosition(placement);
         showMessage({
             message: '', // unused but required param
             animated: false,
@@ -273,39 +283,29 @@ export default class UINotice
 
     animateOpening() {
         const containerWidth = this.getContainerWidth();
-        this.setMarginLeft(new Animated.Value(containerWidth + contentOffset), () => {
+        this.setMarginLeft(new Animated.Value(-containerWidth - contentOffset), () => {
             Animated.spring(this.state.marginLeft, {
                 toValue: cardShadowWidth,
                 duration: UIConstant.animationDuration(),
-            }).start();
+            })
+                .start();
         });
     }
 
     animateClosing() {
         const containerWidth = this.getContainerWidth();
         Animated.timing(this.state.marginLeft, {
-            toValue: containerWidth + contentOffset,
+            toValue: -containerWidth - contentOffset,
             duration: UIConstant.animationDuration(),
-        }).start(() => hideMessage());
-    }
-
-    setAdditionalInset(key: string, inset: number) {
-        const insets = this.getInsets();
-        insets[key] = inset;
-        this.setInsets(insets);
-    }
-
-    removeAdditionalInset(key: string) {
-        const insets = this.getInsets();
-        delete insets[key];
-        this.setInsets(insets);
+        })
+            .start(() => hideMessage());
     }
 
     // Render
     renderCloseButton() {
         const icoClose = this.action && this.action.title ? icoCloseGrey : icoCloseBlue;
         return (
-            <TouchableOpacity onPress={() => this.closeWithCancel()} >
+            <TouchableOpacity onPress={() => this.closeWithCancel()}>
                 <Image source={icoClose} />
             </TouchableOpacity>
         );
@@ -358,10 +358,14 @@ export default class UINotice
         return (
             <View
                 style={{ alignItems }}
-                onLayout={e => this.onWindowContainerLayout(e)}
+                onLayout={this.onWindowContainerLayout}
             >
                 <View style={[styles.container, { width: containerWidth }]}>
-                    <Animated.View style={[styles.noticeStyle, { width: noticeWidth, marginLeft }]}>
+                    <Animated.View style={[styles.noticeStyle, {
+                        width: noticeWidth,
+                        marginLeft,
+                    }]}
+                    >
                         <View style={styles.contentContainer}>
                             {this.renderHeader()}
                             <Text style={styles.messageStyle}>

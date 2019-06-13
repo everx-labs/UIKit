@@ -9,6 +9,10 @@ export default class UIStyleWidth {
         return UIStyle.threeQuartersWidth;
     }
 
+    static twothirds() {
+        return UIStyle.twoThirdsWidth;
+    }
+
     static half() {
         return UIStyle.halfWidth;
     }
@@ -19,5 +23,10 @@ export default class UIStyleWidth {
 
     static quarter() {
         return UIStyle.quarterWidth;
+    }
+
+    // Containers
+    static twoThirdsContainer() {
+        return UIStyle.twoThirdsWidthContainer;
     }
 }

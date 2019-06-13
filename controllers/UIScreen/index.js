@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIController from '../../controllers/UIController';
 import UIConstant from '../../helpers/UIConstant';
@@ -12,16 +11,24 @@ type ControllerState = {
     screenWidth: number
 };
 
+export type ContentOffset = {
+    x: number,
+    y: number,
+}
+
+export type ContentSize = {
+    width: number,
+    height: number,
+}
+
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
-    contentContainerStyle: ?ViewStyleProp;
     scrollView: ?ScrollView;
 
     constructor(props: Props & NavigationProps) {
         super(props);
         this.presetName = '';
-        this.contentContainerStyle = {};
 
         this.state = {
             screenWidth: 0,
@@ -39,13 +46,24 @@ export default class UIScreen<Props, State>
     }
 
     // Events
-    onScreenLayout(e: any) {
+    onScreenLayout = (e: any) => {
         const { width } = e.nativeEvent.layout;
         this.setScreenWidth(width);
         const narrow = this.isNarrowScreen(width);
         this.dispatchNarrow(narrow);
+    };
+
+    // Virtual
+    onScrollDefault = (e: any) => {
+        const { contentOffset, contentSize } = e.nativeEvent;
+        this.onScroll(contentOffset, contentSize);
+    };
+
+    onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
+        //
     }
 
+    // Getters
     isNarrow() {
         const screenWidth = this.getScreenWidth();
         return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
@@ -63,6 +81,11 @@ export default class UIScreen<Props, State>
     // Getters
     getScreenWidth() {
         return this.state.screenWidth;
+    }
+
+    // Virtual
+    getContentContainerStyle() {
+        return null;
     }
 
     // Actions
@@ -91,19 +114,31 @@ export default class UIScreen<Props, State>
         return null;
     }
 
+    renderTopContent() {
+        return null;
+    }
+
+    renderBottomContent() {
+        return null;
+    }
+
     render() {
         return (
             <View
                 style={UIStyle.flex}
-                onLayout={e => this.onScreenLayout(e)}
+                onLayout={this.onScreenLayout}
             >
+                {this.renderTopContent()}
                 <ScrollView
                     ref={(component) => { this.scrollView = component; }}
-                    style={[UIStyle.flex]}
-                    contentContainerStyle={this.contentContainerStyle}
+                    style={UIStyle.flex}
+                    contentContainerStyle={this.getContentContainerStyle()}
+                    scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
+                    onScroll={this.onScrollDefault}
                 >
                     {this.renderContent()}
                 </ScrollView>
+                {this.renderBottomContent()}
             </View>
         );
     }

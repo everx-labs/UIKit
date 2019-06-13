@@ -35,14 +35,23 @@ export default class UIStyleMargin {
     static topHuge() { // 32
         return UIStyle.marginTopHuge;
     }
+    static topSpacious() { // 40
+        return UIStyle.marginTopSpacious;
+    }
     static topGreat() { // 48
         return UIStyle.marginTopGreat;
     }
     static topMajor() { // 64
         return UIStyle.marginTopMajor;
     }
+    static topMassive() { // 72
+        return UIStyle.marginTopMassive;
+    }
     static topVast() { // 80
         return UIStyle.marginTopVast;
+    }
+    static topTremendous() { // 96
+        return UIStyle.marginTopTremendous;
     }
     static topEnormous() { // 104
         return UIStyle.marginTopEnormous;

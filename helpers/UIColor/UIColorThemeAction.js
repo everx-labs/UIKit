@@ -1,5 +1,4 @@
 // @flow
-
 import UIColorPalette from './UIColorPalette';
 import type { UIColorThemeData } from './UIColorTypes';
 
@@ -8,7 +7,7 @@ const UIColorThemeAction: UIColorThemeData = {
         normal: UIColorPalette.primaryMinus,
         focused: UIColorPalette.primary3,
         light: UIColorPalette.whiteLight,
-        hovered: UIColorPalette.blackLight,
+        hover: UIColorPalette.primary2,
     },
     text: {
         primary: {
@@ -46,6 +45,9 @@ const UIColorThemeAction: UIColorThemeData = {
     },
     detailsInput: {
         comment: UIColorPalette.white,
+        amount: {
+            placeholder: UIColorPalette.primary3,
+        },
     },
 };
 

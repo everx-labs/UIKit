@@ -13,11 +13,11 @@ import UIModalController from '../../controllers/UIModalController';
 import UIToastMessage from '../../components/notifications/UIToastMessage';
 import UIConstant from '../../helpers/UIConstant';
 import UIButton from '../../components/buttons/UIButton';
+import UILabel from '../../components/text/UILabel';
 import UILocalized from '../../helpers/UILocalized';
 import UIColor from '../UIColor';
 import UIFont from '../UIFont';
-import UIStyle from '../UIStyle';
-import UITextStyle from '../UITextStyle';
+
 import type { ModalControllerProps } from '../../controllers/UIModalController';
 
 // End imports
@@ -34,7 +34,7 @@ type State = {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'column',
+        //
     },
     titleText: {
         marginHorizontal: UIConstant.contentOffset(),
@@ -42,8 +42,6 @@ const styles = StyleSheet.create({
         color: UIColor.black(),
     },
     messageContainer: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
         margin: UIConstant.contentOffset(),
         paddingLeft: UIConstant.smallContentOffset(),
         borderLeftColor: UIColor.primary1(),
@@ -60,7 +58,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     static shared: ?UIShareScreen = null;
 
     static share(options: Options): boolean {
-        const shared = UIShareScreen.shared;
+        const { shared } = UIShareScreen;
         if (!shared) {
             return false;
         }
@@ -124,9 +122,10 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                     {UILocalized.Share}
                 </Text>
                 <View style={styles.messageContainer}>
-                    <Text style={[UITextStyle.primaryBodyRegular, UIStyle.flex]}>
-                        {this.getMessage()}
-                    </Text>
+                    <UILabel
+                        role={UILabel.Role.Description}
+                        text={this.getMessage()}
+                    />
                 </View>
                 <UIButton
                     testID="copy_button"
@@ -134,7 +133,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                     title={UILocalized.Copy}
                     buttonShape={UIButton.ButtonShape.Radius}
                     onPress={this.onCopyPressed}
-                ></UIButton>
+                />
             </View>
         );
     }

@@ -59,12 +59,8 @@ export default class UIProfilePhoto extends UIComponent {
                     source={this.props.source}
                     photoStyle={photoStyle}
                     editable={this.props.editable}
-                    onUploadPhoto={(photo, showHUD, hideHUD) => {
-                        this.props.onUploadPhoto(photo, showHUD, hideHUD);
-                    }}
-                    onDeletePhoto={(showHUD, hideHUD) => {
-                        this.props.onDeletePhoto(showHUD, hideHUD);
-                    }}
+                    onUploadPhoto={this.props.onUploadPhoto}
+                    onDeletePhoto={this.props.onDeletePhoto}
                 />
                 {this.renderOverlay()}
                 {this.renderCameraIcon()}

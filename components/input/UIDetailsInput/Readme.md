@@ -13,7 +13,7 @@ class ExampleComponent extends ThemeSwitcher {
 
     renderContent() {
         return (
-            <View style={UIStyle.greatCellHeight}>
+            <View>
                 <UIDetailsInput
                     theme={this.getTheme()}
                     value={this.state.details}

@@ -8,18 +8,22 @@ import UIStyleBorder from './UIStyleBorder';
 import UIStyleHeight from './UIStyleHeight';
 import UIStyleMargin from './UIStyleMargin';
 import UIStylePadding from './UIStylePadding';
-import UIStyleClass from './UIStyleClass';
+import UIStyleCommon from './UIStyleCommon';
 import UIStyleFlex from './UIStyleFlex';
 import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
 import UIStyleColor from './UIStyleColor';
 
-const absoluteFillObject = {
+const absoluteFillContainer = {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+};
+
+const absoluteFillObject = {
+    ...absoluteFillContainer,
     overflow: 'hidden',
 };
 
@@ -137,6 +141,9 @@ const UIStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    oferflowHidden: {
+        overflow: 'hidden',
+    },
 
     commonShadow: {
         ...UIConstant.commonShadow(),
@@ -153,6 +160,9 @@ const UIStyle = StyleSheet.create({
     },
     threeQuartersWidth: {
         width: '75%',
+    },
+    twoThirdsWidth: {
+        width: '66%',
     },
     halfWidth: {
         width: '50%',
@@ -187,14 +197,23 @@ const UIStyle = StyleSheet.create({
     marginTopHuge: { // 32
         marginTop: UIConstant.hugeContentOffset(),
     },
+    marginTopSpacious: { // 40
+        marginTop: UIConstant.spaciousContentOffset(),
+    },
     marginTopGreat: { // 48
         marginTop: UIConstant.greatContentOffset(),
     },
     marginTopMajor: { // 64
         marginTop: UIConstant.majorContentOffset(),
     },
+    marginTopMassive: { // 72
+        marginTop: UIConstant.massiveContentOffset(),
+    },
     marginTopVast: { // 80
         marginTop: UIConstant.vastContentOffset(),
+    },
+    marginTopTremendous: { // 96
+        marginTop: UIConstant.tremendousContentOffset(),
     },
     marginTopEnormous: { // 104
         marginTop: UIConstant.enormousContentOffset(),
@@ -286,6 +305,9 @@ const UIStyle = StyleSheet.create({
     paddingTopDefault: {
         paddingTop: UIConstant.contentOffset(),
     },
+    paddingBottomSmall: {
+        paddingBottom: UIConstant.smallContentOffset(),
+    },
     paddingBottomDefault: {
         paddingBottom: UIConstant.contentOffset(),
     },
@@ -337,7 +359,10 @@ const UIStyle = StyleSheet.create({
     },
 
     // containers
-    absoluteFillObject: {
+    absoluteFillContainer: {
+        ...absoluteFillContainer,
+    },
+    absoluteFillObject: { // has { overflow: hidden }
         ...absoluteFillObject,
     },
     screenBackground: {
@@ -417,6 +442,11 @@ const UIStyle = StyleSheet.create({
         maxWidth: UIConstant.elasticWidthHuge() / 2,
         alignSelf: 'center',
     },
+    twoThirdsWidthContainer: {
+        width: '66%',
+        maxWidth: UIConstant.elasticWidthHuge() / 3 * 2,
+        alignSelf: 'center',
+    },
     fullWidthPaddingContainer: {
         width: '100%',
         paddingHorizontal: UIConstant.contentOffset(),
@@ -492,7 +522,7 @@ const UIStyle = StyleSheet.create({
 
 UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
-UIStyle.Common = UIStyleClass;
+UIStyle.Common = UIStyleCommon;
 UIStyle.Flex = UIStyleFlex;
 UIStyle.Height = UIStyleHeight;
 UIStyle.Margin = UIStyleMargin;
