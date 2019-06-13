@@ -52,14 +52,18 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
         return '';
     }
 
-    onBlur() {
+    onBlur =() => {
         this.setStateSafely({ highlightError: true });
-        this.props.onBlur && this.props.onBlur();
+        if (this.props.onBlur) {
+            this.props.onBlur();
+        }
     }
 
-    onChangeText(text: string) {
+    onChangeText = (text: string) => {
         this.setStateSafely({ highlightError: false });
-        this.props.onChangeText && this.props.onChangeText(text);
+        if (this.props.onChangeText) {
+            this.props.onChangeText(text);
+        }
     }
 
     // Actions
@@ -90,8 +94,8 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
                 ref={(component) => { this.emailInput = component; }}
                 {...this.props}
                 {...commentColorProp}
-                onBlur={this.onBlur.bind(this)}
-                onChangeText={this.onChangeText.bind(this)}
+                onBlur={this.onBlur}
+                onChangeText={this.onChangeText}
                 keyboardType="email-address"
                 comment={this.getComment()}
                 placeholder={this.getPlaceholder()}
