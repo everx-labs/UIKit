@@ -37,12 +37,21 @@ export default class UIActionComponent<Props, State>
         this.setTapped(false);
     };
 
+    // Virtual
+    onEnter = () => {
+    }
+
+    onLeave = () => {
+    }
+
     onMouseEnter = () => {
         this.setHover();
+        this.onEnter();
     };
 
     onMouseLeave = () => {
         this.setHover(false);
+        this.onLeave();
     };
 
     // Setters

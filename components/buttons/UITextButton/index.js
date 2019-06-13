@@ -13,6 +13,8 @@ import UITooltip from '../../notifications/UITooltip';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
+const TOOLTIP_WIDTH = 'auto';
+
 const styles = StyleSheet.create({
     textButton: {
         height: UIConstant.buttonHeight(),
@@ -34,6 +36,10 @@ const styles = StyleSheet.create({
     },
     flexGrow0: {
         flexGrow: 0,
+    },
+    tooltipContainerStyle: {
+        padding: UIConstant.mediumContentOffset(),
+        width: TOOLTIP_WIDTH,
     },
 });
 
@@ -61,6 +67,19 @@ class UITextButton extends UIActionComponent<Props, State> {
         Left: styles.alignLeft,
         Center: styles.alignCenter,
     };
+
+    // Virtual
+    onEnter = () => {
+        if (this.props.tooltip) {
+            UITooltip.showOnMouseForWeb(this.props.tooltip, styles.tooltipContainerStyle);
+        }
+    }
+
+    onLeave = () => {
+        if (this.props.tooltip) {
+            UITooltip.hideOnMouseForWeb();
+        }
+    }
 
     getStateCustomColorStyle() {
         if (this.isTapped()) {
@@ -90,11 +109,17 @@ class UITextButton extends UIActionComponent<Props, State> {
             : null;
         const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
         const styleColor = iconColor ? UIColor.getTintColorStyle(iconColor) : null;
+
+        const iconStyle = [styleColor];
+        if (this.props.title) {
+            iconStyle.push(isBack ?
+                UIStyle.marginLeftDefault :
+                UIStyle.marginRightDefault);
+        }
+
         return (<Image
             source={icon}
-            style={[
-                isBack ? UIStyle.marginLeftDefault : UIStyle.marginRightDefault,
-                styleColor]}
+            style={iconStyle}
         />);
     }
 
@@ -143,10 +168,10 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     renderContent(): React$Node {
         const {
-            buttonStyle, align, icon, backIcon, tooltip,
+            buttonStyle, align, icon, backIcon,
         } = this.props;
 
-        const result = (
+        return (
             <View
                 style={[
                     styles.textButton,
@@ -160,16 +185,6 @@ class UITextButton extends UIActionComponent<Props, State> {
                 {this.renderDetails()}
             </View>
         );
-
-        if (tooltip) {
-            return (
-                <UITooltip message={tooltip}>
-                    {result}
-                </UITooltip>
-            );
-        }
-
-        return result;
     }
 
     static defaultProps: Props;
