@@ -82,7 +82,7 @@ export default class UIStyleCommon {
     }
 
     static overflowHidden() {
-        return UIStyle.oferflowHidden;
+        return UIStyle.overflowHidden;
     }
 
     // shadow

@@ -47,6 +47,10 @@ import UIMenuBackground from './helpers/UIMenuBackground';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';
+import UINavigationCloseButton from './components/navigation/UINavigationCloseButton';
+import UINavigationIconButton from './components/navigation/UINavigationIconButton';
+import UINavigationPlusButton from './components/navigation/UINavigationPlusButton';
+import UINavigationTextButton from './components/navigation/UINavigationTextButton';
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
@@ -154,6 +158,10 @@ export {
     UIModalController,
     UINavigationBackButton,
     UINavigationBar,
+    UINavigationCloseButton,
+    UINavigationIconButton,
+    UINavigationPlusButton,
+    UINavigationTextButton,
     UINavigator,
     UINetworkStatus,
     UINotice,
