@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIDevice from '../../../helpers/UIDevice';
@@ -82,6 +84,8 @@ type UINavigationBarProps = {
     titleRight?: React$Node,
     headerLeft?: AnyComponent,
     headerRight?: AnyComponent,
+    containerStyle?: ViewStyleProp,
+    buttonsContainerStyle?: ViewStyleProp,
 }
 
 export default class UINavigationBar extends UIComponent<UINavigationBarProps, *> {
@@ -137,23 +141,36 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         return this.props.headerRight;
     }
 
-    // Component
-    render() {
+    renderTitleView(): React$Node {
         const { title, titleRight } = this.props;
+        if (!title) {
+            return null;
+        }
+
+        return (
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>{title}</Text>
+                {titleRight}
+            </View>
+        );
+    }
+
+    // Component
+    render(): React$Node {
+        const {
+            title, containerStyle, buttonsContainerStyle,
+        } = this.props;
         const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
         return (
-            <View style={styles.container}>
+            <View style={containerStyle || styles.container}>
                 <View
                     {...testIDProp}
-                    style={styles.buttonsContainer}
+                    style={[styles.buttonsContainer, buttonsContainerStyle]}
                 >
                     {this.getHeaderLeft()}
                     {this.getHeaderRight()}
                 </View>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.titleText}>{this.getTitle()}</Text>
-                    {titleRight}
-                </View>
+                {this.renderTitleView()}
             </View>
         );
     }

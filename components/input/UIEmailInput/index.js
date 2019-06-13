@@ -9,9 +9,21 @@ import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
 import UIColor from '../../../helpers/UIColor';
 
-export default class UIEmailInput extends UIComponent<DetailsProps, ActionState> {
+export type EmailState = {
+    highlightError: boolean,
+};
+
+export default class UIEmailInput extends UIComponent<DetailsProps, ActionState & EmailState> {
     static defaultProps: DetailsProps = detailsDefaultProps;
     emailInput: ?UIDetailsInput<DetailsProps, ActionState>;
+
+    consructor(props: DetailsProps) {
+        this.state = {
+            highlightError: false,
+            tapped: false,
+            hover: false,
+        };
+    }
 
     // Getters
     isSubmitDisabled() {
@@ -34,10 +46,24 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState>
 
     getComment() {
         const { value } = this.props;
-        if (value && this.isSubmitDisabled()) {
+        if (value && this.isSubmitDisabled() && this.state.highlightError) {
             return UILocalized.InvalidEmail;
         }
         return '';
+    }
+
+    onBlur =() => {
+        this.setStateSafely({ highlightError: true });
+        if (this.props.onBlur) {
+            this.props.onBlur();
+        }
+    }
+
+    onChangeText = (text: string) => {
+        this.setStateSafely({ highlightError: false });
+        if (this.props.onChangeText) {
+            this.props.onChangeText(text);
+        }
     }
 
     // Actions
@@ -68,6 +94,8 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState>
                 ref={(component) => { this.emailInput = component; }}
                 {...this.props}
                 {...commentColorProp}
+                onBlur={this.onBlur}
+                onChangeText={this.onChangeText}
                 keyboardType="email-address"
                 comment={this.getComment()}
                 placeholder={this.getPlaceholder()}

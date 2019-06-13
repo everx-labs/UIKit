@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     },
     activeBorder: {
         borderTopWidth: 2,
+        marginTop: -1,
         borderColor: UIColor.primary(),
     },
     border: {
@@ -75,23 +76,31 @@ export default class UIStepBar extends UIComponent<Props, State> {
     // Render
     render() {
         const { itemsList, activeIndex, onPress } = this.props;
+
         const items = itemsList.map((item, index) => {
-            const borderStyle = index <= activeIndex ? styles.activeBorder : styles.border;
+            const scrolledItemsCount = Math.trunc(activeIndex);
+            const borderStyle = index <= scrolledItemsCount ? styles.activeBorder : null;
+            let width = '100%';
+            if (index === scrolledItemsCount) {
+                width = `${(activeIndex - scrolledItemsCount) * 100}%`;
+            }
             return (
-                <TouchableOpacity
-                    key={`stepbar-item-${item}`}
-                    style={[UIStyle.centerContainer, borderStyle]}
-                    onPress={() => onPress(index)}
-                >
-                    <Text style={UITextStyle.primaryTinyMedium}>
-                        {item}
-                    </Text>
-                </TouchableOpacity>
+                <View style={UIStyle.Common.flex()} key={`stepbar-item-${item}`}>
+                    <View style={[borderStyle, { width }]} />
+                    <TouchableOpacity
+                        style={[UIStyle.centerContainer]}
+                        onPress={() => onPress(index)}
+                    >
+                        <Text style={UITextStyle.primaryTinyMedium}>
+                            {item}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             );
         });
 
         return (
-            <View style={[UIStyle.flexRow, styles.container]}>
+            <View style={[UIStyle.flexRow, styles.container, styles.border]}>
                 {items}
             </View>
         );

@@ -95,6 +95,10 @@ export default class UIColor {
         return UIColorPalette.dark;
     }
 
+    static whiteLight() {
+        return UIColorPalette.whiteLight;
+    }
+
     static grey() {
         return UIColorPalette.grey;
     }

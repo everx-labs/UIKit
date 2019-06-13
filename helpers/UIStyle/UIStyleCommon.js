@@ -9,6 +9,10 @@ export default class UIStyleCommon {
         return UIStyle.flex3;
     }
 
+    static flexColumn() {
+        return UIStyle.flexColumn;
+    }
+
     static flexRow() {
         return UIStyle.flexRow;
     }
