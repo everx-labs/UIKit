@@ -5,6 +5,7 @@ import { Text, View } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
+import UIColor from '../../../helpers/UIColor';
 
 import UIComponent from '../../UIComponent';
 
@@ -18,6 +19,7 @@ const LabelRole = Object.freeze({
     Caption: 'caption',
     SecondaryBody: 'secondaryBody',
     CaptionTertiary: 'captionTertiary',
+    CaptionWarning: 'captionWarning',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -79,6 +81,11 @@ export default class UILabel extends UIComponent<Props, State> {
         } else if (role === UILabel.Role.CaptionTertiary) {
             result.push(
                 UIStyle.Color.textTertiary(),
+                UIStyle.Text.captionRegular(),
+            );
+        } else if (role === UILabel.Role.CaptionWarning) {
+            result.push(
+                UIStyle.Color.getColorStyle(UIColor.detailsInputComment()),
                 UIStyle.Text.captionRegular(),
             );
         }
