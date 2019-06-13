@@ -33,6 +33,7 @@ import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
+import UIIdleDetector from './components/UIIdleDetector';
 import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/images/UIImageView';
@@ -144,6 +145,7 @@ export {
     UIFont,
     UITextStyle,
     UIFunction,
+    UIIdleDetector,
     UIImage,
     UIImageButton,
     UIImageView,
