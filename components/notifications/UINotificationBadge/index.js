@@ -30,7 +30,7 @@ type Props = {
 
 type State = {};
 
-export default class UIBadge extends UIComponent<Props, State> {
+export default class UINotificationBadge extends UIComponent<Props, State> {
     static defaultProps = {
         containerStyle: {},
         value: 0,

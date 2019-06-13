@@ -55,6 +55,7 @@ import UINavigationTextButton from './components/navigation/UINavigationTextButt
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
+import UINotificationBadge from './components/notifications/UINotificationBadge';
 import UINumberInput from './components/input/UINumberInput';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
@@ -167,6 +168,7 @@ export {
     UINavigator,
     UINetworkStatus,
     UINotice,
+    UINotificationBadge,
     UINumberInput,
     UIPasswordPrompt,
     UIPhoneInput,
