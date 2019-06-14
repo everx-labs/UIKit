@@ -343,6 +343,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text tertiary]
+    // Title - fontSize: 36, lineHeight: 48
+    tertiaryTitleLight: {
+        ...tertiary,
+        ...UIFont.titleLight(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     tertiaryBodyRegular: {
         ...tertiary,
