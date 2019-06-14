@@ -100,7 +100,7 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     renderTitle() {
         const {
-            title, textStyle, details, theme, disabled, tooltip,
+            title, textStyle, details, theme, disabled,
         } = this.props;
         if (!title) return null;
         const defaultFontStyle = UIFont.smallMedium();
@@ -113,7 +113,7 @@ class UITextButton extends UIActionComponent<Props, State> {
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
 
-        const result = (
+        return (
             <Text
                 style={[
                     defaultFontStyle,
@@ -127,16 +127,6 @@ class UITextButton extends UIActionComponent<Props, State> {
                 {title}
             </Text>
         );
-
-        if (tooltip) {
-            return (
-                <UITooltip message={tooltip}>
-                    {result}
-                </UITooltip>
-            );
-        }
-
-        return result;
     }
 
     renderDetails() {
@@ -153,10 +143,10 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     renderContent(): React$Node {
         const {
-            buttonStyle, align, icon, backIcon,
+            buttonStyle, align, icon, backIcon, tooltip,
         } = this.props;
 
-        return (
+        const result = (
             <View
                 style={[
                     styles.textButton,
@@ -170,6 +160,16 @@ class UITextButton extends UIActionComponent<Props, State> {
                 {this.renderDetails()}
             </View>
         );
+
+        if (tooltip) {
+            return (
+                <UITooltip message={tooltip}>
+                    {result}
+                </UITooltip>
+            );
+        }
+
+        return result;
     }
 
     static defaultProps: Props;
