@@ -84,6 +84,7 @@ type State = {
     marginLeft: AnimatedValue,
     pageWidth: number,
     externalMessageComponent: Node,
+    flashContainerLayoutWidth: number,
 };
 
 type Props = {};

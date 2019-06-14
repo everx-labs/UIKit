@@ -47,6 +47,7 @@ type ToastObject = {
     placement?: Placement,
     autoHide?: boolean,
     action?: NoticeAction,
+    duration?: number,
 }
 
 export default class UIToastMessage {

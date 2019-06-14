@@ -38,10 +38,10 @@ export default class UIActionComponent<Props, State>
     };
 
     // Virtual
-    onEnter = () => {
+    onEnter = (): void => {
     }
 
-    onLeave = () => {
+    onLeave = (): void => {
     }
 
     onMouseEnter = () => {
