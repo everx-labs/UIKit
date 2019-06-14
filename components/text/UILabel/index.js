@@ -80,14 +80,17 @@ export default class UILabel extends UIComponent<Props, State> {
     }
 
     getDefaultSpaceStyle(): ViewStyleProp {
-        if (!this.props.useDefaultSpace) { return null; }
+        if (!this.props.useDefaultSpace) {
+            return null;
+        }
         const role = this.getRole();
-
         if (role === UILabel.Role.Title) {
             return UIStyle.Margin.topMedium();
         } else if (role === UILabel.Role.Subtitle) {
             return UIStyle.Margin.topDefault();
         } else if (role === UILabel.Role.SecondaryBody) {
+            return UIStyle.Margin.topSmall();
+        } else if (role === UILabel.Role.Description) {
             return UIStyle.Margin.topSmall();
         }
         return null;
