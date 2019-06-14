@@ -151,6 +151,7 @@ export default class UINotice
             pageWidth: 0,
 
             externalMessageComponent: null,
+            flashContainerLayoutWidth: 0,
         };
     }
 
@@ -171,6 +172,11 @@ export default class UINotice
             this.setPageWidth(width);
         }
     };
+
+    onFlashContainerLayout = (e: ViewLayoutEvent) => {
+        const { width } = e.nativeEvent.layout;
+        this.setStateSafely({ flashContainerLayoutWidth: width });
+    }
 
     // Setters
     setMarginLeft(marginLeft: AnimatedValue, callback?: () => void) {
@@ -215,12 +221,15 @@ export default class UINotice
 
     getPosition(placement: Placement) {
         const { Bottom, BottomRight } = UINotice.Place;
+
         if (placement === Bottom) {
-            return { bottom: this.getMaxInset() };
+            const right = this.state.flashContainerLayoutWidth - UIConstant.noticeWidth();
+            return { bottom: this.getMaxInset(), right };
         }
         // TODO
         if (placement === BottomRight) {
-            return { bottom: this.getMaxInset() };
+            const right = this.state.flashContainerLayoutWidth - UIConstant.noticeWidth();
+            return { bottom: this.getMaxInset(), right };
         }
         return placement;
     }
@@ -264,9 +273,13 @@ export default class UINotice
     showToastMessage(messageObject: MessageObject, messageComponent: Node) {
         this.setExternalMessageComponent(messageComponent);
         const bottom = this.getMaxInset();
+
+        // toast message is centered
+        const offset = (this.state.flashContainerLayoutWidth - UIConstant.noticeWidth()) / 2;
+
         showMessage({
             animationDuration: UIConstant.animationDuration(),
-            position: ({ bottom }: any),
+            position: ({ bottom, right: offset, left: offset }: any),
             ...messageObject,
         });
     }
@@ -384,7 +397,7 @@ export default class UINotice
         const component = this.getExternalMessageComponent() || this.renderMessageComponent();
         return (
             <SafeAreaView style={{ flex: 1 }} pointerEvents="box-none">
-                <View style={{ flex: 1 }} pointerEvents="box-none">
+                <View style={{ flex: 1 }} onLayout={this.onFlashContainerLayout} pointerEvents="box-none">
                     <FlashMessage
                         MessageComponent={() => component}
                     />
