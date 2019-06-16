@@ -12,11 +12,11 @@ const LabelRole = Object.freeze({
     Title: 'title',
     Subtitle: 'subtitle',
     Description: 'description',
-    BoldDescription: 'boldDescription',
-    SmallAction: 'smallAction',
+    BoldDescription: 'boldDescription', // TODO: rename descriptionBold
+    Action: 'action',
     Note: 'note',
-    SecondaryBody: 'secondaryBody',
-    Caption: 'caption',
+    SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
+    Caption: 'caption', // TODO: rename as captionSecondary
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
 });
@@ -69,7 +69,7 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryBodyRegular());
         } else if (role === UILabel.Role.BoldDescription) {
             result.push(UIStyle.Text.primaryBodyBold());
-        } else if (role === UILabel.Role.SmallAction) {
+        } else if (role === UILabel.Role.Action) {
             result.push(UIStyle.Text.primarySmallMedium());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
