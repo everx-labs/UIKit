@@ -47,7 +47,7 @@ const grey1 = {
 
 const error = {
     ...text,
-    color: UIColor.error(),
+    color: UIColor.detailsInputComment(),
 };
 
 const success = {

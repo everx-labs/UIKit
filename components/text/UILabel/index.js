@@ -15,8 +15,10 @@ const LabelRole = Object.freeze({
     BoldDescription: 'boldDescription',
     SmallAction: 'smallAction',
     Note: 'note',
-    Caption: 'caption',
     SecondaryBody: 'secondaryBody',
+    Caption: 'caption',
+    CaptionTertiary: 'captionTertiary',
+    CaptionWarning: 'captionWarning',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -71,10 +73,14 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primarySmallMedium());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
-        } else if (role === UILabel.Role.Caption) {
-            result.push(UIStyle.Text.secondaryCaptionRegular());
         } else if (role === UILabel.Role.SecondaryBody) {
             result.push(UIStyle.Text.secondaryBodyRegular());
+        } else if (role === UILabel.Role.Caption) {
+            result.push(UIStyle.Text.secondaryCaptionRegular());
+        } else if (role === UILabel.Role.CaptionTertiary) {
+            result.push(UIStyle.Text.tertiaryCaptionRegular());
+        } else if (role === UILabel.Role.CaptionWarning) {
+            result.push(UIStyle.Text.errorCaptionRegular());
         }
         return result;
     }
