@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
@@ -179,7 +180,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
         if (!this.shouldShowIndicator()) {
             return null;
         }
-        return <ActivityIndicator size={20} color={UIColor.white()} />;
+        return (<MaterialIndicator color={UIColor.white()} size={20} />);
     }
 
     renderBottomExtension() {
