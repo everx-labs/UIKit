@@ -223,13 +223,19 @@ export default class UINotice
     getPosition(placement: Placement) {
         const { Bottom, BottomRight } = UINotice.Place;
 
+        // if not to set correct 'left/right' property,
+        // then flashMessage streches horizontally and
+        // blocks touchs on all horizontal space.
+        const right = Math.max(
+            this.state.flashContainerLayoutWidth - UIConstant.noticeWidth(),
+            0,
+        );
+
         if (placement === Bottom) {
-            const right = this.state.flashContainerLayoutWidth - UIConstant.noticeWidth();
             return { bottom: this.getMaxInset(), right };
         }
         // TODO
         if (placement === BottomRight) {
-            const right = this.state.flashContainerLayoutWidth - UIConstant.noticeWidth();
             return { bottom: this.getMaxInset(), right };
         }
         return placement;
@@ -276,7 +282,14 @@ export default class UINotice
         const bottom = this.getMaxInset();
 
         // toast message is centered
-        const offset = (this.state.flashContainerLayoutWidth - UIConstant.noticeWidth()) / 2;
+        // if not to set correct 'left/right' property,
+        // then flashMessage streches horizontally and
+        // blocks touchs on all horizontal space.
+        const parentSpace = Math.max(
+            this.state.flashContainerLayoutWidth - UIConstant.noticeWidth(),
+            0,
+        );
+        const offset = parentSpace / 2;
 
         showMessage({
             animationDuration: UIConstant.animationDuration(),
@@ -397,8 +410,12 @@ export default class UINotice
     render() {
         const component = this.getExternalMessageComponent() || this.renderMessageComponent();
         return (
-            <SafeAreaView style={{ flex: 1 }} pointerEvents="box-none">
-                <View style={{ flex: 1 }} onLayout={this.onFlashContainerLayout} pointerEvents="box-none">
+            <SafeAreaView style={UIStyle.Common.flex()} pointerEvents="box-none">
+                <View
+                    style={UIStyle.Common.flex()}
+                    onLayout={this.onFlashContainerLayout}
+                    pointerEvents="box-none"
+                >
                     <FlashMessage
                         MessageComponent={() => component}
                     />
