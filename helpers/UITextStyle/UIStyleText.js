@@ -231,6 +231,11 @@ export default class UIStyleText {
         return UITextStyle.tertiaryTinyBold;
     }
 
+    // Caption - fontSize: 14, lineHeight: 20
+    static warningCaptionRegular() {
+        return UITextStyle.warningCaptionRegular;
+    }
+
     // [Text white]
     // Key - fontSize: 96, lineHeight: 128
     static whiteKeyBold() {

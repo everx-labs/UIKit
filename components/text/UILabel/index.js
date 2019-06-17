@@ -79,15 +79,9 @@ export default class UILabel extends UIComponent<Props, State> {
         } else if (role === UILabel.Role.SecondaryBody) {
             result.push(UIStyle.Text.secondaryBodyRegular());
         } else if (role === UILabel.Role.CaptionTertiary) {
-            result.push(
-                UIStyle.Color.textTertiary(),
-                UIStyle.Text.captionRegular(),
-            );
+            result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
-            result.push(
-                UIStyle.Color.getColorStyle(UIColor.detailsInputComment()),
-                UIStyle.Text.captionRegular(),
-            );
+            result.push(UIStyle.Text.warningCaptionRegular());
         }
         return result;
     }

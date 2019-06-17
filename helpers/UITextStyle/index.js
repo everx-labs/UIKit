@@ -20,6 +20,11 @@ const caution = {
     color: UIColor.textCaution(),
 };
 
+const warning = {
+    ...text,
+    color: UIColor.detailsInputComment(),
+};
+
 const secondary = {
     ...text,
     color: UIColor.textSecondary(),
@@ -372,6 +377,10 @@ const UITextStyle = StyleSheet.create({
     tertiaryTinyBold: {
         ...tertiary,
         ...UIFont.tinyBold(),
+    },
+    warningCaptionRegular: {
+        ...warning,
+        ...UIFont.captionRegular(),
     },
 
     // [Text white]
