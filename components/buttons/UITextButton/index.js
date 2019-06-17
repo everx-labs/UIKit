@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, Text, Image, View } from 'react-native';
+import { StyleSheet, Text, Image, View, Platform } from 'react-native';
 
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     flexGrow0: {
         flexGrow: 0,
     },
+    // web-only style
     tooltipContainerStyle: {
         padding: UIConstant.mediumContentOffset(),
         width: TOOLTIP_WIDTH,
@@ -70,8 +71,13 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     // Virtual
     onEnter = () => {
+        const webStyle = (
+            Platform.OS === 'web' ?
+                styles.tooltipContainerStyle :
+                null
+        );
         if (this.props.tooltip) {
-            UITooltip.showOnMouseForWeb(this.props.tooltip, styles.tooltipContainerStyle);
+            UITooltip.showOnMouseForWeb(this.props.tooltip, webStyle);
         }
     }
 
