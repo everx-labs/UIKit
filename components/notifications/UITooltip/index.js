@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
 let masterMouseMoveListener = null;
 
 export default class UITooltip extends UIComponent<Props, State> {
-    static showOnMouseForWeb(message: string) {
+    static showOnMouseForWeb(message: string, tooltipContainerStyle?: StylePropType) {
         UITooltip.initMouseMoveListenerForWeb();
         UILayoutManager.showComponent({
-            component: UITooltip.renderTooltip(message, styles.onMouseContainer),
+            component: UITooltip.renderTooltip(message, tooltipContainerStyle || styles.onMouseContainer),
             animation: tooltipAnimation,
         });
     }

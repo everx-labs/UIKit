@@ -84,6 +84,7 @@ type State = {
     marginLeft: AnimatedValue,
     pageWidth: number,
     externalMessageComponent: Node,
+    flashContainerLayoutWidth: number,
 };
 
 type Props = {};
@@ -151,6 +152,7 @@ export default class UINotice
             pageWidth: 0,
 
             externalMessageComponent: null,
+            flashContainerLayoutWidth: 0,
         };
     }
 
@@ -171,6 +173,11 @@ export default class UINotice
             this.setPageWidth(width);
         }
     };
+
+    onFlashContainerLayout = (e: ViewLayoutEvent) => {
+        const { width } = e.nativeEvent.layout;
+        this.setStateSafely({ flashContainerLayoutWidth: width });
+    }
 
     // Setters
     setMarginLeft(marginLeft: AnimatedValue, callback?: () => void) {
@@ -215,12 +222,21 @@ export default class UINotice
 
     getPosition(placement: Placement) {
         const { Bottom, BottomRight } = UINotice.Place;
+
+        // if not to set correct 'left/right' property,
+        // then flashMessage streches horizontally and
+        // blocks touchs on all horizontal space.
+        const right = Math.max(
+            this.state.flashContainerLayoutWidth - UIConstant.noticeWidth(),
+            0,
+        );
+
         if (placement === Bottom) {
-            return { bottom: this.getMaxInset() };
+            return { bottom: this.getMaxInset(), right };
         }
         // TODO
         if (placement === BottomRight) {
-            return { bottom: this.getMaxInset() };
+            return { bottom: this.getMaxInset(), right };
         }
         return placement;
     }
@@ -264,9 +280,20 @@ export default class UINotice
     showToastMessage(messageObject: MessageObject, messageComponent: Node) {
         this.setExternalMessageComponent(messageComponent);
         const bottom = this.getMaxInset();
+
+        // toast message is centered
+        // if not to set correct 'left/right' property,
+        // then flashMessage streches horizontally and
+        // blocks touchs on all horizontal space.
+        const parentSpace = Math.max(
+            this.state.flashContainerLayoutWidth - UIConstant.noticeWidth(),
+            0,
+        );
+        const offset = parentSpace / 2;
+
         showMessage({
             animationDuration: UIConstant.animationDuration(),
-            position: ({ bottom }: any),
+            position: ({ bottom, right: offset, left: offset }: any),
             ...messageObject,
         });
     }
@@ -383,8 +410,12 @@ export default class UINotice
     render() {
         const component = this.getExternalMessageComponent() || this.renderMessageComponent();
         return (
-            <SafeAreaView style={{ flex: 1 }} pointerEvents="box-none">
-                <View style={{ flex: 1 }} pointerEvents="box-none">
+            <SafeAreaView style={UIStyle.Common.flex()} pointerEvents="box-none">
+                <View
+                    style={UIStyle.Common.flex()}
+                    onLayout={this.onFlashContainerLayout}
+                    pointerEvents="box-none"
+                >
                     <FlashMessage
                         MessageComponent={() => component}
                     />

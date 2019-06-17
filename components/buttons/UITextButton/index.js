@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, Text, Image, View } from 'react-native';
+import { StyleSheet, Text, Image, View, Platform } from 'react-native';
 
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
@@ -12,6 +12,8 @@ import UIColor from '../../../helpers/UIColor';
 import UITooltip from '../../notifications/UITooltip';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
+
+const TOOLTIP_WIDTH = 'auto';
 
 const styles = StyleSheet.create({
     textButton: {
@@ -34,6 +36,11 @@ const styles = StyleSheet.create({
     },
     flexGrow0: {
         flexGrow: 0,
+    },
+    // web-only style
+    tooltipContainerStyle: {
+        padding: UIConstant.mediumContentOffset(),
+        width: TOOLTIP_WIDTH,
     },
 });
 
@@ -61,6 +68,24 @@ class UITextButton extends UIActionComponent<Props, State> {
         Left: styles.alignLeft,
         Center: styles.alignCenter,
     };
+
+    // Virtual
+    onEnter = () => {
+        const webStyle = (
+            Platform.OS === 'web' ?
+                styles.tooltipContainerStyle :
+                null
+        );
+        if (this.props.tooltip) {
+            UITooltip.showOnMouseForWeb(this.props.tooltip, webStyle);
+        }
+    }
+
+    onLeave = () => {
+        if (this.props.tooltip) {
+            UITooltip.hideOnMouseForWeb();
+        }
+    }
 
     getStateCustomColorStyle() {
         if (this.isTapped()) {
@@ -90,17 +115,23 @@ class UITextButton extends UIActionComponent<Props, State> {
             : null;
         const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
         const styleColor = iconColor ? UIColor.getTintColorStyle(iconColor) : null;
+
+        const iconStyle = [styleColor];
+        if (this.props.title) {
+            iconStyle.push(isBack ?
+                UIStyle.marginLeftDefault :
+                UIStyle.marginRightDefault);
+        }
+
         return (<Image
             source={icon}
-            style={[
-                isBack ? UIStyle.marginLeftDefault : UIStyle.marginRightDefault,
-                styleColor]}
+            style={iconStyle}
         />);
     }
 
     renderTitle() {
         const {
-            title, textStyle, details, theme, disabled, tooltip,
+            title, textStyle, details, theme, disabled,
         } = this.props;
         if (!title) return null;
         const defaultFontStyle = UIFont.smallMedium();
@@ -113,7 +144,7 @@ class UITextButton extends UIActionComponent<Props, State> {
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
 
-        const result = (
+        return (
             <Text
                 style={[
                     defaultFontStyle,
@@ -127,16 +158,6 @@ class UITextButton extends UIActionComponent<Props, State> {
                 {title}
             </Text>
         );
-
-        if (tooltip) {
-            return (
-                <UITooltip message={tooltip}>
-                    {result}
-                </UITooltip>
-            );
-        }
-
-        return result;
     }
 
     renderDetails() {

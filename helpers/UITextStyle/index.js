@@ -47,6 +47,11 @@ const grey1 = {
 
 const error = {
     ...text,
+    color: UIColor.error(),
+};
+
+const warning = {
+    ...text,
     color: UIColor.detailsInputComment(),
 };
 
@@ -459,6 +464,12 @@ const UITextStyle = StyleSheet.create({
     },
     errorCaptionRegular: {
         ...error,
+        ...UIFont.captionRegular(),
+    },
+
+    // [Text Warning]
+    warningCaptionRegular: {
+        ...warning,
         ...UIFont.captionRegular(),
     },
 });

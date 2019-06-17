@@ -5,6 +5,7 @@ import { Text, View } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
+import UIColor from '../../../helpers/UIColor';
 
 import UIComponent from '../../UIComponent';
 
@@ -80,7 +81,7 @@ export default class UILabel extends UIComponent<Props, State> {
         } else if (role === UILabel.Role.CaptionTertiary) {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
-            result.push(UIStyle.Text.errorCaptionRegular());
+            result.push(UIStyle.Text.warningCaptionRegular());
         }
         return result;
     }
