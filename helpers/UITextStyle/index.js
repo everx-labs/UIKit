@@ -52,7 +52,7 @@ const grey1 = {
 
 const error = {
     ...text,
-    color: UIColor.error(),
+    color: UIColor.detailsInputComment(),
 };
 
 const success = {
@@ -348,6 +348,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text tertiary]
+    // Title - fontSize: 36, lineHeight: 48
+    tertiaryTitleLight: {
+        ...tertiary,
+        ...UIFont.titleLight(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     tertiaryBodyRegular: {
         ...tertiary,

@@ -81,6 +81,8 @@ const UI_ELASTIC_WIDTH_BROAD = 1000;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 const UI_ELASTIC_WIDTH_HUGE = 1600;
 
+const UI_MASTER_SCREEN_WIDTH = 320;
+
 const UI_MAX_SCREEN_HEIGHT = 1280;
 
 const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
@@ -416,6 +418,10 @@ export default class UIConstant {
 
     static elasticWidthHuge() {
         return UI_ELASTIC_WIDTH_HUGE;
+    }
+
+    static masterScreenWidth() {
+        return UI_MASTER_SCREEN_WIDTH;
     }
 
     static maxScreenHeight() {

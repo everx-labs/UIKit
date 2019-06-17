@@ -510,7 +510,7 @@ const UIStyle = StyleSheet.create({
     },
     masterViewController: {
         flex: 1,
-        maxWidth: UIConstant.elasticWidthRegular(),
+        maxWidth: UIConstant.masterScreenWidth(),
         overflow: 'hidden',
     },
     detailViewController: {

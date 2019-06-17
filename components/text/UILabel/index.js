@@ -13,11 +13,11 @@ const LabelRole = Object.freeze({
     Title: 'title',
     Subtitle: 'subtitle',
     Description: 'description',
-    BoldDescription: 'boldDescription',
-    SmallAction: 'smallAction',
+    BoldDescription: 'boldDescription', // TODO: rename descriptionBold
+    Accent: 'accent',
     Note: 'note',
-    Caption: 'caption',
-    SecondaryBody: 'secondaryBody',
+    SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
+    Caption: 'caption', // TODO: rename as captionSecondary
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
 });
@@ -70,14 +70,14 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryBodyRegular());
         } else if (role === UILabel.Role.BoldDescription) {
             result.push(UIStyle.Text.primaryBodyBold());
-        } else if (role === UILabel.Role.SmallAction) {
+        } else if (role === UILabel.Role.Accent) {
             result.push(UIStyle.Text.primarySmallMedium());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
-        } else if (role === UILabel.Role.Caption) {
-            result.push(UIStyle.Text.secondaryCaptionRegular());
         } else if (role === UILabel.Role.SecondaryBody) {
             result.push(UIStyle.Text.secondaryBodyRegular());
+        } else if (role === UILabel.Role.Caption) {
+            result.push(UIStyle.Text.secondaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionTertiary) {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
@@ -87,14 +87,17 @@ export default class UILabel extends UIComponent<Props, State> {
     }
 
     getDefaultSpaceStyle(): ViewStyleProp {
-        if (!this.props.useDefaultSpace) { return null; }
+        if (!this.props.useDefaultSpace) {
+            return null;
+        }
         const role = this.getRole();
-
         if (role === UILabel.Role.Title) {
             return UIStyle.Margin.topMedium();
         } else if (role === UILabel.Role.Subtitle) {
             return UIStyle.Margin.topDefault();
         } else if (role === UILabel.Role.SecondaryBody) {
+            return UIStyle.Margin.topSmall();
+        } else if (role === UILabel.Role.Description) {
             return UIStyle.Margin.topSmall();
         }
         return null;
