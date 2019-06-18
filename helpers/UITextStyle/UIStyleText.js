@@ -218,6 +218,10 @@ export default class UIStyleText {
     static tertiarySmallRegular() {
         return UITextStyle.tertiarySmallRegular;
     }
+    // Small - fontSize: 16, lineHeight: 20
+    static quaternarySmallRegular() {
+        return UITextStyle.quaternarySmallRegular;
+    }
     // Caption - fontSize: 14, lineHeight: 20
     static tertiaryCaptionRegular() {
         return UITextStyle.tertiaryCaptionRegular;
