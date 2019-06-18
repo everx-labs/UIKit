@@ -12,6 +12,9 @@ type Props = ActionProps & {
 
 type State = ActionState;
 
+const SCALE_IN_FACTOR = 0.94;
+const SCALE_OUT_FACTOR = 1.0;
+
 export default class UIScaleButton extends UIActionComponent<Props, State> {
     // constructor
     constructor(props: Props) {
@@ -39,13 +42,13 @@ export default class UIScaleButton extends UIActionComponent<Props, State> {
     // Actions
     scaleIn() {
         Animated.spring(this.state.scale, {
-            toValue: 0.94,
+            toValue: SCALE_IN_FACTOR,
         }).start();
     }
 
     scaleOut() {
         Animated.spring(this.state.scale, {
-            toValue: 1.0,
+            toValue: SCALE_OUT_FACTOR,
         }).start();
     }
 
@@ -56,7 +59,7 @@ export default class UIScaleButton extends UIActionComponent<Props, State> {
             <Animated.View
                 style={{ transform: [{ scale }] }}
             >
-                {this.props.content}
+                {this.props.content || this.props.children}
             </Animated.View>
         );
     }
