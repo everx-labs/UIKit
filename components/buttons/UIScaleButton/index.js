@@ -2,20 +2,28 @@
 import React from 'react';
 import { Animated } from 'react-native';
 
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+
 import UIActionComponent from '../../UIActionComponent';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 type Props = ActionProps & {
     content: React$Node,
+    style: ViewStyleProp,
 }
 
 type State = ActionState;
 
-const SCALE_IN_FACTOR = 0.94;
-const SCALE_OUT_FACTOR = 1.0;
+const SCALE_IN_FACTOR = 0.95;
 
 export default class UIScaleButton extends UIActionComponent<Props, State> {
+    static defaultProps = {
+        ...UIActionComponent.defaultProps,
+        style: {},
+        scaleInFactor: SCALE_IN_FACTOR,
+    }
+
     // constructor
     constructor(props: Props) {
         super(props);
@@ -42,13 +50,13 @@ export default class UIScaleButton extends UIActionComponent<Props, State> {
     // Actions
     scaleIn() {
         Animated.spring(this.state.scale, {
-            toValue: SCALE_IN_FACTOR,
+            toValue: this.props.scaleInFactor,
         }).start();
     }
 
     scaleOut() {
         Animated.spring(this.state.scale, {
-            toValue: SCALE_OUT_FACTOR,
+            toValue: 1.0,
         }).start();
     }
 
@@ -57,7 +65,7 @@ export default class UIScaleButton extends UIActionComponent<Props, State> {
         const { scale } = this.state;
         return (
             <Animated.View
-                style={{ transform: [{ scale }] }}
+                style={[this.props.style, { transform: [{ scale }] }]}
             >
                 {this.props.content || this.props.children}
             </Animated.View>
