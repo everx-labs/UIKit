@@ -256,7 +256,7 @@ const UIStyle = StyleSheet.create({
     marginRightDefault: { // 16
         marginRight: UIConstant.contentOffset(),
     },
-    marginRightMedium: {
+    marginRightMedium: { // 24
         marginRight: UIConstant.mediumContentOffset(),
     },
     marginRightHuge: { // 32
@@ -266,8 +266,17 @@ const UIStyle = StyleSheet.create({
     marginLeftTiny: { // 4
         marginLeft: UIConstant.tinyContentOffset(),
     },
+    marginLeftSmall: { // 8
+        marginLeft: UIConstant.smallContentOffset(),
+    },
+    marginLeftNormal: { // 12
+        marginLeft: UIConstant.normalContentOffset(),
+    },
     marginLeftDefault: { // 16
         marginLeft: UIConstant.contentOffset(),
+    },
+    marginLeftMedium: { // 24
+        marginLeft: UIConstant.mediumContentOffset(),
     },
     marginLeftHuge: { // 32
         marginLeft: UIConstant.hugeContentOffset(),
