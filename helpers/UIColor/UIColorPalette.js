@@ -37,7 +37,7 @@ const UIColorPalette = {
 
     success: '#27AE60',
     warning: '#F2C94C',
-    error: '#EB5757',
+    error: '#CC0022',
     text: {
         lightPrimary: '#000000',
         darkPrimary: '#FFFFFF',
@@ -68,7 +68,6 @@ const UIColorPalette = {
         separatorChat: '#9FA6A9',
     },
     unconfirmedPassport: '#FF9800',
-    logout: '#CC0022',
     walletVersion: '#BEC4C8',
     avatar: [
         '#EF5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#1E88E5', '#0288D1',

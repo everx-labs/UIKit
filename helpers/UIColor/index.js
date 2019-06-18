@@ -348,10 +348,6 @@ export default class UIColor {
         return UIColorPalette.unconfirmedPassport;
     }
 
-    static logout() {
-        return UIColorPalette.logout;
-    }
-
     static walletVersion() {
         return UIColorPalette.walletVersion;
     }
