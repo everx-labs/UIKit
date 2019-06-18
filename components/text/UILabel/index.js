@@ -12,6 +12,7 @@ import UIComponent from '../../UIComponent';
 const LabelRole = Object.freeze({
     Title: 'title',
     Subtitle: 'subtitle',
+    SubtitleRegular: 'subtitleRegular',
     Description: 'description',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
     Accent: 'accent',
@@ -66,6 +67,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryTitleBold());
         } else if (role === UILabel.Role.Subtitle) {
             result.push(UIStyle.Text.primarySubtitleBold());
+        } else if (role === UILabel.Role.SubtitleRegular) {
+            result.push(UIStyle.Text.primarySubtitleRegular());
         } else if (role === UILabel.Role.Description) {
             result.push(UIStyle.Text.primaryBodyRegular());
         } else if (role === UILabel.Role.BoldDescription) {
