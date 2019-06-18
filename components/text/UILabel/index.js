@@ -5,7 +5,6 @@ import { Text, View } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
-import UIColor from '../../../helpers/UIColor';
 
 import UIComponent from '../../UIComponent';
 
@@ -110,7 +109,7 @@ export default class UILabel extends UIComponent<Props, State> {
     // Render
     renderText(textStyle: TextStyleProp[]): React$Node {
         return (
-            <Text style={textStyle}>
+            <Text {...this.props} style={textStyle}>
                 {this.getText()}
             </Text>
         );
