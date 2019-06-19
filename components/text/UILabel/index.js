@@ -21,6 +21,7 @@ const LabelRole = Object.freeze({
     Caption: 'caption', // TODO: rename as captionSecondary
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
+    AccentBold: 'accentBold',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -85,6 +86,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
             result.push(UIStyle.Text.warningCaptionRegular());
+        } else if (role === UILabel.Role.AccentBold) {
+            result.push(UIStyle.Text.primaryAccentBold());
         }
         return result;
     }
@@ -102,6 +105,10 @@ export default class UILabel extends UIComponent<Props, State> {
             return UIStyle.Margin.topSmall();
         } else if (role === UILabel.Role.Description) {
             return UIStyle.Margin.topSmall();
+        } else if (role === UILabel.Role.Note) {
+            return UIStyle.Margin.topDefault();
+        } else if (role === UILabel.Role.AccentBold) {
+            return UIStyle.Margin.topDefault();
         }
         return null;
     }
