@@ -267,9 +267,10 @@ export default class UIDetailsInput<Props, State>
             floatingTitle, floatingTitleText, theme, value,
         } = this.props;
         const emptyValue = !value || !value.length;
-        const text = !floatingTitle || emptyValue && !this.isFocused() ? ' ' : floatingTitleText || this.placeholder();
+        const text = !floatingTitle || (emptyValue && !this.isFocused())
+            ? ' '
+            : floatingTitleText || this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
-
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
                 {text}
@@ -280,7 +281,7 @@ export default class UIDetailsInput<Props, State>
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
         const emptyValue = !this.props.value || !this.props.value.length;
-        if (!beginningTag || !this.isFocused() && emptyValue) {
+        if (!beginningTag || (!this.isFocused() && emptyValue)) {
             return null;
         }
         return (
@@ -433,7 +434,7 @@ export default class UIDetailsInput<Props, State>
         if (!comment) {
             return null;
         }
-        const defaultColorStyle = UIColor.textSecondaryStyle(theme);
+        const defaultColorStyle = UIColor.textTertiaryStyle(theme);
         const commentColor = this.commentColor();
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
