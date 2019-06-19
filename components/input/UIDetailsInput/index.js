@@ -6,6 +6,7 @@ import { Platform, TextInput, Text, View, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
+import UILabel from '../../../components/text/UILabel';
 import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
@@ -369,12 +370,10 @@ export default class UIDetailsInput<Props, State>
 
     renderToken() {
         const { token } = this.props;
-        if (!token) return null;
-        return (
-            <Text style={UITextStyle.secondaryBodyRegular}>
-                {token}
-            </Text>
-        );
+        if (!token) {
+            return null;
+        }
+        return (<UILabel role={UILabel.Role.DescriptionTertiary} text={token} />);
     }
 
     renderArrow() {

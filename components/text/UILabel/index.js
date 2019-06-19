@@ -14,6 +14,7 @@ const LabelRole = Object.freeze({
     SubtitleRegular: 'subtitleRegular',
     Description: 'description',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
+    DescriptionTertiary: 'descriptionTertiary',
     Accent: 'accent',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
@@ -72,6 +73,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryBodyRegular());
         } else if (role === UILabel.Role.BoldDescription) {
             result.push(UIStyle.Text.primaryBodyBold());
+        } else if (role === UILabel.Role.DescriptionTertiary) {
+            result.push(UIStyle.Text.tertiaryBodyRegular());
         } else if (role === UILabel.Role.Accent) {
             result.push(UIStyle.Text.primarySmallMedium());
         } else if (role === UILabel.Role.Note) {
