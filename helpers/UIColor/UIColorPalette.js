@@ -13,6 +13,7 @@ const UIColorPalette = {
     tertiary: '#FFFFFF',
     black: '#000000',
     blackLight: '#2B3338',
+    green: '#00AC47',
     white: '#FFFFFF',
     fa: '#FAFAFA',
     dark: '#102027',
