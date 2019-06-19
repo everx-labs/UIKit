@@ -64,6 +64,7 @@ import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
 import UIPureComponent from './components/UIPureComponent';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
+import UIScaleButton from './components/buttons/UIScaleButton';
 import UIScreen from './controllers/UIScreen';
 import UISearchBar from './components/input/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
@@ -177,6 +178,7 @@ export {
     UIProfileView,
     UIPureComponent,
     UIRadioButtonList,
+    UIScaleButton,
     UIScreen,
     UISearchBar,
     UISectionHeader,
