@@ -49,12 +49,7 @@ const maxScreenHeight = UIConstant.maxScreenHeight();
 
 let masterRef = null;
 
-export type State = {
-    modalVisible: boolean,
-    height: number,
-};
-
-export type CustomSheetProps = {
+export type Props = any & {
     modal?: boolean,
     component: ?React$Node,
     fullWidth?: boolean,
@@ -63,7 +58,12 @@ export type CustomSheetProps = {
     onCancel?: () => void,
 };
 
-export default class UICustomSheet extends UIController<CustomSheetProps, State> {
+export type State = {
+    modalVisible: boolean,
+    height: number,
+};
+
+export default class UICustomSheet extends UIController<Props, State> {
     static show(args: any) {
         if (masterRef) {
             if (!args.component) {
@@ -88,7 +88,7 @@ export default class UICustomSheet extends UIController<CustomSheetProps, State>
     modal: ?boolean;
 
     // constructor
-    constructor(props: CustomSheetProps) {
+    constructor(props: Props) {
         super(props);
         this.component = null;
         this.fullWidth = false;
@@ -170,7 +170,7 @@ export default class UICustomSheet extends UIController<CustomSheetProps, State>
         onShow = () => {},
         onCancel = () => {},
         modal = false,
-    }: CustomSheetProps = {}) {
+    }: Props = {}) {
         if (this.props.masterSheet) {
             this.component = component;
             this.fullWidth = fullWidth;
@@ -272,7 +272,7 @@ export default class UICustomSheet extends UIController<CustomSheetProps, State>
         );
     }
 
-    static defaultProps: CustomSheetProps;
+    static defaultProps: Props;
 }
 
 UICustomSheet.defaultProps = {

@@ -5,6 +5,7 @@ import { ScrollView, View } from 'react-native';
 import UIController from '../../controllers/UIController';
 import UIConstant from '../../helpers/UIConstant';
 import UIStyle from '../../helpers/UIStyle';
+
 import type { NavigationProps } from '../../helpers/UINavigator';
 
 type ControllerState = {
