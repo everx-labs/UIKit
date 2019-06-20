@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
     leftMajor: {
         marginLeft: UIConstant.majorContentOffset(),
     },
+    rightGreat: {
+        marginRight: UIConstant.greatContentOffset(),
+    },
     rightMajor: {
         marginRight: UIConstant.majorContentOffset(),
     },
@@ -102,6 +105,9 @@ export default class UIStyleMargin {
     static rightHuge() { // 32
         return UIStyle.marginRightHuge;
     }
+    static rightGreat() { // 48
+        return styles.rightGreat;
+    }
     static rightMajor() { // 64
         return styles.rightMajor;
     }
@@ -110,8 +116,17 @@ export default class UIStyleMargin {
     static leftTiny() { // 4
         return UIStyle.marginLeftTiny;
     }
+    static leftSmall() { // 8
+        return UIStyle.marginLeftSmall;
+    }
+    static leftNormal() { // 12
+        return UIStyle.marginLeftNormal;
+    }
     static leftDefault() { // 16
         return UIStyle.marginLeftDefault;
+    }
+    static leftMedium() { // 24
+        return UIStyle.marginLeftMedium;
     }
     static leftGreat() { // 48
         return styles.leftGreat;

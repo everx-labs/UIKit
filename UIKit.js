@@ -33,6 +33,7 @@ import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
+import UIIdleDetector from './components/UIIdleDetector';
 import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/images/UIImageView';
@@ -47,9 +48,14 @@ import UIMenuBackground from './helpers/UIMenuBackground';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';
+import UINavigationCloseButton from './components/navigation/UINavigationCloseButton';
+import UINavigationIconButton from './components/navigation/UINavigationIconButton';
+import UINavigationPlusButton from './components/navigation/UINavigationPlusButton';
+import UINavigationTextButton from './components/navigation/UINavigationTextButton';
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
+import UINotificationBadge from './components/notifications/UINotificationBadge';
 import UINumberInput from './components/input/UINumberInput';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
@@ -58,6 +64,7 @@ import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
 import UIPureComponent from './components/UIPureComponent';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
+import UIScaleButton from './components/buttons/UIScaleButton';
 import UIScreen from './controllers/UIScreen';
 import UISearchBar from './components/input/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
@@ -78,6 +85,7 @@ import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
 import UITransitionView from './components/views/UITransitionView';
+import UIUploadFileInput from './components/input/UIUploadFileInput';
 import UIUserAgent from './helpers/UIUserAgent';
 
 // Types
@@ -139,6 +147,7 @@ export {
     UIFont,
     UITextStyle,
     UIFunction,
+    UIIdleDetector,
     UIImage,
     UIImageButton,
     UIImageView,
@@ -153,9 +162,14 @@ export {
     UIModalController,
     UINavigationBackButton,
     UINavigationBar,
+    UINavigationCloseButton,
+    UINavigationIconButton,
+    UINavigationPlusButton,
+    UINavigationTextButton,
     UINavigator,
     UINetworkStatus,
     UINotice,
+    UINotificationBadge,
     UINumberInput,
     UIPasswordPrompt,
     UIPhoneInput,
@@ -164,6 +178,7 @@ export {
     UIProfileView,
     UIPureComponent,
     UIRadioButtonList,
+    UIScaleButton,
     UIScreen,
     UISearchBar,
     UISectionHeader,
@@ -184,6 +199,7 @@ export {
     UIToggle,
     UITooltip,
     UITransitionView,
+    UIUploadFileInput,
     UIUserAgent,
 };
 

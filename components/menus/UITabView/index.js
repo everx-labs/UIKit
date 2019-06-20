@@ -32,6 +32,7 @@ type TabBarProps = SceneRendererProps<*>;
 type UITabViewProps = {
     tabWidth?: number,
     pages: PageCollection,
+    barAlign?: string,
 };
 
 type UITypeViewState = {
@@ -79,7 +80,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
             activeTintColor: UIColor.primary(),
             inactiveTintColor: UIColor.dark(),
             style: {
-                alignSelf: 'center',
+                alignSelf: this.props.barAlign || 'center',
                 backgroundColor: 'transparent',
                 width: tabWidth * this.state.routes.length,
             },
@@ -97,9 +98,9 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
     }
 
     // Events
-    onIndexChange(index: number) {
+    onIndexChange = (index: number) => {
         this.setStateSafely({ index });
-    }
+    };
 
     // Getters
     getRoutes() {
@@ -157,7 +158,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
                 navigationState={navigationState}
                 renderScene={this.renderScene}
                 renderTabBar={this.renderTabBar}
-                onIndexChange={index => this.onIndexChange(index)}
+                onIndexChange={this.onIndexChange}
             />
         );
     }

@@ -11,10 +11,10 @@ export type ActionState = {
 }
 
 export type ActionProps = {
-    testID: string,
+    testID?: string,
     disabled?: boolean,
     showIndicator?: boolean,
-    onPress: () => void,
+    onPress?: () => void,
 };
 
 export default class UIActionComponent<Props, State>
@@ -27,6 +27,32 @@ export default class UIActionComponent<Props, State>
             hover: false,
         };
     }
+
+    // Events
+    onPressIn = () => {
+        this.setTapped();
+    };
+
+    onPressOut = () => {
+        this.setTapped(false);
+    };
+
+    // Virtual
+    onEnter = (): void => {
+    }
+
+    onLeave = (): void => {
+    }
+
+    onMouseEnter = () => {
+        this.setHover();
+        this.onEnter();
+    };
+
+    onMouseLeave = () => {
+        this.setHover(false);
+        this.onLeave();
+    };
 
     // Setters
     setTapped(tapped: boolean = true) {
@@ -63,8 +89,8 @@ export default class UIActionComponent<Props, State>
     render(): React$Node {
         const { onPress, testID } = this.props;
         const eventProps: EventProps = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
+            onMouseEnter: this.onMouseEnter,
+            onMouseLeave: this.onMouseLeave,
         };
         const testIDProp = testID ? { testID } : null;
         return (
@@ -72,8 +98,8 @@ export default class UIActionComponent<Props, State>
                 {...testIDProp}
                 disabled={this.isDisabled() || this.shouldShowIndicator()}
                 onPress={onPress}
-                onPressIn={() => this.setTapped()}
-                onPressOut={() => this.setTapped(false)}
+                onPressIn={this.onPressIn}
+                onPressOut={this.onPressOut}
                 {...eventProps}
             >
                 {this.renderContent()}

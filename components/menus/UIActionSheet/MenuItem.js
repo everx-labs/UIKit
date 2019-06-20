@@ -19,7 +19,7 @@ const MenuItem = (props) => {
     return (
         <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => onPress()}
+            onPress={onPress}
         >
             <Text style={[
                 UITextStyle.primarySmallMedium,

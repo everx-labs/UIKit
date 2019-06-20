@@ -23,6 +23,12 @@ const styles = StyleSheet.create({
 });
 
 export default class UIDetailsToggle extends UIComponent {
+    // Events
+    onToggle = () => {
+        const { active, onPress } = this.props;
+        onPress(!active);
+    };
+
     // Render
     renderDetailsView() {
         const {
@@ -37,12 +43,12 @@ export default class UIDetailsToggle extends UIComponent {
     }
 
     renderToggle() {
-        const { active, onPress, testID } = this.props;
+        const { active, testID } = this.props;
         return (<UIToggle
             testID={testID}
             containerStyle={styles.toggle}
             active={active}
-            onPress={() => onPress(!active)}
+            onPress={this.onToggle}
         />);
     }
 

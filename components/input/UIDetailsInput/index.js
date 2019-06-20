@@ -6,13 +6,14 @@ import { Platform, TextInput, Text, View, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
+import UILabel from '../../../components/text/UILabel';
 import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
-import UIComponent from '../../UIComponent';
+import UIActionComponent from '../../UIActionComponent';
 
 import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
@@ -24,6 +25,7 @@ import type {
 } from '../../../helpers/UIColor/UIColorTypes';
 
 import type { EventProps } from '../../../types';
+import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export type DetailsProps = {
+export type DetailsProps = ActionProps & {
     accessibilityLabel?: string,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
@@ -56,6 +58,7 @@ export type DetailsProps = {
     defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
+    floatingTitleText: string,
     hideBottomLine: boolean,
     hidePlaceholder: boolean,
     keyboardType: KeyboardType,
@@ -79,11 +82,6 @@ export type DetailsProps = {
     testID?: string,
 };
 
-export type DetailsState = {
-    focused: boolean,
-    hover: boolean,
-};
-
 export const detailsDefaultProps = {
     autoCapitalize: 'sentences',
     autoFocus: false,
@@ -92,6 +90,7 @@ export const detailsDefaultProps = {
     comment: '',
     editable: true,
     floatingTitle: true,
+    floatingTitleText: '',
     hideBottomLine: false,
     hidePlaceholder: false,
     keyboardType: 'default',
@@ -112,19 +111,10 @@ export const detailsDefaultProps = {
 };
 
 export default class UIDetailsInput<Props, State>
-    extends UIComponent<$Shape<Props & DetailsProps>, $Shape<State & DetailsState>> {
+    extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & ActionState>> {
     textInput: ?TextInput;
 
     static defaultProps: DetailsProps = detailsDefaultProps;
-
-    constructor(props: Props & DetailsProps) {
-        super(props);
-
-        this.state = {
-            focused: false,
-            hover: false,
-        };
-    }
 
     componentDidMount() {
         super.componentDidMount();
@@ -138,31 +128,31 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Events
-    onChangeText(text: string) {
+    onChangeText = (text: string) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
         }
-    }
+    };
 
-    onKeyPress(e: any) {
+    onKeyPress = (e: any) => {
         const { onKeyPress } = this.props;
         if (onKeyPress) {
             onKeyPress(e);
         }
-    }
+    };
 
-    onFocus() {
+    onFocus = () => {
         this.setFocused();
         this.props.onFocus();
-    }
+    };
 
-    onBlur() {
+    onBlur = () => {
         this.setFocused(false);
         this.props.onBlur();
-    }
+    };
 
-    onSubmitEditing() {
+    onSubmitEditing = () => {
         if (this.isSubmitDisabled()) {
             setTimeout(() => {
                 this.focus();
@@ -173,7 +163,7 @@ export default class UIDetailsInput<Props, State>
                 onSubmitEditing();
             }
         }
-    }
+    };
 
     // Setters
     setFocused(focused: boolean = true) {
@@ -248,7 +238,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
     }
 
 
@@ -273,8 +263,13 @@ export default class UIDetailsInput<Props, State>
 
     // Render
     renderFloatingTitle() {
-        const { floatingTitle, value, theme } = this.props;
-        const text = !floatingTitle || !value ? ' ' : this.placeholder();
+        const {
+            floatingTitle, floatingTitleText, theme, value,
+        } = this.props;
+        const emptyValue = !value || !value.length;
+        const text = !floatingTitle || (emptyValue && !this.isFocused())
+            ? ' '
+            : floatingTitleText || this.placeholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
@@ -285,7 +280,8 @@ export default class UIDetailsInput<Props, State>
 
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
-        if (!beginningTag) {
+        const emptyValue = !this.props.value || !this.props.value.length;
+        if (!beginningTag || (!this.isFocused() && emptyValue)) {
             return null;
         }
         return (
@@ -330,11 +326,11 @@ export default class UIDetailsInput<Props, State>
                 {...maxLengthProp}
                 multiline={multiline}
                 numberOfLines={maxLines}
-                onFocus={() => this.onFocus()}
-                onBlur={() => this.onBlur()}
-                onChangeText={text => this.onChangeText(text)}
-                onSubmitEditing={() => this.onSubmitEditing()}
-                onKeyPress={e => this.onKeyPress(e)}
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitEditing}
+                onKeyPress={this.onKeyPress}
                 placeholder={this.getInlinePlaceholder()}
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
@@ -375,12 +371,10 @@ export default class UIDetailsInput<Props, State>
 
     renderToken() {
         const { token } = this.props;
-        if (!token) return null;
-        return (
-            <Text style={UITextStyle.secondaryBodyRegular}>
-                {token}
-            </Text>
-        );
+        if (!token) {
+            return null;
+        }
+        return (<UILabel role={UILabel.Role.DescriptionTertiary} text={token} />);
     }
 
     renderArrow() {
@@ -419,10 +413,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextView() {
-        const { hideBottomLine, theme } = this.props;
+        const { comment, hideBottomLine, theme } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor: UIColorData;
-        if (this.commentColor()) {
+        if (comment && this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
             bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
@@ -440,7 +434,7 @@ export default class UIDetailsInput<Props, State>
         if (!comment) {
             return null;
         }
-        const defaultColorStyle = UIColor.textSecondaryStyle(theme);
+        const defaultColorStyle = UIColor.textTertiaryStyle(theme);
         const commentColor = this.commentColor();
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
@@ -463,8 +457,8 @@ export default class UIDetailsInput<Props, State>
             return <View />;
         }
         const eventProps: EventProps = {
-            onMouseEnter: () => this.setHover(),
-            onMouseLeave: () => this.setHover(false),
+            onMouseEnter: this.onMouseEnter,
+            onMouseLeave: this.onMouseLeave,
         };
         return (
             <View

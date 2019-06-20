@@ -1,8 +1,13 @@
 Use this component inside navigationOptions for React Navigation
 ```js static
-static navigationOptions(navigation: ReactNavigation, options: UINavigationBarOptions)
+static navigationOptions(
+	navigation: ReactNavigation, 
+	options: UINavigationBarOptions
+)
 
-<UINavigationBackButton navigation={navigation} />
+<UINavigationBackButton 
+	navigation={navigation}
+/>
 ```
 
 Example:

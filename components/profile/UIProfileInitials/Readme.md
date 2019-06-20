@@ -4,65 +4,44 @@ Now there are 14 colors for this in UIColor.
 Example:
 
 ```js
-<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-    <UIProfileInitials
-        id="1"
-        initials="A"
-    />
-    <UIProfileInitials
-        id="2"
-        initials="B"
-    />
-    <UIProfileInitials
-        id="3"
-        initials="C"
-    />
-    <UIProfileInitials
-        id="4"
-        initials="D"
-    />
-    <UIProfileInitials
-        id="5"
-        initials="E"
-    />
-    <UIProfileInitials
-        id="6"
-        initials="F"
-    />
-    <UIProfileInitials
-        id="7"
-        initials="G"
-    />
-</View>
+const rowStyle = { 
+    flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap',
+};
 
-<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+renderProfile = (id, initials) => (
     <UIProfileInitials
-        id="8"
-        initials="HI"
-    />
-    <UIProfileInitials
-        id="9"
-        initials="JK"
-    />
-    <UIProfileInitials
-        id="a"
-        initials="LM"
-    />
-    <UIProfileInitials
-        id="b"
-        initials="NO"
-    />
-    <UIProfileInitials
-        id="c"
-        initials="PQ"
-    />
-    <UIProfileInitials
-        id="d"
-        initials="RS"
-    />
-    <UIProfileInitials
-        id="e"
-        initials="TU"
-    />
-</View>
+		containerStyle={[
+		    UIStyle.Margin.bottomDefault(), 
+		    UIStyle.Margin.rightDefault(),
+		]}
+		id={id}
+		initials={initials}
+	/>
+)
+
+const Example = () => (
+    <React.Fragment>
+        <View style={rowStyle}>
+            {renderProfile('1', 'A')}
+            {renderProfile('2', 'B')}
+            {renderProfile('3', 'C')}
+            {renderProfile('4', 'D')}
+            {renderProfile('5', 'E')}
+            {renderProfile('6', 'F')}
+            {renderProfile('7', 'G')}
+        </View>
+        
+        <View style={rowStyle}>
+        	{renderProfile('8', 'HI')}
+			{renderProfile('9', 'JK')}
+			{renderProfile('a', 'LM')}
+			{renderProfile('b', 'NO')}
+			{renderProfile('c', 'PQ')}
+			{renderProfile('d', 'RS')}
+			{renderProfile('e', 'TU')}
+        </View>
+    </React.Fragment>
+);
+
+<Example />
 ```

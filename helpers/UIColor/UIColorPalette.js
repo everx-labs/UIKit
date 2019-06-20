@@ -13,6 +13,7 @@ const UIColorPalette = {
     tertiary: '#FFFFFF',
     black: '#000000',
     blackLight: '#2B3338',
+    green: '#00AC47',
     white: '#FFFFFF',
     fa: '#FAFAFA',
     dark: '#102027',
@@ -37,7 +38,7 @@ const UIColorPalette = {
 
     success: '#27AE60',
     warning: '#F2C94C',
-    error: '#EB5757',
+    error: '#CC0022',
     text: {
         lightPrimary: '#000000',
         darkPrimary: '#FFFFFF',

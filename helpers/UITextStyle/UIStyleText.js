@@ -206,6 +206,10 @@ export default class UIStyleText {
     }
 
     // [Text tertiary]
+    // Title - fontSize: 36, lineHeight: 48
+    static tertiaryTitleLight() {
+        return UITextStyle.tertiaryTitleLight;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static tertiaryBodyRegular() {
         return UITextStyle.tertiaryBodyRegular;
@@ -213,6 +217,10 @@ export default class UIStyleText {
     // Small - fontSize: 16, lineHeight: 20
     static tertiarySmallRegular() {
         return UITextStyle.tertiarySmallRegular;
+    }
+    // Small - fontSize: 16, lineHeight: 20
+    static quaternarySmallRegular() {
+        return UITextStyle.quaternarySmallRegular;
     }
     // Caption - fontSize: 14, lineHeight: 20
     static tertiaryCaptionRegular() {
@@ -229,6 +237,11 @@ export default class UIStyleText {
     // Tiny - fontSize: 12, lineHeight: 16
     static tertiaryTinyBold() {
         return UITextStyle.tertiaryTinyBold;
+    }
+
+    // Caption - fontSize: 14, lineHeight: 20
+    static warningCaptionRegular() {
+        return UITextStyle.warningCaptionRegular;
     }
 
     // [Text white]

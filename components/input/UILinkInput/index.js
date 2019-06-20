@@ -3,11 +3,12 @@ import React from 'react';
 
 import UIComponent from '../../UIComponent';
 import UIDetailsInput, { detailsDefaultProps } from '../UIDetailsInput';
-import type { DetailsProps, DetailsState } from '../UIDetailsInput';
+import type { DetailsProps } from '../UIDetailsInput';
+import type { ActionState } from '../../UIActionComponent';
 
-export default class UILinkInput extends UIComponent<DetailsProps, DetailsState> {
+export default class UILinkInput extends UIComponent<DetailsProps, ActionState> {
     static defaultProps: DetailsProps = detailsDefaultProps;
-    linkInput: ?UIDetailsInput<DetailsProps, DetailsState>;
+    linkInput: ?UIDetailsInput<DetailsProps, ActionState>;
 
     // Getters
     beginningTag() {

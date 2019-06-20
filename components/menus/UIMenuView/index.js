@@ -59,18 +59,30 @@ export default class UIMenuView extends UIComponent<Props, State> {
     }
 
     // Events
-    onTriggerLayout(e: ViewLayoutEvent) {
+    onTriggerLayout = (e: ViewLayoutEvent) => {
         const { width: triggerWidth } = e.nativeEvent.layout;
         this.setTriggerWidth(triggerWidth);
-    }
+    };
 
-    onMenuLayout(e: ViewLayoutEvent) {
+    onMenuLayout = (e: ViewLayoutEvent) => {
         const { width: menuWidth } = e.nativeEvent.layout;
         const triggerWidth = this.getTriggerWidth();
         if (menuWidth > triggerWidth) {
             this.setMenuMarginLeft(menuWidth - triggerWidth);
         }
-    }
+    };
+
+    onOpenMenu = () => {
+        if (Platform.OS === 'web' || UIDevice.isTablet()) {
+            this.setIsVisible();
+            this.initClickListenerForWeb();
+            UIMenuBackground.initBackgroundForTablet();
+            masterRef = this;
+        } else {
+            const { menuItemsList, needCancelItem, onCancelCallback } = this.props;
+            UIActionSheet.show(menuItemsList, needCancelItem, onCancelCallback);
+        }
+    };
 
     // Setters
     setIsVisible(isVisible: boolean = true) {
@@ -99,18 +111,6 @@ export default class UIMenuView extends UIComponent<Props, State> {
     }
 
     // Actions
-    openMenu() {
-        if (Platform.OS === 'web' || UIDevice.isTablet()) {
-            this.setIsVisible();
-            this.initClickListenerForWeb();
-            UIMenuBackground.initBackgroundForTablet();
-            masterRef = this;
-        } else {
-            const { menuItemsList, needCancelItem, onCancelCallback } = this.props;
-            UIActionSheet.show(menuItemsList, needCancelItem, onCancelCallback);
-        }
-    }
-
     hideMenu() {
         if (Platform.OS === 'web' || UIDevice.isTablet()) {
             this.setIsVisible(false);
@@ -151,7 +151,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                     { marginLeft: this.getMenuPaddingLeft() },
                     { backgroundColor: UIColor.backgroundPrimary() },
                 ]}
-                onLayout={e => this.onMenuLayout(e)}
+                onLayout={this.onMenuLayout}
             >
                 {this.props.menuItemsList.map(item => (
                     <MenuItem
@@ -188,8 +188,8 @@ export default class UIMenuView extends UIComponent<Props, State> {
                     <TouchableOpacity
                         {...setClassNameTrick}
                         {...testIDProp}
-                        onPress={() => this.openMenu()}
-                        onLayout={e => this.onTriggerLayout(e)}
+                        onPress={this.onOpenMenu}
+                        onLayout={this.onTriggerLayout}
                     >
                         <View pointerEvents="none">
                             {this.props.children}

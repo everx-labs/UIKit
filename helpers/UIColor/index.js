@@ -87,12 +87,20 @@ export default class UIColor {
         return UIColorPalette.white;
     }
 
+    static green() {
+        return UIColorPalette.green;
+    }
+
     static fa() {
         return UIColorPalette.fa;
     }
 
     static dark() {
         return UIColorPalette.dark;
+    }
+
+    static whiteLight() {
+        return UIColorPalette.whiteLight;
     }
 
     static grey() {

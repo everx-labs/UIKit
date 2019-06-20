@@ -55,7 +55,7 @@ class UICheckboxItem extends UIComponent {
         const { onPress, editable } = this.props;
         if (onPress && editable) {
             return (
-                <TouchableWithoutFeedback onPress={() => onPress()}>
+                <TouchableWithoutFeedback onPress={onPress}>
                     {this.renderCheckbox()}
                 </TouchableWithoutFeedback>
             );

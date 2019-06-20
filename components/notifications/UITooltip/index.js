@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
 let masterMouseMoveListener = null;
 
 export default class UITooltip extends UIComponent<Props, State> {
-    static showOnMouseForWeb(message: string) {
+    static showOnMouseForWeb(message: string, tooltipContainerStyle?: StylePropType) {
         UITooltip.initMouseMoveListenerForWeb();
         UILayoutManager.showComponent({
-            component: UITooltip.renderTooltip(message, styles.onMouseContainer),
+            component: UITooltip.renderTooltip(message, tooltipContainerStyle || styles.onMouseContainer),
             animation: tooltipAnimation,
         });
     }
@@ -271,6 +271,34 @@ export default class UITooltip extends UIComponent<Props, State> {
     }
 
     // Events
+    onShow = async () => {
+        if (!this.props.active) {
+            return;
+        }
+        if (masterMouseMoveListener) {
+            UITooltip.deinitMouseMoveListenerForWeb();
+        }
+        this.isVisible = true;
+        const { containerStyle, position } = await this.calcPreset();
+        const component = UITooltip.renderTooltip(this.props.message, containerStyle);
+        UILayoutManager.showComponent({
+            animation: tooltipAnimation,
+            position,
+            component,
+        });
+    };
+
+    onHide = () => {
+        if (!this.isVisible) {
+            return;
+        }
+        this.isVisible = false;
+        setTimeout(() => {
+            if (!this.isVisible) {
+                UILayoutManager.hideComponent();
+            }
+        }, UIConstant.animationDuration());
+    };
 
     // Setters
 
@@ -286,35 +314,6 @@ export default class UITooltip extends UIComponent<Props, State> {
                 });
             }
         });
-    }
-
-    async show() {
-        if (!this.props.active) {
-            return;
-        }
-        if (masterMouseMoveListener) {
-            UITooltip.deinitMouseMoveListenerForWeb();
-        }
-        this.isVisible = true;
-        const { containerStyle, position } = await this.calcPreset();
-        const component = UITooltip.renderTooltip(this.props.message, containerStyle);
-        UILayoutManager.showComponent({
-            animation: tooltipAnimation,
-            position,
-            component,
-        });
-    }
-
-    hide() {
-        if (!this.isVisible) {
-            return;
-        }
-        this.isVisible = false;
-        setTimeout(() => {
-            if (!this.isVisible) {
-                UILayoutManager.hideComponent();
-            }
-        }, UIConstant.animationDuration());
     }
 
     // Render
@@ -336,8 +335,8 @@ export default class UITooltip extends UIComponent<Props, State> {
             return (
                 <View style={this.props.containerStyle}>
                     <TouchableOpacity
-                        onPressIn={() => this.show()}
-                        onPressOut={() => this.hide()}
+                        onPressIn={this.onShow}
+                        onPressOut={this.onHide}
                     >
                         {this.renderTrigger()}
                     </TouchableOpacity>
@@ -345,8 +344,8 @@ export default class UITooltip extends UIComponent<Props, State> {
             );
         }
         const onMouseEvents: EventProps = {
-            onMouseEnter: () => this.show(),
-            onMouseLeave: () => this.hide(),
+            onMouseEnter: this.onShow,
+            onMouseLeave: this.onHide,
         };
         return (
             <View

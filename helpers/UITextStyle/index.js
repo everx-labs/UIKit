@@ -50,6 +50,11 @@ const error = {
     color: UIColor.error(),
 };
 
+const warning = {
+    ...text,
+    color: UIColor.detailsInputComment(),
+};
+
 const success = {
     ...text,
     color: UIColor.success(),
@@ -343,6 +348,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text tertiary]
+    // Title - fontSize: 36, lineHeight: 48
+    tertiaryTitleLight: {
+        ...tertiary,
+        ...UIFont.titleLight(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     tertiaryBodyRegular: {
         ...tertiary,
@@ -351,6 +361,11 @@ const UITextStyle = StyleSheet.create({
     // Small - fontSize: 16, lineHeight: 20
     tertiarySmallRegular: {
         ...tertiary,
+        ...UIFont.smallRegular(),
+    },
+    // Small - fontSize: 16, lineHeight: 20
+    quaternarySmallRegular: {
+        ...quaternary,
         ...UIFont.smallRegular(),
     },
     // Caption - fontSize: 14, lineHeight: 20
@@ -454,6 +469,12 @@ const UITextStyle = StyleSheet.create({
     },
     errorCaptionRegular: {
         ...error,
+        ...UIFont.captionRegular(),
+    },
+
+    // [Text Warning]
+    warningCaptionRegular: {
+        ...warning,
         ...UIFont.captionRegular(),
     },
 });

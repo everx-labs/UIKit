@@ -130,42 +130,42 @@ export default class UIPasswordPrompt extends UIController {
     }
 
     // Events
-    onDismissed() {
+    onDismissed = () => {
         this.setPromptVisible(false);
-    }
+    };
 
-    onPressCancel() {
+    onPressCancel = () => {
         this.hidePromptOnCancel();
-    }
+    };
 
-    onPressDone() {
+    onPressDone = () => {
         if (this.isDataValid()) {
             const password = this.getPassword();
             this.hidePromptOnDone(password);
         }
-    }
+    };
 
-    onPressNext() {
+    onPressNext = () => {
         if (this.getPassword()) {
             this.confirmPasswordInput.focus();
         }
-    }
+    };
 
-    onFocusPasswordToConfirmInput() {
+    onFocusPasswordToConfirmInput = () => {
         if (!this.getPassword()) {
             this.passwordInput.focus();
         }
-    }
+    };
 
-    onChangePassword(newText) {
+    onChangePassword = (newText) => {
         this.setPassword(newText);
-    }
+    };
 
-    onChangePasswordToConfirm(newText) {
+    onChangePasswordToConfirm = (newText) => {
         this.setPasswordToConfirm(newText);
-    }
+    };
 
-    onKeyboardWillShow(e) {
+    onKeyboardWillShow = (e) => {
         if (!this.isPromptVisible()) {
             return;
         }
@@ -185,30 +185,30 @@ export default class UIPasswordPrompt extends UIController {
         Animated.spring(this.state.marginTop, {
             toValue: (-keyboardHeight / 2),
         }).start();
-    }
+    };
 
-    onKeyboardWillHide() {
+    onKeyboardWillHide = () => {
         if (!this.isPromptVisible()) {
             return;
         }
         Animated.spring(this.state.marginTop, {
             toValue: 0,
         }).start();
-    }
+    };
 
-    onLayout(e) {
+    onLayout = (e) => {
         const { layout } = e.nativeEvent;
         if (!this.contentHeight) { // only set on render first time
             this.contentHeight = layout.height;
         }
-    }
+    };
 
-    onScrollViewLayout(e) {
+    onScrollViewLayout = (e) => {
         const { layout } = e.nativeEvent;
         if (!this.scrollViewHeight) { // only set on render first time
             this.scrollViewHeight = layout.height;
         }
-    }
+    };
 
     // Setters
     setPromptVisible(promptVisible = true, callback) {
@@ -354,10 +354,10 @@ export default class UIPasswordPrompt extends UIController {
             value: this.getPassword(),
             autoFocus: true,
             returnKeyType: this.shouldConfirm ? 'next' : 'done',
-            onChangeHandler: newValue => this.onChangePassword(newValue),
+            onChangeHandler: this.onChangePassword,
             onSubmitHandler: this.shouldConfirm
-                ? () => this.onPressNext()
-                : () => this.onPressDone(),
+                ? this.onPressNext
+                : this.onPressDone,
         });
         const confirmPasswordView = renderPasswordView({
             refBinder: (input) => { this.confirmPasswordInput = input; },
@@ -365,9 +365,9 @@ export default class UIPasswordPrompt extends UIController {
             value: this.getPasswordToConfirm(),
             autoFocus: false,
             returnKeyType: 'done',
-            onFocusHandler: () => this.onFocusPasswordToConfirmInput(),
-            onChangeHandler: newValue => this.onChangePasswordToConfirm(newValue),
-            onSubmitHandler: () => this.onPressDone(),
+            onFocusHandler: this.onFocusPasswordToConfirmInput,
+            onChangeHandler: this.onChangePasswordToConfirm,
+            onSubmitHandler: this.onPressDone,
         });
         return (
             <View style={marginTopSmall}>
@@ -383,13 +383,13 @@ export default class UIPasswordPrompt extends UIController {
                 <UITextButton
                     title={UILocalized.Cancel}
                     buttonStyle={styles.textButton}
-                    onPress={() => this.onPressCancel()}
+                    onPress={this.onPressCancel}
                 />
                 <UITextButton
                     title={UILocalized.Done}
                     disabled={this.isDoneButtonDisabled()}
                     buttonStyle={styles.textButton}
-                    onPress={() => this.onPressDone()}
+                    onPress={this.onPressDone}
                 />
             </View>
         );
@@ -399,10 +399,10 @@ export default class UIPasswordPrompt extends UIController {
         return (
             <View
                 style={styles.contentView}
-                onLayout={e => this.onLayout(e)}
+                onLayout={this.onLayout}
             >
                 <Animated.ScrollView
-                    onLayout={e => this.onScrollViewLayout(e)}
+                    onLayout={this.onScrollViewLayout}
                     style={[{ height: this.getScrollViewHeight() }, marginTopMedium]}
                 >
                     <Text style={[...titleContainer, this.titleStyle]}>
@@ -426,7 +426,7 @@ export default class UIPasswordPrompt extends UIController {
                         height={null}
                         dialogAnimation={scaleAnimation}
                         dismissOnTouchOutside={false}
-                        onDismissed={() => this.onDismissed()}
+                        onDismissed={this.onDismissed}
                         overlayBackgroundColor="transparent"
                     >
                         {this.renderContent()}

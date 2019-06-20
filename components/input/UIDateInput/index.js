@@ -10,7 +10,8 @@ import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UILocalized from '../../../helpers/UILocalized';
 
-import type { DetailsProps, DetailsState } from '../UIDetailsInput';
+import type { DetailsProps } from '../UIDetailsInput';
+import type { ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
     missingValueView: {
@@ -38,7 +39,7 @@ type Props = DetailsProps & {
     maxLength?: number,
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
-type State = DetailsState & {
+type State = ActionState & {
     date: string
 };
 
@@ -66,24 +67,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         this.loadInitialDate();
     }
 
-    loadInitialDate() {
-        const { initialEpochTime } = this.props;
-
-        if (initialEpochTime) {
-            const dateStr = Moment(initialEpochTime).format(this.getPattern());
-            const value = dateStr.split(this.getSeparator()).join('');
-            this.setStateSafely({ date: value });
-        }
-    }
-
-    hidePlaceholder() {
-        const date = this.getValue().length > 0;
-        const isFocused = this.isFocused() || false;
-
-        return (date || isFocused);
-    }
-
-    onChangeText(date: string) {
+    // Events
+    onChangeText = (date: string): void => {
         const { onChangeDate } = this.props;
 
         const newDate = date.split(this.getSeparator()).join('');
@@ -95,7 +80,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
                 onChangeDate(dateObj, this.isValidDate());
             }
         });
-    }
+    };
 
     // Getters
     commentColor() {
@@ -173,6 +158,24 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     getSeparator() {
         return this.props.separator || '.';
+    }
+
+    // Actions
+    loadInitialDate() {
+        const { initialEpochTime } = this.props;
+
+        if (initialEpochTime) {
+            const dateStr = Moment(initialEpochTime).format(this.getPattern());
+            const value = dateStr.split(this.getSeparator()).join('');
+            this.setStateSafely({ date: value });
+        }
+    }
+
+    hidePlaceholder() {
+        const date = this.getValue().length > 0;
+        const isFocused = this.isFocused() || false;
+
+        return (date || isFocused);
     }
 
     // Render

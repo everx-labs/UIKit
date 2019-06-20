@@ -7,6 +7,10 @@ const containerStyle = {
     height: 350,
 }
 
+const rowStyle = { 
+    flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'
+}
+
 class ExampleComponent extends React.Component {
     constructor() {
         super();
@@ -36,25 +40,25 @@ class ExampleComponent extends React.Component {
     renderToastButtons() {
         return (
             <View style={{ marginTop: 16 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={rowStyle}>
                     <UITextButton 
-                        title="Show default toast on left"
+                        title="Show default on left"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Address copied to clipboard.',
                             placement: UIToastMessage.Place.Left,
                         })}
                     />
                     <UITextButton 
-                        title="Show default toast with message only"
+                        title="Show default with message only"
                         onPress={() => UIToastMessage.showMessage(
                             'Address copied to clipboard.'
                         )}
                     />
                     <View/>
                 </View>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={[{ display: 'flex' }, rowStyle]}>
                     <UITextButton 
-                        title="Show action toast on left without autohide"
+                        title="Show action on left, no autohide"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Account deleted.',
                             action: {
@@ -66,7 +70,7 @@ class ExampleComponent extends React.Component {
                         })}
                     />
                     <UITextButton 
-                        title="Show alert toast on center without autohide"
+                        title="Show alert on center, no autohide"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Error deleting account.',
                             type: UIToastMessage.Type.Alert,

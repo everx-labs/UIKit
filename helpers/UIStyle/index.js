@@ -8,7 +8,7 @@ import UIStyleBorder from './UIStyleBorder';
 import UIStyleHeight from './UIStyleHeight';
 import UIStyleMargin from './UIStyleMargin';
 import UIStylePadding from './UIStylePadding';
-import UIStyleClass from './UIStyleClass';
+import UIStyleCommon from './UIStyleCommon';
 import UIStyleFlex from './UIStyleFlex';
 import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
@@ -43,6 +43,16 @@ const borderBottom = {
     borderBottomWidth: 1,
 };
 
+const cellBorderBottom = {
+    borderBottomColor: UIColor.whiteLight(),
+    borderBottomWidth: 1,
+};
+
+const cellBorderTop = {
+    borderTopColor: UIColor.whiteLight(),
+    borderTopWidth: 1,
+};
+
 const borderBottomAction = {
     borderBottomColor: UIColor.primary(),
     borderBottomWidth: 1,
@@ -69,6 +79,9 @@ const UIStyle = StyleSheet.create({
     },
     flexRow: {
         flexDirection: 'row',
+    },
+    flexColumn: {
+        flexDirection: 'column',
     },
     flexRowWrap: {
         flexDirection: 'row',
@@ -127,6 +140,9 @@ const UIStyle = StyleSheet.create({
     rowSpaceContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    overflowHidden: {
+        overflow: 'hidden',
     },
 
     commonShadow: {
@@ -240,7 +256,7 @@ const UIStyle = StyleSheet.create({
     marginRightDefault: { // 16
         marginRight: UIConstant.contentOffset(),
     },
-    marginRightMedium: {
+    marginRightMedium: { // 24
         marginRight: UIConstant.mediumContentOffset(),
     },
     marginRightHuge: { // 32
@@ -250,8 +266,20 @@ const UIStyle = StyleSheet.create({
     marginLeftTiny: { // 4
         marginLeft: UIConstant.tinyContentOffset(),
     },
+    marginLeftSmall: { // 8
+        marginLeft: UIConstant.smallContentOffset(),
+    },
+    marginLeftNormal: { // 12
+        marginLeft: UIConstant.normalContentOffset(),
+    },
     marginLeftDefault: { // 16
         marginLeft: UIConstant.contentOffset(),
+    },
+    marginLeftMedium: { // 24
+        marginLeft: UIConstant.mediumContentOffset(),
+    },
+    marginLeftHuge: { // 32
+        marginLeft: UIConstant.hugeContentOffset(),
     },
 
     marginHorizontalOffset: { // 16
@@ -320,6 +348,12 @@ const UIStyle = StyleSheet.create({
     },
     borderBottomAction: {
         ...borderBottomAction,
+    },
+    cellBorderTop: {
+        ...cellBorderTop,
+    },
+    cellBorderBottom: {
+        ...cellBorderBottom,
     },
 
     // colors
@@ -485,7 +519,7 @@ const UIStyle = StyleSheet.create({
     },
     masterViewController: {
         flex: 1,
-        maxWidth: UIConstant.elasticWidthRegular(),
+        maxWidth: UIConstant.masterScreenWidth(),
         overflow: 'hidden',
     },
     detailViewController: {
@@ -497,7 +531,7 @@ const UIStyle = StyleSheet.create({
 
 UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
-UIStyle.Common = UIStyleClass;
+UIStyle.Common = UIStyleCommon;
 UIStyle.Flex = UIStyleFlex;
 UIStyle.Height = UIStyleHeight;
 UIStyle.Margin = UIStyleMargin;

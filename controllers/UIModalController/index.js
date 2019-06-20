@@ -75,6 +75,7 @@ export default class UIModalController<Props, State>
     marginBottom: Animated.Value;
     dy: Animated.Value;
     animation: SlideAnimation | FadeAnimation;
+    testID: ?string;
 
     constructor(props: ModalControllerProps & Props) {
         super(props);
@@ -120,32 +121,32 @@ export default class UIModalController<Props, State>
         // Method needs to be overridden in order to be used.
     }
 
-    onDidHide() {
+    onDidHide = () => {
         this.setControllerVisible(false, () => {
             this.dy.setValue(0);
         });
-    }
+    };
 
-    onCancelPress() {
+    onCancelPress = () => {
         this.hide();
         if (this.onCancel) {
             this.onCancel();
         }
-    }
+    };
 
-    onLayout(e: OnLayoutEventArgs) {
+    onLayout = (e: OnLayoutEventArgs) => {
         const { layout } = e.nativeEvent;
         const { width, height } = layout;
         this.setSize(width, height);
-    }
+    };
 
-    onReleaseSwipe(dy: number) {
+    onReleaseSwipe = (dy: number) => {
         if (dy > UIConstant.swipeThreshold()) {
             this.onCancelPress();
         } else {
             this.returnToTop();
         }
-    }
+    };
 
     // Getters
 
@@ -312,8 +313,8 @@ export default class UIModalController<Props, State>
         return (<UIModalNavigationBar
             swipeToDismiss={this.shouldSwipeToDismiss()}
             onMove={Animated.event([null, { dy: this.dy }])}
-            onRelease={dy => this.onReleaseSwipe(dy)}
-            onCancel={() => this.onCancelPress()}
+            onRelease={this.onReleaseSwipe}
+            onCancel={this.onCancelPress}
         />);
     }
 
@@ -321,8 +322,10 @@ export default class UIModalController<Props, State>
         const {
             width, height, contentHeight, containerStyle, dialogStyle,
         } = this.getDialogStyle();
+        const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
         return (
             <PopupDialog
+                {...testIDProp}
                 ref={(popupDialog) => {
                     this.dialog = popupDialog;
                 }}
@@ -333,7 +336,7 @@ export default class UIModalController<Props, State>
                 dialogAnimation={this.animation}
                 dialogTitle={this.getModalNavigationBar()}
                 dismissOnTouchOutside={false}
-                onDismissed={() => this.onDidHide()}
+                onDismissed={this.onDidHide}
                 onShown={() => this.onDidAppear()}
                 overlayBackgroundColor="transparent"
             >
@@ -367,7 +370,7 @@ export default class UIModalController<Props, State>
                     UIStyle.absoluteFillContainer,
                     { backgroundColor },
                 ]}
-                onLayout={e => this.onLayout(e)}
+                onLayout={this.onLayout}
             >
                 <Animated.View style={{ marginTop: this.dy }}>
                     {this.renderDialog()}
