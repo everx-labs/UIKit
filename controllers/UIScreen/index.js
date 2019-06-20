@@ -31,19 +31,6 @@ export default class UIScreen<Props, State>
         this.presetName = '';
 
         // Events
-        this.onScreenLayoutDefault = (e: any) => {
-            const { width } = e.nativeEvent.layout;
-            this.setScreenWidth(width);
-            const narrow = this.isNarrowScreen(width);
-            this.dispatchNarrow(narrow);
-            this.onScreenLayout(width);
-        };
-
-        this.onScrollDefault = (e: any) => {
-            const { contentOffset, contentSize } = e.nativeEvent;
-            this.onScroll(contentOffset, contentSize);
-        };
-
         this.state = {
             screenWidth: 0,
         };
@@ -60,6 +47,19 @@ export default class UIScreen<Props, State>
     }
 
     // Events
+    onScreenLayoutDefault = (e: any) => {
+        const { width } = e.nativeEvent.layout;
+        this.setScreenWidth(width);
+        const narrow = this.isNarrowScreen(width);
+        this.dispatchNarrow(narrow);
+        this.onScreenLayout(width);
+    };
+
+    onScrollDefault = (e: any) => {
+        const { contentOffset, contentSize } = e.nativeEvent;
+        this.onScroll(contentOffset, contentSize);
+    };
+
     // Virtual
     onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
         //
@@ -67,16 +67,6 @@ export default class UIScreen<Props, State>
 
     onScreenLayout(width) {
         //
-    }
-
-    // Getters
-    isNarrow() {
-        const screenWidth = this.getScreenWidth();
-        return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
-    }
-
-    isNarrowScreen(width: number) {
-        return width < UIConstant.elasticWidthBroad();
     }
 
     // Setters
@@ -87,6 +77,15 @@ export default class UIScreen<Props, State>
     // Getters
     getScreenWidth() {
         return this.state.screenWidth;
+    }
+
+    isNarrow() {
+        const screenWidth = this.getScreenWidth();
+        return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
+    }
+
+    isNarrowScreen(width: number) {
+        return width < UIConstant.elasticWidthBroad();
     }
 
     // Virtual
