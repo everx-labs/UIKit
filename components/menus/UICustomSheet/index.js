@@ -117,7 +117,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
     }
 
     // Events
-    onLayout = (e: any) => {
+    onLayout(e: any) {
         const { height } = e.nativeEvent.layout;
         const oldHeight = this.getHeight();
         if (height !== oldHeight) {
@@ -127,7 +127,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
                 }
             });
         }
-    };
+    }
 
     // Setters
     setModalVisible(modalVisible: boolean, callback?: () => void) {
@@ -221,7 +221,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
                         containerStyle,
                         { bottom: this.marginBottom },
                     ]}
-                    onLayout={this.onLayout}
+                    onLayout={e => this.onLayout(e)}
                 >
                     {this.component}
                 </Animated.View>
