@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
 import {
-    Platform,
-    View,
-    Modal,
-    StyleSheet,
     Animated,
+    Modal,
+    Platform,
+    LayoutAnimation,
+    StyleSheet,
     TouchableWithoutFeedback,
+    View,
 } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
@@ -14,7 +15,9 @@ import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/Animat
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIComponent from '../../UIComponent';
+import UIController from '../../../controllers/UIController';
+
+import type { ContentInset, AnimationParameters } from '../../../controllers/UIController';
 
 const styles = StyleSheet.create({
     container: {
@@ -46,8 +49,6 @@ const maxScreenHeight = UIConstant.maxScreenHeight();
 
 let masterRef = null;
 
-export type Props = {};
-
 export type State = {
     modalVisible: boolean,
     height: number,
@@ -62,7 +63,7 @@ export type CustomSheetProps = {
     onCancel?: () => void,
 };
 
-export default class UICustomSheet extends UIComponent<CustomSheetProps, State> {
+export default class UICustomSheet extends UIController<CustomSheetProps, State> {
     static show(args: any) {
         if (masterRef) {
             if (!args.component) {
@@ -130,6 +131,19 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
     };
 
     // Setters
+    setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
+        super.setContentInset(contentInset, animation);
+        const { duration, easing } = animation || {
+            duration: UIConstant.animationDuration(),
+            easing: LayoutAnimation.Types.keyboard,
+        };
+        Animated.timing(this.marginBottom, {
+            toValue: contentInset.bottom + UIConstant.contentOffset(),
+            duration,
+            easing: UIController.getEasingFunction(easing),
+        }).start();
+    }
+
     setModalVisible(modalVisible: boolean, callback?: () => void) {
         this.setStateSafely({
             modalVisible,
