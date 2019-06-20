@@ -54,6 +54,7 @@ export type State = {
 };
 
 export type CustomSheetProps = {
+    modal?: boolean,
     component: ?React$Node,
     fullWidth?: boolean,
     masterSheet?: boolean,
@@ -83,6 +84,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
     marginBottom: AnimatedValue;
     onShow: ?() => void;
     onCancel: ?() => void;
+    modal: ?boolean;
 
     // constructor
     constructor(props: CustomSheetProps) {
@@ -92,6 +94,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
         this.onShow = () => {};
         this.onCancel = () => {};
+        this.modal = true;
 
         this.state = {
             modalVisible: false,
@@ -114,7 +117,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
     }
 
     // Events
-    onLayout(e: any) {
+    onLayout = (e: any) => {
         const { height } = e.nativeEvent.layout;
         const oldHeight = this.getHeight();
         if (height !== oldHeight) {
@@ -124,7 +127,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
                 }
             });
         }
-    }
+    };
 
     // Setters
     setModalVisible(modalVisible: boolean, callback?: () => void) {
@@ -152,17 +155,20 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         fullWidth = false,
         onShow = () => {},
         onCancel = () => {},
+        modal = false,
     }: CustomSheetProps = {}) {
         if (this.props.masterSheet) {
             this.component = component;
             this.fullWidth = fullWidth;
             this.onCancel = onCancel;
             this.onShow = onShow;
+            this.modal = modal;
         } else {
             this.component = this.props.component;
             this.fullWidth = this.props.fullWidth;
             this.onCancel = this.props.onCancel;
             this.onShow = this.props.onShow;
+            this.modal = this.props.modal;
         }
         this.setModalVisible(true);
     }
@@ -206,7 +212,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         return (
             <View
                 pointerEvents="box-none"
-                style={UIStyle.absoluteFillObject}
+                style={UIStyle.screenContainer}
             >
                 <Animated.View
                     style={[
@@ -215,7 +221,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
                         containerStyle,
                         { bottom: this.marginBottom },
                     ]}
-                    onLayout={e => this.onLayout(e)}
+                    onLayout={this.onLayout}
                 >
                     {this.component}
                 </Animated.View>
@@ -238,9 +244,10 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         if (!this.getModalVisible()) {
             return null;
         }
-        if (Platform.OS === 'web') {
+        if (Platform.OS === 'web' || !this.modal) {
             return this.renderContainer();
         }
+    
         return (
             <Modal
                 animationType="fade"
@@ -261,4 +268,5 @@ UICustomSheet.defaultProps = {
     fullWidth: false,
     onShow: () => {},
     onCancel: () => {},
+    modal: true,
 };
