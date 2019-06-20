@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIController from '../../controllers/UIController';
 import UIConstant from '../../helpers/UIConstant';
@@ -31,6 +30,20 @@ export default class UIScreen<Props, State>
         super(props);
         this.presetName = '';
 
+        // Events
+        this.onScreenLayoutDefault = (e: any) => {
+            const { width } = e.nativeEvent.layout;
+            this.setScreenWidth(width);
+            const narrow = this.isNarrowScreen(width);
+            this.dispatchNarrow(narrow);
+            this.onScreenLayout(width);
+        };
+
+        this.onScrollDefault = (e: any) => {
+            const { contentOffset, contentSize } = e.nativeEvent;
+            this.onScroll(contentOffset, contentSize);
+        };
+
         this.state = {
             screenWidth: 0,
         };
@@ -47,20 +60,12 @@ export default class UIScreen<Props, State>
     }
 
     // Events
-    onScreenLayout(e: any) {
-        const { width } = e.nativeEvent.layout;
-        this.setScreenWidth(width);
-        const narrow = this.isNarrowScreen(width);
-        this.dispatchNarrow(narrow);
-    }
-
     // Virtual
-    onScrollDefault(e: any) {
-        const { contentOffset, contentSize } = e.nativeEvent;
-        this.onScroll(contentOffset, contentSize);
+    onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
+        //
     }
 
-    onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
+    onScreenLayout(width) {
         //
     }
 
@@ -127,15 +132,15 @@ export default class UIScreen<Props, State>
         return (
             <View
                 style={UIStyle.flex}
-                onLayout={e => this.onScreenLayout(e)}
+                onLayout={this.onScreenLayoutDefault}
             >
                 {this.renderTopContent()}
                 <ScrollView
                     ref={(component) => { this.scrollView = component; }}
-                    style={[UIStyle.flex]}
+                    style={UIStyle.flex}
                     contentContainerStyle={this.getContentContainerStyle()}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
-                    onScroll={e => this.onScrollDefault(e)}
+                    onScroll={this.onScrollDefault}
                 >
                     {this.renderContent()}
                 </ScrollView>
