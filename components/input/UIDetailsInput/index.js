@@ -80,6 +80,7 @@ export type DetailsProps = ActionProps & {
     value: string,
     visible: boolean,
     testID?: string,
+    disableSubmitEmpty?: boolean,
 };
 
 export const detailsDefaultProps = {
@@ -108,6 +109,7 @@ export const detailsDefaultProps = {
     theme: UIColor.Theme.Light,
     value: '',
     visible: true,
+    disableSubmitEmpty: false,
 };
 
 export default class UIDetailsInput<Props, State>
@@ -184,7 +186,9 @@ export default class UIDetailsInput<Props, State>
     }
 
     isSubmitDisabled(): boolean {
-        return !this.props.value || this.props.submitDisabled || false;
+        return (this.props.disableSubmitEmpty && !this.props.value) ||
+                this.props.submitDisabled ||
+                false;
     }
 
     keyboardType(): KeyboardType {
