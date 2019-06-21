@@ -5,6 +5,7 @@ import {
     Modal,
     Platform,
     LayoutAnimation,
+    SafeAreaView,
     StyleSheet,
     TouchableWithoutFeedback,
     View,
@@ -245,16 +246,16 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     renderContainer() {
         return (
-            <React.Fragment>
+            <SafeAreaView style={UIStyle.absoluteFillObject}>
                 <TouchableWithoutFeedback onPress={() => this.hide(this.onCancel)}>
                     <View style={[UIStyle.absoluteFillObject, styles.container]} />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}
-            </React.Fragment>
+            </SafeAreaView>
         );
     }
 
-    renderSafely(): any {
+    render() {
         if (!this.getModalVisible()) {
             return null;
         }
