@@ -254,7 +254,7 @@ export default class UICustomSheet extends UIController<Props, State> {
         );
     }
 
-    render() {
+    renderSafely() {
         if (!this.getModalVisible()) {
             return null;
         }
