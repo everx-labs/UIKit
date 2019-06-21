@@ -15,7 +15,8 @@ const LabelRole = Object.freeze({
     Description: 'description',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
     DescriptionTertiary: 'descriptionTertiary',
-    Accent: 'accent',
+    SmallMedium: 'smallMedium',
+    SmallRegular: 'smallRegular',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
     Caption: 'caption', // TODO: rename as captionSecondary
@@ -76,8 +77,12 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryBodyBold());
         } else if (role === UILabel.Role.DescriptionTertiary) {
             result.push(UIStyle.Text.tertiaryBodyRegular());
-        } else if (role === UILabel.Role.Accent) {
+        } else if (role === UILabel.Role.SmallMedium) {
             result.push(UIStyle.Text.primarySmallMedium());
+        } else if (role === UILabel.Role.SmallRegular) {
+            result.push(UIStyle.Text.primarySmallRegular());
+        } else if (role === UILabel.Role.AccentBold) {
+            result.push(UIStyle.Text.primaryAccentBold());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
         } else if (role === UILabel.Role.SecondaryBody) {
@@ -88,8 +93,6 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
             result.push(UIStyle.Text.warningCaptionRegular());
-        } else if (role === UILabel.Role.AccentBold) {
-            result.push(UIStyle.Text.primaryAccentBold());
         }
         return result;
     }
