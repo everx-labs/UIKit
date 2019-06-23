@@ -346,9 +346,16 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     renderWordsList() {
         const hints = this.getPossibleHints();
+        const wtc = this.getWordThatChanged();
 
         if (hints.length === 0) {
             return null;
+        } else if (hints.length === 1) {
+            // This hides the hints list when there is only one hint
+            // and the hint is equal than the typed word.
+            if (hints[0] === wtc) {
+                return null;
+            }
         }
 
         return (
