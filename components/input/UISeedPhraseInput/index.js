@@ -26,6 +26,7 @@ import type { ActionState } from '../../UIActionComponent';
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     phraseToCheck: string,
+    isSeedPhraseValid?: boolean,
     onChangeIsValidPhrase?: (isValid: boolean) => void,
 };
 
@@ -54,6 +55,7 @@ const DASH = '\u2014';
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
+        isSeedPhraseValid: null,
         autoCapitalize: 'none',
         returnKeyType: 'none',
         placeholder: UILocalized.Password,
@@ -193,7 +195,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     areWordsValid(currentPhrase?: string): boolean {
-        const { phraseToCheck } = this.props;
+        const { phraseToCheck, isSeedPhraseValid } = this.props;
+        if (isSeedPhraseValid !== null) {
+            return isSeedPhraseValid;
+        }
         if (phraseToCheck.length > 0) {
             return this.areSeedPhrasesEqual(currentPhrase);
         }
