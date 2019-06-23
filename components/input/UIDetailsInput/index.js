@@ -90,6 +90,7 @@ export type DetailsProps = ActionProps & {
     value: string,
     visible: boolean,
     testID?: string,
+    disableSubmitEmpty: boolean,
 };
 
 export const detailsDefaultProps = {
@@ -120,6 +121,7 @@ export const detailsDefaultProps = {
     theme: UIColor.Theme.Light,
     value: '',
     visible: true,
+    disableSubmitEmpty: false,
 };
 
 export default class UIDetailsInput<Props, State>
@@ -221,7 +223,14 @@ export default class UIDetailsInput<Props, State>
     }
 
     isSubmitDisabled(): boolean {
-        return !this.props.value || this.props.submitDisabled || false;
+        return (this.props.disableSubmitEmpty && !this.props.value) ||
+                this.props.submitDisabled || false;
+    }
+
+    isMultiline(): boolean {
+        const { maxLines, forceMultiLine } = this.props;
+        const shouldMultiline = !!maxLines && maxLines > 1;
+        return shouldMultiline || forceMultiLine;
     }
 
     keyboardType(): KeyboardType {
@@ -233,7 +242,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     extraInputStyle(): ViewStyleProp {
-        // not inplemente in here
+        return {};
     }
 
     textInputStyle() {
@@ -344,6 +353,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderAuxTextInput() {
+        if (!this.isMultiline()) {
+            return null;
+        }
+        
         return (
             <TextInput
                 ref={(component) => { this.auxTextInput = component; }}
@@ -374,8 +387,6 @@ export default class UIDetailsInput<Props, State>
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const shouldMultiline = !!maxLines && maxLines > 1;
-        const multiline = shouldMultiline || forceMultiLine;
         const numberOfLines = forceMultiLine ? undefined : maxLines;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
@@ -389,7 +400,7 @@ export default class UIDetailsInput<Props, State>
                 editable={editable}
                 keyboardType={this.keyboardType()}
                 {...maxLengthProp}
-                multiline={multiline}
+                multiline={this.isMultiline()}
                 numberOfLines={numberOfLines}
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}

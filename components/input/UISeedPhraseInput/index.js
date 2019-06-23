@@ -25,7 +25,6 @@ import type { ActionState } from '../../UIActionComponent';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
-    rightButton?: string,
     phraseToCheck: string,
 };
 
@@ -50,6 +49,7 @@ const styles = StyleSheet.create({
     },
 });
 
+const DASH = '\u2014';
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
@@ -250,9 +250,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // methods
     updateInputRef() {
-        if (this.popOverRef) {
-            this.popOverRef._element.focus();
-            this.setTextInputRef(this.popOverRef._element);
+        const element = this.popOverRef._element;
+        if (element) {
+            element.focus();
+            this.setTextInputRef(element);
+        } else {
+            throw new Error('No element has been found for popover');
         }
     }
 
@@ -266,7 +269,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 continue;
             }
 
-            if (words[i] !== '\u2014' && words[i] !== '-') {
+            if (words[i] !== DASH && words[i] !== '-') {
                 normalized.push(words[i]);
             }
         }
@@ -279,7 +282,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             let newPhrase = `${words[0]}`;
             for (let i = 1; i < words.length; i += 1) {
                 if (words[i - 1] !== '') {
-                    newPhrase = `${newPhrase} \u2014 ${words[i]}`;
+                    newPhrase = `${newPhrase} ${DASH} ${words[i]}`;
                 }
             }
             return newPhrase;
@@ -370,6 +373,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 arrowWidth={0}
                 arrowHeight={0}
                 isVisible={isVisible}
+                offset={{
+                    x: 0,
+                    y: UIConstant.contentOffset(),
+                }}
                 component={() => (
                     this.renderWordsList()
                 )}

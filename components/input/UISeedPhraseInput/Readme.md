@@ -19,7 +19,7 @@ class ExampleComponent extends React.Component {
                     onChangeText={(newText) => this.setState({
                         seedPhrase: newText
                     })}
-                    prhaseToCheck={this.state.phraseToCheck}
+                    phraseToCheck={this.state.phraseToCheck}
                 />
             </View>
         );
