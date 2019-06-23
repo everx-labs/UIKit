@@ -64,6 +64,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         onChangeIsValidPhrase: () => {},
     };
 
+    lastWords: Array<string>;
+    totalWords: number;
+    popOverRef: Popover;
+
     constructor(props: Props) {
         super(props);
 
@@ -96,7 +100,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
     }
     // Getters
-    getDictionary(): array<string> {
+    getDictionary(): Array<string> {
         return Mnemonic.Words.ENGLISH;
     }
 
@@ -160,7 +164,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return this.totalWords - count;
     }
 
-    getPossibleHints(): array<string> {
+    getPossibleHints(): Array<string> {
         const wtc = this.getWordThatChanged();
         const dictionary = this.getDictionary();
         const hints = dictionary.filter(word => word.startsWith(wtc));
@@ -215,7 +219,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onChangeText = (newValue: string, updateFlag: boolean = true): void => {
+    onChangeText = (newValue: string): void => {
         const { onChangeText, onChangeIsValidPhrase } = this.props;
         const split = this.splitPhrase(newValue);
         if (split.length > this.totalWords) {
@@ -223,7 +227,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
 
         const finalValue = this.addDashes(split);
-        this.identifyWordThatChanged(split, updateFlag);
+        this.identifyWordThatChanged(split);
         onChangeText(finalValue);
 
         if (onChangeIsValidPhrase) {
@@ -251,7 +255,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         // eslint-disable-next-line no-underscore-dangle
         this.popOverRef._element.focus();
-        this.onChangeText(newPhrase, false);
+        this.onChangeText(newPhrase);
     }
 
     // methods
@@ -265,7 +269,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
     }
 
-    splitPhrase(phrase: string): array<string> {
+    splitPhrase(phrase: string): Array<string> {
         const noExtraSpaces = phrase.replace(/\s+/g, ' ');
         const words = noExtraSpaces.split(' ');
         const normalized = [];
@@ -283,7 +287,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return normalized;
     }
 
-    addDashes(words: array<string>): string {
+    addDashes(words: Array<string>): string {
         if (words.length) {
             let newPhrase = `${words[0]}`;
             for (let i = 1; i < words.length; i += 1) {
@@ -297,18 +301,16 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return '';
     }
 
-    identifyWordThatChanged(currentWords: array<string>, updateFlag: bolean = true) {
+    identifyWordThatChanged(currentWords: Array<string>) {
         let i = 0;
         let change = -1;
 
-        if (updateFlag) {
-            while (i < this.lastWords.length && i < currentWords.length) {
-                if (this.lastWords[i] !== currentWords[i]) {
-                    change = i;
-                    break;
-                }
-                i += 1;
+        while (i < this.lastWords.length && i < currentWords.length) {
+            if (this.lastWords[i] !== currentWords[i]) {
+                change = i;
+                break;
             }
+            i += 1;
         }
 
         this.lastWords = Array.from(currentWords);

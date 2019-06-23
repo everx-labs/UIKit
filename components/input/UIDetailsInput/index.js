@@ -127,6 +127,7 @@ export const detailsDefaultProps = {
 export default class UIDetailsInput<Props, State>
     extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & ActionState>> {
     textInput: ?TextInput;
+    auxTextInput: ?any;
 
     static defaultProps: DetailsProps = detailsDefaultProps;
 
@@ -146,7 +147,10 @@ export default class UIDetailsInput<Props, State>
         let newHeight = 0;
         
         if (Platform.OS === 'web' && this.auxTextInput) {
-            newHeight = this.auxTextInput._node.scrollHeight;
+            const aux = this.auxTextInput;
+            if (aux?._node) {
+                newHeight = aux?._node.scrollHeight;
+            }
         } else if (event && event.nativeEvent) {
             const { contentSize } = event.nativeEvent;
             newHeight = contentSize?.height || 0;
