@@ -26,6 +26,7 @@ import type { ActionState } from '../../UIActionComponent';
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     rightButton?: string,
+    phraseToCheck: string,
 };
 
 type State = ActionState & {
@@ -49,8 +50,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const TOTAL_WORDS = 12;
-
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
@@ -60,12 +59,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         autofocus: true,
         containerStyle: { },
         forceMultiLine: true,
+        phraseToCheck: '',
     };
 
     constructor(props: Props) {
         super(props);
 
         this.lastWords = [];
+        this.totalWords = 12;
 
         this.state = {
             ...this.state,
@@ -78,9 +79,20 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
+        this.setTotalWords();
         this.updateInputRef();
     }
 
+    // Setters
+    setTotalWords() {
+        const { phraseToCheck } = this.props;
+        if (phraseToCheck.length === 0) {
+            this.totalWords = 12;
+        } else {
+            const words = this.splitPhrase(phraseToCheck);
+            this.totalWords = words.length;
+        }
+    }
     // Getters
     getDictionary(): array<string> {
         return Mnemonic.Words.ENGLISH;
@@ -105,7 +117,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const valid = this.areWordsValid();
         const count = this.getRemainingCount();
 
-        if (!valid) {
+        if (!valid && count === 0) {
             return UIColor.error();
         } else if (valid && count === 0) {
             return UIColor.success();
@@ -123,7 +135,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const valid = this.areWordsValid();
         const count = this.getRemainingCount();
 
-        if (!valid) {
+        if (!valid && count === 0) {
             return UILocalized.seedPhraseTypo;
         } else if (valid && count === 0) {
             return UILocalized.greatMemory;
@@ -143,7 +155,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const phrase = this.getValue().trim();
         const words = this.splitPhrase(phrase);
         const count = phrase.length === 0 ? 0 : words.length;
-        return TOTAL_WORDS - count;
+        return this.totalWords - count;
     }
 
     getPossibleHints(): array<string> {
@@ -175,6 +187,11 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     areWordsValid(): boolean {
+        const { phraseToCheck } = this.props;
+        if (phraseToCheck.length > 0) {
+            return this.areSeedPhrasesEqual();
+        }
+
         const phrase = this.getValue();
         const words = this.splitPhrase(phrase);
         const dictionary = this.getDictionary();
@@ -199,7 +216,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     onChangeText = (newValue: string, updateFlag: boolean = true): void => {
         const { onChangeText } = this.props;
         const split = this.splitPhrase(newValue);
-        if (split.length > TOTAL_WORDS) {
+        if (split.length > this.totalWords) {
             return;
         }
 
@@ -218,7 +235,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const wtc = this.getWordThatChangedIndex();
 
         let newPhrase = '';
-        const extraSpace = words.length === TOTAL_WORDS ? '' : ' ';
+        const extraSpace = words.length === this.totalWords ? '' : ' ';
         for (let i = 0; i < words.length; i += 1) {
             const wordToAdd = i === wtc ? hint : words[i];
             newPhrase = `${newPhrase} ${wordToAdd}`;
@@ -249,7 +266,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 continue;
             }
 
-            if (words[i] !== '\u2014') {
+            if (words[i] !== '\u2014' && words[i] !== '-') {
                 normalized.push(words[i]);
             }
         }
@@ -287,6 +304,26 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         this.lastWords = Array.from(currentWords);
         this.setStateSafely({ wordThatChanged: change });
+    }
+
+    areSeedPhrasesEqual(): boolean {
+        const { phraseToCheck } = this.props;
+        const typedPhrase = this.getValue();
+
+        const wA = this.splitPhrase(phraseToCheck);
+        const wB = this.splitPhrase(typedPhrase);
+
+        let result = true;
+        if (wA.length === wB.length) {
+            for (let i = 0; i < wA.length; i += 1) {
+                if (wA[i] !== wB[i]) {
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        return result;
     }
 
     // Render
