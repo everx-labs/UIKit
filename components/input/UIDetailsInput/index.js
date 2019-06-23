@@ -39,6 +39,14 @@ const styles = StyleSheet.create({
     },
     textInput: {
         padding: 0,
+        zIndex: 1,
+    },
+    textInputAux: {
+        marginBottom: -UIConstant.smallCellHeight(),
+        height: UIConstant.smallCellHeight(),
+        backgroundColor: 'transparent',
+        color: 'transparent',
+        zIndex: -1,
     },
     beginningTag: {
         margin: 0,
@@ -53,7 +61,8 @@ export type DetailsProps = ActionProps & {
     autoFocus: boolean,
     beginningTag: string,
     containerStyle: ViewStyleProp,
-    comment: string,
+    inputStyle: ViewStyleProp,
+    comment?: string | null,
     commentColor?: string | null,
     defaultValue?: string,
     editable: boolean,
@@ -64,6 +73,7 @@ export type DetailsProps = ActionProps & {
     keyboardType: KeyboardType,
     maxLength?: number,
     maxLines: number,
+    forceMultiLine: boolean,
     needArrow?: boolean,
     onBlur: () => void,
     onChangeText: (text: string) => void,
@@ -80,7 +90,6 @@ export type DetailsProps = ActionProps & {
     value: string,
     visible: boolean,
     testID?: string,
-    disableSubmitEmpty?: boolean,
 };
 
 export const detailsDefaultProps = {
@@ -88,6 +97,7 @@ export const detailsDefaultProps = {
     autoFocus: false,
     beginningTag: '',
     containerStyle: {},
+    inputStyle: {},
     comment: '',
     editable: true,
     floatingTitle: true,
@@ -96,6 +106,7 @@ export const detailsDefaultProps = {
     hidePlaceholder: false,
     keyboardType: 'default',
     maxLines: 1,
+    forceMultiLine: false,
     needArrow: false,
     onBlur: () => {},
     onChangeText: () => {},
@@ -109,7 +120,6 @@ export const detailsDefaultProps = {
     theme: UIColor.Theme.Light,
     value: '',
     visible: true,
-    disableSubmitEmpty: false,
 };
 
 export default class UIDetailsInput<Props, State>
@@ -130,6 +140,23 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Events
+    onChange(event: any) {
+        let newHeight = 0;
+        
+        if (Platform.OS === 'web' && this.auxTextInput) {
+            newHeight = this.auxTextInput._node.scrollHeight;
+        } else if (event && event.nativeEvent) {
+            const { contentSize } = event.nativeEvent;
+            newHeight = contentSize?.height || 0;
+        }
+
+        this.onContentSizeChange(newHeight);
+    }
+
+    onContentSizeChange(heigh: number) {
+        // Not implemented in here
+    }
+
     onChangeText = (text: string) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
@@ -176,6 +203,14 @@ export default class UIDetailsInput<Props, State>
         this.setStateSafely({ hover });
     }
 
+    // TODO: For some reason, when this component is wrapped with the Popover component,
+    // the reference is always 'null', but, on the parent control (the Popover), there is
+    // a property called '_elements', there you can access to the refenrence, so, we can
+    // pass it here.
+    setTextInputRef(inputRef: TextInput) {
+        this.textInput = inputRef;
+    }
+
     // Getters
     isFocused(): boolean {
         return this.state.focused || (this.textInput && this.textInput.isFocused()) || false;
@@ -186,9 +221,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     isSubmitDisabled(): boolean {
-        return (this.props.disableSubmitEmpty && !this.props.value) ||
-                this.props.submitDisabled ||
-                false;
+        return !this.props.value || this.props.submitDisabled || false;
     }
 
     keyboardType(): KeyboardType {
@@ -197,6 +230,10 @@ export default class UIDetailsInput<Props, State>
 
     containerStyle(): ViewStyleProp {
         return styles.container;
+    }
+
+    extraInputStyle(): ViewStyleProp {
+        // not inplemente in here
     }
 
     textInputStyle() {
@@ -209,6 +246,7 @@ export default class UIDetailsInput<Props, State>
             fontStyle,
             textColorStyle,
             UIStyle.flex,
+            this.extraInputStyle(),
         ];
     }
 
@@ -239,6 +277,11 @@ export default class UIDetailsInput<Props, State>
     getValue() {
         const { value } = this.props;
         return `${value}`;
+    }
+
+    getComment() {
+        const { comment } = this.props;
+        return `${comment}`;
     }
 
     getInlinePlaceholder() {
@@ -300,6 +343,21 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
+    renderAuxTextInput() {
+        return (
+            <TextInput
+                ref={(component) => { this.auxTextInput = component; }}
+                style={[this.textInputStyle(), styles.textInputAux]}
+                numberOfLines={1}
+                editable={false}
+                value={this.getValue()}
+                multiline
+                autoCapitalize="none"
+                autoCorrect={false}
+            />
+        );
+    }
+
     renderTextInput() {
         const {
             accessibilityLabel,
@@ -312,10 +370,13 @@ export default class UIDetailsInput<Props, State>
             secureTextEntry,
             testID,
             theme,
+            forceMultiLine,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const multiline = !!maxLines && maxLines > 1;
+        const shouldMultiline = !!maxLines && maxLines > 1;
+        const multiline = shouldMultiline || forceMultiLine;
+        const numberOfLines = forceMultiLine ? undefined : maxLines;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
@@ -329,10 +390,12 @@ export default class UIDetailsInput<Props, State>
                 keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={multiline}
-                numberOfLines={maxLines}
+                numberOfLines={numberOfLines}
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
                 onChangeText={this.onChangeText}
+                onChange={e => this.onChange(e)}
+                onContentSizeChange={e => this.onChange(e)}
                 onSubmitEditing={this.onSubmitEditing}
                 onKeyPress={this.onKeyPress}
                 placeholder={this.getInlinePlaceholder()}
@@ -434,7 +497,8 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderComment() {
-        const { comment, theme } = this.props;
+        const { theme } = this.props;
+        const comment = this.getComment();
         if (!comment) {
             return null;
         }
