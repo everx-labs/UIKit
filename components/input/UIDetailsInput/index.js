@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
         padding: 0,
         textAlign: 'center',
     },
+    button: {
+        height: undefined,
+    },
 });
 
 export type DetailsProps = ActionProps & {
@@ -391,6 +394,7 @@ export default class UIDetailsInput<Props, State>
         return (<UITextButton
             textStyle={UIStyle.Color.getColorStyle(UIColor.textPrimary())}
             {...button}
+            buttonStyle={[styles.button, button.buttonStyle]}
         />);
     }
 
