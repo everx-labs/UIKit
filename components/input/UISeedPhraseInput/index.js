@@ -26,6 +26,7 @@ import type { ActionState } from '../../UIActionComponent';
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     phraseToCheck: string,
+    onChangeIsValidPhrase?: (isValid: boolean) => void,
 };
 
 type State = ActionState & {
@@ -60,6 +61,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         containerStyle: { },
         forceMultiLine: true,
         phraseToCheck: '',
+        onChangeIsValidPhrase: () => {},
     };
 
     constructor(props: Props) {
@@ -186,13 +188,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return wtc !== -1;
     }
 
-    areWordsValid(): boolean {
+    areWordsValid(currentPhrase?: string): boolean {
         const { phraseToCheck } = this.props;
         if (phraseToCheck.length > 0) {
-            return this.areSeedPhrasesEqual();
+            return this.areSeedPhrasesEqual(currentPhrase);
         }
 
-        const phrase = this.getValue();
+        const phrase = currentPhrase || this.getValue();
         const words = this.splitPhrase(phrase);
         const dictionary = this.getDictionary();
 
@@ -214,7 +216,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Events
     onChangeText = (newValue: string, updateFlag: boolean = true): void => {
-        const { onChangeText } = this.props;
+        const { onChangeText, onChangeIsValidPhrase } = this.props;
         const split = this.splitPhrase(newValue);
         if (split.length > this.totalWords) {
             return;
@@ -223,6 +225,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const finalValue = this.addDashes(split);
         this.identifyWordThatChanged(split, updateFlag);
         onChangeText(finalValue);
+
+        if (onChangeIsValidPhrase) {
+            onChangeIsValidPhrase(this.areWordsValid(finalValue));
+        }
     };
 
     onContentSizeChange(height: number) {
@@ -309,15 +315,16 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.setStateSafely({ wordThatChanged: change });
     }
 
-    areSeedPhrasesEqual(): boolean {
+    areSeedPhrasesEqual(currentPhrase?: string): boolean {
         const { phraseToCheck } = this.props;
-        const typedPhrase = this.getValue();
+        const typedPhrase = currentPhrase || this.getValue();
 
         const wA = this.splitPhrase(phraseToCheck);
         const wB = this.splitPhrase(typedPhrase);
 
-        let result = true;
+        let result = false;
         if (wA.length === wB.length) {
+            result = true;
             for (let i = 0; i < wA.length; i += 1) {
                 if (wA[i] !== wB[i]) {
                     result = false;
@@ -351,8 +358,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         if (hints.length === 0) {
             return null;
         } else if (hints.length === 1) {
-            // This hides the hints list when there is only one hint
-            // and the hint is equal than the typed word.
             if (hints[0] === wtc) {
                 return null;
             }
