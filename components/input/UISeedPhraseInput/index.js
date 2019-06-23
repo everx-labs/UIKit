@@ -249,7 +249,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 continue;
             }
 
-            if (words[i] !== '-') {
+            if (words[i] !== '\u2014') {
                 normalized.push(words[i]);
             }
         }
@@ -262,7 +262,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             let newPhrase = `${words[0]}`;
             for (let i = 1; i < words.length; i += 1) {
                 if (words[i - 1] !== '') {
-                    newPhrase = `${newPhrase} - ${words[i]}`;
+                    newPhrase = `${newPhrase} \u2014 ${words[i]}`;
                 }
             }
             return newPhrase;
