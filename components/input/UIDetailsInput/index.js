@@ -7,6 +7,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UILabel from '../../../components/text/UILabel';
+import UITextButton from '../../../components/buttons/UITextButton';
 import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
@@ -45,6 +46,9 @@ const styles = StyleSheet.create({
         padding: 0,
         textAlign: 'center',
     },
+    button: {
+        height: undefined,
+    },
 });
 
 export type DetailsProps = ActionProps & {
@@ -52,6 +56,7 @@ export type DetailsProps = ActionProps & {
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
+    button?: Object,
     containerStyle: ViewStyleProp,
     comment: string,
     commentColor?: string | null,
@@ -80,6 +85,7 @@ export type DetailsProps = ActionProps & {
     value: string,
     visible: boolean,
     testID?: string,
+    disableSubmitEmpty?: boolean,
 };
 
 export const detailsDefaultProps = {
@@ -108,6 +114,7 @@ export const detailsDefaultProps = {
     theme: UIColor.Theme.Light,
     value: '',
     visible: true,
+    disableSubmitEmpty: false,
 };
 
 export default class UIDetailsInput<Props, State>
@@ -184,7 +191,9 @@ export default class UIDetailsInput<Props, State>
     }
 
     isSubmitDisabled(): boolean {
-        return !this.props.value || this.props.submitDisabled || false;
+        return (this.props.disableSubmitEmpty && !this.props.value) ||
+                this.props.submitDisabled ||
+                false;
     }
 
     keyboardType(): KeyboardType {
@@ -377,6 +386,18 @@ export default class UIDetailsInput<Props, State>
         return (<UILabel role={UILabel.Role.DescriptionTertiary} text={token} />);
     }
 
+    renderButton() {
+        const { button } = this.props;
+        if (!button) {
+            return null;
+        }
+        return (<UITextButton
+            textStyle={UIStyle.Color.getColorStyle(UIColor.textPrimary())}
+            {...button}
+            buttonStyle={[styles.button, button.buttonStyle]}
+        />);
+    }
+
     renderArrow() {
         const { theme, needArrow } = this.props;
         if (!needArrow) {
@@ -407,6 +428,7 @@ export default class UIDetailsInput<Props, State>
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
+                {this.renderButton()}
                 {this.renderArrow()}
             </React.Fragment>
         );

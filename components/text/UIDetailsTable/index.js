@@ -73,7 +73,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     // Getters
     getTextStyle(type: ?string) {
         const {
-            primarySmallRegular,
+            secondarySmallRegular,
             successSmallRegular,
             primarySmallMedium,
         } = UITextStyle;
@@ -82,7 +82,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         } else if (type === UIDetailsTable.CellType.Accent) {
             return primarySmallMedium;
         } else if (type === UIDetailsTable.CellType.Default || !type) {
-            return primarySmallRegular;
+            return secondarySmallRegular;
         }
         return null;
     }
@@ -147,7 +147,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 const {
                     caption, value,
                 } = details;
-                const { secondarySmallRegular } = UITextStyle;
+                const { tertiarySmallRegular } = UITextStyle;
 
                 const cell = this.renderCell(details);
                 return (
@@ -155,7 +155,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         <View style={[styles.leftCell, UIStyle.marginRightDefault]}>
                             <Text
                                 numberOfLines={1}
-                                style={secondarySmallRegular}
+                                style={tertiarySmallRegular}
                             >
                                 {caption}
                             </Text>
