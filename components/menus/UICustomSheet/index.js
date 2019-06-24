@@ -73,7 +73,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         }
     }
 
-    static hide(callback: () => void) {
+    static hide(callback?: () => void) {
         if (masterRef) {
             masterRef.hide(callback);
         }
@@ -247,7 +247,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         if (Platform.OS === 'web' || !this.modal) {
             return this.renderContainer();
         }
-    
+
         return (
             <Modal
                 animationType="fade"

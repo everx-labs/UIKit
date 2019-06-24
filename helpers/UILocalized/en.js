@@ -547,6 +547,12 @@ const en: UILocalizedData = {
     // Labels
     Phone: 'Phone',
     EmailAddress: 'Email',
+
+    // Feedback module
+    ThanksForYourFeedback: 'Thanks for your feedback',
+    DescribeYourIssueOrIdea: 'Describe your issue or idea',
+    YourEmail: 'Your email',
+    SendFeedback: 'Send feedback',
 };
 
 export default en;

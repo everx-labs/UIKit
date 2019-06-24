@@ -3,7 +3,6 @@ import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, Text, Image, View, Platform } from 'react-native';
 
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIActionComponent from '../../UIActionComponent';
 import UIStyle from '../../../helpers/UIStyle';
@@ -79,13 +78,13 @@ class UITextButton extends UIActionComponent<Props, State> {
         if (this.props.tooltip) {
             UITooltip.showOnMouseForWeb(this.props.tooltip, webStyle);
         }
-    }
+    };
 
     onLeave = () => {
         if (this.props.tooltip) {
             UITooltip.hideOnMouseForWeb();
         }
-    }
+    };
 
     getStateCustomColorStyle() {
         if (this.isTapped()) {
@@ -104,23 +103,23 @@ class UITextButton extends UIActionComponent<Props, State> {
         }
 
         const {
-            theme, disabled,
+            theme, disabled, iconHoverColor,
         } = this.props;
         const tapped = this.isTapped();
         const hover = this.isHover();
 
         const defaultColor = UIColor.actionTextPrimary(theme);
         const stateColorStyle = disabled || tapped || hover
-            ? this.props.iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
+            ? iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
             : null;
         const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
-        const styleColor = iconColor ? UIColor.getTintColorStyle(iconColor) : null;
+        const styleColor = iconColor ? UIStyle.Color.getTintColorStyle(iconColor) : null;
 
         const iconStyle = [styleColor];
         if (this.props.title) {
             iconStyle.push(isBack ?
-                UIStyle.marginLeftDefault :
-                UIStyle.marginRightDefault);
+                UIStyle.Margin.leftDefault() :
+                UIStyle.Margin.rightDefault());
         }
 
         return (<Image
@@ -133,7 +132,9 @@ class UITextButton extends UIActionComponent<Props, State> {
         const {
             title, textStyle, details, theme, disabled,
         } = this.props;
-        if (!title) return null;
+        if (!title) {
+            return null;
+        }
         const defaultFontStyle = UIFont.smallMedium();
         const tapped = this.isTapped();
         const hover = this.isHover();
@@ -166,7 +167,7 @@ class UITextButton extends UIActionComponent<Props, State> {
             return null;
         }
         return (
-            <Text style={[UITextStyle.secondarySmallRegular, detailsStyle]}>
+            <Text style={[UIStyle.Text.secondarySmallRegular(), detailsStyle]}>
                 {details}
             </Text>
         );

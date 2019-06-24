@@ -65,7 +65,7 @@ export default class UIScreen<Props, State>
         //
     }
 
-    onScreenLayout(width) {
+    onScreenLayout(width: string) {
         //
     }
 

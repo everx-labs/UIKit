@@ -115,6 +115,12 @@ const UITextStyle = StyleSheet.create({
         ...UIFont.tinyMedium(),
     },
 
+    // Icon - fontSize: 10, lineHeight: 16
+    iconBold: {
+        ...text,
+        ...UIFont.iconBold(),
+    },
+
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
     primaryHeadlineLight: {

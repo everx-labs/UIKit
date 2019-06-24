@@ -63,4 +63,4 @@ export default class UIStyleHeight {
     static minHeightGreatCell() { // 72
         return styles.minHeightGreatCell;
     }
-};
+}

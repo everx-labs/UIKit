@@ -24,6 +24,10 @@ export default class UIStyleText {
     static tinyMedium() {
         return UITextStyle.tinyMedium;
     }
+    // Icon - fontSize: 10, lineHeight: 16
+    static iconBold() {
+        return UITextStyle.iconBold;
+    }
 
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84

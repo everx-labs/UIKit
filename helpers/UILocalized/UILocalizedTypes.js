@@ -535,4 +535,10 @@ export type UILocalizedData = {
     // Toasts
     EnterCorrectDataToField: string,
     EmailAddress: string,
+
+    // Feedback module
+    ThanksForYourFeedback: string,
+    DescribeYourIssueOrIdea: string,
+    YourEmail: string,
+    SendFeedback: string,
 }

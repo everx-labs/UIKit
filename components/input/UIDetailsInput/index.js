@@ -395,7 +395,7 @@ export default class UIDetailsInput<Props, State>
             <UIActionImage
                 {...icons}
                 disabled={this.isSubmitDisabled()}
-                onPress={() => this.onSubmitEditing()}
+                onPress={this.onSubmitEditing}
             />
         );
     }
