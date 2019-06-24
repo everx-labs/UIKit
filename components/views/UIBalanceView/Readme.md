@@ -23,5 +23,6 @@ Example:
          );
      }
  };
+ 
  <ExampleComponent />
  ```
