@@ -53,6 +53,12 @@ const styles = StyleSheet.create({
         padding: 0,
         textAlign: 'center',
     },
+    commentStyle: {
+        zIndex: -1,
+        ...UITextStyle.captionRegular,
+        ...UIStyle.marginTopTiny,
+        ...UIStyle.marginBottomSmall,
+    },
 });
 
 export type DetailsProps = ActionProps & {
@@ -156,7 +162,15 @@ export default class UIDetailsInput<Props, State>
             newHeight = contentSize?.height || 0;
         }
 
-        this.onContentSizeChange(newHeight);
+        if (newHeight) {
+            this.setInputAreaHeight(newHeight - UIConstant.smallCellHeight());
+        }
+    }
+
+    setInputAreaHeight(height: number) {
+        const newSize = Math.min(height, UIConstant.smallCellHeight() * 4);
+        const inH = UIConstant.smallCellHeight() + newSize;
+        this.onContentSizeChange(inH);
     }
 
     onContentSizeChange(heigh: number) {
@@ -523,9 +537,7 @@ export default class UIDetailsInput<Props, State>
         return (
             <Text
                 style={[
-                    UITextStyle.captionRegular,
-                    UIStyle.marginTopTiny,
-                    UIStyle.marginBottomSmall,
+                    styles.commentStyle,
                     defaultColorStyle,
                     colorStyle,
                 ]}

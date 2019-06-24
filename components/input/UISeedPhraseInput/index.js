@@ -38,16 +38,21 @@ type State = ActionState & {
 
 const styles = StyleSheet.create({
     hintsContainer: {
-        maxHeight: UIConstant.defaultCellHeight() * 3,
+        flex: 1,
         width: UIConstant.toastWidth(),
+        maxHeight: UIConstant.defaultCellHeight() * 3,
         backgroundColor: UIColor.backgroundPrimary(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: UIConstant.borderRadius(),
+        paddingHorizontal: UIConstant.contentOffset(),
+        ...UIConstant.cardShadow(),
     },
     cellHint: {
-        marginHorizontal: UIConstant.contentOffset(),
-        height: UIConstant.defaultCellHeight(),
+        zIndex: 1,
         justifyContent: 'center',
+        minHeight: UIConstant.defaultCellHeight(),
+        backgroundColor: UIColor.backgroundPrimary(),
+
     },
 });
 
@@ -371,14 +376,15 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
 
         return (
-            <FlatList
-                style={[UIConstant.cardShadow(), styles.hintsContainer]}
-                data={hints}
-                renderItem={element => this.renderHint(element.item)}
-                scrollEnabled
-                showsVerticalScrollIndicator
-                keyExtractor={item => item}
-            />
+            <View style={styles.hintsContainer}>
+                <FlatList
+                    data={hints}
+                    renderItem={element => this.renderHint(element.item)}
+                    scrollEnabled
+                    showsVerticalScrollIndicator
+                    keyExtractor={item => item}
+                />
+            </View>
         );
     }
 
@@ -394,11 +400,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 isVisible={isVisible}
                 offset={{
                     x: 0,
-                    y: UIConstant.contentOffset(),
+                    y: UIConstant.smallContentOffset() + 1,
                 }}
-                component={() => (
-                    this.renderWordsList()
-                )}
+                component={() => this.renderWordsList()}
             >
                 {this.renderTextInput()}
             </Popover>
