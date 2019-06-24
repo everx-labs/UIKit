@@ -125,6 +125,10 @@ const UI_FONT_ICON_BOLD = { ...UI_FONT_ICON, ...UI_FONT_BOLD };
 const UI_FONT_ICON_REGULAR = { ...UI_FONT_ICON, ...UI_FONT_REGULAR };
 
 export default class UIFont {
+    static bold() {
+        return UI_FONT_BOLD;
+    }
+
     static keyBold() {
         return UI_FONT_KEY_BOLD;
     }

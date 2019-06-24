@@ -2,7 +2,7 @@
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 
-import UIComponent from '../UIComponent';
+import UIPureComponent from '../UIPureComponent';
 import type { EventProps } from '../../types';
 
 export type ActionState = {
@@ -18,7 +18,7 @@ export type ActionProps = {
 };
 
 export default class UIActionComponent<Props, State>
-    extends UIComponent<any & ActionProps, any & ActionState> {
+    extends UIPureComponent<any & ActionProps, any & ActionState> {
     constructor(props: any & ActionProps) {
         super(props);
 

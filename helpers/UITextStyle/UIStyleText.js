@@ -5,6 +5,10 @@ export default class UIStyleText {
         return UITextStyle.alignCenter;
     }
 
+    static bold() {
+        return UITextStyle.bold;
+    }
+
     // [Text]
     // Body - fontSize: 18, lineHeight: 24
     static bodyRegular() {
