@@ -369,15 +369,6 @@ export default class UIColor {
         return UIColor.defaultAvatarBackground(colorNumber);
     }
 
-    // Passport
-    static unconfirmedPassport() {
-        return UIColorPalette.unconfirmedPassport;
-    }
-
-    static walletVersion() {
-        return UIColorPalette.walletVersion;
-    }
-
     // deprecated, moved to UIStyleColor
     static getColorStyle(color: UIColorData) {
         return UIStyleColor.getStyle(color, UIStyleColor.Styles.Color);
