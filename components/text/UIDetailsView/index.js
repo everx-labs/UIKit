@@ -4,7 +4,6 @@ import StylePropType from 'react-style-proptype';
 
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 import UILabel from '../UILabel';

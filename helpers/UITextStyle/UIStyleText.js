@@ -142,6 +142,14 @@ export default class UIStyleText {
     static quaternaryBodyRegular() {
         return UITextStyle.quaternaryBodyRegular;
     }
+    // Small - fontSize: 16, lineHeight: 20
+    static quaternarySmallRegular() {
+        return UITextStyle.quaternarySmallRegular;
+    }
+    // Caption - fontSize: 14, lineHeight: 20
+    static quaternaryCaptionRegular() {
+        return UITextStyle.quaternaryCaptionRegular;
+    }
 
     // [Text Grey 1]
     // Subtitle - fontSize: 36, lineHeight: 48
@@ -217,10 +225,6 @@ export default class UIStyleText {
     // Small - fontSize: 16, lineHeight: 20
     static tertiarySmallRegular() {
         return UITextStyle.tertiarySmallRegular;
-    }
-    // Small - fontSize: 16, lineHeight: 20
-    static quaternarySmallRegular() {
-        return UITextStyle.quaternarySmallRegular;
     }
     // Caption - fontSize: 14, lineHeight: 20
     static tertiaryCaptionRegular() {

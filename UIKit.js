@@ -7,6 +7,7 @@ import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/input/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
+import UIBalanceView from './components/views/UIBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
@@ -120,6 +121,7 @@ export {
     UIAlertView,
     UIAmountInput,
     UIBadge,
+    UIBalanceView,
     UIBackgroundView,
     UIBottomBar,
     UIButton,
