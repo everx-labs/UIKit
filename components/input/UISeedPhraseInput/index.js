@@ -154,7 +154,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             return UILocalized.greatMemory;
         }
 
-        return `${count} ${UILocalized.moreWords}`;
+        return UILocalized.localizedStringForValue(count, 'moreWords');
     }
 
     getLastWord(phrase: string): string {
