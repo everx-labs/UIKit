@@ -59,6 +59,7 @@ import UINotificationBadge from './components/notifications/UINotificationBadge'
 import UINumberInput from './components/input/UINumberInput';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
+import UIPinCodeInput from './components/input/UIPinCodeInput';
 import UIProfilePhoto from './components/profile/UIProfilePhoto';
 import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
@@ -173,6 +174,7 @@ export {
     UINumberInput,
     UIPasswordPrompt,
     UIPhoneInput,
+    UIPinCodeInput,
     UIProfilePhoto,
     UIProfileInitials,
     UIProfileView,
