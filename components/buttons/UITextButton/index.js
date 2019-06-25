@@ -176,15 +176,14 @@ class UITextButton extends UIActionComponent<Props, State> {
         const {
             buttonStyle, align, icon, backIcon,
         } = this.props;
-
+        const style = [styles.textButton, align];
+        if (buttonStyle instanceof Array) {
+            style.push(...buttonStyle);
+        } else {
+            style.push(buttonStyle);
+        }
         return (
-            <View
-                style={[
-                    styles.textButton,
-                    align,
-                    buttonStyle,
-                ]}
-            >
+            <View style={style}>
                 {this.renderIcon(icon, false)}
                 {this.renderTitle()}
                 {this.renderIcon(backIcon, true)}

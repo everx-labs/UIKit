@@ -62,7 +62,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         ...UIDetailsInput.defaultProps,
         isSeedPhraseValid: null,
         autoCapitalize: 'none',
-        returnKeyType: 'none',
+        returnKeyType: 'default',
         placeholder: UILocalized.Password,
         autofocus: true,
         containerStyle: { },

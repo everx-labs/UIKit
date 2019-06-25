@@ -7,6 +7,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import UILabel from '../../../components/text/UILabel';
+import UITextButton from '../../../components/buttons/UITextButton';
 import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
@@ -55,9 +56,9 @@ const styles = StyleSheet.create({
     },
     commentStyle: {
         zIndex: -1,
-        ...UITextStyle.captionRegular,
-        ...UIStyle.marginTopTiny,
-        ...UIStyle.marginBottomSmall,
+    },
+    button: {
+        height: undefined,
     },
 });
 
@@ -66,6 +67,7 @@ export type DetailsProps = ActionProps & {
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
+    button?: Object,
     containerStyle: ViewStyleProp,
     inputStyle: ViewStyleProp,
     comment?: string | null,
@@ -473,6 +475,18 @@ export default class UIDetailsInput<Props, State>
         return (<UILabel role={UILabel.Role.DescriptionTertiary} text={token} />);
     }
 
+    renderButton() {
+        const { button } = this.props;
+        if (!button) {
+            return null;
+        }
+        return (<UITextButton
+            textStyle={UIStyle.Color.getColorStyle(UIColor.textPrimary())}
+            {...button}
+            buttonStyle={[styles.button, button.buttonStyle]}
+        />);
+    }
+
     renderArrow() {
         const { theme, needArrow } = this.props;
         if (!needArrow) {
@@ -503,6 +517,7 @@ export default class UIDetailsInput<Props, State>
                 {this.renderTextInput()}
                 {this.renderCounter()}
                 {this.renderToken()}
+                {this.renderButton()}
                 {this.renderArrow()}
             </React.Fragment>
         );
@@ -540,6 +555,9 @@ export default class UIDetailsInput<Props, State>
                     styles.commentStyle,
                     defaultColorStyle,
                     colorStyle,
+                    UITextStyle.captionRegular,
+                    UIStyle.marginTopTiny,
+                    UIStyle.marginBottomSmall,
                 ]}
             >
                 {comment}
