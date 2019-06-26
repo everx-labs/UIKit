@@ -66,6 +66,9 @@ const styleProperties = {
     warning: {
         color: 'red',
     },
+    animatedView: {
+        height: UIConstant.mediumCellHeight(),
+    },
 };
 
 const styles = StyleSheet.create(styleProperties);
@@ -191,29 +194,30 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     }
 
     renderItem(item: number) {
+        let dotStyle;
         if (this.state.wrongPin) {
-            return (
-                <View style={styles.dotView}>
-                    <View style={styles.dotRed} />
-                </View>
-            );
+            dotStyle = styles.dotRed;
+        } else if (item > this.state.pin.length) {
+            dotStyle = styles.dotGray;
+        } else {
+            dotStyle = styles.dotBlue;
         }
         return (
             <View style={styles.dotView}>
-                <View style={item > this.state.pin.length ? styles.dotGray : styles.dotBlue} />
+                <View style={dotStyle} />
             </View>
         );
     }
 
     renderIndicator() {
         return (
-            <Animated.View style={{ marginLeft: this.state.shakeMargin, height: 40 }}>
+            <Animated.View style={[styles.animatedView, { marginLeft: this.state.shakeMargin }]}>
                 <FlatList
                     style={[UIStyle.Margin.topTiny(), UIStyle.Margin.bottomDefault()]}
                     horizontal
                     data={this.indicator}
                     extraData={this.state}
-                    renderItem={item => this.renderItem(item.item)}
+                    renderItem={({ item }) => this.renderItem(item)}
                     keyExtractor={item => `${item}`}
                 />
             </Animated.View>
