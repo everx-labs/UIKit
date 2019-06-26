@@ -24,6 +24,7 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         SecondaryImageBottomRight: 'SecondaryImageBottomRight',
         Primary: 'Primary',
         Action: 'Action',
+        NotWhite: 'NotWhite',
     };
 
     static PresetStyles = StyleSheet.create({
@@ -56,6 +57,9 @@ export default class UIBackgroundView extends UIComponent<Props, State> {
         },
         [UIBackgroundView.PresetNames.Action]: {
             backgroundColor: UIColor.primary(),
+        },
+        [UIBackgroundView.PresetNames.NotWhite]: {
+            backgroundColor: UIColor.notWhite(),
         },
     });
 

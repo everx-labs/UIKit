@@ -110,6 +110,7 @@ export type UILocalizedData = {
     NumberCopiedToClipboard: string,
     LinkCopiedToClipboard: string,
     MessageCopiedToClipboard: string,
+    HashCopiedToClipboard: string,
     FileIsTooBig: string,
     Important: string,
     UserIsNotAuthorized: string,
@@ -535,4 +536,10 @@ export type UILocalizedData = {
     // Toasts
     EnterCorrectDataToField: string,
     EmailAddress: string,
+
+    // Feedback module
+    ThanksForYourFeedback: string,
+    DescribeYourIssueOrIdea: string,
+    YourEmail: string,
+    SendFeedback: string,
 }

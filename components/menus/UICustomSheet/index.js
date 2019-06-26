@@ -75,7 +75,7 @@ export default class UICustomSheet extends UIController<Props, State> {
         }
     }
 
-    static hide(callback: () => void) {
+    static hide(callback?: () => void) {
         if (masterRef) {
             masterRef.hide(callback);
         }

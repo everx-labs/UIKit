@@ -31,6 +31,7 @@ export default class UIScreen<Props, State>
         super(props);
         this.presetName = '';
 
+        // Events
         this.state = {
             screenWidth: 0,
         };
@@ -47,31 +48,26 @@ export default class UIScreen<Props, State>
     }
 
     // Events
-    onScreenLayout = (e: any) => {
+    onScreenLayoutDefault = (e: any) => {
         const { width } = e.nativeEvent.layout;
         this.setScreenWidth(width);
         const narrow = this.isNarrowScreen(width);
         this.dispatchNarrow(narrow);
+        this.onScreenLayout(width);
     };
 
-    // Virtual
     onScrollDefault = (e: any) => {
         const { contentOffset, contentSize } = e.nativeEvent;
         this.onScroll(contentOffset, contentSize);
     };
 
+    // Virtual
     onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
         //
     }
 
-    // Getters
-    isNarrow() {
-        const screenWidth = this.getScreenWidth();
-        return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
-    }
-
-    isNarrowScreen(width: number) {
-        return width < UIConstant.elasticWidthBroad();
+    onScreenLayout(width: string) {
+        //
     }
 
     // Setters
@@ -82,6 +78,15 @@ export default class UIScreen<Props, State>
     // Getters
     getScreenWidth() {
         return this.state.screenWidth;
+    }
+
+    isNarrow() {
+        const screenWidth = this.getScreenWidth();
+        return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
+    }
+
+    isNarrowScreen(width: number) {
+        return width < UIConstant.elasticWidthBroad();
     }
 
     // Virtual
@@ -127,7 +132,7 @@ export default class UIScreen<Props, State>
         return (
             <View
                 style={UIStyle.flex}
-                onLayout={this.onScreenLayout}
+                onLayout={this.onScreenLayoutDefault}
             >
                 {this.renderTopContent()}
                 <ScrollView

@@ -30,6 +30,7 @@ import UIDot from './components/design/UIDot';
 import UIDropdownAlert from './components/popup/UIDropdownAlert';
 import UIEmailInput from './components/input/UIEmailInput';
 import UIEventHelper from './helpers/UIEventHelper';
+import UIFeedback from './components/products/UIFeedback';
 import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
@@ -114,6 +115,8 @@ import type {
     UIColorData,
     UIColorThemeNameType,
 } from './helpers/UIColor/UIColorTypes';
+import type { MenuItemType } from './components/menus/UIMenuView';
+import type { UIFeedbackSubmitFunc } from './components/products/UIFeedback';
 
 export {
     UIAccountPicker,
@@ -148,6 +151,7 @@ export {
     UIDropdownAlert,
     UIEmailInput,
     UIEventHelper,
+    UIFeedback,
     UIFlashMessage,
     UIFont,
     UIFunction,
@@ -215,6 +219,7 @@ export type {
     AnyComponent,
     CreateNavigationOptions,
     NavigationProps,
+    MenuItemType,
     PointerEvents,
     PositionObject,
     ReactNavigation,
@@ -225,4 +230,5 @@ export type {
     UIColorThemeNameType,
     UINavigationRoute,
     UINavigationRouting,
+    UIFeedbackSubmitFunc,
 };
