@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const DASH = '\u2014';
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
@@ -298,7 +297,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 continue;
             }
 
-            if (words[i] !== DASH && words[i] !== '-') {
+            if (words[i] !== UIConstant.dashSymbol() && words[i] !== '-') {
                 normalized.push(words[i]);
             }
         }
@@ -311,7 +310,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             let newPhrase = `${words[0]}`;
             for (let i = 1; i < words.length; i += 1) {
                 if (words[i - 1] !== '') {
-                    newPhrase = `${newPhrase} ${DASH} ${words[i]}`;
+                    newPhrase = `${newPhrase} ${UIConstant.dashSymbol()} ${words[i]}`;
                 }
             }
             return newPhrase;
