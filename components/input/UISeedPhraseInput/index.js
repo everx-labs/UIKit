@@ -34,18 +34,22 @@ type State = ActionState & {
     popoverPlacement: string,
     wordThatChanged: number,
     inputHeight: number,
+    inputWidth: number,
 };
 
 const styles = StyleSheet.create({
     hintsContainer: {
-        flex: 1,
-        width: UIConstant.toastWidth(),
         maxHeight: UIConstant.defaultCellHeight() * 3,
         backgroundColor: UIColor.backgroundPrimary(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: UIConstant.borderRadius(),
-        paddingHorizontal: UIConstant.contentOffset(),
         ...UIConstant.cardShadow(),
+    },
+    listComponent: {
+        width: UIConstant.toastWidth(),
+    },
+    contentListComponent: {
+        paddingHorizontal: UIConstant.contentOffset(),
     },
     cellHint: {
         zIndex: 1,
@@ -86,6 +90,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             popoverPlacement: 'bottom',
             wordThatChanged: -1,
             inputHeight: UIConstant.smallCellHeight(),
+            inputWidth: UIConstant.toastWidth(),
             comment: '',
         };
     }
@@ -192,6 +197,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const phrase = this.getValue();
         const words = this.splitPhrase(phrase);
         return words[wtc] || '';
+    }
+
+    getInputWidth() {
+        return this.state.inputWidth || UIConstant.toastWidth();
     }
 
     areHintsVisible(): boolean {
@@ -375,10 +384,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             }
         }
 
+        const w = { width: this.getInputWidth() };
+
         return (
-            <View style={styles.hintsContainer}>
+            <View style={[styles.hintsContainer, w]}>
                 <FlatList
                     data={hints}
+                    style={[styles.listComponent, w]}
+                    contentContainerStyle={styles.contentListComponent}
                     renderItem={element => this.renderHint(element.item)}
                     scrollEnabled
                     showsVerticalScrollIndicator
@@ -386,6 +399,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 />
             </View>
         );
+    }
+
+    onLayout(e: any) {
+        const ev = e.nativeEvent;
+        if (ev) {
+            const { layout } = ev;
+            this.setStateSafely({ inputWidth: layout.width });
+        }
     }
 
     renderInputWithPopOver() {

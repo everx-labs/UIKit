@@ -179,6 +179,10 @@ export default class UIDetailsInput<Props, State>
         // Not implemented in here
     }
 
+    onLayout(e: any) {
+        // Not implemented in here
+    }
+
     onChangeText = (text: string) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
@@ -413,6 +417,7 @@ export default class UIDetailsInput<Props, State>
         const placeholderColor = UIColor.textPlaceholder(theme);
         return (
             <TextInput
+                onLayout={e => this.onLayout(e)}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
                 autoCorrect={false}
