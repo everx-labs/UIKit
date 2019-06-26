@@ -24,7 +24,9 @@ export default class UIStyleText {
     static tinyMedium() {
         return UITextStyle.tinyMedium;
     }
-
+    static smallRegular() {
+        return UITextStyle.smallRegular;
+    }
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
     static primaryHeadlineLight() {
@@ -125,6 +127,9 @@ export default class UIStyleText {
     }
     static secondarySmallMedium() {
         return UITextStyle.secondarySmallMedium;
+    }
+    static secondarySmallBold() {
+        return UITextStyle.secondarySmallBold;
     }
     // Caption - fontSize: 14, lineHeight: 20
     static secondaryCaptionRegular() {

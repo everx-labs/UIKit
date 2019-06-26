@@ -114,6 +114,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.tinyMedium(),
     },
+    smallRegular: {
+        ...text,
+        ...UIFont.smallRegular(),
+    },
 
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
@@ -242,6 +246,10 @@ const UITextStyle = StyleSheet.create({
     secondarySmallMedium: {
         ...secondary,
         ...UIFont.smallRegular(),
+    },
+    secondarySmallBold: {
+        ...secondary,
+        ...UIFont.smallBold(),
     },
     // Caption - fontSize: 14, lineHeight: 20
     secondaryCaptionRegular: {
