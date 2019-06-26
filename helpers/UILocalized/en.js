@@ -308,6 +308,10 @@ const en: UILocalizedData = {
     DecryptingDocument: 'Decrypting document...',
     RecoveringDocument: 'Please, wait. We are recovering the document. It may take a while...',
     SorryYouDoNotHaveAnAccessToThisDocument: 'Sorry you don\'t seem to have an access to this Document. You can always import another wallet from a seed phrase.',
+    moreWords01: 'more word',
+    moreWords11: 'more words',
+    moreWords24: 'more words',
+    moreWords50: 'more words',
 
     // Username
     Username_InvalidTooShort: 'A username must have at least 5 characters.',

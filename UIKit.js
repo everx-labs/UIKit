@@ -7,6 +7,7 @@ import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/input/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
+import UIBalanceView from './components/views/UIBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
@@ -39,6 +40,7 @@ import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/images/UIImageView';
 import UILabel from './components/text/UILabel';
+import UILandingView from './components/views/UILandingView';
 import UILayoutManager from './helpers/UILayoutManager';
 import UILinkInput from './components/input/UILinkInput';
 import UIListHeader from './components/text/UIListHeader';
@@ -69,6 +71,7 @@ import UIScaleButton from './components/buttons/UIScaleButton';
 import UIScreen from './controllers/UIScreen';
 import UISearchBar from './components/input/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
+import UISeedPhraseInput from './components/input/UISeedPhraseInput';
 import UISeparator from './components/design/UISeparator';
 import UIShareManager from './helpers/UIShareManager';
 import UIShareScreen from './helpers/UIShareManager/UIShareScreen';
@@ -122,12 +125,13 @@ export {
     UIActionSheet,
     UIAlertView,
     UIAmountInput,
-    UIBadge,
     UIBackgroundView,
+    UIBadge,
+    UIBalanceView,
     UIBottomBar,
     UIButton,
-    UICheckboxItem,
     UICard,
+    UICheckboxItem,
     UIColor,
     UIColorPalette,
     UICompatibilityView,
@@ -137,9 +141,9 @@ export {
     UICustomSheet,
     UIDateInput,
     UIDetailsInput,
+    UIDetailsTable,
     UIDetailsToggle,
     UIDetailsView,
-    UIDetailsTable,
     UIDevice,
     UIDialogController,
     UIDot,
@@ -149,20 +153,21 @@ export {
     UIFeedback,
     UIFlashMessage,
     UIFont,
-    UITextStyle,
     UIFunction,
+    UITextStyle,
     UIIdleDetector,
     UIImage,
     UIImageButton,
     UIImageView,
     UILabel,
+    UILandingView,
     UILayoutManager,
     UILinkInput,
     UIListHeader,
     UILoadMoreButton,
     UILocalized,
-    UIMenuView,
     UIMenuBackground,
+    UIMenuView,
     UIModalController,
     UINavigationBackButton,
     UINavigationBar,
@@ -177,8 +182,8 @@ export {
     UINumberInput,
     UIPasswordPrompt,
     UIPhoneInput,
-    UIProfilePhoto,
     UIProfileInitials,
+    UIProfilePhoto,
     UIProfileView,
     UIPureComponent,
     UIRadioButtonList,
@@ -186,6 +191,7 @@ export {
     UIScreen,
     UISearchBar,
     UISectionHeader,
+    UISeedPhraseInput,
     UISeparator,
     UIShareManager,
     UIShareScreen,
@@ -199,8 +205,8 @@ export {
     UITextButton,
     UITextInput,
     UIToastMessage,
-    UITokenCell,
     UIToggle,
+    UITokenCell,
     UITooltip,
     UITransitionView,
     UIUploadFileInput,

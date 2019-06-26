@@ -272,6 +272,16 @@ const UITextStyle = StyleSheet.create({
         ...quaternary,
         ...UIFont.bodyRegular(),
     },
+    // Small - fontSize: 16, lineHeight: 20
+    quaternarySmallRegular: {
+        ...quaternary,
+        ...UIFont.smallRegular(),
+    },
+    // Caption - fontSize: 14, lineHeight: 20
+    quaternaryCaptionRegular: {
+        ...quaternary,
+        ...UIFont.captionRegular(),
+    },
 
     // [Text Grey]
     greyBodyRegular: {
@@ -370,11 +380,6 @@ const UITextStyle = StyleSheet.create({
     // Small - fontSize: 16, lineHeight: 20
     tertiarySmallRegular: {
         ...tertiary,
-        ...UIFont.smallRegular(),
-    },
-    // Small - fontSize: 16, lineHeight: 20
-    quaternarySmallRegular: {
-        ...quaternary,
         ...UIFont.smallRegular(),
     },
     // Caption - fontSize: 14, lineHeight: 20

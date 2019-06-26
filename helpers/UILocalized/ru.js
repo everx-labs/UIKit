@@ -307,6 +307,10 @@ const ru: UILocalizedData = {
     DecryptingDocument: 'Расшифровка документа...',
     RecoveringDocument: 'Пожалуйста, подождите. Мы восстанавливаем документ. Это может занять некоторое время...',
     SorryYouDoNotHaveAnAccessToThisDocument: 'Извините, у вас нет доступа к этому документу. Вы всегда можете импортировать другой кошелек c помощью бэкап-фразы.',
+    moreWords01: 'слово осталось',
+    moreWords11: 'слово осталось',
+    moreWords24: 'слова осталось',
+    moreWords50: 'слов осталось',
 
     // Username
     Username_InvalidTooShort: 'Имя пользователя должно содержать минимум 5 символов.',
