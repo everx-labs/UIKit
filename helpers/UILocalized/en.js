@@ -558,6 +558,10 @@ const en: UILocalizedData = {
     DescribeYourIssueOrIdea: 'Describe your issue or idea',
     YourEmail: 'Your email',
     SendFeedback: 'Send feedback',
+
+    // Seed Phrase Input:
+    seedPhraseTypo: 'Seems we have a typo here, try again',
+    greatMemory: 'Great memory, check passed!',
 };
 
 export default en;

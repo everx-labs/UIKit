@@ -557,6 +557,10 @@ const ru: UILocalizedData = {
     DescribeYourIssueOrIdea: 'Describe your issue or idea',
     YourEmail: 'Your email',
     SendFeedback: 'Send feedback',
+
+    // Seed Phrase Input:
+    seedPhraseTypo: 'Seems we have a typo here, try again', // TODO: Translate
+    greatMemory: 'Great memory, check passed!', // TODO: Translate
 };
 
 export default ru;
