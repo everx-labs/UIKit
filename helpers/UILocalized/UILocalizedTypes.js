@@ -110,6 +110,7 @@ export type UILocalizedData = {
     NumberCopiedToClipboard: string,
     LinkCopiedToClipboard: string,
     MessageCopiedToClipboard: string,
+    HashCopiedToClipboard: string,
     FileIsTooBig: string,
     Important: string,
     UserIsNotAuthorized: string,
