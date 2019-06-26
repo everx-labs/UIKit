@@ -1,12 +1,14 @@
 // @flow
 import React from 'react';
 import {
-    Platform,
-    View,
-    Modal,
-    StyleSheet,
     Animated,
+    Modal,
+    Platform,
+    LayoutAnimation,
+    SafeAreaView,
+    StyleSheet,
     TouchableWithoutFeedback,
+    View,
 } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
@@ -14,7 +16,9 @@ import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/Animat
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIComponent from '../../UIComponent';
+import UIController from '../../../controllers/UIController';
+
+import type { ContentInset, AnimationParameters } from '../../../controllers/UIController';
 
 const styles = StyleSheet.create({
     container: {
@@ -46,14 +50,8 @@ const maxScreenHeight = UIConstant.maxScreenHeight();
 
 let masterRef = null;
 
-export type Props = {};
-
-export type State = {
-    modalVisible: boolean,
-    height: number,
-};
-
-export type CustomSheetProps = {
+export type Props = any & {
+    modal?: boolean,
     component: ?React$Node,
     fullWidth?: boolean,
     masterSheet?: boolean,
@@ -61,7 +59,12 @@ export type CustomSheetProps = {
     onCancel?: () => void,
 };
 
-export default class UICustomSheet extends UIComponent<CustomSheetProps, State> {
+export type State = {
+    modalVisible: boolean,
+    height: number,
+};
+
+export default class UICustomSheet extends UIController<Props, State> {
     static show(args: any) {
         if (masterRef) {
             if (!args.component) {
@@ -83,15 +86,17 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
     marginBottom: AnimatedValue;
     onShow: ?() => void;
     onCancel: ?() => void;
+    modal: ?boolean;
 
     // constructor
-    constructor(props: CustomSheetProps) {
+    constructor(props: Props) {
         super(props);
         this.component = null;
         this.fullWidth = false;
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
         this.onShow = () => {};
         this.onCancel = () => {};
+        this.modal = true;
 
         this.state = {
             modalVisible: false,
@@ -127,6 +132,19 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
     };
 
     // Setters
+    setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
+        super.setContentInset(contentInset, animation);
+        const { duration, easing } = animation || {
+            duration: UIConstant.animationDuration(),
+            easing: LayoutAnimation.Types.keyboard,
+        };
+        Animated.timing(this.marginBottom, {
+            toValue: contentInset.bottom + UIConstant.contentOffset(),
+            duration,
+            easing: UIController.getEasingFunction(easing),
+        }).start();
+    }
+
     setModalVisible(modalVisible: boolean, callback?: () => void) {
         this.setStateSafely({
             modalVisible,
@@ -152,17 +170,20 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         fullWidth = false,
         onShow = () => {},
         onCancel = () => {},
-    }: CustomSheetProps = {}) {
+        modal = false,
+    }: Props = {}) {
         if (this.props.masterSheet) {
             this.component = component;
             this.fullWidth = fullWidth;
             this.onCancel = onCancel;
             this.onShow = onShow;
+            this.modal = modal;
         } else {
             this.component = this.props.component;
             this.fullWidth = this.props.fullWidth;
             this.onCancel = this.props.onCancel;
             this.onShow = this.props.onShow;
+            this.modal = this.props.modal;
         }
         this.setModalVisible(true);
     }
@@ -206,7 +227,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         return (
             <View
                 pointerEvents="box-none"
-                style={UIStyle.absoluteFillObject}
+                style={UIStyle.screenContainer}
             >
                 <Animated.View
                     style={[
@@ -225,12 +246,12 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
 
     renderContainer() {
         return (
-            <React.Fragment>
+            <SafeAreaView style={UIStyle.absoluteFillObject}>
                 <TouchableWithoutFeedback onPress={() => this.hide(this.onCancel)}>
                     <View style={[UIStyle.absoluteFillObject, styles.container]} />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}
-            </React.Fragment>
+            </SafeAreaView>
         );
     }
 
@@ -238,7 +259,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         if (!this.getModalVisible()) {
             return null;
         }
-        if (Platform.OS === 'web') {
+        if (Platform.OS === 'web' || !this.modal) {
             return this.renderContainer();
         }
         return (
@@ -252,7 +273,7 @@ export default class UICustomSheet extends UIComponent<CustomSheetProps, State> 
         );
     }
 
-    static defaultProps: CustomSheetProps;
+    static defaultProps: Props;
 }
 
 UICustomSheet.defaultProps = {
@@ -261,4 +282,5 @@ UICustomSheet.defaultProps = {
     fullWidth: false,
     onShow: () => {},
     onCancel: () => {},
+    modal: true,
 };

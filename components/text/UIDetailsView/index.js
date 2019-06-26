@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
+import UILabel from '../UILabel';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,36 +18,41 @@ const styles = StyleSheet.create({
 
 export default class UIDetailsView extends UIComponent {
     // Render
+    renderValue() {
+        const { value, textStyle, onPress } = this.props;
+        return (
+            <UILabel
+                style={textStyle}
+                role={onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular}
+                text={value}
+            />
+        );
+    }
+
+    renderComment() {
+        const { comments, commentsStyle } = this.props;
+        return (
+            <UILabel
+                style={commentsStyle}
+                role={UILabel.Role.CaptionTertiary}
+                text={comments}
+            />
+        );
+    }
+
     renderContentView() {
-        const {
-            secondaryCaptionRegular,
-            primarySmallMedium,
-            primarySmallRegular,
-        } = UITextStyle;
-        const {
-            value, comments, textStyle, commentsStyle, reversed,
-        } = this.props;
-        const defaultTextStyle = this.props.onPress ? primarySmallMedium : primarySmallRegular;
-        if (reversed) {
+        if (this.props.reversed) {
             return (
                 <View>
-                    <Text style={[secondaryCaptionRegular, commentsStyle]}>
-                        {comments}
-                    </Text>
-                    <Text style={[defaultTextStyle, textStyle]}>
-                        {value}
-                    </Text>
+                    {this.renderComment()}
+                    {this.renderValue()}
                 </View>
             );
         }
         return (
             <View>
-                <Text style={[defaultTextStyle, textStyle]}>
-                    {value}
-                </Text>
-                <Text style={[secondaryCaptionRegular, commentsStyle]}>
-                    {comments}
-                </Text>
+                {this.renderValue()}
+                {this.renderComment()}
             </View>
         );
     }

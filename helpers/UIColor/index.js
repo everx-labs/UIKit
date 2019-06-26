@@ -87,6 +87,10 @@ export default class UIColor {
         return UIColorPalette.white;
     }
 
+    static green() {
+        return UIColorPalette.green;
+    }
+
     static fa() {
         return UIColorPalette.fa;
     }
@@ -363,15 +367,6 @@ export default class UIColor {
         }
         const colorNumber = typeof id === 'number' ? id : id.charCodeAt(0);
         return UIColor.defaultAvatarBackground(colorNumber);
-    }
-
-    // Passport
-    static unconfirmedPassport() {
-        return UIColorPalette.unconfirmedPassport;
-    }
-
-    static walletVersion() {
-        return UIColorPalette.walletVersion;
     }
 
     // deprecated, moved to UIStyleColor

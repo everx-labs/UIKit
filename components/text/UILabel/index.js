@@ -14,12 +14,15 @@ const LabelRole = Object.freeze({
     SubtitleRegular: 'subtitleRegular',
     Description: 'description',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
-    Accent: 'accent',
+    DescriptionTertiary: 'descriptionTertiary',
+    SmallMedium: 'smallMedium',
+    SmallRegular: 'smallRegular',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
     Caption: 'caption', // TODO: rename as captionSecondary
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
+    AccentBold: 'accentBold',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -72,8 +75,14 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryBodyRegular());
         } else if (role === UILabel.Role.BoldDescription) {
             result.push(UIStyle.Text.primaryBodyBold());
-        } else if (role === UILabel.Role.Accent) {
+        } else if (role === UILabel.Role.DescriptionTertiary) {
+            result.push(UIStyle.Text.tertiaryBodyRegular());
+        } else if (role === UILabel.Role.SmallMedium) {
             result.push(UIStyle.Text.primarySmallMedium());
+        } else if (role === UILabel.Role.SmallRegular) {
+            result.push(UIStyle.Text.primarySmallRegular());
+        } else if (role === UILabel.Role.AccentBold) {
+            result.push(UIStyle.Text.primaryAccentBold());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
         } else if (role === UILabel.Role.SecondaryBody) {
@@ -101,6 +110,10 @@ export default class UILabel extends UIComponent<Props, State> {
             return UIStyle.Margin.topSmall();
         } else if (role === UILabel.Role.Description) {
             return UIStyle.Margin.topSmall();
+        } else if (role === UILabel.Role.Note) {
+            return UIStyle.Margin.topDefault();
+        } else if (role === UILabel.Role.AccentBold) {
+            return UIStyle.Margin.topDefault();
         }
         return null;
     }
