@@ -28,6 +28,9 @@ export default class UIStyleText {
     static tinyMedium() {
         return UITextStyle.tinyMedium;
     }
+    static smallRegular() {
+        return UITextStyle.smallRegular;
+    }
     // Icon - fontSize: 10, lineHeight: 16
     static iconBold() {
         return UITextStyle.iconBold;
@@ -133,6 +136,9 @@ export default class UIStyleText {
     }
     static secondarySmallMedium() {
         return UITextStyle.secondarySmallMedium;
+    }
+    static secondarySmallBold() {
+        return UITextStyle.secondarySmallBold;
     }
     // Caption - fontSize: 14, lineHeight: 20
     static secondaryCaptionRegular() {
