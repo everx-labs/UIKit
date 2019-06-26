@@ -121,6 +121,11 @@ const UITextStyle = StyleSheet.create({
         ...primary,
         ...UIFont.headlineLight(),
     },
+    // HeadLine - fontSize: 64, lineHeight: 84
+    primaryHeadlineBold: {
+        ...primary,
+        ...UIFont.headlineBold(),
+    },
 
     // HeadLine - fontSize: 48, lineHeight: 64
     primarySubheadBold: {
@@ -395,6 +400,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text white]
+    // Key - fontSize: 48, lineHeight: 64
+    whiteSubheadBold: {
+        ...white,
+        ...UIFont.subheadBold(),
+    },
     // Key - fontSize: 96, lineHeight: 128
     whiteKeyBold: {
         ...white,
@@ -413,6 +423,10 @@ const UITextStyle = StyleSheet.create({
     whiteAccentBold: {
         ...white,
         ...UIFont.accentBold(),
+    },
+    whiteAccentRegular: {
+        ...white,
+        ...UIFont.accentRegular(),
     },
     // Body - fontSize: 18, lineHeight: 24
     whiteBodyRegular: {

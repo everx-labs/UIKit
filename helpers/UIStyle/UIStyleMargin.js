@@ -82,6 +82,9 @@ export default class UIStyleMargin {
     static bottomMajor() { // 64
         return UIStyle.marginBottomMajor;
     }
+    static bottomMassive() { // 72
+        return UIStyle.marginBottomMassive;
+    }
     static bottomVast() { // 80
         return UIStyle.marginBottomVast;
     }

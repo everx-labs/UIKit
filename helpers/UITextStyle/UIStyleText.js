@@ -30,6 +30,10 @@ export default class UIStyleText {
     static primaryHeadlineLight() {
         return UITextStyle.primaryHeadlineLight;
     }
+    // HeadLine - fontSize: 64, lineHeight: 84
+    static primaryHeadlineBold() {
+        return UITextStyle.primaryHeadlineBold;
+    }
 
     // HeadLine - fontSize: 48, lineHeight: 64
     static primarySubheadBold() {
@@ -253,6 +257,10 @@ export default class UIStyleText {
     static whiteKeyBold() {
         return UITextStyle.whiteKeyBold;
     }
+    // Key - fontSize: 48, lineHeight: 64
+    static whiteSubheadBold() {
+        return UITextStyle.whiteSubheadBold;
+    }
     // Title - fontSize: 36, lineHeight: 48
     static whiteTitleBold() {
         return UITextStyle.whiteTitleBold;
@@ -260,6 +268,9 @@ export default class UIStyleText {
     // Subtitle - fontSize: 24, lineHeight: 32
     static whiteSubtitleBold() {
         return UITextStyle.whiteSubtitleBold;
+    }
+    static whiteAccentRegular() {
+        return UITextStyle.whiteAccentRegular;
     }
     static whiteAccentBold() {
         return UITextStyle.whiteAccentBold;
