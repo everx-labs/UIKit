@@ -24,7 +24,7 @@ export default class UIPureComponent<Props, State> extends PureComponent<Props, 
 
     mounted: boolean;
 
-    render() {
+    render(): React$Node {
         return null;
     }
 }

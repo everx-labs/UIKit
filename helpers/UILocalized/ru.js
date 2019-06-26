@@ -112,6 +112,7 @@ const ru: UILocalizedData = {
     NumberCopiedToClipboard: 'Номер скопирован в буфер.',
     LinkCopiedToClipboard: 'Ссылка скопирована в буфер.',
     MessageCopiedToClipboard: 'Сообщение скопировано в буфер',
+    HashCopiedToClipboard: 'Hash copied to clipboard.',
     FileIsTooBig: 'Извините, мы не можем это обработать. Файл слишком большой.',
     Important: 'ВАЖНО!',
     UserIsNotAuthorized: 'Пользователь не авторизован',
@@ -550,6 +551,12 @@ const ru: UILocalizedData = {
     // Labels
     Phone: 'Phone',
     EmailAddress: 'Email',
+
+    // Feedback module
+    ThanksForYourFeedback: 'Thanks for your feedback',
+    DescribeYourIssueOrIdea: 'Describe your issue or idea',
+    YourEmail: 'Your email',
+    SendFeedback: 'Send feedback',
 };
 
 export default ru;

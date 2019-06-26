@@ -5,6 +5,10 @@ export default class UIStyleText {
         return UITextStyle.alignCenter;
     }
 
+    static bold() {
+        return UITextStyle.bold;
+    }
+
     // [Text]
     // Body - fontSize: 18, lineHeight: 24
     static bodyRegular() {
@@ -27,6 +31,11 @@ export default class UIStyleText {
     static smallRegular() {
         return UITextStyle.smallRegular;
     }
+    // Icon - fontSize: 10, lineHeight: 16
+    static iconBold() {
+        return UITextStyle.iconBold;
+    }
+
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
     static primaryHeadlineLight() {

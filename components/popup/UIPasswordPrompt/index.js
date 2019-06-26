@@ -417,7 +417,7 @@ export default class UIPasswordPrompt extends UIController {
 
     renderContainer() {
         return (
-            <View style={[UIStyle.absoluteFillObject, styles.container]}>
+            <View style={[UIStyle.Common.absoluteFillObject(), styles.container]}>
                 <Animated.View style={{ marginTop: this.getMarginTop() }}>
                     <PopupDialog
                         ref={(popupDialog) => { this.dialog = popupDialog; }}

@@ -127,6 +127,10 @@ export default class UIColor {
         return UIColorPalette.light;
     }
 
+    static lightQuinary() {
+        return UIColorPalette.background.lightQuinary;
+    }
+
     static notWhite() {
         return UIColorPalette.notWhite;
     }

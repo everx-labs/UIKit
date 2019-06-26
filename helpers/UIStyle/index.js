@@ -137,6 +137,11 @@ const UIStyle = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    centerRightContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
     rowSpaceContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -313,6 +318,9 @@ const UIStyle = StyleSheet.create({
     },
     paddingHorizontal: {
         paddingHorizontal: UIConstant.contentOffset(),
+    },
+    paddingVertical: {
+        paddingVertical: UIConstant.contentOffset(),
     },
     paddingTopDefault: {
         paddingTop: UIConstant.contentOffset(),
@@ -529,6 +537,11 @@ const UIStyle = StyleSheet.create({
         flex: 1,
         ...borderLeft,
         overflow: 'hidden',
+    },
+
+    icon: {
+        width: UIConstant.iconSize(),
+        height: UIConstant.iconSize(),
     },
 });
 

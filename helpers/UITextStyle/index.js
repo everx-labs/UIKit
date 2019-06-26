@@ -89,6 +89,9 @@ const UITextStyle = StyleSheet.create({
     alignCenter: {
         textAlign: 'center',
     },
+    bold: {
+        ...UIFont.bold(),
+    },
 
     // [Text]
     // Body - fontSize: 18, lineHeight: 24
@@ -117,6 +120,12 @@ const UITextStyle = StyleSheet.create({
     smallRegular: {
         ...text,
         ...UIFont.smallRegular(),
+    },
+
+    // Icon - fontSize: 10, lineHeight: 16
+    iconBold: {
+        ...text,
+        ...UIFont.iconBold(),
     },
 
     // [Text Primary]

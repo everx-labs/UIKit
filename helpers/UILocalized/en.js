@@ -112,6 +112,7 @@ const en: UILocalizedData = {
     NumberCopiedToClipboard: 'Number copied to clipboard.',
     LinkCopiedToClipboard: 'Link copied to clipboard.',
     MessageCopiedToClipboard: 'Message copied to clipboard.',
+    HashCopiedToClipboard: 'Hash copied to clipboard.',
     FileIsTooBig: 'Sorry, we cannot process this. File is too big.',
     Important: 'IMPORTANT!',
     UserIsNotAuthorized: 'User is not authorized',
@@ -551,6 +552,12 @@ const en: UILocalizedData = {
     // Labels
     Phone: 'Phone',
     EmailAddress: 'Email',
+
+    // Feedback module
+    ThanksForYourFeedback: 'Thanks for your feedback',
+    DescribeYourIssueOrIdea: 'Describe your issue or idea',
+    YourEmail: 'Your email',
+    SendFeedback: 'Send feedback',
 };
 
 export default en;
