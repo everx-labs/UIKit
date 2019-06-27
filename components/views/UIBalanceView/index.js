@@ -15,6 +15,7 @@ type Props = {
     description: string,
     tokenSymbol: string,
     testID?: string,
+    cacheKey?: string,
 };
 
 type State = {
@@ -29,6 +30,8 @@ const styles = StyleSheet.create({
     },
 });
 
+const cachedBalance = {};
+
 export default class UIBalanceView extends UIComponent<Props, State> {
     static defaultProps = {
         balance: '',
@@ -37,18 +40,22 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     };
 
     // constructor
+    balance: ?string;
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            balance: '',
+            balance: this.getCachedBalance(),
             auxBalance: '',
         };
+
+        this.balance = null;
     }
 
-    componentDidUpdate(prevProps: Props) {
+    componentDidUpdate() {
         const { balance } = this.props;
-        if (balance !== prevProps.balance) {
+        if (balance !== this.balance) {
+            this.balance = balance;
             this.setAuxBalance(balance, () => { // start component layout and measuring
                 this.measureAuxBalanceText(balance);
             });
@@ -66,6 +73,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     // Setters
     setBalance(balance: string) {
+        this.setCachedBalance(balance);
         this.setStateSafely({ balance });
     }
 
@@ -99,6 +107,10 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         return this.props.testID;
     }
 
+    getCacheKey(): ?string {
+        return this.props.cacheKey;
+    }
+
     // Processing
     processAuxBalanceHeight(height: number, auxBalance: string) {
         if (!this.auxBalanceLineHeight) {
@@ -123,6 +135,18 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 this.processAuxBalanceHeight(h, auxBalance);
             });
         }, 0);
+    }
+
+    setCachedBalance(balance: string) {
+        const key = this.getCacheKey();
+        if (key) {
+            cachedBalance[key] = balance;
+        }
+    }
+
+    getCachedBalance(): string {
+        const key = this.getCacheKey();
+        return (key && cachedBalance[key]) || '';
     }
 
     // Render

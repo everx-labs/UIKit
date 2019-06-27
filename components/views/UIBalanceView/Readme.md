@@ -13,6 +13,7 @@ Example:
          return (
              <View>
                  <UIBalanceView
+                     cacheKey="totalBalance"
                      testID="balanceView"
                      balance={this.state.balance}
                      separator=","
@@ -23,6 +24,6 @@ Example:
          );
      }
  };
- 
+
  <ExampleComponent />
  ```
