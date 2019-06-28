@@ -53,11 +53,14 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     componentDidUpdate() {
-        const { balance } = this.props;
+        const { balance, separator } = this.props;
         if (balance !== this.balance) {
             this.balance = balance;
-            this.setAuxBalance(balance, () => { // start component layout and measuring
-                this.measureAuxBalanceText(balance);
+            const formattedBalance = balance.split(separator).length > 1
+                ? balance
+                : `${balance}${separator}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
+            this.setAuxBalance(formattedBalance, () => { // start component layout and measuring
+                this.measureAuxBalanceText(formattedBalance);
             });
         }
     }
