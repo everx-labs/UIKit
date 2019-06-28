@@ -117,6 +117,7 @@ import type {
 } from './helpers/UIColor/UIColorTypes';
 import type { MenuItemType } from './components/menus/UIMenuView';
 import type { UIFeedbackSubmitFunc } from './components/products/UIFeedback';
+import type { ContentOffset } from './controllers/UIScreen';
 
 export {
     UIAccountPicker,
@@ -224,6 +225,7 @@ export type {
     PositionObject,
     ReactNavigation,
     ContentInset,
+    ContentOffset,
     DetailsList,
     UIAccountData,
     UIColorData,
