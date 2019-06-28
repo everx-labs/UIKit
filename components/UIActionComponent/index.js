@@ -15,6 +15,8 @@ export type ActionProps = {
     disabled?: boolean,
     showIndicator?: boolean,
     onPress?: () => void,
+    onMouseEnter?: () => void,
+    onMouseLeave?: () => void,
 };
 
 export default class UIActionComponent<Props, State>
@@ -41,17 +43,25 @@ export default class UIActionComponent<Props, State>
 
     onPress = () => {
         this.onPressed();
-        this.props.onPress();
+        if (this.props.onPress) {
+            this.props.onPress();
+        }
     };
 
     onMouseEnter = () => {
         this.setHover();
         this.onEnter();
+        if (this.props.onMouseEnter) {
+            this.props.onMouseEnter();
+        }
     };
 
     onMouseLeave = () => {
         this.setHover(false);
         this.onLeave();
+        if (this.props.onMouseLeave) {
+            this.props.onMouseLeave();
+        }
     };
 
     // Virtual
