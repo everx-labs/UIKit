@@ -44,6 +44,9 @@ export default class UIStyleMargin {
     static topGreat() { // 48
         return UIStyle.marginTopGreat;
     }
+    static topBig() { // 56
+        return UIStyle.marginTopBig;
+    }
     static topMajor() { // 64
         return UIStyle.marginTopMajor;
     }

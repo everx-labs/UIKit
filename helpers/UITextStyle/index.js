@@ -121,6 +121,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.smallRegular(),
     },
+    smallBold: {
+        ...text,
+        ...UIFont.smallBold(),
+    },
 
     // Icon - fontSize: 10, lineHeight: 16
     iconBold: {
@@ -228,6 +232,10 @@ const UITextStyle = StyleSheet.create({
     secondaryTitleLight: {
         ...secondary,
         ...UIFont.titleLight(),
+    },
+    secondaryTitleBold: {
+        ...secondary,
+        ...UIFont.titleBold(),
     },
     // Accent - fontSize: 20, lineHeight: 28
     secondaryAccentRegular: {
@@ -454,6 +462,11 @@ const UITextStyle = StyleSheet.create({
     whiteSmallMedium: {
         ...white,
         ...UIFont.smallMedium(),
+    },
+    // Caption - fontSize: 14, lineHeight: 20
+    whiteCaptionRegular: {
+        ...white,
+        ...UIFont.captionRegular(),
     },
     // Tiny - fontSize: 12, lineHeight: 16
     whiteTinyRegular: {
