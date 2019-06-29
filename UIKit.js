@@ -9,6 +9,7 @@ import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
 import UIBalanceView from './components/views/UIBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
+import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UICard from './components/text/UICard';
@@ -131,6 +132,7 @@ export {
     UIBadge,
     UIBalanceView,
     UIBottomBar,
+    UIBullet,
     UIButton,
     UICard,
     UICheckboxItem,
