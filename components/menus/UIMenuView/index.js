@@ -157,6 +157,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                     <MenuItem
                         key={`${Math.random()}~MenuItem~${item.title}`}
                         title={item.title}
+                        titleStyle={item.titleStyle}
                         disabled={item.disabled}
                         onSelect={() => {
                             item.onPress();
