@@ -4,9 +4,12 @@ import React from 'react';
 import { FlatList } from 'react-native';
 
 import UIColor from '../../../helpers/UIColor';
+import UIStyle from '../../../helpers/UIStyle';
 import UILocalized from '../../../helpers/UILocalized';
-import UICustomSheet from '../UICustomSheet';
+
 import UIComponent from '../../UIComponent';
+
+import UICustomSheet from '../UICustomSheet';
 
 import MenuItem from './MenuItem';
 import type { MenuItemType } from '../UIMenuView';
@@ -123,7 +126,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         );
     }
 
-    renderMenuItem(item: MenuItemType) {
+    renderMenuItem = ({ item }: { item: MenuItemType }) => {
         return (
             <MenuItem
                 {...item}
@@ -132,7 +135,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                         this.customSheet.hide(() => item.onPress());
                     }
                 }}
-                textStyle={{ color: UIColor.primary() }}
+                textStyle={[UIStyle.Color.getColorStyle(UIColor.primary()), item.titleStyle]}
             />
         );
     }
@@ -142,7 +145,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
             <React.Fragment>
                 <FlatList
                     data={this.getMenuItemsList()}
-                    renderItem={({ item }) => this.renderMenuItem(item)}
+                    renderItem={this.renderMenuItem}
                     scrollEnabled={false}
                     showsVerticalScrollIndicator={false}
                 />
