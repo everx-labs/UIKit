@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import StylePropType from 'react-style-proptype';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { Popover } from 'react-native-simple-popover';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
@@ -23,6 +24,7 @@ type Placement = 'top' | 'bottom' | 'left' | 'right';
 
 export type MenuItemType = {
     title: string,
+    titleStyle: StylePropType,
     disabled?: boolean,
     onPress: () => void
 };
