@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 type Props = {
     containerStyle: ViewStyleProp,
     onPress: () => void,
+    disabled: boolean,
     title: string,
     testID?: string,
 };
@@ -39,18 +40,20 @@ export default class UINavigationTextButton extends UIComponent<Props, State> {
     static defaultProps = {
         containerStyle: {},
         onPress: () => {},
+        disabled: false,
         title: null,
     };
 
     // Render
     render() {
         const {
-            testID, containerStyle, onPress, title,
+            testID, containerStyle, onPress, disabled, title,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
         return (
             <TouchableOpacity
                 {...testIDProp}
+                disabled={disabled}
                 style={[styles.navButton, containerStyle]}
                 onPress={onPress}
             >
