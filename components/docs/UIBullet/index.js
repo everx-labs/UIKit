@@ -6,12 +6,12 @@ import UILabel from '../../text/UILabel';
 import UIStyle from '../../../helpers/UIStyle';
 
 type Props = {
-    children: React$Node,
+    children: string,
     level?: number,
     bullet?: string,
 };
 
-const UIBullet = ({ children, level, bullet }: Props) => {
+const UIBullet = ({ children, level = 1, bullet = '•' }: Props) => {
     const shift = level > 1
         ? <View style={[UIStyle.Margin.rightDefault(), UIStyle.Margin.leftGreat()]} />
         : null;
