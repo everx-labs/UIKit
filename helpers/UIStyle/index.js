@@ -337,6 +337,12 @@ const UIStyle = StyleSheet.create({
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
     },
+    paddingRightHuge: {
+        paddingRight: UIConstant.hugeContentOffset(),
+    },
+    paddingRightGreat: {
+        paddingRight: UIConstant.greatContentOffset(),
+    },
     paddingLeftDefault: {
         paddingLeft: UIConstant.contentOffset(),
     },
