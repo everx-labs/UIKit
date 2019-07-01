@@ -31,6 +31,9 @@ export default class UIStyleText {
     static smallRegular() {
         return UITextStyle.smallRegular;
     }
+    static smallBold() {
+        return UITextStyle.smallBold;
+    }
     // Icon - fontSize: 10, lineHeight: 16
     static iconBold() {
         return UITextStyle.iconBold;
@@ -115,6 +118,9 @@ export default class UIStyleText {
     // Title - fontSize: 36, lineHeight: 48
     static secondaryTitleLight() {
         return UITextStyle.secondaryTitleLight;
+    }
+    static secondaryTitleBold() {
+        return UITextStyle.secondaryTitleBold;
     }
     // Accent - fontSize: 20, lineHeight: 28
     static secondaryAccentRegular() {
@@ -296,6 +302,10 @@ export default class UIStyleText {
     // Small - fontSize: 16, lineHeight: 20
     static whiteSmallMedium() {
         return UITextStyle.whiteSmallMedium;
+    }
+    // Caption - fontSize: 14, lineHeight: 20
+    static whiteCaptionRegular() {
+        return UITextStyle.whiteCaptionRegular;
     }
     // Tiny - fontSize: 12, lineHeight: 16
     static whiteTinyRegular() {

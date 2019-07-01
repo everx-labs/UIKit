@@ -208,6 +208,9 @@ const UIStyle = StyleSheet.create({
     marginTopGreat: { // 48
         marginTop: UIConstant.greatContentOffset(),
     },
+    marginTopBig: { // 56
+        marginTop: UIConstant.bigCellHeight(),
+    },
     marginTopMajor: { // 64
         marginTop: UIConstant.majorContentOffset(),
     },
@@ -333,6 +336,12 @@ const UIStyle = StyleSheet.create({
     },
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
+    },
+    paddingRightHuge: {
+        paddingRight: UIConstant.hugeContentOffset(),
+    },
+    paddingRightGreat: {
+        paddingRight: UIConstant.greatContentOffset(),
     },
     paddingLeftDefault: {
         paddingLeft: UIConstant.contentOffset(),
