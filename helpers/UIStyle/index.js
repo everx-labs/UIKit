@@ -208,6 +208,9 @@ const UIStyle = StyleSheet.create({
     marginTopGreat: { // 48
         marginTop: UIConstant.greatContentOffset(),
     },
+    marginTopBig: { // 56
+        marginTop: UIConstant.bigCellHeight(),
+    },
     marginTopMajor: { // 64
         marginTop: UIConstant.majorContentOffset(),
     },
