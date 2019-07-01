@@ -5,15 +5,10 @@ import type { UILocalizedData } from './UILocalizedTypes';
 const en: UILocalizedData = {
     // TON
     TONLabel: 'TON',
-    TONWallet: 'TON Wallet',
-    BITFuture: 'Bit Future',
     CopyRight: '2019 © TON Labs',
     Disclaimer: 'Disclaimer',
 
     // Terms
-    TermsText: 'By submitting your offer, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
-    TermsTextHTML: 'By submitting your offer, you verify that you have reviewed and agree to the above Terms and Conditions as well as to TON Wallet\'s privacy policy and legal terms, which can be found',
-    TermsTextAuth: 'By pressing "Login" button, you verify that you have reviewed and agree to TON Wallet\'s privacy policy and legal terms, which can be found',
     TermsCookiesPolicy: 'By using this website, you agree to our Cookies Policy.',
     Here: 'here',
     LegalNotes: 'Legal Notes',
@@ -167,7 +162,6 @@ const en: UILocalizedData = {
     SearchContacts: 'Search for contacts...',
     SearchFriends: 'Search friends...',
     InviteFriends: 'Invite Friends',
-    ShareTONchat: 'Share TON.wallet',
     Contacts: 'Contacts',
     Friends: 'Friends',
     NewContact: 'New Contact',
@@ -175,8 +169,6 @@ const en: UILocalizedData = {
     MiddleName: 'Middle Name',
     LastName: 'Last Name',
     AddContact: 'Add Contact',
-    InviteToTONChat: 'Invite to TON.wallet',
-    InviteMessage: 'Hey, I`m using TON.wallet. Join me! Download it here: https://tonwallet.app.link',
 
     Online: 'online',
     Recently: 'was recently',
@@ -224,7 +216,7 @@ const en: UILocalizedData = {
     PrivateChannelsCanOnlyBeJoinedViaAnInviteLink: 'Private channels can only be joined via an invite link.',
     PeopleCanJoinYourChannelByFollowingThisLink: 'People can join your channel by following this link, you can revoke the link at any time.',
     PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem: 'Public channels can be found in search, anyone can join them.',
-    PeopleCanShareThisLinkWithOtherAndFindYourChannel: 'People can share this link with other and find your channel using TON.wallet search.',
+    PeopleCanShareThisLinkWithOtherAndFindYourChannel: 'People can share this link with other and find your channel using search.',
     WhomWouldYouLikeToAdd: 'Whom would you like to add?',
     UnreadMessages: 'Unread messages',
     SayHello: 'Say "Hello"',
@@ -297,7 +289,6 @@ const en: UILocalizedData = {
     TypeMessage: 'Write a message...',
 
     // Wallet
-    PleaseCreateYourLocalPassword: 'Please create your local password.\nImportant security notice! TON Wallet uses blockchain technology and advanced cryptography to protect your personal information. This is a local password that will work only on this device. In order to access your TON Wallet secure application on another device you will have to use 12 words seed phrase which you can obtain in a Backup Account section of your Profile.',
     WeNeedYourPassword: 'We need your local password to perform operations on this device',
     WeNeedYourPasswordToUpgradeWallet: 'We need your local password to upgrade your wallet',
     Password: 'Password',
@@ -393,7 +384,6 @@ const en: UILocalizedData = {
     TransactionFrom: 'You have received a transaction from',
     InvitesYouToWallet: 'Invites you to join TONWallet and receive a transaction.',
     Transactions: 'Transactions',
-    InviteWalletSMS: 'Hey, I`m using TON Wallet, join me so that you can receive this transaction!',
 
     // Accounts
     Account: 'Account',

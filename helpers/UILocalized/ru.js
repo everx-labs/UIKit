@@ -5,15 +5,10 @@ import type { UILocalizedData } from './UILocalizedTypes';
 const ru: UILocalizedData = {
     // TON
     TONLabel: 'TON',
-    TONWallet: 'TON Wallet',
-    BITFuture: 'Bit Future',
     CopyRight: '2019 © TON Labs',
     Disclaimer: 'Disclaimer',
 
     // Terms
-    TermsText: 'Отправляя это предложение, Вы подтверждаете, что Вы ознакомились и согласны с политикой конфиденциальности и условиями использования TON Wallet, которые можно найти',
-    TermsTextAuth: 'Нажимая на кнопку "Войти", Вы подтверждаете, что Вы ознакомились и согласны с политикой конфиденциальности и условиями использования TON Wallet, которые можно найти',
-    TermsTextHTML: 'Нажимая на кнопку "Войти", Вы подтверждаете, что Вы ознакомились и согласны с политикой конфиденциальности и условиями использования выше, а так же политикой конфиденциальности и условиями TON Wallet, которые можно найти',
     TermsCookiesPolicy: 'By using this website, you agree to our Cookies Policy.',
     Here: 'здесь',
     LegalNotes: 'Legal Notes',
@@ -167,7 +162,6 @@ const ru: UILocalizedData = {
     SearchContacts: 'Поиск по контактам...',
     SearchFriends: 'Поиск друзей...',
     InviteFriends: 'Пригласить',
-    ShareTONchat: 'Поделиться ссылкой на TON.wallet',
     Contacts: 'Контакты',
     Friends: 'Друзья',
     NewContact: 'Новый контакт',
@@ -175,8 +169,6 @@ const ru: UILocalizedData = {
     MiddleName: 'Среднее Имя',
     LastName: 'Фамилия',
     AddContact: 'Добавить Контакт',
-    InviteToTONChat: 'Пригласить в TON.wallet',
-    InviteMessage: 'Привет, я использую TON.wallet для переписки. Присоединяйся! Скачать его можно здесь: https://tonwallet.app.link',
 
     Online: 'в сети',
     Recently: 'был(а) недавно',
@@ -224,7 +216,7 @@ const ru: UILocalizedData = {
     PrivateChannelsCanOnlyBeJoinedViaAnInviteLink: 'На частные каналы можно подписаться только по ссылке-приглашению',
     PeopleCanJoinYourChannelByFollowingThisLink: 'На Ваш канал можно будет подписаться, перейдя по этой ссылке. Вы можете сбросить эту ссылку в любое время',
     PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem: 'Публичные каналы можно найти через поиск, подписаться на них может любой пользователь.',
-    PeopleCanShareThisLinkWithOtherAndFindYourChannel: 'Люди смогут делиться этой ссылкой с другими и находить ваш канал через поиск в TON.wallet.',
+    PeopleCanShareThisLinkWithOtherAndFindYourChannel: 'Люди смогут делиться этой ссылкой с другими и находить ваш канал через поиск.',
     WhomWouldYouLikeToAdd: 'Кого бы Вы хотели добавить?',
     UnreadMessages: 'Непрочитанные сообщения',
     SayHello: 'Скажи "Привет"',
@@ -296,7 +288,6 @@ const ru: UILocalizedData = {
     TypeMessage: 'Введите сообщение',
 
     // Wallet
-    PleaseCreateYourLocalPassword: 'Создайте свой локальный пароль.\nВажное уведомление о безопасности! TON Wallet использует технологию блокчейн и продвинутую криптографию для защиты вашей личной информации. Это локальный пароль, который будет работать только на этом устройстве. Чтобы получить доступ к защищенному приложению TON Wallet на другом устройстве, вам нужно будет использовать фразу из 12 слов, которую вы можете получить в разделе «Резервная копия аккаунта» вашего профиля.',
     WeNeedYourPassword: 'Введите Ваш пароль, чтобы выполнять операции на этом устройстве',
     WeNeedYourPasswordToUpgradeWallet: 'Введите Ваш пароль, чтобы обновить Ваш кошелек',
     Password: 'Пароль',
@@ -392,7 +383,6 @@ const ru: UILocalizedData = {
     TransactionFrom: 'You have received a transaction from',
     InvitesYouToWallet: 'Invites you to join TONWallet and receive a transaction.',
     Transactions: 'Транзакции',
-    InviteWalletSMS: 'Привет, я использую TON Wallet, присоединяйся ко мне, чтобы получить эту транзакцию!',
 
     // Accounts
     Account: 'Аккаунт',
