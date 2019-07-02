@@ -219,17 +219,18 @@ export default class UIController<Props, State>
         this.loadSafeAreaInsets();
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        // TODO: remove and use getDerivedStateFromProps
-    }
-
     componentWillUnmount() {
         super.componentWillUnmount();
         this.deinitKeyboardListeners();
+        this.stopListeningToNavigation();
     }
 
     componentWillFocus() {
         this.pushStateIfNeeded();
+    }
+
+    componentWillBlur() {
+        //
     }
 
     loadSafeAreaInsets() {
@@ -401,17 +402,33 @@ export default class UIController<Props, State>
             });
     }
 
+    navigationListeners: { remove(): void }[];
     listenToNavigation() {
         if (!this.props.navigation) {
             return;
         }
-        this.props.navigation.addListener('willFocus', (payload) => {
-            console.log(
-                `[UIController] Controller ${this.constructor.name} will focus with payload:`,
-                payload,
-            );
-            this.componentWillFocus();
-        });
+        this.navigationListeners = [
+            this.props.navigation.addListener('willFocus', (payload) => {
+                console.log(
+                    `[UIController] Controller ${this.constructor.name} will focus with payload:`,
+                    payload,
+                );
+                this.componentWillFocus();
+            }),
+            this.props.navigation.addListener('willBlur', (payload) => {
+                console.log(
+                    `[UIController] Controller ${this.constructor.name} will blur with payload:`,
+                    payload,
+                );
+                this.componentWillBlur();
+            }),
+        ];
+    }
+
+    stopListeningToNavigation() {
+        if (this.navigationListeners) {
+            this.navigationListeners.forEach(listener => listener.remove());
+        }
     }
 
     pushStateIfNeeded() {
