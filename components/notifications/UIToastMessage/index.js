@@ -47,6 +47,7 @@ type ToastObject = {
     placement?: Placement,
     autoHide?: boolean,
     action?: NoticeAction,
+    duration?: number,
 }
 
 export default class UIToastMessage {
@@ -60,9 +61,9 @@ export default class UIToastMessage {
         Left: 'flex-start',
     }
 
-    static showMessage(args: string | ToastObject) {
+    static showMessage(args: string | ToastObject, duration?: number) {
         if (typeof args === 'string') {
-            this.prepareAndShowMessage({ message: args });
+            this.prepareAndShowMessage({ message: args, duration });
         } else {
             this.prepareAndShowMessage(args);
         }
@@ -77,7 +78,7 @@ export default class UIToastMessage {
     // Actions
     static prepareAndShowMessage(args: ToastObject) {
         const {
-            message, type, placement, autoHide = true, action,
+            message, type, placement, autoHide = true, action, duration,
         } = args;
         this.message = message || '';
         this.type = type || this.Type.Default;
@@ -87,7 +88,7 @@ export default class UIToastMessage {
         const messageObject: MessageObject = {
             message: '', // unused but required param
             animated: true,
-            duration: 5000,
+            duration: duration || 5000,
             autoHide,
         };
         UINotice.showToastMessage(messageObject, messageComponent);

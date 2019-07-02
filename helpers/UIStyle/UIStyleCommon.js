@@ -77,12 +77,16 @@ export default class UIStyleCommon {
         return UIStyle.centerLeftContainer;
     }
 
+    static centerRightContainer() {
+        return UIStyle.centerRightContainer;
+    }
+
     static rowSpaceContainer() {
         return UIStyle.rowSpaceContainer;
     }
 
     static overflowHidden() {
-        return UIStyle.oferflowHidden;
+        return UIStyle.overflowHidden;
     }
 
     // shadow
@@ -100,6 +104,10 @@ export default class UIStyleCommon {
 
     static positionAbsolute() {
         return UIStyle.positionAbsolute;
+    }
+
+    static absoluteFillObject() {
+        return UIStyle.absoluteFillObject;
     }
 
     // colors
@@ -138,5 +146,9 @@ export default class UIStyleCommon {
 
     static bottomScreenContainer() {
         return UIStyle.bottomScreenContainer;
+    }
+
+    static icon() {
+        return UIStyle.icon;
     }
 }

@@ -148,7 +148,7 @@ class UIDialogController extends UIController {
     }
 
     setContentInset(contentInset, animation) {
-        super.setContentInset(contentInset);
+        super.setContentInset(contentInset, animation);
         const bottomInset = Math.max(0, contentInset.bottom);
         const { duration, easing } = animation || {
             duration: UIConstant.animationDuration(),

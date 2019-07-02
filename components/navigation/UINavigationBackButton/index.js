@@ -1,19 +1,23 @@
+// @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
-import PropTypes from 'prop-types';
 import { Image, TouchableOpacity, View } from 'react-native';
+
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+
 import UIStyle from '../../../helpers/UIStyle';
+import UIAssets from '../../../assets/UIAssets';
+
 import UIComponent from '../../UIComponent';
 
-const backImage = require('../../../assets/ico-arrow-left/ico-arrow-left.png');
+type Props = {
+    containerStyle: ViewStyleProp,
+    icon: any,
+    navigation: Object,
+};
 
-export default class UINavigationBackButton extends UIComponent {
-    static propTypes = {
-        containerStyle: StylePropType,
-        icon: PropTypes.any,
-        navigation: PropTypes.instanceOf(Object),
-    };
+type State = {};
 
+export default class UINavigationBackButton extends UIComponent<Props, State> {
     static defaultProps = {
         containerStyle: {},
         icon: null,
@@ -51,7 +55,7 @@ export default class UINavigationBackButton extends UIComponent {
                     this.getNavigation().goBack(null);
                 }}
             >
-                <Image source={this.getIcon() || backImage} />
+                <Image source={this.getIcon() || UIAssets.icoArrowLeft()} />
             </TouchableOpacity>
         );
     }

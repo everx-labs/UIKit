@@ -50,6 +50,11 @@ const error = {
     color: UIColor.error(),
 };
 
+const warning = {
+    ...text,
+    color: UIColor.detailsInputComment(),
+};
+
 const success = {
     ...text,
     color: UIColor.success(),
@@ -84,6 +89,9 @@ const UITextStyle = StyleSheet.create({
     alignCenter: {
         textAlign: 'center',
     },
+    bold: {
+        ...UIFont.bold(),
+    },
 
     // [Text]
     // Body - fontSize: 18, lineHeight: 24
@@ -109,12 +117,31 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.tinyMedium(),
     },
+    smallRegular: {
+        ...text,
+        ...UIFont.smallRegular(),
+    },
+    smallBold: {
+        ...text,
+        ...UIFont.smallBold(),
+    },
+
+    // Icon - fontSize: 10, lineHeight: 16
+    iconBold: {
+        ...text,
+        ...UIFont.iconBold(),
+    },
 
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
     primaryHeadlineLight: {
         ...primary,
         ...UIFont.headlineLight(),
+    },
+    // HeadLine - fontSize: 64, lineHeight: 84
+    primaryHeadlineBold: {
+        ...primary,
+        ...UIFont.headlineBold(),
     },
 
     // HeadLine - fontSize: 48, lineHeight: 64
@@ -206,6 +233,10 @@ const UITextStyle = StyleSheet.create({
         ...secondary,
         ...UIFont.titleLight(),
     },
+    secondaryTitleBold: {
+        ...secondary,
+        ...UIFont.titleBold(),
+    },
     // Accent - fontSize: 20, lineHeight: 28
     secondaryAccentRegular: {
         ...secondary,
@@ -233,6 +264,10 @@ const UITextStyle = StyleSheet.create({
         ...secondary,
         ...UIFont.smallRegular(),
     },
+    secondarySmallBold: {
+        ...secondary,
+        ...UIFont.smallBold(),
+    },
     // Caption - fontSize: 14, lineHeight: 20
     secondaryCaptionRegular: {
         ...secondary,
@@ -257,6 +292,16 @@ const UITextStyle = StyleSheet.create({
     quaternaryBodyRegular: {
         ...quaternary,
         ...UIFont.bodyRegular(),
+    },
+    // Small - fontSize: 16, lineHeight: 20
+    quaternarySmallRegular: {
+        ...quaternary,
+        ...UIFont.smallRegular(),
+    },
+    // Caption - fontSize: 14, lineHeight: 20
+    quaternaryCaptionRegular: {
+        ...quaternary,
+        ...UIFont.captionRegular(),
     },
 
     // [Text Grey]
@@ -343,6 +388,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text tertiary]
+    // Title - fontSize: 36, lineHeight: 48
+    tertiaryTitleLight: {
+        ...tertiary,
+        ...UIFont.titleLight(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     tertiaryBodyRegular: {
         ...tertiary,
@@ -375,6 +425,11 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text white]
+    // Key - fontSize: 48, lineHeight: 64
+    whiteSubheadBold: {
+        ...white,
+        ...UIFont.subheadBold(),
+    },
     // Key - fontSize: 96, lineHeight: 128
     whiteKeyBold: {
         ...white,
@@ -394,6 +449,10 @@ const UITextStyle = StyleSheet.create({
         ...white,
         ...UIFont.accentBold(),
     },
+    whiteAccentRegular: {
+        ...white,
+        ...UIFont.accentRegular(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     whiteBodyRegular: {
         ...white,
@@ -403,6 +462,11 @@ const UITextStyle = StyleSheet.create({
     whiteSmallMedium: {
         ...white,
         ...UIFont.smallMedium(),
+    },
+    // Caption - fontSize: 14, lineHeight: 20
+    whiteCaptionRegular: {
+        ...white,
+        ...UIFont.captionRegular(),
     },
     // Tiny - fontSize: 12, lineHeight: 16
     whiteTinyRegular: {
@@ -454,6 +518,12 @@ const UITextStyle = StyleSheet.create({
     },
     errorCaptionRegular: {
         ...error,
+        ...UIFont.captionRegular(),
+    },
+
+    // [Text Warning]
+    warningCaptionRegular: {
+        ...warning,
         ...UIFont.captionRegular(),
     },
 });

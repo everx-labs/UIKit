@@ -137,11 +137,16 @@ const UIStyle = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    centerRightContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
     rowSpaceContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    oferflowHidden: {
+    overflowHidden: {
         overflow: 'hidden',
     },
 
@@ -203,6 +208,9 @@ const UIStyle = StyleSheet.create({
     marginTopGreat: { // 48
         marginTop: UIConstant.greatContentOffset(),
     },
+    marginTopBig: { // 56
+        marginTop: UIConstant.bigCellHeight(),
+    },
     marginTopMajor: { // 64
         marginTop: UIConstant.majorContentOffset(),
     },
@@ -240,6 +248,9 @@ const UIStyle = StyleSheet.create({
     marginBottomMajor: { // 64
         marginBottom: UIConstant.majorContentOffset(),
     },
+    marginBottomMassive: { // 72
+        marginBottom: UIConstant.massiveContentOffset(),
+    },
     marginBottomVast: { // 80
         marginBottom: UIConstant.vastContentOffset(),
     },
@@ -256,7 +267,7 @@ const UIStyle = StyleSheet.create({
     marginRightDefault: { // 16
         marginRight: UIConstant.contentOffset(),
     },
-    marginRightMedium: {
+    marginRightMedium: { // 24
         marginRight: UIConstant.mediumContentOffset(),
     },
     marginRightHuge: { // 32
@@ -266,8 +277,17 @@ const UIStyle = StyleSheet.create({
     marginLeftTiny: { // 4
         marginLeft: UIConstant.tinyContentOffset(),
     },
+    marginLeftSmall: { // 8
+        marginLeft: UIConstant.smallContentOffset(),
+    },
+    marginLeftNormal: { // 12
+        marginLeft: UIConstant.normalContentOffset(),
+    },
     marginLeftDefault: { // 16
         marginLeft: UIConstant.contentOffset(),
+    },
+    marginLeftMedium: { // 24
+        marginLeft: UIConstant.mediumContentOffset(),
     },
     marginLeftHuge: { // 32
         marginLeft: UIConstant.hugeContentOffset(),
@@ -302,6 +322,9 @@ const UIStyle = StyleSheet.create({
     paddingHorizontal: {
         paddingHorizontal: UIConstant.contentOffset(),
     },
+    paddingVertical: {
+        paddingVertical: UIConstant.contentOffset(),
+    },
     paddingTopDefault: {
         paddingTop: UIConstant.contentOffset(),
     },
@@ -313,6 +336,12 @@ const UIStyle = StyleSheet.create({
     },
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
+    },
+    paddingRightHuge: {
+        paddingRight: UIConstant.hugeContentOffset(),
+    },
+    paddingRightGreat: {
+        paddingRight: UIConstant.greatContentOffset(),
     },
     paddingLeftDefault: {
         paddingLeft: UIConstant.contentOffset(),
@@ -510,13 +539,18 @@ const UIStyle = StyleSheet.create({
     },
     masterViewController: {
         flex: 1,
-        maxWidth: UIConstant.elasticWidthRegular(),
+        maxWidth: UIConstant.masterScreenWidth(),
         overflow: 'hidden',
     },
     detailViewController: {
         flex: 1,
         ...borderLeft,
         overflow: 'hidden',
+    },
+
+    icon: {
+        width: UIConstant.iconSize(),
+        height: UIConstant.iconSize(),
     },
 });
 

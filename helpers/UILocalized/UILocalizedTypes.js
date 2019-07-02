@@ -3,15 +3,10 @@
 export type UILocalizedData = {
     // TON
     TONLabel: string,
-    TONWallet: string,
-    BITFuture: string,
     CopyRight: string,
     Disclaimer: string,
 
     // Terms
-    TermsText: string,
-    TermsTextHTML: string,
-    TermsTextAuth: string,
     TermsCookiesPolicy: string,
     Here: string,
     LegalNotes: string,
@@ -110,6 +105,7 @@ export type UILocalizedData = {
     NumberCopiedToClipboard: string,
     LinkCopiedToClipboard: string,
     MessageCopiedToClipboard: string,
+    HashCopiedToClipboard: string,
     FileIsTooBig: string,
     Important: string,
     UserIsNotAuthorized: string,
@@ -164,7 +160,6 @@ export type UILocalizedData = {
     SearchContacts: string,
     SearchFriends: string,
     InviteFriends: string,
-    ShareTONchat: string,
     Contacts: string,
     Friends: string,
     NewContact: string,
@@ -172,8 +167,6 @@ export type UILocalizedData = {
     MiddleName: string,
     LastName: string,
     AddContact: string,
-    InviteToTONChat: string,
-    InviteMessage: string,
 
     Online: string,
     Recently: string,
@@ -294,7 +287,6 @@ export type UILocalizedData = {
     TypeMessage: string,
 
     // Wallet
-    PleaseCreateYourLocalPassword: string,
     WeNeedYourPassword: string,
     WeNeedYourPasswordToUpgradeWallet: string,
     Password: string,
@@ -386,7 +378,6 @@ export type UILocalizedData = {
     TransactionFrom: string,
     InvitesYouToWallet: string,
     Transactions: string,
-    InviteWalletSMS: string,
 
     // Accounts
     Account: string,
@@ -535,4 +526,10 @@ export type UILocalizedData = {
     // Toasts
     EnterCorrectDataToField: string,
     EmailAddress: string,
+
+    // Feedback module
+    ThanksForYourFeedback: string,
+    DescribeYourIssueOrIdea: string,
+    YourEmail: string,
+    SendFeedback: string,
 }

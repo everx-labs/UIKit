@@ -5,6 +5,10 @@ export default class UIStyleText {
         return UITextStyle.alignCenter;
     }
 
+    static bold() {
+        return UITextStyle.bold;
+    }
+
     // [Text]
     // Body - fontSize: 18, lineHeight: 24
     static bodyRegular() {
@@ -24,11 +28,25 @@ export default class UIStyleText {
     static tinyMedium() {
         return UITextStyle.tinyMedium;
     }
+    static smallRegular() {
+        return UITextStyle.smallRegular;
+    }
+    static smallBold() {
+        return UITextStyle.smallBold;
+    }
+    // Icon - fontSize: 10, lineHeight: 16
+    static iconBold() {
+        return UITextStyle.iconBold;
+    }
 
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
     static primaryHeadlineLight() {
         return UITextStyle.primaryHeadlineLight;
+    }
+    // HeadLine - fontSize: 64, lineHeight: 84
+    static primaryHeadlineBold() {
+        return UITextStyle.primaryHeadlineBold;
     }
 
     // HeadLine - fontSize: 48, lineHeight: 64
@@ -101,6 +119,9 @@ export default class UIStyleText {
     static secondaryTitleLight() {
         return UITextStyle.secondaryTitleLight;
     }
+    static secondaryTitleBold() {
+        return UITextStyle.secondaryTitleBold;
+    }
     // Accent - fontSize: 20, lineHeight: 28
     static secondaryAccentRegular() {
         return UITextStyle.secondaryAccentRegular;
@@ -122,6 +143,9 @@ export default class UIStyleText {
     static secondarySmallMedium() {
         return UITextStyle.secondarySmallMedium;
     }
+    static secondarySmallBold() {
+        return UITextStyle.secondarySmallBold;
+    }
     // Caption - fontSize: 14, lineHeight: 20
     static secondaryCaptionRegular() {
         return UITextStyle.secondaryCaptionRegular;
@@ -141,6 +165,14 @@ export default class UIStyleText {
     // Body - fontSize: 18, lineHeight: 24
     static quaternaryBodyRegular() {
         return UITextStyle.quaternaryBodyRegular;
+    }
+    // Small - fontSize: 16, lineHeight: 20
+    static quaternarySmallRegular() {
+        return UITextStyle.quaternarySmallRegular;
+    }
+    // Caption - fontSize: 14, lineHeight: 20
+    static quaternaryCaptionRegular() {
+        return UITextStyle.quaternaryCaptionRegular;
     }
 
     // [Text Grey 1]
@@ -206,6 +238,10 @@ export default class UIStyleText {
     }
 
     // [Text tertiary]
+    // Title - fontSize: 36, lineHeight: 48
+    static tertiaryTitleLight() {
+        return UITextStyle.tertiaryTitleLight;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static tertiaryBodyRegular() {
         return UITextStyle.tertiaryBodyRegular;
@@ -231,10 +267,19 @@ export default class UIStyleText {
         return UITextStyle.tertiaryTinyBold;
     }
 
+    // Caption - fontSize: 14, lineHeight: 20
+    static warningCaptionRegular() {
+        return UITextStyle.warningCaptionRegular;
+    }
+
     // [Text white]
     // Key - fontSize: 96, lineHeight: 128
     static whiteKeyBold() {
         return UITextStyle.whiteKeyBold;
+    }
+    // Key - fontSize: 48, lineHeight: 64
+    static whiteSubheadBold() {
+        return UITextStyle.whiteSubheadBold;
     }
     // Title - fontSize: 36, lineHeight: 48
     static whiteTitleBold() {
@@ -243,6 +288,9 @@ export default class UIStyleText {
     // Subtitle - fontSize: 24, lineHeight: 32
     static whiteSubtitleBold() {
         return UITextStyle.whiteSubtitleBold;
+    }
+    static whiteAccentRegular() {
+        return UITextStyle.whiteAccentRegular;
     }
     static whiteAccentBold() {
         return UITextStyle.whiteAccentBold;
@@ -254,6 +302,10 @@ export default class UIStyleText {
     // Small - fontSize: 16, lineHeight: 20
     static whiteSmallMedium() {
         return UITextStyle.whiteSmallMedium;
+    }
+    // Caption - fontSize: 14, lineHeight: 20
+    static whiteCaptionRegular() {
+        return UITextStyle.whiteCaptionRegular;
     }
     // Tiny - fontSize: 12, lineHeight: 16
     static whiteTinyRegular() {

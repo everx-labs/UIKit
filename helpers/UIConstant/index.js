@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
+const UI_ANIMATION_SMALL_DURATION = 100;
 const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 100;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
@@ -81,6 +82,8 @@ const UI_ELASTIC_WIDTH_BROAD = 1000;
 const UI_ELASTIC_WIDTH_MAX = 1280;
 const UI_ELASTIC_WIDTH_HUGE = 1600;
 
+const UI_MASTER_SCREEN_WIDTH = 320;
+
 const UI_MAX_SCREEN_HEIGHT = 1280;
 
 const BACKGROUND_IMAGE_CONTAINER_WIDTH = 380;
@@ -110,6 +113,8 @@ const MAX_DECIMAL_DIGITS = 9;
 const MAX_TEXT_LINE_LENGTH = 200;
 
 const INITIAL_RENDER_DATA_COUNT = 12; // good for displaying a tables of 1,2,3,4 columns
+
+const DASH_SYMBOL = '\u2014';
 
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
@@ -159,6 +164,10 @@ export default class UIConstant {
     // Animations
     static animationDuration() {
         return UI_ANIMATION_DURATION;
+    }
+
+    static animationSmallDuration() {
+        return UI_ANIMATION_SMALL_DURATION;
     }
 
     static feedbackDelay() {
@@ -418,6 +427,10 @@ export default class UIConstant {
         return UI_ELASTIC_WIDTH_HUGE;
     }
 
+    static masterScreenWidth() {
+        return UI_MASTER_SCREEN_WIDTH;
+    }
+
     static maxScreenHeight() {
         return UI_MAX_SCREEN_HEIGHT;
     }
@@ -518,5 +531,9 @@ export default class UIConstant {
 
     static maxDecimalDigits() {
         return MAX_DECIMAL_DIGITS;
+    }
+
+    static dashSymbol() {
+        return DASH_SYMBOL;
     }
 }

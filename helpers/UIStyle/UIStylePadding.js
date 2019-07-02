@@ -13,6 +13,10 @@ export default class UIStylePadding {
         return UIStyle.paddingHorizontal;
     }
 
+    static vertical() {
+        return UIStyle.paddingVertical;
+    }
+
     static topDefault() {
         return UIStyle.paddingTopDefault;
     }
@@ -31,6 +35,14 @@ export default class UIStylePadding {
 
     static rightDefault() {
         return UIStyle.paddingRightDefault;
+    }
+
+    static rightHuge() {
+        return UIStyle.paddingRightHuge;
+    }
+
+    static rightGreat() {
+        return UIStyle.paddingRightGreat;
     }
 
     static bottomMajor() {

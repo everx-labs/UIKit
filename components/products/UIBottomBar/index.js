@@ -52,6 +52,7 @@ type Props = {
     isNarrow: boolean,
     screenWidth: number,
     containerStyle: StylePropType,
+    onPressCopyRight: () => void,
 };
 
 type State = {
@@ -205,7 +206,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     renderMenu() {
         const { menuItems } = this.props;
         const textStyle = this.textStyle();
-        if (menuItems.length === 0) {
+        if (!menuItems.length) {
             return null;
         }
         const dot = (
@@ -228,7 +229,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         ));
 
         return (
-            <View style={UIStyle.Common.flexRow()}>
+            <View style={UIStyle.Common.centerLeftContainer()}>
                 {menu}
             </View>
         );
@@ -262,15 +263,22 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     renderCopyRight() {
-        const { copyRight } = this.props;
+        const { copyRight, onPressCopyRight } = this.props;
         const textStyle = this.textStyle();
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
         const align = isShort ? UIStyle.Common.alignCenter() : UIStyle.Common.alignEnd();
+        const flex = this.isNarrow() && !isShort ? null : UIStyle.Common.flex();
         return (
-            <View style={[UIStyle.Common.flex(), align]}>
+            <View style={[flex, align]}>
                 <Text style={textStyle}>
-                    {copyRightText}
+                    <UITextButton
+                        title={copyRightText}
+                        textStyle={textStyle}
+                        textHoverStyle={UIColor.textPrimaryStyle()}
+                        textTappedStyle={UIColor.textPrimaryStyle()}
+                        onPress={onPressCopyRight}
+                    />
                     {this.renderDisclaimer()}
                 </Text>
             </View>
@@ -278,7 +286,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     render() {
-        const mobile = this.isNarrow();
+        const narrow = this.isNarrow();
         return (
             <View style={UIStyle.Common.bottomScreenContainer()}>
                 <View style={this.props.containerStyle}>
@@ -288,7 +296,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                         {this.renderDesktopContacts()}
                         {this.renderCopyRight()}
                     </View>
-                    {this.renderContacts(mobile)}
+                    {this.renderContacts(narrow)}
                 </View>
             </View>
         );
@@ -319,4 +327,6 @@ UIBottomBar.defaultProps = {
 
     isNarrow: true,
     screenWidth: 0,
+
+    onPressCopyRight: () => { Linking.openURL('https://tonlabs.io'); },
 };

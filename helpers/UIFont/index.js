@@ -121,9 +121,14 @@ const UI_FONT_TINY_REGULAR = { ...UI_FONT_TINY, ...UI_FONT_REGULAR };
 const UI_FONT_TINY_MEDIUM = { ...UI_FONT_TINY, ...UI_FONT_MEDIUM };
 const UI_FONT_MENU_BOLD = { ...UI_FONT_MENU, ...UI_FONT_BOLD };
 const UI_FONT_MENU_REGULAR = { ...UI_FONT_MENU, ...UI_FONT_REGULAR };
+const UI_FONT_ICON_BOLD = { ...UI_FONT_ICON, ...UI_FONT_BOLD };
 const UI_FONT_ICON_REGULAR = { ...UI_FONT_ICON, ...UI_FONT_REGULAR };
 
 export default class UIFont {
+    static bold() {
+        return UI_FONT_BOLD;
+    }
+
     static keyBold() {
         return UI_FONT_KEY_BOLD;
     }
@@ -238,6 +243,10 @@ export default class UIFont {
 
     static menuRegular() {
         return UI_FONT_MENU_REGULAR;
+    }
+
+    static iconBold() {
+        return UI_FONT_ICON_BOLD;
     }
 
     static iconRegular() {

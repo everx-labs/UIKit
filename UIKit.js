@@ -7,7 +7,9 @@ import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/input/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
+import UIBalanceView from './components/views/UIBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
+import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UICard from './components/text/UICard';
@@ -29,14 +31,17 @@ import UIDot from './components/design/UIDot';
 import UIDropdownAlert from './components/popup/UIDropdownAlert';
 import UIEmailInput from './components/input/UIEmailInput';
 import UIEventHelper from './helpers/UIEventHelper';
+import UIFeedback from './components/products/UIFeedback';
 import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
+import UIIdleDetector from './components/UIIdleDetector';
 import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
 import UIImageView from './components/images/UIImageView';
 import UILabel from './components/text/UILabel';
+import UILandingView from './components/views/UILandingView';
 import UILayoutManager from './helpers/UILayoutManager';
 import UILinkInput from './components/input/UILinkInput';
 import UIListHeader from './components/text/UIListHeader';
@@ -47,20 +52,28 @@ import UIMenuBackground from './helpers/UIMenuBackground';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';
+import UINavigationCloseButton from './components/navigation/UINavigationCloseButton';
+import UINavigationIconButton from './components/navigation/UINavigationIconButton';
+import UINavigationPlusButton from './components/navigation/UINavigationPlusButton';
+import UINavigationTextButton from './components/navigation/UINavigationTextButton';
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
+import UINotificationBadge from './components/notifications/UINotificationBadge';
 import UINumberInput from './components/input/UINumberInput';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
+import UIPinCodeInput from './components/input/UIPinCodeInput';
 import UIProfilePhoto from './components/profile/UIProfilePhoto';
 import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
 import UIPureComponent from './components/UIPureComponent';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
+import UIScaleButton from './components/buttons/UIScaleButton';
 import UIScreen from './controllers/UIScreen';
 import UISearchBar from './components/input/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
+import UISeedPhraseInput from './components/input/UISeedPhraseInput';
 import UISeparator from './components/design/UISeparator';
 import UIShareManager from './helpers/UIShareManager';
 import UIShareScreen from './helpers/UIShareManager/UIShareScreen';
@@ -103,6 +116,9 @@ import type {
     UIColorData,
     UIColorThemeNameType,
 } from './helpers/UIColor/UIColorTypes';
+import type { MenuItemType } from './components/menus/UIMenuView';
+import type { UIFeedbackSubmitFunc } from './components/products/UIFeedback';
+import type { ContentOffset } from './controllers/UIScreen';
 
 export {
     UIAccountPicker,
@@ -112,12 +128,14 @@ export {
     UIActionSheet,
     UIAlertView,
     UIAmountInput,
-    UIBadge,
     UIBackgroundView,
+    UIBadge,
+    UIBalanceView,
     UIBottomBar,
+    UIBullet,
     UIButton,
-    UICheckboxItem,
     UICard,
+    UICheckboxItem,
     UIColor,
     UIColorPalette,
     UICompatibilityView,
@@ -127,47 +145,58 @@ export {
     UICustomSheet,
     UIDateInput,
     UIDetailsInput,
+    UIDetailsTable,
     UIDetailsToggle,
     UIDetailsView,
-    UIDetailsTable,
     UIDevice,
     UIDialogController,
     UIDot,
     UIDropdownAlert,
     UIEmailInput,
     UIEventHelper,
+    UIFeedback,
     UIFlashMessage,
     UIFont,
-    UITextStyle,
     UIFunction,
+    UITextStyle,
+    UIIdleDetector,
     UIImage,
     UIImageButton,
     UIImageView,
     UILabel,
+    UILandingView,
     UILayoutManager,
     UILinkInput,
     UIListHeader,
     UILoadMoreButton,
     UILocalized,
-    UIMenuView,
     UIMenuBackground,
+    UIMenuView,
     UIModalController,
     UINavigationBackButton,
     UINavigationBar,
+    UINavigationCloseButton,
+    UINavigationIconButton,
+    UINavigationPlusButton,
+    UINavigationTextButton,
     UINavigator,
     UINetworkStatus,
     UINotice,
+    UINotificationBadge,
     UINumberInput,
     UIPasswordPrompt,
     UIPhoneInput,
-    UIProfilePhoto,
+    UIPinCodeInput,
     UIProfileInitials,
+    UIProfilePhoto,
     UIProfileView,
     UIPureComponent,
     UIRadioButtonList,
+    UIScaleButton,
     UIScreen,
     UISearchBar,
     UISectionHeader,
+    UISeedPhraseInput,
     UISeparator,
     UIShareManager,
     UIShareScreen,
@@ -181,8 +210,8 @@ export {
     UITextButton,
     UITextInput,
     UIToastMessage,
-    UITokenCell,
     UIToggle,
+    UITokenCell,
     UITooltip,
     UITransitionView,
     UIUploadFileInput,
@@ -193,14 +222,17 @@ export type {
     AnyComponent,
     CreateNavigationOptions,
     NavigationProps,
+    MenuItemType,
     PointerEvents,
     PositionObject,
     ReactNavigation,
     ContentInset,
+    ContentOffset,
     DetailsList,
     UIAccountData,
     UIColorData,
     UIColorThemeNameType,
     UINavigationRoute,
     UINavigationRouting,
+    UIFeedbackSubmitFunc,
 };

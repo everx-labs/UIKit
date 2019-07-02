@@ -26,7 +26,23 @@ export default class UIStyleWidth {
     }
 
     // Containers
+    static fullCenterContainer() {
+        return UIStyle.fullWidthCenterContainer;
+    }
+
+    static fullPaddingContainer() {
+        return UIStyle.fullWidthPaddingContainer;
+    }
+
+    static halfContainer() {
+        return UIStyle.halfWidthContainer;
+    }
+
     static twoThirdsContainer() {
         return UIStyle.twoThirdsWidthContainer;
+    }
+
+    static halfContainer() {
+        return UIStyle.halfWidthContainer;
     }
 }

@@ -96,18 +96,6 @@ export default class UIModalController<Props, State>
         };
     }
 
-    componentDidMount() {
-        super.componentDidMount();
-    }
-
-    componentWillReceiveProps(nextProps: ModalControllerProps & Props) {
-        super.componentWillReceiveProps(nextProps);
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-    }
-
     // Events
     onWillAppear() {
         // Method needs to be overridden in order to be used.

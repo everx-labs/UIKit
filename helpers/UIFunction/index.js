@@ -4,6 +4,8 @@ import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
 import isEmail from 'validator/lib/isEmail';
 
+import UIConstant from '../../helpers/UIConstant';
+
 const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
 
@@ -114,7 +116,7 @@ export default class UIFunction {
         locale,
         options = {
             minimumFractionDigits: 0,
-            maximumFractionDigits: 8,
+            maximumFractionDigits: UIConstant.maxDecimalDigits(),
         },
     ) {
         return Number(number).toLocaleString(locale, options);
@@ -367,6 +369,7 @@ export default class UIFunction {
 
     static normalizeKeyPhrase(keyPhrase: string): string {
         return keyPhrase
+            .replace(new RegExp(UIConstant.dashSymbol(), 'g'), '')
             .replace(this.spaces, ' ')
             .trim()
             .toLowerCase();
