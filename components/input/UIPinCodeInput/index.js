@@ -61,13 +61,16 @@ const styleProperties = {
         width: UIConstant.tinyCellHeight() / 2,
         height: UIConstant.tinyCellHeight() / 2,
         borderRadius: UIConstant.borderRadius() / 2,
-        backgroundColor: UIColor.fa(),
+        backgroundColor: UIColor.grey3(),
     },
     warning: {
         color: 'red',
     },
     animatedView: {
         height: UIConstant.mediumCellHeight(),
+    },
+    label: {
+        textAlign: 'center',
     },
 };
 
@@ -184,7 +187,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderLabel() {
         return (
             <UILabel
-                style={UIStyle.Margin.bottomDefault()}
+                style={[UIStyle.Margin.bottomDefault(), styles.label]}
                 role={UILabel.Role.SecondaryBody}
                 text={this.props.pinTitle}
                 numberOfLines={1}
@@ -228,6 +231,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const descStyle = StyleSheet.create({
             descColor: {
                 color: this.props.pinDescriptionColor,
+                minHeight: UIConstant.mediumCellHeight(),
             },
         });
         return (
@@ -244,7 +248,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     renderKeyboard() {
         return (
-            <View style={[UIStyle.Margin.topVast()]}>
+            <View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
                         style={styles.key}
@@ -345,10 +349,12 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={UIStyle.fullWidthCenterContainer}>
-                {this.renderLabel()}
-                {this.renderIndicator()}
-                {this.renderDescription()}
+            <View style={[UIStyle.fullWidthCenterContainer, UIStyle.flex]}>
+                <View style={[UIStyle.flexJustifyCenter, UIStyle.textAlignCenter]}>
+                    {this.renderLabel()}
+                    {this.renderIndicator()}
+                    {this.renderDescription()}
+                </View>
                 {this.renderKeyboard()}
             </View>
         );
