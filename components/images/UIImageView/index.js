@@ -13,6 +13,7 @@ import UIComponent from '../../UIComponent';
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
 const LightboxMobile = Platform.OS !== 'web' ? require('react-native-lightbox').default : null;
+const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
 
 const styles = StyleSheet.create({
     photoContainer: {
@@ -342,13 +343,26 @@ export default class UIImageView extends UIComponent<Props, State> {
             if (photoBig) {
                 photo = photoBig;
             }
+            if (Platform.OS === 'web') {
+                return ([
+                    <UISpinnerOverlay
+                        visible={this.state.showSpinnerOnPhotoView}
+                    />,
+                    <Image
+                        resizeMode="contain"
+                        resizeMethod="auto"
+                        style={{ flex: 1 }}
+                        source={photo}
+                    />,
+                ]);
+            }
             return ([
                 <UISpinnerOverlay
                     visible={this.state.showSpinnerOnPhotoView}
                 />,
-                <Image
+                <FastImage
                     resizeMode="contain"
-                    resizeMethod="auto"
+                    // resizeMethod="auto"
                     style={{ flex: 1 }}
                     source={photo}
                 />,
@@ -369,10 +383,20 @@ export default class UIImageView extends UIComponent<Props, State> {
             if (photoBig) {
                 photo = photoBig;
             }
+            if (Platform.OS === 'web') {
+                return (
+                    <Image
+                        resizeMode={this.props.resizeMode}
+                        resizeMethod={this.props.resizeMethod}
+                        style={[styles.photoContainer, this.props.photoStyle]}
+                        source={photo}
+                    />
+                );
+            }
             return (
-                <Image
+                <FastImage
                     resizeMode={this.props.resizeMode}
-                    resizeMethod={this.props.resizeMethod}
+                    // resizeMethod={this.props.resizeMethod}
                     style={[styles.photoContainer, this.props.photoStyle]}
                     source={photo}
                 />
