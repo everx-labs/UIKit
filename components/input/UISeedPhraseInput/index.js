@@ -39,6 +39,7 @@ type State = ActionState & {
 
 const styles = StyleSheet.create({
     hintsContainer: {
+        flex: 1,
         maxHeight: UIConstant.defaultCellHeight() * 3,
         backgroundColor: UIColor.backgroundPrimary(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
@@ -56,7 +57,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         minHeight: UIConstant.defaultCellHeight(),
         backgroundColor: UIColor.backgroundPrimary(),
-
     },
 });
 
