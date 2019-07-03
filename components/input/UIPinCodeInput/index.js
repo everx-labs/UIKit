@@ -63,14 +63,8 @@ const styleProperties = {
         borderRadius: UIConstant.borderRadius() / 2,
         backgroundColor: UIColor.grey3(),
     },
-    warning: {
-        color: 'red',
-    },
     animatedView: {
         height: UIConstant.mediumCellHeight(),
-    },
-    label: {
-        textAlign: 'center',
     },
 };
 
@@ -187,7 +181,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderLabel() {
         return (
             <UILabel
-                style={[UIStyle.Margin.bottomDefault(), styles.label]}
+                style={UIStyle.Margin.bottomDefault()}
                 role={UILabel.Role.SecondaryBody}
                 text={this.props.pinTitle}
                 numberOfLines={1}
@@ -237,7 +231,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         return (
             <UILabel
                 style={[UIStyle.Margin.bottomVast(),
-                    UIStyle.textAlignCenter, descStyle.descColor]}
+                    descStyle.descColor]}
                 role={UILabel.Role.CaptionTertiary}
                 text={this.props.pinDescription}
                 numberOfLines={2}
@@ -350,7 +344,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     render() {
         return (
             <View style={[UIStyle.fullWidthCenterContainer, UIStyle.flex]}>
-                <View style={[UIStyle.flexJustifyCenter, UIStyle.textAlignCenter]}>
+                <View style={[UIStyle.flexJustifyCenter, UIStyle.alignCenter]}>
                     {this.renderLabel()}
                     {this.renderIndicator()}
                     {this.renderDescription()}
