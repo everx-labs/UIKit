@@ -109,11 +109,11 @@ export default class UIModalController<Props, State>
         // Method needs to be overridden in order to be used.
     }
 
-    onDidHide = () => {
+    onDidHide() {
         this.setControllerVisible(false, () => {
             this.dy.setValue(0);
         });
-    };
+    }
 
     onCancelPress = () => {
         this.hide();
@@ -324,7 +324,7 @@ export default class UIModalController<Props, State>
                 dialogAnimation={this.animation}
                 dialogTitle={this.getModalNavigationBar()}
                 dismissOnTouchOutside={false}
-                onDismissed={this.onDidHide}
+                onDismissed={() => this.onDidHide()}
                 onShown={() => this.onDidAppear()}
                 overlayBackgroundColor="transparent"
             >
