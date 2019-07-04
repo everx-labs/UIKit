@@ -96,6 +96,9 @@ const UIStyle = StyleSheet.create({
     alignEnd: {
         alignItems: 'flex-end',
     },
+    alignStart: {
+        alignItems: 'flex-start',
+    },
     textAlignCenter: {
         textAlign: 'center',
     },
@@ -330,6 +333,12 @@ const UIStyle = StyleSheet.create({
     },
     paddingBottomSmall: {
         paddingBottom: UIConstant.smallContentOffset(),
+    },
+    paddingBottomMassive: {
+        paddingBottom: UIConstant.massiveContentOffset(),
+    },
+    paddingBottomVast: {
+        paddingBottom: UIConstant.vastContentOffset(),
     },
     paddingBottomDefault: {
         paddingBottom: UIConstant.contentOffset(),
