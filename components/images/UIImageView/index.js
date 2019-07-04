@@ -16,6 +16,8 @@ const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
 const LightboxMobile = Platform.OS !== 'web' ? require('react-native-lightbox').default : null;
 const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
 
+const UIImage = Platform.OS === 'web' ? Image : FastImage;
+
 const styles = StyleSheet.create({
     photoContainer: {
         width: '100%',
@@ -344,7 +346,6 @@ export default class UIImageView extends UIComponent<Props, State> {
             if (photoBig) {
                 photo = photoBig;
             }
-            const UIImage = Platform.OS === 'web' ? Image : FastImage;
             return ([
                 <UISpinnerOverlay
                     visible={this.state.showSpinnerOnPhotoView}
@@ -372,7 +373,6 @@ export default class UIImageView extends UIComponent<Props, State> {
             if (photoBig) {
                 photo = photoBig;
             }
-            const UIImage = Platform.OS === 'web' ? Image : FastImage;
             return (
                 <UIImage
                     resizeMode={this.props.resizeMode}
