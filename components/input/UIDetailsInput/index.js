@@ -153,7 +153,7 @@ export default class UIDetailsInput<Props, State>
     // Events
     onChange(event: any) {
         let newHeight = 0;
-        
+
         if (Platform.OS === 'web' && this.auxTextInput) {
             const aux = this.auxTextInput;
             if (aux?._node) {
@@ -380,7 +380,7 @@ export default class UIDetailsInput<Props, State>
         if (!this.isMultiline()) {
             return null;
         }
-        
+
         return (
             <TextInput
                 ref={(component) => { this.auxTextInput = component; }}
