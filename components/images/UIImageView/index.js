@@ -9,6 +9,7 @@ import UIActionSheet from '../../menus/UIActionSheet';
 import UIAlertView from '../../popup/UIAlertView';
 import UIColor from '../../../helpers/UIColor';
 import UIComponent from '../../UIComponent';
+import UIStyle from '../../../helpers/UIStyle';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -343,27 +344,15 @@ export default class UIImageView extends UIComponent<Props, State> {
             if (photoBig) {
                 photo = photoBig;
             }
-            if (Platform.OS === 'web') {
-                return ([
-                    <UISpinnerOverlay
-                        visible={this.state.showSpinnerOnPhotoView}
-                    />,
-                    <Image
-                        resizeMode="contain"
-                        resizeMethod="auto"
-                        style={{ flex: 1 }}
-                        source={photo}
-                    />,
-                ]);
-            }
+            const UIImage = Platform.OS === 'web' ? Image : FastImage;
             return ([
                 <UISpinnerOverlay
                     visible={this.state.showSpinnerOnPhotoView}
                 />,
-                <FastImage
+                <UIImage
                     resizeMode="contain"
-                    // resizeMethod="auto"
-                    style={{ flex: 1 }}
+                    resizeMethod="auto"
+                    style={UIStyle.Common.flex()}
                     source={photo}
                 />,
             ]);
@@ -383,20 +372,11 @@ export default class UIImageView extends UIComponent<Props, State> {
             if (photoBig) {
                 photo = photoBig;
             }
-            if (Platform.OS === 'web') {
-                return (
-                    <Image
-                        resizeMode={this.props.resizeMode}
-                        resizeMethod={this.props.resizeMethod}
-                        style={[styles.photoContainer, this.props.photoStyle]}
-                        source={photo}
-                    />
-                );
-            }
+            const UIImage = Platform.OS === 'web' ? Image : FastImage;
             return (
-                <FastImage
+                <UIImage
                     resizeMode={this.props.resizeMode}
-                    // resizeMethod={this.props.resizeMethod}
+                    resizeMethod={this.props.resizeMethod}
                     style={[styles.photoContainer, this.props.photoStyle]}
                     source={photo}
                 />
