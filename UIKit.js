@@ -90,6 +90,7 @@ import UIToastMessage from './components/notifications/UIToastMessage';
 import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
+import UITransactionView from './components/views/UITransactionView';
 import UITransitionView from './components/views/UITransitionView';
 import UIUploadFileInput from './components/input/UIUploadFileInput';
 import UIUserAgent from './helpers/UIUserAgent';
@@ -213,6 +214,7 @@ export {
     UIToggle,
     UITokenCell,
     UITooltip,
+    UITransactionView,
     UITransitionView,
     UIUploadFileInput,
     UIUserAgent,

@@ -27,6 +27,10 @@ class UISectionHeader extends UIComponent {
         return this.props.title;
     }
 
+    getTitleRight() {
+        return this.props.titleRight;
+    }
+
     // Render
     renderSeparator() {
         const separator = (
@@ -41,6 +45,8 @@ class UISectionHeader extends UIComponent {
                 {this.renderSeparator()}
                 <View
                     style={[
+                        UIStyle.flexRow,
+                        UIStyle.justifySpaceBetween,
                         UIStyle.centerLeftContainer,
                         styles.sectionHeader,
                         this.props.containerStyle,
@@ -48,6 +54,9 @@ class UISectionHeader extends UIComponent {
                 >
                     <Text style={UITextStyle.tertiaryTinyBold}>
                         {this.getTitle()}
+                    </Text>
+                    <Text style={UITextStyle.tertiaryTinyRegular}>
+                        {this.getTitleRight()}
                     </Text>
                 </View>
             </View>
@@ -59,12 +68,14 @@ export default UISectionHeader;
 
 UISectionHeader.defaultProps = {
     title: '',
+    titleRight: '',
     needBorder: false,
     containerStyle: null,
 };
 
 UISectionHeader.propTypes = {
     title: PropTypes.string,
+    titleRight: PropTypes.string,
     needBorder: PropTypes.bool,
     containerStyle: StylePropType,
 };
