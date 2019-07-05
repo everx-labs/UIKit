@@ -312,7 +312,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
 
     renderTitle() {
         const title = this.getTitle();
-        const style = [UITextStyle.primarySmallMedium, UIStyle.flex];
+        const style = [UITextStyle.primarySmallMedium];
         return <Text style={style} numberOfLines={1}>{title}</Text>;
     }
 
