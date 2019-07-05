@@ -269,13 +269,12 @@ export default class UITransactionView extends UIComponent<Props, State> {
         const amount = this.getAmount();
         const separator = this.getSeparator();
         const stringParts = amount.split(separator);
-        const sign = Number(amount.replace(this.getSeparator(), '.')) > 0 ? '+' : '';
         return (
             <Text
                 style={UITextStyle.primarySmallRegular}
                 numberOfLines={1}
             >
-                {`${sign}${stringParts[0]}`}
+                {stringParts[0]}
                 <Text style={[UIStyle.Text.tertiaryTitleLight(), UIFont.smallRegular()]}>
                     {`${separator}${stringParts[1]}`}
                 </Text>
