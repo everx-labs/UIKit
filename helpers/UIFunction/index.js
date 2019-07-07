@@ -369,6 +369,7 @@ export default class UIFunction {
 
     static normalizeKeyPhrase(keyPhrase: string): string {
         return keyPhrase
+            .replace(new RegExp(UIConstant.dashSymbol(), 'g'), '')
             .replace(this.spaces, ' ')
             .trim()
             .toLowerCase();

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
+import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    titleStyle?: StylePropType,
+    titleStyle?: TextStyleProp,
     title: string,
     disabled?: boolean,
     onSelect: () => void,

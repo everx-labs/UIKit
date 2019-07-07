@@ -2,8 +2,10 @@
 import React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { Popover } from 'react-native-simple-popover';
-import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
+
 import type { Node } from 'react';
+import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -23,6 +25,7 @@ type Placement = 'top' | 'bottom' | 'left' | 'right';
 
 export type MenuItemType = {
     title: string,
+    titleStyle: TextStyleProp,
     disabled?: boolean,
     onPress: () => void
 };
@@ -157,6 +160,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                     <MenuItem
                         key={`${Math.random()}~MenuItem~${item.title}`}
                         title={item.title}
+                        titleStyle={item.titleStyle}
                         disabled={item.disabled}
                         onSelect={() => {
                             item.onPress();

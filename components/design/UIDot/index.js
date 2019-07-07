@@ -34,7 +34,7 @@ class UIDot extends UIComponent {
         const { color, type } = this.props;
         const colorStyle = UIColor.getBackgroundColorStyle(color);
         return (
-            <View style={styles.iconContainer}>
+            <View style={[styles.iconContainer, this.props.iconContainer]}>
                 <View style={[styles.circle, colorStyle, type]} />
             </View>
         );

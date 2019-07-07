@@ -9,6 +9,7 @@ import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
 import UIBalanceView from './components/views/UIBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
+import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UICard from './components/text/UICard';
@@ -89,6 +90,7 @@ import UIToastMessage from './components/notifications/UIToastMessage';
 import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
+import UITransactionView from './components/views/UITransactionView';
 import UITransitionView from './components/views/UITransitionView';
 import UIUploadFileInput from './components/input/UIUploadFileInput';
 import UIUserAgent from './helpers/UIUserAgent';
@@ -117,6 +119,7 @@ import type {
 } from './helpers/UIColor/UIColorTypes';
 import type { MenuItemType } from './components/menus/UIMenuView';
 import type { UIFeedbackSubmitFunc } from './components/products/UIFeedback';
+import type { ContentOffset } from './controllers/UIScreen';
 
 export {
     UIAccountPicker,
@@ -130,6 +133,7 @@ export {
     UIBadge,
     UIBalanceView,
     UIBottomBar,
+    UIBullet,
     UIButton,
     UICard,
     UICheckboxItem,
@@ -210,6 +214,7 @@ export {
     UIToggle,
     UITokenCell,
     UITooltip,
+    UITransactionView,
     UITransitionView,
     UIUploadFileInput,
     UIUserAgent,
@@ -224,6 +229,7 @@ export type {
     PositionObject,
     ReactNavigation,
     ContentInset,
+    ContentOffset,
     DetailsList,
     UIAccountData,
     UIColorData,

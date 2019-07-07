@@ -268,7 +268,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
         const align = isShort ? UIStyle.Common.alignCenter() : UIStyle.Common.alignEnd();
-        const flex = this.isNarrow() ? null : UIStyle.Common.flex();
+        const flex = this.isNarrow() && !isShort ? null : UIStyle.Common.flex();
         return (
             <View style={[flex, align]}>
                 <Text style={textStyle}>
@@ -286,7 +286,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     render() {
-        const mobile = this.isNarrow();
+        const narrow = this.isNarrow();
         return (
             <View style={UIStyle.Common.bottomScreenContainer()}>
                 <View style={this.props.containerStyle}>
@@ -296,7 +296,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                         {this.renderDesktopContacts()}
                         {this.renderCopyRight()}
                     </View>
-                    {this.renderContacts(mobile)}
+                    {this.renderContacts(narrow)}
                 </View>
             </View>
         );

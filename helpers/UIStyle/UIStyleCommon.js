@@ -33,6 +33,10 @@ export default class UIStyleCommon {
         return UIStyle.alignEnd;
     }
 
+    static alignStart() {
+        return UIStyle.alignStart;
+    }
+
     static textAlignCenter() {
         return UIStyle.textAlignCenter;
     }

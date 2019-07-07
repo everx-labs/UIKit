@@ -153,7 +153,7 @@ export default class UIDetailsInput<Props, State>
     // Events
     onChange(event: any) {
         let newHeight = 0;
-        
+
         if (Platform.OS === 'web' && this.auxTextInput) {
             const aux = this.auxTextInput;
             if (aux?._node) {
@@ -176,6 +176,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     onContentSizeChange(heigh: number) {
+        // Not implemented in here
+    }
+
+    onLayout(e: any) {
         // Not implemented in here
     }
 
@@ -376,7 +380,7 @@ export default class UIDetailsInput<Props, State>
         if (!this.isMultiline()) {
             return null;
         }
-        
+
         return (
             <TextInput
                 ref={(component) => { this.auxTextInput = component; }}
@@ -413,6 +417,7 @@ export default class UIDetailsInput<Props, State>
         const placeholderColor = UIColor.textPlaceholder(theme);
         return (
             <TextInput
+                onLayout={e => this.onLayout(e)}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
                 autoCorrect={false}

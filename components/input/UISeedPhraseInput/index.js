@@ -34,29 +34,32 @@ type State = ActionState & {
     popoverPlacement: string,
     wordThatChanged: number,
     inputHeight: number,
+    inputWidth: number,
 };
 
 const styles = StyleSheet.create({
     hintsContainer: {
         flex: 1,
-        width: UIConstant.toastWidth(),
         maxHeight: UIConstant.defaultCellHeight() * 3,
         backgroundColor: UIColor.backgroundPrimary(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: UIConstant.borderRadius(),
-        paddingHorizontal: UIConstant.contentOffset(),
         ...UIConstant.cardShadow(),
+    },
+    listComponent: {
+        width: UIConstant.toastWidth(),
+    },
+    contentListComponent: {
+        paddingHorizontal: UIConstant.contentOffset(),
     },
     cellHint: {
         zIndex: 1,
         justifyContent: 'center',
         minHeight: UIConstant.defaultCellHeight(),
         backgroundColor: UIColor.backgroundPrimary(),
-
     },
 });
 
-const DASH = '\u2014';
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
@@ -64,7 +67,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         autoCapitalize: 'none',
         returnKeyType: 'default',
         placeholder: UILocalized.Password,
-        autofocus: true,
+        autoFocus: false,
         containerStyle: { },
         forceMultiLine: true,
         phraseToCheck: '',
@@ -86,6 +89,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             popoverPlacement: 'bottom',
             wordThatChanged: -1,
             inputHeight: UIConstant.smallCellHeight(),
+            inputWidth: UIConstant.toastWidth(),
             comment: '',
         };
     }
@@ -194,6 +198,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return words[wtc] || '';
     }
 
+    getInputWidth() {
+        return this.state.inputWidth || UIConstant.toastWidth();
+    }
+
     areHintsVisible(): boolean {
         const wtc = this.getWordThatChangedIndex();
         return wtc !== -1;
@@ -289,7 +297,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 continue;
             }
 
-            if (words[i] !== DASH && words[i] !== '-') {
+            if (words[i] !== UIConstant.dashSymbol() && words[i] !== '-') {
                 normalized.push(words[i]);
             }
         }
@@ -302,7 +310,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             let newPhrase = `${words[0]}`;
             for (let i = 1; i < words.length; i += 1) {
                 if (words[i - 1] !== '') {
-                    newPhrase = `${newPhrase} ${DASH} ${words[i]}`;
+                    newPhrase = `${newPhrase} ${UIConstant.dashSymbol()} ${words[i]}`;
                 }
             }
             return newPhrase;
@@ -375,10 +383,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             }
         }
 
+        const w = { width: this.getInputWidth() };
+
         return (
-            <View style={styles.hintsContainer}>
+            <View style={[styles.hintsContainer, w]}>
                 <FlatList
                     data={hints}
+                    style={[styles.listComponent, w]}
+                    contentContainerStyle={styles.contentListComponent}
                     renderItem={element => this.renderHint(element.item)}
                     scrollEnabled
                     showsVerticalScrollIndicator
@@ -386,6 +398,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 />
             </View>
         );
+    }
+
+    onLayout(e: any) {
+        const ev = e.nativeEvent;
+        if (ev) {
+            const { layout } = ev;
+            this.setStateSafely({ inputWidth: layout.width });
+        }
     }
 
     renderInputWithPopOver() {

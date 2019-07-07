@@ -61,10 +61,7 @@ const styleProperties = {
         width: UIConstant.tinyCellHeight() / 2,
         height: UIConstant.tinyCellHeight() / 2,
         borderRadius: UIConstant.borderRadius() / 2,
-        backgroundColor: UIColor.fa(),
-    },
-    warning: {
-        color: 'red',
+        backgroundColor: UIColor.grey3(),
     },
     animatedView: {
         height: UIConstant.mediumCellHeight(),
@@ -228,12 +225,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const descStyle = StyleSheet.create({
             descColor: {
                 color: this.props.pinDescriptionColor,
+                minHeight: UIConstant.mediumCellHeight(),
             },
         });
         return (
             <UILabel
                 style={[UIStyle.Margin.bottomVast(),
-                    UIStyle.textAlignCenter, descStyle.descColor]}
+                    descStyle.descColor]}
                 role={UILabel.Role.CaptionTertiary}
                 text={this.props.pinDescription}
                 numberOfLines={2}
@@ -244,7 +242,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     renderKeyboard() {
         return (
-            <View style={[UIStyle.Margin.topVast()]}>
+            <View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
                         style={styles.key}
@@ -345,10 +343,12 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={UIStyle.fullWidthCenterContainer}>
-                {this.renderLabel()}
-                {this.renderIndicator()}
-                {this.renderDescription()}
+            <View style={[UIStyle.fullWidthCenterContainer, UIStyle.flex]}>
+                <View style={[UIStyle.flexJustifyCenter, UIStyle.alignCenter]}>
+                    {this.renderLabel()}
+                    {this.renderIndicator()}
+                    {this.renderDescription()}
+                </View>
                 {this.renderKeyboard()}
             </View>
         );
