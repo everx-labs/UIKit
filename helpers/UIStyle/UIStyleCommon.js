@@ -151,4 +151,12 @@ export default class UIStyleCommon {
     static icon() {
         return UIStyle.icon;
     }
+
+    static noOpacity() {
+        return UIStyle.noOpacity;
+    }
+
+    static fullOpacity() {
+        return UIStyle.fullOpacity;
+    }
 }

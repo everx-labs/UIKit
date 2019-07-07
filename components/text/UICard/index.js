@@ -153,8 +153,8 @@ export default class UICard extends UIActionComponent<Props, State> {
                 value={title}
                 comments={details}
                 containerStyle={styles.statusContentContainer}
-                textStyle={UITextStyle.primaryTitleLight}
-                commentsStyle={UITextStyle.secondaryCaptionRegular}
+                textStyle={UIStyle.Text.primaryTitleLight()}
+                commentsStyle={UIStyle.Text.secondaryCaptionRegular()}
             />
         );
     }
@@ -164,14 +164,22 @@ export default class UICard extends UIActionComponent<Props, State> {
         return (
             <React.Fragment>
                 <View style={styles.rowContainer}>
-                    <Text style={UITextStyle.primarySmallMedium}>
+                    <Text
+                        ellipsizeMode="middle"
+                        numberOfLines={1}
+                        style={[UIStyle.Text.primarySmallMedium(), UIStyle.Common.flex()]}
+                    >
                         {title}
                     </Text>
-                    <Text style={UITextStyle.primarySmallRegular}>
+                    <Text
+                        ellipsizeMode="clip"
+                        numberOfLines={1}
+                        style={UIStyle.Text.primarySmallRegular()}
+                    >
                         {caption}
                     </Text>
                 </View>
-                <Text style={[UIStyle.marginTopTiny, UITextStyle.secondaryCaptionRegular]}>
+                <Text style={[UIStyle.Margin.topTiny(), UIStyle.Text.secondaryCaptionRegular()]}>
                     {details}
                 </Text>
             </React.Fragment>

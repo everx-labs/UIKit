@@ -543,6 +543,12 @@ const UIStyle = StyleSheet.create({
         width: UIConstant.iconSize(),
         height: UIConstant.iconSize(),
     },
+    noOpacity: {
+        opacity: 0,
+    },
+    fullOpacity: {
+        opacity: 1,
+    },
 });
 
 UIStyle.Border = UIStyleBorder;

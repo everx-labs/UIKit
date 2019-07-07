@@ -102,36 +102,45 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderCell(details: Details) {
-        const textStyle = this.getTextStyle(details.type);
-        const { actionSmallMedium } = UITextStyle;
-        if (!details.value) {
+        const { type, value } = details;
+        const textStyle = this.getTextStyle(type);
+        if (!value) {
             return null;
         }
-        if (details.type === UIDetailsTable.CellType.NumberPercent) {
-            const [number, percent] = details.value.split('(');
+
+        let strValue = value;
+        if (typeof value === 'number') {
+            strValue = `${value}`;
+        }
+
+        if (type === UIDetailsTable.CellType.NumberPercent) {
+            const [number, percent] = strValue.split('(');
             return this.renderTextCell(
                 number,
                 `(${percent}`,
             );
-        } else if (details.type === UIDetailsTable.CellType.Gram) {
-            const [integer, fractional] = details.value.split('.');
+        } else if (type === UIDetailsTable.CellType.Gram) {
+            if (!strValue.includes('.')) {
+                strValue = `${strValue}.0`;
+            }
+            const [integer, fractional] = strValue.split('.');
             return this.renderTextCell(
                 integer,
                 `.${fractional} ${UILocalized.gram}`,
             );
-        } else if (details.type === UIDetailsTable.CellType.Action) {
+        } else if (type === UIDetailsTable.CellType.Action) {
             // actionSmallMedium;
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
-                    <Text style={actionSmallMedium}>
-                        {details.value}
+                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                        {strValue}
                     </Text>
                 </TouchableOpacity>
             );
         }
         return (
-            <Text style={[textStyle, UIStyle.flex]}>
-                {details.value}
+            <Text style={[textStyle, UIStyle.Common.flex()]}>
+                {strValue}
             </Text>
         );
     }
