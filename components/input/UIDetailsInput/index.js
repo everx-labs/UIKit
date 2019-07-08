@@ -427,6 +427,7 @@ export default class UIDetailsInput<Props, State>
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
                 numberOfLines={numberOfLines}
+                clearButtonMode="never"
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
                 onChangeText={this.onChangeText}
