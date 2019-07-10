@@ -3,18 +3,16 @@ import React from 'react';
 import StylePropType from 'react-style-proptype';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
-import { View, StyleSheet, Text, Animated } from 'react-native';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 
+import type { ActionProps, ActionState } from '../../UIActionComponent';
 import UIActionComponent from '../../UIActionComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIDetailsView from '../UIDetailsView';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
-
-import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 type Props = ActionProps & {
     width: number,
@@ -86,16 +84,16 @@ export default class UICard extends UIActionComponent<Props, State> {
     }
 
     getCardPreset() {
-        const { progress, caption } = this.props;
+        const { progress, caption, width } = this.props;
         if (progress) {
             return {
                 card: this.renderProgressCard(),
                 cardStyle: styles.defaultCard,
             };
-        } else if (!caption) {
+        } else if (!caption && width) {
             return {
                 card: this.renderStatusCard(),
-                cardStyle: { width: this.props.width },
+                cardStyle: { width },
             };
         }
         return {
@@ -119,12 +117,13 @@ export default class UICard extends UIActionComponent<Props, State> {
         Animated.timing(this.state.spinValue, {
             toValue: 1,
             duration: 2000,
-        }).start(() => {
-            if (this.mounted) {
-                this.setSpinValue(new Animated.Value(0));
-                this.animateRotation();
-            }
-        });
+        })
+            .start(() => {
+                if (this.mounted) {
+                    this.setSpinValue(new Animated.Value(0));
+                    this.animateRotation();
+                }
+            });
     }
 
     // Render
@@ -167,7 +166,11 @@ export default class UICard extends UIActionComponent<Props, State> {
                     <Text
                         ellipsizeMode="middle"
                         numberOfLines={1}
-                        style={[UIStyle.Text.primarySmallMedium(), UIStyle.Common.flex()]}
+                        style={[
+                            UIStyle.Text.primarySmallMedium(),
+                            UIStyle.Common.flex(),
+                            UIStyle.Margin.rightMedium(),
+                        ]}
                     >
                         {title}
                     </Text>

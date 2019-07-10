@@ -51,6 +51,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         Accent: 'Accent',
         NumberPercent: 'NumberPercent',
         Gram: 'Gram',
+        Disabled: 'Disabled',
     };
 
     // Events
@@ -81,6 +82,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return successSmallRegular;
         } else if (type === UIDetailsTable.CellType.Accent) {
             return primarySmallMedium;
+        } else if (type === UIDetailsTable.CellType.Disabled) {
+            return secondarySmallRegular;
         } else if (type === UIDetailsTable.CellType.Default || !type) {
             return secondarySmallRegular;
         }
@@ -102,9 +105,9 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderCell(details: Details) {
-        const { type, value } = details;
+        const { type, value, onPress } = details;
         const textStyle = this.getTextStyle(type);
-        if (!value) {
+        if (!value && value !== 0) {
             return null;
         }
 
@@ -132,6 +135,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
             // actionSmallMedium;
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
+                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                        {strValue}
+                    </Text>
+                </TouchableOpacity>
+            );
+        } else if (onPress) {
+            return (
+                <TouchableOpacity onPress={onPress}>
                     <Text style={UIStyle.Text.actionSmallMedium()}>
                         {strValue}
                     </Text>
