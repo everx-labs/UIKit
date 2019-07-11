@@ -9,10 +9,12 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
+import { UIFunction } from '../../../UIKit';
 
 export type Details = {
     caption: ?string,
-    value: ?string,
+    value: ?string | number,
+    limit?: number,
     type?: string,
     screen?: string,
     tag?: any,
@@ -100,34 +102,32 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderCell(details: Details) {
-        const { type, value, onPress } = details;
+        const {
+            type, value, limit, onPress,
+        } = details;
         const textStyle = this.getTextStyle(type);
         if (!value && value !== 0) {
             return null;
         }
-        let strValue = `${value}`;
-
-        if (type === UIDetailsTable.CellType.NumberPercent) {
-            const number = Number.parseFloat(strValue);
-            const percent = '(%)';
-            return this.renderTextCell(
-                number,
-                percent,
-            );
+        if (type === UIDetailsTable.CellType.NumberPercent && limit && limit !== 0 && typeof value === 'number') {
+            const primary = UIFunction.getNumberString(value, 8);
+            const percent = (primary / limit) * 100;
+            const formattedPercent = UIFunction.getNumberString(percent, 8);
+            const secondary = ` (${formattedPercent} %)`;
+            return this.renderTextCell(primary, secondary);
         } else if (type === UIDetailsTable.CellType.Gram) {
-            if (!strValue.includes('.')) {
-                strValue = `${strValue}.0`;
-            }
-            const [integer, fractional] = strValue.split('.');
+            const formattedValue = UIFunction.getNumberString(value, 8);
+            const [integer, fractional = ''] = `${formattedValue}`.split('.');
+            const dot = fractional ? '.' : '';
             return this.renderTextCell(
                 integer,
-                `.${fractional} ${UILocalized.gram}`,
+                `${dot}${fractional} ${UILocalized.gram}`,
             );
         } else if (type === UIDetailsTable.CellType.Action) {
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
                     <Text style={UIStyle.Text.actionSmallMedium()}>
-                        {strValue}
+                        {value}
                     </Text>
                 </TouchableOpacity>
             );
@@ -135,14 +135,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return (
                 <TouchableOpacity onPress={onPress}>
                     <Text style={UIStyle.Text.actionSmallMedium()}>
-                        {strValue}
+                        {value}
                     </Text>
                 </TouchableOpacity>
             );
         }
         return (
             <Text style={[textStyle, UIStyle.Common.flex()]}>
-                {strValue}
+                {value}
             </Text>
         );
     }

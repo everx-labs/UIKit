@@ -123,8 +123,8 @@ export default class UIFunction {
     }
 
     // Allows to print small numbers with "-e" suffix
-    static getNumberString(number: number): string {
-        return number.toFixed(10).replace(/\.?0+$/, '');
+    static getNumberString(number: number, digits: number = 10): string {
+        return number.toFixed(digits).replace(/\.?0+$/, '');
     }
 
     static numericText(text) {
