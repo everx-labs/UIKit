@@ -16,6 +16,7 @@ export type Details = {
     type?: string,
     screen?: string,
     tag?: any,
+    onPress?: () => void,
 };
 
 export type DetailsList = { [string]: Details };
@@ -51,6 +52,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         Accent: 'Accent',
         NumberPercent: 'NumberPercent',
         Gram: 'Gram',
+        Disabled: 'Disabled',
     };
 
     // Events
@@ -72,29 +74,25 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     // Getters
     getTextStyle(type: ?string) {
-        const {
-            secondarySmallRegular,
-            successSmallRegular,
-            primarySmallMedium,
-        } = UITextStyle;
         if (type === UIDetailsTable.CellType.Success) {
-            return successSmallRegular;
+            return UIStyle.Text.successSmallRegular();
         } else if (type === UIDetailsTable.CellType.Accent) {
-            return primarySmallMedium;
+            return UIStyle.Text.primarySmallMedium();
+        } else if (type === UIDetailsTable.CellType.Disabled) {
+            return UIStyle.Text.tertiarySmallRegular();
         } else if (type === UIDetailsTable.CellType.Default || !type) {
-            return secondarySmallRegular;
+            return UIStyle.Text.secondarySmallRegular();
         }
         return null;
     }
 
-    renderTextCell(value: string, details: string) {
-        const { secondarySmallRegular, primarySmallRegular } = UITextStyle;
+    renderTextCell(value: number | string, details: string) {
         return (
             <Text>
-                <Text style={primarySmallRegular}>
+                <Text style={UIStyle.Text.primarySmallRegular()}>
                     {value}
                 </Text>
-                <Text style={secondarySmallRegular}>
+                <Text style={UIStyle.Text.secondarySmallRegular()}>
                     {details}
                 </Text>
             </Text>
@@ -102,36 +100,49 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderCell(details: Details) {
-        const textStyle = this.getTextStyle(details.type);
-        const { actionSmallMedium } = UITextStyle;
-        if (!details.value) {
+        const { type, value, onPress } = details;
+        const textStyle = this.getTextStyle(type);
+        if (!value && value !== 0) {
             return null;
         }
-        if (details.type === UIDetailsTable.CellType.NumberPercent) {
-            const [number, percent] = details.value.split('(');
+        let strValue = `${value}`;
+
+        if (type === UIDetailsTable.CellType.NumberPercent) {
+            const number = Number.parseFloat(strValue);
+            const percent = '(%)';
             return this.renderTextCell(
                 number,
-                `(${percent}`,
+                percent,
             );
-        } else if (details.type === UIDetailsTable.CellType.Gram) {
-            const [integer, fractional] = details.value.split('.');
+        } else if (type === UIDetailsTable.CellType.Gram) {
+            if (!strValue.includes('.')) {
+                strValue = `${strValue}.0`;
+            }
+            const [integer, fractional] = strValue.split('.');
             return this.renderTextCell(
                 integer,
                 `.${fractional} ${UILocalized.gram}`,
             );
-        } else if (details.type === UIDetailsTable.CellType.Action) {
-            // actionSmallMedium;
+        } else if (type === UIDetailsTable.CellType.Action) {
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
-                    <Text style={actionSmallMedium}>
-                        {details.value}
+                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                        {strValue}
+                    </Text>
+                </TouchableOpacity>
+            );
+        } else if (onPress) {
+            return (
+                <TouchableOpacity onPress={onPress}>
+                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                        {strValue}
                     </Text>
                 </TouchableOpacity>
             );
         }
         return (
-            <Text style={[textStyle, UIStyle.flex]}>
-                {details.value}
+            <Text style={[textStyle, UIStyle.Common.flex()]}>
+                {strValue}
             </Text>
         );
     }

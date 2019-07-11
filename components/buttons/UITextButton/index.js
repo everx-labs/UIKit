@@ -16,16 +16,10 @@ const TOOLTIP_WIDTH = 'auto';
 
 const styles = StyleSheet.create({
     textButton: {
-        height: UIConstant.buttonHeight(),
         backgroundColor: 'transparent',
-        alignItems: 'center',
-        flexDirection: 'row',
     },
     alignLeft: {
         justifyContent: 'flex-start',
-    },
-    alignCenter: {
-        justifyContent: 'center',
     },
     detailsText: {
         marginRight: UIConstant.contentOffset(),
@@ -65,7 +59,7 @@ type State = ActionState;
 class UITextButton extends UIActionComponent<Props, State> {
     static Align = {
         Left: styles.alignLeft,
-        Center: styles.alignCenter,
+        Center: UIStyle.Common.justifyCenter(),
     };
 
     // Virtual
@@ -175,9 +169,12 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     renderContent(): React$Node {
         const {
-            buttonStyle, align, icon, backIcon,
+            buttonStyle, align, icon, backIcon, multiLine,
         } = this.props;
-        const style = [styles.textButton, align];
+        const containerStyle = multiLine
+            ? []
+            : [UIStyle.Common.centerLeftContainer(), UIStyle.Height.buttonHeight()];
+        const style = [styles.textButton, ...containerStyle, align];
         if (buttonStyle instanceof Array) {
             style.push(...buttonStyle);
         } else {
@@ -207,4 +204,5 @@ UITextButton.defaultProps = {
     theme: UIColor.Theme.Light,
     title: '',
     tooltip: null,
+    multiLine: false,
 };

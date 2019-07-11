@@ -5,6 +5,10 @@ export default class UIStyleText {
         return UITextStyle.alignCenter;
     }
 
+    static alignRight() {
+        return UITextStyle.alignRight;
+    }
+
     static bold() {
         return UITextStyle.bold;
     }
