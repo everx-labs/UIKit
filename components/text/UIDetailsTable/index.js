@@ -16,6 +16,7 @@ export type Details = {
     type?: string,
     screen?: string,
     tag?: any,
+    onPress?: () => void,
 };
 
 export type DetailsList = { [string]: Details };
@@ -85,7 +86,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         return null;
     }
 
-    renderTextCell(value: string, details: string) {
+    renderTextCell(value: number | string, details: string) {
         return (
             <Text>
                 <Text style={UIStyle.Text.primarySmallRegular()}>
@@ -104,11 +105,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         if (!value && value !== 0) {
             return null;
         }
-
-        let strValue = value;
-        if (typeof value === 'number') {
-            strValue = `${value}`;
-        }
+        let strValue = `${value}`;
 
         if (type === UIDetailsTable.CellType.NumberPercent) {
             const number = Number.parseFloat(strValue);
