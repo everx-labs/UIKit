@@ -73,31 +73,25 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     // Getters
     getTextStyle(type: ?string) {
-        const {
-            secondarySmallRegular,
-            successSmallRegular,
-            primarySmallMedium,
-        } = UITextStyle;
         if (type === UIDetailsTable.CellType.Success) {
-            return successSmallRegular;
+            return UIStyle.Text.successSmallRegular();
         } else if (type === UIDetailsTable.CellType.Accent) {
-            return primarySmallMedium;
+            return UIStyle.Text.primarySmallMedium();
         } else if (type === UIDetailsTable.CellType.Disabled) {
-            return secondarySmallRegular;
+            return UIStyle.Text.tertiarySmallRegular();
         } else if (type === UIDetailsTable.CellType.Default || !type) {
-            return secondarySmallRegular;
+            return UIStyle.Text.secondarySmallRegular();
         }
         return null;
     }
 
     renderTextCell(value: string, details: string) {
-        const { secondarySmallRegular, primarySmallRegular } = UITextStyle;
         return (
             <Text>
-                <Text style={primarySmallRegular}>
+                <Text style={UIStyle.Text.primarySmallRegular()}>
                     {value}
                 </Text>
-                <Text style={secondarySmallRegular}>
+                <Text style={UIStyle.Text.secondarySmallRegular()}>
                     {details}
                 </Text>
             </Text>
@@ -117,10 +111,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
 
         if (type === UIDetailsTable.CellType.NumberPercent) {
-            const [number, percent] = strValue.split('(');
+            const number = Number.parseFloat(strValue);
+            const percent = '(%)';
             return this.renderTextCell(
                 number,
-                `(${percent}`,
+                percent,
             );
         } else if (type === UIDetailsTable.CellType.Gram) {
             if (!strValue.includes('.')) {
@@ -132,7 +127,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 `.${fractional} ${UILocalized.gram}`,
             );
         } else if (type === UIDetailsTable.CellType.Action) {
-            // actionSmallMedium;
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
                     <Text style={UIStyle.Text.actionSmallMedium()}>

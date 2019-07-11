@@ -89,6 +89,9 @@ const UITextStyle = StyleSheet.create({
     alignCenter: {
         textAlign: 'center',
     },
+    alignRight: {
+        textAlign: 'right',
+    },
     bold: {
         ...UIFont.bold(),
     },

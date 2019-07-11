@@ -159,7 +159,9 @@ export default class UICard extends UIActionComponent<Props, State> {
     }
 
     renderContentCard() {
-        const { title, caption, details } = this.props;
+        const {
+            title, caption, fixedCaption, details,
+        } = this.props;
         return (
             <React.Fragment>
                 <View style={styles.rowContainer}>
@@ -169,7 +171,7 @@ export default class UICard extends UIActionComponent<Props, State> {
                         style={[
                             UIStyle.Text.primarySmallMedium(),
                             UIStyle.Common.flex(),
-                            UIStyle.Margin.rightMedium(),
+                            UIStyle.Margin.rightDefault(),
                         ]}
                     >
                         {title}
@@ -177,9 +179,22 @@ export default class UICard extends UIActionComponent<Props, State> {
                     <Text
                         ellipsizeMode="clip"
                         numberOfLines={1}
-                        style={UIStyle.Text.primarySmallRegular()}
+                        style={[
+                            UIStyle.Text.primarySmallRegular(),
+                            UIStyle.Common.flex(),
+                            UIStyle.Text.alignRight(),
+                        ]}
                     >
                         {caption}
+                    </Text>
+                    <Text
+                        numberOfLines={1}
+                        style={[
+                            UIStyle.Text.primarySmallRegular(),
+                            UIStyle.Margin.leftSmall(),
+                        ]}
+                    >
+                        {fixedCaption}
                     </Text>
                 </View>
                 <Text style={[UIStyle.Margin.topTiny(), UIStyle.Text.secondaryCaptionRegular()]}>
@@ -219,6 +234,7 @@ UICard.defaultProps = {
     transparent: false,
     title: '',
     caption: '',
+    fixedCaption: '',
     details: '',
 };
 
