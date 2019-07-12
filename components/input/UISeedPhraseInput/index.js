@@ -6,11 +6,10 @@ import {
     FlatList,
     TouchableOpacity,
 } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { Popover, PopoverContainer } from 'react-native-simple-popover';
 
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 import Mnemonic from 'bitcore-mnemonic';
 
 import UILabel from '../../text/UILabel';
@@ -20,6 +19,8 @@ import UIDetailsInput from '../UIDetailsInput';
 import UIColor from '../../../helpers/UIColor';
 
 import UIConstant from '../../../helpers/UIConstant';
+
+import type { EventProps } from '../../../types';
 import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
 
@@ -82,7 +83,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     totalWords: number;
     popOverRef: Popover;
     currentHintsLength: number;
-    hintsListRef: ?FlatList;
+    hintsListRef: ?FlatList<*>;
 
     constructor(props: Props) {
         super(props);
