@@ -116,9 +116,9 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const secondary = ` (${formattedPercent} %)`;
             return this.renderTextCell(primary, secondary);
         } else if (type === UIDetailsTable.CellType.Gram) {
-            const number = typeof value === 'string' ? Number.parseFloat(value) : value;
+            const number = value * 1;
             const formattedValue = UIFunction.getNumberString(number, 8);
-            const [integer, fractional = ''] = `${formattedValue}`.split('.');
+            const [integer, fractional = ''] = formattedValue.split('.');
             const dot = fractional ? '.' : '';
             return this.renderTextCell(
                 integer,
