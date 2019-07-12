@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { Popover, PopoverContainer } from 'react-native-simple-popover';
+import { Popover } from 'react-native-simple-popover';
 
 import Mnemonic from 'bitcore-mnemonic';
 
@@ -323,13 +323,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.setCurrentHighligh(index);
     }
 
-    onMouseOut(index: number) {
+    onMouseOut() {
         this.setCurrentHighligh(-1);
     }
 
     // methods
     updateInputRef() {
-        const element = this.popOverRef._element;
+        const element = this.popOverRef?._element;
         if (element) {
             element.focus();
             this.setTextInputRef(element);
@@ -411,7 +411,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     renderHint(index: number, hint: string) {
         const eventProps: EventProps = {
             onMouseEnter: () => this.onMouseIn(index),
-            onMouseLeave: () => this.onMouseOut(index),
+            onMouseLeave: () => this.onMouseOut(),
         };
 
         const ch = this.getCurrentHighligh();
@@ -489,21 +489,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderWordHints() {
-        return (
-            <PopoverContainer>
-                <View>
-                    {this.renderAuxTextInput()}
-                    {this.renderInputWithPopOver()}
-                </View>
-            </PopoverContainer>
-        );
-    }
-
     renderTextFragment() {
         return (
             <React.Fragment>
-                {this.renderWordHints()}
+                <View style={UIStyle.Common.flex()}>
+                    {this.renderAuxTextInput()}
+                    {this.renderInputWithPopOver()}
+                </View>
             </React.Fragment>
         );
     }

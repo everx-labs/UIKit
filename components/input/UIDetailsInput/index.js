@@ -113,7 +113,9 @@ export const detailsDefaultProps = {
     floatingTitleText: '',
     hideBottomLine: false,
     hidePlaceholder: false,
-    keyboardType: 'default',
+    keyboardType: Platform.OS === 'android'
+        ? 'visible-password' // to fix an Android bug with suggestions
+        : 'default',
     maxLines: 1,
     forceMultiLine: false,
     needArrow: false,
