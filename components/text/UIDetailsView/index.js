@@ -1,5 +1,5 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
@@ -16,7 +16,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIDetailsView extends UIComponent {
+type Props = {
+    value: string | number,
+    comments: string,
+    reversed: boolean,
+    onPress: () => void,
+    containerStyle: StylePropType,
+    textStyle: StylePropType,
+    commentsStyle: StylePropType,
+};
+
+export default class UIDetailsView extends UIComponent<Props> {
     // Render
     renderValue() {
         const { value, textStyle, onPress } = this.props;
@@ -81,14 +91,4 @@ UIDetailsView.defaultProps = {
     containerStyle: {},
     textStyle: {},
     commentsStyle: {},
-};
-
-UIDetailsView.propTypes = {
-    value: PropTypes.string,
-    comments: PropTypes.string,
-    reversed: PropTypes.bool,
-    onPress: PropTypes.func,
-    containerStyle: StylePropType,
-    textStyle: StylePropType,
-    commentsStyle: StylePropType,
 };

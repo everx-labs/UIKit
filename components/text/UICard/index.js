@@ -19,7 +19,7 @@ type Props = ActionProps & {
     containerStyle: StylePropType,
     progress: boolean,
     transparent: boolean,
-    title: string,
+    title: number | string,
     caption: string,
     details: string,
 };
@@ -31,9 +31,6 @@ type State = ActionState & {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-    },
-    loadingCard: {
-        alignItems: 'center',
     },
     filled: {
         paddingHorizontal: UIConstant.contentOffset(),
@@ -134,7 +131,7 @@ export default class UICard extends UIActionComponent<Props, State> {
             outputRange: ['0deg', '360deg'],
         });
         return (
-            <View style={styles.loadingCard}>
+            <View style={UIStyle.Common.alignCenter()}>
                 <Animated.Image
                     source={icoProgress}
                     style={{
