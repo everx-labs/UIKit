@@ -35,6 +35,7 @@ type State = ActionState & {
     wordThatChanged: number,
     inputHeight: number,
     inputWidth: number,
+    currentHighlight: number,
 };
 
 const styles = StyleSheet.create({
@@ -49,14 +50,17 @@ const styles = StyleSheet.create({
     listComponent: {
         width: UIConstant.toastWidth(),
     },
-    contentListComponent: {
-        paddingHorizontal: UIConstant.contentOffset(),
-    },
     cellHint: {
         zIndex: 1,
         justifyContent: 'center',
+        paddingHorizontal: UIConstant.contentOffset(),
         minHeight: UIConstant.defaultCellHeight(),
+    },
+    cellHintNormal: {
         backgroundColor: UIColor.backgroundPrimary(),
+    },
+    cellHintSelected: {
+        backgroundColor: UIColor.notWhite(),
     },
 });
 
@@ -77,12 +81,16 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     lastWords: Array<string>;
     totalWords: number;
     popOverRef: Popover;
+    currentHintsLength: number;
+    hintsListRef: ?FlatList;
 
     constructor(props: Props) {
         super(props);
 
         this.lastWords = [];
         this.totalWords = 12;
+        this.currentHintsLength = 0;
+        this.hintsListRef = null;
 
         this.state = {
             ...this.state,
@@ -91,6 +99,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             comment: '',
+            currentHighlight: -1,
         };
     }
 
@@ -110,6 +119,11 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             this.totalWords = words.length;
         }
     }
+
+    setCurrentHighligh(index: number) {
+        this.setStateSafely({ currentHighlight: index });
+    }
+
     // Getters
     getDictionary(): Array<string> {
         return Mnemonic.Words.ENGLISH;
@@ -121,8 +135,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return flex;
     }
 
-    extraInputStyle(): ViewStyleProp {
-        return { height: this.state.inputHeight };
+    numOfLines(): number {
+        return this.state.inputHeight / UIConstant.smallCellHeight();
     }
 
     commentColor(): ?string {
@@ -179,6 +193,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const wtc = this.getWordThatChanged();
         const dictionary = this.getDictionary();
         const hints = dictionary.filter(word => word.startsWith(wtc));
+        this.currentHintsLength = hints.length;
 
         return hints;
     }
@@ -200,6 +215,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     getInputWidth() {
         return this.state.inputWidth || UIConstant.toastWidth();
+    }
+
+    getCurrentHighligh(): number {
+        return this.state.currentHighlight;
     }
 
     areHintsVisible(): boolean {
@@ -237,6 +256,29 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
+    onKeyPress = (e: any): void => {
+        const event = e.nativeEvent;
+
+        let c = this.getCurrentHighligh();
+        if (this.currentHintsLength > 0) {
+            if (event.key === 'ArrowUp') {
+                c = c - 1 < 0 ? this.currentHintsLength - 1 : c - 1;
+            } else if (event.key === 'ArrowDown') {
+                c = c + 1 >= this.currentHintsLength ? 0 : c + 1;
+            } else if (event.key === 'Enter' && c >= 0) {
+                const hints = this.getPossibleHints();
+                const word = `${hints[c]}`;
+                this.onHintSelected(word);
+                c = -1;
+            }
+        }
+
+        this.setCurrentHighligh(c);
+        if (c >= 0 && this.hintsListRef) {
+            this.hintsListRef.scrollToIndex({ animated: true, index: c, viewPosition: 1 });
+        }
+    };
+
     onChangeText = (newValue: string): void => {
         const { onChangeText, onChangeIsValidPhrase } = this.props;
         const split = this.splitPhrase(newValue);
@@ -274,6 +316,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         // eslint-disable-next-line no-underscore-dangle
         this.popOverRef._element.focus();
         this.onChangeText(newPhrase);
+    }
+
+    onMouseIn(index: number) {
+        this.setCurrentHighligh(index);
+    }
+
+    onMouseOut(index: number) {
+        this.setCurrentHighligh(-1);
     }
 
     // methods
@@ -332,7 +382,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
 
         this.lastWords = Array.from(currentWords);
-        this.setStateSafely({ wordThatChanged: change });
+        this.setStateSafely({ wordThatChanged: change, currentHighlight: -1 });
     }
 
     areSeedPhrasesEqual(currentPhrase?: string): boolean {
@@ -357,11 +407,19 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Render
-    renderHint(hint: string) {
+    renderHint(index: number, hint: string) {
+        const eventProps: EventProps = {
+            onMouseEnter: () => this.onMouseIn(index),
+            onMouseLeave: () => this.onMouseOut(index),
+        };
+
+        const ch = this.getCurrentHighligh();
+        const cellType = ch === index ? styles.cellHintSelected : styles.cellHintNormal;
         return (
             <TouchableOpacity
-                style={styles.cellHint}
+                style={[styles.cellHint, cellType]}
                 onPress={() => this.onHintSelected(hint)}
+                {...eventProps}
             >
                 <UILabel
                     text={hint}
@@ -388,13 +446,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return (
             <View style={[styles.hintsContainer, w]}>
                 <FlatList
+                    ref={(ref) => { this.hintsListRef = ref; }}
                     data={hints}
                     style={[styles.listComponent, w]}
-                    contentContainerStyle={styles.contentListComponent}
-                    renderItem={element => this.renderHint(element.item)}
+                    renderItem={element => this.renderHint(element.index, element.item)}
                     scrollEnabled
                     showsVerticalScrollIndicator
                     keyExtractor={item => item}
+                    keyboardShouldPersistTaps="handled"
                 />
             </View>
         );

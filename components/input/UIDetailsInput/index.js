@@ -265,8 +265,8 @@ export default class UIDetailsInput<Props, State>
         return styles.container;
     }
 
-    extraInputStyle(): ViewStyleProp {
-        return {};
+    numOfLines(): number {
+        return 1;
     }
 
     textInputStyle() {
@@ -279,7 +279,6 @@ export default class UIDetailsInput<Props, State>
             fontStyle,
             textColorStyle,
             UIStyle.flex,
-            this.extraInputStyle(),
         ];
     }
 
@@ -402,16 +401,14 @@ export default class UIDetailsInput<Props, State>
             autoFocus,
             editable,
             maxLength,
-            maxLines,
             returnKeyType,
             secureTextEntry,
             testID,
             theme,
-            forceMultiLine,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const numberOfLines = forceMultiLine ? undefined : maxLines;
+        const numberOfLines = this.numOfLines();
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
