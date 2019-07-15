@@ -185,7 +185,7 @@ export default class UIDetailsInput<Props, State>
         // Not implemented in here
     }
 
-    onChangeText = (text: string) => {
+    onChangeText = (text: string, callback: ?((finalValue: string) => void)) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
