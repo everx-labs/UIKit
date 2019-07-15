@@ -83,7 +83,8 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     getPossibleHints(): Array<string> {
         const wtc = this.getWordThatChanged();
         const dictionary = Mnemonic.Words.ENGLISH;
-        const hints = dictionary.filter(word => word.startsWith(wtc));
+        // Can't use `word.startsWith(wtc)` as Android requires the `.indexOf(wtc) === 0` polyfill
+        const hints = dictionary.filter(word => word.indexOf(wtc) === 0);
         this.currentHintsLength = hints.length;
         return hints;
     }

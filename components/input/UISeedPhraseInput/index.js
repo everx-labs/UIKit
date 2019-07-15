@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { Popover } from 'react-native-simple-popover';
@@ -43,6 +43,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         autoFocus: false,
         containerStyle: { },
         forceMultiLine: true,
+        keyboardType: 'default', /* Platform.OS === 'android'
+            ? 'visible-password' // to fix Android bug with keyboard suggestions
+            : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
         phraseToCheck: '',
         onChangeIsValidPhrase: () => {},
     };
@@ -87,6 +90,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         super.componentDidMount();
         this.setTotalWords();
         this.updateInputRef();
+    }
+
+    // Events
+    onKeyPress = (e: any): void => {
+        if (this.seedPhraseHintsView) {
+            this.seedPhraseHintsView.onKeyPress(e);
+        }
     }
 
     // Setters
@@ -209,7 +219,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.setStateSafely({ inputHeight: height });
     }
 
-    onChangeText = (newValue: string): void => {
+    onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
         const { onChangeText, onChangeIsValidPhrase } = this.props;
         const split = UISeedPhraseInput.splitPhrase(newValue);
         if (split.length > this.totalWords) {
@@ -217,8 +227,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
 
         const finalValue = this.addDashes(split);
-        this.identifyWordThatChanged(split);
         onChangeText(finalValue);
+
+        this.identifyWordThatChanged(split, () => {
+            if (callback) {
+                callback(finalValue);
+            }
+        });
 
         if (onChangeIsValidPhrase) {
             onChangeIsValidPhrase(this.areWordsValid(finalValue));
@@ -239,11 +254,34 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         newPhrase = `${newPhrase}`.trim();
         newPhrase = `${newPhrase}${extraSpace}`;
 
-        const element = this.popOverRef?._element;
-        if (element) {
-            element.focus();
-        }
-        this.onChangeText(newPhrase);
+        this.onChangeText(newPhrase, (finalValue) => {
+            const element = this.popOverRef?._element;
+            if (element) {
+                element.focus();
+
+                // Apply a fix to move the cursor to the right
+                if (Platform.OS === 'android') {
+                    // Actually Android moves the cursor to the the right visually,
+                    // BUT physically it's not moved, and when the user continues typing
+                    // the cursor stays wherever it was before, but not at the right.
+
+                    // Thus we change the native position of it ...
+                    element.setNativeProps({
+                        selection: {
+                            start: finalValue.length - 1,
+                            end: finalValue.length - 1,
+                        },
+                    });
+                    // ... in order to return it back to the right
+                    element.setNativeProps({
+                        selection: {
+                            start: finalValue.length,
+                            end: finalValue.length,
+                        },
+                    });
+                }
+            }
+        });
     }
 
     // methods
@@ -271,7 +309,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return '';
     }
 
-    identifyWordThatChanged(currentWords: Array<string>) {
+    identifyWordThatChanged(currentWords: Array<string>, callback: ?(() => void)) {
         let i = 0;
         let index = 0;
         while (i < this.lastWords.length && i < currentWords.length) {
@@ -288,6 +326,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 const wordThatChanged = currentWords[index];
                 if (this.seedPhraseHintsView) {
                     this.seedPhraseHintsView.wordChanged(wordThatChanged);
+                }
+                if (callback) {
+                    callback();
                 }
             }, UIConstant.animationSmallDuration()); // Give some time to render
         });

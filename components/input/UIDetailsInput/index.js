@@ -113,9 +113,7 @@ export const detailsDefaultProps = {
     floatingTitleText: '',
     hideBottomLine: false,
     hidePlaceholder: false,
-    keyboardType: Platform.OS === 'android'
-        ? 'visible-password' // to fix an Android bug with suggestions
-        : 'default',
+    keyboardType: 'default',
     maxLines: 1,
     forceMultiLine: false,
     needArrow: false,
@@ -185,7 +183,7 @@ export default class UIDetailsInput<Props, State>
         // Not implemented in here
     }
 
-    onChangeText = (text: string) => {
+    onChangeText = (text: string, callback: ?((finalValue: string) => void)) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
