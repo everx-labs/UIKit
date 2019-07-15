@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
 
 export type DetailsProps = ActionProps & {
     accessibilityLabel?: string,
+    autoCorrect: boolean,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
@@ -103,6 +104,7 @@ export type DetailsProps = ActionProps & {
 
 export const detailsDefaultProps = {
     autoCapitalize: 'sentences',
+    autoCorrect: false,
     autoFocus: false,
     beginningTag: '',
     containerStyle: {},
@@ -397,6 +399,7 @@ export default class UIDetailsInput<Props, State>
     renderTextInput() {
         const {
             accessibilityLabel,
+            autoCorrect,
             autoCapitalize,
             autoFocus,
             editable,
@@ -417,7 +420,7 @@ export default class UIDetailsInput<Props, State>
                 onLayout={e => this.onLayout(e)}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
-                autoCorrect={false}
+                autoCorrect={autoCorrect}
                 autoFocus={autoFocus}
                 editable={editable}
                 keyboardType={this.keyboardType()}
