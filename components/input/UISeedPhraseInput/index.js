@@ -51,7 +51,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     };
 
     static splitPhrase(phrase: string): Array<string> {
-        const noExtraSpaces = phrase.replace(/\s+/g, ' ');
+        const noRegularDash = phrase.replace(/-+/g, ` ${UIConstant.dashSymbol()} `);
+	    const noExtraSpaces = noRegularDash.replace(/\s+/g, ' ');
         const words = noExtraSpaces.split(' ');
         const normalized = [];
         for (let i = 0; i < words.length; i += 1) {
