@@ -118,7 +118,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     processAuxBalanceHeight(height: number, auxBalance: string) {
         if (!this.auxBalanceLineHeight) {
             this.auxBalanceLineHeight = height;
-        } else if (this.auxBalanceLineHeight < height) {
+        }
+        if (this.auxBalanceLineHeight < height) {
             const truncatedAuxBalance = auxBalance.slice(0, -1); // reduce balance size
             this.setAuxBalance(truncatedAuxBalance, () => {
                 this.measureAuxBalanceText(truncatedAuxBalance);

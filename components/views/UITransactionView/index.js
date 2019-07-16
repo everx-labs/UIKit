@@ -206,7 +206,8 @@ export default class UITransactionView extends UIComponent<Props, State> {
     processAuxAmountHeight(height: number, auxAmount: string) {
         if (!this.auxAmountLineHeight) {
             this.auxAmountLineHeight = height;
-        } else if (this.auxAmountLineHeight < height) {
+        }
+        if (this.auxAmountLineHeight < height) {
             const truncatedAuxAmount = auxAmount.slice(0, -1); // reduce amount size
             this.setAuxAmount(truncatedAuxAmount, () => {
                 this.measureAuxAmountText(truncatedAuxAmount);
