@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UICard extends UIActionComponent<Props, State> {
+export default class UICardView extends UIActionComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -194,7 +194,7 @@ export default class UICard extends UIActionComponent<Props, State> {
                         {fixedCaption}
                     </Text>
                 </View>
-                <Text style={[UIStyle.Margin.topTiny(), UIStyle.Text.secondaryCaptionRegular()]}>
+                <Text style={[UIStyle.Margin.topTiny(), UIStyle.Text.tertiaryCaptionRegular()]}>
                     {details}
                 </Text>
             </React.Fragment>
@@ -223,7 +223,7 @@ export default class UICard extends UIActionComponent<Props, State> {
     static defaultProps: Props;
 }
 
-UICard.defaultProps = {
+UICardView.defaultProps = {
     ...UIActionComponent.defaultProps,
     width: 0,
     containerStyle: {},

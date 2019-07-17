@@ -96,7 +96,24 @@ const UITextStyle = StyleSheet.create({
         ...UIFont.bold(),
     },
 
+    // [Colors]
+    // Primary
+    primary: {
+        ...primary,
+    },
+    secondary: {
+        ...secondary,
+    },
+    tertiary: {
+        ...tertiary,
+    },
+
     // [Text]
+    // Title - fontSize: 36, lineHeight: 48
+    titleLight: {
+        ...text,
+        ...UIFont.titleLight(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     bodyRegular: {
         ...text,

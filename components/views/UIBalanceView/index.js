@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
@@ -16,6 +17,7 @@ type Props = {
     tokenSymbol: string,
     testID?: string,
     cacheKey?: string,
+    textStyle?: ViewStyleProp,
 };
 
 type State = {
@@ -37,6 +39,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         balance: '',
         description: '',
         tokenSymbol: '',
+        textStyle: UIStyle.Text.titleLight(),
     };
 
     // constructor
@@ -160,11 +163,11 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const stringParts = balance.split(separator);
         return (
             <Text
-                style={UIStyle.Text.primaryTitleLight()}
+                style={[this.props.textStyle, UIStyle.Text.primary(), UIStyle.Common.flex()]}
                 numberOfLines={1}
             >
                 {stringParts[0]}
-                <Text style={UIStyle.Text.tertiaryTitleLight()}>
+                <Text style={UIStyle.Text.tertiary()}>
                     {`${separator}${stringParts[1]} ${this.getTokenSymbol()}`}
                 </Text>
             </Text>

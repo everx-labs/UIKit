@@ -6,7 +6,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
-import UILabel from '../UILabel';
+import UILabel from '../../text/UILabel';
 
 const styles = StyleSheet.create({
     container: {
@@ -17,16 +17,19 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+    testID?: string,
     value: string | number,
     comments: string,
     reversed: boolean,
-    onPress: () => void,
+    onPress: ?() => void,
     containerStyle: StylePropType,
     textStyle: StylePropType,
     commentsStyle: StylePropType,
 };
 
-export default class UIDetailsView extends UIComponent<Props> {
+type State = {};
+
+export default class UIDetailsView extends UIComponent<Props, State> {
     // Render
     renderValue() {
         const { value, textStyle, onPress } = this.props;
@@ -34,7 +37,7 @@ export default class UIDetailsView extends UIComponent<Props> {
             <UILabel
                 style={textStyle}
                 role={onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular}
-                text={value}
+                text={`${value}`}
             />
         );
     }
@@ -70,17 +73,20 @@ export default class UIDetailsView extends UIComponent<Props> {
     render() {
         const { onPress, testID } = this.props;
         const Wrapper = onPress ? TouchableOpacity : View;
+        const onPressProp: any = { onPress };
         const testIDProp = testID ? { testID } : null;
         return (
             <Wrapper
                 {...testIDProp}
+                {...onPressProp}
                 style={[styles.container, this.props.containerStyle]}
-                onPress={onPress}
             >
                 {this.renderContentView()}
             </Wrapper>
         );
     }
+
+    static defaultProps: Props;
 }
 
 UIDetailsView.defaultProps = {

@@ -13,7 +13,24 @@ export default class UIStyleText {
         return UITextStyle.bold;
     }
 
+    // [Colors]
+    static primary() {
+        return UITextStyle.primary;
+    }
+
+    static secondary() {
+        return UITextStyle.secondary;
+    }
+
+    static tertiary() {
+        return UITextStyle.tertiary;
+    }
+
     // [Text]
+    // Title - fontSize: 36, lineHeight: 48
+    static titleLight() {
+        return UITextStyle.titleLight;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static bodyRegular() {
         return UITextStyle.bodyRegular;
