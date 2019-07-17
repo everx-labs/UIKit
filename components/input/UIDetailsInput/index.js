@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
 
 export type DetailsProps = ActionProps & {
     accessibilityLabel?: string,
+    autoCorrect: boolean,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
@@ -103,6 +104,7 @@ export type DetailsProps = ActionProps & {
 
 export const detailsDefaultProps = {
     autoCapitalize: 'sentences',
+    autoCorrect: false,
     autoFocus: false,
     beginningTag: '',
     containerStyle: {},
@@ -183,7 +185,7 @@ export default class UIDetailsInput<Props, State>
         // Not implemented in here
     }
 
-    onChangeText = (text: string) => {
+    onChangeText = (text: string, callback: ?((finalValue: string) => void)) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
@@ -265,8 +267,8 @@ export default class UIDetailsInput<Props, State>
         return styles.container;
     }
 
-    extraInputStyle(): ViewStyleProp {
-        return {};
+    numOfLines(): number {
+        return 1;
     }
 
     textInputStyle() {
@@ -279,7 +281,6 @@ export default class UIDetailsInput<Props, State>
             fontStyle,
             textColorStyle,
             UIStyle.flex,
-            this.extraInputStyle(),
         ];
     }
 
@@ -398,20 +399,19 @@ export default class UIDetailsInput<Props, State>
     renderTextInput() {
         const {
             accessibilityLabel,
+            autoCorrect,
             autoCapitalize,
             autoFocus,
             editable,
             maxLength,
-            maxLines,
             returnKeyType,
             secureTextEntry,
             testID,
             theme,
-            forceMultiLine,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const numberOfLines = forceMultiLine ? undefined : maxLines;
+        const numberOfLines = this.numOfLines();
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
@@ -420,7 +420,7 @@ export default class UIDetailsInput<Props, State>
                 onLayout={e => this.onLayout(e)}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
-                autoCorrect={false}
+                autoCorrect={autoCorrect}
                 autoFocus={autoFocus}
                 editable={editable}
                 keyboardType={this.keyboardType()}
