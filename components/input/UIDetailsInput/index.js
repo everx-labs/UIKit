@@ -268,6 +268,10 @@ export default class UIDetailsInput<Props, State>
         return styles.container;
     }
 
+    numOfLines(): number {
+        return this.props.maxLines;
+    }
+
     textInputStyle() {
         const { theme } = this.props;
         const textColorStyle = UIColor.textPrimaryStyle(theme);
@@ -423,6 +427,7 @@ export default class UIDetailsInput<Props, State>
                 keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
+                numberOfLines={this.numOfLines()}
                 clearButtonMode="never"
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}

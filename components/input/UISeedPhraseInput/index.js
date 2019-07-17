@@ -118,6 +118,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return flex;
     }
 
+    numOfLines(): number {
+        return this.state.inputHeight / UIConstant.smallCellHeight();
+    }
+
     commentColor(): ?string {
         const { commentColor } = this.props;
         if (commentColor) {
