@@ -82,6 +82,7 @@ export type DetailsProps = ActionProps & {
     keyboardType: KeyboardType,
     maxLength?: number,
     maxLines: number,
+    maxHeight?: number,
     forceMultiLine: boolean,
     needArrow?: boolean,
     onBlur: () => void,
@@ -408,6 +409,7 @@ export default class UIDetailsInput<Props, State>
             secureTextEntry,
             testID,
             theme,
+            maxHeight,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
@@ -445,6 +447,7 @@ export default class UIDetailsInput<Props, State>
                         marginTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
                             ? 5 // seems to be smth connected to iOS's textContainerInset
                             : 0,
+                        maxHeight,
                     },
                 ]}
                 selectionColor={UIColor.primary()}
