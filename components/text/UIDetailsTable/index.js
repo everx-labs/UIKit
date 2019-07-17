@@ -110,14 +110,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return null;
         }
         if (type === UIDetailsTable.CellType.NumberPercent && limit && limit !== 0 && typeof value === 'number') {
-            const primary = UIFunction.getNumberString(value, 8);
+            const primary = UIFunction.getNumberString(value);
             const percent = (primary / limit) * 100;
-            const formattedPercent = UIFunction.getNumberString(percent, 8);
+            const formattedPercent = UIFunction.getNumberString(percent);
             const secondary = ` (${formattedPercent} %)`;
             return this.renderTextCell(primary, secondary);
         } else if (type === UIDetailsTable.CellType.Gram) {
             const number = value * 1;
-            const formattedValue = UIFunction.getNumberString(number, 8);
+            const formattedValue = UIFunction.getNumberString(number);
             const [integer, fractional = ''] = formattedValue.split('.');
             const dot = fractional ? '.' : '';
             return this.renderTextCell(

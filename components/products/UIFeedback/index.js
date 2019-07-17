@@ -44,8 +44,8 @@ class UIFeedback extends UIComponent<Props, State> {
 
     // Events
     onSubmitFeedBack = () => {
-        const email = this.getEmail();
-        const feedback = this.getFeedback();
+        const email = this.getEmail().trim();
+        const feedback = this.getFeedback().trim();
         if (!email || !feedback) {
             return;
         }
