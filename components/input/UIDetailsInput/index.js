@@ -268,10 +268,6 @@ export default class UIDetailsInput<Props, State>
         return styles.container;
     }
 
-    numOfLines(): number {
-        return 1;
-    }
-
     textInputStyle() {
         const { theme } = this.props;
         const textColorStyle = UIColor.textPrimaryStyle(theme);
@@ -413,7 +409,6 @@ export default class UIDetailsInput<Props, State>
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const numberOfLines = this.numOfLines();
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
@@ -428,7 +423,6 @@ export default class UIDetailsInput<Props, State>
                 keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
-                numberOfLines={numberOfLines}
                 clearButtonMode="never"
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
