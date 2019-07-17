@@ -52,7 +52,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     static splitPhrase(phrase: string): Array<string> {
         const noRegularDash = phrase.replace(/-+/g, ` ${UIConstant.dashSymbol()} `);
-	const noExtraSpaces = noRegularDash.replace(/\s+/g, ' ');
+        const noExtraSpaces = noRegularDash.replace(/\s+/g, ' ');
         const words = noExtraSpaces.split(' ');
         const normalized = [];
         for (let i = 0; i < words.length; i += 1) {
@@ -362,6 +362,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             ref={(component) => { this.seedPhraseHintsView = component; }}
             width={this.getInputWidth()}
             onHintSelected={this.onHintSelected}
+            yOffset={this.state.inputHeight - UIConstant.contentOffset()}
         />);
     }
 
@@ -376,7 +377,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 isVisible={isVisible}
                 offset={{
                     x: 0,
-                    y: UIConstant.smallContentOffset() + 1,
+                    y: 1,
                 }}
                 component={() => this.renderHintsView()}
             >

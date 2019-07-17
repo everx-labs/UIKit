@@ -19,6 +19,7 @@ import type { EventProps } from '../../../types';
 
 type Props = {
     width: number,
+    yOffset: number,
     onHintSelected: (hint: string) => void,
 };
 
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
 export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     static defaultProps = {
         width: 0,
+        yOffset: 0,
         onHintSelected: () => {},
     };
 
@@ -95,6 +97,10 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
 
     getWidth() {
         return this.props.width;
+    }
+
+    getMarginTop() {
+        return this.props.yOffset;
     }
 
     getCurrentHighligh(): number {
@@ -192,11 +198,12 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         const hints = this.getPossibleHints();
         const wtc = this.getWordThatChanged();
         const width = this.getWidth();
+        const marginTop = this.getMarginTop();
         if (hints.length === 0 || (hints.length === 1 && hints[0] === wtc) || !width) {
             return <View />;
         }
         return (
-            <View style={[styles.hintsContainer, { width }]}>
+            <View style={[styles.hintsContainer, { width, marginTop }]}>
                 <FlatList
                     ref={(ref) => { this.hintsListRef = ref; }}
                     data={hints}
