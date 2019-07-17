@@ -82,6 +82,7 @@ export type DetailsProps = ActionProps & {
     keyboardType: KeyboardType,
     maxLength?: number,
     maxLines: number,
+    maxHeight?: number,
     forceMultiLine: boolean,
     needArrow?: boolean,
     onBlur: () => void,
@@ -268,7 +269,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     numOfLines(): number {
-        return 1;
+        return this.props.maxLines;
     }
 
     textInputStyle() {
@@ -408,10 +409,10 @@ export default class UIDetailsInput<Props, State>
             secureTextEntry,
             testID,
             theme,
+            maxHeight,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const numberOfLines = this.numOfLines();
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
@@ -426,7 +427,7 @@ export default class UIDetailsInput<Props, State>
                 keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
-                numberOfLines={numberOfLines}
+                numberOfLines={this.numOfLines()}
                 clearButtonMode="never"
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
@@ -445,6 +446,7 @@ export default class UIDetailsInput<Props, State>
                         marginTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
                             ? 5 // seems to be smth connected to iOS's textContainerInset
                             : 0,
+                        maxHeight,
                     },
                 ]}
                 selectionColor={UIColor.primary()}
