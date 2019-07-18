@@ -37,6 +37,10 @@ export default class UIStylePadding {
         return UIStyle.paddingBottomVast;
     }
 
+    static bottomEnormous() {
+        return UIStyle.paddingBottomEnormous;
+    }
+
     static leftDefault() {
         return UIStyle.paddingLeftDefault;
     }
