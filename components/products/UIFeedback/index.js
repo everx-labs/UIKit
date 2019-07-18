@@ -18,6 +18,7 @@ export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void
 
 type Props = {
     onSubmitFeedBack: UIFeedbackSubmitFunc,
+    numberOfLines?: number,
 };
 
 type State = {
@@ -120,6 +121,7 @@ class UIFeedback extends UIComponent<Props, State> {
                     containerStyle={UIStyle.Height.greatCell()}
                     value={this.getFeedback()}
                     placeholder={UILocalized.DescribeYourIssueOrIdea}
+                    maxLines={this.props.numberOfLines}
                     onChangeText={this.onChangeFeedback}
                     onSubmitEditing={this.onSubmitFeedBack}
                 />
@@ -135,4 +137,3 @@ class UIFeedback extends UIComponent<Props, State> {
 }
 
 export default UIFeedback;
-
