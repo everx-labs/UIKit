@@ -102,15 +102,15 @@ export default class UIModalController<Props, State>
 
     // Events
     onWillAppear() {
-        // Method needs to be overridden in order to be used.
+        // nothing here
     }
 
     onDidAppear() {
-        // Method needs to be overridden in order to be used.
+        this.initKeyboardListeners();
     }
 
     onWillHide() {
-        // Method needs to be overridden in order to be used.
+        this.deinitKeyboardListeners();
     }
 
     onDidHide() {
