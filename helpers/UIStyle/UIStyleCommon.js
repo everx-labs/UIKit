@@ -136,6 +136,10 @@ export default class UIStyleCommon {
         return UIStyle.fullWidthPaddingContainer;
     }
 
+    static fullWidthPaddingCenterContainer() {
+        return UIStyle.fullWidthPaddingCenterContainer;
+    }
+
     static pageContainer() {
         return UIStyle.pageContainer;
     }
