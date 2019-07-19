@@ -38,7 +38,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         ...UIDetailsInput.defaultProps,
         isSeedPhraseValid: null,
         autoCapitalize: 'none',
-        returnKeyType: 'default',
+        returnKeyType: 'done',
+        blurOnSubmit: true,
         placeholder: UILocalized.Password,
         autoFocus: false,
         containerStyle: { },
@@ -294,6 +295,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         } else {
             throw new Error('No element has been found for popover');
         }
+    }
+
+    hideHints() {
+        this.setStateSafely({ wordThatChangedIndex: -1 });
     }
 
     addDashes(words: Array<string>): string {
