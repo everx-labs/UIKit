@@ -247,12 +247,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     onBlur() {
-        if (Platform.OS === 'web') {
-            return;
-        }
-
         super.onBlur();
-        this.hideHints();
+        if (Platform.OS !== 'web') {
+            this.hideHints();
+        }
     }
 
     onContentSizeChange(height: number) {
