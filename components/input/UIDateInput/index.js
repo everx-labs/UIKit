@@ -112,9 +112,10 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         if (!dateComponents || !separator) return defaultPattern;
 
-        let pattern = `${dateSymbols[dateComponents[0]]}${separator}`;
-        pattern = `${pattern}${dateSymbols[dateComponents[1]]}${separator}`;
-        pattern = `${pattern}${dateSymbols[dateComponents[2]]}`;
+        let pattern = `${dateSymbols[dateComponents[0]]}`;
+        for (let i = 1; i < dateComponents.length; i += 1) {
+            pattern += `${separator}${dateSymbols[dateComponents[i]]}`;
+        }
 
         return pattern;
     }
