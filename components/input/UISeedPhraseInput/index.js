@@ -49,6 +49,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
         phraseToCheck: '',
         onChangeIsValidPhrase: () => {},
+        onBlur: () => {},
     };
 
     static splitPhrase(phrase: string): Array<string> {
@@ -215,6 +216,11 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             const { layout } = nativeEvent;
             this.setStateSafely({ inputWidth: layout.width });
         }
+    }
+
+    onBlur() {
+        super.onBlur();
+        this.hideHints();
     }
 
     onContentSizeChange(height: number) {
