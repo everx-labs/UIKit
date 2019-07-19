@@ -163,7 +163,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const stringParts = balance.split(separator);
         return (
             <Text
-                style={[this.props.textStyle, UIStyle.Text.primary(), UIStyle.Common.flex()]}
+                style={[UIStyle.Text.primary(), this.props.textStyle]}
                 numberOfLines={1}
             >
                 {stringParts[0]}
