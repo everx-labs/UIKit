@@ -11,6 +11,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
+import UIDevice from '../../../helpers/UIDevice';
 
 import UIDetailsInput from '../UIDetailsInput';
 
@@ -38,7 +39,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         ...UIDetailsInput.defaultProps,
         isSeedPhraseValid: null,
         autoCapitalize: 'none',
-        returnKeyType: 'default',
+        returnKeyType: 'done',
+        blurOnSubmit: true,
         placeholder: UILocalized.Password,
         autoFocus: false,
         containerStyle: { },
@@ -48,6 +50,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
         phraseToCheck: '',
         onChangeIsValidPhrase: () => {},
+        onBlur: () => {},
     };
 
     static splitPhrase(phrase: string): Array<string> {
@@ -70,12 +73,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     totalWords: number;
     popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
+    clickListener: ?(e: any) => void;
 
     constructor(props: Props) {
         super(props);
 
         this.lastWords = [];
         this.totalWords = 12;
+        this.clickListener = null;
 
         this.state = {
             ...this.state,
@@ -91,6 +96,31 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         super.componentDidMount();
         this.setTotalWords();
         this.updateInputRef();
+        this.initClickListenerForWeb();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.deinitClickListenerForWeb();
+    }
+
+    initClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        this.clickListener = (e: any) => {
+            this.hideHints();
+        };
+        window.addEventListener(listenerType, this.clickListener);
+    }
+
+    deinitClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        window.removeEventListener(listenerType, this.clickListener);
     }
 
     // Events
@@ -216,6 +246,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
     }
 
+    onBlur() {
+        super.onBlur();
+        if (Platform.OS !== 'web') {
+            this.hideHints();
+        }
+    }
+
     onContentSizeChange(height: number) {
         this.setStateSafely({ inputHeight: height });
     }
@@ -294,6 +331,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         } else {
             throw new Error('No element has been found for popover');
         }
+    }
+
+    hideHints() {
+        this.setStateSafely({ wordThatChangedIndex: -1 });
     }
 
     addDashes(words: Array<string>): string {

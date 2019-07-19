@@ -92,6 +92,7 @@ export type DetailsProps = ActionProps & {
     onKeyPress?: (e: any) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
+    blurOnSubmit?: boolean,
     secureTextEntry: boolean,
     showSymbolsLeft: boolean,
     submitDisabled?: boolean,
@@ -205,10 +206,10 @@ export default class UIDetailsInput<Props, State>
         this.props.onFocus();
     };
 
-    onBlur = () => {
+    onBlur() {
         this.setFocused(false);
         this.props.onBlur();
-    };
+    }
 
     onSubmitEditing = () => {
         if (this.isSubmitDisabled()) {
@@ -407,6 +408,7 @@ export default class UIDetailsInput<Props, State>
             maxLength,
             returnKeyType,
             secureTextEntry,
+            blurOnSubmit,
             testID,
             theme,
             maxHeight,
@@ -414,6 +416,7 @@ export default class UIDetailsInput<Props, State>
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const blurOnSubmitProp = blurOnSubmit ? { blurOnSubmit } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
         return (
@@ -430,7 +433,7 @@ export default class UIDetailsInput<Props, State>
                 numberOfLines={this.numOfLines()}
                 clearButtonMode="never"
                 onFocus={this.onFocus}
-                onBlur={this.onBlur}
+                onBlur={() => this.onBlur()}
                 onChangeText={this.onChangeText}
                 onChange={e => this.onChange(e)}
                 onContentSizeChange={e => this.onChange(e)}
@@ -440,6 +443,7 @@ export default class UIDetailsInput<Props, State>
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
+                {...blurOnSubmitProp}
                 style={[
                     this.textInputStyle(),
                     {
