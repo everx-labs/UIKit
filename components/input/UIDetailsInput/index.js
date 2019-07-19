@@ -92,6 +92,7 @@ export type DetailsProps = ActionProps & {
     onKeyPress?: (e: any) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
+    blurOnSubmit?: boolean,
     secureTextEntry: boolean,
     showSymbolsLeft: boolean,
     submitDisabled?: boolean,
@@ -407,6 +408,7 @@ export default class UIDetailsInput<Props, State>
             maxLength,
             returnKeyType,
             secureTextEntry,
+            blurOnSubmit,
             testID,
             theme,
             maxHeight,
@@ -414,6 +416,7 @@ export default class UIDetailsInput<Props, State>
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const blurOnSubmitProp = blurOnSubmit ? { blurOnSubmit } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
         return (
@@ -440,6 +443,7 @@ export default class UIDetailsInput<Props, State>
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
+                {...blurOnSubmitProp}
                 style={[
                     this.textInputStyle(),
                     {
