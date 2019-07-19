@@ -219,9 +219,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     onBlur() {
-        this.setFocused(false);
+        super.onBlur();
         this.hideHints();
-        this.props.onBlur();
     }
 
     onContentSizeChange(height: number) {
