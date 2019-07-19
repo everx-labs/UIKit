@@ -11,6 +11,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
+import UIDevice from '../../../helpers/UIDevice';
 
 import UIDetailsInput from '../UIDetailsInput';
 
@@ -72,12 +73,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     totalWords: number;
     popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
+    clickListener: ?(e: any) => void;
 
     constructor(props: Props) {
         super(props);
 
         this.lastWords = [];
         this.totalWords = 12;
+        this.clickListener = null;
 
         this.state = {
             ...this.state,
@@ -93,6 +96,31 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         super.componentDidMount();
         this.setTotalWords();
         this.updateInputRef();
+        this.initClickListenerForWeb();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.deinitClickListenerForWeb();
+    }
+
+    initClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        this.clickListener = (e: any) => {
+            this.hideHints();
+        };
+        window.addEventListener(listenerType, this.clickListener);
+    }
+
+    deinitClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        window.removeEventListener(listenerType, this.clickListener);
     }
 
     // Events
@@ -220,7 +248,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     onBlur() {
         super.onBlur();
-        this.hideHints();
+        if (Platform.OS !== 'web') {
+            this.hideHints();
+        }
     }
 
     onContentSizeChange(height: number) {
