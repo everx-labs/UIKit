@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
 type Props = DetailsProps & {
     containerStyle?: StylePropType,
     dateComponents?: string[],
-    hasDay?: boolean,
     initialEpochTime?: number | null,
     separator?: string,
     maxLength?: number,
@@ -49,7 +48,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         ...UIDetailsInput.defaultProps,
         containerStyle: {},
         dateComponents: ['year', 'month', 'day'],
-        hasDay: true,
         separator: '.',
         initialEpochTime: null,
         onChangeDate: () => {},
@@ -115,11 +113,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         if (!dateComponents || !separator) return defaultPattern;
 
         let pattern = `${dateSymbols[dateComponents[0]]}`;
-        if (dateComponents[1]) {
-            pattern = `${pattern}${separator}${dateSymbols[dateComponents[1]]}`;
-        }
-        if (dateComponents[2]) {
-            pattern = `${pattern}${separator}${dateSymbols[dateComponents[2]]}`;
+        for (let i = 1; i < dateComponents.length; i += 1) {
+            pattern += `${separator}${dateSymbols[dateComponents[i]]}`;
         }
 
         return pattern;
