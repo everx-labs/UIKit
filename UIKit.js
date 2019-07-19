@@ -12,7 +12,7 @@ import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
-import UICard from './components/text/UICard';
+import UICardView from './components/views/UICardView';
 import UIColor from './helpers/UIColor';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
 import UICompatibilityView from './helpers/UICompatibilityView';
@@ -23,7 +23,7 @@ import UICustomSheet from './components/menus/UICustomSheet';
 import UIDateInput from './components/input/UIDateInput';
 import UIDetailsInput from './components/input/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
-import UIDetailsView from './components/text/UIDetailsView';
+import UIDetailsView from './components/views/UIDetailsView';
 import UIDetailsTable from './components/text/UIDetailsTable';
 import UIDevice from './helpers/UIDevice';
 import UIDialogController from './controllers/UIDialogController';
@@ -135,7 +135,7 @@ export {
     UIBottomBar,
     UIBullet,
     UIButton,
-    UICard,
+    UICardView,
     UICheckboxItem,
     UIColor,
     UIColorPalette,

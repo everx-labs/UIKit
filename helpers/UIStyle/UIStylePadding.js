@@ -29,6 +29,10 @@ export default class UIStylePadding {
         return UIStyle.paddingBottomDefault;
     }
 
+    static bottomSpacious() { // 40
+        return UIStyle.paddingBottomSpacious;
+    }
+
     static bottomMassive() {
         return UIStyle.paddingBottomMassive;
     }

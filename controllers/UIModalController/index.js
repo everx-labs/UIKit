@@ -77,6 +77,10 @@ export default class UIModalController<Props, State>
     animation: SlideAnimation | FadeAnimation;
     testID: ?string;
 
+    static animations = {
+        fade: new FadeAnimation({ toValue: 1 }),
+    }
+
     constructor(props: ModalControllerProps & Props) {
         super(props);
         this.hasSpinnerOverlay = true;

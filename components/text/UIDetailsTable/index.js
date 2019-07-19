@@ -1,29 +1,32 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import UIColor from '../../../helpers/UIColor';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UILocalized from '../../../helpers/UILocalized';
+import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
+import UIFunction from '../../../helpers/UIFunction';
 import UIComponent from '../../UIComponent';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 
 export type Details = {
     caption: ?string,
-    value: ?string,
+    value: ?string | number,
+    limit?: number,
     type?: string,
     screen?: string,
     tag?: any,
+    component?: React$Node,
     onPress?: () => void,
 };
 
-export type DetailsList = { [string]: Details };
+export type DetailsList = Details[];
 
 type Props = {
     navigation?: ReactNavigation,
-    detailsList: ?DetailsList,
+    detailsList: DetailsList,
+    style?: ViewStyleProp,
     onPress?: (details: Details) => void,
 }
 
@@ -51,8 +54,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
         Action: 'Action',
         Accent: 'Accent',
         NumberPercent: 'NumberPercent',
-        Gram: 'Gram',
         Disabled: 'Disabled',
+    };
+
+    static defaultProps: Props = {
+        detailsList: [],
     };
 
     // Events
@@ -100,34 +106,24 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderCell(details: Details) {
-        const { type, value, onPress } = details;
+        const {
+            type, value, limit, component, onPress,
+        } = details;
         const textStyle = this.getTextStyle(type);
-        if (!value && value !== 0) {
+        if ((!value && value !== 0) && !component) {
             return null;
         }
-        let strValue = `${value}`;
-
-        if (type === UIDetailsTable.CellType.NumberPercent) {
-            const number = Number.parseFloat(strValue);
-            const percent = '(%)';
-            return this.renderTextCell(
-                number,
-                percent,
-            );
-        } else if (type === UIDetailsTable.CellType.Gram) {
-            if (!strValue.includes('.')) {
-                strValue = `${strValue}.0`;
-            }
-            const [integer, fractional] = strValue.split('.');
-            return this.renderTextCell(
-                integer,
-                `.${fractional} ${UILocalized.gram}`,
-            );
+        if (type === UIDetailsTable.CellType.NumberPercent && limit && limit !== 0 && typeof value === 'number') {
+            const primary = UIFunction.getNumberString(value);
+            const percent = (primary / limit) * 100;
+            const formattedPercent = UIFunction.getNumberString(percent);
+            const secondary = ` (${formattedPercent} %)`;
+            return this.renderTextCell(primary, secondary);
         } else if (type === UIDetailsTable.CellType.Action) {
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
                     <Text style={UIStyle.Text.actionSmallMedium()}>
-                        {strValue}
+                        {value}
                     </Text>
                 </TouchableOpacity>
             );
@@ -135,56 +131,49 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return (
                 <TouchableOpacity onPress={onPress}>
                     <Text style={UIStyle.Text.actionSmallMedium()}>
-                        {strValue}
+                        {value}
                     </Text>
                 </TouchableOpacity>
             );
+        } else if (component) {
+            return component;
         }
         return (
             <Text style={[textStyle, UIStyle.Common.flex()]}>
-                {strValue}
+                {value}
             </Text>
         );
     }
 
-    render() {
-        const { detailsList } = this.props;
-        if (!detailsList) {
-            return null;
-        }
-        const cells = Object.keys(detailsList)
-            .map<React$Node>((name: string) => {
-                const details = detailsList[name];
-                const {
-                    caption, value,
-                } = details;
-                const { tertiarySmallRegular } = UITextStyle;
-
-                const cell = this.renderCell(details);
-                return (
-                    <View style={styles.row} key={`details-table-row-${name}-${value || ''}`}>
-                        <View style={[styles.leftCell, UIStyle.marginRightDefault]}>
-                            <Text
-                                numberOfLines={1}
-                                style={tertiarySmallRegular}
-                            >
-                                {caption}
-                            </Text>
-                        </View>
-                        <View style={styles.rightCell}>
-                            {cell}
-                        </View>
+    renderRows() {
+        return this.props.detailsList.map<React$Node>((item) => {
+            const cell = this.renderCell(item);
+            const { caption, value } = item;
+            return (
+                <View style={styles.row} key={`details-table-row-${caption || ''}-${value || ''}`}>
+                    <View style={[styles.leftCell, UIStyle.Margin.rightDefault()]}>
+                        <Text
+                            numberOfLines={1}
+                            style={UIStyle.Text.tertiarySmallRegular()}
+                        >
+                            {caption}
+                        </Text>
                     </View>
-                );
-            });
-        return cells;
+                    <View style={styles.rightCell}>
+                        {cell}
+                    </View>
+                </View>
+            );
+        });
     }
 
-    static defaultProps: Props;
+    render() {
+        return (
+            <View style={this.props.style}>
+                {this.renderRows()}
+            </View>
+        );
+    }
 }
 
 export default UIDetailsTable;
-
-UIDetailsTable.defaultProps = {
-    detailsList: null,
-};

@@ -5,6 +5,10 @@ export default class UIStyleCommon {
         return UIStyle.flex;
     }
 
+    static flex2() {
+        return UIStyle.flex2;
+    }
+
     static flex3() {
         return UIStyle.flex3;
     }

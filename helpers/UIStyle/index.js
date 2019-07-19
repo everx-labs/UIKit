@@ -74,6 +74,9 @@ const UIStyle = StyleSheet.create({
     flex: {
         flex: 1,
     },
+    flex2: {
+        flex: 2,
+    },
     flex3: {
         flex: 3,
     },
@@ -333,6 +336,9 @@ const UIStyle = StyleSheet.create({
     },
     paddingBottomSmall: {
         paddingBottom: UIConstant.smallContentOffset(),
+    },
+    paddingBottomSpacious: { // 40
+        paddingBottom: UIConstant.spaciousContentOffset(),
     },
     paddingBottomMassive: {
         paddingBottom: UIConstant.massiveContentOffset(),
