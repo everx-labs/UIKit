@@ -114,10 +114,12 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         if (!dateComponents || !separator) return defaultPattern;
 
-        let pattern = `${dateSymbols[dateComponents[0]]}${separator}`;
-        pattern = `${pattern}${dateSymbols[dateComponents[1]]}`;
-        if (this.props.hasDay) {
-            pattern = `${separator}${pattern}${dateSymbols[dateComponents[2]]}`;
+        let pattern = `${dateSymbols[dateComponents[0]]}`;
+        if (dateComponents[1]) {
+            pattern = `${pattern}${separator}${dateSymbols[dateComponents[1]]}`;
+        }
+        if (dateComponents[2]) {
+            pattern = `${pattern}${separator}${dateSymbols[dateComponents[2]]}`;
         }
 
         return pattern;
