@@ -337,6 +337,9 @@ const UIStyle = StyleSheet.create({
     paddingBottomSmall: {
         paddingBottom: UIConstant.smallContentOffset(),
     },
+    paddingBottomSpacious: { // 40
+        paddingBottom: UIConstant.spaciousContentOffset(),
+    },
     paddingBottomMassive: {
         paddingBottom: UIConstant.massiveContentOffset(),
     },

@@ -1,13 +1,14 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import UIColor from '../../../helpers/UIColor';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
+import UIFunction from '../../../helpers/UIFunction';
 import UIComponent from '../../UIComponent';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
-import { UIFunction } from '../../../UIKit';
 
 export type Details = {
     caption: ?string,
@@ -25,6 +26,7 @@ export type DetailsList = Details[];
 type Props = {
     navigation?: ReactNavigation,
     detailsList: DetailsList,
+    style?: ViewStyleProp,
     onPress?: (details: Details) => void,
 }
 
@@ -143,9 +145,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
         );
     }
 
-    render() {
-        const { detailsList } = this.props;
-        return detailsList.map<React$Node>((item) => {
+    renderRows() {
+        return this.props.detailsList.map<React$Node>((item) => {
             const cell = this.renderCell(item);
             const { caption, value } = item;
             return (
@@ -166,6 +167,13 @@ class UIDetailsTable extends UIComponent<Props, State> {
         });
     }
 
+    render() {
+        return (
+            <View style={this.props.style}>
+                {this.renderRows()}
+            </View>
+        );
+    }
 }
 
 export default UIDetailsTable;
