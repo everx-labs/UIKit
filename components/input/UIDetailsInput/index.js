@@ -206,10 +206,10 @@ export default class UIDetailsInput<Props, State>
         this.props.onFocus();
     };
 
-    onBlur = () => {
+    onBlur() {
         this.setFocused(false);
         this.props.onBlur();
-    };
+    }
 
     onSubmitEditing = () => {
         if (this.isSubmitDisabled()) {
@@ -433,7 +433,7 @@ export default class UIDetailsInput<Props, State>
                 numberOfLines={this.numOfLines()}
                 clearButtonMode="never"
                 onFocus={this.onFocus}
-                onBlur={this.onBlur}
+                onBlur={() => this.onBlur()}
                 onChangeText={this.onChangeText}
                 onChange={e => this.onChange(e)}
                 onContentSizeChange={e => this.onChange(e)}
