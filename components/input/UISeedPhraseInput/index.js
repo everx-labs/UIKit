@@ -335,19 +335,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
     }
 
-    setSelectionToEnd() {
-        const element = this.popOverRef?._element;
-        if (element) {
-            element.focus();
-            element.setNativeProps({
-                selection: {
-                    start: 1,
-                    end: 2,
-                },
-            });
-        }
-    }
-
     hideHints() {
         this.setStateSafely({ wordThatChangedIndex: -1 });
     }
