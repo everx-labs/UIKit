@@ -298,7 +298,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 element.focus();
 
                 // Apply a fix to move the cursor to the right
-                if (Platform.OS === 'android') {
+                if (Platform.OS === 'web') {
+                    const node = element?._node;
+                    if (node) {
+                        node.setSelectionRange(finalValue.length, finalValue.length);
+                    }
+                } else if (Platform.OS === 'ios') {
+                    // nothing
+                } else if (Platform.OS === 'android') {
                     // Actually Android moves the cursor to the the right visually,
                     // BUT physically it's not moved, and when the user continues typing
                     // the cursor stays wherever it was before, but not at the right.
