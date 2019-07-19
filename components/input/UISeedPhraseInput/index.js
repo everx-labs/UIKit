@@ -11,6 +11,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
+import UIDevice from '../../../helpers/UIDevice';
 
 import UIDetailsInput from '../UIDetailsInput';
 
@@ -72,12 +73,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     totalWords: number;
     popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
+    clickListener: ?(e: any) => void;
 
     constructor(props: Props) {
         super(props);
 
         this.lastWords = [];
         this.totalWords = 12;
+        this.clickListener = null;
 
         this.state = {
             ...this.state,
@@ -93,6 +96,31 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         super.componentDidMount();
         this.setTotalWords();
         this.updateInputRef();
+        this.initClickListenerForWeb();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.deinitClickListenerForWeb();
+    }
+
+    initClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        this.clickListener = (e: any) => {
+            this.hideHints();
+        };
+        window.addEventListener(listenerType, this.clickListener);
+    }
+
+    deinitClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        window.removeEventListener(listenerType, this.clickListener);
     }
 
     // Events
@@ -219,6 +247,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     onBlur() {
+        if (Platform.OS === 'web') {
+            return;
+        }
+
         super.onBlur();
         this.hideHints();
     }
@@ -266,8 +298,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             const element = this.popOverRef?._element;
             if (element) {
                 element.focus();
-
-                // Apply a fix to move the cursor to the right
                 if (Platform.OS === 'android') {
                     // Actually Android moves the cursor to the the right visually,
                     // BUT physically it's not moved, and when the user continues typing
@@ -300,6 +330,19 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             this.setTextInputRef(element);
         } else {
             throw new Error('No element has been found for popover');
+        }
+    }
+
+    setSelectionToEnd() {
+        const element = this.popOverRef?._element;
+        if (element) {
+            element.focus();
+            element.setNativeProps({
+                selection: {
+                    start: 1,
+                    end: 2,
+                },
+            });
         }
     }
 
