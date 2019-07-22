@@ -230,7 +230,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         });
         return (
             <UILabel
-                style={[UIStyle.Margin.bottomVast(),
+                style={[UIStyle.Margin.bottomMassive(),
                     descStyle.descColor]}
                 role={UILabel.Role.CaptionTertiary}
                 text={this.props.pinDescription}
