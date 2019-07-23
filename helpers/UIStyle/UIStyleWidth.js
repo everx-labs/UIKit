@@ -45,4 +45,8 @@ export default class UIStyleWidth {
     static halfContainer() {
         return UIStyle.halfWidthContainer;
     }
+
+    static defaultWidth() {
+        return UI
+    }
 }
