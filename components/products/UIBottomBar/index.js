@@ -263,16 +263,19 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     renderCopyRight() {
-        const { copyRight, onPressCopyRight } = this.props;
+        const { copyRight, onPressCopyRight, copyRightIcon } = this.props;
         const textStyle = this.textStyle();
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
-        const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
+        const copyRightText = this.isNarrow() && !isShort ? '' : copyRight;
         const align = isShort ? UIStyle.Common.alignCenter() : UIStyle.Common.alignEnd();
         const flex = this.isNarrow() && !isShort ? null : UIStyle.Common.flex();
         return (
             <View style={[flex, align]}>
                 <Text style={textStyle}>
                     <UITextButton
+                        icon={this.isNarrow() && copyRightIcon}
+                        iconColor={this.isNarrow() && UIColor.textTertiary()}
+                        iconHoverColor={this.isNarrow() && UIColor.textPrimary()}
                         title={copyRightText}
                         textStyle={textStyle}
                         textHoverStyle={UIColor.textPrimaryStyle()}
