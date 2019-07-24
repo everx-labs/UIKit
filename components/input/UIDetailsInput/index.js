@@ -158,11 +158,8 @@ export default class UIDetailsInput<Props, State>
     onChange(event: any) {
         let newHeight = 0;
 
-        if (Platform.OS === 'web' && this.auxTextInput) {
-            const aux = this.auxTextInput;
-            if (aux?._node) {
-                newHeight = aux?._node.scrollHeight;
-            }
+        if (Platform.OS === 'web') {
+            this.onWebChange();
         } else if (event && event.nativeEvent) {
             const { contentSize } = event.nativeEvent;
             newHeight = contentSize?.height || 0;
@@ -171,6 +168,20 @@ export default class UIDetailsInput<Props, State>
         if (newHeight) {
             this.setInputAreaHeight(newHeight - UIConstant.smallCellHeight());
         }
+    }
+
+    onWebChange() {
+        this.setStateSafely({}, () => {
+            const aux = this.auxTextInput;
+            let newHeight = 0;
+            if (aux?._node) {
+                newHeight = aux?._node.scrollHeight || 0;
+            }
+
+            if (newHeight) {
+                this.setInputAreaHeight(newHeight - UIConstant.smallCellHeight());
+            }
+        });
     }
 
     setInputAreaHeight(height: number) {
