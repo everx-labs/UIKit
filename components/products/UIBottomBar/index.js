@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, Text, Linking } from 'react-native';
-import StylePropType from 'react-style-proptype';
+
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -39,8 +41,9 @@ type Props = {
     leftText: string,
     accentText: string,
     accentEmail: string,
-    textStyle: StylePropType,
+    textStyle: TextStyleProp,
     copyRight: string,
+    copyRightIcon: ?ImageSource,
     disclaimer: string,
     menuItems: MenuItem[],
     companyName: string,
@@ -51,7 +54,7 @@ type Props = {
     email: string,
     isNarrow: boolean,
     screenWidth: number,
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     onPressCopyRight: () => void,
 };
 
@@ -326,6 +329,7 @@ UIBottomBar.defaultProps = {
     email: '',
 
     copyRight: '',
+    copyRightIcon: null,
     disclaimer: '',
 
     isNarrow: true,
