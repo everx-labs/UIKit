@@ -156,20 +156,35 @@ export default class UIDetailsInput<Props, State>
 
     // Events
     onChange(event: any) {
-        let newHeight = 0;
+        if (Platform.OS === 'web') {
+            this.onWebChange();
+        } else if (event && event.nativeEvent) {
+            this.onMobileChange(event);
+        }
+    }
 
-        if (Platform.OS === 'web' && this.auxTextInput) {
+    onMobileChange(event: any) {
+        if (event && event.nativeEvent) {
+            const { contentSize } = event.nativeEvent;
+            const height = contentSize?.height || 0;
+
+            this.onHeightChange(height);
+        }
+    }
+
+    onWebChange() {
+        this.setStateSafely({}, () => {
             const aux = this.auxTextInput;
             if (aux?._node) {
-                newHeight = aux?._node.scrollHeight;
+                const height = aux?._node.scrollHeight || 0;
+                this.onHeightChange(height);
             }
-        } else if (event && event.nativeEvent) {
-            const { contentSize } = event.nativeEvent;
-            newHeight = contentSize?.height || 0;
-        }
+        });
+    }
 
-        if (newHeight) {
-            this.setInputAreaHeight(newHeight - UIConstant.smallCellHeight());
+    onHeightChange(heigh: number) {
+        if (heigh) {
+            this.setInputAreaHeight(heigh - UIConstant.smallCellHeight());
         }
     }
 

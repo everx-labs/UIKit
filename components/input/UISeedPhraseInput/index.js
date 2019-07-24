@@ -240,6 +240,11 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     // Events
     onLayout(e: any) {
         const { nativeEvent } = e;
+        // If the browser window is resized, this forces the input
+        // to adjust its size so that the full phrase is displayed.
+        if (Platform.OS === 'web') {
+            this.onChange(e);
+        }
         if (nativeEvent) {
             const { layout } = nativeEvent;
             this.setStateSafely({ inputWidth: layout.width });
