@@ -118,7 +118,7 @@ class UIFeedback extends UIComponent<Props, State> {
                 />
                 <UIDetailsInput
                     ref={(component) => { this.feedbackInput = component; }}
-                    containerStyle={UIStyle.Height.greatCell()}
+                    containerStyle={[UIStyle.Height.greatCell(), UIStyle.Margin.topDefault()]}
                     value={this.getFeedback()}
                     placeholder={UILocalized.DescribeYourIssueOrIdea}
                     maxLines={this.props.numberOfLines}
