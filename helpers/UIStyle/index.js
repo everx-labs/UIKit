@@ -22,7 +22,7 @@ const absoluteFillWidthContainer = {
 
 const absoluteFillContainer = {
     ...absoluteFillWidthContainer,
-    right: 0,
+    top: 0,
     bottom: 0,
 };
 
