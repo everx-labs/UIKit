@@ -61,7 +61,6 @@ export default class UINotificationBadge extends UIComponent<Props, State> {
                     styles.container,
                     this.props.containerStyle,
                 ]}
-                pointerEvents="none"
             >
                 {value}
             </Text>

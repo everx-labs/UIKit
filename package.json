@@ -48,7 +48,7 @@
     "devDependencies": {
         "@babel/preset-flow": "7.0.0",
         "babel-eslint": "9.0.0",
-        "flow-bin": "0.87.0"
+        "flow-bin": "0.92.0"
     },
     "repository": {
         "type": "git",

@@ -1,7 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
-
-type StateUpdate<State, Props> = ((State, Props) => $Shape<State> | void);
+import { PureComponent } from 'react';
 
 export default class UIPureComponent<Props, State> extends PureComponent<Props, State> {
     componentDidMount() {
@@ -12,10 +10,7 @@ export default class UIPureComponent<Props, State> extends PureComponent<Props, 
         this.mounted = false;
     }
 
-    setStateSafely(
-        state: $Shape<State> | StateUpdate<State, Props>,
-        callback?: () => mixed,
-    ) {
+    setStateSafely(state: Object, callback?: () => void) {
         if (!this.mounted) {
             return;
         }

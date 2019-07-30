@@ -124,7 +124,11 @@ export default class UILabel extends UIComponent<Props, State> {
 
     // Render
     renderText(textStyle: TextStyleProp[]): React$Node {
-        const { useDefaultSpace, ...props } = this.props;
+        const {
+            useDefaultSpace,
+            role, text,
+            ...props
+        } = this.props;
         return (
             <Text {...props} style={textStyle}>
                 {this.getText()}
