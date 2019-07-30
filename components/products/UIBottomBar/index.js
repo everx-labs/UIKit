@@ -64,6 +64,10 @@ type State = {
 };
 
 export default class UIBottomBar extends UIComponent<Props, State> {
+    static getItemProp(name: string): Object {
+        return { itemProp: name };
+    }
+
     // Getters
     textStyle() {
         const { theme, textStyle } = this.props;
@@ -160,31 +164,34 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 style={bottomTextStyle}
                 {...itemProps}
             >
-                <Text itemProp="name" style={[textStyle, UIStyle.Text.alignCenter()]}>
+                <Text
+                    style={[textStyle, UIStyle.Text.alignCenter()]}
+                    {...UIBottomBar.getItemProp('name')}
+                >
                     {companyName}
                 </Text>
                 <Text
-                    itemProp="address"
+                    {...UIBottomBar.getItemProp('address')}
                     itemScope
                     itemType="http://schema.org/PostalAddress"
                     style={[textStyle, UIStyle.Text.alignCenter()]}
                 >
-                    <Text itemProp="streetAddress">
+                    <Text {...UIBottomBar.getItemProp('streetAddress')}>
                         {address}
                     </Text>
                     {', '}
-                    <Text itemProp="postalCode">
+                    <Text {...UIBottomBar.getItemProp('postalCode')}>
                         {postalCode}
                     </Text>
                     {', '}
-                    <Text itemProp="addressLocality">
+                    <Text {...UIBottomBar.getItemProp('addressLocality')}>
                         {location}
                     </Text>
                 </Text>
                 <Text style={[textStyle, UIStyle.Text.alignCenter()]}>
                     {this.renderEmail()}
                     {'   ·  '}
-                    <Text itemProp="telephone">{phoneNumber}</Text>
+                    <Text {...UIBottomBar.getItemProp('telephone')}>{phoneNumber}</Text>
                 </Text>
             </View>
         );

@@ -90,7 +90,7 @@ type UINavigationBarProps = {
 
 export default class UINavigationBar extends UIComponent<UINavigationBarProps, *> {
     static defaultProps = {
-        title: null,
+        title: '',
         headerLeft: null,
         headerRight: null,
     };
