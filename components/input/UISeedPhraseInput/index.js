@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { Popover } from 'react-native-simple-popover';
@@ -34,6 +34,8 @@ type State = ActionState & {
     inputWidth: number,
 };
 
+const space = ' ';
+
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
@@ -54,19 +56,11 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     };
 
     static splitPhrase(phrase: string): Array<string> {
-        const noRegularDash = phrase.replace(/-+/g, ` ${UIConstant.dashSymbol()} `);
-        const noExtraSpaces = noRegularDash.replace(/\s+/g, ' ');
-        const words = noExtraSpaces.split(' ');
-        const normalized = [];
-        for (let i = 0; i < words.length; i += 1) {
-            if (i === 0 && words[0] === '') {
-                continue;
-            }
-            if (words[i] !== UIConstant.dashSymbol() && words[i] !== '-') {
-                normalized.push(words[i]);
-            }
-        }
-        return normalized;
+        return (phrase.match(/\w+|\s$/g) || []).map(s => (s === space ? '' : s));
+    }
+
+    static addDashes(words: Array<string> = []): string {
+        return words.join(`${space}${UIConstant.dashSymbol()}${space}`);
     }
 
     lastWords: Array<string>;
@@ -74,6 +68,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
     clickListener: ?(e: any) => void;
+    staticInputHeight: number;
+    currentInputHeight: number;
+    keyboardWillHideListener: any;
 
     constructor(props: Props) {
         super(props);
@@ -81,6 +78,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.lastWords = [];
         this.totalWords = 12;
         this.clickListener = null;
+        this.staticInputHeight = 0; // used to learn the input height once popover is rendered
+        // This will help us to calculate the proper yOffset amount for UISeedPhraseHintsView
 
         this.state = {
             ...this.state,
@@ -96,14 +95,34 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         super.componentDidMount();
         this.setTotalWords();
         this.updateInputRef();
+        this.initKeyboardListeners();
         this.initClickListenerForWeb();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.deinitKeyboardListeners();
         this.deinitClickListenerForWeb();
     }
 
+    // Keyboard
+    initKeyboardListeners() {
+        if (Platform.OS === 'web') {
+            return; // no need
+        }
+        this.keyboardWillHideListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+            e => this.onKeyboardWillHide(e),
+        );
+    }
+
+    deinitKeyboardListeners() {
+        if (this.keyboardWillHideListener) {
+            this.keyboardWillHideListener.remove();
+        }
+    }
+
+    // Clicks
     initClickListenerForWeb() {
         if (Platform.OS !== 'web') {
             return;
@@ -124,6 +143,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
+    onKeyboardWillHide = (e: any) => {
+        this.hideHints();
+    }
+
     onKeyPress = (e: any): void => {
         if (this.seedPhraseHintsView) {
             this.seedPhraseHintsView.onKeyPress(e);
@@ -141,6 +164,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
     }
 
+    setInputHeight(inputHeight: number) {
+        this.setStateSafely({ inputHeight });
+    }
+
     // Getters
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
@@ -148,8 +175,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return flex;
     }
 
+    getInputHeight(): number {
+        return this.state.inputHeight;
+    }
+
     numOfLines(): number {
-        return this.state.inputHeight / UIConstant.smallCellHeight();
+        return Math.round(this.getInputHeight() / UIConstant.smallCellHeight());
     }
 
     commentColor(): ?string {
@@ -253,13 +284,17 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     onBlur() {
         super.onBlur();
+        this.staticInputHeight = 0;
         if (Platform.OS !== 'web') {
             this.hideHints();
         }
     }
 
     onContentSizeChange(height: number) {
-        this.setStateSafely({ inputHeight: height });
+        if (!this.staticInputHeight) {
+            this.staticInputHeight = height;
+        }
+        this.setInputHeight(height);
     }
 
     onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
@@ -269,7 +304,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             return;
         }
 
-        const finalValue = this.addDashes(split);
+        const finalValue = UISeedPhraseInput.addDashes(split);
         onChangeText(finalValue);
 
         this.identifyWordThatChanged(split, () => {
@@ -349,20 +384,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.setStateSafely({ wordThatChangedIndex: -1 });
     }
 
-    addDashes(words: Array<string>): string {
-        if (words.length) {
-            let newPhrase = `${words[0]}`;
-            for (let i = 1; i < words.length; i += 1) {
-                if (words[i - 1] !== '') {
-                    newPhrase = `${newPhrase} ${UIConstant.dashSymbol()} ${words[i]}`;
-                }
-            }
-            return newPhrase;
-        }
-
-        return '';
-    }
-
     identifyWordThatChanged(currentWords: Array<string>, callback: ?(() => void)) {
         let i = 0;
         let index = 0;
@@ -411,11 +432,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderHintsView() {
+        const yOffset = (this.getInputHeight() - this.staticInputHeight)
+            + UIConstant.normalContentOffset();
         return (<UISeedPhraseHintsView
             ref={(component) => { this.seedPhraseHintsView = component; }}
             width={this.getInputWidth()}
             onHintSelected={this.onHintSelected}
-            yOffset={this.state.inputHeight - UIConstant.contentOffset()}
+            yOffset={yOffset}
         />);
     }
 
@@ -428,10 +451,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 arrowWidth={0}
                 arrowHeight={0}
                 isVisible={isVisible}
-                offset={{
-                    x: 0,
-                    y: 1,
-                }}
                 component={() => this.renderHintsView()}
             >
                 {this.renderTextInput()}
