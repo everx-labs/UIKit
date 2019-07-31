@@ -78,7 +78,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.lastWords = [];
         this.totalWords = 12;
         this.clickListener = null;
-        this.popoverInputHeight = 0;
+        this.staticInputHeight = 0; // used to learn the input height once popover is rendered
+        // This will help us to calculate the proper yOffset amount for UISeedPhraseHintsView
 
         this.state = {
             ...this.state,
@@ -283,15 +284,15 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     onBlur() {
         super.onBlur();
-        this.popoverInputHeight = 0;
+        this.staticInputHeight = 0;
         if (Platform.OS !== 'web') {
             this.hideHints();
         }
     }
 
     onContentSizeChange(height: number) {
-        if (!this.popoverInputHeight) {
-            this.popoverInputHeight = height;
+        if (!this.staticInputHeight) {
+            this.staticInputHeight = height;
         }
         this.setInputHeight(height);
     }
@@ -431,7 +432,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderHintsView() {
-        const yOffset = (this.getInputHeight() - this.popoverInputHeight)
+        const yOffset = (this.getInputHeight() - this.staticInputHeight)
             + UIConstant.normalContentOffset();
         return (<UISeedPhraseHintsView
             ref={(component) => { this.seedPhraseHintsView = component; }}
