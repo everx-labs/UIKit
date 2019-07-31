@@ -33,14 +33,10 @@ const maxCells = 3;
 const styles = StyleSheet.create({
     hintsContainer: {
         flex: 1,
-        maxHeight: UIConstant.defaultCellHeight() * maxCells,
         backgroundColor: UIColor.backgroundPrimary(),
         ...UIConstant.cardShadow(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: UIConstant.borderRadius(),
-    },
-    hintsList: {
-        paddingBottom: UIConstant.defaultCellHeight() * (maxCells - 1), // to view even if clipped
     },
     cellHint: {
         zIndex: 1,
@@ -207,10 +203,14 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         if (hints.length === 0 || (hints.length === 1 && hints[0] === wtc) || !width) {
             return <View />;
         }
+        const maxHintsToShow = Math.min(hints.length, maxCells);
+        const height = UIConstant.defaultCellHeight() * maxHintsToShow;
+        // Calculate the padding bottom to view cells even if clipped
+        const paddingBottom = UIConstant.defaultCellHeight() * (maxHintsToShow - 1);
         return (
-            <View style={[styles.hintsContainer, { width, marginTop }]}>
+            <View style={[styles.hintsContainer, { width, height, marginTop }]}>
                 <FlatList
-                    contentContainerStyle={styles.hintsList}
+                    contentContainerStyle={{ paddingBottom }}
                     ref={(ref) => { this.hintsListRef = ref; }}
                     data={hints}
                     style={{ width }}
