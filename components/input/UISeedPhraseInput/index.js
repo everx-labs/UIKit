@@ -68,7 +68,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
     clickListener: ?(e: any) => void;
-    popoverInputHeight: number;
+    staticInputHeight: number;
     currentInputHeight: number;
     keyboardWillHideListener: any;
 
