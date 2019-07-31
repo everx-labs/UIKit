@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { Popover } from 'react-native-simple-popover';
@@ -70,6 +70,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     clickListener: ?(e: any) => void;
     popoverInputHeight: number;
     currentInputHeight: number;
+    keyboardWillHideListener: any;
 
     constructor(props: Props) {
         super(props);
@@ -93,14 +94,34 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         super.componentDidMount();
         this.setTotalWords();
         this.updateInputRef();
+        this.initKeyboardListeners();
         this.initClickListenerForWeb();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.deinitKeyboardListeners();
         this.deinitClickListenerForWeb();
     }
 
+    // Keyboard
+    initKeyboardListeners() {
+        if (Platform.OS === 'web') {
+            return; // no need
+        }
+        this.keyboardWillHideListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+            e => this.onKeyboardWillHide(e),
+        );
+    }
+
+    deinitKeyboardListeners() {
+        if (this.keyboardWillHideListener) {
+            this.keyboardWillHideListener.remove();
+        }
+    }
+
+    // Clicks
     initClickListenerForWeb() {
         if (Platform.OS !== 'web') {
             return;
@@ -121,6 +142,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
+    onKeyboardWillHide = (e: any) => {
+        this.hideHints();
+    }
+
     onKeyPress = (e: any): void => {
         if (this.seedPhraseHintsView) {
             this.seedPhraseHintsView.onKeyPress(e);
