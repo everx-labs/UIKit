@@ -28,10 +28,11 @@ type State = {
     currentHighlight: number,
 };
 
+const maxCells = 3;
+
 const styles = StyleSheet.create({
     hintsContainer: {
         flex: 1,
-        maxHeight: UIConstant.defaultCellHeight() * 3,
         backgroundColor: UIColor.backgroundPrimary(),
         ...UIConstant.cardShadow(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
@@ -86,7 +87,10 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         const wtc = this.getWordThatChanged();
         const dictionary = Mnemonic.Words.ENGLISH;
         // Can't use `word.startsWith(wtc)` as Android requires the `.indexOf(wtc) === 0` polyfill
-        const hints = dictionary.filter(word => word.indexOf(wtc) === 0);
+        let hints = dictionary.filter(word => word.indexOf(wtc) === 0);
+        if (hints.length === dictionary.length) { // if nothings is filtered, then display nothing
+            hints = [];
+        }
         this.currentHintsLength = hints.length;
         return hints;
     }
@@ -202,9 +206,14 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         if (hints.length === 0 || (hints.length === 1 && hints[0] === wtc) || !width) {
             return <View />;
         }
+        const maxHintsToShow = Math.min(hints.length, maxCells);
+        const height = UIConstant.defaultCellHeight() * maxHintsToShow;
+        // Calculate the padding bottom to view cells even if clipped
+        const paddingBottom = UIConstant.defaultCellHeight() * (maxHintsToShow - 1);
         return (
-            <View style={[styles.hintsContainer, { width, marginTop }]}>
+            <View style={[styles.hintsContainer, { width, height, marginTop }]}>
                 <FlatList
+                    contentContainerStyle={{ paddingBottom }}
                     ref={(ref) => { this.hintsListRef = ref; }}
                     data={hints}
                     style={{ width }}
