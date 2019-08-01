@@ -141,6 +141,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.smallRegular(),
     },
+    smallMedium: {
+        ...text,
+        ...UIFont.smallMedium(),
+    },
     smallBold: {
         ...text,
         ...UIFont.smallBold(),

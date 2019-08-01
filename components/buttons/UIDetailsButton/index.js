@@ -10,12 +10,11 @@ import UIActionComponent from '../../UIActionComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIDetailsView from '../UIDetailsView';
+import UIColorPalette from '../../../helpers/UIColor/UIColorPalette';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
 type Props = ActionProps & {
-    width: number,
     containerStyle: StylePropType,
     progress: boolean,
     transparent: boolean,
@@ -29,31 +28,20 @@ type State = ActionState & {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-    },
-    filled: {
-        paddingHorizontal: UIConstant.contentOffset(),
-        backgroundColor: UIColor.backgroundPrimary(),
-        borderRadius: UIConstant.smallBorderRadius(),
-    },
-    transparent: {
-        backgroundColor: 'transparent',
-    },
     rowContainer: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    defaultCard: {
-        height: UIConstant.largeCellHeight(),
-    },
-    statusContentContainer: {
-        margin: 0,
+    hoverOffset: {
+        left: -UIConstant.contentOffset(),
+        right: -UIConstant.contentOffset(),
+        top: -1,
+        bottom: -1,
     },
 });
 
-export default class UICardView extends UIActionComponent<Props, State> {
+export default class UIDetailsButton extends UIActionComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -80,33 +68,40 @@ export default class UICardView extends UIActionComponent<Props, State> {
         return this.state.spinValue;
     }
 
-    getCardPreset() {
-        const { progress, caption, width } = this.props;
-        if (progress) {
-            return {
-                card: this.renderProgressCard(),
-                cardStyle: styles.defaultCard,
-            };
-        } else if (!caption && width) {
-            return {
-                card: this.renderStatusCard(),
-                cardStyle: { width },
-            };
+    getBackgroundStyle() {
+        if (this.props.disabled || this.props.disableHighlight) {
+            return null;
         }
-        return {
-            card: this.renderContentCard(),
-            cardStyle: styles.defaultCard,
-        };
-    }
 
-    getShadowStyle() {
-        if (!this.props.transparent && !this.isTapped()) {
-            if (this.isHover()) {
-                return UIStyle.shadow40;
-            }
-            return UIStyle.commonShadow;
+        if (this.isHover() || this.isTapped()) {
+            const color = UIColor.whiteLight();
+            return [
+                UIColor.getBackgroundColorStyle(color),
+                styles.hoverOffset,
+            ];
         }
         return null;
+    }
+
+    getTitleColorStyle() {
+        if (this.props.disabled || this.props.titleIsText) {
+            return UIColor.getColorStyle(UIColorPalette.text.lightSecondary);
+        }
+
+        if (this.isHover() || this.isTapped()) {
+            const color = UIColor.primary4();
+            return UIColor.getColorStyle(color);
+        }
+        return null;
+    }
+
+    getFormattedText(str: string) {
+        const signs = this.props.narrow ? 5 : 9;
+        if (str.length <= signs * 2) {
+            return str;
+        }
+        const dots = '.'.repeat(signs);
+        return `${str.substr(0, signs)} ${dots} ${str.substr(str.length - signs)}`;
     }
 
     // Actions
@@ -142,23 +137,21 @@ export default class UICardView extends UIActionComponent<Props, State> {
         );
     }
 
-    renderStatusCard() {
-        const { title, details } = this.props;
-        return (
-            <UIDetailsView
-                value={title}
-                comments={details}
-                containerStyle={styles.statusContentContainer}
-                textStyle={UIStyle.Text.primaryTitleLight()}
-                commentsStyle={UIStyle.Text.secondaryCaptionRegular()}
-            />
-        );
-    }
-
     renderContentCard() {
         const {
-            title, caption, fixedCaption, details,
+            title, caption, details, secondDetails, captionComponent,
         } = this.props;
+        const formattedCaption = this.getFormattedText(caption);
+        const captionTextComponent = caption ? (
+            <Text
+                ellipsizeMode="middle"
+                numberOfLines={1}
+                style={UIStyle.Text.primarySmallRegular()}
+            >
+                {formattedCaption}
+            </Text>
+        ) : null;
+        const formattedTitle = this.getFormattedText(title);
         return (
             <React.Fragment>
                 <View style={styles.rowContainer}>
@@ -166,56 +159,52 @@ export default class UICardView extends UIActionComponent<Props, State> {
                         ellipsizeMode="middle"
                         numberOfLines={1}
                         style={[
-                            UIStyle.Text.primarySmallMedium(),
+                            UIStyle.Text.smallMedium(),
                             UIStyle.Common.flex(),
                             UIStyle.Margin.rightDefault(),
+                            this.getTitleColorStyle(),
                         ]}
                     >
-                        {title}
+                        {formattedTitle}
                     </Text>
-                    <Text
-                        ellipsizeMode="clip"
-                        numberOfLines={1}
-                        style={[
-                            UIStyle.Text.primarySmallRegular(),
-                            UIStyle.Common.flex(),
-                            UIStyle.Text.alignRight(),
-                        ]}
+                    {captionTextComponent}
+                    {captionComponent}
+                </View>
+                <View style={[styles.rowContainer, UIStyle.Margin.topTiny()]}>
+                    <Text style={[
+                        UIStyle.Text.secondaryCaptionRegular(),
+                        UIStyle.Common.flex(),
+                    ]}
                     >
-                        {caption}
+                        {details}
                     </Text>
-                    <Text
-                        numberOfLines={1}
-                        style={[
-                            UIStyle.Text.primarySmallRegular(),
-                            UIStyle.Margin.leftSmall(),
-                        ]}
-                    >
-                        {fixedCaption}
+                    <Text style={UIStyle.Text.secondaryCaptionRegular()}>
+                        {secondDetails}
                     </Text>
                 </View>
-                <Text style={[UIStyle.Margin.topTiny(), UIStyle.Text.tertiaryCaptionRegular()]}>
-                    {details}
-                </Text>
             </React.Fragment>
         );
     }
 
+    renderCard() {
+        if (this.props.progress) {
+            return this.renderProgressCard();
+        }
+        return this.renderContentCard();
+    }
+
     renderContent() {
-        const { containerStyle, transparent } = this.props;
-        const { card, cardStyle } = this.getCardPreset();
-        const backgroundStyle = transparent ? styles.transparent : styles.filled;
-        const shadowStyle = this.getShadowStyle();
+        const { containerStyle } = this.props;
+        const backgroundStyle = this.getBackgroundStyle();
         return (
             <View style={[
-                styles.container,
-                cardStyle,
+                UIStyle.Common.justifyCenter(),
+                UIStyle.Height.majorCell(),
                 containerStyle,
-                backgroundStyle,
-                shadowStyle,
             ]}
             >
-                {card}
+                <View style={[UIStyle.Common.positionAbsolute(), backgroundStyle]} />
+                {this.renderCard()}
             </View>
         );
     }
@@ -223,12 +212,11 @@ export default class UICardView extends UIActionComponent<Props, State> {
     static defaultProps: Props;
 }
 
-UICardView.defaultProps = {
+UIDetailsButton.defaultProps = {
     ...UIActionComponent.defaultProps,
-    width: 0,
+    narrow: false,
     containerStyle: {},
     progress: false,
-    transparent: false,
     title: '',
     caption: '',
     fixedCaption: '',
