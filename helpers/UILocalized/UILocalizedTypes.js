@@ -414,7 +414,7 @@ export type UILocalizedData = {
 
     // Passport
     ViewPassport: string,
-    PassportNeedsAttention: string,
+    PassportNeedsAttention: string[],
     AtTime: string,
     Passport: string,
     Status: string,
@@ -494,6 +494,9 @@ export type UILocalizedData = {
 
     ConfirmIdentity: string,
     SMSNotice: string,
+
+    BuyLimitTitle: string,
+    BuyLimitAlert: string,
 
     // Limits
     TransactionError: string[],

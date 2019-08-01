@@ -419,7 +419,11 @@ const ru: UILocalizedData = {
 
     // Passport
     ViewPassport: 'Посмотреть паспорт',
-    PassportNeedsAttention: 'Необходима валидация паспорта',
+    PassportNeedsAttention: [
+        'Please add all your personal information to your passport',
+        'Please add all your personal information and an official document to your passport',
+        'Passport validation is required',
+    ],
     AtTime: 'в',
     Passport: 'Паспорт',
     Status: 'Статус',
@@ -507,6 +511,9 @@ const ru: UILocalizedData = {
 
     ConfirmIdentity: 'Чтобы продолжить, нам необходимо подтвердить вашу личность, отправив SMS-код на ваш номер телефона',
     SMSNotice: 'Может взиматься плата за SMS',
+
+    BuyLimitTitle: 'Amount Alert',
+    BuyLimitAlert: 'The requested transfer amount exceeds the single transaction threshold of 32,000 Euros. Reduce the amount.',
 
     // Limits
     TransactionError: [

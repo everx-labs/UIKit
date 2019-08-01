@@ -420,7 +420,11 @@ const en: UILocalizedData = {
 
     // Passport
     ViewPassport: 'View Passport',
-    PassportNeedsAttention: 'Passport validation is required',
+    PassportNeedsAttention: [
+        'Please add all your personal information to your passport',
+        'Please add all your personal information and an official document to your passport',
+        'Passport validation is required',
+    ],
     AtTime: 'at',
     Passport: 'Passport',
     Status: 'Status',
@@ -508,6 +512,9 @@ const en: UILocalizedData = {
 
     ConfirmIdentity: 'To proceed, we need to confirm your identity by sending an SMS code to your phone number',
     SMSNotice: 'SMS fees may apply',
+
+    BuyLimitTitle: 'Amount Alert',
+    BuyLimitAlert: 'The requested transfer amount exceeds the single transaction threshold of 32,000 Euros. Reduce the amount.',
 
     // Limits
     TransactionError: [
