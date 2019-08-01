@@ -420,7 +420,11 @@ const en: UILocalizedData = {
 
     // Passport
     ViewPassport: 'View Passport',
-    PassportNeedsAttention: 'Passport validation is required',
+    PassportNeedsAttention: [
+        'Please add all your personal information to your passport',
+        'Please add all your personal information and an official document to your passport',
+        'Passport validation is required',
+    ],
     AtTime: 'at',
     Passport: 'Passport',
     Status: 'Status',

@@ -419,7 +419,11 @@ const ru: UILocalizedData = {
 
     // Passport
     ViewPassport: 'Посмотреть паспорт',
-    PassportNeedsAttention: 'Необходима валидация паспорта',
+    PassportNeedsAttention: [
+        'Please add all your personal information to your passport',
+        'Please add all your personal information and an official document to your passport',
+        'Passport validation is required',
+    ],
     AtTime: 'в',
     Passport: 'Паспорт',
     Status: 'Статус',
