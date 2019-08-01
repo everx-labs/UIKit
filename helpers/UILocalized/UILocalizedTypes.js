@@ -414,7 +414,7 @@ export type UILocalizedData = {
 
     // Passport
     ViewPassport: string,
-    PassportNeedsAttention: string,
+    PassportNeedsAttention: string[],
     AtTime: string,
     Passport: string,
     Status: string,
