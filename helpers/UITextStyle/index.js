@@ -52,7 +52,7 @@ const error = {
 
 const warning = {
     ...text,
-    color: UIColor.detailsInputComment(),
+    color: UIColor.warning(),
 };
 
 const success = {
@@ -396,6 +396,17 @@ const UITextStyle = StyleSheet.create({
         ...UIFont.captionRegular(),
     },
 
+    // Body - fontSize: 18, lineHeight: 24
+    cautionBodyRegular: {
+        ...caution,
+        ...UIFont.bodyRegular(),
+    },
+    // Small - fontSize: 16, lineHeight: 20
+    cautionSmallRegular: {
+        ...caution,
+        ...UIFont.smallRegular(),
+    },
+
     // [Text success]
     // Caption - fontSize: 14, lineHeight: 20
     successCaptionRegular: {
@@ -506,6 +517,11 @@ const UITextStyle = StyleSheet.create({
         ...action,
         ...UIFont.smallMedium(),
     },
+    // Small - fontSize: 16, lineHeight: 20
+    actionSmallRegular: {
+        ...action,
+        ...UIFont.smallRegular(),
+    },
 
     // [Text Action minus (primary minus)]
     // Small - fontSize: 16, lineHeight: 20
@@ -540,11 +556,26 @@ const UITextStyle = StyleSheet.create({
         ...error,
         ...UIFont.captionRegular(),
     },
+    // Body - fontSize: 18, lineHeight: 24
+    errorBodyRegular: {
+        ...error,
+        ...UIFont.bodyRegular(),
+    },
+    // Small - fontSize: 16, lineHeight: 20
+    errorSmallRegular: {
+        ...error,
+        ...UIFont.smallRegular(),
+    },
 
     // [Text Warning]
     warningCaptionRegular: {
         ...warning,
         ...UIFont.captionRegular(),
+    },
+    // Small - fontSize: 16, lineHeight: 20
+    warningSmallRegular: {
+        ...warning,
+        ...UIFont.smallRegular(),
     },
 });
 

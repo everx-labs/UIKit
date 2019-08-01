@@ -249,6 +249,16 @@ export default class UIStyleText {
         return UITextStyle.cautionCaptionRegular;
     }
 
+    // Body - fontSize: 14, lineHeight: 20
+    static cautionBodyRegular() {
+        return UITextStyle.cautionBodyRegular;
+    }
+
+    // Small - fontSize: 16, lineHeight: 20
+    static cautionSmallRegular() {
+        return UITextStyle.cautionSmallRegular;
+    }
+
     // [Text success]
     // Caption - fontSize: 14, lineHeight: 20
     static successCaptionRegular() {
@@ -291,6 +301,10 @@ export default class UIStyleText {
     // Caption - fontSize: 14, lineHeight: 20
     static warningCaptionRegular() {
         return UITextStyle.warningCaptionRegular;
+    }
+    // Small - fontSize: 16, lineHeight: 20
+    static warningSmallRegular() {
+        return UITextStyle.warningSmallRegular;
     }
 
     // [Text white]
@@ -344,6 +358,11 @@ export default class UIStyleText {
         return UITextStyle.actionSmallMedium;
     }
 
+    // Small - fontSize: 16, lineHeight: 20
+    static actionSmallRegular() {
+        return UITextStyle.actionSmallRegular;
+    }
+
     // [Text Action minus (primary minus)]
     // Small - fontSize: 16, lineHeight: 20
     static actionMinusSmallMedium() {
@@ -365,10 +384,18 @@ export default class UIStyleText {
     }
 
     // [Text Error]
+    // Body - fontSize: 18, lineHeight: 24
+    static errorBodyRegular() {
+        return UITextStyle.errorBodyRegular;
+    }
     static errorCaptionMedium() {
         return UITextStyle.errorCaptionMedium;
     }
     static errorCaptionRegular() {
         return UITextStyle.errorCaptionRegular;
+    }
+    // Small - fontSize: 16, lineHeight: 20
+    static errorSmallRegular() {
+        return UITextStyle.errorSmallRegular;
     }
 }
