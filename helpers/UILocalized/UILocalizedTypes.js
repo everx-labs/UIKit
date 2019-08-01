@@ -495,9 +495,6 @@ export type UILocalizedData = {
     ConfirmIdentity: string,
     SMSNotice: string,
 
-    BuyLimitTitle: string,
-    BuyLimitAlert: string,
-
     // Limits
     TransactionError: string[],
     LimitSetSuccess: string,

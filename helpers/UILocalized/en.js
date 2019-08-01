@@ -513,9 +513,6 @@ const en: UILocalizedData = {
     ConfirmIdentity: 'To proceed, we need to confirm your identity by sending an SMS code to your phone number',
     SMSNotice: 'SMS fees may apply',
 
-    BuyLimitTitle: 'Amount Alert',
-    BuyLimitAlert: 'The requested transfer amount exceeds the single transaction threshold of 32,000 Euros. Reduce the amount.',
-
     // Limits
     TransactionError: [
         '-',
