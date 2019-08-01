@@ -68,8 +68,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
     clickListener: ?(e: any) => void;
+    lastVisibleState: boolean;
     staticInputHeight: number;
-    currentInputHeight: number;
     keyboardWillHideListener: any;
 
     constructor(props: Props) {
@@ -78,6 +78,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.lastWords = [];
         this.totalWords = 12;
         this.clickListener = null;
+        this.lastVisibleState = false;
         this.staticInputHeight = 0; // used to learn the input height once popover is rendered
         // This will help us to calculate the proper yOffset amount for UISeedPhraseHintsView
 
@@ -168,6 +169,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.setStateSafely({ inputHeight });
     }
 
+    setWordThatChangedIndex(wordThatChangedIndex: number, callback?: () => void) {
+        this.setStateSafely({ wordThatChangedIndex }, callback);
+    }
+
     // Getters
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
@@ -236,7 +241,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     areHintsVisible(): boolean {
         const wtc = this.getWordThatChangedIndex();
-        return wtc !== -1;
+        const visible = wtc !== -1;
+        if (this.lastVisibleState !== visible) {
+            this.lastVisibleState = visible;
+            setTimeout(() => {
+                this.staticInputHeight = this.getInputHeight();
+            }, 0); // requires the timeout in order to recive a proper height value
+        }
+        return visible;
     }
 
     areWordsValid(currentPhrase?: string): boolean {
@@ -284,16 +296,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     onBlur() {
         super.onBlur();
-        this.staticInputHeight = 0;
         if (Platform.OS !== 'web') {
             this.hideHints();
         }
     }
 
     onContentSizeChange(height: number) {
-        if (!this.staticInputHeight) {
-            this.staticInputHeight = height;
-        }
         this.setInputHeight(height);
     }
 
@@ -381,7 +389,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     hideHints() {
-        this.setStateSafely({ wordThatChangedIndex: -1 });
+        this.setWordThatChangedIndex(-1); // hides hints container
     }
 
     identifyWordThatChanged(currentWords: Array<string>, callback: ?(() => void)) {
@@ -396,7 +404,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
         this.lastWords = Array.from(currentWords);
 
-        this.setStateSafely({ wordThatChangedIndex: index }, () => {
+        this.setWordThatChangedIndex(index, () => {
             setTimeout(() => {
                 const wordThatChanged = currentWords[index];
                 if (this.seedPhraseHintsView) {
@@ -443,14 +451,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     renderInputWithPopOver() {
-        const isVisible = this.areHintsVisible();
         return (
             <Popover
                 ref={(c) => { this.popOverRef = c; }}
                 placement={this.state.popoverPlacement}
                 arrowWidth={0}
                 arrowHeight={0}
-                isVisible={isVisible}
+                isVisible={this.areHintsVisible()}
                 component={() => this.renderHintsView()}
             >
                 {this.renderTextInput()}
