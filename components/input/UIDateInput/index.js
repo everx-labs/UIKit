@@ -40,7 +40,8 @@ type Props = DetailsProps & {
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
 type State = ActionState & {
-    date: string
+    date: string,
+    highlightError: boolean,
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -102,7 +103,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     onBlur = () => {
-        console.log('blur');
         this.setStateSafely({ highlightError: true });
         if (this.props.onBlur) {
             this.props.onBlur();
