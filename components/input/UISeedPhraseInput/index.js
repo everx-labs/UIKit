@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { Platform, View, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -95,7 +96,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     componentDidMount() {
         super.componentDidMount();
         this.setTotalWords();
-        this.updateInputRef();
         this.initKeyboardListeners();
         this.initClickListenerForWeb();
     }
@@ -341,13 +341,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         newPhrase = `${newPhrase}${extraSpace}`;
 
         this.onChangeText(newPhrase, (finalValue) => {
-            const element = this.popOverRef?._element;
-            if (element) {
-                element.focus();
+            const { textInput } = this;
+            if (textInput) {
+                textInput.focus();
 
                 // Apply a fix to move the cursor to the right
                 if (Platform.OS === 'web') {
-                    const node = element?._node;
+                    // $FlowFixMe
+                    const node: any = textInput._node;
                     if (node) {
                         node.setSelectionRange(finalValue.length, finalValue.length);
                     }
@@ -359,14 +360,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                     // the cursor stays wherever it was before, but not at the right.
 
                     // Thus we change the native position of it ...
-                    element.setNativeProps({
+                    textInput.setNativeProps({
                         selection: {
                             start: finalValue.length - 1,
                             end: finalValue.length - 1,
                         },
                     });
                     // ... in order to return it back to the right
-                    element.setNativeProps({
+                    textInput.setNativeProps({
                         selection: {
                             start: finalValue.length,
                             end: finalValue.length,
@@ -378,16 +379,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // methods
-    updateInputRef() {
-        const element = this.popOverRef?._element;
-        if (element) {
-            element.focus();
-            this.setTextInputRef(element);
-        } else {
-            throw new Error('No element has been found for popover');
-        }
-    }
-
     hideHints() {
         this.setWordThatChangedIndex(-1); // hides hints container
     }
@@ -460,7 +451,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 isVisible={this.areHintsVisible()}
                 component={() => this.renderHintsView()}
             >
-                {this.renderTextInput()}
+                <View />
             </Popover>
         );
     }
@@ -468,8 +459,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     renderTextFragment() {
         return (
             <React.Fragment>
-                <View style={UIStyle.Common.flex()}>
+                <View style={UIStyle.screenContainer}>
                     {this.renderAuxTextInput()}
+                    {this.renderTextInput()}
                     {this.renderInputWithPopOver()}
                 </View>
             </React.Fragment>
