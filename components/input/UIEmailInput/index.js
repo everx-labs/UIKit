@@ -18,6 +18,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
     emailInput: ?UIDetailsInput<DetailsProps, ActionState>;
 
     consructor(props: DetailsProps) {
+        super.constructor(props);
         this.state = {
             highlightError: false,
             tapped: false,
@@ -52,7 +53,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
         return '';
     }
 
-    onBlur =() => {
+    onBlur = () => {
         this.setStateSafely({ highlightError: true });
         if (this.props.onBlur) {
             this.props.onBlur();

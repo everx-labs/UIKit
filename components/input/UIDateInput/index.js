@@ -40,7 +40,8 @@ type Props = DetailsProps & {
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
 type State = ActionState & {
-    date: string
+    date: string,
+    highlightError: boolean,
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -59,6 +60,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         this.state = {
             ...this.state,
             date: '',
+            highlightError: false,
         };
     }
 
@@ -70,6 +72,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     // Events
     onChangeText = (date: string): void => {
         const { onChangeDate } = this.props;
+        this.setStateSafely({ highlightError: false });
 
         const newDate = date.split(this.getSeparator()).join('');
         if (Number.isNaN(Number(newDate))) return;
@@ -84,7 +87,26 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     // Getters
     commentColor() {
-        return this.isValidDate() ? null : UIColor.error();
+        const value = this.getValue();
+        if (value && !this.isValidDate()) {
+            return UIColor.detailsInputComment();
+        }
+        return null;
+    }
+
+    getComment() {
+        const value = this.getValue();
+        if (value && !this.isValidDate() && this.state.highlightError) {
+            return UILocalized.InvalidDate;
+        }
+        return '';
+    }
+
+    onBlur = () => {
+        this.setStateSafely({ highlightError: true });
+        if (this.props.onBlur) {
+            this.props.onBlur();
+        }
     }
 
     keyboardType() {
@@ -184,9 +206,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const { floatingTitle } = this.props;
         const date = this.getValue();
         const text = !floatingTitle || !date ? ' ' : this.placeholder();
-        const color = !this.isValidDate() ? { color: UIColor.error() } : null;
         return (
-            <Text style={[UITextStyle.tertiaryTinyRegular, color]}>
+            <Text style={UITextStyle.tertiaryTinyRegular}>
                 {text}
             </Text>
         );
