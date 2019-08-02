@@ -12,7 +12,7 @@ import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
-import UICardView from './components/views/UICardView';
+import UIDetailsButton from './components/buttons/UIDetailsButton';
 import UIColor from './helpers/UIColor';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
 import UICompatibilityView from './helpers/UICompatibilityView';
@@ -135,7 +135,7 @@ export {
     UIBottomBar,
     UIBullet,
     UIButton,
-    UICardView,
+    UIDetailsButton,
     UICheckboxItem,
     UIColor,
     UIColorPalette,

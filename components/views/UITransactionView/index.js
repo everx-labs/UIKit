@@ -124,17 +124,13 @@ export default class UITransactionView extends UIComponent<Props, State> {
         this.amount = null;
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+        this.updateAmount();
+    }
+
     componentDidUpdate() {
-        const { amount, separator } = this.props;
-        if (amount !== this.amount) {
-            this.amount = amount;
-            const formattedAmount = amount.split(separator).length > 1
-                ? amount
-                : `${amount}${separator}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
-            this.setAuxAmount(formattedAmount, () => { // start component layout and measuring
-                this.measureAuxAmountText(formattedAmount);
-            });
-        }
+        this.updateAmount();
     }
 
     // Events
@@ -202,6 +198,11 @@ export default class UITransactionView extends UIComponent<Props, State> {
         return this.props.cacheKey;
     }
 
+    getCachedAmount(): string {
+        const key = this.getCacheKey();
+        return (key && cachedAmount[key]) || '';
+    }
+
     // Processing
     processAuxAmountHeight(height: number, auxAmount: string) {
         if (!this.auxAmountLineHeight) {
@@ -236,9 +237,17 @@ export default class UITransactionView extends UIComponent<Props, State> {
         }
     }
 
-    getCachedAmount(): string {
-        const key = this.getCacheKey();
-        return (key && cachedAmount[key]) || '';
+    updateAmount() {
+        const { amount, separator } = this.props;
+        if (amount !== this.amount) {
+            this.amount = amount;
+            const formattedAmount = amount.split(separator).length > 1
+                ? amount
+                : `${amount}${separator}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
+            this.setAuxAmount(formattedAmount, () => { // start component layout and measuring
+                this.measureAuxAmountText(formattedAmount);
+            });
+        }
     }
 
     // Render

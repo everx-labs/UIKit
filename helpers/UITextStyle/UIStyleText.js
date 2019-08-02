@@ -52,6 +52,9 @@ export default class UIStyleText {
     static smallRegular() {
         return UITextStyle.smallRegular;
     }
+    static smallMedium() {
+        return UITextStyle.smallMedium;
+    }
     static smallBold() {
         return UITextStyle.smallBold;
     }

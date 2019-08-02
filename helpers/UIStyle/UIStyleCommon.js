@@ -93,6 +93,10 @@ export default class UIStyleCommon {
         return UIStyle.rowSpaceContainer;
     }
 
+    static rowCenterSpaceContainer() {
+        return UIStyle.rowCenterSpaceContainer;
+    }
+
     static overflowHidden() {
         return UIStyle.overflowHidden;
     }
@@ -116,6 +120,10 @@ export default class UIStyleCommon {
 
     static absoluteFillObject() {
         return UIStyle.absoluteFillObject;
+    }
+
+    static absoluteFillWidthContainer() {
+        return UIStyle.absoluteFillWidthContainer;
     }
 
     // colors

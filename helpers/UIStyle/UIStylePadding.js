@@ -61,6 +61,10 @@ export default class UIStylePadding {
         return UIStyle.paddingRightGreat;
     }
 
+    static bottomMedium() {
+        return UIStyle.paddingBottomMedium;
+    }
+
     static bottomMajor() {
         return UIStyle.paddingBottomMajor;
     }

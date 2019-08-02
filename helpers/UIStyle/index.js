@@ -14,11 +14,15 @@ import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
 import UIStyleColor from './UIStyleColor';
 
-const absoluteFillContainer = {
+const absoluteFillWidthContainer = {
     position: 'absolute',
-    top: 0,
     left: 0,
     right: 0,
+};
+
+const absoluteFillContainer = {
+    ...absoluteFillWidthContainer,
+    top: 0,
     bottom: 0,
 };
 
@@ -150,6 +154,12 @@ const UIStyle = StyleSheet.create({
     },
     rowSpaceContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    rowCenterSpaceContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
     },
     overflowHidden: {
@@ -337,11 +347,17 @@ const UIStyle = StyleSheet.create({
     paddingBottomSmall: {
         paddingBottom: UIConstant.smallContentOffset(),
     },
+    paddingBottomMedium: {
+        paddingBottom: UIConstant.mediumContentOffset(),
+    },
     paddingBottomSpacious: { // 40
         paddingBottom: UIConstant.spaciousContentOffset(),
     },
     paddingBottomMassive: {
         paddingBottom: UIConstant.massiveContentOffset(),
+    },
+    paddingBottomMajor: { // 64
+        paddingBottom: UIConstant.majorContentOffset(),
     },
     paddingBottomVast: {
         paddingBottom: UIConstant.vastContentOffset(),
@@ -363,9 +379,6 @@ const UIStyle = StyleSheet.create({
     },
     paddingLeftDefault: {
         paddingLeft: UIConstant.contentOffset(),
-    },
-    paddingBottomMajor: {
-        paddingBottom: UIConstant.majorContentOffset(),
     },
 
     // borders
@@ -452,16 +465,15 @@ const UIStyle = StyleSheet.create({
         marginRight: UIConstant.contentOffset(),
         marginBottom: UIConstant.contentOffset(),
     },
+    absoluteFillWidthContainer: {
+        ...absoluteFillWidthContainer,
+    },
     bottomScreenContainer: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
+        ...absoluteFillWidthContainer,
         bottom: 0,
     },
     topScreenContainer: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
+        ...absoluteFillWidthContainer,
         top: 0,
     },
     centerOnScreenContainer: {
