@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { Platform, View, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -28,10 +29,10 @@ type Props = DetailsProps & {
 };
 
 type State = ActionState & {
-    popoverPlacement: string,
     wordThatChangedIndex: number,
     inputHeight: number,
     inputWidth: number,
+    heightChanging: boolean,
 };
 
 const space = ' ';
@@ -65,11 +66,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     lastWords: Array<string>;
     totalWords: number;
-    popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
     clickListener: ?(e: any) => void;
-    lastVisibleState: boolean;
-    staticInputHeight: number;
     keyboardWillHideListener: any;
 
     constructor(props: Props) {
@@ -78,24 +76,20 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.lastWords = [];
         this.totalWords = 12;
         this.clickListener = null;
-        this.lastVisibleState = false;
-        this.staticInputHeight = 0; // used to learn the input height once popover is rendered
-        // This will help us to calculate the proper yOffset amount for UISeedPhraseHintsView
 
         this.state = {
             ...this.state,
-            popoverPlacement: 'bottom',
             wordThatChangedIndex: -1,
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             comment: '',
+            heightChanging: false,
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
         this.setTotalWords();
-        this.updateInputRef();
         this.initKeyboardListeners();
         this.initClickListenerForWeb();
     }
@@ -173,6 +167,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.setStateSafely({ wordThatChangedIndex }, callback);
     }
 
+    setHeightChanging(heightChanging: boolean, callback?: () => void) {
+        this.setStateSafely({ heightChanging }, callback);
+    }
+
     // Getters
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
@@ -239,16 +237,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return this.state.inputWidth || UIConstant.toastWidth();
     }
 
+    isHeightChanging(): boolean {
+        return this.state.heightChanging;
+    }
+
     areHintsVisible(): boolean {
         const wtc = this.getWordThatChangedIndex();
-        const visible = wtc !== -1;
-        if (this.lastVisibleState !== visible) {
-            this.lastVisibleState = visible;
-            setTimeout(() => {
-                this.staticInputHeight = this.getInputHeight();
-            }, 0); // requires the timeout in order to recive a proper height value
-        }
-        return visible;
+        return wtc !== -1 && !this.isHeightChanging();
     }
 
     areWordsValid(currentPhrase?: string): boolean {
@@ -303,6 +298,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     onContentSizeChange(height: number) {
         this.setInputHeight(height);
+        this.rerenderPopoverForAndroid();
     }
 
     onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
@@ -341,13 +337,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         newPhrase = `${newPhrase}${extraSpace}`;
 
         this.onChangeText(newPhrase, (finalValue) => {
-            const element = this.popOverRef?._element;
-            if (element) {
-                element.focus();
+            const { textInput } = this;
+            if (textInput) {
+                textInput.focus();
 
                 // Apply a fix to move the cursor to the right
                 if (Platform.OS === 'web') {
-                    const node = element?._node;
+                    // $FlowFixMe
+                    const node: any = textInput._node;
                     if (node) {
                         node.setSelectionRange(finalValue.length, finalValue.length);
                     }
@@ -359,14 +356,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                     // the cursor stays wherever it was before, but not at the right.
 
                     // Thus we change the native position of it ...
-                    element.setNativeProps({
+                    textInput.setNativeProps({
                         selection: {
                             start: finalValue.length - 1,
                             end: finalValue.length - 1,
                         },
                     });
                     // ... in order to return it back to the right
-                    element.setNativeProps({
+                    textInput.setNativeProps({
                         selection: {
                             start: finalValue.length,
                             end: finalValue.length,
@@ -378,16 +375,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // methods
-    updateInputRef() {
-        const element = this.popOverRef?._element;
-        if (element) {
-            element.focus();
-            this.setTextInputRef(element);
-        } else {
-            throw new Error('No element has been found for popover');
-        }
-    }
-
     hideHints() {
         this.setWordThatChangedIndex(-1); // hides hints container
     }
@@ -438,29 +425,38 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return result;
     }
 
+    rerenderPopoverForAndroid() {
+        // This hack is needed to rerender the popover on Android, as changing `key` is not enough!
+        if (Platform.OS === 'android') {
+            this.setHeightChanging(true, () => {
+                setTimeout(() => {
+                    this.setHeightChanging(false);
+                }, UIConstant.animationSmallDuration());
+            });
+        }
+    }
+
     // Render
     renderHintsView() {
-        const yOffset = (this.getInputHeight() - this.staticInputHeight)
-            + UIConstant.normalContentOffset();
         return (<UISeedPhraseHintsView
             ref={(component) => { this.seedPhraseHintsView = component; }}
             width={this.getInputWidth()}
             onHintSelected={this.onHintSelected}
-            yOffset={yOffset}
+            yOffset={UIConstant.normalContentOffset()}
         />);
     }
 
-    renderInputWithPopOver() {
+    renderHintsPopover() {
         return (
             <Popover
-                ref={(c) => { this.popOverRef = c; }}
-                placement={this.state.popoverPlacement}
+                key={`hintsPopover~${this.getInputHeight()}`}
+                placement="bottom"
                 arrowWidth={0}
                 arrowHeight={0}
                 isVisible={this.areHintsVisible()}
                 component={() => this.renderHintsView()}
             >
-                {this.renderTextInput()}
+                <View />
             </Popover>
         );
     }
@@ -468,9 +464,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     renderTextFragment() {
         return (
             <React.Fragment>
-                <View style={UIStyle.Common.flex()}>
+                <View style={UIStyle.screenContainer}>
                     {this.renderAuxTextInput()}
-                    {this.renderInputWithPopOver()}
+                    {this.renderTextInput()}
+                    {this.renderHintsPopover()}
                 </View>
             </React.Fragment>
         );
