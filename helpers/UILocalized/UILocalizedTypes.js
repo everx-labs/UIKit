@@ -29,7 +29,7 @@ export type UILocalizedData = {
     InvalidPassword: string,
     InvalidEmail: string,
     InvalidPhone: string,
-    InvalidBirthDate: string,
+    InvalidDate: string,
     YouHaveEnteredAnInvalidPhoneNumber: string,
     YouHaveEnteredAnEmptyCodeFor: string,
     YouHaveEnteredAnExpiredCodeFor: string,
