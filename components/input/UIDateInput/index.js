@@ -97,7 +97,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     getComment() {
         const value = this.getValue();
         if (value && !this.isValidDate() && this.state.highlightError) {
-            return UILocalized.InvalidEmail;
+            return UILocalized.InvalidBirthDate;
         }
         return '';
     }
