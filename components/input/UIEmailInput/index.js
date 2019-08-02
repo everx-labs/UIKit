@@ -52,7 +52,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
         return '';
     }
 
-    onBlur =() => {
+    onBlur = () => {
         this.setStateSafely({ highlightError: true });
         if (this.props.onBlur) {
             this.props.onBlur();
