@@ -30,7 +30,7 @@ const ru: UILocalizedData = {
     InvalidUsername: 'Недопустимое имя пользователя',
     InvalidPassword: 'Неверный пароль',
     InvalidEmail: 'Invalid email address',
-    InvalidePhone: 'Invalid phone',
+    InvalidPhone: 'Invalid phone',
     YouHaveEnteredAnInvalidPhoneNumber: 'Вы ввели неверный номер телефона',
     YouHaveEnteredAnEmptyCodeFor: 'Вы ввели пустой код для',
     YouHaveEnteredAnExpiredCodeFor: 'Вы ввели истекший код для',

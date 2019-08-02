@@ -30,7 +30,7 @@ const en: UILocalizedData = {
     InvalidUsername: 'Invalid username',
     InvalidPassword: 'Invalid password',
     InvalidEmail: 'Invalid email address',
-    InvalidePhone: 'Invalid phone',
+    InvalidPhone: 'Invalid phone',
     YouHaveEnteredAnInvalidPhoneNumber: 'You have entered an invalid phone number',
     YouHaveEnteredAnEmptyCodeFor: 'You have entered an empty code for',
     YouHaveEnteredAnExpiredCodeFor: 'You have entered an expired code for',

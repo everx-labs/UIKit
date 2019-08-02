@@ -20,6 +20,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
     phoneInput: ?UIDetailsInput<DetailsProps, State>;
 
     consructor(props: DetailsProps) {
+        super.constructor(props);
         this.state = {
             highlightError: false,
         };
@@ -45,7 +46,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
     getComment() {
         const { value } = this.props;
         if (value && this.isSubmitDisabled() && this.state.highlightError) {
-            return UILocalized.InvalidEmail;
+            return UILocalized.InvalidPhone;
         }
         return '';
     }
