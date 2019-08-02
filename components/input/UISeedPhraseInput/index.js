@@ -29,7 +29,6 @@ type Props = DetailsProps & {
 };
 
 type State = ActionState & {
-    popoverPlacement: string,
     wordThatChangedIndex: number,
     inputHeight: number,
     inputWidth: number,
@@ -66,11 +65,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     lastWords: Array<string>;
     totalWords: number;
-    popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
     clickListener: ?(e: any) => void;
-    lastVisibleState: boolean;
-    staticInputHeight: number;
     keyboardWillHideListener: any;
 
     constructor(props: Props) {
@@ -79,13 +75,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.lastWords = [];
         this.totalWords = 12;
         this.clickListener = null;
-        this.lastVisibleState = false;
-        this.staticInputHeight = 0; // used to learn the input height once popover is rendered
-        // This will help us to calculate the proper yOffset amount for UISeedPhraseHintsView
 
         this.state = {
             ...this.state,
-            popoverPlacement: 'bottom',
             wordThatChangedIndex: -1,
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
@@ -241,14 +233,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     areHintsVisible(): boolean {
         const wtc = this.getWordThatChangedIndex();
-        const visible = wtc !== -1;
-        if (this.lastVisibleState !== visible) {
-            this.lastVisibleState = visible;
-            setTimeout(() => {
-                this.staticInputHeight = this.getInputHeight();
-            }, 0); // requires the timeout in order to recive a proper height value
-        }
-        return visible;
+        return wtc !== -1;
     }
 
     areWordsValid(currentPhrase?: string): boolean {
@@ -431,21 +416,19 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderHintsView() {
-        const yOffset = (this.getInputHeight() - this.staticInputHeight)
-            + UIConstant.normalContentOffset();
         return (<UISeedPhraseHintsView
             ref={(component) => { this.seedPhraseHintsView = component; }}
             width={this.getInputWidth()}
             onHintSelected={this.onHintSelected}
-            yOffset={yOffset}
+            yOffset={UIConstant.normalContentOffset()}
         />);
     }
 
-    renderInputWithPopOver() {
+    renderHintsPopover() {
         return (
             <Popover
-                ref={(c) => { this.popOverRef = c; }}
-                placement={this.state.popoverPlacement}
+                key={`hintsPopover~${this.getInputHeight()}`}
+                placement="bottom"
                 arrowWidth={0}
                 arrowHeight={0}
                 isVisible={this.areHintsVisible()}
@@ -462,7 +445,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 <View style={UIStyle.screenContainer}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
-                    {this.renderInputWithPopOver()}
+                    {this.renderHintsPopover()}
                 </View>
             </React.Fragment>
         );
