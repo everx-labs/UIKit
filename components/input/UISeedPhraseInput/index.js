@@ -32,6 +32,7 @@ type State = ActionState & {
     wordThatChangedIndex: number,
     inputHeight: number,
     inputWidth: number,
+    heightChanging: boolean,
 };
 
 const space = ' ';
@@ -82,6 +83,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             comment: '',
+            heightChanging: false,
         };
     }
 
@@ -165,6 +167,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.setStateSafely({ wordThatChangedIndex }, callback);
     }
 
+    setHeightChanging(heightChanging: boolean, callback?: () => void) {
+        this.setStateSafely({ heightChanging }, callback);
+    }
+
     // Getters
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
@@ -231,9 +237,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return this.state.inputWidth || UIConstant.toastWidth();
     }
 
+    isHeightChanging(): boolean {
+        return this.state.heightChanging;
+    }
+
     areHintsVisible(): boolean {
         const wtc = this.getWordThatChangedIndex();
-        return wtc !== -1;
+        return wtc !== -1 && !this.isHeightChanging();
     }
 
     areWordsValid(currentPhrase?: string): boolean {
@@ -288,6 +298,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     onContentSizeChange(height: number) {
         this.setInputHeight(height);
+        this.rerenderPopoverForAndroid();
     }
 
     onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
@@ -412,6 +423,17 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
 
         return result;
+    }
+
+    rerenderPopoverForAndroid() {
+        // This hack is needed to rerender the popover on Android, as changing `key` is not enough!
+        if (Platform.OS === 'android') {
+            this.setHeightChanging(true, () => {
+                setTimeout(() => {
+                    this.setHeightChanging(false);
+                }, UIConstant.animationSmallDuration());
+            });
+        }
     }
 
     // Render
