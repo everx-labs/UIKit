@@ -31,7 +31,7 @@ const en: UILocalizedData = {
     InvalidPassword: 'Invalid password',
     InvalidEmail: 'Invalid email address',
     InvalidPhone: 'Invalid phone',
-    InvalidDate: 'Invalide date',
+    InvalidDate: 'Invalid date',
     YouHaveEnteredAnInvalidPhoneNumber: 'You have entered an invalid phone number',
     YouHaveEnteredAnEmptyCodeFor: 'You have entered an empty code for',
     YouHaveEnteredAnExpiredCodeFor: 'You have entered an expired code for',
