@@ -79,6 +79,7 @@ export default class UIModalController<Props, State>
 
     static animations = {
         fade: new FadeAnimation({ toValue: 1 }),
+        slide: new SlideAnimation({ slideFrom: 'bottom' }),
     }
 
     constructor(props: ModalControllerProps & Props) {
@@ -92,9 +93,7 @@ export default class UIModalController<Props, State>
         this.onCancel = null;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
-        this.animation = new SlideAnimation({
-            slideFrom: 'bottom',
-        });
+        this.animation = UIModalController.animations.slide;
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
