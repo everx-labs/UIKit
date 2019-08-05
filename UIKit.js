@@ -12,7 +12,6 @@ import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
-import UIDetailsButton from './components/buttons/UIDetailsButton';
 import UIColor from './helpers/UIColor';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
 import UICompatibilityView from './helpers/UICompatibilityView';
@@ -21,6 +20,7 @@ import UIConstant from './helpers/UIConstant';
 import UIController from './controllers/UIController';
 import UICustomSheet from './components/menus/UICustomSheet';
 import UIDateInput from './components/input/UIDateInput';
+import UIDetailsButton from './components/buttons/UIDetailsButton';
 import UIDetailsInput from './components/input/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
 import UIDetailsView from './components/views/UIDetailsView';
@@ -135,7 +135,6 @@ export {
     UIBottomBar,
     UIBullet,
     UIButton,
-    UIDetailsButton,
     UICheckboxItem,
     UIColor,
     UIColorPalette,
@@ -145,6 +144,7 @@ export {
     UIController,
     UICustomSheet,
     UIDateInput,
+    UIDetailsButton,
     UIDetailsInput,
     UIDetailsTable,
     UIDetailsToggle,
