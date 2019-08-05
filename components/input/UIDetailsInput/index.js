@@ -91,6 +91,7 @@ export type DetailsProps = ActionProps & {
     onFocus: () => void,
     onSubmitEditing?: () => void,
     onKeyPress?: (e: any) => void,
+    onHeightChange?: (height: number) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
     blurOnSubmit?: boolean,
@@ -127,6 +128,7 @@ export const detailsDefaultProps = {
     onFocus: () => {},
     onSubmitEditing: () => {},
     onKeyPress: () => {},
+    onHeightChange: () => {},
     placeholder: '',
     secureTextEntry: false,
     showSymbolsLeft: false,
@@ -183,14 +185,18 @@ export default class UIDetailsInput<Props, State>
     }
 
     onHeightChange(height: number) {
+        const { onHeightChange } = this.props;
         if (height) {
-            this.setInputAreaHeight(height - UIConstant.smallCellHeight());
+            this.setInputAreaHeight(height);
+            if (onHeightChange) {
+                onHeightChange(height);
+            }
         }
     }
 
     setInputAreaHeight(height: number) {
-        const newSize = Math.min(height, UIConstant.smallCellHeight() * 4);
-        const inH = UIConstant.smallCellHeight() + newSize;
+        const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
+        const inH = newSize;
         this.onContentSizeChange(inH);
     }
 
@@ -541,7 +547,10 @@ export default class UIDetailsInput<Props, State>
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
-                {this.renderTextInput()}
+                <View style={UIStyle.screenContainer}>
+                    {this.renderAuxTextInput()}
+                    {this.renderTextInput()}
+                </View>
                 {this.renderCounter()}
                 {this.renderToken()}
                 {this.renderButton()}
