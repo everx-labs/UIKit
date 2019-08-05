@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Platform, StyleSheet, View, Text, Modal } from 'react-native';
 import StylePropType from 'react-style-proptype';
-import { MaterialIndicator } from 'react-native-indicators';
+import { WaveIndicator } from 'react-native-indicators';
 
 import UITextStyle from '../../helpers/UITextStyle';
 import UIColor from '../../helpers/UIColor';
@@ -180,9 +180,10 @@ export default class UISpinnerOverlay extends Component {
     renderContent() {
         return (
             <View style={styles.background}>
-                <MaterialIndicator
+                <WaveIndicator
                     color={this.props.color}
                     size={this.props.size}
+                    count={2}
                 />
                 <View style={styles.textContainer}>
                     {this.renderTitleContent()}
@@ -232,8 +233,8 @@ UISpinnerOverlay.defaultProps = {
     titleContent: '',
     textContent: '',
     color: 'white',
-    size: 40, // dafault for MaterialIndicator
-    overlayColor: 'rgba(0,0,0,0.3)',
+    size: 40, // dafault for Indicator
+    overlayColor: 'rgba(0,0,0,0.15)',
     titleStyle: {},
     textStyle: {},
     containerStyle: {},
