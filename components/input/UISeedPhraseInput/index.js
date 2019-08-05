@@ -1,6 +1,7 @@
 // @flow
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { Popover } from 'react-native-simple-popover';
@@ -28,11 +29,13 @@ type Props = DetailsProps & {
 };
 
 type State = ActionState & {
-    popoverPlacement: string,
     wordThatChangedIndex: number,
     inputHeight: number,
     inputWidth: number,
+    heightChanging: boolean,
 };
+
+const space = ' ';
 
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
@@ -54,26 +57,18 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     };
 
     static splitPhrase(phrase: string): Array<string> {
-        const noRegularDash = phrase.replace(/-+/g, ` ${UIConstant.dashSymbol()} `);
-        const noExtraSpaces = noRegularDash.replace(/\s+/g, ' ');
-        const words = noExtraSpaces.split(' ');
-        const normalized = [];
-        for (let i = 0; i < words.length; i += 1) {
-            if (i === 0 && words[0] === '') {
-                continue;
-            }
-            if (words[i] !== UIConstant.dashSymbol() && words[i] !== '-') {
-                normalized.push(words[i]);
-            }
-        }
-        return normalized;
+        return (phrase.match(/\w+|\s$/g) || []).map(s => (s === space ? '' : s));
+    }
+
+    static addDashes(words: Array<string> = []): string {
+        return words.join(`${space}${UIConstant.dashSymbol()}${space}`);
     }
 
     lastWords: Array<string>;
     totalWords: number;
-    popOverRef: Popover;
     seedPhraseHintsView: ?UISeedPhraseHintsView;
     clickListener: ?(e: any) => void;
+    keyboardWillHideListener: any;
 
     constructor(props: Props) {
         super(props);
@@ -84,26 +79,45 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         this.state = {
             ...this.state,
-            popoverPlacement: 'bottom',
             wordThatChangedIndex: -1,
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             comment: '',
+            heightChanging: false,
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
         this.setTotalWords();
-        this.updateInputRef();
+        this.initKeyboardListeners();
         this.initClickListenerForWeb();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.deinitKeyboardListeners();
         this.deinitClickListenerForWeb();
     }
 
+    // Keyboard
+    initKeyboardListeners() {
+        if (Platform.OS === 'web') {
+            return; // no need
+        }
+        this.keyboardWillHideListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+            e => this.onKeyboardWillHide(e),
+        );
+    }
+
+    deinitKeyboardListeners() {
+        if (this.keyboardWillHideListener) {
+            this.keyboardWillHideListener.remove();
+        }
+    }
+
+    // Clicks
     initClickListenerForWeb() {
         if (Platform.OS !== 'web') {
             return;
@@ -124,6 +138,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
+    onKeyboardWillHide = (e: any) => {
+        this.hideHints();
+    }
+
     onKeyPress = (e: any): void => {
         if (this.seedPhraseHintsView) {
             this.seedPhraseHintsView.onKeyPress(e);
@@ -141,6 +159,18 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
     }
 
+    setInputHeight(inputHeight: number) {
+        this.setStateSafely({ inputHeight });
+    }
+
+    setWordThatChangedIndex(wordThatChangedIndex: number, callback?: () => void) {
+        this.setStateSafely({ wordThatChangedIndex }, callback);
+    }
+
+    setHeightChanging(heightChanging: boolean, callback?: () => void) {
+        this.setStateSafely({ heightChanging }, callback);
+    }
+
     // Getters
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
@@ -148,8 +178,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return flex;
     }
 
+    getInputHeight(): number {
+        return this.state.inputHeight;
+    }
+
     numOfLines(): number {
-        return this.state.inputHeight / UIConstant.smallCellHeight();
+        return Math.round(this.getInputHeight() / UIConstant.smallCellHeight());
     }
 
     commentColor(): ?string {
@@ -203,9 +237,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return this.state.inputWidth || UIConstant.toastWidth();
     }
 
+    isHeightChanging(): boolean {
+        return this.state.heightChanging;
+    }
+
     areHintsVisible(): boolean {
         const wtc = this.getWordThatChangedIndex();
-        return wtc !== -1;
+        return wtc !== -1 && !this.isHeightChanging();
     }
 
     areWordsValid(currentPhrase?: string): boolean {
@@ -259,7 +297,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     onContentSizeChange(height: number) {
-        this.setStateSafely({ inputHeight: height });
+        this.setInputHeight(height);
+        this.rerenderPopoverForAndroid();
     }
 
     onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
@@ -269,7 +308,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             return;
         }
 
-        const finalValue = this.addDashes(split);
+        const finalValue = UISeedPhraseInput.addDashes(split);
         onChangeText(finalValue);
 
         this.identifyWordThatChanged(split, () => {
@@ -298,13 +337,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         newPhrase = `${newPhrase}${extraSpace}`;
 
         this.onChangeText(newPhrase, (finalValue) => {
-            const element = this.popOverRef?._element;
-            if (element) {
-                element.focus();
+            const { textInput } = this;
+            if (textInput) {
+                textInput.focus();
 
                 // Apply a fix to move the cursor to the right
                 if (Platform.OS === 'web') {
-                    const node = element?._node;
+                    // $FlowFixMe
+                    const node: any = textInput._node;
                     if (node) {
                         node.setSelectionRange(finalValue.length, finalValue.length);
                     }
@@ -316,14 +356,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                     // the cursor stays wherever it was before, but not at the right.
 
                     // Thus we change the native position of it ...
-                    element.setNativeProps({
+                    textInput.setNativeProps({
                         selection: {
                             start: finalValue.length - 1,
                             end: finalValue.length - 1,
                         },
                     });
                     // ... in order to return it back to the right
-                    element.setNativeProps({
+                    textInput.setNativeProps({
                         selection: {
                             start: finalValue.length,
                             end: finalValue.length,
@@ -335,32 +375,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // methods
-    updateInputRef() {
-        const element = this.popOverRef?._element;
-        if (element) {
-            element.focus();
-            this.setTextInputRef(element);
-        } else {
-            throw new Error('No element has been found for popover');
-        }
-    }
-
     hideHints() {
-        this.setStateSafely({ wordThatChangedIndex: -1 });
-    }
-
-    addDashes(words: Array<string>): string {
-        if (words.length) {
-            let newPhrase = `${words[0]}`;
-            for (let i = 1; i < words.length; i += 1) {
-                if (words[i - 1] !== '') {
-                    newPhrase = `${newPhrase} ${UIConstant.dashSymbol()} ${words[i]}`;
-                }
-            }
-            return newPhrase;
-        }
-
-        return '';
+        this.setWordThatChangedIndex(-1); // hides hints container
     }
 
     identifyWordThatChanged(currentWords: Array<string>, callback: ?(() => void)) {
@@ -375,7 +391,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
         this.lastWords = Array.from(currentWords);
 
-        this.setStateSafely({ wordThatChangedIndex: index }, () => {
+        this.setWordThatChangedIndex(index, () => {
             setTimeout(() => {
                 const wordThatChanged = currentWords[index];
                 if (this.seedPhraseHintsView) {
@@ -409,32 +425,38 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return result;
     }
 
+    rerenderPopoverForAndroid() {
+        // This hack is needed to rerender the popover on Android, as changing `key` is not enough!
+        if (Platform.OS === 'android') {
+            this.setHeightChanging(true, () => {
+                setTimeout(() => {
+                    this.setHeightChanging(false);
+                }, UIConstant.animationSmallDuration());
+            });
+        }
+    }
+
     // Render
     renderHintsView() {
         return (<UISeedPhraseHintsView
             ref={(component) => { this.seedPhraseHintsView = component; }}
             width={this.getInputWidth()}
             onHintSelected={this.onHintSelected}
-            yOffset={this.state.inputHeight - UIConstant.contentOffset()}
+            yOffset={UIConstant.normalContentOffset()}
         />);
     }
 
-    renderInputWithPopOver() {
-        const isVisible = this.areHintsVisible();
+    renderHintsPopover() {
         return (
             <Popover
-                ref={(c) => { this.popOverRef = c; }}
-                placement={this.state.popoverPlacement}
+                key={`hintsPopover~${this.getInputHeight()}`}
+                placement="bottom"
                 arrowWidth={0}
                 arrowHeight={0}
-                isVisible={isVisible}
-                offset={{
-                    x: 0,
-                    y: 1,
-                }}
+                isVisible={this.areHintsVisible()}
                 component={() => this.renderHintsView()}
             >
-                {this.renderTextInput()}
+                <View />
             </Popover>
         );
     }
@@ -442,9 +464,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     renderTextFragment() {
         return (
             <React.Fragment>
-                <View style={UIStyle.Common.flex()}>
+                <View style={UIStyle.screenContainer}>
                     {this.renderAuxTextInput()}
-                    {this.renderInputWithPopOver()}
+                    {this.renderTextInput()}
+                    {this.renderHintsPopover()}
                 </View>
             </React.Fragment>
         );

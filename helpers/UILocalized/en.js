@@ -30,6 +30,8 @@ const en: UILocalizedData = {
     InvalidUsername: 'Invalid username',
     InvalidPassword: 'Invalid password',
     InvalidEmail: 'Invalid email address',
+    InvalidPhone: 'Invalid phone',
+    InvalidDate: 'Invalid date',
     YouHaveEnteredAnInvalidPhoneNumber: 'You have entered an invalid phone number',
     YouHaveEnteredAnEmptyCodeFor: 'You have entered an empty code for',
     YouHaveEnteredAnExpiredCodeFor: 'You have entered an expired code for',
@@ -420,7 +422,11 @@ const en: UILocalizedData = {
 
     // Passport
     ViewPassport: 'View Passport',
-    PassportNeedsAttention: 'Passport validation is required',
+    PassportNeedsAttention: [
+        'Please add all your personal information to your passport',
+        'Please add all your personal information and an official document to your passport',
+        'Passport validation is required',
+    ],
     AtTime: 'at',
     Passport: 'Passport',
     Status: 'Status',

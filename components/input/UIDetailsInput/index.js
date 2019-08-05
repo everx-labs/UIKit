@@ -158,7 +158,7 @@ export default class UIDetailsInput<Props, State>
     onChange(event: any) {
         if (Platform.OS === 'web') {
             this.onWebChange();
-        } else if (event && event.nativeEvent) {
+        } else {
             this.onMobileChange(event);
         }
     }
@@ -167,7 +167,6 @@ export default class UIDetailsInput<Props, State>
         if (event && event.nativeEvent) {
             const { contentSize } = event.nativeEvent;
             const height = contentSize?.height || 0;
-
             this.onHeightChange(height);
         }
     }
@@ -182,9 +181,9 @@ export default class UIDetailsInput<Props, State>
         });
     }
 
-    onHeightChange(heigh: number) {
-        if (heigh) {
-            this.setInputAreaHeight(heigh - UIConstant.smallCellHeight());
+    onHeightChange(height: number) {
+        if (height) {
+            this.setInputAreaHeight(height - UIConstant.smallCellHeight());
         }
     }
 
@@ -194,7 +193,7 @@ export default class UIDetailsInput<Props, State>
         this.onContentSizeChange(inH);
     }
 
-    onContentSizeChange(heigh: number) {
+    onContentSizeChange(height: number) {
         // Not implemented in here
     }
 
@@ -216,10 +215,10 @@ export default class UIDetailsInput<Props, State>
         }
     };
 
-    onFocus = () => {
+    onFocus() {
         this.setFocused();
         this.props.onFocus();
-    };
+    }
 
     onBlur() {
         this.setFocused(false);
@@ -447,7 +446,7 @@ export default class UIDetailsInput<Props, State>
                 multiline={this.isMultiline()}
                 numberOfLines={this.numOfLines()}
                 clearButtonMode="never"
-                onFocus={this.onFocus}
+                onFocus={() => this.onFocus()}
                 onBlur={() => this.onBlur()}
                 onChangeText={this.onChangeText}
                 onChange={e => this.onChange(e)}

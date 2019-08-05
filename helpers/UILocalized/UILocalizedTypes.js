@@ -28,6 +28,8 @@ export type UILocalizedData = {
     InvalidUsername: string,
     InvalidPassword: string,
     InvalidEmail: string,
+    InvalidPhone: string,
+    InvalidDate: string,
     YouHaveEnteredAnInvalidPhoneNumber: string,
     YouHaveEnteredAnEmptyCodeFor: string,
     YouHaveEnteredAnExpiredCodeFor: string,
@@ -414,7 +416,7 @@ export type UILocalizedData = {
 
     // Passport
     ViewPassport: string,
-    PassportNeedsAttention: string,
+    PassportNeedsAttention: string[],
     AtTime: string,
     Passport: string,
     Status: string,

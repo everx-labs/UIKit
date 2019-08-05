@@ -55,17 +55,13 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         this.balance = null;
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+        this.updateBalance();
+    }
+
     componentDidUpdate() {
-        const { balance, separator } = this.props;
-        if (balance !== this.balance) {
-            this.balance = balance;
-            const formattedBalance = balance.split(separator).length > 1
-                ? balance
-                : `${balance}${separator}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
-            this.setAuxBalance(formattedBalance, () => { // start component layout and measuring
-                this.measureAuxBalanceText(formattedBalance);
-            });
-        }
+        this.updateBalance();
     }
 
     // Events
@@ -117,6 +113,11 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         return this.props.cacheKey;
     }
 
+    getCachedBalance(): string {
+        const key = this.getCacheKey();
+        return (key && cachedBalance[key]) || '';
+    }
+
     // Processing
     processAuxBalanceHeight(height: number, auxBalance: string) {
         if (!this.auxBalanceLineHeight) {
@@ -151,9 +152,17 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         }
     }
 
-    getCachedBalance(): string {
-        const key = this.getCacheKey();
-        return (key && cachedBalance[key]) || '';
+    updateBalance() {
+        const { balance, separator } = this.props;
+        if (balance !== this.balance) {
+            this.balance = balance;
+            const formattedBalance = balance.split(separator).length > 1
+                ? balance
+                : `${balance}${separator}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
+            this.setAuxBalance(formattedBalance, () => { // start component layout and measuring
+                this.measureAuxBalanceText(formattedBalance);
+            });
+        }
     }
 
     // Render
