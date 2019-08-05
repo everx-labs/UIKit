@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
     button: {
+        marginLeft: UIConstant.tinyContentOffset(),
         height: undefined,
     },
 });
