@@ -390,6 +390,7 @@ const ru: UILocalizedData = {
     Account: 'Аккаунт',
     Accounts: 'Аккаунты',
     MyMainAccount: 'Мой Главный Аккаунт',
+    MyAccount: 'Мой Аккаунт',
     Limits: 'Лимиты',
     SingleOperationLimit: 'Лимит на одну операцию',
     PublicAccount: 'Публичный аккаунт',

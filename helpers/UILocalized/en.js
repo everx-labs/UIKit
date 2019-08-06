@@ -391,6 +391,7 @@ const en: UILocalizedData = {
     Account: 'Account',
     Accounts: 'Accounts',
     MyMainAccount: 'My Main Account',
+    MyAccount: 'My Account',
     Limits: 'Limits',
     SingleOperationLimit: 'Single Operation up to',
     PublicAccount: 'Public account',
