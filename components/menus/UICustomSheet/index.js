@@ -2,6 +2,7 @@
 import React from 'react';
 import {
     Animated,
+    BackHandler,
     Modal,
     Platform,
     LayoutAnimation,
@@ -113,6 +114,7 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.stopListeningToBackButton();
         if (this.props.masterSheet) {
             masterRef = null;
         }
@@ -146,6 +148,11 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     setModalVisible(modalVisible: boolean, callback?: () => void) {
+        if (modalVisible) {
+            this.startListeningToBackButton();
+        } else {
+            this.stopListeningToBackButton();
+        }
         this.setStateSafely({
             modalVisible,
         }, callback);
@@ -162,6 +169,24 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     getHeight() {
         return this.state.height;
+    }
+
+    // Back button
+    backHandler: any;
+    startListeningToBackButton() {
+        if (Platform.OS !== 'android') {
+            return;
+        }
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            this.hide();
+            return true;
+        });
+    }
+
+    stopListeningToBackButton() {
+        if (this.backHandler) {
+            this.backHandler.remove();
+        }
     }
 
     // Actions
