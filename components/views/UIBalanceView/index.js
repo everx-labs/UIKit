@@ -17,7 +17,9 @@ type Props = {
     tokenSymbol: string,
     testID?: string,
     cacheKey?: string,
+    containerStyle?: ViewStyleProp,
     textStyle?: ViewStyleProp,
+    smartTruncator: boolean,
 };
 
 type State = {
@@ -40,11 +42,13 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         description: '',
         tokenSymbol: '',
         textStyle: UIStyle.Text.titleLight(),
+        smartTruncator: true,
     };
 
     // constructor
     balance: ?string;
     balanceLineHeight: number;
+    updatingBalance: boolean;
     constructor(props: Props) {
         super(props);
 
@@ -55,6 +59,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
         this.balance = null;
         this.balanceLineHeight = 0;
+        this.updatingBalance = false;
     }
 
     componentDidMount() {
@@ -73,11 +78,16 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     };
 
     onAuxBalanceLayout = () => {
+        if (this.updatingBalance) {
+            return;
+        }
+        this.updatingBalance = true;
         this.updateBalance(true); // force
     };
 
     // Setters
     setBalance(balance: string) {
+        this.updatingBalance = false;
         this.setCachedBalance(balance);
         this.setStateSafely({ balance });
     }
@@ -204,9 +214,10 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                     UIStyle.topScreenContainer,
                     UIStyle.Text.primaryTitleLight(),
                     styles.auxBalance,
+                    this.props.textStyle,
                 ]}
                 onLayout={this.onAuxBalanceLayout}
-                numberOfLines={2}
+                numberOfLines={this.props.smartTruncator ? 2 : 1}
             >
                 {`${auxBalance} ${this.getTokenSymbol()}`}
             </Text>
@@ -225,7 +236,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const testID = this.getTestID();
         const testIDProp = testID ? { testID } : null;
         return (
-            <View {...testIDProp} >
+            <View {...testIDProp} style={this.props.containerStyle} >
                 {this.renderBalance()}
                 {this.renderAuxBalance()}
                 {this.renderDescription()}
