@@ -385,6 +385,7 @@ export type UILocalizedData = {
     Account: string,
     Accounts: string,
     MyMainAccount: string,
+    MyAccount: string,
     Limits: string,
     SingleOperationLimit: string,
     PublicAccount: string,
