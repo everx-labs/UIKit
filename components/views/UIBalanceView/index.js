@@ -168,7 +168,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     updateBalance(force: boolean = false) {
         const { balance, separator } = this.props;
-        if ((balance !== '0' && balance !== this.balance) || force) {
+        if (balance !== this.balance || force) {
             this.balance = balance;
             const formattedBalance = balance.split(separator).length > 1
                 ? balance
