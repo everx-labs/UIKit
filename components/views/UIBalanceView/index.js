@@ -17,7 +17,9 @@ type Props = {
     tokenSymbol: string,
     testID?: string,
     cacheKey?: string,
+    containerStyle?: ViewStyleProp,
     textStyle?: ViewStyleProp,
+    smartTruncator: boolean,
 };
 
 type State = {
@@ -40,10 +42,13 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         description: '',
         tokenSymbol: '',
         textStyle: UIStyle.Text.titleLight(),
+        smartTruncator: true,
     };
 
     // constructor
     balance: ?string;
+    balanceLineHeight: number;
+    updatingBalance: boolean;
     constructor(props: Props) {
         super(props);
 
@@ -53,6 +58,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         };
 
         this.balance = null;
+        this.balanceLineHeight = 0;
+        this.updatingBalance = false;
     }
 
     componentDidMount() {
@@ -65,16 +72,22 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     // Events
-    auxBalanceLineHeight: ?number;
-    onAuxBalanceLayout = (e: any) => {
+    onBalanceLayout = (e: any) => {
         const { height } = e.nativeEvent.layout;
-        if (!this.auxBalanceLineHeight) {
-            this.auxBalanceLineHeight = height;
+        this.balanceLineHeight = height;
+    };
+
+    onAuxBalanceLayout = () => {
+        if (this.updatingBalance) {
+            return;
         }
+        this.updatingBalance = true;
+        this.updateBalance(true); // force
     };
 
     // Setters
     setBalance(balance: string) {
+        this.updatingBalance = false;
         this.setCachedBalance(balance);
         this.setStateSafely({ balance });
     }
@@ -120,13 +133,10 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     // Processing
     processAuxBalanceHeight(height: number, auxBalance: string) {
-        if (!this.auxBalanceLineHeight) {
-            this.auxBalanceLineHeight = height;
-        }
-        if (this.auxBalanceLineHeight < height) {
+        if (this.balanceLineHeight < height) { // make sure we fit the balance into one line
             const truncatedAuxBalance = auxBalance.slice(0, -1); // reduce balance size
             this.setAuxBalance(truncatedAuxBalance, () => {
-                this.measureAuxBalanceText(truncatedAuxBalance);
+                this.measureAuxBalanceText();
             });
         } else {
             this.setBalance(auxBalance);
@@ -134,13 +144,17 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     // Actions
-    measureAuxBalanceText(auxBalance: string) {
+    measuringBalance: ?string;
+    measureAuxBalanceText() {
         setTimeout(() => {
+            this.measuringBalance = this.getAuxBalance();
             if (!this.auxBalanceText) {
                 return;
             }
             this.auxBalanceText.measure((relX, relY, w, h) => {
-                this.processAuxBalanceHeight(h, auxBalance);
+                if (this.measuringBalance && this.measuringBalance === this.getAuxBalance()) {
+                    this.processAuxBalanceHeight(h, this.measuringBalance);
+                }
             });
         }, 0);
     }
@@ -152,15 +166,15 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         }
     }
 
-    updateBalance() {
+    updateBalance(force: boolean = false) {
         const { balance, separator } = this.props;
-        if (balance !== this.balance) {
+        if (balance !== this.balance || force) {
             this.balance = balance;
             const formattedBalance = balance.split(separator).length > 1
                 ? balance
                 : `${balance}${separator}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
             this.setAuxBalance(formattedBalance, () => { // start component layout and measuring
-                this.measureAuxBalanceText(formattedBalance);
+                this.measureAuxBalanceText();
             });
         }
     }
@@ -170,15 +184,21 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const balance = this.getBalance();
         const separator = this.getSeparator();
         const stringParts = balance.split(separator);
-        return (
-            <Text
-                style={[UIStyle.Text.primary(), this.props.textStyle]}
-                numberOfLines={1}
-            >
-                {stringParts[0]}
+        const integer = stringParts[0];
+        const fractional = stringParts.length > 1
+            ? (
                 <Text style={UIStyle.Text.tertiary()}>
                     {`${separator}${stringParts[1]} ${this.getTokenSymbol()}`}
                 </Text>
+            )
+            : null;
+        return (
+            <Text
+                style={[UIStyle.Text.primary(), this.props.textStyle]}
+                onLayout={this.onBalanceLayout}
+                numberOfLines={1}
+            >
+                {integer}{fractional}
             </Text>
         );
     }
@@ -194,9 +214,10 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                     UIStyle.topScreenContainer,
                     UIStyle.Text.primaryTitleLight(),
                     styles.auxBalance,
+                    this.props.textStyle,
                 ]}
                 onLayout={this.onAuxBalanceLayout}
-                numberOfLines={2}
+                numberOfLines={this.props.smartTruncator ? 2 : 1}
             >
                 {`${auxBalance} ${this.getTokenSymbol()}`}
             </Text>
@@ -215,7 +236,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const testID = this.getTestID();
         const testIDProp = testID ? { testID } : null;
         return (
-            <View {...testIDProp} >
+            <View {...testIDProp} style={this.props.containerStyle} >
                 {this.renderBalance()}
                 {this.renderAuxBalance()}
                 {this.renderDescription()}
