@@ -18,6 +18,7 @@ import type { ReactNavigation } from '../../components/navigation/UINavigationBa
 import UIConstant from '../../helpers/UIConstant';
 import UIDevice from '../../helpers/UIDevice';
 import UIEventHelper from '../../helpers/UIEventHelper';
+import UIFunction from '../../helpers/UIFunction';
 import UILocalized from '../../helpers/UILocalized/';
 import UIStyle from '../../helpers/UIStyle';
 
@@ -531,11 +532,13 @@ export default class UIController<Props, State>
                 if (this.getRunningAsyncOperation() !== '') {
                     return;
                 }
-                this.setStateSafely({ runningAsyncOperation: name || 'operation' });
+                const runningOperation = { runningAsyncOperation: name || 'operation' };
+                await UIFunction.makeAsync(this.setStateSafely.bind(this))(runningOperation);
                 try {
                     await operation();
                 } finally {
-                    this.setStateSafely({ runningAsyncOperation: '' });
+                    const emptyOperation = { runningAsyncOperation: '' };
+                    await UIFunction.makeAsync(this.setStateSafely.bind(this))(emptyOperation);
                 }
             } catch (error) {
                 console.log(
