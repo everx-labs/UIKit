@@ -96,6 +96,10 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return !companyName && !address && !phoneNumber && !postalCode && !location;
     }
 
+    hasNoPhoneNumber() {
+        return !this.props.phoneNumber;
+    }
+
     hasNoLeftPart() {
         const { leftText, menuItems } = this.props;
         return !leftText && menuItems.length === 0;
@@ -190,8 +194,14 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 </Text>
                 <Text style={[textStyle, UIStyle.Text.alignCenter()]}>
                     {this.renderEmail()}
-                    {'   ·  '}
-                    <Text {...UIBottomBar.getItemProp('telephone')}>{phoneNumber}</Text>
+                    {
+                        this.hasNoPhoneNumber() ? null : (
+                            <React.Fragment>
+                                {'   ·  '}
+                                <Text {...UIBottomBar.getItemProp('telephone')}>{phoneNumber}</Text>
+                            </React.Fragment>
+                        )
+                    }
                 </Text>
             </View>
         );
