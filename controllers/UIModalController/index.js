@@ -23,6 +23,7 @@ import type {
 
 import UIController from '../UIController';
 import UIDevice from '../../helpers/UIDevice';
+import UIFunction from '../../helpers/UIFunction';
 import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
@@ -263,19 +264,22 @@ export default class UIModalController<Props, State>
     // Events
 
     // Actions
-    show() {
-        this.setControllerVisible(true);
+    openDialog() {
         this.onWillAppear();
-        // First set visible then do the rest
-        setTimeout(() => { // in order to render
-            if (this.dialog) {
-                this.dialog.show();
-            }
-            this.setInitialSwipeState();
-        }, 0);
+        if (this.dialog) {
+            this.dialog.show();
+        }
     }
 
-    hide() {
+    async show(open: boolean = true) {
+        this.setInitialSwipeState();
+        await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);
+        if (open) {
+            this.openDialog();
+        }
+    }
+
+    async hide() {
         if (this.dialog) {
             this.dialog.dismiss();
             this.onWillHide();
