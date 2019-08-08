@@ -159,6 +159,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
             <UICustomSheet
                 ref={(component) => { this.customSheet = component; }}
                 masterSheet={false}
+                modal={false}
                 component={this.renderMenu()}
                 fullWidth
                 onCancel={this.onCancel}
