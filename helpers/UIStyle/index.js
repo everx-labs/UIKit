@@ -20,6 +20,12 @@ const absoluteFillWidthContainer = {
     right: 0,
 };
 
+const absoluteFillHeightContainer = {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+};
+
 const absoluteFillContainer = {
     ...absoluteFillWidthContainer,
     top: 0,
@@ -475,6 +481,14 @@ const UIStyle = StyleSheet.create({
     topScreenContainer: {
         ...absoluteFillWidthContainer,
         top: 0,
+    },
+    leftScreenContainer: {
+        ...absoluteFillHeightContainer,
+        left: 0,
+    },
+    rightScreenContainer: {
+        ...absoluteFillHeightContainer,
+        right: 0,
     },
     centerOnScreenContainer: {
         position: 'absolute',

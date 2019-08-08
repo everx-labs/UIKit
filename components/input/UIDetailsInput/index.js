@@ -271,8 +271,8 @@ export default class UIDetailsInput<Props, State>
         return this.state.hover;
     }
 
-    isSubmitDisabled(): boolean {
-        return (this.props.disableSubmitEmpty && !this.props.value) ||
+    isSubmitDisabled(value: string = this.props.value): boolean {
+        return (this.props.disableSubmitEmpty && !value) ||
                 this.props.submitDisabled || false;
     }
 
