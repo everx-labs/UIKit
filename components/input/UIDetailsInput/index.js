@@ -263,6 +263,18 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Getters
+
+    getCommentTestId(comment: string): string {
+        if (comment === 'Seems we have a typo here, try again') {
+            return 'comment_error';
+        } else if (comment.includes('more')) {
+            return `comment_counter_${comment.split(' ')[0]}`;
+        } else if (comment === 'Great memory, check passed!') {
+            return 'comment_success';
+        }
+        return 'comment';
+    }
+
     isFocused(): boolean {
         return this.state.focused || (this.textInput && this.textInput.isFocused()) || false;
     }
@@ -587,6 +599,7 @@ export default class UIDetailsInput<Props, State>
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
+                testID={this.getCommentTestId(comment)}
                 style={[
                     styles.commentStyle,
                     defaultColorStyle,
