@@ -168,6 +168,14 @@ export default class UIStyleCommon {
         return UIStyle.bottomScreenContainer;
     }
 
+    static leftScreenContainer() {
+        return UIStyle.leftScreenContainer;
+    }
+
+    static rightScreenContainer() {
+        return UIStyle.rightScreenContainer;
+    }
+
     static icon() {
         return UIStyle.icon;
     }

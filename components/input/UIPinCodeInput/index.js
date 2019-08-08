@@ -28,6 +28,8 @@ type Props = {
     pinCodeEnter: (pin: string) => void,
 };
 
+const dotSize = UIConstant.tinyCellHeight();
+
 const styleProperties = {
     key: {
         width: UIConstant.buttonHeight(),
@@ -38,32 +40,33 @@ const styleProperties = {
         marginRight: UIConstant.mediumContentOffset(),
     },
     dotView: {
-        width: UIConstant.tinyCellHeight(),
-        height: UIConstant.tinyCellHeight(),
+        width: UIConstant.smallContentOffset() + dotSize + UIConstant.smallContentOffset(),
+        height: UIConstant.smallContentOffset() + dotSize + UIConstant.smallContentOffset(),
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: UIConstant.smallContentOffset(),
-        marginRight: UIConstant.smallContentOffset(),
+        paddingHorizontal: UIConstant.smallContentOffset(),
     },
     dotBlue: {
-        width: UIConstant.tinyCellHeight(),
-        height: UIConstant.tinyCellHeight(),
-        borderRadius: UIConstant.borderRadius(),
+        width: dotSize,
+        height: dotSize,
+        borderRadius: dotSize / 2,
         backgroundColor: UIColor.primary(),
     },
     dotRed: {
-        width: UIConstant.tinyCellHeight(),
-        height: UIConstant.tinyCellHeight(),
-        borderRadius: UIConstant.borderRadius(),
+        width: dotSize,
+        height: dotSize,
+        borderRadius: dotSize / 2,
         backgroundColor: UIColor.error(),
     },
     dotGray: {
-        width: UIConstant.tinyCellHeight() / 2,
-        height: UIConstant.tinyCellHeight() / 2,
-        borderRadius: UIConstant.borderRadius() / 2,
+        width: dotSize / 2,
+        height: dotSize / 2,
+        borderRadius: dotSize / 4,
         backgroundColor: UIColor.grey3(),
     },
     animatedView: {
+        alignItems: 'center',
+        justifyContent: 'center',
         height: UIConstant.mediumCellHeight(),
     },
 };
@@ -210,7 +213,6 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         return (
             <Animated.View style={[styles.animatedView, { marginLeft: this.state.shakeMargin }]}>
                 <FlatList
-                    style={[UIStyle.Margin.topTiny(), UIStyle.Margin.bottomDefault()]}
                     horizontal
                     data={this.indicator}
                     extraData={this.state}
@@ -245,6 +247,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             <View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
+                        testID="pincode-digit-1"
                         style={styles.key}
                         onPress={() => this.onKeyPress('1')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -252,6 +255,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>1</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-2"
                         style={styles.key}
                         onPress={() => this.onKeyPress('2')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -259,6 +263,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>2</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-3"
                         style={styles.key}
                         onPress={() => this.onKeyPress('3')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -268,6 +273,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
+                        testID="pincode-digit-4"
                         style={styles.key}
                         onPress={() => this.onKeyPress('4')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -275,6 +281,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>4</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-5"
                         style={styles.key}
                         onPress={() => this.onKeyPress('5')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -282,6 +289,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>5</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-6"
                         style={styles.key}
                         onPress={() => this.onKeyPress('6')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -291,6 +299,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
+                        testID="pincode-digit-7"
                         style={styles.key}
                         onPress={() => this.onKeyPress('7')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -298,6 +307,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>7</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-8"
                         style={styles.key}
                         onPress={() => this.onKeyPress('8')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -305,6 +315,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>8</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-9"
                         style={styles.key}
                         onPress={() => this.onKeyPress('9')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -323,6 +334,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-0"
                         style={styles.key}
                         onPress={() => this.onKeyPress('0')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -330,6 +342,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>0</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        testID="pincode-digit-delete"
                         style={styles.key}
                         onPress={this.onDeletePress}
                         disabled={this.state.pin.length === 0}

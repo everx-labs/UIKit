@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -18,6 +17,7 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIProfileInitials from '../../profile/UIProfileInitials';
+import UIBalanceView from '../UIBalanceView';
 
 type Props = {
     amount: string,
@@ -34,8 +34,7 @@ type Props = {
 };
 
 type State = {
-    amount: string,
-    auxAmount: string,
+    //
 };
 
 const tableStyles = StyleSheet.create({
@@ -88,16 +87,6 @@ const detailsStyles = StyleSheet.create({
     },
 });
 
-const styles = StyleSheet.create({
-    auxAmount: {
-        opacity: 0,
-        zIndex: -1,
-        width: 0,
-    },
-});
-
-const cachedAmount = {};
-
 export default class UITransactionView extends UIComponent<Props, State> {
     static defaultProps = {
         amount: '',
@@ -110,47 +99,6 @@ export default class UITransactionView extends UIComponent<Props, State> {
         detailsMode: false,
         onPress: () => {},
     };
-
-    // constructor
-    amount: ?string;
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            amount: this.getCachedAmount(),
-            auxAmount: '',
-        };
-
-        this.amount = null;
-    }
-
-    componentDidMount() {
-        super.componentDidMount();
-        this.updateAmount();
-    }
-
-    componentDidUpdate() {
-        this.updateAmount();
-    }
-
-    // Events
-    auxAmountLineHeight: ?number;
-    onAuxAmountLayout = (e: any) => {
-        const { height } = e.nativeEvent.layout;
-        if (!this.auxAmountLineHeight) {
-            this.auxAmountLineHeight = height;
-        }
-    };
-
-    // Setters
-    setAmount(amount: string) {
-        this.setCachedAmount(amount);
-        this.setStateSafely({ amount });
-    }
-
-    setAuxAmount(auxAmount: string, callback?: () => void) {
-        this.setStateSafely({ auxAmount }, callback);
-    }
 
     // Getters
     isDetailsMode() {
@@ -166,12 +114,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
     }
 
     getAmount(): string {
-        return this.state.amount
-            || `0${this.getSeparator()}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
-    }
-
-    getAuxAmount(): string {
-        return this.state.auxAmount || this.getAmount();
+        return this.props.amount || '0';
     }
 
     getDescription(): string {
@@ -196,58 +139,6 @@ export default class UITransactionView extends UIComponent<Props, State> {
 
     getCacheKey(): ?string {
         return this.props.cacheKey;
-    }
-
-    getCachedAmount(): string {
-        const key = this.getCacheKey();
-        return (key && cachedAmount[key]) || '';
-    }
-
-    // Processing
-    processAuxAmountHeight(height: number, auxAmount: string) {
-        if (!this.auxAmountLineHeight) {
-            this.auxAmountLineHeight = height;
-        }
-        if (this.auxAmountLineHeight < height) {
-            const truncatedAuxAmount = auxAmount.slice(0, -1); // reduce amount size
-            this.setAuxAmount(truncatedAuxAmount, () => {
-                this.measureAuxAmountText(truncatedAuxAmount);
-            });
-        } else {
-            this.setAmount(auxAmount);
-        }
-    }
-
-    // Actions
-    measureAuxAmountText(auxAmount: string) {
-        setTimeout(() => {
-            if (!this.auxAmountText) {
-                return;
-            }
-            this.auxAmountText.measure((relX, relY, w, h) => {
-                this.processAuxAmountHeight(h, auxAmount);
-            });
-        }, 0);
-    }
-
-    setCachedAmount(amount: string) {
-        const key = this.getCacheKey();
-        if (key) {
-            cachedAmount[key] = amount;
-        }
-    }
-
-    updateAmount() {
-        const { amount, separator } = this.props;
-        if (amount !== this.amount) {
-            this.amount = amount;
-            const formattedAmount = amount.split(separator).length > 1
-                ? amount
-                : `${amount}${separator}${'0'.repeat(UIConstant.maxDecimalDigits())}`;
-            this.setAuxAmount(formattedAmount, () => { // start component layout and measuring
-                this.measureAuxAmountText(formattedAmount);
-            });
-        }
     }
 
     // Render
@@ -275,51 +166,6 @@ export default class UITransactionView extends UIComponent<Props, State> {
         );
     }
 
-    renderAmount() {
-        const amount = this.getAmount();
-        const separator = this.getSeparator();
-        const stringParts = amount.split(separator);
-        return (
-            <Text
-                style={UITextStyle.primarySmallRegular}
-                numberOfLines={1}
-            >
-                {stringParts[0]}
-                <Text style={[UIStyle.Text.tertiaryTitleLight(), UIFont.smallRegular()]}>
-                    {`${separator}${stringParts[1]}`}
-                </Text>
-            </Text>
-        );
-    }
-
-    /* eslint-disable-next-line */
-    auxAmountText: ?(React$Component<*> & NativeMethodsMixinType);
-    renderAuxAmount() {
-        const auxAmount = this.getAuxAmount();
-        return (
-            <Text
-                ref={(component) => { this.auxAmountText = component; }}
-                style={[
-                    UITextStyle.primaryBodyRegular,
-                    styles.auxAmount,
-                ]}
-                onLayout={this.onAuxAmountLayout}
-                numberOfLines={1}
-            >
-                {`${auxAmount}`}
-            </Text>
-        );
-    }
-
-    renderTransactionAmount() {
-        return (
-            <View style={[UIStyle.flexRow, UIStyle.justifyCenter, UIStyle.marginLeftDefault]}>
-                {this.renderAmount()}
-                {this.renderAuxAmount()}
-            </View>
-        );
-    }
-
     renderTitle() {
         const title = this.getTitle();
         const style = [UITextStyle.primarySmallMedium];
@@ -328,7 +174,27 @@ export default class UITransactionView extends UIComponent<Props, State> {
 
     renderDescription() {
         const description = this.getDescription();
-        return description.length ? <Text style={UITextStyle.secondaryCaptionRegular}>{description}</Text> : null;
+        return description.length ?
+            (
+                <Text style={UITextStyle.secondaryCaptionRegular}>
+                    {description}
+                </Text>
+            )
+            : null;
+    }
+
+    renderAmount() {
+        const cacheKey = this.getCacheKey();
+        const cacheKeyProp = cacheKey ? { cacheKey } : {};
+        return (
+            <UIBalanceView
+                {...cacheKeyProp}
+                balance={this.getAmount()}
+                separator={this.getSeparator()}
+                smartTruncator={false}
+                textStyle={[UIStyle.Text.smallRegular(), UIStyle.Common.textAlignRight()]}
+            />
+        );
     }
 
     renderContent() {
@@ -336,11 +202,11 @@ export default class UITransactionView extends UIComponent<Props, State> {
             <View style={[this.getStyles().container, this.props.containerStyle]}>
                 {this.renderAvatar()}
                 <View style={[UIStyle.flex, UIStyle.flexRow, UIStyle.alignCenter]}>
-                    <View style={[UIStyle.flex, UIStyle.flexColumn]}>
+                    <View style={[UIStyle.flex, UIStyle.flexColumn, UIStyle.Margin.rightDefault()]}>
                         {this.renderTitle()}
                         {this.renderDescription()}
                     </View>
-                    {this.renderTransactionAmount()}
+                    {this.renderAmount()}
                 </View>
             </View>
         );

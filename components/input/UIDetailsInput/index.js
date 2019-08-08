@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
     button: {
+        marginLeft: UIConstant.tinyContentOffset(),
         height: undefined,
     },
 });
@@ -90,6 +91,7 @@ export type DetailsProps = ActionProps & {
     onFocus: () => void,
     onSubmitEditing?: () => void,
     onKeyPress?: (e: any) => void,
+    onHeightChange?: (height: number) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
     blurOnSubmit?: boolean,
@@ -126,6 +128,7 @@ export const detailsDefaultProps = {
     onFocus: () => {},
     onSubmitEditing: () => {},
     onKeyPress: () => {},
+    onHeightChange: () => {},
     placeholder: '',
     secureTextEntry: false,
     showSymbolsLeft: false,
@@ -182,14 +185,18 @@ export default class UIDetailsInput<Props, State>
     }
 
     onHeightChange(height: number) {
+        const { onHeightChange } = this.props;
         if (height) {
-            this.setInputAreaHeight(height - UIConstant.smallCellHeight());
+            this.setInputAreaHeight(height);
+            if (onHeightChange) {
+                onHeightChange(height);
+            }
         }
     }
 
     setInputAreaHeight(height: number) {
-        const newSize = Math.min(height, UIConstant.smallCellHeight() * 4);
-        const inH = UIConstant.smallCellHeight() + newSize;
+        const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
+        const inH = newSize;
         this.onContentSizeChange(inH);
     }
 
@@ -264,8 +271,8 @@ export default class UIDetailsInput<Props, State>
         return this.state.hover;
     }
 
-    isSubmitDisabled(): boolean {
-        return (this.props.disableSubmitEmpty && !this.props.value) ||
+    isSubmitDisabled(value: string = this.props.value): boolean {
+        return (this.props.disableSubmitEmpty && !value) ||
                 this.props.submitDisabled || false;
     }
 
@@ -335,7 +342,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.placeholder();
     }
 
 
@@ -540,7 +547,10 @@ export default class UIDetailsInput<Props, State>
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
-                {this.renderTextInput()}
+                <View style={UIStyle.screenContainer}>
+                    {this.renderAuxTextInput()}
+                    {this.renderTextInput()}
+                </View>
                 {this.renderCounter()}
                 {this.renderToken()}
                 {this.renderButton()}
