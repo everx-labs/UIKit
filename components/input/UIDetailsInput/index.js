@@ -342,7 +342,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.placeholder();
     }
 
 
