@@ -65,13 +65,13 @@ export default class UILabel extends UIComponent<Props, State> {
         const role = this.getRole();
         const result = [];
 
-        if (role === UILabel.Role.Title) {
+        if (role === UILabel.Role.Title) { // Title - fontSize: 36, lineHeight: 48
             result.push(UIStyle.Text.primaryTitleBold());
         } else if (role === UILabel.Role.Subtitle) {
             result.push(UIStyle.Text.primarySubtitleBold());
         } else if (role === UILabel.Role.SubtitleRegular) {
             result.push(UIStyle.Text.primarySubtitleRegular());
-        } else if (role === UILabel.Role.Description) {
+        } else if (role === UILabel.Role.Description) { // Body - fontSize: 18, lineHeight: 24
             result.push(UIStyle.Text.primaryBodyRegular());
         } else if (role === UILabel.Role.BoldDescription) {
             result.push(UIStyle.Text.primaryBodyBold());

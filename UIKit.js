@@ -61,6 +61,7 @@ import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
 import UINotificationBadge from './components/notifications/UINotificationBadge';
 import UINumberInput from './components/input/UINumberInput';
+import UIPageNotFoundScreen from './controllers/UIPageNotFoundScreen';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
 import UIPinCodeInput from './components/input/UIPinCodeInput';
@@ -185,6 +186,7 @@ export {
     UINotice,
     UINotificationBadge,
     UINumberInput,
+    UIPageNotFoundScreen,
     UIPasswordPrompt,
     UIPhoneInput,
     UIPinCodeInput,

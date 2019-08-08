@@ -558,6 +558,10 @@ const en: UILocalizedData = {
     // Seed Phrase Input:
     seedPhraseTypo: 'Seems we have a typo here, try again',
     greatMemory: 'Great memory, check passed!',
+
+    // Cross-services
+    WeCanTFindThePageYouReLookingFor: 'We can\'t find the page you\'re looking for.',
+    BackToHome: 'BackToHome',
 };
 
 export default en;
