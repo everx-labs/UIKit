@@ -28,6 +28,8 @@ type Props = {
     pinCodeEnter: (pin: string) => void,
 };
 
+const dotSize = UIConstant.tinyCellHeight();
+
 const styleProperties = {
     key: {
         width: UIConstant.buttonHeight(),
@@ -38,32 +40,33 @@ const styleProperties = {
         marginRight: UIConstant.mediumContentOffset(),
     },
     dotView: {
-        width: UIConstant.tinyCellHeight(),
-        height: UIConstant.tinyCellHeight(),
+        width: UIConstant.smallContentOffset() + dotSize + UIConstant.smallContentOffset(),
+        height: UIConstant.smallContentOffset() + dotSize + UIConstant.smallContentOffset(),
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: UIConstant.smallContentOffset(),
-        marginRight: UIConstant.smallContentOffset(),
+        paddingHorizontal: UIConstant.smallContentOffset(),
     },
     dotBlue: {
-        width: UIConstant.tinyCellHeight(),
-        height: UIConstant.tinyCellHeight(),
-        borderRadius: UIConstant.borderRadius(),
+        width: dotSize,
+        height: dotSize,
+        borderRadius: dotSize / 2,
         backgroundColor: UIColor.primary(),
     },
     dotRed: {
-        width: UIConstant.tinyCellHeight(),
-        height: UIConstant.tinyCellHeight(),
-        borderRadius: UIConstant.borderRadius(),
+        width: dotSize,
+        height: dotSize,
+        borderRadius: dotSize / 2,
         backgroundColor: UIColor.error(),
     },
     dotGray: {
-        width: UIConstant.tinyCellHeight() / 2,
-        height: UIConstant.tinyCellHeight() / 2,
-        borderRadius: UIConstant.borderRadius() / 2,
+        width: dotSize / 2,
+        height: dotSize / 2,
+        borderRadius: dotSize / 4,
         backgroundColor: UIColor.grey3(),
     },
     animatedView: {
+        alignItems: 'center',
+        justifyContent: 'center',
         height: UIConstant.mediumCellHeight(),
     },
 };
@@ -210,7 +213,6 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         return (
             <Animated.View style={[styles.animatedView, { marginLeft: this.state.shakeMargin }]}>
                 <FlatList
-                    style={[UIStyle.Margin.topTiny(), UIStyle.Margin.bottomDefault()]}
                     horizontal
                     data={this.indicator}
                     extraData={this.state}
