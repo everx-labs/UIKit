@@ -593,7 +593,7 @@ export default class UIDetailsInput<Props, State>
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
-                testID={...testIDProp}
+                testID={testIDProp}
                 style={[
                     styles.commentStyle,
                     defaultColorStyle,
