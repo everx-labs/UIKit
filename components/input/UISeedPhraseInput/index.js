@@ -174,7 +174,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Getters
     getCommentTestID(): string {
-        const {commentTestID} = this.props;
+        const { commentTestID } = this.props;
         const comment = this.getComment();
         if (comment === UILocalized.seedPhraseTypo) {
             return `${commentTestID}_error`;
