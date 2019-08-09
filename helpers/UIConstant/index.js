@@ -66,7 +66,7 @@ const UI_LARGE_AVATAR_SIZE = 64;
 
 const UI_ICON_SIZE = 24;
 
-const UI_DISABLED_OUTLINE = Platform.OS === 'web' ? { outlineWidth: '0' } : null;
+const UI_DISABLED_OUTLINE = Platform.OS === 'web' ? { outlineStyle: 'none' } : null;
 
 const UI_SEPARATOR_SYMBOL = '~';
 
