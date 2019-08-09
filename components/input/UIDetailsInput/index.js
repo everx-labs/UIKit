@@ -263,16 +263,11 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Getters
-
-    getCommentTestId(comment: string): string {
-        if (comment === 'Seems we have a typo here, try again') {
-            return 'comment_error';
-        } else if (comment.includes('more')) {
-            return `comment_counter_${comment.split(' ')[0]}`;
-        } else if (comment === 'Great memory, check passed!') {
-            return 'comment_success';
+    getCommentTestID(): string {
+        const {commentTestID} = this.props;
+        if (commentTestID) {
+            return commentTestID;
         }
-        return 'comment';
     }
 
     isFocused(): boolean {
@@ -599,7 +594,7 @@ export default class UIDetailsInput<Props, State>
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
-                testID={this.getCommentTestId(comment)}
+                testID={this.getCommentTestID()}
                 style={[
                     styles.commentStyle,
                     defaultColorStyle,

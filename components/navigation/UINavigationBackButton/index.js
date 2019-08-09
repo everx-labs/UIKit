@@ -23,6 +23,7 @@ export default class UINavigationBackButton extends UIComponent<Props, State> {
         containerStyle: {},
         icon: null,
         navigation: null,
+        testID: 'back_btn',
     };
 
     // Getters
