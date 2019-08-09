@@ -264,7 +264,7 @@ export default class UIDetailsInput<Props, State>
 
     // Getters
     getCommentTestID(): ?string {
-        return this.props.commentTestID;
+        return this.props.commentTestID ? this.props.commentTestID : null;
     }
 
     isFocused(): boolean {
@@ -593,7 +593,7 @@ export default class UIDetailsInput<Props, State>
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
-                testID={testIDProp}
+                {...testIDProp}
                 style={[
                     styles.commentStyle,
                     defaultColorStyle,
