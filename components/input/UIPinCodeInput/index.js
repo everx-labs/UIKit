@@ -244,7 +244,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     renderKeyboard() {
         const { pinTitle } = this.props;
-        const relatedScreen = pinTitle.split(' ')[0];
+        const relatedScreen = pinTitle ? pinTitle.split(' ')[0] : '';
         return (
             <View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
