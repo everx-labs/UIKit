@@ -30,6 +30,7 @@ import UIDialogController from './controllers/UIDialogController';
 import UIDot from './components/design/UIDot';
 import UIDropdownAlert from './components/popup/UIDropdownAlert';
 import UIEmailInput from './components/input/UIEmailInput';
+import UIErrorScreen from './controllers/UIErrorScreen';
 import UIEventHelper from './helpers/UIEventHelper';
 import UIFeedback from './components/products/UIFeedback';
 import UIFlashMessage from './helpers/UIFlashMessage';
@@ -61,7 +62,6 @@ import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
 import UINotificationBadge from './components/notifications/UINotificationBadge';
 import UINumberInput from './components/input/UINumberInput';
-import UIPageNotFoundScreen from './controllers/UIPageNotFoundScreen';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
 import UIPinCodeInput from './components/input/UIPinCodeInput';
@@ -155,6 +155,7 @@ export {
     UIDot,
     UIDropdownAlert,
     UIEmailInput,
+    UIErrorScreen,
     UIEventHelper,
     UIFeedback,
     UIFlashMessage,
@@ -186,7 +187,6 @@ export {
     UINotice,
     UINotificationBadge,
     UINumberInput,
-    UIPageNotFoundScreen,
     UIPasswordPrompt,
     UIPhoneInput,
     UIPinCodeInput,

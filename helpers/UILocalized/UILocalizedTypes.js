@@ -538,5 +538,7 @@ export type UILocalizedData = {
 
     // Cross-services
     WeCanTFindThePageYouReLookingFor: string,
+    TheRequestedServiceIsDownToGetUpAsapTryAgainLater: string,
+    WelcomeTo000: string,
     BackToHome: string,
 }
