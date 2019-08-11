@@ -81,7 +81,7 @@ export default class UIModalController<Props, State>
     static animations = {
         fade: () => new FadeAnimation({ toValue: 1 }),
         slide: () => new SlideAnimation({ slideFrom: 'bottom' }),
-    }
+    };
 
     constructor(props: ModalControllerProps & Props) {
         super(props);
