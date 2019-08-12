@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
@@ -9,6 +10,7 @@ type Props = {
     children: string,
     level?: number,
     bullet?: string,
+    bulletStyle: ?ViewStyleProp,
 };
 
 const styles = StyleSheet.create({
