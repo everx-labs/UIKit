@@ -10,7 +10,7 @@ type Props = {
     children: string,
     level?: number,
     bullet?: string,
-    bulletStyle: ?ViewStyleProp,
+    bulletStyle?: ViewStyleProp,
 };
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 const UIBullet = ({
-    children, level = 1, bullet = '—', bulletStyle = null,
+    children, level = 1, bullet = '—', bulletStyle,
 }: Props) => {
     const shift = level > 1
         ? <View style={[UIStyle.Margin.rightDefault(), UIStyle.Margin.leftGreat()]} />
