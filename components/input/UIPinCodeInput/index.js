@@ -26,6 +26,7 @@ type Props = {
     usePredefined?: boolean,
     disabled?: boolean,
     pinCodeEnter: (pin: string) => void,
+    testID?: string,
 };
 
 const dotSize = UIConstant.tinyCellHeight();
@@ -195,15 +196,20 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     renderItem(item: number) {
         let dotStyle;
+        let testID = 'pinValueNotSet';
         if (this.state.wrongPin) {
             dotStyle = styles.dotRed;
         } else if (item > this.state.pin.length) {
             dotStyle = styles.dotGray;
         } else {
             dotStyle = styles.dotBlue;
+            testID = 'pinValueSet';
         }
         return (
-            <View style={styles.dotView}>
+            <View
+                testID={testID}
+                style={styles.dotView}
+            >
                 <View style={dotStyle} />
             </View>
         );
@@ -357,8 +363,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     }
 
     render() {
+        const { testID } = this.props;
+        const testIDProp = testID ? { testID } : null;
         return (
-            <View style={[UIStyle.fullWidthCenterContainer, UIStyle.flex]}>
+            <View
+                {...testIDProp}
+                style={[UIStyle.fullWidthCenterContainer, UIStyle.flex]}
+            >
                 <View style={[UIStyle.flexJustifyCenter, UIStyle.alignCenter]}>
                     {this.renderLabel()}
                     {this.renderIndicator()}
