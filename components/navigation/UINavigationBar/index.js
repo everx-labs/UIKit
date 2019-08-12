@@ -100,7 +100,10 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         // if headerLeft option unspecified, we use back button
         const headerLeft = ('headerLeft' in options)
             ? options.headerLeft
-            : <UINavigationBackButton navigation={navigation} />;
+            : (<UINavigationBackButton
+                navigation={navigation}
+                testID={`back_btn_${options.title || ''}`}
+            />);
 
         if (options.useDefaultStyle) {
             effective = {

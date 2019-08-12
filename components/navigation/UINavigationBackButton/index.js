@@ -10,6 +10,7 @@ import UIAssets from '../../../assets/UIAssets';
 import UIComponent from '../../UIComponent';
 
 type Props = {
+    testID: string,
     containerStyle: ViewStyleProp,
     icon: any,
     navigation: Object,
@@ -22,6 +23,7 @@ export default class UINavigationBackButton extends UIComponent<Props, State> {
         containerStyle: {},
         icon: null,
         navigation: null,
+        testID: 'back_btn',
     };
 
     // Getters
@@ -43,13 +45,15 @@ export default class UINavigationBackButton extends UIComponent<Props, State> {
 
     // React.Component
     render() {
+        const { testID } = this.props;
+        const testIDProp = testID ? { testID } : null;
         const params = this.getNavigationParams();
         if (params && params.initialRoute) {
             return (<View />);
         }
         return (
             <TouchableOpacity
-                testID="back_btn"
+                {...testIDProp}
                 style={[UIStyle.navigatorButton, this.getContainerStyle()]}
                 onPress={() => {
                     this.getNavigation().goBack(null);

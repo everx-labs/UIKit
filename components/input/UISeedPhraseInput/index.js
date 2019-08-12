@@ -52,6 +52,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             ? 'visible-password' // to fix Android bug with keyboard suggestions
             : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
         phraseToCheck: '',
+        commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
     };
@@ -172,6 +173,19 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Getters
+    getCommentTestID(): string {
+        const { commentTestID } = this.props;
+        const comment = this.getComment();
+        if (comment === UILocalized.seedPhraseTypo) {
+            return `${commentTestID}_error`;
+        } else if (comment.includes('more')) {
+            return `${commentTestID}_counter_${comment.split(' ')[0]}`;
+        } else if (comment === UILocalized.greatMemory) {
+            return `${commentTestID}_success`;
+        }
+        return commentTestID;
+    }
+
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
         const flex = rightButton && rightButton.length > 0 ? UIStyle.flex : null;
