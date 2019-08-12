@@ -20,19 +20,20 @@ const styles = StyleSheet.create({
     },
 });
 
-const UIBullet = ({ children, level = 1, bullet = '—' }: Props) => {
+const UIBullet = ({
+    children, level = 1, bullet = '—', bulletStyle = null,
+}: Props) => {
     const shift = level > 1
         ? <View style={[UIStyle.Margin.rightDefault(), UIStyle.Margin.leftGreat()]} />
         : null;
-    const bulletStyle = bullet.length >= 4
-        ? styles.bulletWideContainer
-        : styles.bulletSlimContainer;
+    const customBulletStyle = bulletStyle
+        || (bullet.length >= 4 ? styles.bulletWideContainer : styles.bulletSlimContainer);
     return (
         <View style={[UIStyle.Common.flexRow(), UIStyle.Margin.topDefault()]}>
             {shift}
             <Text style={[
                 UIStyle.Text.quaternarySmallRegular(),
-                bulletStyle,
+                customBulletStyle,
             ]}
             >
                 {bullet}
