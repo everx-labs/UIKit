@@ -225,9 +225,13 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     renderDescription() {
+        const description = this.getDescription();
+        if (!description) {
+            return null;
+        }
         return (<UILabel
             style={UIStyle.Margin.topSmall()}
-            text={this.getDescription()}
+            text={description}
             role={UILabel.Role.CaptionTertiary}
         />);
     }
