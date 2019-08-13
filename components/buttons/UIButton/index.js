@@ -139,7 +139,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
             {
                 toValue: 1,
                 duration: 600,
-                easing: Easing.easeOutBack,
+                easing: Easing.ease,
             },
         ).start(() => this.scale());
     }
@@ -235,7 +235,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
     }
 
     // render
-    renderIcon(icon, position) {
+    renderIcon(icon: string, position: string) {
         if (this.shouldShowIndicator()) {
             return null;
         }
@@ -425,6 +425,8 @@ export default class UIButton extends UIActionComponent<Props, State> {
     }
 
     static defaultProps: Props;
+    spinValue: any;
+    scaleValue: any;
 }
 
 UIButton.defaultProps = {
