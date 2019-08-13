@@ -1,45 +1,236 @@
 Example:
 
 ```js
-const icon = require('../../../assets/ico-camera/ico-camera.png');
+const iconCam = require('../../../assets/ico-camera/ico-camera.png');
+const iconTriangle = require('../../../assets/ico-triangle/ico-triangle.png');
 
-class Example extends ThemeSwitcher {
-    constructor() {
-        super();
-        this.state = {
-            i: 1,
-        }
-    }
-
-    renderContent() {
+class Example extends React.Component  {
+    render() {
         return (
             <React.Fragment>
                 <UIButton
-                    theme={this.getTheme()}
                     title="Default button"
                     onPress={() => alert('Action was called')}
                 />
                 <UIButton
-                    theme={this.getTheme()}
                     style={{ marginTop: 16 }}
                     buttonShape={UIButton.ButtonShape.Radius}
-                    title="Radius badge button"
-                    onPress={() => this.setState({ i: this.state.i + 1})}
-                    badge={this.state.i}
+                    title="Radius button"
                 />
                 <UIButton
-                    theme={this.getTheme()}
                     style={{ marginTop: 16 }}
                     buttonShape={UIButton.ButtonShape.Rounded}
-                    icon={icon} 
-                    title="Rounded icon button"
+                    title="Rounded button"
                 />
                 <UIButton
-                    disabled
-                    theme={this.getTheme()}
                     style={{ marginTop: 16 }}
-                    buttonSize={UIButton.ButtonSize.Small}
-                    title="Disabled tiny button"
+                    buttonStyle={UIButton.ButtonStyle.Full}
+                    title="Action"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    buttonStyle={UIButton.ButtonStyle.Full}
+                    disabled
+                    title="Disabled"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="Action"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    disabled
+                    title="Disabled"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Action"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    disabled
+                    title="Disabled"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIcon
+                    title="With Icon L"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIcon
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="With Icon L"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIcon
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="With Icon L"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIconR
+                    title="With Icon R"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="With Icon R"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="With Icon R"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIcon
+                    hasIconR
+                    title="Action & 2 ico"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIcon
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="Action & 2 ico"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    hasIcon
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Action & 2 ico"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    title="With Icon L"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="With Icon L"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="With Icon L"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIconR
+                    title="With Icon R"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="With Icon R"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="With Icon R"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    hasIconR
+                    title="Action & 2 ico"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="Action & 2 ico"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Action & 2 ico"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    icon={iconCam}
+                    iconR={iconCam}
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="Action & 2 ico"
+                />
+
+                <UIButton
+                    badge={10}
+                    style={{ marginTop: 16 }}
+                    buttonStyle={UIButton.ButtonStyle.Full}
+                    title="Badged"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    showIndicator
+                    indicatorAnimation={UIButton.Indicator.Spin}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    showIndicator
+                    indicatorAnimation={UIButton.Indicator.Spin}
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    showIndicator
+                    indicatorAnimation={UIButton.Indicator.Spin}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    showIndicator
+                    indicatorAnimation={UIButton.Indicator.Round}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    showIndicator
+                    indicatorAnimation={UIButton.Indicator.Pulse}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    showIndicator
+                    indicatorAnimation={UIButton.Indicator.Sandglass}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    showIndicator
+                    buttonStyle={UIButton.ButtonStyle.Border}
                 />
             </React.Fragment>
         );
