@@ -59,108 +59,108 @@ class Example extends React.Component  {
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIcon
-                    title="With Icon L"
+                    title="Center & IconL"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIcon
                     buttonStyle={UIButton.ButtonStyle.Border}
-                    title="With Icon L"
+                    title="Center & IconL"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIcon
                     buttonStyle={UIButton.ButtonStyle.Link}
-                    title="With Icon L"
+                    title="Center & IconL"
                 />
 
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIconR
-                    title="With Icon R"
+                    title="Center & IconR"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIconR
                     buttonStyle={UIButton.ButtonStyle.Border}
-                    title="With Icon R"
+                    title="Center & IconR"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIconR
                     buttonStyle={UIButton.ButtonStyle.Link}
-                    title="With Icon R"
+                    title="Center & IconR"
                 />
 
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIcon
                     hasIconR
-                    title="Action & 2 ico"
+                    title="Center & 2 ico"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIcon
                     hasIconR
                     buttonStyle={UIButton.ButtonStyle.Border}
-                    title="Action & 2 ico"
+                    title="Center & 2 ico"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
                     hasIcon
                     hasIconR
                     buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Action & 2 ico"
-                />
-
-                <UIButton
-                    style={{ marginTop: 16 }}
-                    textAlign={UIButton.TextAlign.Left}
-                    hasIcon
-                    title="With Icon L"
-                />
-                <UIButton
-                    style={{ marginTop: 16 }}
-                    textAlign={UIButton.TextAlign.Left}
-                    hasIcon
-                    buttonStyle={UIButton.ButtonStyle.Border}
-                    title="With Icon L"
-                />
-                <UIButton
-                    style={{ marginTop: 16 }}
-                    textAlign={UIButton.TextAlign.Left}
-                    hasIcon
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="With Icon L"
-                />
-
-                <UIButton
-                    style={{ marginTop: 16 }}
-                    textAlign={UIButton.TextAlign.Left}
-                    hasIconR
-                    title="With Icon R"
-                />
-                <UIButton
-                    style={{ marginTop: 16 }}
-                    textAlign={UIButton.TextAlign.Left}
-                    hasIconR
-                    buttonStyle={UIButton.ButtonStyle.Border}
-                    title="With Icon R"
-                />
-                <UIButton
-                    style={{ marginTop: 16 }}
-                    textAlign={UIButton.TextAlign.Left}
-                    hasIconR
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="With Icon R"
+                    title="Center & 2 ico"
                 />
 
                 <UIButton
                     style={{ marginTop: 16 }}
                     textAlign={UIButton.TextAlign.Left}
                     hasIcon
+                    title="Left & IconL"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="Left & IconL"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Left & IconL"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
                     hasIconR
-                    title="Action & 2 ico"
+                    title="Left & IconR"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                    title="Left & IconR"
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIconR
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Left & IconR"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    hasIcon
+                    hasIconR
+                    title="Left & 2 ico"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
@@ -168,7 +168,7 @@ class Example extends React.Component  {
                     hasIcon
                     hasIconR
                     buttonStyle={UIButton.ButtonStyle.Border}
-                    title="Action & 2 ico"
+                    title="Left & 2 ico"
                 />
                 <UIButton
                     style={{ marginTop: 16 }}
@@ -176,7 +176,7 @@ class Example extends React.Component  {
                     hasIcon
                     hasIconR
                     buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Action & 2 ico"
+                    title="Left & 2 ico"
                 />
 
                 <UIButton
@@ -185,7 +185,24 @@ class Example extends React.Component  {
                     icon={iconCam}
                     iconR={iconCam}
                     buttonStyle={UIButton.ButtonStyle.Border}
-                    title="Action & 2 ico"
+                    title="Left & 2 ico"
+                />
+
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Left}
+                    icon={iconCam}
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    textAlign={UIButton.TextAlign.Right}
+                    icon={iconCam}
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                />
+                <UIButton
+                    style={{ marginTop: 16 }}
+                    icon={iconCam}
                 />
 
                 <UIButton
