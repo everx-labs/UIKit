@@ -12,9 +12,10 @@ import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
 import UIActionComponent from '../../UIActionComponent';
 
+import IconAnimation from './IconAnimation';
+
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
-const indicatorDefault = require('../../../assets/ico-triangle/ico-triangle.png');
 const iconDefault = require('../../../assets/ico-triangle/ico-triangle.png');
 
 const styles = StyleSheet.create({
@@ -113,40 +114,9 @@ export default class UIButton extends UIActionComponent<Props, State> {
 
     insetKey: string;
 
-    constructor(props: Props) {
-        super(props);
-        this.spinValue = new Animated.Value(0);
-        this.scaleValue = new Animated.Value(0);
-    }
     componentDidMount() {
         super.componentDidMount();
         this.setInsetIfFooter();
-        this.spin();
-        this.scale();
-    }
-
-    spin() {
-        this.spinValue.setValue(0);
-        Animated.timing(
-            this.spinValue,
-            {
-                toValue: 1,
-                duration: 3000,
-                easing: Easing.linear,
-            },
-        ).start(() => this.spin());
-    }
-
-    scale() {
-        this.scaleValue.setValue(0);
-        Animated.timing(
-            this.scaleValue,
-            {
-                toValue: 1,
-                duration: 600,
-                easing: Easing.ease,
-            },
-        ).start(() => this.scale());
     }
 
     componentWillUnmount() {
@@ -301,43 +271,10 @@ export default class UIButton extends UIActionComponent<Props, State> {
             return (<MaterialIndicator color={this.getTextColor()} size={20} />);
         }
 
-        const spin = this.spinValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg'],
-        });
-
-        const round = this.spinValue.interpolate({
-            inputRange: [0, 0.08, 0.32, 0.4, 0.64, 0.72, 0.96, 1],
-            outputRange: ['0deg', '60deg', '80deg', '180deg', '200deg', '300deg', '320deg', '360deg'],
-        });
-
-        const scale = this.scaleValue.interpolate({
-            inputRange: [0, 0.3, 0.6, 1],
-            outputRange: [1, 0.9, 1.1, 1],
-        });
-
-        const transform = [];
-        if (this.props.indicatorAnimation === UIButton.Indicator.Spin) {
-            transform.push({ rotateY: spin });
-        } else if (this.props.indicatorAnimation === UIButton.Indicator.Round) {
-            transform.push({ rotate: round });
-        } else if (this.props.indicatorAnimation === UIButton.Indicator.Sandglass) {
-            const scaleX = this.spinValue.interpolate({
-                inputRange: [0, 0.25, 0.5, 0.75, 1],
-                outputRange: [1, 0, 1, 0, 1],
-            });
-            const scaleY = this.spinValue.interpolate({
-                inputRange: [0, 0.25, 0.25, 0.75, 0.75, 1],
-                outputRange: [1, 1, -1, -1, 1, 1],
-            });
-            transform.push({ scaleX });
-            transform.push({ scaleY });
-        } else if (this.props.indicatorAnimation === UIButton.Indicator.Pulse) {
-            transform.push({ scale });
-        }
-        return (<Animated.Image
-            style={[{ transform }, this.getIconTintStyle()]}
-            source={this.props.icon || indicatorDefault}
+        return (<IconAnimation
+            icon={this.props.iconIndicator}
+            animation={this.props.indicatorAnimation}
+            iconTintStyle={this.getIconTintStyle()}
         />);
     }
 
