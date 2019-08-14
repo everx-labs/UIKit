@@ -56,7 +56,7 @@ type Props = {
     onMouseLeave?: () => void,
 };
 
-type State = ActionState;
+type State = {};
 
 export default class UILink extends UIComponent<Props, State> {
     render() {
@@ -64,6 +64,8 @@ export default class UILink extends UIComponent<Props, State> {
             <UIButton {...this.props} buttonStyle={UIButton.ButtonStyle.Link} />
         );
     }
+
+    static defaultProps: Props;
 }
 
 UILink.defaultProps = {
@@ -79,11 +81,8 @@ UILink.defaultProps = {
     style: null,
     textAlign: UIButton.TextAlign.Center,
     textStyle: null,
-    indicatorAnimation: null,
+    indicatorAnimation: '',
 
     disabled: false,
     showIndicator: false,
-    onPress: null,
-    onMouseEnter: null,
-    onMouseLeave: null,
 };
