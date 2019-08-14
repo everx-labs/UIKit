@@ -59,6 +59,9 @@ type Props = {
 type State = {};
 
 export default class UILink extends UIComponent<Props, State> {
+    static TextAlign = UIButton.TextAlign;
+    static Indicator = UIButton.Indicator;
+
     render() {
         return (
             <UIButton {...this.props} buttonStyle={UIButton.ButtonStyle.Link} />
