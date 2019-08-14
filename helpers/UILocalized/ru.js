@@ -5,7 +5,7 @@ import type { UILocalizedData } from './UILocalizedTypes';
 const ru: UILocalizedData = {
     // TON
     TONLabel: 'TON',
-    CopyRight: '2019 © TON Labs',
+    CopyRight: '2018-2019 © TON Labs',
     Disclaimer: 'Disclaimer',
 
     // Terms
@@ -560,6 +560,12 @@ const ru: UILocalizedData = {
     // Seed Phrase Input:
     seedPhraseTypo: 'Seems we have a typo here, try again', // TODO: Translate
     greatMemory: 'Great memory, check passed!', // TODO: Translate
+
+    // Cross-services
+    WeCanTFindThePageYouReLookingFor: 'We can\'t find the page you\'re looking for.',
+    TheRequestedServiceIsDownToGetUpAsapTryAgainLater: 'The requested service is down to get up ASAP. Try again later.',
+    WelcomeTo000: 'Welcome to 000',
+    BackToHome: 'Back to Home',
 };
 
 export default ru;
