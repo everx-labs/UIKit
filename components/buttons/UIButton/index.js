@@ -45,6 +45,10 @@ type Props = ActionProps & {
     buttonShape?: string,
     /** One of: UIButton.ButtonStyle.Full, UIButton.ButtonStyle.Border, UIButton.ButtonStyle.Link */
     buttonStyle?: string,
+    /** use it for additional data */
+    count?: string,
+    /** use it for additional data */
+    data?: string,
     /** @ignore */
     footer?: boolean,
     /** use it for default left icon, ignore it if use icon prop */
@@ -97,6 +101,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
     static TextAlign = {
         Center: 'center',
         Left: 'left',
+        Right: 'right',
     };
 
     static Indicator = {
@@ -251,10 +256,12 @@ export default class UIButton extends UIActionComponent<Props, State> {
     }
 
     renderIconL() {
+        if (!this.props.icon && !this.props.hasIcon) return null;
         return this.renderIcon(this.props.icon, 'left');
     }
 
     renderIconR() {
+        if (!this.props.iconR && !this.props.hasIconR) return null;
         return this.renderIcon(this.props.iconR, 'right');
     }
 
@@ -334,6 +341,48 @@ export default class UIButton extends UIActionComponent<Props, State> {
         />);
     }
 
+    renderData() {
+        if (!this.props.data) return null;
+
+        const data = (
+            <Text style={[UIStyle.Text.tertiaryTinyBold(), UIStyle.Margin.leftSmall()]}>
+                {this.props.data}
+            </Text>);
+
+        if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
+
+        return (
+            <View style={[
+                UIStyle.Common.flex(),
+                UIStyle.Common.centerRightContainer(),
+            ]}
+            >
+                {data}
+            </View>
+        );
+    }
+
+    renderCount() {
+        if (!this.props.count) return null;
+
+        const data = (
+            <Text style={[UIStyle.Text.tertiaryBodyRegular(), UIStyle.Margin.leftSmall()]}>
+                {this.props.count}
+            </Text>);
+
+        if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
+
+        return (
+            <View style={[
+                UIStyle.Common.flex(),
+                UIStyle.Common.centerRightContainer(),
+            ]}
+            >
+                {data}
+            </View>
+        );
+    }
+
     renderBottomExtension() {
         if (!this.props.bottomExtend) {
             return null;
@@ -375,7 +424,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
             if (hasTitle && (hasNoIcons || hasIconLeftOnly)) {
                 buttonContainerStyle.push(UIStyle.Common.centerLeftContainer());
                 content = [this.renderIconL(), this.renderTitle()];
-            } else if (hasTitle && hasIconRightOnly) {
+            } else if (hasTitle && (hasIconRightOnly || this.props.data)) {
                 buttonContainerStyle.push(UIStyle.Common.rowSpaceContainer());
                 content = [this.renderTitle(), this.renderIconR()];
             } else if (hasTitle && hasIcons) {
@@ -388,18 +437,38 @@ export default class UIButton extends UIActionComponent<Props, State> {
                     this.renderIconR(),
                 ];
             }
-        } else {
-            // Center
+        } else if (textAlign === UIButton.TextAlign.Center) {
             if (hasTitle && (hasNoIcons || hasIconLeftOnly || hasIconRightOnly)) {
                 buttonContainerStyle.push(UIStyle.Common.centerContainer());
                 content = [
-                    hasIconLeftOnly && this.renderIconL(),
+                    this.renderIconL(),
                     this.renderTitle(),
-                    hasIconRightOnly && this.renderIconR(),
+                    this.renderIconR(),
                 ];
             } else if (hasTitle && hasIcons) {
                 buttonContainerStyle.push(UIStyle.Common.rowSpaceContainer());
-                content = [this.renderIconL(), this.renderTitle(), this.renderIconR()];
+                content = [
+                    this.renderIconL(),
+                    this.renderTitle(),
+                    this.renderIconR(),
+                ];
+            }
+        } else if (textAlign === UIButton.TextAlign.Right) {
+            if (hasTitle && (hasNoIcons || hasIconRightOnly)) {
+                buttonContainerStyle.push(UIStyle.Common.centerRightContainer());
+                content = [this.renderTitle(), this.renderIconR()];
+            } else if (hasTitle && hasIconLeftOnly) {
+                buttonContainerStyle.push(UIStyle.Common.rowSpaceContainer());
+                content = [this.renderIconL(), this.renderTitle()];
+            } else if (hasTitle && hasIcons) {
+                buttonContainerStyle.push(UIStyle.Common.rowSpaceContainer());
+                content = [
+                    this.renderIconL(),
+                    <View style={UIStyle.Common.centerLeftContainer()}>
+                        {this.renderTitle()}
+                        {this.renderIconR()}
+                    </View>,
+                ];
             }
         }
 
@@ -417,6 +486,8 @@ export default class UIButton extends UIActionComponent<Props, State> {
                 <View style={buttonContainerStyle}>
                     {this.renderBadge()}
                     {content}
+                    {this.renderCount()}
+                    {this.renderData()}
                     {this.renderIndicator()}
                 </View>
                 {this.renderBottomExtension()}
@@ -436,6 +507,8 @@ UIButton.defaultProps = {
     buttonSize: UIButton.ButtonSize.Default,
     buttonShape: UIButton.ButtonShape.Default,
     buttonStyle: UIButton.ButtonStyle.Full,
+    count: '',
+    data: '',
     footer: false,
     hasIcon: false,
     hasIconR: false,
@@ -446,7 +519,5 @@ UIButton.defaultProps = {
     style: null,
     textAlign: UIButton.TextAlign.Center,
     textStyle: null,
-    title: '',
-    theme: UIColor.Theme.Light,
     indicatorAnimation: null,
 };
