@@ -123,7 +123,10 @@ export default class UIToastMessage {
         return (
             <View style={[styles.containerStyle, { alignItems: this.placement }]}>
                 <View style={[styles.toastStyle, { backgroundColor: color }]}>
-                    <Text style={styles.titleStyle}>
+                    <Text
+                        testID={`message_${this.type}`}
+                        style={styles.titleStyle}
+                    >
                         {this.message}
                     </Text>
                     {this.renderCloseButton()}
