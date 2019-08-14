@@ -37,12 +37,14 @@ const sandglassInterpolateValues = {
 };
 
 type Props = {
-  icon: string,
+  icon: any,
   animation: string,
   iconTintStyle?: StylePropType,
 }
 
-export default class IconAnimation extends UIComponent {
+type State = {}
+
+export default class IconAnimation extends UIComponent<Props, State> {
     static Animation = {
         Spin: 'spin',
         Round: 'round',
@@ -74,18 +76,18 @@ export default class IconAnimation extends UIComponent {
 
     render() {
         const transform = [];
-        if (this.props.animation === UIButton.Indicator.Spin) {
+        if (this.props.animation === IconAnimation.Animation.Spin) {
             const rotateY = this.animatedValue.interpolate(spinInterpolateValues);
             transform.push({ rotateY });
-        } else if (this.props.animation === UIButton.Indicator.Round) {
+        } else if (this.props.animation === IconAnimation.Animation.Round) {
             const rotate = this.animatedValue.interpolate(roundInterpolateValues);
             transform.push({ rotate });
-        } else if (this.props.animation === UIButton.Indicator.Sandglass) {
+        } else if (this.props.animation === IconAnimation.Animation.Sandglass) {
             const scaleX = this.animatedValue.interpolate(sandglassInterpolateValues.x);
             const scaleY = this.animatedValue.interpolate(sandglassInterpolateValues.y);
             transform.push({ scaleX });
             transform.push({ scaleY });
-        } else if (this.props.animation === UIButton.Indicator.Pulse) {
+        } else if (this.props.animation === IconAnimation.Animation.Pulse) {
             const scale = this.animatedValue.interpolate(scaleInterpolateValues);
             transform.push({ scale });
         }
