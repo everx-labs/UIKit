@@ -24,9 +24,6 @@ type Props = {
     buttonStyle?: string,
     /** uri to left icon */
     icon?: ?string,
-    /** specify in addition to showIndicator props, one of:
-        UIButton.Indicator.Spin, UIButton.Indicator.Round, UIButton.ButtonStyle.Sandglass, UIButton.ButtonStyle.Pulse
-     */
     /** button container style */
     style?: StylePropType,
     /** @ignore */

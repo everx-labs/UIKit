@@ -8,6 +8,7 @@ class Example extends React.Component  {
     render() {
         return (
             <React.Fragment>
+            <View style={{maxWidth: 330}}>
                 <UIButton
                     title="Default button"
                     onPress={() => alert('Action was called')}
@@ -249,6 +250,7 @@ class Example extends React.Component  {
                     showIndicator
                     buttonStyle={UIButton.ButtonStyle.Border}
                 />
+            </View>
             </React.Fragment>
         );
     }

@@ -8,32 +8,29 @@ class Example extends React.Component  {
         return (
             <React.Fragment>
                 <UIActionIcon
-                    style={{ marginTop: 16 }}
                     buttonStyle={UIActionIcon.Style.Full}
-                    buttonShape={UIActionIcon.Shape.Radius}
                 />
                 <UIActionIcon
-                    style={{ marginTop: 16 }}
+                    style={UIStyle.Margin.topDefault()}
                     buttonStyle={UIActionIcon.Style.Border}
-                    buttonShape={UIActionIcon.Shape.Radius}
                 />
                 <UIActionIcon
-                    style={{ marginTop: 16 }}
+                    style={UIStyle.Margin.topDefault()}
                     buttonStyle={UIActionIcon.Style.Link}
                 />
 
                 <UIActionIcon
-                    style={{ marginTop: 16 }}
+                    style={UIStyle.Margin.topDefault()}
                     buttonStyle={UIActionIcon.Style.Full}
                     buttonShape={UIActionIcon.Shape.Rounded}
                 />
                 <UIActionIcon
-                    style={{ marginTop: 16 }}
+                    style={UIStyle.Margin.topDefault()}
                     buttonStyle={UIActionIcon.Style.Border}
                     buttonShape={UIActionIcon.Shape.Rounded}
                 />
                 <UIActionIcon
-                    style={{ marginTop: 16 }}
+                    style={UIStyle.Margin.topDefault()}
                     buttonStyle={UIActionIcon.Style.Link}
                     icon={iconCam}
                 />
