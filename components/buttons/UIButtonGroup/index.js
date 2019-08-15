@@ -19,8 +19,6 @@ type Props = {
     /** button group container style */
     style?: StylePropType,
     /** @ignore */
-    theme?: string,
-    /** @ignore */
     children?: any,
 };
 
@@ -41,16 +39,15 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
         const buttonsCount = this.props.children?.length;
         if (!buttonsCount) return null;
 
-        const style = this.props.direction === 'row' ? UIStyle.Margin.leftDefault() : null;
         return this.props.children.map((child, rank) => {
-            const style = this.props.direction === 'row' && rank !== 0 ? UIStyle.Margin.leftDefault() : null;
+            const style = this.props.direction === UIButtonGroup.Direction.Row && rank !== 0 ? UIStyle.Margin.leftDefault() : null;
             return React.cloneElement(child, { style: [style, child.props.style], key: `button-${rank}` });
         });
     }
 
     render() {
         const groupStyle = [UIStyle.Common.flex()];
-        if (this.props.direction === 'row') {
+        if (this.props.direction === UIButtonGroup.Direction.Row) {
             groupStyle.push(
                 UIStyle.Common.centerLeftContainer(),
                 UIStyle.Common.flexRowWrap(),
@@ -72,6 +69,5 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
 UIButtonGroup.defaultProps = {
     children: null,
     direction: UIButtonGroup.Direction.Row,
-    theme: UIColor.Theme.Light,
     style: null,
 };
