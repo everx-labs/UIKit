@@ -33,11 +33,11 @@ export default class UIErrorScreen extends UIScreen {
     };
 
     static errors = {
-        [this.errorCodes.pageNotfound]: {
+        [UIErrorScreen.errorCodes.pageNotfound]: {
             title: '404',
             caption: UILocalized.WeCanTFindThePageYouReLookingFor,
         },
-        [this.errorCodes.serviceUnavailable]: {
+        [UIErrorScreen.errorCodes.serviceUnavailable]: {
             title: UILocalized.WelcomeTo000,
             caption: UILocalized.TheRequestedServiceIsDownToGetUpAsapTryAgainLater,
         },
