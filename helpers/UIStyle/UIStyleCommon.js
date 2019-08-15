@@ -5,6 +5,10 @@ export default class UIStyleCommon {
         return UIStyle.flex;
     }
 
+    static flex2() {
+        return UIStyle.flex2;
+    }
+
     static flex3() {
         return UIStyle.flex3;
     }
@@ -31,6 +35,10 @@ export default class UIStyleCommon {
 
     static alignEnd() {
         return UIStyle.alignEnd;
+    }
+
+    static alignStart() {
+        return UIStyle.alignStart;
     }
 
     static textAlignCenter() {
@@ -85,6 +93,10 @@ export default class UIStyleCommon {
         return UIStyle.rowSpaceContainer;
     }
 
+    static rowCenterSpaceContainer() {
+        return UIStyle.rowCenterSpaceContainer;
+    }
+
     static overflowHidden() {
         return UIStyle.overflowHidden;
     }
@@ -110,6 +122,10 @@ export default class UIStyleCommon {
         return UIStyle.absoluteFillObject;
     }
 
+    static absoluteFillWidthContainer() {
+        return UIStyle.absoluteFillWidthContainer;
+    }
+
     // colors
     static backgroundPrimaryColor() {
         return UIStyle.backgroundPrimaryColor;
@@ -132,6 +148,10 @@ export default class UIStyleCommon {
         return UIStyle.fullWidthPaddingContainer;
     }
 
+    static fullWidthPaddingCenterContainer() {
+        return UIStyle.fullWidthPaddingCenterContainer;
+    }
+
     static pageContainer() {
         return UIStyle.pageContainer;
     }
@@ -148,7 +168,23 @@ export default class UIStyleCommon {
         return UIStyle.bottomScreenContainer;
     }
 
+    static leftScreenContainer() {
+        return UIStyle.leftScreenContainer;
+    }
+
+    static rightScreenContainer() {
+        return UIStyle.rightScreenContainer;
+    }
+
     static icon() {
         return UIStyle.icon;
+    }
+
+    static noOpacity() {
+        return UIStyle.noOpacity;
+    }
+
+    static fullOpacity() {
+        return UIStyle.fullOpacity;
     }
 }

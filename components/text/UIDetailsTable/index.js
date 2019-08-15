@@ -1,28 +1,32 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import UIColor from '../../../helpers/UIColor';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UILocalized from '../../../helpers/UILocalized';
+import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
+import UIFunction from '../../../helpers/UIFunction';
 import UIComponent from '../../UIComponent';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 
 export type Details = {
     caption: ?string,
-    value: ?string,
+    value: ?string | number,
+    limit?: number,
     type?: string,
     screen?: string,
     tag?: any,
+    component?: React$Node,
+    onPress?: () => void,
 };
 
-export type DetailsList = { [string]: Details };
+export type DetailsList = Details[];
 
 type Props = {
     navigation?: ReactNavigation,
-    detailsList: ?DetailsList,
+    detailsList: DetailsList,
+    style?: ViewStyleProp,
     onPress?: (details: Details) => void,
 }
 
@@ -50,7 +54,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
         Action: 'Action',
         Accent: 'Accent',
         NumberPercent: 'NumberPercent',
-        Gram: 'Gram',
+        Disabled: 'Disabled',
+    };
+
+    static defaultProps: Props = {
+        detailsList: [],
     };
 
     // Events
@@ -72,29 +80,25 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     // Getters
     getTextStyle(type: ?string) {
-        const {
-            secondarySmallRegular,
-            successSmallRegular,
-            primarySmallMedium,
-        } = UITextStyle;
         if (type === UIDetailsTable.CellType.Success) {
-            return successSmallRegular;
+            return UIStyle.Text.successSmallRegular();
         } else if (type === UIDetailsTable.CellType.Accent) {
-            return primarySmallMedium;
+            return UIStyle.Text.primarySmallMedium();
+        } else if (type === UIDetailsTable.CellType.Disabled) {
+            return UIStyle.Text.tertiarySmallRegular();
         } else if (type === UIDetailsTable.CellType.Default || !type) {
-            return secondarySmallRegular;
+            return UIStyle.Text.secondarySmallRegular();
         }
         return null;
     }
 
-    renderTextCell(value: string, details: string) {
-        const { secondarySmallRegular, primarySmallRegular } = UITextStyle;
+    renderTextCell(value: number | string, details: string) {
         return (
             <Text>
-                <Text style={primarySmallRegular}>
+                <Text style={UIStyle.Text.primarySmallRegular()}>
                     {value}
                 </Text>
-                <Text style={secondarySmallRegular}>
+                <Text style={UIStyle.Text.secondarySmallRegular()}>
                     {details}
                 </Text>
             </Text>
@@ -102,78 +106,74 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderCell(details: Details) {
-        const textStyle = this.getTextStyle(details.type);
-        const { actionSmallMedium } = UITextStyle;
-        if (!details.value) {
+        const {
+            type, value, limit, component, onPress,
+        } = details;
+        const textStyle = this.getTextStyle(type);
+        if ((!value && value !== 0) && !component) {
             return null;
         }
-        if (details.type === UIDetailsTable.CellType.NumberPercent) {
-            const [number, percent] = details.value.split('(');
-            return this.renderTextCell(
-                number,
-                `(${percent}`,
-            );
-        } else if (details.type === UIDetailsTable.CellType.Gram) {
-            const [integer, fractional] = details.value.split('.');
-            return this.renderTextCell(
-                integer,
-                `.${fractional} ${UILocalized.gram}`,
-            );
-        } else if (details.type === UIDetailsTable.CellType.Action) {
-            // actionSmallMedium;
+        if (type === UIDetailsTable.CellType.NumberPercent && limit && limit !== 0 && typeof value === 'number') {
+            const primary = UIFunction.getNumberString(value);
+            const percent = (primary / limit) * 100;
+            const formattedPercent = UIFunction.getNumberString(percent);
+            const secondary = ` (${formattedPercent} %)`;
+            return this.renderTextCell(primary, secondary);
+        } else if (type === UIDetailsTable.CellType.Action) {
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
-                    <Text style={actionSmallMedium}>
-                        {details.value}
+                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                        {value}
                     </Text>
                 </TouchableOpacity>
             );
+        } else if (onPress) {
+            return (
+                <TouchableOpacity onPress={onPress}>
+                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                        {value}
+                    </Text>
+                </TouchableOpacity>
+            );
+        } else if (component) {
+            return component;
         }
         return (
-            <Text style={[textStyle, UIStyle.flex]}>
-                {details.value}
+            <Text style={[textStyle, UIStyle.Common.flex()]}>
+                {value}
             </Text>
         );
     }
 
-    render() {
-        const { detailsList } = this.props;
-        if (!detailsList) {
-            return null;
-        }
-        const cells = Object.keys(detailsList)
-            .map<React$Node>((name: string) => {
-                const details = detailsList[name];
-                const {
-                    caption, value,
-                } = details;
-                const { tertiarySmallRegular } = UITextStyle;
-
-                const cell = this.renderCell(details);
-                return (
-                    <View style={styles.row} key={`details-table-row-${name}-${value || ''}`}>
-                        <View style={[styles.leftCell, UIStyle.marginRightDefault]}>
-                            <Text
-                                numberOfLines={1}
-                                style={tertiarySmallRegular}
-                            >
-                                {caption}
-                            </Text>
-                        </View>
-                        <View style={styles.rightCell}>
-                            {cell}
-                        </View>
+    renderRows() {
+        return this.props.detailsList.map<React$Node>((item) => {
+            const cell = this.renderCell(item);
+            const { caption, value } = item;
+            return (
+                <View style={styles.row} key={`details-table-row-${caption || ''}-${value || ''}`}>
+                    <View style={[styles.leftCell, UIStyle.Margin.rightDefault()]}>
+                        <Text
+                            numberOfLines={1}
+                            style={UIStyle.Text.tertiarySmallRegular()}
+                        >
+                            {caption}
+                        </Text>
                     </View>
-                );
-            });
-        return cells;
+                    <View style={styles.rightCell}>
+                        {cell}
+                    </View>
+                </View>
+            );
+        });
     }
 
-    static defaultProps: Props;
+    render() {
+        return (
+            <View style={this.props.style}>
+                {this.renderRows()}
+            </View>
+        );
+    }
 }
 
 export default UIDetailsTable;
-
-UIDetailsTable.defaultProps = {
-    detailsList: null,
-};

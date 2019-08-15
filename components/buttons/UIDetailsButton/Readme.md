@@ -9,35 +9,35 @@ class Example extends BackgroundContainer {
                     presetName={UIBackgroundView.PresetNames.Secondary}
                 />
                 <View style={UIStyle.paddingDefault}>
-                    <UICard
+                    <UICardView
                         progress
                         transparent
                     />
-                    <UICard
+                    <UICardView
                         containerStyle={UIStyle.marginTopHuge}
                         progress
                     />
-                    <UICard
+                    <UICardView
                         containerStyle={UIStyle.marginTopHuge}
                         transparent
                         title="Title"
                         caption="100.000000000"
                         details="details"
                     />
-                    <UICard
+                    <UICardView
                         containerStyle={UIStyle.marginTopHuge}
                         title="Title"
                         caption="100.000000000"
                         details="details"
                     />
-                    <UICard 
+                    <UICardView 
                         width={240}
                         containerStyle={UIStyle.marginTopHuge}
                         transparent
                         title="Title"
                         details="details"
                     />
-                    <UICard 
+                    <UICardView 
                         width={240}
                         containerStyle={UIStyle.marginTopHuge}
                         title="Title"

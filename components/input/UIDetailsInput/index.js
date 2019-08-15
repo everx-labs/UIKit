@@ -58,12 +58,14 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
     button: {
+        marginLeft: UIConstant.tinyContentOffset(),
         height: undefined,
     },
 });
 
 export type DetailsProps = ActionProps & {
     accessibilityLabel?: string,
+    autoCorrect: boolean,
     autoCapitalize: AutoCapitalize,
     autoFocus: boolean,
     beginningTag: string,
@@ -81,6 +83,7 @@ export type DetailsProps = ActionProps & {
     keyboardType: KeyboardType,
     maxLength?: number,
     maxLines: number,
+    maxHeight?: number,
     forceMultiLine: boolean,
     needArrow?: boolean,
     onBlur: () => void,
@@ -88,8 +91,10 @@ export type DetailsProps = ActionProps & {
     onFocus: () => void,
     onSubmitEditing?: () => void,
     onKeyPress?: (e: any) => void,
+    onHeightChange?: (height: number) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
+    blurOnSubmit?: boolean,
     secureTextEntry: boolean,
     showSymbolsLeft: boolean,
     submitDisabled?: boolean,
@@ -103,6 +108,7 @@ export type DetailsProps = ActionProps & {
 
 export const detailsDefaultProps = {
     autoCapitalize: 'sentences',
+    autoCorrect: false,
     autoFocus: false,
     beginningTag: '',
     containerStyle: {},
@@ -122,6 +128,7 @@ export const detailsDefaultProps = {
     onFocus: () => {},
     onSubmitEditing: () => {},
     onKeyPress: () => {},
+    onHeightChange: () => {},
     placeholder: '',
     secureTextEntry: false,
     showSymbolsLeft: false,
@@ -152,30 +159,48 @@ export default class UIDetailsInput<Props, State>
 
     // Events
     onChange(event: any) {
-        let newHeight = 0;
-        
-        if (Platform.OS === 'web' && this.auxTextInput) {
+        if (Platform.OS === 'web') {
+            this.onWebChange();
+        } else {
+            this.onMobileChange(event);
+        }
+    }
+
+    onMobileChange(event: any) {
+        if (event && event.nativeEvent) {
+            const { contentSize } = event.nativeEvent;
+            const height = contentSize?.height || 0;
+            this.onHeightChange(height);
+        }
+    }
+
+    onWebChange() {
+        this.setStateSafely({}, () => {
             const aux = this.auxTextInput;
             if (aux?._node) {
-                newHeight = aux?._node.scrollHeight;
+                const height = aux?._node.scrollHeight || 0;
+                this.onHeightChange(height);
             }
-        } else if (event && event.nativeEvent) {
-            const { contentSize } = event.nativeEvent;
-            newHeight = contentSize?.height || 0;
-        }
+        });
+    }
 
-        if (newHeight) {
-            this.setInputAreaHeight(newHeight - UIConstant.smallCellHeight());
+    onHeightChange(height: number) {
+        const { onHeightChange } = this.props;
+        if (height) {
+            this.setInputAreaHeight(height);
+            if (onHeightChange) {
+                onHeightChange(height);
+            }
         }
     }
 
     setInputAreaHeight(height: number) {
-        const newSize = Math.min(height, UIConstant.smallCellHeight() * 4);
-        const inH = UIConstant.smallCellHeight() + newSize;
+        const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
+        const inH = newSize;
         this.onContentSizeChange(inH);
     }
 
-    onContentSizeChange(heigh: number) {
+    onContentSizeChange(height: number) {
         // Not implemented in here
     }
 
@@ -183,7 +208,7 @@ export default class UIDetailsInput<Props, State>
         // Not implemented in here
     }
 
-    onChangeText = (text: string) => {
+    onChangeText = (text: string, callback: ?((finalValue: string) => void)) => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
@@ -197,15 +222,15 @@ export default class UIDetailsInput<Props, State>
         }
     };
 
-    onFocus = () => {
+    onFocus() {
         this.setFocused();
         this.props.onFocus();
-    };
+    }
 
-    onBlur = () => {
+    onBlur() {
         this.setFocused(false);
         this.props.onBlur();
-    };
+    }
 
     onSubmitEditing = () => {
         if (this.isSubmitDisabled()) {
@@ -238,6 +263,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Getters
+    getCommentTestID(): ?string {
+        return this.props.commentTestID ? this.props.commentTestID : null;
+    }
+
     isFocused(): boolean {
         return this.state.focused || (this.textInput && this.textInput.isFocused()) || false;
     }
@@ -246,8 +275,8 @@ export default class UIDetailsInput<Props, State>
         return this.state.hover;
     }
 
-    isSubmitDisabled(): boolean {
-        return (this.props.disableSubmitEmpty && !this.props.value) ||
+    isSubmitDisabled(value: string = this.props.value): boolean {
+        return (this.props.disableSubmitEmpty && !value) ||
                 this.props.submitDisabled || false;
     }
 
@@ -265,8 +294,8 @@ export default class UIDetailsInput<Props, State>
         return styles.container;
     }
 
-    extraInputStyle(): ViewStyleProp {
-        return {};
+    numOfLines(): number {
+        return this.props.maxLines;
     }
 
     textInputStyle() {
@@ -279,7 +308,6 @@ export default class UIDetailsInput<Props, State>
             fontStyle,
             textColorStyle,
             UIStyle.flex,
-            this.extraInputStyle(),
         ];
     }
 
@@ -318,7 +346,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.placeholder();
     }
 
 
@@ -380,7 +408,7 @@ export default class UIDetailsInput<Props, State>
         if (!this.isMultiline()) {
             return null;
         }
-        
+
         return (
             <TextInput
                 ref={(component) => { this.auxTextInput = component; }}
@@ -398,21 +426,22 @@ export default class UIDetailsInput<Props, State>
     renderTextInput() {
         const {
             accessibilityLabel,
+            autoCorrect,
             autoCapitalize,
             autoFocus,
             editable,
             maxLength,
-            maxLines,
             returnKeyType,
             secureTextEntry,
+            blurOnSubmit,
             testID,
             theme,
-            forceMultiLine,
+            maxHeight,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
-        const numberOfLines = forceMultiLine ? undefined : maxLines;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
+        const blurOnSubmitProp = blurOnSubmit ? { blurOnSubmit } : null;
         const testIDProp = testID ? { testID } : null;
         const placeholderColor = UIColor.textPlaceholder(theme);
         return (
@@ -420,15 +449,16 @@ export default class UIDetailsInput<Props, State>
                 onLayout={e => this.onLayout(e)}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
-                autoCorrect={false}
+                autoCorrect={autoCorrect}
                 autoFocus={autoFocus}
                 editable={editable}
                 keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
-                numberOfLines={numberOfLines}
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
+                numberOfLines={this.numOfLines()}
+                clearButtonMode="never"
+                onFocus={() => this.onFocus()}
+                onBlur={() => this.onBlur()}
                 onChangeText={this.onChangeText}
                 onChange={e => this.onChange(e)}
                 onContentSizeChange={e => this.onChange(e)}
@@ -438,12 +468,14 @@ export default class UIDetailsInput<Props, State>
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
                 {...returnKeyTypeProp}
+                {...blurOnSubmitProp}
                 style={[
                     this.textInputStyle(),
                     {
                         marginTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
                             ? 5 // seems to be smth connected to iOS's textContainerInset
                             : 0,
+                        maxHeight,
                     },
                 ]}
                 selectionColor={UIColor.primary()}
@@ -519,7 +551,10 @@ export default class UIDetailsInput<Props, State>
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
-                {this.renderTextInput()}
+                <View style={UIStyle.screenContainer}>
+                    {this.renderAuxTextInput()}
+                    {this.renderTextInput()}
+                </View>
                 {this.renderCounter()}
                 {this.renderToken()}
                 {this.renderButton()}
@@ -548,6 +583,8 @@ export default class UIDetailsInput<Props, State>
     renderComment() {
         const { theme } = this.props;
         const comment = this.getComment();
+        const testID = this.getCommentTestID();
+        const testIDProp = testID ? { testID } : null;
         if (!comment) {
             return null;
         }
@@ -556,6 +593,7 @@ export default class UIDetailsInput<Props, State>
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
+                {...testIDProp}
                 style={[
                     styles.commentStyle,
                     defaultColorStyle,

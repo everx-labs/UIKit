@@ -29,6 +29,22 @@ export default class UIStylePadding {
         return UIStyle.paddingBottomDefault;
     }
 
+    static bottomSpacious() { // 40
+        return UIStyle.paddingBottomSpacious;
+    }
+
+    static bottomMassive() {
+        return UIStyle.paddingBottomMassive;
+    }
+
+    static bottomVast() {
+        return UIStyle.paddingBottomVast;
+    }
+
+    static bottomEnormous() {
+        return UIStyle.paddingBottomEnormous;
+    }
+
     static leftDefault() {
         return UIStyle.paddingLeftDefault;
     }
@@ -43,6 +59,10 @@ export default class UIStylePadding {
 
     static rightGreat() {
         return UIStyle.paddingRightGreat;
+    }
+
+    static bottomMedium() {
+        return UIStyle.paddingBottomMedium;
     }
 
     static bottomMajor() {

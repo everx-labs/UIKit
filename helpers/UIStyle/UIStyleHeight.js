@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     minHeightGreatCell: { // 72
         minHeight: UIConstant.greatCellHeight(),
     },
+
+    buttonHeight: {
+        height: UIConstant.buttonHeight(),
+    },
 });
 
 export default class UIStyleHeight {
@@ -62,5 +66,9 @@ export default class UIStyleHeight {
 
     static minHeightGreatCell() { // 72
         return styles.minHeightGreatCell;
+    }
+
+    static buttonHeight() {
+        return styles.buttonHeight;
     }
 }

@@ -248,13 +248,24 @@ export default class UISlider extends UIComponent<Props, State> {
     }
 
     render() {
-        const { itemsList, itemRenderer } = this.props;
+        const { itemsList, itemRenderer, containerStyle } = this.props;
+        if (!itemsList.length) {
+            return null;
+        }
+
         const cards = itemsList.map(itemRenderer);
+        if (itemsList.length === 1) {
+            return (
+                <View style={containerStyle}>
+                    {cards}
+                </View>
+            );
+        }
+
         const marginLeft = this.getMarginLeftFromDx();
         const responder: any = this.getResponder();
-
         return (
-            <View style={this.props.containerStyle}>
+            <View style={containerStyle}>
                 <Animated.View
                     style={[UIStyle.flexRow, styles.cardsContainer, { marginLeft }]}
                 >

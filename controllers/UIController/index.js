@@ -18,6 +18,7 @@ import type { ReactNavigation } from '../../components/navigation/UINavigationBa
 import UIConstant from '../../helpers/UIConstant';
 import UIDevice from '../../helpers/UIDevice';
 import UIEventHelper from '../../helpers/UIEventHelper';
+import UIFunction from '../../helpers/UIFunction';
 import UILocalized from '../../helpers/UILocalized/';
 import UIStyle from '../../helpers/UIStyle';
 
@@ -98,7 +99,10 @@ export default class UIController<Props, State>
     };
 
     static addKeyboardPanningScreen(screen: UIController<Props, State>) {
-        keyboardPanningScreens.push(screen);
+        const index = keyboardPanningScreens.indexOf(screen);
+        if (index < 0) {
+            keyboardPanningScreens.push(screen);
+        }
     }
 
     static removeKeyboardPanningScreen(screen: UIController<Props, State>) {
@@ -469,7 +473,8 @@ export default class UIController<Props, State>
                     e => this.onKeyboardWillHide(e),
                 );
             } else if (this.androidKeyboardAdjust === UIController.AndroidKeyboardAdjust.Resize) {
-                if (!UIController.isKeyboardPanning()) { // Make it resizable only if not panning!
+                // Make it resizable only if not panning!
+                if (!UIController.isKeyboardPanning()) {
                     AndroidKeyboardAdjust.setAdjustResize();
                 }
             }
@@ -477,8 +482,14 @@ export default class UIController<Props, State>
     }
 
     deinitKeyboardListeners() {
-        // Remove this screen from keyboard panning if it is
-        UIController.removeKeyboardPanningScreen(this);
+        if (Platform.OS === 'android') {
+            // Remove this screen from keyboard panning if it is
+            UIController.removeKeyboardPanningScreen(this);
+            // Make it resizable only if not panning!
+            if (!UIController.isKeyboardPanning()) {
+                AndroidKeyboardAdjust.setAdjustResize();
+            }
+        }
         // Remove keyboard listeners
         if (this.keyboardWillShowListener) {
             this.keyboardWillShowListener.remove();
@@ -521,11 +532,13 @@ export default class UIController<Props, State>
                 if (this.getRunningAsyncOperation() !== '') {
                     return;
                 }
-                this.setStateSafely({ runningAsyncOperation: name || 'operation' });
+                const runningOperation = { runningAsyncOperation: name || 'operation' };
+                await UIFunction.makeAsync(this.setStateSafely.bind(this))(runningOperation);
                 try {
                     await operation();
                 } finally {
-                    this.setStateSafely({ runningAsyncOperation: '' });
+                    const emptyOperation = { runningAsyncOperation: '' };
+                    await UIFunction.makeAsync(this.setStateSafely.bind(this))(emptyOperation);
                 }
             } catch (error) {
                 console.log(

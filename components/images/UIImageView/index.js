@@ -9,10 +9,14 @@ import UIActionSheet from '../../menus/UIActionSheet';
 import UIAlertView from '../../popup/UIAlertView';
 import UIColor from '../../../helpers/UIColor';
 import UIComponent from '../../UIComponent';
+import UIStyle from '../../../helpers/UIStyle';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
 const LightboxMobile = Platform.OS !== 'web' ? require('react-native-lightbox').default : null;
+const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
+
+const UIImage = Platform.OS === 'web' ? Image : FastImage;
 
 const styles = StyleSheet.create({
     photoContainer: {
@@ -159,6 +163,15 @@ export default class UIImageView extends UIComponent<Props, State> {
             this.hideSpinnerOnPhotoView,
         );
     };
+
+    // Used to open the input dialog directly using ref.
+    openDialog() {
+        if (Platform.OS === 'web' && this.input) {
+            this.input.click();
+        } else {
+            this.onPressPhoto();
+        }
+    }
 
     // Setters
     setLightboxVisible(lightboxVisible: boolean = true) {
@@ -346,10 +359,10 @@ export default class UIImageView extends UIComponent<Props, State> {
                 <UISpinnerOverlay
                     visible={this.state.showSpinnerOnPhotoView}
                 />,
-                <Image
+                <UIImage
                     resizeMode="contain"
                     resizeMethod="auto"
-                    style={{ flex: 1 }}
+                    style={UIStyle.Common.flex()}
                     source={photo}
                 />,
             ]);
@@ -370,7 +383,7 @@ export default class UIImageView extends UIComponent<Props, State> {
                 photo = photoBig;
             }
             return (
-                <Image
+                <UIImage
                     resizeMode={this.props.resizeMode}
                     resizeMethod={this.props.resizeMethod}
                     style={[styles.photoContainer, this.props.photoStyle]}

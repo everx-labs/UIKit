@@ -18,6 +18,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
     emailInput: ?UIDetailsInput<DetailsProps, ActionState>;
 
     consructor(props: DetailsProps) {
+        super.constructor(props);
         this.state = {
             highlightError: false,
             tapped: false,
@@ -25,9 +26,23 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
         };
     }
 
+    // Events
+    onBlur = () => {
+        this.setStateSafely({ highlightError: true });
+        if (this.props.onBlur) {
+            this.props.onBlur();
+        }
+    };
+
+    onChangeText = (text: string) => {
+        this.setStateSafely({ highlightError: false });
+        if (this.props.onChangeText) {
+            this.props.onChangeText(text);
+        }
+    };
+
     // Getters
-    isSubmitDisabled() {
-        const { value } = this.props;
+    isSubmitDisabled(value: string = this.props.value) {
         return !UIFunction.isEmail(value);
     }
 
@@ -50,20 +65,6 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
             return UILocalized.InvalidEmail;
         }
         return '';
-    }
-
-    onBlur =() => {
-        this.setStateSafely({ highlightError: true });
-        if (this.props.onBlur) {
-            this.props.onBlur();
-        }
-    }
-
-    onChangeText = (text: string) => {
-        this.setStateSafely({ highlightError: false });
-        if (this.props.onChangeText) {
-            this.props.onChangeText(text);
-        }
     }
 
     // Actions

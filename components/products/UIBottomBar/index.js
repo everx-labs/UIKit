@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, Text, Linking } from 'react-native';
-import StylePropType from 'react-style-proptype';
+
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -39,8 +41,9 @@ type Props = {
     leftText: string,
     accentText: string,
     accentEmail: string,
-    textStyle: StylePropType,
+    textStyle: TextStyleProp,
     copyRight: string,
+    copyRightIcon: ?ImageSource,
     disclaimer: string,
     menuItems: MenuItem[],
     companyName: string,
@@ -51,7 +54,7 @@ type Props = {
     email: string,
     isNarrow: boolean,
     screenWidth: number,
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     onPressCopyRight: () => void,
 };
 
@@ -61,6 +64,10 @@ type State = {
 };
 
 export default class UIBottomBar extends UIComponent<Props, State> {
+    static getItemProp(name: string): Object {
+        return { itemProp: name };
+    }
+
     // Getters
     textStyle() {
         const { theme, textStyle } = this.props;
@@ -87,6 +94,10 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             companyName, address, phoneNumber, postalCode, location,
         } = this.props;
         return !companyName && !address && !phoneNumber && !postalCode && !location;
+    }
+
+    hasNoPhoneNumber() {
+        return !this.props.phoneNumber;
     }
 
     hasNoLeftPart() {
@@ -157,31 +168,40 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 style={bottomTextStyle}
                 {...itemProps}
             >
-                <Text itemProp="name" style={[textStyle, UIStyle.Text.alignCenter()]}>
+                <Text
+                    style={[textStyle, UIStyle.Text.alignCenter()]}
+                    {...UIBottomBar.getItemProp('name')}
+                >
                     {companyName}
                 </Text>
                 <Text
-                    itemProp="address"
+                    {...UIBottomBar.getItemProp('address')}
                     itemScope
                     itemType="http://schema.org/PostalAddress"
                     style={[textStyle, UIStyle.Text.alignCenter()]}
                 >
-                    <Text itemProp="streetAddress">
+                    <Text {...UIBottomBar.getItemProp('streetAddress')}>
                         {address}
                     </Text>
                     {', '}
-                    <Text itemProp="postalCode">
+                    <Text {...UIBottomBar.getItemProp('postalCode')}>
                         {postalCode}
                     </Text>
                     {', '}
-                    <Text itemProp="addressLocality">
+                    <Text {...UIBottomBar.getItemProp('addressLocality')}>
                         {location}
                     </Text>
                 </Text>
                 <Text style={[textStyle, UIStyle.Text.alignCenter()]}>
                     {this.renderEmail()}
-                    {'   ·  '}
-                    <Text itemProp="telephone">{phoneNumber}</Text>
+                    {
+                        this.hasNoPhoneNumber() ? null : (
+                            <React.Fragment>
+                                {'   ·  '}
+                                <Text {...UIBottomBar.getItemProp('telephone')}>{phoneNumber}</Text>
+                            </React.Fragment>
+                        )
+                    }
                 </Text>
             </View>
         );
@@ -263,16 +283,19 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     renderCopyRight() {
-        const { copyRight, onPressCopyRight } = this.props;
+        const { copyRight, onPressCopyRight, copyRightIcon } = this.props;
         const textStyle = this.textStyle();
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
-        const copyRightText = this.isNarrow() && !isShort ? '©' : copyRight;
+        const copyRightText = this.isNarrow() && !isShort ? '' : copyRight;
         const align = isShort ? UIStyle.Common.alignCenter() : UIStyle.Common.alignEnd();
         const flex = this.isNarrow() && !isShort ? null : UIStyle.Common.flex();
         return (
             <View style={[flex, align]}>
                 <Text style={textStyle}>
                     <UITextButton
+                        icon={this.isNarrow() && copyRightIcon}
+                        iconColor={this.isNarrow() && UIColor.textTertiary()}
+                        iconHoverColor={this.isNarrow() && UIColor.textPrimary()}
                         title={copyRightText}
                         textStyle={textStyle}
                         textHoverStyle={UIColor.textPrimaryStyle()}
@@ -323,6 +346,7 @@ UIBottomBar.defaultProps = {
     email: '',
 
     copyRight: '',
+    copyRightIcon: null,
     disclaimer: '',
 
     isNarrow: true,

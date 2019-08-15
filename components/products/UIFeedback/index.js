@@ -18,6 +18,7 @@ export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void
 
 type Props = {
     onSubmitFeedBack: UIFeedbackSubmitFunc,
+    numberOfLines?: number,
 };
 
 type State = {
@@ -44,8 +45,8 @@ class UIFeedback extends UIComponent<Props, State> {
 
     // Events
     onSubmitFeedBack = () => {
-        const email = this.getEmail();
-        const feedback = this.getFeedback();
+        const email = this.getEmail().trim();
+        const feedback = this.getFeedback().trim();
         if (!email || !feedback) {
             return;
         }
@@ -117,9 +118,10 @@ class UIFeedback extends UIComponent<Props, State> {
                 />
                 <UIDetailsInput
                     ref={(component) => { this.feedbackInput = component; }}
-                    containerStyle={UIStyle.Height.greatCell()}
+                    containerStyle={[UIStyle.Height.greatCell(), UIStyle.Margin.topDefault()]}
                     value={this.getFeedback()}
                     placeholder={UILocalized.DescribeYourIssueOrIdea}
+                    maxLines={this.props.numberOfLines}
                     onChangeText={this.onChangeFeedback}
                     onSubmitEditing={this.onSubmitFeedBack}
                 />
@@ -135,4 +137,3 @@ class UIFeedback extends UIComponent<Props, State> {
 }
 
 export default UIFeedback;
-

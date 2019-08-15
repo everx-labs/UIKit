@@ -1,25 +1,23 @@
 // @flow
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    FlatList,
-    TouchableOpacity,
-} from 'react-native';
-
-import { Popover, PopoverContainer } from 'react-native-simple-popover';
-
+import { Platform, View, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
+
+import { Popover } from 'react-native-simple-popover';
+
 import Mnemonic from 'bitcore-mnemonic';
 
-import UILabel from '../../text/UILabel';
-import UIStyle from '../../../helpers/UIStyle';
-import UILocalized from '../../../helpers/UILocalized';
-import UIDetailsInput from '../UIDetailsInput';
 import UIColor from '../../../helpers/UIColor';
-
 import UIConstant from '../../../helpers/UIConstant';
+import UILocalized from '../../../helpers/UILocalized';
+import UIStyle from '../../../helpers/UIStyle';
+import UIDevice from '../../../helpers/UIDevice';
+
+import UIDetailsInput from '../UIDetailsInput';
+
+import UISeedPhraseHintsView from './UISeedPhraseHintsView';
+
 import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
 
@@ -31,73 +29,124 @@ type Props = DetailsProps & {
 };
 
 type State = ActionState & {
-    popoverPlacement: string,
-    wordThatChanged: number,
+    wordThatChangedIndex: number,
     inputHeight: number,
     inputWidth: number,
+    heightChanging: boolean,
 };
 
-const styles = StyleSheet.create({
-    hintsContainer: {
-        maxHeight: UIConstant.defaultCellHeight() * 3,
-        backgroundColor: UIColor.backgroundPrimary(),
-        borderBottomLeftRadius: UIConstant.borderRadius(),
-        borderBottomRightRadius: UIConstant.borderRadius(),
-        ...UIConstant.cardShadow(),
-    },
-    listComponent: {
-        width: UIConstant.toastWidth(),
-    },
-    contentListComponent: {
-        paddingHorizontal: UIConstant.contentOffset(),
-    },
-    cellHint: {
-        zIndex: 1,
-        justifyContent: 'center',
-        minHeight: UIConstant.defaultCellHeight(),
-        backgroundColor: UIColor.backgroundPrimary(),
-
-    },
-});
+const space = ' ';
 
 export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
         isSeedPhraseValid: null,
         autoCapitalize: 'none',
-        returnKeyType: 'default',
+        returnKeyType: 'done',
+        blurOnSubmit: true,
         placeholder: UILocalized.Password,
-        autofocus: true,
+        autoFocus: false,
         containerStyle: { },
         forceMultiLine: true,
+        keyboardType: 'default', /* Platform.OS === 'android'
+            ? 'visible-password' // to fix Android bug with keyboard suggestions
+            : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
         phraseToCheck: '',
+        commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
+        onBlur: () => {},
     };
+
+    static splitPhrase(phrase: string): Array<string> {
+        return (phrase.match(/\w+|\s$/g) || []).map(s => (s === space ? '' : s));
+    }
+
+    static addDashes(words: Array<string> = []): string {
+        return words.join(`${space}${UIConstant.dashSymbol()}${space}`);
+    }
 
     lastWords: Array<string>;
     totalWords: number;
-    popOverRef: Popover;
+    seedPhraseHintsView: ?UISeedPhraseHintsView;
+    clickListener: ?(e: any) => void;
+    keyboardWillHideListener: any;
 
     constructor(props: Props) {
         super(props);
 
         this.lastWords = [];
         this.totalWords = 12;
+        this.clickListener = null;
 
         this.state = {
             ...this.state,
-            popoverPlacement: 'bottom',
-            wordThatChanged: -1,
+            wordThatChangedIndex: -1,
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             comment: '',
+            heightChanging: false,
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
         this.setTotalWords();
-        this.updateInputRef();
+        this.initKeyboardListeners();
+        this.initClickListenerForWeb();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.deinitKeyboardListeners();
+        this.deinitClickListenerForWeb();
+    }
+
+    // Keyboard
+    initKeyboardListeners() {
+        if (Platform.OS === 'web') {
+            return; // no need
+        }
+        this.keyboardWillHideListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+            e => this.onKeyboardWillHide(e),
+        );
+    }
+
+    deinitKeyboardListeners() {
+        if (this.keyboardWillHideListener) {
+            this.keyboardWillHideListener.remove();
+        }
+    }
+
+    // Clicks
+    initClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        this.clickListener = (e: any) => {
+            this.hideHints();
+        };
+        window.addEventListener(listenerType, this.clickListener);
+    }
+
+    deinitClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        window.removeEventListener(listenerType, this.clickListener);
+    }
+
+    // Events
+    onKeyboardWillHide = (e: any) => {
+        this.hideHints();
+    }
+
+    onKeyPress = (e: any): void => {
+        if (this.seedPhraseHintsView) {
+            this.seedPhraseHintsView.onKeyPress(e);
+        }
     }
 
     // Setters
@@ -106,13 +155,35 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         if (phraseToCheck.length === 0) {
             this.totalWords = 12;
         } else {
-            const words = this.splitPhrase(phraseToCheck);
+            const words = UISeedPhraseInput.splitPhrase(phraseToCheck);
             this.totalWords = words.length;
         }
     }
+
+    setInputHeight(inputHeight: number) {
+        this.setStateSafely({ inputHeight });
+    }
+
+    setWordThatChangedIndex(wordThatChangedIndex: number, callback?: () => void) {
+        this.setStateSafely({ wordThatChangedIndex }, callback);
+    }
+
+    setHeightChanging(heightChanging: boolean, callback?: () => void) {
+        this.setStateSafely({ heightChanging }, callback);
+    }
+
     // Getters
-    getDictionary(): Array<string> {
-        return Mnemonic.Words.ENGLISH;
+    getCommentTestID(): string {
+        const { commentTestID } = this.props;
+        const comment = this.getComment();
+        if (comment === UILocalized.seedPhraseTypo) {
+            return `${commentTestID}_error`;
+        } else if (comment.includes('more')) {
+            return `${commentTestID}_counter_${comment.split(' ')[0]}`;
+        } else if (comment === UILocalized.greatMemory) {
+            return `${commentTestID}_success`;
+        }
+        return commentTestID;
     }
 
     containerStyle(): ViewStyleProp {
@@ -121,8 +192,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return flex;
     }
 
-    extraInputStyle(): ViewStyleProp {
-        return { height: this.state.inputHeight };
+    getInputHeight(): number {
+        return this.state.inputHeight;
+    }
+
+    numOfLines(): number {
+        return Math.round(this.getInputHeight() / UIConstant.smallCellHeight());
     }
 
     commentColor(): ?string {
@@ -161,50 +236,28 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return UILocalized.localizedStringForValue(count, 'moreWords');
     }
 
-    getLastWord(phrase: string): string {
-        const w = this.splitPhrase(phrase);
-        const last = w.length ? w[w.length - 1] : '';
-
-        return last;
-    }
-
     getRemainingCount(): number {
         const phrase = this.getValue().trim();
-        const words = this.splitPhrase(phrase);
+        const words = UISeedPhraseInput.splitPhrase(phrase);
         const count = phrase.length === 0 ? 0 : words.length;
         return this.totalWords - count;
     }
 
-    getPossibleHints(): Array<string> {
-        const wtc = this.getWordThatChanged();
-        const dictionary = this.getDictionary();
-        const hints = dictionary.filter(word => word.startsWith(wtc));
-
-        return hints;
-    }
-
     getWordThatChangedIndex(): number {
-        return this.state.wordThatChanged;
-    }
-
-    getWordThatChanged(): string {
-        const wtc = this.getWordThatChangedIndex();
-        if (wtc < 0) {
-            return '';
-        }
-
-        const phrase = this.getValue();
-        const words = this.splitPhrase(phrase);
-        return words[wtc] || '';
+        return this.state.wordThatChangedIndex;
     }
 
     getInputWidth() {
         return this.state.inputWidth || UIConstant.toastWidth();
     }
 
+    isHeightChanging(): boolean {
+        return this.state.heightChanging;
+    }
+
     areHintsVisible(): boolean {
         const wtc = this.getWordThatChangedIndex();
-        return wtc !== -1;
+        return wtc !== -1 && !this.isHeightChanging();
     }
 
     areWordsValid(currentPhrase?: string): boolean {
@@ -217,8 +270,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
 
         const phrase = currentPhrase || this.getValue();
-        const words = this.splitPhrase(phrase);
-        const dictionary = this.getDictionary();
+        const words = UISeedPhraseInput.splitPhrase(phrase);
+        const dictionary = Mnemonic.Words.ENGLISH;
 
         let result = true;
         for (let i = 0; i < words.length; i += 1) {
@@ -237,29 +290,55 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onChangeText = (newValue: string): void => {
+    onLayout(e: any) {
+        const { nativeEvent } = e;
+        // If the browser window is resized, this forces the input
+        // to adjust its size so that the full phrase is displayed.
+        if (Platform.OS === 'web') {
+            this.onChange(e);
+        }
+        if (nativeEvent) {
+            const { layout } = nativeEvent;
+            this.setStateSafely({ inputWidth: layout.width });
+        }
+    }
+
+    onBlur() {
+        super.onBlur();
+        if (Platform.OS !== 'web') {
+            this.hideHints();
+        }
+    }
+
+    onContentSizeChange(height: number) {
+        this.setInputHeight(height);
+        this.rerenderPopoverForAndroid();
+    }
+
+    onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
         const { onChangeText, onChangeIsValidPhrase } = this.props;
-        const split = this.splitPhrase(newValue);
+        const split = UISeedPhraseInput.splitPhrase(newValue);
         if (split.length > this.totalWords) {
             return;
         }
 
-        const finalValue = this.addDashes(split);
-        this.identifyWordThatChanged(split);
+        const finalValue = UISeedPhraseInput.addDashes(split);
         onChangeText(finalValue);
+
+        this.identifyWordThatChanged(split, () => {
+            if (callback) {
+                callback(finalValue);
+            }
+        });
 
         if (onChangeIsValidPhrase) {
             onChangeIsValidPhrase(this.areWordsValid(finalValue));
         }
     };
 
-    onContentSizeChange(height: number) {
-        this.setStateSafely({ inputHeight: height });
-    }
-
-    onHintSelected(hint: string) {
+    onHintSelected = (hint: string) => {
         const phrase = this.getValue();
-        const words = this.splitPhrase(phrase);
+        const words = UISeedPhraseInput.splitPhrase(phrase);
         const wtc = this.getWordThatChangedIndex();
 
         let newPhrase = '';
@@ -271,76 +350,80 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         newPhrase = `${newPhrase}`.trim();
         newPhrase = `${newPhrase}${extraSpace}`;
 
-        // eslint-disable-next-line no-underscore-dangle
-        this.popOverRef._element.focus();
-        this.onChangeText(newPhrase);
+        this.onChangeText(newPhrase, (finalValue) => {
+            const { textInput } = this;
+            if (textInput) {
+                textInput.focus();
+
+                // Apply a fix to move the cursor to the right
+                if (Platform.OS === 'web') {
+                    // $FlowFixMe
+                    const node: any = textInput._node;
+                    if (node) {
+                        node.setSelectionRange(finalValue.length, finalValue.length);
+                    }
+                } else if (Platform.OS === 'ios') {
+                    // nothing
+                } else if (Platform.OS === 'android') {
+                    // Actually Android moves the cursor to the the right visually,
+                    // BUT physically it's not moved, and when the user continues typing
+                    // the cursor stays wherever it was before, but not at the right.
+
+                    // Thus we change the native position of it ...
+                    textInput.setNativeProps({
+                        selection: {
+                            start: finalValue.length - 1,
+                            end: finalValue.length - 1,
+                        },
+                    });
+                    // ... in order to return it back to the right
+                    textInput.setNativeProps({
+                        selection: {
+                            start: finalValue.length,
+                            end: finalValue.length,
+                        },
+                    });
+                }
+            }
+        });
     }
 
     // methods
-    updateInputRef() {
-        const element = this.popOverRef._element;
-        if (element) {
-            element.focus();
-            this.setTextInputRef(element);
-        } else {
-            throw new Error('No element has been found for popover');
-        }
+    hideHints() {
+        this.setWordThatChangedIndex(-1); // hides hints container
     }
 
-    splitPhrase(phrase: string): Array<string> {
-        const noExtraSpaces = phrase.replace(/\s+/g, ' ');
-        const words = noExtraSpaces.split(' ');
-        const normalized = [];
-
-        for (let i = 0; i < words.length; i += 1) {
-            if (i === 0 && words[0] === '') {
-                continue;
-            }
-
-            if (words[i] !== UIConstant.dashSymbol() && words[i] !== '-') {
-                normalized.push(words[i]);
-            }
-        }
-
-        return normalized;
-    }
-
-    addDashes(words: Array<string>): string {
-        if (words.length) {
-            let newPhrase = `${words[0]}`;
-            for (let i = 1; i < words.length; i += 1) {
-                if (words[i - 1] !== '') {
-                    newPhrase = `${newPhrase} ${UIConstant.dashSymbol()} ${words[i]}`;
-                }
-            }
-            return newPhrase;
-        }
-
-        return '';
-    }
-
-    identifyWordThatChanged(currentWords: Array<string>) {
+    identifyWordThatChanged(currentWords: Array<string>, callback: ?(() => void)) {
         let i = 0;
-        let change = -1;
-
+        let index = 0;
         while (i < this.lastWords.length && i < currentWords.length) {
             if (this.lastWords[i] !== currentWords[i]) {
-                change = i;
+                index = i;
                 break;
             }
             i += 1;
         }
-
         this.lastWords = Array.from(currentWords);
-        this.setStateSafely({ wordThatChanged: change });
+
+        this.setWordThatChangedIndex(index, () => {
+            setTimeout(() => {
+                const wordThatChanged = currentWords[index];
+                if (this.seedPhraseHintsView) {
+                    this.seedPhraseHintsView.wordChanged(wordThatChanged);
+                }
+                if (callback) {
+                    callback();
+                }
+            }, UIConstant.animationSmallDuration()); // Give some time to render
+        });
     }
 
     areSeedPhrasesEqual(currentPhrase?: string): boolean {
         const { phraseToCheck } = this.props;
         const typedPhrase = currentPhrase || this.getValue();
 
-        const wA = this.splitPhrase(phraseToCheck);
-        const wB = this.splitPhrase(typedPhrase);
+        const wA = UISeedPhraseInput.splitPhrase(phraseToCheck);
+        const wB = UISeedPhraseInput.splitPhrase(typedPhrase);
 
         let result = false;
         if (wA.length === wB.length) {
@@ -356,94 +439,50 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         return result;
     }
 
+    rerenderPopoverForAndroid() {
+        // This hack is needed to rerender the popover on Android, as changing `key` is not enough!
+        if (Platform.OS === 'android') {
+            this.setHeightChanging(true, () => {
+                setTimeout(() => {
+                    this.setHeightChanging(false);
+                }, UIConstant.animationSmallDuration());
+            });
+        }
+    }
+
     // Render
-    renderHint(hint: string) {
-        return (
-            <TouchableOpacity
-                style={styles.cellHint}
-                onPress={() => this.onHintSelected(hint)}
-            >
-                <UILabel
-                    text={hint}
-                    role={UILabel.Role.Note}
-                />
-            </TouchableOpacity>
-        );
+    renderHintsView() {
+        return (<UISeedPhraseHintsView
+            ref={(component) => { this.seedPhraseHintsView = component; }}
+            width={this.getInputWidth()}
+            onHintSelected={this.onHintSelected}
+            yOffset={UIConstant.normalContentOffset()}
+        />);
     }
 
-    renderWordsList() {
-        const hints = this.getPossibleHints();
-        const wtc = this.getWordThatChanged();
-
-        if (hints.length === 0) {
-            return null;
-        } else if (hints.length === 1) {
-            if (hints[0] === wtc) {
-                return null;
-            }
-        }
-
-        const w = { width: this.getInputWidth() };
-
-        return (
-            <View style={[styles.hintsContainer, w]}>
-                <FlatList
-                    data={hints}
-                    style={[styles.listComponent, w]}
-                    contentContainerStyle={styles.contentListComponent}
-                    renderItem={element => this.renderHint(element.item)}
-                    scrollEnabled
-                    showsVerticalScrollIndicator
-                    keyExtractor={item => item}
-                />
-            </View>
-        );
-    }
-
-    onLayout(e: any) {
-        const ev = e.nativeEvent;
-        if (ev) {
-            const { layout } = ev;
-            this.setStateSafely({ inputWidth: layout.width });
-        }
-    }
-
-    renderInputWithPopOver() {
-        const isVisible = this.areHintsVisible();
-
+    renderHintsPopover() {
         return (
             <Popover
-                ref={(c) => { this.popOverRef = c; }}
-                placement={this.state.popoverPlacement}
+                key={`hintsPopover~${this.getInputHeight()}`}
+                placement="bottom"
                 arrowWidth={0}
                 arrowHeight={0}
-                isVisible={isVisible}
-                offset={{
-                    x: 0,
-                    y: UIConstant.smallContentOffset() + 1,
-                }}
-                component={() => this.renderWordsList()}
+                isVisible={this.areHintsVisible()}
+                component={() => this.renderHintsView()}
             >
-                {this.renderTextInput()}
+                <View />
             </Popover>
-        );
-    }
-
-    renderWordHints() {
-        return (
-            <PopoverContainer>
-                <View>
-                    {this.renderAuxTextInput()}
-                    {this.renderInputWithPopOver()}
-                </View>
-            </PopoverContainer>
         );
     }
 
     renderTextFragment() {
         return (
             <React.Fragment>
-                {this.renderWordHints()}
+                <View style={UIStyle.screenContainer}>
+                    {this.renderAuxTextInput()}
+                    {this.renderTextInput()}
+                    {this.renderHintsPopover()}
+                </View>
             </React.Fragment>
         );
     }

@@ -4,7 +4,7 @@ import StylePropType from 'react-style-proptype';
 
 import { StyleSheet, View } from 'react-native';
 
-import UIDetailsView from '../../text/UIDetailsView';
+import UIDetailsView from '../../views/UIDetailsView';
 import UIToggle from '../UIToggle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';

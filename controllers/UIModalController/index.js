@@ -23,6 +23,7 @@ import type {
 
 import UIController from '../UIController';
 import UIDevice from '../../helpers/UIDevice';
+import UIFunction from '../../helpers/UIFunction';
 import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
@@ -77,6 +78,11 @@ export default class UIModalController<Props, State>
     animation: SlideAnimation | FadeAnimation;
     testID: ?string;
 
+    static animations = {
+        fade: () => new FadeAnimation({ toValue: 1 }),
+        slide: () => new SlideAnimation({ slideFrom: 'bottom' }),
+    }
+
     constructor(props: ModalControllerProps & Props) {
         super(props);
         this.hasSpinnerOverlay = true;
@@ -88,9 +94,7 @@ export default class UIModalController<Props, State>
         this.onCancel = null;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
-        this.animation = new SlideAnimation({
-            slideFrom: 'bottom',
-        });
+        this.animation = UIModalController.animations.slide();
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
@@ -98,22 +102,22 @@ export default class UIModalController<Props, State>
 
     // Events
     onWillAppear() {
-        // Method needs to be overridden in order to be used.
+        this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
     }
 
     onDidAppear() {
-        // Method needs to be overridden in order to be used.
+        this.initKeyboardListeners();
     }
 
     onWillHide() {
-        // Method needs to be overridden in order to be used.
+        this.deinitKeyboardListeners();
     }
 
-    onDidHide = () => {
+    onDidHide() {
         this.setControllerVisible(false, () => {
             this.dy.setValue(0);
         });
-    };
+    }
 
     onCancelPress = () => {
         this.hide();
@@ -217,10 +221,10 @@ export default class UIModalController<Props, State>
     setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
         super.setContentInset(contentInset);
         let bottomInset = contentInset.bottom;
-        // If bottom inset is more than zero, then keyboard is visible
-        // OR dynamic adjustment is disabled
-        // so append safe area
-        if (bottomInset > 0 || !this.adjustBottomSafeAreaInsetDynamically) {
+        // If bottom inset is greater than zero (keyboard is visible),
+        // OR dynamic adjustment is enabled,
+        // then append the bottom safe area value
+        if (bottomInset > 0 || this.adjustBottomSafeAreaInsetDynamically) {
             bottomInset += this.getSafeAreaInsets().bottom;
         }
         if (animation) {
@@ -260,19 +264,22 @@ export default class UIModalController<Props, State>
     // Events
 
     // Actions
-    show() {
-        this.setControllerVisible(true);
+    openDialog() {
         this.onWillAppear();
-        // First set visible then do the rest
-        setTimeout(() => { // in order to render
-            if (this.dialog) {
-                this.dialog.show();
-            }
-            this.setInitialSwipeState();
-        }, 0);
+        if (this.dialog) {
+            this.dialog.show();
+        }
     }
 
-    hide() {
+    async show(open: boolean = true) {
+        this.setInitialSwipeState();
+        await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);
+        if (open) {
+            this.openDialog();
+        }
+    }
+
+    async hide() {
         if (this.dialog) {
             this.dialog.dismiss();
             this.onWillHide();
@@ -324,7 +331,7 @@ export default class UIModalController<Props, State>
                 dialogAnimation={this.animation}
                 dialogTitle={this.getModalNavigationBar()}
                 dismissOnTouchOutside={false}
-                onDismissed={this.onDidHide}
+                onDismissed={() => this.onDidHide()}
                 onShown={() => this.onDidAppear()}
                 overlayBackgroundColor="transparent"
             >

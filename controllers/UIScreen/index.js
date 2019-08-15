@@ -80,6 +80,19 @@ export default class UIScreen<Props, State>
         return this.state.screenWidth;
     }
 
+    getRouteName() {
+        return this.props.navigation.state.routeName;
+    }
+
+    getPreviousRouteName() {
+        const { state } = this.props.navigation.dangerouslyGetParent();
+        if (state.routes && state.routes.length >= 2) {
+            const { routeName } = state.routes[state.routes.length - 2];
+            return routeName;
+        }
+        return null;
+    }
+
     isNarrow() {
         const screenWidth = this.getScreenWidth();
         return screenWidth && screenWidth < UIConstant.elasticWidthBroad();

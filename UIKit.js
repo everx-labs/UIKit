@@ -12,7 +12,6 @@ import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
-import UICard from './components/text/UICard';
 import UIColor from './helpers/UIColor';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
 import UICompatibilityView from './helpers/UICompatibilityView';
@@ -21,9 +20,10 @@ import UIConstant from './helpers/UIConstant';
 import UIController from './controllers/UIController';
 import UICustomSheet from './components/menus/UICustomSheet';
 import UIDateInput from './components/input/UIDateInput';
+import UIDetailsButton from './components/buttons/UIDetailsButton';
 import UIDetailsInput from './components/input/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
-import UIDetailsView from './components/text/UIDetailsView';
+import UIDetailsView from './components/views/UIDetailsView';
 import UIDetailsTable from './components/text/UIDetailsTable';
 import UIDevice from './helpers/UIDevice';
 import UIDialogController from './controllers/UIDialogController';
@@ -90,6 +90,7 @@ import UIToastMessage from './components/notifications/UIToastMessage';
 import UITokenCell from './components/products/UITokenCell';
 import UIToggle from './components/buttons/UIToggle';
 import UITooltip from './components/notifications/UITooltip';
+import UITransactionView from './components/views/UITransactionView';
 import UITransitionView from './components/views/UITransitionView';
 import UIUploadFileInput from './components/input/UIUploadFileInput';
 import UIUserAgent from './helpers/UIUserAgent';
@@ -134,7 +135,6 @@ export {
     UIBottomBar,
     UIBullet,
     UIButton,
-    UICard,
     UICheckboxItem,
     UIColor,
     UIColorPalette,
@@ -144,6 +144,7 @@ export {
     UIController,
     UICustomSheet,
     UIDateInput,
+    UIDetailsButton,
     UIDetailsInput,
     UIDetailsTable,
     UIDetailsToggle,
@@ -213,6 +214,7 @@ export {
     UIToggle,
     UITokenCell,
     UITooltip,
+    UITransactionView,
     UITransitionView,
     UIUploadFileInput,
     UIUserAgent,
