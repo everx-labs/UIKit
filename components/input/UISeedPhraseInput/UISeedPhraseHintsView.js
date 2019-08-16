@@ -186,6 +186,7 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         const cellType = ch === index ? styles.cellHintSelected : styles.cellHintNormal;
         return (
             <TouchableOpacity
+                testID={`profile_backup_key_phrase_${hint}`}
                 style={[styles.cellHint, cellType]}
                 onPress={() => this.onHintSelected(hint)}
                 {...eventProps}

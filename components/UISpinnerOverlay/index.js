@@ -195,6 +195,7 @@ export default class UISpinnerOverlay extends Component {
     renderSpinner() {
         return (
             <View
+                testID="spinner_loader"
                 style={[
                     styles.container,
                     this.props.containerStyle,

@@ -263,6 +263,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Getters
+    getCommentTestID(): ?string {
+        return this.props.commentTestID ? this.props.commentTestID : null;
+    }
+
     isFocused(): boolean {
         return this.state.focused || (this.textInput && this.textInput.isFocused()) || false;
     }
@@ -579,6 +583,8 @@ export default class UIDetailsInput<Props, State>
     renderComment() {
         const { theme } = this.props;
         const comment = this.getComment();
+        const testID = this.getCommentTestID();
+        const testIDProp = testID ? { testID } : null;
         if (!comment) {
             return null;
         }
@@ -587,6 +593,7 @@ export default class UIDetailsInput<Props, State>
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         return (
             <Text
+                {...testIDProp}
                 style={[
                     styles.commentStyle,
                     defaultColorStyle,
