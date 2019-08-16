@@ -17,6 +17,10 @@ export default class UIStylePadding {
         return UIStyle.paddingVertical;
     }
 
+    static verticalNormal() {
+        return UIStyle.paddingVerticalNormal;
+    }
+
     static topDefault() {
         return UIStyle.paddingTopDefault;
     }
