@@ -7,6 +7,7 @@ class Example extends React.Component  {
     render() {
         return (
             <React.Fragment>
+            <View style={{maxWidth: 330}}>
                 <UILink
                     style={{ marginTop: 16 }}
                     textAlign={UILink.TextAlign.Right}
@@ -136,6 +137,7 @@ class Example extends React.Component  {
                     style={{ marginTop: 16 }}
                     showIndicator
                 />
+            </View>
             </React.Fragment>
         );
     }

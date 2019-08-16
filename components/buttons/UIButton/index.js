@@ -25,8 +25,14 @@ const styles = StyleSheet.create({
     badgeContainer: {
         marginRight: UIConstant.smallContentOffset(),
     },
-    title: {
+    titleL: {
         ...UIFont.bodyMedium(),
+    },
+    titleM: {
+        ...UIFont.smallMedium(),
+    },
+    titleS: {
+        ...UIFont.captionMedium(),
     },
     extension: {
         flex: 1,
@@ -141,6 +147,19 @@ export default class UIButton extends UIActionComponent<Props, State> {
             return UIConstant.smallButtonHeight();
         default: // UIButton.ButtonSize.Default
             return UIConstant.buttonHeight();
+        }
+    }
+
+    getTitleFontStyle() {
+        switch (this.props.buttonSize) {
+        case UIButton.ButtonSize.Large:
+            return styles.titleL;
+        case UIButton.ButtonSize.Medium:
+            return styles.titleM;
+        case UIButton.ButtonSize.Small:
+            return styles.titleS;
+        default:
+            return styles.titleM;
         }
     }
 
@@ -259,7 +278,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
         return (
             <Text
                 style={[
-                    styles.title,
+                    this.getTitleFontStyle(),
                     this.props.textStyle,
                     titleStyle,
                 ]}
@@ -459,8 +478,6 @@ export default class UIButton extends UIActionComponent<Props, State> {
     }
 
     static defaultProps: Props;
-    spinValue: any;
-    scaleValue: any;
 }
 
 UIButton.defaultProps = {
@@ -468,7 +485,7 @@ UIButton.defaultProps = {
     badge: 0,
     bottomExtend: false, // useful for iPhone X (SafeArea)
     buttonSize: UIButton.ButtonSize.Default,
-    buttonShape: UIButton.ButtonShape.Default,
+    buttonShape: UIButton.ButtonShape.Radius,
     buttonStyle: UIButton.ButtonStyle.Full,
     count: '',
     data: '',
