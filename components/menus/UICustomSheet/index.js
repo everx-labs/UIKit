@@ -273,7 +273,10 @@ export default class UICustomSheet extends UIController<Props, State> {
     renderContainer() {
         const paddingBottom = { paddingBottom: this.getSafeAreaInsets().bottom };
         return (
-            <View style={[UIStyle.absoluteFillObject, paddingBottom]}>
+            <View
+                testID="background_layer"
+                style={[UIStyle.absoluteFillObject, paddingBottom]}
+            >
                 <TouchableWithoutFeedback onPress={() => this.hide(this.onCancel)}>
                     <View style={[UIStyle.absoluteFillObject, styles.container]} />
                 </TouchableWithoutFeedback>

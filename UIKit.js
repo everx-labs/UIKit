@@ -30,6 +30,7 @@ import UIDialogController from './controllers/UIDialogController';
 import UIDot from './components/design/UIDot';
 import UIDropdownAlert from './components/popup/UIDropdownAlert';
 import UIEmailInput from './components/input/UIEmailInput';
+import UIErrorScreen from './controllers/UIErrorScreen';
 import UIEventHelper from './helpers/UIEventHelper';
 import UIFeedback from './components/products/UIFeedback';
 import UIFlashMessage from './helpers/UIFlashMessage';
@@ -154,6 +155,7 @@ export {
     UIDot,
     UIDropdownAlert,
     UIEmailInput,
+    UIErrorScreen,
     UIEventHelper,
     UIFeedback,
     UIFlashMessage,
