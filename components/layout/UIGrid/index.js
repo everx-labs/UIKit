@@ -153,7 +153,7 @@ export default class UIGrid extends UIComponent<Props, State> {
 
     renderRow(children, rank) {
         const rowStyle = [
-            { width: '100%' },
+            UIStyle.Width.full(),
             UIStyle.Common.flexRow(),
             { marginTop: rank !== 0 ? this.getRowGutter() : 0 },
         ];
@@ -174,7 +174,7 @@ export default class UIGrid extends UIComponent<Props, State> {
         let row = 0;
         let columns = 0;
         const rows = [[]];
-        for (const child of children) {
+        children.forEach((child) => {
             const childColumns = child.props.medium || 1;
             columns += childColumns;
             if (columns > this.getColumns()) {
@@ -182,7 +182,7 @@ export default class UIGrid extends UIComponent<Props, State> {
                 columns = childColumns;
             }
             rows[row].push(child);
-        }
+        });
 
         const containerStyle = [
             {
@@ -199,7 +199,7 @@ export default class UIGrid extends UIComponent<Props, State> {
         );
     }
 
-    // static defaultProps: Props;
+    static defaultProps: Props;
 }
 
 UIGrid.defaultProps = {
