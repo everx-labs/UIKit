@@ -9,6 +9,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
+import UIColor from '../../../helpers/UIColor';
 
 type Props = {
     balance: string,
@@ -19,6 +20,7 @@ type Props = {
     cacheKey?: string,
     containerStyle?: ViewStyleProp,
     textStyle?: ViewStyleProp,
+    fractionalTextStyle?: ViewStyleProp,
     smartTruncator: boolean,
 };
 
@@ -42,6 +44,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         description: '',
         tokenSymbol: '',
         textStyle: UIStyle.Text.titleLight(),
+        fractionalTextStyle: UIStyle.Text.tertiary(),
         smartTruncator: true,
     };
 
@@ -187,7 +190,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const integer = stringParts[0];
         const fractional = stringParts.length > 1
             ? (
-                <Text style={UIStyle.Text.tertiary()}>
+                <Text style={[UIStyle.Text.tertiary(), this.props.fractionalTextStyle]}>
                     {`${separator}${stringParts[1]} ${this.getTokenSymbol()}`}
                 </Text>
             )
