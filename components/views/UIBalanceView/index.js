@@ -190,7 +190,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const integer = stringParts[0];
         const fractional = stringParts.length > 1
             ? (
-                <Text style={[UIStyle.Text.tertiary(), this.props.fractionalTextStyle]}>
+                <Text style={this.props.fractionalTextStyle}>
                     {`${separator}${stringParts[1]} ${this.getTokenSymbol()}`}
                 </Text>
             )
