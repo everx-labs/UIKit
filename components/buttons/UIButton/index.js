@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text, Image, Animated, Easing } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import UIFont from '../../../helpers/UIFont';
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
     buttonContainerStyle: {
         flex: 1,
-        padding: 16,
+        paddingHorizontal: UIConstant.contentOffset(),
     },
 });
 
@@ -352,7 +352,12 @@ export default class UIButton extends UIActionComponent<Props, State> {
         return (<View style={styles.extension} />);
     }
 
-    renderLeftLayout(hasIconLeftOnly: boolean, hasIconRightOnly: boolean, hasIcons: boolean, hasNoIcons: boolean) {
+    renderLeftLayout(
+        hasIconLeftOnly: boolean,
+        hasIconRightOnly: boolean,
+        hasIcons: boolean,
+        hasNoIcons: boolean,
+    ) {
         const content = hasIcons ? [
             <View style={UIStyle.Common.centerLeftContainer()}>
                 {this.renderIconL()}
@@ -362,10 +367,13 @@ export default class UIButton extends UIActionComponent<Props, State> {
         ] : [this.renderIconL(), this.renderTitle(), this.renderIconR()];
 
         return (
-            <View style={[
-                styles.buttonContainerStyle,
-                hasIcons || hasIconRightOnly ? UIStyle.Common.rowCenterSpaceContainer() : UIStyle.Common.centerLeftContainer(),
-            ]}
+            <View
+                style={[
+                    styles.buttonContainerStyle,
+                    hasIcons || hasIconRightOnly
+                        ? UIStyle.Common.rowCenterSpaceContainer()
+                        : UIStyle.Common.centerLeftContainer(),
+                ]}
             >
                 {this.renderBadge()}
                 {content}
@@ -375,7 +383,12 @@ export default class UIButton extends UIActionComponent<Props, State> {
         );
     }
 
-    renderRightLayout(hasIconLeftOnly: boolean, hasIconRightOnly: boolean, hasIcons: boolean, hasNoIcons: boolean) {
+    renderRightLayout(
+        hasIconLeftOnly: boolean,
+        hasIconRightOnly: boolean,
+        hasIcons: boolean,
+        hasNoIcons: boolean,
+    ) {
         const content = hasIcons ? [
             this.renderIconL(),
             <View style={UIStyle.Common.centerLeftContainer()}>
@@ -385,10 +398,13 @@ export default class UIButton extends UIActionComponent<Props, State> {
         ] : [this.renderIconL(), this.renderTitle(), this.renderIconR()];
 
         return (
-            <View style={[
-                styles.buttonContainerStyle,
-                hasIcons || hasIconLeftOnly ? UIStyle.Common.rowCenterSpaceContainer() : UIStyle.Common.centerRightContainer(),
-            ]}
+            <View
+                style={[
+                    styles.buttonContainerStyle,
+                    hasIcons || hasIconLeftOnly
+                        ? UIStyle.Common.rowCenterSpaceContainer()
+                        : UIStyle.Common.centerRightContainer(),
+                ]}
             >
                 {this.renderBadge()}
                 {content}
@@ -398,17 +414,25 @@ export default class UIButton extends UIActionComponent<Props, State> {
         );
     }
 
-    renderCenterLayout(hasIconLeftOnly: boolean, hasIconRightOnly: boolean, hasIcons: boolean, hasNoIcons: boolean) {
+    renderCenterLayout(
+        hasIconLeftOnly: boolean,
+        hasIconRightOnly: boolean,
+        hasIcons: boolean,
+        hasNoIcons: boolean,
+    ) {
         const content = [
             this.renderIconL(),
             this.renderTitle(),
             this.renderIconR(),
         ];
         return (
-            <View style={[
-                styles.buttonContainerStyle,
-                hasIcons ? UIStyle.Common.rowCenterSpaceContainer() : UIStyle.Common.centerContainer(),
-            ]}
+            <View
+                style={[
+                    styles.buttonContainerStyle,
+                    hasIcons
+                        ? UIStyle.Common.rowCenterSpaceContainer()
+                        : UIStyle.Common.centerContainer(),
+                ]}
             >
                 {this.renderBadge()}
                 {content}
@@ -430,8 +454,12 @@ export default class UIButton extends UIActionComponent<Props, State> {
         if (bottomExtend) {
             height *= 2;
         }
-        const backgroundColorStyle = (buttonStyle === UIButton.ButtonStyle.Full) ? this.getButtonColorStyle() : null;
-        const borderStyle = (buttonStyle === UIButton.ButtonStyle.Border) ? this.getBorderStyle() : null;
+        const backgroundColorStyle = (buttonStyle === UIButton.ButtonStyle.Full)
+            ? this.getButtonColorStyle()
+            : null;
+        const borderStyle = (buttonStyle === UIButton.ButtonStyle.Border)
+            ? this.getBorderStyle()
+            : null;
 
         const hasIconLeftOnly = (icon || hasIcon) && !iconR && !hasIconR;
         const hasIconRightOnly = (iconR || hasIconR) && !icon && !hasIcon;
@@ -443,9 +471,11 @@ export default class UIButton extends UIActionComponent<Props, State> {
         if (showIndicator || !hasTitle && hasIconLeftOnly) {
             const alignContainerStyle = [
                 styles.buttonContainerStyle,
-                textAlign === UIButton.TextAlign.Left ? UIStyle.Common.centerLeftContainer() :
-                    textAlign === UIButton.TextAlign.Right ? UIStyle.Common.centerRightContainer() :
-                        UIStyle.Common.centerContainer(),
+                textAlign === UIButton.TextAlign.Left
+                    ? UIStyle.Common.centerLeftContainer()
+                    : textAlign === UIButton.TextAlign.Right
+                        ? UIStyle.Common.centerRightContainer()
+                        : UIStyle.Common.centerContainer(),
             ];
             content = (
                 <View style={alignContainerStyle}>
@@ -453,11 +483,14 @@ export default class UIButton extends UIActionComponent<Props, State> {
                 </View>
             );
         } else if (textAlign === UIButton.TextAlign.Left) {
-            content = this.renderLeftLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
+            content
+                = this.renderLeftLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
         } else if (textAlign === UIButton.TextAlign.Center) {
-            content = this.renderCenterLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
+            content
+                = this.renderCenterLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
         } else if (textAlign === UIButton.TextAlign.Right) {
-            content = this.renderRightLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
+            content
+                = this.renderRightLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
         }
 
         return (
