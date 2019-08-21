@@ -149,7 +149,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         return this.props.detailsList.map<React$Node>((item) => {
             const cell = this.renderCell(item);
             const { caption, value } = item;
-            const testIDCaption = caption ? caption : 'default';
+            const testIDCaption = caption || 'default';
             return (
                 <View style={styles.row} key={`details-table-row-${caption || ''}-${value || ''}`}>
                     <View style={[styles.leftCell, UIStyle.Margin.rightDefault()]}>

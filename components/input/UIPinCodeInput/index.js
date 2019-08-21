@@ -237,11 +237,9 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 minHeight: UIConstant.mediumCellHeight(),
             },
         });
-
-        const commentTestID = this.props.commentTestID || null;
         return (
             <UILabel
-                testID={commentTestID}
+                testID={this.props.commentTestID}
                 style={[UIStyle.Margin.bottomMassive(),
                     descStyle.descColor]}
                 role={UILabel.Role.CaptionTertiary}
