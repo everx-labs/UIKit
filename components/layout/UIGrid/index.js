@@ -66,12 +66,14 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+    /** @ignore */
+    children?: any,
     /** gap between columns */
-    gutter?: number,
+    gutter: number,
     /** gap between rows */
-    rowGutter?: number,
+    rowGutter: number,
     /** One of: UIGrid.Type.C6, UIGrid.Type.C8, UIGrid.Type.C12 */
-    type?: string,
+    type: string,
     /** custom style */
     style?: StylePropType,
 };
@@ -90,7 +92,7 @@ export default class UIGrid extends UIComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            width: null,
+            width: 0,
         };
     }
 
@@ -131,7 +133,7 @@ export default class UIGrid extends UIComponent<Props, State> {
         return (rowWidth - guttersWidth) / this.getColumns();
     }
 
-    renderChildren(children) {
+    renderChildren(children: any) {
         return children.map((child, rank) => {
             const childColumns = (child.props.medium || 1);
             const childGutters = (childColumns - 1) * this.getGutter();
@@ -151,7 +153,7 @@ export default class UIGrid extends UIComponent<Props, State> {
         });
     }
 
-    renderRow(children, rank) {
+    renderRow(children: any, rank: number) {
         const rowStyle = [
             UIStyle.Width.full(),
             UIStyle.Common.flexRow(),
