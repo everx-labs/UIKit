@@ -47,11 +47,11 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
     }
 
     getCommentColor() {
-        const { value, theme } = this.props;
+        const { value, theme, commentColor } = this.props;
         if (value && this.isSubmitDisabled()) {
             return UIColor.detailsInputComment(theme);
         }
-        return null;
+        return commentColor;
     }
 
     getPlaceholder() {
@@ -60,11 +60,11 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
     }
 
     getComment() {
-        const { value } = this.props;
+        const { value, comment } = this.props;
         if (value && this.isSubmitDisabled() && this.state.highlightError) {
             return UILocalized.InvalidEmail;
         }
-        return '';
+        return comment;
     }
 
     // Actions
