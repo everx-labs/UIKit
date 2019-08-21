@@ -27,6 +27,7 @@ type Props = {
     disabled?: boolean,
     pinCodeEnter: (pin: string) => void,
     testID?: string,
+    commentTestID?: string,
 };
 
 const dotSize = UIConstant.tinyCellHeight();
