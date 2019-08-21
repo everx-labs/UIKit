@@ -27,6 +27,7 @@ type Props = {
     disabled?: boolean,
     pinCodeEnter: (pin: string) => void,
     testID?: string,
+    commentTestID?: string,
 };
 
 const dotSize = UIConstant.tinyCellHeight();
@@ -238,6 +239,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         });
         return (
             <UILabel
+                testID={this.props.commentTestID}
                 style={[UIStyle.Margin.bottomMassive(),
                     descStyle.descColor]}
                 role={UILabel.Role.CaptionTertiary}
