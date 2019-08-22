@@ -52,6 +52,7 @@ type Props = {
     containerStyle: ViewStyleProp,
     bottomSeparator: boolean,
     renderGlass: boolean,
+    onFocus?: () => void,
 }
 
 type State = {
@@ -66,6 +67,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
         containerStyle: {},
         bottomSeparator: true,
         renderGlass: false,
+        onFocus: () => {},
     };
 
     static handleHeader(navigation: ReactNavigation) {
@@ -87,8 +89,12 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     // Events
     onFocusHandler = () => {
+        const { onFocus } = this.props;
         this.setFocused(true);
         this.hideHeader();
+        if (onFocus) {
+            onFocus();
+        }
     };
 
     onBlurHandler = (force: boolean = false) => {
