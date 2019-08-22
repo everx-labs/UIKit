@@ -13,6 +13,7 @@ import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
+import UIStyle from '../../../helpers/UIStyle';
 import UITextButton from '../../buttons/UITextButton';
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 import UITextInput from '../UITextInput';
@@ -21,7 +22,6 @@ import UIComponent from '../../UIComponent';
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
 import icoGlass from '../../../assets/ico-glass/ico-glass.png';
-
 const styles = StyleSheet.create({
     searchInput: {
         width: null,
@@ -177,7 +177,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
         }
 
         return (
-            <Image source={icoGlass} style={{ alignSelf: 'center', marginRight: UIConstant.contentOffset() }} />
+            <Image source={icoGlass} style={[UIStyle.alignSelfCenter, UIStyle.marginRightDefault]} />
         );
     }
 
