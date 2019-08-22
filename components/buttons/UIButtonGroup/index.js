@@ -9,6 +9,8 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 
+const GUTTER = UIConstant.contentOffset();
+
 const styles = StyleSheet.create({
     //
 });
@@ -20,6 +22,8 @@ type Props = {
     style?: StylePropType,
     /** @ignore */
     children?: any,
+    /** Gap between buttons */
+    gutter: number,
 };
 
 type State = {};
@@ -34,19 +38,27 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
         super(props);
     }
 
+    isRow() {
+        return (this.props.direction === UIButtonGroup.Direction.Row);
+    }
+
+    getGutterStyle() {
+        return { marginLeft: this.props.gutter };
+    }
+
     renderChildren() {
         if (!this.props.children) return null;
         const buttonsCount = this.props.children?.length;
         if (!buttonsCount) return null;
 
         return this.props.children.map((child, rank) => {
-            const style = this.props.direction === UIButtonGroup.Direction.Row && rank !== 0 ? UIStyle.Margin.leftDefault() : null;
+            const style = this.isRow() && rank !== 0 ? this.getGutterStyle() : null;
             return React.cloneElement(child, { style: [style, child.props.style], key: `button-${rank}` });
         });
     }
 
     render() {
-        const groupStyle = [UIStyle.Common.flex()];
+        const groupStyle = [];
         if (this.props.direction === UIButtonGroup.Direction.Row) {
             groupStyle.push(
                 UIStyle.Common.centerLeftContainer(),
@@ -69,5 +81,6 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
 UIButtonGroup.defaultProps = {
     children: null,
     direction: UIButtonGroup.Direction.Row,
+    gutter: GUTTER,
     style: null,
 };

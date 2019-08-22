@@ -76,6 +76,8 @@ type Props = {
     type: string,
     /** custom style */
     style?: StylePropType,
+    /** width of grid, if not set it's '100%' */
+    width?: number | null,
 };
 
 type State = {
@@ -92,7 +94,7 @@ export default class UIGrid extends UIComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            width: 0,
+            width: this.props.width || 0,
         };
     }
 
@@ -169,6 +171,16 @@ export default class UIGrid extends UIComponent<Props, State> {
 
     render() {
         if (!this.props.children) return null;
+        if (this.state.width === 0) {
+            return (<View
+                style={[
+                    UIStyle.Width.full(),
+                    this.props.style,
+                ]}
+                onLayout={this.onLayout}
+            />);
+        }
+
         const childrenCount = this.props.children?.length || 1;
         const children = childrenCount > 1 ?
             this.props.children :
@@ -209,4 +221,5 @@ UIGrid.defaultProps = {
     rowGutter: ROW_GUTTER,
     type: UIGrid.Type.C8,
     style: null,
+    width: null,
 };
