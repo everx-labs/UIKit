@@ -17,12 +17,14 @@ const LabelRole = Object.freeze({
     DescriptionTertiary: 'descriptionTertiary',
     SmallMedium: 'smallMedium',
     SmallRegular: 'smallRegular',
+    TinyRegular: 'tinyRegular',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
     Caption: 'caption', // TODO: rename as captionSecondary
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
     AccentBold: 'accentBold',
+    IconQuaternary: 'iconQuaternary',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -83,6 +85,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primarySmallMedium());
         } else if (role === UILabel.Role.SmallRegular) {
             result.push(UIStyle.Text.primarySmallRegular());
+        } else if (role === UILabel.Role.TinyRegular) {
+            result.push(UIStyle.Text.primaryTinyRegular());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
         } else if (role === UILabel.Role.AccentBold) { // Accent - fontSize: 20, lineHeight: 28
@@ -93,6 +97,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
             result.push(UIStyle.Text.warningCaptionRegular());
+        } else if (role === UILabel.Role.IconQuaternary) {
+            result.push(UIStyle.Text.quaternaryIconRegular());
         }
         return result;
     }

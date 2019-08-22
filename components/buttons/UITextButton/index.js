@@ -180,6 +180,11 @@ class UITextButton extends UIActionComponent<Props, State> {
         } else {
             style.push(buttonStyle);
         }
+        if (this.props.style instanceof Array) {
+            style.push(...this.props.style);
+        } else {
+            style.push(this.props.style);
+        }
         return (
             <View style={style}>
                 {this.renderIcon(icon, false)}
