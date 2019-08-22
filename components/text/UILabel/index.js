@@ -24,6 +24,7 @@ const LabelRole = Object.freeze({
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
     AccentBold: 'accentBold',
+    IconQuaternary: 'iconQuaternary',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -96,6 +97,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
             result.push(UIStyle.Text.warningCaptionRegular());
+        } else if (role === UILabel.Role.IconQuaternary) {
+            result.push(UIStyle.Text.quaternaryIconRegular());
         }
         return result;
     }
