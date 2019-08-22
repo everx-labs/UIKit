@@ -1,6 +1,7 @@
 import UIAccountPicker from './components/UIAccountPicker';
 import UIAccountPickerScreen from './components/UIAccountPicker/controllers/UIAccountPickerScreen';
 import UIActionComponent from './components/UIActionComponent';
+import UIActionIcon from './components/buttons/UIActionIcon';
 import UIActionImage from './components/images/UIActionImage';
 import UIActionSheet from './components/menus/UIActionSheet';
 import UIAlertView from './components/popup/UIAlertView';
@@ -11,6 +12,7 @@ import UIBalanceView from './components/views/UIBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
+import UIButtonGroup from './components/buttons/UIButtonGroup';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UIColor from './helpers/UIColor';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
@@ -37,6 +39,7 @@ import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
+import UIGrid from './components/layout/UIGrid';
 import UIIdleDetector from './components/UIIdleDetector';
 import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
@@ -44,6 +47,7 @@ import UIImageView from './components/images/UIImageView';
 import UILabel from './components/text/UILabel';
 import UILandingView from './components/views/UILandingView';
 import UILayoutManager from './helpers/UILayoutManager';
+import UILink from './components/buttons/UILink';
 import UILinkInput from './components/input/UILinkInput';
 import UIListHeader from './components/text/UIListHeader';
 import UILoadMoreButton from './components/buttons/UILoadMoreButton';
@@ -126,6 +130,7 @@ export {
     UIAccountPicker,
     UIAccountPickerScreen,
     UIActionComponent,
+    UIActionIcon,
     UIActionImage,
     UIActionSheet,
     UIAlertView,
@@ -136,6 +141,7 @@ export {
     UIBottomBar,
     UIBullet,
     UIButton,
+    UIButtonGroup,
     UICheckboxItem,
     UIColor,
     UIColorPalette,
@@ -161,6 +167,7 @@ export {
     UIFlashMessage,
     UIFont,
     UIFunction,
+    UIGrid,
     UITextStyle,
     UIIdleDetector,
     UIImage,
@@ -169,6 +176,7 @@ export {
     UILabel,
     UILandingView,
     UILayoutManager,
+    UILink,
     UILinkInput,
     UIListHeader,
     UILoadMoreButton,
