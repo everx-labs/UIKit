@@ -4,13 +4,16 @@ import React from 'react';
 import {
     View,
     StyleSheet,
+    Image,
 } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
+import UIStyle from '../../../helpers/UIStyle';
 import UITextButton from '../../buttons/UITextButton';
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 import UITextInput from '../UITextInput';
@@ -18,6 +21,7 @@ import UIComponent from '../../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
+import icoGlass from '../../../assets/ico-glass/ico-glass.png';
 const styles = StyleSheet.create({
     searchInput: {
         width: null,
@@ -45,6 +49,10 @@ type Props = {
     onChangeExpression?: (text: string) => void,
     navigation?: ReactNavigation,
     onSetIntegratedHeader?: (header: React$Node) => React$Node,
+    containerStyle: ViewStyleProp,
+    bottomSeparator: boolean,
+    renderGlass: boolean,
+    onFocus?: () => void,
 }
 
 type State = {
@@ -56,6 +64,10 @@ export default class UISearchBar extends UIComponent<Props, State> {
         value: '',
         placeholder: '',
         onChangeExpression: () => {},
+        containerStyle: {},
+        bottomSeparator: true,
+        renderGlass: false,
+        onFocus: () => {},
     };
 
     static handleHeader(navigation: ReactNavigation) {
@@ -77,8 +89,12 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     // Events
     onFocusHandler = () => {
+        const { onFocus } = this.props;
         this.setFocused(true);
         this.hideHeader();
+        if (onFocus) {
+            onFocus();
+        }
     };
 
     onBlurHandler = (force: boolean = false) => {
@@ -159,6 +175,18 @@ export default class UISearchBar extends UIComponent<Props, State> {
     }
 
     // render
+    renderGlass() {
+        const { renderGlass } = this.props;
+
+        if (!renderGlass) {
+            return null;
+        }
+
+        return (
+            <Image source={icoGlass} style={[UIStyle.alignSelfCenter, UIStyle.marginRightDefault]} />
+        );
+    }
+
     renderCancelButton() {
         if (!this.isFocused()) {
             return null;
@@ -183,16 +211,19 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     render() {
         const {
-            value, placeholder, onChangeExpression, testID,
+            value, placeholder, onChangeExpression, testID, containerStyle, bottomSeparator,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
+        const separator = bottomSeparator ? <View style={styles.bottomSeparator} /> : null;
         return (
             <View>
                 <View
                     style={[
                         styles.searchContainer,
+                        containerStyle,
                     ]}
                 >
+                    {this.renderGlass()}
                     <UITextInput
                         {...testIDProp}
                         ref={(component) => {
@@ -209,7 +240,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
                     />
                     {this.renderCancelButton()}
                 </View>
-                <View style={styles.bottomSeparator} />
+                {separator}
             </View>
         );
     }

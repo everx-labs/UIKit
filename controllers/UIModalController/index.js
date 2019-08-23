@@ -79,9 +79,9 @@ export default class UIModalController<Props, State>
     testID: ?string;
 
     static animations = {
-        fade: new FadeAnimation({ toValue: 1 }),
-        slide: new SlideAnimation({ slideFrom: 'bottom' }),
-    }
+        fade: () => new FadeAnimation({ toValue: 1 }),
+        slide: () => new SlideAnimation({ slideFrom: 'bottom' }),
+    };
 
     constructor(props: ModalControllerProps & Props) {
         super(props);
@@ -94,7 +94,7 @@ export default class UIModalController<Props, State>
         this.onCancel = null;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
-        this.animation = UIModalController.animations.slide;
+        this.animation = UIModalController.animations.slide();
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
@@ -102,7 +102,7 @@ export default class UIModalController<Props, State>
 
     // Events
     onWillAppear() {
-        // nothing here
+        this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
     }
 
     onDidAppear() {
@@ -221,10 +221,10 @@ export default class UIModalController<Props, State>
     setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
         super.setContentInset(contentInset);
         let bottomInset = contentInset.bottom;
-        // If bottom inset is more than zero, then keyboard is visible
-        // OR dynamic adjustment is disabled
-        // so append safe area
-        if (bottomInset > 0 || !this.adjustBottomSafeAreaInsetDynamically) {
+        // If bottom inset is greater than zero (keyboard is visible),
+        // OR dynamic adjustment is enabled,
+        // then append the bottom safe area value
+        if (bottomInset > 0 || this.adjustBottomSafeAreaInsetDynamically) {
             bottomInset += this.getSafeAreaInsets().bottom;
         }
         if (animation) {

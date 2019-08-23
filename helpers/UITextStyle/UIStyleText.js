@@ -198,6 +198,10 @@ export default class UIStyleText {
     static quaternaryCaptionRegular() {
         return UITextStyle.quaternaryCaptionRegular;
     }
+    // Icon - fontSize: 10, lineHeight: 16
+    static quaternaryIconRegular() {
+        return UITextStyle.quaternaryIconRegular;
+    }
 
     // [Text Grey 1]
     // Subtitle - fontSize: 36, lineHeight: 48

@@ -155,6 +155,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.iconBold(),
     },
+    iconRegular: {
+        ...text,
+        ...UIFont.iconRegular(),
+    },
 
     // [Text Primary]
     // HeadLine - fontSize: 64, lineHeight: 84
@@ -326,6 +330,11 @@ const UITextStyle = StyleSheet.create({
     quaternaryCaptionRegular: {
         ...quaternary,
         ...UIFont.captionRegular(),
+    },
+    // Icon - fontSize: 10, lineHeight: 16
+    quaternaryIconRegular: {
+        ...quaternary,
+        ...UIFont.iconRegular(),
     },
 
     // [Text Grey]

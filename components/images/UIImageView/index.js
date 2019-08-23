@@ -164,6 +164,15 @@ export default class UIImageView extends UIComponent<Props, State> {
         );
     };
 
+    // Used to open the input dialog directly using ref.
+    openDialog() {
+        if (Platform.OS === 'web' && this.input) {
+            this.input.click();
+        } else {
+            this.onPressPhoto();
+        }
+    }
+
     // Setters
     setLightboxVisible(lightboxVisible: boolean = true) {
         this.setStateSafely({ lightboxVisible });

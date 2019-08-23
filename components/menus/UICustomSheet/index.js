@@ -214,8 +214,8 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     animateShow() {
-        const height = this.getHeight();
-        this.marginBottom.setValue(-height);
+        const offset = this.getHeight() + this.getSafeAreaInsets().bottom;
+        this.marginBottom.setValue(-offset);
         this.slideFromBottom();
     }
 
@@ -226,8 +226,9 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     slideToBottom(callback: () => void) {
+        const offset = this.getHeight() + this.getSafeAreaInsets().bottom;
         Animated.timing(this.marginBottom, {
-            toValue: -this.getHeight(),
+            toValue: -offset,
             duration: UIConstant.animationDuration(),
         }).start(callback);
     }
@@ -270,13 +271,17 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     renderContainer() {
+        const paddingBottom = { paddingBottom: this.getSafeAreaInsets().bottom };
         return (
-            <SafeAreaView style={UIStyle.absoluteFillObject}>
+            <View
+                testID="background_layer"
+                style={[UIStyle.absoluteFillObject, paddingBottom]}
+            >
                 <TouchableWithoutFeedback onPress={() => this.hide(this.onCancel)}>
                     <View style={[UIStyle.absoluteFillObject, styles.container]} />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}
-            </SafeAreaView>
+            </View>
         );
     }
 

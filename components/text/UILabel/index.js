@@ -17,12 +17,14 @@ const LabelRole = Object.freeze({
     DescriptionTertiary: 'descriptionTertiary',
     SmallMedium: 'smallMedium',
     SmallRegular: 'smallRegular',
+    TinyRegular: 'tinyRegular',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
     Caption: 'caption', // TODO: rename as captionSecondary
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
     AccentBold: 'accentBold',
+    IconQuaternary: 'iconQuaternary',
 });
 
 type LabelRoleValue = $Values<typeof LabelRole>;
@@ -65,34 +67,38 @@ export default class UILabel extends UIComponent<Props, State> {
         const role = this.getRole();
         const result = [];
 
-        if (role === UILabel.Role.Title) {
+        if (role === UILabel.Role.Title) { // Title - fontSize: 36, lineHeight: 48
             result.push(UIStyle.Text.primaryTitleBold());
-        } else if (role === UILabel.Role.Subtitle) {
+        } else if (role === UILabel.Role.Subtitle) { // Subtitle - fontSize: 24, lineHeight: 32
             result.push(UIStyle.Text.primarySubtitleBold());
         } else if (role === UILabel.Role.SubtitleRegular) {
             result.push(UIStyle.Text.primarySubtitleRegular());
-        } else if (role === UILabel.Role.Description) {
+        } else if (role === UILabel.Role.Description) { // Body - fontSize: 18, lineHeight: 24
             result.push(UIStyle.Text.primaryBodyRegular());
         } else if (role === UILabel.Role.BoldDescription) {
             result.push(UIStyle.Text.primaryBodyBold());
+        } else if (role === UILabel.Role.SecondaryBody) {
+            result.push(UIStyle.Text.secondaryBodyRegular());
         } else if (role === UILabel.Role.DescriptionTertiary) {
             result.push(UIStyle.Text.tertiaryBodyRegular());
-        } else if (role === UILabel.Role.SmallMedium) {
+        } else if (role === UILabel.Role.SmallMedium) { // Small - fontSize: 16, lineHeight: 20
             result.push(UIStyle.Text.primarySmallMedium());
         } else if (role === UILabel.Role.SmallRegular) {
             result.push(UIStyle.Text.primarySmallRegular());
-        } else if (role === UILabel.Role.AccentBold) {
-            result.push(UIStyle.Text.primaryAccentBold());
+        } else if (role === UILabel.Role.TinyRegular) {
+            result.push(UIStyle.Text.primaryTinyRegular());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
-        } else if (role === UILabel.Role.SecondaryBody) {
-            result.push(UIStyle.Text.secondaryBodyRegular());
-        } else if (role === UILabel.Role.Caption) {
+        } else if (role === UILabel.Role.AccentBold) { // Accent - fontSize: 20, lineHeight: 28
+            result.push(UIStyle.Text.primaryAccentBold());
+        } else if (role === UILabel.Role.Caption) { // Caption - fontSize: 14, lineHeight: 20
             result.push(UIStyle.Text.secondaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionTertiary) {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
             result.push(UIStyle.Text.warningCaptionRegular());
+        } else if (role === UILabel.Role.IconQuaternary) {
+            result.push(UIStyle.Text.quaternaryIconRegular());
         }
         return result;
     }
@@ -103,17 +109,19 @@ export default class UILabel extends UIComponent<Props, State> {
         }
         const role = this.getRole();
         if (role === UILabel.Role.Title) {
-            return UIStyle.Margin.topMedium();
+            return UIStyle.Margin.topMedium(); // 24
         } else if (role === UILabel.Role.Subtitle) {
-            return UIStyle.Margin.topDefault();
+            return UIStyle.Margin.topDefault(); // 16
         } else if (role === UILabel.Role.SecondaryBody) {
-            return UIStyle.Margin.topSmall();
+            return UIStyle.Margin.topSmall(); // 8
         } else if (role === UILabel.Role.Description) {
-            return UIStyle.Margin.topSmall();
+            return UIStyle.Margin.topSmall(); // 8
         } else if (role === UILabel.Role.Note) {
-            return UIStyle.Margin.topDefault();
+            return UIStyle.Margin.topDefault(); // 16
         } else if (role === UILabel.Role.AccentBold) {
-            return UIStyle.Margin.topDefault();
+            return UIStyle.Margin.topDefault(); // 16
+        } else if (role === UILabel.Role.Caption) {
+            return UIStyle.Margin.topSmall();
         }
         return null;
     }
