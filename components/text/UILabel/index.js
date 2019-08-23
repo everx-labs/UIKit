@@ -120,6 +120,8 @@ export default class UILabel extends UIComponent<Props, State> {
             return UIStyle.Margin.topDefault(); // 16
         } else if (role === UILabel.Role.AccentBold) {
             return UIStyle.Margin.topDefault(); // 16
+        } else if (role === UILabel.Role.Caption) {
+            return UIStyle.Margin.topSmall();
         }
         return null;
     }
