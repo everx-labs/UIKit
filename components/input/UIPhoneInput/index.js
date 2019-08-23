@@ -32,11 +32,11 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
     }
 
     getCommentColor() {
-        const { value, theme } = this.props;
+        const { value, theme, commentColor } = this.props;
         if (value && this.isSubmitDisabled()) {
             return UIColor.detailsInputComment(theme);
         }
-        return null;
+        return commentColor;
     }
 
     placeholder() {
@@ -44,11 +44,11 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
     }
 
     getComment() {
-        const { value } = this.props;
+        const { value, comment } = this.props;
         if (value && this.isSubmitDisabled() && this.state.highlightError) {
             return UILocalized.InvalidPhone;
         }
-        return '';
+        return comment;
     }
 
     // Events
@@ -102,6 +102,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
                 comment={this.getComment()}
                 submitDisabled={this.isSubmitDisabled()}
                 onChangeText={this.onChangeText}
+                mandatory={this.props.mandatory}
             />
         );
     }
