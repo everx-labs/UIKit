@@ -104,6 +104,8 @@ export type DetailsProps = ActionProps & {
     visible: boolean,
     testID?: string,
     disableSubmitEmpty: boolean,
+    mandatory?: boolean,
+    mandatoryColor?: string | null,
 };
 
 export const detailsDefaultProps = {
@@ -137,6 +139,8 @@ export const detailsDefaultProps = {
     value: '',
     visible: true,
     disableSubmitEmpty: false,
+    mandatory: false,
+    mandatoryColor: UIColor.error(),
 };
 
 export default class UIDetailsInput<Props, State>
@@ -564,10 +568,14 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextView() {
-        const { comment, hideBottomLine, theme } = this.props;
+        const {
+            comment, hideBottomLine, theme, mandatory,
+        } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor: UIColorData;
-        if (comment && this.commentColor()) {
+        if (mandatory && !this.getValue()) {
+            bottomLineColor = this.props.mandatoryColor;
+        } else if (comment && this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
             bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());

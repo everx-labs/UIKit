@@ -101,6 +101,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
                 comment={this.getComment()}
                 placeholder={this.getPlaceholder()}
                 submitDisabled={this.isSubmitDisabled()}
+                mandatory={this.props.mandatory}
             />
         );
     }
