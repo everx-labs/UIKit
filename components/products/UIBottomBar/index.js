@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 const bottomTextStyle = [
     UIStyle.Common.alignJustifyCenter(),
     UIStyle.Height.bigCell(),
-    UIStyle.Common.pageSlimContainer(),
+    // UIStyle.Common.pageSlimContainer(),
 ];
 
 type MenuItem = {
@@ -152,9 +152,9 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 
     renderContacts(able: boolean) {
         const {
-            companyName, address, phoneNumber, postalCode, location,
+            companyName, address, phoneNumber, postalCode, location, info,
         } = this.props;
-        const textStyle = this.textStyle();
+        const textStyle = [this.textStyle(), UIStyle.Text.alignCenter()];
         if (!able || this.hasNoContacts()) {
             return null;
         }
@@ -169,7 +169,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 {...itemProps}
             >
                 <Text
-                    style={[textStyle, UIStyle.Text.alignCenter()]}
+                    style={textStyle}
                     {...UIBottomBar.getItemProp('name')}
                 >
                     {companyName}
@@ -178,7 +178,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                     {...UIBottomBar.getItemProp('address')}
                     itemScope
                     itemType="http://schema.org/PostalAddress"
-                    style={[textStyle, UIStyle.Text.alignCenter()]}
+                    style={textStyle}
                 >
                     <Text {...UIBottomBar.getItemProp('streetAddress')}>
                         {address}
@@ -192,7 +192,10 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                         {location}
                     </Text>
                 </Text>
-                <Text style={[textStyle, UIStyle.Text.alignCenter()]}>
+                <Text style={textStyle}>
+                    {info}
+                </Text>
+                <Text style={textStyle}>
                     {this.renderEmail()}
                     {
                         this.hasNoPhoneNumber() ? null : (
