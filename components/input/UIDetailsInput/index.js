@@ -378,6 +378,9 @@ export default class UIDetailsInput<Props, State>
         const {
             floatingTitle, floatingTitleText, theme, value,
         } = this.props;
+        if (!floatingTitle) {
+            return null;
+        }
         const emptyValue = !value || !value.length;
         const text = !floatingTitle || (emptyValue && !this.isFocused())
             ? ' '

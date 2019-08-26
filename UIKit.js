@@ -13,6 +13,8 @@ import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UIButtonGroup from './components/buttons/UIButtonGroup';
+import UIChatInput from './components/chat/UIChatInput';
+import UIChatMessageCell from './components/chat/cells/UIChatMessageCell';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
 import UIColor from './helpers/UIColor';
 import UIColorPalette from './helpers/UIColor/UIColorPalette';
@@ -142,6 +144,8 @@ export {
     UIBullet,
     UIButton,
     UIButtonGroup,
+    UIChatInput,
+    UIChatMessageCell,
     UICheckboxItem,
     UIColor,
     UIColorPalette,
