@@ -305,6 +305,10 @@ const UITextStyle = StyleSheet.create({
         ...secondary,
         ...UIFont.captionMedium(),
     },
+    secondaryCaptionBold: {
+        ...secondary,
+        ...UIFont.captionBold(),
+    },
     // Tiny - fontSize: 12, lineHeight: 16
     secondaryTinyRegular: {
         ...secondary,
