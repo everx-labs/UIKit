@@ -177,6 +177,9 @@ export default class UIStyleText {
     static secondaryCaptionMedium() {
         return UITextStyle.secondaryCaptionMedium;
     }
+    static secondaryCaptionBold() {
+        return UITextStyle.secondaryCaptionBold;
+    }
     // Tiny - fontSize: 12, lineHeight: 16
     static secondaryTinyRegular() {
         return UITextStyle.secondaryTinyRegular;
