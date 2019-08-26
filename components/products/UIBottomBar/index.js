@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
 const bottomTextStyle = [
     UIStyle.Common.alignJustifyCenter(),
     UIStyle.Height.bigCell(),
-    // UIStyle.Common.pageSlimContainer(),
 ];
 
 type MenuItem = {
