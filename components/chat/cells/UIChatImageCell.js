@@ -15,37 +15,21 @@ import type { ChatAdditionalInfo, UIChatImageSize } from '../extras';
 
 type Props = {
     image: ?any,
+    imageSize: ?UIChatImageSize,
     additionalInfo: ?ChatAdditionalInfo,
     parentLayout: ?Layout,
 }
 
 type State = {
-    size: UIChatImageSize,
+
 }
 
 const IMAGE_SIZE = 1024;
 export default class UIChatImageCell extends UIPureComponent<Props, State> {
     static defaultProps = {
         parentLayout: null,
+        imageSize: { width: IMAGE_SIZE, height: IMAGE_SIZE },
     };
-
-    // constructor
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            size: { width: IMAGE_SIZE, height: IMAGE_SIZE },
-            showSpinner: false,
-        };
-    }
-
-    componentDidMount() {
-        super.componentDidMount();
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-    }
 
     // Getters
     getImage(): any {
@@ -53,8 +37,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     getSize(): UIChatImageSize {
-        // TODO: Extract size from image data
-        return this.state.size;
+        return this.props.imageSize;
     }
 
     getUrl(): string {
