@@ -77,6 +77,7 @@ export type DetailsProps = ActionProps & {
     defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
+    hideFloatingTitle: boolean,
     floatingTitleText: string,
     hideBottomLine: boolean,
     hidePlaceholder: boolean,
@@ -118,6 +119,7 @@ export const detailsDefaultProps = {
     comment: '',
     editable: true,
     floatingTitle: true,
+    hideFloatingTitle: false,
     floatingTitleText: '',
     hideBottomLine: false,
     hidePlaceholder: false,
@@ -376,8 +378,11 @@ export default class UIDetailsInput<Props, State>
     // Render
     renderFloatingTitle() {
         const {
-            floatingTitle, floatingTitleText, theme, value,
+            floatingTitle, floatingTitleText, theme, value, hideFloatingTitle,
         } = this.props;
+        if (hideFloatingTitle) {
+            return null;
+        }
         const emptyValue = !value || !value.length;
         const text = !floatingTitle || (emptyValue && !this.isFocused())
             ? ' '
