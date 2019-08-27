@@ -21,7 +21,7 @@ export type TransactionInfo = {
     localeAmount: string,
     token: string,
     sent: boolean,
-    currency: ?{
+    currency?: {
         rate: number,
         symbol: string,
     }

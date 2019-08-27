@@ -343,7 +343,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 <Text style={[
                         UIStyle.Color.getColorStyle(UIColor.white()),
                         UIFont.menuRegular(),
-                        UIFont.menuRegular()
                     ]}
                 >
                     [{this.formatedTime()}] {text}
