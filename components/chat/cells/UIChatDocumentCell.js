@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class TONDocumentCell extends UIPureComponent<Props, State> {
+export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     static defaultProps = {
         document: null,
         additionalInfo: null,

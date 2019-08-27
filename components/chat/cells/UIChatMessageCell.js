@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     msgContainer: {
+        flexShrink: 1,
+        flexDirection: 'column',
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.horizontalContentOffset(),
         paddingVertical: UIConstant.verticalContentOffset(),
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     msgContainerEmpty: {
+        alignSelf: 'flex-start',
         borderRadius: UIConstant.borderRadius(),
         borderColor: UIColor.light(),
         borderWidth: 1,
@@ -246,7 +249,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         style,
                         rounded,
                         bg,
-                        { flexShrink: 1, flexDirection: 'column' },
                     ]}
                 >
                     {userName}
@@ -260,7 +262,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     wrapInTouch(wrap: React$Element<*>, objectToReturn: any): React$Element<*> {
         return (
             <TouchableHighlight
-                style={{ flex: 1 }}
+                style={UIStyle.Common.flex()}
                 onPress={() => this.props.onTouchMedia(objectToReturn)}
                 key={`touchWrap_${wrap.key || ''}`}
             >
@@ -338,7 +340,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderInformationCell(text: string) {
         return (
             <View style={[styles.msgContainerInformation]}>
-                <Text style={[{ color: 'white' }, UIFont.menuRegular()]}>
+                <Text style={[
+                        UIStyle.Color.getColorStyle(UIColor.white()),
+                        UIFont.menuRegular(),
+                        UIFont.menuRegular()
+                    ]}
+                >
                     [{this.formatedTime()}] {text}
                 </Text>
             </View>
@@ -348,8 +355,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderEmptyChatCell() {
         return (
             <View style={[styles.container, styles.emptyChatCell]}>
-                <View style={[styles.msgContainerEmpty, { alignSelf: 'flex-start' }]}>
-                    <Text style={[UIFont.bodyMedium(), { color: UIColor.textPrimary() }]}>
+                <View style={styles.msgContainerEmpty}>
+                    <Text style={[
+                            UIFont.bodyMedium(),
+                            UIStyle.Color.getColorStyle(UIColor.textPrimary())
+                        ]}
+                    >
                         {UILocalized.SayHello}
                     </Text>
                 </View>

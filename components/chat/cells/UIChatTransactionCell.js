@@ -70,6 +70,19 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return Math.abs(trx.amount || 0.0);
     }
 
+    getAmountInCurrency(): string {
+        const trx = this.getTransaction();
+        const extra = this.getExtra();
+        const amount = trx.out ? -extra.localeAmount : extra.localeAmount;
+
+        if (!extra.currency) {
+            return '';
+        }
+        const {currency} = extra;
+
+        return `${amount * currency.rate} ${currency.symbol}`
+    }
+
     getDate(): number {
         return this.getMessage().info.created;
     }
@@ -78,7 +91,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const extra: TransactionExtraInfo = {
             localeAmount: this.getAmount(),
             separator: '.',
-            token: 'G',
+            token: '',
         };
         return this.props.extraTrxInfo || extra;
     }
@@ -133,7 +146,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     <UILabel
                         style={styles.textWhite}
                         role={UILabel.Role.TinyRegular}
-                        text={`${amount} €`}
+                        text={`${this.getAmountInCurrency()}`}
                     />
                 </View>
             </View>

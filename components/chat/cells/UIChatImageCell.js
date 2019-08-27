@@ -9,6 +9,7 @@ import UIPureComponent from '../../UIPureComponent';
 import UIImageView from '../../images/UIImageView';
 import UISpinnerOverlay from '../../UISpinnerOverlay';
 import UIConstant from '../../../helpers/UIConstant';
+import UIStyle from '../../../helpers/UIStyle';
 
 import type { ChatAdditionalInfo } from '../extras';
 
@@ -22,6 +23,7 @@ type State = {
 
 }
 
+const IMAGE_SIZE = 1024;
 export default class UIChatImageCell extends UIPureComponent<Props, State> {
     static defaultProps = {
         parentLayout: null,
@@ -32,7 +34,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         super(props);
 
         this.state = {
-            size: { width: 120, height: 80 },
+            size: { width: IMAGE_SIZE, height: IMAGE_SIZE },
             showSpinner: false,
         };
     }
@@ -114,7 +116,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     render() {
         return (
             <View
-                style={{ flex: 1 }}
+                style={UIStyle.Common.flex()}
                 key={`imageViewContent${this.getUrl()}`}
             >
                 {this.renderImage()}

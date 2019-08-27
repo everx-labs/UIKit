@@ -21,6 +21,10 @@ export type TransactionInfo = {
     localeAmount: string,
     token: string,
     sent: boolean,
+    currency: ?{
+        rate: number,
+        symbol: string,
+    }
 };
 
 export type UIChatMessageInfo = {
