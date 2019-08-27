@@ -48,3 +48,8 @@ export type ChatAdditionalInfo = {
     lastFromChain: boolean,
     transactionLocalized: ?TransactionInfo,
 };
+
+export type UIChatImageSize = {
+    width: number,
+    height: number,
+}

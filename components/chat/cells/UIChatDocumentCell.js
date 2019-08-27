@@ -2,6 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIPureComponent from '../../UIPureComponent';
 import UISpinnerOverlay from '../../UISpinnerOverlay';
@@ -72,7 +73,8 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     }
 
     getUrl(): string {
-
+        // TODO:
+        return '';
     }
 
     // Actions

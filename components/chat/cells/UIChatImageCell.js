@@ -11,7 +11,7 @@ import UISpinnerOverlay from '../../UISpinnerOverlay';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 
-import type { ChatAdditionalInfo } from '../extras';
+import type { ChatAdditionalInfo, UIChatImageSize } from '../extras';
 
 type Props = {
     image: ?any,
@@ -20,7 +20,7 @@ type Props = {
 }
 
 type State = {
-
+    size: UIChatImageSize,
 }
 
 const IMAGE_SIZE = 1024;
@@ -52,8 +52,9 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         return this.props.image;
     }
 
-    getSize(): ImageSize {
-        return this.props.imageSize;
+    getSize(): UIChatImageSize {
+        // TODO: Extract size from image data
+        return this.state.size;
     }
 
     getUrl(): string {

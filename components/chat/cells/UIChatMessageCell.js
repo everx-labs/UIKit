@@ -263,7 +263,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <TouchableHighlight
                 style={UIStyle.Common.flex()}
-                onPress={() => this.props.onTouchMedia(objectToReturn)}
+                onPress={() => {
+                    if (this.props.onTouchMedia) {
+                        this.props.onTouchMedia(objectToReturn);
+                    }
+                }}
                 key={`touchWrap_${wrap.key || ''}`}
             >
                 <View>
@@ -341,9 +345,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <View style={[styles.msgContainerInformation]}>
                 <Text style={[
-                        UIStyle.Color.getColorStyle(UIColor.white()),
-                        UIFont.menuRegular(),
-                    ]}
+                    UIStyle.Color.getColorStyle(UIColor.white()),
+                    UIFont.menuRegular(),
+                ]}
                 >
                     [{this.formatedTime()}] {text}
                 </Text>
@@ -356,9 +360,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             <View style={[styles.container, styles.emptyChatCell]}>
                 <View style={styles.msgContainerEmpty}>
                     <Text style={[
-                            UIFont.bodyMedium(),
-                            UIStyle.Color.getColorStyle(UIColor.textPrimary())
-                        ]}
+                        UIFont.bodyMedium(),
+                        UIStyle.Color.getColorStyle(UIColor.textPrimary()),
+                    ]}
                     >
                         {UILocalized.SayHello}
                     </Text>

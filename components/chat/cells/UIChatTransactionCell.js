@@ -75,7 +75,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const extra = this.getExtra();
         const amount = trx.out ? -extra.localeAmount : extra.localeAmount;
         
-        const {currency} = extra;
+        const { currency } = extra;
         if (!currency) {
             return '';
         }
