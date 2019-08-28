@@ -9,6 +9,7 @@ const UIColorPalette = {
     primary4: '#006BA1',
     primary5: '#005885',
     primary6: '#003F5E',
+    primaryAlpha20: 'rgba(0, 136, 204, 0.2)',
     secondary: '#FFFFFF',
     tertiary: '#FFFFFF',
     black: '#000000',

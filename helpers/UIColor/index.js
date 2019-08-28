@@ -67,6 +67,10 @@ export default class UIColor {
         return UIColorPalette.primary6;
     }
 
+    static primaryAlpha20() {
+        return UIColorPalette.primaryAlpha20;
+    }
+
     static secondary() {
         return UIColorPalette.secondary;
     }
