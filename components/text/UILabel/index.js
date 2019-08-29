@@ -30,7 +30,7 @@ const LabelRole = Object.freeze({
     IconQuaternary: 'iconQuaternary',
 });
 
-type LabelRoleValue = $Values<typeof LabelRole>;
+export type LabelRoleValue = $Values<typeof LabelRole>;
 
 type Props = {
     style: ?ViewStyleProp,
