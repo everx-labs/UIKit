@@ -25,6 +25,7 @@ type Props = {
 
 type State = {
     data: any,
+    showSpinner: boolean,
 }
 
 const styles = StyleSheet.create({
@@ -56,15 +57,16 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
 
         this.state = {
             data: null,
+            showSpinner: false,
         };
     }
 
-    async onTouchDocument() {
+    onTouchDocument() {
         const { onOpenPDF, document, additionalInfo } = this.props;
         if (onOpenPDF && document && additionalInfo) {
-            const docName = additionalInfo.docName || '';
-            const docData = await document(additionalInfo.message);
-            onOpenPDF(docData, docName);
+            this.setStateSafely({ showSpinner: true }, () => {
+                this.downloadDocument(onOpenPDF, document, additionalInfo);
+            });
         }
     }
 
@@ -91,6 +93,18 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     }
 
     // Actions
+    async downloadDocument(
+        callback: (data: any, name: string) => void,
+        downloader: any,
+        info: ChatAdditionalInfo,
+    ) {
+        const docName = info.docName || '';
+        const docData = await downloader(info.message);
+        callback(docData, docName);
+        this.setStateSafely({ showSpinner: false });
+    }
+
+    // Render
     renderDocumentName() {
         const { additionalInfo } = this.props;
         const docName = additionalInfo?.docName || '';
@@ -141,7 +155,7 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     renderSpinnerOverlay() {
         return (
             <UISpinnerOverlay
-                visible={this.state.data}
+                visible={this.state.showSpinner}
             />
         );
     }

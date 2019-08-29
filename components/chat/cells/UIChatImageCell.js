@@ -110,10 +110,9 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     renderSpinnerOverlay() {
-        const showSpinner = this.state.data === null;
         return (
             <UISpinnerOverlay
-                visible={showSpinner}
+                visible={!this.state.data}
             />
         );
     }
