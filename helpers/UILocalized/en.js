@@ -289,6 +289,7 @@ const en: UILocalizedData = {
     ChatWith: 'Chat with',
     DoYouWantToBlockThisUser: 'Do you want to block this user?',
     TypeMessage: 'Write a message...',
+    FailedToLoadDocument: 'Failed to load document',
 
     // Wallet
     WeNeedYourPassword: 'We need your local password to perform operations on this device',

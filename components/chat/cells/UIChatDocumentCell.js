@@ -5,6 +5,8 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIPureComponent from '../../UIPureComponent';
+import UIToastMessage from '../../notifications/UIToastMessage';
+import UILocalized from '../../../helpers/UILocalized';
 import UISpinnerOverlay from '../../UISpinnerOverlay';
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -64,9 +66,7 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     onTouchDocument() {
         const { onOpenPDF, document, additionalInfo } = this.props;
         if (onOpenPDF && document && additionalInfo) {
-            this.setStateSafely({ showSpinner: true }, () => {
-                this.downloadDocument(onOpenPDF, document, additionalInfo);
-            });
+            this.downloadDocument(onOpenPDF, document, additionalInfo);
         }
     }
 
@@ -98,9 +98,23 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
         downloader: any,
         info: ChatAdditionalInfo,
     ) {
-        const docName = info.docName || '';
-        const docData = await downloader(info.message);
-        callback(docData, docName);
+        this.showSpinner();
+        try {
+            const docName = info.docName || '';
+            const docData = await downloader(info.message);
+            callback(docData, docName);
+        } catch (error) {
+            UIToastMessage.showMessage(UILocalized.FailedToLoadDocument);
+        } finally {
+            this.hideSpinner();
+        }
+    }
+
+    showSpinner() {
+        this.setStateSafely({ showSpinner: true });
+    }
+
+    hideSpinner() {
         this.setStateSafely({ showSpinner: false });
     }
 
