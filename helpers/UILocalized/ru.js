@@ -288,6 +288,7 @@ const ru: UILocalizedData = {
     ChatWith: 'Чат с',
     DoYouWantToBlockThisUser: 'Вы хотите заблокировать этого юзера?',
     TypeMessage: 'Введите сообщение',
+    FailedToLoadDocument: 'Failed to load document',
 
     // Wallet
     WeNeedYourPassword: 'Введите Ваш пароль, чтобы выполнять операции на этом устройстве',

@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
         height: UIConstant.greatCellHeight(),
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.normalContentOffset(),
-        marginBottom: UIConstant.normalContentOffset(),
-        marginTop: UIConstant.normalContentOffset(),
         backgroundColor: UIColor.green(),
     },
     textWhite: {
@@ -74,13 +72,13 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const amount = trx.out ? -extra.localeAmount : extra.localeAmount;
-        
+
         const { currency } = extra;
         if (!currency) {
             return '';
         }
 
-        return `${amount * currency.rate} ${currency.symbol}`
+        return `${amount * currency.rate} ${currency.symbol}`;
     }
 
     getDate(): number {
