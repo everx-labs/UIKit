@@ -14,14 +14,17 @@ import UIStyle from '../../../helpers/UIStyle';
 import docBlue from '../../../assets/ico-doc-blue/ico-doc-blue.png';
 import docWhite from '../../../assets/ico-doc-white/ico-doc-white.png';
 
+import type { ChatAdditionalInfo } from '../extras';
+
 type Props = {
     document: any,
     isReceived: boolean,
-    onOpenPDF?: (msg: any) => void,
+    additionalInfo: ?ChatAdditionalInfo,
+    onOpenPDF?: (pfdData: any, pdfName: string) => void,
 }
 
 type State = {
-    showSpinner: boolean,
+    data: any,
 }
 
 const styles = StyleSheet.create({
@@ -48,10 +51,20 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
         onOpenPDF: () => {},
     };
 
-    onTouchDocument() {
-        const { onOpenPDF, document } = this.props;
-        if (onOpenPDF) {
-            onOpenPDF(document);
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            data: null,
+        };
+    }
+
+    async onTouchDocument() {
+        const { onOpenPDF, document, additionalInfo } = this.props;
+        if (onOpenPDF && document && additionalInfo) {
+            const docName = additionalInfo.docName || '';
+            const docData = await document(additionalInfo.message);
+            onOpenPDF(docData, docName);
         }
     }
 
@@ -79,8 +92,8 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
 
     // Actions
     renderDocumentName() {
-        const doc = this.props.document;
-        const docName = doc.info.metadata?.docName || '';
+        const { additionalInfo } = this.props;
+        const docName = additionalInfo?.docName || '';
         return (
             <Text
                 style={[
@@ -128,7 +141,7 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     renderSpinnerOverlay() {
         return (
             <UISpinnerOverlay
-                visible={this.state.showSpinner}
+                visible={this.state.data}
             />
         );
     }

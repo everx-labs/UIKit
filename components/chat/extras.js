@@ -43,13 +43,22 @@ export type UIChatMessage = {
     info: UIChatMessageInfo,
 };
 
+export type UIChatImageSize = {
+    width: number,
+    height: number,
+};
+
 export type ChatAdditionalInfo = {
     message: UIChatMessage,
     lastFromChain: boolean,
     transactionLocalized: ?TransactionInfo,
+    imageSize: ?UIChatImageSize;
+    docName: ?string,
 };
 
-export type UIChatImageSize = {
-    width: number,
-    height: number,
-}
+export type UIChatCellInfo = {
+    data: any,
+    type: ChatMessageContentType,
+    status: ChatMessageStatusType,
+    additionalInfo: ChatAdditionalInfo,
+};
