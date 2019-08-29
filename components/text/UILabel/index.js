@@ -19,6 +19,7 @@ const LabelRole = Object.freeze({
     SmallMedium: 'smallMedium',
     SmallRegular: 'smallRegular',
     TinyRegular: 'tinyRegular',
+    TinyTertiary: 'tinyTertiary',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
     Caption: 'caption', // TODO: rename as captionSecondary
@@ -90,6 +91,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primarySmallRegular());
         } else if (role === UILabel.Role.TinyRegular) {
             result.push(UIStyle.Text.primaryTinyRegular());
+        } else if (role === UILabel.Role.TinyTertiary) {
+            result.push(UIStyle.Text.tertiaryTinyRegular());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
         } else if (role === UILabel.Role.AccentBold) { // Accent - fontSize: 20, lineHeight: 28
