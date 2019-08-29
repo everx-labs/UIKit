@@ -19,6 +19,7 @@ const LabelRole = Object.freeze({
     SmallMedium: 'smallMedium',
     SmallRegular: 'smallRegular',
     TinyRegular: 'tinyRegular',
+    TinyMedium: 'tinyMedium',
     TinyTertiary: 'tinyTertiary',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
@@ -91,6 +92,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primarySmallRegular());
         } else if (role === UILabel.Role.TinyRegular) {
             result.push(UIStyle.Text.primaryTinyRegular());
+        } else if (role === UILabel.Role.TinyMedium) {
+            result.push(UIStyle.Text.primaryTinyMedium());
         } else if (role === UILabel.Role.TinyTertiary) {
             result.push(UIStyle.Text.tertiaryTinyRegular());
         } else if (role === UILabel.Role.Note) {
