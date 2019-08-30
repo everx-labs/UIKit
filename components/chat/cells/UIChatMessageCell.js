@@ -376,7 +376,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <UIChatTransactionCell
                 message={data}
-                extraTrxInfo={additionalInfo?.transactionLocalized}
+                additionalInfo={additionalInfo}
                 onPress={this.onTransactionPress}
             />
         );

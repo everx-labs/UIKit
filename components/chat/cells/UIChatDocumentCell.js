@@ -13,8 +13,10 @@ import UIColor from '../../../helpers/UIColor';
 import UIFont from '../../../helpers/UIFont';
 import UIStyle from '../../../helpers/UIStyle';
 
-import docBlue from '../../../assets/ico-doc-blue/ico-doc-blue.png';
-import docWhite from '../../../assets/ico-doc-white/ico-doc-white.png';
+import fileBlue from '../../../assets/ico-file-income-blue/fileBlue.png';
+import fileWhite from '../../../assets/ico-file-income-white/fileWhite.png';
+import cloudBlack from '../../../assets/ico-cloud-black/cloudBlack.png';
+import cloudWhite from '../../../assets/ico-cloud-white/cloudWhite.png';
 
 import type { ChatAdditionalInfo } from '../extras';
 
@@ -43,6 +45,7 @@ const styles = StyleSheet.create({
     },
     metadata: {
         marginHorizontal: UIConstant.contentOffset(),
+        marginLeft: UIConstant.smallContentOffset(),
     },
 });
 
@@ -92,6 +95,18 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
         return '';
     }
 
+    getFileSize(): string {
+        const { additionalInfo } = this.props;
+        const fileSize = additionalInfo?.fileSize;
+
+        if (fileSize) {
+            const size = fileSize / 1000000;
+            return `, ${size.toFixed(1)} M`;
+        }
+
+        return '';
+    }
+
     // Actions
     async downloadDocument(
         callback: (data: any, name: string) => void,
@@ -137,23 +152,29 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     }
 
     renderDocumentMetadata() {
+        const { isReceived } = this.props;
+        const imgCloud = isReceived ? cloudBlack : cloudWhite;
+
         return (
-            <Text
-                style={[
-                    this.getMetaDataFontColor(),
-                    UIFont.tinyRegular(),
-                ]}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-            >
-                PDF
-            </Text>
+            <View style={UIStyle.flexRow}>
+                <Text
+                    style={[
+                        this.getMetaDataFontColor(),
+                        UIFont.tinyRegular(),
+                    ]}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                >
+                PDF {this.getFileSize()}
+                </Text>
+                <Image style={UIStyle.marginHorizontalOffset} source={imgCloud} />
+            </View>
         );
     }
 
     renderDocument() {
         const { isReceived } = this.props;
-        const image = isReceived ? docBlue : docWhite;
+        const image = isReceived ? fileBlue : fileWhite;
 
         return (
             <View style={[styles.infoSection]}>
