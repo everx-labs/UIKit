@@ -96,7 +96,7 @@ export default class UIGrid extends UIComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            width: this.props.width,
+            width: this.props.width || 0,
         };
     }
 
