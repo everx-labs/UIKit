@@ -101,14 +101,14 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getAmountInCurrency(): string {
         const trx = this.getTransaction();
         const extra = this.getExtra();
-        const amount = trx.out ? -extra.localeAmount : extra.localeAmount;
+        const amount = trx.out ? `- ${extra.amount}` : `${extra.amount}`;
 
         const { currency } = extra;
         if (!currency) {
             return '';
         }
 
-        return `${amount * currency.rate} ${currency.symbol}`;
+        return `${amount} ${currency.symbol}`;
     }
 
     getDate(): number {
@@ -117,7 +117,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getExtra(): TransactionExtraInfo {
         const extra: TransactionExtraInfo = {
-            localeAmount: this.getAmount(),
+            amountLocalized: this.getAmount(),
+            amount: this.getAmount(),
             separator: '.',
             token: '',
             currency: {
@@ -163,7 +164,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const conner = trx.out ? styles.rightConner : styles.leftConner;
-        const amount = trx.out ? -extra.localeAmount : extra.localeAmount;
+        const amount = trx.out ? `- ${extra.amountLocalized}` : `${extra.amountLocalized}`;
         const color = this.getCardColor();
         const date = Moment(this.getDate()).format('D MMM LT');
 
@@ -190,7 +191,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         text={this.getText()}
                     />
                     <UIBalanceView
-                        balance={`${amount}`}
+                        balance={amount}
                         separator={extra.separator}
                         tokenSymbol={extra.token}
                         smartTruncator={false}
