@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import CenterView from '../CenterView';
 
 import { storiesOf } from '../helpers/storiesOf';
+import Constants from '../helpers/constants';
 
 import {
     UIGrid,
@@ -18,7 +19,7 @@ const styles = {
     },
 };
 
-storiesOf('Layout', module)
+storiesOf(Constants.CategoryLayout, module)
     .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
     .add('Grid', () => (
         <View style={{ height: 500 }}>
