@@ -95,7 +95,7 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
         return '';
     }
 
-    getFileSize(): sting {
+    getFileSize(): string {
         const { additionalInfo } = this.props;
         const fileSize = additionalInfo?.fileSize;
 
