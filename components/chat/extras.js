@@ -29,8 +29,8 @@ export type TypeOfTransactionType = $Values<typeof TypeOfTransaction>;
 
 export type TransactionInfo = {
     separator: string,
-    localeAmount: string,
-    amountInCurrency: string,
+    amountLocalized: string,
+    amount: string,
     token: string,
     sent: boolean,
     currency?: {
