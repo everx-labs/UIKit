@@ -51,6 +51,7 @@ type Props = {
     postalCode: string,
     phoneNumber: string,
     email: string,
+    info?: string,
     isNarrow: boolean,
     screenWidth: number,
     containerStyle: ViewStyleProp,
