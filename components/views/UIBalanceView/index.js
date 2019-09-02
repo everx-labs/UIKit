@@ -134,7 +134,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const { length: balanceLen } = this.getBalance();
 
         if (this.animatingBalance) {
-            this.afterAnimationCallback = () => { this.setBalance(balance, true) };
+            this.afterAnimationCallback = () => { this.setBalance(balance, true); };
             return;
         }
         this.animatingBalance = true;
@@ -367,7 +367,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         } = this.props;
         const digitStyle = digit.primary ? null : fractionalTextStyle;
         const newDigitStyle = newDigit.primary ? null : fractionalTextStyle;
-        const similar = newDigit.value === digit.value && !loading;
+        const similar = newDigit.value === digit.value
+            && newDigit.primary === digit.primary && !loading;
         const newDigitValue = similar ? '' : newDigit.value || (this.getNewBalance() && ' ') || '';
         const marginTop = this.getMarginTop(index); // 0 or index
         const margin = similar || !animated ? {} : { marginTop };
