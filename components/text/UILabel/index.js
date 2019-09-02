@@ -13,11 +13,14 @@ const LabelRole = Object.freeze({
     Subtitle: 'subtitle',
     SubtitleRegular: 'subtitleRegular',
     Description: 'description',
+    DescriptionMedium: 'descriptionMedium',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
     DescriptionTertiary: 'descriptionTertiary',
     SmallMedium: 'smallMedium',
     SmallRegular: 'smallRegular',
     TinyRegular: 'tinyRegular',
+    TinyMedium: 'tinyMedium',
+    TinyTertiary: 'tinyTertiary',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
     Caption: 'caption', // TODO: rename as captionSecondary
@@ -27,7 +30,7 @@ const LabelRole = Object.freeze({
     IconQuaternary: 'iconQuaternary',
 });
 
-type LabelRoleValue = $Values<typeof LabelRole>;
+export type LabelRoleValue = $Values<typeof LabelRole>;
 
 type Props = {
     style: ?ViewStyleProp,
@@ -75,6 +78,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primarySubtitleRegular());
         } else if (role === UILabel.Role.Description) { // Body - fontSize: 18, lineHeight: 24
             result.push(UIStyle.Text.primaryBodyRegular());
+        } else if (role === UILabel.Role.DescriptionMedium) {
+            result.push(UIStyle.Text.primaryBodyMedium());
         } else if (role === UILabel.Role.BoldDescription) {
             result.push(UIStyle.Text.primaryBodyBold());
         } else if (role === UILabel.Role.SecondaryBody) {
@@ -87,6 +92,10 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primarySmallRegular());
         } else if (role === UILabel.Role.TinyRegular) {
             result.push(UIStyle.Text.primaryTinyRegular());
+        } else if (role === UILabel.Role.TinyMedium) {
+            result.push(UIStyle.Text.primaryTinyMedium());
+        } else if (role === UILabel.Role.TinyTertiary) {
+            result.push(UIStyle.Text.tertiaryTinyRegular());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
         } else if (role === UILabel.Role.AccentBold) { // Accent - fontSize: 20, lineHeight: 28

@@ -21,7 +21,7 @@ type Props = {
 }
 
 type State = {
-
+    data: any,
 }
 
 const IMAGE_SIZE = 1024;
@@ -31,9 +31,21 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         imageSize: { width: IMAGE_SIZE, height: IMAGE_SIZE },
     };
 
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            data: null,
+        };
+    }
+
+    componentDidMount() {
+        this.loadImage();
+    }
+
     // Getters
     getImage(): any {
-        return this.props.image;
+        return this.state.data;
     }
 
     getSize(): UIChatImageSize {
@@ -50,6 +62,15 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     // Setters
 
     // Actions
+    async loadImage() {
+        const { image, additionalInfo } = this.props;
+        const { data } = this.state;
+        if (image && !data) {
+            const imgData = await image(additionalInfo?.message);
+            this.setState({ data: imgData.data });
+        }
+    }
+
     renderImage() {
         const { parentLayout } = this.props;
         const image = this.getImage();
@@ -89,10 +110,9 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     renderSpinnerOverlay() {
-        const showSpinner = this.props.image !== null;
         return (
             <UISpinnerOverlay
-                visible={showSpinner}
+                visible={!this.state.data}
             />
         );
     }

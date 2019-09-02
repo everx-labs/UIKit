@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import Moment from 'moment';
 
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+
 import UIPureComponent from '../../UIPureComponent';
 import UIScaleButton from '../../buttons/UIScaleButton';
 import UILabel from '../../text/UILabel';
@@ -15,11 +17,12 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 
-import type { ChatMessage, TransactionExtraInfo } from '../extras';
+import { TypeOfTransaction } from '../extras';
+import type { ChatMessage, TransactionExtraInfo, ChatAdditionalInfo } from '../extras';
 
 type Props = {
     message: any,
-    extraTrxInfo: TransactionExtraInfo,
+    additionalInfo: ChatAdditionalInfo,
     onPress: () => void,
 }
 
@@ -32,12 +35,37 @@ const styles = StyleSheet.create({
         height: UIConstant.greatCellHeight(),
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.normalContentOffset(),
-        marginBottom: UIConstant.normalContentOffset(),
-        marginTop: UIConstant.normalContentOffset(),
         backgroundColor: UIColor.green(),
+    },
+    cardDeposit: {
+        backgroundColor: UIColor.white(),
+        ...UIConstant.cardShadow(),
+    },
+    cardWithdraw: {
+        backgroundColor: UIColor.white(),
+        ...UIConstant.cardShadow(),
+    },
+    cardIncome: {
+        backgroundColor: UIColor.green(),
+    },
+    cardSpending: {
+        backgroundColor: UIColor.blackLight(),
+    },
+    cardBill: {
+        backgroundColor: UIColor.white(),
+    },
+    cardInvoice: {
+        backgroundColor: UIColor.white(),
+        ...UIConstant.cardShadow(),
+    },
+    cardInvite: {
+        backgroundColor: UIColor.primary(),
     },
     textWhite: {
         color: UIColor.white(),
+    },
+    textMetadata: {
+        color: UIColor.grey1(),
     },
     leftConner: {
         borderBottomLeftRadius: 0,
@@ -73,14 +101,14 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getAmountInCurrency(): string {
         const trx = this.getTransaction();
         const extra = this.getExtra();
-        const amount = trx.out ? -extra.localeAmount : extra.localeAmount;
-        
+        const amount = trx.out ? `- ${extra.amount}` : `${extra.amount}`;
+
         const { currency } = extra;
         if (!currency) {
             return '';
         }
 
-        return `${amount * currency.rate} ${currency.symbol}`
+        return `${amount} ${currency.symbol}`;
     }
 
     getDate(): number {
@@ -89,18 +117,55 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getExtra(): TransactionExtraInfo {
         const extra: TransactionExtraInfo = {
-            localeAmount: this.getAmount(),
+            amountLocalized: this.getAmount(),
+            amount: this.getAmount(),
             separator: '.',
             token: '',
+            currency: {
+                rate: 1.0,
+                symbol: '',
+            },
         };
-        return this.props.extraTrxInfo || extra;
+        return this.props.additionalInfo?.transactionInfo || extra;
     }
+
+    getCardColor(): ViewStyleProp {
+        const extra = this.getExtra();
+        const { type } = extra;
+        if (type === TypeOfTransaction.Deposit) {
+            return styles.cardDeposit;
+        } else if (type === TypeOfTransaction.Withdraw) {
+            return styles.cardWithdraw;
+        } else if (type === TypeOfTransaction.Income) {
+            return styles.cardIncome;
+        } else if (type === TypeOfTransaction.Spending) {
+            return styles.cardSpending;
+        } else if (type === TypeOfTransaction.Bill) {
+            return styles.cardBill;
+        } else if (type === TypeOfTransaction.Invoice) {
+            return styles.cardInvoice;
+        } else if (type === TypeOfTransaction.Invite) {
+            return styles.cardInvite;
+        }
+
+        return null;
+    }
+
+    getTextColor() {
+        // TODO:
+    }
+
+    getAmountColor() {
+        // TODO:
+    }
+
 
     renderTrxContent() {
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const conner = trx.out ? styles.rightConner : styles.leftConner;
-        const amount = trx.out ? -extra.localeAmount : extra.localeAmount;
+        const amount = trx.out ? `- ${extra.amountLocalized}` : `${extra.amountLocalized}`;
+        const color = this.getCardColor();
         const date = Moment(this.getDate()).format('D MMM LT');
 
         return (
@@ -108,6 +173,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 UIStyle.Common.justifyCenter(),
                 styles.trxCard,
                 conner,
+                color,
             ]}
             >
                 <View style={[
@@ -125,7 +191,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         text={this.getText()}
                     />
                     <UIBalanceView
-                        balance={`${amount}`}
+                        balance={amount}
                         separator={extra.separator}
                         tokenSymbol={extra.token}
                         smartTruncator={false}
@@ -139,12 +205,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
                 <View style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}>
                     <UILabel
-                        style={[UIStyle.Margin.rightHuge(), styles.textWhite]}
+                        style={[UIStyle.Margin.rightHuge(), styles.textMetadata]}
                         role={UILabel.Role.TinyRegular}
                         text={date}
                     />
                     <UILabel
-                        style={styles.textWhite}
+                        style={styles.textMetadata}
                         role={UILabel.Role.TinyRegular}
                         text={this.getAmountInCurrency()}
                     />

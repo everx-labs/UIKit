@@ -13,18 +13,31 @@ export const ChatMessageStatus = {
     Received: 'received',
 };
 
+export const TypeOfTransaction = {
+    Deposit: 'deposit',
+    Withdraw: 'withdraw',
+    Income: 'income',
+    Spending: 'spending',
+    Bill: 'bill',
+    Invoice: 'invoice',
+    Invite: 'invite',
+};
+
 export type ChatMessageContentType = $Values<typeof ChatMessageContent>;
 export type ChatMessageStatusType = $Values<typeof ChatMessageStatus>;
+export type TypeOfTransactionType = $Values<typeof TypeOfTransaction>;
 
 export type TransactionInfo = {
     separator: string,
-    localeAmount: string,
+    amountLocalized: string,
+    amount: string,
     token: string,
     sent: boolean,
     currency?: {
         rate: number,
         symbol: string,
-    }
+    },
+    type: ?TypeOfTransactionType,
 };
 
 export type UIChatMessageInfo = {
@@ -43,13 +56,23 @@ export type UIChatMessage = {
     info: UIChatMessageInfo,
 };
 
-export type ChatAdditionalInfo = {
-    message: UIChatMessage,
-    lastFromChain: boolean,
-    transactionLocalized: ?TransactionInfo,
-};
-
 export type UIChatImageSize = {
     width: number,
     height: number,
-}
+};
+
+export type ChatAdditionalInfo = {
+    message: UIChatMessage,
+    lastFromChain: boolean,
+    transactionInfo: ?TransactionInfo,
+    imageSize: ?UIChatImageSize;
+    docName: ?string,
+    fileSize: ?number,
+};
+
+export type UIChatCellInfo = {
+    data: any,
+    type: ChatMessageContentType,
+    status: ChatMessageStatusType,
+    additionalInfo: ChatAdditionalInfo,
+};

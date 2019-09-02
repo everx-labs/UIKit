@@ -120,6 +120,7 @@ import type {
 } from './types';
 import type { ContentInset } from './controllers/UIController';
 import type { DetailsList } from './components/text/UIDetailsTable';
+import type { LabelRoleValue } from './components/text/UILabel';
 import type {
     UIColorData,
     UIColorThemeNameType,
@@ -245,6 +246,7 @@ export type {
     ContentInset,
     ContentOffset,
     DetailsList,
+    LabelRoleValue,
     UIAccountData,
     UIColorData,
     UIColorThemeNameType,

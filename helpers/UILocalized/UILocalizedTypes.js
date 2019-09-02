@@ -287,6 +287,7 @@ export type UILocalizedData = {
     ChatWith: string,
     DoYouWantToBlockThisUser: string,
     TypeMessage: string,
+    FailedToLoadDocument: string,
 
     // Wallet
     WeNeedYourPassword: string,

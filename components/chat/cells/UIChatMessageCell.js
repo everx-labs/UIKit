@@ -34,7 +34,7 @@ type Props = {
     additionalInfo?: ChatAdditionalInfo,
 
     onTouchMedia?: (objectToReturn: any) => void,
-    onOpenPDF?: (document: any) => void,
+    onOpenPDF?: (docData: any, docName: string) => void,
     onPressUrl?: (url: string) => void,
     onTouchTransaction?: (trx: any) => void,
 }
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     dateSeparator: {
         flexShrink: 1,
         flexDirection: 'column',
-        margin: UIConstant.contentOffset() - (UIConstant.tinyContentOffset() / 2),
         justifyContent: 'center',
         backgroundColor: UIColor.overlay40(),
         height: UIConstant.smallCellHeight(),
@@ -322,7 +321,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderDocumentCell() {
-        const { data, onOpenPDF } = this.props;
+        const { data, onOpenPDF, additionalInfo } = this.props;
 
         if (!data) {
             return null;
@@ -331,10 +330,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             this.wrapInMessageContainer(<UIChatDocumentCell
                 document={data}
+                additionalInfo={additionalInfo}
                 isReceived={this.isReceived()}
-                onOpenPDF={(msg) => {
+                onOpenPDF={(docData, docName) => {
                     if (onOpenPDF) {
-                        onOpenPDF(msg);
+                        onOpenPDF(docData, docName);
                     }
                 }}
             />)
@@ -372,11 +372,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTransactionCell() {
-        const { additionalInfo } = this.props;
+        const { additionalInfo, data } = this.props;
         return (
             <UIChatTransactionCell
-                message={additionalInfo?.message}
-                extraTrxInfo={additionalInfo?.transactionLocalized}
+                message={data}
+                additionalInfo={additionalInfo}
                 onPress={this.onTransactionPress}
             />
         );
@@ -405,18 +405,25 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             type, status, additionalInfo,
         } = this.props;
 
+        const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
-        const extraSpace = additionalInfo?.lastFromChain ? { marginBottom: UIConstant.tinyContentOffset() } : null;
 
+        let margin = null;
         let align = status === ChatMessageStatus.Received ? 'flex-start' : 'flex-end';
+        if (additionalInfo?.lastFromChain) {
+            margin = { marginBottom: UIConstant.normalContentOffset() - currentMargin };
+        }
+
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.EmptyChat) {
             align = 'flex-start';
             cell = this.renderEmptyChatCell();
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
         } else if (type === ChatMessageContent.AttachmentImage) {
@@ -434,7 +441,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         alignSelf: align,
                         justifyContent: align,
                     },
-                    extraSpace,
+                    margin,
                 ]}
                 onLayout={e => this.onLayout(e)}
             >

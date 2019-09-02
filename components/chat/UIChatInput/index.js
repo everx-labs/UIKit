@@ -77,9 +77,9 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         hideFloatingTitle: true,
         forceMultiLine: true,
         keyboardType: 'default',
-        menuPlus: [{ title: 'Image', onPress: () => { console.log('[DEBUG] OnPress'); } }],
-        menuMore: [{ title: 'Image', onPress: () => { console.log('[DEBUG] OnPress'); } }],
-        quickAction: { title: '', onPress: () => { } },
+        menuPlus: null,
+        menuMore: null,
+        quickAction: null,
 
         onSendText: () => {},
     };
