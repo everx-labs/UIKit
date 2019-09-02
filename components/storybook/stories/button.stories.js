@@ -8,8 +8,6 @@ import { withInfo } from '../helpers/addonInfo';
 import { getMarkdown } from '../helpers/getMarkdown';
 import Constants from '../helpers/constants';
 
-import { action } from '@storybook/addon-actions';
-
 import {
     UIButton,
     UIButtonGroup,
@@ -17,9 +15,10 @@ import {
     UICustomSheet,
 } from '../../../UIKit';
 
+import iconCam from '../../../assets/ico-camera/ico-camera.png';
+import iconTriangle from '../../../assets/ico-triangle/ico-triangle.png';
+
 const md = getMarkdown('../../../components/menus/UICustomSheet/Readme.md');
-const iconCam = require('../../../assets/ico-camera/ico-camera.png');
-const iconTriangle = require('../../../assets/ico-triangle/ico-triangle.png');
 
 if (Platform.OS === 'web') {
     storiesOf('Props', module)
@@ -64,9 +63,9 @@ storiesOf(Constants.CategoryButton, module)
     .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
     .add('ButtonStyle', () => (
         <UIButtonGroup>
-            <UIButton title="Action" buttonStyle={UIButton.ButtonStyle.Full} />
-            <UIButton title="Action" buttonStyle={UIButton.ButtonStyle.Border} />
-            <UIButton title="Action" buttonStyle={UIButton.ButtonStyle.Link} />
+            <UIButton title="Action" buttonStyle={UIButton.ButtonStyle.Full} onPress={() => { console.log('iconCam: ', iconCam); }} />
+            <UIButton title="Action" buttonStyle={UIButton.ButtonStyle.Border} onPress={() => {}} />
+            <UIButton title="Action" buttonStyle={UIButton.ButtonStyle.Link} onPress={() => { console.log('iconCam: ', iconCam); }} />
         </UIButtonGroup>
     ))
     .add('ButtonShape', () => (
@@ -121,7 +120,7 @@ storiesOf(Constants.CategoryButton, module)
         <UIButtonGroup direction={UIButtonGroup.Direction.Column}>
             <UIButton
                 title="Default button"
-                onPress={action('clicked-text')}
+                onPress={() => {}}
             />
             <UIButton
                 buttonShape={UIButton.ButtonShape.Radius}

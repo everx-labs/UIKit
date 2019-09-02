@@ -6,8 +6,6 @@ import CenterView from '../CenterView';
 import { storiesOf } from '../helpers/storiesOf';
 import Constants from '../helpers/constants';
 
-import { action } from '@storybook/addon-actions';
-
 import {
     UIButtonGroup,
     UIButton,
