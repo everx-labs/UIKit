@@ -6,6 +6,7 @@ import CenterView from '../CenterView';
 import { storiesOf } from '../helpers/storiesOf';
 import { withInfo } from '../helpers/addonInfo';
 import { getMarkdown } from '../helpers/getMarkdown';
+import { getUri } from '../helpers/getUri';
 import Constants from '../helpers/constants';
 
 import {
@@ -15,8 +16,8 @@ import {
     UICustomSheet,
 } from '../../../UIKit';
 
-import iconCam from '../../../assets/ico-camera/ico-camera.png';
-import iconTriangle from '../../../assets/ico-triangle/ico-triangle.png';
+const iconCam = getUri(require('../../../assets/ico-camera/ico-camera.png'), 24, 24);
+const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'), 24, 24);
 
 const md = getMarkdown('../../../components/menus/UICustomSheet/Readme.md');
 
@@ -85,24 +86,24 @@ storiesOf(Constants.CategoryButton, module)
     .add('Iconed', () => (
         <UIButtonGroup direction={UIButtonGroup.Direction.Column}>
             <UIButton icon={iconCam} />
-            <UIButton hasIcon title="Center & IconL" />
-            <UIButton hasIcon title="Center & IconL" buttonStyle={UIButton.ButtonStyle.Border} />
-            <UIButton hasIcon title="Center & IconL" buttonStyle={UIButton.ButtonStyle.Link} />
-            <UIButton hasIconR title="Center & IconR" />
-            <UIButton hasIconR title="Center & IconR" buttonStyle={UIButton.ButtonStyle.Border} />
-            <UIButton hasIconR title="Center & IconR" buttonStyle={UIButton.ButtonStyle.Link} />
-            <UIButton hasIcon hasIconR title="Center & 2 ico" />
-            <UIButton hasIcon hasIconR title="Center & 2 ico" buttonStyle={UIButton.ButtonStyle.Border} />
-            <UIButton hasIcon hasIconR title="Center & 2 ico" buttonStyle={UIButton.ButtonStyle.Link} />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon title="Left & IconL" />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon title="Left & IconL" buttonStyle={UIButton.ButtonStyle.Border} />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon title="Left & IconL" buttonStyle={UIButton.ButtonStyle.Link} />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIconR title="Left & IconR" />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIconR title="Left & IconR" buttonStyle={UIButton.ButtonStyle.Border} />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIconR title="Left & IconR" buttonStyle={UIButton.ButtonStyle.Link} />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon hasIconR title="Left & 2 ico" />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon hasIconR title="Left & 2 ico" buttonStyle={UIButton.ButtonStyle.Border} />
-            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon hasIconR title="Left & 2 ico" buttonStyle={UIButton.ButtonStyle.Link} />
+            <UIButton hasIcon icon={iconDefault} title="Center & IconL" />
+            <UIButton hasIcon icon={iconDefault} title="Center & IconL" buttonStyle={UIButton.ButtonStyle.Border} />
+            <UIButton hasIcon icon={iconDefault} title="Center & IconL" buttonStyle={UIButton.ButtonStyle.Link} />
+            <UIButton hasIconR iconR={iconDefault} title="Center & IconR" />
+            <UIButton hasIconR iconR={iconDefault} title="Center & IconR" buttonStyle={UIButton.ButtonStyle.Border} />
+            <UIButton hasIconR iconR={iconDefault} title="Center & IconR" buttonStyle={UIButton.ButtonStyle.Link} />
+            <UIButton hasIcon hasIconR icon={iconDefault} iconR={iconDefault} title="Center & 2 ico" />
+            <UIButton hasIcon hasIconR icon={iconDefault} iconR={iconDefault} title="Center & 2 ico" buttonStyle={UIButton.ButtonStyle.Border} />
+            <UIButton hasIcon hasIconR icon={iconDefault} iconR={iconDefault} title="Center & 2 ico" buttonStyle={UIButton.ButtonStyle.Link} />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon icon={iconDefault} title="Left & IconL" />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon icon={iconDefault} title="Left & IconL" buttonStyle={UIButton.ButtonStyle.Border} />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon icon={iconDefault} title="Left & IconL" buttonStyle={UIButton.ButtonStyle.Link} />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIconR iconR={iconDefault} title="Left & IconR" />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIconR iconR={iconDefault} title="Left & IconR" buttonStyle={UIButton.ButtonStyle.Border} />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIconR iconR={iconDefault} title="Left & IconR" buttonStyle={UIButton.ButtonStyle.Link} />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon hasIconR icon={iconDefault} iconR={iconDefault} title="Left & 2 ico" />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon hasIconR icon={iconDefault} iconR={iconDefault} title="Left & 2 ico" buttonStyle={UIButton.ButtonStyle.Border} />
+            <UIButton textAlign={UIButton.TextAlign.Left} hasIcon hasIconR icon={iconDefault} iconR={iconDefault} title="Left & 2 ico" buttonStyle={UIButton.ButtonStyle.Link} />
             <UIButton textAlign={UIButton.TextAlign.Left} icon={iconCam} iconR={iconCam} title="Left & 2 ico" buttonStyle={UIButton.ButtonStyle.Border} />
             <UIButton textAlign={UIButton.TextAlign.Right} icon={iconCam} buttonStyle={UIButton.ButtonStyle.Border} />
         </UIButtonGroup>
@@ -110,212 +111,9 @@ storiesOf(Constants.CategoryButton, module)
     .add('Progress Animations', () => (
         <UIButtonGroup direction={UIButtonGroup.Direction.Column}>
             <UIButton showIndicator />
-            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Spin} />
-            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Round} />
-            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Pulse} />
-            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Sandglass} />
-        </UIButtonGroup>
-    ))
-    .add('All', () => (
-        <UIButtonGroup direction={UIButtonGroup.Direction.Column}>
-            <UIButton
-                title="Default button"
-                onPress={() => {}}
-            />
-            <UIButton
-                buttonShape={UIButton.ButtonShape.Radius}
-                title="Radius button"
-            />
-            <UIButton
-                buttonShape={UIButton.ButtonShape.Rounded}
-                title="Rounded button"
-            />
-            <UIButton
-                buttonStyle={UIButton.ButtonStyle.Full}
-                disabled
-                title="Disabled"
-            />
-            <UIButton
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Action"
-            />
-            <UIButton
-                buttonStyle={UIButton.ButtonStyle.Border}
-                disabled
-                title="Disabled"
-            />
-            <UIButton
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Action"
-            />
-            <UIButton
-                buttonStyle={UIButton.ButtonStyle.Link}
-                disabled
-                title="Disabled"
-            />
-
-            <UIButton
-                hasIcon
-                title="Center & IconL"
-            />
-            <UIButton
-                hasIcon
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Center & IconL"
-            />
-            <UIButton
-                hasIcon
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Center & IconL"
-            />
-
-            <UIButton
-                hasIconR
-                title="Center & IconR"
-            />
-            <UIButton
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Center & IconR"
-            />
-            <UIButton
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Center & IconR"
-            />
-
-            <UIButton
-                hasIcon
-                hasIconR
-                title="Center & 2 ico"
-            />
-            <UIButton
-                hasIcon
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Center & 2 ico"
-            />
-            <UIButton
-                hasIcon
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Center & 2 ico"
-            />
-
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIcon
-                title="Left & IconL"
-            />
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIcon
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Left & IconL"
-            />
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIcon
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Left & IconL"
-            />
-
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIconR
-                title="Left & IconR"
-            />
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Left & IconR"
-            />
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Left & IconR"
-            />
-
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIcon
-                hasIconR
-                title="Left & 2 ico"
-            />
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIcon
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Left & 2 ico"
-            />
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                hasIcon
-                hasIconR
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Left & 2 ico"
-            />
-
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                icon={iconCam}
-                iconR={iconCam}
-                buttonStyle={UIButton.ButtonStyle.Border}
-                title="Left & 2 ico"
-            />
-
-            <UIButton
-                textAlign={UIButton.TextAlign.Left}
-                icon={iconCam}
-                buttonStyle={UIButton.ButtonStyle.Border}
-            />
-            <UIButton
-                textAlign={UIButton.TextAlign.Right}
-                icon={iconCam}
-                buttonStyle={UIButton.ButtonStyle.Border}
-            />
-            <UIButton
-                icon={iconCam}
-            />
-
-            <UIButton
-                badge={10}
-                buttonStyle={UIButton.ButtonStyle.Full}
-                title="Badged"
-            />
-
-            <UIButton
-                showIndicator
-                indicatorAnimation={UIButton.Indicator.Spin}
-            />
-            <UIButton
-                showIndicator
-                indicatorAnimation={UIButton.Indicator.Spin}
-                buttonStyle={UIButton.ButtonStyle.Border}
-            />
-            <UIButton
-                showIndicator
-                indicatorAnimation={UIButton.Indicator.Spin}
-                buttonStyle={UIButton.ButtonStyle.Link}
-            />
-            <UIButton
-                showIndicator
-                indicatorAnimation={UIButton.Indicator.Round}
-            />
-            <UIButton
-                showIndicator
-                indicatorAnimation={UIButton.Indicator.Pulse}
-            />
-            <UIButton
-                showIndicator
-                indicatorAnimation={UIButton.Indicator.Sandglass}
-            />
-            <UIButton
-                showIndicator
-                buttonStyle={UIButton.ButtonStyle.Border}
-            />
+            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Spin} iconIndicator={iconDefault} />
+            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Round} iconIndicator={iconDefault} />
+            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Pulse} iconIndicator={iconDefault} />
+            <UIButton showIndicator indicatorAnimation={UIButton.Indicator.Sandglass} iconIndicator={iconDefault} />
         </UIButtonGroup>
     ));

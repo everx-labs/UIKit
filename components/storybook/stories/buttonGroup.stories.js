@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import CenterView from '../CenterView';
 
 import { storiesOf } from '../helpers/storiesOf';
+import { getUri } from '../helpers/getUri';
 import Constants from '../helpers/constants';
 
 import {
@@ -12,6 +13,8 @@ import {
     UIActionIcon,
     UIStyle,
 } from '../../../UIKit';
+
+const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'), 24, 24);
 
 
 storiesOf(Constants.CategoryButtonGroup, module)
@@ -54,7 +57,7 @@ storiesOf(Constants.CategoryButtonGroup, module)
             <UIButtonGroup style={UIStyle.Margin.topDefault()}>
                 <UIButton title="Action" style={{ flex: 2 }} />
                 <UIButton title="Action" style={{ flex: 1 }} buttonStyle={UIButton.ButtonStyle.Link} />
-                <UIActionIcon style={{ flex: 1 }} buttonStyle={UIButton.ButtonStyle.Link} />
+                <UIActionIcon icon={iconDefault} style={{ flex: 1 }} buttonStyle={UIButton.ButtonStyle.Link} />
             </UIButtonGroup>
 
             <UIButtonGroup style={UIStyle.Margin.topDefault()}>
@@ -87,7 +90,7 @@ storiesOf(Constants.CategoryButtonGroup, module)
             <UIButtonGroup style={UIStyle.Margin.topDefault()}>
                 <UIButton title="Action" style={{ flex: 2 }} buttonStyle={UIButton.ButtonStyle.Link} />
                 <UIButton title="Action" style={{ flex: 1 }} buttonStyle={UIButton.ButtonStyle.Link} />
-                <UIActionIcon style={{ flex: 1 }} buttonStyle={UIButton.ButtonStyle.Link} />
+                <UIActionIcon icon={iconDefault} style={{ flex: 1 }} buttonStyle={UIButton.ButtonStyle.Link} />
             </UIButtonGroup>
 
             <UIButtonGroup style={UIStyle.Margin.topDefault()}>

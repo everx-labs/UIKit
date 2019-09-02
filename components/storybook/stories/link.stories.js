@@ -2,6 +2,7 @@ import React from 'react';
 import CenterView from '../CenterView';
 
 import { storiesOf } from '../helpers/storiesOf';
+import { getUri } from '../helpers/getUri';
 
 import {
     UILink,
@@ -11,7 +12,8 @@ import {
 
 import Constants from '../helpers/constants';
 
-const iconCam = require('../../../assets/ico-camera/ico-camera.png');
+const iconCam = getUri(require('../../../assets/ico-camera/ico-camera.png'), 24, 24);
+const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'), 24, 24);
 
 storiesOf(Constants.CategoryLink, module)
     .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
@@ -61,6 +63,7 @@ storiesOf(Constants.CategoryLink, module)
             />
             <UILink
                 hasIcon
+                icon={iconDefault}
                 title="Center"
             />
             <UILink
@@ -71,6 +74,8 @@ storiesOf(Constants.CategoryLink, module)
             <UILink
                 hasIcon
                 hasIconR
+                icon={iconDefault}
+                iconR={iconDefault}
                 title="Center"
             />
 
@@ -82,12 +87,14 @@ storiesOf(Constants.CategoryLink, module)
             <UILink
                 textAlign={UILink.TextAlign.Left}
                 hasIcon
+                icon={iconDefault}
                 title="Left"
             />
 
             <UILink
                 textAlign={UILink.TextAlign.Left}
                 hasIconR
+                iconR={iconDefault}
                 title="Left"
             />
 
@@ -95,6 +102,8 @@ storiesOf(Constants.CategoryLink, module)
                 textAlign={UILink.TextAlign.Left}
                 hasIcon
                 hasIconR
+                icon={iconDefault}
+                iconR={iconDefault}
                 title="Left"
             />
 
