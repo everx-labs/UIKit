@@ -101,23 +101,23 @@ export default class UIModalController<Props, State>
     }
 
     // Events
-    onWillAppear() {
+    onWillAppear = () => {
         this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
-    }
+    };
 
-    onDidAppear() {
+    onDidAppear = () => {
         this.initKeyboardListeners();
-    }
+    };
 
-    onWillHide() {
+    onWillHide = () => {
         this.deinitKeyboardListeners();
-    }
+    };
 
-    onDidHide() {
+    onDidHide = () => {
         this.setControllerVisible(false, () => {
             this.dy.setValue(0);
         });
-    }
+    };
 
     onCancelPress = () => {
         this.hide();
@@ -141,6 +141,9 @@ export default class UIModalController<Props, State>
     };
 
     // Getters
+    getNavigationBarHeight() {
+        return this.shouldSwipeToDismiss() ? 30 : 48;
+    }
 
     isControllerVisible(): boolean {
         return this.state.controllerVisible || false;
@@ -185,7 +188,7 @@ export default class UIModalController<Props, State>
 
         let contentHeight = height - this.getSafeAreaInsets().bottom;
         if (this.dismissible) {
-            contentHeight -= UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
+            contentHeight -= this.getNavigationBarHeight();
         }
 
         if (enlargeHeightForBounce) {
@@ -209,8 +212,7 @@ export default class UIModalController<Props, State>
 
     interpolateColor(): ColorValue {
         const { height } = Dimensions.get('window');
-        const maxValue = height - UIDevice.statusBarHeight()
-            - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
+        const maxValue = height - UIDevice.statusBarHeight() - this.getNavigationBarHeight();
         return (this.dy: any).interpolate({
             inputRange: [0, maxValue],
             outputRange: [UIColor.overlay60(), UIColor.overlay0()],
@@ -305,19 +307,32 @@ export default class UIModalController<Props, State>
     }
 
     // Render
-    getModalNavigationBar() {
+    renderLeftHeader() {
+        return null;
+    }
+
+    renderRightHeader() {
+        return null;
+    }
+
+    renderModalNavigationBar() {
         if (!this.dismissible) {
             return null;
         }
         if (this.state.header) {
             return this.state.header;
         }
-        return (<UIModalNavigationBar
-            swipeToDismiss={this.shouldSwipeToDismiss()}
-            onMove={Animated.event([null, { dy: this.dy }])}
-            onRelease={this.onReleaseSwipe}
-            onCancel={this.onCancelPress}
-        />);
+        return (
+            <UIModalNavigationBar
+                height={this.getNavigationBarHeight()}
+                swipeToDismiss={this.shouldSwipeToDismiss()}
+                leftComponent={this.renderLeftHeader()}
+                rightComponent={this.renderRightHeader()}
+                onMove={Animated.event([null, { dy: this.dy }])}
+                onRelease={this.onReleaseSwipe}
+                onCancel={this.onCancelPress}
+            />
+        );
     }
 
     renderDialog() {
@@ -328,18 +343,16 @@ export default class UIModalController<Props, State>
         return (
             <PopupDialog
                 {...testIDProp}
-                ref={(popupDialog) => {
-                    this.dialog = popupDialog;
-                }}
+                ref={(popupDialog) => { this.dialog = popupDialog; }}
                 width={width}
                 height={height}
                 containerStyle={containerStyle}
                 dialogStyle={dialogStyle}
                 dialogAnimation={this.animation}
-                dialogTitle={this.getModalNavigationBar()}
+                dialogTitle={this.renderModalNavigationBar()}
                 dismissOnTouchOutside={false}
-                onDismissed={() => this.onDidHide()}
-                onShown={() => this.onDidAppear()}
+                onDismissed={this.onDidHide}
+                onShown={this.onDidAppear}
                 overlayBackgroundColor="transparent"
             >
                 <Animated.View

@@ -187,4 +187,9 @@ export default class UIStyleCommon {
     static fullOpacity() {
         return UIStyle.fullOpacity;
     }
+
+    // custom
+    static dismissStripe() {
+        return UIStyle.dismissStripe;
+    }
 }
