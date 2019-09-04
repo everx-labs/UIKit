@@ -130,7 +130,7 @@ export default class UIModalNavigationBar extends UIComponent {
             <View
                 style={[
                     styles.navigationView,
-                    { height: UIModalNavigationBar.getBarHeight(this.props.swipeToDismiss) },
+                    { height: this.getBarHeight(this.props.swipeToDismiss) },
                 ]}
                 {...this.panResponder.panHandlers}
             >
