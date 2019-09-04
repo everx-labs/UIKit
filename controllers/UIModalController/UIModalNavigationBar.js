@@ -1,5 +1,5 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, Image, TouchableOpacity, PanResponder } from 'react-native';
 
 import UIStyle from '../../helpers/UIStyle';
@@ -32,10 +32,26 @@ const styles = StyleSheet.create({
     },
 });
 
+type Props = {
+    title: string,
+    cancelImage: string,
+    cancelText: string,
+    swipeToDismiss: boolean,
+    onCancel: () => void,
+    onMove: () => void,
+    onRelease: () => void,
+};
+
 export default class UIModalNavigationBar extends UIComponent {
-    static getBarHeight(shouldSwipeToDismiss = false) {
-        return shouldSwipeToDismiss ? 30 : 48;
-    }
+    static defaultProps = {
+        title: '',
+        cancelImage: null,
+        cancelText: UILocalized.Cancel,
+        swipeToDismiss: false,
+        onCancel: null,
+        onMove: null,
+        onRelease: null,
+    };
 
     constructor(props) {
         super(props);
@@ -61,6 +77,11 @@ export default class UIModalNavigationBar extends UIComponent {
         } else {
             this.panResponder = {};
         }
+    }
+
+    // Getters
+    getBarHeight(shouldSwipeToDismiss = false) {
+        return this.props.height || (shouldSwipeToDismiss ? 30 : 48);
     }
 
     // Render
@@ -118,23 +139,3 @@ export default class UIModalNavigationBar extends UIComponent {
         );
     }
 }
-
-UIModalNavigationBar.defaultProps = {
-    title: '',
-    cancelImage: null,
-    cancelText: UILocalized.Cancel,
-    swipeToDismiss: false,
-    onCancel: null,
-    onMove: null,
-    onRelease: null,
-};
-
-UIModalNavigationBar.propTypes = {
-    title: PropTypes.string,
-    cancelImage: PropTypes.any,
-    cancelText: PropTypes.string,
-    swipeToDismiss: PropTypes.bool,
-    onCancel: PropTypes.func,
-    onMove: PropTypes.func,
-    onRelease: PropTypes.func,
-};

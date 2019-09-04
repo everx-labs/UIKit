@@ -261,6 +261,13 @@ export default class UIModalController<Props, State>
         this.setStateSafely({ header });
     }
 
+    // Getters
+    getBackgroundColor() {
+        return Platform.OS === 'web' && this.fullscreen
+            ? 'transparent'
+            : this.bgAlpha;
+    }
+
     // Events
 
     // Actions
@@ -353,10 +360,7 @@ export default class UIModalController<Props, State>
     }
 
     renderContainer() {
-        const backgroundColor = Platform.OS === 'web' && this.fullscreen
-            ? 'transparent'
-            : this.bgAlpha;
-
+        const backgroundColor = this.getBackgroundColor();
         return (
             <Animated.View
                 style={[
