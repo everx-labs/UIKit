@@ -85,6 +85,7 @@ export default class UIModalController<Props, State>
 
     constructor(props: ModalControllerProps & Props) {
         super(props);
+        this.testID = '[UIModalController]';
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
@@ -348,7 +349,7 @@ export default class UIModalController<Props, State>
                 height={height}
                 containerStyle={containerStyle}
                 dialogStyle={dialogStyle}
-                dialogAnimation={this.animation}
+                dialogAnimation={this.animation} //
                 dialogTitle={this.renderModalNavigationBar()}
                 dismissOnTouchOutside={false}
                 onDismissed={this.onDidHide}
@@ -379,7 +380,7 @@ export default class UIModalController<Props, State>
                 style={[
                     // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
                     // And this brings a layout bug to Safari
-                    UIStyle.absoluteFillContainer,
+                    UIStyle.Common.absoluteFillContainer(),
                     { backgroundColor },
                 ]}
                 onLayout={this.onLayout}

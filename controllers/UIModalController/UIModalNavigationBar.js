@@ -83,7 +83,6 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                     this.props.onRelease(gestureState.dy);
                 },
             });
-            console.log('>>', typeof this.panResponder);
         } else {
             this.panResponder = {};
         }
@@ -96,27 +95,28 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
         } = this.props;
         if (swipeToDismiss) {
             return (
-                <React.Fragment>
-                    <View style={[
-                        UIStyle.Common.absoluteFillObject(),
-                        UIStyle.Common.centerContainer(),
+                <View
+                    style={[
+                        UIStyle.Common.rowCenterSpaceContainer(),
+                        UIStyle.Width.full(),
+                        UIStyle.Padding.horizontal(),
                     ]}
+                >
+                    <View
+                        style={[
+                            UIStyle.Common.absoluteFillObject(),
+                            UIStyle.Common.centerContainer(),
+                        ]}
+                        {...this.panResponder.panHandlers}
                     >
                         <View
                             testID="swipe_to_dismiss"
                             style={UIStyle.Common.dismissStripe()}
                         />
                     </View>
-                    <View style={[
-                        UIStyle.Common.rowCenterSpaceContainer(),
-                        UIStyle.Width.full(),
-                        UIStyle.Padding.horizontal(),
-                    ]}
-                    >
-                        {leftComponent}
-                        {rightComponent}
-                    </View>
-                </React.Fragment>
+                    {leftComponent}
+                    {rightComponent}
+                </View>
             );
         }
         if (!onCancel) {
@@ -150,6 +150,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // }
 
     render() {
+        const panHandler = this.props.swipeToDismiss ? {} : { ...this.panResponder.panHandlers };
         return (
             <View
                 testID="NavBar"
@@ -157,7 +158,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                     styles.navigationView,
                     { height: this.props.height },
                 ]}
-                {...this.panResponder.panHandlers}
+                {...panHandler}
             >
                 {this.renderContent()}
             </View>
