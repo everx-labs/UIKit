@@ -289,7 +289,7 @@ export default class UIModalController<Props, State>
         }
     }
 
-    async show(open: boolean = true, data) {
+    async show(open: boolean = true, data: any) {
         this.setInitialSwipeState();
         await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);
         if (open) {
