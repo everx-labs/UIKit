@@ -102,23 +102,31 @@ export default class UIModalController<Props, State>
     }
 
     // Events
-    onWillAppear = () => {
+    onWillAppear() {
         this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
+    }
+
+    onDidAppearHandler = () => {
+        this.onDidAppear();
     };
 
-    onDidAppear = () => {
+    onDidAppear() {
         this.initKeyboardListeners();
-    };
+    }
 
-    onWillHide = () => {
+    onWillHide() {
         this.deinitKeyboardListeners();
+    }
+
+    onDidHideHandler = () => {
+        this.onDidHide();
     };
 
-    onDidHide = () => {
+    onDidHide() {
         this.setControllerVisible(false, () => {
             this.dy.setValue(0);
         });
-    };
+    }
 
     onCancelPress = () => {
         this.hide();
@@ -281,7 +289,7 @@ export default class UIModalController<Props, State>
         }
     }
 
-    async show(open: boolean = true) {
+    async show(open: boolean = true, data) {
         this.setInitialSwipeState();
         await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);
         if (open) {
@@ -352,8 +360,8 @@ export default class UIModalController<Props, State>
                 dialogAnimation={this.animation} //
                 dialogTitle={this.renderModalNavigationBar()}
                 dismissOnTouchOutside={false}
-                onDismissed={this.onDidHide}
-                onShown={this.onDidAppear}
+                onDismissed={this.onDidHideHandler}
+                onShown={this.onDidAppearHandler}
                 overlayBackgroundColor="transparent"
             >
                 <Animated.View

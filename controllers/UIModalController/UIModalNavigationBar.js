@@ -129,7 +129,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
             </Text>
         );
         return (
-            <View style={[UIStyle.Width.full(), styles.defaultContainer]}>
+            <View style={[UIStyle.Common.flex(), styles.defaultContainer]}>
                 <TouchableOpacity style={styles.navButton} onPress={onCancel}>
                     {cancelImage ? image : text}
                 </TouchableOpacity>
@@ -153,7 +153,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
         const panHandler = this.props.swipeToDismiss ? {} : { ...this.panResponder.panHandlers };
         return (
             <View
-                testID="NavBar"
+                testID="NavigationBar container"
                 style={[
                     styles.navigationView,
                     { height: this.props.height },

@@ -168,6 +168,10 @@ export default class UIStyleCommon {
         return UIStyle.bottomScreenContainer;
     }
 
+    static bottomOffsetScreenContainer() {
+        return UIStyle.bottomOffsetScreenContainer;
+    }
+
     static leftScreenContainer() {
         return UIStyle.leftScreenContainer;
     }
