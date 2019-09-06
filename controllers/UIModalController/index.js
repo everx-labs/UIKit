@@ -408,13 +408,17 @@ export default class UIModalController<Props, State>
             return this.renderContainer();
         }
         return (
-            <Modal
-                animationType="fade"
-                transparent
-                visible={this.state.controllerVisible}
-            >
-                {this.renderContainer()}
-            </Modal>
+            UIDevice.isMobile() ? (
+                this.renderContainer()
+            ) : (
+                <Modal
+                    animationType="fade"
+                    transparent
+                    visible={this.state.controllerVisible}
+                >
+                    {this.renderContainer()}
+                </Modal>
+            )
         );
     }
 

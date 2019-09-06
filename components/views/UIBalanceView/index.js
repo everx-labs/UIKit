@@ -501,8 +501,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 {
                     additionalDescription ? (
                         <UILabel
-                            style={UIStyle.Margin.topSmall()}
-                            text={description}
+                            style={[UIStyle.Margin.topSmall(), UIStyle.Margin.leftNormal()]}
+                            text={additionalDescription}
                             role={
                                 additionalEnabled
                                     ? UILabel.Role.CaptionTertiary
