@@ -21,6 +21,8 @@ type Props = {
     balance: string,
     separator: string,
     description: string,
+    additionalDescription: string,
+    additionalEnabled: boolean,
     tokenSymbol: string,
     testID?: string,
     cacheKey?: string,
@@ -55,6 +57,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     static defaultProps = {
         balance: '',
         description: '',
+        additionalDescription: '',
+        additionalEnabled: true,
         tokenSymbol: '',
         textStyle: UIStyle.Text.titleLight(),
         fractionalTextStyle: UIStyle.Text.tertiary(),
@@ -230,6 +234,14 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     getDescription(): string {
         return this.props.description || '';
+    }
+
+    getAdditionalDescription(): string {
+        return this.props.additionalDescription || '';
+    }
+
+    getAdditionalEnabled(): boolean {
+        return this.props.additionalEnabled;
     }
 
     getTokenSymbol(): string {
@@ -474,14 +486,33 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     renderDescription() {
         const description = this.getDescription();
+        const additionalDescription = this.getAdditionalDescription();
+        const additionalEnabled = this.getAdditionalEnabled();
         if (!description) {
             return null;
         }
-        return (<UILabel
-            style={UIStyle.Margin.topSmall()}
-            text={description}
-            role={UILabel.Role.CaptionTertiary}
-        />);
+        return (
+            <View style={UIStyle.Common.flexRow()}>
+                <UILabel
+                    style={UIStyle.Margin.topSmall()}
+                    text={description}
+                    role={UILabel.Role.CaptionTertiary}
+                />
+                {
+                    additionalDescription ? (
+                        <UILabel
+                            style={UIStyle.Margin.topSmall()}
+                            text={description}
+                            role={
+                                additionalEnabled
+                                    ? UILabel.Role.CaptionTertiary
+                                    : UILabel.Role.CaptionError
+                            }
+                        />
+                    ) : null
+                }
+            </View>
+        );
     }
 
     render() {
