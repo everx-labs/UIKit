@@ -133,6 +133,7 @@ export const detailsDefaultProps = {
     onSubmitEditing: () => {},
     onKeyPress: () => {},
     onHeightChange: () => {},
+    onPressComment: null,
     placeholder: '',
     secureTextEntry: false,
     showSymbolsLeft: false,
@@ -594,7 +595,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderComment() {
-        const { theme } = this.props;
+        const { theme, onPressComment } = this.props;
         const comment = this.getComment();
         const testID = this.getCommentTestID();
         const testIDProp = testID ? { testID } : null;
@@ -604,6 +605,23 @@ export default class UIDetailsInput<Props, State>
         const defaultColorStyle = UIColor.textTertiaryStyle(theme);
         const commentColor = this.commentColor();
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
+        if (onPressComment) {
+            return (
+                <UITextButton
+                    buttonStyle={[
+                        styles.commentStyle,
+                        UIStyle.Margin.topTiny(),
+                        UIStyle.Margin.bottomSmall(),
+                    ]}
+                    textStyle={[
+                        UIColor.actionTextPrimaryStyle(theme),
+                        colorStyle,
+                        UIStyle.Text.captionRegular(),
+                    ]}
+                    onPress={onPressComment}
+                />
+            );
+        }
         return (
             <Text
                 {...testIDProp}
@@ -611,9 +629,9 @@ export default class UIDetailsInput<Props, State>
                     styles.commentStyle,
                     defaultColorStyle,
                     colorStyle,
-                    UITextStyle.captionRegular,
-                    UIStyle.marginTopTiny,
-                    UIStyle.marginBottomSmall,
+                    UIStyle.Text.captionRegular(),
+                    UIStyle.Margin.topTiny(),
+                    UIStyle.Margin.bottomSmall(),
                 ]}
             >
                 {comment}
