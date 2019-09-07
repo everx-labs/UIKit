@@ -74,6 +74,7 @@ export type DetailsProps = ActionProps & {
     inputStyle: ViewStyleProp,
     comment?: string | null,
     commentColor?: string | null,
+    bottomLineColor?: string | null,
     defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
@@ -306,15 +307,16 @@ export default class UIDetailsInput<Props, State>
     }
 
     textInputStyle() {
-        const { theme } = this.props;
+        const { theme, inputStyle } = this.props;
         const textColorStyle = UIColor.textPrimaryStyle(theme);
-        const fontStyle = UITextStyle.bodyRegular;
+        const fontStyle = UIStyle.Text.bodyRegular();
         delete fontStyle.lineHeight;
         return [
             styles.textInput,
             fontStyle,
             textColorStyle,
-            UIStyle.flex,
+            UIStyle.Common.flex(),
+            inputStyle,
         ];
     }
 
@@ -575,12 +577,14 @@ export default class UIDetailsInput<Props, State>
 
     renderTextView() {
         const {
-            comment, hideBottomLine, theme, mandatory,
+            comment, hideBottomLine, theme, mandatory, mandatoryColor,
         } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor: UIColorData;
-        if (mandatory && !this.getValue()) {
-            bottomLineColor = this.props.mandatoryColor;
+        if (this.props.bottomLineColor) {
+            bottomLineColor = this.props.bottomLineColor;
+        } else if (mandatory && !this.getValue()) {
+            bottomLineColor = mandatoryColor;
         } else if (comment && this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
@@ -618,6 +622,7 @@ export default class UIDetailsInput<Props, State>
                         colorStyle,
                         UIStyle.Text.captionRegular(),
                     ]}
+                    title={comment}
                     onPress={onPressComment}
                 />
             );
