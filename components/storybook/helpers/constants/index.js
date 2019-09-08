@@ -3,6 +3,7 @@ const CategoryButton = 'Actions|Button';
 const CategoryLink = 'Actions';
 const CategoryButtonGroup = 'Actions|ButtonGroup';
 const CategoryLayout = 'Layout';
+const CategoryProperties = 'Properties';
 
 export default {
     CategoryButtonIcon,
@@ -10,4 +11,5 @@ export default {
     CategoryButtonGroup,
     CategoryLayout,
     CategoryLink,
+    CategoryProperties,
 };
