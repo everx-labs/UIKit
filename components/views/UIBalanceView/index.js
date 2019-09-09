@@ -21,6 +21,8 @@ type Props = {
     balance: string,
     separator: string,
     description: string,
+    additionalDescription: string,
+    additionalEnabled: boolean,
     tokenSymbol: string,
     testID?: string,
     cacheKey?: string,
@@ -55,6 +57,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     static defaultProps = {
         balance: '',
         description: '',
+        additionalDescription: '',
+        additionalEnabled: true,
         tokenSymbol: '',
         textStyle: UIStyle.Text.titleLight(),
         fractionalTextStyle: UIStyle.Text.tertiary(),
@@ -134,7 +138,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const { length: balanceLen } = this.getBalance();
 
         if (this.animatingBalance) {
-            this.afterAnimationCallback = () => { this.setBalance(balance, true) };
+            this.afterAnimationCallback = () => { this.setBalance(balance, true); };
             return;
         }
         this.animatingBalance = true;
@@ -230,6 +234,14 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     getDescription(): string {
         return this.props.description || '';
+    }
+
+    getAdditionalDescription(): string {
+        return this.props.additionalDescription || '';
+    }
+
+    getAdditionalEnabled(): boolean {
+        return this.props.additionalEnabled;
     }
 
     getTokenSymbol(): string {
@@ -367,7 +379,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         } = this.props;
         const digitStyle = digit.primary ? null : fractionalTextStyle;
         const newDigitStyle = newDigit.primary ? null : fractionalTextStyle;
-        const similar = newDigit.value === digit.value && !loading;
+        const similar = newDigit.value === digit.value
+            && newDigit.primary === digit.primary && !loading;
         const newDigitValue = similar ? '' : newDigit.value || (this.getNewBalance() && ' ') || '';
         const marginTop = this.getMarginTop(index); // 0 or index
         const margin = similar || !animated ? {} : { marginTop };
@@ -474,14 +487,33 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     renderDescription() {
         const description = this.getDescription();
+        const additionalDescription = this.getAdditionalDescription();
+        const additionalEnabled = this.getAdditionalEnabled();
         if (!description) {
             return null;
         }
-        return (<UILabel
-            style={UIStyle.Margin.topSmall()}
-            text={description}
-            role={UILabel.Role.CaptionTertiary}
-        />);
+        return (
+            <View style={UIStyle.Common.flexRow()}>
+                <UILabel
+                    style={UIStyle.Margin.topSmall()}
+                    text={description}
+                    role={UILabel.Role.CaptionTertiary}
+                />
+                {
+                    additionalDescription ? (
+                        <UILabel
+                            style={[UIStyle.Margin.topSmall(), UIStyle.Margin.leftNormal()]}
+                            text={additionalDescription}
+                            role={
+                                additionalEnabled
+                                    ? UILabel.Role.CaptionTertiary
+                                    : UILabel.Role.CaptionError
+                            }
+                        />
+                    ) : null
+                }
+            </View>
+        );
     }
 
     render() {

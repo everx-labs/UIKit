@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     hoverOffset: {
         left: -UIConstant.contentOffset(),
         right: -UIConstant.contentOffset(),
-        top: -1,
-        bottom: -1,
+        top: 0,
+        bottom: 0,
     },
 });
 

@@ -43,7 +43,10 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
     }
 
     getGutterStyle() {
-        return { marginLeft: this.props.gutter };
+        if (this.props.direction === UIButtonGroup.Direction.Row) {
+            return { marginLeft: this.props.gutter };
+        }
+        return { marginTop: this.props.gutter };
     }
 
     renderChildren() {
@@ -52,7 +55,7 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
         if (!buttonsCount) return null;
 
         return this.props.children.map((child, rank) => {
-            const style = this.isRow() && rank !== 0 ? this.getGutterStyle() : null;
+            const style = rank !== 0 ? this.getGutterStyle() : null;
             return React.cloneElement(child, { style: [style, child.props.style], key: `button-${rank}` });
         });
     }

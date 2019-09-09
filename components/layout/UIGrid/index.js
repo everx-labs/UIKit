@@ -76,8 +76,10 @@ type Props = {
     type: string,
     /** custom style */
     style?: StylePropType,
-    /** width of grid, if not set it's '100%' */
-    width?: number | null,
+    /** width of grid, if not set it's '100%'
+    * @default 0
+    */
+    width?: number,
 };
 
 type State = {
@@ -221,5 +223,5 @@ UIGrid.defaultProps = {
     rowGutter: ROW_GUTTER,
     type: UIGrid.Type.C8,
     style: null,
-    width: null,
+    width: 0,
 };
