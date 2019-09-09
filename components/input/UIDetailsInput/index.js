@@ -612,6 +612,7 @@ export default class UIDetailsInput<Props, State>
         if (onPressComment) {
             return (
                 <UITextButton
+                    {...testIDProp}
                     buttonStyle={[
                         styles.commentStyle,
                         UIStyle.Margin.topTiny(),
