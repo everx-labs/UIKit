@@ -609,20 +609,21 @@ export default class UIDetailsInput<Props, State>
         const defaultColorStyle = UIColor.textTertiaryStyle(theme);
         const commentColor = this.commentColor();
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
+        const containerStyle = [
+            styles.commentStyle,
+            UIStyle.Margin.topTiny(),
+            UIStyle.Margin.bottomSmall(),
+        ];
+        const textStyle = [
+            colorStyle,
+            UIStyle.Text.captionRegular(),
+        ];
         if (onPressComment) {
             return (
                 <UITextButton
                     {...testIDProp}
-                    buttonStyle={[
-                        styles.commentStyle,
-                        UIStyle.Margin.topTiny(),
-                        UIStyle.Margin.bottomSmall(),
-                    ]}
-                    textStyle={[
-                        UIColor.actionTextPrimaryStyle(theme),
-                        colorStyle,
-                        UIStyle.Text.captionRegular(),
-                    ]}
+                    buttonStyle={containerStyle}
+                    textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
                     title={comment}
                     onPress={onPressComment}
                 />
@@ -632,12 +633,9 @@ export default class UIDetailsInput<Props, State>
             <Text
                 {...testIDProp}
                 style={[
-                    styles.commentStyle,
                     defaultColorStyle,
-                    colorStyle,
-                    UIStyle.Text.captionRegular(),
-                    UIStyle.Margin.topTiny(),
-                    UIStyle.Margin.bottomSmall(),
+                    ...textStyle,
+                    ...containerStyle,
                 ]}
             >
                 {comment}
