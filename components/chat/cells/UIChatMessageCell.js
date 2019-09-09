@@ -22,6 +22,7 @@ import UILocalized from '../../../helpers/UILocalized';
 import UIChatImageCell from './UIChatImageCell';
 import UIChatDocumentCell from './UIChatDocumentCell';
 import UIChatTransactionCell from './UIChatTransactionCell';
+import UIChatActionCell from './UIChatActionCell';
 
 import { ChatMessageContent, ChatMessageStatus } from '../extras';
 
@@ -37,6 +38,7 @@ type Props = {
     onOpenPDF?: (docData: any, docName: string) => void,
     onPressUrl?: (url: string) => void,
     onTouchTransaction?: (trx: any) => void,
+    onTouchAction?: (action: any) => void,
 }
 
 type State = {
@@ -150,6 +152,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         onTouchMedia: () => {},
         onOpenPDF: () => {},
         onTouchTransaction: () => {},
+        onTouchAction: () => {},
     };
 
     // constructor
@@ -183,6 +186,14 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const message = additionalInfo?.message;
         if (message && onTouchTransaction) {
             onTouchTransaction(message?.info.trx);
+        }
+    }
+
+    onActionPress = () => {
+        const { additionalInfo, onTouchAction } = this.props;
+        const actionType = additionalInfo?.actionType;
+        if (onTouchAction && actionType) {
+            onTouchAction(actionType);
         }
     }
 
@@ -382,6 +393,23 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderActionCell() {
+        const { additionalInfo, data } = this.props;
+        const actionType = additionalInfo?.actionType;
+
+        if (!actionType) {
+            return null;
+        }
+
+        return (
+            <UIChatActionCell
+                text={data}
+                typeOfAction={actionType}
+                onPress={this.onActionPress}
+            />
+        );
+    }
+
     renderTextCell() {
         const { data } = this.props;
         return this.wrapInMessageContainer(this.renderText(data || ''));
@@ -430,6 +458,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderImageCell();
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
+        } else if (type === ChatMessageContent.ActionButton) {
+            cell = this.renderActionCell();
         } else {
             cell = this.renderInformationCell('Message/Cell type not supported.');
         }

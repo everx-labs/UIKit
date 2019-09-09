@@ -3,6 +3,7 @@ export const ChatMessageContent = {
     AttachmentImage: 'aim',
     AttachmentDocument: 'doc',
     TransactionInChat: 'trx',
+    ActionButton: 'act',
     DateSeparator: 'date',
     EmptyChat: 'empty',
 };
@@ -23,9 +24,14 @@ export const TypeOfTransaction = {
     Invite: 'invite',
 };
 
+export const TypeOfAction = {
+    Buy: 'buy',
+};
+
 export type ChatMessageContentType = $Values<typeof ChatMessageContent>;
 export type ChatMessageStatusType = $Values<typeof ChatMessageStatus>;
 export type TypeOfTransactionType = $Values<typeof TypeOfTransaction>;
+export type TypeOfActionType = $Values<typeof TypeOfAction>;
 
 export type TransactionInfo = {
     separator: string,
@@ -68,6 +74,7 @@ export type ChatAdditionalInfo = {
     imageSize: ?UIChatImageSize;
     docName: ?string,
     fileSize: ?number,
+    actionType: ?TypeOfActionType,
 };
 
 export type UIChatCellInfo = {
