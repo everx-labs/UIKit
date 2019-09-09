@@ -109,15 +109,20 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
         const defaultTitleStyle = rightButtonDisabled ?
             UITextStyle.secondarySmallMedium : UITextStyle.actionSmallMedium;
+        const button = rightButton instanceof String || typeof rightButton === 'string'
+            ? (
+                <Text style={[UITextStyle.secondaryBodyRegular, defaultTitleStyle]}>
+                    {rightButton}
+                </Text>
+            )
+            : rightButton;
         return (
             <TouchableOpacity
                 testID="amount_input_right_button"
                 disabled={rightButtonDisabled}
                 onPress={onRightButtonPress}
             >
-                <Text style={[UITextStyle.secondaryBodyRegular, defaultTitleStyle]}>
-                    {rightButton}
-                </Text>
+                {button}
             </TouchableOpacity>
         );
     }
