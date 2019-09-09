@@ -408,17 +408,13 @@ export default class UIModalController<Props, State>
             return this.renderContainer();
         }
         return (
-            this.fullscreen ? (
-                <Modal
-                    animationType="fade"
-                    transparent
-                    visible={this.state.controllerVisible}
-                >
-                    {this.renderContainer()}
-                </Modal>
-            ) : (
-                this.renderContainer()
-            )
+            <Modal
+                animationType="fade"
+                transparent
+                visible={this.state.controllerVisible}
+            >
+                {this.renderContainer()}
+            </Modal>
         );
     }
 
