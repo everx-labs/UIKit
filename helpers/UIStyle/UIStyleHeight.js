@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
+import UIStyle from '../UIStyle';
 
 const styles = StyleSheet.create({
     // heights
@@ -70,5 +71,9 @@ export default class UIStyleHeight {
 
     static buttonHeight() {
         return styles.buttonHeight;
+    }
+
+    static full() {
+        return UIStyle.fullHeight;
     }
 }

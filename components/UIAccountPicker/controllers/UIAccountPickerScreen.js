@@ -40,6 +40,7 @@ class UIAccountPickerScreen extends UIModalController<Props, State> {
     constructor(props: Props) {
         super(props);
         this.hasSpinnerOverlay = true;
+        this.testID = '[UIAccountPickerScreen]';
 
         this.state = {
             accounts: null,

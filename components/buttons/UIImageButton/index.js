@@ -64,9 +64,9 @@ export default class UIImageButton extends UIComponent<Props, State> {
     }
 
     getImage(): ImageSource {
-        const { image } = this.props;
+        const { image, customImage } = this.props;
         if (image === UIImageButton.Images.custom) {
-            return this.props.customImage;
+            return customImage;
         }
         // eslint-disable-next-line import/no-dynamic-require,global-require
         return assets[image]();

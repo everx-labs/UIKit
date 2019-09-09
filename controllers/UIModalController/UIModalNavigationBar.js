@@ -1,17 +1,20 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, Image, TouchableOpacity, PanResponder } from 'react-native';
+import type { PressEvent } from 'react-native/Libraries/Types/CoreEventTypes';
+import type { GestureState, PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 
 import UIStyle from '../../helpers/UIStyle';
 import UILocalized from '../../helpers/UILocalized';
 import UIConstant from '../../helpers/UIConstant';
 import UIComponent from '../../components/UIComponent';
-import UITextStyle from '../../helpers/UITextStyle';
 
 const styles = StyleSheet.create({
     navigationView: {
         borderTopLeftRadius: UIConstant.borderRadius(),
         borderTopRightRadius: UIConstant.borderRadius(),
+    },
+    defaultContainer: {
         paddingHorizontal: 15,
         alignItems: 'center',
         justifyContent: 'center',
@@ -32,12 +35,34 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIModalNavigationBar extends UIComponent {
-    static getBarHeight(shouldSwipeToDismiss = false) {
-        return shouldSwipeToDismiss ? 30 : 48;
-    }
+type Props = {
+    rightComponent: ?React$Node,
+    leftComponent: ?React$Node,
+    height: number,
+    title: string,
+    cancelImage: ?string,
+    cancelText: string,
+    swipeToDismiss: boolean,
+    onCancel: ?() => void,
+    onMove: (event: PressEvent, gestureState: GestureState) => mixed;
+    onRelease: (number) => void,
+};
 
-    constructor(props) {
+type State = {};
+
+export default class UIModalNavigationBar extends UIComponent<Props, State> {
+    static defaultProps = {
+        title: '',
+        cancelImage: null,
+        cancelText: UILocalized.Cancel,
+        swipeToDismiss: false,
+        onCancel: null,
+        onMove: () => {},
+        onRelease: () => {},
+    };
+
+    panResponder: PanResponderInstance;
+    constructor(props: Props) {
         super(props);
 
         if (this.props.swipeToDismiss) {
@@ -64,16 +89,34 @@ export default class UIModalNavigationBar extends UIComponent {
     }
 
     // Render
-    renderCancelButton() {
+    renderContent() {
         const {
-            onCancel, swipeToDismiss, cancelImage, cancelText,
+            onCancel, swipeToDismiss, cancelImage, cancelText, leftComponent, rightComponent,
         } = this.props;
         if (swipeToDismiss) {
             return (
                 <View
-                    testID="swipe_to_dismiss"
-                    style={UIStyle.dismissStripe}
-                />
+                    style={[
+                        UIStyle.Common.rowCenterSpaceContainer(),
+                        UIStyle.Width.full(),
+                        UIStyle.Padding.horizontal(),
+                    ]}
+                >
+                    <View
+                        style={[
+                            UIStyle.Common.absoluteFillObject(),
+                            UIStyle.Common.centerContainer(),
+                        ]}
+                        {...this.panResponder.panHandlers}
+                    >
+                        <View
+                            testID="swipe_to_dismiss"
+                            style={UIStyle.Common.dismissStripe()}
+                        />
+                    </View>
+                    {leftComponent}
+                    {rightComponent}
+                </View>
             );
         }
         if (!onCancel) {
@@ -81,60 +124,44 @@ export default class UIModalNavigationBar extends UIComponent {
         }
         const image = (<Image style={styles.cancelImage} source={cancelImage} />);
         const text = (
-            <Text style={UITextStyle.actionSmallMedium}>
+            <Text style={UIStyle.Text.actionSmallMedium()}>
                 {cancelText}
             </Text>
         );
         return (
-            <TouchableOpacity style={styles.navButton} onPress={onCancel}>
-                {cancelImage ? image : text}
-            </TouchableOpacity>
+            <View style={[UIStyle.Common.flex(), styles.defaultContainer]}>
+                <TouchableOpacity style={styles.navButton} onPress={onCancel}>
+                    {cancelImage ? image : text}
+                </TouchableOpacity>
+            </View>
         );
     }
 
-    renderNavigationTitle() {
-        const { swipeToDismiss, title } = this.props;
-        if (swipeToDismiss) {
-            return null;
-        }
-        return (
-            <Text style={UIStyle.navigatorHeaderTitle}>
-                {title}
-            </Text>
-        );
-    }
+    // renderNavigationTitle() {
+    //     const { swipeToDismiss, title } = this.props;
+    //     if (swipeToDismiss) {
+    //         return null;
+    //     }
+    //     return (
+    //         <Text style={UIStyle.navigatorHeaderTitle}>
+    //             {title}
+    //         </Text>
+    //     );
+    // }
 
     render() {
+        const panHandler = this.props.swipeToDismiss ? {} : { ...this.panResponder.panHandlers };
         return (
             <View
+                testID="NavigationBar container"
                 style={[
                     styles.navigationView,
-                    { height: UIModalNavigationBar.getBarHeight(this.props.swipeToDismiss) },
+                    { height: this.props.height },
                 ]}
-                {...this.panResponder.panHandlers}
+                {...panHandler}
             >
-                {this.renderCancelButton()}
+                {this.renderContent()}
             </View>
         );
     }
 }
-
-UIModalNavigationBar.defaultProps = {
-    title: '',
-    cancelImage: null,
-    cancelText: UILocalized.Cancel,
-    swipeToDismiss: false,
-    onCancel: null,
-    onMove: null,
-    onRelease: null,
-};
-
-UIModalNavigationBar.propTypes = {
-    title: PropTypes.string,
-    cancelImage: PropTypes.any,
-    cancelText: PropTypes.string,
-    swipeToDismiss: PropTypes.bool,
-    onCancel: PropTypes.func,
-    onMove: PropTypes.func,
-    onRelease: PropTypes.func,
-};

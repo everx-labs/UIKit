@@ -138,7 +138,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 textStyle={[UIStyle.Color.getColorStyle(UIColor.primary()), item.titleStyle]}
             />
         );
-    }
+    };
 
     renderMenu() {
         return (

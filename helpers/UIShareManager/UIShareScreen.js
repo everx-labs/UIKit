@@ -70,6 +70,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     // constructor
     constructor(props: Props) {
         super(props);
+        this.testID = '[UIShareScreen]';
         this.state = {
             ...this.state,
             message: '',

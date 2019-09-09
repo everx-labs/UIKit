@@ -182,6 +182,10 @@ const UIStyle = StyleSheet.create({
         ...UIConstant.cardShadow(),
     },
 
+    fullHeight: {
+        height: '100%',
+    },
+
     fullWidth: {
         width: '100%',
     },

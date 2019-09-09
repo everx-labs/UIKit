@@ -85,6 +85,7 @@ export default class UIModalController<Props, State>
 
     constructor(props: ModalControllerProps & Props) {
         super(props);
+        this.testID = '[UIModalController]';
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
@@ -105,6 +106,10 @@ export default class UIModalController<Props, State>
         this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
     }
 
+    onDidAppearHandler = () => {
+        this.onDidAppear();
+    };
+
     onDidAppear() {
         this.initKeyboardListeners();
     }
@@ -112,6 +117,10 @@ export default class UIModalController<Props, State>
     onWillHide() {
         this.deinitKeyboardListeners();
     }
+
+    onDidHideHandler = () => {
+        this.onDidHide();
+    };
 
     onDidHide() {
         this.setControllerVisible(false, () => {
@@ -141,6 +150,9 @@ export default class UIModalController<Props, State>
     };
 
     // Getters
+    getNavigationBarHeight() {
+        return this.shouldSwipeToDismiss() ? 30 : 48;
+    }
 
     isControllerVisible(): boolean {
         return this.state.controllerVisible || false;
@@ -185,7 +197,7 @@ export default class UIModalController<Props, State>
 
         let contentHeight = height - this.getSafeAreaInsets().bottom;
         if (this.dismissible) {
-            contentHeight -= UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
+            contentHeight -= this.getNavigationBarHeight();
         }
 
         if (enlargeHeightForBounce) {
@@ -209,8 +221,7 @@ export default class UIModalController<Props, State>
 
     interpolateColor(): ColorValue {
         const { height } = Dimensions.get('window');
-        const maxValue = height - UIDevice.statusBarHeight()
-            - UIModalNavigationBar.getBarHeight(this.shouldSwipeToDismiss());
+        const maxValue = height - UIDevice.statusBarHeight() - this.getNavigationBarHeight();
         return (this.dy: any).interpolate({
             inputRange: [0, maxValue],
             outputRange: [UIColor.overlay60(), UIColor.overlay0()],
@@ -261,6 +272,13 @@ export default class UIModalController<Props, State>
         this.setStateSafely({ header });
     }
 
+    // Getters
+    getBackgroundColor() {
+        return Platform.OS === 'web' && this.fullscreen
+            ? 'transparent'
+            : this.bgAlpha;
+    }
+
     // Events
 
     // Actions
@@ -271,7 +289,7 @@ export default class UIModalController<Props, State>
         }
     }
 
-    async show(open: boolean = true) {
+    async show(open: boolean = true, data: any) {
         this.setInitialSwipeState();
         await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);
         if (open) {
@@ -298,19 +316,32 @@ export default class UIModalController<Props, State>
     }
 
     // Render
-    getModalNavigationBar() {
+    renderLeftHeader() {
+        return null;
+    }
+
+    renderRightHeader() {
+        return null;
+    }
+
+    renderModalNavigationBar() {
         if (!this.dismissible) {
             return null;
         }
         if (this.state.header) {
             return this.state.header;
         }
-        return (<UIModalNavigationBar
-            swipeToDismiss={this.shouldSwipeToDismiss()}
-            onMove={Animated.event([null, { dy: this.dy }])}
-            onRelease={this.onReleaseSwipe}
-            onCancel={this.onCancelPress}
-        />);
+        return (
+            <UIModalNavigationBar
+                height={this.getNavigationBarHeight()}
+                swipeToDismiss={this.shouldSwipeToDismiss()}
+                leftComponent={this.renderLeftHeader()}
+                rightComponent={this.renderRightHeader()}
+                onMove={Animated.event([null, { dy: this.dy }])}
+                onRelease={this.onReleaseSwipe}
+                onCancel={this.onCancelPress}
+            />
+        );
     }
 
     renderDialog() {
@@ -321,18 +352,16 @@ export default class UIModalController<Props, State>
         return (
             <PopupDialog
                 {...testIDProp}
-                ref={(popupDialog) => {
-                    this.dialog = popupDialog;
-                }}
+                ref={(popupDialog) => { this.dialog = popupDialog; }}
                 width={width}
                 height={height}
                 containerStyle={containerStyle}
                 dialogStyle={dialogStyle}
-                dialogAnimation={this.animation}
-                dialogTitle={this.getModalNavigationBar()}
+                dialogAnimation={this.animation} //
+                dialogTitle={this.renderModalNavigationBar()}
                 dismissOnTouchOutside={false}
-                onDismissed={() => this.onDidHide()}
-                onShown={() => this.onDidAppear()}
+                onDismissed={this.onDidHideHandler}
+                onShown={this.onDidAppearHandler}
                 overlayBackgroundColor="transparent"
             >
                 <Animated.View
@@ -353,16 +382,13 @@ export default class UIModalController<Props, State>
     }
 
     renderContainer() {
-        const backgroundColor = Platform.OS === 'web' && this.fullscreen
-            ? 'transparent'
-            : this.bgAlpha;
-
+        const backgroundColor = this.getBackgroundColor();
         return (
             <Animated.View
                 style={[
                     // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
                     // And this brings a layout bug to Safari
-                    UIStyle.absoluteFillContainer,
+                    UIStyle.Common.absoluteFillContainer(),
                     { backgroundColor },
                 ]}
                 onLayout={this.onLayout}

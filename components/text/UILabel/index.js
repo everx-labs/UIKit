@@ -26,6 +26,7 @@ const LabelRole = Object.freeze({
     Caption: 'caption', // TODO: rename as captionSecondary
     CaptionTertiary: 'captionTertiary',
     CaptionWarning: 'captionWarning',
+    CaptionError: 'captionError',
     AccentBold: 'accentBold',
     IconQuaternary: 'iconQuaternary',
 });
@@ -106,6 +107,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.tertiaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionWarning) {
             result.push(UIStyle.Text.warningCaptionRegular());
+        } else if (role === UILabel.Role.CaptionError) {
+            result.push(UIStyle.Text.errorCaptionRegular());
         } else if (role === UILabel.Role.IconQuaternary) {
             result.push(UIStyle.Text.quaternaryIconRegular());
         }
