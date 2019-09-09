@@ -74,6 +74,7 @@ export type DetailsProps = ActionProps & {
     inputStyle: ViewStyleProp,
     comment?: string | null,
     commentColor?: string | null,
+    bottomLineColor?: string | null,
     defaultValue?: string,
     editable: boolean,
     floatingTitle: boolean,
@@ -133,6 +134,7 @@ export const detailsDefaultProps = {
     onSubmitEditing: () => {},
     onKeyPress: () => {},
     onHeightChange: () => {},
+    onPressComment: null,
     placeholder: '',
     secureTextEntry: false,
     showSymbolsLeft: false,
@@ -305,15 +307,16 @@ export default class UIDetailsInput<Props, State>
     }
 
     textInputStyle() {
-        const { theme } = this.props;
+        const { theme, inputStyle } = this.props;
         const textColorStyle = UIColor.textPrimaryStyle(theme);
-        const fontStyle = UITextStyle.bodyRegular;
+        const fontStyle = UIStyle.Text.bodyRegular();
         delete fontStyle.lineHeight;
         return [
             styles.textInput,
             fontStyle,
             textColorStyle,
-            UIStyle.flex,
+            UIStyle.Common.flex(),
+            inputStyle,
         ];
     }
 
@@ -574,12 +577,14 @@ export default class UIDetailsInput<Props, State>
 
     renderTextView() {
         const {
-            comment, hideBottomLine, theme, mandatory,
+            comment, hideBottomLine, theme, mandatory, mandatoryColor,
         } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
         let bottomLineColor: UIColorData;
-        if (mandatory && !this.getValue()) {
-            bottomLineColor = this.props.mandatoryColor;
+        if (this.props.bottomLineColor) {
+            bottomLineColor = this.props.bottomLineColor;
+        } else if (mandatory && !this.getValue()) {
+            bottomLineColor = mandatoryColor;
         } else if (comment && this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
@@ -594,7 +599,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderComment() {
-        const { theme } = this.props;
+        const { theme, onPressComment } = this.props;
         const comment = this.getComment();
         const testID = this.getCommentTestID();
         const testIDProp = testID ? { testID } : null;
@@ -604,16 +609,33 @@ export default class UIDetailsInput<Props, State>
         const defaultColorStyle = UIColor.textTertiaryStyle(theme);
         const commentColor = this.commentColor();
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
+        const containerStyle = [
+            styles.commentStyle,
+            UIStyle.Margin.topTiny(),
+            UIStyle.Margin.bottomSmall(),
+        ];
+        const textStyle = [
+            colorStyle,
+            UIStyle.Text.captionRegular(),
+        ];
+        if (onPressComment) {
+            return (
+                <UITextButton
+                    {...testIDProp}
+                    buttonStyle={containerStyle}
+                    textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
+                    title={comment}
+                    onPress={onPressComment}
+                />
+            );
+        }
         return (
             <Text
                 {...testIDProp}
                 style={[
-                    styles.commentStyle,
                     defaultColorStyle,
-                    colorStyle,
-                    UITextStyle.captionRegular,
-                    UIStyle.marginTopTiny,
-                    UIStyle.marginBottomSmall,
+                    ...textStyle,
+                    ...containerStyle,
                 ]}
             >
                 {comment}
