@@ -1,7 +1,6 @@
 import { Platform } from 'react-native';
 
 const UI_FONT_FAMILY = {
-    fontFamily: Platform.select({ web: 'IBM Plex Sans' }),
     ...Platform.select({
         android: {
             textShadowRadius: 0, // Disable Text Shadow Globally as it's broken for Android started RN0.57.2: https://github.com/facebook/react-native/issues/21507
@@ -9,13 +8,18 @@ const UI_FONT_FAMILY = {
     }),
 };
 
+const FONT_WEB_LIGHT = Platform.select({ web: { fontFamily: 'PTRootUIWebLight, "IBM Plex Sans"' } });
+const FONT_WEB_REGULAR = Platform.select({ web: { fontFamily: 'PTRootUIWebRegular, "IBM Plex Sans"' } });
+const FONT_WEB_MEDIUM = Platform.select({ web: { fontFamily: 'PTRootUIWebMedium, "IBM Plex Sans"' } });
+const FONT_WEB_BOLD = Platform.select({ web: { fontFamily: 'PTRootUIWebBold, "IBM Plex Sans"' } });
+
 // const UI_FONT_THIN = { fontWeight: '100' };
 // const UI_FONT_ULTRA_LIGHT = { fontWeight: '200' };
-const UI_FONT_LIGHT = { fontWeight: '300' };
-const UI_FONT_REGULAR = { fontWeight: '400' };
-const UI_FONT_MEDIUM = { fontWeight: '500' };
+const UI_FONT_LIGHT = { ...FONT_WEB_LIGHT, fontWeight: '300' };
+const UI_FONT_REGULAR = { ...FONT_WEB_REGULAR, fontWeight: '400' };
+const UI_FONT_MEDIUM = { ...FONT_WEB_MEDIUM, fontWeight: '500' };
 // const UI_FONT_SEMIBOLD = { fontWeight: '600' };
-const UI_FONT_BOLD = { fontWeight: '700' };
+const UI_FONT_BOLD = { ...FONT_WEB_BOLD, fontWeight: '700' };
 // const UI_FONT_HEAVY = { fontWeight: '800' };
 // const UI_FONT_BLACK = { fontWeight: '900' };
 

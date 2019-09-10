@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Linking } from 'react-native';
 
 import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
@@ -25,6 +25,10 @@ type Props = {
     hasIcon?: boolean,
     /** use it for default right icon, ignore it if use iconR prop */
     hasIconR?: boolean,
+    /** external url, starting with http...
+    @default null
+    */
+    href?: ?string,
     /** uri to left icon */
     icon?: ?string,
     /** uri to right icon */
@@ -62,7 +66,16 @@ export default class UILink extends UIComponent<Props, State> {
     static TextAlign = UIButton.TextAlign;
     static Indicator = UIButton.Indicator;
 
+    goHref = () => {
+        if (this.props.href) { Linking.openURL(this.props.href); }
+    }
+
     render() {
+        if (this.props.href) {
+            return (
+                <UIButton {...this.props} onPress={this.goHref} buttonStyle={UIButton.ButtonStyle.Link} />
+            );
+        }
         return (
             <UIButton {...this.props} buttonStyle={UIButton.ButtonStyle.Link} />
         );
@@ -77,6 +90,7 @@ UILink.defaultProps = {
     data: '',
     hasIcon: false,
     hasIconR: false,
+    href: null,
     icon: null,
     theme: UIColor.Theme.Light,
     title: '',
