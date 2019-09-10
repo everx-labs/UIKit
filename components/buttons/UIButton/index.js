@@ -21,6 +21,7 @@ const iconDefault = require('../../../assets/ico-triangle/ico-triangle.png');
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
+        paddingHorizontal: UIConstant.contentOffset(),
     },
     badgeContainer: {
         marginRight: UIConstant.smallContentOffset(),
@@ -41,7 +42,6 @@ const styles = StyleSheet.create({
     },
     buttonContainerStyle: {
         flex: 1,
-        paddingHorizontal: UIConstant.contentOffset(),
     },
 });
 
