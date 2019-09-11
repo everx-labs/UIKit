@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         borderBottomColor: UIColor.light(),
     },
     headerCentral: {
-        marginRight: UIConstant.contentOffset(),
+        marginHorizontal: UIConstant.smallContentOffset(),
     },
 });
 
