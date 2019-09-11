@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
         borderBottomColor: UIColor.light(),
     },
     headerCentral: {
-        marginHorizontal: UIConstant.contentOffset(),
+        marginLeft: UIConstant.mediumContentOffset(),
+        marginRight: UIConstant.contentOffset(),
     },
 });
 
