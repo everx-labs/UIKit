@@ -5,6 +5,7 @@ import type { PressEvent } from 'react-native/Libraries/Types/CoreEventTypes';
 import type { GestureState, PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 
 import UIStyle from '../../helpers/UIStyle';
+import UIColor from '../../helpers/UIColor';
 import UILocalized from '../../helpers/UILocalized';
 import UIConstant from '../../helpers/UIConstant';
 import UIComponent from '../../components/UIComponent';
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: UIConstant.borderRadius(),
     },
     defaultContainer: {
+        flexDirection: 'row',
         paddingHorizontal: 15,
         alignItems: 'center',
         justifyContent: 'center',
@@ -30,14 +32,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     cancelImage: {
-        height: 18,
-        width: 18,
+        height: UIConstant.tinyButtonHeight(),
+        width: UIConstant.tinyButtonHeight(),
+    },
+    bottomLine: {
+        borderBottomWidth: 1,
+        borderBottomColor: UIColor.light(),
+    },
+    headerCentral: {
+        marginHorizontal: UIConstant.contentOffset(),
     },
 });
 
 type Props = {
     rightComponent: ?React$Node,
     leftComponent: ?React$Node,
+    centralComponent: ?React$Node,
+    bottomLine: ?boolean,
     height: number,
     title: string,
     cancelImage: ?string,
@@ -91,7 +102,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // Render
     renderContent() {
         const {
-            onCancel, swipeToDismiss, cancelImage, cancelText, leftComponent, rightComponent,
+            onCancel, bottomLine, swipeToDismiss, cancelImage, cancelText, leftComponent, centralComponent, rightComponent,
         } = this.props;
         if (swipeToDismiss) {
             return (
@@ -128,11 +139,18 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                 {cancelText}
             </Text>
         );
+        const separator = bottomLine ? styles.bottomLine : null;
         return (
-            <View style={[UIStyle.Common.flex(), styles.defaultContainer]}>
+            <View style={[UIStyle.Common.flex(), styles.defaultContainer, separator]}>
                 <TouchableOpacity style={styles.navButton} onPress={onCancel}>
                     {cancelImage ? image : text}
                 </TouchableOpacity>
+                <View style={[UIStyle.Common.flex(), styles.headerCentral]}>
+                    {centralComponent}
+                </View>
+                <View>
+                    {rightComponent}
+                </View>
             </View>
         );
     }
