@@ -27,8 +27,11 @@ import icoClear from '../../../assets/ico-clear/ico-clear.png';
 
 const styles = StyleSheet.create({
     searchInput: {
-        width: null,
         flex: 1,
+    },
+    textStyle: {
+        ...UIFont.smallRegular(),
+        width: '100%',
     },
     searchContainer: {
         flexDirection: 'row',
@@ -235,8 +238,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
                         value={value}
                         placeholder={placeholder}
                         returnKeyType="search"
+                        textStyle={styles.textStyle}
                         containerStyle={styles.searchInput}
-                        textStyle={UIFont.smallRegular()}
                         onFocus={this.onFocusHandler}
                         onBlur={this.onBlurHandler}
                         onChangeText={this.onChangeExpression}
