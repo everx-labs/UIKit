@@ -299,7 +299,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const textStyle = this.isReceived() ? styles.timeTextLeft : styles.timeTextRight;
         const msgTime = this.formatedTime();
         return (
-            <Text style={[UIFont.tinyRegular(), textStyle]}>
+            <Text
+                testID="chat_message_time"
+                style={[UIFont.tinyRegular(), textStyle]}
+            >
                 {msgTime}
             </Text>
         );
@@ -355,10 +358,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderInformationCell(text: string) {
         return (
             <View style={[styles.msgContainerInformation]}>
-                <Text style={[
-                    UIStyle.Color.getColorStyle(UIColor.white()),
-                    UIFont.menuRegular(),
-                ]}
+                <Text
+                    testID="chat_information"
+                    style={[
+                        UIStyle.Color.getColorStyle(UIColor.white()),
+                        UIFont.menuRegular(),
+                    ]}
                 >
                     [{this.formatedTime()}] {text}
                 </Text>
@@ -370,10 +375,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <View style={[styles.container, styles.emptyChatCell]}>
                 <View style={styles.msgContainerEmpty}>
-                    <Text style={[
-                        UIFont.bodyMedium(),
-                        UIStyle.Color.getColorStyle(UIColor.textPrimary()),
-                    ]}
+                    <Text
+                        testID="empty_chat_message"
+                        style={[
+                            UIFont.bodyMedium(),
+                            UIStyle.Color.getColorStyle(UIColor.textPrimary()),
+                        ]}
                     >
                         {UILocalized.SayHello}
                     </Text>
@@ -386,6 +393,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { additionalInfo, data } = this.props;
         return (
             <UIChatTransactionCell
+                testID="transaction_message"
                 message={data}
                 additionalInfo={additionalInfo}
                 onPress={this.onTransactionPress}
@@ -419,6 +427,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const urlStyle = this.getStatus() === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
         return (
             <ParsedText
+                testID="chat_text_message"
                 style={[this.getFontColor(), UIFont.smallRegular(), styles.textCell]}
                 parse={[{ type: 'url', style: urlStyle, onPress: this.onPressUrl }]}
                 key={`text${Math.trunc(Math.random() * 10000).toString()}`}
