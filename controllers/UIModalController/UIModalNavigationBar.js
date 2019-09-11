@@ -23,11 +23,6 @@ const styles = StyleSheet.create({
     },
     navButton: {
         flexDirection: 'row',
-        position: 'absolute',
-        left: 10,
-        height: 40,
-        minWidth: 40,
-        padding: 4,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -40,7 +35,6 @@ const styles = StyleSheet.create({
         borderBottomColor: UIColor.light(),
     },
     headerCentral: {
-        marginLeft: UIConstant.mediumContentOffset(),
         marginRight: UIConstant.contentOffset(),
     },
 });
