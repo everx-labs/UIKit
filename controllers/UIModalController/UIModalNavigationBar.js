@@ -67,7 +67,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
         onRelease: () => {},
     };
 
-    panResponder: PanResponderInstance;
+    panResponder: PanResponderInstance | {};
     constructor(props: Props) {
         super(props);
 
@@ -97,8 +97,10 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // Render
     renderContent() {
         const {
-            onCancel, bottomLine, swipeToDismiss, cancelImage, cancelText, leftComponent, centralComponent, rightComponent,
+            onCancel, bottomLine, swipeToDismiss,
+            cancelImage, cancelText, leftComponent, centralComponent, rightComponent,
         } = this.props;
+        const panHandlers = this.panResponder.panHandlers || {};
         if (swipeToDismiss) {
             return (
                 <View
@@ -113,7 +115,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                             UIStyle.Common.absoluteFillObject(),
                             UIStyle.Common.centerContainer(),
                         ]}
-                        {...this.panResponder.panHandlers}
+                        {...panHandlers}
                     >
                         <View
                             testID="swipe_to_dismiss"
@@ -163,7 +165,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // }
 
     render() {
-        const panHandler = this.props.swipeToDismiss ? {} : { ...this.panResponder.panHandlers };
+        const panHandlers = this.panResponder.panHandlers || {};
         return (
             <View
                 testID="NavigationBar container"
@@ -171,7 +173,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                     styles.navigationView,
                     { height: this.props.height },
                 ]}
-                {...panHandler}
+                {...panHandlers}
             >
                 {this.renderContent()}
             </View>
