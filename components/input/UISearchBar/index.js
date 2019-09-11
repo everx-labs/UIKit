@@ -222,13 +222,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
         const testIDProp = testID ? { testID } : null;
         const separator = bottomSeparator ? <View style={styles.bottomSeparator} /> : null;
         return (
-            <View>
-                <View
-                    style={[
-                        styles.searchContainer,
-                        containerStyle,
-                    ]}
-                >
+            <View style={containerStyle}>
+                <View style={styles.searchContainer}>
                     {this.renderGlass()}
                     <UITextInput
                         {...testIDProp}
