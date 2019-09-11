@@ -45,7 +45,7 @@ type OnLayoutEventArgs = {
 
 export type ModalControllerProps = ControllerProps;
 
-export type ModalControllerState = ControllerState & {
+type ModalControllerState = ControllerState & {
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
@@ -214,6 +214,10 @@ export default class UIModalController<Props, State>
         };
     }
 
+    getCancelImage() {
+        return null;
+    }
+
     // Override if needed!
     shouldSwipeToDismiss() {
         return Platform.OS !== 'web';
@@ -279,6 +283,10 @@ export default class UIModalController<Props, State>
             : this.bgAlpha;
     }
 
+    isHeaderLineVisible() {
+        return false;
+    }
+
     // Events
 
     // Actions
@@ -320,6 +328,10 @@ export default class UIModalController<Props, State>
         return null;
     }
 
+    renderCentralHeader() {
+        return null;
+    }
+
     renderRightHeader() {
         return null;
     }
@@ -336,10 +348,13 @@ export default class UIModalController<Props, State>
                 height={this.getNavigationBarHeight()}
                 swipeToDismiss={this.shouldSwipeToDismiss()}
                 leftComponent={this.renderLeftHeader()}
+                centralComponent={this.renderCentralHeader()}
                 rightComponent={this.renderRightHeader()}
+                bottomLine={this.isHeaderLineVisible()}
                 onMove={Animated.event([null, { dy: this.dy }])}
                 onRelease={this.onReleaseSwipe}
                 onCancel={this.onCancelPress}
+                cancelImage={this.getCancelImage()}
             />
         );
     }

@@ -5,6 +5,7 @@ import {
     View,
     StyleSheet,
     Image,
+    TouchableOpacity,
 } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -22,6 +23,8 @@ import UIComponent from '../../UIComponent';
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
 import icoGlass from '../../../assets/ico-glass/ico-glass.png';
+import icoClear from '../../../assets/ico-clear/ico-clear.png';
+
 const styles = StyleSheet.create({
     searchInput: {
         width: null,
@@ -188,14 +191,14 @@ export default class UISearchBar extends UIComponent<Props, State> {
     }
 
     renderCancelButton() {
-        if (!this.isFocused()) {
+        const { value } = this.props;
+        if (!this.isFocused() || !value?.length) {
             return null;
         }
         return (
-            <UITextButton
-                title={UILocalized.Cancel}
-                onPress={() => this.onCancel()}
-            />
+            <TouchableOpacity style={UIStyle.justifyCenter} onPress={() => this.onCancel()}>
+                <Image source={icoClear} />
+            </TouchableOpacity>
         );
     }
 
