@@ -45,7 +45,7 @@ type OnLayoutEventArgs = {
 
 export type ModalControllerProps = ControllerProps;
 
-type ModalControllerState = ControllerState & {
+export type ModalControllerState = ControllerState & {
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
