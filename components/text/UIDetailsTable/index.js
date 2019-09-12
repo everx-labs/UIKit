@@ -28,6 +28,8 @@ type Props = {
     detailsList: DetailsList,
     style?: ViewStyleProp,
     onPress?: (details: Details) => void,
+    leftCellStyle?: ViewStyleProp,
+    rightCellStyle?: ViewStyleProp,
 }
 
 type State = {};
@@ -152,7 +154,12 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const testIDCaption = caption || 'default';
             return (
                 <View style={styles.row} key={`details-table-row-${caption || ''}-${value || ''}`}>
-                    <View style={[styles.leftCell, UIStyle.Margin.rightDefault()]}>
+                    <View
+                        style={[
+                            this.props.leftCellStyle || styles.leftCell,
+                            UIStyle.Margin.rightDefault(),
+                        ]}
+                    >
                         <Text
                             numberOfLines={1}
                             style={UIStyle.Text.tertiarySmallRegular()}
@@ -162,7 +169,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     </View>
                     <View
                         testID={`table_cell_${testIDCaption}_value`}
-                        style={styles.rightCell}
+                        style={this.props.rightCellStyle || styles.rightCell}
                     >
                         {cell}
                     </View>
