@@ -23,50 +23,50 @@ const styles = {
 storiesOf(Constants.CategoryLayout, module)
     .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
     .add('Grid', () => (
-        <View style={styles.container}>
+        <View >style={styles.container}>
             <UIGrid
                 type={UIGrid.Type.C6}
                 style={styles.grid}
             >
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={3}>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={3}>
                     <UIButton title="3 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={3}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={3}>
                     <UIButton title="3 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
+                </UIGridColumn>
             </UIGrid>
 
             <UIGrid
                 type={UIGrid.Type.C8}
                 style={styles.grid}
             >
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={1}>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={2}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={2}>
                     <UIButton title="2 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={4}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={4}>
                     <UIButton title="4 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={3}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={3}>
                     <UIButton title="3 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
+                </UIGridColumn>
             </UIGrid>
 
             <UIGrid
@@ -75,51 +75,51 @@ storiesOf(Constants.CategoryLayout, module)
                 gutter={4}
                 rowGutter={8}
             >
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={4}>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={4}>
                     <UIButton title="4 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={4}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={4}>
                     <UIButton title="4 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={4}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={4}>
                     <UIButton title="4 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
-                <View style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                </UIGridColumn>
+                <UIGridColumn >style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
-                </View>
+                </UIGridColumn>
             </UIGrid>
         </View>
     ));
