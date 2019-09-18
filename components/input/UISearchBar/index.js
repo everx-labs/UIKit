@@ -5,6 +5,7 @@ import {
     View,
     StyleSheet,
     Image,
+    TouchableOpacity,
 } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -22,10 +23,15 @@ import UIComponent from '../../UIComponent';
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
 import icoGlass from '../../../assets/ico-glass/ico-glass.png';
+import icoClear from '../../../assets/ico-clear/ico-clear.png';
+
 const styles = StyleSheet.create({
     searchInput: {
-        width: null,
         flex: 1,
+    },
+    textStyle: {
+        ...UIFont.smallRegular(),
+        width: '100%',
     },
     searchContainer: {
         flexDirection: 'row',
@@ -188,14 +194,14 @@ export default class UISearchBar extends UIComponent<Props, State> {
     }
 
     renderCancelButton() {
-        if (!this.isFocused()) {
+        const { value } = this.props;
+        if (!this.isFocused() || !value?.length) {
             return null;
         }
         return (
-            <UITextButton
-                title={UILocalized.Cancel}
-                onPress={() => this.onCancel()}
-            />
+            <TouchableOpacity style={UIStyle.justifyCenter} onPress={() => this.onCancel()}>
+                <Image source={icoClear} />
+            </TouchableOpacity>
         );
     }
 
@@ -216,13 +222,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
         const testIDProp = testID ? { testID } : null;
         const separator = bottomSeparator ? <View style={styles.bottomSeparator} /> : null;
         return (
-            <View>
-                <View
-                    style={[
-                        styles.searchContainer,
-                        containerStyle,
-                    ]}
-                >
+            <View style={containerStyle}>
+                <View style={styles.searchContainer}>
                     {this.renderGlass()}
                     <UITextInput
                         {...testIDProp}
@@ -232,8 +233,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
                         value={value}
                         placeholder={placeholder}
                         returnKeyType="search"
+                        textStyle={styles.textStyle}
                         containerStyle={styles.searchInput}
-                        textStyle={UIFont.smallRegular()}
                         onFocus={this.onFocusHandler}
                         onBlur={this.onBlurHandler}
                         onChangeText={this.onChangeExpression}

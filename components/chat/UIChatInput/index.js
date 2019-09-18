@@ -158,7 +158,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         if (val.length > 0) {
             return (
                 <View style={styles.btnSend}>
-                    <TouchableHighlight onPress={() => this.onSendText(val)}>
+                    <TouchableHighlight
+                        testID="send_btn"
+                        onPress={() => this.onSendText(val)}
+                    >
                         <Image source={btnSend} />
                     </TouchableHighlight>
                 </View>
@@ -189,6 +192,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         return (
             <View style={styles.btnMenuContainer}>
                 <UIMenuView
+                    testID="menu_view"
                     menuItemsList={items}
                     placement="top"
                 >

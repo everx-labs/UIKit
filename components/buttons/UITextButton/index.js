@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 
 type Props = ActionProps & {
     align: StylePropType,
+    containerStyle?: StylePropType,
     buttonStyle?: StylePropType,
     details: string,
     detailsStyle?: StylePropType,
@@ -169,12 +170,12 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     renderContent(): React$Node {
         const {
-            buttonStyle, align, icon, backIcon, multiLine,
+            buttonStyle, align, icon, backIcon, containerStyle, multiLine,
         } = this.props;
-        const containerStyle = multiLine
+        const contStyle = multiLine
             ? []
             : [UIStyle.Common.centerLeftContainer(), UIStyle.Height.buttonHeight()];
-        const style = [styles.textButton, ...containerStyle, align];
+        const style = [styles.textButton, ...contStyle, align, containerStyle];
         if (buttonStyle instanceof Array) {
             style.push(...buttonStyle);
         } else {
