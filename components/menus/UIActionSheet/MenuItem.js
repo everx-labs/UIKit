@@ -1,32 +1,52 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-import UITextStyle from '../../../helpers/UITextStyle';
+import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
 
 const styles = StyleSheet.create({
     menuItem: {
         height: UIConstant.actionSheetItemHeight(),
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 });
 
-const MenuItem = (props) => {
-    const { title, textStyle, onPress } = props;
+type Props = {
+    title: string,
+    textStyle?: ViewStyleProp,
+    onPress?: () => void,
+};
+
+const MenuItem = (props): Props => {
+    const {
+        title, details, textStyle, detailsStyle, onPress,
+    } = props;
+    const contentStyle = details
+        ? UIStyle.Common.justifySpaceBetween()
+        : UIStyle.Common.justifyCenter();
     return (
         <TouchableOpacity
-            style={styles.menuItem}
+            style={[
+                UIStyle.Common.centerLeftContainer(),
+                contentStyle,
+                styles.menuItem,
+            ]}
             onPress={onPress}
         >
             <Text style={[
-                UITextStyle.primarySmallMedium,
+                UIStyle.Text.primarySmallMedium(),
                 textStyle,
             ]}
             >
                 {title}
+            </Text>
+            <Text style={[
+                UIStyle.Text.tertiarySmallRegular(),
+                detailsStyle,
+            ]}
+            >
+                {details}
             </Text>
         </TouchableOpacity>
     );
@@ -35,13 +55,6 @@ const MenuItem = (props) => {
 export default MenuItem;
 
 MenuItem.defaultProps = {
-    title: null,
-    textStyle: null,
+    title: '',
     onPress: () => {},
-};
-
-MenuItem.propTypes = {
-    title: PropTypes.string,
-    textStyle: StylePropType,
-    onPress: PropTypes.func,
 };

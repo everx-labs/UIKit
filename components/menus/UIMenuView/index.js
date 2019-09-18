@@ -27,7 +27,7 @@ export type MenuItemType = {
     title: string,
     titleStyle: TextStyleProp,
     disabled?: boolean,
-    onPress: () => void
+    onPress: () => void,
 };
 
 type Props = {

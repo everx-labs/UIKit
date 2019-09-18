@@ -132,7 +132,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 {...item}
                 onPress={() => {
                     if (this.customSheet) {
-                        this.customSheet.hide(() => item.onPress());
+                        this.customSheet.hide(item.onPress);
                     }
                 }}
                 textStyle={[UIStyle.Color.getColorStyle(UIColor.primary()), item.titleStyle]}
