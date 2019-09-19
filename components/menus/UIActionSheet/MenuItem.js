@@ -12,10 +12,10 @@ export type MenuItemType = {
     detailsStyle?: TextStyleProp,
     disabled?: boolean,
     chosen?: boolean,
-    onPress: () => void,
+    onPress?: () => void,
 };
 
-const MenuItem = (props): MenuItemType => {
+const MenuItem = (props: MenuItemType) => {
     const {
         title, details, titleStyle, detailsStyle, chosen, onPress,
     } = props;
@@ -25,17 +25,13 @@ const MenuItem = (props): MenuItemType => {
     const marginRight = details ? UIStyle.Margin.rightDefault() : null;
     const defaultTitleStyle = chosen ? UIStyle.Text.primary() : UIStyle.Text.action();
     const defaultDetailsStyle = chosen ? UIStyle.Text.primary() : UIStyle.Text.tertiary();
-    const Wrapper = chosen ? View : TouchableOpacity;
-    const onPressProp = chosen ? {} : { onPress };
-    return (
-        <Wrapper
-            style={[
-                UIStyle.Common.centerLeftContainer(),
-                UIStyle.Height.buttonHeight(),
-                contentStyle,
-            ]}
-            {...onPressProp}
-        >
+    const containerStyle = [
+        UIStyle.Common.centerLeftContainer(),
+        UIStyle.Height.buttonHeight(),
+        contentStyle,
+    ];
+    const content = (
+        <React.Fragment>
             <Text
                 numberOfLines={1}
                 style={[
@@ -57,15 +53,32 @@ const MenuItem = (props): MenuItemType => {
             >
                 {details}
             </Text>
-        </Wrapper>
+        </React.Fragment>
+    );
+    if (chosen) {
+        return (
+            <View style={containerStyle}>
+                {content}
+            </View>
+        );
+    }
+    return (
+        <TouchableOpacity
+            style={containerStyle}
+            onPress={onPress}
+        >
+            {content}
+        </TouchableOpacity>
     );
 };
 
 export default MenuItem;
 
 MenuItem.defaultProps = {
-    title: '',
     chosen: false,
     disabled: false,
+    titleStyle: null,
+    details: '',
+    detailsStyle: null,
     onPress: () => {},
 };

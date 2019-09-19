@@ -13,7 +13,8 @@ import UIActionSheet from '../../menus/UIActionSheet';
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
 
-import MenuItem, { MenuItemType } from '../UIActionSheet/MenuItem';
+import MenuItem from '../UIActionSheet/MenuItem';
+import type { MenuItemType } from '../UIActionSheet/MenuItem';
 import type { ClassNameProp } from '../../../types';
 
 let masterRef = null;
@@ -163,7 +164,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                         {...item}
                         key={`${Math.random()}~MenuItem~${item.title}`}
                         onPress={() => {
-                            item.onPress();
+                            if (item.onPress) item.onPress();
                             this.hideMenu();
                         }}
                     />

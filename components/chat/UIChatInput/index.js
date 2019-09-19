@@ -4,7 +4,6 @@ import React from 'react';
 import { Platform, Image, View, StyleSheet, TouchableHighlight } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UIColor from '../../../helpers/UIColor';
 import UITextButton from '../../buttons/UITextButton';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
@@ -15,7 +14,7 @@ import UIDetailsInput from '../../input/UIDetailsInput';
 
 import type { DetailsProps } from '../../input/UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
-import type { MenuItemType } from '../../menus/UIMenuView';
+import type { MenuItemType } from '../../menus/UIActionSheet/MenuItem';
 
 import btnPlus from '../../../assets/btn_plus/btn_plus.png';
 import btnDots from '../../../assets/btn_dots/btn_dots.png';
