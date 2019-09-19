@@ -94,7 +94,6 @@ const UI_PASSWORD_PROMPT_WIDTH = 416;
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
 
-const UI_ACTIONSHEET_ITEM_HEIGHT = 48;
 const UI_MENU_WIDTH = 176; // menu for web
 
 const UI_TOOLTIP_MAX_WIDTH = 288;
@@ -457,11 +456,6 @@ export default class UIConstant {
 
     static toastWidth() {
         return UI_TOAST_WIDTH;
-    }
-
-    // Action sheet
-    static actionSheetItemHeight() {
-        return UI_ACTIONSHEET_ITEM_HEIGHT;
     }
 
     // Menu for web

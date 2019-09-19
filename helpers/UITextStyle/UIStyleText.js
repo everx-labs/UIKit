@@ -26,6 +26,10 @@ export default class UIStyleText {
         return UITextStyle.tertiary;
     }
 
+    static action() {
+        return UITextStyle.action;
+    }
+
     // [Text]
     // Title - fontSize: 36, lineHeight: 48
     static titleLight() {

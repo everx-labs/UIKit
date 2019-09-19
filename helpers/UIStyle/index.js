@@ -419,6 +419,9 @@ const UIStyle = StyleSheet.create({
     cellBorderBottom: {
         ...cellBorderBottom,
     },
+    borderRadiusDefault: {
+        borderRadius: UIConstant.borderRadius(),
+    },
 
     // colors
     backgroundPrimaryColor: {

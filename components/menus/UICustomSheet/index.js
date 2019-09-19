@@ -6,7 +6,6 @@ import {
     Modal,
     Platform,
     LayoutAnimation,
-    SafeAreaView,
     StyleSheet,
     TouchableWithoutFeedback,
     View,
