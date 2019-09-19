@@ -429,7 +429,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             <ParsedText
                 testID="chat_text_message"
                 style={[this.getFontColor(), UIFont.smallRegular(), styles.textCell]}
-                parse={[{ type: 'url', style: urlStyle, onPress: this.onPressUrl }]}
+                parse={[{ type: 'url', style: urlStyle, onPress: (url, index) => this.onPressUrl(url, index) }]}
                 key={`text${Math.trunc(Math.random() * 10000).toString()}`}
             >
                 {text}
