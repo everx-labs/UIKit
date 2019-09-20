@@ -21,4 +21,9 @@ export default class UIStyleBorder {
     static top() {
         return UIStyle.borderTop;
     }
+
+    // radius
+    static radiusDefault() {
+        return UIStyle.borderRadiusDefault;
+    }
 }

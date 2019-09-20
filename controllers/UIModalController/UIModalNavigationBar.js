@@ -97,7 +97,8 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // Render
     renderContent() {
         const {
-            onCancel, bottomLine, swipeToDismiss, cancelImage, cancelText, leftComponent, centralComponent, rightComponent,
+            onCancel, bottomLine, swipeToDismiss, cancelImage,
+            cancelText, leftComponent, centralComponent, rightComponent,
         } = this.props;
         if (swipeToDismiss) {
             return (
