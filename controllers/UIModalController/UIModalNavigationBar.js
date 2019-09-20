@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, PanResponder } from 'react-native';
 import type { PressEvent } from 'react-native/Libraries/Types/CoreEventTypes';
 import type { GestureState, PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
@@ -40,15 +41,16 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    rightComponent: ?React$Node,
-    leftComponent: ?React$Node,
-    centralComponent: ?React$Node,
-    bottomLine: ?boolean,
+    rightComponent?: React$Node,
+    leftComponent?: React$Node,
+    centralComponent?: React$Node,
+    bottomLine?: boolean,
     height: number,
     title: string,
     cancelImage: ?string,
     cancelText: string,
     swipeToDismiss: boolean,
+    dismissStripeStyle: ViewStyleProp,
     onCancel: ?() => void,
     onMove: (event: PressEvent, gestureState: GestureState) => mixed;
     onRelease: (number) => void,
@@ -59,9 +61,11 @@ type State = {};
 export default class UIModalNavigationBar extends UIComponent<Props, State> {
     static defaultProps = {
         title: '',
+        bottomLine: false,
         cancelImage: null,
         cancelText: UILocalized.Cancel,
         swipeToDismiss: false,
+        dismissStripeStyle: null,
         onCancel: null,
         onMove: () => {},
         onRelease: () => {},
@@ -97,7 +101,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // Render
     renderContent() {
         const {
-            onCancel, bottomLine, swipeToDismiss, cancelImage,
+            onCancel, bottomLine, swipeToDismiss, dismissStripeStyle, cancelImage,
             cancelText, leftComponent, centralComponent, rightComponent,
         } = this.props;
         if (swipeToDismiss) {
@@ -118,7 +122,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                     >
                         <View
                             testID="swipe_to_dismiss"
-                            style={UIStyle.Common.dismissStripe()}
+                            style={[UIStyle.Common.dismissStripe(), dismissStripeStyle]}
                         />
                     </View>
                     {leftComponent}
