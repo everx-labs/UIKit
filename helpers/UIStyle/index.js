@@ -118,6 +118,9 @@ const UIStyle = StyleSheet.create({
     textAlignRight: {
         textAlign: 'right',
     },
+    justifyStart: {
+        justifyContent: 'flex-start',
+    },
     justifyCenter: {
         justifyContent: 'center',
     },

@@ -20,14 +20,8 @@ const styles = StyleSheet.create({
         marginHorizontal: UIConstant.contentOffset(),
         marginBottom: -UIConstant.smallContentOffset(),
     },
-    textButton: {
-        backgroundColor: 'transparent',
-    },
     alignLeft: {
         justifyContent: 'flex-start',
-    },
-    detailsText: {
-        marginRight: UIConstant.contentOffset(),
     },
     flexGrow1: {
         flexGrow: 1,
@@ -70,6 +64,14 @@ class UITextButton extends UIActionComponent<Props, State> {
         Center: UIStyle.Common.justifyCenter(),
     };
 
+    static pushStyle(styleArray, newStyle) {
+        if (newStyle instanceof Array) {
+            styleArray.push(...newStyle);
+        } else {
+            styleArray.push(newStyle);
+        }
+    }
+
     // Virtual
     onEnter = () => {
         const webStyle = (
@@ -96,6 +98,14 @@ class UITextButton extends UIActionComponent<Props, State> {
             return this.props.textHoverStyle;
         }
         return null;
+    }
+
+    getCommonStyle() {
+        const result = [];
+        UITextButton.pushStyle(result, this.props.containerStyle);
+        UITextButton.pushStyle(result, this.props.buttonStyle);
+        UITextButton.pushStyle(result, this.props.style);
+        return result;
     }
 
     // Render
@@ -197,24 +207,15 @@ class UITextButton extends UIActionComponent<Props, State> {
 
     renderContent(): React$Node {
         const {
-            buttonStyle, align, icon, backIcon, containerStyle, multiLine,
+            align, icon, backIcon, multiLine,
         } = this.props;
         const contStyle = multiLine
             ? []
             : [UIStyle.Common.centerLeftContainer(), UIStyle.Height.buttonHeight()];
-        const style = [styles.textButton, ...contStyle, align, containerStyle];
-        if (buttonStyle instanceof Array) {
-            style.push(...buttonStyle);
-        } else {
-            style.push(buttonStyle);
-        }
-        if (this.props.style instanceof Array) {
-            style.push(...this.props.style);
-        } else {
-            style.push(this.props.style);
-        }
+        const style = [UIStyle.Common.backgroundTransparent(), ...contStyle, align];
+        const commonStyle = this.getCommonStyle();
         return (
-            <View style={UIStyle.Common.flexColumn()}>
+            <View style={[UIStyle.Common.flexColumn(), commonStyle]}>
                 {this.renderFloatingTitle()}
                 <View style={style}>
                     {this.renderIcon(icon, false)}

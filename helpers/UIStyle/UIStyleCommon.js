@@ -49,6 +49,10 @@ export default class UIStyleCommon {
         return UIStyle.textAlignRight;
     }
 
+    static justifyStart() {
+        return UIStyle.justifyStart;
+    }
+
     static justifyCenter() {
         return UIStyle.justifyCenter;
     }
@@ -77,30 +81,6 @@ export default class UIStyleCommon {
         return UIStyle.flexJustifyEnd;
     }
 
-    static centerContainer() {
-        return UIStyle.centerContainer;
-    }
-
-    static centerLeftContainer() {
-        return UIStyle.centerLeftContainer;
-    }
-
-    static centerRightContainer() {
-        return UIStyle.centerRightContainer;
-    }
-
-    static rowSpaceContainer() {
-        return UIStyle.rowSpaceContainer;
-    }
-
-    static rowCenterSpaceContainer() {
-        return UIStyle.rowCenterSpaceContainer;
-    }
-
-    static overflowHidden() {
-        return UIStyle.overflowHidden;
-    }
-
     // shadow
     static commonShadow() {
         return UIStyle.commonShadow;
@@ -114,18 +94,6 @@ export default class UIStyleCommon {
         return UIStyle.cardShadow;
     }
 
-    static positionAbsolute() {
-        return UIStyle.positionAbsolute;
-    }
-
-    static absoluteFillObject() {
-        return UIStyle.absoluteFillObject;
-    }
-
-    static absoluteFillWidthContainer() {
-        return UIStyle.absoluteFillWidthContainer;
-    }
-
     // colors
     static backgroundPrimaryColor() {
         return UIStyle.backgroundPrimaryColor;
@@ -137,6 +105,14 @@ export default class UIStyleCommon {
 
     static backgroundTransparent() {
         return UIStyle.backgroundTransparent;
+    }
+
+    static noOpacity() {
+        return UIStyle.noOpacity;
+    }
+
+    static fullOpacity() {
+        return UIStyle.fullOpacity;
     }
 
     // Containers
@@ -180,19 +156,48 @@ export default class UIStyleCommon {
         return UIStyle.rightScreenContainer;
     }
 
+    static centerContainer() {
+        return UIStyle.centerContainer;
+    }
+
+    static centerLeftContainer() {
+        return UIStyle.centerLeftContainer;
+    }
+
+    static centerRightContainer() {
+        return UIStyle.centerRightContainer;
+    }
+
+    static rowSpaceContainer() {
+        return UIStyle.rowSpaceContainer;
+    }
+
+    static rowCenterSpaceContainer() {
+        return UIStyle.rowCenterSpaceContainer;
+    }
+
+    // other
+    static overflowHidden() {
+        return UIStyle.overflowHidden;
+    }
+
+    static positionAbsolute() {
+        return UIStyle.positionAbsolute;
+    }
+
+    static absoluteFillObject() {
+        return UIStyle.absoluteFillObject;
+    }
+
+    static absoluteFillWidthContainer() {
+        return UIStyle.absoluteFillWidthContainer;
+    }
+
+    // custom
     static icon() {
         return UIStyle.icon;
     }
 
-    static noOpacity() {
-        return UIStyle.noOpacity;
-    }
-
-    static fullOpacity() {
-        return UIStyle.fullOpacity;
-    }
-
-    // custom
     static dismissStripe() {
         return UIStyle.dismissStripe;
     }
