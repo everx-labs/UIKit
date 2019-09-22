@@ -1,15 +1,15 @@
 import UIStyle from '../UIStyle';
 
 export default class UIStyleFlex {
-    static flex() {
+    static x1() {
         return UIStyle.flex;
     }
 
-    static flex2() {
+    static x2() {
         return UIStyle.flex2;
     }
 
-    static flex3() {
+    static x3() {
         return UIStyle.flex3;
     }
 
@@ -81,23 +81,23 @@ export default class UIStyleFlex {
         return UIStyle.flexJustifyEnd;
     }
 
-    static centerContainer() {
+    static center() {
         return UIStyle.centerContainer;
     }
 
-    static centerLeftContainer() {
+    static centerLeft() {
         return UIStyle.centerLeftContainer;
     }
 
-    static centerRightContainer() {
+    static centerRight() {
         return UIStyle.centerRightContainer;
     }
 
-    static rowSpaceContainer() {
+    static rowSpace() {
         return UIStyle.rowSpaceContainer;
     }
 
-    static rowCenterSpaceContainer() {
+    static rowCenterSpace() {
         return UIStyle.rowCenterSpaceContainer;
     }
 }

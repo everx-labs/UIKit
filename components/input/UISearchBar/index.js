@@ -217,7 +217,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     render() {
         const {
-            value, placeholder, onChangeExpression, testID, containerStyle, bottomSeparator,
+            value, placeholder, testID, containerStyle, bottomSeparator,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
         const separator = bottomSeparator ? <View style={styles.bottomSeparator} /> : null;
