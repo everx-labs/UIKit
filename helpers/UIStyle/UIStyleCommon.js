@@ -1,6 +1,7 @@
 import UIStyle from './index';
 
 export default class UIStyleCommon {
+    // deprecated, use UIStyle.Flex
     static flex() {
         return UIStyle.flex;
     }
@@ -81,6 +82,7 @@ export default class UIStyleCommon {
         return UIStyle.flexJustifyEnd;
     }
 
+    // actual
     // shadow
     static commonShadow() {
         return UIStyle.commonShadow;
