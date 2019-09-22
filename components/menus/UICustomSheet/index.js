@@ -11,20 +11,19 @@ import {
     View,
 } from 'react-native';
 
+import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIController from '../../../controllers/UIController';
+import UIModalNavigationBar from '../../../controllers/UIModalController/UIModalNavigationBar';
 
 import type { ContentInset, AnimationParameters } from '../../../controllers/UIController';
 
+
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: UIColor.overlay60(),
-        justifyContent: 'flex-end',
-    },
     downMenu: {
         position: 'absolute',
         backgroundColor: 'white',
@@ -37,12 +36,17 @@ const styles = StyleSheet.create({
         right: UIConstant.contentOffset(),
     },
     slimContainer: {
-        paddingVertical: UIConstant.contentOffset(),
+        paddingBottom: UIConstant.contentOffset(),
         width: '100%',
         maxWidth: UIConstant.elasticWidthHalfNormal(),
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',
+    },
+    smallDismissStripe: {
+        width: UIConstant.iconSize(),
+        height: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius(),
     },
 });
 
@@ -51,10 +55,10 @@ const maxScreenHeight = UIConstant.maxScreenHeight();
 let masterRef = null;
 
 export type Props = any & {
-    modal?: boolean,
     component: ?React$Node,
     fullWidth?: boolean,
     masterSheet?: boolean,
+    modal?: boolean,
     onShow?: () => void,
     onCancel?: () => void,
 };
@@ -65,6 +69,15 @@ export type State = {
 };
 
 export default class UICustomSheet extends UIController<Props, State> {
+    static defaultProps: Props = {
+        component: null,
+        fullWidth: false,
+        masterSheet: true,
+        modal: true,
+        onShow: () => {},
+        onCancel: () => {},
+    };
+
     static show(args: any) {
         if (masterRef) {
             if (!args.component) {
@@ -87,6 +100,7 @@ export default class UICustomSheet extends UIController<Props, State> {
     onShow: ?() => void;
     onCancel: ?() => void;
     modal: ?boolean;
+    dy: Animated.Value;
 
     // constructor
     constructor(props: Props) {
@@ -97,6 +111,7 @@ export default class UICustomSheet extends UIController<Props, State> {
         this.onShow = () => {};
         this.onCancel = () => {};
         this.modal = true;
+        this.dy = new Animated.Value(0);
 
         this.state = {
             modalVisible: false,
@@ -130,6 +145,19 @@ export default class UICustomSheet extends UIController<Props, State> {
                 }
             });
         }
+    };
+
+    // same in UIModalController
+    onReleaseSwipe = (dy: number) => {
+        if (dy > UIConstant.swipeThreshold()) {
+            this.onHide();
+        } else {
+            this.returnToTop();
+        }
+    };
+
+    onHide = () => {
+        this.hide(this.onCancel);
     };
 
     // Setters
@@ -170,6 +198,20 @@ export default class UICustomSheet extends UIController<Props, State> {
         return this.state.height;
     }
 
+    getPosition() {
+        return Animated.add(this.marginBottom, Animated.multiply(-1, this.dy));
+    }
+
+    getInterpolatedColor(): ColorValue {
+        const height = this.getHeight();
+        const position = this.getPosition();
+        return (position: any).interpolate({
+            inputRange: [-height, 0],
+            outputRange: [UIColor.overlay0(), UIColor.overlay60()],
+        });
+    }
+
+    // Actions
     // Back button
     backHandler: any;
     startListeningToBackButton() {
@@ -188,7 +230,6 @@ export default class UICustomSheet extends UIController<Props, State> {
         }
     }
 
-    // Actions
     show({
         component,
         fullWidth = false,
@@ -232,10 +273,21 @@ export default class UICustomSheet extends UIController<Props, State> {
         }).start(callback);
     }
 
+    // same in UIModalController
+    returnToTop() {
+        Animated.spring(this.dy, {
+            toValue: 0,
+            velocity: 0,
+            tension: 65,
+            friction: 10,
+        }).start();
+    }
+
     hide(callback: ?() => void = () => {}) {
         this.slideToBottom(() => {
             this.setModalVisible(false, () => {
                 this.marginBottom.setValue(-maxScreenHeight);
+                this.dy.setValue(0);
                 this.setHeight(0);
                 setTimeout(() => {
                     if (callback) {
@@ -249,6 +301,7 @@ export default class UICustomSheet extends UIController<Props, State> {
     // Render
     renderSheet() {
         const containerStyle = this.fullWidth ? styles.fullScreenContainer : styles.slimContainer;
+        const bottom = this.getPosition();
         return (
             <View
                 pointerEvents="box-none"
@@ -259,10 +312,18 @@ export default class UICustomSheet extends UIController<Props, State> {
                         UIStyle.bottomScreenContainer,
                         styles.downMenu,
                         containerStyle,
-                        { bottom: this.marginBottom },
+                        { bottom },
                     ]}
                     onLayout={this.onLayout}
                 >
+                    <UIModalNavigationBar
+                        swipeToDismiss
+                        dismissStripeStyle={styles.smallDismissStripe}
+                        height={UIConstant.smallCellHeight()}
+                        onMove={Animated.event([null, { dy: this.dy }])}
+                        onRelease={this.onReleaseSwipe}
+                        onCancel={this.onHide}
+                    />
                     {this.component}
                 </Animated.View>
             </View>
@@ -271,13 +332,16 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     renderContainer() {
         const paddingBottom = { paddingBottom: this.getSafeAreaInsets().bottom };
+        const backgroundColor = this.getInterpolatedColor();
         return (
             <View
                 testID="background_layer"
                 style={[UIStyle.absoluteFillObject, paddingBottom]}
             >
-                <TouchableWithoutFeedback onPress={() => this.hide(this.onCancel)}>
-                    <View style={[UIStyle.absoluteFillObject, styles.container]} />
+                <TouchableWithoutFeedback onPress={this.onHide}>
+                    <Animated.View
+                        style={[UIStyle.absoluteFillObject, { backgroundColor }]}
+                    />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}
             </View>
@@ -301,15 +365,4 @@ export default class UICustomSheet extends UIController<Props, State> {
             </Modal>
         );
     }
-
-    static defaultProps: Props;
 }
-
-UICustomSheet.defaultProps = {
-    component: null,
-    masterSheet: true,
-    fullWidth: false,
-    onShow: () => {},
-    onCancel: () => {},
-    modal: true,
-};
