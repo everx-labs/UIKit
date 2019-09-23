@@ -13,7 +13,7 @@ type Props = {
   /** container style
   @default null
   */
-  containerStyle?: StylePropType,
+  style?: StylePropType,
   /** Text along with the toggle
   @default ''
   */
@@ -139,7 +139,7 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
             style={[
                 UIStyle.Common.flexRow(),
                 UIStyle.Common.alignCenter(),
-                this.props.containerStyle,
+                this.props.style,
             ]}
             pointerEvents="box-only"
         >
@@ -155,14 +155,14 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
         );
     }
 
-    // static defaultProps: Props;
+    static defaultProps: Props;
 }
 
-/* UIDetailsSwitcher.defaultProps = {
+UIDetailsSwitcher.defaultProps = {
     switcherPosition: UIDetailsSwitcher.Position.Right,
     disabled: false,
     type: UIDetailsSwitcher.Type.Square,
-    containerStyle: {},
+    style: null,
     details: '',
     comments: '',
     active: false,
@@ -170,4 +170,4 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
     testID: null,
     iconActive: null,
     iconInactive: null,
-}; */
+};

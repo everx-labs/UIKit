@@ -24,8 +24,8 @@ class UIRadioButtonItem extends UIComponent {
             <TouchableWithoutFeedback onPress={() => this.props.onPress()}>
                 <View style={[styles.radiobuttonItem, centerLeftContainer]}>
                     <Image
-                        source={icoRadiobuttonActive}
-                        style={marginRightDefault}
+                        source={this.props.iconActive || icoRadiobuttonActive}
+                        style={this.props.radioStyle || marginRightDefault}
                     />
                     <Text style={UITextStyle.primaryBodyRegular}>
                         {this.props.title}
@@ -41,8 +41,8 @@ class UIRadioButtonItem extends UIComponent {
             <TouchableWithoutFeedback onPress={() => this.props.onPress()}>
                 <View style={[styles.radiobuttonItem, centerLeftContainer]}>
                     <Image
-                        source={icoRadiobuttonInactive}
-                        style={marginRightDefault}
+                        source={this.props.iconInactive || icoRadiobuttonInactive}
+                        style={this.props.radioStyle || marginRightDefault}
                     />
                     <Text style={UITextStyle.primaryBodyRegular}>
                         {this.props.title}
@@ -63,10 +63,16 @@ UIRadioButtonItem.defaultProps = {
     selected: false,
     title: '',
     onPress: () => {},
+    iconInactive: null,
+    iconActive: null,
+    radioStyle: null,
 };
 
 UIRadioButtonItem.propTypes = {
     selected: PropTypes.bool,
     title: PropTypes.string,
     onPress: PropTypes.func,
+    iconInactive: PropTypes.string,
+    iconActive: PropTypes.string,
+    radioStyle: PropTypes.any,
 };

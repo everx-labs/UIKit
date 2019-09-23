@@ -11,12 +11,16 @@ import { getUri } from '../helpers/getUri';
 import Constants from '../helpers/constants';
 
 import {
+    UIGrid,
+    UILink,
+    UIActionIcon,
     UIButton,
     UIButtonGroup,
     UIStyle,
     UICustomSheet,
     UIDetailsToggle,
     UIDetailsCheckbox,
+    UIDetailsRadio,
 } from '../../../UIKit';
 
 class Hidden extends React.Component {
@@ -25,19 +29,59 @@ class Hidden extends React.Component {
     }
 }
 
+const TableComponent = ({ propDefinitions }) => {
+    let props = propDefinitions.filter(({
+        property, propType, required, description,
+    }) => {
+        return (description && description.indexOf('@ignore') === -1);
+    });
+    props = props.map(({
+        property, propType, required, description, defaultValue,
+    }) => {
+        const prop = {};
+        prop.name = property;
+
+        let lines = description.split('\n');
+        const defaultValueLine = lines.find(line => line.indexOf('@default') >= 0);
+        lines = lines.filter(line => line.indexOf('@default') === -1);
+
+        prop.description = lines.join('\n');
+        prop.flowType = propType;
+        prop.defaultValue = { value: defaultValue };
+
+        if (!prop.defaultValue.value && defaultValueLine) {
+            const words = defaultValueLine.split(' ');
+            const defaultIdx = words.indexOf('@default');
+            if (defaultIdx >= 0) {
+                prop.defaultValue.value = words[defaultIdx + 1] || '';
+            }
+        }
+        return prop;
+    });
+
+    return (
+        <PropsSection props={props} />
+    );
+};
+
 if (Platform.OS === 'web') {
     storiesOf(Constants.CategoryProperties, module)
         .addDecorator(withInfo)
         .addDecorator(getStory => <Hidden>{getStory()}</Hidden>)
         .addParameters({
             info: {
+                TableComponent,
                 propTablesExclude: [CenterView, View, React.Fragment, withInfo],
                 source: false,
                 inline: true,
             },
         })
         .add('Button', () => <UIButton />, { info: { propTables: [UIButton] } })
+        .add('ButtonIcon', () => <UIActionIcon />, { info: { propTables: [UIActionIcon] } })
         .add('ButtonGroup', () => <UIButtonGroup />, { info: { propTables: [UIButtonGroup] } })
         .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } })
-        .add('Checkbox', () => <UIDetailsCheckbox />, { info: { propTables: [UIDetailsCheckbox] } });
+        .add('Radio', () => <UIDetailsRadio />, { info: { propTables: [UIDetailsRadio] } })
+        .add('Checkbox', () => <UIDetailsCheckbox />, { info: { propTables: [UIDetailsCheckbox] } })
+        .add('Grid', () => <UIGrid />, { info: { propTables: [UIGrid] } })
+        .add('Link', () => <UILink />, { info: { propTables: [UILink] } });
 }

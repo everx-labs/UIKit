@@ -18,30 +18,29 @@ const styles = {
         UIStyle.Color.getBackgroundColorStyle(UIColor.whiteLight()),
         UIStyle.Margin.topDefault(),
     ],
-    container: { height: 500 },
 };
 
 storiesOf(Constants.CategoryLayout, module)
     .addDecorator(getStory => <FullWidthView>{getStory()}</FullWidthView>)
     .add('Grid', () => (
-        <View >style={styles.container}>
+        <View>
             <UIGrid
                 type={UIGrid.Type.C6}
                 style={styles.grid}
             >
-                <UIGridColumn style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={3}>
+                <UIGridColumn medium={3}>
                     <UIButton title="3 cells" buttonStyle={UIButton.ButtonStyle.Border} />
                 </UIGridColumn>
-                <UIGridColumn style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                <UIGridColumn medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
                 </UIGridColumn>
-                <UIGridColumn style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                <UIGridColumn medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
                 </UIGridColumn>
-                <UIGridColumn style={UIStyle.Color.getBackgroundColorStyle(UIColor.success())} medium={1}>
+                <UIGridColumn medium={1}>
                     <UIButton title="1 cells" buttonStyle={UIButton.ButtonStyle.Border} />
                 </UIGridColumn>
-                <UIGridColumn style={UIStyle.Color.getBackgroundColorStyle(UIColor.warning())} medium={3}>
+                <UIGridColumn medium={3}>
                     <UIButton title="3 cells" buttonStyle={UIButton.ButtonStyle.Border} />
                 </UIGridColumn>
             </UIGrid>

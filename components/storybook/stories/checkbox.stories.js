@@ -16,8 +16,8 @@ import {
 
 const icoSquareCheckboxOn = getUri(require('../../../assets/ico-checkbox-square-active/ico-checkbox-square-active.png'), 24, 24);
 const icoSquareCheckboxOff = getUri(require('../../../assets/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png'), 24, 24);
-const icoCircleCheckboxOn = getUri(require('../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active.png'), 24, 24);
-const icoCircleCheckboxOff = getUri(require('../../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive.png'), 24, 24);
+const icoCircleCheckboxOn = getUri(require('../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png'), 24, 24);
+const icoCircleCheckboxOff = getUri(require('../../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png'), 24, 24);
 
 class CheckboxTester extends UIComponent {
     constructor(props) {

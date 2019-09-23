@@ -18,9 +18,9 @@ import icoSquareCheckboxInactiveAction
     from '../../../assets/ico-checkbox-square-inactive/inactive-action.png';
 
 import icoCircleCheckboxActive
-    from '../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active.png';
+    from '../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
 import icoCircleCheckboxInactive
-    from '../../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive.png';
+    from '../../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png';
 
 const checkboxSize = 24;
 

@@ -28,6 +28,7 @@ import UIDetailsButton from './components/buttons/UIDetailsButton';
 import UIDetailsInput from './components/input/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
 import UIDetailsCheckbox from './components/buttons/UIDetailsCheckbox';
+import UIDetailsRadio from './components/buttons/UIDetailsRadio';
 import UIDetailsView from './components/views/UIDetailsView';
 import UIDetailsTable from './components/text/UIDetailsTable';
 import UIDevice from './helpers/UIDevice';
@@ -163,6 +164,7 @@ export {
     UIDetailsTable,
     UIDetailsToggle,
     UIDetailsCheckbox,
+    UIDetailsRadio,
     UIDetailsView,
     UIDevice,
     UIDialogController,

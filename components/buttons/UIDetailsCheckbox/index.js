@@ -16,7 +16,7 @@ type Props = {
   /** container style
   @default null
   */
-  containerStyle?: StylePropType,
+  style?: ?StylePropType,
   /** Text along with the toggle
   @default ''
   */
@@ -100,7 +100,7 @@ UIDetailsCheckbox.defaultProps = {
     switcherPosition: UIDetailsCheckbox.Position.Right,
     disabled: false,
     type: UICheckboxItem.Type.Square,
-    containerStyle: {},
+    style: null,
     details: '',
     comments: '',
     selected: false,
