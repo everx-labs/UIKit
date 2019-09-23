@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import CountryPicker from 'react-native-country-picker-modal';
+import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 
 import UIModalController from '../../../controllers/UIModalController';
 import UIConstant from '../../../helpers/UIConstant';
@@ -73,6 +73,10 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         if (shared) {
             shared.show(args);
         }
+    }
+
+    static getAllCountries() {
+        return getAllCountries();
     }
 
     cca2: ?string;
