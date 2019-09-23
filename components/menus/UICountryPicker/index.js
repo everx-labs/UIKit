@@ -13,8 +13,6 @@ import UIFont from '../../../helpers/UIFont';
 
 let shared;
 
-const defaultDisabledCountries = ['AF', 'AS', 'BS', 'BW', 'ET', 'KP', 'GH', 'GU', 'IR', 'IQ', 'LY', 'NG', 'PK', 'PA', 'PR', 'WS', 'SA', 'LK', 'SY', 'TT', 'TN', 'VI', 'YE', 'KH', 'RS', 'CA', 'HK', 'JP', 'CN', 'MO', 'SG', 'US'];
-
 const countryPickerStyle = StyleSheet.create({
     container: {
         flex: 1,
@@ -147,9 +145,9 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     async show(args: any) {
         if (typeof args === 'object') {
             const {
-                cca2 = 'US',
                 language = 'eng',
-                disabledCountries = defaultDisabledCountries,
+                cca2,
+                disabledCountries,
             } = args;
             this.cca2 = cca2;
             this.language = language;
