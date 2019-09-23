@@ -22,6 +22,7 @@ import UICompatibilityView from './helpers/UICompatibilityView';
 import UIComponent from './components/UIComponent';
 import UIConstant from './helpers/UIConstant';
 import UIController from './controllers/UIController';
+import UICountryPicker from './components/menus/UICountryPicker';
 import UICustomSheet from './components/menus/UICustomSheet';
 import UIDateInput from './components/input/UIDateInput';
 import UIDetailsButton from './components/buttons/UIDetailsButton';
@@ -155,6 +156,7 @@ export {
     UIComponent,
     UIConstant,
     UIController,
+    UICountryPicker,
     UICustomSheet,
     UIDateInput,
     UIDetailsButton,
