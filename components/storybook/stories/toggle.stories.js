@@ -49,7 +49,7 @@ class ToggleTester extends UIComponent {
                 child,
                 {
                     onPress: this.onPress,
-                    active: this.state.isActive,
+                    active: !child.props.disabled ? this.state.isActive : child.props.active,
                     iconActive,
                     iconInactive,
                 },

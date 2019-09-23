@@ -16,7 +16,7 @@ import {
     UIStyle,
     UICustomSheet,
     UIDetailsToggle,
-    UIDetailsCheckbox
+    UIDetailsCheckbox,
 } from '../../../UIKit';
 
 class Hidden extends React.Component {
@@ -38,6 +38,6 @@ if (Platform.OS === 'web') {
         })
         .add('Button', () => <UIButton />, { info: { propTables: [UIButton] } })
         .add('ButtonGroup', () => <UIButtonGroup />, { info: { propTables: [UIButtonGroup] } })
-        .add('Toggle', () => <UIDetailsToggle /> { info: { propTables: [UIDetailsToggle] } })
-        .add('Checkbox', () => <UIDetailsCheckbox /> { info: { propTables: [UIDetailsCheckbox] } });
+        .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } })
+        .add('Checkbox', () => <UIDetailsCheckbox />, { info: { propTables: [UIDetailsCheckbox] } });
 }
