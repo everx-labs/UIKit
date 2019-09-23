@@ -46,41 +46,89 @@ const styles = StyleSheet.create({
 });
 
 type Props = ActionProps & {
-    /** Number for badged button */
+    /** Number for badged button
+    @default 0
+    */
     badge?: number,
-    /** useful for iPhone X (SafeArea) */
+    /** useful for iPhone X (SafeArea)
+    @default false
+    */
     bottomExtend?: boolean,
-    /** One of: UIButton.ButtonSize.Large, UIButton.ButtonSize.Medium, UIButton.ButtonSize.Small, UIButton.ButtonSize.Default */
+    /** One of:
+    UIButton.ButtonSize.Large,
+    UIButton.ButtonSize.Medium,
+    UIButton.ButtonSize.Small,
+    UIButton.ButtonSize.Default
+    @default UIButton.ButtonSize.Default
+    */
     buttonSize?: string,
-    /** One of: UIButton.ButtonShape.Radius, UIButton.ButtonShape.Rounded, UIButton.ButtonShape.Full, UIButton.ButtonShape.Default */
+    /** One of:
+    UIButton.ButtonShape.Radius,
+    UIButton.ButtonShape.Rounded,
+    UIButton.ButtonShape.Full,
+    UIButton.ButtonShape.Default
+    @default UIButton.ButtonShape.Radius
+    */
     buttonShape?: string,
-    /** One of: UIButton.ButtonStyle.Full, UIButton.ButtonStyle.Border, UIButton.ButtonStyle.Link */
+    /** One of:
+    UIButton.ButtonStyle.Full,
+    UIButton.ButtonStyle.Border,
+    UIButton.ButtonStyle.Link
+    @default UIButton.ButtonStyle.Full
+    */
     buttonStyle?: string,
-    /** use it for additional data */
+    /** use it for additional data
+    @default ''
+    */
     count?: string,
-    /** use it for additional data */
+    /** use it for additional data
+    @default ''
+    */
     data?: string,
     /** @ignore */
     footer?: boolean,
-    /** use it for default left icon, ignore it if use icon prop */
+    /** use it for default left icon, ignore it if use icon prop
+    @default false
+    */
     hasIcon?: boolean,
-    /** use it for default right icon, ignore it if use iconR prop */
+    /** use it for default right icon, ignore it if use iconR prop
+    @default false
+    */
     hasIconR?: boolean,
-    /** uri to left icon */
+    /** uri to left icon
+    @default null
+    */
     icon?: ?string,
-    /** uri to right icon */
+    /** uri to right icon
+    @default null
+    */
     iconR?: ?string,
     /** specify in addition to showIndicator props, one of:
-        UIButton.Indicator.Spin, UIButton.Indicator.Round, UIButton.ButtonStyle.Sandglass, UIButton.ButtonStyle.Pulse
+        UIButton.Indicator.Spin,
+        UIButton.Indicator.Round,
+        UIButton.ButtonStyle.Sandglass,
+        UIButton.ButtonStyle.Pulse
+        @default null
      */
     indicatorAnimation?: string,
-    /** button container style */
+    /** button container style
+    @default null
+    */
     style?: StylePropType,
-    /** text align, one of: UIButton.TextAlign.Center, UIButton.TextAlign.Left */
+    /** text align, one of:
+    UIButton.TextAlign.Center,
+    UIButton.TextAlign.Left,
+    UIButton.TextAlign.Right,
+    @default UIButton.TextAlign.Center
+    */
     textAlign?: string,
-    /** button title style */
+    /** button title style
+    @default null
+    */
     textStyle?: StylePropType,
-    /** Visible button title */
+    /** Visible button title
+    @default ''
+    */
     title?: string,
     /** @ignore */
     theme?: string,
@@ -508,6 +556,10 @@ export default class UIButton extends UIActionComponent<Props, State> {
                 {this.renderBottomExtension()}
             </View>
         );
+    }
+
+    render() {
+        return super.render();
     }
 
     static defaultProps: Props;

@@ -68,16 +68,27 @@ const styles = StyleSheet.create({
 type Props = {
     /** @ignore */
     children?: any,
-    /** gap between columns */
+    /** gap between columns
+    @default 16
+    */
     gutter: number,
-    /** gap between rows */
+    /** gap between rows
+    @default 0
+    */
     rowGutter: number,
-    /** One of: UIGrid.Type.C6, UIGrid.Type.C8, UIGrid.Type.C12 */
+    /** One of
+    UIGrid.Type.C6,
+    UIGrid.Type.C8,
+    UIGrid.Type.C12
+    @default UIGrid.Type.C8
+    */
     type: string,
-    /** custom style */
+    /** custom style
+    @default null
+    */
     style?: StylePropType,
     /** width of grid, if not set it's '100%'
-    * @default 0
+    * @default null
     */
     width?: number,
 };
