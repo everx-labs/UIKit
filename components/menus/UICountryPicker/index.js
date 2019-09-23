@@ -146,8 +146,8 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         if (typeof args === 'object') {
             const {
                 language = 'eng',
-                cca2,
-                disabledCountries,
+                cca2 = 'US',
+                disabledCountries = [],
             } = args;
             this.cca2 = cca2;
             this.language = language;
