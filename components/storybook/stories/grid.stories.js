@@ -24,7 +24,7 @@ const styles = {
 storiesOf(Constants.CategoryLayout, module)
     .addDecorator(getStory => <FullWidthView>{getStory()}</FullWidthView>)
     .add('Grid', () => (
-        <View style={styles.container}>
+        <View >style={styles.container}>
             <UIGrid
                 type={UIGrid.Type.C6}
                 style={styles.grid}

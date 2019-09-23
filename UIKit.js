@@ -43,6 +43,7 @@ import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
 import UIFunction from './helpers/UIFunction';
 import UIGrid from './components/layout/UIGrid';
+import UIGridColumn from './components/layout/UIGridColumn';
 import UIIdleDetector from './components/UIIdleDetector';
 import UIImage from './components/images/UIImage';
 import UIImageButton from './components/buttons/UIImageButton';
@@ -175,6 +176,7 @@ export {
     UIFont,
     UIFunction,
     UIGrid,
+    UIGridColumn,
     UITextStyle,
     UIIdleDetector,
     UIImage,

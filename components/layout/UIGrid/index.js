@@ -184,16 +184,6 @@ export default class UIGrid extends UIComponent<Props, State> {
 
     render() {
         if (!this.props.children) return null;
-        if (this.state.width === 0) {
-            return (<View
-                style={[
-                    UIStyle.Width.full(),
-                    this.props.style,
-                ]}
-                onLayout={this.onLayout}
-            />);
-        }
-
         const childrenCount = this.props.children?.length || 1;
         const children = childrenCount > 1 ?
             this.props.children :
@@ -217,6 +207,11 @@ export default class UIGrid extends UIComponent<Props, State> {
                 paddingHorizontal: this.getContainerPadding(),
             },
             this.props.style,
+            // if width isn't known, we'll know it at first in this.onLayout
+            // and then render:
+            {
+                opacity: this.state.width === 0 ? 0 : 100,
+            },
         ];
 
         return (
