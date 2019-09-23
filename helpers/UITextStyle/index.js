@@ -107,6 +107,9 @@ const UITextStyle = StyleSheet.create({
     tertiary: {
         ...tertiary,
     },
+    action: {
+        ...action,
+    },
 
     // [Text]
     // Title - fontSize: 36, lineHeight: 48

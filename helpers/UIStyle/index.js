@@ -118,6 +118,9 @@ const UIStyle = StyleSheet.create({
     textAlignRight: {
         textAlign: 'right',
     },
+    justifyStart: {
+        justifyContent: 'flex-start',
+    },
     justifyCenter: {
         justifyContent: 'center',
     },
@@ -418,6 +421,9 @@ const UIStyle = StyleSheet.create({
     },
     cellBorderBottom: {
         ...cellBorderBottom,
+    },
+    borderRadiusDefault: {
+        borderRadius: UIConstant.borderRadius(),
     },
 
     // colors

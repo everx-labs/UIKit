@@ -159,4 +159,7 @@ export default class UIStyleMargin {
     static default() { // 16
         return UIStyle.marginDefault;
     }
+    static bottomLeftRight() {
+        return UIStyle.bottomOffsetItemContainer;
+    }
 }
