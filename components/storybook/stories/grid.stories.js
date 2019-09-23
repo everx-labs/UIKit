@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import CenterView from '../CenterView';
+import FullWidthView from '../FullWidthView';
 
 import { storiesOf } from '../helpers/storiesOf';
 import Constants from '../helpers/constants';
@@ -22,7 +22,7 @@ const styles = {
 };
 
 storiesOf(Constants.CategoryLayout, module)
-    .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
+    .addDecorator(getStory => <FullWidthView>{getStory()}</FullWidthView>)
     .add('Grid', () => (
         <View style={styles.container}>
             <UIGrid
