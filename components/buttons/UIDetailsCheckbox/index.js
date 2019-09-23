@@ -5,7 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { StyleSheet, View } from 'react-native';
 
 import UIDetailsView from '../../views/UIDetailsView';
-import UIToggle from '../UIToggle';
+import UICheckboxItem from '../UICheckboxItem';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
@@ -35,16 +35,19 @@ type Props = {
   */
   disabled?: boolean,
   /**
+  shape of checkbox, one of:
+  UIDetailsCheckbox.Type.Square
+  UIDetailsCheckbox.Type.Circle
+  @default UIDetailsCheckbox.Type.Square
+  */
+  type?: string,
+  /**
   toggle position to text, one of:
-  UIDetailsToggle.Position.Right
-  UIDetailsToggle.Position.Left
-  @default UIDetailsToggle.Position.Right
+  UIDetailsCheckbox.Position.Right
+  UIDetailsCheckbox.Position.Left
+  @default UIDetailsCheckbox.Position.Right
   */
   switcherPosition?: string,
-  /** Defines whether toggle is colored or default
-  * @default false
-  */
-  colored?: boolean,
   /** Your action here, arg is new state of toggle (isActive: boolean)
   */
   onPress: (isActive: boolean) => void,
@@ -66,21 +69,22 @@ type Props = {
 const styles = StyleSheet.create({
 });
 
-export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
+export default class UIDetailsCheckbox extends UIDetailsSwitcher<Props, State> {
     static Position = UIDetailsSwitcher.Position;
+    static Type = UICheckboxItem.Type;
 
     renderSwitcher(): React$Node {
         const {
-            active, colored, testID, iconActive, iconInactive,
+            active, disabled, testID, iconActive, iconInactive,
         } = this.props;
 
-        return (<UIToggle
+        return (<UICheckboxItem
             iconActive={iconActive}
             iconInactive={iconInactive}
             testID={testID}
             containerStyle={this.getSwitcherStyle()}
-            active={active}
-            colored={colored}
+            selected={active}
+            editable={!disabled}
         />
         );
     }
@@ -92,14 +96,14 @@ export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
     static defaultProps: Props;
 }
 
-UIDetailsToggle.defaultProps = {
-    switcherPosition: UIDetailsToggle.Position.Right,
-    colored: false,
+UIDetailsCheckbox.defaultProps = {
+    switcherPosition: UIDetailsCheckbox.Position.Right,
+    disabled: false,
+    type: UICheckboxItem.Type.Square,
     containerStyle: {},
     details: '',
     comments: '',
-    active: false,
-    disabled: false,
+    selected: false,
     onPress: () => {},
     testID: null,
     iconActive: null,

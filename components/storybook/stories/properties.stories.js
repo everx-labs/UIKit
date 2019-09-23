@@ -15,9 +15,9 @@ import {
     UIButtonGroup,
     UIStyle,
     UICustomSheet,
+    UIDetailsToggle,
+    UIDetailsCheckbox
 } from '../../../UIKit';
-
-const md = getMarkdown('../../../components/menus/UICustomSheet/Readme.md');
 
 class Hidden extends React.Component {
     render() {
@@ -37,5 +37,7 @@ if (Platform.OS === 'web') {
             },
         })
         .add('Button', () => <UIButton />, { info: { propTables: [UIButton] } })
-        .add('UIButtonGroup', () => <UIButtonGroup />, { info: { propTables: [UIButtonGroup] } });
+        .add('ButtonGroup', () => <UIButtonGroup />, { info: { propTables: [UIButtonGroup] } })
+        .add('Toggle', () => <UIDetailsToggle /> { info: { propTables: [UIDetailsToggle] } })
+        .add('Checkbox', () => <UIDetailsCheckbox /> { info: { propTables: [UIDetailsCheckbox] } });
 }

@@ -4,6 +4,9 @@ const CategoryLink = 'Actions';
 const CategoryButtonGroup = 'Actions|ButtonGroup';
 const CategoryLayout = 'Layout';
 const CategoryProperties = 'Properties';
+const CategoryTumblers = 'Actions|Tumblers';
+const CategoryCheckbox = 'Actions|Checkbox';
+const CategoryToggle = 'Actions|Toggle';
 
 export default {
     CategoryButtonIcon,
@@ -12,4 +15,7 @@ export default {
     CategoryLayout,
     CategoryLink,
     CategoryProperties,
+    CategoryTumblers,
+    CategoryCheckbox,
+    CategoryToggle,
 };
