@@ -78,6 +78,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     cca2: ?string;
     language: ?string;
     countryPicker: ?CountryPicker;
+    disabledCountries: ?string[];
 
     constructor(props: Props) {
         super(props);
@@ -86,6 +87,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.modal = false;
         this.cca2 = null;
         this.language = null;
+        this.disabledCountries = [];
 
         this.state = {
             expression: '',
