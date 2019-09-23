@@ -1,26 +1,23 @@
 // @flow
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
 import UIModalController from '../../../controllers/UIModalController';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UISearchBar from '../../input/UISearchBar';
+import { primary, quaternary } from '../../../helpers/UITextStyle';
 import type { ModalControllerProps, ModalControllerState, ModalControllerShowArgs } from '../../../controllers/UIModalController';
+import UIFont from '../../../helpers/UIFont';
 
 let shared;
 
-const styles = StyleSheet.create({
-    scrollViewContainer: {
-        flex: 1,
-        margin: UIConstant.contentOffset(),
-    },
-});
+const defaultDisabledCountries = ['AF', 'AS', 'BS', 'BW', 'ET', 'KP', 'GH', 'GU', 'IR', 'IQ', 'LY', 'NG', 'PK', 'PA', 'PR', 'WS', 'SA', 'LK', 'SY', 'TT', 'TN', 'VI', 'YE', 'KH', 'RS', 'CA', 'HK', 'JP', 'CN', 'MO', 'SG', 'US'];
 
 const countryPickerStyle = StyleSheet.create({
     container: {
-        width: '100%',
+        flex: 1,
     },
     contentContainer: {
         flex: 1,
@@ -37,21 +34,20 @@ const countryPickerStyle = StyleSheet.create({
     itemCountry: {
         height: UIConstant.buttonHeight(),
     },
-    itemCountryFlag: {
-        borderRadius: UIConstant.tinyBorderRadius(),
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '7%',
-        width: '15%',
-    },
     itemCountryName: {
         borderBottomWidth: 0,
     },
-    countryName: {
-        borderBottomWidth: 0,
+    modalContainer: {
+        flex: 1,
+        margin: -1,
     },
-    header: {
-        marginHorizontal: -UIConstant.contentOffset(),
+    countryName: {
+        ...primary,
+        ...UIFont.smallMedium(),
+    },
+    disabledCountryName: {
+        ...quaternary,
+        ...UIFont.smallMedium(),
     },
 });
 
@@ -98,13 +94,18 @@ export default class UICountryPicker extends UIModalController<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
-        shared = this;
+        if (this.props.isShared) {
+            shared = this;
+        }
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
-        shared = null;
+        if (this.props.isShared) {
+            shared = null;
+        }
     }
+
 
     // Events
     onCancel = () => {
@@ -142,9 +143,11 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             const {
                 cca2 = 'US',
                 language = 'eng',
+                disabledCountries = defaultDisabledCountries,
             } = args;
             this.cca2 = cca2;
             this.language = language;
+            this.disabledCountries = disabledCountries;
         }
         await super.show(args);
     }
@@ -166,31 +169,21 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     renderContentView() {
-        // $FlowExpectedError
-        countryPickerStyle.modalContainer = {
-            flex: 1,
-            margin: -1,
-            width: this.getDialogStyle().width - (UIConstant.contentOffset() * 2),
-        };
-
         return (
             <React.Fragment>
                 {this.renderSearchBar()}
-                <ScrollView
-                    testID="country_view"
-                    contentContainerStyle={styles.scrollViewContainer}
-                >
-                    <CountryPicker
-                        ref={(component) => { this.countryPicker = component; }}
-                        cca2={this.cca2}
-                        translation={this.language}
-                        hideAlphabetFilter
-                        filterable
-                        renderFilter={() => null}
-                        styles={countryPickerStyle}
-                        onChange={this.onPickCountry}
-                    />
-                </ScrollView>
+                <CountryPicker
+                    ref={(component) => { this.countryPicker = component; }}
+                    cca2={this.cca2}
+                    translation={this.language}
+                    hideAlphabetFilter
+                    filterable
+                    renderFilter={() => null}
+                    disabledCountries={this.disabledCountries}
+                    disabledCountryText={`${UILocalized.serviceUnavailable}...`}
+                    styles={countryPickerStyle}
+                    onChange={this.onPickCountry}
+                />
             </React.Fragment>
         );
     }

@@ -542,4 +542,5 @@ export type UILocalizedData = {
     TheRequestedServiceIsDownToGetUpAsapTryAgainLater: string,
     WelcomeTo000: string,
     BackToHome: string,
+    serviceUnavailable: string,
 }
