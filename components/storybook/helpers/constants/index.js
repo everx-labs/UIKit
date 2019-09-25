@@ -8,6 +8,7 @@ const CategoryTumblers = 'Actions|Tumblers';
 const CategoryCheckbox = 'Actions|Checkbox';
 const CategoryToggle = 'Actions|Toggle';
 const CategoryRadio = 'Actions|Radio';
+const CategoryView = 'Design|Views';
 
 export default {
     CategoryButtonIcon,
@@ -20,4 +21,5 @@ export default {
     CategoryCheckbox,
     CategoryToggle,
     CategoryRadio,
+    CategoryView,
 };
