@@ -57,13 +57,13 @@ export default class UIBadge extends UIComponent {
 
     // render
     render() {
-        const { badge, style } = this.props;
+        const { badge, style, textStyle } = this.props;
         if (badge === 0) return null;
 
         const { container, badgeText } = styles;
         return (
-            <View style={[container, style, this.getBackgroundColor()]}>
-                <Text style={[badgeText, this.getColor()]}>
+            <View style={[container, this.getBackgroundColor(), style]}>
+                <Text style={[badgeText, this.getColor(), textStyle]}>
                     {badge}
                 </Text>
             </View>
@@ -73,12 +73,14 @@ export default class UIBadge extends UIComponent {
 
 UIBadge.defaultProps = {
     style: {},
+    textStyle: {},
     badge: 0,
     inverted: false,
 };
 
 UIBadge.propTypes = {
     style: StylePropType,
+    textStyle: StylePropType,
     badge: PropTypes.number,
     inverted: PropTypes.bool,
 };
