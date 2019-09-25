@@ -68,6 +68,7 @@ import UINavigationCloseButton from './components/navigation/UINavigationCloseBu
 import UINavigationIconButton from './components/navigation/UINavigationIconButton';
 import UINavigationPlusButton from './components/navigation/UINavigationPlusButton';
 import UINavigationTextButton from './components/navigation/UINavigationTextButton';
+import UIUnfold from './components/navigation/UIUnfold';
 import UINavigator from './helpers/UINavigator';
 import UINetworkStatus from './components/notifications/UINetworkStatus';
 import UINotice from './components/notifications/UINotice';
@@ -205,6 +206,7 @@ export {
     UINavigationIconButton,
     UINavigationPlusButton,
     UINavigationTextButton,
+    UIUnfold,
     UINavigator,
     UINetworkStatus,
     UINotice,

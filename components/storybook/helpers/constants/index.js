@@ -9,6 +9,7 @@ const CategoryCheckbox = 'Actions|Checkbox';
 const CategoryToggle = 'Actions|Toggle';
 const CategoryRadio = 'Actions|Radio';
 const CategoryView = 'Design|Views';
+const CategoryNavigationUnfold = 'Navigation|Unfold';
 
 export default {
     CategoryButtonIcon,
@@ -22,4 +23,5 @@ export default {
     CategoryToggle,
     CategoryRadio,
     CategoryView,
+    CategoryNavigationUnfold,
 };

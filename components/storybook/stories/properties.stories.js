@@ -22,6 +22,7 @@ import {
     UIDetailsCheckbox,
     UIDetailsRadio,
     UICard,
+    UIUnfold,
 } from '../../../UIKit';
 
 class Hidden extends React.Component {
@@ -85,5 +86,6 @@ if (Platform.OS === 'web') {
         .add('Grid', () => <UIGrid />, { info: { propTables: [UIGrid] } })
         .add('Link', () => <UILink />, { info: { propTables: [UILink] } })
         .add('Radio', () => <UIDetailsRadio />, { info: { propTables: [UIDetailsRadio] } })
-        .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } });
+        .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } })
+        .add('UIUnfold', () => <UIUnfold />, { info: { propTables: [UIUnfold] } });
 }
