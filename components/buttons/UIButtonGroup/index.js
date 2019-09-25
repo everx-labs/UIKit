@@ -16,13 +16,21 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    /** One of: UIButtonGroup.Direction.Column, UIButtonGroup.Direction.Row */
+    /** One of:
+    UIButtonGroup.Direction.Column,
+    UIButtonGroup.Direction.Row
+    @default UIButtonGroup.Direction.Row
+    */
     direction?: string,
-    /** button group container style */
+    /** button group container style
+    @default null
+    */
     style?: StylePropType,
     /** @ignore */
     children?: any,
-    /** Gap between buttons */
+    /** Gap between buttons
+    @default 16
+    */
     gutter: number,
 };
 

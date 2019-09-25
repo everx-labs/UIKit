@@ -8,6 +8,7 @@ import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/input/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
+import UICard from './components/views/UICard';
 import UIBalanceView from './components/views/UIBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
@@ -28,6 +29,8 @@ import UIDateInput from './components/input/UIDateInput';
 import UIDetailsButton from './components/buttons/UIDetailsButton';
 import UIDetailsInput from './components/input/UIDetailsInput';
 import UIDetailsToggle from './components/buttons/UIDetailsToggle';
+import UIDetailsCheckbox from './components/buttons/UIDetailsCheckbox';
+import UIDetailsRadio from './components/buttons/UIDetailsRadio';
 import UIDetailsView from './components/views/UIDetailsView';
 import UIDetailsTable from './components/text/UIDetailsTable';
 import UIDevice from './helpers/UIDevice';
@@ -147,6 +150,7 @@ export {
     UIBullet,
     UIButton,
     UIButtonGroup,
+    UICard,
     UIChatInput,
     UIChatMessageCell,
     UICheckboxItem,
@@ -163,6 +167,8 @@ export {
     UIDetailsInput,
     UIDetailsTable,
     UIDetailsToggle,
+    UIDetailsCheckbox,
+    UIDetailsRadio,
     UIDetailsView,
     UIDevice,
     UIDialogController,
