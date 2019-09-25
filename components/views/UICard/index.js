@@ -19,11 +19,11 @@ import UIActionComponent from '../../UIActionComponent';
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 const styles = StyleSheet.create({
-    containerRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    lableIcon: {
+        marginRight: 12,
     },
-    containerColumn: {
+    action: {
+        paddingRight: 0,
     },
 });
 
@@ -195,34 +195,48 @@ export default class UICard extends UIActionComponent<Props, State> {
         if (!actionIcon && !actionTitle) return null;
 
         if (actionIcon && actionTitle) {
-            return (<UILink
-                iconR={actionIcon}
-                title={actionTitle}
-                onPress={onActionPress}
-                size={this.props.size}
-                style={{ paddingRight: 0 }}
-            />);
+            return (
+                <UILink
+                    iconR={actionIcon}
+                    title={actionTitle}
+                    onPress={onActionPress}
+                    size={this.props.size}
+                    style={styles.action}
+                />
+            );
         }
 
         if (actionIcon) {
             return (
-                <UILink onPress={onActionPress} icon={actionIcon} size={this.props.size} style={{ paddingRight: 0 }} />
+                <UILink
+                    onPress={onActionPress}
+                    icon={actionIcon}
+                    size={this.props.size}
+                    style={styles.action}
+                />
             );
         }
 
         return (
-            <UILink onPress={onActionPress} title={actionTitle} size={this.props.size} style={{ paddingRight: 0 }} />
+            <UILink
+                onPress={onActionPress}
+                title={actionTitle}
+                size={this.props.size}
+                style={styles.action}
+            />
         );
     }
 
     renderBadge() {
         const { badge } = this.props;
         if (!badge) return null;
-        return (<UIBadge
-            badge={badge}
-            textStyle={UIStyle.Text.tertiaryTinyBold()}
-            style={UIColor.getBackgroundColorStyle(UIColor.whiteLight())}
-        />);
+        return (
+            <UIBadge
+                badge={badge}
+                textStyle={UIStyle.Text.tertiaryTinyBold()}
+                style={UIColor.getBackgroundColorStyle(UIColor.whiteLight())}
+            />
+        );
     }
 
     renderData() {
@@ -253,13 +267,22 @@ export default class UICard extends UIActionComponent<Props, State> {
         if (!labelIcon) return null;
         const d = this.getLabelIconSize();
         return (
-            <Image source={labelIcon} style={{ width: d, height: d, marginRight: 12 }} />
+            <Image
+                source={labelIcon}
+                style={[styles.lableIcon, { width: d, height: d }]}
+            />
         );
     }
 
     renderLeft(hasRight: boolean) {
         return (
-            <View style={[{ flex: hasRight ? 2 : 3 }, UIStyle.Height.full(), UIStyle.Common.flexRow(), UIStyle.Common.alignCenter()]}>
+            <View style={[
+                { flex: hasRight ? 2 : 1 },
+                UIStyle.Height.full(),
+                UIStyle.Common.flexRow(),
+                UIStyle.Common.alignCenter(),
+            ]}
+            >
                 {this.renderLabelIcon()}
                 <View style={[UIStyle.Common.flex(), UIStyle.Common.justifyCenter()]}>
                     {this.renderLabel()}
@@ -278,11 +301,13 @@ export default class UICard extends UIActionComponent<Props, State> {
             const data = this.renderData();
             const badge = this.renderBadge();
             const action = this.renderAction();
-            if (!secondary && !data && !badge && !action) {
-                right = null;
-            } else {
+            if (secondary || data || badge || action) {
                 right = (
-                    <View style={[UIStyle.Height.full(), UIStyle.Common.flexRow(), UIStyle.Common.alignCenter()]}>
+                    <View style={[
+                        UIStyle.Height.full(),
+                        UIStyle.Common.flexRow(),
+                        UIStyle.Common.alignCenter()]}
+                    >
                         <View style={[UIStyle.Common.alignEnd()]}>
                             {secondary}
                             {data}
@@ -295,7 +320,13 @@ export default class UICard extends UIActionComponent<Props, State> {
 
         if (!right) return null;
         return (
-            <View style={[{ flex: 1 }, UIStyle.Height.full(), UIStyle.Common.justifyCenter(), UIStyle.Common.alignEnd()]}>
+            <View style={[
+                UIStyle.Common.flex(),
+                UIStyle.Height.full(),
+                UIStyle.Common.justifyCenter(),
+                UIStyle.Common.alignEnd(),
+            ]}
+            >
                 {right}
             </View>
         );
