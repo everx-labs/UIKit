@@ -17,6 +17,7 @@ const ru: UILocalizedData = {
     Login: 'Войти',
     WeNeedYourPhoneNumber: 'Для идентификации нам нужен Ваш\nномер телефона',
     PhoneNumber: 'Номер телефона',
+    cardNumber: 'Card number',
     TermsButtonText: 'Зарегистрировавшись, Вы соглашаетесь с Условиями использования',
     GetCode: 'Получить код',
     WeHaveSentYouACode: 'Мы отправили Вам код для подтверждения Вашего номера',
@@ -32,6 +33,7 @@ const ru: UILocalizedData = {
     InvalidEmail: 'Invalid email address',
     InvalidPhone: 'Invalid phone',
     InvalidDate: 'Invalid date',
+    invalidCardNumber: 'Invalid card number',
     YouHaveEnteredAnInvalidPhoneNumber: 'Вы ввели неверный номер телефона',
     YouHaveEnteredAnEmptyCodeFor: 'Вы ввели пустой код для',
     YouHaveEnteredAnExpiredCodeFor: 'Вы ввели истекший код для',
@@ -567,6 +569,7 @@ const ru: UILocalizedData = {
     TheRequestedServiceIsDownToGetUpAsapTryAgainLater: 'The requested service is down to get up ASAP. Try again later.',
     WelcomeTo000: 'Welcome to 000',
     BackToHome: 'Back to Home',
+    serviceUnavailable: 'Service unavailable',
 };
 
 export default ru;

@@ -13,6 +13,7 @@ import UIStyleFlex from './UIStyleFlex';
 import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
 import UIStyleColor from './UIStyleColor';
+import UIStyleContainer from './UIStyleContainer';
 
 const absoluteFillWidthContainer = {
     position: 'absolute',
@@ -451,7 +452,6 @@ const UIStyle = StyleSheet.create({
     screenContainer: {
         flex: 1,
         flexDirection: 'column',
-        // alignItems: 'center',
     },
     pageContainer: {
         ...pageContainer,
@@ -615,11 +615,15 @@ const UIStyle = StyleSheet.create({
     fullOpacity: {
         opacity: 1,
     },
+    displayNone: {
+        display: 'none',
+    },
 });
 
 UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
 UIStyle.Common = UIStyleCommon;
+UIStyle.Container = UIStyleContainer;
 UIStyle.Flex = UIStyleFlex;
 UIStyle.Height = UIStyleHeight;
 UIStyle.Margin = UIStyleMargin;

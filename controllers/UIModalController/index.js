@@ -56,6 +56,7 @@ export type ModalControllerShowArgs = ?boolean | {
     open?: boolean,
     onCancel?: () => void,
     onSubmit?: () => void,
+    onSelect?: (any) => void,
 };
 
 const styles = StyleSheet.create({
@@ -77,6 +78,7 @@ export default class UIModalController<Props, State>
     modal: boolean;
     adjustBottomSafeAreaInsetDynamically: boolean;
     onCancel: ?(() => void);
+    onSelect: ?((any) => void);
     onSubmit: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
@@ -101,6 +103,7 @@ export default class UIModalController<Props, State>
         this.dialog = null;
         this.onCancel = null;
         this.onSubmit = null;
+        this.onSelect = null;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
@@ -317,8 +320,15 @@ export default class UIModalController<Props, State>
             } else {
                 open = arg.open;
             }
-            this.onCancel = arg.onCancel;
-            this.onSubmit = arg.onSubmit;
+            if (arg.onCancel) {
+                this.onCancel = arg.onCancel;
+            }
+            if (arg.onSubmit) {
+                this.onSubmit = arg.onSubmit;
+            }
+            if (arg.onSelect) {
+                this.onSelect = arg.onSelect;
+            }
         }
         this.setInitialSwipeState();
         await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);

@@ -71,22 +71,26 @@ export type DetailsProps = ActionProps & {
     beginningTag: string,
     button?: Object,
     containerStyle: ViewStyleProp,
-    inputStyle: ViewStyleProp,
     comment?: string | null,
     commentColor?: string | null,
+    blurOnSubmit?: boolean,
     bottomLineColor?: string | null,
     defaultValue?: string,
+    disableSubmitEmpty: boolean,
     editable: boolean,
+    inputStyle: ViewStyleProp,
+    forceMultiLine: boolean,
     floatingTitle: boolean,
-    hideFloatingTitle: boolean,
     floatingTitleText: string,
     hideBottomLine: boolean,
+    hideFloatingTitle: boolean,
     hidePlaceholder: boolean,
     keyboardType: KeyboardType,
+    mandatory?: boolean,
+    mandatoryColor?: string | null,
     maxLength?: number,
     maxLines: number,
     maxHeight?: number,
-    forceMultiLine: boolean,
     needArrow?: boolean,
     onBlur: () => void,
     onChangeText: (text: string) => void,
@@ -96,18 +100,15 @@ export type DetailsProps = ActionProps & {
     onHeightChange?: (height: number) => void,
     placeholder?: string,
     returnKeyType?: ReturnKeyType,
-    blurOnSubmit?: boolean,
+    rightComponent?: React$Node,
     secureTextEntry: boolean,
     showSymbolsLeft: boolean,
     submitDisabled?: boolean,
-    token?: string,
     theme?: UIColorThemeNameType,
+    token?: string,
     value: string,
     visible: boolean,
     testID?: string,
-    disableSubmitEmpty: boolean,
-    mandatory?: boolean,
-    mandatoryColor?: string | null,
 };
 
 export const detailsDefaultProps = {
@@ -116,17 +117,20 @@ export const detailsDefaultProps = {
     autoFocus: false,
     beginningTag: '',
     containerStyle: {},
-    inputStyle: {},
     comment: '',
+    disableSubmitEmpty: false,
     editable: true,
     floatingTitle: true,
-    hideFloatingTitle: false,
     floatingTitleText: '',
-    hideBottomLine: false,
-    hidePlaceholder: false,
-    keyboardType: 'default',
-    maxLines: 1,
     forceMultiLine: false,
+    hideBottomLine: false,
+    hideFloatingTitle: false,
+    hidePlaceholder: false,
+    inputStyle: {},
+    keyboardType: 'default',
+    mandatory: false,
+    mandatoryColor: UIColor.error(),
+    maxLines: 1,
     needArrow: false,
     onBlur: () => {},
     onChangeText: () => {},
@@ -142,9 +146,6 @@ export const detailsDefaultProps = {
     theme: UIColor.Theme.Light,
     value: '',
     visible: true,
-    disableSubmitEmpty: false,
-    mandatory: false,
-    mandatoryColor: UIColor.error(),
 };
 
 export default class UIDetailsInput<Props, State>
@@ -559,11 +560,15 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
+    renderRightComponent() {
+        return this.props.rightComponent;
+    }
+
     renderTextFragment() {
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
-                <View style={UIStyle.screenContainer}>
+                <View style={UIStyle.Container.screen()}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
                 </View>
@@ -571,6 +576,7 @@ export default class UIDetailsInput<Props, State>
                 {this.renderToken()}
                 {this.renderButton()}
                 {this.renderArrow()}
+                {this.renderRightComponent()}
             </React.Fragment>
         );
     }

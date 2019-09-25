@@ -201,6 +201,9 @@ export default class UIStyleText {
     static quaternarySmallRegular() {
         return UITextStyle.quaternarySmallRegular;
     }
+    static quaternarySmallMedium() {
+        return UITextStyle.quaternarySmallMedium;
+    }
     // Caption - fontSize: 14, lineHeight: 20
     static quaternaryCaptionRegular() {
         return UITextStyle.quaternaryCaptionRegular;

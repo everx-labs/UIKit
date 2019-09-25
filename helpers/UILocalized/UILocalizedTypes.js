@@ -15,6 +15,7 @@ export type UILocalizedData = {
     Login: string,
     WeNeedYourPhoneNumber: string,
     PhoneNumber: string,
+    cardNumber: string,
     TermsButtonText: string,
     GetCode: string,
     WeHaveSentYouACode: string,
@@ -30,6 +31,7 @@ export type UILocalizedData = {
     InvalidEmail: string,
     InvalidPhone: string,
     InvalidDate: string,
+    invalidCardNumber: string,
     YouHaveEnteredAnInvalidPhoneNumber: string,
     YouHaveEnteredAnEmptyCodeFor: string,
     YouHaveEnteredAnExpiredCodeFor: string,
@@ -542,4 +544,5 @@ export type UILocalizedData = {
     TheRequestedServiceIsDownToGetUpAsapTryAgainLater: string,
     WelcomeTo000: string,
     BackToHome: string,
+    serviceUnavailable: string,
 }

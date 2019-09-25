@@ -17,6 +17,7 @@ const en: UILocalizedData = {
     Login: 'Login',
     WeNeedYourPhoneNumber: 'To identify you, we need your\nphone number',
     PhoneNumber: 'Phone Number',
+    cardNumber: 'Card number',
     TermsButtonText: 'By signing up you agree to the Terms of Service',
     GetCode: 'Get code',
     WeHaveSentYouACode: 'We have sent you a code to verify your number',
@@ -32,6 +33,7 @@ const en: UILocalizedData = {
     InvalidEmail: 'Invalid email address',
     InvalidPhone: 'Invalid phone',
     InvalidDate: 'Invalid date',
+    invalidCardNumber: 'Invalid card number',
     YouHaveEnteredAnInvalidPhoneNumber: 'You have entered an invalid phone number',
     YouHaveEnteredAnEmptyCodeFor: 'You have entered an empty code for',
     YouHaveEnteredAnExpiredCodeFor: 'You have entered an expired code for',
@@ -568,6 +570,7 @@ const en: UILocalizedData = {
     TheRequestedServiceIsDownToGetUpAsapTryAgainLater: 'The requested service is down to get up ASAP. Try again later.',
     WelcomeTo000: 'Welcome to 000',
     BackToHome: 'Back to Home',
+    serviceUnavailable: 'Service unavailable',
 };
 
 export default en;

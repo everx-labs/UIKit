@@ -26,6 +26,7 @@ const UIColorPalette = {
     whiteLight: '#F5F5F5',
     notWhite: '#F8F9F9',
     black80: 'rgba(0,0,0,0.8)',
+    white20: 'rgba(255,255,255,0.2)',
     white40: 'rgba(255,255,255,0.4)',
     white80: 'rgba(255,255,255,0.8)',
     hue005D8C: '#005D8C',
