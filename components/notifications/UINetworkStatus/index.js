@@ -10,7 +10,7 @@ import UIDevice from '../../../helpers/UIDevice';
 import UIComponent from '../../UIComponent';
 
 const NetInfo = Platform.OS === 'web'
-    ? require('react-native').NetInfo
+    ? (require('react-native') || {}).NetInfo // to suppress flow warning!
     : require('@react-native-community/netinfo');
 
 const STATUS_HEIGHT = 24; // Based on Figma design
