@@ -22,7 +22,7 @@ const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.pn
 const md = getMarkdown('../../../components/menus/UICustomSheet/Readme.md');
 
 if (Platform.OS === 'web') {
-    storiesOf('Props', module)
+    storiesOf(Constants.CategoryProperties, module)
         .addDecorator(withInfo)
         .addParameters({
             info: {

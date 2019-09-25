@@ -5,7 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { StyleSheet, View } from 'react-native';
 
 import UIDetailsView from '../../views/UIDetailsView';
-import UIToggle from '../UIToggle';
+import UIRadioButtonItem from '../UIRadioButtonList/UIRadioButtonItem';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
@@ -36,9 +36,9 @@ type Props = {
   disabled?: boolean,
   /**
   toggle position to text, one of:
-  UIDetailsToggle.Position.Right
-  UIDetailsToggle.Position.Left
-  @default UIDetailsToggle.Position.Right
+  UIDetailsRadio.Position.Right
+  UIDetailsRadio.Position.Left
+  @default UIDetailsRadio.Position.Right
   */
   switcherPosition?: string,
   /** Defines whether toggle is colored or default
@@ -66,7 +66,7 @@ type Props = {
 const styles = StyleSheet.create({
 });
 
-export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
+export default class UIDetailsRadio extends UIDetailsSwitcher<Props, State> {
     static Position = UIDetailsSwitcher.Position;
 
     renderSwitcher(): React$Node {
@@ -74,13 +74,12 @@ export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
             active, colored, testID, iconActive, iconInactive,
         } = this.props;
 
-        return (<UIToggle
+        return (<UIRadioButtonItem
             iconActive={iconActive}
             iconInactive={iconInactive}
             testID={testID}
-            containerStyle={this.getSwitcherStyle()}
-            active={active}
-            colored={colored}
+            radioStyle={this.getSwitcherStyle()}
+            selected={active}
         />
         );
     }
@@ -92,9 +91,8 @@ export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
     static defaultProps: Props;
 }
 
-UIDetailsToggle.defaultProps = {
-    switcherPosition: UIDetailsToggle.Position.Right,
-    colored: false,
+UIDetailsRadio.defaultProps = {
+    switcherPosition: UIDetailsRadio.Position.Right,
     style: null,
     details: '',
     comments: '',

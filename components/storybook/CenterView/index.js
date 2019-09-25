@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import { View, ScrollView } from 'react-native';
-import { UIStyle } from '../../../UIKit';
+import { View, ScrollView, Platform } from 'react-native';
+import { UIStyle, UIGrid, UIGridColumn, UIColor } from '../../../UIKit';
 
 const styles = {
     main: {
@@ -18,17 +18,22 @@ type Props = {
 
 const CenterView = (props: Props) => {
     return (
-        <View style={styles.main}>
-            <ScrollView
-                style={[
-                    UIStyle.Margin.topMajor(),
-                    UIStyle.Width.full(),
-                    UIStyle.Padding.default(),
-                ]}
-            >
-                {props.children}
-            </ScrollView>
-        </View>
+        <UIGrid>
+            <UIGridColumn medium={2} />
+            <UIGridColumn medium={4}>
+                <ScrollView
+                    style={[
+                        Platform.OS === 'web' ? null : UIStyle.Margin.topMajor(),
+                        UIStyle.Width.full(),
+                        UIStyle.Padding.default(),
+                        UIStyle.Color.getBackgroundColorStyle(UIColor.whiteLight()),
+                    ]}
+                >
+                    {props.children}
+                </ScrollView>
+            </UIGridColumn>
+            <UIGridColumn medium={2} />
+        </UIGrid>
     );
 };
 
