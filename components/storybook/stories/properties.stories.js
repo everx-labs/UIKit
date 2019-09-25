@@ -21,6 +21,7 @@ import {
     UIDetailsToggle,
     UIDetailsCheckbox,
     UIDetailsRadio,
+    UICard,
 } from '../../../UIKit';
 
 class Hidden extends React.Component {
@@ -77,11 +78,12 @@ if (Platform.OS === 'web') {
             },
         })
         .add('Button', () => <UIButton />, { info: { propTables: [UIButton] } })
-        .add('ButtonIcon', () => <UIActionIcon />, { info: { propTables: [UIActionIcon] } })
         .add('ButtonGroup', () => <UIButtonGroup />, { info: { propTables: [UIButtonGroup] } })
-        .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } })
-        .add('Radio', () => <UIDetailsRadio />, { info: { propTables: [UIDetailsRadio] } })
+        .add('ButtonIcon', () => <UIActionIcon />, { info: { propTables: [UIActionIcon] } })
+        .add('Card', () => <UICard />, { info: { propTables: [UICard] } })
         .add('Checkbox', () => <UIDetailsCheckbox />, { info: { propTables: [UIDetailsCheckbox] } })
         .add('Grid', () => <UIGrid />, { info: { propTables: [UIGrid] } })
-        .add('Link', () => <UILink />, { info: { propTables: [UILink] } });
+        .add('Link', () => <UILink />, { info: { propTables: [UILink] } })
+        .add('Radio', () => <UIDetailsRadio />, { info: { propTables: [UIDetailsRadio] } })
+        .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } });
 }
