@@ -28,20 +28,71 @@ const styles = StyleSheet.create({
 });
 
 type Props = ActionProps & {
+    /**
+    Text label
+    @default 'Label'
+    */
     label: string,
+    /**
+    Icon left to label
+    @default null
+    */
     labelIcon?: ?string,
+    /**
+    Text caption
+    @default null
+    */
     caption?: ?string,
+    /**
+    Text secondary
+    @default null
+    */
     secondary?: ?string,
+    /**
+    Text data
+    @default null
+    */
     data?: ?string,
+    /**
+    Badge value
+    @default null
+    */
     badge?: ?string,
+    /**
+    Container style
+    @default null
+    */
     style?: ?StylePropType,
+    /**
+    Action by tapping card
+    @default null
+    */
     onPress?: ?() => void,
-
+    /**
+    Icon along with action
+    @default null
+    */
     actionIcon?: ?string,
+    /**
+    Action string title
+    @default null
+    */
     actionTitle?: ?string,
+    /**
+    Action by tapping action title/icon
+    @default null
+    */
     onActionPress?: ?() => void,
-
+    /**
+    Size of card, one of: UICard.Size.XS(52 height), UICard.Size.S(72 height), UICard.Size.M(76 height), UICard.Size.L(80 height)
+    @default UICard.Size.M
+    */
     size?: ?string,
+    /**
+    Direction of card, one of: UICard.Direction.Row, UICard.Direction.Column
+    @default UICard.Size.M
+    @ignore
+    */
     direction?: ?string,
 };
 
@@ -274,6 +325,10 @@ export default class UICard extends UIActionComponent<Props, State> {
                 {right}
             </View>
         );
+    }
+
+    render() {
+        return super.render();
     }
 
 
