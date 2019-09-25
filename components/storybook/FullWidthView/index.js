@@ -6,7 +6,6 @@ import { UIStyle, UIGrid, UIGridColumn } from '../../../UIKit';
 const styles = {
     main: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
     },
 };
 

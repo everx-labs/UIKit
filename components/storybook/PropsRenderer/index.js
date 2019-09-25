@@ -34,13 +34,13 @@ export default class PropsSection extends React.Component {
                             ]}
                             >
                                 <Text style={[
-                                    UIStyle.Text.primaryBodyBold(),
+                                    UIStyle.Text.primarySmallBold(),
                                 ]}
                                 >
                                     {prop.name}
                                 </Text>
                                 <Text style={[
-                                    UIStyle.Text.secondaryBodyRegular(),
+                                    UIStyle.Text.secondarySmallRegular(),
                                     UIStyle.Margin.leftSmall(),
                                 ]}
                                 >
