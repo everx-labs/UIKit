@@ -145,10 +145,12 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     async show(args: any) {
         if (typeof args === 'object') {
             const {
+                fullscreen = false,
                 language = 'eng',
                 cca2 = 'US',
                 disabledCountries = [],
             } = args;
+            this.fullscreen = fullscreen;
             this.cca2 = cca2;
             this.language = language;
             this.disabledCountries = disabledCountries;
