@@ -17,10 +17,10 @@ import {
 } from '../../../UIKit';
 
 
-const icoActiveDefault = getUri(require('../../../assets/ico-toggle-active/ico-toggle-active.png'), 24, 24);
-const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'), 24, 24);
-const iconShowDefault = getUri(require('../../../assets/ico-unfold/ico-show.png'), 24, 24);
-const iconHideDefault = getUri(require('../../../assets/ico-unfold/ico-hide.png'), 24, 24);
+const icoActiveDefault = getUri(require('../../../assets/ico-toggle-active/ico-toggle-active.png'));
+const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'));
+const iconShowDefault = getUri(require('../../../assets/ico-unfold/ico-show.png'));
+const iconHideDefault = getUri(require('../../../assets/ico-unfold/ico-hide.png'));
 
 class UnfoldTester extends UIComponent {
     constructor() {

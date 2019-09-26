@@ -2,8 +2,8 @@
 // should use react-native-web-loader or url-loader, but they break images
 // so, use incorrect webpack-image-loader and convert paths manually...
 
-const getUri = (source, width = null, height = null) => {
-    return { uri: source, width: width || 24, height: height || 24 };
+const getUri = (source, width = 24, height = 24) => {
+    return { uri: source, width, height };
 };
 
 export { getUri };
