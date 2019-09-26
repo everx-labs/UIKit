@@ -4,6 +4,7 @@ import { TouchableOpacity, Image, Text, View } from 'react-native';
 
 import StylePropType from 'react-style-proptype';
 import UIStyle from '../../../helpers/UIStyle';
+import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
 const iconShowDefault = require('../../../assets/ico-unfold/ico-show.png');
