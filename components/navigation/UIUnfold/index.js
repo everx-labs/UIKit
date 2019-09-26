@@ -95,7 +95,9 @@ export default class UIUnfold extends UIComponent<Props, State> {
     }
 
     getHeight() {
-        if (this.props.size === UIUnfold.Size.M) return 40;
+        if (this.props.size === UIUnfold.Size.M) {
+            return UIConstant.mediumButtonHeight();
+        }
         // L
         return 48;
     }
