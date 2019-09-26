@@ -25,12 +25,12 @@ type Props = {
     Icon to show content
     @default UIKit/assets/ico-unfold/ico-show.png
     */
-    iconShow: string,
+    iconShow: string | number,
     /**
     Icon to hide content
     @default UIKit/assets/ico-unfold/ico-hide.png
     */
-    iconHide: string,
+    iconHide: string | number,
     /**
     Position of fold/unfold icon to text, one of UIUnfold.Position.Right, UIUnfold.Position.Left
     @default UIUnfold.Position.Right
@@ -70,7 +70,7 @@ type Props = {
     Your handler here if need unfolded value outside, onPress(unfolded) {...}
     @default null
     */
-    onPress?: ?()=>void,
+    onPress?: ?(unfolded: boolean)=>void,
 };
 
 type State = {
@@ -109,7 +109,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
         return [UIStyle.Text.primarySmallMedium()];
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (this.state.unfolded !== nextProps.unfolded) {
             this.setState({ unfolded: nextProps.unfolded });
         }
@@ -167,7 +167,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
 
     render() {
         const {
-            style, textStyle, iconFold, iconUnfold, content, titleFold, titleUnfold,
+            style, content,
         } = this.props;
         return (
             <View style={[style]}>
