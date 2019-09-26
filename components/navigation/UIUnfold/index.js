@@ -99,7 +99,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
             return UIConstant.mediumButtonHeight();
         }
         // L
-        return 48;
+        return UIConstant.buttonHeight();
     }
 
     getTextStyle() {
