@@ -3,19 +3,18 @@ import React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { Popover } from 'react-native-simple-popover';
 
-import type { Node } from 'react';
-import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
-import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
 import UIMenuBackground from '../../../helpers/UIMenuBackground';
 import UIDevice from '../../../helpers/UIDevice';
 import UIEventHelper from '../../../helpers/UIEventHelper';
 import UIActionSheet from '../../menus/UIActionSheet';
 import UIComponent from '../../UIComponent';
+import UIStyle from '../../../helpers/UIStyle';
 
-import MenuItem from './MenuItem';
+import MenuItem from '../UIActionSheet/MenuItem';
+import type { MenuItemType } from '../UIActionSheet/MenuItem';
 import type { ClassNameProp } from '../../../types';
 
 let masterRef = null;
@@ -23,18 +22,11 @@ const MENU_TRIGGER = 'menu-trigger';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
-export type MenuItemType = {
-    title: string,
-    titleStyle: TextStyleProp,
-    disabled?: boolean,
-    onPress: () => void
-};
-
 type Props = {
     menuItemsList: MenuItemType[],
     placement?: Placement,
     needCancelItem?: boolean,
-    children?: Node,
+    children?: React$Node,
     onCancelCallback?: () => void,
     testID?: string,
 };
@@ -46,6 +38,13 @@ type State = {
 };
 
 export default class UIMenuView extends UIComponent<Props, State> {
+    static defaultProps: Props = {
+        menuItemsList: [],
+        placement: 'bottom',
+        needCancelItem: true, // for iOS and Android only
+        onCancelCallback: () => {}, // for iOS and Android only
+    };
+
     static hideMenu() {
         if (masterRef) {
             masterRef.hideMenu();
@@ -134,6 +133,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
         }
     }
 
+    clickListener: (e: any) => void;
     initClickListenerForWeb(ignoreFirstClick: boolean = false) {
         if (Platform.OS !== 'web') {
             return;
@@ -161,31 +161,32 @@ export default class UIMenuView extends UIComponent<Props, State> {
     }
 
     // Render
-    renderMenu() {
+    renderMenu = () => {
+        const backgroundStyle = UIColor.getBackgroundColorStyle(UIColor.backgroundPrimary());
         return (
             <View
                 style={[
-                    UIConstant.cardShadow(),
+                    UIStyle.Border.radiusDefault(),
+                    UIStyle.Common.cardShadow(),
+                    UIStyle.Padding.horizontal(),
+                    backgroundStyle,
                     { marginLeft: this.getMenuPaddingLeft() },
-                    { backgroundColor: UIColor.backgroundPrimary() },
                 ]}
                 onLayout={this.onMenuLayout}
             >
                 {this.props.menuItemsList.map(item => (
                     <MenuItem
+                        {...item}
                         key={`${Math.random()}~MenuItem~${item.title}`}
-                        title={item.title}
-                        titleStyle={item.titleStyle}
-                        disabled={item.disabled}
-                        onSelect={() => {
-                            item.onPress();
+                        onPress={() => {
+                            if (item.onPress) item.onPress();
                             this.hideMenu();
                         }}
                     />
                 ))}
             </View>
         );
-    }
+    };
 
     render() {
         // This trick with class name required to suppress flow warning
@@ -193,16 +194,16 @@ export default class UIMenuView extends UIComponent<Props, State> {
         const setClassNameTrick: ClassNameProp = {
             className: MENU_TRIGGER,
         };
-        const { placement, testID } = this.props;
+        const { placement, testID, children } = this.props;
         const testIDProp = testID ? { testID } : null;
         return (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={UIStyle.Common.flexRow()}>
                 <Popover
                     placement={placement}
                     arrowWidth={0}
                     arrowHeight={0}
                     isVisible={this.isVisible()}
-                    component={() => this.renderMenu()}
+                    component={this.renderMenu}
                 >
                     <TouchableOpacity
                         {...setClassNameTrick}
@@ -211,21 +212,11 @@ export default class UIMenuView extends UIComponent<Props, State> {
                         onLayout={this.onTriggerLayout}
                     >
                         <View pointerEvents="none">
-                            {this.props.children}
+                            {children}
                         </View>
                     </TouchableOpacity>
                 </Popover>
             </View>
         );
     }
-
-    clickListener: (e: any) => void;
-    static defaultProps: Props;
 }
-
-UIMenuView.defaultProps = {
-    menuItemsList: [],
-    placement: 'bottom',
-    needCancelItem: true, // for iOS and Android only
-    onCancelCallback: () => {}, // for iOS and Android only
-};

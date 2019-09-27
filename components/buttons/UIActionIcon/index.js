@@ -16,20 +16,43 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    /** One of: UIActionIcon.Size.Large, UIActionIcon.Size.Medium, UIActionIcon.Size.Small, UIActionIcon.Size.Default */
+    /** One of:
+    UIActionIcon.Size.Large,
+    UIActionIcon.Size.Medium,
+    UIActionIcon.Size.Small,
+    UIActionIcon.Size.Default
+    @default UIActionIcon.Size.Default
+    */
     buttonSize?: string,
-    /** One of: UIActionIcon.Shape.Radius, UIButton.Shape.Rounded, UIButton.Shape.Full, UIButton.Shape.Default */
+    /** One of:
+    UIActionIcon.Shape.Radius,
+    UIButton.Shape.Rounded,
+    UIButton.Shape.Full,
+    UIButton.Shape.Default
+    @default UIButton.Shape.Default
+    */
     buttonShape?: string,
-    /** One of: UIActionIcon.Style.Full, UIActionIcon.Style.Border, UIActionIcon.Style.Link */
+    /** One of:
+    UIActionIcon.Style.Full,
+    UIActionIcon.Style.Border,
+    UIActionIcon.Style.Link
+    @default UIActionIcon.Style.Full
+    */
     buttonStyle?: string,
-    /** uri to left icon */
+    /** uri to left icon
+    @default null
+    */
     icon?: ?string,
-    /** button container style */
+    /** button container style
+    @default null
+    */
     style?: StylePropType,
     /** @ignore */
     theme?: string,
 
-    /** set true if button disabled */
+    /** set true if button disabled
+    @default false
+    */
     disabled?: boolean,
     /** Your action here */
     onPress?: () => void,

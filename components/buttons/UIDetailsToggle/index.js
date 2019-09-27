@@ -8,74 +8,100 @@ import UIDetailsView from '../../views/UIDetailsView';
 import UIToggle from '../UIToggle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
+import UIStyle from '../../../helpers/UIStyle';
+import UIDetailsSwitcher from '../UIDetailsSwitcher';
+
+type State = {};
+type Props = {
+  /** container style
+  @default null
+  */
+  style?: ?StylePropType,
+  /** Text along with the toggle
+  @default ''
+  */
+  details?: string,
+  /** Text under the details
+  @default ''
+  */
+  comments?: string,
+  /** Defines whether toggle ON/OFF
+  @default false
+  */
+  active: boolean,
+  /**
+  Editable/disabled
+  @default false
+  */
+  disabled?: boolean,
+  /**
+  toggle position to text, one of:
+  UIDetailsToggle.Position.Right
+  UIDetailsToggle.Position.Left
+  @default UIDetailsToggle.Position.Right
+  */
+  switcherPosition?: string,
+  /** Defines whether toggle is colored or default
+  * @default false
+  */
+  colored?: boolean,
+  /** Your action here, arg is new state of toggle (isActive: boolean)
+  */
+  onPress: (isActive: boolean) => void,
+  /** test id
+  * @ignore
+  * @default null
+  */
+  testID?: ?string,
+  /** customize your icon
+  * @default null
+  */
+  iconActive?: ?string,
+  /** customize your icon
+  * @default null
+  */
+  iconInactive?: ?string,
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-    },
-    detailsView: {
-        flex: 1,
-    },
-    toggle: {
-        marginLeft: UIConstant.smallContentOffset(),
-        marginTop: UIConstant.normalContentOffset(),
-    },
 });
 
-export default class UIDetailsToggle extends UIComponent {
-    // Events
-    onToggle = () => {
-        const { active, onPress } = this.props;
-        onPress(!active);
-    };
+export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
+    static Position = UIDetailsSwitcher.Position;
 
-    // Render
-    renderDetailsView() {
+    renderSwitcher(): React$Node {
         const {
-            active, details, comments, onPress,
+            active, colored, testID, iconActive, iconInactive,
         } = this.props;
-        return (<UIDetailsView
-            containerStyle={styles.detailsView}
-            value={details}
-            comments={comments}
-            onPress={() => onPress(!active)}
-        />);
-    }
 
-    renderToggle() {
-        const { active, testID } = this.props;
         return (<UIToggle
+            iconActive={iconActive}
+            iconInactive={iconInactive}
             testID={testID}
-            containerStyle={styles.toggle}
+            containerStyle={this.getSwitcherStyle()}
             active={active}
-            onPress={this.onToggle}
-        />);
+            colored={colored}
+        />
+        );
     }
 
     render() {
-        return (
-            <View style={[styles.container, this.props.containerStyle]}>
-                {this.renderDetailsView()}
-                {this.renderToggle()}
-            </View>
-        );
+        return super.render();
     }
+
+    static defaultProps: Props;
 }
 
 UIDetailsToggle.defaultProps = {
-    containerStyle: {},
+    switcherPosition: UIDetailsToggle.Position.Right,
+    colored: false,
+    style: null,
     details: '',
     comments: '',
     active: false,
+    disabled: false,
     onPress: () => {},
     testID: null,
-};
-
-UIDetailsToggle.propTypes = {
-    containerStyle: StylePropType,
-    details: PropTypes.string,
-    comments: PropTypes.string,
-    active: PropTypes.bool,
-    onPress: PropTypes.func,
-    testID: PropTypes.string,
+    iconActive: null,
+    iconInactive: null,
 };

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import StylePropType from 'react-style-proptype';
+
+import { Image, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
@@ -16,9 +18,9 @@ import icoSquareCheckboxInactiveAction
     from '../../../assets/ico-checkbox-square-inactive/inactive-action.png';
 
 import icoCircleCheckboxActive
-    from '../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active.png';
+    from '../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
 import icoCircleCheckboxInactive
-    from '../../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive.png';
+    from '../../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png';
 
 const checkboxSize = 24;
 
@@ -39,7 +41,12 @@ class UICheckboxItem extends UIComponent {
     }
 
     getImage() {
-        const { type, selected } = this.props;
+        const {
+            type, selected, iconActive, iconInactive,
+        } = this.props;
+        if (iconActive && selected) return iconActive;
+        if (iconInactive && !selected) return iconInactive;
+
         if (type === UICheckboxItem.Type.Square) {
             if (this.props.theme === UIColor.Theme.Action) {
                 return selected ? icoSquareCheckboxActiveAction : icoSquareCheckboxInactiveAction;
@@ -62,26 +69,35 @@ class UICheckboxItem extends UIComponent {
     }
 
     render() {
-        const { onPress, editable } = this.props;
+        const { onPress, editable, containerStyle } = this.props;
         if (onPress && editable) {
             return (
-                <TouchableWithoutFeedback onPress={onPress}>
-                    {this.renderCheckbox()}
-                </TouchableWithoutFeedback>
+                <View style={containerStyle}>
+                    <TouchableWithoutFeedback onPress={onPress}>
+                        {this.renderCheckbox()}
+                    </TouchableWithoutFeedback>
+                </View>
             );
         }
-        return this.renderCheckbox();
+        return (
+            <View style={containerStyle}>
+                {this.renderCheckbox()}
+            </View>
+        );
     }
 }
 
 export default UICheckboxItem;
 
 UICheckboxItem.defaultProps = {
+    containerStyle: null,
     selected: false,
     editable: true,
     type: UICheckboxItem.Type.Square,
     onPress: null,
     theme: UIColor.Theme.Light,
+    iconActive: null,
+    iconInactive: null,
 };
 
 UICheckboxItem.propTypes = {
@@ -90,4 +106,7 @@ UICheckboxItem.propTypes = {
     editable: PropTypes.bool,
     type: PropTypes.string,
     onPress: PropTypes.func,
+    containerStyle: StylePropType,
+    iconActive: PropTypes.string,
+    iconInactive: PropTypes.string,
 };

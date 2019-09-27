@@ -15,42 +15,79 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    /** One of: UIButton.ButtonSize.Large, UIButton.ButtonSize.Medium, UIButton.ButtonSize.Small, UIButton.ButtonSize.Default */
+    /** One of:
+    UIButton.ButtonSize.Large,
+    UIButton.ButtonSize.Medium,
+    UIButton.ButtonSize.Small,
+    UIButton.ButtonSize.Default
+    @default UIButton.ButtonSize.Medium
+    */
     buttonSize?: string,
-    /** use it for additional data */
+    /** use it for additional data
+    @default ''
+    */
     count?: string,
-    /** use it for additional data */
+    /** use it for additional data
+    @default ''
+    */
     data?: string,
-    /** use it for default left icon, ignore it if use icon prop */
+    /** use it for default left icon, ignore it if use icon prop
+    @default false
+    */
     hasIcon?: boolean,
-    /** use it for default right icon, ignore it if use iconR prop */
+    /** use it for default right icon, ignore it if use iconR prop
+    @default false
+    */
     hasIconR?: boolean,
     /** external url, starting with http...
     @default null
     */
     href?: ?string,
-    /** uri to left icon */
+    /** uri to left icon
+    @default null
+    */
     icon?: ?string,
-    /** uri to right icon */
+    /** uri to right icon
+    @default null
+    */
     iconR?: ?string,
     /** specify in addition to showIndicator props, one of:
-        UIButton.Indicator.Spin, UIButton.Indicator.Round, UIButton.ButtonStyle.Sandglass, UIButton.ButtonStyle.Pulse
+        UIButton.Indicator.Spin,
+        UIButton.Indicator.Round,
+        UIButton.ButtonStyle.Sandglass,
+        UIButton.ButtonStyle.Pulse
+        @default null
      */
     indicatorAnimation?: string,
-    /** button container style */
+    /** button container style
+    @default null
+    */
     style?: StylePropType,
-    /** text align, one of: UIButton.TextAlign.Center, UIButton.TextAlign.Left */
+    /** text align, one of:
+    UIButton.TextAlign.Center,
+    UIButton.TextAlign.Left,
+    UIButton.TextAlign.Right,
+    @default UIButton.TextAlign.Center
+    */
     textAlign?: string,
-    /** button title style */
+    /** button title style
+    @default null
+    */
     textStyle?: StylePropType,
-    /** Visible button title */
+    /** Visible button title
+    @default ''
+    */
     title?: string,
     /** @ignore */
     theme?: string,
 
-    /** set true if button disabled */
+    /** set true if button disabled
+    @default false
+    */
     disabled?: boolean,
-    /** set true for indicating wait state */
+    /** set true for indicating wait state
+    @default false
+    */
     showIndicator?: boolean,
     /** Your action here */
     onPress?: () => void,

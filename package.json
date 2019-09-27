@@ -30,6 +30,7 @@
         "react-localization": "git+https://github.com/FactorBench/react-localization.git",
         "react-native-android-keyboard-adjust": "^1.1.1",
         "react-native-awesome-alerts": "^1.0.8",
+        "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
         "react-native-device-info": "^0.22.5",
         "react-native-dropdownalert": "^3.5.0",
         "react-native-fast-image": "^6.1.1",

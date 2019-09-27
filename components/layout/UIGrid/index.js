@@ -68,16 +68,27 @@ const styles = StyleSheet.create({
 type Props = {
     /** @ignore */
     children?: any,
-    /** gap between columns */
+    /** gap between columns
+    @default 16
+    */
     gutter: number,
-    /** gap between rows */
+    /** gap between rows
+    @default 0
+    */
     rowGutter: number,
-    /** One of: UIGrid.Type.C6, UIGrid.Type.C8, UIGrid.Type.C12 */
+    /** One of
+    UIGrid.Type.C6,
+    UIGrid.Type.C8,
+    UIGrid.Type.C12
+    @default UIGrid.Type.C8
+    */
     type: string,
-    /** custom style */
+    /** custom style
+    @default null
+    */
     style?: StylePropType,
     /** width of grid, if not set it's '100%'
-    * @default 0
+    * @default null
     */
     width?: number,
 };
@@ -173,16 +184,6 @@ export default class UIGrid extends UIComponent<Props, State> {
 
     render() {
         if (!this.props.children) return null;
-        if (this.state.width === 0) {
-            return (<View
-                style={[
-                    UIStyle.Width.full(),
-                    this.props.style,
-                ]}
-                onLayout={this.onLayout}
-            />);
-        }
-
         const childrenCount = this.props.children?.length || 1;
         const children = childrenCount > 1 ?
             this.props.children :
@@ -206,6 +207,11 @@ export default class UIGrid extends UIComponent<Props, State> {
                 paddingHorizontal: this.getContainerPadding(),
             },
             this.props.style,
+            // if width isn't known, we'll know it at first in this.onLayout
+            // and then render:
+            {
+                opacity: this.state.width === 0 ? 0 : 100,
+            },
         ];
 
         return (

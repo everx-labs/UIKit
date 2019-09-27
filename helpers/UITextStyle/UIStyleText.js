@@ -26,6 +26,10 @@ export default class UIStyleText {
         return UITextStyle.tertiary;
     }
 
+    static action() {
+        return UITextStyle.action;
+    }
+
     // [Text]
     // Title - fontSize: 36, lineHeight: 48
     static titleLight() {
@@ -196,6 +200,9 @@ export default class UIStyleText {
     // Small - fontSize: 16, lineHeight: 20
     static quaternarySmallRegular() {
         return UITextStyle.quaternarySmallRegular;
+    }
+    static quaternarySmallMedium() {
+        return UITextStyle.quaternarySmallMedium;
     }
     // Caption - fontSize: 14, lineHeight: 20
     static quaternaryCaptionRegular() {

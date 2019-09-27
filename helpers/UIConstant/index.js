@@ -5,7 +5,7 @@ import UIColor from '../UIColor';
 const UI_ANIMATION_DURATION = 250;
 const UI_ANIMATION_SMALL_DURATION = 100;
 const UI_FEEDBACK_DELAY = 100;
-const UI_SWIPE_THRESHOLD = 100;
+const UI_SWIPE_THRESHOLD = 50;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
 const UI_MAX_SCROLL_EVENT_THROTTLE = 16;
@@ -94,7 +94,6 @@ const UI_PASSWORD_PROMPT_WIDTH = 416;
 const UI_NOTICE_WIDTH = 360;
 const UI_TOAST_WIDTH = 328;
 
-const UI_ACTIONSHEET_ITEM_HEIGHT = 48;
 const UI_MENU_WIDTH = 176; // menu for web
 
 const UI_TOOLTIP_MAX_WIDTH = 288;
@@ -457,11 +456,6 @@ export default class UIConstant {
 
     static toastWidth() {
         return UI_TOAST_WIDTH;
-    }
-
-    // Action sheet
-    static actionSheetItemHeight() {
-        return UI_ACTIONSHEET_ITEM_HEIGHT;
     }
 
     // Menu for web

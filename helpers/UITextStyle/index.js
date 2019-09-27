@@ -10,7 +10,7 @@ const text = {
     textAlign: 'left',
 };
 
-const primary = {
+export const primary = {
     ...text,
     color: UIColor.textPrimary(),
 };
@@ -30,7 +30,7 @@ const secondaryDark = {
     color: UIColor.textSecondary(UIColor.Theme.Dark),
 };
 
-const quaternary = {
+export const quaternary = {
     ...text,
     color: UIColor.textQuaternary(),
 };
@@ -106,6 +106,9 @@ const UITextStyle = StyleSheet.create({
     },
     tertiary: {
         ...tertiary,
+    },
+    action: {
+        ...action,
     },
 
     // [Text]
@@ -329,6 +332,10 @@ const UITextStyle = StyleSheet.create({
     quaternarySmallRegular: {
         ...quaternary,
         ...UIFont.smallRegular(),
+    },
+    quaternarySmallMedium: {
+        ...quaternary,
+        ...UIFont.smallMedium(),
     },
     // Caption - fontSize: 14, lineHeight: 20
     quaternaryCaptionRegular: {

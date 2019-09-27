@@ -14,7 +14,7 @@ export type ActionProps = {
     testID?: string,
     disabled?: boolean,
     showIndicator?: boolean,
-    onPress?: () => void,
+    onPress?: ?() => void,
     onMouseEnter?: () => void,
     onMouseLeave?: () => void,
 };

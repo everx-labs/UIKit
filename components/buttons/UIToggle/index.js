@@ -19,12 +19,14 @@ export default class UIToggle extends UIComponent {
 
     // Render
     renderIcon() {
-        const { active, colored } = this.props;
+        const {
+            active, colored, iconActive, iconInactive,
+        } = this.props;
         let source;
         if (colored) {
-            source = active ? icoOn : icoOff;
+            source = active ? (iconActive || icoOn) : (iconInactive || icoOff);
         } else {
-            source = active ? icoActive : icoInactive;
+            source = active ? (iconActive || icoActive) : (iconInactive || icoInactive);
         }
         return (<Image source={source} />);
     }
@@ -51,9 +53,13 @@ UIToggle.defaultProps = {
     colored: false,
     onPress: () => {},
     testID: null,
+    iconActive: null,
+    iconInactive: null,
 };
 
 UIToggle.propTypes = {
+    iconActive: PropTypes.string,
+    iconInactive: PropTypes.string,
     containerStyle: StylePropType,
     active: PropTypes.bool,
     colored: PropTypes.bool,

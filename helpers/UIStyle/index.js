@@ -13,6 +13,7 @@ import UIStyleFlex from './UIStyleFlex';
 import UIStyleText from '../UITextStyle/UIStyleText';
 import UIStyleWidth from './UIStyleWidth';
 import UIStyleColor from './UIStyleColor';
+import UIStyleContainer from './UIStyleContainer';
 
 const absoluteFillWidthContainer = {
     position: 'absolute',
@@ -117,6 +118,9 @@ const UIStyle = StyleSheet.create({
     },
     textAlignRight: {
         textAlign: 'right',
+    },
+    justifyStart: {
+        justifyContent: 'flex-start',
     },
     justifyCenter: {
         justifyContent: 'center',
@@ -419,6 +423,9 @@ const UIStyle = StyleSheet.create({
     cellBorderBottom: {
         ...cellBorderBottom,
     },
+    borderRadiusDefault: {
+        borderRadius: UIConstant.borderRadius(),
+    },
 
     // colors
     backgroundPrimaryColor: {
@@ -614,6 +621,7 @@ const UIStyle = StyleSheet.create({
 UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
 UIStyle.Common = UIStyleCommon;
+UIStyle.Container = UIStyleContainer;
 UIStyle.Flex = UIStyleFlex;
 UIStyle.Height = UIStyleHeight;
 UIStyle.Margin = UIStyleMargin;

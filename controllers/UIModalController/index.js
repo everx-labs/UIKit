@@ -52,6 +52,13 @@ export type ModalControllerState = ControllerState & {
     header?: React$Node,
 };
 
+export type ModalControllerShowArgs = ?boolean | {
+    open?: boolean,
+    onCancel?: () => void,
+    onSubmit?: () => void,
+    onSelect?: (any) => void,
+};
+
 const styles = StyleSheet.create({
     dialogOverflow: {
         overflow: 'hidden',
@@ -71,6 +78,8 @@ export default class UIModalController<Props, State>
     modal: boolean;
     adjustBottomSafeAreaInsetDynamically: boolean;
     onCancel: ?(() => void);
+    onSelect: ?((any) => void);
+    onSubmit: ?(() => void);
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
     marginBottom: Animated.Value;
@@ -93,6 +102,8 @@ export default class UIModalController<Props, State>
         this.adjustBottomSafeAreaInsetDynamically = true;
         this.dialog = null;
         this.onCancel = null;
+        this.onSubmit = null;
+        this.onSelect = null;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
@@ -297,7 +308,28 @@ export default class UIModalController<Props, State>
         }
     }
 
-    async show(open: boolean = true, data: any) {
+    async show(arg: ModalControllerShowArgs) {
+        let open;
+        if (!arg) {
+            open = true;
+        } else if (typeof arg === 'boolean') {
+            open = arg;
+        } else if (arg && typeof arg === 'object') {
+            if (!arg.open) {
+                open = true;
+            } else {
+                open = arg.open;
+            }
+            if (arg.onCancel) {
+                this.onCancel = arg.onCancel;
+            }
+            if (arg.onSubmit) {
+                this.onSubmit = arg.onSubmit;
+            }
+            if (arg.onSelect) {
+                this.onSelect = arg.onSelect;
+            }
+        }
         this.setInitialSwipeState();
         await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);
         if (open) {
