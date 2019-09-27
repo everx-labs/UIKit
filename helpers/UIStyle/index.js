@@ -452,7 +452,6 @@ const UIStyle = StyleSheet.create({
     screenContainer: {
         flex: 1,
         flexDirection: 'column',
-        // alignItems: 'center',
     },
     pageContainer: {
         ...pageContainer,
@@ -615,6 +614,9 @@ const UIStyle = StyleSheet.create({
     },
     fullOpacity: {
         opacity: 1,
+    },
+    displayNone: {
+        display: 'none',
     },
 });
 

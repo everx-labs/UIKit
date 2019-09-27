@@ -9,6 +9,12 @@ import UIConstant from '../../helpers/UIConstant';
 const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
 
+type BankCardNumberArgs = {
+    number: string,
+    raw?: boolean,
+    presumed?: boolean,
+}
+
 export default class UIFunction {
     // 'No operation' closure. Useful in case when callback/handler must be specified but
     // without real work.
@@ -402,5 +408,50 @@ export default class UIFunction {
         const date = new Date();
         date.setDate(date.getDate() + days);
         document.cookie = `${key}=${value}; path=/; expires=${date.toUTCString()}`;
+    }
+
+    static bankCardTypes = {
+        masterCard: 'masterCard',
+        maestro: 'maestro',
+        visa: 'visa',
+    };
+
+    static getBankCardType({ number = '', raw = true, presumed = false }: BankCardNumberArgs) {
+        const rawNumber = raw ? number : number.replace(/[^0-9]/gim, '');
+        const regEx = {
+            [this.bankCardTypes.visa]: /^4[0-9]{12}(?:[0-9]{3})?$/,
+            [this.bankCardTypes.masterCard]: /^5[1-5][0-9]{5,}|222[1-9][0-9]{3,}|22[3-9][0-9]{4,}|2[3-6][0-9]{5,}|27[01][0-9]{4,}|2720[0-9]{3,}$/,
+            [this.bankCardTypes.maestro]: /^(5018|5020|5038|5612|5893|6304|6759|6761|6762|6763|0604|6390)\d+$/,
+            // for future using
+            // amex: /^3[47][0-9]{13}$/,
+            // diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
+            // discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
+            // jcb: /^(?:2131|1800|35\d{3})\d{11}$/,
+            // dankort: /^(5019)\d+$/,
+            // interpayment: /^(636)\d+$/,
+            // unionpay: /^(62|88)\d+$/,
+            // electron: /^(4026|417500|4405|4508|4844|4913|4917)\d+$/,
+        };
+
+        const numbers = {
+            [this.bankCardTypes.visa]: '4916338506082832',
+            [this.bankCardTypes.masterCard]: '5280934283171080',
+            [this.bankCardTypes.maestro]: '5018000000000000',
+        };
+
+        const results = {};
+        Object.keys(regEx).forEach((key) => {
+            const fullNumber = presumed ? `${rawNumber}${numbers[key].substr(rawNumber.length)}` : rawNumber;
+            if (regEx[key].test(fullNumber)) {
+                if (presumed || rawNumber.length === 16) {
+                    results[key] = true;
+                }
+            }
+        });
+        if (presumed) {
+            return results;
+        }
+        const arr = Object.keys(results).map(key => key);
+        return arr[0] || null;
     }
 }

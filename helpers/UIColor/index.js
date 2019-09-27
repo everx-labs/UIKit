@@ -143,6 +143,10 @@ export default class UIColor {
         return UIColorPalette.black80;
     }
 
+    static white20() {
+        return UIColorPalette.white20;
+    }
+
     static white40() {
         return UIColorPalette.white40;
     }

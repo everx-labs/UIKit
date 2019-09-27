@@ -196,6 +196,10 @@ export default class UIStyleCommon {
         return UIStyle.absoluteFillWidthContainer;
     }
 
+    static displayNone() {
+        return UIStyle.displayNone;
+    }
+
     // custom
     static icon() {
         return UIStyle.icon;

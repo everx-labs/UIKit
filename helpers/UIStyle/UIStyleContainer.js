@@ -13,6 +13,10 @@ export default class UIStyleContainer {
         return UIStyle.fullWidthPaddingCenterContainer;
     }
 
+    static screen() {
+        return UIStyle.screenContainer;
+    }
+
     static page() {
         return UIStyle.pageContainer;
     }
