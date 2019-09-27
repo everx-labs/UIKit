@@ -27,6 +27,7 @@ const CenterView = (props: Props) => {
                         UIStyle.Width.full(),
                         UIStyle.Padding.default(),
                         UIStyle.Color.getBackgroundColorStyle(UIColor.whiteLight()),
+                        props.style,
                     ]}
                 >
                     {props.children}

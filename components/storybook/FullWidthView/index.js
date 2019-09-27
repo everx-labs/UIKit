@@ -19,6 +19,7 @@ const FullWidthView = (props: Props) => {
             <ScrollView
                 style={[
                     UIStyle.Width.full(),
+                    UIStyle.Height.full(),
                     UIStyle.Padding.default(),
                 ]}
             >

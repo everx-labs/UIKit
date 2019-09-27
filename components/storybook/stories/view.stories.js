@@ -24,7 +24,7 @@ const icoActiveDefault = getUri(require('../../../assets/ico-toggle-active/ico-t
 const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'), 24, 24);
 
 storiesOf(Constants.CategoryView, module)
-    .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
+    .addDecorator(getStory => <CenterView style={UIStyle.Color.getBackgroundColorStyle(UIColor.white())}>{getStory()}</CenterView>)
     .add('UITransactionView', () => (
         <UITransactionView
             cacheKey="amountTransaction"
