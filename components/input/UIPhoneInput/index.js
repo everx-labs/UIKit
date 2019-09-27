@@ -45,7 +45,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
 
     getComment() {
         const { value, comment } = this.props;
-        if (value && this.isSubmitDisabled() && this.state.highlightError) {
+        if (value && this.isSubmitDisabled() && this?.state?.highlightError) {
             return UILocalized.InvalidPhone;
         }
         return comment;
