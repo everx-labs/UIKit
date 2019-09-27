@@ -14,7 +14,7 @@ import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UIButtonGroup from './components/buttons/UIButtonGroup';
-import UICardNumberInput from './components/input/UICardNumberInput';
+import UIBankCardNumberInput from './components/input/UIBankCardNumberInput';
 import UIChatInput from './components/chat/UIChatInput';
 import UIChatMessageCell from './components/chat/cells/UIChatMessageCell';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
@@ -151,7 +151,7 @@ export {
     UIBullet,
     UIButton,
     UIButtonGroup,
-    UICardNumberInput,
+    UIBankCardNumberInput,
     UICard,
     UIChatInput,
     UIChatMessageCell,

@@ -9,7 +9,7 @@ import UIFunction from '../../../helpers/UIFunction';
 import UIStyle from '../../../helpers/UIStyle';
 import type { DetailsProps } from '../../input/UIDetailsInput';
 
-import TONAssets from '../../../../../assets/TONAssets';
+import UIAssets from '../../../assets/UIAssets';
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 
@@ -21,7 +21,7 @@ type State = {
     highlightError: boolean,
 };
 
-export default class UICardNumberInput extends UIComponent<Props, State> {
+export default class UIBankCardNumberInput extends UIComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -81,13 +81,13 @@ export default class UICardNumberInput extends UIComponent<Props, State> {
     getComment() {
         const { value, comment } = this.props;
         if (value && !this.areSomePresumedCardTypes() && this.state.highlightError) {
-            return UILocalized.invalidCardNumber;
+            return UILocalized.InvalidBankCardNumber;
         }
         return comment;
     }
 
     getPlaceholder() {
-        return this.props.placeholder || UILocalized.cardNumber;
+        return this.props.placeholder || UILocalized.BankCardNumber;
     }
 
     // Render
@@ -95,15 +95,15 @@ export default class UICardNumberInput extends UIComponent<Props, State> {
         const presumedCards = this.getPresumedCardTypes();
         const { visa, masterCard, maestro } = UIFunction.bankCardTypes;
         const visaImage = presumedCards[visa]
-            ? <Image source={TONAssets.icoVisa()} />
+            ? <Image source={UIAssets.icoVisa()} />
             : null;
         const masterCardStyle = visaImage ? UIStyle.Margin.leftSmall() : null;
         const masterCardImage = presumedCards[masterCard]
-            ? <Image source={TONAssets.icoMastercard()} style={masterCardStyle} />
+            ? <Image source={UIAssets.icoMastercard()} style={masterCardStyle} />
             : null;
         const maestroStyle = visaImage || masterCardImage ? UIStyle.Margin.leftSmall() : null;
         const maestroImage = presumedCards[maestro]
-            ? <Image source={TONAssets.icoMaestro()} style={maestroStyle} />
+            ? <Image source={UIAssets.icoMaestro()} style={maestroStyle} />
             : null;
         return (
             <View style={UIStyle.Container.centerLeft()}>
