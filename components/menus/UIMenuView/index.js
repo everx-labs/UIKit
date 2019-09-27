@@ -51,8 +51,10 @@ export default class UIMenuView extends UIComponent<Props, State> {
         }
     }
 
+    firstClickIgnored: boolean;
     constructor(props: Props) {
         super(props);
+        this.firstClickIgnored = false;
         this.state = {
             isVisible: false,
             triggerWidth: 0,
@@ -74,10 +76,10 @@ export default class UIMenuView extends UIComponent<Props, State> {
         }
     };
 
-    onOpenMenu = () => {
+    onOpenMenu = (ignoreFirstClick: boolean = false) => {
         if (Platform.OS === 'web' || UIDevice.isTablet()) {
             this.setIsVisible();
-            this.initClickListenerForWeb();
+            this.initClickListenerForWeb(ignoreFirstClick);
             UIMenuBackground.initBackgroundForTablet();
             masterRef = this;
         } else {
@@ -85,6 +87,14 @@ export default class UIMenuView extends UIComponent<Props, State> {
             UIActionSheet.show(menuItemsList, needCancelItem, onCancelCallback);
         }
     };
+
+    // When using `LongPress` to display the menu, it is necessary to ignore
+    // the first click event that occurs once releasing the click/touch on web
+    // otherwise, the menu will hide automatically once releasing the touch/click
+    // preventing to be able to select any option from the menu.
+    openMenu() {
+        this.onOpenMenu(true);
+    }
 
     // Setters
     setIsVisible(isVisible: boolean = true) {
@@ -115,6 +125,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
     // Actions
     hideMenu() {
         if (Platform.OS === 'web' || UIDevice.isTablet()) {
+            this.firstClickIgnored = false;
             this.setIsVisible(false);
             this.deinitClickListenerForWeb();
             UIMenuBackground.hideBackgroundForTablet();
@@ -123,12 +134,16 @@ export default class UIMenuView extends UIComponent<Props, State> {
     }
 
     clickListener: (e: any) => void;
-    initClickListenerForWeb() {
+    initClickListenerForWeb(ignoreFirstClick: boolean = false) {
         if (Platform.OS !== 'web') {
             return;
         }
         const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
         this.clickListener = (e: any) => {
+            if (ignoreFirstClick && !this.firstClickIgnored) {
+                this.firstClickIgnored = true;
+                return;
+            }
             const eventResult = UIEventHelper.checkEventTarget(e, MENU_TRIGGER);
             if (!eventResult) {
                 this.hideMenu();

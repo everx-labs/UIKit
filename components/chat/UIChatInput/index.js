@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     btnMenuContainer: {
         alignSelf: 'flex-end',
         marginHorizontal: UIConstant.smallContentOffset(),
+        paddingBottom: UIConstant.tinyContentOffset() / 2,
     },
     btnMenu: {
         alignItems: 'center',
@@ -61,6 +62,9 @@ const styles = StyleSheet.create({
     messageInput: {
         alignSelf: 'flex-end',
         marginVertical: 0,
+    },
+    inputMsg: {
+        paddingBottom: UIConstant.tinyContentOffset(),
     },
 });
 
@@ -204,10 +208,11 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     renderTextFragment() {
+        const extraStyle = Platform.OS !== 'web' ? styles.inputMsg : null;
         return (
             <React.Fragment>
                 {this.renderMenu(true)}
-                <View style={UIStyle.screenContainer}>
+                <View style={[UIStyle.screenContainer, extraStyle]}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
                 </View>
