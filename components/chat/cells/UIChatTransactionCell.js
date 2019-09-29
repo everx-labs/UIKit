@@ -164,7 +164,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const conner = trx.out ? styles.rightConner : styles.leftConner;
-        const amount = trx.out ? `- ${extra.amountLocalized}` : `${extra.amountLocalized}`;
+        const amount = trx.out ? `- ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
         const color = this.getCardColor();
         const date = Moment(this.getDate()).format('D MMM LT');
 
@@ -187,7 +187,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                             UIStyle.Margin.rightHuge(),
                             styles.textWhite,
                         ]}
-                        role={UILabel.Role.Caption}
+                        role={UILabel.Role.SmallMedium}
                         text={this.getText()}
                     />
                     <UIBalanceView
