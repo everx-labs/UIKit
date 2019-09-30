@@ -342,11 +342,11 @@ export default class UIDetailsInput<Props, State>
         return this.props.defaultValue;
     }
 
-    placeholder(): string {
+    getPlaceholder(): string {
         return this.props.placeholder;
     }
 
-    required(): boolean {
+    getRequired(): boolean {
         return this.props.required;
     }
 
@@ -365,11 +365,11 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        const required = this.required();
+        const required = this.getRequired();
         if (required) {
             return '';
         }
-        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.getPlaceholder();
     }
 
 
@@ -403,7 +403,7 @@ export default class UIDetailsInput<Props, State>
         const emptyValue = !value || !value.length;
         const text = !floatingTitle || (emptyValue && !this.isFocused())
             ? ' '
-            : floatingTitleText || this.placeholder();
+            : floatingTitleText || this.getPlaceholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
@@ -578,7 +578,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderRequiredPlaceholder() {
-        const placeholder = this.placeholder();
+        const placeholder = this.getPlaceholder();
         if (this.state.focused) {
             return null;
         }
@@ -597,7 +597,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextFragment() {
-        const required = this.required();
+        const required = this.getRequired();
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
