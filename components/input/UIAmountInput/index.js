@@ -65,7 +65,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     // Getters
     getInlinePlaceholder() {
-        return this.hidePlaceholder() || this.isFocused() ? '' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? '' : this.getPlaceholder();
     }
 
     getInputPlaceholderColor() {
@@ -131,7 +131,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         const { floatingTitle, value, theme } = this.props;
         const text = (!floatingTitle || !value) && !this.isFocused()
             ? ' '
-            : this.placeholder();
+            : this.getPlaceholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
