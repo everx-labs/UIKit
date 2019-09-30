@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
         marginLeft: UIConstant.tinyContentOffset(),
         height: undefined,
     },
+    requiredAsterisk: {
+        color: UIColor.primary(),
+    },
 });
 
 export type DetailsProps = ActionProps & {
@@ -99,6 +102,7 @@ export type DetailsProps = ActionProps & {
     onKeyPress?: (e: any) => void,
     onHeightChange?: (height: number) => void,
     placeholder?: string,
+    required?: boolean,
     returnKeyType?: ReturnKeyType,
     rightComponent?: React$Node,
     secureTextEntry: boolean,
@@ -140,6 +144,7 @@ export const detailsDefaultProps = {
     onHeightChange: () => {},
     onPressComment: null,
     placeholder: '',
+    required: false,
     secureTextEntry: false,
     showSymbolsLeft: false,
     submitDisabled: false,
@@ -337,8 +342,12 @@ export default class UIDetailsInput<Props, State>
         return this.props.defaultValue;
     }
 
-    placeholder() {
+    getPlaceholder(): string {
         return this.props.placeholder;
+    }
+
+    getRequired(): boolean {
+        return this.props.required;
     }
 
     hidePlaceholder() {
@@ -356,7 +365,11 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
-        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.placeholder();
+        const required = this.getRequired();
+        if (required) {
+            return '';
+        }
+        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.getPlaceholder();
     }
 
 
@@ -390,7 +403,7 @@ export default class UIDetailsInput<Props, State>
         const emptyValue = !value || !value.length;
         const text = !floatingTitle || (emptyValue && !this.isFocused())
             ? ' '
-            : floatingTitleText || this.placeholder();
+            : floatingTitleText || this.getPlaceholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
@@ -564,6 +577,29 @@ export default class UIDetailsInput<Props, State>
         return this.props.rightComponent;
     }
 
+    renderRequiredPlaceholder() {
+        const required = this.getRequired();
+        if (!required) {
+            return null;
+        }
+        if (this.state.focused || this.props.value) {
+            return null;
+        }
+        const placeholder = this.getPlaceholder();
+        return (
+            <Text style={[UIStyle.Text.tertiaryBodyRegular(), UIStyle.Common.positionAbsolute()]}>
+                {placeholder}
+                <Text
+                    style={[
+                        UIStyle.Text.tertiaryBodyRegular(),
+                        styles.requiredAsterisk,
+                    ]}
+                > *
+                </Text>
+            </Text>
+        );
+    }
+
     renderTextFragment() {
         return (
             <React.Fragment>
@@ -571,6 +607,7 @@ export default class UIDetailsInput<Props, State>
                 <View style={UIStyle.Container.screen()}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
+                    {this.renderRequiredPlaceholder()}
                 </View>
                 {this.renderCounter()}
                 {this.renderToken()}
