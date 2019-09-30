@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     btnMenuContainer: {
         alignSelf: 'flex-end',
         marginHorizontal: UIConstant.smallContentOffset(),
-        paddingBottom: UIConstant.tinyContentOffset() / 2,
     },
     btnMenu: {
         alignItems: 'center',

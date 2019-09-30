@@ -39,7 +39,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         return commentColor;
     }
 
-    placeholder() {
+    getPlaceholder() {
         return this.props.placeholder || UILocalized.Phone;
     }
 
@@ -98,7 +98,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
                 {...commentColorProp}
                 onBlur={this.onBlur}
                 keyboardType="phone-pad"
-                placeholder={this.placeholder()}
+                placeholder={this.getPlaceholder()}
                 comment={this.getComment()}
                 submitDisabled={this.isSubmitDisabled()}
                 onChangeText={this.onChangeText}
