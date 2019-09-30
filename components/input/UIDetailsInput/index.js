@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
         marginLeft: UIConstant.tinyContentOffset(),
         height: undefined,
     },
+    requiredAsterisk: {
+        color: UIColor.primary(),
+    },
 });
 
 export type DetailsProps = ActionProps & {
@@ -339,8 +342,12 @@ export default class UIDetailsInput<Props, State>
         return this.props.defaultValue;
     }
 
-    placeholder() {
+    placeholder(): string {
         return this.props.placeholder;
+    }
+
+    required(): boolean {
+        return this.props.required;
     }
 
     hidePlaceholder() {
@@ -358,6 +365,10 @@ export default class UIDetailsInput<Props, State>
     }
 
     getInlinePlaceholder() {
+        const required = this.required();
+        if (required) {
+            return '';
+        }
         return this.hidePlaceholder() || this.isFocused() ? ' ' : this.placeholder();
     }
 
@@ -566,13 +577,34 @@ export default class UIDetailsInput<Props, State>
         return this.props.rightComponent;
     }
 
+    renderRequiredPlaceholder() {
+        const placeholder = this.placeholder();
+        if (this.state.focused) {
+            return null;
+        }
+        return (
+            <Text style={[UIStyle.Text.tertiaryBodyRegular(), UIStyle.Common.positionAbsolute()]}>
+                {placeholder}
+                <Text
+                    style={[
+                        UIStyle.Text.tertiaryBodyRegular(),
+                        styles.requiredAsterisk,
+                    ]}
+                > *
+                </Text>
+            </Text>
+        );
+    }
+
     renderTextFragment() {
+        const required = this.required();
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
                 <View style={UIStyle.Container.screen()}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
+                    {required ? this.renderRequiredPlaceholder() : null}
                 </View>
                 {this.renderCounter()}
                 {this.renderToken()}
