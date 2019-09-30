@@ -1,42 +1,71 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, Text } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import UIStyle from '../../../helpers/UIStyle';
 import UIColor from '../../../helpers/UIColor';
 import UIFont from '../../../helpers/UIFont';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
-class UIProfileInitials extends UIComponent {
+
+type Props = {
+    id?: any,
+    initials?: string,
+    textStyle?: ViewStyleProp,
+    containerStyle?: ViewStyleProp,
+    avatarSize: number,
+};
+
+type Style = {};
+
+const styles = StyleSheet.create({
+    textStyle: {
+        textAlign: 'center',
+        alignSelf: 'center',
+        ...UIFont.titleLight(),
+        color: UIColor.white(),
+        letterSpacing: 0,
+    },
+});
+
+class UIProfileInitials extends UIComponent<Props, Style> {
+    static defaultProps = {
+        id: null,
+        initials: '',
+        textStyle: null,
+        containerStyle: null,
+        avatarSize: UIConstant.profilePhotoSize(),
+    };
+
     getBackgroundColor() {
         const { id } = this.props;
         return UIColor.getAvatarBackgroundColor(id);
     }
 
-    render() {
-        const { avatarSize, initials } = this.props;
-        const styles = StyleSheet.create({
-            avatarContainer: {
-                width: avatarSize,
-                height: avatarSize,
-                borderRadius: avatarSize / 2.0,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: this.getBackgroundColor(),
-            },
-            textStyle: {
-                textAlign: 'center',
-                alignSelf: 'center',
-                ...UIFont.titleLight(),
-                color: UIColor.white(),
-            },
-        });
+    getAvatarContainer(): ViewStyleProp {
+        const { avatarSize } = this.props;
+        return {
+            width: avatarSize,
+            height: avatarSize,
+            borderRadius: avatarSize / 2.0,
+            backgroundColor: this.getBackgroundColor(),
+        };
+    }
 
-        const { avatarContainer, textStyle } = styles;
+    render() {
+        const { initials } = this.props;
         return (
-            <View style={[avatarContainer, this.props.containerStyle]}>
-                <Text style={[textStyle, this.props.textStyle, { letterSpacing: 0 }]}>
+            <View
+                style={[
+                    UIStyle.Common.alignCenter(),
+                    UIStyle.justifyCenter,
+                    this.getAvatarContainer(),
+                    this.props.containerStyle,
+                ]}
+            >
+                <Text style={[styles.textStyle, this.props.textStyle]}>
                     {initials}
                 </Text>
             </View>
@@ -45,19 +74,3 @@ class UIProfileInitials extends UIComponent {
 }
 
 export default UIProfileInitials;
-
-UIProfileInitials.defaultProps = {
-    id: null,
-    initials: '',
-    textStyle: null,
-    containerStyle: null,
-    avatarSize: UIConstant.profilePhotoSize(),
-};
-
-UIProfileInitials.propTypes = {
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    initials: PropTypes.string,
-    textStyle: StylePropType,
-    containerStyle: StylePropType,
-    avatarSize: PropTypes.number,
-};
