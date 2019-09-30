@@ -342,7 +342,7 @@ export default class UIDetailsInput<Props, State>
         return this.props.defaultValue;
     }
 
-    placeholder(): string {
+    getPlaceholder(): string {
         return this.props.placeholder;
     }
 
@@ -369,7 +369,7 @@ export default class UIDetailsInput<Props, State>
         if (required) {
             return '';
         }
-        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.placeholder();
+        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.getPlaceholder();
     }
 
 
@@ -403,7 +403,7 @@ export default class UIDetailsInput<Props, State>
         const emptyValue = !value || !value.length;
         const text = !floatingTitle || (emptyValue && !this.isFocused())
             ? ' '
-            : floatingTitleText || this.placeholder();
+            : floatingTitleText || this.getPlaceholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
             <Text style={[UITextStyle.tinyRegular, colorStyle]}>
@@ -585,7 +585,7 @@ export default class UIDetailsInput<Props, State>
         if (this.state.focused || this.props.value) {
             return null;
         }
-        const placeholder = this.placeholder();
+        const placeholder = this.getPlaceholder();
         return (
             <Text style={[UIStyle.Text.tertiaryBodyRegular(), UIStyle.Common.positionAbsolute()]}>
                 {placeholder}
