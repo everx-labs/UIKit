@@ -578,10 +578,14 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderRequiredPlaceholder() {
-        const placeholder = this.getPlaceholder();
+        const required = this.getRequired();
+        if (!required) {
+            return null;
+        }
         if (this.state.focused) {
             return null;
         }
+        const placeholder = this.getPlaceholder();
         return (
             <Text style={[UIStyle.Text.tertiaryBodyRegular(), UIStyle.Common.positionAbsolute()]}>
                 {placeholder}
@@ -597,14 +601,13 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderTextFragment() {
-        const required = this.getRequired();
         return (
             <React.Fragment>
                 {this.renderBeginningTag()}
                 <View style={UIStyle.Container.screen()}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
-                    {required ? this.renderRequiredPlaceholder() : null}
+                    {this.renderRequiredPlaceholder()}
                 </View>
                 {this.renderCounter()}
                 {this.renderToken()}
