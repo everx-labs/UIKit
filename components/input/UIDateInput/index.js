@@ -32,11 +32,41 @@ const styles = StyleSheet.create({
 });
 
 type Props = DetailsProps & {
+    /**
+    Deprecated, use style instead.
+    @ignore
+    */
     containerStyle?: StylePropType,
+    /**
+    Style of container.
+    @default null
+    */
+    style?: StylePropType,
+    /**
+    Together with separator, specifies date patern, for ex:
+    for 'YYYY.MM.DD' dateComponents are ['YYYY', 'MM', 'DD']
+    and separator is '.'
+    @default "['year', 'month', 'day']"
+    */
     dateComponents?: string[],
+    /**
+    @default null
+    */
     initialEpochTime?: number | null,
+    /**
+    Together with dateComponents, specifies date patern, for ex:
+    for 'YYYY.MM.DD' dateComponents are ['YYYY', 'MM', 'DD']
+    and separator is '.'
+    @default '.'
+    */
     separator?: string,
+    /**
+    Limits the maximum number of characters that can be entered.
+    */
     maxLength?: number,
+    /**
+    Callback with text date.
+    */
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
 type State = ActionState & {
@@ -48,6 +78,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     static defaultProps: DetailsProps = {
         ...UIDetailsInput.defaultProps,
         containerStyle: {},
+        style: null,
         dateComponents: ['year', 'month', 'day'],
         separator: '.',
         initialEpochTime: null,

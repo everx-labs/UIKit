@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 // @flow
 import React from 'react';
-import { Platform, TextInput, Text, View, StyleSheet } from 'react-native';
+import { Platform, TextInput, Text, View, StyleSheet, Image } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
@@ -64,55 +64,263 @@ const styles = StyleSheet.create({
     requiredAsterisk: {
         color: UIColor.primary(),
     },
+    prefixIcon: {
+        marginRight: 8,
+    },
 });
 
 export type DetailsProps = ActionProps & {
+    /**
+    @ignore
+    */
     accessibilityLabel?: string,
+    /**
+    If false, disables auto-correct.
+    @default false
+    */
     autoCorrect: boolean,
+    /**
+    Can tell TextInput to automatically capitalize certain characters. This property is not supported by some keyboard types such as name-phone-pad.
+    characters: all characters.
+    words: first letter of each word.
+    sentences: first letter of each sentence (default).
+    none: don't auto capitalize anything.
+    @default 'sentences'
+    */
     autoCapitalize: AutoCapitalize,
+    /**
+    If true, focuses the input on componentDidMount.
+    @default false
+    */
     autoFocus: boolean,
+    /**
+    Prefix for input value.
+    @default ''
+    */
     beginningTag: string,
+    /**
+    Object to describe right button, contains properties like UITextButton.
+    For ex, {title: "Action", icon: iconSrc, textStyle: {color: UIColor.black(), onPress: ()=>{}}}
+    @default null
+    */
     button?: Object,
+    /**
+    Style of container
+    @default null
+    */
+    style: ViewStyleProp,
+    /**
+    Style of container, deprecated
+    @ignore
+    */
     containerStyle: ViewStyleProp,
+    /**
+    Comment string (bottom)
+    @default null
+    */
     comment?: string | null,
+    /**
+    Color of comment string
+    @default
+    */
     commentColor?: string | null,
+    /**
+    If true, the text field will blur when submitted.
+    Note that for multiline fields, setting blurOnSubmit to true means that pressing return
+    will blur the field and trigger the onSubmitEditing event instead of inserting
+    a newline into the field.
+    @default 'true for single-line fields and false for multiline fields.'
+    */
     blurOnSubmit?: boolean,
+    /**
+    Color of bottom line
+    @default null
+    */
     bottomLineColor?: string | null,
+    /**
+    Initial value of input
+    @ignore
+    */
     defaultValue?: string,
+    /**
+    Cursor will return to input (focus again) if try to submit empty value
+    @default false
+    */
     disableSubmitEmpty: boolean,
+    /**
+    If false, text is not editable. The default value is true.
+    @default true
+    */
     editable: boolean,
+    /**
+    Text style.
+    @default {}
+    */
     inputStyle: ViewStyleProp,
+    /**
+    Use it for multiline input.
+    @default false
+    */
     forceMultiLine: boolean,
+    /**
+    Use it to show top label text.
+    @default false
+    */
     floatingTitle: boolean,
+    /**
+    Top label text. If not set and floatingTitle is true then placeholder is used.
+    @default ''
+    */
     floatingTitleText: string,
+    /**
+    Don't draw bottom input line.
+    @default false
+    */
     hideBottomLine: boolean,
+    /**
+    Don't draw top label text.
+    @default false
+    */
     hideFloatingTitle: boolean,
+    /**
+    Don't draw placeholder.
+    @default false
+    */
     hidePlaceholder: boolean,
+    /**
+    Determines which keyboard to open, e.g.numeric.
+    See https://facebook.github.io/react-native/docs/textinput#keyboardtype
+    @default 'default'
+    */
     keyboardType: KeyboardType,
+    /**
+    If true - highlight comment if empty value.
+    @default null
+    */
     mandatory?: boolean,
+    /**
+    Color of error comment on empty value.
+    @default null
+    */
     mandatoryColor?: string | null,
+    /**
+    Limits the maximum number of characters that can be entered.
+    @default null
+    */
     maxLength?: number,
+    /**
+    Limits the maximum lines of input field.
+    @default 1
+    */
     maxLines: number,
+    /**
+    Limits the maximum height of input field (in units, used in style).
+    @default null
+    */
     maxHeight?: number,
+    /**
+    @ignore
+    */
     needArrow?: boolean,
+    /**
+    Callback that is called when the text input is blurred.
+    */
     onBlur: () => void,
+    /**
+    Callback that is called when the text input's text changes.
+    Changed text is passed as a single string argument to the callback handler.
+    */
     onChangeText: (text: string) => void,
+    /**
+    Callback that is called when the text input is focused.
+    This is called with { nativeEvent: { target } }
+    */
     onFocus: () => void,
+    /**
+    Callback that is called when the text input's submit button is pressed
+    with the argument {nativeEvent: {text, eventCount, target}}.
+    Invalid if multiline={true} is specified.
+    */
     onSubmitEditing?: () => void,
+    /**
+    Callback that is called when a key is pressed.
+    This will be called with { nativeEvent: { key: keyValue } } where keyValue is 'Enter' or 'Backspace'
+    for respective keys and the typed-in character otherwise including ' ' for space.
+    Fires before onChange callbacks.
+    Note: on Android only the inputs from soft keyboard are handled, not the hardware keyboard inputs.
+    */
     onKeyPress?: (e: any) => void,
+    /**
+    Callback that is called when onChange called, with the new height
+    */
     onHeightChange?: (height: number) => void,
+    /**
+    The string that will be rendered before text input has been entered.
+    Also used as top label, if floatingTitle is true and floatingTitleText not set.
+    @default ''
+    */
     placeholder?: string,
+    /**
+    Use this flag to render * symbol, indicating that field is required.
+    @default false
+    */
     required?: boolean,
+    /**
+    Determines how the return key should look.
+    See https://facebook.github.io/react-native/docs/textinput#returnkeytype
+    @default null
+    */
     returnKeyType?: ReturnKeyType,
+    /**
+    Use any component for rendering in the right of input (such as actions, images etc.).
+    @default null
+    */
     rightComponent?: React$Node,
+    /**
+    If true, the text input obscures the text entered so that sensitive text like passwords stay secure.
+    The default value is false. Does not work with multiline={true}.
+    @default false
+    */
     secureTextEntry: boolean,
+    /**
+    If maxLengh is set, show how many symbols left to enter.
+    @default false
+    */
     showSymbolsLeft: boolean,
+    /**
+    True if submitting value is disabled.
+    @default false
+    */
     submitDisabled?: boolean,
+    /**
+    @ignore
+    */
     theme?: UIColorThemeNameType,
     token?: string,
+    /**
+    The value to show for the text input.
+    @default ''
+    */
     value: string,
+    /**
+    The value to show for the text input.
+    @default true
+    */
     visible: boolean,
+    /**
+    @ignore
+    */
     testID?: string,
+    /**
+    Prefix icon
+    @default null
+    */
+    prefixIcon?: ?string,
+    /**
+    Prefix icon color
+    @default null
+    */
+    prefixIconColor?: ?string,
 };
 
 export const detailsDefaultProps = {
@@ -147,10 +355,13 @@ export const detailsDefaultProps = {
     required: false,
     secureTextEntry: false,
     showSymbolsLeft: false,
+    style: null,
     submitDisabled: false,
     theme: UIColor.Theme.Light,
     value: '',
     visible: true,
+    prefixIcon: null,
+    prefixIconColor: null,
 };
 
 export default class UIDetailsInput<Props, State>
@@ -412,6 +623,16 @@ export default class UIDetailsInput<Props, State>
         );
     }
 
+    renderPrefixIcon() {
+        const { prefixIcon, prefixIconColor } = this.props;
+        if (!prefixIcon) return null;
+
+        const styleColor = prefixIconColor ? UIStyle.Color.getTintColorStyle(prefixIconColor) : null;
+        return (
+            <Image source={this.props.prefixIcon} style={[styles.prefixIcon, styleColor]} />
+        );
+    }
+
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
         const emptyValue = !this.props.value || !this.props.value.length;
@@ -543,8 +764,16 @@ export default class UIDetailsInput<Props, State>
         if (!button) {
             return null;
         }
+
+        const buttonTextStyle = [];
+        if (button.onPress && !button.disabled) {
+            buttonTextStyle.push(UIStyle.Text.primaryBodyMedium());
+        } else {
+            buttonTextStyle.push(UIStyle.Text.tertiaryBodyRegular());
+        }
+
         return (<UITextButton
-            textStyle={UIStyle.Color.getColorStyle(UIColor.textPrimary())}
+            textStyle={buttonTextStyle}
             {...button}
             buttonStyle={[styles.button, button.buttonStyle]}
         />);
@@ -603,6 +832,7 @@ export default class UIDetailsInput<Props, State>
     renderTextFragment() {
         return (
             <React.Fragment>
+                {this.renderPrefixIcon()}
                 {this.renderBeginningTag()}
                 <View style={UIStyle.Container.screen()}>
                     {this.renderAuxTextInput()}
@@ -697,7 +927,7 @@ export default class UIDetailsInput<Props, State>
         return (
             <View
                 {...eventProps}
-                style={[this.containerStyle(), this.props.containerStyle]}
+                style={[this.containerStyle(), this.props.containerStyle, this.props.style]}
             >
                 {this.renderFloatingTitle()}
                 {this.renderTextView()}

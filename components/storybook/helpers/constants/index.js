@@ -11,6 +11,7 @@ const CategoryRadio = 'Actions|Radio';
 const CategoryView = 'Design|Views';
 const CategoryNavigationUnfold = 'Navigation|Unfold';
 const CategoryModalPicker = 'Modal|Picker';
+const CategoryInput = 'Actions|Input';
 
 export default {
     CategoryButtonIcon,
@@ -26,4 +27,5 @@ export default {
     CategoryView,
     CategoryNavigationUnfold,
     CategoryModalPicker,
+    CategoryInput,
 };

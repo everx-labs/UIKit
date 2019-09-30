@@ -23,6 +23,8 @@ import {
     UIDetailsRadio,
     UICard,
     UIUnfold,
+    UIDetailsInput,
+    UIDateInput,
 } from '../../../UIKit';
 
 class Hidden extends React.Component {
@@ -83,9 +85,11 @@ if (Platform.OS === 'web') {
         .add('ButtonIcon', () => <UIActionIcon />, { info: { propTables: [UIActionIcon] } })
         .add('Card', () => <UICard />, { info: { propTables: [UICard] } })
         .add('Checkbox', () => <UIDetailsCheckbox />, { info: { propTables: [UIDetailsCheckbox] } })
+        .add('DateInput', () => <UIDateInput />, { info: { propTables: [UIDateInput] } })
+        .add('DetailsInput', () => <UIDetailsInput />, { info: { propTables: [UIDetailsInput] } })
         .add('Grid', () => <UIGrid />, { info: { propTables: [UIGrid] } })
         .add('Link', () => <UILink />, { info: { propTables: [UILink] } })
         .add('Radio', () => <UIDetailsRadio />, { info: { propTables: [UIDetailsRadio] } })
         .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } })
-        .add('UIUnfold', () => <UIUnfold />, { info: { propTables: [UIUnfold] } });
+        .add('Unfold', () => <UIUnfold />, { info: { propTables: [UIUnfold] } });
 }
