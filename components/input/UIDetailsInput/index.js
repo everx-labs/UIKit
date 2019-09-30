@@ -582,7 +582,7 @@ export default class UIDetailsInput<Props, State>
         if (!required) {
             return null;
         }
-        if (this.state.focused) {
+        if (this.state.focused || this.props.value) {
             return null;
         }
         const placeholder = this.getPlaceholder();
