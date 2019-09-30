@@ -36,12 +36,6 @@ type State = ActionState & {
 };
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        borderWidth: 1,
-        flex: 1,
-        flexDirection: 'row',
-        width: '100%',
-    },
     btnMenuContainer: {
         alignSelf: 'flex-end',
         marginHorizontal: UIConstant.smallContentOffset(),
@@ -58,12 +52,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'flex-end',
     },
-    messageInput: {
-        alignSelf: 'flex-end',
-        marginVertical: 0,
-    },
     inputMsg: {
-        paddingBottom: UIConstant.tinyContentOffset(),
+        marginVertical: 0,
+        paddingBottom: Platform.select({ // compensate mobile textContainer's default padding
+            ios: 10,
+            android: 10,
+        }),
     },
 });
 
@@ -207,11 +201,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     renderTextFragment() {
-        const extraStyle = Platform.OS !== 'web' ? styles.inputMsg : null;
         return (
             <React.Fragment>
                 {this.renderMenu(true)}
-                <View style={[UIStyle.screenContainer, extraStyle]}>
+                <View style={[UIStyle.Flex.x1(), styles.inputMsg]}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
                 </View>
