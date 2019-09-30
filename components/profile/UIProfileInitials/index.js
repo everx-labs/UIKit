@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -10,11 +11,11 @@ import UIComponent from '../../UIComponent';
 
 
 type Props = {
-    id?: string | number,
+    id?: any,
     initials?: string,
     textStyle?: ViewStyleProp,
     containerStyle?: ViewStyleProp,
-    avatarSize?: number,
+    avatarSize: number,
 };
 
 type Style = {};
