@@ -11,7 +11,6 @@ import {
     UIGrid,
     UITransactionView,
     UIBalanceView,
-    UIDetailsView,
     UIStyle,
     UIColor,
     UIComponent,
@@ -58,21 +57,6 @@ storiesOf(Constants.CategoryView, module)
                 separator=","
                 tokenSymbol="G"
                 loading
-            />
-        </UIButtonGroup>
-    ))
-    .add('UIDetailsView', () => (
-        <UIButtonGroup direction={UIButtonGroup.Direction.Column} gutter={8}>
-            <UIDetailsView
-                value="Details"
-                comments="Some comment here"
-                onPress={() => alert('Action was called')}
-            />
-            <UIDetailsView
-                reversed
-                value="Details"
-                comments="Some comment here"
-                onPress={() => alert('Action was called')}
             />
         </UIButtonGroup>
     ))
