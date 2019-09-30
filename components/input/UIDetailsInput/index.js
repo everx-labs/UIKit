@@ -108,7 +108,7 @@ export type DetailsProps = ActionProps & {
     Style of container
     @default null
     */
-    style: ViewStyleProp,
+    style?: ViewStyleProp,
     /**
     Style of container, deprecated
     @ignore
@@ -323,53 +323,12 @@ export type DetailsProps = ActionProps & {
     prefixIconColor?: ?string,
 };
 
-export const detailsDefaultProps = {
-    autoCapitalize: 'sentences',
-    autoCorrect: false,
-    autoFocus: false,
-    beginningTag: '',
-    containerStyle: {},
-    comment: '',
-    disableSubmitEmpty: false,
-    editable: true,
-    floatingTitle: true,
-    floatingTitleText: '',
-    forceMultiLine: false,
-    hideBottomLine: false,
-    hideFloatingTitle: false,
-    hidePlaceholder: false,
-    inputStyle: {},
-    keyboardType: 'default',
-    mandatory: false,
-    mandatoryColor: UIColor.error(),
-    maxLines: 1,
-    needArrow: false,
-    onBlur: () => {},
-    onChangeText: () => {},
-    onFocus: () => {},
-    onSubmitEditing: () => {},
-    onKeyPress: () => {},
-    onHeightChange: () => {},
-    onPressComment: null,
-    placeholder: '',
-    required: false,
-    secureTextEntry: false,
-    showSymbolsLeft: false,
-    style: null,
-    submitDisabled: false,
-    theme: UIColor.Theme.Light,
-    value: '',
-    visible: true,
-    prefixIcon: null,
-    prefixIconColor: null,
-};
-
 export default class UIDetailsInput<Props, State>
     extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & ActionState>> {
     textInput: ?TextInput;
     auxTextInput: ?any;
 
-    static defaultProps: DetailsProps = detailsDefaultProps;
+    static defaultProps: Props & DetailsProps;
 
     componentDidMount() {
         super.componentDidMount();
@@ -936,3 +895,44 @@ export default class UIDetailsInput<Props, State>
         );
     }
 }
+
+UIDetailsInput.defaultProps = {
+    autoCapitalize: 'sentences',
+    autoCorrect: false,
+    autoFocus: false,
+    beginningTag: '',
+    containerStyle: {},
+    comment: '',
+    disableSubmitEmpty: false,
+    editable: true,
+    floatingTitle: true,
+    floatingTitleText: '',
+    forceMultiLine: false,
+    hideBottomLine: false,
+    hideFloatingTitle: false,
+    hidePlaceholder: false,
+    inputStyle: {},
+    keyboardType: 'default',
+    mandatory: false,
+    mandatoryColor: UIColor.error(),
+    maxLines: 1,
+    needArrow: false,
+    onBlur: () => {},
+    onChangeText: () => {},
+    onFocus: () => {},
+    onSubmitEditing: () => {},
+    onKeyPress: () => {},
+    onHeightChange: () => {},
+    onPressComment: null,
+    placeholder: '',
+    required: false,
+    secureTextEntry: false,
+    showSymbolsLeft: false,
+    style: null,
+    submitDisabled: false,
+    theme: UIColor.Theme.Light,
+    value: '',
+    visible: true,
+    prefixIcon: null,
+    prefixIconColor: null,
+};

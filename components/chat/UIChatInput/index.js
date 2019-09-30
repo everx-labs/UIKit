@@ -22,11 +22,11 @@ import btnSend from '../../../assets/btn_msg_send/btn_msg_send.png';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
-    menuPlus?: MenuItemType[],
-    menuMore?: MenuItemType[],
-    quickAction?: MenuItemType,
+    menuPlus?: ?MenuItemType[],
+    menuMore?: ?MenuItemType[],
+    quickAction?: ?MenuItemType,
 
-    onSendText?: (text: string) => {},
+    onSendText?: (text: string) => void,
 };
 
 type State = ActionState & {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 });
 
 export default class UIChatInput extends UIDetailsInput<Props, State> {
-    static defaultProps = {
+    static defaultProps: Props = {
         ...UIDetailsInput.defaultProps,
         autoCapitalize: 'sentences',
         placeholder: UILocalized.TypeMessage,
@@ -83,7 +83,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         menuMore: null,
         quickAction: null,
 
-        onSendText: () => {},
+        onSendText: (text: string) => {},
     };
 
     constructor(props: Props) {

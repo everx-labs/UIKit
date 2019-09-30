@@ -2,7 +2,7 @@
 import React from 'react';
 
 import UIComponent from '../../UIComponent';
-import UIDetailsInput, { detailsDefaultProps } from '../UIDetailsInput';
+import UIDetailsInput from '../UIDetailsInput';
 import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
@@ -16,7 +16,7 @@ export type PhoneState = {
 type State = {};
 
 export default class UIPhoneInput extends UIComponent<DetailsProps, State & PhoneState> {
-    static defaultProps: DetailsProps = detailsDefaultProps;
+    static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
     phoneInput: ?UIDetailsInput<DetailsProps, State>;
 
     consructor(props: DetailsProps) {

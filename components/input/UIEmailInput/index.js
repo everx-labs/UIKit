@@ -2,7 +2,7 @@
 import React from 'react';
 
 import UIComponent from '../../UIComponent';
-import UIDetailsInput, { detailsDefaultProps } from '../UIDetailsInput';
+import UIDetailsInput from '../UIDetailsInput';
 import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
 import type { DetailsProps } from '../UIDetailsInput';
@@ -14,7 +14,7 @@ export type EmailState = {
 };
 
 export default class UIEmailInput extends UIComponent<DetailsProps, ActionState & EmailState> {
-    static defaultProps: DetailsProps = detailsDefaultProps;
+    static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
     emailInput: ?UIDetailsInput<DetailsProps, ActionState>;
 
     consructor(props: DetailsProps) {
