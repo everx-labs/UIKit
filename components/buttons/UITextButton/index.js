@@ -17,7 +17,6 @@ const TOOLTIP_WIDTH = 'auto';
 
 const styles = StyleSheet.create({
     floatingTitle: {
-        marginHorizontal: UIConstant.contentOffset(),
         marginBottom: -UIConstant.smallContentOffset(),
     },
     flexGrow1: {
