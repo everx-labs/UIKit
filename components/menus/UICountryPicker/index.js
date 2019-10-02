@@ -90,6 +90,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.cca2 = null;
         this.language = null;
         this.disabledCountries = [];
+        this.modalOnWeb = false;
 
         this.state = {
             expression: '',
@@ -117,10 +118,14 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     };
 
     onPickCountry = (country: Country) => {
-        this.hide();
-        this.setExpression('');
-        if (this.onSelect) {
-            this.onSelect(country);
+        const countryCCA2 = country.cca2 || '';
+        const disabledCountries = this.getDisabledCountries();
+        if (disabledCountries.indexOf(countryCCA2) === -1) {
+            this.hide();
+            this.setExpression('');
+            if (this.onSelect) {
+                this.onSelect(country);
+            }
         }
     };
 
@@ -136,6 +141,10 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         return this.state.expression;
     }
 
+    getDisabledCountries(): Array<string> {
+        return this.disabledCountries || [];
+    }
+
     // Setters
     setExpression(expression: string) {
         this.setStateSafely({ expression });
@@ -149,11 +158,13 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 language = 'eng',
                 cca2 = 'US',
                 disabledCountries = [],
+                modalOnWeb = false,
             } = args;
             this.fullscreen = fullscreen;
             this.cca2 = cca2;
             this.language = language;
             this.disabledCountries = disabledCountries;
+            this.modalOnWeb = modalOnWeb;
         }
         await super.show(args);
     }
