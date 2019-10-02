@@ -90,6 +90,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.cca2 = null;
         this.language = null;
         this.disabledCountries = [];
+        this.modalOnWeb = false;
 
         this.state = {
             expression: '',
@@ -149,11 +150,13 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 language = 'eng',
                 cca2 = 'US',
                 disabledCountries = [],
+                modalOnWeb = false,
             } = args;
             this.fullscreen = fullscreen;
             this.cca2 = cca2;
             this.language = language;
             this.disabledCountries = disabledCountries;
+            this.modalOnWeb = modalOnWeb;
         }
         await super.show(args);
     }
