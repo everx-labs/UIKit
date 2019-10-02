@@ -118,10 +118,14 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     };
 
     onPickCountry = (country: Country) => {
-        this.hide();
-        this.setExpression('');
-        if (this.onSelect) {
-            this.onSelect(country);
+        const countryCCA2 = country.cca2 || '';
+        const disabledCountries = this.getDisabledCountries();
+        if (disabledCountries.indexOf(countryCCA2) === -1) {
+            this.hide();
+            this.setExpression('');
+            if (this.onSelect) {
+                this.onSelect(country);
+            }
         }
     };
 
@@ -135,6 +139,10 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     // Getters
     getExpression() {
         return this.state.expression;
+    }
+
+    getDisabledCountries(): Array<string> {
+        return this.disabledCountries || [];
     }
 
     // Setters
