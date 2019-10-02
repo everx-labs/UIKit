@@ -16,6 +16,7 @@ import {
     UIComponent,
     UICard,
     UIButtonGroup,
+    UIQuote,
 } from '../../../UIKit';
 
 
@@ -24,6 +25,11 @@ const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.pn
 
 storiesOf(Constants.CategoryView, module)
     .addDecorator(getStory => <CenterView style={UIStyle.Color.getBackgroundColorStyle(UIColor.white())}>{getStory()}</CenterView>)
+    .add('UIQuote', () => (
+        <UIQuote>
+          <Text style={UIStyle.Text.secondaryBodyRegular()}>Quoted text.</Text>
+        <UIQuote/>
+    ))
     .add('UITransactionView', () => (
         <UITransactionView
             cacheKey="amountTransaction"

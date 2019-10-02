@@ -25,6 +25,7 @@ import {
     UIUnfold,
     UIDetailsInput,
     UIDateInput,
+    UIQuote,
 } from '../../../UIKit';
 
 class Hidden extends React.Component {
@@ -89,6 +90,7 @@ if (Platform.OS === 'web') {
         .add('DetailsInput', () => <UIDetailsInput />, { info: { propTables: [UIDetailsInput] } })
         .add('Grid', () => <UIGrid />, { info: { propTables: [UIGrid] } })
         .add('Link', () => <UILink />, { info: { propTables: [UILink] } })
+        .add('UIQuote', () => <UIQuote />, { info: { propTables: [UIQuote] } })
         .add('Radio', () => <UIDetailsRadio />, { info: { propTables: [UIDetailsRadio] } })
         .add('Toggle', () => <UIDetailsToggle />, { info: { propTables: [UIDetailsToggle] } })
         .add('Unfold', () => <UIUnfold />, { info: { propTables: [UIUnfold] } });

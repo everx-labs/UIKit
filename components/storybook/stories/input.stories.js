@@ -95,6 +95,11 @@ storiesOf(Constants.CategoryInput, module)
             />
             <UIDetailsInput
                 placeholder="Placeholder"
+                value="Input Autofocus"
+                autoFocus
+            />
+            <UIDetailsInput
+                placeholder="Placeholder"
                 value="Input"
                 button={{
                     title: 'Secondary',
