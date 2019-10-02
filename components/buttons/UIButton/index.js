@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = ActionProps & {
+export type ButtonProps = ActionProps & {
     /** Number for badged button
     @default 0
     */
@@ -103,14 +103,33 @@ type Props = ActionProps & {
     @default null
     */
     iconR?: ?string,
+    /** Custom style for left icon
+    @default null
+    */
+    iconStyle?: ?StylePropType,
+    /** Custom style for right icon
+    @default null
+    */
+    iconRStyle?: ?StylePropType,
     /** specify in addition to showIndicator props, one of:
         UIButton.Indicator.Spin,
         UIButton.Indicator.Round,
         UIButton.ButtonStyle.Sandglass,
-        UIButton.ButtonStyle.Pulse
+        UIButton.ButtonStyle.Pulse,
+        UIButton.ButtonStyle.Forward
         @default null
      */
     indicatorAnimation?: string,
+    /**
+    Custom icon for indicator
+    @default null
+    */
+    iconIndicator?: ?string,
+    /**
+    Custom style for indicator
+    @default null
+    */
+    iconIndicatorStyle?: ?StylePropType,
     /** button container style
     @default null
     */
@@ -136,7 +155,7 @@ type Props = ActionProps & {
 
 type State = ActionState;
 
-export default class UIButton extends UIActionComponent<Props, State> {
+export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static ButtonSize = {
         Default: 'default',
         Large: 'large',
@@ -163,12 +182,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
         Right: 'right',
     };
 
-    static Indicator = {
-        Spin: 'spin',
-        Round: 'round',
-        Sandglass: 'sandglass',
-        Pulse: 'pulse',
-    };
+    static Indicator = IconAnimation.Animation;
 
     insetKey: string;
 
@@ -286,12 +300,14 @@ export default class UIButton extends UIActionComponent<Props, State> {
             return null;
         }
 
-        const style = [this.getIconTintStyle()];
+        const style = [];
         if (this.props.title) {
             if (position === 'left') {
                 style.push(UIStyle.Margin.rightSmall());
+                style.push(this.props.iconStyle || this.getIconTintStyle());
             } else if (position === 'right') {
                 style.push(UIStyle.Margin.leftSmall());
+                style.push(this.props.iconRStyle || this.getIconTintStyle());
             }
         }
 
@@ -347,7 +363,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
         return (<IconAnimation
             icon={this.props.iconIndicator}
             animation={this.props.indicatorAnimation}
-            iconTintStyle={this.getIconTintStyle()}
+            iconTintStyle={this.props.iconIndicatorStyle || this.getIconTintStyle()}
         />);
     }
 
@@ -562,7 +578,7 @@ export default class UIButton extends UIActionComponent<Props, State> {
         return super.render();
     }
 
-    static defaultProps: Props;
+    static defaultProps: ButtonProps;
 }
 
 UIButton.defaultProps = {
@@ -581,8 +597,12 @@ UIButton.defaultProps = {
     theme: UIColor.Theme.Light,
     title: '',
     iconR: null,
+    iconStyle: null,
+    iconRStyle: null,
     style: null,
     textAlign: UIButton.TextAlign.Center,
     textStyle: null,
     indicatorAnimation: null,
+    iconIndicator: null,
+    iconIndicatorStyle: null,
 };
