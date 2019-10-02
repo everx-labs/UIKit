@@ -118,6 +118,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     onBlur = () => {
+        this.setFocused(false);
         this.setStateSafely({ highlightError: true });
         if (this.props.onBlur) {
             this.props.onBlur();
@@ -217,17 +218,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     // Render
-    renderFloatingTitle() {
-        const { floatingTitle } = this.props;
-        const date = this.getValue();
-        const text = !floatingTitle || !date ? ' ' : this.getPlaceholder();
-        return (
-            <Text style={UITextStyle.tertiaryTinyRegular}>
-                {text}
-            </Text>
-        );
-    }
-
     renderMissingValue() {
         const date = this.getValue();
         if (date.length === 0 && !this.isFocused()) {
@@ -257,6 +247,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return (
             <React.Fragment>
                 {this.renderTextInput()}
+                {this.renderRequiredPlaceholder()}
                 {this.renderMissingValue()}
             </React.Fragment>
         );

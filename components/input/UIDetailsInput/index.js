@@ -323,12 +323,25 @@ export type DetailsProps = ActionProps & {
     prefixIconColor?: ?string,
 };
 
+type DetailsState = ActionState & {
+  focused: boolean,
+}
+
 export default class UIDetailsInput<Props, State>
-    extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & ActionState>> {
+    extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & DetailsState>> {
     textInput: ?TextInput;
     auxTextInput: ?any;
 
     static defaultProps: Props & DetailsProps;
+
+    constructor(props: Props & DetailsProps) {
+        super(props);
+        this.state = {
+            focused: false,
+            tapped: false,
+            hover: false,
+        };
+    }
 
     componentDidMount() {
         super.componentDidMount();
@@ -565,18 +578,18 @@ export default class UIDetailsInput<Props, State>
     // Render
     renderFloatingTitle() {
         const {
-            floatingTitle, floatingTitleText, theme, value, hideFloatingTitle,
+            floatingTitle, floatingTitleText, theme, hideFloatingTitle,
         } = this.props;
         if (hideFloatingTitle) {
             return null;
         }
+        const value = this.getValue();
         const emptyValue = !value || !value.length;
         const text = !floatingTitle || (emptyValue && !this.isFocused())
             ? ' '
             : floatingTitleText || this.getPlaceholder();
-        const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
-            <Text style={[UITextStyle.tinyRegular, colorStyle]}>
+            <Text style={UIStyle.Text.tertiaryTinyRegular()}>
                 {text}
             </Text>
         );
