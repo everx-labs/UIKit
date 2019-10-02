@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     quote: {
         borderLeftColor: UIColor.grey(),
         borderLeftWidth: 1,
-        padding: 16,
+        padding: UIConstant.contentOffset(),
     },
 });
 

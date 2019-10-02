@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         color: UIColor.primary(),
     },
     prefixIcon: {
-        marginRight: 8,
+        marginRight: UIConstant.smallContentOffset(),
     },
 });
 
