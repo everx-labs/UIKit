@@ -69,6 +69,12 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
     },
+    modalOnWebDialogBorders: {
+        borderTopLeftRadius: UIConstant.borderRadius(),
+        borderTopRightRadius: UIConstant.borderRadius(),
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+    },
 });
 
 export default class UIModalController<Props, State>
@@ -86,6 +92,7 @@ export default class UIModalController<Props, State>
     dy: Animated.Value;
     animation: SlideAnimation | FadeAnimation;
     testID: ?string;
+    modalOnWeb: boolean;
 
     static animations = {
         fade: () => new FadeAnimation({ toValue: 1 }),
@@ -107,6 +114,7 @@ export default class UIModalController<Props, State>
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
+        this.modalOnWeb = false;
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
@@ -182,15 +190,19 @@ export default class UIModalController<Props, State>
         const navBarHeight = Platform.OS === 'web' || !this.dismissible
             ? 0
             : UIDevice.navigationBarHeight(); // navigation bar height above the modal controller
+        const modalForWebTopOffset = Platform.OS === 'web' && this.modalOnWeb ? (height / 2.0) : 0;
 
         const containerStyle = {
             top: -1, // fix for 1px top offset
-            paddingTop: statusBarHeight + navBarHeight,
+            paddingTop: statusBarHeight + navBarHeight + modalForWebTopOffset,
             width,
             height,
         };
 
-        let dialogStyle = [styles.dialogOverflow, styles.dialogBorders];
+        let dialogStyle = [
+            styles.dialogOverflow,
+            this.modalOnWeb ? styles.modalOnWebDialogBorders : styles.dialogBorders,
+        ];
 
         // Need to enlarge the controller in order to hide a "bouncing" bottom border.
         // It works for PopupDialog ONLY in case we have some space above the dialog!
@@ -289,6 +301,9 @@ export default class UIModalController<Props, State>
 
     // Getters
     getBackgroundColor() {
+        if (Platform.OS === 'web' && this.modalOnWeb) {
+            return this.bgAlpha;
+        }
         return Platform.OS === 'web' && this.fullscreen
             ? 'transparent'
             : this.bgAlpha;
