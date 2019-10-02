@@ -17,7 +17,13 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+  /** React children
+  @default null
+  */
   children?: any,
+  /** Custom style
+  @default null
+  */
   style?: ?StylePropType,
 };
 
