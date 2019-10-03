@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, ScrollView, Platform } from 'react-native';
 import { UIStyle, UIGrid, UIGridColumn, UIColor } from '../../../UIKit';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = {
     main: {
@@ -14,6 +15,7 @@ const styles = {
 
 type Props = {
     children?: React$Node,
+    style?: ViewStyleProp,
 }
 
 const CenterView = (props: Props) => {
@@ -27,6 +29,7 @@ const CenterView = (props: Props) => {
                         UIStyle.Width.full(),
                         UIStyle.Padding.default(),
                         UIStyle.Color.getBackgroundColorStyle(UIColor.whiteLight()),
+                        props.style,
                     ]}
                 >
                     {props.children}

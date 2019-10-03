@@ -32,11 +32,27 @@ const styles = StyleSheet.create({
 });
 
 type Props = DetailsProps & {
-    containerStyle?: StylePropType,
+    /**
+    Together with separator, specifies date patern, for ex:
+    for 'YYYY.MM.DD' dateComponents are ['YYYY', 'MM', 'DD']
+    and separator is '.'
+    @default "['year', 'month', 'day']"
+    */
     dateComponents?: string[],
+    /**
+    @default null
+    */
     initialEpochTime?: number | null,
+    /**
+    Together with dateComponents, specifies date patern, for ex:
+    for 'YYYY.MM.DD' dateComponents are ['YYYY', 'MM', 'DD']
+    and separator is '.'
+    @default '.'
+    */
     separator?: string,
-    maxLength?: number,
+    /**
+    Callback with text date.
+    */
     onChangeDate?: (text: string, isDateValid: boolean) => void,
 };
 type State = ActionState & {
@@ -45,9 +61,8 @@ type State = ActionState & {
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
-    static defaultProps: DetailsProps = {
+    static defaultProps: Props = {
         ...UIDetailsInput.defaultProps,
-        containerStyle: {},
         dateComponents: ['year', 'month', 'day'],
         separator: '.',
         initialEpochTime: null,
@@ -103,6 +118,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     onBlur = () => {
+        this.setFocused(false);
         this.setStateSafely({ highlightError: true });
         if (this.props.onBlur) {
             this.props.onBlur();
@@ -202,17 +218,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     // Render
-    renderFloatingTitle() {
-        const { floatingTitle } = this.props;
-        const date = this.getValue();
-        const text = !floatingTitle || !date ? ' ' : this.getPlaceholder();
-        return (
-            <Text style={UITextStyle.tertiaryTinyRegular}>
-                {text}
-            </Text>
-        );
-    }
-
     renderMissingValue() {
         const date = this.getValue();
         if (date.length === 0 && !this.isFocused()) {
@@ -242,8 +247,13 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return (
             <React.Fragment>
                 {this.renderTextInput()}
+                {this.renderRequiredPlaceholder()}
                 {this.renderMissingValue()}
             </React.Fragment>
         );
+    }
+
+    render() {
+        return super.render();
     }
 }

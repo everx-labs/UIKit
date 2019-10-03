@@ -82,6 +82,7 @@ import UIProfilePhoto from './components/profile/UIProfilePhoto';
 import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
 import UIPureComponent from './components/UIPureComponent';
+import UIQuote from './components/views/UIQuote';
 import UIRadioButtonList from './components/buttons/UIRadioButtonList';
 import UIScaleButton from './components/buttons/UIScaleButton';
 import UIScreen from './controllers/UIScreen';
@@ -221,6 +222,7 @@ export {
     UIProfilePhoto,
     UIProfileView,
     UIPureComponent,
+    UIQuote,
     UIRadioButtonList,
     UIScaleButton,
     UIScreen,

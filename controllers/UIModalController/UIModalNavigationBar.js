@@ -94,7 +94,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                 },
             });
         } else {
-            this.panResponder = {};
+            this.panResponder = PanResponder.create({});
         }
     }
 

@@ -2,12 +2,12 @@
 import React from 'react';
 
 import UIComponent from '../../UIComponent';
-import UIDetailsInput, { detailsDefaultProps } from '../UIDetailsInput';
+import UIDetailsInput from '../UIDetailsInput';
 import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
 
 export default class UILinkInput extends UIComponent<DetailsProps, ActionState> {
-    static defaultProps: DetailsProps = detailsDefaultProps;
+    static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
     linkInput: ?UIDetailsInput<DetailsProps, ActionState>;
 
     // Getters

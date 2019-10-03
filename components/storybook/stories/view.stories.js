@@ -11,12 +11,12 @@ import {
     UIGrid,
     UITransactionView,
     UIBalanceView,
-    UIDetailsView,
     UIStyle,
     UIColor,
     UIComponent,
     UICard,
     UIButtonGroup,
+    UIQuote,
 } from '../../../UIKit';
 
 
@@ -24,7 +24,12 @@ const icoActiveDefault = getUri(require('../../../assets/ico-toggle-active/ico-t
 const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'), 24, 24);
 
 storiesOf(Constants.CategoryView, module)
-    .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
+    .addDecorator(getStory => <CenterView style={UIStyle.Color.getBackgroundColorStyle(UIColor.white())}>{getStory()}</CenterView>)
+    .add('UIQuote', () => (
+        <UIQuote>
+            <Text style={UIStyle.Text.secondaryBodyRegular()}>Quoted text.</Text>
+        </UIQuote>
+    ))
     .add('UITransactionView', () => (
         <UITransactionView
             cacheKey="amountTransaction"
@@ -58,21 +63,6 @@ storiesOf(Constants.CategoryView, module)
                 separator=","
                 tokenSymbol="G"
                 loading
-            />
-        </UIButtonGroup>
-    ))
-    .add('UIDetailsView', () => (
-        <UIButtonGroup direction={UIButtonGroup.Direction.Column} gutter={8}>
-            <UIDetailsView
-                value="Details"
-                comments="Some comment here"
-                onPress={() => alert('Action was called')}
-            />
-            <UIDetailsView
-                reversed
-                value="Details"
-                comments="Some comment here"
-                onPress={() => alert('Action was called')}
             />
         </UIButtonGroup>
     ))

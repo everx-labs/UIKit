@@ -34,15 +34,8 @@ class ToggleTester extends UIComponent {
             this.props.children :
             [this.props.children];
         return children.map((child, rank) => {
-            let iconActive = null;
-            let iconInactive = null;
-            if (child.props.colored) {
-                iconActive = icoOnColored;
-                iconInactive = icoOffColored;
-            } else {
-                iconActive = icoActiveDefault;
-                iconInactive = icoInactiveDefault;
-            }
+            const iconActive = icoActiveDefault;
+            const iconInactive = icoInactiveDefault;
             return React.cloneElement(
                 child,
                 {

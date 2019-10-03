@@ -24,7 +24,7 @@ import type { ActionState } from '../../UIActionComponent';
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     phraseToCheck: string,
-    isSeedPhraseValid?: boolean,
+    isSeedPhraseValid?: ?boolean,
     onChangeIsValidPhrase?: (isValid: boolean) => void,
 };
 
