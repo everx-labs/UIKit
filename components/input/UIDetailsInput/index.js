@@ -12,6 +12,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIFont from '../../../helpers/UIFont';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
 import UIActionComponent from '../../UIActionComponent';
@@ -588,8 +589,11 @@ export default class UIDetailsInput<Props, State>
         const text = !floatingTitle || (emptyValue && !this.isFocused())
             ? ' '
             : floatingTitleText || this.getPlaceholder();
+
+        const colorStyle = UIColor.textTertiaryStyle(theme);
+
         return (
-            <Text style={UIStyle.Text.tertiaryTinyRegular()}>
+            <Text style={[UIFont.tinyRegular(), colorStyle]}>
                 {text}
             </Text>
         );

@@ -99,6 +99,10 @@ storiesOf(Constants.CategoryInput, module)
                 autoFocus
             />
             <UIDetailsInput
+                placeholder="Action Theme"
+                theme={UIColor.Theme.Action}
+            />
+            <UIDetailsInput
                 placeholder="Placeholder"
                 value="Input"
                 button={{
