@@ -153,7 +153,11 @@ export default class UILabel extends UIComponent<Props, State> {
             ...props
         } = this.props;
         return (
-            <Text {...props} style={textStyle}>
+            <Text
+                {...props}
+                testID={`label_text_${text}`}
+                style={textStyle}
+            >
                 {this.getText()}
             </Text>
         );
