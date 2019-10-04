@@ -16,7 +16,7 @@ import type { TypeOfActionType } from '../extras';
 
 type Props = {
     text: string,
-    typeOfAction: TypeOfActionType,
+    additionalInfo: any,
     onPress?: (action: TypeOfActionType) => void,
 }
 
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
 export default class UIChatActionCell extends UIPureComponent<Props, State> {
     static defaultProps = {
         text: 'Buy Grams',
-        typeOfAction: TypeOfAction.Buy,
         onPress: () => {},
     };
 
@@ -63,7 +62,13 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
     }
 
     // Getters
-    getText(): any {
+    getText(): string {
+        const { additionalInfo } = this.props;
+
+        if (additionalInfo.actionType === TypeOfAction.Link) {
+            return (additionalInfo.linkTitle || '').trim();
+        }
+
         return this.props.text;
     }
 
