@@ -16,7 +16,7 @@ import type { TypeOfActionType } from '../extras';
 
 type Props = {
     text: string,
-    additionalInfo: any,
+    typeOfAction: TypeOfActionType,
     onPress?: (action: TypeOfActionType) => void,
 }
 
@@ -63,12 +63,6 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
 
     // Getters
     getText(): string {
-        const { additionalInfo } = this.props;
-
-        if (additionalInfo.actionType === TypeOfAction.Link) {
-            return (additionalInfo.linkTitle || '').trim();
-        }
-
         return this.props.text;
     }
 

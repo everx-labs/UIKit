@@ -37,6 +37,7 @@ type Props = {
     onTouchMedia?: (objectToReturn: any) => void,
     onOpenPDF?: (docData: any, docName: string) => void,
     onPressUrl?: (url: string) => void,
+    onPressDeepLink?: (link: string) => void,
     onTouchTransaction?: (trx: any) => void,
     onTouchAction?: (action: any) => void,
 }
@@ -184,6 +185,13 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { onPressUrl } = this.props;
         if (onPressUrl) {
             onPressUrl(url);
+        }
+    }
+
+    onPressDeepLink(link: string) {
+        const { onPressDeepLink } = this.props;
+        if (onPressDeepLink) {
+            onPressDeepLink(link);
         }
     }
 
@@ -418,6 +426,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const style = status === ChatMessageStatus.Received
             ? styles.linkActionMessageContainer
             : null;
+
+
         return (
             <View style={style}>
                 {this.renderTextCell()}
@@ -435,16 +445,17 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderActionCell() {
         const { additionalInfo, data } = this.props;
+        const actionType = additionalInfo?.actionType;
 
-        if (!additionalInfo) {
+        if (!actionType) {
             return null;
         }
 
         return (
             <UIChatActionCell
-                text={data}
+                text={additionalInfo?.linkTitle || data}
                 onPress={this.onActionPress}
-                additionalInfo={additionalInfo}
+                typeOfAction={actionType}
             />
         );
     }
