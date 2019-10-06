@@ -136,7 +136,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
             UIStyle.Common.flex(),
             UIStyle.Common.flexRow(),
             UIStyle.Common.alignCenter(),
-            { height: this.getHeight() },
+            UIStyle.Margin.bottomDefault(),
         ];
 
         if (title && iconRight) {
@@ -149,7 +149,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
 
         return (
             <TouchableOpacity style={containerStyle} onPress={this.onPress}>
-                <View style={[UIStyle.Common.flexRow(), UIStyle.Common.alignCenter()]}>
+                <View style={[UIStyle.Common.flex(), UIStyle.Common.flexRow(), UIStyle.Common.alignCenter()]}>
                     {iconLeft}
                     <Text style={[
                         this.getTextStyle(),
@@ -170,7 +170,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
             style, content,
         } = this.props;
         return (
-            <View style={[style]}>
+            <View style={[UIStyle.Margin.topDefault(), style]}>
                 {this.renderButton()}
                 {this.state.unfolded ? content : null}
             </View>
