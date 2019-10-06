@@ -261,6 +261,10 @@ export default class UIStyleText {
     }
 
     // [Text Caution]
+    static cautionKeyRegular() {
+        return UITextStyle.cautionKeyRegular;
+    }
+
     // Caption - fontSize: 14, lineHeight: 20
     static cautionCaptionRegular() {
         return UITextStyle.cautionCaptionRegular;
@@ -322,6 +326,9 @@ export default class UIStyleText {
     // Small - fontSize: 16, lineHeight: 20
     static warningSmallRegular() {
         return UITextStyle.warningSmallRegular;
+    }
+    static warningKeyRegular() {
+        return UITextStyle.warningKeyRegular;
     }
 
     // [Text white]
@@ -401,6 +408,9 @@ export default class UIStyleText {
     }
 
     // [Text Error]
+    static errorKeyRegular() {
+        return UITextStyle.errorKeyRegular;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static errorBodyRegular() {
         return UITextStyle.errorBodyRegular;

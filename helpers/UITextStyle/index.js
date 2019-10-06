@@ -414,6 +414,10 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Caution]
+    cautionKeyRegular: {
+        ...caution,
+        ...UIFont.keyRegular(),
+    },
     // Caption - fontSize: 14, lineHeight: 20
     cautionCaptionRegular: {
         ...caution,
@@ -572,6 +576,10 @@ const UITextStyle = StyleSheet.create({
     },
 
     // [Text Error]
+    errorKeyRegular: {
+        ...error,
+        ...UIFont.keyRegular(),
+    },
     errorCaptionMedium: {
         ...error,
         ...UIFont.captionMedium(),
@@ -600,6 +608,10 @@ const UITextStyle = StyleSheet.create({
     warningSmallRegular: {
         ...warning,
         ...UIFont.smallRegular(),
+    },
+    warningKeyRegular: {
+        ...warning,
+        ...UIFont.keyRegular(),
     },
 });
 
