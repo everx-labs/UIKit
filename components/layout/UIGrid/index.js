@@ -91,6 +91,10 @@ type Props = {
     * @default null
     */
     width?: number,
+    /** onLayout handler
+    * @default null
+    */
+    onLayout?: ?(e: any) => void,
 };
 
 type State = {
@@ -244,4 +248,5 @@ UIGrid.defaultProps = {
     type: UIGrid.Type.C8,
     style: null,
     width: 0,
+    onLayout: null,
 };
