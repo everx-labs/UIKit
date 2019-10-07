@@ -461,6 +461,7 @@ const ru: UILocalizedData = {
     Gender: 'Пол',
     Citizenship: 'Гражданство',
     Residence: 'Страна проживания',
+    SelectResidence: 'Выберите страну проживания…',
     Address: 'Адрес',
     Male: 'Мужчина',
     Female: 'Женщина',

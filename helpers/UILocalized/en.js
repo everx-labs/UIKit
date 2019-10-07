@@ -462,6 +462,7 @@ const en: UILocalizedData = {
     Gender: 'Gender',
     Citizenship: 'Citizenship',
     Residence: 'Residence',
+    SelectResidence: 'Select the country of residence…',
     Address: 'Address',
     Male: 'Male',
     Female: 'Female',
