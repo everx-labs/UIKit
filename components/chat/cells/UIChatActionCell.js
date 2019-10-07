@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
 export default class UIChatActionCell extends UIPureComponent<Props, State> {
     static defaultProps = {
         text: 'Buy Grams',
-        typeOfAction: TypeOfAction.Buy,
         onPress: () => {},
     };
 
@@ -63,7 +62,7 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
     }
 
     // Getters
-    getText(): any {
+    getText(): string {
         return this.props.text;
     }
 

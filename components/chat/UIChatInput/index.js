@@ -73,9 +73,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         hideFloatingTitle: true,
         forceMultiLine: true,
         keyboardType: 'default',
-        menuPlus: null,
-        menuMore: null,
-        quickAction: null,
 
         onSendText: (text: string) => {},
     };

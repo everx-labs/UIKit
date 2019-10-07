@@ -3,6 +3,7 @@ export const ChatMessageContent = {
     AttachmentImage: 'aim',
     AttachmentDocument: 'doc',
     TransactionInChat: 'trx',
+    LinkActionMessage: 'lam',
     ActionButton: 'act',
     DateSeparator: 'date',
     EmptyChat: 'empty',
@@ -26,6 +27,7 @@ export const TypeOfTransaction = {
 
 export const TypeOfAction = {
     Buy: 'buy',
+    Link: 'link',
 };
 
 export type ChatMessageContentType = $Values<typeof ChatMessageContent>;

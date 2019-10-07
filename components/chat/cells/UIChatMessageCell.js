@@ -24,7 +24,7 @@ import UIChatDocumentCell from './UIChatDocumentCell';
 import UIChatTransactionCell from './UIChatTransactionCell';
 import UIChatActionCell from './UIChatActionCell';
 
-import { ChatMessageContent, ChatMessageStatus } from '../extras';
+import { ChatMessageContent, ChatMessageStatus, TypeOfAction } from '../extras';
 
 import type { ChatMessageContentType, ChatMessageStatusType, ChatAdditionalInfo } from '../extras';
 
@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.smallContentOffset(),
         borderRadius: UIConstant.smallCellHeight() / 2,
     },
+    linkActionMessageContainer: {
+        marginBottom: UIConstant.tinyContentOffset(),
+    },
     dateText: {
         color: UIColor.secondary(),
     },
@@ -139,6 +142,9 @@ const styles = StyleSheet.create({
     },
     rightConner: {
         borderBottomRightRadius: 0,
+    },
+    verticalSeparator: {
+        marginTop: UIConstant.tinyContentOffset() / 2,
     },
 });
 
@@ -174,7 +180,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         this.setStateSafely({ layout });
     }
 
-    onPressUrl(url: string, matchIndex: number) {
+    onPressUrl(url: string, matchIndex: number = 0) {
         const { onPressUrl } = this.props;
         if (onPressUrl) {
             onPressUrl(url);
@@ -192,6 +198,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     onActionPress = () => {
         const { additionalInfo, onTouchAction } = this.props;
         const actionType = additionalInfo?.actionType;
+
+        if (actionType === TypeOfAction.Link) {
+            this.onPressUrl(additionalInfo?.link || '');
+            return;
+        }
+
         if (onTouchAction && actionType) {
             onTouchAction(actionType);
         }
@@ -401,6 +413,28 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderLinkActionMessageCell() {
+        const { status } = this.props;
+        const style = status === ChatMessageStatus.Received
+            ? styles.linkActionMessageContainer
+            : null;
+
+
+        return (
+            <View style={style}>
+                {this.renderTextCell()}
+                {
+                    status === ChatMessageStatus.Received ?
+                        (
+                            <View style={styles.verticalSeparator}>
+                                {this.renderActionCell()}
+                            </View>
+                        ) : null
+                }
+            </View>
+        );
+    }
+
     renderActionCell() {
         const { additionalInfo, data } = this.props;
         const actionType = additionalInfo?.actionType;
@@ -411,9 +445,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
         return (
             <UIChatActionCell
-                text={data}
-                typeOfAction={actionType}
+                text={additionalInfo?.linkTitle || data}
                 onPress={this.onActionPress}
+                typeOfAction={actionType}
             />
         );
     }
@@ -469,6 +503,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderDocumentCell();
         } else if (type === ChatMessageContent.ActionButton) {
             cell = this.renderActionCell();
+        } else if (type === ChatMessageContent.LinkActionMessage) {
+            cell = this.renderLinkActionMessageCell();
         } else {
             cell = this.renderInformationCell('Message/Cell type not supported.');
         }
