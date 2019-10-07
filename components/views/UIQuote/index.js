@@ -10,7 +10,7 @@ import UIComponent from '../../UIComponent';
 
 const styles = StyleSheet.create({
     quote: {
-        borderLeftColor: UIColor.grey(),
+        borderLeftColor: UIColor.grey3(),
         borderLeftWidth: 1,
         padding: UIConstant.contentOffset(),
     },

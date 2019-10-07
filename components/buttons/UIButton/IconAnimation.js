@@ -25,6 +25,11 @@ const scaleInterpolateValues = {
     outputRange: [1, 0.9, 1.1, 1],
 };
 
+const forwardInterpolateValues = {
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 8, 0],
+};
+
 const sandglassInterpolateValues = {
     x: {
         inputRange: [0, 0.25, 0.5, 0.75, 1],
@@ -50,6 +55,7 @@ export default class IconAnimation extends UIComponent<Props, State> {
         Round: 'round',
         Sandglass: 'sandglass',
         Pulse: 'pulse',
+        Forward: 'forward',
     };
 
     constructor(props: Props) {
@@ -62,16 +68,32 @@ export default class IconAnimation extends UIComponent<Props, State> {
         this.animate();
     }
 
+    getDuration() {
+        if (this.props.animation === IconAnimation.Animation.Pulse) {
+            return 600;
+        }
+        if (this.props.animation === IconAnimation.Animation.Forward) {
+            return 600;
+        }
+        return 3000;
+    }
+
     animate = () => {
         this.animatedValue.setValue(0);
+        const callback = this.props.animation !== IconAnimation.Animation.Forward ?
+            null :
+            this.animate;
+
         Animated.timing(
             this.animatedValue,
             {
                 toValue: 1,
-                duration: this.props.animation === IconAnimation.Animation.Pulse ? 600 : 3000,
-                easing: this.props.animation === IconAnimation.Animation.Pulse ? Easing.ease : Easing.linear,
+                duration: this.getDuration(),
+                easing: this.props.animation === IconAnimation.Animation.Pulse ||
+                this.props.animation === IconAnimation.Animation.Forward
+                    ? Easing.ease : Easing.linear,
             },
-        ).start(this.animate);
+        ).start(callback);
     }
 
     render() {
@@ -90,6 +112,9 @@ export default class IconAnimation extends UIComponent<Props, State> {
         } else if (this.props.animation === IconAnimation.Animation.Pulse) {
             const scale = this.animatedValue.interpolate(scaleInterpolateValues);
             transform.push({ scale });
+        } else if (this.props.animation === IconAnimation.Animation.Forward) {
+            const translateX = this.animatedValue.interpolate(forwardInterpolateValues);
+            transform.push({ translateX });
         }
         return (<Animated.Image
             style={[{ transform }, this.props.iconTintStyle]}
