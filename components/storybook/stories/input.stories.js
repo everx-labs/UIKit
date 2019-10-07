@@ -143,7 +143,7 @@ storiesOf(Constants.CategoryInput, module)
         </InputTester>
     ))
     .add('DateInput', () => (
-        <InputTester><UIDateInput placeholder="Date" /></InputTester>
+        <InputTester><UIDateInput placeholder="Date" required /></InputTester>
     ))
     .add('EmailInput', () => (
         <InputTester><UIEmailInput placeholder="Enter your email" /></InputTester>

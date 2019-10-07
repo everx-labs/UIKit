@@ -783,6 +783,9 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderRequiredPlaceholder() {
+        if (this.hidePlaceholder()) {
+            return null;
+        }
         const required = this.getRequired();
         if (!required) {
             return null;
