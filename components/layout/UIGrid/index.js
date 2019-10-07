@@ -91,6 +91,10 @@ type Props = {
     * @default null
     */
     width?: number,
+    /** onLayout handler
+    * @default null
+    */
+    onLayout?: ?(e: any) => void,
 };
 
 type State = {
@@ -114,6 +118,9 @@ export default class UIGrid extends UIComponent<Props, State> {
     onLayout = (e: any) => {
         const { width } = e.nativeEvent.layout;
         this.setStateSafely({ width });
+        if (this.props.onLayout) {
+            this.props.onLayout(e);
+        }
     }
 
     getColumns() {
@@ -185,9 +192,20 @@ export default class UIGrid extends UIComponent<Props, State> {
     render() {
         if (!this.props.children) return null;
         const childrenCount = this.props.children?.length || 1;
-        const children = childrenCount > 1 ?
+        const propChildren = childrenCount > 1 ?
             this.props.children :
             [this.props.children];
+
+        const children = [];
+        propChildren.forEach((child) => {
+            if (!child?.props && child?.length) {
+                // case if passed array of columns
+                children.push(...child.filter((ch) => { return ch !== null; }));
+            } else if (child?.props) {
+                children.push(child);
+            }
+        });
+
         let row = 0;
         let columns = 0;
         const rows = [[]];
@@ -230,4 +248,5 @@ UIGrid.defaultProps = {
     type: UIGrid.Type.C8,
     style: null,
     width: 0,
+    onLayout: null,
 };

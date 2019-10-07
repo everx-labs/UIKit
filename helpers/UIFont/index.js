@@ -98,6 +98,7 @@ const UI_FONT_ICON = {
 
 const UI_FONT_KEY_BOLD = { ...UI_FONT_KEY, ...UI_FONT_BOLD };
 const UI_FONT_KEY_LIGHT = { ...UI_FONT_KEY, ...UI_FONT_LIGHT };
+const UI_FONT_KEY_REGULAR = { ...UI_FONT_KEY, ...UI_FONT_REGULAR };
 const UI_FONT_HEADLINE_BOLD = { ...UI_FONT_HEADLINE, ...UI_FONT_BOLD };
 const UI_FONT_HEADLINE_LIGHT = { ...UI_FONT_HEADLINE, ...UI_FONT_LIGHT };
 const UI_FONT_SUBHEAD_BOLD = { ...UI_FONT_SUBHEAD, ...UI_FONT_BOLD };
@@ -135,6 +136,10 @@ export default class UIFont {
 
     static keyBold() {
         return UI_FONT_KEY_BOLD;
+    }
+
+    static keyRegular() {
+        return UI_FONT_KEY_REGULAR;
     }
 
     static keyLight() {
