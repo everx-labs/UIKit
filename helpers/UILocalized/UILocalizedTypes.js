@@ -445,6 +445,7 @@ export type UILocalizedData = {
     Gender: string,
     Citizenship: string,
     Residence: string,
+    SelectResidence: string,
     Male: string,
     Female: string,
     RequestedFiles: string,
