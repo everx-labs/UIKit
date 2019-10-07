@@ -9,7 +9,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
 import UIMenuView from '../../menus/UIMenuView';
-
+import UIButtonGroup from '../../buttons/UIButtonGroup';
 import UIDetailsInput from '../../input/UIDetailsInput';
 
 import type { DetailsProps } from '../../input/UIDetailsInput';
@@ -24,7 +24,7 @@ type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     menuPlus?: ?MenuItemType[],
     menuMore?: ?MenuItemType[],
-    quickAction?: ?MenuItemType,
+    quickAction?: ?MenuItemType[],
 
     onSendText?: (text: string) => void,
 };
@@ -148,12 +148,12 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderQuickAction() {
-        const { quickAction } = this.props;
+        const { quickAction, menuMore } = this.props;
         const val = this.getValue();
 
         if (val.length > 0) {
             return (
-                <View style={styles.btnSend}>
+                <View style={menuMore ? styles.btnSend : UIStyle.Margin.rightDefault()}>
                     <TouchableHighlight
                         testID="send_btn"
                         onPress={() => this.onSendText(val)}
@@ -167,12 +167,18 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return null;
         }
         return (
-            <UITextButton
-                buttonStyle={styles.btnMenuContainer}
-                testID="chat_quickAction"
-                onPress={quickAction.onPress}
-                title={quickAction.title}
-            />
+            <UIButtonGroup style={menuMore ? null : UIStyle.Margin.rightSmall()}>
+                {
+                    quickAction.map(action => (
+                        <UITextButton
+                            buttonStyle={styles.btnMenuContainer}
+                            testID="chat_quickAction"
+                            onPress={action.onPress}
+                            title={action.title}
+                        />
+                    ))
+                }
+            </UIButtonGroup>
         );
     }
 
