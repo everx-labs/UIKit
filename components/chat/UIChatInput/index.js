@@ -172,7 +172,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                     quickAction.map(action => (
                         <UITextButton
                             buttonStyle={styles.btnMenuContainer}
-                            testID="chat_quickAction"
+                            testID={action.testID}
                             onPress={action.onPress}
                             title={action.title}
                         />
