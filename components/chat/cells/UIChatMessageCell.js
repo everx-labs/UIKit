@@ -37,7 +37,6 @@ type Props = {
     onTouchMedia?: (objectToReturn: any) => void,
     onOpenPDF?: (docData: any, docName: string) => void,
     onPressUrl?: (url: string) => void,
-    onPressDeepLink?: (link: string) => void,
     onTouchTransaction?: (trx: any) => void,
     onTouchAction?: (action: any) => void,
 }
@@ -185,13 +184,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { onPressUrl } = this.props;
         if (onPressUrl) {
             onPressUrl(url);
-        }
-    }
-
-    onPressDeepLink(link: string) {
-        const { onPressDeepLink } = this.props;
-        if (onPressDeepLink) {
-            onPressDeepLink(link);
         }
     }
 
