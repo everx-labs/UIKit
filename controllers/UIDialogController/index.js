@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
  * this.hasPhotoView = false
  * this.hasTextInput = false
  * this.hasAuxTextInput = false
+ * this.testID = undefined
  * this.textInputPlaceholder = undefined
  * this.textInputAutoFocus = true
  * this.textInputSecureTextEntry = false
@@ -98,6 +99,7 @@ class UIDialogController extends UIController {
         this.hasPhotoView = false;
         this.hasTextInput = false;
         this.hasAuxTextInput = false;
+        this.testID = undefined;
         this.textInputPlaceholder = undefined;
         this.textInputAutoFocus = true;
         this.textInputSecureTextEntry = false;
@@ -327,9 +329,11 @@ class UIDialogController extends UIController {
                 {this.renderContentContainer()}
             </React.Fragment>
         );
+        const testIDProp = this.testID ? { testID: `${this.testID}_wrapper` } : null;
         const wrappedContent = this.wrapContentInScrollView
             ? (
                 <ScrollView
+                    {...testIDProp}
                     style={UIStyle.screenContainer}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={[
@@ -345,6 +349,7 @@ class UIDialogController extends UIController {
             )
             : (
                 <View
+                    {...testIDProp}
                     style={[
                         UIStyle.screenContainer,
                         UIStyle.pageContainer,
