@@ -83,7 +83,7 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         if (value && !this.areSomePresumedCardTypes() && this.state.highlightError) {
             return UILocalized.InvalidBankCardNumber;
         }
-        return comment;
+        return comment || '';
     }
 
     getPlaceholder() {
