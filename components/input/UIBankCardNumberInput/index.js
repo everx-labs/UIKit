@@ -121,7 +121,7 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
             <UIDetailsInput
                 {...this.props}
                 {...commentColorProp}
-                keyboardType={UIFunction.phoneNumberInputKeyboardType()}
+                keyboardType={this.props.keyboardType || UIFunction.phoneNumberInputKeyboardType()}
                 placeholder={this.getPlaceholder()}
                 containerStyle={this.props.style}
                 rightComponent={this.renderCardLogos()}
