@@ -620,6 +620,18 @@ const UIStyle = StyleSheet.create({
     },
 });
 
+UIStyle.border = UIStyleBorder;
+UIStyle.color = UIStyleColor;
+UIStyle.common = UIStyleCommon;
+UIStyle.container = UIStyleContainer;
+UIStyle.flex = UIStyleFlex;
+UIStyle.height = UIStyleHeight;
+UIStyle.margin = UIStyleMargin;
+UIStyle.padding = UIStylePadding;
+UIStyle.text = UIStyleText;
+UIStyle.width = UIStyleWidth;
+
+// Deprecated
 UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
 UIStyle.Common = UIStyleCommon;
