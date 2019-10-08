@@ -13,7 +13,6 @@ import UIActionImage from '../../images/UIActionImage';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
 import UIActionComponent from '../../UIActionComponent';
 
@@ -356,13 +355,13 @@ export default class UIDetailsInput<Props, State>
     }
 
     // Events
-    onChange(event: any) {
+    onChange = (event: any): void => {
         if (Platform.OS === 'web') {
             this.onWebChange();
         } else {
             this.onMobileChange(event);
         }
-    }
+    };
 
     onMobileChange(event: any) {
         if (event && event.nativeEvent) {
@@ -398,15 +397,15 @@ export default class UIDetailsInput<Props, State>
         this.onContentSizeChange(inH);
     }
 
-    onContentSizeChange(height: number) {
+    onContentSizeChange = (height: number): void => {
         // Not implemented in here
-    }
+    };
 
-    onLayout(e: any) {
+    onLayout = (e: any): void => {
         // Not implemented in here
-    }
+    };
 
-    onChangeText = (text: string, callback: ?((finalValue: string) => void)) => {
+    onChangeText = (text: string, callback: ?((finalValue: string) => void)): void => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
@@ -420,15 +419,15 @@ export default class UIDetailsInput<Props, State>
         }
     };
 
-    onFocus() {
+    onFocus = (): void => {
         this.setFocused();
         this.props.onFocus();
-    }
+    };
 
-    onBlur() {
+    onBlur = (): void => {
         this.setFocused(false);
         this.props.onBlur();
-    }
+    };
 
     onSubmitEditing = () => {
         if (this.isSubmitDisabled()) {
@@ -499,13 +498,13 @@ export default class UIDetailsInput<Props, State>
     textInputStyle() {
         const { theme, inputStyle } = this.props;
         const textColorStyle = UIColor.textPrimaryStyle(theme);
-        const fontStyle = UIStyle.Text.bodyRegular();
+        const fontStyle = UIStyle.text.bodyRegular();
         delete fontStyle.lineHeight;
         return [
             styles.textInput,
             fontStyle,
             textColorStyle,
-            UIStyle.Common.flex(),
+            UIStyle.common.flex(),
             inputStyle,
         ];
     }
@@ -545,7 +544,10 @@ export default class UIDetailsInput<Props, State>
 
     getComment() {
         const { comment } = this.props;
-        return `${comment}`;
+        if (comment === null) {
+            return '';
+        }
+        return `${comment || ' '}`; // space is needed to have fixed height of component
     }
 
     getInlinePlaceholder() {
@@ -603,7 +605,7 @@ export default class UIDetailsInput<Props, State>
         const { prefixIcon, prefixIconColor } = this.props;
         if (!prefixIcon) return null;
 
-        const styleColor = prefixIconColor ? UIStyle.Color.getTintColorStyle(prefixIconColor) : null;
+        const styleColor = prefixIconColor ? UIStyle.color.getTintColorStyle(prefixIconColor) : null;
         return (
             <Image source={this.props.prefixIcon} style={[styles.prefixIcon, styleColor]} />
         );
@@ -618,7 +620,7 @@ export default class UIDetailsInput<Props, State>
         return (
             <Text
                 style={[
-                    UITextStyle.quaternaryBodyRegular,
+                    UIStyle.text.quaternaryBodyRegular(),
                     styles.beginningTag,
                 ]}
             >
@@ -669,7 +671,7 @@ export default class UIDetailsInput<Props, State>
         const placeholderColor = UIColor.textPlaceholder(theme);
         return (
             <TextInput
-                onLayout={e => this.onLayout(e)}
+                onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
                 autoCorrect={autoCorrect}
@@ -680,11 +682,11 @@ export default class UIDetailsInput<Props, State>
                 multiline={this.isMultiline()}
                 numberOfLines={this.numOfLines()}
                 clearButtonMode="never"
-                onFocus={() => this.onFocus()}
-                onBlur={() => this.onBlur()}
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
                 onChangeText={this.onChangeText}
-                onChange={e => this.onChange(e)}
-                onContentSizeChange={e => this.onChange(e)}
+                onChange={this.onChange}
+                onContentSizeChange={this.onChange}
                 onSubmitEditing={this.onSubmitEditing}
                 onKeyPress={this.onKeyPress}
                 placeholder={this.getInlinePlaceholder()}
@@ -718,7 +720,7 @@ export default class UIDetailsInput<Props, State>
         return (
             <Text
                 style={[
-                    UITextStyle.secondaryBodyRegular,
+                    UIStyle.text.secondaryBodyRegular(),
                     { marginRight: UIConstant.smallContentOffset() },
                 ]}
             >
@@ -743,9 +745,9 @@ export default class UIDetailsInput<Props, State>
 
         const buttonTextStyle = [];
         if (button.onPress && !button.disabled) {
-            buttonTextStyle.push(UIStyle.Text.primaryBodyMedium());
+            buttonTextStyle.push(UIStyle.text.primaryBodyMedium());
         } else {
-            buttonTextStyle.push(UIStyle.Text.tertiaryBodyRegular());
+            buttonTextStyle.push(UIStyle.text.tertiaryBodyRegular());
         }
 
         return (<UITextButton
@@ -779,7 +781,7 @@ export default class UIDetailsInput<Props, State>
     }
 
     renderRightComponent() {
-        return this.props.rightComponent;
+        return this.props.rightComponent || null;
     }
 
     renderRequiredPlaceholder() {
@@ -795,11 +797,11 @@ export default class UIDetailsInput<Props, State>
         }
         const placeholder = this.getPlaceholder();
         return (
-            <Text style={[UIStyle.Text.tertiaryBodyRegular(), UIStyle.Common.positionAbsolute()]}>
+            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.Common.positionAbsolute()]}>
                 {placeholder}
                 <Text
                     style={[
-                        UIStyle.Text.tertiaryBodyRegular(),
+                        UIStyle.text.tertiaryBodyRegular(),
                         styles.requiredAsterisk,
                     ]}
                 > *
@@ -813,7 +815,7 @@ export default class UIDetailsInput<Props, State>
             <React.Fragment>
                 {this.renderPrefixIcon()}
                 {this.renderBeginningTag()}
-                <View style={UIStyle.Container.screen()}>
+                <View style={UIStyle.container.screen()}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
                     {this.renderRequiredPlaceholder()}
@@ -863,12 +865,12 @@ export default class UIDetailsInput<Props, State>
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         const containerStyle = [
             styles.commentStyle,
-            UIStyle.Margin.topTiny(),
-            UIStyle.Margin.bottomSmall(),
+            UIStyle.margin.topTiny(),
+            UIStyle.margin.bottomSmall(),
         ];
         const textStyle = [
             colorStyle,
-            UIStyle.Text.captionRegular(),
+            UIStyle.text.captionRegular(),
         ];
         if (onPressComment) {
             return (
@@ -922,7 +924,7 @@ UIDetailsInput.defaultProps = {
     autoFocus: false,
     beginningTag: '',
     containerStyle: {},
-    comment: '',
+    comment: null,
     disableSubmitEmpty: false,
     editable: true,
     floatingTitle: true,

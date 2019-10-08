@@ -119,7 +119,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onLayout(e: any) {
+    onLayout = (e: any) => {
         const { nativeEvent } = e;
         // If the browser window is resized, this forces the input
         // to adjust its size so that the full phrase is displayed.
@@ -130,11 +130,11 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             const { layout } = nativeEvent;
             this.setStateSafely({ inputWidth: layout.width });
         }
-    }
+    };
 
-    onContentSizeChange(height: number) {
+    onContentSizeChange = (height: number) => {
         this.setInputHeight(height);
-    }
+    };
 
     onSendText(text: string) {
         const { onSendText } = this.props;
