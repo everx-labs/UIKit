@@ -675,6 +675,7 @@ export default class UIDetailsInput<Props, State>
                 autoCorrect={autoCorrect}
                 autoFocus={autoFocus}
                 editable={editable}
+                enablesReturnKeyAutomatically={this.props.disableSubmitEmpty}
                 keyboardType={this.keyboardType()}
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
