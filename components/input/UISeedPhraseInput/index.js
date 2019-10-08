@@ -290,7 +290,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onLayout(e: any) {
+    onLayout = (e: any) => {
         const { nativeEvent } = e;
         // If the browser window is resized, this forces the input
         // to adjust its size so that the full phrase is displayed.
@@ -301,19 +301,19 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             const { layout } = nativeEvent;
             this.setStateSafely({ inputWidth: layout.width });
         }
-    }
+    };
 
-    onBlur() {
+    onBlur = () => {
         super.onBlur();
         if (Platform.OS !== 'web') {
             this.hideHints();
         }
-    }
+    };
 
-    onContentSizeChange(height: number) {
+    onContentSizeChange = (height: number) => {
         this.setInputHeight(height);
         this.rerenderPopoverForAndroid();
-    }
+    };
 
     onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
         const { onChangeText, onChangeIsValidPhrase } = this.props;
@@ -386,7 +386,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 }
             }
         });
-    }
+    };
 
     // methods
     hideHints() {

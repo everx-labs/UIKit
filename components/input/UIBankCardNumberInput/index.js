@@ -83,7 +83,7 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         if (value && !this.areSomePresumedCardTypes() && this.state.highlightError) {
             return UILocalized.InvalidBankCardNumber;
         }
-        return comment;
+        return comment || '';
     }
 
     getPlaceholder() {
@@ -97,21 +97,24 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         const visaImage = presumedCards[visa]
             ? <Image source={UIAssets.icoVisa()} />
             : null;
-        const masterCardStyle = visaImage ? UIStyle.Margin.leftSmall() : null;
+        const masterCardStyle = visaImage ? UIStyle.margin.leftSmall() : null;
         const masterCardImage = presumedCards[masterCard]
             ? <Image source={UIAssets.icoMastercard()} style={masterCardStyle} />
             : null;
-        const maestroStyle = visaImage || masterCardImage ? UIStyle.Margin.leftSmall() : null;
+        const maestroStyle = visaImage || masterCardImage ? UIStyle.margin.leftSmall() : null;
         const maestroImage = presumedCards[maestro]
             ? <Image source={UIAssets.icoMaestro()} style={maestroStyle} />
             : null;
-        return (
-            <View style={UIStyle.Container.centerLeft()}>
-                {visaImage}
-                {masterCardImage}
-                {maestroImage}
-            </View>
-        );
+        if (visaImage || masterCardImage || maestroImage) {
+            return (
+                <View style={UIStyle.container.centerLeft()}>
+                    {visaImage}
+                    {masterCardImage}
+                    {maestroImage}
+                </View>
+            );
+        }
+        return null;
     }
 
     render() {
@@ -123,7 +126,6 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
                 {...commentColorProp}
                 keyboardType={this.props.keyboardType || UIFunction.phoneNumberInputKeyboardType()}
                 placeholder={this.getPlaceholder()}
-                containerStyle={this.props.style}
                 rightComponent={this.renderCardLogos()}
                 comment={this.getComment()}
                 submitDisabled={!this.isValidCardNumber()}

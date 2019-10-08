@@ -82,7 +82,11 @@ const borderRight = {
 const profilePhotoSize = 72;
 
 const UIStyle = StyleSheet.create({
+    // Deprecated in order to use flex as subclass in future
     flex: {
+        flex: 1,
+    },
+    flex1: {
         flex: 1,
     },
     flex2: {
@@ -399,7 +403,7 @@ const UIStyle = StyleSheet.create({
     },
 
     // borders
-    border: {
+    borderAround: {
         ...borderTop,
         ...borderBottom,
         ...borderLeft,
@@ -620,11 +624,25 @@ const UIStyle = StyleSheet.create({
     },
 });
 
+UIStyle.border = UIStyleBorder;
+UIStyle.color = UIStyleColor;
+UIStyle.common = UIStyleCommon;
+UIStyle.container = UIStyleContainer;
+UIStyle.height = UIStyleHeight;
+UIStyle.margin = UIStyleMargin;
+UIStyle.padding = UIStylePadding;
+UIStyle.text = UIStyleText;
+UIStyle.width = UIStyleWidth;
+
+// already exists in UIStyle
+// UIStyle.flex = UIStyleFlex;
+UIStyle.Flex = UIStyleFlex;
+
+// Deprecated
 UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
 UIStyle.Common = UIStyleCommon;
 UIStyle.Container = UIStyleContainer;
-UIStyle.Flex = UIStyleFlex;
 UIStyle.Height = UIStyleHeight;
 UIStyle.Margin = UIStyleMargin;
 UIStyle.Padding = UIStylePadding;

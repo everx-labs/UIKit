@@ -3,7 +3,7 @@ import UIStyle from './index';
 export default class UIStyleBorder {
     // borders
     static common() {
-        return UIStyle.border;
+        return UIStyle.borderAround;
     }
 
     static bottom() {
