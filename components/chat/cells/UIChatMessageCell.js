@@ -414,7 +414,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderLinkActionMessageCell() {
-        const { status } = this.props;
+        const { status, additionalInfo } = this.props;
         const style = status === ChatMessageStatus.Received
             ? styles.linkActionMessageContainer
             : null;
@@ -424,7 +424,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             <View style={style}>
                 {this.renderTextCell()}
                 {
-                    status === ChatMessageStatus.Received ?
+                    status === ChatMessageStatus.Received && !additionalInfo?.processed ?
                         (
                             <View style={styles.verticalSeparator}>
                                 {this.renderActionCell()}
