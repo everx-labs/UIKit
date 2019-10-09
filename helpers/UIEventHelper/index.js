@@ -44,10 +44,10 @@ export default class UIEventHelper {
     }
 
     static pushHistory(path: string) {
-        const { pushState } = window.history || {};
-        if (pushState) {
+        const { history } = window;
+        if (history?.pushState) {
             if (prevPath !== null) {
-                pushState(null, '', `/${path}`);
+                history.pushState(null, '', `/${path}`);
             }
             prevPath = path; // Path is already normalized
         }
