@@ -110,7 +110,6 @@ export default class UICustomSheet extends UIController<Props, State> {
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
         this.onShow = () => {};
         this.onCancel = () => {};
-        this.modal = true;
         this.dy = new Animated.Value(0);
 
         this.state = {

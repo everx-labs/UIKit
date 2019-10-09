@@ -86,7 +86,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         super(props);
         this.fullscreen = false;
         this.testID = '[UICountryPicker]';
-        this.modal = false;
         this.cca2 = null;
         this.language = null;
         this.disabledCountries = [];

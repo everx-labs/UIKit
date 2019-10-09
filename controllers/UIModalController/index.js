@@ -1,13 +1,7 @@
-/* eslint-disable class-methods-use-this */
 // @flow
+/* eslint-disable class-methods-use-this */
 import React from 'react';
-import {
-    StyleSheet,
-    Platform,
-    Modal,
-    Dimensions,
-    Animated,
-} from 'react-native';
+import { StyleSheet, Platform, Dimensions, Animated } from 'react-native';
 import PopupDialog, {
     SlideAnimation,
     FadeAnimation,
@@ -44,6 +38,9 @@ type OnLayoutEventArgs = {
 };
 
 export type ModalControllerProps = ControllerProps & {
+    onWillAppear?: () => void,
+    onDidAppear?: () => void,
+    onWillHide?: () => void,
     onDidHide?: () => void,
 };
 
@@ -107,7 +104,6 @@ export default class UIModalController<Props, State>
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
-        this.modal = true;
         this.adjustBottomSafeAreaInsetDynamically = true;
         this.dialog = null;
         this.onCancel = null;
@@ -125,33 +121,49 @@ export default class UIModalController<Props, State>
     // Events
     onWillAppear() {
         this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
-    }
 
-    onDidAppearHandler = () => {
-        this.onDidAppear();
-    };
+        const { onWillAppear } = this.props;
+        if (onWillAppear) {
+            onWillAppear();
+        }
+    }
 
     onDidAppear() {
         this.initKeyboardListeners();
+
+        const { onDidAppear } = this.props;
+        if (onDidAppear) {
+            onDidAppear();
+        }
     }
 
     onWillHide() {
         this.deinitKeyboardListeners();
-    }
 
-    onDidHideHandler = () => {
-        this.onDidHide();
-    };
+        const { onWillHide } = this.props;
+        if (onWillHide) {
+            onWillHide();
+        }
+    }
 
     onDidHide() {
         this.setControllerVisible(false, () => {
             this.dy.setValue(0);
         });
 
-        if (this.props.onDidHide) {
-            this.props.onDidHide();
+        const { onDidHide } = this.props;
+        if (onDidHide) {
+            onDidHide();
         }
     }
+
+    onDidAppearHandler = () => {
+        this.onDidAppear();
+    };
+
+    onDidHideHandler = () => {
+        this.onDidHide();
+    };
 
     onCancelPress = () => {
         this.hide();
