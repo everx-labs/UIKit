@@ -466,18 +466,8 @@ export default class UIModalController<Props, State>
         if (!this.state.controllerVisible) {
             return null;
         }
-        if (Platform.OS === 'web' || !this.modal) {
-            return this.renderContainer();
-        }
-        return (
-            <Modal
-                animationType="fade"
-                transparent
-                visible={this.state.controllerVisible}
-            >
-                {this.renderContainer()}
-            </Modal>
-        );
+
+        return this.renderContainer();
     }
 
     // Internals
