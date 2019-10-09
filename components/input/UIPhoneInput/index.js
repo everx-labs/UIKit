@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Platform } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIDetailsInput from '../UIDetailsInput';
@@ -19,11 +20,15 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
     static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
     phoneInput: ?UIDetailsInput<DetailsProps, State>;
 
-    consructor(props: DetailsProps) {
-        super.constructor(props);
+    constructor(props: DetailsProps) {
+        super(props);
         this.state = {
             highlightError: false,
         };
+
+        this.selection = { start: 0, end: 0 };
+        this.textFormated = '';
+        this.text = '';
     }
 
     isSubmitDisabled() {
@@ -59,11 +64,63 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         }
     }
 
+    onSelectionChange = (e) => {
+        this.selection = e.nativeEvent?.selection;
+        // correct cursor position if needed
+        this.setStateSafely({});
+    }
+
+    compareArrays = (arraySmall, arrayBig, position, positionInBigArray = false) => {
+        let idx = 0;
+        let distance = 0;
+        while (idx < position + 1) {
+            if (arrayBig[0] === arraySmall[0]) {
+                arrayBig.shift();
+                arraySmall.shift();
+                ++idx;
+            } else {
+                arrayBig.shift();
+                if (positionInBigArray) ++idx;
+                ++distance;
+            }
+        }
+        return distance;
+    }
+
+    correctCursorPosition = () => {
+        if (Platform.OS !== 'web') {
+            return null;
+        }
+
+        if (this.prevText === this.text || this.textFormated === this.text) {
+            return this.selection;
+        }
+        this.prevText = this.text;
+
+        const textArray = this.text.split('');
+        const formatedTextArray = this.textFormated.split('');
+        let newCursorPosition = this.selection.start;
+        let countOfModifiedSymbolsBeforeCursor = 0;
+        if (textArray.length < formatedTextArray.length) {
+            countOfModifiedSymbolsBeforeCursor = this.compareArrays(textArray, formatedTextArray, this.selection.start - 1);
+            newCursorPosition = this.selection.start + countOfModifiedSymbolsBeforeCursor;
+        } else if (textArray.length > formatedTextArray.length) {
+            countOfModifiedSymbolsBeforeCursor = this.compareArrays(formatedTextArray, textArray, this.selection.start - 1, true);
+            newCursorPosition = this.selection.start - countOfModifiedSymbolsBeforeCursor;
+        }
+
+        return { start: newCursorPosition, end: newCursorPosition };
+    }
+
     onChangeText = (text: string) => {
+        this.text = text;
+        this.prevText = this.props.value;
+
         const { onChangeText } = this.props;
         this.setStateSafely({ highlightError: false });
         if (onChangeText) {
             const input = UIFunction.formatPhoneText(text);
+            this.textFormated = input;
             onChangeText(input);
         }
     };
@@ -87,8 +144,14 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         }
     }
 
+    getSelection = () => {
+        this.selection = this.correctCursorPosition();
+        return this.selection;
+    }
+
     // Render
     render() {
+        const selection = this.getSelection();
         const commentColor = this.getCommentColor();
         const commentColorProp = commentColor ? { commentColor } : null;
         return (
@@ -98,11 +161,14 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
                 {...commentColorProp}
                 onBlur={this.onBlur}
                 keyboardType="phone-pad"
+                multiline
                 placeholder={this.getPlaceholder()}
                 comment={this.getComment()}
                 submitDisabled={this.isSubmitDisabled()}
                 onChangeText={this.onChangeText}
                 mandatory={this.props.mandatory}
+                onSelectionChange={this.onSelectionChange}
+                selection={selection}
             />
         );
     }
