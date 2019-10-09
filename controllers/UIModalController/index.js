@@ -43,7 +43,9 @@ type OnLayoutEventArgs = {
     },
 };
 
-export type ModalControllerProps = ControllerProps;
+export type ModalControllerProps = ControllerProps & {
+    onDidHide?: () => void,
+};
 
 export type ModalControllerState = ControllerState & {
     width?: ?number,
@@ -145,6 +147,10 @@ export default class UIModalController<Props, State>
         this.setControllerVisible(false, () => {
             this.dy.setValue(0);
         });
+
+        if (this.props.onDidHide) {
+            this.props.onDidHide();
+        }
     }
 
     onCancelPress = () => {
