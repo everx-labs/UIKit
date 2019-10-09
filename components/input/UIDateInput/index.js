@@ -58,6 +58,7 @@ type Props = DetailsProps & {
 type State = ActionState & {
     date: string,
     highlightError: boolean,
+    oldStringValueWithSeparators: string,
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -67,6 +68,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         separator: '.',
         initialEpochTime: null,
         onChangeDate: () => {},
+        multiline: true,
     };
 
     constructor(props: Props) {
@@ -76,7 +78,10 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             ...this.state,
             date: '',
             highlightError: false,
+            oldStringValueWithSeparators: '',
         };
+
+        this.selection = { start: 0, end: 0 };
     }
 
     componentDidMount() {
@@ -92,13 +97,21 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const newDate = date.split(this.getSeparator()).join('');
         if (Number.isNaN(Number(newDate))) return;
 
-        this.setStateSafely({ date: newDate }, () => {
+        this.setStateSafely({ date: newDate, oldStringValueWithSeparators: this.getValue() }, () => {
             if (onChangeDate) {
                 const dateObj = Moment(date, this.getPattern()).toDate();
                 onChangeDate(dateObj, this.isValidDate());
             }
         });
     };
+
+    getSelection = () => {
+        return this.selection;
+    }
+
+    onSelectionChange = (e) => {
+        this.selection = e.nativeEvent?.selection;
+    }
 
     // Getters
     commentColor() {
@@ -158,8 +171,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return pattern;
     }
 
-    getSeparatorPositionsForDate() {
-        const date = this.getDate();
+    getSeparatorPositionsForDate(dateString: string) {
+        const date = dateString;
         const pattern = this.getPattern(true);
         const pos = [];
 
@@ -175,9 +188,13 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     getValue() {
-        const separatorsAt = this.getSeparatorPositionsForDate();
-        const current = this.getDate();
-        let newDate = separatorsAt.length > 0 ? '' : this.getDate();
+        return this.getValueWithSeparators(this.getDate());
+    }
+
+    getValueWithSeparators(dateString: string) {
+        const separatorsAt = this.getSeparatorPositionsForDate(dateString);
+        const current = dateString;
+        let newDate = separatorsAt.length > 0 ? '' : current;
 
         let last = 0;
         for (let i = 0; i < separatorsAt.length; i += 1) {
@@ -186,6 +203,25 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         }
         if (separatorsAt.length > 0) {
             newDate = `${newDate}${current.substring(last)}`;
+        }
+
+        // calculate cursor position for web input
+        if (Platform.OS === 'web' && this.state.oldStringValueWithSeparators !== newDate) {
+            const valuesLengthDiff = (newDate.length - this.state.oldStringValueWithSeparators.length);
+            // selectionStart is cursor position before rerender
+            const selectionStart = (valuesLengthDiff > 0) ? this.selection.start - 1 : this.selection.start + 1;
+            const cursorAtSeparatorPosition = selectionStart === 4 || selectionStart === 7;
+            const cursorAtNextSeparatorPosition = selectionStart === 5 || selectionStart === 8;
+
+            let offset = 0;
+            if (valuesLengthDiff > 0 && cursorAtSeparatorPosition) {
+                offset = 1; // +1 for separator symbol
+            }
+            if (valuesLengthDiff < 0 && cursorAtNextSeparatorPosition) {
+                offset = -1; // -1 for separator symbol
+            }
+            this.selection.start = this.selection.start + offset;
+            this.selection.end = this.selection.end + offset;
         }
 
         return newDate;
