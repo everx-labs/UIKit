@@ -58,7 +58,7 @@ type Props = DetailsProps & {
 type State = ActionState & {
     date: string,
     highlightError: boolean,
-    oldStringValueWithSeparators: string,
+    prevSelection?: ?{start: number, end: number},
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -78,10 +78,11 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             ...this.state,
             date: '',
             highlightError: false,
-            oldStringValueWithSeparators: '',
+            prevSelection: { start: 0, end: 0 },
         };
 
         this.selection = { start: 0, end: 0 };
+        this.oldValueWithSeparators = '';
     }
 
     componentDidMount() {
@@ -97,7 +98,10 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const newDate = date.split(this.getSeparator()).join('');
         if (Number.isNaN(Number(newDate))) return;
 
-        this.setStateSafely({ date: newDate, oldStringValueWithSeparators: this.getValue() }, () => {
+        this.setStateSafely({
+            date: newDate,
+            prevSelection: this.selection,
+        }, () => {
             if (onChangeDate) {
                 const dateObj = Moment(date, this.getPattern()).toDate();
                 onChangeDate(dateObj, this.isValidDate());
@@ -105,12 +109,56 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         });
     };
 
+    correctCursorPosition(currentSelection, prevSelection, separatorsAt) {
+        if (Platform.OS !== 'web') {
+            return null;
+        }
+
+        // correct cursor position for web input:
+        const newValue = this.getValue();
+        if (this.oldValueWithSeparators === newValue) {
+            return currentSelection;
+        }
+
+        const valuesLengthDiff = (newValue.length - this.oldValueWithSeparators.length);
+        this.oldValueWithSeparators = newValue;
+        const symbolsWereAdded = (valuesLengthDiff > 0);
+        const symbolsWereRemoved = (valuesLengthDiff < 0);
+        // prevSelection.start is cursor position before this render:
+        const selectionStart = prevSelection.start;
+        const separatorPositionsInInputString = separatorsAt.map((posInOriginString, rank) => {
+            return posInOriginString + rank;
+        });
+        const separatorNextPositionsInInputString = separatorsAt.map((posInOriginString, rank) => {
+            return posInOriginString + rank + 1;
+        });
+        const cursorAtSeparatorPosition = separatorPositionsInInputString.includes(selectionStart);
+        const cursorAtNextSeparatorPosition = separatorNextPositionsInInputString.includes(selectionStart);
+
+        let offset = symbolsWereAdded ? 1 : symbolsWereRemoved ? -1 : 0;
+        if (valuesLengthDiff > 0 && cursorAtSeparatorPosition) {
+            ++offset; // +1 for separator symbol
+        }
+        if (valuesLengthDiff < 0 && cursorAtNextSeparatorPosition) {
+            --offset; // -1 for separator symbol
+        }
+        return { start: selectionStart + offset, end: selectionStart + offset };
+    }
+
     getSelection = () => {
+        this.selection = this.correctCursorPosition(
+            this.selection,
+            this.state.prevSelection,
+            this.getSeparatorPositionsForDate(this.getDate()),
+        );
+
         return this.selection;
     }
 
     onSelectionChange = (e) => {
         this.selection = e.nativeEvent?.selection;
+        // correct cursor position if needed
+        this.setStateSafely({});
     }
 
     // Getters
@@ -203,28 +251,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         }
         if (separatorsAt.length > 0) {
             newDate = `${newDate}${current.substring(last)}`;
-        }
-
-        // calculate cursor position for web input
-        if (Platform.OS === 'web' && this.state.oldStringValueWithSeparators !== newDate) {
-            const valuesLengthDiff = (newDate.length - this.state.oldStringValueWithSeparators.length);
-            // selectionStart is cursor position before rerender
-            const selectionStart = (valuesLengthDiff > 0) ? this.selection.start - 1 : this.selection.start + 1;
-            const separatorPositionsInInputString = separatorsAt.map((posInOriginString, rank) => {
-                return posInOriginString + rank;
-            });
-            const cursorAtSeparatorPosition = separatorPositionsInInputString.includes(selectionStart);
-            const cursorAtNextSeparatorPosition = separatorPositionsInInputString.includes(selectionStart - 1);
-
-            let offset = 0;
-            if (valuesLengthDiff > 0 && cursorAtSeparatorPosition) {
-                offset = 1; // +1 for separator symbol
-            }
-            if (valuesLengthDiff < 0 && cursorAtNextSeparatorPosition) {
-                offset = -1; // -1 for separator symbol
-            }
-            this.selection.start = this.selection.start + offset;
-            this.selection.end = this.selection.end + offset;
         }
 
         return newDate;
