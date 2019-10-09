@@ -1,13 +1,7 @@
-/* eslint-disable class-methods-use-this */
 // @flow
+/* eslint-disable class-methods-use-this */
 import React from 'react';
-import {
-    StyleSheet,
-    Platform,
-    Modal,
-    Dimensions,
-    Animated,
-} from 'react-native';
+import { StyleSheet, Platform, Dimensions, Animated } from 'react-native';
 import PopupDialog, {
     SlideAnimation,
     FadeAnimation,
@@ -43,7 +37,12 @@ type OnLayoutEventArgs = {
     },
 };
 
-export type ModalControllerProps = ControllerProps;
+export type ModalControllerProps = ControllerProps & {
+    onWillAppear?: () => void,
+    onDidAppear?: () => void,
+    onWillHide?: () => void,
+    onDidHide?: () => void,
+};
 
 export type ModalControllerState = ControllerState & {
     width?: ?number,
@@ -105,7 +104,6 @@ export default class UIModalController<Props, State>
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
-        this.modal = true;
         this.adjustBottomSafeAreaInsetDynamically = true;
         this.dialog = null;
         this.onCancel = null;
@@ -123,29 +121,49 @@ export default class UIModalController<Props, State>
     // Events
     onWillAppear() {
         this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
+
+        const { onWillAppear } = this.props;
+        if (onWillAppear) {
+            onWillAppear();
+        }
+    }
+
+    onDidAppear() {
+        this.initKeyboardListeners();
+
+        const { onDidAppear } = this.props;
+        if (onDidAppear) {
+            onDidAppear();
+        }
+    }
+
+    onWillHide() {
+        this.deinitKeyboardListeners();
+
+        const { onWillHide } = this.props;
+        if (onWillHide) {
+            onWillHide();
+        }
+    }
+
+    onDidHide() {
+        this.setControllerVisible(false, () => {
+            this.dy.setValue(0);
+        });
+
+        const { onDidHide } = this.props;
+        if (onDidHide) {
+            onDidHide();
+        }
     }
 
     onDidAppearHandler = () => {
         this.onDidAppear();
     };
 
-    onDidAppear() {
-        this.initKeyboardListeners();
-    }
-
-    onWillHide() {
-        this.deinitKeyboardListeners();
-    }
-
     onDidHideHandler = () => {
         this.onDidHide();
     };
-
-    onDidHide() {
-        this.setControllerVisible(false, () => {
-            this.dy.setValue(0);
-        });
-    }
 
     onCancelPress = () => {
         this.hide();
@@ -466,18 +484,8 @@ export default class UIModalController<Props, State>
         if (!this.state.controllerVisible) {
             return null;
         }
-        if (Platform.OS === 'web' || !this.modal) {
-            return this.renderContainer();
-        }
-        return (
-            <Modal
-                animationType="fade"
-                transparent
-                visible={this.state.controllerVisible}
-            >
-                {this.renderContainer()}
-            </Modal>
-        );
+
+        return this.renderContainer();
     }
 
     // Internals
