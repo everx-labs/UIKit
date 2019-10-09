@@ -210,8 +210,11 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             const valuesLengthDiff = (newDate.length - this.state.oldStringValueWithSeparators.length);
             // selectionStart is cursor position before rerender
             const selectionStart = (valuesLengthDiff > 0) ? this.selection.start - 1 : this.selection.start + 1;
-            const cursorAtSeparatorPosition = selectionStart === 4 || selectionStart === 7;
-            const cursorAtNextSeparatorPosition = selectionStart === 5 || selectionStart === 8;
+            const separatorPositionsInInputString = separatorsAt.map((posInOriginString, rank) => {
+                return posInOriginString + rank;
+            });
+            const cursorAtSeparatorPosition = separatorPositionsInInputString.includes(selectionStart);
+            const cursorAtNextSeparatorPosition = separatorPositionsInInputString.includes(selectionStart - 1);
 
             let offset = 0;
             if (valuesLengthDiff > 0 && cursorAtSeparatorPosition) {
