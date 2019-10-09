@@ -161,7 +161,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
                 {...commentColorProp}
                 onBlur={this.onBlur}
                 keyboardType="phone-pad"
-                multiline
+                multiline={Platform.OS === 'web'}
                 placeholder={this.getPlaceholder()}
                 comment={this.getComment()}
                 submitDisabled={this.isSubmitDisabled()}

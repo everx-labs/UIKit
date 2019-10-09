@@ -68,7 +68,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         separator: '.',
         initialEpochTime: null,
         onChangeDate: () => {},
-        multiline: true,
+        multiline: Platform.OS === 'web',
     };
 
     constructor(props: Props) {
