@@ -431,7 +431,7 @@ const UIStyle = StyleSheet.create({
         borderRadius: UIConstant.borderRadius(),
     },
 
-    // colors
+    // colors deprecated, use UIStyle.color
     backgroundPrimaryColor: {
         backgroundColor: UIColor.backgroundPrimary(),
     },
