@@ -394,6 +394,15 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                         },
                     });
                     */
+
+                    // Another hack...
+                    // Remove the ending space in order to force the input updating its cursor!
+                    // It doesn't affect UX dramatically: the carret just jumps one position left
+                    if (finalValue.endsWith(space)) {
+                        textInput.setNativeProps({
+                            text: finalValue.substr(0, finalValue.length - 1),
+                        });
+                    }
                 }
             }
         });
