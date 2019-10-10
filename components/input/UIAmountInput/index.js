@@ -6,8 +6,7 @@ import { Platform, StyleSheet, View, Text, TouchableOpacity } from 'react-native
 import UIDetailsInput from '../UIDetailsInput';
 
 import UIColor from '../../../helpers/UIColor';
-import UITextStyle from '../../../helpers/UITextStyle';
-import UIStyleColor from '../../../helpers/UIStyle/UIStyleColor';
+import UIStyle from '../../../helpers/UIStyle';
 
 import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
@@ -70,13 +69,12 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     getInputPlaceholderColor() {
         const { theme } = this.props;
-        return UIStyleColor.getColorStyle(UIColor.amountInputPlaceholder(theme));
+        return UIStyle.color.getColorStyle(UIColor.amountInputPlaceholder(theme));
     }
 
     containerStyle() {
         const { rightButton } = this.props;
-        const flex = rightButton && rightButton.length > 0 ? { flex: 1 } : null;
-        return flex;
+        return rightButton && rightButton.length > 0 ? { flex: 1 } : null;
     }
 
     keyboardType() {
@@ -108,10 +106,10 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         }
 
         const defaultTitleStyle = rightButtonDisabled ?
-            UITextStyle.secondarySmallMedium : UITextStyle.actionSmallMedium;
+            UIStyle.text.secondarySmallMedium : UIStyle.text.actionSmallMedium;
         const button = rightButton instanceof String || typeof rightButton === 'string'
             ? (
-                <Text style={[UITextStyle.secondaryBodyRegular, defaultTitleStyle]}>
+                <Text style={[UIStyle.text.secondaryBodyRegular, defaultTitleStyle]}>
                     {rightButton}
                 </Text>
             )
@@ -134,7 +132,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             : this.getPlaceholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
-            <Text style={[UITextStyle.tinyRegular, colorStyle]}>
+            <Text style={[UIStyle.text.tinyRegular, colorStyle]}>
                 {text}
             </Text>
         );

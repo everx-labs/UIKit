@@ -634,9 +634,8 @@ UIStyle.padding = UIStylePadding;
 UIStyle.text = UIStyleText;
 UIStyle.width = UIStyleWidth;
 
-// already exists in UIStyle
-// UIStyle.flex = UIStyleFlex;
-UIStyle.Flex = UIStyleFlex;
+// flex already exists in UIStyle
+UIStyle.displayFlex = UIStyleFlex;
 
 // Deprecated
 UIStyle.Border = UIStyleBorder;
@@ -648,5 +647,6 @@ UIStyle.Margin = UIStyleMargin;
 UIStyle.Padding = UIStylePadding;
 UIStyle.Text = UIStyleText;
 UIStyle.Width = UIStyleWidth;
+UIStyle.Flex = UIStyleFlex;
 
 export default UIStyle;
