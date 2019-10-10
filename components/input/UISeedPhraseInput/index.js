@@ -26,6 +26,7 @@ type Props = DetailsProps & {
     phraseToCheck: string,
     isSeedPhraseValid?: ?boolean,
     onChangeIsValidPhrase?: (isValid: boolean) => void,
+    totalWords: number
 };
 
 type State = ActionState & {
@@ -55,6 +56,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
+        totalWords: 12, // default value
     };
 
     static splitPhrase(phrase: string): Array<string> {
@@ -75,7 +77,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         super(props);
 
         this.lastWords = [];
-        this.totalWords = 12;
+        this.totalWords = props.totalWords;
         this.clickListener = null;
 
         this.state = {
@@ -151,9 +153,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Setters
     setTotalWords() {
-        const { phraseToCheck } = this.props;
+        const { phraseToCheck, totalWords } = this.props;
         if (phraseToCheck.length === 0) {
-            this.totalWords = 12;
+            this.totalWords = totalWords;
         } else {
             const words = UISeedPhraseInput.splitPhrase(phraseToCheck);
             this.totalWords = words.length;
