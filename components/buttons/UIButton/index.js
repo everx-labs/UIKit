@@ -301,14 +301,12 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         }
 
         const style = [];
-        if (this.props.title) {
-            if (position === 'left') {
-                style.push(UIStyle.Margin.rightSmall());
-                style.push(this.props.iconStyle || this.getIconTintStyle());
-            } else if (position === 'right') {
-                style.push(UIStyle.Margin.leftSmall());
-                style.push(this.props.iconRStyle || this.getIconTintStyle());
-            }
+        if (position === 'left') {
+            if (this.props.title) style.push(UIStyle.Margin.rightSmall());
+            style.push(this.props.iconStyle || this.getIconTintStyle());
+        } else if (position === 'right') {
+            if (this.props.title) style.push(UIStyle.Margin.leftSmall());
+            style.push(this.props.iconRStyle || this.getIconTintStyle());
         }
 
         return <Image source={icon || iconDefault} style={style} />;
