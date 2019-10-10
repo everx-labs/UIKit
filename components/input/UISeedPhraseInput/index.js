@@ -372,6 +372,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                     // BUT physically it's not moved, and when the user continues typing
                     // the cursor stays wherever it was before, but not at the right.
 
+                    /*
+                    At the moment the hack bellow behaves even more terrible then the issue above,
+                    because a native selection of Android's TextInput gets stuck since RN0.60:
+                    https://github.com/facebook/react-native/issues/26047
+
+                    Have to comment this scope for now and live with the bug described above...
+
                     // Thus we change the native position of it ...
                     textInput.setNativeProps({
                         selection: {
@@ -386,6 +393,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                             end: finalValue.length,
                         },
                     });
+                    */
                 }
             }
         });
