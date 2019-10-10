@@ -587,11 +587,11 @@ export default class UIDetailsInput<Props, State>
         }
     }
 
-    onSelectionChange = (e: any) => {
+    onSelectionChange = (e: any): void => {
         if (this.props.onSelectionChange) this.props.onSelectionChange(e);
     }
 
-    getSelection = () => {
+    getSelection = (): any => {
         return this.props.selection;
     }
 

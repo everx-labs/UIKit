@@ -71,6 +71,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         multiline: Platform.OS === 'web',
     };
 
+    selection: {start: number, end: number};
+    oldValueWithSeparators: string;
+
     constructor(props: Props) {
         super(props);
 
@@ -109,7 +112,11 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         });
     };
 
-    correctCursorPosition(currentSelection, prevSelection, separatorsAt) {
+    correctCursorPosition(
+        currentSelection: {start: number, end: number},
+        prevSelection: {start: number, end: number},
+        separatorsAt: number[],
+    ) {
         if (Platform.OS !== 'web') {
             return null;
         }
@@ -145,17 +152,20 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return { start: selectionStart + offset, end: selectionStart + offset };
     }
 
-    getSelection = () => {
-        this.selection = this.correctCursorPosition(
+    getSelection = (): any => {
+        const selectionCorrected = this.correctCursorPosition(
             this.selection,
             this.state.prevSelection,
             this.getSeparatorPositionsForDate(this.getDate()),
         );
-
-        return this.selection;
+        if (selectionCorrected) {
+            this.selection = selectionCorrected;
+            return this.selection;
+        }
+        return null;
     }
 
-    onSelectionChange = (e) => {
+    onSelectionChange = (e: any): void => {
         this.selection = e.nativeEvent?.selection;
         // correct cursor position if needed
         this.setStateSafely({});

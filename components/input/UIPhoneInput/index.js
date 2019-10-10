@@ -19,6 +19,10 @@ type State = {};
 export default class UIPhoneInput extends UIComponent<DetailsProps, State & PhoneState> {
     static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
     phoneInput: ?UIDetailsInput<DetailsProps, State>;
+    selection: {start: number, end: number};
+    textFormated: string;
+    text: string;
+    prevText: string;
 
     constructor(props: DetailsProps) {
         super(props);
@@ -29,6 +33,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         this.selection = { start: 0, end: 0 };
         this.textFormated = '';
         this.text = '';
+        this.prevText = '';
     }
 
     isSubmitDisabled() {
@@ -64,13 +69,13 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         }
     }
 
-    onSelectionChange = (e) => {
+    onSelectionChange = (e: any): void => {
         this.selection = e.nativeEvent?.selection;
         // correct cursor position if needed
         this.setStateSafely({});
     }
 
-    compareArrays = (arraySmall, arrayBig, position, positionInBigArray = false) => {
+    compareArrays = (arraySmall: any[], arrayBig: any[], position: number, positionInBigArray: boolean = false) => {
         let idx = 0;
         let distance = 0;
         while (idx < position + 1) {
@@ -95,8 +100,8 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         if (this.prevText === this.text || this.textFormated === this.text) {
             return this.selection;
         }
-        this.prevText = this.text;
 
+        this.prevText = this.text;
         const textArray = this.text.split('');
         const formatedTextArray = this.textFormated.split('');
         let newCursorPosition = this.selection.start;
@@ -144,9 +149,13 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         }
     }
 
-    getSelection = () => {
-        this.selection = this.correctCursorPosition();
-        return this.selection;
+    getSelection = (): any => {
+        const selectionCorrected = this.correctCursorPosition();
+        if (selectionCorrected) {
+            this.selection = selectionCorrected;
+            return this.selection;
+        }
+        return null;
     }
 
     // Render
