@@ -306,7 +306,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     };
 
     onBlur = () => {
-        super.onBlur();
+        this.setFocused(false);
+        this.props.onBlur();
         if (Platform.OS !== 'web') {
             this.hideHints();
         }
