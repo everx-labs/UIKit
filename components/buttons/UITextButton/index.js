@@ -40,8 +40,8 @@ type Props = ActionProps & {
     style?: ViewStyleProp,
     details: string,
     detailsStyle?: TextStyleProp,
-    icon: ?string,
-    backIcon: ?string,
+    icon: ?string | ?React$Node,
+    backIcon: ?string | ?React$Node,
     iconColor?: string,
     iconHoverColor?: string,
     textStyle?: TextStyleProp,
@@ -60,6 +60,7 @@ class UITextButton extends UIActionComponent<Props, State> {
     static Align = {
         Left: UIStyle.Common.justifyStart(),
         Center: UIStyle.Common.justifyCenter(),
+        Between: UIStyle.Common.justifySpaceBetween(),
     };
 
     static pushStyle(styleArray: ViewStyleProp[], newStyle: ViewStyleProp | ViewStyleProp[]) {
@@ -148,10 +149,14 @@ class UITextButton extends UIActionComponent<Props, State> {
             iconStyle.push(isBack ? UIStyle.Margin.leftDefault() : UIStyle.Margin.rightDefault());
         }
 
-        return (<Image
-            source={icon}
-            style={iconStyle}
-        />);
+        if (typeof icon === 'string') {
+            return (<Image
+                source={icon}
+                style={iconStyle}
+            />);
+        }
+
+        return icon;
     }
 
     renderTitle() {
