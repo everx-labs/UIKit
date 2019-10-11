@@ -132,7 +132,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             : this.getPlaceholder();
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
-            <Text style={[UIStyle.text.tinyRegular, colorStyle]}>
+            <Text style={[UIStyle.text.tinyRegular(), colorStyle]}>
                 {text}
             </Text>
         );
