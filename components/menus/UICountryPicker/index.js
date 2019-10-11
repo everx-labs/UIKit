@@ -14,7 +14,6 @@ import type {
     ModalControllerState,
     ModalControllerShowArgs,
 } from '../../../controllers/UIModalController';
-import UIColor from '../../../helpers/UIColor';
 import UIFont from '../../../helpers/UIFont';
 
 let shared;
