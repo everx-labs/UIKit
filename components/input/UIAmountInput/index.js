@@ -74,7 +74,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     containerStyle() {
         const { rightButton } = this.props;
-        return rightButton && rightButton.length > 0 ? { flex: 1 } : null;
+        return rightButton && rightButton.length > 0 ? UIStyle.common.flex() : null;
     }
 
     keyboardType() {
