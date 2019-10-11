@@ -7,8 +7,13 @@ import UIModalController from '../../../controllers/UIModalController';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UISearchBar from '../../input/UISearchBar';
+import UISeparator from '../../../components/design/UISeparator';
 import { primary, quaternary } from '../../../helpers/UITextStyle';
-import type { ModalControllerProps, ModalControllerState, ModalControllerShowArgs } from '../../../controllers/UIModalController';
+import type {
+    ModalControllerProps,
+    ModalControllerState,
+    ModalControllerShowArgs,
+} from '../../../controllers/UIModalController';
 import UIFont from '../../../helpers/UIFont';
 
 let shared;
@@ -176,6 +181,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         return (
             <React.Fragment>
                 <UISearchBar
+                    autoFocus
                     value={this.getExpression()}
                     placeholder={`${UILocalized.Search}...`}
                     onChangeExpression={this.onChangeExpression}
@@ -188,6 +194,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         return (
             <React.Fragment>
                 {this.renderSearchBar()}
+                <UISeparator />
                 <CountryPicker
                     ref={(component) => { this.countryPicker = component; }}
                     cca2={this.cca2}
@@ -196,7 +203,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                     filterable
                     renderFilter={() => null}
                     disabledCountries={this.disabledCountries}
-                    disabledCountryText={`${UILocalized.serviceUnavailable}...`}
+                    disabledCountryText={UILocalized.serviceUnavailable}
                     styles={countryPickerStyle}
                     onChange={this.onPickCountry}
                 />
