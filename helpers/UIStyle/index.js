@@ -260,6 +260,9 @@ const UIStyle = StyleSheet.create({
     marginTopEnormous: { // 104
         marginTop: UIConstant.enormousContentOffset(),
     },
+    marginTopGiant: { // 136
+        marginTop: UIConstant.giantContentOffset(),
+    },
 
     marginBottomTiny: { // 4
         marginBottom: UIConstant.tinyContentOffset(),
@@ -385,6 +388,9 @@ const UIStyle = StyleSheet.create({
     },
     paddingBottomEnormous: {
         paddingBottom: UIConstant.enormousContentOffset(),
+    },
+    paddingBottomGiant: { // 136
+        paddingBottom: UIConstant.giantContentOffset(),
     },
     paddingBottomDefault: {
         paddingBottom: UIConstant.contentOffset(),
