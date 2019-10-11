@@ -59,6 +59,7 @@ type Props = {
     bottomSeparator: boolean,
     renderGlass: boolean,
     onFocus?: () => void,
+    autoFocus?: boolean,
 }
 
 type State = {
@@ -74,6 +75,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
         bottomSeparator: true,
         renderGlass: false,
         onFocus: () => {},
+        autoFocus: false,
     };
 
     static handleHeader(navigation: ReactNavigation) {
@@ -189,7 +191,13 @@ export default class UISearchBar extends UIComponent<Props, State> {
         }
 
         return (
-            <Image source={icoGlass} style={[UIStyle.alignSelfCenter, UIStyle.marginRightDefault]} />
+            <Image
+                source={icoGlass}
+                style={[
+                    UIStyle.alignSelfCenter,
+                    UIStyle.marginRightDefault,
+                ]}
+            />
         );
     }
 
@@ -217,7 +225,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     render() {
         const {
-            value, placeholder, testID, containerStyle, bottomSeparator,
+            value, placeholder, testID, containerStyle, bottomSeparator, autoFocus,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
         const separator = bottomSeparator ? <View style={styles.bottomSeparator} /> : null;
@@ -230,6 +238,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
                         ref={(component) => {
                             this.textInput = component;
                         }}
+                        autoFocus={autoFocus}
                         value={value}
                         placeholder={placeholder}
                         returnKeyType="search"

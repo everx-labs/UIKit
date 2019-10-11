@@ -181,6 +181,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         return (
             <React.Fragment>
                 <UISearchBar
+                    autoFocus
                     value={this.getExpression()}
                     placeholder={`${UILocalized.Search}...`}
                     onChangeExpression={this.onChangeExpression}
