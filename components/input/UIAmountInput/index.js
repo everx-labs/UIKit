@@ -109,7 +109,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             UIStyle.text.secondarySmallMedium() : UIStyle.text.actionSmallMedium();
         const button = rightButton instanceof String || typeof rightButton === 'string'
             ? (
-                <Text style={[UIStyle.text.secondaryBodyRegular, defaultTitleStyle]}>
+                <Text style={[UIStyle.text.secondaryBodyRegular(), defaultTitleStyle]}>
                     {rightButton}
                 </Text>
             )
