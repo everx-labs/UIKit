@@ -1,83 +1,63 @@
 import UIStyle from './index';
 
 export default class UIStyleCommon {
-    // deprecated, use UIStyle.Flex
     static flex() {
         return UIStyle.flex;
     }
-    // deprecated, use UIStyle.Flex
     static flex2() {
         return UIStyle.flex2;
     }
-    // deprecated, use UIStyle.Flex
     static flex3() {
         return UIStyle.flex3;
     }
-    // deprecated, use UIStyle.Flex
     static flexColumn() {
         return UIStyle.flexColumn;
     }
-    // deprecated, use UIStyle.Flex
     static flexRow() {
         return UIStyle.flexRow;
     }
-    // deprecated, use UIStyle.Flex
     static flexRowWrap() {
         return UIStyle.flexRowWrap;
     }
-    // deprecated, use UIStyle.Flex
     static alignCenter() {
         return UIStyle.alignCenter;
     }
-    // deprecated, use UIStyle.Flex
     static alignSelfCenter() {
         return UIStyle.alignSelfCenter;
     }
-    // deprecated, use UIStyle.Flex
     static alignEnd() {
         return UIStyle.alignEnd;
     }
-    // deprecated, use UIStyle.Flex
     static alignStart() {
         return UIStyle.alignStart;
     }
-    // deprecated, use UIStyle.Flex
     static textAlignCenter() {
         return UIStyle.textAlignCenter;
     }
-    // deprecated, use UIStyle.Flex
     static textAlignRight() {
         return UIStyle.textAlignRight;
     }
-    // deprecated, use UIStyle.Flex
     static justifyStart() {
         return UIStyle.justifyStart;
     }
-    // deprecated, use UIStyle.Flex
     static justifyCenter() {
         return UIStyle.justifyCenter;
     }
-    // deprecated, use UIStyle.Flex
     static alignJustifyCenter() {
         return UIStyle.alignJustifyCenter;
     }
-    // deprecated, use UIStyle.Flex
     static justifySpaceBetween() {
         return UIStyle.justifySpaceBetween;
     }
-    // deprecated, use UIStyle.Flex
     static justifyEnd() {
         return UIStyle.justifyEnd;
     }
-    // deprecated, use UIStyle.Flex
     static flexAlignCenter() {
         return UIStyle.flexAlignCenter;
     }
-    // deprecated, use UIStyle.Flex
     static flexJustifyCenter() {
         return UIStyle.flexJustifyCenter;
     }
-    // deprecated, use UIStyle.Flex
     static flexJustifyEnd() {
         return UIStyle.flexJustifyEnd;
     }

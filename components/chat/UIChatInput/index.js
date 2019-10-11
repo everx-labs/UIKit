@@ -207,7 +207,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         return (
             <React.Fragment>
                 {this.renderMenu(true)}
-                <View style={[UIStyle.Flex.x1(), styles.inputMsg]}>
+                <View style={[UIStyle.common.flex(), styles.inputMsg]}>
                     {this.renderAuxTextInput()}
                     {this.renderTextInput()}
                 </View>
