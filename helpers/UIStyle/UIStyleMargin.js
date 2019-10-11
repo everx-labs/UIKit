@@ -62,6 +62,9 @@ export default class UIStyleMargin {
     static topEnormous() { // 104
         return UIStyle.marginTopEnormous;
     }
+    static topGiant() { // 136
+        return UIStyle.marginTopGiant;
+    }
 
     // Bottom
     static bottomTiny() { // 4
