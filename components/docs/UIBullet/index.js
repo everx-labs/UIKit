@@ -26,12 +26,12 @@ const UIBullet = ({
     children, level = 1, bullet = '—', bulletStyle,
 }: Props) => {
     const shift = level > 1
-        ? <View style={[UIStyle.Margin.rightDefault(), UIStyle.Margin.leftGreat()]} />
+        ? <View style={[UIStyle.margin.rightDefault(), UIStyle.margin.leftGreat()]} />
         : null;
     const customBulletStyle = bulletStyle
         || (bullet.length >= 4 ? styles.bulletWideContainer : styles.bulletSlimContainer);
     return (
-        <View style={[UIStyle.Common.flexRow(), UIStyle.Margin.topDefault()]}>
+        <View style={[UIStyle.common.flexRow(), UIStyle.margin.topDefault()]}>
             {shift}
             <Text style={[
                 UIStyle.Text.quaternarySmallRegular(),
@@ -42,7 +42,7 @@ const UIBullet = ({
             </Text>
             <Text style={[
                 UIStyle.Text.secondarySmallRegular(),
-                UIStyle.Common.flex(),
+                UIStyle.common.flex(),
             ]}
             >
                 {children}
@@ -54,6 +54,7 @@ const UIBullet = ({
 UIBullet.defaultProps = {
     level: 1,
     bullet: '—',
+    bulletStyle: {},
 };
 
 export { UIBullet as default };

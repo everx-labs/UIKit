@@ -2,6 +2,7 @@
 import React from 'react';
 import { StyleSheet, Text, Image, View, Platform } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import AdaptiveImage from 'react-native-web-image-loader/lib/modules/adaptiveImage';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIActionComponent from '../../UIActionComponent';
@@ -9,7 +10,6 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UIColor from '../../../helpers/UIColor';
 import UITooltip from '../../notifications/UITooltip';
-import UITextStyle from '../../../helpers/UITextStyle';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
@@ -56,11 +56,25 @@ type Props = ActionProps & {
 
 type State = ActionState;
 
-class UITextButton extends UIActionComponent<Props, State> {
+export default class UITextButton extends UIActionComponent<Props, State> {
     static Align = {
-        Left: UIStyle.Common.justifyStart(),
-        Center: UIStyle.Common.justifyCenter(),
-        Between: UIStyle.Common.justifySpaceBetween(),
+        Left: UIStyle.common.justifyStart(),
+        Center: UIStyle.common.justifyCenter(),
+        Between: UIStyle.common.justifySpaceBetween(),
+    };
+
+    static defaultProps: Props = {
+        ...UIActionComponent.defaultProps,
+        align: UITextButton.Align.Left,
+        details: '',
+        icon: null,
+        backIcon: null,
+        theme: UIColor.Theme.Light,
+        title: '',
+        tooltip: null,
+        multiLine: false,
+        floatingTitle: '',
+        hideFloatingTitle: true,
     };
 
     static pushStyle(styleArray: ViewStyleProp[], newStyle: ViewStyleProp | ViewStyleProp[]) {
@@ -119,7 +133,7 @@ class UITextButton extends UIActionComponent<Props, State> {
         const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
             <View style={styles.floatingTitle}>
-                <Text style={[UITextStyle.tinyRegular, colorStyle]}>
+                <Text style={[UIStyle.text.tinyRegular(), colorStyle]}>
                     {floatingTitle}
                 </Text>
             </View>
@@ -142,14 +156,14 @@ class UITextButton extends UIActionComponent<Props, State> {
             ? iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
             : null;
         const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
-        const styleColor = iconColor ? UIStyle.Color.getTintColorStyle(iconColor) : null;
+        const styleColor = iconColor ? UIStyle.color.getTintColorStyle(iconColor) : null;
 
         const iconStyle = [styleColor];
         if (title) {
-            iconStyle.push(isBack ? UIStyle.Margin.leftDefault() : UIStyle.Margin.rightDefault());
+            iconStyle.push(isBack ? UIStyle.margin.leftDefault() : UIStyle.margin.rightDefault());
         }
 
-        if (typeof icon === 'string') {
+        if (typeof icon === 'string' || icon instanceof AdaptiveImage) {
             return (<Image
                 source={icon}
                 style={iconStyle}
@@ -200,7 +214,7 @@ class UITextButton extends UIActionComponent<Props, State> {
             return null;
         }
         return (
-            <Text style={[UIStyle.Text.secondarySmallRegular(), detailsStyle]}>
+            <Text style={[UIStyle.text.secondarySmallRegular(), detailsStyle]}>
                 {details}
             </Text>
         );
@@ -212,11 +226,11 @@ class UITextButton extends UIActionComponent<Props, State> {
         } = this.props;
         const contStyle = multiLine
             ? []
-            : [UIStyle.Common.centerLeftContainer(), UIStyle.Height.buttonHeight()];
-        const style = [UIStyle.Common.backgroundTransparent(), ...contStyle, align];
+            : [UIStyle.container.centerLeft(), UIStyle.height.buttonHeight()];
+        const style = [UIStyle.common.backgroundTransparent(), ...contStyle, align];
         const commonStyle = this.getCommonStyle();
         return (
-            <View style={[UIStyle.Common.flexColumn(), commonStyle]}>
+            <View style={[UIStyle.common.flexColumn(), ...commonStyle]}>
                 {this.renderFloatingTitle()}
                 <View style={style}>
                     {this.renderIcon(icon, false)}
@@ -227,22 +241,4 @@ class UITextButton extends UIActionComponent<Props, State> {
             </View>
         );
     }
-
-    static defaultProps: Props;
 }
-
-export default UITextButton;
-
-UITextButton.defaultProps = {
-    ...UIActionComponent.defaultProps,
-    align: UITextButton.Align.Left,
-    details: '',
-    icon: null,
-    backIcon: null,
-    theme: UIColor.Theme.Light,
-    title: '',
-    tooltip: null,
-    multiLine: false,
-    floatingTitle: '',
-    hideFloatingTitle: true,
-};
