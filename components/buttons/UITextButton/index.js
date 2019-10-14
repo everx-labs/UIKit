@@ -46,12 +46,18 @@ type Props = ActionProps & {
     theme: string,
     title: string,
     tooltip?: string,
-    hideFloatingTitle?: boolean,
 };
 
 type State = ActionState;
 
 export default class UITextButton extends UIActionComponent<Props, State> {
+    static align = {
+        left: UIStyle.common.justifyStart(),
+        center: UIStyle.common.justifyCenter(),
+        between: UIStyle.common.justifySpaceBetween(),
+    };
+
+    // Deprecated
     static Align = {
         Left: UIStyle.common.justifyStart(),
         Center: UIStyle.common.justifyCenter(),
