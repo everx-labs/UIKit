@@ -10,50 +10,57 @@ type Props = {
     children: string,
     level?: number,
     bullet?: string,
-    bulletStyle?: ViewStyleProp,
+    bulletStyle?: ?ViewStyleProp,
 };
 
-const styles = StyleSheet.create({
-    bulletWideContainer: {
+export const styles = StyleSheet.create({
+    wideContainer: {
+        width: UIConstant.majorContentOffset(),
+    },
+    mediumContainer: {
         width: UIConstant.greatContentOffset(),
     },
-    bulletSlimContainer: {
+    slimContainer: {
         width: UIConstant.hugeContentOffset(),
     },
 });
+
+const getBulletWidthStyle = (len) => {
+    if (len >= 6) {
+        return styles.wideContainer;
+    }
+    if (len >= 4) {
+        return styles.mediumContainer;
+    }
+    return styles.slimContainer;
+};
 
 const UIBullet = ({
     children, level = 1, bullet = '—', bulletStyle,
 }: Props) => {
     const shift = level > 1
-        ? <View style={[UIStyle.Margin.rightDefault(), UIStyle.Margin.leftGreat()]} />
+        ? <View style={[UIStyle.margin.rightDefault(), UIStyle.margin.leftGreat()]} />
         : null;
-    const customBulletStyle = bulletStyle
-        || (bullet.length >= 4 ? styles.bulletWideContainer : styles.bulletSlimContainer);
+    const customBulletStyle = bulletStyle || getBulletWidthStyle(bullet.length);
     return (
-        <View style={[UIStyle.Common.flexRow(), UIStyle.Margin.topDefault()]}>
+        <View style={[UIStyle.common.flexRow(), UIStyle.margin.topDefault()]}>
             {shift}
-            <Text style={[
-                UIStyle.Text.quaternarySmallRegular(),
-                customBulletStyle,
-            ]}
-            >
+            <Text style={[UIStyle.text.quaternarySmallRegular(), customBulletStyle]}>
                 {bullet}
             </Text>
-            <Text style={[
-                UIStyle.Text.secondarySmallRegular(),
-                UIStyle.Common.flex(),
-            ]}
-            >
+            <Text style={[UIStyle.text.secondarySmallRegular(), UIStyle.common.flex()]}>
                 {children}
             </Text>
         </View>
     );
 };
 
+UIBullet.styles = styles;
+
 UIBullet.defaultProps = {
     level: 1,
     bullet: '—',
+    bulletStyle: null,
 };
 
 export { UIBullet as default };
