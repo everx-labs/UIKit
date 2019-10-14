@@ -2,7 +2,6 @@
 import React from 'react';
 import { StyleSheet, Text, Image, View, Platform } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import AdaptiveImage from 'react-native-web-image-loader/lib/modules/adaptiveImage';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIActionComponent from '../../UIActionComponent';
@@ -37,8 +36,8 @@ type Props = ActionProps & {
     style?: ViewStyleProp,
     details: string,
     detailsStyle?: TextStyleProp,
-    icon: ?string | ?React$Node,
-    backIcon: ?string | ?React$Node,
+    icon: ?string,
+    backIcon: ?string,
     iconColor?: string,
     iconHoverColor?: string,
     textStyle?: TextStyleProp,
@@ -139,14 +138,10 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             iconStyle.push(isBack ? UIStyle.margin.leftDefault() : UIStyle.margin.rightDefault());
         }
 
-        if (typeof icon === 'string' || icon instanceof AdaptiveImage) {
-            return (<Image
-                source={icon}
-                style={iconStyle}
-            />);
-        }
-
-        return icon;
+        return (<Image
+            source={icon}
+            style={iconStyle}
+        />);
     }
 
     renderTitle() {
