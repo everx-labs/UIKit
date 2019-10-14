@@ -46,7 +46,6 @@ type Props = ActionProps & {
     theme: string,
     title: string,
     tooltip?: string,
-    hideFloatingTitle?: boolean,
 };
 
 type State = ActionState;
