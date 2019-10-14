@@ -16,9 +16,6 @@ import type { ActionProps, ActionState } from '../../UIActionComponent';
 const TOOLTIP_WIDTH = 'auto';
 
 const styles = StyleSheet.create({
-    floatingTitle: {
-        marginBottom: -UIConstant.smallContentOffset(),
-    },
     flexGrow1: {
         flexGrow: 1,
     },
@@ -51,7 +48,6 @@ type Props = ActionProps & {
     title: string,
     tooltip?: string,
     hideFloatingTitle?: boolean,
-    floatingTitle?: string,
 };
 
 type State = ActionState;
@@ -73,8 +69,6 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         title: '',
         tooltip: null,
         multiLine: false,
-        floatingTitle: '',
-        hideFloatingTitle: true,
     };
 
     static pushStyle(styleArray: ViewStyleProp[], newStyle: ViewStyleProp | ViewStyleProp[]) {
@@ -122,24 +116,6 @@ export default class UITextButton extends UIActionComponent<Props, State> {
     }
 
     // Render
-    renderFloatingTitle() {
-        const {
-            floatingTitle, hideFloatingTitle, theme,
-        } = this.props;
-        if (hideFloatingTitle) {
-            return null;
-        }
-
-        const colorStyle = UIColor.textTertiaryStyle(theme);
-        return (
-            <View style={styles.floatingTitle}>
-                <Text style={[UIStyle.text.tinyRegular(), colorStyle]}>
-                    {floatingTitle}
-                </Text>
-            </View>
-        );
-    }
-
     renderIcon(icon: string, isBack: boolean) {
         if (!icon) {
             return null;
@@ -224,20 +200,17 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         const {
             align, icon, backIcon, multiLine,
         } = this.props;
+        const commonStyle = this.getCommonStyle();
         const contStyle = multiLine
             ? []
             : [UIStyle.container.centerLeft(), UIStyle.height.buttonHeight()];
         const style = [UIStyle.common.backgroundTransparent(), ...contStyle, align];
-        const commonStyle = this.getCommonStyle();
         return (
-            <View style={[UIStyle.common.flexColumn(), ...commonStyle]}>
-                {this.renderFloatingTitle()}
-                <View style={style}>
-                    {this.renderIcon(icon, false)}
-                    {this.renderTitle()}
-                    {this.renderIcon(backIcon, true)}
-                    {this.renderDetails()}
-                </View>
+            <View style={[UIStyle.common.flexColumn(), style, ...commonStyle]}>
+                {this.renderIcon(icon, false)}
+                {this.renderTitle()}
+                {this.renderIcon(backIcon, true)}
+                {this.renderDetails()}
             </View>
         );
     }
