@@ -22,7 +22,11 @@ const styles = StyleSheet.create({
     lableIcon: {
         marginRight: 12,
     },
-    action: {
+    actionRight: {
+        paddingRight: 0,
+    },
+    actionLeft: {
+        paddingLeft: 0,
         paddingRight: 0,
     },
 });
@@ -90,13 +94,23 @@ type Props = ActionProps & {
     size?: ?string,
     /**
     Direction of card, one of: UICard.Direction.Row, UICard.Direction.Column
-    @default UICard.Size.M
-    @ignore
+    @default UICard.Direction.Row
     */
     direction?: ?string,
+    /**
+    For UICard.Direction.Column only. Position of image, one of: UICard.LabelIconPosition.Top, UICard.LabelIconPosition.Bottom
+    @default UICard.LabelIconPosition.Top
+    */
+    labelIconPositionV?: string,
+    /**
+    For UICard.Direction.Column only. Position of image, one of: UICard.LabelIconPosition.Left, UICard.LabelIconPosition.Right
+    @default UICard.LabelIconPosition.Left
+    */
+    labelIconPositionH?: string,
 };
 
 type State = ActionState & {
+  columns: number,
 };
 
 export default class UICard extends UIActionComponent<Props, State> {
@@ -110,7 +124,19 @@ export default class UICard extends UIActionComponent<Props, State> {
         Row: 'row',
         Column: 'column',
     };
+    static LabelIconPosition = {
+        Top: 'top',
+        Left: 'left',
+        Right: 'right',
+        Bottom: 'bottom',
+    };
 
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            columns: 6,
+        };
+    }
 
     getBackgroundStyle() {
         if (!this.props.onPress) {
@@ -125,17 +151,28 @@ export default class UICard extends UIActionComponent<Props, State> {
     }
 
     getLabelIconSize() {
-        if (this.props.size === UICard.Size.XS) {
-            return 32;
+        if (this.isRow()) {
+            if (this.props.size === UICard.Size.XS) {
+                return 32;
+            }
+            if (this.props.size === UICard.Size.S) {
+                return 40;
+            }
+            if (this.props.size === UICard.Size.M) {
+                return 44;
+            }
+            // L
+            return 48;
         }
+
         if (this.props.size === UICard.Size.S) {
             return 40;
         }
         if (this.props.size === UICard.Size.M) {
-            return 44;
+            return 48;
         }
         // L
-        return 48;
+        return 88;
     }
 
     getHeight() {
@@ -153,14 +190,27 @@ export default class UICard extends UIActionComponent<Props, State> {
     }
 
     getSecondaryStyle() {
-        if (this.props.size === UICard.Size.L) {
-            if (!this.props.data) { return [UIStyle.Text.primaryAccentRegular()]; }
-            return [UIStyle.Text.secondaryBodyRegular()];
+        if (this.isRow()) {
+            if (this.props.size === UICard.Size.L) {
+                if (!this.props.data) { return [UIStyle.Text.primaryAccentRegular()]; }
+                return [UIStyle.Text.secondaryBodyRegular()];
+            }
+            return [UIStyle.Text.secondarySmallRegular()];
         }
-        return [UIStyle.Text.secondarySmallRegular()];
+
+        // Column
+        if (this.props.size === UICard.Size.L || this.props.size === UICard.Size.S) {
+            return [UIStyle.Text.secondarySmallRegular()];
+        }
+        // M
+        return [UIStyle.Text.secondaryBodyRegular()];
     }
 
     getDataStyle() {
+        // Column
+        if (!this.isRow()) return [UIStyle.Text.quaternaryCaptionRegular()];
+
+        // Row
         if (this.props.size === UICard.Size.M && this.props.badge) {
             return [UIStyle.Text.tertiaryTinyRegular()];
         }
@@ -172,20 +222,44 @@ export default class UICard extends UIActionComponent<Props, State> {
     }
 
     getLabelStyle() {
-        if (this.props.size === UICard.Size.L) {
+        if (this.isRow()) {
+            if (this.props.size === UICard.Size.L) {
+                return [UIStyle.Text.secondaryBodyMedium()];
+            }
+            return [UIStyle.Text.secondarySmallMedium()];
+        }
+
+        // Column
+        if (this.props.size === UICard.Size.S) {
+            return [UIStyle.Text.secondarySmallMedium()];
+        }
+        if (this.props.size === UICard.Size.M) {
             return [UIStyle.Text.secondaryBodyMedium()];
         }
-        return [UIStyle.Text.secondarySmallMedium()];
+        // L
+        return [UIStyle.Text.tertiaryTinyMedium()];
     }
 
     getCaptionStyle() {
-        if (this.props.size === UICard.Size.XS) {
-            return [UIStyle.Text.tertiarySmallRegular()];
+        if (this.isRow()) {
+            if (this.props.size === UICard.Size.XS) {
+                return [UIStyle.Text.tertiarySmallRegular()];
+            }
+            if (this.props.size === UICard.Size.S) {
+                return [UIStyle.Text.tertiaryTinyRegular()];
+            }
+            return [UIStyle.Text.tertiaryCaptionRegular()];
         }
+
+        // Column
         if (this.props.size === UICard.Size.S) {
-            return [UIStyle.Text.tertiaryTinyRegular()];
+            return [UIStyle.Text.tertiaryTinyMedium()];
         }
-        return [UIStyle.Text.tertiaryCaptionRegular()];
+        if (this.props.size === UICard.Size.M) {
+            return [UIStyle.Text.tertiaryCaptionRegular()];
+        }
+        // L
+        return [UIStyle.Text.primaryAccentMedium()];
     }
 
     // Render
@@ -194,14 +268,19 @@ export default class UICard extends UIActionComponent<Props, State> {
         if (!onActionPress) return null;
         if (!actionIcon && !actionTitle) return null;
 
+        const linkSize = this.props.size === UICard.Size.XS ? UICard.Size.S : this.props.size;
+        const linkStyle = this.isRow() ? styles.actionRight : styles.actionLeft;
+        const textAlign = this.isRow() ? null : UILink.TextAlign.Left;
+
         if (actionIcon && actionTitle) {
             return (
                 <UILink
                     iconR={actionIcon}
                     title={actionTitle}
                     onPress={onActionPress}
-                    size={this.props.size}
-                    style={styles.action}
+                    size={linkSize}
+                    style={linkStyle}
+                    textAlign={textAlign}
                 />
             );
         }
@@ -211,8 +290,9 @@ export default class UICard extends UIActionComponent<Props, State> {
                 <UILink
                     onPress={onActionPress}
                     icon={actionIcon}
-                    size={this.props.size}
-                    style={styles.action}
+                    size={linkSize}
+                    style={linkStyle}
+                    textAlign={textAlign}
                 />
             );
         }
@@ -221,8 +301,9 @@ export default class UICard extends UIActionComponent<Props, State> {
             <UILink
                 onPress={onActionPress}
                 title={actionTitle}
-                size={this.props.size}
-                style={styles.action}
+                size={linkSize}
+                style={linkStyle}
+                textAlign={textAlign}
             />
         );
     }
@@ -252,14 +333,16 @@ export default class UICard extends UIActionComponent<Props, State> {
     }
 
     renderLabel() {
-        const { label } = this.props;
-        return (<Text style={this.getLabelStyle()}>{label}</Text>);
+        const { label, labelIcon, size } = this.props;
+        const isTopIconedColumn = labelIcon && !this.isRow() && size !== UICard.Size.L;
+        const iconSpaceStyle = isTopIconedColumn ? UIStyle.Margin.topSmall() : null;
+        return (<Text style={[this.getLabelStyle(), iconSpaceStyle]}>{label}</Text>);
     }
 
     renderCaption() {
         const { caption } = this.props;
         if (!caption) return null;
-        return (<Text style={this.getCaptionStyle()}>{caption}</Text>);
+        return (<Text style={[this.getCaptionStyle(), UIStyle.Margin.topTiny()]}>{caption}</Text>);
     }
 
     renderLabelIcon() {
@@ -269,8 +352,163 @@ export default class UICard extends UIActionComponent<Props, State> {
         return (
             <Image
                 source={labelIcon}
-                style={[styles.lableIcon, { width: d, height: d }]}
+                style={[this.isRow() ? styles.lableIcon : null, { width: d, height: d }]}
             />
+        );
+    }
+
+    getColumnWidth() {
+        if (this.props.size === UICard.Size.S) return 90;
+        if (this.props.size === UICard.Size.M) return 124;
+        if (this.props.size === UICard.Size.L) return 296;
+        return 124;
+    }
+
+    getColumnHeight() {
+        if (this.props.size === UICard.Size.S) return 168;
+        if (this.props.size === UICard.Size.M) return 208;
+        if (this.props.size === UICard.Size.L) return 192;
+        return 208;
+    }
+
+    renderColumnL() {
+        const secondary = this.renderSecondary();
+        const action = this.renderAction();
+        const labelIcon = this.renderLabelIcon();
+        const label = this.renderLabel();
+        const caption = this.renderCaption();
+
+        const top = (
+            <View>
+                {label}
+                {caption}
+            </View>
+        );
+        const bottom = (
+            <View style={[
+                secondary && !action ?
+                    { paddingBottom: UIConstant.contentOffset() } :
+                    null,
+            ]}
+            >
+                {secondary}
+                {action}
+            </View>
+        );
+        const right = (
+            <View style={[UIStyle.Common.flex(), UIStyle.Common.alignEnd()]}>
+                {labelIcon}
+            </View>
+        );
+
+        const onGridLayout = () => {
+            this.setStateSafely({ columns: this.grid.getColumns() });
+        };
+
+        return (
+            <UIGrid
+                type={UIGrid.Type.C6}
+                gutter={0}
+                ref={(grid) => { this.grid = grid; }}
+                onLayout={onGridLayout}
+            >
+                <UIGridColumn medium={(this.state.columns / 3) * 2}>{top}</UIGridColumn>
+                <UIGridColumn medium={this.state.columns / 3}>{right}</UIGridColumn>
+                <UIGridColumn medium={this.state.columns} style={UIStyle.Margin.topGreat()} />
+                <UIGridColumn medium={this.state.columns}>{bottom}</UIGridColumn>
+            </UIGrid>
+        );
+    }
+
+    renderColumnM() {
+        const { labelIconPositionV, labelIconPositionH } = this.props;
+        const secondary = this.renderSecondary();
+        const action = this.renderAction();
+        const data = this.renderData();
+        const labelIcon = this.renderLabelIcon();
+        const label = this.renderLabel();
+        const caption = this.renderCaption();
+
+        const labelIconData = data ? (
+            <View style={[
+                UIStyle.Common.flexRow(),
+                UIStyle.Common.justifySpaceBetween(),
+            ]}
+            >
+                {labelIcon}
+                {data}
+            </View>
+        ) : (
+            <View style={[
+                labelIconPositionH === UICard.LabelIconPosition.Left ?
+                    UIStyle.Common.alignStart() :
+                    UIStyle.Common.alignEnd()]}
+            >
+                {labelIcon}
+            </View>
+        );
+
+        if (action || secondary || data) {
+            return (
+                <View style={[
+                    UIStyle.Common.flex(),
+                    UIStyle.Common.justifySpaceBetween(),
+                    { paddingBottom: secondary ? UIConstant.contentOffset() : 0 },
+                ]}
+                >
+                    <View>
+                        {labelIconData}
+                        <View style={action || secondary ? null : UIStyle.Margin.topGreat()}>
+                            {label}
+                            {caption}
+                        </View>
+                    </View>
+                    {action || secondary}
+                </View>
+            );
+        }
+
+        const isImgBottom = labelIconPositionV === UICard.LabelIconPosition.Bottom;
+        const isImgTop = labelIconPositionV === UICard.LabelIconPosition.Top;
+        const isImgRight = labelIconPositionH === UICard.LabelIconPosition.Right;
+        const isImgLeft = labelIconPositionH === UICard.LabelIconPosition.Left;
+        const content = (
+            <View>
+                {label}
+                {caption}
+            </View>
+        );
+        return (
+            <View style={[
+                UIStyle.Common.flex(),
+                UIStyle.Common.justifySpaceBetween(),
+                { paddingBottom: UIConstant.contentOffset() },
+            ]}
+            >
+                {isImgBottom ?
+                    content : isImgRight ?
+                        labelIconData :
+                        <View>
+                            {labelIconData}
+                            {caption}
+                        </View>
+                }
+                {isImgBottom ? labelIconData : isImgRight ? content : label}
+            </View>
+        );
+    }
+
+    renderColumnS() {
+        const labelIcon = this.renderLabelIcon();
+        const label = this.renderLabel();
+        const caption = this.renderCaption();
+
+        return (
+            <React.Fragment>
+                {labelIcon}
+                {label}
+                {caption}
+            </React.Fragment>
         );
     }
 
@@ -336,8 +574,8 @@ export default class UICard extends UIActionComponent<Props, State> {
         return (this.props.direction === UICard.Direction.Row);
     }
 
-    renderContent() {
-        const { style, direction } = this.props;
+    renderRow() {
+        const { style } = this.props;
         const backgroundStyle = this.getBackgroundStyle();
         const right = this.renderRight();
         const left = this.renderLeft(right !== null);
@@ -356,6 +594,35 @@ export default class UICard extends UIActionComponent<Props, State> {
                 {right}
             </View>
         );
+    }
+
+    renderColumn() {
+        const { style } = this.props;
+        const backgroundStyle = this.getBackgroundStyle();
+        const minWidth = this.getColumnWidth();
+        const minHeight = this.getColumnHeight();
+
+        const column = (this.props.size === UICard.Size.S) ?
+            this.renderColumnS() : (this.props.size === UICard.Size.M) ?
+                this.renderColumnM() :
+                this.renderColumnL();
+
+        return (
+            <View style={[
+                { minHeight, minWidth },
+                { paddingTop: UIConstant.contentOffset() },
+                backgroundStyle,
+                style,
+            ]}
+            >
+                {column}
+            </View>
+        );
+    }
+
+    renderContent() {
+        if (this.isRow()) return this.renderRow();
+        return this.renderColumn();
     }
 
     render() {
@@ -381,4 +648,6 @@ UICard.defaultProps = {
 
     size: UICard.Size.M,
     direction: UICard.Direction.Row,
+    labelIconPositionH: UICard.LabelIconPosition.Left,
+    labelIconPositionV: UICard.LabelIconPosition.Top,
 };
