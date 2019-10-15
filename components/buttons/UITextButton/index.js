@@ -210,7 +210,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             <View style={[UIStyle.common.flexColumn(), style, ...commonStyle]}>
                 {this.renderIcon(icon, false)}
                 {this.renderTitle()}
-                {this.renderIcon(backIcon, true)}
+                {/*{this.renderIcon(backIcon, true)}*/}
                 {this.renderDetails()}
             </View>
         );

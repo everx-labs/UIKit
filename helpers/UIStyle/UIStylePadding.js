@@ -1,79 +1,142 @@
-import UIStyle from '../UIStyle';
+import { StyleSheet } from 'react-native';
+import UIConstant from '../UIConstant';
+
+export const paddingProps = {
+    paddingDefault: { // 16
+        padding: UIConstant.contentOffset(),
+    },
+    paddingSmall: {
+        padding: UIConstant.smallContentOffset(),
+    },
+    paddingHorizontal: {
+        paddingHorizontal: UIConstant.contentOffset(),
+    },
+    paddingVertical: {
+        paddingVertical: UIConstant.contentOffset(),
+    },
+    paddingVerticalNormal: {
+        paddingVertical: UIConstant.normalContentOffset(),
+    },
+    paddingTopDefault: {
+        paddingTop: UIConstant.contentOffset(),
+    },
+    paddingBottomSmall: {
+        paddingBottom: UIConstant.smallContentOffset(),
+    },
+    paddingBottomMedium: {
+        paddingBottom: UIConstant.mediumContentOffset(),
+    },
+    paddingBottomSpacious: { // 40
+        paddingBottom: UIConstant.spaciousContentOffset(),
+    },
+    paddingBottomMassive: {
+        paddingBottom: UIConstant.massiveContentOffset(),
+    },
+    paddingBottomMajor: { // 64
+        paddingBottom: UIConstant.majorContentOffset(),
+    },
+    paddingBottomVast: {
+        paddingBottom: UIConstant.vastContentOffset(),
+    },
+    paddingBottomEnormous: {
+        paddingBottom: UIConstant.enormousContentOffset(),
+    },
+    paddingBottomGiant: { // 136
+        paddingBottom: UIConstant.giantContentOffset(),
+    },
+    paddingBottomDefault: {
+        paddingBottom: UIConstant.contentOffset(),
+    },
+    paddingRightDefault: {
+        paddingRight: UIConstant.contentOffset(),
+    },
+    paddingRightHuge: {
+        paddingRight: UIConstant.hugeContentOffset(),
+    },
+    paddingRightGreat: {
+        paddingRight: UIConstant.greatContentOffset(),
+    },
+    paddingLeftDefault: {
+        paddingLeft: UIConstant.contentOffset(),
+    },
+};
+
+const styles = StyleSheet.create(paddingProps);
 
 export default class UIStylePadding {
     static default() { // 16
-        return UIStyle.paddingDefault;
+        return styles.paddingDefault;
     }
 
     static small() {
-        return UIStyle.paddingSmall;
+        return styles.paddingSmall;
     }
 
     static horizontal() {
-        return UIStyle.paddingHorizontal;
+        return styles.paddingHorizontal;
     }
 
     static vertical() {
-        return UIStyle.paddingVertical;
+        return styles.paddingVertical;
     }
 
     static verticalNormal() {
-        return UIStyle.paddingVerticalNormal;
+        return styles.paddingVerticalNormal;
     }
 
     static topDefault() {
-        return UIStyle.paddingTopDefault;
+        return styles.paddingTopDefault;
     }
 
     static bottomSmall() {
-        return UIStyle.paddingBottomSmall;
+        return styles.paddingBottomSmall;
     }
 
     static bottomDefault() {
-        return UIStyle.paddingBottomDefault;
+        return styles.paddingBottomDefault;
     }
 
     static bottomSpacious() { // 40
-        return UIStyle.paddingBottomSpacious;
+        return styles.paddingBottomSpacious;
     }
 
     static bottomMassive() {
-        return UIStyle.paddingBottomMassive;
+        return styles.paddingBottomMassive;
     }
 
     static bottomVast() {
-        return UIStyle.paddingBottomVast;
+        return styles.paddingBottomVast;
     }
 
     static bottomEnormous() {
-        return UIStyle.paddingBottomEnormous;
+        return styles.paddingBottomEnormous;
     }
 
     static bottomGiant() { // 136
-        return UIStyle.paddingBottomGiant;
+        return styles.paddingBottomGiant;
     }
 
     static leftDefault() {
-        return UIStyle.paddingLeftDefault;
+        return styles.paddingLeftDefault;
     }
 
     static rightDefault() {
-        return UIStyle.paddingRightDefault;
+        return styles.paddingRightDefault;
     }
 
     static rightHuge() {
-        return UIStyle.paddingRightHuge;
+        return styles.paddingRightHuge;
     }
 
     static rightGreat() {
-        return UIStyle.paddingRightGreat;
+        return styles.paddingRightGreat;
     }
 
     static bottomMedium() {
-        return UIStyle.paddingBottomMedium;
+        return styles.paddingBottomMedium;
     }
 
     static bottomMajor() {
-        return UIStyle.paddingBottomMajor;
+        return styles.paddingBottomMajor;
     }
 }

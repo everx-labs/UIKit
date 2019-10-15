@@ -1,3 +1,4 @@
+// @flow
 import { StyleSheet } from 'react-native';
 import UIColor from '../UIColor';
 import type { UIColorData, UIColorThemeNameType } from '../UIColor/UIColorTypes';

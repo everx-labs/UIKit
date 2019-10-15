@@ -1,103 +1,178 @@
-import UIStyle from '../UIStyle';
+import { StyleSheet } from 'react-native';
+import { containerProps } from './UIStyleContainer';
+
+export const flexProps = {
+    flex: {
+        flex: 1,
+    },
+    flex1: {
+        flex: 1,
+    },
+    flex2: {
+        flex: 2,
+    },
+    flex3: {
+        flex: 3,
+    },
+    flexRow: {
+        flexDirection: 'row',
+    },
+    flexColumn: {
+        flexDirection: 'column',
+    },
+    flexRowWrap: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    alignCenter: {
+        alignItems: 'center',
+    },
+    alignSelfCenter: {
+        alignSelf: 'center',
+    },
+    alignEnd: {
+        alignItems: 'flex-end',
+    },
+    alignStart: {
+        alignItems: 'flex-start',
+    },
+    textAlignCenter: {
+        textAlign: 'center',
+    },
+    textAlignRight: {
+        textAlign: 'right',
+    },
+    justifyStart: {
+        justifyContent: 'flex-start',
+    },
+    justifyCenter: {
+        justifyContent: 'center',
+    },
+    alignJustifyCenter: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    justifySpaceBetween: {
+        justifyContent: 'space-between',
+    },
+    justifyEnd: {
+        justifyContent: 'flex-end',
+    },
+    flexAlignCenter: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    flexJustifyCenter: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    flexJustifyEnd: {
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+    ...containerProps,
+};
+
+const styles = StyleSheet.create(flexProps);
 
 export default class UIStyleFlex {
     static x1() {
-        return UIStyle.flex;
+        return styles.flex;
     }
 
     static x2() {
-        return UIStyle.flex2;
+        return styles.flex2;
     }
 
     static x3() {
-        return UIStyle.flex3;
+        return styles.flex3;
     }
 
     static column() {
-        return UIStyle.flexColumn;
+        return styles.flexColumn;
     }
 
     static row() {
-        return UIStyle.flexRow;
+        return styles.flexRow;
     }
 
     static rowWrap() {
-        return UIStyle.flexRowWrap;
+        return styles.flexRowWrap;
     }
 
     static alignCenter() {
-        return UIStyle.alignCenter;
+        return styles.alignCenter;
     }
 
     static alignSelfCenter() {
-        return UIStyle.alignSelfCenter;
+        return styles.alignSelfCenter;
     }
 
     static alignEnd() {
-        return UIStyle.alignEnd;
+        return styles.alignEnd;
     }
 
     static alignStart() {
-        return UIStyle.alignStart;
+        return styles.alignStart;
     }
 
     static textAlignCenter() {
-        return UIStyle.textAlignCenter;
+        return styles.textAlignCenter;
     }
 
     static textAlignRight() {
-        return UIStyle.textAlignRight;
+        return styles.textAlignRight;
     }
 
     static justifyStart() {
-        return UIStyle.justifyStart;
+        return styles.justifyStart;
     }
 
     static justifyCenter() {
-        return UIStyle.justifyCenter;
+        return styles.justifyCenter;
     }
 
     static alignJustifyCenter() {
-        return UIStyle.alignJustifyCenter;
+        return styles.alignJustifyCenter;
     }
 
     static justifySpaceBetween() {
-        return UIStyle.justifySpaceBetween;
+        return styles.justifySpaceBetween;
     }
 
     static justifyEnd() {
-        return UIStyle.justifyEnd;
+        return styles.justifyEnd;
     }
 
     static flexAlignCenter() {
-        return UIStyle.flexAlignCenter;
+        return styles.flexAlignCenter;
     }
 
     static flexJustifyCenter() {
-        return UIStyle.flexJustifyCenter;
+        return styles.flexJustifyCenter;
     }
 
     static flexJustifyEnd() {
-        return UIStyle.flexJustifyEnd;
+        return styles.flexJustifyEnd;
     }
 
     static center() {
-        return UIStyle.centerContainer;
+        return styles.centerContainer;
     }
 
     static centerLeft() {
-        return UIStyle.centerLeftContainer;
+        return styles.centerLeftContainer;
     }
 
     static centerRight() {
-        return UIStyle.centerRightContainer;
+        return styles.centerRightContainer;
     }
 
     static rowSpace() {
-        return UIStyle.rowSpaceContainer;
+        return styles.rowSpaceContainer;
     }
 
     static rowCenterSpace() {
-        return UIStyle.rowCenterSpaceContainer;
+        return styles.rowCenterSpaceContainer;
     }
 }

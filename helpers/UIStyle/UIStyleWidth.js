@@ -1,44 +1,69 @@
-import UIStyle from './index';
+import { StyleSheet } from 'react-native';
+import { containerProps } from './UIStyleContainer';
+
+export const widthProps = {
+    fullWidth: {
+        width: '100%',
+    },
+    threeQuartersWidth: {
+        width: '75%',
+    },
+    twoThirdsWidth: {
+        width: '66%',
+    },
+    halfWidth: {
+        width: '50%',
+    },
+    thirdWidth: {
+        width: '33%',
+    },
+    quarterWidth: {
+        width: '25%',
+    },
+    ...containerProps,
+};
+
+const styles = StyleSheet.create(widthProps);
 
 export default class UIStyleWidth {
     static full() {
-        return UIStyle.fullWidth;
+        return styles.fullWidth;
     }
 
     static threeQuarters() {
-        return UIStyle.threeQuartersWidth;
+        return styles.threeQuartersWidth;
     }
 
     static twothirds() {
-        return UIStyle.twoThirdsWidth;
+        return styles.twoThirdsWidth;
     }
 
     static half() {
-        return UIStyle.halfWidth;
+        return styles.halfWidth;
     }
 
     static third() {
-        return UIStyle.thirdWidth;
+        return styles.thirdWidth;
     }
 
     static quarter() {
-        return UIStyle.quarterWidth;
+        return styles.quarterWidth;
     }
 
     // Containers
     static fullCenterContainer() {
-        return UIStyle.fullWidthCenterContainer;
+        return styles.fullWidthCenterContainer;
     }
 
     static fullPaddingContainer() {
-        return UIStyle.fullWidthPaddingContainer;
+        return styles.fullWidthPaddingContainer;
     }
 
     static halfContainer() {
-        return UIStyle.halfWidthContainer;
+        return styles.halfWidthContainer;
     }
 
     static twoThirdsContainer() {
-        return UIStyle.twoThirdsWidthContainer;
+        return styles.twoThirdsWidthContainer;
     }
 }

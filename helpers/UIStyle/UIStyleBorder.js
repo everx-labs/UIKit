@@ -1,29 +1,99 @@
-import UIStyle from './index';
+import { StyleSheet } from 'react-native';
+
+import UIConstant from '../UIConstant';
+import UIColor from '../UIColor';
+
+const borderTop = {
+    borderTopColor: UIColor.light(),
+    borderTopWidth: 1,
+};
+
+const borderBottom = {
+    borderBottomColor: UIColor.light(),
+    borderBottomWidth: 1,
+};
+
+const cellBorderBottom = {
+    borderBottomColor: UIColor.whiteLight(),
+    borderBottomWidth: 1,
+};
+
+const cellBorderTop = {
+    borderTopColor: UIColor.whiteLight(),
+    borderTopWidth: 1,
+};
+
+const borderBottomAction = {
+    borderBottomColor: UIColor.primary(),
+    borderBottomWidth: 1,
+};
+
+export const borderLeft = {
+    borderLeftColor: UIColor.light(),
+    borderLeftWidth: 1,
+};
+
+const borderRight = {
+    borderRightColor: UIColor.light(),
+    borderRightWidth: 1,
+};
+
+export const borderProps = {
+    borderAround: {
+        ...borderTop,
+        ...borderBottom,
+        ...borderLeft,
+        ...borderRight,
+    },
+    borderBottom: {
+        ...borderBottom,
+    },
+    borderLeft: {
+        ...borderLeft,
+    },
+    borderTop: {
+        ...borderTop,
+    },
+    borderBottomAction: {
+        ...borderBottomAction,
+    },
+    cellBorderTop: {
+        ...cellBorderTop,
+    },
+    cellBorderBottom: {
+        ...cellBorderBottom,
+    },
+    borderRadiusDefault: {
+        borderRadius: UIConstant.borderRadius(),
+    },
+};
+
+const styles = StyleSheet.create(borderProps);
 
 export default class UIStyleBorder {
     // borders
     static common() {
-        return UIStyle.borderAround;
+        return styles.borderAround;
     }
 
     static bottom() {
-        return UIStyle.borderBottom;
+        return styles.borderBottom;
     }
 
     static bottomAction() {
-        return UIStyle.borderBottomAction;
+        return styles.borderBottomAction;
     }
 
     static left() {
-        return UIStyle.borderLeft;
+        return styles.borderLeft;
     }
 
     static top() {
-        return UIStyle.borderTop;
+        return styles.borderTop;
     }
 
     // radius
     static radiusDefault() {
-        return UIStyle.borderRadiusDefault;
+        return styles.borderRadiusDefault;
     }
 }

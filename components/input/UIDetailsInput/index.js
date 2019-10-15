@@ -719,12 +719,7 @@ export default class UIDetailsInput<Props, State>
             return null;
         }
         return (
-            <Text
-                style={[
-                    UIStyle.text.secondaryBodyRegular(),
-                    { marginRight: UIConstant.smallContentOffset() },
-                ]}
-            >
+            <Text style={[UIStyle.text.secondaryBodyRegular(), UIStyle.margin.rightSmall()]}>
                 {maxLength - value.length}
             </Text>
         );
@@ -798,7 +793,7 @@ export default class UIDetailsInput<Props, State>
         }
         const placeholder = this.getPlaceholder();
         return (
-            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.Common.positionAbsolute()]}>
+            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.common.positionAbsolute()]}>
                 {placeholder}
                 <Text
                     style={[
@@ -834,7 +829,7 @@ export default class UIDetailsInput<Props, State>
         const {
             comment, hideBottomLine, theme, mandatory, mandatoryColor,
         } = this.props;
-        const bottomLine = hideBottomLine ? null : UIStyle.borderBottom;
+        const bottomLine = hideBottomLine ? null : UIStyle.border.bottom();
         let bottomLineColor: UIColorData;
         if (this.props.bottomLineColor) {
             bottomLineColor = this.props.bottomLineColor;
