@@ -210,6 +210,10 @@ const UITextStyle = StyleSheet.create({
         ...primary,
         ...UIFont.accentRegular(),
     },
+    primaryAccentMedium: {
+        ...primary,
+        ...UIFont.accentMedium(),
+    },
     primaryAccentBold: {
         ...primary,
         ...UIFont.accentBold(),
