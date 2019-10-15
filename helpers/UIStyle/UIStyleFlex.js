@@ -1,7 +1,8 @@
+// @flow
 import { StyleSheet } from 'react-native';
-import { containerProps } from './UIStyleContainer';
+import { containerStyles } from './UIStyleContainer';
 
-export const flexProps = {
+export const flexStyles = {
     flex: {
         flex: 1,
     },
@@ -70,10 +71,10 @@ export const flexProps = {
         flex: 1,
         justifyContent: 'flex-end',
     },
-    ...containerProps,
+    ...containerStyles,
 };
 
-const styles = StyleSheet.create(flexProps);
+const styles = StyleSheet.create(flexStyles);
 
 export default class UIStyleFlex {
     static x1() {

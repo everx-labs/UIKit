@@ -1,10 +1,11 @@
+// @flow
 import { StyleSheet } from 'react-native';
 import UIColor from '../UIColor';
 import UIConstant from '../UIConstant';
-import { containerProps } from './UIStyleContainer';
-import { flexProps } from './UIStyleFlex';
+import { containerStyles } from './UIStyleContainer';
+import { flexStyles } from './UIStyleFlex';
 
-export const commonProps = {
+export const commonStyles = {
     commonShadow: {
         ...UIConstant.commonShadow(),
     },
@@ -55,11 +56,11 @@ export const commonProps = {
         position: 'absolute',
     },
 
-    ...containerProps,
-    ...flexProps,
+    ...containerStyles,
+    ...flexStyles,
 };
 
-const styles = StyleSheet.create(commonProps);
+const styles = StyleSheet.create(commonStyles);
 
 export default class UIStyleCommon {
     static flex() {

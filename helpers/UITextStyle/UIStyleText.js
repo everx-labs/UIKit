@@ -1,3 +1,4 @@
+// @flow
 import UITextStyle from '../UITextStyle';
 
 export default class UIStyleText {

@@ -1,7 +1,8 @@
+// @flow
 import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
 
-export const paddingProps = {
+export const paddingStyles = {
     paddingDefault: { // 16
         padding: UIConstant.contentOffset(),
     },
@@ -61,7 +62,7 @@ export const paddingProps = {
     },
 };
 
-const styles = StyleSheet.create(paddingProps);
+const styles = StyleSheet.create(paddingStyles);
 
 export default class UIStylePadding {
     static default() { // 16

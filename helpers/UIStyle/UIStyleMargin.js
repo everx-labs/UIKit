@@ -1,7 +1,8 @@
+// @flow
 import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
 
-export const marginProps = {
+export const marginStyles = {
     leftGreat: {
         marginLeft: UIConstant.greatContentOffset(),
     },
@@ -154,7 +155,7 @@ export const marginProps = {
     },
 };
 
-const styles = StyleSheet.create(marginProps);
+const styles = StyleSheet.create(marginStyles);
 
 export default class UIStyleMargin {
     // Top

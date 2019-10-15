@@ -1,3 +1,4 @@
+// @flow
 import { StyleSheet } from 'react-native';
 
 import UIConstant from '../UIConstant';
@@ -38,7 +39,7 @@ const borderRight = {
     borderRightWidth: 1,
 };
 
-export const borderProps = {
+export const borderStyles = {
     borderAround: {
         ...borderTop,
         ...borderBottom,
@@ -68,7 +69,7 @@ export const borderProps = {
     },
 };
 
-const styles = StyleSheet.create(borderProps);
+const styles = StyleSheet.create(borderStyles);
 
 export default class UIStyleBorder {
     // borders

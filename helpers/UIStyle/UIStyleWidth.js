@@ -1,7 +1,8 @@
+// @flow
 import { StyleSheet } from 'react-native';
-import { containerProps } from './UIStyleContainer';
+import { containerStyles } from './UIStyleContainer';
 
-export const widthProps = {
+export const widthStyles = {
     fullWidth: {
         width: '100%',
     },
@@ -20,10 +21,10 @@ export const widthProps = {
     quarterWidth: {
         width: '25%',
     },
-    ...containerProps,
+    ...containerStyles,
 };
 
-const styles = StyleSheet.create(widthProps);
+const styles = StyleSheet.create(widthStyles);
 
 export default class UIStyleWidth {
     static full() {

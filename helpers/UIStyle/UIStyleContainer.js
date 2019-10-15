@@ -1,3 +1,4 @@
+// @flow
 import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
 import UIColor from '../UIColor';
@@ -31,7 +32,7 @@ const pageContainer = {
     alignSelf: 'center',
 };
 
-export const containerProps = {
+export const containerStyles = {
     centerContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -162,7 +163,7 @@ export const containerProps = {
     },
 };
 
-const styles = StyleSheet.create(containerProps);
+const styles = StyleSheet.create(containerStyles);
 
 export default class UIStyleContainer {
     static absoluteFill() {

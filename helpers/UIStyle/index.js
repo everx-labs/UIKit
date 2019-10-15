@@ -4,26 +4,26 @@ import UIColor from '../UIColor';
 import UIFont from '../UIFont';
 import UIConstant from '../UIConstant';
 import UIDevice from '../UIDevice';
-import UIStyleBorder, { borderProps, borderLeft } from './UIStyleBorder';
-import UIStyleHeight, { heightProps } from './UIStyleHeight';
-import UIStyleMargin, { marginProps } from './UIStyleMargin';
-import UIStylePadding, { paddingProps } from './UIStylePadding';
-import UIStyleCommon, { commonProps } from './UIStyleCommon';
+import UIStyleBorder, { borderStyles, borderLeft } from './UIStyleBorder';
+import UIStyleHeight, { heightStyles } from './UIStyleHeight';
+import UIStyleMargin, { marginStyles } from './UIStyleMargin';
+import UIStylePadding, { paddingStyles } from './UIStylePadding';
+import UIStyleCommon, { commonStyles } from './UIStyleCommon';
 import UIStyleFlex from './UIStyleFlex';
 import UIStyleText from '../UITextStyle/UIStyleText';
-import UIStyleWidth, { widthProps } from './UIStyleWidth';
+import UIStyleWidth, { widthStyles } from './UIStyleWidth';
 import UIStyleColor from './UIStyleColor';
 import UIStyleContainer from './UIStyleContainer';
 
 const profilePhotoSize = 72;
 
 const UIStyle = StyleSheet.create({
-    ...commonProps,
-    ...widthProps,
-    ...heightProps,
-    ...marginProps,
-    ...paddingProps,
-    ...borderProps,
+    ...commonStyles,
+    ...widthStyles,
+    ...heightStyles,
+    ...marginStyles,
+    ...paddingStyles,
+    ...borderStyles,
 
     // colors deprecated, use UIStyle.color
     backgroundPrimaryColor: {

@@ -1,7 +1,8 @@
+// @flow
 import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
 
-export const heightProps = {
+export const heightStyles = {
     // heights
     tinyCell: { // 16
         height: UIConstant.tinyCellHeight(),
@@ -37,7 +38,7 @@ export const heightProps = {
     },
 };
 
-const styles = StyleSheet.create(heightProps);
+const styles = StyleSheet.create(heightStyles);
 
 export default class UIStyleHeight {
     // heights
