@@ -1,191 +1,253 @@
-import UIStyle from './index';
+// @flow
+import { StyleSheet } from 'react-native';
+import UIColor from '../UIColor';
+import UIConstant from '../UIConstant';
+import { containerStyles } from './UIStyleContainer';
+import { flexStyles } from './UIStyleFlex';
+
+export const commonStyles = {
+    commonShadow: {
+        ...UIConstant.commonShadow(),
+    },
+    shadow40: {
+        ...UIConstant.shadow40(),
+    },
+    cardShadow: {
+        ...UIConstant.cardShadow(),
+    },
+
+    backgroundPrimaryColor: {
+        backgroundColor: UIColor.backgroundPrimary(),
+    },
+    backgroundLightColor: {
+        backgroundColor: UIColor.light(),
+    },
+    backgroundTransparent: {
+        backgroundColor: 'transparent',
+    },
+
+    noOpacity: {
+        opacity: 0,
+    },
+    fullOpacity: {
+        opacity: 1,
+    },
+    displayNone: {
+        display: 'none',
+    },
+
+    overflowHidden: {
+        overflow: 'hidden',
+    },
+
+    dismissStripe: {
+        height: 4,
+        width: 40,
+        backgroundColor: UIColor.light(),
+        borderRadius: 2,
+    },
+
+    icon: {
+        width: UIConstant.iconSize(),
+        height: UIConstant.iconSize(),
+    },
+
+    positionAbsolute: {
+        position: 'absolute',
+    },
+
+    ...containerStyles,
+    ...flexStyles,
+};
+
+const styles = StyleSheet.create(commonStyles);
 
 export default class UIStyleCommon {
     static flex() {
-        return UIStyle.flex;
+        return styles.flex;
     }
     static flex2() {
-        return UIStyle.flex2;
+        return styles.flex2;
     }
     static flex3() {
-        return UIStyle.flex3;
+        return styles.flex3;
     }
     static flexColumn() {
-        return UIStyle.flexColumn;
+        return styles.flexColumn;
     }
     static flexRow() {
-        return UIStyle.flexRow;
+        return styles.flexRow;
     }
     static flexRowWrap() {
-        return UIStyle.flexRowWrap;
+        return styles.flexRowWrap;
     }
     static alignCenter() {
-        return UIStyle.alignCenter;
+        return styles.alignCenter;
     }
     static alignSelfCenter() {
-        return UIStyle.alignSelfCenter;
+        return styles.alignSelfCenter;
     }
     static alignEnd() {
-        return UIStyle.alignEnd;
+        return styles.alignEnd;
     }
     static alignStart() {
-        return UIStyle.alignStart;
+        return styles.alignStart;
     }
     static textAlignCenter() {
-        return UIStyle.textAlignCenter;
+        return styles.textAlignCenter;
     }
     static textAlignRight() {
-        return UIStyle.textAlignRight;
+        return styles.textAlignRight;
     }
     static justifyStart() {
-        return UIStyle.justifyStart;
+        return styles.justifyStart;
     }
     static justifyCenter() {
-        return UIStyle.justifyCenter;
+        return styles.justifyCenter;
     }
     static alignJustifyCenter() {
-        return UIStyle.alignJustifyCenter;
+        return styles.alignJustifyCenter;
     }
     static justifySpaceBetween() {
-        return UIStyle.justifySpaceBetween;
+        return styles.justifySpaceBetween;
     }
     static justifyEnd() {
-        return UIStyle.justifyEnd;
+        return styles.justifyEnd;
     }
     static flexAlignCenter() {
-        return UIStyle.flexAlignCenter;
+        return styles.flexAlignCenter;
     }
     static flexJustifyCenter() {
-        return UIStyle.flexJustifyCenter;
+        return styles.flexJustifyCenter;
     }
     static flexJustifyEnd() {
-        return UIStyle.flexJustifyEnd;
+        return styles.flexJustifyEnd;
     }
 
     // Containers
     // deprecated, use UIStyle.Container
     static absoluteFillContainer() {
-        return UIStyle.absoluteFillContainer;
+        return styles.absoluteFillContainer;
     }
     // deprecated, use UIStyle.Container
     static fullWidthPaddingContainer() {
-        return UIStyle.fullWidthPaddingContainer;
+        return styles.fullWidthPaddingContainer;
     }
     // deprecated, use UIStyle.Container
     static fullWidthPaddingCenterContainer() {
-        return UIStyle.fullWidthPaddingCenterContainer;
+        return styles.fullWidthPaddingCenterContainer;
     }
     // deprecated, use UIStyle.Container
     static pageContainer() {
-        return UIStyle.pageContainer;
+        return styles.pageContainer;
     }
     // deprecated, use UIStyle.Container
     static pageNormalContainer() {
-        return UIStyle.pageNormalContainer;
+        return styles.pageNormalContainer;
     }
     // deprecated, use UIStyle.Container
     static pageSlimContainer() {
-        return UIStyle.pageSlimContainer;
+        return styles.pageSlimContainer;
     }
     // deprecated, use UIStyle.Container
     static bottomScreenContainer() {
-        return UIStyle.bottomScreenContainer;
+        return styles.bottomScreenContainer;
     }
     // deprecated, use UIStyle.Container
     static bottomOffsetScreenContainer() {
-        return UIStyle.bottomOffsetScreenContainer;
+        return styles.bottomOffsetScreenContainer;
     }
     // deprecated, use UIStyle.Container
     static leftScreenContainer() {
-        return UIStyle.leftScreenContainer;
+        return styles.leftScreenContainer;
     }
     // deprecated, use UIStyle.Container
     static rightScreenContainer() {
-        return UIStyle.rightScreenContainer;
+        return styles.rightScreenContainer;
     }
     // deprecated, use UIStyle.Container
     static centerContainer() {
-        return UIStyle.centerContainer;
+        return styles.centerContainer;
     }
     // deprecated, use UIStyle.Container
     static centerLeftContainer() {
-        return UIStyle.centerLeftContainer;
+        return styles.centerLeftContainer;
     }
     // deprecated, use UIStyle.Container
     static centerRightContainer() {
-        return UIStyle.centerRightContainer;
+        return styles.centerRightContainer;
     }
     // deprecated, use UIStyle.Container
     static rowSpaceContainer() {
-        return UIStyle.rowSpaceContainer;
+        return styles.rowSpaceContainer;
     }
     // deprecated, use UIStyle.Container
     static rowCenterSpaceContainer() {
-        return UIStyle.rowCenterSpaceContainer;
+        return styles.rowCenterSpaceContainer;
     }
 
     // actual
     // shadow
     static commonShadow() {
-        return UIStyle.commonShadow;
+        return styles.commonShadow;
     }
 
     static shadow40() {
-        return UIStyle.shadow40;
+        return styles.shadow40;
     }
 
     static cardShadow() {
-        return UIStyle.cardShadow;
+        return styles.cardShadow;
     }
 
     // colors
     static backgroundPrimaryColor() {
-        return UIStyle.backgroundPrimaryColor;
+        return styles.backgroundPrimaryColor;
     }
 
     static backgroundLightColor() {
-        return UIStyle.backgroundLightColor;
+        return styles.backgroundLightColor;
     }
 
     static backgroundTransparent() {
-        return UIStyle.backgroundTransparent;
+        return styles.backgroundTransparent;
     }
 
     static noOpacity() {
-        return UIStyle.noOpacity;
+        return styles.noOpacity;
     }
 
     static fullOpacity() {
-        return UIStyle.fullOpacity;
+        return styles.fullOpacity;
     }
 
     // other
     static overflowHidden() {
-        return UIStyle.overflowHidden;
+        return styles.overflowHidden;
     }
 
     static positionAbsolute() {
-        return UIStyle.positionAbsolute;
+        return styles.positionAbsolute;
     }
 
     static absoluteFillObject() {
-        return UIStyle.absoluteFillObject;
+        return styles.absoluteFillObject;
     }
 
     static absoluteFillWidthContainer() {
-        return UIStyle.absoluteFillWidthContainer;
+        return styles.absoluteFillWidthContainer;
     }
 
     static displayNone() {
-        return UIStyle.displayNone;
+        return styles.displayNone;
     }
 
     // custom
     static icon() {
-        return UIStyle.icon;
+        return styles.icon;
     }
 
     static dismissStripe() {
-        return UIStyle.dismissStripe;
+        return styles.dismissStripe;
     }
 }

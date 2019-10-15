@@ -1,9 +1,8 @@
+// @flow
 import { StyleSheet } from 'react-native';
-
-import UIStyle from '../UIStyle';
 import UIConstant from '../UIConstant';
 
-const styles = StyleSheet.create({
+export const marginStyles = {
     leftGreat: {
         marginLeft: UIConstant.greatContentOffset(),
     },
@@ -16,103 +15,243 @@ const styles = StyleSheet.create({
     rightMajor: {
         marginRight: UIConstant.majorContentOffset(),
     },
-});
+
+    marginTopTiny: { // 4
+        marginTop: UIConstant.tinyContentOffset(),
+    },
+    marginTopSmall: { // 8
+        marginTop: UIConstant.smallContentOffset(),
+    },
+    marginTopNormal: { // 12
+        marginTop: UIConstant.normalContentOffset(),
+    },
+    marginTopDefault: { // 16
+        marginTop: UIConstant.contentOffset(),
+    },
+    marginTopMedium: { // 24
+        marginTop: UIConstant.mediumContentOffset(),
+    },
+    marginTopHuge: { // 32
+        marginTop: UIConstant.hugeContentOffset(),
+    },
+    marginTopSpacious: { // 40
+        marginTop: UIConstant.spaciousContentOffset(),
+    },
+    marginTopGreat: { // 48
+        marginTop: UIConstant.greatContentOffset(),
+    },
+    marginTopBig: { // 56
+        marginTop: UIConstant.bigCellHeight(),
+    },
+    marginTopMajor: { // 64
+        marginTop: UIConstant.majorContentOffset(),
+    },
+    marginTopMassive: { // 72
+        marginTop: UIConstant.massiveContentOffset(),
+    },
+    marginTopVast: { // 80
+        marginTop: UIConstant.vastContentOffset(),
+    },
+    marginTopTremendous: { // 96
+        marginTop: UIConstant.tremendousContentOffset(),
+    },
+    marginTopEnormous: { // 104
+        marginTop: UIConstant.enormousContentOffset(),
+    },
+    marginTopGiant: { // 136
+        marginTop: UIConstant.giantContentOffset(),
+    },
+
+    marginBottomTiny: { // 4
+        marginBottom: UIConstant.tinyContentOffset(),
+    },
+    marginBottomSmall: { // 8
+        marginBottom: UIConstant.smallContentOffset(),
+    },
+    marginBottomNormal: { // 12
+        marginBottom: UIConstant.normalContentOffset(),
+    },
+    marginBottomDefault: { // 16
+        marginBottom: UIConstant.contentOffset(),
+    },
+    marginBottomMedium: { // 24
+        marginBottom: UIConstant.mediumContentOffset(),
+    },
+    marginBottomHuge: { // 32
+        marginBottom: UIConstant.hugeContentOffset(),
+    },
+    marginBottomMajor: { // 64
+        marginBottom: UIConstant.majorContentOffset(),
+    },
+    marginBottomMassive: { // 72
+        marginBottom: UIConstant.massiveContentOffset(),
+    },
+    marginBottomVast: { // 80
+        marginBottom: UIConstant.vastContentOffset(),
+    },
+
+    marginRightTiny: { // 4
+        marginRight: UIConstant.tinyContentOffset(),
+    },
+    marginRightSmall: { // 8
+        marginRight: UIConstant.smallContentOffset(),
+    },
+    marginRightNormal: { // 12
+        marginRight: UIConstant.normalContentOffset(),
+    },
+    marginRightDefault: { // 16
+        marginRight: UIConstant.contentOffset(),
+    },
+    marginRightMedium: { // 24
+        marginRight: UIConstant.mediumContentOffset(),
+    },
+    marginRightHuge: { // 32
+        marginRight: UIConstant.hugeContentOffset(),
+    },
+
+    marginLeftTiny: { // 4
+        marginLeft: UIConstant.tinyContentOffset(),
+    },
+    marginLeftSmall: { // 8
+        marginLeft: UIConstant.smallContentOffset(),
+    },
+    marginLeftNormal: { // 12
+        marginLeft: UIConstant.normalContentOffset(),
+    },
+    marginLeftDefault: { // 16
+        marginLeft: UIConstant.contentOffset(),
+    },
+    marginLeftMedium: { // 24
+        marginLeft: UIConstant.mediumContentOffset(),
+    },
+    marginLeftHuge: { // 32
+        marginLeft: UIConstant.hugeContentOffset(),
+    },
+
+    marginHorizontalOffset: { // 16
+        marginLeft: UIConstant.contentOffset(),
+        marginRight: UIConstant.contentOffset(),
+    },
+    marginHorizontalNegativeOffset: {
+        marginHorizontal: -UIConstant.contentOffset(),
+    },
+    marginHorizontalMediumOffset: {
+        marginLeft: UIConstant.mediumContentOffset(),
+        marginRight: UIConstant.mediumContentOffset(),
+    },
+    marginHorizontalSmallOffset: {
+        marginLeft: UIConstant.smallContentOffset(),
+        marginRight: UIConstant.smallContentOffset(),
+    },
+
+    marginDefault: { // 16
+        margin: UIConstant.contentOffset(),
+    },
+
+    marginLeftRight: {
+        marginLeft: UIConstant.contentOffset(),
+        marginRight: UIConstant.contentOffset(),
+        marginBottom: UIConstant.contentOffset(),
+    },
+};
+
+const styles = StyleSheet.create(marginStyles);
 
 export default class UIStyleMargin {
     // Top
     static topTiny() { // 4
-        return UIStyle.marginTopTiny;
+        return styles.marginTopTiny;
     }
     static topSmall() { // 8
-        return UIStyle.marginTopSmall;
+        return styles.marginTopSmall;
     }
     static topNormal() { // 12
-        return UIStyle.marginTopNormal;
+        return styles.marginTopNormal;
     }
     static topDefault() { // 16
-        return UIStyle.marginTopDefault;
+        return styles.marginTopDefault;
     }
     static topMedium() { // 24
-        return UIStyle.marginTopMedium;
+        return styles.marginTopMedium;
     }
     static topHuge() { // 32
-        return UIStyle.marginTopHuge;
+        return styles.marginTopHuge;
     }
     static topSpacious() { // 40
-        return UIStyle.marginTopSpacious;
+        return styles.marginTopSpacious;
     }
     static topGreat() { // 48
-        return UIStyle.marginTopGreat;
+        return styles.marginTopGreat;
     }
     static topBig() { // 56
-        return UIStyle.marginTopBig;
+        return styles.marginTopBig;
     }
     static topMajor() { // 64
-        return UIStyle.marginTopMajor;
+        return styles.marginTopMajor;
     }
     static topMassive() { // 72
-        return UIStyle.marginTopMassive;
+        return styles.marginTopMassive;
     }
     static topVast() { // 80
-        return UIStyle.marginTopVast;
+        return styles.marginTopVast;
     }
     static topTremendous() { // 96
-        return UIStyle.marginTopTremendous;
+        return styles.marginTopTremendous;
     }
     static topEnormous() { // 104
-        return UIStyle.marginTopEnormous;
+        return styles.marginTopEnormous;
     }
     static topGiant() { // 136
-        return UIStyle.marginTopGiant;
+        return styles.marginTopGiant;
     }
 
     // Bottom
     static bottomTiny() { // 4
-        return UIStyle.marginBottomTiny;
+        return styles.marginBottomTiny;
     }
     static bottomSmall() { // 8
-        return UIStyle.marginBottomSmall;
+        return styles.marginBottomSmall;
     }
     static bottomNormal() { // 12
-        return UIStyle.marginBottomNormal;
+        return styles.marginBottomNormal;
     }
     static bottomDefault() { // 16
-        return UIStyle.marginBottomDefault;
+        return styles.marginBottomDefault;
     }
     static bottomMedium() { // 24
-        return UIStyle.marginBottomMedium;
+        return styles.marginBottomMedium;
     }
     static bottomHuge() { // 32
-        return UIStyle.marginBottomHuge;
+        return styles.marginBottomHuge;
     }
     static bottomMajor() { // 64
-        return UIStyle.marginBottomMajor;
+        return styles.marginBottomMajor;
     }
     static bottomMassive() { // 72
-        return UIStyle.marginBottomMassive;
+        return styles.marginBottomMassive;
     }
     static bottomVast() { // 80
-        return UIStyle.marginBottomVast;
+        return styles.marginBottomVast;
     }
 
     // Right
     static rightTiny() { // 4
-        return UIStyle.marginRightTiny;
+        return styles.marginRightTiny;
     }
     static rightSmall() { // 8
-        return UIStyle.marginRightSmall;
+        return styles.marginRightSmall;
     }
     static rightNormal() { // 12
-        return UIStyle.marginRightNormal;
+        return styles.marginRightNormal;
     }
     static rightDefault() { // 16
-        return UIStyle.marginRightDefault;
+        return styles.marginRightDefault;
     }
     static rightMedium() { // 24
-        return UIStyle.marginRightMedium;
+        return styles.marginRightMedium;
     }
     static rightHuge() { // 32
-        return UIStyle.marginRightHuge;
+        return styles.marginRightHuge;
     }
     static rightGreat() { // 48
         return styles.rightGreat;
@@ -123,19 +262,19 @@ export default class UIStyleMargin {
 
     // Left
     static leftTiny() { // 4
-        return UIStyle.marginLeftTiny;
+        return styles.marginLeftTiny;
     }
     static leftSmall() { // 8
-        return UIStyle.marginLeftSmall;
+        return styles.marginLeftSmall;
     }
     static leftNormal() { // 12
-        return UIStyle.marginLeftNormal;
+        return styles.marginLeftNormal;
     }
     static leftDefault() { // 16
-        return UIStyle.marginLeftDefault;
+        return styles.marginLeftDefault;
     }
     static leftMedium() { // 24
-        return UIStyle.marginLeftMedium;
+        return styles.marginLeftMedium;
     }
     static leftGreat() { // 48
         return styles.leftGreat;
@@ -146,23 +285,23 @@ export default class UIStyleMargin {
 
     // Horizontal
     static horizontalSmallOffset() { // 8
-        return UIStyle.marginHorizontalSmallOffset;
+        return styles.marginHorizontalSmallOffset;
     }
     static horizontalOffset() { // 16
-        return UIStyle.marginHorizontalOffset;
+        return styles.marginHorizontalOffset;
     }
     static horizontalNegativeOffset() { // -16
-        return UIStyle.marginHorizontalNegativeOffset;
+        return styles.marginHorizontalNegativeOffset;
     }
     static horizontalMediumOffset() { // 24
-        return UIStyle.marginHorizontalMediumOffset;
+        return styles.marginHorizontalMediumOffset;
     }
 
     // Common
     static default() { // 16
-        return UIStyle.marginDefault;
+        return styles.marginDefault;
     }
     static bottomLeftRight() {
-        return UIStyle.bottomOffsetItemContainer;
+        return styles.marginLeftRight;
     }
 }
