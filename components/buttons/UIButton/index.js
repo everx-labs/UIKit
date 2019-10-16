@@ -158,9 +158,9 @@ type State = ActionState;
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static ButtonSize = {
         Default: 'default',
-        Large: 'large',
-        Medium: 'medium',
-        Small: 'small',
+        Large: 'l',
+        Medium: 'm',
+        Small: 's',
     };
 
     static ButtonShape = {
