@@ -105,6 +105,9 @@ export default class UIStyleText {
     static primaryAccentRegular() {
         return UITextStyle.primaryAccentRegular;
     }
+    static primaryAccentMedium() {
+        return UITextStyle.primaryAccentMedium;
+    }
     static primaryAccentBold() {
         return UITextStyle.primaryAccentBold;
     }

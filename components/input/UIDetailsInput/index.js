@@ -827,15 +827,15 @@ export default class UIDetailsInput<Props, State>
 
     renderTextView() {
         const {
-            comment, hideBottomLine, theme, mandatory, mandatoryColor,
+            hideBottomLine, theme, mandatory, mandatoryColor,
         } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.border.bottom();
         let bottomLineColor: UIColorData;
         if (this.props.bottomLineColor) {
-            bottomLineColor = this.props.bottomLineColor;
+            ({ bottomLineColor } = this.props);
         } else if (mandatory && !this.getValue()) {
             bottomLineColor = mandatoryColor;
-        } else if (comment && this.commentColor()) {
+        } else if (this.commentColor()) {
             bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
         } else {
             bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
