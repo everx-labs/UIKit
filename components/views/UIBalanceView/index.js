@@ -8,7 +8,7 @@ import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shi
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIComponent from '../../UIComponent';
+import UIPureComponent from '../../UIPureComponent';
 import UILabel from '../../text/UILabel';
 
 type ColoredDigit = {
@@ -53,15 +53,15 @@ const cachedBalance = {};
 const maxNumberOfZeroes = '0'.repeat(UIConstant.maxDecimalDigits());
 const maxBalanceLength = UIConstant.maxDecimalDigits() + 2;
 
-export default class UIBalanceView extends UIComponent<Props, State> {
+export default class UIBalanceView extends UIPureComponent<Props, State> {
     static defaultProps = {
         balance: '',
         description: '',
         additionalDescription: '',
         additionalEnabled: true,
         tokenSymbol: '',
-        textStyle: UIStyle.Text.titleLight(),
-        fractionalTextStyle: UIStyle.Text.tertiary(),
+        textStyle: UIStyle.text.titleLight(),
+        fractionalTextStyle: UIStyle.text.tertiary(),
         smartTruncator: true,
         animated: false,
         loading: false,
@@ -90,6 +90,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         this.updatingBalance = false;
         this.animatingBalance = false;
         this.afterAnimationCallback = () => {};
+        console.log(this.props.animated ? '>>> init' : '');
     }
 
     componentDidMount() {
@@ -137,23 +138,24 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
         const { length: balanceLen } = this.getBalance();
 
+        console.log(this.props.animated ? `check this.animatingBalance ${this.animatingBalance}` : '');
         if (this.animatingBalance) {
             this.afterAnimationCallback = () => { this.setBalance(balance, true); };
             return;
         }
         this.animatingBalance = true;
+        console.log(this.props.animated ? `set animatingBalance ${this.animatingBalance}` : '');
 
         const setWidthAnim = condition => (condition
             ? Animated.timing(this.state.balanceWidth, {
                 toValue: balance.length * (this.balanceLineHeight / 2),
-                duration: UIConstant.animationSmallDuration(),
+                duration: 10000,
             }) : {
                 start: (callback) => { callback(); },
             }
         );
 
-        const startWidthAnim = setWidthAnim(balance.length > balanceLen
-            || balanceWidthValue === 0);
+        const startWidthAnim = setWidthAnim(balance.length > balanceLen || balanceWidthValue === 0);
         // $FlowExpectedError
         startWidthAnim.start(async () => {
             await this.setNewBalance(balance);
@@ -178,6 +180,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 const endWidthAnim = setWidthAnim(balance.length < balanceLen);
                 endWidthAnim.start(() => {
                     this.animatingBalance = false;
+                    console.log(this.props.animated ? `set animatingBalance ${this.animatingBalance}` : '');
                     this.setCachedBalance(balance);
                     const callback = loading
                         ? () => { this.setBalance(this.getAuxBalance()); }
@@ -335,7 +338,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
             : null;
         return (
             <Text
-                style={[UIStyle.Text.primary(), this.props.textStyle]}
+                style={[UIStyle.text.primary(), this.props.textStyle]}
                 onLayout={this.onBalanceLayout}
                 numberOfLines={1}
             >
@@ -348,11 +351,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const width = this.balanceLineHeight / 2;
         return text.split('').map<*>((sym: string): React$Node => {
             return (
-                <View style={{ width }} key={`${keyWord}-digit-${sym}-${Math.random()}`}>
-                    <Text>
-                        {sym}
-                    </Text>
-                </View>
+                <Text style={{ width }} key={`${keyWord}-digit-${sym}-${Math.random()}`}>
+                    {sym}
+                </Text>
             );
         });
     }
@@ -382,6 +383,11 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const similar = newDigit.value === digit.value
             && newDigit.primary === digit.primary && !loading;
         const newDigitValue = similar ? '' : newDigit.value || (this.getNewBalance() && ' ') || '';
+        const newDigitText = newDigitValue ? (
+            <Text style={[UIStyle.text.primary(), textStyle, newDigitStyle]}>
+                {newDigitValue}
+            </Text>
+        ) : null;
         const marginTop = this.getMarginTop(index); // 0 or index
         const margin = similar || !animated ? {} : { marginTop };
         return (
@@ -392,10 +398,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                     width: this.balanceLineHeight / 2,
                 }}
             >
-                <Text style={[UIStyle.Text.primary(), textStyle, newDigitStyle]}>
-                    {newDigitValue}
-                </Text>
-                <Text style={[UIStyle.Text.primary(), textStyle, digitStyle]}>
+                {newDigitText}
+                <Text style={[UIStyle.text.primary(), textStyle, digitStyle]}>
                     {digit.value}
                 </Text>
             </Animated.View>
@@ -441,11 +445,11 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         }
 
         return (
-            <View style={[UIStyle.Common.positionAbsolute(), UIStyle.Common.flexRow()]}>
+            <View style={[UIStyle.common.positionAbsolute(), UIStyle.common.flexRow()]}>
                 <Animated.View
                     style={[
-                        UIStyle.Common.flexRow(),
-                        UIStyle.Common.overflowHidden(),
+                        UIStyle.common.flexRow(),
+                        UIStyle.common.overflowHidden(),
                         { width: this.state.balanceWidth },
                     ]}
                 >
@@ -471,8 +475,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
             <Text
                 ref={(component) => { this.auxBalanceText = component; }}
                 style={[
-                    UIStyle.topScreenContainer,
-                    UIStyle.Text.primaryTitleLight(),
+                    UIStyle.container.topScreen(),
+                    UIStyle.text.primaryTitleLight(),
                     styles.auxBalance,
                     this.props.textStyle,
                 ]}
@@ -493,16 +497,16 @@ export default class UIBalanceView extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={UIStyle.Common.flexRow()}>
+            <View style={UIStyle.common.flexRow()}>
                 <UILabel
-                    style={UIStyle.Margin.topSmall()}
+                    style={UIStyle.margin.topSmall()}
                     text={description}
                     role={UILabel.Role.CaptionTertiary}
                 />
                 {
                     additionalDescription ? (
                         <UILabel
-                            style={[UIStyle.Margin.topSmall(), UIStyle.Margin.leftNormal()]}
+                            style={[UIStyle.margin.topSmall(), UIStyle.margin.leftNormal()]}
                             text={additionalDescription}
                             role={
                                 additionalEnabled
@@ -520,7 +524,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const testID = this.getTestID();
         const testIDProp = testID ? { testID } : null;
         const visibleBalance = this.props.animated ? (
-            <View style={UIStyle.Common.overflowHidden()}>
+            <View style={UIStyle.common.overflowHidden()}>
                 {this.renderAnimatedBalanceContainer()}
                 {this.renderAnimatedBalance()}
             </View>

@@ -586,6 +586,7 @@ export default class UIController<Props, State>
             this.renderOverlay() || [],
             this.hasSpinnerOverlay ? this.renderSpinnerOverlay() : [],
         );
+        console.log('RENDER UIController', main, overlays);
         if (overlays.length === 0) {
             return main;
         }

@@ -233,4 +233,8 @@ export default class UIStyleContainer {
     static absoluteFillWidth() {
         return styles.absoluteFillWidthContainer;
     }
+
+    static topScreen() {
+        return styles.topScreenContainer;
+    }
 }
