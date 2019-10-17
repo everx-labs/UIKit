@@ -110,7 +110,7 @@ type Props = ActionProps & {
 };
 
 type State = ActionState & {
-  columns: number,
+    columns: number,
 };
 
 export default class UICard extends UIActionComponent<Props, State> {
@@ -131,9 +131,12 @@ export default class UICard extends UIActionComponent<Props, State> {
         Bottom: 'bottom',
     };
 
+    grid: any;
+
     constructor(props: Props) {
         super(props);
         this.state = {
+            ...this.state,
             columns: 6,
         };
     }
@@ -270,7 +273,7 @@ export default class UICard extends UIActionComponent<Props, State> {
 
         const linkSize = this.props.size === UICard.Size.XS ? UICard.Size.S : this.props.size;
         const linkStyle = this.isRow() ? styles.actionRight : styles.actionLeft;
-        const textAlign = this.isRow() ? null : UILink.TextAlign.Left;
+        const textAlign = this.isRow() ? UILink.TextAlign.Center : UILink.TextAlign.Left;
 
         if (actionIcon && actionTitle) {
             return (
