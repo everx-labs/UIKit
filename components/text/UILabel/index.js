@@ -10,6 +10,7 @@ import UIComponent from '../../UIComponent';
 
 const LabelRole = Object.freeze({
     Title: 'title',
+    TitleLight: 'titleLight',
     Subtitle: 'subtitle',
     SubtitleRegular: 'subtitleRegular',
     Description: 'description',
@@ -74,6 +75,8 @@ export default class UILabel extends UIComponent<Props, State> {
 
         if (role === UILabel.Role.Title) { // Title - fontSize: 36, lineHeight: 48
             result.push(UIStyle.Text.primaryTitleBold());
+        } else if (role === UILabel.Role.TitleLight) {
+            result.push(UIStyle.Text.primaryTitleLight());
         } else if (role === UILabel.Role.Subtitle) { // Subtitle - fontSize: 24, lineHeight: 32
             result.push(UIStyle.Text.primarySubtitleBold());
         } else if (role === UILabel.Role.SubtitleRegular) {
