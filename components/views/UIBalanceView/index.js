@@ -90,7 +90,6 @@ export default class UIBalanceView extends UIPureComponent<Props, State> {
         this.updatingBalance = false;
         this.animatingBalance = false;
         this.afterAnimationCallback = () => {};
-        console.log(this.props.animated ? '>>> init' : '');
     }
 
     componentDidMount() {
@@ -138,13 +137,11 @@ export default class UIBalanceView extends UIPureComponent<Props, State> {
 
         const { length: balanceLen } = this.getBalance();
 
-        console.log(this.props.animated ? `check this.animatingBalance ${this.animatingBalance}` : '');
         if (this.animatingBalance) {
             this.afterAnimationCallback = () => { this.setBalance(balance, true); };
             return;
         }
         this.animatingBalance = true;
-        console.log(this.props.animated ? `set animatingBalance ${this.animatingBalance}` : '');
 
         const setWidthAnim = condition => (condition
             ? Animated.timing(this.state.balanceWidth, {
@@ -180,7 +177,6 @@ export default class UIBalanceView extends UIPureComponent<Props, State> {
                 const endWidthAnim = setWidthAnim(balance.length < balanceLen);
                 endWidthAnim.start(() => {
                     this.animatingBalance = false;
-                    console.log(this.props.animated ? `set animatingBalance ${this.animatingBalance}` : '');
                     this.setCachedBalance(balance);
                     const callback = loading
                         ? () => { this.setBalance(this.getAuxBalance()); }
