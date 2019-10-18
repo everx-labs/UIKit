@@ -8,7 +8,7 @@ import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shi
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIPureComponent from '../../UIPureComponent';
+import UIComponent from '../../UIPureComponent';
 import UILabel from '../../text/UILabel';
 
 type ColoredDigit = {
@@ -53,7 +53,7 @@ const cachedBalance = {};
 const maxNumberOfZeroes = '0'.repeat(UIConstant.maxDecimalDigits());
 const maxBalanceLength = UIConstant.maxDecimalDigits() + 2;
 
-export default class UIBalanceView extends UIPureComponent<Props, State> {
+export default class UIBalanceView extends UIComponent<Props, State> {
     static defaultProps = {
         balance: '',
         description: '',
