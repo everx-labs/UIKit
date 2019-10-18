@@ -8,7 +8,7 @@ import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shi
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIComponent from '../../UIPureComponent';
+import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
 
 type ColoredDigit = {
@@ -146,7 +146,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const setWidthAnim = condition => (condition
             ? Animated.timing(this.state.balanceWidth, {
                 toValue: balance.length * (this.balanceLineHeight / 2),
-                duration: 10000,
+                duration: UIConstant.animationSmallDuration(),
             }) : {
                 start: (callback) => { callback(); },
             }
