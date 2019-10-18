@@ -237,4 +237,8 @@ export default class UIStyleContainer {
     static topScreen() {
         return styles.topScreenContainer;
     }
+
+    static screenBackground() {
+        return styles.screenBackground;
+    }
 }
