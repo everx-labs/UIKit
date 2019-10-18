@@ -572,9 +572,9 @@ export default class UIController<Props, State>
         // We must set the 'collapsible' to 'false'
         // for the containers 'measure' works well on Android.
         const main = (
-            <SafeAreaView style={UIStyle.screenBackground}>
+            <SafeAreaView style={UIStyle.container.screenBackground()}>
                 <View
-                    style={UIStyle.flex}
+                    style={UIStyle.common.flex()}
                     collapsable={false}
                     ref={this.onSetContainer}
                 >
@@ -590,7 +590,7 @@ export default class UIController<Props, State>
             return main;
         }
         return (
-            <View style={UIStyle.flex}>
+            <View style={UIStyle.common.flex()}>
                 {main}
                 {overlays.length > 1 ? <React.Fragment>{overlays}</React.Fragment> : overlays[0]}
             </View>

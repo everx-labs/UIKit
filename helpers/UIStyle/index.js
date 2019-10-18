@@ -25,17 +25,6 @@ const UIStyle = StyleSheet.create({
     ...paddingStyles,
     ...borderStyles,
 
-    // colors deprecated, use UIStyle.color
-    backgroundPrimaryColor: {
-        backgroundColor: UIColor.backgroundPrimary(),
-    },
-    backgroundLightColor: {
-        backgroundColor: UIColor.light(),
-    },
-    backgroundTransparent: {
-        backgroundColor: 'transparent',
-    },
-
     // navigator
     navigatorHeader: {
         backgroundColor: UIColor.backgroundPrimary(),
