@@ -561,7 +561,7 @@ export default class UIDetailsInput<Props, State>
 
     getCommentRight() {
         const { commentRight } = this.props;
-        if (commentRight === null) {
+        if (!commentRight) {
             return '';
         }
         return commentRight;
