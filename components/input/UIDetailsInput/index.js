@@ -913,37 +913,31 @@ export default class UIDetailsInput<Props, State>
                 text={commentRight}
             />
         );
-        if (onPressComment) {
-            return (
-                <View style={containerViewStyle}>
-                    <View style={leftViewContainer}>
-                        <UITextButton
-                            {...testIDProp}
-                            style={[...containerStyle, UIStyle.height.littleCell()]}
-                            textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
-                            title={comment}
-                            onPress={onPressComment}
-                        />
-                    </View>
-                    <View style={rightViewContainer}>
-                        {commentRightLabel}
-                    </View>
-                </View>
-            );
-        }
+        const component = onPressComment ? (
+            <UITextButton
+                {...testIDProp}
+                style={[...containerStyle, UIStyle.height.littleCell()]}
+                textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
+                title={comment}
+                onPress={onPressComment}
+            />
+        ) : (
+            <Text
+                {...testIDProp}
+                style={[
+                    defaultColorStyle,
+                    ...textStyle,
+                    ...containerStyle,
+                ]}
+            >
+                {comment}
+            </Text>
+        );
+
         return (
             <View style={containerViewStyle}>
                 <View style={leftViewContainer}>
-                    <Text
-                        {...testIDProp}
-                        style={[
-                            defaultColorStyle,
-                            ...textStyle,
-                            ...containerStyle,
-                        ]}
-                    >
-                        {comment}
-                    </Text>
+                    {component}
                 </View>
                 <View style={rightViewContainer}>
                     {commentRightLabel}
