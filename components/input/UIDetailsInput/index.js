@@ -120,6 +120,11 @@ export type DetailsProps = ActionProps & {
     */
     comment?: string | null,
     /**
+    Comment string for the right side of comment line
+    @default null
+    */
+    commentRight?: string | null,
+    /**
     Color of comment string
     @default
     */
@@ -464,6 +469,10 @@ export default class UIDetailsInput<Props, State>
         return this.props.commentTestID ? this.props.commentTestID : null;
     }
 
+    getCommentRightTestID(): ?string {
+        return this.props.commentRightTestID ? this.props.commentRightTestID : null;
+    }
+
     isFocused(): boolean {
         return this.state.focused || (this.textInput && this.textInput.isFocused()) || false;
     }
@@ -548,6 +557,14 @@ export default class UIDetailsInput<Props, State>
             return '';
         }
         return `${comment || ' '}`; // space is needed to have fixed height of component
+    }
+
+    getCommentRight() {
+        const { commentRight } = this.props;
+        if (!commentRight) {
+            return '';
+        }
+        return commentRight;
     }
 
     getInlinePlaceholder() {
@@ -853,6 +870,9 @@ export default class UIDetailsInput<Props, State>
         const comment = this.getComment();
         const testID = this.getCommentTestID();
         const testIDProp = testID ? { testID } : null;
+        const commentRight = this.getCommentRight();
+        const commentRightTestID = this.getCommentRightTestID();
+        const commentRightTestIDProp = commentRightTestID ? { commentRightTestID } : null;
         if (!comment) {
             return null;
         }
@@ -868,28 +888,67 @@ export default class UIDetailsInput<Props, State>
             colorStyle,
             UIStyle.text.captionRegular(),
         ];
-        if (onPressComment) {
-            return (
-                <UITextButton
-                    {...testIDProp}
-                    style={[...containerStyle, UIStyle.height.littleCell()]}
-                    textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
-                    title={comment}
-                    onPress={onPressComment}
-                />
-            );
-        }
-        return (
-            <Text
-                {...testIDProp}
+        const containerViewStyle = [
+            UIStyle.common.flex(),
+            UIStyle.common.flexRow(),
+            UIStyle.common.justifySpaceBetween(),
+            UIStyle.common.alignCenter(),
+        ];
+        const leftViewContainer = commentRight
+            ? UIStyle.common.flex2() : UIStyle.common.flex();
+        const rightViewContainer = commentRight
+            ? [
+                UIStyle.common.flex2(),
+                UIStyle.common.alignEnd(),
+                UIStyle.margin.leftDefault(),
+            ] : null;
+        const commentRightLabel = (
+            <UILabel
+                {...commentRightTestIDProp}
+                role={UILabel.Role.CaptionTertiary}
                 style={[
-                    defaultColorStyle,
                     ...textStyle,
                     ...containerStyle,
                 ]}
-            >
-                {comment}
-            </Text>
+                text={commentRight}
+            />
+        );
+        if (onPressComment) {
+            return (
+                <View style={containerViewStyle}>
+                    <View style={leftViewContainer}>
+                        <UITextButton
+                            {...testIDProp}
+                            style={[...containerStyle, UIStyle.height.littleCell()]}
+                            textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
+                            title={comment}
+                            onPress={onPressComment}
+                        />
+                    </View>
+                    <View style={rightViewContainer}>
+                        {commentRightLabel}
+                    </View>
+                </View>
+            );
+        }
+        return (
+            <View style={containerViewStyle}>
+                <View style={leftViewContainer}>
+                    <Text
+                        {...testIDProp}
+                        style={[
+                            defaultColorStyle,
+                            ...textStyle,
+                            ...containerStyle,
+                        ]}
+                    >
+                        {comment}
+                    </Text>
+                </View>
+                <View style={rightViewContainer}>
+                    {commentRightLabel}
+                </View>
+            </View>
         );
     }
 

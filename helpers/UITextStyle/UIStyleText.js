@@ -90,6 +90,9 @@ export default class UIStyleText {
     static primaryTitleBold() {
         return UITextStyle.primaryTitleBold;
     }
+    static primaryTitleRegular() {
+        return UITextStyle.primaryTitleRegular;
+    }
 
     // Subtitle - fontSize: 24, lineHeight: 32
     static primarySubtitleLight() {

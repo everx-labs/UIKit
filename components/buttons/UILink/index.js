@@ -28,6 +28,7 @@ type State = {};
 export default class UILink extends UIComponent<Props, State> {
     static TextAlign = UIButton.TextAlign;
     static Indicator = UIButton.Indicator;
+    static Size = UIButton.ButtonSize;
 
     goHref = () => {
         if (this.props.href) { Linking.openURL(this.props.href); }
