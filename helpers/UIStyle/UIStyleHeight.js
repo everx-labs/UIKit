@@ -7,6 +7,9 @@ export const heightStyles = {
     tinyCell: { // 16
         height: UIConstant.tinyCellHeight(),
     },
+    littleCell: { // 20
+        height: UIConstant.tinyButtonHeight(),
+    },
     smallCell: { // 24
         height: UIConstant.smallCellHeight(),
     },
@@ -44,6 +47,10 @@ export default class UIStyleHeight {
     // heights
     static tinyCell() { // 16
         return styles.tinyCell;
+    }
+
+    static littleCell() { // 20
+        return styles.littleCell;
     }
 
     static smallCell() { // 24

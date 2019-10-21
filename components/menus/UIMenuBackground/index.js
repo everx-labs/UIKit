@@ -1,19 +1,26 @@
+// @flow
 import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
-import PropTypes from 'prop-types';
 import { PopoverContainer } from 'react-native-simple-popover';
 
-import UIMenuView from '../../components/menus/UIMenuView';
-import UIStyle from '../../helpers/UIStyle';
-import UIDevice from '../../helpers/UIDevice';
-import UIComponent from '../../components/UIComponent';
+import UIStyle from '../../../helpers/UIStyle';
+import UIDevice from '../../../helpers/UIDevice';
+import UIComponent from '../../UIComponent';
 
 let masterRef = null;
 
-export default class UIMenuBackground extends UIComponent {
-    static initBackgroundForTablet() {
+type Props = {
+    children: React$Node,
+};
+
+type State = {
+    isBackgroundActive: boolean,
+};
+
+export default class UIMenuBackground extends UIComponent<Props, State> {
+    static initBackgroundForTablet(callback: () => void) {
         if (masterRef) {
-            masterRef.initBackgroundForTablet();
+            masterRef.initBackgroundForTablet(callback);
         }
     }
 
@@ -23,8 +30,10 @@ export default class UIMenuBackground extends UIComponent {
         }
     }
 
-    constructor(props) {
+    callback: () => void;
+    constructor(props: Props) {
         super(props);
+        this.callback = () => {};
 
         this.state = {
             isBackgroundActive: false,
@@ -42,7 +51,7 @@ export default class UIMenuBackground extends UIComponent {
     }
 
     // Setters
-    setIsBackgroundActive(isBackgroundActive = true) {
+    setIsBackgroundActive(isBackgroundActive: boolean = true) {
         this.setStateSafely({ isBackgroundActive });
     }
 
@@ -52,7 +61,8 @@ export default class UIMenuBackground extends UIComponent {
     }
 
     // Actions
-    initBackgroundForTablet() {
+    initBackgroundForTablet(callback: () => void) {
+        this.callback = callback;
         this.setIsBackgroundActive();
     }
 
@@ -63,13 +73,13 @@ export default class UIMenuBackground extends UIComponent {
     // Render
     renderContent() {
         const pointerEvents = this.isBackgroundActive() ? 'box-only' : 'auto';
-        const onPress = this.isBackgroundActive() ? { onPress: () => UIMenuView.hideMenu() } : null;
+        const onPress = this.isBackgroundActive() ? { onPress: this.callback } : null;
         // We use UIMenuView only for Tablet and Web now, for web we use window.addEventListener
         if (UIDevice.isTablet()) {
             return (
                 <TouchableWithoutFeedback {...onPress}>
                     <View
-                        style={UIStyle.screenContainer}
+                        style={UIStyle.container.screen()}
                         pointerEvents={pointerEvents}
                     >
                         {this.props.children}
@@ -88,11 +98,3 @@ export default class UIMenuBackground extends UIComponent {
         );
     }
 }
-
-UIMenuBackground.defaultProps = {
-    onClose: () => {},
-};
-
-UIMenuBackground.propTypes = {
-    onClose: PropTypes.func,
-};

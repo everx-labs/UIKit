@@ -61,7 +61,7 @@ import UIListHeader from './components/text/UIListHeader';
 import UILoadMoreButton from './components/buttons/UILoadMoreButton';
 import UILocalized from './helpers/UILocalized';
 import UIMenuView from './components/menus/UIMenuView';
-import UIMenuBackground from './helpers/UIMenuBackground';
+import UIMenuBackground from './components/menus/UIMenuBackground';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';

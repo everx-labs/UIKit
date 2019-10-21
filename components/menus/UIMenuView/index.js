@@ -6,7 +6,7 @@ import { Popover } from 'react-native-simple-popover';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 import UIColor from '../../../helpers/UIColor';
-import UIMenuBackground from '../../../helpers/UIMenuBackground';
+import UIMenuBackground from '../UIMenuBackground';
 import UIDevice from '../../../helpers/UIDevice';
 import UIEventHelper from '../../../helpers/UIEventHelper';
 import UIActionSheet from '../../menus/UIActionSheet';
@@ -80,7 +80,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
         if (Platform.OS === 'web' || UIDevice.isTablet()) {
             this.setIsVisible();
             this.initClickListenerForWeb(ignoreFirstClick);
-            UIMenuBackground.initBackgroundForTablet();
+            UIMenuBackground.initBackgroundForTablet(() => UIMenuView.hideMenu());
             masterRef = this;
         } else {
             const { menuItemsList, needCancelItem, onCancelCallback } = this.props;
