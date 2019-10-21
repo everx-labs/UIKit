@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     },
     commentStyle: {
         zIndex: -1,
-        height: UIConstant.tinyButtonHeight(),
     },
     button: {
         marginLeft: UIConstant.tinyContentOffset(),
@@ -873,7 +872,7 @@ export default class UIDetailsInput<Props, State>
             return (
                 <UITextButton
                     {...testIDProp}
-                    style={containerStyle}
+                    style={[...containerStyle, UIStyle.height.littleCell()]}
                     textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
                     title={comment}
                     onPress={onPressComment}
