@@ -94,7 +94,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         this.setStateSafely({ date: newDate }, () => {
             if (onChangeDate) {
-                const dateObj = Moment(date, this.getPattern()).toDate();
+                const dateObj = Moment(this.getValue(), this.getPattern()).toDate();
                 onChangeDate(dateObj, this.isValidDate());
             }
         });
@@ -103,10 +103,10 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     // Getters
     commentColor() {
         const value = this.getValue();
-        if (value && !this.isValidDate()) {
+        if (value && !this.isValidDate() && this.state.highlightError) {
             return UIColor.detailsInputComment();
         }
-        return null;
+        return super.commentColor();
     }
 
     getComment() {
@@ -114,7 +114,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         if (value && !this.isValidDate() && this.state.highlightError) {
             return UILocalized.InvalidDate;
         }
-        return '';
+        return super.getComment();
     }
 
     onBlur = () => {
