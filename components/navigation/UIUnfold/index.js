@@ -78,7 +78,16 @@ type State = {
 };
 
 export default class UIUnfold extends UIComponent<Props, State> {
-    static defaultProps: Props;
+    static position = {
+        right: 'right',
+        left: 'left',
+    };
+    static size = {
+        m: 'm',
+        l: 'l',
+    };
+
+    // Deprecated
     static Position = {
         Right: 'right',
         Left: 'left',
@@ -88,6 +97,20 @@ export default class UIUnfold extends UIComponent<Props, State> {
         L: 'l',
     };
 
+    static defaultProps: Props = {
+        titleShow: null,
+        titleHide: null,
+        showButton: true,
+        iconShow: iconShowDefault,
+        iconHide: iconHideDefault,
+        iconPosition: UIUnfold.position.right,
+        content: null,
+        style: null,
+        textStyle: null,
+        unfolded: false,
+        size: UIUnfold.size.m,
+    };
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -95,6 +118,19 @@ export default class UIUnfold extends UIComponent<Props, State> {
         };
     }
 
+    componentWillReceiveProps(nextProps: Props) {
+        if (this.state.unfolded !== nextProps.unfolded) {
+            this.setState({ unfolded: nextProps.unfolded });
+        }
+    }
+
+    // Events
+    onPress = () => {
+        if (this.props.onPress) { this.props.onPress(!this.state.unfolded); }
+        this.setState({ unfolded: !this.state.unfolded });
+    };
+
+    // Getters
     getHeight() {
         if (this.props.size === UIUnfold.Size.M) {
             return UIConstant.mediumButtonHeight();
@@ -109,51 +145,47 @@ export default class UIUnfold extends UIComponent<Props, State> {
         return [UIStyle.Text.primarySmallMedium()];
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (this.state.unfolded !== nextProps.unfolded) {
-            this.setState({ unfolded: nextProps.unfolded });
-        }
-    }
-
-    onPress = () => {
-        if (this.props.onPress) { this.props.onPress(!this.state.unfolded); }
-        this.setState({ unfolded: !this.state.unfolded });
-    }
-
     // Render
     renderButton() {
         const {
             showButton, textStyle, iconHide, iconShow, titleHide, titleShow, iconPosition,
         } = this.props;
-        const unfolded = this.state.unfolded;
-        const icon = !showButton ? null : unfolded ? <Image source={iconHide} /> : <Image source={iconShow} />;
+        const { unfolded } = this.state;
+        const image = unfolded ? <Image source={iconHide} /> : <Image source={iconShow} />;
+        const icon = showButton ? image : null;
         const isRight = iconPosition === UIUnfold.Position.Right;
         const iconLeft = isRight ? null : icon;
         const iconRight = isRight ? icon : null;
         const title = unfolded ? titleHide : titleShow;
 
         const containerStyle = [
-            UIStyle.Common.flex(),
-            UIStyle.Common.flexRow(),
-            UIStyle.Common.alignCenter(),
-            UIStyle.Margin.bottomDefault(),
+            UIStyle.common.flex(),
+            UIStyle.common.flexRow(),
+            UIStyle.common.alignCenter(),
+            UIStyle.margin.bottomDefault(),
         ];
 
         if (title && iconRight) {
-            containerStyle.push(UIStyle.Common.justifySpaceBetween());
+            containerStyle.push(UIStyle.common.justifySpaceBetween());
         }
 
         if (!title && iconRight) {
-            containerStyle.push(UIStyle.Common.justifyEnd());
+            containerStyle.push(UIStyle.common.justifyEnd());
         }
 
         return (
             <TouchableOpacity style={containerStyle} onPress={this.onPress}>
-                <View style={[UIStyle.Common.flex(), UIStyle.Common.flexRow(), UIStyle.Common.alignCenter()]}>
+                <View style={[
+                    UIStyle.common.flex(),
+                    UIStyle.common.flexRow(),
+                    UIStyle.common.alignCenter(),
+                    UIStyle.margin.rightSmall(),
+                ]}
+                >
                     {iconLeft}
                     <Text style={[
                         this.getTextStyle(),
-                        iconLeft ? UIStyle.Margin.leftSmall() : null,
+                        iconLeft ? UIStyle.margin.leftSmall() : null,
                         textStyle,
                     ]}
                     >
@@ -166,28 +198,12 @@ export default class UIUnfold extends UIComponent<Props, State> {
     }
 
     render() {
-        const {
-            style, content,
-        } = this.props;
+        const { style, content } = this.props;
         return (
-            <View style={[UIStyle.Margin.topDefault(), style]}>
+            <View style={[UIStyle.margin.topDefault(), style]}>
                 {this.renderButton()}
                 {this.state.unfolded ? content : null}
             </View>
         );
     }
 }
-
-UIUnfold.defaultProps = {
-    titleShow: null,
-    titleHide: null,
-    showButton: true,
-    iconShow: iconShowDefault,
-    iconHide: iconHideDefault,
-    iconPosition: UIUnfold.Position.Right,
-    content: null,
-    style: null,
-    textStyle: null,
-    unfolded: false,
-    size: UIUnfold.Size.M,
-};
