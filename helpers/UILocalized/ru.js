@@ -458,6 +458,8 @@ const ru: UILocalizedData = {
     FillInPersonalDetails: 'Заполните Ваши личные данные',
     UploadAScan: 'Загрузите скан Вашего паспорта или другого удостоверения личности',
     DoB: 'Дата Рождения',
+    DoBMin: 'Должен быть старше',
+    DoBMax: 'Должен быть младше',
     Gender: 'Пол',
     Citizenship: 'Гражданство',
     Residence: 'Страна проживания',
