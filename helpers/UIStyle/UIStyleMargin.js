@@ -89,6 +89,9 @@ export const marginStyles = {
     marginBottomVast: { // 80
         marginBottom: UIConstant.vastContentOffset(),
     },
+    marginBottomGiant: { // 136
+        marginBottom: UIConstant.giantContentOffset(),
+    },
 
     marginRightTiny: { // 4
         marginRight: UIConstant.tinyContentOffset(),
@@ -232,6 +235,9 @@ export default class UIStyleMargin {
     }
     static bottomVast() { // 80
         return styles.marginBottomVast;
+    }
+    static bottomGiant() { // 136
+        return styles.marginBottomGiant;
     }
 
     // Right
