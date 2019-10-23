@@ -13,6 +13,9 @@ import UILocalized from '../../../helpers/UILocalized';
 import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
 
+const AGE_MAX = 100;
+const AGE_MIN = 18;
+
 const styles = StyleSheet.create({
     missingValueView: {
         zIndex: -1,
@@ -54,6 +57,21 @@ type Props = DetailsProps & {
     Callback with text date.
     */
     onChangeDate?: (text: string, isDateValid: boolean) => void,
+    /**
+    Is this input for age. Use ageMax/ageMin together with this prop.
+    @default false
+    */
+    age?: boolean,
+    /**
+    If age is set, use it for max age.
+    @default 100
+    */
+    ageMax?: number,
+    /**
+    If age is set, use it for min age.
+    @default 18
+    */
+    ageMin?: number,
 };
 type State = ActionState & {
     date: string,
@@ -67,6 +85,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         separator: '.',
         initialEpochTime: null,
         onChangeDate: () => {},
+        age: false,
+        ageMax: AGE_MAX,
+        ageMin: AGE_MIN,
     };
 
     constructor(props: Props) {
@@ -95,26 +116,59 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         this.setStateSafely({ date: newDate }, () => {
             if (onChangeDate) {
                 const dateObj = Moment(this.getValue(), this.getPattern()).toDate();
-                onChangeDate(dateObj, this.isValidDate());
+                const ageInfo = this.props.age && this.isValidDate() ? this.isAgeValid() : null;
+                onChangeDate(dateObj, ageInfo ? ageInfo.isAgeValid : this.isValidDate());
             }
         });
     };
 
     // Getters
+    isAgeValid() {
+        let isAgeValid = true;
+        let ageErrorMessage = '';
+
+        // check age:
+        const dateObj = Moment(this.getValue(), this.getPattern()).toDate();
+        const ageDifMs = Date.now() - dateObj.getTime();
+        if (ageDifMs < 0) {
+            isAgeValid = false;
+            ageErrorMessage = UILocalized.InvalidDate;
+        } else {
+            const ageDate = new Date(ageDifMs);
+            const age = ageDate.getUTCFullYear() - 1970;
+            if (age < this.props.ageMin) {
+                isAgeValid = false;
+                ageErrorMessage = `${UILocalized.DoBMin} ${this.props.ageMin}`;
+            } else if (age > this.props.ageMax) {
+                isAgeValid = false;
+                ageErrorMessage = `${UILocalized.DoBMax} ${this.props.ageMax}`;
+            }
+        }
+        return { isAgeValid, ageErrorMessage };
+    }
+
     commentColor() {
         const value = this.getValue();
-        if (value && !this.isValidDate() && this.state.highlightError) {
+        const ageInfo = this.props.age && this.isValidDate() ? this.isAgeValid() : null;
+
+        if (value
+            && (
+                !this.isValidDate() || !ageInfo?.isAgeValid
+            )) {
             return UIColor.detailsInputComment();
         }
-        return super.commentColor();
+        return null;
     }
 
     getComment() {
         const value = this.getValue();
-        if (value && !this.isValidDate() && this.state.highlightError) {
-            return UILocalized.InvalidDate;
+        const ageInfo = this.props.age && this.isValidDate() ? this.isAgeValid() : null;
+        if (value && (
+            !this.isValidDate() || !ageInfo?.isAgeValid
+        ) && this.state.highlightError) {
+            return ageInfo ? ageInfo.ageErrorMessage : UILocalized.InvalidDate;
         }
-        return super.getComment();
+        return '';
     }
 
     onBlur = () => {
