@@ -29,6 +29,7 @@ type Props = {
     children?: React$Node,
     onCancelCallback?: () => void,
     testID?: string,
+    style?: any,
 };
 
 type State = {
@@ -211,7 +212,10 @@ export default class UIMenuView extends UIComponent<Props, State> {
                         onPress={this.onOpenMenu}
                         onLayout={this.onTriggerLayout}
                     >
-                        <View pointerEvents="none">
+                        <View
+                            pointerEvents="none"
+                            style={this.props.style}
+                        >
                             {children}
                         </View>
                     </TouchableOpacity>
