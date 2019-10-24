@@ -39,13 +39,15 @@ const styles = StyleSheet.create({
     btnMenuContainer: {
         alignSelf: 'flex-end',
         marginHorizontal: UIConstant.smallContentOffset(),
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: UIConstant.defaultCellHeight(),
     },
     btnMenu: {
         alignItems: 'center',
         justifyContent: 'center',
         height: UIConstant.smallButtonHeight(),
         width: UIConstant.smallButtonHeight(),
-        bottom: UIConstant.smallContentOffset() - 1,
     },
     btnSend: {
         height: UIConstant.defaultCellHeight(),
@@ -55,8 +57,8 @@ const styles = StyleSheet.create({
     inputMsg: {
         marginVertical: 0,
         paddingBottom: Platform.select({ // compensate mobile textContainer's default padding
-            ios: 10,
-            android: 10,
+            ios: UIConstant.smallContentOffset(),
+            android: UIConstant.smallContentOffset(),
         }),
     },
 });
@@ -207,9 +209,11 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         return (
             <React.Fragment>
                 {this.renderMenu(true)}
-                <View style={[UIStyle.common.flex(), styles.inputMsg]}>
-                    {this.renderAuxTextInput()}
-                    {this.renderTextInput()}
+                <View style={[UIStyle.displayFlex.x1(), styles.inputMsg]}>
+                    <View>
+                        {this.renderAuxTextInput()}
+                        {this.renderTextInput()}
+                    </View>
                 </View>
                 {this.renderQuickAction()}
                 {this.renderMenu()}
