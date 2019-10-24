@@ -144,13 +144,13 @@ export default class UIScreen<Props, State>
     render() {
         return (
             <View
-                style={UIStyle.flex}
+                style={UIStyle.common.flex()}
                 onLayout={this.onScreenLayoutDefault}
             >
                 {this.renderTopContent()}
                 <ScrollView
                     ref={(component) => { this.scrollView = component; }}
-                    style={UIStyle.flex}
+                    style={UIStyle.common.flex()}
                     contentContainerStyle={this.getContentContainerStyle()}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                     onScroll={this.onScrollDefault}
