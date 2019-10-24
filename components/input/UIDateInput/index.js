@@ -90,6 +90,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         ageMin: AGE_MIN,
     };
 
+    textChanged: boolean; // web only
+
     constructor(props: Props) {
         super(props);
 
@@ -97,7 +99,11 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             ...this.state,
             date: '',
             highlightError: false,
+            prevValue: '',
+            selection: { start: 0, end: 0 },
         };
+
+        this.textChanged = false;
     }
 
     componentDidMount() {
@@ -113,7 +119,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const newDate = date.split(this.getSeparator()).join('');
         if (Number.isNaN(Number(newDate))) return;
 
-        this.setStateSafely({ date: newDate }, () => {
+        const prevValue = this.getValue();
+        this.textChanged = true;
+        this.setStateSafely({ date: newDate, prevValue }, () => {
             if (onChangeDate) {
                 const dateObj = Moment(this.getValue(), this.getPattern()).toDate();
                 const ageInfo = this.props.age && this.isValidDate() ? this.isAgeValid() : null;
@@ -121,6 +129,44 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             }
         });
     };
+
+    adjustSelection(selectionToAdjust: {start: number, end: number}) {
+        if (Platform.OS === 'web') {
+            if (!this.textChanged) {
+                return selectionToAdjust;
+            }
+            this.textChanged = false;
+        }
+
+        const newValue = this.getValue();
+        const prevValue = this.state.prevValue;
+        const diff = newValue.length - prevValue.length;
+
+        let adjustedPosition = selectionToAdjust.start;
+        const separatorsAt = this.getSeparatorPositionsForDate();
+        const separatorNextPositions = separatorsAt.map((posInOriginString, rank) => {
+            return posInOriginString + rank + 1;
+        });
+        const isCursorAtNextSeparatorPosition = separatorNextPositions.includes(adjustedPosition);
+
+        if (diff > 0 && isCursorAtNextSeparatorPosition) {
+            ++adjustedPosition;
+        }
+        if (diff < 0 && adjustedPosition > newValue.length) {
+            adjustedPosition = newValue.length;
+        }
+
+        const selection = { start: adjustedPosition, end: adjustedPosition };
+        return selection;
+    }
+
+    getSelection = (): any => {
+        return this.adjustSelection(this.state.selection);
+    }
+
+    onSelectionChange = (e: any): void => {
+        this.setStateSafely({ selection: e.nativeEvent?.selection });
+    }
 
     // Getters
     isAgeValid() {
