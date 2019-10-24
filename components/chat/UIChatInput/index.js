@@ -154,6 +154,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return (
                 <View style={menuMore ? styles.btnSend : UIStyle.Margin.rightDefault()}>
                     <TouchableHighlight
+                        style={styles.btnMenuContainer}
                         testID="send_btn"
                         onPress={() => this.onSendText(val)}
                     >
