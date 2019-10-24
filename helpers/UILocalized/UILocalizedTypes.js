@@ -442,6 +442,8 @@ export type UILocalizedData = {
     FillInPersonalDetails: string,
     UploadAScan: string,
     DoB: string,
+    DoBMin: string,
+    DoBMax: string,
     Gender: string,
     Citizenship: string,
     Residence: string,

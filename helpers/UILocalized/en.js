@@ -459,6 +459,8 @@ const en: UILocalizedData = {
     FillInPersonalDetails: 'Fill in your personal details',
     UploadAScan: 'Upload a scan of your passport or other ID',
     DoB: 'Date of Birth',
+    DoBMin: 'Must be older than',
+    DoBMax: 'Must be younger than',
     Gender: 'Gender',
     Citizenship: 'Citizenship',
     Residence: 'Residence',
