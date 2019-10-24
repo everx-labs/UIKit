@@ -334,10 +334,10 @@ class UIDialogController extends UIController {
             ? (
                 <ScrollView
                     {...testIDProp}
-                    style={UIStyle.screenContainer}
+                    style={UIStyle.container.screen()}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={[
-                        UIStyle.pageContainer,
+                        UIStyle.container.page(),
                         styles.scrollContainer,
                         this.getContentContainerStyle(),
                         { paddingBottom: this.getBottomPanelHeight() },
@@ -351,8 +351,8 @@ class UIDialogController extends UIController {
                 <View
                     {...testIDProp}
                     style={[
-                        UIStyle.screenContainer,
-                        UIStyle.pageContainer,
+                        UIStyle.container.screen(),
+                        UIStyle.container.page(),
                         this.getContentContainerStyle(),
                         { paddingBottom: this.getBottomPanelHeight() },
                     ]}

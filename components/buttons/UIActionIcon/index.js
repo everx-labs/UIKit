@@ -69,25 +69,26 @@ export default class UIActionIcon extends UIComponent<Props, State> {
     static Shape = UIButton.ButtonShape;
     static Style = UIButton.ButtonStyle;
 
-    constructor(props: Props) {
-        super(props);
-    }
+    // Deprecated
+    static size = UIButton.buttonSize;
+    static shape = UIButton.buttonShape;
+    static style = UIButton.buttonStyle;
 
     getButtonWidth() {
         switch (this.props.buttonSize) {
-        case UIActionIcon.Size.Large:
+        case UIActionIcon.size.large:
             return UIConstant.largeButtonHeight();
-        case UIActionIcon.Size.Medium:
+        case UIActionIcon.size.medium:
             return UIConstant.mediumButtonHeight();
-        case UIActionIcon.Size.Small:
+        case UIActionIcon.size.small:
             return UIConstant.smallButtonHeight();
-        default: // UIActionIcon.Size.Default
+        default: // UIActionIcon.size.default
             return UIConstant.buttonHeight();
         }
     }
 
     render() {
-        let style = this.props.style;
+        let { style } = this.props;
         const widthStyle = { width: this.getButtonWidth() };
         if (style && style.push) {
             style.push(widthStyle);
@@ -103,9 +104,9 @@ export default class UIActionIcon extends UIComponent<Props, State> {
 }
 
 UIActionIcon.defaultProps = {
-    buttonSize: UIActionIcon.Size.Medium,
-    buttonShape: UIActionIcon.Shape.Default,
-    buttonStyle: UIActionIcon.Style.Full,
+    buttonSize: UIActionIcon.size.medium,
+    buttonShape: UIActionIcon.shape.default,
+    buttonStyle: UIActionIcon.style.full,
     icon: null,
     theme: UIColor.Theme.Light,
     style: null,
