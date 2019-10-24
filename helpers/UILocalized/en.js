@@ -62,7 +62,7 @@ const en: UILocalizedData = {
     Cancel: 'Cancel',
     Done: 'Done',
     Continue: 'Continue',
-    Close: 'Cancel',
+    Close: 'Close',
     Edit: 'Edit',
     Delete: 'Delete',
     Manage: 'Manage',

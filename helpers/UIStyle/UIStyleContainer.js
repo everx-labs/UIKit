@@ -241,4 +241,8 @@ export default class UIStyleContainer {
     static screenBackground() {
         return styles.screenBackground;
     }
+
+    static halfWidth() {
+        return containerStyles.halfWidthContainer;
+    }
 }

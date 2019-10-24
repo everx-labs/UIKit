@@ -35,6 +35,7 @@ type Props = {
 type State = {};
 
 export default class UIImageButton extends UIComponent<Props, State> {
+    // Deprecated
     static Images = {
         back: 'back',
         closePrimary: 'close-primary',
@@ -46,16 +47,13 @@ export default class UIImageButton extends UIComponent<Props, State> {
         custom: 'custom',
     };
 
-    static defaultProps = {
+    static images = this.Images;
+
+    static defaultProps: Props = {
+        image: this.images.custom,
         customImage: null,
         buttonStyle: null,
-    };
-
-    // Events
-    onPress = () => {
-        if (this.props.onPress) {
-            this.props.onPress();
-        }
+        onPress: () => {},
     };
 
     // Getters
@@ -77,7 +75,7 @@ export default class UIImageButton extends UIComponent<Props, State> {
         return (
             <TouchableOpacity
                 style={[UIStyle.navigatorButton, this.getButtonStyle()]}
-                onPress={this.onPress}
+                onPress={this.props.onPress}
             >
                 <Image source={this.getImage()} />
             </TouchableOpacity>
