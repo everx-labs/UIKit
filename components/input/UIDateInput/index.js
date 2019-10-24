@@ -120,8 +120,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         if (Number.isNaN(Number(newDate))) return;
 
         const prevValue = this.getValue();
-        this.textChanged = true;
         this.setStateSafely({ date: newDate, prevValue }, () => {
+            this.textChanged = true;
             if (onChangeDate) {
                 const dateObj = Moment(this.getValue(), this.getPattern()).toDate();
                 const ageInfo = this.props.age && this.isValidDate() ? this.isAgeValid() : null;
@@ -139,7 +139,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         }
 
         const newValue = this.getValue();
-        const prevValue = this.state.prevValue;
+        const { prevValue } = this.state;
         const diff = newValue.length - prevValue.length;
 
         let adjustedPosition = selectionToAdjust.start;
@@ -150,9 +150,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const isCursorAtNextSeparatorPosition = separatorNextPositions.includes(adjustedPosition);
 
         if (diff > 0 && isCursorAtNextSeparatorPosition) {
-            ++adjustedPosition;
-        }
-        if (diff < 0 && adjustedPosition > newValue.length) {
+            adjustedPosition += 1;
+        } else if (diff < 0 && adjustedPosition > newValue.length) {
             adjustedPosition = newValue.length;
         }
 
