@@ -369,8 +369,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
                 key="buttonTitle"
                 style={[
                     this.getTitleFontStyle(),
-                    this.props.textStyle,
                     titleStyle,
+                    this.props.textStyle,
                 ]}
             >
                 {this.props.title}
