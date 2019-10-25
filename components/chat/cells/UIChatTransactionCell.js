@@ -17,12 +17,19 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 
-import { TypeOfTransaction } from '../extras';
-import type { ChatMessage, TransactionExtraInfo, ChatAdditionalInfo } from '../extras';
+import { ChatMessageStatus, TypeOfTransaction } from '../extras';
+
+import type {
+    ChatAdditionalInfo,
+    ChatMessage,
+    ChatMessageStatusType,
+    TransactionExtraInfo,
+} from '../extras';
 
 type Props = {
     message: any,
     additionalInfo: ChatAdditionalInfo,
+    status: ChatMessageStatusType,
     onPress: () => void,
 }
 
@@ -159,28 +166,39 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         // TODO:
     }
 
+    getStatus(): string {
+        const { status } = this.props;
+        return status || ChatMessageStatus.Received;
+    }
 
+    isReceived(): boolean {
+        return this.getStatus() === ChatMessageStatus.Received;
+    }
+
+    // Render
     renderTrxContent() {
         const trx = this.getTransaction();
         const extra = this.getExtra();
-        const conner = trx.out ? styles.rightConner : styles.leftConner;
+        const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
         const amount = trx.out ? `- ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
         const color = this.getCardColor();
         const date = Moment(this.getDate()).format('D MMM LT');
 
         return (
-            <View style={[
-                UIStyle.Common.justifyCenter(),
-                styles.trxCard,
-                conner,
-                color,
-            ]}
-            >
-                <View style={[
-                    UIStyle.Common.flexRow(),
-                    UIStyle.Margin.bottomTiny(),
-                    UIStyle.Common.justifySpaceBetween(),
+            <View
+                style={[
+                    UIStyle.Common.justifyCenter(),
+                    styles.trxCard,
+                    conner,
+                    color,
                 ]}
+            >
+                <View
+                    style={[
+                        UIStyle.Common.flexRow(),
+                        UIStyle.Margin.bottomTiny(),
+                        UIStyle.Common.justifySpaceBetween(),
+                    ]}
                 >
                     <UILabel
                         style={[

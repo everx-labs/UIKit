@@ -238,8 +238,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return Moment(time).format('LT');
     }
 
-    wrapInMessageContainer(children: React$Element<*>, isSticker: boolean = false)
-        : React$Element<*> {
+    wrapInMessageContainer(children: React$Element<*>, isSticker: boolean = false): React$Element<*> {
         const { additionalInfo } = this.props;
 
         const bg = isSticker ? { backgroundColor: 'transparent' } : null;
@@ -402,11 +401,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTransactionCell() {
-        const { additionalInfo, data } = this.props;
+        const { additionalInfo, data, status } = this.props;
         return (
             <UIChatTransactionCell
                 testID="transaction_message"
                 message={data}
+                status={status}
                 additionalInfo={additionalInfo}
                 onPress={this.onTransactionPress}
             />
