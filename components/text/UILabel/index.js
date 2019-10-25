@@ -21,6 +21,7 @@ const LabelRole = Object.freeze({
     SmallMedium: 'smallMedium',
     SmallBold: 'smallBold',
     SmallRegular: 'smallRegular',
+    // TODO: add regular tertiary role
     TinyRegular: 'tinyRegular',
     TinyMedium: 'tinyMedium',
     TinyTertiary: 'tinyTertiary',

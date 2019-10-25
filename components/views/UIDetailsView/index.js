@@ -25,6 +25,7 @@ type Props = {
     containerStyle: StylePropType,
     textStyle: StylePropType,
     commentsStyle: StylePropType,
+    disabled?: boolean,
 };
 
 type State = {};
@@ -32,11 +33,17 @@ type State = {};
 export default class UIDetailsView extends UIComponent<Props, State> {
     // Render
     renderValue() {
-        const { value, textStyle, onPress } = this.props;
+        const {
+            value, textStyle, onPress, disabled,
+        } = this.props;
+        let role = onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular;
+        if (disabled) {
+            role = UILabel.Role.CaptionTertiary;
+        }
         return (
             <UILabel
                 style={textStyle}
-                role={onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular}
+                role={role}
                 text={`${value}`}
             />
         );
