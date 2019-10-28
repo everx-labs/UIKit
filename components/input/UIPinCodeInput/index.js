@@ -163,31 +163,33 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     }
 
     wrongPin(description?: string): Promise<void> {
+        const delay = UIConstant.animationDuration();
         return new Promise((resolve) => {
             setTimeout(() => {
                 this.setStateSafely({ wrongPin: true, description });
                 Vibration.vibrate(500);
                 this.shakeIndicator();
-            }, 300);
+            }, delay);
             setTimeout(() => {
                 this.setStateSafely({ wrongPin: false, description: '' });
                 this.resetPin();
                 resolve();
-            }, 1300);
+            }, delay + UIConstant.animationAccentInteractionDurationNormal());
         });
     }
 
     rightPin(description?: string): Promise<void> {
+        const delay = UIConstant.animationDuration();
         return new Promise((resolve) => {
             setTimeout(() => {
                 this.setStateSafely({ rightPin: true, description });
-            }, 300);
+            }, delay);
 
             setTimeout(() => {
                 this.setStateSafely({ rightPin: false, description: '' });
                 this.resetPin();
                 resolve();
-            }, 800);
+            }, delay + UIConstant.animationAccentInteractionDurationFast());
         });
     }
 

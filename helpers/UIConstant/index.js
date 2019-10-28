@@ -4,6 +4,9 @@ import UIColor from '../UIColor';
 
 const UI_ANIMATION_DURATION = 250;
 const UI_ANIMATION_SMALL_DURATION = 100;
+const UI_ANIMATION_ACCENT_INTERACTION_DURATION_FAST = 500;
+const UI_ANIMATION_ACCENT_INTERACTION_DURATION_NORMAL = 1000;
+const UI_ANIMATION_ACCENT_INTERACTION_DURATION_SLOW = 1500;
 const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 50;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
@@ -168,6 +171,18 @@ export default class UIConstant {
 
     static animationSmallDuration() {
         return UI_ANIMATION_SMALL_DURATION;
+    }
+
+    static animationAccentInteractionDurationFast() {
+        return UI_ANIMATION_ACCENT_INTERACTION_DURATION_FAST;
+    }
+
+    static animationAccentInteractionDurationNormal() {
+        return UI_ANIMATION_ACCENT_INTERACTION_DURATION_NORMAL;
+    }
+
+    static animationAccentInteractionDurationSlow() {
+        return UI_ANIMATION_ACCENT_INTERACTION_DURATION_SLOW;
     }
 
     static feedbackDelay() {
