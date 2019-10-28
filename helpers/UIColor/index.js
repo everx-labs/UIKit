@@ -95,6 +95,10 @@ export default class UIColor {
         return UIColorPalette.green;
     }
 
+    static yellow() {
+        return UIColorPalette.yellow;
+    }
+
     static fa() {
         return UIColorPalette.fa;
     }
