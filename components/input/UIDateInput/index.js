@@ -181,7 +181,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     commentColor() {
-        if (this.isInputValid()) {
+        if (this.isInputInvalid()) {
             return UIColor.detailsInputComment();
         }
         return null;
@@ -189,7 +189,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     getComment() {
         const ageInfo = this.props.age && this.isDateValid() ? this.isAgeValid() : null;
-        if (this.isInputValid() && this.state.highlightError) {
+        if (this.isInputInvalid() && this.state.highlightError) {
             return ageInfo ? ageInfo.ageErrorMessage : UILocalized.InvalidDate;
         }
         return '';
@@ -310,7 +310,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         return (validDate && validLength && this.isDateInRange());
     }
 
-    isInputValid() {
+    isInputInvalid() {
         const value = this.getValue();
         const ageInfo = this.props.age && this.isDateValid() ? this.isAgeValid() : null;
         return value && (!this.isDateValid() || (ageInfo && !ageInfo.isAgeValid));
