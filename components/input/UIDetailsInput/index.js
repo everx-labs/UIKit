@@ -458,6 +458,12 @@ export default class UIDetailsInput<Props, State>
         }
     };
 
+    onSelectionChange = (e: any): void => {
+        if (this.props.onSelectionChange) {
+            this.props.onSelectionChange(e);
+        }
+    };
+
     // Setters
     setFocused(focused: boolean = true) {
         this.setStateSafely({ focused });
@@ -553,6 +559,10 @@ export default class UIDetailsInput<Props, State>
         return this.props.required;
     }
 
+    getSelection() {
+        return this.props.selection;
+    }
+
     hidePlaceholder() {
         return this.props.hidePlaceholder;
     }
@@ -604,16 +614,6 @@ export default class UIDetailsInput<Props, State>
         if (this.textInput) {
             this.textInput.clear();
         }
-    }
-
-    onSelectionChange = (e: any): void => {
-        if (this.props.onSelectionChange) {
-            this.props.onSelectionChange(e);
-        }
-    }
-
-    getSelection = (): any => {
-        return this.props.selection;
     }
 
     // Render
