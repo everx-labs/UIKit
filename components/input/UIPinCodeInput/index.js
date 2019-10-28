@@ -162,7 +162,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         });
     }
 
-    wrongPin(description?: string) {
+    wrongPin(description?: string): Promise<void> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 this.setStateSafely({ wrongPin: true, description });
@@ -177,7 +177,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         });
     }
 
-    rightPin(description?: string) {
+    rightPin(description?: string): Promise<void> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 this.setStateSafely({ rightPin: true, description });
