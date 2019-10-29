@@ -79,7 +79,6 @@ type State = {
     titleContent: string,
     textContent: string,
     visible: boolean,
-    staticVisible: boolean,
 };
 
 export default class UISpinnerOverlay extends UIComponent<Props, State> {
@@ -117,7 +116,6 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
             titleContent: this.props.titleContent,
             textContent: this.props.textContent,
             visible: false,
-            staticVisible: false,
         };
     }
 
@@ -138,7 +136,6 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
         if (this.props.masterSpinner) {
             masterRef = null;
         }
-        this.mounted = false;
     }
 
     // Setters
@@ -154,33 +151,24 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
         this.setStateSafely({ visible });
     }
 
-    setStaticVisible(staticVisible: boolean = true) {
-        this.setStateSafely({ staticVisible });
-    }
-
     // Getters
     getVisible() {
         return this.state.visible;
     }
 
-    getStaticVisible() {
-        return this.state.staticVisible;
-    }
-
     // Actions
     show() {
-        this.setStaticVisible();
+        this.setVisible();
     }
 
     hide() {
-        this.setStaticVisible(false);
+        this.setVisible(false);
     }
 
     // Processing
     processProps(props: Props) {
         this.setTitleContent(props.titleContent);
         this.setTextContent(props.textContent);
-        this.setVisible(props.visible);
     }
 
     // Render
@@ -254,7 +242,7 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
     }
 
     render() {
-        if (!this.getVisible() && !this.getStaticVisible()) {
+        if (!this.getVisible() && !this.props.visible) {
             return null;
         }
         if (Platform.OS === 'web' || !this.props.modal) {
