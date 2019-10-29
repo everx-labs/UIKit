@@ -336,7 +336,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
             style.push(this.props.iconRStyle || this.getIconTintStyle());
         }
 
-        return <Image source={icon || iconDefault} style={style} />;
+        return <Image source={icon || iconDefault} style={style} key={`buttonIcon~${position}`} />;
     }
 
     renderIconL() {
@@ -366,6 +366,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         const titleStyle = this.getTitleColorStyle();
         return (
             <Text
+                key="buttonTitle"
                 style={[
                     this.getTitleFontStyle(),
                     this.props.textStyle,
