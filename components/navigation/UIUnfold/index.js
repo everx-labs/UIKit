@@ -71,6 +71,11 @@ type Props = {
     @default null
     */
     onPress?: ?(unfolded: boolean)=>void,
+    /**
+    Your handler here
+    @default null
+    */
+    onLayout?: ?(e: any)=>void,
 };
 
 type State = {
