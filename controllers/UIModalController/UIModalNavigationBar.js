@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
     defaultContainer: {
         flexDirection: 'row',
-        paddingHorizontal: 15,
+        paddingHorizontal: UIConstant.contentOffset(),
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         borderBottomColor: UIColor.light(),
     },
     headerCentral: {
-        marginHorizontal: UIConstant.smallContentOffset(),
+        // marginHorizontal: UIConstant.smallContentOffset(),
     },
 });
 

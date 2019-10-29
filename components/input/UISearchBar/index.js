@@ -12,10 +12,8 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import UIConstant from '../../../helpers/UIConstant';
 import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
-import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextButton from '../../buttons/UITextButton';
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 import UITextInput from '../UITextInput';
 import UIComponent from '../../UIComponent';
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
     searchContainer: {
         flexDirection: 'row',
         width: '100%',
-        paddingHorizontal: UIConstant.contentOffset(),
+        marginHorizontal: UIConstant.contentOffset(),
     },
     bottomSeparator: {
         position: 'absolute',
@@ -45,6 +43,10 @@ const styles = StyleSheet.create({
         bottom: 0,
         height: 1,
         backgroundColor: UIColor.light(),
+    },
+    cancelButton: {
+        justifyContent: 'center',
+        marginHorizontal: UIConstant.contentOffset(),
     },
 });
 
@@ -206,8 +208,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
         if (!this.isFocused() || !value?.length) {
             return null;
         }
-        return (
-            <TouchableOpacity style={UIStyle.justifyCenter} onPress={() => this.onCancel()}>
+        return (//
+            <TouchableOpacity style={styles.cancelButton} onPress={() => this.onCancel()}>
                 <Image source={icoClear} />
             </TouchableOpacity>
         );
