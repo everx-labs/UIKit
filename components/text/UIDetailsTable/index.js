@@ -35,17 +35,9 @@ type Props = {
 type State = {};
 
 const styles = StyleSheet.create({
-    row: {
-        flexDirection: 'row',
-        paddingVertical: 16,
+    borderBottom: {
         borderBottomWidth: 1,
         borderBottomColor: UIColor.current.background.whiteLight,
-    },
-    leftCell: {
-        flex: 1,
-    },
-    rightCell: {
-        flex: 3,
     },
 });
 
@@ -148,28 +140,37 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderRows() {
-        return this.props.detailsList.map<React$Node>((item) => {
+        const { detailsList } = this.props;
+        return detailsList.map<React$Node>((item, index) => {
             const cell = this.renderCell(item);
             const { caption, value } = item;
             const testIDCaption = caption || 'default';
+            const borderBottomStyle = index < detailsList.length - 1 ? styles.borderBottom : null;
             return (
-                <View style={styles.row} key={`details-table-row-${caption || ''}-${value || ''}`}>
+                <View
+                    style={[
+                        UIStyle.padding.vertical(),
+                        UIStyle.common.flexRow(),
+                        borderBottomStyle,
+                    ]}
+                    key={`details-table-row-${caption || ''}-${value || ''}`}
+                >
                     <View
                         style={[
-                            this.props.leftCellStyle || styles.leftCell,
-                            UIStyle.Margin.rightDefault(),
+                            this.props.leftCellStyle || UIStyle.common.flex(),
+                            UIStyle.margin.rightDefault(),
                         ]}
                     >
                         <Text
                             numberOfLines={1}
-                            style={UIStyle.Text.tertiarySmallRegular()}
+                            style={UIStyle.text.tertiarySmallRegular()}
                         >
                             {caption}
                         </Text>
                     </View>
                     <View
                         testID={`table_cell_${testIDCaption}_value`}
-                        style={this.props.rightCellStyle || styles.rightCell}
+                        style={this.props.rightCellStyle || UIStyle.common.flex3()}
                     >
                         {cell}
                     </View>

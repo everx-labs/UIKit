@@ -64,15 +64,9 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         });
     }
 
-    areSomePresumedCardTypes() {
-        const presumedCardTypes = this.getPresumedCardTypes();
-        const arr = Object.keys(presumedCardTypes).map(key => key);
-        return arr.length > 0;
-    }
-
     getCommentColor() {
         const { value, theme, commentColor } = this.props;
-        if (value && !this.areSomePresumedCardTypes()) {
+        if (value && !this.isValidCardNumber()) {
             return UIColor.detailsInputComment(theme);
         }
         return commentColor;
@@ -80,7 +74,7 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
 
     getComment() {
         const { value, comment } = this.props;
-        if (value && !this.areSomePresumedCardTypes() && this.state.highlightError) {
+        if (value && !this.isValidCardNumber() && this.state.highlightError) {
             return UILocalized.InvalidBankCardNumber;
         }
         return comment || '';
