@@ -200,7 +200,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
     render() {
         const { style, content } = this.props;
         return (
-            <View style={[UIStyle.margin.topDefault(), style]}>
+            <View onLayout={this.props.onLayout} style={[UIStyle.margin.topDefault(), style]}>
                 {this.renderButton()}
                 {this.state.unfolded ? content : null}
             </View>

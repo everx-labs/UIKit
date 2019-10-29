@@ -48,6 +48,9 @@ export const paddingStyles = {
     paddingBottomDefault: {
         paddingBottom: UIConstant.contentOffset(),
     },
+    paddingBottomHuge: {
+        paddingBottom: UIConstant.hugeContentOffset(),
+    },
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
     },
@@ -135,6 +138,10 @@ export default class UIStylePadding {
 
     static bottomMedium() {
         return styles.paddingBottomMedium;
+    }
+
+    static bottomHuge() {
+        return styles.paddingBottomHuge;
     }
 
     static bottomMajor() {
