@@ -64,7 +64,11 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
 
         return this.props.children.map((child, rank) => {
             const style = rank !== 0 ? this.getGutterStyle() : null;
-            return React.cloneElement(child, { style: [style, child.props.style], key: `button-${rank}` });
+            return React.cloneElement(child, {
+                style: [style, child.props.style],
+                // eslint-disable-next-line
+                key: `button-${rank}`,
+            });
         });
     }
 
