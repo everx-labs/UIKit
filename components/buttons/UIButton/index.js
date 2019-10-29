@@ -111,6 +111,14 @@ export type ButtonProps = ActionProps & {
     @default null
     */
     iconRStyle?: ?StylePropType,
+    /** Custom style for left icon
+    @default null
+    */
+    iconHoverStyle?: ?StylePropType,
+    /** Custom style for right icon
+    @default null
+    */
+    iconRHoverStyle?: ?StylePropType,
     /** specify in addition to showIndicator props, one of:
         UIButton.Indicator.Spin,
         UIButton.Indicator.Round,
@@ -145,6 +153,10 @@ export type ButtonProps = ActionProps & {
     @default null
     */
     textStyle?: StylePropType,
+    /** button title style
+    @default null
+    */
+    textHoverStyle?: StylePropType,
     /** Visible button title
     @default ''
     */
@@ -156,58 +168,51 @@ export type ButtonProps = ActionProps & {
 type State = ActionState;
 
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
-    static buttonSize = {
-        default: 'default',
-        large: 'l',
-        medium: 'm',
-        small: 's',
-    };
-
-    static buttonShape = {
-        default: 'default',
-        radius: 'radius',
-        rounded: 'rounded',
-        full: 'full',
-    };
-
-    static buttonStyle = {
-        full: 'full',
-        border: 'border',
-        link: 'link',
-    };
-
-    static textAlign = {
-        center: 'center',
-        left: 'left',
-        right: 'right',
-    };
-
     // Deprecated
     static ButtonSize = {
         Default: 'default',
+        default: 'default',
         Large: 'l',
+        large: 'l',
         Medium: 'm',
+        medium: 'm',
         Small: 's',
+        small: 's',
     };
 
     static ButtonShape = {
         Default: 'default',
+        default: 'default',
         Radius: 'radius',
+        radius: 'radius',
         Rounded: 'rounded',
+        rounded: 'rounded',
         Full: 'full',
+        full: 'full',
     };
 
     static ButtonStyle = {
         Full: 'full',
+        full: 'full',
         Border: 'border',
+        border: 'border',
         Link: 'link',
+        link: 'link',
     };
 
     static TextAlign = {
         Center: 'center',
+        center: 'center',
         Left: 'left',
+        left: 'left',
         Right: 'right',
+        right: 'right',
     };
+
+    static buttonSize = UIButton.ButtonSize;
+    static buttonShape = UIButton.ButtonShape;
+    static buttonStyle = UIButton.ButtonStyle;
+    static textAlign = UIButton.TextAlign;
 
     static Indicator = IconAnimation.Animation;
 
@@ -328,14 +333,18 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         }
 
         const style = [];
+        const hovered = this.isHover() || this.isTapped();
+        let propStyle = null;
+
         if (position === 'left') {
             if (this.props.title) style.push(UIStyle.Margin.rightSmall());
-            style.push(this.props.iconStyle || this.getIconTintStyle());
+            propStyle = hovered ? this.props.iconHoverStyle : this.props.iconStyle;
         } else if (position === 'right') {
             if (this.props.title) style.push(UIStyle.Margin.leftSmall());
-            style.push(this.props.iconRStyle || this.getIconTintStyle());
+            propStyle = hovered ? this.props.iconRHoverStyle : this.props.iconRStyle;
         }
 
+        style.push(propStyle || this.getIconTintStyle());
         return <Image source={icon || iconDefault} style={style} key={`buttonIcon~${position}`} />;
     }
 
@@ -364,13 +373,14 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
             return null;
         }
         const titleStyle = this.getTitleColorStyle();
+        const hovered = this.isHover() || this.isTapped();
         return (
             <Text
                 key="buttonTitle"
                 style={[
                     this.getTitleFontStyle(),
                     titleStyle,
-                    this.props.textStyle,
+                    hovered ? this.props.textHoverStyle : this.props.textStyle,
                 ]}
             >
                 {this.props.title}
@@ -624,10 +634,13 @@ UIButton.defaultProps = {
     title: '',
     iconR: null,
     iconStyle: null,
+    iconHoverStyle: null,
     iconRStyle: null,
+    iconRHoverStyle: null,
     style: null,
     textAlign: UIButton.TextAlign.Center,
     textStyle: null,
+    textHoverStyle: null,
     indicatorAnimation: null,
     iconIndicator: null,
     iconIndicatorStyle: null,
