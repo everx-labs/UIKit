@@ -80,7 +80,6 @@ export default class UIModalController<Props, State>
     extends UIController<ModalControllerProps & Props, ModalControllerState & State> {
     fullscreen: boolean;
     dismissible: boolean;
-    modal: boolean;
     adjustBottomSafeAreaInsetDynamically: boolean;
     onCancel: ?(() => void);
     onSelect: ?((any) => void);
