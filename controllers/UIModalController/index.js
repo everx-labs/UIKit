@@ -267,7 +267,6 @@ export default class UIModalController<Props, State>
             const screenHeight = Dimensions.get('window').height;
             const halfFullScreenDialogHeight = Math.min(screenHeight, fullScreenDialogHeight) / 2;
             const halfScreenHeight = screenHeight / 2;
-            const screenHeight = Dimensions.get('window').height;
 
             containerStyle.justifyContent = 'flex-end';
             height = (screenHeight / 2) + halfFullScreenDialogHeight;
