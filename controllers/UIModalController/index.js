@@ -382,7 +382,6 @@ export default class UIModalController<Props, State>
             if (!arg.open) {
                 open = true;
             } else {
-                // eslint-disable-next-line prefer-destructuring
                 open = arg.open;
             }
             if (arg.onCancel) {
@@ -465,7 +464,6 @@ export default class UIModalController<Props, State>
         } = this.getDialogStyle();
 
         const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
-        console.info('Height', height);
         return (
             <PopupDialog
                 {...testIDProp}
