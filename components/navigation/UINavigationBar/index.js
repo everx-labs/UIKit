@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     },
     navigatorHeader: {
         ...StyleSheet.flatten(UIStyle.navigatorHeader),
-        height: UIDevice.navigationBarHeight() * 2,
     },
 });
 
@@ -97,6 +96,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
 
     static navigationOptions(navigation: ReactNavigation, options: UINavigationBarOptions) {
         let effective;
+        const hasLeftOrRight = options.headerLeft || options.headerRight;
         // if headerLeft option unspecified, we use back button
         const headerLeft = ('headerLeft' in options)
             ? options.headerLeft
@@ -112,14 +112,20 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
             };
         } else {
             effective = {
-                headerStyle: [styles.navigatorHeader, options.headerStyle || {}],
+                headerStyle: [
+                    styles.navigatorHeader,
+                    { height: UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1) },
+                    options.headerStyle || {},
+                ],
                 headerLeft: null, // only way to suppress unattended back button
-                headerTitle: <UINavigationBar
-                    title={options.title}
-                    titleRight={options.titleRight}
-                    headerLeft={headerLeft}
-                    headerRight={options.headerRight}
-                />,
+                headerTitle: (
+                    <UINavigationBar
+                        title={options.title}
+                        titleRight={options.titleRight}
+                        headerLeft={headerLeft}
+                        headerRight={options.headerRight}
+                    />
+                ),
             };
         }
         if (options.searchBar) {
@@ -163,16 +169,21 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         const {
             title, containerStyle, buttonsContainerStyle,
         } = this.props;
+
         const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
+        const hasButtons = (this.getHeaderLeft() || this.getHeaderRight());
+
         return (
             <View style={containerStyle || styles.container}>
-                <View
-                    {...testIDProp}
-                    style={[styles.buttonsContainer, buttonsContainerStyle]}
-                >
-                    {this.getHeaderLeft()}
-                    {this.getHeaderRight()}
-                </View>
+                {hasButtons &&
+                    <View
+                        {...testIDProp}
+                        style={[styles.buttonsContainer, buttonsContainerStyle]}
+                    >
+                        {this.getHeaderLeft()}
+                        {this.getHeaderRight()}
+                    </View>
+                }
                 {this.renderTitleView()}
             </View>
         );

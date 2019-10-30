@@ -71,6 +71,7 @@ export type ControllerState = {
     spinnerTextContent?: string,
     spinnerTitleContent?: string,
     spinnerVisible?: boolean,
+    keyboardVisible?: boolean,
     runningAsyncOperation?: string,
 };
 
@@ -286,6 +287,7 @@ export default class UIController<Props, State>
     }
 
     onKeyboardWillShow(event: KeyboardEvent) {
+        this.setStateSafely({ keyboardVisible: true });
         const keyboardFrame = event.endCoordinates;
         const animation = UIController.getKeyboardAnimation(event);
         const { container } = this;
@@ -305,6 +307,7 @@ export default class UIController<Props, State>
     }
 
     onKeyboardWillHide(event: KeyboardEvent) {
+        this.setStateSafely({ keyboardVisible: false });
         this.setContentInset(EmptyInset, UIController.getKeyboardAnimation(event));
     }
 
