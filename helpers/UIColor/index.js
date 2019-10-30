@@ -167,6 +167,10 @@ export default class UIColor {
         return UIColorPalette.warning;
     }
 
+    static caution() {
+        return UIColorPalette.caution;
+    }
+
     static error() {
         return UIColorPalette.error;
     }
