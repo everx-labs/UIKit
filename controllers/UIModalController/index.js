@@ -264,7 +264,9 @@ export default class UIModalController<Props, State>
         }
 
         if (this.fromBottom && (UIDevice.isDesktop() || UIDevice.isTablet())) {
-            const halfFullScreenDialogHeight = fullScreenDialogHeight / 2;
+            const screenHeight = Dimensions.get('window').height;
+            const halfFullScreenDialogHeight = Math.min(screenHeight, fullScreenDialogHeight) / 2;
+            const halfScreenHeight = screenHeight / 2;
             const screenHeight = Dimensions.get('window').height;
 
             containerStyle.justifyContent = 'flex-end';
