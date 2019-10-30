@@ -270,7 +270,7 @@ export default class UIModalController<Props, State>
 
             containerStyle.justifyContent = 'flex-end';
             height = halfScreenHeight + halfFullScreenDialogHeight;
-            contentHeight += (screenHeight / 2) - halfFullScreenDialogHeight;
+            contentHeight += halfScreenHeight - halfFullScreenDialogHeight;
         }
 
         if (enlargeHeightForBounce) {
