@@ -6,6 +6,7 @@ import PopupDialog, {
     SlideAnimation,
     FadeAnimation,
 } from 'react-native-popup-dialog';
+import type { Style } from 'react-style-proptype/src/Style.flow';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type {
@@ -121,7 +122,7 @@ export default class UIModalController<Props, State>
         this.onCancel = null;
         this.onSubmit = null;
         this.onSelect = null;
-        this.fromBottom = UIDevice.isMobile();
+        this.fromBottom = false;
         this.smallStripe = false;
         this.half = false;
         this.marginBottom = new Animated.Value(0);
@@ -225,14 +226,14 @@ export default class UIModalController<Props, State>
             : UIDevice.navigationBarHeight(); // navigation bar height above the modal controller
         const modalForWebTopOffset = Platform.OS === 'web' && this.modalOnWeb ? (height / 2.0) : 0;
 
-        const containerStyle = {
+        const containerStyle: Style = {
             top: -1, // fix for 1px top offset
             paddingTop: statusBarHeight + navBarHeight + modalForWebTopOffset,
             width,
             height,
         };
 
-        let dialogStyle = [
+        let dialogStyle: Style | Style[] = [
             styles.dialogOverflow,
             this.modalOnWeb ? styles.modalOnWebDialogBorders : styles.dialogBorders,
         ];
@@ -262,17 +263,18 @@ export default class UIModalController<Props, State>
             contentHeight -= this.getNavigationBarHeight();
         }
 
+        if (this.fromBottom && (UIDevice.isDesktop() || UIDevice.isTablet())) {
+            const halfFullScreenDialogHeight = fullScreenDialogHeight / 2;
+            const screenHeight = Dimensions.get('window').height;
+
+            containerStyle.justifyContent = 'flex-end';
+            height = (screenHeight / 2) + halfFullScreenDialogHeight;
+            contentHeight += (screenHeight / 2) - halfFullScreenDialogHeight;
+        }
+
         if (enlargeHeightForBounce) {
             height += UIConstant.coverBounceOffset();
             containerStyle.paddingTop += UIConstant.coverBounceOffset();
-        }
-
-        if (this.fromBottom && (UIDevice.isDesktop() || UIDevice.isTablet())) {
-            const halfFullScreenDialogHeight = fullScreenDialogHeight / 2;
-            containerStyle.justifyContent = 'flex-end';
-            dialogStyle.height += (height / 2) - halfFullScreenDialogHeight;
-            height = (height / 2) + halfFullScreenDialogHeight;
-            contentHeight += (height / 2) - halfFullScreenDialogHeight;
         }
 
         return {
@@ -380,6 +382,7 @@ export default class UIModalController<Props, State>
             if (!arg.open) {
                 open = true;
             } else {
+                // eslint-disable-next-line prefer-destructuring
                 open = arg.open;
             }
             if (arg.onCancel) {
@@ -460,7 +463,9 @@ export default class UIModalController<Props, State>
         const {
             width, height, contentHeight, containerStyle, dialogStyle,
         } = this.getDialogStyle();
+
         const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
+        console.info('Height', height);
         return (
             <PopupDialog
                 {...testIDProp}
@@ -495,6 +500,7 @@ export default class UIModalController<Props, State>
         );
     }
 
+    // eslint-disable-next-line no-unused-vars
     renderContentView(contentHeight: number): React$Node {
         return null;
     }
