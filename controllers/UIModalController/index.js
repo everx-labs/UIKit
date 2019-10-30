@@ -274,7 +274,11 @@ export default class UIModalController<Props, State>
 
             containerStyle.justifyContent = 'flex-end';
             height = halfScreenHeight + halfFullScreenDialogHeight;
-            contentHeight += halfScreenHeight - halfFullScreenDialogHeight;
+
+            contentHeight = height - this.getSafeAreaInsets().bottom;
+            if (this.dismissible) {
+                contentHeight -= this.getNavigationBarHeight();
+            }
         }
 
         if (enlargeHeightForBounce) {
@@ -318,10 +322,6 @@ export default class UIModalController<Props, State>
         // then append the bottom safe area value
         if (bottomInset > 0 || this.adjustBottomSafeAreaInsetDynamically) {
             bottomInset += this.getSafeAreaInsets().bottom;
-        }
-
-        if (UIDevice.isTablet()) {
-            bottomInset -= 70;
         }
 
         if (animation) {
