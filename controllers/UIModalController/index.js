@@ -74,12 +74,25 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
     },
+    smallDismissStripe: {
+        width: UIConstant.iconSize(),
+        height: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius(),
+    },
+    defaultDismissStripe: {
+        width: UIConstant.iconSize() * 2,
+        height: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius(),
+    },
 });
 
 export default class UIModalController<Props, State>
     extends UIController<ModalControllerProps & Props, ModalControllerState & State> {
     fullscreen: boolean;
     dismissible: boolean;
+    fromBottom: boolean;
+    smallStripe: boolean;
+    half: boolean;
     adjustBottomSafeAreaInsetDynamically: boolean;
     onCancel: ?(() => void);
     onSelect: ?((any) => void);
@@ -108,6 +121,9 @@ export default class UIModalController<Props, State>
         this.onCancel = null;
         this.onSubmit = null;
         this.onSelect = null;
+        this.fromBottom = UIDevice.isMobile();
+        this.smallStripe = false;
+        this.half = false;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
@@ -233,9 +249,15 @@ export default class UIModalController<Props, State>
             }
         }
 
-        height -= statusBarHeight + navBarHeight;
+        if (this.half && !(UIDevice.isDesktop() || UIDevice.isTablet())) {
+            height /= 2;
+            containerStyle.justifyContent = 'flex-end';
+        } else {
+            height -= statusBarHeight + navBarHeight;
+        }
 
         let contentHeight = height - this.getSafeAreaInsets().bottom;
+
         if (this.dismissible) {
             contentHeight -= this.getNavigationBarHeight();
         }
@@ -243,6 +265,14 @@ export default class UIModalController<Props, State>
         if (enlargeHeightForBounce) {
             height += UIConstant.coverBounceOffset();
             containerStyle.paddingTop += UIConstant.coverBounceOffset();
+        }
+
+        if (this.fromBottom && (UIDevice.isDesktop() || UIDevice.isTablet())) {
+            const halfFullScreenDialogHeight = fullScreenDialogHeight / 2;
+            containerStyle.justifyContent = 'flex-end';
+            dialogStyle.height += (height / 2) - halfFullScreenDialogHeight;
+            height = (height / 2) + halfFullScreenDialogHeight;
+            contentHeight += (height / 2) - halfFullScreenDialogHeight;
         }
 
         return {
@@ -409,6 +439,9 @@ export default class UIModalController<Props, State>
         }
         return (
             <UIModalNavigationBar
+                dismissStripeStyle={
+                    this.smallStripe ? styles.smallDismissStripe : styles.defaultDismissStripe
+                }
                 height={this.getNavigationBarHeight()}
                 swipeToDismiss={this.shouldSwipeToDismiss()}
                 leftComponent={this.renderLeftHeader()}
@@ -435,7 +468,13 @@ export default class UIModalController<Props, State>
                 width={width}
                 height={height}
                 containerStyle={containerStyle}
-                dialogStyle={dialogStyle}
+                dialogStyle={[
+                    dialogStyle,
+                    this.fromBottom && {
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                    },
+                ]}
                 dialogAnimation={this.animation} //
                 dialogTitle={this.renderModalNavigationBar()}
                 dismissOnTouchOutside={false}
