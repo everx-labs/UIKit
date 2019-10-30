@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     smallDismissStripe: {
         width: UIConstant.iconSize(),
         height: UIConstant.tinyBorderRadius(),
-        borderRadius: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius() / 2,
     },
     defaultDismissStripe: {
         width: UIConstant.iconSize() * 2,
         height: UIConstant.tinyBorderRadius(),
-        borderRadius: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius() / 2,
     },
 });
 
@@ -263,7 +263,11 @@ export default class UIModalController<Props, State>
             contentHeight -= this.getNavigationBarHeight();
         }
 
-        if (this.fromBottom && (UIDevice.isDesktop() || UIDevice.isTablet())) {
+        // eslint-disable-next-line no-underscore-dangle
+        if (
+            (this.fromBottom || this.state.keyboardVisible) &&
+            (UIDevice.isDesktop() || UIDevice.isTablet())
+        ) {
             const screenHeight = Dimensions.get('window').height;
             const halfFullScreenDialogHeight = Math.min(screenHeight, fullScreenDialogHeight) / 2;
             const halfScreenHeight = screenHeight / 2;
@@ -315,6 +319,11 @@ export default class UIModalController<Props, State>
         if (bottomInset > 0 || this.adjustBottomSafeAreaInsetDynamically) {
             bottomInset += this.getSafeAreaInsets().bottom;
         }
+
+        if (UIDevice.isTablet()) {
+            bottomInset -= 70;
+        }
+
         if (animation) {
             Animated.timing(this.marginBottom, {
                 toValue: bottomInset,
@@ -474,6 +483,7 @@ export default class UIModalController<Props, State>
                 containerStyle={containerStyle}
                 dialogStyle={[
                     dialogStyle,
+                    // Only inline style working in this prop
                     this.fromBottom && {
                         borderBottomLeftRadius: 0,
                         borderBottomRightRadius: 0,
