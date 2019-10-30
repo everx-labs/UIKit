@@ -295,13 +295,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     }
 
     renderKeyboard() {
-        const { pinTitle } = this.props;
-        const relatedScreen = pinTitle ? pinTitle.split(' ')[0] : '';
         return (
-            <View>
+            <View testID="digitKeyboard">
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_1`}
+                        testID="pincode_digit_1"
                         style={styles.key}
                         onPress={() => this.onKeyPress('1')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -309,7 +307,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>1</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_2`}
+                        testID="pincode_digit_2"
                         style={styles.key}
                         onPress={() => this.onKeyPress('2')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -317,7 +315,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>2</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_3`}
+                        testID="pincode_digit_3"
                         style={styles.key}
                         onPress={() => this.onKeyPress('3')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -327,7 +325,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_4`}
+                        testID="pincode_digit_4"
                         style={styles.key}
                         onPress={() => this.onKeyPress('4')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -335,7 +333,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>4</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_5`}
+                        testID="pincode_digit_5"
                         style={styles.key}
                         onPress={() => this.onKeyPress('5')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -343,7 +341,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>5</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_6`}
+                        testID="pincode_digit_6"
                         style={styles.key}
                         onPress={() => this.onKeyPress('6')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -353,7 +351,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomNormal()]}>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_7`}
+                        testID="pincode_digit_7"
                         style={styles.key}
                         onPress={() => this.onKeyPress('7')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -361,7 +359,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>7</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_8`}
+                        testID="pincode_digit_8"
                         style={styles.key}
                         onPress={() => this.onKeyPress('8')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -369,7 +367,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>8</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_9`}
+                        testID="pincode_digit_9"
                         style={styles.key}
                         onPress={() => this.onKeyPress('9')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -388,7 +386,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_0`}
+                        testID="pincode_digit_0"
                         style={styles.key}
                         onPress={() => this.onKeyPress('0')}
                         disabled={this.state.pin.length === this.props.pinCodeLenght}
@@ -396,7 +394,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         <Text style={UITextStyle.primaryTitleLight}>0</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID={`${relatedScreen}_pincode_digit_delete`}
+                        testID="pincode_digit_delete"
                         style={styles.key}
                         onPress={this.onDeletePress}
                         disabled={this.state.pin.length === 0}
