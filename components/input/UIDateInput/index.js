@@ -81,6 +81,9 @@ type Props = DetailsProps & {
 type State = ActionState & {
     date: string,
     highlightError: boolean,
+    selection: { start: number, end: number },
+    textFormated: string,
+    text: string,
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {

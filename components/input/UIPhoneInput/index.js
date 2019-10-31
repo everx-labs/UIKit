@@ -12,6 +12,9 @@ import type { DetailsProps } from '../UIDetailsInput';
 
 export type PhoneState = {
     highlightError: boolean,
+    selection: { start: number, end: number },
+    textFormated: string,
+    text: string,
 };
 
 type State = {};

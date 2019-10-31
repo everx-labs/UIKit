@@ -19,6 +19,9 @@ type Props = DetailsProps & {
 
 type State = {
     highlightError: boolean,
+    selection: { start: number, end: number },
+    textFormated: string,
+    text: string,
 };
 
 export default class UIBankCardNumberInput extends UIComponent<Props, State> {
