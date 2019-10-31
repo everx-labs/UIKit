@@ -96,7 +96,6 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
 
     static navigationOptions(navigation: ReactNavigation, options: UINavigationBarOptions) {
         let effective;
-        const hasLeftOrRight = options.headerLeft || options.headerRight;
         // if headerLeft option unspecified, we use back button
         const headerLeft = ('headerLeft' in options)
             ? options.headerLeft
@@ -104,6 +103,8 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
                 navigation={navigation}
                 testID={`back_btn_${options.title || ''}`}
             />);
+
+        const hasLeftOrRight = headerLeft || options.headerRight;
 
         if (options.useDefaultStyle) {
             effective = {
