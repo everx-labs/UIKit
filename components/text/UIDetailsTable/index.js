@@ -42,13 +42,23 @@ const styles = StyleSheet.create({
 });
 
 class UIDetailsTable extends UIComponent<Props, State> {
+    // deprecated
     static CellType = {
-        Default: 'Default',
-        Success: 'Success',
-        Action: 'Action',
-        Accent: 'Accent',
-        NumberPercent: 'NumberPercent',
-        Disabled: 'Disabled',
+        Default: 'default',
+        Success: 'success',
+        Action: 'action',
+        Accent: 'accent',
+        NumberPercent: 'numberPercent',
+        Disabled: 'disabled',
+    };
+
+    static cellType = {
+        default: 'default',
+        success: 'success',
+        action: 'action',
+        accent: 'accent',
+        numberPercent: 'numberPercent',
+        disabled: 'disabled',
     };
 
     static defaultProps: Props = {
@@ -74,14 +84,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     // Getters
     getTextStyle(type: ?string) {
-        if (type === UIDetailsTable.CellType.Success) {
-            return UIStyle.Text.successSmallRegular();
-        } else if (type === UIDetailsTable.CellType.Accent) {
-            return UIStyle.Text.primarySmallMedium();
-        } else if (type === UIDetailsTable.CellType.Disabled) {
-            return UIStyle.Text.tertiarySmallRegular();
-        } else if (type === UIDetailsTable.CellType.Default || !type) {
-            return UIStyle.Text.secondarySmallRegular();
+        if (type === UIDetailsTable.cellType.success) {
+            return UIStyle.text.successSmallRegular();
+        } else if (type === UIDetailsTable.cellType.accent) {
+            return UIStyle.text.primarySmallMedium();
+        } else if (type === UIDetailsTable.cellType.disabled) {
+            return UIStyle.text.tertiarySmallRegular();
+        } else if (type === UIDetailsTable.cellType.default || !type) {
+            return UIStyle.text.secondarySmallRegular();
         }
         return null;
     }
@@ -89,10 +99,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
     renderTextCell(value: number | string, details: string) {
         return (
             <Text>
-                <Text style={UIStyle.Text.primarySmallRegular()}>
+                <Text style={UIStyle.text.primarySmallRegular()}>
                     {value}
                 </Text>
-                <Text style={UIStyle.Text.secondarySmallRegular()}>
+                <Text style={UIStyle.text.secondarySmallRegular()}>
                     {details}
                 </Text>
             </Text>
@@ -107,16 +117,16 @@ class UIDetailsTable extends UIComponent<Props, State> {
         if ((!value && value !== 0) && !component) {
             return null;
         }
-        if (type === UIDetailsTable.CellType.NumberPercent && limit && limit !== 0 && typeof value === 'number') {
+        if (type === UIDetailsTable.cellType.numberPercent && limit && limit !== 0 && typeof value === 'number') {
             const primary = UIFunction.getNumberString(value);
             const percent = (primary / limit) * 100;
             const formattedPercent = UIFunction.getNumberString(percent);
             const secondary = ` (${formattedPercent} %)`;
             return this.renderTextCell(primary, secondary);
-        } else if (type === UIDetailsTable.CellType.Action) {
+        } else if (type === UIDetailsTable.cellType.action) {
             return (
                 <TouchableOpacity onPress={() => this.onActionPressed(details)}>
-                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                    <Text style={UIStyle.text.actionSmallMedium()}>
                         {value}
                     </Text>
                 </TouchableOpacity>
@@ -124,7 +134,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         } else if (onPress) {
             return (
                 <TouchableOpacity onPress={onPress}>
-                    <Text style={UIStyle.Text.actionSmallMedium()}>
+                    <Text style={UIStyle.text.actionSmallMedium()}>
                         {value}
                     </Text>
                 </TouchableOpacity>
@@ -133,7 +143,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return component;
         }
         return (
-            <Text style={[textStyle, UIStyle.Common.flex()]}>
+            <Text style={[textStyle, UIStyle.common.flex()]}>
                 {value}
             </Text>
         );
