@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import StylePropType from 'react-style-proptype';
 
 import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
@@ -38,7 +38,7 @@ type Props = {
     /** button container style
     @default null
     */
-    style?: ViewStyleProp,
+    style?: StylePropType,
     /** @ignore */
     theme?: string,
 
