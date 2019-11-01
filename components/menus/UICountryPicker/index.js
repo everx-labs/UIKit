@@ -15,6 +15,7 @@ import type {
     ModalControllerShowArgs,
 } from '../../../controllers/UIModalController';
 import UIFont from '../../../helpers/UIFont';
+import { TONAsync } from '../../../../../TONUtility';
 
 let shared;
 
@@ -171,6 +172,15 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             this.modalOnWeb = modalOnWeb;
         }
         await super.show(args);
+
+        this.focus();
+    }
+
+    async focus() {
+        await TONAsync.timeout(3 * UIConstant.animationDuration());
+        if (this.countryPickerInput) {
+            this.countryPickerInput.focus();
+        }
     }
 
     // Render
@@ -181,9 +191,9 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         return (
             <React.Fragment>
                 <UISearchBar
-                    autoFocus
                     value={this.getExpression()}
                     placeholder={`${UILocalized.Search}...`}
+                    ref={(component) => { this.countryPickerInput = component; }}
                     onChangeExpression={this.onChangeExpression}
                 />
             </React.Fragment>
