@@ -39,6 +39,9 @@ export const commonStyles = {
     overflowHidden: {
         overflow: 'hidden',
     },
+    overflowVisible: {
+        overflow: 'visible',
+    },
 
     dismissStripe: {
         height: 4,
@@ -224,6 +227,10 @@ export default class UIStyleCommon {
     // other
     static overflowHidden() {
         return styles.overflowHidden;
+    }
+
+    static overflowVisible() {
+        return styles.overflowVisible;
     }
 
     static positionAbsolute() {

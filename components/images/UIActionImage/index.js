@@ -16,6 +16,27 @@ type Props = ActionProps & {
 type State = ActionState;
 
 export default class UIActionImage extends UIActionComponent<Props, State> {
+    static colorSchemes = {
+        textPrimary: 'textPrimary',
+        buttonPrimary: 'buttonPrimary',
+    };
+
+    static defaultProps: Props = {
+        ...UIActionComponent.defaultProps,
+        theme: UIColor.Theme.Light,
+        style: null,
+        // first type of interface - multiple sources
+        iconDisabled: null,
+        iconEnabled: null,
+        iconHovered: null,
+        // second type of interface - one source and multiple colors
+        source: null,
+        colorDisabled: null,
+        colorEnabled: null,
+        colorHovered: null,
+        colorScheme: UIActionImage.colorSchemes.textPrimary,
+    };
+
     renderColoredImage() {
         const {
             source, colorDisabled, colorHovered, colorEnabled, style, theme, onPress,
@@ -29,6 +50,8 @@ export default class UIActionImage extends UIActionComponent<Props, State> {
             color = colorHovered;
         } else if (colorEnabled) {
             color = colorEnabled;
+        } else if (this.props.colorScheme === UIActionImage.colorSchemes.buttonPrimary) {
+            color = UIColor.buttonBackground(theme, this.isTapped(), this.isHover());
         } else {
             color = UIColor.stateTextPrimary(theme, disabled, this.isTapped(), this.isHover());
         }
@@ -43,8 +66,12 @@ export default class UIActionImage extends UIActionComponent<Props, State> {
 
     renderContent() {
         const {
-            iconDisabled, iconHovered, iconEnabled, disabled, source, style,
+            iconDisabled, iconHovered, iconEnabled, disabled, source, style, children,
         } = this.props;
+
+        if (children) {
+            return children;
+        }
 
         if (source) {
             return this.renderColoredImage();
@@ -65,21 +92,4 @@ export default class UIActionImage extends UIActionComponent<Props, State> {
             />
         );
     }
-
-    static defaultProps: Props;
 }
-
-UIActionImage.defaultProps = {
-    ...UIActionComponent.defaultProps,
-    theme: UIColor.Theme.Light,
-    style: null,
-    // first type of interface - multiple sources
-    iconDisabled: null,
-    iconEnabled: null,
-    iconHovered: null,
-    // second type of interface - one source and multiple colors
-    source: null,
-    colorDisabled: null,
-    colorEnabled: null,
-    colorHovered: null,
-};
