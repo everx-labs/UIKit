@@ -152,6 +152,12 @@ export default class UISearchBar extends UIComponent<Props, State> {
         return this.isFocused() ? UIDevice.statusBarHeight() : 0;
     }
 
+    focus() {
+        if (this.textInput) {
+            this.textInput.focus();
+        }
+    }
+
     hideHeader() {
         if (this.hasHeader()) {
             this.setHeader(this.renderUIDummyNavigationBar());
