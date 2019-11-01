@@ -15,7 +15,6 @@ import type {
     ModalControllerShowArgs,
 } from '../../../controllers/UIModalController';
 import UIFont from '../../../helpers/UIFont';
-import { TONAsync } from '../../../../../TONUtility';
 
 let shared;
 
@@ -76,6 +75,12 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     static show(args: ModalControllerShowArgs) {
         if (shared) {
             shared.show(args);
+        }
+    }
+
+    static focus() {
+        if (shared) {
+            shared.focus();
         }
     }
 
@@ -178,7 +183,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     async focus() {
-        await TONAsync.timeout(3 * UIConstant.animationDuration());
         if (this.countryPickerInput) {
             this.countryPickerInput.focus();
         }
