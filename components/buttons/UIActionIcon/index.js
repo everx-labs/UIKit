@@ -1,19 +1,11 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text, Image, Animated, Easing } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
-import UIStyle from '../../../helpers/UIStyle';
-
-const styles = StyleSheet.create({
-    container: {
-        overflow: 'hidden',
-    },
-});
 
 type Props = {
     /** One of:
@@ -46,7 +38,7 @@ type Props = {
     /** button container style
     @default null
     */
-    style?: StylePropType,
+    style?: ViewStyleProp,
     /** @ignore */
     theme?: string,
 
