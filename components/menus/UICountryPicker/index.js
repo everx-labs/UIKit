@@ -86,6 +86,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     cca2: ?string;
     language: ?string;
     countryPicker: ?CountryPicker;
+    countryPickerInput: ?UISearchBar;
     disabledCountries: ?string[];
 
     constructor(props: Props) {
