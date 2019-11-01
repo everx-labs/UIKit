@@ -78,6 +78,12 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         }
     }
 
+    static focus() {
+        if (shared) {
+            shared.focus();
+        }
+    }
+
     static getAllCountries() {
         return getAllCountries();
     }
@@ -85,6 +91,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     cca2: ?string;
     language: ?string;
     countryPicker: ?CountryPicker;
+    countryPickerInput: ?UISearchBar;
     disabledCountries: ?string[];
 
     constructor(props: Props) {
@@ -171,6 +178,14 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             this.modalOnWeb = modalOnWeb;
         }
         await super.show(args);
+
+        this.focus();
+    }
+
+    async focus() {
+        if (this.countryPickerInput) {
+            this.countryPickerInput.focus();
+        }
     }
 
     // Render
@@ -181,9 +196,9 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         return (
             <React.Fragment>
                 <UISearchBar
-                    autoFocus
                     value={this.getExpression()}
                     placeholder={`${UILocalized.Search}...`}
+                    ref={(component) => { this.countryPickerInput = component; }}
                     onChangeExpression={this.onChangeExpression}
                 />
             </React.Fragment>

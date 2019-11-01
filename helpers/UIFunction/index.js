@@ -455,4 +455,26 @@ export default class UIFunction {
         }
         return null;
     }
+
+    // for numeric inputs that can be formatted with different separators
+    static adjustCursorPosition(textSource: string, cursorSource: number, textFormatted: string): number {
+        const digits = '0123456789';
+        const cursorInDigits = cursorSource - textSource.split('').filter((s, r) => !digits.includes(s) && r < cursorSource).length;
+
+        let idx = 0;
+        let cursorFormatted = 0;
+
+        for (let i = 0; i < textFormatted.length; ++i) {
+            if (digits.includes(textFormatted[i])) {
+                if (idx < cursorInDigits) {
+                    ++cursorFormatted;
+                    ++idx;
+                }
+                if (idx === cursorInDigits) break;
+            } else {
+                ++cursorFormatted;
+            }
+        }
+        return cursorFormatted;
+    }
 }

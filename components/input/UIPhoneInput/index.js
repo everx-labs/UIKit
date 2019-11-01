@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Platform } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIDetailsInput from '../UIDetailsInput';
@@ -11,6 +12,9 @@ import type { DetailsProps } from '../UIDetailsInput';
 
 export type PhoneState = {
     highlightError: boolean,
+    selection: { start: number, end: number },
+    textFormated: string,
+    text: string,
 };
 
 type State = {};
@@ -18,12 +22,18 @@ type State = {};
 export default class UIPhoneInput extends UIComponent<DetailsProps, State & PhoneState> {
     static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
     phoneInput: ?UIDetailsInput<DetailsProps, State>;
+    textChanged: boolean;
 
-    consructor(props: DetailsProps) {
-        super.constructor(props);
+    constructor(props: DetailsProps) {
+        super(props);
         this.state = {
             highlightError: false,
+            selection: { start: 0, end: 0 },
+            textFormated: '',
+            text: '',
         };
+
+        this.textChanged = false;
     }
 
     isSubmitDisabled() {
@@ -59,11 +69,37 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         }
     }
 
+    getSelection() {
+        return this.adjustSelection(this.state.selection);
+    }
+
+    onSelectionChange = (e: any): void => {
+        this.setStateSafely({ selection: e.nativeEvent?.selection });
+    };
+
+    adjustSelection(selectionToAdjust: {start: number, end: number}) {
+        if (Platform.OS === 'web') {
+            if (!this.textChanged) {
+                return selectionToAdjust;
+            }
+            this.textChanged = false;
+        }
+
+        const cursorPosition = UIFunction.adjustCursorPosition(
+            this.state.text,
+            selectionToAdjust.start,
+            this.state.textFormated,
+        );
+        return { start: cursorPosition, end: cursorPosition };
+    }
+
     onChangeText = (text: string) => {
         const { onChangeText } = this.props;
         this.setStateSafely({ highlightError: false });
+        this.textChanged = true;
         if (onChangeText) {
             const input = UIFunction.formatPhoneText(text);
+            this.setStateSafely({ text, textFormated: input });
             onChangeText(input);
         }
     };
@@ -89,6 +125,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
 
     // Render
     render() {
+        const selection = this.getSelection();
         const commentColor = this.getCommentColor();
         const commentColorProp = commentColor ? { commentColor } : null;
         return (
@@ -103,6 +140,8 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
                 submitDisabled={this.isSubmitDisabled()}
                 onChangeText={this.onChangeText}
                 mandatory={this.props.mandatory}
+                onSelectionChange={this.onSelectionChange}
+                selection={selection}
             />
         );
     }

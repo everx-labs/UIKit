@@ -7,6 +7,7 @@ import UIDetailsInput from '../UIDetailsInput';
 
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
+import UIFunction from '../../../helpers/UIFunction';
 
 import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
@@ -80,6 +81,9 @@ type Props = DetailsProps & {
 type State = ActionState & {
     date: string,
     highlightError: boolean,
+    selection: { start: number, end: number },
+    textFormated: string,
+    text: string,
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -104,8 +108,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             ...this.state,
             date: '',
             highlightError: false,
-            prevValue: '',
             selection: { start: 0, end: 0 },
+            textFormated: '',
+            text: '',
         };
 
         this.textChanged = false;
@@ -124,8 +129,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const newDate = date.split(this.getSeparator()).join('');
         if (Number.isNaN(Number(newDate))) return;
 
-        const prevValue = this.getValue();
-        this.setStateSafely({ date: newDate, prevValue }, () => {
+        this.setStateSafely({ date: newDate, text: date }, () => {
             this.textChanged = true;
             if (onChangeDate) {
                 const dateObj = this.getDateObj();
@@ -160,24 +164,12 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             this.textChanged = false;
         }
 
-        const newValue = this.getValue();
-        const { prevValue } = this.state;
-        const diff = newValue.length - prevValue.length;
-
-        let adjustedPosition = selectionToAdjust.start;
-        const separatorsAt = this.getSeparatorPositionsForDate();
-        const separatorNextPositions = separatorsAt.map((posInOriginString, rank) => {
-            return posInOriginString + rank + 1;
-        });
-        const isCursorAtNextSeparatorPosition = separatorNextPositions.includes(adjustedPosition);
-
-        if (diff > 0 && isCursorAtNextSeparatorPosition) {
-            adjustedPosition += 1;
-        } else if (diff < 0 && adjustedPosition > newValue.length) {
-            adjustedPosition = newValue.length;
-        }
-
-        return { start: adjustedPosition, end: adjustedPosition };
+        const cursorPosition = UIFunction.adjustCursorPosition(
+            this.state.text,
+            selectionToAdjust.start,
+            this.getValue(),
+        );
+        return { start: cursorPosition, end: cursorPosition };
     }
 
     commentColor() {
