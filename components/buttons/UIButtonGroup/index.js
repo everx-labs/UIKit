@@ -59,10 +59,24 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
 
     renderChildren() {
         if (!this.props.children) return null;
-        const buttonsCount = this.props.children?.length;
-        if (!buttonsCount) return null;
 
-        return this.props.children.map((child, rank) => {
+        const childrenCount = this.props.children?.length || 1;
+        const propChildren = childrenCount > 1 ?
+            this.props.children :
+            [this.props.children];
+
+        const children = [];
+        propChildren.forEach((child) => {
+            if (!child?.props && child?.length) {
+                // case if passed array of columns
+                children.push(...child.filter((ch) => { return ch !== null; }));
+            } else if (child?.props) {
+                children.push(child);
+            }
+        });
+        if (children.length === 0) return null;
+
+        return children.map<any>((child, rank) => {
             const style = rank !== 0 ? this.getGutterStyle() : null;
             return React.cloneElement(child, {
                 style: [style, child.props.style],

@@ -81,8 +81,8 @@ type UINavigationBarOptions = {
 type UINavigationBarProps = {
     title?: string,
     titleRight?: React$Node,
-    headerLeft?: AnyComponent,
-    headerRight?: AnyComponent,
+    headerLeft?: ?AnyComponent,
+    headerRight?: ?AnyComponent,
     containerStyle?: ViewStyleProp,
     buttonsContainerStyle?: ViewStyleProp,
 }
