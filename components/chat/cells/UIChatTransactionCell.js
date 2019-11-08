@@ -16,6 +16,7 @@ import UIBalanceView from '../../views/UIBalanceView';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIFunction from '../../../helpers/UIFunction';
 
 import { ChatMessageStatus, TypeOfTransaction } from '../extras';
 
@@ -106,16 +107,15 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getAmountInCurrency(): string {
-        const trx = this.getTransaction();
         const extra = this.getExtra();
-        const amount = trx.out ? `- ${extra.amount}` : `${extra.amount}`;
+        const amount = `${extra.amount}`;
 
         const { currency } = extra;
         if (!currency) {
             return '';
         }
 
-        return `${amount} ${currency.symbol}`;
+        return UIFunction.amountAndCurrency(amount, currency.symbol);
     }
 
     getDate(): number {
@@ -180,7 +180,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
-        const amount = trx.out ? `- ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
+        const amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
         const color = this.getCardColor();
         const date = Moment(this.getDate()).format('D MMM LT');
 
