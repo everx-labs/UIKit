@@ -287,6 +287,10 @@ export default class UIColor {
         return themes[theme || current].text.placeholder;
     }
 
+    static textDisabled(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].detailsInput.amount.placeholder;
+    }
+
     // Background colors
     static backgroundPrimary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.primary;
@@ -365,10 +369,6 @@ export default class UIColor {
 
     static detailsInputComment(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].detailsInput.comment;
-    }
-
-    static amountInputPlaceholder(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].detailsInput.amount.placeholder;
     }
 
 
