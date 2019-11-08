@@ -69,7 +69,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     getInputPlaceholderColor() {
         const { theme } = this.props;
-        return UIStyle.color.getColorStyle(UIColor.amountInputPlaceholder(theme));
+        return UIStyle.color.getColorStyle(UIColor.textDisabled(theme));
     }
 
     containerStyle() {
