@@ -575,7 +575,12 @@ export default class UIController<Props, State>
         // We must set the 'collapsible' to 'false'
         // for the containers 'measure' works well on Android.
         const main = (
-            <SafeAreaView style={UIStyle.container.screenBackground()}>
+            <SafeAreaView
+                style={[
+                    UIStyle.container.screen(),
+                    UIStyle.common.backgroundPrimaryColor(),
+                ]}
+            >
                 <View
                     style={UIStyle.common.flex()}
                     collapsable={false}
