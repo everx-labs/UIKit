@@ -16,6 +16,11 @@ type ColoredDigit = {
     primary?: boolean,
 };
 
+type BalanceWithSign = {
+    balance: string,
+    sign: string,
+};
+
 type Props = {
     animated: boolean,
     balance: string,
@@ -319,16 +324,35 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         });
     }
 
+    formBalanceWithSign(balance: string): BalanceWithSign {
+        if (balance.includes('− ') || balance.includes('- ')) {
+            return {
+                balance: balance.replace('− ', '').replace('- ', ''),
+                sign: '−',
+            };
+        } else if (balance.includes('+ ') || balance.includes('+ ')) {
+            return {
+                balance: balance.replace('+ ', '').replace('+ ', ''),
+                sign: '+',
+            };
+        }
+        return {
+            balance,
+            sign: '',
+        };
+    }
+
     // Render
     renderBalance() {
         const balance = this.getBalance();
+        const balanceWithSign: BalanceWithSign = this.formBalanceWithSign(balance);
         const separator = this.getSeparator();
-        const stringParts = balance.split(separator);
-        const integer = stringParts[0];
+        const stringParts = balanceWithSign.balance.split(separator);
+        const integer = `${balanceWithSign.sign ? `${balanceWithSign.sign} ` : ''}${this.getTokenSymbol()} ${stringParts[0]}`;
         const fractional = stringParts.length > 1
             ? (
                 <Text style={this.props.fractionalTextStyle}>
-                    {`${separator}${stringParts[1]} ${this.getTokenSymbol()}`}
+                    {`${separator}${stringParts[1]}`}
                 </Text>
             )
             : null;
