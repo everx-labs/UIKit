@@ -125,7 +125,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return UIFunction.amountAndCurrency(amount, currency.symbol);
     }
 
-    getDate(): number {
+    getDate(): string {
         const { created } = this.getMessage().info;
         const today = new Date();
         const date = new Date(created);
