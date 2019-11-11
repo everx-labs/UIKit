@@ -26,6 +26,7 @@ type Props = {
     textStyle: StylePropType,
     commentsStyle: StylePropType,
     disabled?: boolean,
+    testID?: string,
 };
 
 type State = {};
@@ -34,7 +35,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     // Render
     renderValue() {
         const {
-            value, textStyle, onPress, disabled,
+            value, textStyle, onPress, disabled, testID,
         } = this.props;
         let role = onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular;
         if (disabled) {
@@ -42,6 +43,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         }
         return (
             <UILabel
+                testID={testID || null}
                 style={textStyle}
                 role={role}
                 text={`${value}`}
@@ -50,9 +52,10 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     }
 
     renderComment() {
-        const { comments, commentsStyle } = this.props;
+        const { comments, commentsStyle, commentTestID } = this.props;
         return (
             <UILabel
+                testID={commentTestID || null}
                 style={commentsStyle}
                 role={UILabel.Role.CaptionTertiary}
                 text={comments}
