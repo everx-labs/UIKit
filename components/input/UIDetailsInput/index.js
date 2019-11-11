@@ -80,7 +80,8 @@ export type DetailsProps = ActionProps & {
     */
     autoCorrect: boolean,
     /**
-    Can tell TextInput to automatically capitalize certain characters. This property is not supported by some keyboard types such as name-phone-pad.
+    Can tell TextInput to automatically capitalize certain characters.
+    This property is not supported by some keyboard types such as name-phone-pad.
     characters: all characters.
     words: first letter of each word.
     sentences: first letter of each sentence (default).
@@ -458,6 +459,12 @@ export default class UIDetailsInput<Props, State>
         }
     };
 
+    onSelectionChange = (e: any): void => {
+        if (this.props.onSelectionChange) {
+            this.props.onSelectionChange(e);
+        }
+    };
+
     // Setters
     setFocused(focused: boolean = true) {
         this.setStateSafely({ focused });
@@ -553,6 +560,10 @@ export default class UIDetailsInput<Props, State>
         return this.props.required;
     }
 
+    getSelection() {
+        return this.props.selection;
+    }
+
     hidePlaceholder() {
         return this.props.hidePlaceholder;
     }
@@ -606,16 +617,6 @@ export default class UIDetailsInput<Props, State>
         }
     }
 
-    onSelectionChange = (e: any): void => {
-        if (this.props.onSelectionChange) {
-            this.props.onSelectionChange(e);
-        }
-    }
-
-    getSelection = (): any => {
-        return this.props.selection;
-    }
-
     // Render
     renderFloatingTitle() {
         const {
@@ -643,7 +644,9 @@ export default class UIDetailsInput<Props, State>
         const { prefixIcon, prefixIconColor } = this.props;
         if (!prefixIcon) return null;
 
-        const styleColor = prefixIconColor ? UIStyle.color.getTintColorStyle(prefixIconColor) : null;
+        const styleColor = prefixIconColor
+            ? UIStyle.color.getTintColorStyle(prefixIconColor)
+            : null;
         return (
             <Image source={this.props.prefixIcon} style={[styles.prefixIcon, styleColor]} />
         );
@@ -706,7 +709,9 @@ export default class UIDetailsInput<Props, State>
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const blurOnSubmitProp = blurOnSubmit ? { blurOnSubmit } : null;
         const testIDProp = testID ? { testID } : null;
-        const placeholderColor = UIColor.textPlaceholder(theme);
+        const placeholderColor = editable
+            ? UIColor.textPlaceholder(theme)
+            : UIColor.textDisabled(theme);
         return (
             <TextInput
                 onLayout={this.onLayout}

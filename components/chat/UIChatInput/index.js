@@ -169,8 +169,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         return (
             <UIButtonGroup style={menuMore ? null : UIStyle.Margin.rightSmall()}>
                 {
-                    quickAction.map(action => (
+                    quickAction.map((action, index) => (
                         <UITextButton
+                            // eslint-disable-next-line
+                            key={`quickAction~${index}`}
                             buttonStyle={styles.btnMenuContainer}
                             testID={action.testID}
                             onPress={action.onPress}

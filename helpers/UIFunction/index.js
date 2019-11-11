@@ -263,7 +263,7 @@ export default class UIFunction {
         return parsedPhone.formatInternational();
     }
 
-    static formatMessageDate(date, shortFormat = true) {
+    static formatMessageDate(date: Date, shortFormat: boolean = true) {
         const format = shortFormat ? 'l' : 'll';
         // Same as Telegram formatting
         return Moment(date).calendar(null, {
@@ -276,7 +276,7 @@ export default class UIFunction {
         });
     }
 
-    static roundNumber(number, scale = 2) {
+    static roundNumber(number: number, scale: number = 2) {
         if (!(`${number}`).includes('e')) {
             return +(`${Math.round(`${number}e+${scale}`)}e-${scale}`);
         }
@@ -288,40 +288,35 @@ export default class UIFunction {
         return +(`${Math.round(`${+arr[0]}e${sig}${+arr[1] + scale}`)}e-${scale}`);
     }
 
-    static roundStringNumber(string, scale = 2) {
-        const number = parseFloat(`${string}`.replace(',', '.'));
+    static roundStringNumber(str: string, scale: number = 2) {
+        const number = parseFloat(`${str}`.replace(',', '.'));
         return UIFunction.roundNumber(number, scale);
     }
 
-    static alertObject(obj, level = 0) {
+    static objectToString(obj: any, level: number = 0) {
         if (typeof obj === 'string') {
-            alert(obj);
-            return;
+            return obj;
         }
 
         const tab = UIFunction.repeat('   ', level);
 
         let str = '';
-        for (const key in obj) {
-            str += `${tab + key}: ${typeof obj[key] === 'object' ? `\r\n${UIFunction.alertObject(obj[key], level + 1)}` : obj[key]}\r\n`;
-        }
+        Object.keys(obj).forEach((key) => {
+            str += `${tab + key}: ${typeof obj[key] === 'object' ? `\r\n${UIFunction.objectToString(obj[key], level + 1)}` : obj[key]}\r\n`;
+        });
 
-        if (level === 0) {
-            alert(str);
-        } else {
-            return str;
-        }
+        return str;
     }
 
-    static repeat(str, number) {
+    static repeat(str: string, num: number) {
         let res = '';
-        for (let i = 0; i < number; i += 1) {
+        for (let i = 0; i < num; i += 1) {
             res += str;
         }
         return res;
     }
 
-    static areObjectsEqual(objA, objB) {
+    static areObjectsEqual(objA: { [string]: string }, objB: { [string]: string }) {
         if (!objA || !objB) {
             return false;
         }
@@ -387,7 +382,7 @@ export default class UIFunction {
             .replace(/[^\s-_0-9a-zA-Zа-яА-ЯёЁ]/g, '');
     }
 
-    static hasLetters(str) {
+    static hasLetters(str: string) {
         return str.search(/[a-zа-яё]/i) !== -1;
     }
 
@@ -399,12 +394,12 @@ export default class UIFunction {
         return isEmail(expression);
     }
 
-    static getCookie(name) {
+    static getCookie(name: string) {
         const matches = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    static setCookie(key, value, days) {
+    static setCookie(key: string, value: string, days: number) {
         const date = new Date();
         date.setDate(date.getDate() + days);
         document.cookie = `${key}=${value}; path=/; expires=${date.toUTCString()}`;
@@ -414,14 +409,15 @@ export default class UIFunction {
         masterCard: 'masterCard',
         maestro: 'maestro',
         visa: 'visa',
+        undetected: 'undetected',
     };
 
     static getBankCardType({ number = '', raw = true, presumed = false }: BankCardNumberArgs) {
         const rawNumber = raw ? number : number.replace(/[^0-9]/gim, '');
         const regEx = {
             [this.bankCardTypes.visa]: /^4[0-9]{12}(?:[0-9]{3})?$/,
-            [this.bankCardTypes.masterCard]: /^5[1-5][0-9]{5,}|222[1-9][0-9]{3,}|22[3-9][0-9]{4,}|2[3-6][0-9]{5,}|27[01][0-9]{4,}|2720[0-9]{3,}$/,
-            [this.bankCardTypes.maestro]: /^(5018|5020|5038|5612|5893|6304|6759|6761|6762|6763|0604|6390)\d+$/,
+            [this.bankCardTypes.masterCard]: /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/,
+            [this.bankCardTypes.maestro]: /^(5[06789]|6)[0-9]*$/,
             // for future using
             // amex: /^3[47][0-9]{13}$/,
             // diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
@@ -442,16 +438,43 @@ export default class UIFunction {
         const results = {};
         Object.keys(regEx).forEach((key) => {
             const fullNumber = presumed ? `${rawNumber}${numbers[key].substr(rawNumber.length)}` : rawNumber;
-            if (regEx[key].test(fullNumber)) {
-                if (presumed || rawNumber.length === 16) {
-                    results[key] = true;
-                }
+            if (regEx[key].test(fullNumber) && (presumed || rawNumber.length === 16)) {
+                results[key] = true;
             }
         });
+
         if (presumed) {
             return results;
         }
         const arr = Object.keys(results).map(key => key);
-        return arr[0] || null;
+        if (arr.length) {
+            return arr[0];
+        }
+        if (rawNumber.length >= 14 && rawNumber.length <= 16) {
+            return this.bankCardTypes.undetected;
+        }
+        return null;
+    }
+
+    // for numeric inputs that can be formatted with different separators
+    static adjustCursorPosition(textSource: string, cursorSource: number, textFormatted: string): number {
+        const digits = '0123456789';
+        const cursorInDigits = cursorSource - textSource.split('').filter((s, r) => !digits.includes(s) && r < cursorSource).length;
+
+        let idx = 0;
+        let cursorFormatted = 0;
+
+        for (let i = 0; i < textFormatted.length; ++i) {
+            if (digits.includes(textFormatted[i])) {
+                if (idx < cursorInDigits) {
+                    ++cursorFormatted;
+                    ++idx;
+                }
+                if (idx === cursorInDigits) break;
+            } else {
+                ++cursorFormatted;
+            }
+        }
+        return cursorFormatted;
     }
 }

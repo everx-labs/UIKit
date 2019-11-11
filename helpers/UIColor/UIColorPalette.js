@@ -15,6 +15,7 @@ const UIColorPalette = {
     black: '#000000',
     blackLight: '#2B3338',
     green: '#00AC47',
+    yellow: '#E6AC00',
     white: '#FFFFFF',
     fa: '#FAFAFA',
     dark: '#102027',
@@ -41,6 +42,7 @@ const UIColorPalette = {
     success: '#27AE60',
     warning: '#F2C94C',
     error: '#CC0022',
+    caution: '#CC4400',
     text: {
         lightPrimary: '#000000',
         darkPrimary: '#FFFFFF',

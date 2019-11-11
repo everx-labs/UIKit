@@ -99,7 +99,7 @@ const en: UILocalizedData = {
     Report: 'Report',
     PleaseDoNotCloseTheApp: 'Please, do not close the app',
     ThisActionCannotBeUndone: 'This action cannot be undone',
-    SomethingWentWrong: 'Something went wrong. Please try later.',
+    SomethingWentWrong: 'Something went wrong. Please, try again later.',
     NewVersionIsAvailable: 'New version is available',
     PleaseUpdate: 'Please update',
     ForgotPassword: 'Forgot password?',

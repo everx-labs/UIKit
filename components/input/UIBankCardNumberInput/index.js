@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIComponent from '../../UIComponent';
@@ -19,23 +19,35 @@ type Props = DetailsProps & {
 
 type State = {
     highlightError: boolean,
+    selection: { start: number, end: number },
+    textFormated: string,
+    text: string,
 };
 
 export default class UIBankCardNumberInput extends UIComponent<Props, State> {
+    textChanged: boolean;
+
     constructor(props: Props) {
         super(props);
 
         this.state = {
             highlightError: false,
+            selection: { start: 0, end: 0 },
+            textFormated: '',
+            text: '',
         };
+
+        this.textChanged = false;
     }
 
     // Events
     onChangeCardNumber = (input: string) => {
+        this.textChanged = true;
         this.setStateSafely({ highlightError: false });
         const cardNumberRaw = input.replace(/[^0-9]/gim, '');
         const cardNumber = (cardNumberRaw.match(/\d{1,4}/g) || []).join(' ');
         if (cardNumberRaw.length <= 16) {
+            this.setStateSafely({ text: input, textFormated: cardNumber });
             this.props.onChangeText(cardNumber);
         }
     };
@@ -47,7 +59,31 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         }
     };
 
+    onSelectionChange = (e: any): void => {
+        this.setStateSafely({ selection: e.nativeEvent?.selection });
+    };
+
     // Getters
+    adjustSelection(selectionToAdjust: {start: number, end: number}) {
+        if (Platform.OS === 'web') {
+            if (!this.textChanged) {
+                return selectionToAdjust;
+            }
+            this.textChanged = false;
+        }
+
+        const cursorPosition = UIFunction.adjustCursorPosition(
+            this.state.text,
+            selectionToAdjust.start,
+            this.state.textFormated,
+        );
+        return { start: cursorPosition, end: cursorPosition };
+    }
+
+    getSelection() {
+        return this.adjustSelection(this.state.selection);
+    }
+
     isValidCardNumber(value: string = this.props.value) {
         return UIFunction.getBankCardType({
             number: value,
@@ -64,15 +100,9 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         });
     }
 
-    areSomePresumedCardTypes() {
-        const presumedCardTypes = this.getPresumedCardTypes();
-        const arr = Object.keys(presumedCardTypes).map(key => key);
-        return arr.length > 0;
-    }
-
     getCommentColor() {
         const { value, theme, commentColor } = this.props;
-        if (value && !this.areSomePresumedCardTypes()) {
+        if (value && !this.isValidCardNumber()) {
             return UIColor.detailsInputComment(theme);
         }
         return commentColor;
@@ -80,7 +110,7 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
 
     getComment() {
         const { value, comment } = this.props;
-        if (value && !this.areSomePresumedCardTypes() && this.state.highlightError) {
+        if (value && !this.isValidCardNumber() && this.state.highlightError) {
             return UILocalized.InvalidBankCardNumber;
         }
         return comment || '';
@@ -131,6 +161,8 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
                 submitDisabled={!this.isValidCardNumber()}
                 onBlur={this.onBlur}
                 onChangeText={this.onChangeCardNumber}
+                onSelectionChange={this.onSelectionChange}
+                selection={this.getSelection()}
             />
         );
     }

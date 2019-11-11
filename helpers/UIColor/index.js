@@ -95,6 +95,10 @@ export default class UIColor {
         return UIColorPalette.green;
     }
 
+    static yellow() {
+        return UIColorPalette.yellow;
+    }
+
     static fa() {
         return UIColorPalette.fa;
     }
@@ -161,6 +165,10 @@ export default class UIColor {
 
     static warning() {
         return UIColorPalette.warning;
+    }
+
+    static caution() {
+        return UIColorPalette.caution;
     }
 
     static error() {
@@ -279,6 +287,10 @@ export default class UIColor {
         return themes[theme || current].text.placeholder;
     }
 
+    static textDisabled(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].detailsInput.amount.placeholder;
+    }
+
     // Background colors
     static backgroundPrimary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.primary;
@@ -357,10 +369,6 @@ export default class UIColor {
 
     static detailsInputComment(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].detailsInput.comment;
-    }
-
-    static amountInputPlaceholder(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].detailsInput.amount.placeholder;
     }
 
 

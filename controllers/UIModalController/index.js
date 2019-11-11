@@ -6,6 +6,7 @@ import PopupDialog, {
     SlideAnimation,
     FadeAnimation,
 } from 'react-native-popup-dialog';
+import type { Style } from 'react-style-proptype/src/Style.flow';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type {
@@ -74,13 +75,25 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
     },
+    smallDismissStripe: {
+        width: UIConstant.iconSize(),
+        height: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius() / 2,
+    },
+    defaultDismissStripe: {
+        width: UIConstant.iconSize() * 2,
+        height: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius() / 2,
+    },
 });
 
 export default class UIModalController<Props, State>
     extends UIController<ModalControllerProps & Props, ModalControllerState & State> {
     fullscreen: boolean;
     dismissible: boolean;
-    modal: boolean;
+    fromBottom: boolean;
+    smallStripe: boolean;
+    half: boolean;
     adjustBottomSafeAreaInsetDynamically: boolean;
     onCancel: ?(() => void);
     onSelect: ?((any) => void);
@@ -109,6 +122,9 @@ export default class UIModalController<Props, State>
         this.onCancel = null;
         this.onSubmit = null;
         this.onSelect = null;
+        this.fromBottom = false;
+        this.smallStripe = false;
+        this.half = false;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
@@ -210,14 +226,14 @@ export default class UIModalController<Props, State>
             : UIDevice.navigationBarHeight(); // navigation bar height above the modal controller
         const modalForWebTopOffset = Platform.OS === 'web' && this.modalOnWeb ? (height / 2.0) : 0;
 
-        const containerStyle = {
+        const containerStyle: Style = {
             top: -1, // fix for 1px top offset
             paddingTop: statusBarHeight + navBarHeight + modalForWebTopOffset,
             width,
             height,
         };
 
-        let dialogStyle = [
+        let dialogStyle: Style | Style[] = [
             styles.dialogOverflow,
             this.modalOnWeb ? styles.modalOnWebDialogBorders : styles.dialogBorders,
         ];
@@ -234,11 +250,35 @@ export default class UIModalController<Props, State>
             }
         }
 
-        height -= statusBarHeight + navBarHeight;
+        if (this.half && !(UIDevice.isDesktop() || UIDevice.isTablet())) {
+            height /= 2;
+            containerStyle.justifyContent = 'flex-end';
+        } else {
+            height -= statusBarHeight + navBarHeight;
+        }
 
         let contentHeight = height - this.getSafeAreaInsets().bottom;
+
         if (this.dismissible) {
             contentHeight -= this.getNavigationBarHeight();
+        }
+
+        // eslint-disable-next-line no-underscore-dangle
+        if (
+            (this.fromBottom || this.state.keyboardVisible) &&
+            (UIDevice.isDesktop() || UIDevice.isTablet())
+        ) {
+            const screenHeight = Dimensions.get('window').height;
+            const halfFullScreenDialogHeight = Math.min(screenHeight, fullScreenDialogHeight) / 2;
+            const halfScreenHeight = screenHeight / 2;
+
+            containerStyle.justifyContent = 'flex-end';
+            height = halfScreenHeight + halfFullScreenDialogHeight;
+
+            contentHeight = height - this.getSafeAreaInsets().bottom;
+            if (this.dismissible) {
+                contentHeight -= this.getNavigationBarHeight();
+            }
         }
 
         if (enlargeHeightForBounce) {
@@ -283,6 +323,7 @@ export default class UIModalController<Props, State>
         if (bottomInset > 0 || this.adjustBottomSafeAreaInsetDynamically) {
             bottomInset += this.getSafeAreaInsets().bottom;
         }
+
         if (animation) {
             Animated.timing(this.marginBottom, {
                 toValue: bottomInset,
@@ -410,6 +451,9 @@ export default class UIModalController<Props, State>
         }
         return (
             <UIModalNavigationBar
+                dismissStripeStyle={
+                    this.smallStripe ? styles.smallDismissStripe : styles.defaultDismissStripe
+                }
                 height={this.getNavigationBarHeight()}
                 swipeToDismiss={this.shouldSwipeToDismiss()}
                 leftComponent={this.renderLeftHeader()}
@@ -428,6 +472,7 @@ export default class UIModalController<Props, State>
         const {
             width, height, contentHeight, containerStyle, dialogStyle,
         } = this.getDialogStyle();
+
         const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
         return (
             <PopupDialog
@@ -436,7 +481,14 @@ export default class UIModalController<Props, State>
                 width={width}
                 height={height}
                 containerStyle={containerStyle}
-                dialogStyle={dialogStyle}
+                dialogStyle={[
+                    dialogStyle,
+                    // Only inline style working in this prop
+                    this.fromBottom && {
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                    },
+                ]}
                 dialogAnimation={this.animation} //
                 dialogTitle={this.renderModalNavigationBar()}
                 dismissOnTouchOutside={false}
@@ -457,6 +509,7 @@ export default class UIModalController<Props, State>
         );
     }
 
+    // eslint-disable-next-line no-unused-vars
     renderContentView(contentHeight: number): React$Node {
         return null;
     }

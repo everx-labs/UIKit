@@ -122,6 +122,7 @@ import type {
     UINavigationRoute,
     UINavigationRouting,
 } from './helpers/UINavigator';
+import type { ActionProps } from './components/UIActionComponent';
 import type {
     PointerEvents,
     PositionObject,
@@ -255,6 +256,7 @@ export type {
     AnyComponent,
     CreateNavigationOptions,
     NavigationProps,
+    ActionProps,
     MenuItemType,
     PointerEvents,
     PositionObject,

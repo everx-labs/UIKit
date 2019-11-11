@@ -80,6 +80,9 @@ export const marginStyles = {
     marginBottomHuge: { // 32
         marginBottom: UIConstant.hugeContentOffset(),
     },
+    marginBottomGreat: { // 48
+        marginBottom: UIConstant.greatContentOffset(),
+    },
     marginBottomMajor: { // 64
         marginBottom: UIConstant.majorContentOffset(),
     },
@@ -226,6 +229,9 @@ export default class UIStyleMargin {
     }
     static bottomHuge() { // 32
         return styles.marginBottomHuge;
+    }
+    static bottomGreat() { // 48
+        return styles.marginBottomGreat;
     }
     static bottomMajor() { // 64
         return styles.marginBottomMajor;

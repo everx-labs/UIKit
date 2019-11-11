@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React from 'react';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { Platform, StyleSheet, View, Text, Modal } from 'react-native';
-import StylePropType from 'react-style-proptype';
 import { WaveIndicator } from 'react-native-indicators';
 
-import UITextStyle from '../../helpers/UITextStyle';
+import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
+import UIComponent from '../UIComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -60,21 +61,55 @@ const styles = StyleSheet.create({
 
 let masterRef = null;
 
-export default class UISpinnerOverlay extends Component {
+type Props = {
+    visible: boolean,
+    modal: boolean,
+    titleContent: string,
+    textContent: string,
+    color: string,
+    size: number,
+    overlayColor: string,
+    titleStyle: ViewStyleProp,
+    textStyle: ViewStyleProp,
+    containerStyle: ViewStyleProp,
+    masterSpinner: boolean,
+}
+
+type State = {
+    titleContent: string,
+    textContent: string,
+    visible: boolean,
+};
+
+export default class UISpinnerOverlay extends UIComponent<Props, State> {
+    static defaultProps: Props = {
+        visible: false,
+        modal: false,
+        titleContent: '',
+        textContent: '',
+        color: 'white',
+        size: 40, // default for Indicator
+        overlayColor: 'rgba(0,0,0,0.15)',
+        titleStyle: {},
+        textStyle: {},
+        containerStyle: {},
+        masterSpinner: false,
+    };
+
     static show() {
         if (masterRef) {
-            masterRef.setVisible(true);
+            masterRef.show();
         }
     }
 
     static hide() {
         if (masterRef) {
-            masterRef.setVisible(false);
+            masterRef.hide();
         }
     }
 
     // Constructor
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -85,45 +120,35 @@ export default class UISpinnerOverlay extends Component {
     }
 
     componentDidMount() {
-        this.mounted = true;
+        super.componentDidMount();
         if (this.props.masterSpinner) {
             masterRef = this;
         }
         this.processProps(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         this.processProps(nextProps);
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         if (this.props.masterSpinner) {
             masterRef = null;
         }
-        this.mounted = false;
     }
 
     // Setters
-    setTitleContent(titleContent) {
-        if (!this.mounted) {
-            return;
-        }
-        this.setState({
-            titleContent,
-        });
+    setTitleContent(titleContent: string) {
+        this.setStateSafely({ titleContent });
     }
 
-    setTextContent(textContent) {
-        if (!this.mounted) {
-            return;
-        }
-        this.setState({
-            textContent,
-        });
+    setTextContent(textContent: string) {
+        this.setStateSafely({ textContent });
     }
 
-    setVisible(visible) {
-        this.setState({ visible });
+    setVisible(visible: boolean = true) {
+        this.setStateSafely({ visible });
     }
 
     // Getters
@@ -131,11 +156,19 @@ export default class UISpinnerOverlay extends Component {
         return this.state.visible;
     }
 
+    // Actions
+    show() {
+        this.setVisible();
+    }
+
+    hide() {
+        this.setVisible(false);
+    }
+
     // Processing
-    processProps(props) {
+    processProps(props: Props) {
         this.setTitleContent(props.titleContent);
         this.setTextContent(props.textContent);
-        this.setVisible(props.visible);
     }
 
     // Render
@@ -143,7 +176,7 @@ export default class UISpinnerOverlay extends Component {
         return (
             <Text
                 style={[
-                    UITextStyle.primaryBodyRegular,
+                    UIStyle.text.primaryBodyRegular(),
                     styles.titleContent,
                     this.props.titleStyle,
                     {
@@ -162,7 +195,7 @@ export default class UISpinnerOverlay extends Component {
         return (
             <Text
                 style={[
-                    UITextStyle.primaryBodyRegular,
+                    UIStyle.text.primaryBodyRegular(),
                     styles.textContent,
                     this.props.textStyle,
                     {
@@ -209,7 +242,7 @@ export default class UISpinnerOverlay extends Component {
     }
 
     render() {
-        if (!this.getVisible()) {
+        if (!this.getVisible() && !this.props.visible) {
             return null;
         }
         if (Platform.OS === 'web' || !this.props.modal) {
@@ -227,31 +260,3 @@ export default class UISpinnerOverlay extends Component {
         ); // onRequestClose={() => this.close()}
     }
 }
-
-UISpinnerOverlay.defaultProps = {
-    visible: false,
-    modal: false,
-    titleContent: '',
-    textContent: '',
-    color: 'white',
-    size: 40, // dafault for Indicator
-    overlayColor: 'rgba(0,0,0,0.15)',
-    titleStyle: {},
-    textStyle: {},
-    containerStyle: {},
-    masterSpinner: false,
-};
-
-UISpinnerOverlay.propTypes = {
-    visible: PropTypes.bool,
-    modal: PropTypes.bool,
-    titleContent: PropTypes.string,
-    textContent: PropTypes.string,
-    color: PropTypes.string,
-    size: PropTypes.number,
-    overlayColor: PropTypes.string,
-    titleStyle: StylePropType,
-    textStyle: StylePropType,
-    containerStyle: StylePropType,
-    masterSpinner: PropTypes.bool,
-};
