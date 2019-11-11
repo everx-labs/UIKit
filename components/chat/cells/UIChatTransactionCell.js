@@ -160,8 +160,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         } else if (type === TypeOfTransaction.Withdraw) {
             return styles.cardWithdraw;
         } else if (type === TypeOfTransaction.Income) {
-            return styles.cardIncome;
-        } else if (type === TypeOfTransaction.Spending) {
             const status = this.getStatus();
             if (status === ChatMessageStatus.Sending) {
                 return styles.cardSpending;
@@ -170,6 +168,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
             } else if (status === ChatMessageStatus.Aborted) {
                 return styles.cardAborted;
             }
+            return styles.cardIncome;
+        } else if (type === TypeOfTransaction.Spending) {
             return styles.cardSpending;
         } else if (type === TypeOfTransaction.Bill) {
             return styles.cardBill;
