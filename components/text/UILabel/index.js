@@ -42,7 +42,7 @@ type Props = {
     text: string,
     role: LabelRoleValue,
     useDefaultSpace?: boolean,
-    testID?: string,
+    testID?: ?string,
 }
 
 type State = {
