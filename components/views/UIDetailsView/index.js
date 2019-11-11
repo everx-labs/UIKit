@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 
 type Props = {
     testID?: string,
+    commentTestID?: string,
     value: string | number,
     comments: string,
     reversed: boolean,
@@ -26,7 +27,6 @@ type Props = {
     textStyle: StylePropType,
     commentsStyle: StylePropType,
     disabled?: boolean,
-    testID?: string,
 };
 
 type State = {};
