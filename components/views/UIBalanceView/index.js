@@ -325,14 +325,15 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     formBalanceWithSign(balance: string): BalanceWithSign {
-        if (balance.includes('− ') || balance.includes('- ')) {
+        // here "-" signs have different codes, so we should check & replace both of them
+        if (balance.includes('−') || balance.includes('-')) {
             return {
-                balance: balance.replace('− ', '').replace('- ', ''),
+                balance: balance.replace('−', '').replace('-', '').trim(),
                 sign: '−',
             };
-        } else if (balance.includes('+ ') || balance.includes('+ ')) {
+        } else if (balance.includes('+')) {
             return {
-                balance: balance.replace('+ ', '').replace('+ ', ''),
+                balance: balance.replace('+', '').trim(),
                 sign: '+',
             };
         }
