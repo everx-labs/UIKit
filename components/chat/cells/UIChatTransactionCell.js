@@ -126,7 +126,16 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getDate(): number {
-        return this.getMessage().info.created;
+        const { created } = this.getMessage().info;
+        const today = new Date();
+        const date = new Date(created);
+        date.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        const moment = today.getTime() === date.getTime()
+            ? `${UILocalized.Today}, ${Moment(created).format('LT')}` // TONLocalized.chats.labels.today
+            : Moment(created).format('D MMM LT');
+
+        return moment;
     }
 
     getExtra(): TransactionExtraInfo {
@@ -208,7 +217,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
         const amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
         const color = this.getCardColor();
-        const date = Moment(this.getDate()).format('D MMM LT');
+        const date = this.getDate();
         const status = this.getStatus();
 
         return (
