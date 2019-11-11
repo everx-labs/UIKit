@@ -17,6 +17,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
+import UILocalized from '../../../helpers/UILocalized';
 
 import { ChatMessageStatus, TypeOfTransaction } from '../extras';
 
@@ -58,6 +59,12 @@ const styles = StyleSheet.create({
     },
     cardSpending: {
         backgroundColor: UIColor.blackLight(),
+    },
+    cardRejected: {
+        backgroundColor: UIColor.caution(),
+    },
+    cardAborted: {
+        backgroundColor: UIColor.error(),
     },
     cardBill: {
         backgroundColor: UIColor.white(),
@@ -146,6 +153,14 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         } else if (type === TypeOfTransaction.Income) {
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
+            const status = this.getStatus();
+            if (status === ChatMessageStatus.Sending) {
+                return styles.cardSpending;
+            } else if (status === ChatMessageStatus.Rejected) {
+                return styles.cardRejected;
+            } else if (status === ChatMessageStatus.Aborted) {
+                return styles.cardAborted;
+            }
             return styles.cardSpending;
         } else if (type === TypeOfTransaction.Bill) {
             return styles.cardBill;
@@ -171,6 +186,17 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return status || ChatMessageStatus.Received;
     }
 
+    getStatusString(status: ChatMessageStatus): string {
+        if (status === ChatMessageStatus.Rejected) {
+            return UILocalized.TransactionStatus.rejected;
+        } else if (status === ChatMessageStatus.Aborted) {
+            return UILocalized.TransactionStatus.aborted;
+        } else if (status === ChatMessageStatus.Sending) {
+            return UILocalized.TransactionStatus.sending;
+        }
+        return '';
+    }
+
     isReceived(): boolean {
         return this.getStatus() === ChatMessageStatus.Received;
     }
@@ -183,6 +209,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
         const color = this.getCardColor();
         const date = Moment(this.getDate()).format('D MMM LT');
+        const status = this.getStatus();
 
         return (
             <View
@@ -225,7 +252,13 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     <UILabel
                         style={[UIStyle.Margin.rightHuge(), styles.textMetadata]}
                         role={UILabel.Role.TinyRegular}
-                        text={date}
+                        text={
+                            status === ChatMessageStatus.Rejected ||
+                            status === ChatMessageStatus.Aborted ||
+                            status === ChatMessageStatus.Sending
+                                ? this.getStatusString(status)
+                                : date
+                        }
                     />
                     <UILabel
                         style={styles.textMetadata}

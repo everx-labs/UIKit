@@ -13,6 +13,8 @@ export const ChatMessageStatus = {
     Sent: 'sent',
     Sending: 'sending',
     Received: 'received',
+    Rejected: 'rejected',
+    Aborted: 'aborted',
 };
 
 export const TypeOfTransaction = {
