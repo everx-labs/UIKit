@@ -9,6 +9,13 @@ import UIConstant from '../../helpers/UIConstant';
 const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
 
+export const CurrencyPosition = Object.freeze({
+    Before: 'before',
+    After: 'after',
+});
+
+export type CurrencyPositionType = $Values<typeof CurrencyPosition>;
+
 type BankCardNumberArgs = {
     number: string,
     raw?: boolean,
@@ -126,6 +133,17 @@ export default class UIFunction {
         },
     ) {
         return Number(number).toLocaleString(locale, options);
+    }
+
+    // Returns string of amount and currency in required order (default is
+    static amountAndCurrency(
+        amount,
+        currency,
+        currencyPosition: CurrencyPositionType = CurrencyPosition.Before,
+    ) {
+        return currencyPosition === CurrencyPosition.Before
+            ? `${currency} ${amount}`
+            : `${amount} ${currency}`;
     }
 
     // Allows to print small numbers with "-e" suffix

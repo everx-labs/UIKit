@@ -503,6 +503,11 @@ export type UILocalizedData = {
     YourTransactionCouldNotBeCompleted: string,
     YourTransactionCompleted: string,
     ViewOnEtherscan: string,
+    TransactionStatus: {
+        rejected: string,
+        aborted: string,
+        sending: string,
+    },
 
     ConfirmIdentity: string,
     SMSNotice: string,

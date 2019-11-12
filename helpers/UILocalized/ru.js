@@ -520,6 +520,11 @@ const ru: UILocalizedData = {
     YourTransactionCouldNotBeCompleted: 'Ваша транзакция не может быть завершена',
     YourTransactionCompleted: 'Ваша транзакция завершена',
     ViewOnEtherscan: 'Ссылка на транзакцию в Etherscan',
+    TransactionStatus: {
+        rejected: 'Rejected',
+        aborted: 'Aborted',
+        sending: 'Pending...',
+    },
 
     ConfirmIdentity: 'Чтобы продолжить, нам необходимо подтвердить вашу личность, отправив SMS-код на ваш номер телефона',
     SMSNotice: 'Может взиматься плата за SMS',

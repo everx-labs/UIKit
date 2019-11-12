@@ -521,6 +521,11 @@ const en: UILocalizedData = {
     YourTransactionCouldNotBeCompleted: 'Your transaction could not be completed',
     YourTransactionCompleted: 'Your transaction has been completed',
     ViewOnEtherscan: 'View on Etherscan',
+    TransactionStatus: {
+        rejected: 'Rejected',
+        aborted: 'Aborted',
+        sending: 'Pending...',
+    },
 
     ConfirmIdentity: 'To proceed, we need to confirm your identity by sending an SMS code to your phone number',
     SMSNotice: 'SMS fees may apply',
