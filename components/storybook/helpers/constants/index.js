@@ -12,6 +12,7 @@ const CategoryView = 'Design|Views';
 const CategoryNavigationUnfold = 'Navigation|Unfold';
 const CategoryModalPicker = 'Modal|Picker';
 const CategoryInput = 'Actions|Input';
+const CategoryIcons = 'Design|Icons';
 
 export default {
     CategoryButtonIcon,
@@ -28,4 +29,5 @@ export default {
     CategoryNavigationUnfold,
     CategoryModalPicker,
     CategoryInput,
+    CategoryIcons,
 };
