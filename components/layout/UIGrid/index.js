@@ -88,7 +88,7 @@ type Props = {
     */
     style?: StylePropType,
     /** width of grid, if not set it's '100%'
-    * @default null
+    * @default 0
     */
     width?: number,
     /** onLayout handler
@@ -147,6 +147,10 @@ export default class UIGrid extends UIComponent<Props, State> {
             this.state.width < maxWidth
         ) return this.getGutter();
         return (this.state.width - maxWidth) / 2;
+    }
+
+    getWidth() {
+        return this.state.width;
     }
 
     getCellWidth() {
