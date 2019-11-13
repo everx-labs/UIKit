@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-// import ReactGA from 'react-ga';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -38,10 +37,10 @@ const customStyles = {
         UIStyle.Common.flex(),
     ],
     description: [
-        UIStyle.Height.majorCell(),
+        UIStyle.height.majorCell(),
         UIStyle.Common.justifyEnd(),
-        UIStyle.Margin.topDefault(),
-        UIStyle.Width.threeQuarters(),
+        UIStyle.margin.topDefault(),
+        UIStyle.width.threeQuarters(),
         styles.description,
     ],
 };
@@ -63,8 +62,17 @@ type State = {
 };
 
 export default class UIStubPage extends UIComponent<Props, State> {
-    emailInput: ?UIEmailInput;
+    static defaultProps: Props = {
+        presetName: UIBackgroundView.PresetNames.Primary,
+        needBottomIcon: true,
+        title: '',
+        label: '',
+        caption: UILocalized.GetNotifiedWhenWeLaunch,
+        disclaimer: '',
+        onSubmit: () => {},
+    };
 
+    emailInput: ?UIEmailInput;
     constructor(props: Props) {
         super(props);
 
@@ -143,20 +151,20 @@ export default class UIStubPage extends UIComponent<Props, State> {
     getWidthStyle() {
         const columns = this.getColumnsNumber();
         if (columns === 12) {
-            return UIStyle.Width.third();
+            return UIStyle.width.third();
         }
         if (columns === 8) {
-            return UIStyle.Width.half();
+            return UIStyle.width.half();
         }
-        return UIStyle.Width.full();
+        return UIStyle.width.full();
     }
 
     // Render
     renderInput() {
         if (this.isSubmitted()) {
             return (
-                <View style={UIStyle.Height.greatCell()}>
-                    <Text style={[UIStyle.Text.whiteBodyRegular(), UIStyle.Margin.topHuge()]}>
+                <View style={UIStyle.height.greatCell()}>
+                    <Text style={[UIStyle.Text.whiteBodyRegular(), UIStyle.margin.topHuge()]}>
                         {UILocalized.WillGetInTouchWithYouSoon}
                     </Text>
                 </View>
@@ -168,8 +176,8 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 theme={UIColor.Theme.Action}
                 value={this.getEmail()}
                 containerStyle={[
-                    UIStyle.Height.greatCell(),
-                    UIStyle.Margin.topSmall(),
+                    UIStyle.height.greatCell(),
+                    UIStyle.margin.topSmall(),
                 ]}
                 needArrow
                 onChangeText={text => this.setEmail(text)}
@@ -223,16 +231,4 @@ export default class UIStubPage extends UIComponent<Props, State> {
             </View>
         );
     }
-
-    static defaultProps: Props;
 }
-
-UIStubPage.defaultProps = {
-    presetName: UIBackgroundView.PresetNames.Primary,
-    needBottomIcon: true,
-    title: '',
-    label: '',
-    caption: UILocalized.GetNotifiedWhenWeLaunch,
-    disclaimer: '',
-    onSubmit: () => {},
-};
