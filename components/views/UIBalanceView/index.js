@@ -100,8 +100,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         this.updateBalance();
     }
 
-    componentDidUpdate() {
-        this.updateBalance();
+    componentDidUpdate(prevProps) {
+        const force = prevProps.loading !== this.props.loading;
+        this.updateBalance(force);
     }
 
     // Events
@@ -134,13 +135,13 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         // const balanceWidthValue = this.state.balanceWidth.__getValue();
 
         const { loading, animated } = this.props;
-        if ((balance === this.getNewBalance() || balance === this.getBalance())
-                && !loading) { // && balanceWidthValue !== 0
-            return;
-        }
-        if (!animated && !loading) {
+        if (!animated) {
             this.setCachedBalance(balance);
             this.setStateSafely({ balance, newBalance: '' });
+            return;
+        }
+
+        if (balance === this.getNewBalance() && !loading) { // && balanceWidthValue !== 0
             return;
         }
 
@@ -328,7 +329,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     updateBalance(force: boolean = false) {
         const { balance, separator, loading } = this.props;
-        const loadingCondition = loading && this.balance !== '0' && balance;
+        const loadingCondition = loading && this.balance !== '0';
         const updatingCondition = (balance !== this.balance && !loading) || force;
         if (!loadingCondition && !updatingCondition) {
             return;
@@ -339,8 +340,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
             floorBalance = `0${separator}${this.getZeroes()}`;
         } else {
             this.balance = balance;
-            const formattedBalance = balance.split(separator).length > 1
-                ? balance
+            const stringParts = `${balance}`.split(separator);
+            const formattedBalance = stringParts.length > 1
+                ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits)}`
                 : `${balance}${separator}${this.getZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
             floorBalance = integer.length > maxBalanceLength ? integer : formattedBalance;

@@ -1,7 +1,7 @@
 Example:
 
   ```js
- const logo = require('../assets/logo.png');
+ const logo = require('../../../assets/logo/tonlabs/tonlabs-black.png');
 
  class ExampleComponent extends React.Component {
      constructor() {
