@@ -11,11 +11,6 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
 
-type ColoredDigit = {
-    value: string,
-    primary?: boolean,
-};
-
 type BalanceWithSign = {
     balance: string,
     sign: string,
@@ -36,6 +31,7 @@ type Props = {
     fractionalTextStyle?: ViewStyleProp,
     smartTruncator: boolean,
     loading: boolean,
+    maxFractionalDigits: number,
 };
 
 type State = {
@@ -55,7 +51,6 @@ const styles = StyleSheet.create({
 
 const cachedBalance = {};
 
-const maxNumberOfZeroes = '0'.repeat(UIConstant.maxDecimalDigits());
 const maxBalanceLength = UIConstant.maxDecimalDigits() + 2;
 
 export default class UIBalanceView extends UIComponent<Props, State> {
@@ -70,6 +65,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         smartTruncator: true,
         animated: false,
         loading: false,
+        maxFractionalDigits: UIConstant.maxDecimalDigits(),
     };
 
     // constructor
@@ -95,6 +91,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         this.updatingBalance = false;
         this.animatingBalance = false;
         this.afterAnimationCallback = () => {};
+        // this.newBalanceSymbolsWidth = 0;
+        // this.oldBalanceSymbolsWidth = 0;
     }
 
     componentDidMount() {
@@ -120,14 +118,24 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         this.updateBalance(true); // force
     };
 
+    // onNewBalanceSymbolsLayout = (e) => {
+    //     const { width } = e.nativeEvent.layout;
+    //     this.setStateSafely({ newBalanceSymbolsWidth: width });
+    // };
+    //
+    // onOldBalanceSymbolsLayout = (e) => {
+    //     const { width } = e.nativeEvent.layout;
+    //     this.setStateSafely({ oldBalanceSymbolsWidth: width });
+    // };
+
     // Setters
     async setBalance(balance: string, isCallback: boolean = false) {
         this.updatingBalance = false;
-        const balanceWidthValue = this.state.balanceWidth.__getValue();
+        // const balanceWidthValue = this.state.balanceWidth.__getValue();
 
         const { loading, animated } = this.props;
         if ((balance === this.getNewBalance() || balance === this.getBalance())
-                && balanceWidthValue !== 0 && !loading) {
+                && !loading) { // && balanceWidthValue !== 0
             return;
         }
         if (!animated && !loading) {
@@ -148,18 +156,20 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         }
         this.animatingBalance = true;
 
-        const setWidthAnim = condition => (condition
-            ? Animated.timing(this.state.balanceWidth, {
-                toValue: balance.length * (this.balanceLineHeight / 2),
-                duration: UIConstant.animationSmallDuration(),
-            }) : {
-                start: (callback) => { callback(); },
-            }
-        );
-
-        const startWidthAnim = setWidthAnim(balance.length > balanceLen || balanceWidthValue === 0);
+        // const integer = balance.split(this.getSeparator())[0];
+        // const setWidthAnim = condition => (condition
+        //     ? Animated.timing(this.state.balanceWidth, {
+        //         toValue: integer.length * (this.getSymbolWidth()),
+        //         duration: UIConstant.animationSmallDuration(),
+        //     }) : {
+        //         start: (callback) => { callback(); },
+        //     }
+        // );
+        // const startWidthAnim = setWidthAnim(balance.length > balanceLen || balanceWidthValue === 0);
         // $FlowExpectedError
-        startWidthAnim.start(async () => {
+        // startWidthAnim.start(
+
+        (async () => {
             await this.setNewBalance(balance);
             const len = Math.max(this.getNewBalance().length, balanceLen);
 
@@ -179,20 +189,26 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 animations.push(anim);
             }
             Animated.parallel(animations).start(() => {
-                const endWidthAnim = setWidthAnim(balance.length < balanceLen);
-                endWidthAnim.start(() => {
-                    this.animatingBalance = false;
-                    this.setCachedBalance(balance);
-                    const callback = loading
-                        ? () => { this.setBalance(this.getAuxBalance()); }
-                        : this.afterAnimationCallback;
-                    this.setStateSafely({
-                        balance,
-                        newBalance: '',
-                    }, callback);
-                });
+                // const endWidthAnim = setWidthAnim(balance.length < balanceLen);
+                // endWidthAnim.start(() => {
+
+                this.animatingBalance = false;
+                this.setCachedBalance(balance);
+                const callback = loading
+                    ? () => {
+                        setTimeout(() => {
+                            this.setBalance(this.getAuxBalance());
+                        }, 250);
+                    } : this.afterAnimationCallback;
+                this.setStateSafely({
+                    marginTops: [],
+                    balance,
+                    newBalance: '',
+                }, callback);
+
+                // });
             });
-        });
+        })();
     }
 
     setNewBalance(newBalance: string) {
@@ -221,7 +237,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     getBalance(): string {
-        return this.state.balance || `0${this.getSeparator()}${maxNumberOfZeroes}`;
+        return this.state.balance || `0${this.getSeparator()}${this.getZeroes()}`;
     }
 
     getNewBalance() {
@@ -265,6 +281,16 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         return (key && cachedBalance[key]) || '';
     }
 
+    getPreSymbols() {
+        const balance = this.getBalance();
+        const balanceWithSign: BalanceWithSign = this.formBalanceWithSign(balance);
+        return `${balanceWithSign.sign ? `${balanceWithSign.sign} ` : ''}${this.getTokenSymbol()} `;
+    }
+
+    getZeroes() {
+        return '0'.repeat(this.props.maxFractionalDigits);
+    }
+
     // Processing
     processAuxBalanceHeight(height: number, auxBalance: string) {
         if (this.balanceLineHeight < height) { // make sure we fit the balance into one line
@@ -302,7 +328,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     updateBalance(force: boolean = false) {
         const { balance, separator, loading } = this.props;
-        const loadingCondition = loading && this.balance !== '0';
+        const loadingCondition = loading && this.balance !== '0' && balance;
         const updatingCondition = (balance !== this.balance && !loading) || force;
         if (!loadingCondition && !updatingCondition) {
             return;
@@ -310,12 +336,12 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         let floorBalance;
         if (loadingCondition) {
             this.balance = '0';
-            floorBalance = `0${separator}${maxNumberOfZeroes}`;
+            floorBalance = `0${separator}${this.getZeroes()}`;
         } else {
             this.balance = balance;
             const formattedBalance = balance.split(separator).length > 1
                 ? balance
-                : `${balance}${separator}${maxNumberOfZeroes}`;
+                : `${balance}${separator}${this.getZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
             floorBalance = integer.length > maxBalanceLength ? integer : formattedBalance;
         }
@@ -355,8 +381,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 <Text style={this.props.fractionalTextStyle}>
                     {`${separator}${stringParts[1]}`}
                 </Text>
-            )
-            : null;
+            ) : null;
         return (
             <Text
                 style={[UIStyle.text.primary(), this.props.textStyle]}
@@ -368,60 +393,41 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         );
     }
 
-    renderDigits(text: string, keyWord: string) {
-        const width = this.balanceLineHeight / 2;
-        return text.split('').map<*>((sym: string): React$Node => {
-            return (
-                <Text style={{ width }} key={`${keyWord}-digit-${sym}-${Math.random()}`}>
-                    {sym}
-                </Text>
-            );
-        });
-    }
-
     renderAnimatedBalanceContainer() {
-        const text = this.getBalance().length > this.getNewBalance().length
+        const balance = this.getBalance().length > this.getNewBalance().length
             ? this.getBalance()
             : this.getNewBalance();
         return (
             <Text
-                style={[this.props.textStyle, styles.auxBalance]}
+                style={[
+                    UIStyle.text.primaryTitleLight(),
+                    styles.auxBalance,
+                    this.props.textStyle,
+                ]}
                 onLayout={this.onBalanceLayout}
                 numberOfLines={1}
             >
-                {this.renderDigits(text, 'container')}
-                {` ${this.getTokenSymbol()}`}
+                {this.getPreSymbols()}
+                {balance}
             </Text>
         );
     }
 
-    renderAnimatedSymbol(digit: ColoredDigit, newDigit: ColoredDigit, index: number) {
-        const {
-            fractionalTextStyle, textStyle, loading, animated,
-        } = this.props;
-        const digitStyle = digit.primary ? null : fractionalTextStyle;
-        const newDigitStyle = newDigit.primary ? null : fractionalTextStyle;
-        const similar = newDigit.value === digit.value
-            && newDigit.primary === digit.primary && !loading;
-        const newDigitValue = similar ? '' : newDigit.value || (this.getNewBalance() && ' ') || '';
-        const newDigitText = newDigitValue ? (
-            <Text style={[UIStyle.text.primary(), textStyle, newDigitStyle]}>
-                {newDigitValue}
-            </Text>
-        ) : null;
-        const marginTop = this.getMarginTop(index); // 0 or index
-        const margin = similar || !animated ? {} : { marginTop };
+    renderAnimatedSymbol(digit: string, primary: boolean, newDigit: boolean, index: number) {
+        const { fractionalTextStyle, textStyle } = this.props;
+        const digitStyle = primary ? null : fractionalTextStyle;
+        const shift = newDigit ? 0 : this.balanceLineHeight;
+        const marginTop = this.getMarginTop(index) ? this.getMarginTop(index).interpolate({
+            inputRange: [-this.balanceLineHeight, 0],
+            outputRange: [-this.balanceLineHeight + shift, shift],
+        }) : 0;
         return (
             <Animated.View
-                key={`${index}-${digit.value}-${Math.random()}`}
-                style={{
-                    ...margin,
-                    width: this.balanceLineHeight / 2,
-                }}
+                key={`${index}-${digit}-${Math.random()}`}
+                style={{ marginTop }}
             >
-                {newDigitText}
                 <Text style={[UIStyle.text.primary(), textStyle, digitStyle]}>
-                    {digit.value}
+                    {digit}
                 </Text>
             </Animated.View>
         );
@@ -431,56 +437,70 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         if (!this.props.animated) {
             return null;
         }
-
-        const balance = this.getBalance();
         const separator = this.getSeparator();
+
+        let i = 0;
+        const oldSymbols = [];
+        const balance = this.getBalance();
         const stringParts = balance.split(separator);
         const integer = stringParts[0];
         const fractional = stringParts.length > 1 ? `${separator}${stringParts[1]}` : '';
 
-        const symbols = [];
-        let i = 0;
-        const newBalance = this.getNewBalance();
-        const separatorIndex = newBalance.indexOf(separator);
-
-        const pushSymbols = (digit) => {
-            const newDigit = {
-                value: newBalance[i],
-                primary: separatorIndex === -1 || separatorIndex > i,
-            };
-            symbols.push(this.renderAnimatedSymbol(digit, newDigit, i));
+        const pushSymbols = (digit, primary, newDigit, symbols) => {
+            symbols.push(this.renderAnimatedSymbol(digit, primary, newDigit, i));
             i += 1;
         };
 
         integer.split('').forEach((sym) => {
-            const digit = { value: sym, primary: true };
-            pushSymbols(digit);
+            pushSymbols(sym, true, false, oldSymbols);
         });
         fractional.split('').forEach((sym) => {
-            const digit = { value: sym, primary: false };
-            pushSymbols(digit);
+            pushSymbols(sym, false, false, oldSymbols);
         });
-        while (i < newBalance.length) {
-            const digit = { value: '' };
-            pushSymbols(digit);
-        }
+
+        i = 0;
+        const newSymbols = [];
+        const newBalance = this.getNewBalance();
+        const newStringParts = newBalance.split(separator);
+        const newInteger = newStringParts[0];
+        const newFractional = newStringParts.length > 1 ? `${separator}${newStringParts[1]}` : '';
+
+        newInteger.split('').forEach((sym) => {
+            pushSymbols(sym, true, true, newSymbols);
+        });
+        newFractional.split('').forEach((sym) => {
+            pushSymbols(sym, false, true, newSymbols);
+        });
 
         return (
             <View style={[UIStyle.common.positionAbsolute(), UIStyle.common.flexRow()]}>
-                <Animated.View
-                    style={[
-                        UIStyle.common.flexRow(),
-                        UIStyle.common.overflowHidden(),
-                        { width: this.state.balanceWidth },
-                    ]}
+                <Text
+                    style={[UIStyle.text.primary(), this.props.textStyle]}
+                    numberOfLines={1}
                 >
-                    {symbols}
-                </Animated.View>
-                <Text style={[this.props.textStyle, this.props.fractionalTextStyle]}>
-                    {` ${this.getTokenSymbol()}`}
+                    {this.getPreSymbols()}
                 </Text>
+                <View style={[UIStyle.common.flexRow()]}>
+                    {oldSymbols}
+                    <View style={[UIStyle.common.positionAbsolute(), UIStyle.common.flexRow()]}>
+                        {newSymbols}
+                    </View>
+                </View>
             </View>
         );
+
+        // <View
+        //     style={[...newSymbolsStyle, styles.auxBalance]}
+        //     onLayout={this.onNewBalanceSymbolsLayout}
+        // >
+        //     {newSymbols}
+        // </View>,
+        //     <View
+        //         style={[...newSymbolsStyle, styles.auxBalance]}
+        //         onLayout={this.onOldBalanceSymbolsLayout}
+        //     >
+        //         {oldSymbols}
+        //     </View>,
     }
 
     /* eslint-disable-next-line */
@@ -489,11 +509,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const auxBalance = this.getAuxBalance();
         const integer = auxBalance.split(this.getSeparator())[0];
         const smartTruncator = this.props.smartTruncator && integer.length < maxBalanceLength;
-        const digits = this.props.animated
-            ? this.renderDigits(auxBalance, 'aux')
-            : auxBalance;
         return (
             <Text
+                testID="renderAuxBalance"
                 ref={(component) => { this.auxBalanceText = component; }}
                 style={[
                     UIStyle.container.topScreen(),
@@ -504,8 +522,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 onLayout={this.onAuxBalanceLayout}
                 numberOfLines={smartTruncator ? 2 : 1}
             >
-                {digits}
-                {` ${this.getTokenSymbol()}`}
+                {this.getPreSymbols()}{auxBalance}
             </Text>
         );
     }
