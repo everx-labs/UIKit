@@ -163,7 +163,7 @@ export default class UILabel extends UIComponent<Props, State> {
         return (
             <Text
                 {...props}
-                testID={testID || `label_text_${text}`}
+                testID={testID || `label_text_${text.replace(/[^a-zA-Z0-9]/g, '')}`}
                 style={textStyle}
             >
                 {this.getText()}
