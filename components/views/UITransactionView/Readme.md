@@ -1,6 +1,6 @@
 Example:
 
-  ```js
+ ```js
  class ExampleComponent extends React.Component {
      constructor() {
          super();
@@ -20,7 +20,7 @@ Example:
                     description="Sender"
                     separator=","
                     initials="JA"
-                    icon={icon} // If there is an icon, it will be rendered instead of the initials
+                    // icon={icon} // If there is an icon, it will be rendered instead of the initials
                     onPress={this.onPressed}
                 />
              </View>
