@@ -74,6 +74,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     updatingBalance: boolean;
     animatingBalance: boolean;
     afterAnimationCallback: () => void;
+    loading: boolean;
 
     constructor(props: Props) {
         super(props);
