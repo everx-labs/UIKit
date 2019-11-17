@@ -93,7 +93,6 @@ export default class IconAnimation extends UIComponent<Props, State> {
     };
 
     render() {
-        console.log('render');
         const transform = [];
         if (this.props.animation === IconAnimation.Animation.Spin) {
             const rotateY = this.animatedValue.interpolate(spinInterpolateValues);
@@ -102,7 +101,6 @@ export default class IconAnimation extends UIComponent<Props, State> {
             const rotate = this.animatedValue.interpolate(roundInterpolateValues);
             transform.push({ rotate });
         } else if (this.props.animation === IconAnimation.Animation.Sandglass) {
-            console.log('SandGlass');
             const scaleX = this.animatedValue.interpolate(sandglassInterpolateValues.x);
             const scaleY = this.animatedValue.interpolate(sandglassInterpolateValues.y);
             transform.push({ scaleX });

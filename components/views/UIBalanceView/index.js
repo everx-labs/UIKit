@@ -74,6 +74,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     updatingBalance: boolean;
     animatingBalance: boolean;
     afterAnimationCallback: () => void;
+    loading: boolean;
 
     constructor(props: Props) {
         super(props);
@@ -153,7 +154,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
             this.afterAnimationCallback = () => {
                 setTimeout(() => {
                     this.setBalance(balance, true);
-                }, 250);
+                }, UIConstant.animationDuration());
             };
             return;
         }
@@ -208,7 +209,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                     ? () => {
                         setTimeout(() => {
                             this.setBalance(this.getAuxBalance());
-                        }, 250);
+                        }, UIConstant.animationDuration());
                     } : this.afterAnimationCallback;
                 this.setStateSafely({
                     marginTops: [],
