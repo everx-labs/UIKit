@@ -307,11 +307,22 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTime() {
+        const { data } = this.props;
         const textStyle = this.isReceived() ? styles.timeTextLeft : styles.timeTextRight;
         const msgTime = this.formatedTime();
+        let testID;
+        if (data) {
+            if (data.split(' ')[1]) {
+                testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
+            } else {
+                testID = `chat_text_message_${data.split(' ')[0]}_time`;
+            }
+        } else {
+            testID = 'chat_text_message_time';
+        }
         return (
             <Text
-                testID="chat_message_time"
+                testID={testID}
                 style={[UIFont.tinyRegular(), textStyle]}
             >
                 {msgTime}
@@ -445,6 +456,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
         return (
             <UIChatActionCell
+                testID={data ? `action_cell_${data}` : 'action_cell'}
                 text={additionalInfo?.linkTitle || data}
                 onPress={this.onActionPress}
                 typeOfAction={actionType}
@@ -459,9 +471,19 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderText(text: string) {
         const urlStyle = this.getStatus() === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
+        let testID;
+        if (text) {
+            if (text.split(' ')[1]) {
+                testID = `chat_text_message_${text.split(' ')[0]} ${text.split(' ')[1]}`;
+            } else {
+                testID = `chat_text_message_${text.split(' ')[0]}`;
+            }
+        } else {
+            testID = 'chat_text_message';
+        }
         return (
             <ParsedText
-                testID="chat_text_message"
+                testID={testID}
                 style={[this.getFontColor(), UIFont.smallRegular(), styles.textCell]}
                 parse={[{ type: 'url', style: urlStyle, onPress: (url, index) => this.onPressUrl(url, index) }]}
                 key={`text${Math.trunc(Math.random() * 10000).toString()}`}
