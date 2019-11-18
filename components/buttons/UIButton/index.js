@@ -396,9 +396,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
             return (<MaterialIndicator color={this.getTextColor()} size={20} />);
         }
 
-        const iconProp = this.props.iconIndicator ? { icon: this.props.iconIndicator } : {};
         return (<IconAnimation
-            {...iconProp}
+            icon={this.props.iconIndicator}
             animation={this.props.indicatorAnimation}
             iconTintStyle={this.props.iconIndicatorStyle || this.getIconTintStyle()}
         />);
@@ -643,6 +642,6 @@ UIButton.defaultProps = {
     textStyle: null,
     textHoverStyle: null,
     indicatorAnimation: null,
-    iconIndicator: null,
+    iconIndicator: undefined,
     iconIndicatorStyle: null,
 };
