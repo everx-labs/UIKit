@@ -2,13 +2,11 @@ Example:
 
 ```js
 const iconCam = require('../../../assets/ico-camera/ico-camera.png');
-const iconTriangle = require('../../../assets/ico-triangle/ico-triangle.png');
 
 class Example extends React.Component  {
     render() {
         return (
-            <React.Fragment>
-            <View style={{maxWidth: 330}}>
+            <View style={{ maxWidth: 330 }}>
                 <UIButton
                     title="Default button"
                     onPress={() => alert('Action was called')}
@@ -251,7 +249,6 @@ class Example extends React.Component  {
                     buttonStyle={UIButton.ButtonStyle.Border}
                 />
             </View>
-            </React.Fragment>
         );
     }
 };
