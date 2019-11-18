@@ -92,6 +92,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
         const commentColorProp = commentColor ? { commentColor } : null;
         return (
             <UIDetailsInput
+                commentTestID="email_input_comment"
                 ref={(component) => { this.emailInput = component; }}
                 {...this.props}
                 {...commentColorProp}

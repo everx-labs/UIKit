@@ -130,6 +130,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         const commentColorProp = commentColor ? { commentColor } : null;
         return (
             <UIDetailsInput
+                commentTestID="phone_input_comment"
                 ref={(component) => { this.phoneInput = component; }}
                 {...this.props}
                 {...commentColorProp}

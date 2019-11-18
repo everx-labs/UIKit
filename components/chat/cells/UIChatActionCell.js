@@ -18,6 +18,7 @@ type Props = {
     text: string,
     typeOfAction: TypeOfActionType,
     onPress?: (action: TypeOfActionType) => void,
+    testID?: string | null
 }
 
 type State = {
@@ -76,8 +77,10 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
     }
 
     render() {
+        const testID = this.props.testID ? this.props.testID : 'chat_action_cell_default';
         return (
             <TouchableOpacity
+                testID={testID}
                 style={styles.container}
                 onPress={this.onPress}
             >
