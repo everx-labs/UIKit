@@ -21,8 +21,6 @@ const styles = StyleSheet.create({
     textButton: {
         ...UIFont.smallMedium(),
         color: UIColor.primary(),
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
 });
 

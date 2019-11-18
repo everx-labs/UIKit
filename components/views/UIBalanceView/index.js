@@ -550,7 +550,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                             text={additionalDescription}
                             role={
                                 additionalEnabled
-                                    ? UILabel.Role.CaptionTertiary
+                                    ? UILabel.Role.CaptionSuccess
                                     : UILabel.Role.CaptionError
                             }
                         />
