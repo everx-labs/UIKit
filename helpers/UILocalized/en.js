@@ -243,7 +243,7 @@ const en: UILocalizedData = {
         PrivateKeyDetails: 'It is the only thing that can provide an access to your data and money and recover the wallet if needed.',
         PrivateKeyHint: 'We recommend you not to save this key, but to use a mnemonic phrase based on it. It is much easier to remember the phrase than such a big number.',
         KeyPhrase: 'Key Phrase',
-        KeyPhrasePlaceholder: 'Key Phrase',
+        KeyPhrasePlaceholder: 'Password',
         KeyPhraseDetails: 'Write down all these words on paper and keep it in a safe place, you will need them if you lose or reinstall the wallet.',
         KeyPhraseWarning: 'Attention! Without this phrase you won\'t be able to restore access to your Wallet!',
         KeyPhraseHint: 'Do not take pictures or screenshots, other programs can get access to them.',
@@ -256,7 +256,7 @@ const en: UILocalizedData = {
         RestoreWalletDetails: 'Sign in with a key phrase you were given when you created your wallet.',
         EncodePhrase: 'Encode Phrase',
         IHaveWrittenAndRemembered: 'I\'ve written and remembered',
-        OKContinue: 'OK, continue',
+        OKContinue: 'Let\'s  go',
         Seconds: 's',
         SetLocalPassword: 'Create Login Method',
         SetLocalPasswordDetails: 'Set a Passcode to enter the wallet and confirm your transactions. It will work only on this device.',
@@ -574,7 +574,7 @@ const en: UILocalizedData = {
 
     // Seed Phrase Input:
     seedPhraseTypo: 'Seems we have a typo here, try again',
-    greatMemory: 'Great memory, check passed!',
+    greatMemory: 'Great memory, access restored!',
 
     // Cross-services
     WeCanTFindThePageYouReLookingFor: 'We can\'t find the page you\'re looking for.',
