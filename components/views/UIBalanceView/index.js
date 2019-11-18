@@ -74,6 +74,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     updatingBalance: boolean;
     animatingBalance: boolean;
     afterAnimationCallback: () => void;
+    loading: boolean;
 
     constructor(props: Props) {
         super(props);
@@ -91,6 +92,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         this.updatingBalance = false;
         this.animatingBalance = false;
         this.afterAnimationCallback = () => {};
+        this.loading = false;
+
         // this.newBalanceSymbolsWidth = 0;
         // this.oldBalanceSymbolsWidth = 0;
     }
@@ -101,8 +104,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const force = prevProps.loading !== this.props.loading;
-        this.updateBalance(force);
+        const force = prevProps.loading !== this.props.loading && this.props.balance === '0';
+        this.updateBalance(force); // force
     }
 
     // Events
@@ -131,32 +134,38 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     // Setters
     async setBalance(balance: string, isCallback: boolean = false) {
-        this.updatingBalance = false;
-        // const balanceWidthValue = this.state.balanceWidth.__getValue();
-
-        const { loading, animated } = this.props;
-        if (!animated) {
+        if (!this.props.animated) {
             this.setCachedBalance(balance);
             this.setStateSafely({ balance, newBalance: '' });
             return;
         }
 
-        if (balance === this.getNewBalance() && !loading) { // && balanceWidthValue !== 0
+        // we need this in order to always have actual value in this.loading;
+        this.loading = this.props.loading;
+
+        // const balanceWidthValue = this.state.balanceWidth.__getValue();
+        if (balance === this.getNewBalance() && !this.loading) { // && balanceWidthValue !== 0
             return;
         }
 
+        const { length: balanceLen } = this.getBalance();
+        // if some animation is already in progress, we add new animation as callback and return
+        if (this.animatingBalance) {
+            this.afterAnimationCallback = () => {
+                setTimeout(() => {
+                    this.setBalance(balance, true);
+                }, UIConstant.animationDuration());
+            };
+            return;
+        }
+
+        // if this call is a callback, then no need to repeat it more
         if (isCallback) {
             this.afterAnimationCallback = () => {};
         }
 
-        const { length: balanceLen } = this.getBalance();
-
-        if (this.animatingBalance) {
-            this.afterAnimationCallback = () => { this.setBalance(balance, true); };
-            return;
-        }
+        // start animation
         this.animatingBalance = true;
-
         // const integer = balance.split(this.getSeparator())[0];
         // const setWidthAnim = condition => (condition
         //     ? Animated.timing(this.state.balanceWidth, {
@@ -186,6 +195,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                     toValue: 0,
                     duration: UIConstant.animationDuration(),
                     delay: i * (UIConstant.animationDuration() / 5),
+                    useNativeDriver: true,
                 });
                 animations.push(anim);
             }
@@ -195,11 +205,12 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
                 this.animatingBalance = false;
                 this.setCachedBalance(balance);
-                const callback = loading
+                // here we check this.loading, cause this.props.loading may obsolete at this moment
+                const callback = this.loading
                     ? () => {
                         setTimeout(() => {
                             this.setBalance(this.getAuxBalance());
-                        }, 250);
+                        }, UIConstant.animationDuration());
                     } : this.afterAnimationCallback;
                 this.setStateSafely({
                     marginTops: [],
@@ -300,6 +311,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 this.measureAuxBalanceText();
             });
         } else {
+            this.updatingBalance = false;
             this.setBalance(auxBalance);
         }
     }

@@ -95,7 +95,7 @@ const tonlinesIcons = [
     { name: 'tonlabs.png\n', source: iconTonlabs },
     { name: 'tonlabs-square.png\n', source: iconTonlabsSquare },
     { name: 'tonlabs-old.png\n', source: iconTonlabsOld },
-    { name: 'tonwallet.png\n', source: iconTonwallet },
+    { name: 'tonsurf.png\n', source: iconTonwallet },
     { name: 'tonwallet-old.png', source: iconTonwalletOld },
 ];
 

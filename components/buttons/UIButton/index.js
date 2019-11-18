@@ -642,6 +642,6 @@ UIButton.defaultProps = {
     textStyle: null,
     textHoverStyle: null,
     indicatorAnimation: null,
-    iconIndicator: null,
+    iconIndicator: undefined,
     iconIndicatorStyle: null,
 };

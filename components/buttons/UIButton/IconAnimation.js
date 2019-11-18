@@ -1,9 +1,8 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text, Image, Animated, Easing } from 'react-native';
+import { Animated, Easing } from 'react-native';
 
-import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 
 const iconDefault = require('../../../assets/ico-triangle/ico-triangle.png');
@@ -80,7 +79,7 @@ export default class IconAnimation extends UIComponent<Props, State> {
 
     animate = () => {
         this.animatedValue.setValue(0);
-        const callback = this.props.animation !== IconAnimation.Animation.Forward ?
+        const callback = this.props.animation === IconAnimation.Animation.Forward ?
             null :
             this.animate;
 
@@ -94,7 +93,7 @@ export default class IconAnimation extends UIComponent<Props, State> {
                     ? Easing.ease : Easing.linear,
             },
         ).start(callback);
-    }
+    };
 
     render() {
         const transform = [];
