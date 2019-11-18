@@ -5,7 +5,6 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 import UIEmailInput from '../../input/UIEmailInput';
@@ -52,6 +51,7 @@ type Props = {
     label: string,
     caption: string,
     disclaimer: string,
+    titleClassName?: string,
     onSubmit: (string) => void,
 };
 
@@ -164,7 +164,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         if (this.isSubmitted()) {
             return (
                 <View style={UIStyle.height.greatCell()}>
-                    <Text style={[UIStyle.Text.whiteBodyRegular(), UIStyle.margin.topHuge()]}>
+                    <Text style={[UIStyle.text.whiteBodyRegular(), UIStyle.margin.topHuge()]}>
                         {UILocalized.WillGetInTouchWithYouSoon}
                     </Text>
                 </View>
@@ -200,7 +200,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
 
     render(): React$Node {
         const {
-            title, label, needBottomIcon, caption,
+            title, label, needBottomIcon, caption, titleClassName,
         } = this.props;
         const widthStyle = this.getWidthStyle();
         const bottomIcon = needBottomIcon
@@ -213,14 +213,18 @@ export default class UIStubPage extends UIComponent<Props, State> {
                 style={styles.container}
             >
                 <View style={[...customStyles.contentContainer, widthStyle]}>
-                    <Text style={UITextStyle.whiteAccentBold}>
+                    <Text style={UIStyle.text.whiteAccentBold()}>
                         {labelText}
                     </Text>
-                    <Text style={UITextStyle.whiteKeyBold}>
+                    <Text
+                        style={UIStyle.text.whiteKeyBold()}
+                        className={titleClassName}
+                        data={title}
+                    >
                         {title}
                     </Text>
                     <View style={customStyles.description}>
-                        <Text style={UITextStyle.grey1SubtitleBold}>
+                        <Text style={UIStyle.text.grey1SubtitleBold()}>
                             {caption}
                         </Text>
                     </View>

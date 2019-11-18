@@ -80,7 +80,7 @@ export default class IconAnimation extends UIComponent<Props, State> {
 
     animate = () => {
         this.animatedValue.setValue(0);
-        const callback = this.props.animation !== IconAnimation.Animation.Forward ?
+        const callback = this.props.animation === IconAnimation.Animation.Forward ?
             null :
             this.animate;
 
@@ -94,7 +94,7 @@ export default class IconAnimation extends UIComponent<Props, State> {
                     ? Easing.ease : Easing.linear,
             },
         ).start(callback);
-    }
+    };
 
     render() {
         const transform = [];
