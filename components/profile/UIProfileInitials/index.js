@@ -57,10 +57,11 @@ class UIProfileInitials extends UIComponent<Props, Style> {
     }
 
     render() {
-        const { initials } = this.props;
+        const { initials, testID } = this.props;
+        const testIDProp = testID ? { testID } : `profile_testID`;
         return (
             <View
-                testID={`profile_testID`}
+                testID={testIDProp}
                 style={[
                     UIStyle.Common.alignCenter(),
                     UIStyle.justifyCenter,
