@@ -58,7 +58,7 @@ class UIProfileInitials extends UIComponent<Props, Style> {
 
     render() {
         const { initials, testID } = this.props;
-        const testIDProp = testID ? { testID } : `profile_testID`;
+        const testIDProp = testID ? { testID } : 'profile_testID';
         return (
             <View
                 testID={testIDProp}
