@@ -216,10 +216,10 @@ export default class UIStubPage extends UIComponent<Props, State> {
                     <Text style={UIStyle.text.whiteAccentBold()}>
                         {labelText}
                     </Text>
+                    {/* $FlowFixMe */}
                     <Text
                         style={UIStyle.text.whiteKeyBold()}
                         className={titleClassName}
-                        data={title}
                     >
                         {title}
                     </Text>

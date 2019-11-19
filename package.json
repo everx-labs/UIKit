@@ -5,7 +5,7 @@
     "main": "UIKit.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "flow": "flow"
+        "flow": "flow check"
     },
     "pre-commit": [
         "flow"
@@ -50,7 +50,7 @@
     "devDependencies": {
         "@babel/preset-flow": "7.0.0",
         "babel-eslint": "9.0.0",
-        "flow-bin": "0.92.0",
+        "flow-bin": "0.95.1",
         "pre-commit": "1.2.2"
     },
     "repository": {
