@@ -16,6 +16,7 @@ type Props = {
     textStyle?: ViewStyleProp,
     containerStyle?: ViewStyleProp,
     avatarSize: number,
+    testID?: ?string,
 };
 
 type Style = {};
@@ -37,6 +38,7 @@ class UIProfileInitials extends UIComponent<Props, Style> {
         textStyle: null,
         containerStyle: null,
         avatarSize: UIConstant.profilePhotoSize(),
+        testID: null,
     };
 
     getBackgroundColor() {
@@ -55,9 +57,11 @@ class UIProfileInitials extends UIComponent<Props, Style> {
     }
 
     render() {
-        const { initials } = this.props;
+        const { initials, testID } = this.props;
+        const testIDProp = testID ? { testID } : 'profile_testID';
         return (
             <View
+                testID={testIDProp}
                 style={[
                     UIStyle.Common.alignCenter(),
                     UIStyle.justifyCenter,
