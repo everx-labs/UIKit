@@ -168,51 +168,59 @@ export type ButtonProps = ActionProps & {
 type State = ActionState;
 
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
+    static buttonSize = {
+        default: 'default',
+        large: 'l',
+        medium: 'm',
+        small: 's',
+    };
+
+    static buttonShape = {
+        default: 'default',
+        radius: 'radius',
+        mediumRadius: 'medium-radius',
+        rounded: 'rounded',
+        full: 'full',
+    };
+
+    static buttonStyle = {
+        full: 'full',
+        border: 'border',
+        link: 'link',
+    };
+
+    static textAlign = {
+        center: 'center',
+        left: 'left',
+        right: 'right',
+    };
+
     // Deprecated
     static ButtonSize = {
         Default: 'default',
-        default: 'default',
         Large: 'l',
-        large: 'l',
         Medium: 'm',
-        medium: 'm',
         Small: 's',
-        small: 's',
     };
 
     static ButtonShape = {
         Default: 'default',
-        default: 'default',
         Radius: 'radius',
-        radius: 'radius',
         Rounded: 'rounded',
-        rounded: 'rounded',
         Full: 'full',
-        full: 'full',
     };
 
     static ButtonStyle = {
         Full: 'full',
-        full: 'full',
         Border: 'border',
-        border: 'border',
         Link: 'link',
-        link: 'link',
     };
 
     static TextAlign = {
         Center: 'center',
-        center: 'center',
         Left: 'left',
-        left: 'left',
         Right: 'right',
-        right: 'right',
     };
-
-    static buttonSize = UIButton.ButtonSize;
-    static buttonShape = UIButton.ButtonShape;
-    static buttonStyle = UIButton.ButtonStyle;
-    static textAlign = UIButton.TextAlign;
 
     static Indicator = IconAnimation.Animation;
 
@@ -233,24 +241,24 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     // Getters
     getButtonHeight() {
         switch (this.props.buttonSize) {
-        case UIButton.ButtonSize.Large:
-            return UIConstant.largeButtonHeight();
-        case UIButton.ButtonSize.Medium:
-            return UIConstant.mediumButtonHeight();
-        case UIButton.ButtonSize.Small:
-            return UIConstant.smallButtonHeight();
+        case UIButton.buttonSize.large:
+            return UIConstant.largeButtonHeight(); // 56
+        case UIButton.buttonSize.medium:
+            return UIConstant.mediumButtonHeight(); // 40
+        case UIButton.buttonSize.small:
+            return UIConstant.smallButtonHeight(); // 32
         default: // UIButton.ButtonSize.Default
-            return UIConstant.buttonHeight();
+            return UIConstant.buttonHeight(); // 48
         }
     }
 
     getTitleFontStyle() {
         switch (this.props.buttonSize) {
-        case UIButton.ButtonSize.Large:
+        case UIButton.buttonSize.large:
             return styles.titleL;
-        case UIButton.ButtonSize.Medium:
+        case UIButton.buttonSize.medium:
             return styles.titleM;
-        case UIButton.ButtonSize.Small:
+        case UIButton.buttonSize.small:
             return styles.titleS;
         default:
             return styles.titleM;
@@ -259,11 +267,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     getButtonRadius() {
         switch (this.props.buttonShape) {
-        case UIButton.ButtonShape.Radius:
+        case UIButton.buttonShape.radius:
             return UIConstant.smallBorderRadius();
-        case UIButton.ButtonShape.Rounded:
+        case UIButton.buttonShape.mediumRadius:
+            return UIConstant.borderRadius();
+        case UIButton.buttonShape.rounded:
             return this.getButtonHeight() / 2.0;
-        case UIButton.ButtonShape.Full:
+        case UIButton.buttonShape.full:
             return 0;
         default: // UIButton.ButtonShape.Default
             return UIConstant.tinyBorderRadius();
@@ -337,10 +347,10 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         let propStyle = null;
 
         if (position === 'left') {
-            if (this.props.title) style.push(UIStyle.Margin.rightSmall());
+            if (this.props.title) style.push(UIStyle.margin.rightSmall());
             propStyle = hovered ? this.props.iconHoverStyle : this.props.iconStyle;
         } else if (position === 'right') {
-            if (this.props.title) style.push(UIStyle.Margin.leftSmall());
+            if (this.props.title) style.push(UIStyle.margin.leftSmall());
             propStyle = hovered ? this.props.iconRHoverStyle : this.props.iconRStyle;
         }
 
@@ -407,7 +417,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (!this.props.data) return null;
 
         const data = (
-            <Text style={[UIStyle.Text.tertiaryTinyBold(), UIStyle.Margin.leftSmall()]}>
+            <Text style={[UIStyle.text.tertiaryTinyBold(), UIStyle.margin.leftSmall()]}>
                 {this.props.data}
             </Text>);
 
@@ -415,8 +425,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
         return (
             <View style={[
-                UIStyle.Common.flex(),
-                UIStyle.Common.centerRightContainer(),
+                UIStyle.common.flex(),
+                UIStyle.container.centerRight(),
             ]}
             >
                 {data}
@@ -428,7 +438,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (!this.props.count) return null;
 
         const data = (
-            <Text style={[UIStyle.Text.tertiaryBodyRegular(), UIStyle.Margin.leftSmall()]}>
+            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.margin.leftSmall()]}>
                 {this.props.count}
             </Text>);
 
@@ -436,8 +446,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
         return (
             <View style={[
-                UIStyle.Common.flex(),
-                UIStyle.Common.centerRightContainer(),
+                UIStyle.common.flex(),
+                UIStyle.container.centerRight(),
             ]}
             >
                 {data}
@@ -459,7 +469,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         hasNoIcons: boolean,
     ) {
         const content = hasIcons ? [
-            <View style={UIStyle.Common.centerLeftContainer()}>
+            <View style={UIStyle.container.centerLeft()}>
                 {this.renderIconL()}
                 {this.renderTitle()}
             </View>,
@@ -471,8 +481,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
                 style={[
                     styles.buttonContainerStyle,
                     hasIcons || hasIconRightOnly
-                        ? UIStyle.Common.rowCenterSpaceContainer()
-                        : UIStyle.Common.centerLeftContainer(),
+                        ? UIStyle.container.rowCenterSpace()
+                        : UIStyle.container.centerLeft(),
                 ]}
             >
                 {this.renderBadge()}
@@ -491,7 +501,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     ) {
         const content = hasIcons ? [
             this.renderIconL(),
-            <View style={UIStyle.Common.centerLeftContainer()}>
+            <View style={UIStyle.container.centerLeft()}>
                 {this.renderTitle()}
                 {this.renderIconR()}
             </View>,
@@ -502,8 +512,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
                 style={[
                     styles.buttonContainerStyle,
                     hasIcons || hasIconLeftOnly
-                        ? UIStyle.Common.rowCenterSpaceContainer()
-                        : UIStyle.Common.centerRightContainer(),
+                        ? UIStyle.container.rowCenterSpace()
+                        : UIStyle.container.centerRight(),
                 ]}
             >
                 {this.renderBadge()}
@@ -530,8 +540,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
                 style={[
                     styles.buttonContainerStyle,
                     hasIcons
-                        ? UIStyle.Common.rowCenterSpaceContainer()
-                        : UIStyle.Common.centerContainer(),
+                        ? UIStyle.common.rowCenterSpaceContainer()
+                        : UIStyle.common.centerContainer(),
                 ]}
             >
                 {this.renderBadge()}
@@ -554,10 +564,10 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (bottomExtend) {
             height *= 2;
         }
-        const backgroundColorStyle = (buttonStyle === UIButton.ButtonStyle.Full)
+        const backgroundColorStyle = (buttonStyle === UIButton.buttonStyle.full)
             ? this.getButtonColorStyle()
             : null;
-        const borderStyle = (buttonStyle === UIButton.ButtonStyle.Border)
+        const borderStyle = (buttonStyle === UIButton.buttonStyle.border)
             ? this.getBorderStyle()
             : null;
 
@@ -571,24 +581,24 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (showIndicator || !hasTitle && hasIconLeftOnly) {
             const alignContainerStyle = [
                 styles.buttonContainerStyle,
-                textAlign === UIButton.TextAlign.Left
-                    ? UIStyle.Common.centerLeftContainer()
-                    : textAlign === UIButton.TextAlign.Right
-                        ? UIStyle.Common.centerRightContainer()
-                        : UIStyle.Common.centerContainer(),
+                textAlign === UIButton.textAlign.left
+                    ? UIStyle.container.centerLeft()
+                    : textAlign === UIButton.textAlign.right
+                        ? UIStyle.container.centerRight()
+                        : UIStyle.container.center(),
             ];
             content = (
                 <View style={alignContainerStyle}>
                     {showIndicator ? this.renderIndicator() : this.renderIconL()}
                 </View>
             );
-        } else if (textAlign === UIButton.TextAlign.Left) {
+        } else if (textAlign === UIButton.textAlign.left) {
             content
                 = this.renderLeftLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
-        } else if (textAlign === UIButton.TextAlign.Center) {
+        } else if (textAlign === UIButton.textAlign.center) {
             content
                 = this.renderCenterLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
-        } else if (textAlign === UIButton.TextAlign.Right) {
+        } else if (textAlign === UIButton.textAlign.right) {
             content
                 = this.renderRightLayout(hasIconLeftOnly, hasIconRightOnly, hasIcons, hasNoIcons);
         }
@@ -621,9 +631,9 @@ UIButton.defaultProps = {
     ...UIActionComponent.defaultProps,
     badge: 0,
     bottomExtend: false, // useful for iPhone X (SafeArea)
-    buttonSize: UIButton.ButtonSize.Default,
-    buttonShape: UIButton.ButtonShape.Radius,
-    buttonStyle: UIButton.ButtonStyle.Full,
+    buttonSize: UIButton.buttonSize.default,
+    buttonShape: UIButton.buttonShape.radius,
+    buttonStyle: UIButton.buttonStyle.full,
     count: '',
     data: '',
     footer: false,
@@ -638,7 +648,7 @@ UIButton.defaultProps = {
     iconRStyle: null,
     iconRHoverStyle: null,
     style: null,
-    textAlign: UIButton.TextAlign.Center,
+    textAlign: UIButton.textAlign.center,
     textStyle: null,
     textHoverStyle: null,
     indicatorAnimation: null,
