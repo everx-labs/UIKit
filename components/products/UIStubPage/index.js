@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
 
 const customStyles = {
     contentContainer: [
-        UIStyle.Common.pageContainer(),
-        UIStyle.Common.justifyCenter(),
-        UIStyle.Common.flex(),
+        UIStyle.common.pageContainer(),
+        UIStyle.common.justifyCenter(),
+        UIStyle.common.flex(),
     ],
     description: [
         UIStyle.height.majorCell(),
-        UIStyle.Common.justifyEnd(),
+        UIStyle.common.justifyEnd(),
         UIStyle.margin.topDefault(),
         UIStyle.width.threeQuarters(),
         styles.description,
@@ -220,6 +220,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                     <Text
                         style={UIStyle.text.whiteKeyBold()}
                         className={titleClassName}
+                        innerTextForCSS={title}
                     >
                         {title}
                     </Text>
