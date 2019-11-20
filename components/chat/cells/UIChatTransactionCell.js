@@ -129,11 +129,20 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const { created } = this.getMessage().info;
         const today = new Date();
         const date = new Date(created);
-        date.setHours(0, 0, 0, 0);
         today.setHours(0, 0, 0, 0);
-        const moment = today.getTime() === date.getTime()
-            ? `${UILocalized.Today}, ${Moment(created).format('LT')}` // TONLocalized.chats.labels.today
-            : Moment(created).format('D MMM LT');
+        date.setHours(0, 0, 0, 0);
+
+        const todayTime = today.getTime();
+        const dateTime = date.getTime();
+
+        const isToday = todayTime === dateTime;
+        const isYesterday = (todayTime - dateTime) === (24 * 3600 * 1000);
+
+        const moment = (isToday || isYesterday) ? (
+            `${isToday ? UILocalized.Today : UILocalized.Yesterday}, ${Moment(created).format('LT')}`
+        ) : (
+            Moment(created).format('D MMM LT')
+        );
 
         return moment;
     }
