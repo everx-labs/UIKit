@@ -24,6 +24,8 @@ import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
 import UIModalNavigationBar from './UIModalNavigationBar';
 
+import type { SafeAreaInsets } from '../../helpers/UIDevice';
+
 const fullScreenDialogWidth = 600;
 const fullScreenDialogHeight = 600;
 
@@ -134,9 +136,10 @@ export default class UIModalController<Props, State>
         };
     }
 
-    async loadSafeAreaInsets() {
+    async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
         const safeArea = await super.loadSafeAreaInsets();
         this.marginBottom.setValue(safeArea.bottom);
+        return safeArea;
     }
 
     // Events

@@ -5,7 +5,7 @@ import MobileDetect from 'mobile-detect';
 import DeviceInfo from 'react-native-device-info';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-type SafeAreaInsets = {
+export type SafeAreaInsets = {
     top: number,
     left: number,
     right: number,
