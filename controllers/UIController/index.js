@@ -238,11 +238,10 @@ export default class UIController<Props, State>
         //
     }
 
-    loadSafeAreaInsets() {
-        (async () => {
-            const safeArea = await UIDevice.safeAreaInsets();
-            this.setStateSafely({ safeArea });
-        })();
+    async loadSafeAreaInsets() {
+        const safeArea = await UIDevice.safeAreaInsets();
+        this.setStateSafely({ safeArea });
+        return safeArea;
     }
 
     // Virtual

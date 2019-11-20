@@ -134,10 +134,13 @@ export default class UIModalController<Props, State>
         };
     }
 
+    async loadSafeAreaInsets() {
+        const safeArea = await super.loadSafeAreaInsets();
+        this.marginBottom.setValue(safeArea.bottom);
+    }
+
     // Events
     onWillAppear() {
-        this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
-
         const { onWillAppear } = this.props;
         if (onWillAppear) {
             onWillAppear();
