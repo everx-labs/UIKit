@@ -901,7 +901,7 @@ export default class UIDetailsInput<Props, State>
         const commentRight = this.getCommentRight();
         const commentRightTestID = this.getCommentRightTestID();
         const commentRightTestIDProp = commentRightTestID ? { commentRightTestID } : null;
-        if (!comment) {
+        if (!comment && !commentRight) {
             return null;
         }
         const defaultColorStyle = UIColor.textTertiaryStyle(theme);
