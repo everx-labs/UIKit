@@ -247,7 +247,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
             return UIConstant.mediumButtonHeight(); // 40
         case UIButton.buttonSize.small:
             return UIConstant.smallButtonHeight(); // 32
-        default: // UIButton.ButtonSize.Default
+        default: // UIButton.buttonSize.default
             return UIConstant.buttonHeight(); // 48
         }
     }
@@ -540,8 +540,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
                 style={[
                     styles.buttonContainerStyle,
                     hasIcons
-                        ? UIStyle.common.rowCenterSpaceContainer()
-                        : UIStyle.common.centerContainer(),
+                        ? UIStyle.container.rowCenterSpace()
+                        : UIStyle.container.center(),
                 ]}
             >
                 {this.renderBadge()}
