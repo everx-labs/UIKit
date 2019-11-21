@@ -279,7 +279,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     <UILabel
                         style={styles.textMetadata}
                         role={UILabel.Role.TinyRegular}
-                        text={this.getAmountInCurrency()}
+                        // text={this.getAmountInCurrency()}
                     />
                 </View>
             </View>
