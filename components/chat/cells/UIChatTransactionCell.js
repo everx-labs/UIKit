@@ -226,6 +226,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     // Render
     renderTrxContent() {
         const trx = this.getTransaction();
+        console.log('TRX ===> ', trx);
         const extra = this.getExtra();
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
         const amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
@@ -275,10 +276,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         style={[UIStyle.Margin.rightHuge(), styles.textMetadata]}
                         role={UILabel.Role.TinyRegular}
                         text={
-                            status === ChatMessageStatus.Rejected ||
-                            status === ChatMessageStatus.Aborted ||
-                            status === ChatMessageStatus.Sending
-                                ? this.getStatusString(status)
+                            trx.aborted
+                                ? this.getStatusString(ChatMessageStatus.Aborted)
                                 : date
                         }
                     />
