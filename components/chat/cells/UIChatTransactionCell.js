@@ -160,6 +160,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getCardColor(): ViewStyleProp {
         const extra = this.getExtra();
+        const message = this.getMessage();
+        console.log('EXTRA =======> ', extra);
+        console.log('MESSAGE =======> ', message);
         const { type } = extra;
         if (type === TypeOfTransaction.Deposit) {
             return styles.cardDeposit;
@@ -168,15 +171,18 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         } else if (type === TypeOfTransaction.Income) {
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
-            // TODO: check if this condition is required for income
-            const status = this.getStatus();
-            if (status === ChatMessageStatus.Sending) {
-                return styles.cardSpending;
-            } else if (status === ChatMessageStatus.Rejected) {
-                return styles.cardRejected;
-            } else if (status === ChatMessageStatus.Aborted) {
+            if (message.info.trx.aborted) {
                 return styles.cardAborted;
             }
+            // TODO: check if this condition is required for income
+            // const status = this.getStatus();
+            // if (status === ChatMessageStatus.Sending) {
+            //     return styles.cardSpending;
+            // } else if (status === ChatMessageStatus.Rejected) {
+            //     return styles.cardRejected;
+            // } else if (status === ChatMessageStatus.Aborted) {
+            //     return styles.cardAborted;
+            // }
             return styles.cardSpending;
         } else if (type === TypeOfTransaction.Bill) {
             return styles.cardBill;
