@@ -206,11 +206,11 @@ export default class UIConstant {
     }
 
     // Content offsets
-    static tinyContentOffset() {
+    static tinyContentOffset() { // 4
         return UI_TINY_CONTENT_OFFSET;
     }
 
-    static smallContentOffset() {
+    static smallContentOffset() { // 8
         return UI_SMALL_CONTENT_OFFSET;
     }
 
