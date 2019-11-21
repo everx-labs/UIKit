@@ -206,11 +206,11 @@ export default class UIConstant {
     }
 
     // Content offsets
-    static tinyContentOffset() {
+    static tinyContentOffset() { // 4
         return UI_TINY_CONTENT_OFFSET;
     }
 
-    static smallContentOffset() {
+    static smallContentOffset() { // 8
         return UI_SMALL_CONTENT_OFFSET;
     }
 
@@ -301,18 +301,18 @@ export default class UIConstant {
     }
 
     static smallButtonHeight() {
-        return UI_SMALL_BUTTON_HEIGHT;
+        return UI_SMALL_BUTTON_HEIGHT; // 32
     }
 
-    static mediumButtonHeight() {
+    static mediumButtonHeight() { // 40
         return UI_MEDIUM_BUTTON_HEIGHT;
     }
 
     static buttonHeight() {
-        return UI_DEFAULT_BUTTON_HEIGHT;
+        return UI_DEFAULT_BUTTON_HEIGHT; // 48
     }
 
-    static largeButtonHeight() {
+    static largeButtonHeight() { // 56
         return UI_LARGE_BUTTON_HEIGHT;
     }
 
