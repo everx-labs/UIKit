@@ -167,9 +167,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         } else if (type === TypeOfTransaction.Withdraw) {
             return styles.cardWithdraw;
         } else if (type === TypeOfTransaction.Income) {
-            if (message.info.trx.aborted) {
-                return styles.cardRejected;
-            }
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
             if (message.info.trx.aborted) {
