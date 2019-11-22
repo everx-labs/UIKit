@@ -9,10 +9,10 @@ const UI_FONT_FAMILY = {
 };
 
 const emojiFonts = [
-    '"Noto Color Emoji"',
     '"Apple Color Emoji"',
-    '"Segoe UI-Emoji"',
+    '"Segoe UI Emoji"',
     '"Segoe MDL2 Assets"',
+    '"Noto Color Emoji"',
     'Symbola',
     'SymbolaRegular',
 ];
