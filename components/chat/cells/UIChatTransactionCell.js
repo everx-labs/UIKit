@@ -161,28 +161,20 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getCardColor(): ViewStyleProp {
         const extra = this.getExtra();
         const message = this.getMessage();
-        console.log('EXTRA =======> ', extra);
-        console.log('MESSAGE =======> ', message);
         const { type } = extra;
         if (type === TypeOfTransaction.Deposit) {
             return styles.cardDeposit;
         } else if (type === TypeOfTransaction.Withdraw) {
             return styles.cardWithdraw;
         } else if (type === TypeOfTransaction.Income) {
+            if (message.info.trx.aborted) {
+                return styles.cardRejected;
+            }
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
             if (message.info.trx.aborted) {
                 return styles.cardAborted;
             }
-            // TODO: check if this condition is required for income
-            // const status = this.getStatus();
-            // if (status === ChatMessageStatus.Sending) {
-            //     return styles.cardSpending;
-            // } else if (status === ChatMessageStatus.Rejected) {
-            //     return styles.cardRejected;
-            // } else if (status === ChatMessageStatus.Aborted) {
-            //     return styles.cardAborted;
-            // }
             return styles.cardSpending;
         } else if (type === TypeOfTransaction.Bill) {
             return styles.cardBill;
@@ -226,13 +218,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     // Render
     renderTrxContent() {
         const trx = this.getTransaction();
-        console.log('TRX ===> ', trx);
         const extra = this.getExtra();
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
         const amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
         const color = this.getCardColor();
         const date = this.getDate();
-        const status = this.getStatus();
 
         return (
             <View
