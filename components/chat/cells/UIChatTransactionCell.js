@@ -160,7 +160,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getCardColor(): ViewStyleProp {
         const extra = this.getExtra();
-        const message = this.getMessage();
+        const trx = this.getTransaction();
         const { type } = extra;
         if (type === TypeOfTransaction.Deposit) {
             return styles.cardDeposit;
@@ -169,7 +169,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         } else if (type === TypeOfTransaction.Income) {
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
-            if (message.info.trx.aborted) {
+            if (trx.aborted) {
                 return styles.cardAborted;
             }
             return styles.cardSpending;
