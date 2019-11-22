@@ -160,6 +160,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getCardColor(): ViewStyleProp {
         const extra = this.getExtra();
+        const trx = this.getTransaction();
         const { type } = extra;
         if (type === TypeOfTransaction.Deposit) {
             return styles.cardDeposit;
@@ -168,13 +169,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         } else if (type === TypeOfTransaction.Income) {
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
-            // TODO: check if this condition is required for income
-            const status = this.getStatus();
-            if (status === ChatMessageStatus.Sending) {
-                return styles.cardSpending;
-            } else if (status === ChatMessageStatus.Rejected) {
-                return styles.cardRejected;
-            } else if (status === ChatMessageStatus.Aborted) {
+            if (trx.aborted) {
                 return styles.cardAborted;
             }
             return styles.cardSpending;
@@ -225,7 +220,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
         const color = this.getCardColor();
         const date = this.getDate();
-        const status = this.getStatus();
 
         return (
             <View
@@ -269,10 +263,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         style={[UIStyle.Margin.rightHuge(), styles.textMetadata]}
                         role={UILabel.Role.TinyRegular}
                         text={
-                            status === ChatMessageStatus.Rejected ||
-                            status === ChatMessageStatus.Aborted ||
-                            status === ChatMessageStatus.Sending
-                                ? this.getStatusString(status)
+                            trx.aborted
+                                ? this.getStatusString(ChatMessageStatus.Aborted)
                                 : date
                         }
                     />
