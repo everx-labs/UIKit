@@ -4,8 +4,8 @@ import { Animation } from 'react-native-popup-dialog';
 
 
 type Param = {
-    toValue: number,
-    slideFrom: string,
+    toValue?: number,
+    slideFrom?: string,
 }
 
 export default class SlideAnimation extends Animation {
