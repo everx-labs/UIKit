@@ -317,7 +317,7 @@ export default class UIColor {
     }
 
     // border
-    static boderBottomLightColor(theme: ?UIColorThemeNameType) {
+    static borderBottomLightColor(theme: ?UIColorThemeNameType) {
         const { borderBottom } = themes[theme || current];
         return borderBottom.light;
     }

@@ -90,15 +90,15 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
         const groupStyle = [];
         if (this.props.direction === UIButtonGroup.Direction.Row) {
             groupStyle.push(
-                UIStyle.Common.centerLeftContainer(),
-                UIStyle.Common.flexRowWrap(),
+                UIStyle.container.centerLeft(),
+                UIStyle.common.flexRowWrap(),
             );
         }
 
         groupStyle.push(this.props.style);
 
         return (
-            <View style={groupStyle}>
+            <View testID=">> ButtonGroup" style={groupStyle}>
                 {this.renderChildren()}
             </View>
         );

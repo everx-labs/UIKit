@@ -7,10 +7,20 @@ const colorStyleSheets = {
     color: {},
     backgroundColor: {},
     borderBottomColor: {},
+    borderTopColor: {},
     tintColor: {},
 };
 
 export default class UIStyleColor {
+    static styles = {
+        color: 'color',
+        backgroundColor: 'backgroundColor',
+        borderBottomColor: 'borderBottomColor',
+        borderTopColor: 'borderTopColor',
+        tintColor: 'tintColor',
+    };
+
+    // Deprecated
     static Styles = {
         Color: 'color',
         BackgroundColor: 'backgroundColor',
@@ -36,19 +46,23 @@ export default class UIStyleColor {
     }
 
     static getColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.Styles.Color);
+        return this.getStyle(color, this.styles.color);
     }
 
     static getBackgroundColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.Styles.BackgroundColor);
+        return this.getStyle(color, this.styles.backgroundColor);
     }
 
     static getBorderBottomColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.Styles.BorderBottomColor);
+        return this.getStyle(color, this.styles.borderBottomColor);
+    }
+
+    static getBorderTopColorStyle(color: UIColorData) {
+        return this.getStyle(color, this.styles.borderTopColor);
     }
 
     static getTintColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.Styles.TintColor);
+        return this.getStyle(color, this.styles.tintColor);
     }
 
     static textPrimary(theme?: ?UIColorThemeNameType) {
@@ -78,7 +92,7 @@ export default class UIStyleColor {
     }
 
     static borderBottomLight(theme: ?UIColorThemeNameType) {
-        const borderColor = UIColor.boderBottomLightColor(theme);
+        const borderColor = UIColor.borderBottomLightColor(theme);
         return this.getBorderBottomColorStyle(borderColor);
     }
 
