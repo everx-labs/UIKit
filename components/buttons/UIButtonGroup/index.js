@@ -32,6 +32,10 @@ type Props = {
     @default 16
     */
     gutter: number,
+    /** ID for testing
+     @default ''
+     */
+    testID: string,
 };
 
 type State = {};
@@ -98,7 +102,7 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
         groupStyle.push(this.props.style);
 
         return (
-            <View testID=">> ButtonGroup" style={groupStyle}>
+            <View testID={this.props.testID} style={groupStyle}>
                 {this.renderChildren()}
             </View>
         );
@@ -108,6 +112,7 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
 }
 
 UIButtonGroup.defaultProps = {
+    testID: '',
     children: null,
     direction: UIButtonGroup.Direction.Row,
     gutter: GUTTER,
