@@ -8,6 +8,7 @@ type Param = {
     slideFrom?: string,
 }
 
+// TODO: refactor the class to make it cleaner to read.
 export default class SlideAnimation extends Animation {
     constructor({ toValue = 0, slideFrom = 'bottom' }: Param) {
         super(toValue);
