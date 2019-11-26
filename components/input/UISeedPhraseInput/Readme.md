@@ -20,6 +20,8 @@ class ExampleComponent extends React.Component {
                         seedPhrase: newText
                     })}
                     phraseToCheck={this.state.phraseToCheck}
+                    totalWords={12}
+                    words={Mnemonic.Words.ENGLISH}
                 />
             </View>
         );

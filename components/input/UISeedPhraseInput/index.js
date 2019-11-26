@@ -6,8 +6,6 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { Popover } from 'react-native-simple-popover';
 
-import Mnemonic from 'bitcore-mnemonic';
-
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
@@ -26,7 +24,8 @@ type Props = DetailsProps & {
     phraseToCheck: string,
     isSeedPhraseValid?: ?boolean,
     onChangeIsValidPhrase?: (isValid: boolean) => void,
-    totalWords: number
+    totalWords: number,
+    words: string[],
 };
 
 type State = ActionState & {
@@ -57,6 +56,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
         totalWords: 12, // default value
+        words: [],
     };
 
     static splitPhrase(phrase: string): Array<string> {
@@ -273,7 +273,6 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         const phrase = currentPhrase || this.getValue();
         const words = UISeedPhraseInput.splitPhrase(phrase);
-        const dictionary = Mnemonic.Words.ENGLISH;
 
         let result = true;
         for (let i = 0; i < words.length; i += 1) {
@@ -281,7 +280,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                 break;
             }
 
-            const included = dictionary.filter(word => word === words[i]);
+            const included = this.props.words.filter(word => word === words[i]);
             if (included.length === 0) {
                 result = false;
                 break;
@@ -472,8 +471,10 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderHintsView() {
+        const { words } = this.props;
         return (<UISeedPhraseHintsView
             ref={(component) => { this.seedPhraseHintsView = component; }}
+            words={words}
             width={this.getInputWidth()}
             onHintSelected={this.onHintSelected}
             yOffset={UIConstant.normalContentOffset()}
