@@ -35,7 +35,7 @@ type Props = {
     /** ID for testing
      @default ''
      */
-    testID: string,
+    testID?: string,
 };
 
 type State = {};
@@ -112,7 +112,6 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
 }
 
 UIButtonGroup.defaultProps = {
-    testID: '',
     children: null,
     direction: UIButtonGroup.Direction.Row,
     gutter: GUTTER,
