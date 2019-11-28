@@ -92,7 +92,7 @@ export type ButtonProps = ActionProps & {
     */
     hasIcon?: boolean,
     /** use it for default right icon, ignore it if use iconR prop
-    @default false
+    @default true
     */
     hasIconR?: boolean,
     /** uri to left icon
@@ -637,7 +637,7 @@ UIButton.defaultProps = {
     count: '',
     data: '',
     footer: false,
-    hasIcon: false,
+    hasIcon: true,
     hasIconR: false,
     icon: null,
     theme: UIColor.Theme.Light,
