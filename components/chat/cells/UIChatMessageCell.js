@@ -311,7 +311,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const textStyle = this.isReceived() ? styles.timeTextLeft : styles.timeTextRight;
         const msgTime = this.formatedTime();
         let testID;
-        if (data) {
+        if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
                 testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
             } else {
