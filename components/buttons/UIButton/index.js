@@ -92,7 +92,7 @@ export type ButtonProps = ActionProps & {
     */
     hasIcon?: boolean,
     /** use it for default right icon, ignore it if use iconR prop
-    @default false
+    @default true
     */
     hasIconR?: boolean,
     /** uri to left icon
@@ -359,17 +359,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     }
 
     renderIconL() {
-        if (this.props.icon || this.props.hasIcon) {
-            return this.renderIcon(this.props.icon, 'left');
-        }
-        return null;
+        if (!this.props.icon || !this.props.hasIcon) return null;
+        return this.renderIcon(this.props.icon, 'left');
     }
 
     renderIconR() {
-        if (this.props.iconR || this.props.hasIconR) {
-            return this.renderIcon(this.props.iconR, 'right');
-        }
-        return null;
+        if (!this.props.iconR || !this.props.hasIconR) return null;
+        return this.renderIcon(this.props.iconR, 'right');
     }
 
     renderBadge() {
@@ -641,7 +637,7 @@ UIButton.defaultProps = {
     count: '',
     data: '',
     footer: false,
-    hasIcon: false,
+    hasIcon: true,
     hasIconR: false,
     icon: null,
     theme: UIColor.Theme.Light,
