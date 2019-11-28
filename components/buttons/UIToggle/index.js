@@ -32,10 +32,10 @@ export default class UIToggle extends UIComponent {
     }
 
     render() {
-        const { containerStyle, testID } = this.props;
+        const { containerStyle, style, testID } = this.props;
         const testIDProp = testID ? { testID } : null;
         return (
-            <View style={containerStyle}>
+            <View style={[containerStyle, style]}>
                 <TouchableWithoutFeedback
                     {...testIDProp}
                     onPress={this.onPress}
@@ -60,6 +60,7 @@ UIToggle.defaultProps = {
 UIToggle.propTypes = {
     iconActive: PropTypes.string,
     iconInactive: PropTypes.string,
+    style: StylePropType,
     containerStyle: StylePropType,
     active: PropTypes.bool,
     colored: PropTypes.bool,
