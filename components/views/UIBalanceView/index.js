@@ -32,6 +32,8 @@ type Props = {
     smartTruncator: boolean,
     loading: boolean,
     maxFractionalDigits: number,
+    maxBalanceLength: number,
+    useMaxBalanceLength: boolean,
 };
 
 type State = {
@@ -51,8 +53,6 @@ const styles = StyleSheet.create({
 
 const cachedBalance = {};
 
-const maxBalanceLength = UIConstant.maxDecimalDigits() + 2;
-
 export default class UIBalanceView extends UIComponent<Props, State> {
     static defaultProps = {
         balance: '',
@@ -66,6 +66,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         animated: false,
         loading: false,
         maxFractionalDigits: UIConstant.maxDecimalDigits(),
+        useMaxBalanceLength: true,
+        maxBalanceLength: UIConstant.maxDecimalDigits() + 2,
     };
 
     // constructor
@@ -340,7 +342,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     updateBalance(force: boolean = false) {
-        const { balance, separator, loading } = this.props;
+        const { balance, separator, loading, useMaxBalanceLength, maxBalanceLength } = this.props;
         const loadingCondition = loading && this.balance !== '0';
         const updatingCondition = (balance !== this.balance && !loading) || force;
         if (!loadingCondition && !updatingCondition) {
@@ -357,7 +359,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits)}`
                 : `${balance}${separator}${this.getZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
-            floorBalance = integer.length > maxBalanceLength ? integer : formattedBalance;
+            floorBalance = useMaxBalanceLength && integer.length > maxBalanceLength ? integer : formattedBalance;
         }
         this.setAuxBalance(floorBalance, () => { // start component layout and measuring
             this.measureAuxBalanceText();
@@ -522,7 +524,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     renderAuxBalance() {
         const auxBalance = this.getAuxBalance();
         const integer = auxBalance.split(this.getSeparator())[0];
-        const smartTruncator = this.props.smartTruncator && integer.length < maxBalanceLength;
+        const smartTruncator = this.props.smartTruncator
+            && (integer.length < this.props.maxBalanceLength || !this.props.useMaxBalanceLength);
         return (
             <Text
                 testID="renderAuxBalance"
