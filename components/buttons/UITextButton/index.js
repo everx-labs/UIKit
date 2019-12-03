@@ -152,7 +152,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
 
     renderTitle() {
         const {
-            title, textStyle, details, theme, disabled,
+            title, textStyle, details, theme, disabled, multiLine,
         } = this.props;
         if (!title) {
             return null;
@@ -166,6 +166,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             : null;
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
+        const numberOfLines = multiLine ? {} : { numberOfLines: 1 };
 
         return (
             <Text
@@ -177,7 +178,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
                     stateCustomColorStyle,
                     flexGrow,
                 ]}
-                numberOfLines={1}
+                {...numberOfLines}
                 ellipsizeMode="middle"
             >
                 {title}
