@@ -359,17 +359,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     }
 
     renderIconL() {
-        if (this.props.icon || this.props.hasIcon) {
-            return this.renderIcon(this.props.icon, 'left');
-        }
-        return null;
+        if (!this.props.icon || !this.props.hasIcon) return null;
+        return this.renderIcon(this.props.icon, 'left');
     }
 
     renderIconR() {
-        if (this.props.iconR || this.props.hasIconR) {
-            return this.renderIcon(this.props.iconR, 'right');
-        }
-        return null;
+        if (!this.props.iconR || !this.props.hasIconR) return null;
+        return this.renderIcon(this.props.iconR, 'right');
     }
 
     renderBadge() {
