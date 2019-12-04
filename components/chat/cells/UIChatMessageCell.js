@@ -24,9 +24,14 @@ import UIChatDocumentCell from './UIChatDocumentCell';
 import UIChatTransactionCell from './UIChatTransactionCell';
 import UIChatActionCell from './UIChatActionCell';
 
-import { ChatMessageContent, ChatMessageStatus, TypeOfAction } from '../extras';
+import {ChatMessageContent, ChatMessageStatus, TypeOfAction, TypeOfActionDirection} from '../extras';
 
-import type { ChatMessageContentType, ChatMessageStatusType, ChatAdditionalInfo } from '../extras';
+import type {
+    ChatMessageContentType,
+    ChatMessageStatusType,
+    ChatAdditionalInfo,
+    TypeOfActionDirectionType
+} from '../extras';
 
 type Props = {
     type?: ChatMessageContentType,
@@ -446,7 +451,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
-    renderActionCell() {
+    renderActionCell(actionDirection: TypeOfActionDirectionType = TypeOfActionDirection.None) {
         const { additionalInfo, data } = this.props;
         const actionType = additionalInfo?.actionType;
 
@@ -460,6 +465,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 text={additionalInfo?.linkTitle || data}
                 onPress={this.onActionPress}
                 typeOfAction={actionType}
+                actionDirection={actionDirection}
             />
         );
     }
@@ -497,6 +503,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const {
             type, status, additionalInfo,
         } = this.props;
+        const actionType = additionalInfo?.actionType;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
@@ -524,7 +531,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
         } else if (type === ChatMessageContent.ActionButton) {
-            cell = this.renderActionCell();
+            if (actionType === TypeOfAction.BackupPassword ||
+                actionType === TypeOfAction.Contacts) {
+                cell = this.renderActionCell(TypeOfActionDirection.Up);
+            } else {
+                cell = this.renderActionCell();
+            }
         } else if (type === ChatMessageContent.LinkActionMessage) {
             cell = this.renderLinkActionMessageCell();
         } else {

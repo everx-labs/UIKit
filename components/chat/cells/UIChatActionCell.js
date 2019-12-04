@@ -3,22 +3,20 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-import type { Layout } from 'react-native/Libraries/Types/CoreEventTypes';
-
 import UIPureComponent from '../../UIPureComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
 import UITextStyle from '../../../helpers/UITextStyle';
 
-import { TypeOfAction } from '../extras';
-
-import type { TypeOfActionType } from '../extras';
+import { TypeOfActionDirection } from '../extras';
+import type { TypeOfActionType, TypeOfActionDirectionType } from '../extras';
 
 type Props = {
     text: string,
     typeOfAction: TypeOfActionType,
     onPress?: (action: TypeOfActionType) => void,
-    testID?: string | null
+    testID?: string | null,
+    actionDirection?: TypeOfActionDirectionType,
 }
 
 type State = {
@@ -26,14 +24,31 @@ type State = {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    common: {
         borderWidth: 1,
-        width: '100%',
-        height: UIConstant.mediumButtonHeight(),
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: UIConstant.smallBorderRadius(),
         borderColor: UIColor.primary(),
+        marginVertical: UIConstant.tinyContentOffset(),
+    },
+    container: {
+        width: '100%',
+        height: UIConstant.mediumButtonHeight(),
+        borderRadius: UIConstant.smallBorderRadius(),
+    },
+    containerUp: {
+        paddingHorizontal: UIConstant.spaciousContentOffset(),
+        height: UIConstant.smallButtonHeight(),
+        borderBottomRightRadius: UIConstant.borderRadius(),
+        borderBottomLeftRadius: UIConstant.borderRadius(),
+        borderTopRightRadius: UIConstant.borderRadius(),
+    },
+    containerDown: {
+        paddingHorizontal: UIConstant.spaciousContentOffset(),
+        height: UIConstant.smallButtonHeight(),
+        borderBottomRightRadius: UIConstant.borderRadius(),
+        borderTopLeftRadius: UIConstant.borderRadius(),
+        borderTopRightRadius: UIConstant.borderRadius(),
     },
     text: {
         color: UIColor.primary(),
@@ -44,6 +59,7 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
     static defaultProps = {
         text: 'Buy Grams',
         onPress: () => {},
+        actionDirection: TypeOfActionDirection.None,
     };
 
     constructor(props: Props) {
@@ -60,11 +76,25 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
         if (onPress) {
             onPress();
         }
-    }
+    };
 
     // Getters
     getText(): string {
         return this.props.text;
+    }
+
+    getActionDirection(): TypeOfActionDirectionType {
+        return this.props.actionDirection;
+    }
+
+    getContainerStyle() {
+        const actionDirection = this.getActionDirection();
+        if (actionDirection === TypeOfActionDirection.Up) {
+            return styles.containerUp;
+        } else if (actionDirection === TypeOfActionDirection.Down) {
+            return styles.containerDown;
+        }
+        return styles.container;
     }
 
     // Render
@@ -78,10 +108,11 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
 
     render() {
         const testID = this.props.testID ? this.props.testID : 'chat_action_cell_default';
+        const containerStyle = this.getContainerStyle();
         return (
             <TouchableOpacity
                 testID={testID}
-                style={styles.container}
+                style={[styles.common, containerStyle]}
                 onPress={this.onPress}
             >
                 {this.renderText()}
