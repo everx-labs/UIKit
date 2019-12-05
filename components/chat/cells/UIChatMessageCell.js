@@ -24,13 +24,18 @@ import UIChatDocumentCell from './UIChatDocumentCell';
 import UIChatTransactionCell from './UIChatTransactionCell';
 import UIChatActionCell from './UIChatActionCell';
 
-import {ChatMessageContent, ChatMessageStatus, TypeOfAction, TypeOfActionDirection} from '../extras';
+import {
+    ChatMessageContent,
+    ChatMessageStatus,
+    TypeOfAction,
+    TypeOfActionDirection,
+} from '../extras';
 
 import type {
     ChatMessageContentType,
     ChatMessageStatusType,
     ChatAdditionalInfo,
-    TypeOfActionDirectionType
+    TypeOfActionDirectionType,
 } from '../extras';
 
 type Props = {
@@ -198,7 +203,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         if (message && onTouchTransaction) {
             onTouchTransaction(message?.info.trx);
         }
-    }
+    };
 
     onActionPress = () => {
         const { additionalInfo, onTouchAction } = this.props;
@@ -209,10 +214,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             return;
         }
 
-        if (onTouchAction && actionType) {
-            onTouchAction(actionType);
+        if (onTouchAction) {
+            onTouchAction();
         }
-    }
+    };
 
     getLayout(): Layout {
         return this.state.layout;
@@ -220,6 +225,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     getTextAlign(): { textAlign: string } {
         return this.isReceived() ? { textAlign: 'left' } : { textAlign: 'right' };
+    }
+
+    getActionDirection(): TypeOfActionDirection {
+        return this.props.additionalInfo?.message?.info?.direction || TypeOfActionDirection.None;
     }
 
     getFontColor(): TextStyleProp {
@@ -503,7 +512,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const {
             type, status, additionalInfo,
         } = this.props;
-        const actionType = additionalInfo?.actionType;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
@@ -531,12 +539,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
         } else if (type === ChatMessageContent.ActionButton) {
-            if (actionType === TypeOfAction.BackupPassword ||
-                actionType === TypeOfAction.Contacts) {
-                cell = this.renderActionCell(TypeOfActionDirection.Up);
-            } else {
-                cell = this.renderActionCell();
-            }
+            const direction = this.getActionDirection();
+            cell = this.renderActionCell(direction);
         } else if (type === ChatMessageContent.LinkActionMessage) {
             cell = this.renderLinkActionMessageCell();
         } else {
