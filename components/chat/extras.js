@@ -28,10 +28,8 @@ export const TypeOfTransaction = {
 };
 
 export const TypeOfAction = {
-    Buy: 'buy',
+    Default: 'default',
     Link: 'link',
-    BackupPassword: 'backupPassword',
-    Contacts: 'contacts',
 };
 
 export const TypeOfActionDirection = {
