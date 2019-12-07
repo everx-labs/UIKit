@@ -518,9 +518,6 @@ export type UILocalizedData = {
     LimitRemoveSuccess: string,
 
     // Gram.Scan
-    EnterHashTransactionAccountOrBlock: string,
-    SearchByHash: string,
-    PasteFromClipboard: string,
     Gram01: string, // 01 gram
     Gram11: string, // 21 grams
     Gram24: string, // 22,23,24 grams
