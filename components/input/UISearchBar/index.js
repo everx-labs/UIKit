@@ -216,7 +216,10 @@ export default class UISearchBar extends UIComponent<Props, State> {
         }
         return (//
             <TouchableOpacity style={styles.cancelButton} onPress={() => this.onCancel()}>
-                <Image source={icoClear} />
+                <Image
+                    testID="search_bar_cancel"
+                    source={icoClear}
+                />
             </TouchableOpacity>
         );
     }

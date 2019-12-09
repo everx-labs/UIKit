@@ -8,10 +8,19 @@ const UI_FONT_FAMILY = {
     }),
 };
 
-const FONT_WEB_LIGHT = Platform.select({ web: { fontFamily: 'PTRootUIWebLight, "IBM Plex Sans"' } });
-const FONT_WEB_REGULAR = Platform.select({ web: { fontFamily: 'PTRootUIWebRegular, "IBM Plex Sans"' } });
-const FONT_WEB_MEDIUM = Platform.select({ web: { fontFamily: 'PTRootUIWebMedium, "IBM Plex Sans"' } });
-const FONT_WEB_BOLD = Platform.select({ web: { fontFamily: 'PTRootUIWebBold, "IBM Plex Sans"' } });
+const emojiFonts = [
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe MDL2 Assets"',
+    '"Noto Color Emoji"',
+    'Symbola',
+    'SymbolaRegular',
+];
+const fontFamilies = ['"IBM Plex Sans"', ...emojiFonts];
+const FONT_WEB_LIGHT = Platform.select({ web: { fontFamily: ['PTRootUIWebLight', ...fontFamilies].join(',') } });
+const FONT_WEB_REGULAR = Platform.select({ web: { fontFamily: ['PTRootUIWebRegular', ...fontFamilies].join(',') } });
+const FONT_WEB_MEDIUM = Platform.select({ web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(',') } });
+const FONT_WEB_BOLD = Platform.select({ web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(',') } });
 
 // const UI_FONT_THIN = { fontWeight: '100' };
 // const UI_FONT_ULTRA_LIGHT = { fontWeight: '200' };

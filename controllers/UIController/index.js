@@ -26,6 +26,8 @@ import UIAlertView from '../../components/popup/UIAlertView';
 import UIComponent from '../../components/UIComponent';
 import UISpinnerOverlay from '../../components/UISpinnerOverlay';
 
+import type { SafeAreaInsets } from '../../helpers/UIDevice';
+
 const AndroidKeyboardAdjust = Platform.OS === 'android'
     ? require('react-native-android-keyboard-adjust')
     : {
@@ -238,11 +240,10 @@ export default class UIController<Props, State>
         //
     }
 
-    loadSafeAreaInsets() {
-        (async () => {
-            const safeArea = await UIDevice.safeAreaInsets();
-            this.setStateSafely({ safeArea });
-        })();
+    async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
+        const safeArea = await UIDevice.safeAreaInsets();
+        this.setStateSafely({ safeArea });
+        return safeArea;
     }
 
     // Virtual

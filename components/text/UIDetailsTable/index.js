@@ -48,6 +48,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         Success: 'success',
         Action: 'action',
         Accent: 'accent',
+        Error: 'error',
         NumberPercent: 'numberPercent',
         Disabled: 'disabled',
     };
@@ -57,6 +58,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         success: 'success',
         action: 'action',
         accent: 'accent',
+        error: 'error',
         numberPercent: 'numberPercent',
         disabled: 'disabled',
     };
@@ -86,6 +88,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
     getTextStyle(type: ?string) {
         if (type === UIDetailsTable.cellType.success) {
             return UIStyle.text.successSmallRegular();
+        } else if (type === UIDetailsTable.cellType.error) {
+            return UIStyle.text.errorSmallRegular();
         } else if (type === UIDetailsTable.cellType.accent) {
             return UIStyle.text.primarySmallMedium();
         } else if (type === UIDetailsTable.cellType.disabled) {

@@ -2,10 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated } from 'react-native';
-import PopupDialog, {
-    SlideAnimation,
-    FadeAnimation,
-} from 'react-native-popup-dialog';
+import PopupDialog, { FadeAnimation } from 'react-native-popup-dialog';
 import type { Style } from 'react-style-proptype/src/Style.flow';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
@@ -23,6 +20,9 @@ import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
 import UIModalNavigationBar from './UIModalNavigationBar';
+import SlideAnimation from './utils/SlideAnimation';
+
+import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
 const fullScreenDialogWidth = 600;
 const fullScreenDialogHeight = 600;
@@ -134,10 +134,14 @@ export default class UIModalController<Props, State>
         };
     }
 
+    async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
+        const safeArea = await super.loadSafeAreaInsets();
+        this.marginBottom.setValue(safeArea.bottom);
+        return safeArea;
+    }
+
     // Events
     onWillAppear() {
-        this.marginBottom.setValue(this.getSafeAreaInsets().bottom);
-
         const { onWillAppear } = this.props;
         if (onWillAppear) {
             onWillAppear();
@@ -310,6 +314,7 @@ export default class UIModalController<Props, State>
         return (this.dy: any).interpolate({
             inputRange: [0, maxValue],
             outputRange: [UIColor.overlay60(), UIColor.overlay0()],
+            useNativeDriver: true,
         });
     }
 

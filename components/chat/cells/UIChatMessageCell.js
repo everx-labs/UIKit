@@ -24,9 +24,19 @@ import UIChatDocumentCell from './UIChatDocumentCell';
 import UIChatTransactionCell from './UIChatTransactionCell';
 import UIChatActionCell from './UIChatActionCell';
 
-import { ChatMessageContent, ChatMessageStatus, TypeOfAction } from '../extras';
+import {
+    ChatMessageContent,
+    ChatMessageStatus,
+    TypeOfAction,
+    TypeOfActionDirection,
+} from '../extras';
 
-import type { ChatMessageContentType, ChatMessageStatusType, ChatAdditionalInfo } from '../extras';
+import type {
+    ChatMessageContentType,
+    ChatMessageStatusType,
+    ChatAdditionalInfo,
+    TypeOfActionDirectionType,
+} from '../extras';
 
 type Props = {
     type?: ChatMessageContentType,
@@ -193,7 +203,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         if (message && onTouchTransaction) {
             onTouchTransaction(message?.info.trx);
         }
-    }
+    };
 
     onActionPress = () => {
         const { additionalInfo, onTouchAction } = this.props;
@@ -204,10 +214,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             return;
         }
 
-        if (onTouchAction && actionType) {
-            onTouchAction(actionType);
+        if (onTouchAction) {
+            onTouchAction();
         }
-    }
+    };
 
     getLayout(): Layout {
         return this.state.layout;
@@ -215,6 +225,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     getTextAlign(): { textAlign: string } {
         return this.isReceived() ? { textAlign: 'left' } : { textAlign: 'right' };
+    }
+
+    getActionDirection(): TypeOfActionDirection {
+        return this.props.additionalInfo?.message?.info?.direction || TypeOfActionDirection.None;
     }
 
     getFontColor(): TextStyleProp {
@@ -311,7 +325,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const textStyle = this.isReceived() ? styles.timeTextLeft : styles.timeTextRight;
         const msgTime = this.formatedTime();
         let testID;
-        if (data) {
+        if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
                 testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
             } else {
@@ -446,7 +460,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
-    renderActionCell() {
+    renderActionCell(actionDirection: TypeOfActionDirectionType = TypeOfActionDirection.None) {
         const { additionalInfo, data } = this.props;
         const actionType = additionalInfo?.actionType;
 
@@ -460,6 +474,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 text={additionalInfo?.linkTitle || data}
                 onPress={this.onActionPress}
                 typeOfAction={actionType}
+                actionDirection={actionDirection}
             />
         );
     }
@@ -524,7 +539,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
         } else if (type === ChatMessageContent.ActionButton) {
-            cell = this.renderActionCell();
+            const direction = this.getActionDirection();
+            cell = this.renderActionCell(direction);
         } else if (type === ChatMessageContent.LinkActionMessage) {
             cell = this.renderLinkActionMessageCell();
         } else {

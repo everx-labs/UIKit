@@ -7,8 +7,6 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-import Mnemonic from 'bitcore-mnemonic';
-
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 
@@ -18,6 +16,7 @@ import UILabel from '../../text/UILabel';
 import type { EventProps } from '../../../types';
 
 type Props = {
+    words: string[],
     width: number,
     yOffset: number,
     onHintSelected: (hint: string) => void,
@@ -56,6 +55,7 @@ const styles = StyleSheet.create({
 
 export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     static defaultProps = {
+        words: [],
         width: 0,
         yOffset: 0,
         onHintSelected: () => {},
@@ -85,10 +85,10 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     // Getters
     getPossibleHints(): Array<string> {
         const wtc = this.getWordThatChanged();
-        const dictionary = Mnemonic.Words.ENGLISH;
+        const { words } = this.props;
         // Can't use `word.startsWith(wtc)` as Android requires the `.indexOf(wtc) === 0` polyfill
-        let hints = dictionary.filter(word => word.indexOf(wtc) === 0);
-        if (hints.length === dictionary.length) { // if nothings is filtered, then display nothing
+        let hints = words.filter(word => word.indexOf(wtc) === 0);
+        if (hints.length === words.length) { // if nothings is filtered, then display nothing
             hints = [];
         }
         this.currentHintsLength = hints.length;

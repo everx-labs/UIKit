@@ -28,14 +28,21 @@ export const TypeOfTransaction = {
 };
 
 export const TypeOfAction = {
-    Buy: 'buy',
+    Default: 'default',
     Link: 'link',
+};
+
+export const TypeOfActionDirection = {
+    None: 'none',
+    Up: 'up',
+    Down: 'down',
 };
 
 export type ChatMessageContentType = $Values<typeof ChatMessageContent>;
 export type ChatMessageStatusType = $Values<typeof ChatMessageStatus>;
 export type TypeOfTransactionType = $Values<typeof TypeOfTransaction>;
 export type TypeOfActionType = $Values<typeof TypeOfAction>;
+export type TypeOfActionDirectionType = $Values<typeof TypeOfActionDirection>;
 
 export type TransactionInfo = {
     separator: string,

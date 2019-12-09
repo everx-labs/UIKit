@@ -197,7 +197,6 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                     toValue: 0,
                     duration: UIConstant.animationDuration(),
                     delay: i * (UIConstant.animationDuration() / 5),
-                    useNativeDriver: true,
                 });
                 animations.push(anim);
             }
