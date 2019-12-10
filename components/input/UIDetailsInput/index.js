@@ -675,10 +675,12 @@ export default class UIDetailsInput<Props, State>
             return null;
         }
 
+        const webStyle = Platform.OS === 'web' ? { overflow: 'hidden' } : null;
+
         return (
             <TextInput
                 ref={(component) => { this.auxTextInput = component; }}
-                style={[this.textInputStyle(), styles.textInputAux]}
+                style={[this.textInputStyle(), styles.textInputAux, webStyle]}
                 numberOfLines={1}
                 editable={false}
                 value={this.getValue()}
