@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         color: 'transparent',
         zIndex: -1,
+        overflow: Platform.OS === 'web' ? 'hidden' : null,
     },
     beginningTag: {
         margin: 0,
