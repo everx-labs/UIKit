@@ -36,7 +36,8 @@ const dotSize = UIConstant.tinyCellHeight();
 
 const styleProperties = {
     key: {
-        width: UIConstant.buttonHeight(),
+        // Coefficient need for ios version
+        width: UIConstant.buttonHeight() * 1.01,
         height: UIConstant.buttonHeight(),
         alignItems: 'center',
         justifyContent: 'center',

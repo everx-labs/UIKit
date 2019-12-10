@@ -19,24 +19,24 @@ const emojiFonts = [
 ];
 const fontFamilies = ['"IBM Plex Sans"', ...emojiFonts];
 const FONT_WEB_LIGHT = Platform.select({
-    web: { fontFamily: ['PTRootUIWebLight', ...fontFamilies].join(',') },
-    ios: { fontFamily: ['TONGems'].join(',') },
-    android: { fontFamily: ['TONGems'].join(',') },
+    web: { fontFamily: ['PTRootUIWebLight', ...fontFamilies].join(', ') },
+    ios: { fontFamily: ['SFProText-Light'].join(', ') },
+    android: { fontFamily: ['TONGems'].join(', ') },
 });
 const FONT_WEB_REGULAR = Platform.select({
-    web: { fontFamily: ['PTRootUIWebRegular', ...fontFamilies].join(',') },
-    ios: { fontFamily: ['TONGems'].join(',') },
-    android: { fontFamily: ['TONGems'].join(',') },
+    web: { fontFamily: ['PTRootUIWebRegular', ...fontFamilies].join(', ') },
+    ios: { fontFamily: ['SFProText-Regular'].join(', ') },
+    android: { fontFamily: ['TONGems'].join(', ') },
 });
 const FONT_WEB_MEDIUM = Platform.select({
-    web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(',') },
-    ios: { fontFamily: ['TONGems'].join(',') },
-    android: { fontFamily: ['TONGems'].join(',') },
+    web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(', ') },
+    ios: { fontFamily: ['SFProText-Medium'].join(', ') },
+    android: { fontFamily: ['TONGems'].join(', ') },
 });
 const FONT_WEB_BOLD = Platform.select({
-    web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(',') },
-    ios: { fontFamily: ['TONGems'].join(',') },
-    android: { fontFamily: ['TONGems'].join(',') },
+    web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(', ') },
+    ios: { fontFamily: ['SFProText-Bold'].join(', ') },
+    android: { fontFamily: ['TONGems'].join(', ') },
 });
 
 // const UI_FONT_THIN = { fontWeight: '100' };
