@@ -36,7 +36,9 @@ const dotSize = UIConstant.tinyCellHeight();
 
 const styleProperties = {
     key: {
-        width: UIConstant.buttonHeight(),
+        // Coefficient 1.01 need for ios version because
+        // new font symbols interval bigger than default font.
+        width: UIConstant.buttonHeight() * 1.01,
         height: UIConstant.buttonHeight(),
         alignItems: 'center',
         justifyContent: 'center',
