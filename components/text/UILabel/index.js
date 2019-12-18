@@ -163,7 +163,7 @@ export default class UILabel extends UIComponent<Props, State> {
             role, text, testID,
             ...props
         } = this.props;
-        const textForTestID = text.replace ? text.replace(/[^a-zA-Z0-9]/g, '') : 'custom_component';
+        const textForTestID = text && text.replace ? text.replace(/[^a-zA-Z0-9]/g, '') : 'custom_component';
         return (
             <Text
                 {...props}
