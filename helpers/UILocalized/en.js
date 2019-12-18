@@ -522,8 +522,8 @@ const en: UILocalizedData = {
     YourTransactionCompleted: 'Your transaction has been completed',
     ViewOnEtherscan: 'View on Etherscan',
     TransactionStatus: {
-        rejected: 'Rejected',
-        aborted: 'Aborted',
+        rejected: 'Rejected at {0}',
+        aborted: 'Aborted at {0}',
         sending: 'Pending...',
     },
 

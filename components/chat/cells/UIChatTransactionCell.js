@@ -144,6 +144,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return moment;
     }
 
+    getTime(): string {
+        const { created } = this.getMessage().info;
+        return Moment(created).format('LT');
+    }
+
     getExtra(): TransactionExtraInfo {
         const extra: TransactionExtraInfo = {
             amountLocalized: this.getAmount(),
@@ -201,9 +206,15 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getStatusString(status: ChatMessageStatus): string {
         if (status === ChatMessageStatus.Rejected) {
-            return UILocalized.TransactionStatus.rejected;
+            return UILocalized.formatString(
+                UILocalized.TransactionStatus.rejected,
+                this.getTime(),
+            );
         } else if (status === ChatMessageStatus.Aborted) {
-            return UILocalized.TransactionStatus.aborted;
+            return UILocalized.formatString(
+                UILocalized.TransactionStatus.aborted,
+                this.getTime(),
+            );
         } else if (status === ChatMessageStatus.Sending) {
             return UILocalized.TransactionStatus.sending;
         }

@@ -521,8 +521,8 @@ const ru: UILocalizedData = {
     YourTransactionCompleted: 'Ваша транзакция завершена',
     ViewOnEtherscan: 'Ссылка на транзакцию в Etherscan',
     TransactionStatus: {
-        rejected: 'Rejected',
-        aborted: 'Aborted',
+        rejected: 'Rejected at {0}',
+        aborted: 'Aborted at {0}',
         sending: 'Pending...',
     },
 
