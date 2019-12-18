@@ -205,15 +205,16 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getStatusString(status: ChatMessageStatus): string {
+        const time = this.getTime();
         if (status === ChatMessageStatus.Rejected) {
             return UILocalized.formatString(
                 UILocalized.TransactionStatus.rejected,
-                this.getTime(),
+                time,
             );
         } else if (status === ChatMessageStatus.Aborted) {
             return UILocalized.formatString(
                 UILocalized.TransactionStatus.aborted,
-                this.getTime(),
+                time,
             );
         } else if (status === ChatMessageStatus.Sending) {
             return UILocalized.TransactionStatus.sending;
