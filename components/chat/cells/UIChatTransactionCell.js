@@ -79,6 +79,18 @@ const styles = StyleSheet.create({
     textWhite: {
         color: UIColor.white(),
     },
+    textBlue: {
+        color: UIColor.primary(),
+    },
+    textGreen: {
+        color: UIColor.green(),
+    },
+    textBlack: {
+        color: UIColor.black(),
+    },
+    textGrey: {
+        color: UIColor.grey(),
+    },
     textMetadata: {
         color: UIColor.grey1(),
     },
@@ -149,6 +161,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return Moment(created).format('LT');
     }
 
+    getStaking(): ?number {
+        const trx = this.getTransaction();
+        return trx.metadata?.staking?.type;
+    }
+
     getExtra(): TransactionExtraInfo {
         const extra: TransactionExtraInfo = {
             amountLocalized: this.getAmount(),
@@ -178,6 +195,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 return styles.cardAborted;
             } else if (trx.deploy) {
                 return styles.cardInvite;
+            } else if (trx.staking) {
+                return styles.cardDeposit;
             }
             return styles.cardSpending;
         } else if (type === TypeOfTransaction.Bill) {
@@ -192,11 +211,29 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getTextColor() {
-        // TODO:
+        const staking = this.getStaking();
+        if (staking !== undefined) {
+            return styles.textBlack;
+        }
+        return styles.textWhite;
     }
 
     getAmountColor() {
-        // TODO:
+        const staking = this.getStaking();
+        if (staking === 1 || staking === 3) {
+            return styles.textBlue;
+        } else if (staking === 0 || staking === 2) {
+            return styles.textGreen;
+        }
+        return styles.textWhite;
+    }
+
+    getCommentColor() {
+        const staking = this.getStaking();
+        if (staking !== undefined) {
+            return styles.textGrey;
+        }
+        return styles.textWhite;
     }
 
     getStatus(): string {
@@ -231,8 +268,19 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
-        const amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
+        let amount;
+        const staking = trx.metadata?.staking?.type;
+        if (staking === 0 || staking === 2) {
+            amount = `+ ${extra.amountLocalized}`;
+        } else if (staking === 1 || staking === 3) {
+            amount = `- ${extra.amountLocalized}`;
+        } else {
+            amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
+        }
         const color = this.getCardColor();
+        const textColor = this.getTextColor();
+        const amountColor = this.getAmountColor();
+        const commentColor = this.getCommentColor();
         const date = this.getDate();
 
         return (
@@ -254,7 +302,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     <UILabel
                         style={[
                             UIStyle.Margin.rightHuge(),
-                            styles.textWhite,
+                            textColor,
                         ]}
                         role={UILabel.Role.SmallMedium}
                         text={this.getText()}
@@ -266,15 +314,15 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         smartTruncator={false}
                         textStyle={[
                             UIStyle.Text.smallRegular(),
-                            styles.textWhite,
+                            amountColor,
                         ]}
-                        fractionalTextStyle={styles.textWhite}
+                        fractionalTextStyle={amountColor}
                     />
                 </View>
 
                 <View style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}>
                     <UILabel
-                        style={[UIStyle.Margin.rightHuge(), styles.textMetadata]}
+                        style={[UIStyle.Margin.rightHuge(), styles.textMetadata, commentColor]}
                         role={UILabel.Role.TinyRegular}
                         text={
                             trx.aborted
@@ -293,9 +341,14 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     render() {
+        const stake = this.getTransaction().metadata?.staking?.roundId;
+        let { onPress } = this.props;
+        if (stake) {
+            onPress = null;
+        }
         return (
             <UIScaleButton
-                onPress={this.props.onPress}
+                onPress={onPress}
                 content={this.renderTrxContent()}
             />
         );
