@@ -167,9 +167,9 @@ export default class UIMenuView extends UIComponent<Props, State> {
         return (
             <View
                 style={[
-                    UIStyle.Border.radiusDefault(),
-                    UIStyle.Common.cardShadow(),
-                    UIStyle.Padding.horizontal(),
+                    UIStyle.border.radiusDefault(),
+                    UIStyle.common.cardShadow(),
+                    UIStyle.padding.horizontal(),
                     backgroundStyle,
                     { marginLeft: this.getMenuPaddingLeft() },
                 ]}
@@ -195,10 +195,12 @@ export default class UIMenuView extends UIComponent<Props, State> {
         const setClassNameTrick: ClassNameProp = {
             className: MENU_TRIGGER,
         };
-        const { placement, testID, children } = this.props;
+        const {
+            placement, testID, children, style,
+        } = this.props;
         const testIDProp = testID ? { testID } : null;
         return (
-            <View style={UIStyle.Common.flexRow()}>
+            <View style={UIStyle.common.flexRow()}>
                 <Popover
                     placement={placement}
                     arrowWidth={0}
@@ -214,10 +216,11 @@ export default class UIMenuView extends UIComponent<Props, State> {
                     >
                         <View
                             pointerEvents="none"
-                            style={this.props.style}
+                            style={style}
                         >
                             {children}
                         </View>
+                        {/* {this.renderMenu()} */}
                     </TouchableOpacity>
                 </Popover>
             </View>
