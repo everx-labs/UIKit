@@ -91,7 +91,7 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
     }
 
     getUrl(): string {
-        // TODO:
+        // TODO: get url
         return '';
     }
 
