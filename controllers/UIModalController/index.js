@@ -104,6 +104,8 @@ export default class UIModalController<Props, State>
     dy: Animated.Value;
     animation: SlideAnimation | FadeAnimation;
     testID: ?string;
+    minWidth: number = 0;
+    minHeight: number = 0;
     modalOnWeb: boolean;
 
     static animations = {
@@ -487,6 +489,10 @@ export default class UIModalController<Props, State>
                 height={height}
                 containerStyle={containerStyle}
                 dialogStyle={[
+                    {
+                        minWidth: this.minWidth,
+                        minHeight: this.minHeight,
+                    },
                     dialogStyle,
                     // Only inline style working in this prop
                     this.fromBottom && {
