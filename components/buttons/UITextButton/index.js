@@ -46,6 +46,7 @@ type Props = ActionProps & {
     theme: string,
     title: string,
     tooltip?: string,
+    multiLine: boolean,
 };
 
 type State = ActionState;
