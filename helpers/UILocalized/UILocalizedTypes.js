@@ -23,6 +23,8 @@ export type UILocalizedData = {
     HaveNotReceivedTheCode: string,
     CheckingTheCode: string,
     InvalidPhoneNumber: string,
+    InvalidContractAddress: string,
+    SmartContractAddress: string,
     InvalidCode: string,
     InvalidFirstName: string,
     InvalidLastName: string,
