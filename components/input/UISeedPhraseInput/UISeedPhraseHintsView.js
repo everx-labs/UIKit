@@ -68,6 +68,7 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     currentHintsLength: number;
     hintsListRef: ?FlatList<*>;
     wordChanged: (wordThatChanged: string) => void;
+    clickListener: ?(e: any) => void;
 
     constructor(props: Props) {
         super(props);
