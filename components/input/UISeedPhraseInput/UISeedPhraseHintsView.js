@@ -94,7 +94,8 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
             e.preventDefault && e.preventDefault();
             return false;
         };
-        ReactDOM.findDOMNode(this).addEventListener(listenerType, this.clickListener);
+        const meRef = ReactDOM.findDOMNode(this);
+        meRef && meRef.addEventListener(listenerType, this.clickListener);
     }
 
     componentWillUnmount() {
@@ -104,7 +105,8 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
             return;
         }
         const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
-        ReactDOM.findDOMNode(this).removeEventListener(listenerType, this.clickListener);
+        const meRef = ReactDOM.findDOMNode(this);
+        meRef && meRef.removeEventListener(listenerType, this.clickListener);
     }
 
     // Setters
