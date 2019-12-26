@@ -1,5 +1,6 @@
 export const ChatMessageContent = {
     SimpleText: 'stm',
+    Invite: 'inv',
     AttachmentImage: 'aim',
     AttachmentDocument: 'doc',
     TransactionInChat: 'trx',
