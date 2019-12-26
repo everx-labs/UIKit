@@ -70,6 +70,9 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
     }
 
     getSelection() {
+        if (Platform.OS !== 'web') {
+            return null;
+        }
         return this.adjustSelection(this.state.selection);
     }
 
