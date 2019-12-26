@@ -24,6 +24,8 @@ const ru: UILocalizedData = {
     Code: 'Код',
     HaveNotReceivedTheCode: 'Не получили код?',
     InvalidPhoneNumber: 'Недопустимый номер телефона',
+    InvalidContractAddress: 'Неверный адрес контракта',
+    SmartContractAddress: 'Адрес смарт-контракта',
     CheckingTheCode: 'Код проверяется...',
     InvalidCode: 'Неверный код',
     InvalidFirstName: 'Недопустимое имя',
