@@ -273,10 +273,14 @@ export default class UIController<Props, State>
         readjustTimeout: number,
     ) {
         container.measure((relX, relY, w, h, x, y) => {
-            const keyboardOverlapHeight = Math.max(
-                (y + h) - keyboardFrame.screenY,
-                keyboardFrame.height,
-            );
+            // So, there was some logic:
+            // const keyboardOverlapHeight = Math.max(y + h - keyboardFrame.screenY, keyboardFrame.height);
+            // I actually don't understand why we need Math.max with keyboard height here,
+            // but I definetely sure that current realization should work
+            // for popups with bottom y less then screen y.
+            // That way we get a current view bottom y coordinate,
+            // then subtructing it with keyboard top y we get a space overlapped by keyboard.
+            const keyboardOverlapHeight = Math.max(y + h - keyboardFrame.screenY, 0);
             const bottomInset = keyboardOverlapHeight + this.getBottomInsetAdjustment();
             this.setBottomInset(Math.max(0, bottomInset), animation);
             if (Platform.OS === 'android' && (readjustTimeout > 0)) {
