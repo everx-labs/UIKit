@@ -177,7 +177,7 @@ export default class UILayoutManager extends UIComponent<Props, State> {
         const opacity = this.getOpacity();
         return (
             <Animated.View
-                style={[UIStyle.absoluteFillObject, { opacity }]}
+                style={[UIStyle.common.absoluteFillObject(), { opacity }]}
                 pointerEvents="none"
             >
                 <View style={{ position: 'absolute', top, left }}>

@@ -17,6 +17,7 @@ type Props = {
     account: UIAccountData,
     onPressAccount?: () => void,
     containerStyle: ViewStyleProp,
+    displayNameOnly?: boolean,
 };
 type State = {
     // Empty
@@ -27,6 +28,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
         title: '',
         account: null,
         onPressAccount: () => {},
+        displayNameOnly: false,
     };
 
     renderTitle() {
@@ -38,7 +40,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
     }
 
     renderAccountCell() {
-        const { account, onPressAccount } = this.props;
+        const { account, onPressAccount, displayNameOnly } = this.props;
         if (!account) {
             return null;
         }
@@ -46,6 +48,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
             <UIAccountPickerCell
                 account={account}
                 onPress={onPressAccount}
+                displayNameOnly={displayNameOnly}
             />
         );
     }

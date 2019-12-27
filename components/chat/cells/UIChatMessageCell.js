@@ -18,6 +18,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UILocalized from '../../../helpers/UILocalized';
+import UILabel from '../../text/UILabel';
 
 import UIChatImageCell from './UIChatImageCell';
 import UIChatDocumentCell from './UIChatDocumentCell';
@@ -478,14 +479,29 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderInviteCell() {
+        const { data } = this.props;
+
+        return (
+            <UILabel
+                role={UILabel.Role.TinyRegular}
+                text={data}
+                style={UIStyle.color.textTertiary()}
+                numberOfLines={1}
+                ellipsizeMode="middle"
+            />
+        );
+    }
+
     renderTextCell() {
         const { data } = this.props;
         return this.wrapInMessageContainer(this.renderText(data || ''));
     }
 
     renderText(text: string) {
-        const urlStyle = this.getStatus() === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
+        const urlStyle = this.isReceived() ? styles.urlReceived : styles.urlSent;
         let testID;
+
         if (text) {
             if (text.split(' ')[1]) {
                 testID = `chat_text_message_${text.split(' ')[0]} ${text.split(' ')[1]}`;
@@ -495,6 +511,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else {
             testID = 'chat_text_message';
         }
+
         return (
             <ParsedText
                 testID={testID}
@@ -533,6 +550,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
+        } else if (type === ChatMessageContent.Invite) {
+            align = 'center';
+            cell = this.renderInviteCell();
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
         } else if (type === ChatMessageContent.AttachmentDocument) {

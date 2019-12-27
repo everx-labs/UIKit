@@ -687,6 +687,7 @@ export default class UIDetailsInput<Props, State>
                 multiline
                 autoCapitalize="none"
                 autoCorrect={false}
+                onKeyPress={this.onKeyPress}
             />
         );
     }

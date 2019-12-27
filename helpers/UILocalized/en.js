@@ -25,6 +25,8 @@ const en: UILocalizedData = {
     HaveNotReceivedTheCode: 'Haven\'t received the code?',
     CheckingTheCode: 'Checking the code...',
     InvalidPhoneNumber: 'Invalid phone number',
+    InvalidContractAddress: 'Invalid contract-address',
+    SmartContractAddress: 'Smart-contract address',
     InvalidCode: 'Invalid code',
     InvalidFirstName: 'Invalid first name',
     InvalidLastName: 'Invalid last name',
@@ -522,8 +524,8 @@ const en: UILocalizedData = {
     YourTransactionCompleted: 'Your transaction has been completed',
     ViewOnEtherscan: 'View on Etherscan',
     TransactionStatus: {
-        rejected: 'Rejected',
-        aborted: 'Aborted',
+        rejected: 'Rejected at {0}',
+        aborted: 'Aborted at {0}',
         sending: 'Pending...',
     },
 

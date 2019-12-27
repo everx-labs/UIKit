@@ -250,7 +250,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     getBalance(): string {
-        return this.state.balance || `0${this.getSeparator()}${this.getZeroes()}`;
+        return this.state.balance || `0${this.getSeparatorAndZeroes()}`;
     }
 
     getNewBalance() {
@@ -300,8 +300,10 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         return `${balanceWithSign.sign ? `${balanceWithSign.sign} ` : ''}${this.getTokenSymbol()} `;
     }
 
-    getZeroes() {
-        return '0'.repeat(this.props.maxFractionalDigits);
+    getSeparatorAndZeroes() {
+        const { maxFractionalDigits, separator } = this.props;
+        const zeroes = '0'.repeat(maxFractionalDigits);
+        return `${maxFractionalDigits ? separator : ''}${zeroes}`;
     }
 
     // Processing
@@ -350,13 +352,13 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         let floorBalance;
         if (loadingCondition) {
             this.balance = '0';
-            floorBalance = `0${separator}${this.getZeroes()}`;
+            floorBalance = `0${this.getSeparatorAndZeroes()}`;
         } else {
             this.balance = balance;
             const stringParts = `${balance}`.split(separator);
             const formattedBalance = stringParts.length > 1
                 ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits)}`
-                : `${balance}${separator}${this.getZeroes()}`;
+                : `${balance}${this.getSeparatorAndZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
             floorBalance = useMaxBalanceLength && integer.length > maxBalanceLength ? integer : formattedBalance;
         }

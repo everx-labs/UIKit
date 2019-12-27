@@ -7,6 +7,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
 import UIComponent from '../../UIComponent';
+import UITextButton from '../../buttons/UITextButton'
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 
@@ -127,21 +128,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const formattedPercent = UIFunction.getNumberString(percent);
             const secondary = ` (${formattedPercent} %)`;
             return this.renderTextCell(primary, secondary);
-        } else if (type === UIDetailsTable.cellType.action) {
+        } else if (type === UIDetailsTable.cellType.action || onPress) {
             return (
-                <TouchableOpacity onPress={() => this.onActionPressed(details)}>
-                    <Text style={UIStyle.text.actionSmallMedium()}>
-                        {value}
-                    </Text>
-                </TouchableOpacity>
-            );
-        } else if (onPress) {
-            return (
-                <TouchableOpacity onPress={onPress}>
-                    <Text style={UIStyle.text.actionSmallMedium()}>
-                        {value}
-                    </Text>
-                </TouchableOpacity>
+                <UITextButton
+                    multiLine
+                    textStyle={UIStyle.text.actionSmallMedium()}
+                    title={value}
+                    onPress={onPress || (() => this.onActionPressed(details))}
+                />
             );
         } else if (component) {
             return component;
