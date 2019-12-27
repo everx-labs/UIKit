@@ -18,6 +18,7 @@ type Props = {
     account: ?UIAccountData,
     maxDecimals: number,
     onPress?: () => void,
+    displayNameOnly?: boolean,
 };
 
 type State = {
@@ -30,6 +31,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         account: null,
         maxDecimals: UIConstant.maxDecimalDigits(),
         onPress: () => {},
+        displayNameOnly: false,
     };
 
     // constructor
@@ -42,8 +44,23 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     // Getters
+    getAccount(): UIAccountData {
+        return this.props.account;
+    }
+
     getMaxDecimals(): number {
         return this.props.maxDecimals;
+    }
+
+    getAccountName(): string {
+        const { displayNameOnly } = this.props;
+        const { address, name } = this.props.account;
+
+        if (displayNameOnly) {
+            return name || address;
+        }
+
+        return address;
     }
 
     // Render
@@ -67,10 +84,14 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     renderAccount() {
-        const { account } = this.props;
+        const account = this.getAccount();
+
         if (!account) {
             return null;
         }
+
+        const name = this.getAccountName();
+
         return (
             <View style={UIStyle.flexRow}>
                 <Text
@@ -82,7 +103,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                     numberOfLines={1}
                     ellipsizeMode="middle"
                 >
-                    {account.address}
+                    {name}
                 </Text>
                 {this.renderFractional(UIFunction.getNumberString(account.balance))}
             </View>
@@ -90,10 +111,12 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     renderFooter() {
-        const { account } = this.props;
+        const account = this.getAccount();
+
         if (!account) {
             return null;
         }
+
         return (
             <Text style={[UIStyle.marginTopTiny, UITextStyle.tertiaryCaptionRegular]}>
                 {account.name}
@@ -102,14 +125,15 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     render() {
-        const { containerStyle, onPress } = this.props;
+        const { containerStyle, onPress, displayNameOnly } = this.props;
+
         return (
             <TouchableOpacity
                 style={containerStyle}
                 onPress={onPress}
             >
                 {this.renderAccount()}
-                {this.renderFooter()}
+                {displayNameOnly ? null : this.renderFooter()}
             </TouchableOpacity>
         );
     }
