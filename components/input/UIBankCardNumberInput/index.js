@@ -81,6 +81,9 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
     }
 
     getSelection() {
+        if (Platform.OS !== 'web') {
+            return null;
+        }
         return this.adjustSelection(this.state.selection);
     }
 

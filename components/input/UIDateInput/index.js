@@ -153,6 +153,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     // Getters
     getSelection() {
+        if (Platform.OS !== 'web') {
+            return null;
+        }
         return this.adjustSelection(this.state.selection);
     }
 
