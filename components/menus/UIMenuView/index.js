@@ -220,7 +220,6 @@ export default class UIMenuView extends UIComponent<Props, State> {
                         >
                             {children}
                         </View>
-                        {/* {this.renderMenu()} */}
                     </TouchableOpacity>
                 </Popover>
             </View>
