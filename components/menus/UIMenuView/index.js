@@ -168,9 +168,9 @@ export default class UIMenuView extends UIComponent<Props, State> {
         return (
             <View
                 style={[
-                    UIStyle.Border.radiusDefault(),
-                    UIStyle.Common.cardShadow(),
-                    UIStyle.Padding.horizontal(),
+                    UIStyle.border.radiusDefault(),
+                    UIStyle.common.cardShadow(),
+                    UIStyle.padding.horizontal(),
                     backgroundStyle,
                     { marginLeft: this.getMenuPaddingLeft() },
                 ]}
