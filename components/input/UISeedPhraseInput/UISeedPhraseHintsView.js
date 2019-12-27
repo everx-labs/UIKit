@@ -1,14 +1,18 @@
 // @flow
 import React from 'react';
+import ReactDOM from 'react-dom';
+
 import {
     View,
     StyleSheet,
     FlatList,
     TouchableOpacity,
+    Platform,
 } from 'react-native';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
+import UIDevice from '../../../helpers/UIDevice';
 
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
@@ -64,6 +68,7 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     currentHintsLength: number;
     hintsListRef: ?FlatList<*>;
     wordChanged: (wordThatChanged: string) => void;
+    clickListener: ?(e: any) => void;
 
     constructor(props: Props) {
         super(props);
@@ -75,6 +80,32 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
             wordThatChanged: '',
             currentHighlight: -1,
         };
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        this.clickListener = (e: any) => {
+            e.stopPropagation && e.stopPropagation();
+            e.preventDefault && e.preventDefault();
+        };
+        const meRef: any = ReactDOM.findDOMNode(this);
+        meRef && meRef.addEventListener(listenerType, this.clickListener);
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+
+        if (Platform.OS !== 'web') {
+            return;
+        }
+        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const meRef: any = ReactDOM.findDOMNode(this);
+        meRef && meRef.removeEventListener(listenerType, this.clickListener);
     }
 
     // Setters

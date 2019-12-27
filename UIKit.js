@@ -89,6 +89,7 @@ import UIScreen from './controllers/UIScreen';
 import UISearchBar from './components/input/UISearchBar';
 import UISectionHeader from './components/text/UISectionHeader';
 import UISeedPhraseInput from './components/input/UISeedPhraseInput';
+import UIContractAddressInput from './components/input/UIContractAddressInput';
 import UISeparator from './components/design/UISeparator';
 import UIShareManager from './helpers/UIShareManager';
 import UIShareScreen from './helpers/UIShareManager/UIShareScreen';
@@ -230,6 +231,7 @@ export {
     UISearchBar,
     UISectionHeader,
     UISeedPhraseInput,
+    UIContractAddressInput,
     UISeparator,
     UIShareManager,
     UIShareScreen,
