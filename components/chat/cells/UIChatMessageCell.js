@@ -430,7 +430,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { additionalInfo, data, status } = this.props;
         return (
             <UIChatTransactionCell
-                testID="transaction_message"
                 message={data}
                 status={status}
                 additionalInfo={additionalInfo}

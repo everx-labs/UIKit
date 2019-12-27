@@ -285,6 +285,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
         return (
             <View
+                testID={`transaction_message_${amount}`}
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
@@ -322,7 +323,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
                 <View style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}>
                     <UILabel
-                        style={[UIStyle.Margin.rightHuge(), styles.textMetadata, commentColor]}
+                        testID={trx.aborted
+                            ? `transaction_message_${amount}_date`
+                            : `transaction_message_${amount}_aborted`}
                         role={UILabel.Role.TinyRegular}
                         text={
                             trx.aborted
