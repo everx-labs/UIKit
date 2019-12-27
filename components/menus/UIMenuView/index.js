@@ -30,6 +30,7 @@ type Props = {
     onCancelCallback?: () => void,
     testID?: string,
     style?: any,
+    containerStyle?: any,
 };
 
 type State = {
@@ -195,10 +196,17 @@ export default class UIMenuView extends UIComponent<Props, State> {
         const setClassNameTrick: ClassNameProp = {
             className: MENU_TRIGGER,
         };
-        const { placement, testID, children } = this.props;
+        const {
+            placement,
+            testID,
+            children,
+            containerStyle,
+            style,
+        } = this.props;
         const testIDProp = testID ? { testID } : null;
+
         return (
-            <View style={UIStyle.Common.flexRow()}>
+            <View style={[UIStyle.common.flex(), UIStyle.common.flexRow()]}>
                 <Popover
                     placement={placement}
                     arrowWidth={0}
@@ -211,10 +219,11 @@ export default class UIMenuView extends UIComponent<Props, State> {
                         {...testIDProp}
                         onPress={this.onOpenMenu}
                         onLayout={this.onTriggerLayout}
+                        style={containerStyle}
                     >
                         <View
                             pointerEvents="none"
-                            style={this.props.style}
+                            style={style}
                         >
                             {children}
                         </View>
