@@ -54,7 +54,8 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
 
     getAccountName(): string {
         const { displayNameOnly } = this.props;
-        const { address, name } = this.props.account;
+        const account = this.getAccount();
+        const { name, address } = account;
 
         if (displayNameOnly) {
             return name || address;
