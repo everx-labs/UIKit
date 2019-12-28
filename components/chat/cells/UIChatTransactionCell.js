@@ -332,6 +332,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                                 ? this.getStatusString(ChatMessageStatus.Aborted)
                                 : date
                         }
+                        style={[UIStyle.Margin.rightHuge(), commentColor]}
                     />
                     <UILabel
                         style={styles.textMetadata}

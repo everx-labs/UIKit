@@ -247,7 +247,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return this.getStatus() === ChatMessageStatus.Received;
     }
 
-    formatedTime(date: ?Date): string {
+    formattedTime(date: ?Date): string {
         const msg = this.props.additionalInfo?.message;
         const time = date || new Date(msg?.info.created || 0);
         return Moment(time).format('LT');
@@ -324,7 +324,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderTime() {
         const { data } = this.props;
         const textStyle = this.isReceived() ? styles.timeTextLeft : styles.timeTextRight;
-        const msgTime = this.formatedTime();
+        const msgTime = this.formattedTime();
         let testID;
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
@@ -402,7 +402,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         UIFont.menuRegular(),
                     ]}
                 >
-                    [{this.formatedTime()}] {text}
+                    [{this.formattedTime()}] {text}
                 </Text>
             </View>
         );
