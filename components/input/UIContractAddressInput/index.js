@@ -14,6 +14,7 @@ import type { DetailsProps } from '../UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
 
 type Props = DetailsProps & {
+    verify: boolean,
 };
 
 type State = ActionState & {
@@ -30,12 +31,13 @@ export default class UIContractAddressInput extends UIDetailsInput<Props, State>
         autoCapitalize: 'none',
         returnKeyType: 'done',
         blurOnSubmit: true,
-        placeholder: UILocalized.ContractAddress,
+        placeholder: UILocalized.SmartContractAddress,
         autoFocus: false,
         forceMultiLine: true,
         keyboardType: 'default', /* Platform.OS === 'android'
             ? 'visible-password' // to fix Android bug with keyboard suggestions
             : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
+        verify: true,
         onBlur: () => {},
     };
 
@@ -105,16 +107,18 @@ export default class UIContractAddressInput extends UIDetailsInput<Props, State>
     }
 
     commentColor() {
-        const { value, theme, commentColor } = this.props;
-        if (value && !this.isAddressValid(value) && this.state.highlightError) {
+        const {
+            value, theme, commentColor, verify,
+        } = this.props;
+        if (verify && value && !this.isAddressValid(value) && this.state.highlightError) {
             return UIColor.detailsInputComment(theme);
         }
         return commentColor;
     }
 
     getComment() {
-        const { value, comment } = this.props;
-        if (value && !this.isAddressValid(value) && this.state.highlightError) {
+        const { value, comment, verify } = this.props;
+        if (verify && value && !this.isAddressValid(value) && this.state.highlightError) {
             return UILocalized.InvalidContractAddress;
         }
         return comment;
