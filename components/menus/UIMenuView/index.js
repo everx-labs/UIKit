@@ -62,6 +62,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
             triggerWidth: 0,
             menuMarginLeft: 0,
         };
+        this.countdown = null;
     }
 
     // Events
@@ -96,6 +97,12 @@ export default class UIMenuView extends UIComponent<Props, State> {
     // preventing to be able to select any option from the menu.
     openMenu() {
         this.onOpenMenu(true);
+
+        if (this.countdown) {
+            clearTimeout(this.countdown);
+        }
+
+        this.countdown = setTimeout(() => this.hideMenu(), 60000);
     }
 
     // Setters
@@ -132,6 +139,10 @@ export default class UIMenuView extends UIComponent<Props, State> {
             this.deinitClickListenerForWeb();
             UIMenuBackground.hideBackgroundForTablet();
             masterRef = null;
+        }
+
+        if (this.countdown) {
+            clearTimeout(this.countdown);
         }
     }
 
