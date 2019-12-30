@@ -54,6 +54,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
     }
 
     firstClickIgnored: boolean;
+    countdown: ?TimeoutID;
     constructor(props: Props) {
         super(props);
         this.firstClickIgnored = false;
@@ -98,11 +99,15 @@ export default class UIMenuView extends UIComponent<Props, State> {
     openMenu() {
         this.onOpenMenu(true);
 
+        this.clearHideTimeout();
+
+        this.countdown = setTimeout(() => this.hideMenu(), 60000); // 1 min
+    }
+
+    clearHideTimeout() {
         if (this.countdown) {
             clearTimeout(this.countdown);
         }
-
-        this.countdown = setTimeout(() => this.hideMenu(), 60000);
     }
 
     // Setters
@@ -141,9 +146,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
             masterRef = null;
         }
 
-        if (this.countdown) {
-            clearTimeout(this.countdown);
-        }
+        this.clearHideTimeout();
     }
 
     clickListener: (e: any) => void;
