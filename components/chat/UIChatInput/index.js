@@ -195,15 +195,17 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
         return (
             <View style={styles.btnMenuContainer}>
-                <UIMenuView
-                    testID="menu_view"
-                    menuItemsList={items}
-                    placement="top"
-                >
-                    <View style={styles.btnMenu}>
-                        <Image source={img} />
-                    </View>
-                </UIMenuView>
+                <View style={styles.btnMenu}>
+                    <UIMenuView
+                        testID="menu_view"
+                        menuItemsList={items}
+                        placement="top"
+                    >
+                        <View style={styles.btnMenu}>
+                            <Image source={img} />
+                        </View>
+                    </UIMenuView>
+                </View>
             </View>
         );
     }
