@@ -282,6 +282,7 @@ export default class UIController<Props, State>
             // That way we get a current view bottom y coordinate,
             // then subtructing it with keyboard top y we get a space overlapped by keyboard.
             const keyboardOverlapHeight = Math.max((y + h) - keyboardFrame.screenY, 0);
+            // TODO: Test specific cases to check if the bottom inset is calculated properly.
             this.setBottomInset(keyboardOverlapHeight, animation);
             if (Platform.OS === 'android' && (readjustTimeout > 0)) {
                 setTimeout(() => {
