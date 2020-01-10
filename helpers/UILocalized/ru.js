@@ -5,7 +5,7 @@ import type { UILocalizedData } from './UILocalizedTypes';
 const ru: UILocalizedData = {
     // TON
     TONLabel: 'TON',
-    CopyRight: '2018-2019 © TON Labs',
+    CopyRight: `2018–${(new Date()).getFullYear()} © TON Labs`,
     Disclaimer: 'Disclaimer',
 
     // Terms
