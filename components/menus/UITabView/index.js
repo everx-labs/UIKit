@@ -33,7 +33,7 @@ type UITabViewProps = {
     tabWidth?: number,
     pages: PageCollection,
     barAlign?: string,
-    onSwitchTab?: () => void,
+    onSwitchTab?: (index: number) => void,
 };
 
 type UITypeViewState = {
@@ -97,7 +97,9 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
     // Events
     onIndexChange = (index: number) => {
         this.setStateSafely({ index });
-        this.props.onSwitchTab(index);
+        if (this.props.onSwitchTab) {
+            this.props.onSwitchTab(index);
+        }
     };
 
     // Getters

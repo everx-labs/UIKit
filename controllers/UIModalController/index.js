@@ -3,6 +3,7 @@
 import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated, PanResponder } from 'react-native';
 import PopupDialog, { FadeAnimation } from 'react-native-popup-dialog';
+import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { Style } from 'react-style-proptype/src/Style.flow';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
@@ -113,6 +114,7 @@ export default class UIModalController<Props, State>
         slide: () => new SlideAnimation({ slideFrom: 'bottom' }),
     };
 
+    panResponder: PanResponderInstance;
     constructor(props: ModalControllerProps & Props) {
         super(props);
         this.testID = '[UIModalController]';
