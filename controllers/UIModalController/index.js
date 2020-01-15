@@ -134,20 +134,21 @@ export default class UIModalController<Props, State>
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
-
-        this.onMove = Animated.event([null, { dy: this.dy }]);
-
         this.panResponder = PanResponder.create({
             // Ask to be the responder:
             onStartShouldSetPanResponder: () => this.dismissible,
-            onStartShouldSetPanResponderCapture: () => false,
-            onMoveShouldSetPanResponder: () => this.dismissible,
-            onMoveShouldSetPanResponderCapture: () => this.dismissible,
+            onMoveShouldSetPanResponder: (evt, gestureState) => {
+                if (gestureState.dy < 30) {
+                    return false;
+                }
+
+                return this.dismissible;
+            },
 
             // Handling responder events
             onPanResponderMove: (evt, gestureState) => {
                 if (gestureState.dy > 0) {
-                    this.onMove(evt, gestureState);
+                    this.dy.setValue(gestureState.dy);
                 }
             },
             onPanResponderRelease: (evt, gestureState) => {
