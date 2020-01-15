@@ -33,6 +33,7 @@ type UITabViewProps = {
     tabWidth?: number,
     pages: PageCollection,
     barAlign?: string,
+    onSwitchTab?: () => void,
 };
 
 type UITypeViewState = {
@@ -41,10 +42,6 @@ type UITypeViewState = {
 } & NavigationState<*>;
 
 const styles = StyleSheet.create({
-    icon: {
-        height: 24,
-        width: 24,
-    },
     label: {
         textAlign: 'center',
         margin: UIConstant.smallContentOffset(),
@@ -100,6 +97,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
     // Events
     onIndexChange = (index: number) => {
         this.setStateSafely({ index });
+        this.props.onSwitchTab(index);
     };
 
     // Getters
@@ -146,7 +144,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
                 renderLabel={labelProps => this.renderLabel(labelProps)}
             />
         );
-    }
+    };
 
     render() {
         const navigationState = {
