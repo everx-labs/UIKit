@@ -138,6 +138,8 @@ export default class UIModalController<Props, State>
             // Ask to be the responder:
             onStartShouldSetPanResponder: () => this.dismissible,
             onMoveShouldSetPanResponder: (evt, gestureState) => {
+                // Need small delay before moving for correct work
+                // on android (working of input focus not correct)
                 if (gestureState.dy < 30) {
                     return false;
                 }
