@@ -17,7 +17,7 @@ export type MenuItemType = {
 
 const MenuItem = (props: MenuItemType) => {
     const {
-        title, details, titleStyle, detailsStyle, chosen, onPress,
+        title, details, titleStyle, detailsStyle, chosen, onPress, disabled,
     } = props;
     const contentStyle = details
         ? UIStyle.Common.justifySpaceBetween()
@@ -65,6 +65,7 @@ const MenuItem = (props: MenuItemType) => {
     return (
         <TouchableOpacity
             style={containerStyle}
+            disabled={disabled}
             onPress={onPress}
         >
             {content}
