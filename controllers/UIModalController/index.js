@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import { StyleSheet, Platform, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Platform, Dimensions, Animated, PanResponder } from 'react-native';
 import PopupDialog, { FadeAnimation } from 'react-native-popup-dialog';
 import type { Style } from 'react-style-proptype/src/Style.flow';
 
@@ -134,6 +134,29 @@ export default class UIModalController<Props, State>
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
+        this.panResponder = PanResponder.create({
+            // Ask to be the responder:
+            onStartShouldSetPanResponder: () => this.dismissible,
+            onMoveShouldSetPanResponder: (evt, gestureState) => {
+                // Need small delay before moving for correct work
+                // on android (working of input focus not correct)
+                if (gestureState.dy < 30) {
+                    return false;
+                }
+
+                return this.dismissible;
+            },
+
+            // Handling responder events
+            onPanResponderMove: (evt, gestureState) => {
+                if (gestureState.dy > 0) {
+                    this.dy.setValue(gestureState.dy);
+                }
+            },
+            onPanResponderRelease: (evt, gestureState) => {
+                this.onReleaseSwipe(gestureState.dy);
+            },
+        });
     }
 
     async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
@@ -536,6 +559,7 @@ export default class UIModalController<Props, State>
                     { backgroundColor },
                 ]}
                 onLayout={this.onLayout}
+                {...this.panResponder.panHandlers}
             >
                 <Animated.View style={{ marginTop: this.dy }}>
                     {this.renderDialog()}
