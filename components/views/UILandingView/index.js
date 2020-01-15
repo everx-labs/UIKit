@@ -3,7 +3,7 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
-import StylePropType from 'react-style-proptype';
+import type { ImageStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UILabel from '../../text/UILabel';
@@ -14,7 +14,7 @@ type Props = {
     title: string,
     description: string,
     testID?: string,
-    iconStyle?: StylePropType,
+    iconStyle?: ImageStyleProp,
 };
 
 type State = {};
