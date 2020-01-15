@@ -3,6 +3,7 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
+import type { ImageStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UILabel from '../../text/UILabel';
@@ -13,6 +14,7 @@ type Props = {
     title: string,
     description: string,
     testID?: string,
+    iconStyle?: ImageStyleProp,
 };
 
 type State = {};
@@ -41,7 +43,7 @@ export default class UILandingView extends UIComponent<Props, State> {
         return (
             <React.Fragment {...testIDProp} >
                 <Image
-                    style={styles.icon}
+                    style={this.props.iconStyle || styles.icon}
                     source={icon}
                 />
                 <UILabel
