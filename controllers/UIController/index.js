@@ -500,7 +500,11 @@ export default class UIController<Props, State>
             UIController.removeKeyboardPanningScreen(this);
             // Make it resizable only if not panning!
             if (!UIController.isKeyboardPanning()) {
-                AndroidKeyboardAdjust.setAdjustResize();
+                // We need timeout here, because in some cases, like in modals,
+                // component could be unmounted before keyboard would have gone,
+                // that cause the whole screen to be resized (exactly how adjustResize works),
+                // but with delay it will be applied after keyboard will gone.
+                setTimeout(() => AndroidKeyboardAdjust.setAdjustResize(), UIConstant.animationSmallDuration());
             }
         }
         // Remove keyboard listeners
