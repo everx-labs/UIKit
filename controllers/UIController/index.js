@@ -9,6 +9,7 @@ import {
     LayoutAnimation,
     Easing,
     PixelRatio,
+    StatusBar,
 } from 'react-native';
 
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
@@ -35,8 +36,6 @@ const AndroidKeyboardAdjust =
               setAdjustPan() {},
               setAdjustResize() {},
           };
-
-const STATUS_BAR_ANDROID_HEIGHT = 20;
 
 type Params = {
     [string]: string,
@@ -272,7 +271,7 @@ export default class UIController<Props, State>
                         }
                         const pageY = Platform.select({
                             ios: y,
-                            android: y + STATUS_BAR_ANDROID_HEIGHT,
+                            android: y + StatusBar.currentHeight,
                         });
                         const containerBottomY = pageY + height;
                         const keyboardOverlapHeight = Math.max(
