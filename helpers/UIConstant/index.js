@@ -7,6 +7,8 @@ const UI_ANIMATION_SMALL_DURATION = 100;
 const UI_ANIMATION_ACCENT_INTERACTION_DURATION_FAST = 500;
 const UI_ANIMATION_ACCENT_INTERACTION_DURATION_NORMAL = 1000;
 const UI_ANIMATION_ACCENT_INTERACTION_DURATION_SLOW = 1500;
+const UI_ANIMATION_KEYBOARD_OPENING = Platform.select({ ios: 250, android: 100 }) || 0;
+const UI_ANIMATION_KEYBOARD_CLOSING = Platform.select({ ios: 250, android: 0 }) || 0;
 const UI_FEEDBACK_DELAY = 100;
 const UI_SWIPE_THRESHOLD = 50;
 const UI_SMALL_SWIPE_THRESHOLD = 30;
@@ -183,6 +185,14 @@ export default class UIConstant {
 
     static animationAccentInteractionDurationSlow() {
         return UI_ANIMATION_ACCENT_INTERACTION_DURATION_SLOW;
+    }
+
+    static animationKeyboardOpening() {
+        return UI_ANIMATION_KEYBOARD_OPENING;
+    }
+
+    static animationKeyboardClosing() {
+        return UI_ANIMATION_KEYBOARD_CLOSING;
     }
 
     static feedbackDelay() {
