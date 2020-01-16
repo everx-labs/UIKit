@@ -88,17 +88,20 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIModalController<Props, State>
-    extends UIController<ModalControllerProps & Props, ModalControllerState & State> {
+export default class UIModalController<Props, State> extends UIController<
+    ModalControllerProps & Props,
+    ModalControllerState & State,
+> {
     fullscreen: boolean;
     dismissible: boolean;
     fromBottom: boolean;
     smallStripe: boolean;
     half: boolean;
     adjustBottomSafeAreaInsetDynamically: boolean;
-    onCancel: ?(() => void);
-    onSelect: ?((any) => void);
-    onSubmit: ?(() => void);
+    adjustKeyboardInsetDynamically: boolean;
+    onCancel: ?() => void;
+    onSelect: ?(any) => void;
+    onSubmit: ?() => void;
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
     marginBottom: Animated.Value;
@@ -122,6 +125,7 @@ export default class UIModalController<Props, State>
         this.fullscreen = false;
         this.dismissible = true;
         this.adjustBottomSafeAreaInsetDynamically = true;
+        this.adjustKeyboardInsetDynamically = true;
         this.dialog = null;
         this.onCancel = null;
         this.onSubmit = null;
@@ -533,10 +537,14 @@ export default class UIModalController<Props, State>
                 overlayBackgroundColor="transparent"
             >
                 <Animated.View
-                    style={{
-                        height: contentHeight + this.getSafeAreaInsets().bottom,
-                        paddingBottom: this.marginBottom,
-                    }}
+                    style={[
+                        {
+                            height: contentHeight + this.getSafeAreaInsets().bottom,
+                        },
+                        this.adjustKeyboardInsetDynamically
+                            ? { paddingBottom: this.marginBottom }
+                            : null,
+                    ]}
                 >
                     {this.renderContentView(contentHeight)}
                 </Animated.View>
