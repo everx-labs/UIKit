@@ -492,8 +492,8 @@ export default class UIModalController<Props, State>
                 centralComponent={this.renderCentralHeader()}
                 rightComponent={this.renderRightHeader()}
                 bottomLine={this.isHeaderLineVisible()}
-                onMove={Animated.event([null, { dy: this.dy }])}
-                onRelease={this.onReleaseSwipe}
+                // onMove={Animated.event([null, { dy: this.dy }])}
+                // onRelease={this.onReleaseSwipe}
                 onCancel={this.onCancelPress}
                 cancelImage={this.getCancelImage()}
             />
