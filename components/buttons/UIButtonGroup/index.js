@@ -116,4 +116,5 @@ UIButtonGroup.defaultProps = {
     direction: UIButtonGroup.Direction.Row,
     gutter: GUTTER,
     style: null,
+    testID: 'UIButtonGroup'
 };

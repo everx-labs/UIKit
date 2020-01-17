@@ -163,6 +163,8 @@ export type ButtonProps = ActionProps & {
     title?: string,
     /** @ignore */
     theme?: string,
+    /** @default 'uiButton' */
+    testID?: string,
 };
 
 type State = ActionState;
@@ -654,4 +656,5 @@ UIButton.defaultProps = {
     indicatorAnimation: null,
     iconIndicator: undefined,
     iconIndicatorStyle: null,
+    testID: 'uiButton',
 };
