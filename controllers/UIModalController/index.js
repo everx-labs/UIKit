@@ -538,9 +538,11 @@ export default class UIModalController<Props, State> extends UIController<
             >
                 <Animated.View
                     style={[
-                        {
-                            height: contentHeight + this.getSafeAreaInsets().bottom,
-                        },
+                        contentHeight != null
+                            ? {
+                                  height: contentHeight + this.getSafeAreaInsets().bottom,
+                              }
+                            : { flex: 1 },
                         this.adjustKeyboardInsetDynamically
                             ? { paddingBottom: this.marginBottom }
                             : null,

@@ -338,14 +338,20 @@ export type DetailsProps = ActionProps & {
     @default null
     */
     prefixIconColor?: ?string,
+    /**
+    ID for InputAccessoryView
+    */
+    inputAccessoryViewID?: string,
 };
 
 type DetailsState = ActionState & {
-  focused: boolean,
-}
+    focused: boolean,
+};
 
-export default class UIDetailsInput<Props, State>
-    extends UIActionComponent<$Shape<Props & DetailsProps>, $Shape<State & DetailsState>> {
+export default class UIDetailsInput<Props, State> extends UIActionComponent<
+    $Shape<Props & DetailsProps>,
+    $Shape<State & DetailsState>,
+> {
     textInput: ?TextInput;
     auxTextInput: ?any;
 
@@ -706,12 +712,16 @@ export default class UIDetailsInput<Props, State>
             testID,
             theme,
             maxHeight,
+            value,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const blurOnSubmitProp = blurOnSubmit ? { blurOnSubmit } : null;
         const testIDProp = testID ? { testID } : null;
+        // Existance of value prop is define either component controlled or uncontrolled
+        // https://reactjs.org/docs/uncontrolled-components.html
+        const valueProp = value != null ? { value: this.getValue() } : null;
         const placeholderColor = editable
             ? UIColor.textPlaceholder(theme)
             : UIColor.textDisabled(theme);
@@ -746,16 +756,18 @@ export default class UIDetailsInput<Props, State>
                 style={[
                     this.textInputStyle(),
                     {
-                        marginTop: Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
-                            ? 5 // seems to be smth connected to iOS's textContainerInset
-                            : 0,
+                        marginTop:
+                            Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
+                                ? 5 // seems to be smth connected to iOS's textContainerInset
+                                : 0,
                         maxHeight,
                     },
                 ]}
                 selectionColor={UIColor.primary()}
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
-                value={this.getValue()}
+                inputAccessoryViewID={this.props.inputAccessoryViewID}
+                {...valueProp}
                 {...testIDProp}
             />
         );
