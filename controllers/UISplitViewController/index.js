@@ -1,14 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 
 import UIController from '../UIController';
 import UIDevice from '../../helpers/UIDevice';
 import UIStyle from '../../helpers/UIStyle';
+import UIConstant from '../../helpers/UIConstant';
 
 export default class UISplitViewController extends UIController {
     static shouldSplitView() {
         // TODO: make it dynamic by listening to the shared split view instance
-        return !UIDevice.isMobile();
+        const { width } = Dimensions.get('window');
+        return !UIDevice.isMobile() && width > UIConstant.elasticWidthNormal();
     }
 
     // constructor
@@ -21,8 +23,8 @@ export default class UISplitViewController extends UIController {
 
     // Events
     onLayout(e) {
-        // const { layout } = e.nativeEvent;
-        // this.setShouldSplitView(layout.width > UIConstant.elasticWidthMedium());
+        const { layout } = e.nativeEvent;
+        this.setShouldSplitView(layout.width > UIConstant.elasticWidthNormal());
         // TODO: Think how to handle split navigation when detailView is added/removed dynamically!
     }
 

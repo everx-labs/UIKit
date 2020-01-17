@@ -4,7 +4,7 @@ import UIColor from '../UIColor';
 import UIFont from '../UIFont';
 import UIConstant from '../UIConstant';
 import UIDevice from '../UIDevice';
-import UIStyleBorder, { borderStyles, borderLeft } from './UIStyleBorder';
+import UIStyleBorder, { borderStyles } from './UIStyleBorder';
 import UIStyleHeight, { heightStyles } from './UIStyleHeight';
 import UIStyleMargin, { marginStyles } from './UIStyleMargin';
 import UIStylePadding, { paddingStyles } from './UIStylePadding';
@@ -68,15 +68,20 @@ const UIStyle = StyleSheet.create({
         maxWidth: UIConstant.elasticWidthMax(),
         height: '100%',
         alignSelf: 'center',
+        borderRadius: 4,
+        padding: 16,
     },
     masterViewController: {
         flex: 1,
+        minWidth: UIConstant.masterScreenWidth(),
         maxWidth: UIConstant.masterScreenWidth(),
         overflow: 'hidden',
+        borderRadius: 4,
     },
     detailViewController: {
         flex: 1,
-        ...borderLeft,
+        marginLeft: 16,
+        borderRadius: 4,
         overflow: 'hidden',
     },
 });

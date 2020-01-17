@@ -20,7 +20,7 @@ export const commonStyles = {
         backgroundColor: UIColor.backgroundPrimary(),
     },
     backgroundLightColor: {
-        backgroundColor: UIColor.light(),
+        backgroundColor: UIColor.whiteLight(),
     },
     backgroundTransparent: {
         backgroundColor: 'transparent',
