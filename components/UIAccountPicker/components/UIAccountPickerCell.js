@@ -74,7 +74,10 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
             ? fractional
             : '0'.repeat(UIConstant.minDecimalDigits());
         return (
-            <Text style={primaryBodyRegular}>
+            <Text
+                testID={`balance_value_${this.getAccountName()}`}
+                style={primaryBodyRegular}
+            >
                 {integer}
                 <Text style={greyBodyRegular}>
                     {`.${decimals}`}
