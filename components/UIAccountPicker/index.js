@@ -54,8 +54,12 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
     }
 
     render() {
+        const title = this.props.title || 'default';
         return (
-            <View style={this.props.containerStyle}>
+            <View
+                testID={`rebalance_asset_picker_${title}`}
+                style={this.props.containerStyle}
+            >
                 {this.renderTitle()}
                 {this.renderAccountCell()}
             </View>

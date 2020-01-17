@@ -285,7 +285,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
         return (
             <View
-                testID={`transaction_message_${amount}`}
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
@@ -294,6 +293,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 ]}
             >
                 <View
+                    testID={`transaction_message_${amount}`}
                     style={[
                         UIStyle.Common.flexRow(),
                         UIStyle.Margin.bottomTiny(),
