@@ -2,7 +2,7 @@ module.exports = function (api) {
     api.cache(true);
 
     const presets = [
-      'react-native',
+      'module:metro-react-native-babel-preset',
       '@babel/preset-flow'
     ];
     const plugins =  [];
@@ -11,4 +11,4 @@ module.exports = function (api) {
       presets,
       plugins
     };
-  }
+  };

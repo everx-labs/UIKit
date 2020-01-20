@@ -1,6 +1,9 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 module.exports = {
+    setupFilesAfterEnv: [
+        '@testing-library/react-native/cleanup-after-each',
+    ],
     testEnvironment: 'node',
     testMatch: [
         '**/__tests__/*/*.[jt]s?(x)',
