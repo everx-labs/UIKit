@@ -30,7 +30,9 @@ const UI_IS_MOBILE = Platform.OS !== 'web' ? !DeviceInfo.isTabletSync() : UI_IS_
 
 const APP_NAME = Platform.OS !== 'web' ? DeviceInfo.getApplicationNameSync() : '';
 
-const APP_VERSION = Platform.OS !== 'web' ? DeviceInfo.getReadableVersionSync() : '';
+const APP_VERSION = Platform.OS !== 'web' ? DeviceInfo.getVersionSync() : '';
+
+const APP_READABLE_VERSION = Platform.OS !== 'web' ? DeviceInfo.getReadableVersionSync() : '';
 
 const DEVICE_MODEL = Platform.OS !== 'web' ? DeviceInfo.getModelSync() : 'Browser'; // TODO:
 
@@ -92,6 +94,10 @@ export default class UIDevice {
 
     static appVersion(): string {
         return APP_VERSION;
+    }
+
+    static appReadableVersion(): string {
+        return APP_READABLE_VERSION;
     }
 
     static deviceModel(): string {
