@@ -542,7 +542,7 @@ export default class UIModalController<Props, State> extends UIController<
                             ? {
                                   height: contentHeight + this.getSafeAreaInsets().bottom,
                               }
-                            : { flex: 1 },
+                            : UIStyle.common.flex(),
                         this.adjustKeyboardInsetDynamically
                             ? { paddingBottom: this.marginBottom }
                             : null,
