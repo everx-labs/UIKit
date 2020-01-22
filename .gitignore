@@ -7,3 +7,9 @@
 
 # Locks
 package-lock.json
+
+#IDE
+.idea/
+
+#Test results
+coverage/

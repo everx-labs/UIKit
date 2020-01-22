@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check UI button snap 1`] = `
+<View
+  pointerEvents="box-none"
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    collapsable={true}
+    pointerEvents="box-none"
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  >
+    <TouchableWithoutFeedback
+      disabled={true}
+      testID="uiButton"
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+              "paddingHorizontal": 16,
+            },
+            Object {
+              "backgroundColor": "#0088CC",
+            },
+            null,
+            Object {
+              "borderRadius": 4,
+            },
+            Object {
+              "height": 48,
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "flex": 1,
+              },
+              Object {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "fontFamily": "SFProText-Medium",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.25,
+                  "lineHeight": 20,
+                },
+                Object {
+                  "color": "#FFFFFF",
+                },
+                null,
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  </View>
+</View>
+`;

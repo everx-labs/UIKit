@@ -212,4 +212,5 @@ UITextInput.defaultProps = {
     onBlur: () => {},
     onChangeText: () => {},
     onSubmitEditing: () => {},
+    testID: 'uiTextInput',
 };
