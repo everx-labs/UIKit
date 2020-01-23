@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { Animated, StyleSheet, Text, View } from 'react-native';
 
@@ -15,11 +15,13 @@ import UIColorPalette from '../../../helpers/UIColor/UIColorPalette';
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
 type Props = ActionProps & {
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     progress: boolean,
     transparent: boolean,
     title: number | string,
+    truncTitle: boolean,
     caption: string,
+    truncCaption: boolean,
     details: string,
 };
 
@@ -42,6 +44,19 @@ const styles = StyleSheet.create({
 });
 
 export default class UIDetailsButton extends UIActionComponent<Props, State> {
+    static defaultProps: Props = {
+        ...UIActionComponent.defaultProps,
+        narrow: false,
+        containerStyle: {},
+        progress: false,
+        title: '',
+        truncTitle: false,
+        caption: '',
+        truncCaption: false,
+        fixedCaption: '',
+        details: '',
+    };
+
     constructor(props: Props) {
         super(props);
 
@@ -141,7 +156,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         const {
             title, caption, details, secondDetails, captionComponent,
         } = this.props;
-        const formattedCaption = this.getFormattedText(caption);
+        const formattedCaption = this.props.truncCaption ? this.getFormattedText(caption) : caption;
         const captionTextComponent = caption ? (
             <Text
                 ellipsizeMode="middle"
@@ -151,7 +166,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                 {formattedCaption}
             </Text>
         ) : null;
-        const formattedTitle = this.getFormattedText(title);
+        const formattedTitle = this.props.truncTitle ? this.getFormattedText(title) : title;
         return (
             <React.Fragment>
                 <View style={styles.rowContainer}>
@@ -208,18 +223,4 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
             </View>
         );
     }
-
-    static defaultProps: Props;
 }
-
-UIDetailsButton.defaultProps = {
-    ...UIActionComponent.defaultProps,
-    narrow: false,
-    containerStyle: {},
-    progress: false,
-    title: '',
-    caption: '',
-    fixedCaption: '',
-    details: '',
-};
-
