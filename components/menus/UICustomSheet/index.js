@@ -48,6 +48,21 @@ const styles = StyleSheet.create({
         height: UIConstant.tinyBorderRadius(),
         borderRadius: UIConstant.tinyBorderRadius(),
     },
+    headArea: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerLeft: {
+        flex: 1,
+        marginTop: UIConstant.contentOffset(),
+        alignItems: 'flex-start',
+    },
+    headerRight: {
+        flex: 1,
+        marginTop: UIConstant.contentOffset(),
+        alignItems: 'flex-end',
+    },
 });
 
 const maxScreenHeight = UIConstant.maxScreenHeight();
@@ -56,9 +71,12 @@ let masterRef = null;
 
 export type Props = any & {
     component: ?React$Node,
+    headerLeft?: React$Node,
+    headerRight?: React$Node,
     fullWidth?: boolean,
     masterSheet?: boolean,
     modal?: boolean,
+    containerStyle?: any,
     onShow?: () => void,
     onCancel?: () => void,
 };
@@ -71,9 +89,12 @@ export type State = {
 export default class UICustomSheet extends UIController<Props, State> {
     static defaultProps: Props = {
         component: null,
+        headerLeft: null,
+        headerRight: null,
         fullWidth: false,
         masterSheet: true,
         modal: true,
+        containerStyle: null,
         onShow: () => {},
         onCancel: () => {},
     };
@@ -95,8 +116,11 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     component: ?React$Node;
+    headerLeft: ?React$Node;
+    headerRight: ?React$Node;
     fullWidth: ?boolean;
     marginBottom: AnimatedValue;
+    containerStyle: ?any;
     onShow: ?() => void;
     onCancel: ?() => void;
     modal: ?boolean;
@@ -106,7 +130,10 @@ export default class UICustomSheet extends UIController<Props, State> {
     constructor(props: Props) {
         super(props);
         this.component = null;
+        this.headerLeft = null;
+        this.headerRight = null;
         this.fullWidth = false;
+        this.containerStyle = null;
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
         this.onShow = () => {};
         this.onCancel = () => {};
@@ -231,20 +258,29 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     show({
         component,
+        headerLeft = null,
+        headerRight = null,
         fullWidth = false,
+        containerStyle = null,
         onShow = () => {},
         onCancel = () => {},
         modal = false,
     }: Props = {}) {
         if (this.props.masterSheet) {
             this.component = component;
+            this.headerLeft = headerLeft;
+            this.headerRight = headerRight;
             this.fullWidth = fullWidth;
+            this.containerStyle = containerStyle;
             this.onCancel = onCancel;
             this.onShow = onShow;
             this.modal = modal;
         } else {
             this.component = this.props.component;
             this.fullWidth = this.props.fullWidth;
+            this.containerStyle = this.props.containerStyle;
+            this.headerLeft = this.props.headerLeft;
+            this.headerRight = this.props.headerRight;
             this.onCancel = this.props.onCancel;
             this.onShow = this.props.onShow;
             this.modal = this.props.modal;
@@ -300,6 +336,7 @@ export default class UICustomSheet extends UIController<Props, State> {
     // Render
     renderSheet() {
         const containerStyle = this.fullWidth ? styles.fullScreenContainer : styles.slimContainer;
+        const styleProps = this.containerStyle;
         const bottom = this.getPosition();
         return (
             <View
@@ -311,18 +348,27 @@ export default class UICustomSheet extends UIController<Props, State> {
                         UIStyle.bottomScreenContainer,
                         styles.downMenu,
                         containerStyle,
+                        styleProps,
                         { bottom },
                     ]}
                     onLayout={this.onLayout}
                 >
-                    <UIModalNavigationBar
-                        swipeToDismiss
-                        dismissStripeStyle={styles.smallDismissStripe}
-                        height={UIConstant.smallCellHeight()}
-                        onMove={Animated.event([null, { dy: this.dy }])}
-                        onRelease={this.onReleaseSwipe}
-                        onCancel={this.onHide}
-                    />
+                    <View style={styles.headArea}>
+                        <View style={styles.headerLeft}>
+                            {this.headerLeft}
+                        </View>
+                        <UIModalNavigationBar
+                            swipeToDismiss
+                            dismissStripeStyle={styles.smallDismissStripe}
+                            height={UIConstant.tinyCellHeight()}
+                            onMove={Animated.event([null, { dy: this.dy }])}
+                            onRelease={this.onReleaseSwipe}
+                            onCancel={this.onHide}
+                        />
+                        <View style={styles.headerRight}>
+                            {this.headerRight}
+                        </View>
+                    </View>
                     {this.component}
                 </Animated.View>
             </View>
