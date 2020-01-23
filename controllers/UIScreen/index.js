@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 
 import UIController from '../../controllers/UIController';
 import UIConstant from '../../helpers/UIConstant';
@@ -8,8 +8,17 @@ import UIStyle from '../../helpers/UIStyle';
 
 import type { NavigationProps } from '../../helpers/UINavigator';
 
+const styles = StyleSheet.create({
+    scrollDisabled: {
+        overflowX: 'hidden',
+        overflowY: 'hidden',
+        touchAction: 'none',
+    },
+});
+
 type ControllerState = {
-    screenWidth: number
+    screenWidth: number,
+    scrollDisabled: boolean,
 };
 
 export type ContentOffset = {
@@ -34,6 +43,7 @@ export default class UIScreen<Props, State>
         // Events
         this.state = {
             screenWidth: 0,
+            scrollDisabled: false,
         };
     }
 
@@ -150,10 +160,11 @@ export default class UIScreen<Props, State>
                 {this.renderTopContent()}
                 <ScrollView
                     ref={(component) => { this.scrollView = component; }}
-                    style={UIStyle.common.flex()}
+                    style={[UIStyle.common.flex(), this.state.scrollDisabled ? styles.scrollDisabled : null]}
                     contentContainerStyle={this.getContentContainerStyle()}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                     onScroll={this.onScrollDefault}
+                    scrollEnabled={!this.state.scrollDisabled}
                 >
                     {this.renderContent()}
                 </ScrollView>
