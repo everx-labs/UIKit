@@ -9,6 +9,7 @@ import UIStyle from '../../helpers/UIStyle';
 import type { NavigationProps } from '../../helpers/UINavigator';
 
 const styles = StyleSheet.create({
+    // $FlowExpectedError
     scrollDisabled: {
         overflowX: 'hidden',
         overflowY: 'hidden',
@@ -32,7 +33,7 @@ export type ContentSize = {
 }
 
 export default class UIScreen<Props, State>
-    extends UIController<Props & NavigationProps, State & ControllerState> {
+    extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
     scrollView: ?ScrollView;
 
@@ -42,6 +43,7 @@ export default class UIScreen<Props, State>
 
         // Events
         this.state = {
+            ...this.state,
             screenWidth: 0,
             scrollDisabled: false,
         };
