@@ -32,7 +32,7 @@ export type ContentSize = {
 }
 
 export default class UIScreen<Props, State>
-    extends UIController<Props & NavigationProps, any & ControllerState> {
+    extends UIController<Props & NavigationProps, State & ControllerState> {
     presetName: string;
     scrollView: ?ScrollView;
 
@@ -152,6 +152,7 @@ export default class UIScreen<Props, State>
     }
 
     render() {
+        const scrollStyle = this.state.scrollDisabled ? styles.scrollDisabled : null;
         return (
             <View
                 style={UIStyle.common.flex()}
@@ -160,7 +161,7 @@ export default class UIScreen<Props, State>
                 {this.renderTopContent()}
                 <ScrollView
                     ref={(component) => { this.scrollView = component; }}
-                    style={[UIStyle.common.flex(), this.state.scrollDisabled ? styles.scrollDisabled : null]}
+                    style={[UIStyle.common.flex(), scrollStyle]}
                     contentContainerStyle={this.getContentContainerStyle()}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                     onScroll={this.onScrollDefault}
