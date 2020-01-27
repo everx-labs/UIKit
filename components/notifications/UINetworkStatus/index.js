@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    isConnected: (boolean) => void,
+    onConnected: (boolean) => void,
 }
 
 type State = {
@@ -82,8 +82,8 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
         const statusBarColor = connected ? 'white' : 'black';
         StatusBar.setBackgroundColor(statusBarColor, true);
         // Pass connection status to props
-        this.props.isConnected(connected);
-    }
+        this.props.onConnected(connected);
+    };
 
     // Render
     renderSnack() {
@@ -112,5 +112,5 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
 }
 
 UINetworkStatus.defaultProps = {
-    isConnected: () => {},
+    onConnected: () => {},
 };
