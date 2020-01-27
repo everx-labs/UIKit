@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { Platform, ScrollView, View, StyleSheet } from 'react-native';
 
 import UIController from '../../controllers/UIController';
 import UIConstant from '../../helpers/UIConstant';
@@ -10,11 +10,13 @@ import type { NavigationProps } from '../../helpers/UINavigator';
 
 const styles = StyleSheet.create({
     // $FlowExpectedError
-    scrollDisabled: {
-        overflowX: 'hidden',
-        overflowY: 'hidden',
-        touchAction: 'none',
-    },
+    scrollDisabled: Platform.select({
+        web: { // this style does not work on mobile
+            overflowX: 'hidden',
+            overflowY: 'hidden',
+            touchAction: 'none',
+        },
+    }),
 });
 
 type ControllerState = {
