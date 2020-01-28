@@ -402,6 +402,8 @@ export default class UICustomSheet extends UIController<Props, State> {
             <View
                 testID="background_layer"
                 style={[UIStyle.absoluteFillObject, paddingBottom]}
+                collapsable={false}
+                ref={this.containerRef}
             >
                 <TouchableWithoutFeedback onPress={this.onHide}>
                     <Animated.View

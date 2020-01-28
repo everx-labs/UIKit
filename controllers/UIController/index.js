@@ -12,7 +12,6 @@ import {
     StatusBar,
 } from 'react-native';
 
-import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
@@ -33,9 +32,9 @@ const AndroidKeyboardAdjust =
     Platform.OS === 'android'
         ? require('react-native-android-keyboard-adjust')
         : {
-              setAdjustPan() {},
-              setAdjustResize() {},
-          };
+            setAdjustPan() {},
+            setAdjustResize() {},
+        };
 
 type Params = {
     [string]: string,
@@ -170,23 +169,23 @@ export default class UIController<Props, State>
 
     static getEasingFunction(easing: string): (t: number) => number {
         switch (easing) {
-            case LayoutAnimation.Types.spring:
-                return Easing.elastic();
-            case LayoutAnimation.Types.linear:
-                return Easing.linear;
-            case LayoutAnimation.Types.easeIn:
-                return Easing.in(Easing.ease);
-            case LayoutAnimation.Types.easeOut:
-                return Easing.out(Easing.ease);
-            case LayoutAnimation.Types.easeInEaseOut:
-                return Easing.inOut(Easing.ease);
-            case LayoutAnimation.Types.keyboard:
-                // There is no information about real easing function for keyboard animation.
-                // But people on Internet try to find closely easing functions.
-                return Easing.bezier(0.17, 0.59, 0.4, 0.77);
+        case LayoutAnimation.Types.spring:
+            return Easing.elastic();
+        case LayoutAnimation.Types.linear:
+            return Easing.linear;
+        case LayoutAnimation.Types.easeIn:
+            return Easing.in(Easing.ease);
+        case LayoutAnimation.Types.easeOut:
+            return Easing.out(Easing.ease);
+        case LayoutAnimation.Types.easeInEaseOut:
+            return Easing.inOut(Easing.ease);
+        case LayoutAnimation.Types.keyboard:
+            // There is no information about real easing function for keyboard animation.
+            // But people on Internet try to find closely easing functions.
+            return Easing.bezier(0.17, 0.59, 0.4, 0.77);
             // return Easing.bezier(0.19, 0.35, 0.0625, 0.5);
-            default:
-                return Easing.out(Easing.ease);
+        default:
+            return Easing.out(Easing.ease);
         }
     }
 
@@ -503,7 +502,10 @@ export default class UIController<Props, State>
                 // component could be unmounted before keyboard would have gone,
                 // that cause the whole screen to be resized (exactly how adjustResize works),
                 // but with delay it will be applied after keyboard will gone.
-                setTimeout(() => AndroidKeyboardAdjust.setAdjustResize(), UIConstant.animationSmallDuration());
+                setTimeout(
+                    () => AndroidKeyboardAdjust.setAdjustResize(),
+                    UIConstant.animationSmallDuration(),
+                );
             }
         }
         // Remove keyboard listeners
