@@ -28,7 +28,6 @@
         "prop-types": "15.6.2",
         "react-images": "^0.5.19",
         "react-localization": "git+https://github.com/FactorBench/react-localization.git",
-        "react-native": "^0.58.6",
         "react-native-android-keyboard-adjust": "^1.1.1",
         "react-native-awesome-alerts": "^1.0.8",
         "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
@@ -49,16 +48,16 @@
         "validator": "^10.11.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.8.3",
-        "@babel/preset-flow": "^7.8.3",
+        "@babel/core": "7.8.3",
+        "@babel/preset-flow": "7.8.3",
         "@testing-library/react-native": "5.0.3",
         "babel-eslint": "9.0.0",
-        "babel-jest": "^24.9.0",
+        "babel-jest": "24.9.0",
         "flow-bin": "0.95.1",
-        "jest": "^24.9.0",
-        "metro-react-native-babel-preset": "^0.58.0",
+        "jest": "24.9.0",
+        "metro-react-native-babel-preset": "0.56.0",
         "pre-commit": "1.2.2",
-        "react-test-renderer": "^16.12.0"
+        "react-test-renderer": "16.12.0"
     },
     "repository": {
         "type": "git",
