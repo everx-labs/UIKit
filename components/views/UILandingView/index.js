@@ -20,6 +20,7 @@ type Props = {
     icon: ImageSource | FastImageSource,
     title: string,
     description: string,
+    content?: string,
     testID?: string,
     iconStyle?: ImageStyleProp,
 };
@@ -44,9 +45,10 @@ export default class UILandingView extends UIComponent<Props, State> {
     // Render
     render() {
         const {
-            icon, title, description, testID,
+            icon, title, description, testID, content,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
+
         return (
             <React.Fragment {...testIDProp} >
                 {/* $FlowFixMe */}
@@ -62,12 +64,13 @@ export default class UILandingView extends UIComponent<Props, State> {
                 <UILabel
                     style={[
                         UIStyle.Margin.topSmall(),
-                        styles.descriptionLabel,
+                        !content && styles.descriptionLabel,
                     ]}
                     useDefaultSpace
                     role={UILabel.Role.Description}
                     text={description}
                 />
+                {content}
             </React.Fragment>
         );
     }
