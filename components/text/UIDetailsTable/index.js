@@ -21,6 +21,7 @@ export type Details = {
     tag?: any,
     component?: React$Node,
     onPress?: () => void,
+    key?: string,
 };
 
 export type DetailsList = Details[];
@@ -70,6 +71,16 @@ class UIDetailsTable extends UIComponent<Props, State> {
     static defaultProps: Props = {
         detailsList: [],
     };
+
+    static getBooleanCell(bool: boolean) {
+        if (bool === true) {
+            return { value: 'true' };
+        }
+        if (bool === false) {
+            return { value: 'false', type: UIDetailsTable.cellType.disabled };
+        }
+        return {};
+    }
 
     // Events
     onActionPressed(details: Details) {
@@ -154,7 +165,9 @@ class UIDetailsTable extends UIComponent<Props, State> {
         const { detailsList } = this.props;
         return detailsList.map<React$Node>((item, index) => {
             const cell = this.renderCell(item);
-            const { caption, value, captionType } = item;
+            const {
+                caption, value, captionType, key,
+            } = item;
             const testIDCaption = caption || 'default';
             const borderTopStyle = index > 0 && captionType !== UIDetailsTable.cellType.header
                 ? styles.borderTop
@@ -166,7 +179,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         UIStyle.common.flexRow(),
                         borderTopStyle,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}`}
+                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
                 >
                     <View
                         style={[

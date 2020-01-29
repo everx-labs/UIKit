@@ -1,20 +1,15 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
-
-import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import { View, StyleSheet, Image, Text } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIColor from '../../../helpers/UIColor';
-import UIComponent from '../../UIComponent';
-import UILabel from '../../text/UILabel';
 import UIGrid from '../../layout/UIGrid';
 import UIGridColumn from '../../layout/UIGridColumn';
 import UIBadge from '../../design/UIBadge';
-import UITextButton from '../../buttons/UITextButton';
 import UILink from '../../buttons/UILink';
-import UIActionIcon from '../../buttons/UIActionIcon';
 import UIActionComponent from '../../UIActionComponent';
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
@@ -66,7 +61,7 @@ type Props = ActionProps & {
     Container style
     @default null
     */
-    style?: ?StylePropType,
+    style?: ?ViewStyleProp,
     /**
     Action by tapping card
     @default null

@@ -1,7 +1,7 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIComponent from '../../UIComponent';
 
@@ -10,7 +10,28 @@ import icoActive from '../../../assets/ico-toggle-active/ico-toggle-active.png';
 import icoOn from '../../../assets/ico-toggle-on/ico-toggle-on.png';
 import icoOff from '../../../assets/ico-toggle-off/ico-toggle-off.png';
 
-export default class UIToggle extends UIComponent {
+
+type Props = {
+    iconActive: ?string,
+    iconInactive: ?string,
+    containerStyle: ViewStyleProp,
+    active: boolean,
+    colored: boolean,
+    onPress: (boolean) => void,
+    testID: ?string,
+};
+
+export default class UIToggle extends UIComponent<Props, {}> {
+    static defaultProps: Props = {
+        containerStyle: {},
+        active: false,
+        colored: false,
+        onPress: () => {},
+        testID: null,
+        iconActive: null,
+        iconInactive: null,
+    };
+
     // Events
     onPress = () => {
         const { active, onPress } = this.props;
@@ -46,23 +67,3 @@ export default class UIToggle extends UIComponent {
         );
     }
 }
-
-UIToggle.defaultProps = {
-    containerStyle: {},
-    active: false,
-    colored: false,
-    onPress: () => {},
-    testID: null,
-    iconActive: null,
-    iconInactive: null,
-};
-
-UIToggle.propTypes = {
-    iconActive: PropTypes.string,
-    iconInactive: PropTypes.string,
-    containerStyle: StylePropType,
-    active: PropTypes.bool,
-    colored: PropTypes.bool,
-    onPress: PropTypes.func,
-    testID: PropTypes.string,
-};

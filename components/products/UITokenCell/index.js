@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
@@ -28,12 +28,19 @@ type Props = {
     title: string,
     details: string,
     balance: string,
-    containerStyle: ?StylePropType,
+    containerStyle: ?ViewStyleProp,
 };
 
 type State = {};
 
 class UITokenCell extends UIComponent<Props, State> {
+    static defaultProps: Props = {
+        title: '',
+        details: '',
+        balance: '0.00000000',
+        containerStyle: null,
+    };
+
     static renderFractional(stringNumber: string) {
         if (!stringNumber) {
             return null;
@@ -121,10 +128,3 @@ class UITokenCell extends UIComponent<Props, State> {
 }
 
 export default UITokenCell;
-
-UITokenCell.defaultProps = {
-    title: '',
-    details: '',
-    balance: '0.00000000',
-    containerStyle: null,
-};

@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
-
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -23,15 +23,25 @@ type Props = {
     comments: string,
     reversed: boolean,
     onPress: ?() => void,
-    containerStyle: StylePropType,
-    textStyle: StylePropType,
-    commentsStyle: StylePropType,
+    containerStyle: ViewStyleProp,
+    textStyle: ViewStyleProp,
+    commentsStyle: ViewStyleProp,
     disabled?: boolean,
 };
 
 type State = {};
 
 export default class UIDetailsView extends UIComponent<Props, State> {
+    static defaultProps: Props = {
+        value: '',
+        comments: '',
+        reversed: false,
+        onPress: null,
+        containerStyle: {},
+        textStyle: {},
+        commentsStyle: {},
+    };
+
     // Render
     renderValue() {
         const {
@@ -95,16 +105,4 @@ export default class UIDetailsView extends UIComponent<Props, State> {
             </Wrapper>
         );
     }
-
-    static defaultProps: Props;
 }
-
-UIDetailsView.defaultProps = {
-    value: '',
-    comments: '',
-    reversed: false,
-    onPress: null,
-    containerStyle: {},
-    textStyle: {},
-    commentsStyle: {},
-};

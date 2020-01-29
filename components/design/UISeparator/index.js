@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../../../helpers/UIColor';
 
 type Props = {
     error?: boolean,
-    color: ?string,
-    style?: StylePropType,
+    color?: ?string,
+    style?: ViewStyleProp,
 }
 
 const styles = StyleSheet.create({
