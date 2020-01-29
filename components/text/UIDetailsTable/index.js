@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
 import UIComponent from '../../UIComponent';
-import UITextButton from '../../buttons/UITextButton'
+import UITextButton from '../../buttons/UITextButton';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 
@@ -16,6 +16,7 @@ export type Details = {
     value: ?string | number,
     limit?: number,
     type?: string,
+    captionType?: string,
     screen?: string,
     tag?: any,
     component?: React$Node,
@@ -36,9 +37,9 @@ type Props = {
 type State = {};
 
 const styles = StyleSheet.create({
-    borderBottom: {
-        borderBottomWidth: 1,
-        borderBottomColor: UIColor.current.background.whiteLight,
+    borderTop: {
+        borderTopWidth: 1,
+        borderTopColor: UIColor.current.background.whiteLight,
     },
 });
 
@@ -62,6 +63,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
         error: 'error',
         numberPercent: 'numberPercent',
         disabled: 'disabled',
+        header: 'header',
+        bullet: 'bullet',
     };
 
     static defaultProps: Props = {
@@ -151,15 +154,17 @@ class UIDetailsTable extends UIComponent<Props, State> {
         const { detailsList } = this.props;
         return detailsList.map<React$Node>((item, index) => {
             const cell = this.renderCell(item);
-            const { caption, value } = item;
+            const { caption, value, captionType } = item;
             const testIDCaption = caption || 'default';
-            const borderBottomStyle = index < detailsList.length - 1 ? styles.borderBottom : null;
+            const borderTopStyle = index > 0 && captionType !== UIDetailsTable.cellType.header
+                ? styles.borderTop
+                : null;
             return (
                 <View
                     style={[
                         UIStyle.padding.vertical(),
                         UIStyle.common.flexRow(),
-                        borderBottomStyle,
+                        borderTopStyle,
                     ]}
                     key={`details-table-row-${caption || ''}-${value || ''}`}
                 >
@@ -171,9 +176,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     >
                         <Text
                             numberOfLines={1}
-                            style={UIStyle.text.tertiarySmallRegular()}
+                            style={captionType === UIDetailsTable.cellType.header
+                                ? UIStyle.text.tertiarySmallBold()
+                                : UIStyle.text.tertiarySmallRegular()}
                         >
-                            {caption}
+                            {captionType === UIDetailsTable.cellType.bullet ? '• ' : ''}{caption}
                         </Text>
                     </View>
                     <View
