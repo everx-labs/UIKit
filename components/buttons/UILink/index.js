@@ -1,12 +1,9 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import { StyleSheet, Linking } from 'react-native';
 
 import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
-import UIColor from '../../../helpers/UIColor';
-import UIStyle from '../../../helpers/UIStyle';
 
 import type { ButtonProps } from '../UIButton';
 

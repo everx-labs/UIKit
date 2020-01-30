@@ -9,9 +9,9 @@ import {
     LayoutAnimation,
     Easing,
     PixelRatio,
+    StatusBar,
 } from 'react-native';
 
-import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import type { ReactNavigation } from '../../components/navigation/UINavigationBar';
 
@@ -28,14 +28,13 @@ import UISpinnerOverlay from '../../components/UISpinnerOverlay';
 
 import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
-const AndroidKeyboardAdjust = Platform.OS === 'android'
-    ? require('react-native-android-keyboard-adjust')
-    : {
-        setAdjustPan() {
-        },
-        setAdjustResize() {
-        },
-    };
+const AndroidKeyboardAdjust =
+    Platform.OS === 'android'
+        ? require('react-native-android-keyboard-adjust')
+        : {
+            setAdjustPan() {},
+            setAdjustResize() {},
+        };
 
 type Params = {
     [string]: string,
@@ -156,15 +155,14 @@ export default class UIController<Props, State>
     static getParametersFromString(string: string): ?Params {
         const index = string.indexOf('?');
         const parametersString = index >= 0 ? string.substring(index + 1) : '';
-        if (parametersString.length > 0) { // has parameters
-            return parametersString
-                .split('&')
-                .reduce((object, keyValue) => {
-                    const [key, value] = keyValue.split('=');
-                    const newObject = object;
-                    newObject[key] = value;
-                    return newObject;
-                }, {});
+        if (parametersString.length > 0) {
+            // has parameters
+            return parametersString.split('&').reduce((object, keyValue) => {
+                const [key, value] = keyValue.split('=');
+                const newObject = object;
+                newObject[key] = value;
+                return newObject;
+            }, {});
         }
         return null;
     }
@@ -189,22 +187,6 @@ export default class UIController<Props, State>
         default:
             return Easing.out(Easing.ease);
         }
-    }
-
-    static getKeyboardAnimation(event: ?KeyboardEvent): ?AnimationParameters {
-        if (!event) {
-            return null;
-        }
-        const {
-            duration,
-            easing,
-        } = event;
-        return (duration && easing)
-            ? {
-                duration,
-                easing,
-            }
-            : null;
     }
 
     // constructor
@@ -267,64 +249,84 @@ export default class UIController<Props, State>
     }
 
     adjustBottomInset(
-        container: NativeMethodsMixinType,
         keyboardFrame: $ReadOnly<{ screenY: number, height: number }>,
         animation: ?AnimationParameters,
-        readjustTimeout: number,
     ) {
-        container.measure((relX, relY, w, h, x, y) => {
-            // So, there was some logic:
-            // const keyboardOverlapHeight
-            //     = Math.max(y + h - keyboardFrame.screenY, keyboardFrame.height);
-            // I actually don't understand why we need Math.max with keyboard height here,
-            // but I definetely sure that current realization should work
-            // for popups with bottom y less then screen y.
-            // That way we get a current view bottom y coordinate,
-            // then subtructing it with keyboard top y we get a space overlapped by keyboard.
-            const keyboardOverlapHeight = Math.max((y + h) - keyboardFrame.screenY, 0);
-            // TODO: Test specific cases to check if the bottom inset is calculated properly.
-            this.setBottomInset(keyboardOverlapHeight, animation);
-            if (Platform.OS === 'android' && (readjustTimeout > 0)) {
-                setTimeout(() => {
-                    this.adjustBottomInset(container, keyboardFrame, animation, 0);
-                }, readjustTimeout);
-            }
-        });
+        // (savelichalex):
+        // Our modal controller animate Y coordinate, that's why measure is sooo tricky here
+        // I tried to call measure with timeout, but it's turned out
+        // that opening animation time could be different, and by the end of
+        // timeout we just could get wrong coordinates.
+        // That's why I decided to measure it in recursive cycle
+        // and compare with previous coordinate, that guarantee
+        // that we get correct Y point, without knowledge of current animation time.
+        const measureAndApply = (prevY) => {
+            requestAnimationFrame(() => {
+                if (this.containerRef.current != null) {
+                    this.containerRef.current.measureInWindow((x, y, width, height) => {
+                        if (y !== prevY) {
+                            measureAndApply(y);
+                            return;
+                        }
+                        const pageY = Platform.select({
+                            ios: y,
+                            android: y + StatusBar.currentHeight,
+                        });
+                        const containerBottomY = pageY + height;
+                        const keyboardOverlapHeight = Math.max(
+                            containerBottomY - keyboardFrame.screenY,
+                            0,
+                        );
+                        this.setBottomInset(keyboardOverlapHeight, animation);
+                    });
+                }
+            });
+        };
+        measureAndApply();
     }
 
     onKeyboardWillShow(event: KeyboardEvent) {
-        this.setStateSafely({ keyboardVisible: true });
-        const keyboardFrame = event.endCoordinates;
-        const animation = UIController.getKeyboardAnimation(event);
-        const { container } = this;
-        if (!!container && !!container.measure) {
-            this.adjustBottomInset(
-                container,
-                keyboardFrame,
-                animation,
-                UIConstant.animationDuration(),
-            );
-        } else {
-            this.setBottomInset(
-                keyboardFrame.height + this.getBottomInsetAdjustment(),
-                animation,
-            );
+        if (event == null) {
+            return;
         }
+
+        const keyboardFrame = event.endCoordinates;
+        const keyboardAnimationDuration =
+            (event && event.duration) || UIConstant.animationKeyboardOpening();
+        const keyboardAnimationEasing = (event && event.easing) || LayoutAnimation.Types.keyboard;
+        const keyboardAnimation = {
+            duration: keyboardAnimationDuration,
+            easing: keyboardAnimationEasing,
+        };
+
+        this.adjustBottomInset(keyboardFrame, keyboardAnimation);
+        this.setStateSafely({ keyboardVisible: true });
     }
 
     onKeyboardWillHide(event: KeyboardEvent) {
+        const keyboardAnimationDuration =
+            (event && event.duration) || UIConstant.animationKeyboardClosing();
+        const keyboardAnimationEasing = (event && event.easing) || LayoutAnimation.Types.keyboard;
+        const keyboardAnimation = {
+            duration: keyboardAnimationDuration,
+            easing: keyboardAnimationEasing,
+        };
+
+        this.setContentInset(EmptyInset, keyboardAnimation);
         this.setStateSafely({ keyboardVisible: false });
-        this.setContentInset(EmptyInset, UIController.getKeyboardAnimation(event));
     }
 
     // Setters
     setBottomInset(bottom: number, animation: ?AnimationParameters) {
-        this.setContentInset({
-            top: 0,
-            left: 0,
-            bottom,
-            right: 0,
-        }, animation);
+        this.setContentInset(
+            {
+                top: 0,
+                left: 0,
+                bottom,
+                right: 0,
+            },
+            animation,
+        );
     }
 
     setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
@@ -496,7 +498,14 @@ export default class UIController<Props, State>
             UIController.removeKeyboardPanningScreen(this);
             // Make it resizable only if not panning!
             if (!UIController.isKeyboardPanning()) {
-                AndroidKeyboardAdjust.setAdjustResize();
+                // We need timeout here, because in some cases, like in modals,
+                // component could be unmounted before keyboard would have gone,
+                // that cause the whole screen to be resized (exactly how adjustResize works),
+                // but with delay it will be applied after keyboard will gone.
+                setTimeout(
+                    () => AndroidKeyboardAdjust.setAdjustResize(),
+                    UIConstant.animationSmallDuration(),
+                );
             }
         }
         // Remove keyboard listeners
@@ -582,16 +591,9 @@ export default class UIController<Props, State>
         // for the containers 'measure' works well on Android.
         const main = (
             <SafeAreaView
-                style={[
-                    UIStyle.container.screen(),
-                    UIStyle.common.backgroundPrimaryColor(),
-                ]}
+                style={[UIStyle.container.screen(), UIStyle.common.backgroundPrimaryColor()]}
             >
-                <View
-                    style={UIStyle.common.flex()}
-                    collapsable={false}
-                    ref={this.onSetContainer}
-                >
+                <View style={UIStyle.common.flex()} collapsable={false} ref={this.containerRef}>
                     {this.renderSafely()}
                 </View>
             </SafeAreaView>
@@ -618,9 +620,6 @@ export default class UIController<Props, State>
     keyboardWillHideListener: { remove(): void };
     path: string;
     params: Params;
-    container: ?(React$Component<*> & NativeMethodsMixinType);
 
-    onSetContainer = (container: ?(React$Component<*> & NativeMethodsMixinType)) => {
-        this.container = container;
-    };
+    containerRef = React.createRef<View>();
 }

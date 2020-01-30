@@ -1,8 +1,9 @@
 // @flow
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import { StyleSheet, Platform, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Platform, Dimensions, Animated, PanResponder } from 'react-native';
 import PopupDialog, { FadeAnimation } from 'react-native-popup-dialog';
+import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { Style } from 'react-style-proptype/src/Style.flow';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
@@ -87,17 +88,20 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIModalController<Props, State>
-    extends UIController<ModalControllerProps & Props, ModalControllerState & State> {
+export default class UIModalController<Props, State> extends UIController<
+    ModalControllerProps & Props,
+    ModalControllerState & State,
+> {
     fullscreen: boolean;
     dismissible: boolean;
     fromBottom: boolean;
     smallStripe: boolean;
     half: boolean;
     adjustBottomSafeAreaInsetDynamically: boolean;
-    onCancel: ?(() => void);
-    onSelect: ?((any) => void);
-    onSubmit: ?(() => void);
+    adjustKeyboardInsetDynamically: boolean;
+    onCancel: ?() => void;
+    onSelect: ?(any) => void;
+    onSubmit: ?() => void;
     bgAlpha: ?ColorValue;
     dialog: ?PopupDialog;
     marginBottom: Animated.Value;
@@ -113,6 +117,7 @@ export default class UIModalController<Props, State>
         slide: () => new SlideAnimation({ slideFrom: 'bottom' }),
     };
 
+    panResponder: PanResponderInstance;
     constructor(props: ModalControllerProps & Props) {
         super(props);
         this.testID = '[UIModalController]';
@@ -120,6 +125,7 @@ export default class UIModalController<Props, State>
         this.fullscreen = false;
         this.dismissible = true;
         this.adjustBottomSafeAreaInsetDynamically = true;
+        this.adjustKeyboardInsetDynamically = true;
         this.dialog = null;
         this.onCancel = null;
         this.onSubmit = null;
@@ -134,6 +140,29 @@ export default class UIModalController<Props, State>
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
+        this.panResponder = PanResponder.create({
+            // Ask to be the responder:
+            onStartShouldSetPanResponder: () => this.dismissible,
+            onMoveShouldSetPanResponder: (evt, gestureState) => {
+                // Need small delay before moving for correct work
+                // on android (working of input focus not correct)
+                if (gestureState.dy < 30) {
+                    return false;
+                }
+
+                return this.dismissible;
+            },
+
+            // Handling responder events
+            onPanResponderMove: (evt, gestureState) => {
+                if (gestureState.dy > 0) {
+                    this.dy.setValue(gestureState.dy);
+                }
+            },
+            onPanResponderRelease: (evt, gestureState) => {
+                this.onReleaseSwipe(gestureState.dy);
+            },
+        });
     }
 
     async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
@@ -467,8 +496,8 @@ export default class UIModalController<Props, State>
                 centralComponent={this.renderCentralHeader()}
                 rightComponent={this.renderRightHeader()}
                 bottomLine={this.isHeaderLineVisible()}
-                onMove={Animated.event([null, { dy: this.dy }])}
-                onRelease={this.onReleaseSwipe}
+                // onMove={Animated.event([null, { dy: this.dy }])}
+                // onRelease={this.onReleaseSwipe}
                 onCancel={this.onCancelPress}
                 cancelImage={this.getCancelImage()}
             />
@@ -508,10 +537,16 @@ export default class UIModalController<Props, State>
                 overlayBackgroundColor="transparent"
             >
                 <Animated.View
-                    style={{
-                        height: contentHeight + this.getSafeAreaInsets().bottom,
-                        paddingBottom: this.marginBottom,
-                    }}
+                    style={[
+                        contentHeight != null
+                            ? {
+                                  height: contentHeight + this.getSafeAreaInsets().bottom,
+                              }
+                            : UIStyle.common.flex(),
+                        this.adjustKeyboardInsetDynamically
+                            ? { paddingBottom: this.marginBottom }
+                            : null,
+                    ]}
                 >
                     {this.renderContentView(contentHeight)}
                 </Animated.View>
@@ -536,6 +571,7 @@ export default class UIModalController<Props, State>
                     { backgroundColor },
                 ]}
                 onLayout={this.onLayout}
+                {...this.panResponder.panHandlers}
             >
                 <Animated.View style={{ marginTop: this.dy }}>
                     {this.renderDialog()}

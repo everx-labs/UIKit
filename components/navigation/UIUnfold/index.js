@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import { TouchableOpacity, Image, Text, View } from 'react-native';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import StylePropType from 'react-style-proptype';
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
@@ -45,12 +45,12 @@ type Props = {
     Container style
     @default null
     */
-    style?: ?StylePropType,
+    style?: ?ViewStyleProp,
     /**
     Text style
     @default null
     */
-    textStyle?: ?StylePropType,
+    textStyle?: ?TextStyleProp,
     /**
     Whether it's unfolded
     @default false

@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import { View, TouchableOpacity, Platform, Text, StyleSheet, Dimensions } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
-import StylePropType from 'react-style-proptype';
 import type { Node } from 'react';
 import type { EventProps } from '../../../types';
 
@@ -20,13 +20,13 @@ type Props = {
     message: string,
     active: boolean,
     children: Node,
-    containerStyle: ?StylePropType,
+    containerStyle: ?ViewStyleProp,
 };
 
 type State = {};
 
 type Point = { x: number, y: number };
-type Preset = { position: Position, containerStyle: StylePropType };
+type Preset = { position: Position, containerStyle: ViewStyleProp };
 
 const tooltipDelay = 200;
 const tooltipFadein = 200;
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 let masterMouseMoveListener = null;
 
 export default class UITooltip extends UIComponent<Props, State> {
-    static showOnMouseForWeb(message: string, tooltipContainerStyle?: StylePropType) {
+    static showOnMouseForWeb(message: string, tooltipContainerStyle?: ViewStyleProp) {
         UITooltip.initMouseMoveListenerForWeb();
         UILayoutManager.showComponent({
             component: UITooltip.renderTooltip(message, tooltipContainerStyle || styles.onMouseContainer),
@@ -113,7 +113,7 @@ export default class UITooltip extends UIComponent<Props, State> {
         masterMouseMoveListener = null;
     }
 
-    static renderTooltip(message: string, containerStyle: StylePropType) {
+    static renderTooltip(message: string, containerStyle: ViewStyleProp) {
         return (
             <View style={[styles.tooltipContainer, containerStyle]}>
                 <View style={styles.tooltip}>

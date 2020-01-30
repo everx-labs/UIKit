@@ -1,18 +1,28 @@
 // @flow
+// In this file some lines disabled because input types conflicts.
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, Platform, StyleSheet } from 'react-native';
 
+import type { FastImageSource } from 'react-native-fast-image';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
+import type { ImageStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UILabel from '../../text/UILabel';
 import UIComponent from '../../UIComponent';
 
+const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
+
+// $FlowFixMe
+const ImageComponent = Platform.OS === 'web' ? Image : FastImage;
+
 type Props = {
-    icon: ImageSource,
+    icon: ImageSource | FastImageSource,
     title: string,
     description: string,
+    content?: string,
     testID?: string,
+    iconStyle?: ImageStyleProp,
 };
 
 type State = {};
@@ -35,13 +45,15 @@ export default class UILandingView extends UIComponent<Props, State> {
     // Render
     render() {
         const {
-            icon, title, description, testID,
+            icon, title, description, testID, content,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
+
         return (
             <React.Fragment {...testIDProp} >
-                <Image
-                    style={styles.icon}
+                {/* $FlowFixMe */}
+                <ImageComponent
+                    style={this.props.iconStyle || styles.icon}
                     source={icon}
                 />
                 <UILabel
@@ -52,12 +64,13 @@ export default class UILandingView extends UIComponent<Props, State> {
                 <UILabel
                     style={[
                         UIStyle.Margin.topSmall(),
-                        styles.descriptionLabel,
+                        !content && styles.descriptionLabel,
                     ]}
                     useDefaultSpace
                     role={UILabel.Role.Description}
                     text={description}
                 />
+                {content}
             </React.Fragment>
         );
     }

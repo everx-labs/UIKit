@@ -309,6 +309,9 @@ export default class UIStyleText {
     static tertiarySmallRegular() {
         return UITextStyle.tertiarySmallRegular;
     }
+    static tertiarySmallBold() {
+        return UITextStyle.tertiarySmallBold;
+    }
     // Caption - fontSize: 14, lineHeight: 20
     static tertiaryCaptionRegular() {
         return UITextStyle.tertiaryCaptionRegular;

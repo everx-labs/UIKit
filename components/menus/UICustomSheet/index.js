@@ -22,6 +22,7 @@ import UIModalNavigationBar from '../../../controllers/UIModalController/UIModal
 
 import type { ContentInset, AnimationParameters } from '../../../controllers/UIController';
 
+const headerHeight = UIConstant.bigCellHeight();
 
 const styles = StyleSheet.create({
     downMenu: {
@@ -44,9 +45,25 @@ const styles = StyleSheet.create({
         right: 'auto',
     },
     smallDismissStripe: {
-        width: UIConstant.iconSize(),
+        width: 2 * UIConstant.iconSize(),
         height: UIConstant.tinyBorderRadius(),
-        borderRadius: UIConstant.tinyBorderRadius(),
+        borderRadius: UIConstant.tinyBorderRadius() / 2,
+    },
+    headerArea: {
+        height: headerHeight,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerLeft: {
+        flex: 1,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+    },
+    headerRight: {
+        flex: 1,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
     },
 });
 
@@ -56,9 +73,13 @@ let masterRef = null;
 
 export type Props = any & {
     component: ?React$Node,
+    headerLeft?: React$Node,
+    headerRight?: React$Node,
     fullWidth?: boolean,
     masterSheet?: boolean,
     modal?: boolean,
+    showHeader?: boolean,
+    containerStyle?: any,
     onShow?: () => void,
     onCancel?: () => void,
 };
@@ -71,9 +92,13 @@ export type State = {
 export default class UICustomSheet extends UIController<Props, State> {
     static defaultProps: Props = {
         component: null,
+        headerLeft: null,
+        headerRight: null,
         fullWidth: false,
         masterSheet: true,
         modal: true,
+        showHeader: true,
+        containerStyle: null,
         onShow: () => {},
         onCancel: () => {},
     };
@@ -95,18 +120,26 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     component: ?React$Node;
+    headerLeft: ?React$Node;
+    headerRight: ?React$Node;
     fullWidth: ?boolean;
     marginBottom: AnimatedValue;
+    containerStyle: ?any;
     onShow: ?() => void;
     onCancel: ?() => void;
     modal: ?boolean;
+    showHeader: ?boolean;
     dy: Animated.Value;
 
     // constructor
     constructor(props: Props) {
         super(props);
         this.component = null;
+        this.headerLeft = null;
+        this.headerRight = null;
         this.fullWidth = false;
+        this.showHeader = true;
+        this.containerStyle = null;
         this.marginBottom = new Animated.Value(-UIConstant.maxScreenHeight());
         this.onShow = () => {};
         this.onCancel = () => {};
@@ -231,20 +264,32 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     show({
         component,
+        headerLeft = null,
+        headerRight = null,
         fullWidth = false,
+        showHeader = true,
+        containerStyle = null,
         onShow = () => {},
         onCancel = () => {},
         modal = false,
     }: Props = {}) {
         if (this.props.masterSheet) {
             this.component = component;
+            this.headerLeft = headerLeft;
+            this.headerRight = headerRight;
             this.fullWidth = fullWidth;
+            this.showHeader = showHeader;
+            this.containerStyle = containerStyle;
             this.onCancel = onCancel;
             this.onShow = onShow;
             this.modal = modal;
         } else {
             this.component = this.props.component;
             this.fullWidth = this.props.fullWidth;
+            this.showHeader = this.props.showHeader;
+            this.containerStyle = this.props.containerStyle;
+            this.headerLeft = this.props.headerLeft;
+            this.headerRight = this.props.headerRight;
             this.onCancel = this.props.onCancel;
             this.onShow = this.props.onShow;
             this.modal = this.props.modal;
@@ -298,8 +343,35 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     // Render
+    renderHeader() {
+        if (!this.showHeader) {
+            return null;
+        }
+        return (
+            <View style={styles.headerArea}>
+                <View style={styles.headerLeft}>
+                    {this.headerLeft}
+                </View>
+                <View style={UIStyle.common.flex3()}>
+                    <UIModalNavigationBar
+                        height={headerHeight}
+                        swipeToDismiss
+                        dismissStripeStyle={styles.smallDismissStripe}
+                        onMove={Animated.event([null, { dy: this.dy }])}
+                        onRelease={this.onReleaseSwipe}
+                        onCancel={this.onHide}
+                    />
+                </View>
+
+                <View style={styles.headerRight}>
+                    {this.headerRight}
+                </View>
+            </View>
+        );
+    }
     renderSheet() {
         const containerStyle = this.fullWidth ? styles.fullScreenContainer : styles.slimContainer;
+        const styleProps = this.containerStyle;
         const bottom = this.getPosition();
         return (
             <View
@@ -311,18 +383,12 @@ export default class UICustomSheet extends UIController<Props, State> {
                         UIStyle.bottomScreenContainer,
                         styles.downMenu,
                         containerStyle,
+                        styleProps,
                         { bottom },
                     ]}
                     onLayout={this.onLayout}
                 >
-                    <UIModalNavigationBar
-                        swipeToDismiss
-                        dismissStripeStyle={styles.smallDismissStripe}
-                        height={UIConstant.smallCellHeight()}
-                        onMove={Animated.event([null, { dy: this.dy }])}
-                        onRelease={this.onReleaseSwipe}
-                        onCancel={this.onHide}
-                    />
+                    {this.renderHeader()}
                     {this.component}
                 </Animated.View>
             </View>
@@ -336,6 +402,8 @@ export default class UICustomSheet extends UIController<Props, State> {
             <View
                 testID="background_layer"
                 style={[UIStyle.absoluteFillObject, paddingBottom]}
+                collapsable={false}
+                ref={this.containerRef}
             >
                 <TouchableWithoutFeedback onPress={this.onHide}>
                     <Animated.View

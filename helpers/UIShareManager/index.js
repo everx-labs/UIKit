@@ -15,18 +15,19 @@ export default class UIShareManager {
         UIToastMessage.showMessage(success);
     }
 
-    static shareMessage(message: string, success: string) {
+    static async shareMessage(message: string, success: string) {
         if (!message) {
             return;
         }
         const content = {
             message,
         };
-        Share.share(content).then((result) => {
+        try {
+            const result = await Share.share(content);
             console.log('[UIShareManager] Message successfully shared with result:', result, success);
-        }).catch((error) => {
+        } catch (error) {
             console.warn('[UIShareManager] Failed to share message with error:', error);
-        });
+        }
     }
 
     // Public
