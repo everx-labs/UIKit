@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TextInput, Text, View } from 'react-native';
+import { StyleSheet, TextInput, Text, View, Platform } from 'react-native';
 
 import UIStyle from '../../helpers/UIStyle';
 import UITextStyle from '../../helpers/UITextStyle';
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%',
+        flex: 1,
         height: 32,
     },
     beginningTag: {
@@ -24,17 +24,19 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     textInput: {
-        flex: 1,
         height: 32,
         padding: 0,
         zIndex: 1,
         lineHeight: null,
     },
+    androidInputAlignment: {
+        textAlign: 'left',
+    },
 });
 
 export default class UIDialogTextInput extends UIComponent {
     // Events
-    onChangeText = (text) => {
+    onChangeText = text => {
         const { beginningTag, tagSeparator, onChangeText } = this.props;
         let value = text;
         if (beginningTag && value.startsWith(beginningTag)) {
@@ -51,10 +53,20 @@ export default class UIDialogTextInput extends UIComponent {
         return { textAlign: this.props.textAlign };
     }
 
+    getTextInputAlign() {
+        // FIXME(savelichalex): `textAlign: center` doesn't work good on Android for now
+        // https://github.com/facebook/react-native/issues/27658
+        // https://github.com/facebook/react-native/issues/26512
+        // I couldn't find a fix that could be applied from our side
+        // So for now `textAlign: left` is looks like the best available solution
+        if (Platform.OS === 'android' && this.props.textAlign === 'center') {
+            return styles.androidInputAlignment;
+        }
+        return this.getTextAlign();
+    }
+
     getBeginningTagStyle() {
-        return this.props.textAlign === 'center'
-            ? styles.beginningTag
-            : { flex: 0 };
+        return this.props.textAlign === 'center' ? styles.beginningTag : { flex: 0 };
     }
 
     // Actions
