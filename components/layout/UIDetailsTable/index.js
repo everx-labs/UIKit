@@ -73,13 +73,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
     };
 
     static getBooleanCell(bool: boolean) {
-        if (bool === true) {
+        if (bool) {
             return { value: 'true' };
         }
-        if (bool === false) {
-            return { value: 'false', type: UIDetailsTable.cellType.disabled };
-        }
-        return {};
+        return { value: 'false', type: UIDetailsTable.cellType.disabled };
     }
 
     // Events
