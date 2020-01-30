@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Check UI button snap 1`] = `
+exports[`should render correctly 1`] = `
 <View
   pointerEvents="box-none"
   style={

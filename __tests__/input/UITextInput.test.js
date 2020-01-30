@@ -1,16 +1,10 @@
 import React from 'react';
 import { UITextInput } from '../../UIKit';
 import { render, fireEvent } from '@testing-library/react-native';
-import {View} from "react-native";
 
 const Component = () => {
   const [name, setUser] = React.useState('');
-
-  return (
-    <View>
-      <UITextInput value={name} onChangeText={setUser}/>
-    </View>
-  );
+  return (<UITextInput value={name} onChangeText={setUser}/>);
 };
 
 const testData = [
@@ -21,11 +15,10 @@ const testData = [
 
 test.each(testData)('Should %s',(testName, text) =>{
   const { getByTestId, baseElement } = render(<Component />);
+  const input = getByTestId('uiTextInput');
+  fireEvent.changeText(input, text);
 
-  const inputBefore = getByTestId('uiTextInput');
-  fireEvent.changeText(inputBefore, text);
-
-  expect(inputBefore.props.value).toBe(text);
+  expect(input.props.value).toBe(text);
   expect(baseElement).toMatchSnapshot();
 });
 
