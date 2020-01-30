@@ -548,6 +548,8 @@ export type UILocalizedData = {
     DescribeYourIssueOrIdea: string,
     YourEmail: string,
     SendFeedback: string,
+    PushFeedbackShort: string,
+    PushFeedbackLong: string,
 
     // Cross-services
     WeCanTFindThePageYouReLookingFor: string,
