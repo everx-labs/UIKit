@@ -61,10 +61,6 @@ type DetailsSwitcherProps = {
     iconInactive?: ?string,
 };
 
-const styles = StyleSheet.create({
-    switcher: {},
-});
-
 export default class UIDetailsSwitcher<Props, State>
     extends UIComponent<any & DetailsSwitcherProps, State> {
     static Position = {
@@ -97,7 +93,7 @@ export default class UIDetailsSwitcher<Props, State>
     };
 
     getSwitcherStyle() {
-        const switcherStyle = [styles.switcher];
+        const switcherStyle = [];
         if (this.props.switcherPosition === UIDetailsSwitcher.Position.Right) {
             switcherStyle.push(UIStyle.margin.leftSmall());
         } else {
