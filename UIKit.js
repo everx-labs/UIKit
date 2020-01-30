@@ -33,7 +33,7 @@ import UIDetailsToggle from './components/buttons/UIDetailsToggle';
 import UIDetailsCheckbox from './components/buttons/UIDetailsCheckbox';
 import UIDetailsRadio from './components/buttons/UIDetailsRadio';
 import UIDetailsView from './components/views/UIDetailsView';
-import UIDetailsTable from './components/text/UIDetailsTable';
+import UIDetailsTable from './components/layout/UIDetailsTable';
 import UIDevice from './helpers/UIDevice';
 import UIDialogController from './controllers/UIDialogController';
 import UIDot from './components/design/UIDot';
@@ -129,7 +129,7 @@ import type {
     PositionObject,
 } from './types';
 import type { ContentInset } from './controllers/UIController';
-import type { DetailsList } from './components/text/UIDetailsTable';
+import type { DetailsList } from './components/layout/UIDetailsTable';
 import type { LabelRoleValue } from './components/text/UILabel';
 import type {
     UIColorData,

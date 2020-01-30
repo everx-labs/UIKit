@@ -7,7 +7,7 @@ import {
     View,
     StyleSheet,
 } from 'react-native';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
@@ -19,7 +19,7 @@ import UIDot from '../../design/UIDot';
 import UIDevice from '../../../helpers/UIDevice';
 
 type Props = {
-    containerStyle: StylePropType,
+    containerStyle: ViewStyleProp,
     maxWidth: number,
     itemsList: [],
     itemRenderer: (item: any) => ?React$Node,

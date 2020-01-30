@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
-
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
@@ -24,7 +23,7 @@ type Props = {
   /** Custom style
   @default null
   */
-  style?: ?StylePropType,
+  style?: ?ViewStyleProp,
 };
 
 type State = {};

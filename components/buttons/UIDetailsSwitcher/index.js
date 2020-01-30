@@ -1,80 +1,68 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
-
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 import UIDetailsView from '../../views/UIDetailsView';
-import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
 
-type Props = {
-  /** container style
-  @default null
-  */
-  style?: StylePropType,
-  /** Text along with the toggle
-  @default ''
-  */
-  details?: string,
-  /** Text under the details
-  @default ''
-  */
-  comments?: string,
-  /** Defines whether toggle ON/OFF
-  @default false
-  */
-  active: boolean,
-  /**
-  Editable/disabled
-  @default false
-  */
-  disabled?: boolean,
-  /**
-  shape of checkbox, one of:
-  UIDetailsSwitcher.Type.Square
-  UIDetailsSwitcher.Type.Circle
-  @default UIDetailsSwitcher.Type.Square
-  */
-  type?: string,
-  /**
-  toggle position to text, one of:
-  UIDetailsSwitcher.Position.Right
-  UIDetailsSwitcher.Position.Left
-  @default UIDetailsSwitcher.Position.Right
-  */
-  switcherPosition?: string,
-  /** Your action here, arg is new state of toggle (isActive: boolean)
-  */
-  onPress: (isActive: boolean) => void,
-  /** test id
-  * @ignore
-  * @default null
-  */
-  testID?: ?string,
-  /** customize your icon
-  * @default null
-  */
-  iconActive?: ?string,
-  /** customize your icon
-  * @default null
-  */
-  iconInactive?: ?string,
+type DetailsSwitcherProps = {
+    /** container style
+     @default null
+     */
+    style?: ViewStyleProp,
+    /** Text along with the toggle
+     @default ''
+     */
+    details?: string,
+    /** Text under the details
+     @default ''
+     */
+    comments?: string,
+    /** Defines whether toggle ON/OFF
+     @default false
+     */
+    active: boolean,
+    /**
+     Editable/disabled
+     @default false
+     */
+    disabled?: boolean,
+    /**
+     shape of checkbox, one of:
+     UIDetailsSwitcher.Type.Square
+     UIDetailsSwitcher.Type.Circle
+     @default UIDetailsSwitcher.Type.Square
+     */
+    type?: string,
+    /**
+     toggle position to text, one of:
+     UIDetailsSwitcher.Position.Right
+     UIDetailsSwitcher.Position.Left
+     @default UIDetailsSwitcher.Position.Right
+     */
+    switcherPosition?: string,
+    /** Your action here, arg is new state of toggle (isActive: boolean)
+     */
+    onPress: (isActive: boolean) => void,
+    /** test id
+     * @ignore
+     * @default null
+     */
+    testID?: ?string,
+    /** customize your icon
+     * @default null
+     */
+    iconActive?: ?string,
+    /** customize your icon
+     * @default null
+     */
+    iconInactive?: ?string,
 };
 
-const styles = StyleSheet.create({
-    switcher: {
-    },
-    switcherLeft: {
-        marginRight: UIConstant.smallContentOffset(),
-    },
-    switcherRight: {
-        marginLeft: UIConstant.smallContentOffset(),
-    },
-});
-
-export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, State> {
+export default class UIDetailsSwitcher<Props, State>
+    extends UIComponent<any & DetailsSwitcherProps, State> {
     static Position = {
         Left: 'left',
         Right: 'right',
@@ -84,6 +72,20 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
         Circle: 'circle',
     };
 
+    static defaultProps: any & DetailsSwitcherProps = {
+        switcherPosition: UIDetailsSwitcher.Position.Right,
+        disabled: false,
+        type: UIDetailsSwitcher.Type.Square,
+        style: null,
+        details: '',
+        comments: '',
+        active: false,
+        onPress: () => {},
+        testID: null,
+        iconActive: null,
+        iconInactive: null,
+    };
+
     // Events
     onPress = () => {
         const { active, onPress } = this.props;
@@ -91,11 +93,11 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
     };
 
     getSwitcherStyle() {
-        const switcherStyle = [styles.switcher];
+        const switcherStyle = [];
         if (this.props.switcherPosition === UIDetailsSwitcher.Position.Right) {
-            switcherStyle.push(styles.switcherRight);
+            switcherStyle.push(UIStyle.margin.leftSmall());
         } else {
-            switcherStyle.push(styles.switcherLeft);
+            switcherStyle.push(UIStyle.margin.rightSmall());
         }
         return switcherStyle;
     }
@@ -112,12 +114,14 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
 
         if (!comments) {
             return (
-                <Text style={[UIStyle.Text.primarySmallMedium(), UIStyle.Common.flex()]}>{details}</Text>
+                <Text style={[UIStyle.text.primarySmallMedium(), UIStyle.common.flex()]}>
+                    {details}
+                </Text>
             );
         }
 
         return (<UIDetailsView
-            containerStyle={UIStyle.Common.flex()}
+            containerStyle={UIStyle.common.flex()}
             value={details}
             comments={comments}
             onPress={() => {}}
@@ -135,17 +139,19 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
         const right = (this.props.switcherPosition === UIDetailsSwitcher.Position.Right) ?
             this.renderSwitcher() : this.renderDetailsView();
 
-        const button = (<View
-            style={[
-                UIStyle.Common.flexRow(),
-                UIStyle.Common.alignCenter(),
-                this.props.style,
-            ]}
-            pointerEvents="box-only"
-        >
-            {left}
-            {right}
-        </View>);
+        const button = (
+            <View
+                style={[
+                    UIStyle.common.flexRow(),
+                    UIStyle.common.alignCenter(),
+                    this.props.style,
+                ]}
+                pointerEvents="box-only"
+            >
+                {left}
+                {right}
+            </View>
+        );
 
 
         return this.props.disabled ? button : (
@@ -154,20 +160,4 @@ export default class UIDetailsSwitcher<Props, State> extends UIComponent<Props, 
             </TouchableOpacity>
         );
     }
-
-    static defaultProps: Props;
 }
-
-UIDetailsSwitcher.defaultProps = {
-    switcherPosition: UIDetailsSwitcher.Position.Right,
-    disabled: false,
-    type: UIDetailsSwitcher.Type.Square,
-    style: null,
-    details: '',
-    comments: '',
-    active: false,
-    onPress: () => {},
-    testID: null,
-    iconActive: null,
-    iconInactive: null,
-};

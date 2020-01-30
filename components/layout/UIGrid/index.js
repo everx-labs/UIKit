@@ -1,11 +1,9 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { StyleSheet, View } from 'react-native';
 
 import UIComponent from '../../UIComponent';
-import UIColor from '../../../helpers/UIColor';
-import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 
 const GUTTER = 16;
@@ -86,7 +84,7 @@ type Props = {
     /** custom style
     @default null
     */
-    style?: StylePropType,
+    style?: ViewStyleProp,
     /** width of grid, if not set it's '100%'
     * @default 0
     */

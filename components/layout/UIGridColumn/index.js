@@ -1,12 +1,8 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import { StyleSheet, View } from 'react-native';
 
 import UIComponent from '../../UIComponent';
-import UIColor from '../../../helpers/UIColor';
-import UIConstant from '../../../helpers/UIConstant';
-import UIStyle from '../../../helpers/UIStyle';
 
 
 const styles = StyleSheet.create({

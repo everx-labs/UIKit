@@ -471,6 +471,10 @@ const UITextStyle = StyleSheet.create({
         ...tertiary,
         ...UIFont.smallRegular(),
     },
+    tertiarySmallBold: {
+        ...tertiary,
+        ...UIFont.smallBold(),
+    },
     // Caption - fontSize: 14, lineHeight: 20
     tertiaryCaptionRegular: {
         ...tertiary,
