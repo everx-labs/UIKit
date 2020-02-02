@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 type Props = {
     onPress: ()=>void,
-    style?: StylePropType,
+    style?: ViewStyleProp,
 }
 type State = {
     gridColumns: number,
