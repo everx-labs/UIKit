@@ -42,6 +42,7 @@ import UIEmailInput from './components/input/UIEmailInput';
 import UIErrorScreen from './controllers/UIErrorScreen';
 import UIEventHelper from './helpers/UIEventHelper';
 import UIFeedback from './components/products/UIFeedback';
+import UIPushFeedback from './components/products/UIPushFeedback';
 import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
@@ -184,6 +185,7 @@ export {
     UIErrorScreen,
     UIEventHelper,
     UIFeedback,
+    UIPushFeedback,
     UIFlashMessage,
     UIFont,
     UIFunction,

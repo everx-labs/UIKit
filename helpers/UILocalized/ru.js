@@ -568,6 +568,8 @@ const ru: UILocalizedData = {
     DescribeYourIssueOrIdea: 'Describe your issue or idea',
     YourEmail: 'Your email',
     SendFeedback: 'Send feedback',
+    PushFeedbackShort: 'Give feedback to contribute to the story',
+    PushFeedbackLong: 'Give your feedback to help us make the story better. Click here to share.',
 
     // Seed Phrase Input:
     seedPhraseTypo: 'Seems we have a typo here, try again', // TODO: Translate
