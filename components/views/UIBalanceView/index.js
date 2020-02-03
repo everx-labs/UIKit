@@ -136,6 +136,10 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     // Setters
     async setBalance(balance: string, isCallback: boolean = false) {
+        if (balance === this.getCachedBalance()) { // balance is the same, no need to re-render!
+            return;
+        }
+
         if (!this.props.animated) {
             this.setCachedBalance(balance);
             this.setStateSafely({ balance, newBalance: '' });
@@ -177,7 +181,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         //         start: (callback) => { callback(); },
         //     }
         // );
-        // const startWidthAnim = setWidthAnim(balance.length > balanceLen || balanceWidthValue === 0);
+        // const startWidthAnim
+        //    = setWidthAnim(balance.length > balanceLen || balanceWidthValue === 0);
         // $FlowExpectedError
         // startWidthAnim.start(
 
@@ -343,7 +348,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     updateBalance(force: boolean = false) {
-        const { balance, separator, loading, useMaxBalanceLength, maxBalanceLength } = this.props;
+        const {
+            balance, separator, loading, useMaxBalanceLength, maxBalanceLength,
+        } = this.props;
         const loadingCondition = loading && this.balance !== '0';
         const updatingCondition = (balance !== this.balance && !loading) || force;
         if (!loadingCondition && !updatingCondition) {
@@ -360,7 +367,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits)}`
                 : `${balance}${this.getSeparatorAndZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
-            floorBalance = useMaxBalanceLength && integer.length > maxBalanceLength ? integer : formattedBalance;
+            floorBalance = useMaxBalanceLength && integer.length > maxBalanceLength
+                ? integer
+                : formattedBalance;
         }
         this.setAuxBalance(floorBalance, () => { // start component layout and measuring
             this.measureAuxBalanceText();
