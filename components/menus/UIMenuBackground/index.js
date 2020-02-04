@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { PopoverContainer } from 'react-native-simple-popover';
+import { TapGestureHandler, State as RNGHState } from 'react-native-gesture-handler';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIDevice from '../../../helpers/UIDevice';
@@ -73,28 +74,27 @@ export default class UIMenuBackground extends UIComponent<Props, State> {
     // Render
     renderContent() {
         const pointerEvents = this.isBackgroundActive() ? 'box-only' : 'auto';
-        const onPress = this.isBackgroundActive() ? { onPress: this.callback } : null;
         // We use UIMenuView only for Tablet and Web now, for web we use window.addEventListener
         if (UIDevice.isTablet()) {
             return (
-                <TouchableWithoutFeedback {...onPress}>
-                    <View
-                        style={UIStyle.container.screen()}
-                        pointerEvents={pointerEvents}
-                    >
+                <TapGestureHandler
+                    enabled={this.isBackgroundActive()}
+                    onHandlerStateChange={({ nativeEvent: { state } }) => {
+                        if (state === RNGHState.ACTIVE && this.callback != null) {
+                            this.callback();
+                        }
+                    }}
+                >
+                    <View style={UIStyle.container.screen()} pointerEvents={pointerEvents}>
                         {this.props.children}
                     </View>
-                </TouchableWithoutFeedback>
+                </TapGestureHandler>
             );
         }
         return this.props.children;
     }
 
     render() {
-        return (
-            <PopoverContainer>
-                {this.renderContent()}
-            </PopoverContainer>
-        );
+        return <PopoverContainer>{this.renderContent()}</PopoverContainer>;
     }
 }
