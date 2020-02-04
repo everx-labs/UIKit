@@ -1,3 +1,5 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable arrow-parens */
 /* eslint-disable class-methods-use-this */
 // @flow
 import React from 'react';
@@ -248,6 +250,22 @@ export default class UIController<Props, State>
         return adjustment;
     }
 
+    isKeyboardShown = {
+        value: false,
+        // calculation of inset for keyboard opening happen
+        // in multiple async calls, and somewhen between them
+        // user could close a keyboard (unlikely to happen, but still)
+        // so, it's better to check that keyboard is still open during measurement
+        maybeCall(fn: (...args: any[]) => any): () => any {
+            return (...args) => {
+                if (this.value) {
+                    return fn(...args);
+                }
+                return null;
+            };
+        },
+    };
+
     adjustBottomInset(
         keyboardFrame: $ReadOnly<{ screenY: number, height: number }>,
         animation: ?AnimationParameters,
@@ -260,27 +278,31 @@ export default class UIController<Props, State>
         // That's why I decided to measure it in recursive cycle
         // and compare with previous coordinate, that guarantee
         // that we get correct Y point, without knowledge of current animation time.
-        const measureAndApply = (prevY) => {
-            requestAnimationFrame(() => {
-                if (this.containerRef.current != null) {
-                    this.containerRef.current.measureInWindow((x, y, width, height) => {
-                        if (y !== prevY) {
-                            measureAndApply(y);
-                            return;
-                        }
-                        const pageY = Platform.select({
-                            ios: y,
-                            android: y + StatusBar.currentHeight,
-                        });
-                        const containerBottomY = pageY + height;
-                        const keyboardOverlapHeight = Math.max(
-                            containerBottomY - keyboardFrame.screenY,
-                            0,
+        const measureAndApply = prevY => {
+            requestAnimationFrame(
+                this.isKeyboardShown.maybeCall(() => {
+                    if (this.containerRef.current != null) {
+                        this.containerRef.current.measureInWindow(
+                            this.isKeyboardShown.maybeCall((x, y, width, height) => {
+                                if (y !== prevY) {
+                                    measureAndApply(y);
+                                    return;
+                                }
+                                const pageY = Platform.select({
+                                    ios: y,
+                                    android: y + StatusBar.currentHeight,
+                                });
+                                const containerBottomY = pageY + height;
+                                const keyboardOverlapHeight = Math.max(
+                                    containerBottomY - keyboardFrame.screenY,
+                                    0,
+                                );
+                                this.setBottomInset(keyboardOverlapHeight, animation);
+                            }),
                         );
-                        this.setBottomInset(keyboardOverlapHeight, animation);
-                    });
-                }
-            });
+                    }
+                }),
+            );
         };
         measureAndApply();
     }
@@ -299,6 +321,7 @@ export default class UIController<Props, State>
             easing: keyboardAnimationEasing,
         };
 
+        this.isKeyboardShown.value = true;
         this.adjustBottomInset(keyboardFrame, keyboardAnimation);
         this.setStateSafely({ keyboardVisible: true });
     }
@@ -312,6 +335,7 @@ export default class UIController<Props, State>
             easing: keyboardAnimationEasing,
         };
 
+        this.isKeyboardShown.value = false;
         this.setContentInset(EmptyInset, keyboardAnimation);
         this.setStateSafely({ keyboardVisible: false });
     }
