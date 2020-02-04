@@ -2,10 +2,14 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
-import PopupDialog, { FadeAnimation } from 'react-native-popup-dialog';
+import { FadeAnimation } from 'react-native-popup-dialog';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { Style } from 'react-style-proptype/src/Style.flow';
-import { PanGestureHandler, TapGestureHandler, State } from 'react-native-gesture-handler';
+import {
+    PanGestureHandler,
+    TapGestureHandler,
+    State as RNGHState,
+} from 'react-native-gesture-handler';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type {
@@ -28,7 +32,7 @@ import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
 const fullScreenDialogWidth = 600;
 const fullScreenDialogHeight = 600;
-const HARDWARE_BACK_PRESS_EVENT: string = 'hardwareBackPress';
+const HARDWARE_BACK_PRESS_EVENT = 'hardwareBackPress';
 
 type OnLayoutEventArgs = {
     nativeEvent: {
@@ -40,6 +44,8 @@ type OnLayoutEventArgs = {
         },
     },
 };
+
+type RNGHEvent<T> = { nativeEvent: T };
 
 export type ModalControllerProps = ControllerProps & {
     onWillAppear?: () => void,
@@ -65,6 +71,13 @@ export type ModalControllerShowArgs =
       };
 
 const styles = StyleSheet.create({
+    containerCentered: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    containerToTheEnd: {
+        justifyContent: 'flex-end',
+    },
     dialog: {
         borderRadius: UIConstant.borderRadius(),
         backgroundColor: UIColor.backgroundPrimary(UIColor.Theme.Light),
@@ -73,14 +86,16 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     dialogBorders: {
-        borderTopLeftRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
-        borderTopRightRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-    },
-    modalOnWebDialogBorders: {
-        borderTopLeftRadius: UIConstant.borderRadius(),
-        borderTopRightRadius: UIConstant.borderRadius(),
+        borderTopLeftRadius: Platform.select({
+            ios: UIConstant.borderRadius(),
+            android: 0,
+            web: UIConstant.borderRadius(),
+        }),
+        borderTopRightRadius: Platform.select({
+            ios: UIConstant.borderRadius(),
+            android: 0,
+            web: UIConstant.borderRadius(),
+        }),
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
     },
@@ -230,83 +245,77 @@ export default class UIModalController<Props, State> extends UIController<
             ({ width, height } = Dimensions.get('window'));
         }
 
-        const statusBarHeight = UIDevice.statusBarHeight();
-        const navBarHeight =
-            Platform.OS === 'web' || !this.dismissible ? 0 : UIDevice.navigationBarHeight(); // navigation bar height above the modal controller
-        const modalForWebTopOffset = Platform.OS === 'web' && this.modalOnWeb ? height / 2.0 : 0;
+        const outterNavBarHeight = this.dismissible ? UIDevice.navigationBarHeight() : 0; // navigation bar height above the modal controller
 
-        const containerStyle: Style = {
-            // top: -1, // fix for 1px top offset
-            paddingTop: statusBarHeight + navBarHeight + modalForWebTopOffset,
-            width,
-            height,
-        };
-
-        let dialogStyle: Style | Style[] = [
-            styles.dialogOverflow,
-            this.modalOnWeb ? styles.modalOnWebDialogBorders : styles.dialogBorders,
-            this.fromBottom
-                ? {
-                      borderBottomLeftRadius: 0,
-                      borderBottomRightRadius: 0,
-                  }
-                : null,
-        ];
-
-        // Need to enlarge the controller in order to hide a "bouncing" bottom border.
-        // It works for PopupDialog ONLY in case we have some space above the dialog!
-        let enlargeHeightForBounce = navBarHeight > UIConstant.coverBounceOffset();
-        if (!this.fullscreen && (UIDevice.isDesktop() || UIDevice.isTablet())) {
-            width = Math.min(width, fullScreenDialogWidth);
-            height = Math.min(height, fullScreenDialogHeight);
-            if (width === fullScreenDialogWidth && height === fullScreenDialogHeight) {
-                dialogStyle = styles.dialogOverflow;
-                enlargeHeightForBounce = false; // no need to enlarge centered modal controller
+        if (UIDevice.isDesktop() || UIDevice.isTablet()) {
+            if (!this.fullscreen) {
+                // On the desktop and the tablet we need to show a modal with fixed width and height
+                width = Math.min(width, fullScreenDialogWidth);
+                height = Math.min(height, fullScreenDialogHeight);
+                // -------
+                // Basically we are trying to make a modal with a standard size (i.e fullScreenDialogWidth)
+                // But sometimes controller could specify minimum size
+                width = Math.max(width, this.minWidth);
+                height = Math.max(height, this.minHeight);
+                // -------
+                if (this.fromBottom) {
+                    const screenHeight = Dimensions.get('window').height;
+                    height = Math.min(screenHeight, screenHeight - (screenHeight - height) / 2);
+                }
             }
+            return {
+                width,
+                height,
+                dialogStyle: [
+                    styles.dialog, // general style for dialog with rounded corners (all) and background color
+                    styles.dialogOverflow,
+                    this.fromBottom ? styles.dialogBorders : null,
+                    { width, height },
+                    { transform: [{ translateY: this.dy }] },
+                ],
+                contentHeight: height - outterNavBarHeight,
+                containerStyle: [
+                    UIStyle.Common.absoluteFillContainer(),
+                    styles.containerCentered,
+                    this.fromBottom ? styles.containerToTheEnd : null,
+                ],
+            };
         }
 
-        if (this.half && !(UIDevice.isDesktop() || UIDevice.isTablet())) {
-            height /= 2;
-            containerStyle.justifyContent = 'flex-end';
-        } else {
-            height -= statusBarHeight + navBarHeight;
-        }
+        // Mobile
+        const containerPaddingTop = UIDevice.statusBarHeight() + outterNavBarHeight;
 
-        let contentHeight = height - this.getSafeAreaInsets().bottom;
+        const bottomInset = this.fromBottom ? 0 : this.getSafeAreaInsets().bottom;
+        const innerNavBarHeight = this.getNavigationBarHeight();
+        const contentHeight = height - containerPaddingTop - innerNavBarHeight - bottomInset;
 
-        if (this.dismissible) {
-            contentHeight -= this.getNavigationBarHeight();
-        }
-
-        // eslint-disable-next-line no-underscore-dangle
-        if (
-            (this.fromBottom || this.state.keyboardVisible) &&
-            (UIDevice.isDesktop() || UIDevice.isTablet())
-        ) {
-            const screenHeight = Dimensions.get('window').height;
-            const halfFullScreenDialogHeight = Math.min(screenHeight, fullScreenDialogHeight) / 2;
-            const halfScreenHeight = screenHeight / 2;
-
-            containerStyle.justifyContent = 'flex-end';
-            height = halfScreenHeight + halfFullScreenDialogHeight;
-
-            contentHeight = height - this.getSafeAreaInsets().bottom;
-            if (this.dismissible) {
-                contentHeight -= this.getNavigationBarHeight();
-            }
-        }
-
-        if (enlargeHeightForBounce) {
-            height += UIConstant.coverBounceOffset();
-            containerStyle.paddingTop += UIConstant.coverBounceOffset();
-        }
+        // Looks like it's something that used before
+        // Grep across the project didn't get any use of it
+        // if (this.half) {
+        //     height /= 2;
+        //     containerStyle.push({ justifyContent: 'flex-end' });
+        // } else {
+        //     // height -= statusBarHeight + navBarHeight;
+        // }
 
         return {
             width,
             height,
             contentHeight,
-            containerStyle,
-            dialogStyle,
+            containerStyle: [
+                UIStyle.Common.absoluteFillContainer(),
+                UIStyle.common.flex(),
+                {
+                    paddingTop: containerPaddingTop,
+                },
+            ],
+            dialogStyle: [
+                styles.dialog, // general style for dialog with rounded corners (all) and background color
+                styles.dialogOverflow,
+                styles.dialogBorders,
+                UIStyle.common.flex(),
+                { transform: [{ translateY: this.dy }] },
+            ],
         };
     }
 
@@ -316,15 +325,18 @@ export default class UIModalController<Props, State> extends UIController<
 
     // Override if needed!
     shouldSwipeToDismiss() {
-        return Platform.OS !== 'web';
+        return this.dismissible;
+    }
+
+    getMaxHeight() {
+        const { height } = Dimensions.get('window');
+        return height - UIDevice.statusBarHeight();
     }
 
     getAnimatedOverlayOpacity(): ColorValue {
-        // const { height } = Dimensions.get('window');
-        // const maxValue = height - UIDevice.statusBarHeight() - this.getNavigationBarHeight();
+        const maxHeight = this.getMaxHeight();
         return (this.dy: any).interpolate({
-            // inputRange: [0, maxValue],
-            inputRange: [0, 800],
+            inputRange: [0, maxHeight],
             outputRange: [1, 0],
         });
     }
@@ -384,7 +396,7 @@ export default class UIModalController<Props, State> extends UIController<
     // Events
 
     // Actions
-    getSlidingAnimation(animation, toValue, useNativeDriver) {
+    getSlidingAnimation(animation: Animated.Value, toValue: number, useNativeDriver: boolean) {
         return Animated.spring(animation, {
             toValue,
             velocity: 0,
@@ -394,20 +406,19 @@ export default class UIModalController<Props, State> extends UIController<
         });
     }
 
-    moveToTop(onFinish) {
+    moveToTop(onFinish: ?() => void) {
         this.getSlidingAnimation(this.dy, 0, true).start(onFinish);
     }
 
-    moveToBottom(onFinish) {
-        // const { height } = Dimensions.get('window');
-        // const maxValue = height - UIDevice.statusBarHeight() - this.getNavigationBarHeight();
-        // this.animation.toValue(maxValue, () => this.onCancelPress());
-        this.getSlidingAnimation(this.dy, 800, true).start(onFinish);
+    moveToBottom(onFinish: ?() => void) {
+        const maxHeight = this.getMaxHeight();
+        this.getSlidingAnimation(this.dy, maxHeight, true).start(onFinish);
     }
 
     openDialog() {
         this.onWillAppear();
-        this.dy.setValue(800);
+        const maxHeight = this.getMaxHeight();
+        this.dy.setValue(maxHeight);
         this.moveToTop(this.onDidAppearHandler);
     }
 
@@ -485,44 +496,6 @@ export default class UIModalController<Props, State> extends UIController<
         );
     }
 
-    renderDialog() {
-        const { width, height, contentHeight, containerStyle, dialogStyle } = this.getDialogStyle();
-
-        const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
-        return (
-            <Animated.View
-                {...testIDProp}
-                style={[
-                    { width, height },
-                    {
-                        minWidth: this.minWidth,
-                        minHeight: this.minHeight,
-                    },
-                    styles.dialog,
-                    dialogStyle,
-                    { transform: [{ translateY: this.dy }] },
-                ]}
-            >
-                <Animated.View
-                    style={[
-                        contentHeight != null
-                            ? {
-                                  height: contentHeight + this.getSafeAreaInsets().bottom,
-                              }
-                            : UIStyle.common.flex(),
-                        this.adjustKeyboardInsetDynamically
-                            ? { paddingBottom: this.marginBottom }
-                            : null,
-                    ]}
-                >
-                    {this.renderModalNavigationBar()}
-                    {this.renderContentView(contentHeight)}
-                </Animated.View>
-                {this.renderSpinnerOverlay()}
-            </Animated.View>
-        );
-    }
-
     // eslint-disable-next-line no-unused-vars
     renderContentView(contentHeight: number): React$Node {
         return null;
@@ -538,33 +511,30 @@ export default class UIModalController<Props, State> extends UIController<
         }
     };
 
-    onPan = ({ nativeEvent: { translationY } }) => {
-        if (translationY > 0) {
+    onPan = ({ nativeEvent: { translationY } }: RNGHEvent<{ translationY: number }>) => {
+        if (translationY > 0 && this.dismissible) {
             this.dy.setValue(translationY);
         }
     };
 
-    onPanHandlerStateChange = ({ nativeEvent: { state, translationY } }) => {
-        if (state === State.END || state === State.CANCELLED) {
+    onPanHandlerStateChange = ({
+        nativeEvent: { state, translationY },
+    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
+        if ((state === RNGHState.END || state === RNGHState.CANCELLED) && this.dismissible) {
             this.onReleaseSwipe(translationY);
         }
     };
-    onTapHandlerStateChange = ({ nativeEvent: { state } }) => {
-        if (state === State.ACTIVE) {
+    onTapHandlerStateChange = ({ nativeEvent: { state } }: RNGHEvent<{ state: RNGHState }>) => {
+        if (state === RNGHState.ACTIVE && this.dismissible) {
             this.hide();
         }
     };
     renderContainer() {
         const backgroundColor = this.getBackgroundColor();
-        const { containerStyle } = this.getDialogStyle();
+        const { containerStyle, contentHeight, dialogStyle } = this.getDialogStyle();
+        const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
         return (
-            <Animated.View
-                style={[
-                    UIStyle.Common.absoluteFillContainer(),
-                    { justifyContent: 'center', alignItems: 'center' },
-                    containerStyle,
-                ]}
-            >
+            <Animated.View style={containerStyle}>
                 <TapGestureHandler
                     enabled={this.dismissible}
                     waitFor={this.panHandlerRef}
@@ -593,7 +563,20 @@ export default class UIModalController<Props, State> extends UIController<
                     onGestureEvent={this.onPan}
                     onHandlerStateChange={this.onPanHandlerStateChange}
                 >
-                    {this.renderDialog()}
+                    <Animated.View {...testIDProp} style={dialogStyle}>
+                        {this.renderModalNavigationBar()}
+                        <Animated.View
+                            style={[
+                                UIStyle.common.flex(),
+                                this.adjustKeyboardInsetDynamically
+                                    ? { paddingBottom: this.marginBottom }
+                                    : null,
+                            ]}
+                        >
+                            {this.renderContentView(contentHeight)}
+                        </Animated.View>
+                        {this.renderSpinnerOverlay()}
+                    </Animated.View>
                 </PanGestureHandler>
             </Animated.View>
         );
@@ -606,6 +589,4 @@ export default class UIModalController<Props, State> extends UIController<
 
         return this.renderContainer();
     }
-
-    // Internals
 }
