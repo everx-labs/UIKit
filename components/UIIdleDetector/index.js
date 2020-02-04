@@ -34,7 +34,7 @@ export default class UIIdleDetector extends PureComponent<Props, State> {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.panResponder = PanResponder.create({
             onMoveShouldSetPanResponderCapture: this.onShouldSetPanResponderCapture,
             onPanResponderTerminationRequest: this.onShouldSetPanResponderCapture,
