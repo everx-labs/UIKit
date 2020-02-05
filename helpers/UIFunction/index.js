@@ -516,4 +516,21 @@ export default class UIFunction {
         }
         return num;
     }
+
+    static sendFeedbackToZendesk(url: string, requester: string, email: string, feedback: string) {
+        fetch(url, {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                request: {
+                    requester: { name: requester },
+                    subject: 'feedback',
+                    comment: { body: `${email}: ${feedback}` },
+                },
+            }),
+        }).catch(() => {});
+    }
 }
