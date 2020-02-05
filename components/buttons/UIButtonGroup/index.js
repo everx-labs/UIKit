@@ -1,13 +1,11 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import { StyleSheet, View } from 'react-native';
 
-import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
-import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const GUTTER = UIConstant.contentOffset();
 
@@ -25,7 +23,7 @@ type Props = {
     /** button group container style
     @default null
     */
-    style?: StylePropType,
+    style?: ViewStyleProp,
     /** @ignore */
     children?: any,
     /** Gap between buttons

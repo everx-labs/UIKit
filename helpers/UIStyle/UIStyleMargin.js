@@ -288,6 +288,9 @@ export default class UIStyleMargin {
     static leftMedium() { // 24
         return styles.marginLeftMedium;
     }
+    static leftHuge() { // 32
+        return styles.marginLeftHuge;
+    }
     static leftGreat() { // 48
         return styles.leftGreat;
     }

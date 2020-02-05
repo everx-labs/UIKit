@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 
 import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
+import UIFunction from '../../../helpers/UIFunction';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Props = {
     /** One of:
@@ -38,7 +39,7 @@ type Props = {
     /** button container style
     @default null
     */
-    style?: StylePropType,
+    style?: ViewStyleProp | ViewStyleProp[],
     /** @ignore */
     theme?: string,
 
@@ -80,15 +81,13 @@ export default class UIActionIcon extends UIComponent<Props, State> {
     }
 
     render() {
-        let { style } = this.props;
         const widthStyle = { width: this.getButtonWidth() };
-        if (style && style.push) {
-            style.push(widthStyle);
-        } else {
-            style = [style, widthStyle];
-        }
         return (
-            <UIButton {...this.props} style={style} hasIcon />
+            <UIButton
+                {...this.props}
+                style={UIFunction.combineStyles([this.props.style, widthStyle])}
+                hasIcon
+            />
         );
     }
 
