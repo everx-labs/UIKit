@@ -6,8 +6,8 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
-import { UIFunction } from '../../../UIKit';
-
+import UIFunction from '../../../helpers/UIFunction';
+import type { LabelRoleValue } from '../../text/UILabel';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,7 +26,7 @@ type Props = {
     onPress: ?() => void,
     style: ViewStyleProp,
     containerStyle: ViewStyleProp,
-    textRole: string,
+    textRole: ?LabelRoleValue,
     textStyle: ViewStyleProp,
     commentsStyle: ViewStyleProp,
     disabled?: boolean,
@@ -42,7 +42,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         onPress: null,
         style: {},
         containerStyle: {},
-        textRole: '',
+        textRole: undefined,
         textStyle: {},
         commentsStyle: {},
     };
