@@ -8,6 +8,7 @@ import { Popover } from 'react-native-simple-popover';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
+import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
 import UIDevice from '../../../helpers/UIDevice';
@@ -440,22 +441,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     areSeedPhrasesEqual(currentPhrase?: string): boolean {
         const { phraseToCheck } = this.props;
         const typedPhrase = currentPhrase || this.getValue();
-
-        const wA = UISeedPhraseInput.splitPhrase(phraseToCheck);
-        const wB = UISeedPhraseInput.splitPhrase(typedPhrase);
-
-        let result = false;
-        if (wA.length === wB.length) {
-            result = true;
-            for (let i = 0; i < wA.length; i += 1) {
-                if (wA[i] !== wB[i]) {
-                    result = false;
-                    break;
-                }
-            }
-        }
-
-        return result;
+        return UIFunction.normalizeKeyPhrase(typedPhrase)
+            === UIFunction.normalizeKeyPhrase(phraseToCheck);
     }
 
     rerenderPopoverForAndroid() {
