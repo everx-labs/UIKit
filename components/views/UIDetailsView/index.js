@@ -6,6 +6,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
+import { UIFunction } from '../../../UIKit';
 
 
 const styles = StyleSheet.create({
@@ -23,7 +24,9 @@ type Props = {
     comments: string,
     reversed: boolean,
     onPress: ?() => void,
+    style: ViewStyleProp,
     containerStyle: ViewStyleProp,
+    textRole: string,
     textStyle: ViewStyleProp,
     commentsStyle: ViewStyleProp,
     disabled?: boolean,
@@ -37,7 +40,9 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         comments: '',
         reversed: false,
         onPress: null,
+        style: {},
         containerStyle: {},
+        textRole: '',
         textStyle: {},
         commentsStyle: {},
     };
@@ -45,7 +50,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     // Render
     renderValue() {
         const {
-            value, textStyle, onPress, disabled, testID,
+            value, textStyle, textRole, onPress, disabled, testID,
         } = this.props;
         let role = onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular;
         if (disabled) {
@@ -55,7 +60,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
             <UILabel
                 testID={testID || null}
                 style={textStyle}
-                role={role}
+                role={textRole || role}
                 text={`${value}`}
             />
         );
@@ -91,7 +96,9 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     }
 
     render() {
-        const { onPress, testID, containerStyle } = this.props;
+        const {
+            onPress, testID, containerStyle, style,
+        } = this.props;
         const Wrapper = onPress ? TouchableOpacity : View;
         const onPressProp: any = { onPress };
         const testIDProp = testID ? { testID } : null;
@@ -99,7 +106,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
             <Wrapper
                 {...testIDProp}
                 {...onPressProp}
-                style={[styles.container, containerStyle]}
+                style={UIFunction.combineStyles([styles.container, containerStyle, style])}
             >
                 {this.renderContentView()}
             </Wrapper>

@@ -11,6 +11,7 @@ import UIColor from '../../../helpers/UIColor';
 import UITooltip from '../../notifications/UITooltip';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
+import { UIFunction } from '../../../UIKit';
 
 const TOOLTIP_WIDTH = 'auto';
 
@@ -113,14 +114,6 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         return null;
     }
 
-    getCommonStyle() {
-        const result = [];
-        UITextButton.pushStyle(result, this.props.containerStyle);
-        UITextButton.pushStyle(result, this.props.buttonStyle);
-        UITextButton.pushStyle(result, this.props.style);
-        return result;
-    }
-
     // Render
     renderIcon(icon: string, isBack: boolean) {
         if (!icon) {
@@ -201,9 +194,11 @@ export default class UITextButton extends UIActionComponent<Props, State> {
 
     renderContent(): React$Node {
         const {
-            align, icon, backIcon, multiLine,
+            align, icon, backIcon, multiLine, containerStyle, buttonStyle,
         } = this.props;
-        const commonStyle = this.getCommonStyle();
+        const commonStyle = UIFunction.combineStyles([
+            this.props.style, containerStyle, buttonStyle,
+        ]);
         const contStyle = multiLine
             ? []
             : [UIStyle.container.centerLeft(), UIStyle.height.buttonHeight()];

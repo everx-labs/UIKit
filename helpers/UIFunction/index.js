@@ -5,6 +5,7 @@ import Moment from 'moment';
 import isEmail from 'validator/lib/isEmail';
 
 import UIConstant from '../../helpers/UIConstant';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
@@ -494,5 +495,25 @@ export default class UIFunction {
             }
         }
         return cursorFormatted;
+    }
+
+    static combineStyles(stylesArray: ViewStyleProp | ViewStyleProp[] | TextStyleProp | TextStyleProp[]) {
+        let result = [];
+        stylesArray.forEach((item) => {
+            result = Array.isArray(item)
+                ? [...result, ...item]
+                : [...result, item];
+        });
+        return result;
+    }
+
+    static roundToMeaningDigit(num: number) {
+        const fraction = num - Math.trunc(num);
+        for (let i = 0; i < 10; i += 1) {
+            if (fraction * (10 ** i) >= 1) {
+                return Math.trunc(num) + Number(fraction.toFixed(i));
+            }
+        }
+        return num;
     }
 }
