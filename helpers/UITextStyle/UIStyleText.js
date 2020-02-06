@@ -36,6 +36,10 @@ export default class UIStyleText {
     static titleLight() {
         return UITextStyle.titleLight;
     }
+    // Title - fontSize: 36, lineHeight: 48
+    static subtitleBold() {
+        return UITextStyle.subtitleBold;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static bodyRegular() {
         return UITextStyle.bodyRegular;

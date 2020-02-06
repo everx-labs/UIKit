@@ -118,6 +118,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.titleLight(),
     },
+    subtitleBold: {
+        ...text,
+        ...UIFont.subtitleBold(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     bodyRegular: {
         ...text,
