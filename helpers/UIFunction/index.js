@@ -507,7 +507,7 @@ export default class UIFunction {
         return result;
     }
 
-        static roundToMeaningDigit(num: number) {
+    static roundToMeaningDigit(num: number) {
         const fraction = num - Math.trunc(num);
         for (let i = 0; i < 10; i += 1) {
             if (fraction * (10 ** i) >= 1) {
