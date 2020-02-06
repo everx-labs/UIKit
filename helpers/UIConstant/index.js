@@ -366,7 +366,7 @@ export default class UIConstant {
         return UI_DETAILS_CELL_HEIGHT;
     }
 
-    static majorCellHeight() {
+    static majorCellHeight() { // 80
         return UI_MAJOR_CELL_HEIGHT;
     }
 
