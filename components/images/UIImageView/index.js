@@ -51,6 +51,7 @@ type Props = {
     onUploadPhoto?: () => void,
     onDeletePhoto?: () => void,
     onPressPhoto?: () => void,
+    onError?: (error: Error) => void,
 };
 
 type State = {
@@ -125,6 +126,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     onPickFromCamera = () => {
         ImagePicker.launchCamera(photoOptions, (response: PickerResponse) => {
             if (response.error) {
+                this.onPickImageError(response.error);
                 console.warn('[UIImageView] ImagePicker from camera Error: ', response.error);
             } else if (response.didCancel) {
                 console.log('[UIImageView] User cancelled ImagePicker from camera');
@@ -142,6 +144,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     onPickFromGallery = () => {
         ImagePicker.launchImageLibrary(photoOptions, (response: PickerResponse) => {
             if (response.error) {
+                this.onPickImageError(response.error);
                 console.warn('[UIImageView] ImagePicker from gallery Error: ', response.error);
             } else if (response.didCancel) {
                 console.log('[UIImageView] User cancelled ImagePicker from gallery');
@@ -155,6 +158,12 @@ export default class UIImageView extends UIComponent<Props, State> {
             }
         });
     };
+
+    onPickImageError(error: Error) {
+        if (this.props.onError) {
+            this.props.onError(error);
+        }
+    }
 
     onDeletePhoto = () => {
         if (!this.mounted) return;
