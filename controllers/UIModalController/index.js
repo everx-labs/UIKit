@@ -2,7 +2,6 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
-import { FadeAnimation } from 'react-native-popup-dialog';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { Style } from 'react-style-proptype/src/Style.flow';
 import {
@@ -127,15 +126,15 @@ export default class UIModalController<Props, State> extends UIController<
     onSubmit: ?() => void;
     marginBottom: Animated.Value;
     dy: Animated.Value;
-    animation: SlideAnimation | FadeAnimation;
+    animation: 'slide' | 'fade';
     testID: ?string;
     minWidth: number = 0;
     minHeight: number = 0;
     modalOnWeb: boolean;
 
     static animations = {
-        fade: () => new FadeAnimation({ toValue: 1 }),
-        slide: () => new SlideAnimation({ slideFrom: 'bottom' }),
+        fade: () => 'fade',
+        slide: () => 'slide',
     };
 
     panResponder: PanResponderInstance;
@@ -155,6 +154,7 @@ export default class UIModalController<Props, State> extends UIController<
         this.half = false;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
+        this.animation = UIModalController.animations.slide();
         this.modalOnWeb = false;
         this.state = {
             ...(this.state: ModalControllerState & State),
@@ -271,7 +271,9 @@ export default class UIModalController<Props, State> extends UIController<
                     styles.dialogOverflow,
                     this.fromBottom ? styles.dialogBorders : null,
                     { width, height },
-                    { transform: [{ translateY: this.dy }] },
+                    this.animation === UIModalController.animations.slide()
+                        ? { transform: [{ translateY: this.dy }] }
+                        : { opacity: this.getDYDependentOpacity() },
                 ],
                 contentHeight: height - outterNavBarHeight,
                 containerStyle: [
@@ -314,7 +316,9 @@ export default class UIModalController<Props, State> extends UIController<
                 styles.dialogOverflow,
                 styles.dialogBorders,
                 UIStyle.common.flex(),
-                { transform: [{ translateY: this.dy }] },
+                this.animation === UIModalController.animations.slide()
+                    ? { transform: [{ translateY: this.dy }] }
+                    : { opacity: this.getDYDependentOpacity() },
             ],
         };
     }
@@ -333,7 +337,7 @@ export default class UIModalController<Props, State> extends UIController<
         return height - UIDevice.statusBarHeight();
     }
 
-    getAnimatedOverlayOpacity(): ColorValue {
+    getDYDependentOpacity(): ColorValue {
         const maxHeight = this.getMaxHeight();
         return (this.dy: any).interpolate({
             inputRange: [0, maxHeight],
@@ -552,7 +556,7 @@ export default class UIModalController<Props, State> extends UIController<
                                 // And this brings a layout bug to Safari
                                 UIStyle.Common.absoluteFillContainer(),
                                 { backgroundColor },
-                                { opacity: this.getAnimatedOverlayOpacity() },
+                                { opacity: this.getDYDependentOpacity() },
                             ]}
                             onLayout={this.onLayout}
                         />
