@@ -539,9 +539,7 @@ export default class UIModalController<Props, State> extends UIController<
                 <Animated.View
                     style={[
                         contentHeight != null
-                            ? {
-                                  height: contentHeight + this.getSafeAreaInsets().bottom,
-                              }
+                            ? { height: contentHeight + this.getSafeAreaInsets().bottom }
                             : UIStyle.common.flex(),
                         this.adjustKeyboardInsetDynamically
                             ? { paddingBottom: this.marginBottom }
@@ -568,7 +566,7 @@ export default class UIModalController<Props, State> extends UIController<
                     // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
                     // And this brings a layout bug to Safari
                     UIStyle.Common.absoluteFillContainer(),
-                    { backgroundColor },
+                    { backgroundColor, zIndex: 10000 },
                 ]}
                 onLayout={this.onLayout}
                 {...this.panResponder.panHandlers}
