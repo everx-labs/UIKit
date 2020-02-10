@@ -329,7 +329,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     // Override if needed!
     shouldSwipeToDismiss() {
-        return this.dismissible;
+        return Platform.OS !== 'web'; // this.dismissible;
     }
 
     getMaxHeight() {
