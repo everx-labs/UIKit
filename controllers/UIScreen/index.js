@@ -48,6 +48,7 @@ export default class UIScreen<Props, State>
             ...this.state,
             screenWidth: 0,
             scrollDisabled: false,
+            scrollOffset: { x: 0, y: 0 },
         };
     }
 
@@ -72,11 +73,12 @@ export default class UIScreen<Props, State>
 
     onScrollDefault = (e: any) => {
         const { contentOffset, contentSize } = e.nativeEvent;
+        this.setScrollOffset(contentOffset);
         this.onScroll(contentOffset, contentSize);
     };
 
     // Virtual
-    onScroll(contentOffset: ContentOffset, contentSize?: ContentSize) {
+    onScroll(contentOffset: ContentOffset, contentSize: ContentSize) {
         //
     }
 
@@ -89,6 +91,14 @@ export default class UIScreen<Props, State>
         this.setStateSafely({ screenWidth });
     }
 
+    setScrollDisabled(scrollDisabled: boolean = true) {
+        this.setStateSafely({ scrollDisabled });
+    }
+
+    setScrollOffset(scrollOffset: ContentOffset) {
+        this.setState({ scrollOffset });
+    }
+
     // Getters
     getScreenWidth() {
         return this.state.screenWidth;
@@ -96,6 +106,10 @@ export default class UIScreen<Props, State>
 
     getRouteName() {
         return this.props.navigation.state.routeName;
+    }
+
+    getScrollOffset() {
+        return this.state.scrollOffset;
     }
 
     getPreviousRouteName() {
@@ -114,6 +128,10 @@ export default class UIScreen<Props, State>
 
     isNarrowScreen(width: number) {
         return width < UIConstant.elasticWidthBroad();
+    }
+
+    isScrollDisabled() {
+        return this.state.scrollDisabled;
     }
 
     // Virtual
@@ -156,7 +174,7 @@ export default class UIScreen<Props, State>
     }
 
     render() {
-        const scrollStyle = this.state.scrollDisabled ? styles.scrollDisabled : null;
+        const scrollStyle = this.isScrollDisabled() ? styles.scrollDisabled : null;
         return (
             <View
                 style={UIStyle.common.flex()}
@@ -169,7 +187,7 @@ export default class UIScreen<Props, State>
                     contentContainerStyle={this.getContentContainerStyle()}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                     onScroll={this.onScrollDefault}
-                    scrollEnabled={!this.state.scrollDisabled}
+                    scrollEnabled={!this.isScrollDisabled()}
                 >
                     {this.renderContent()}
                 </ScrollView>
