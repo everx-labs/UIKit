@@ -34,6 +34,7 @@ const LabelRole = Object.freeze({
     CaptionWarning: 'captionWarning',
     CaptionError: 'captionError',
     AccentBold: 'accentBold',
+    AccentRegular: 'accentRegular',
     IconQuaternary: 'iconQuaternary',
 });
 
@@ -116,6 +117,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.secondarySmallRegular());
         } else if (role === UILabel.Role.AccentBold) { // Accent - fontSize: 20, lineHeight: 28
             result.push(UIStyle.Text.primaryAccentBold());
+        } else if (role === UILabel.Role.AccentRegular) { // Accent - fontSize: 20, lineHeight: 28
+            result.push(UIStyle.Text.primaryAccentRegular());
         } else if (role === UILabel.Role.Caption) { // Caption - fontSize: 14, lineHeight: 20
             result.push(UIStyle.Text.secondaryCaptionRegular());
         } else if (role === UILabel.Role.CaptionTertiary) {

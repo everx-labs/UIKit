@@ -112,6 +112,9 @@ const UI_INFINITE_SCROLL_TRESHOLD = 0.25; // quarter of the visible page (before
 
 const UI_PROFILE_PHOTO_SIZE = 72;
 
+const UI_SHARE_DIALOG_WIDTH = 412;
+const UI_SHARE_DIALOG_HEIGHT = 472;
+
 const MIN_DECIMAL_DIGITS = 3;
 const MAX_DECIMAL_DIGITS = 9;
 
@@ -499,6 +502,15 @@ export default class UIConstant {
 
     static tooltipMaxHeight() {
         return UI_TOOLTIP_MAX_HEIGHT;
+    }
+
+    // Share Dialog for web
+    static shareDialogWidth() {
+        return UI_SHARE_DIALOG_WIDTH;
+    }
+
+    static shareDialogHeight() {
+        return UI_SHARE_DIALOG_HEIGHT;
     }
 
     // Symbols

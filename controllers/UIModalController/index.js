@@ -130,6 +130,8 @@ export default class UIModalController<Props, State> extends UIController<
     testID: ?string;
     minWidth: number = 0;
     minHeight: number = 0;
+    maxWidth: number = 0;
+    maxHeight: number = 0;
     modalOnWeb: boolean;
 
     static animations = {
@@ -152,6 +154,8 @@ export default class UIModalController<Props, State> extends UIController<
         this.fromBottom = false;
         this.smallStripe = false;
         this.half = false;
+        this.maxHeight = 0;
+        this.maxWidth = 0;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
@@ -263,6 +267,9 @@ export default class UIModalController<Props, State> extends UIController<
                     height = Math.min(screenHeight, screenHeight - (screenHeight - height) / 2);
                 }
             }
+
+            width = this.maxWidth > 0 ? Math.min(width, this.maxWidth) : width;
+            height = this.maxHeight > 0 ? Math.min(height, this.maxHeight) : height;
             return {
                 width,
                 height,
@@ -323,7 +330,7 @@ export default class UIModalController<Props, State> extends UIController<
         };
     }
 
-    getCancelImage() {
+    getCancelImage(): ?string {
         return null;
     }
 

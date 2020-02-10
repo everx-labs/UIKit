@@ -5,6 +5,7 @@ import {
     StyleSheet,
     View,
     Clipboard,
+    ScrollView,
 } from 'react-native';
 
 // Module imports
@@ -17,6 +18,7 @@ import UILabel from '../../components/text/UILabel';
 import UILocalized from '../../helpers/UILocalized';
 import UIColor from '../UIColor';
 import UIFont from '../UIFont';
+import UIAssets from '../../assets/UIAssets';
 
 import type { ModalControllerProps } from '../../controllers/UIModalController';
 
@@ -34,23 +36,23 @@ type State = {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        margin: UIConstant.contentOffset(),
         //
     },
     titleText: {
-        marginHorizontal: UIConstant.contentOffset(),
         ...UIFont.subtitleBold(),
         color: UIColor.black(),
     },
+    note: {
+        marginTop: UIConstant.contentOffset(),
+    },
     messageContainer: {
-        margin: UIConstant.contentOffset(),
-        paddingLeft: UIConstant.smallContentOffset(),
-        borderLeftColor: UIColor.primary1(),
-        borderLeftWidth: 4,
+        marginTop: UIConstant.hugeContentOffset(),
+        flex: 1,
     },
     button: {
-        marginTop: UIConstant.contentOffset(),
-        paddingHorizontal: UIConstant.contentOffset(),
-        alignSelf: 'center',
+        //
     },
 });
 
@@ -71,6 +73,8 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     constructor(props: Props) {
         super(props);
         this.testID = '[UIShareScreen]';
+        this.maxHeight = UIConstant.shareDialogHeight();
+        this.maxWidth = UIConstant.shareDialogWidth();
         this.state = {
             ...this.state,
             message: '',
@@ -93,7 +97,6 @@ export default class UIShareScreen extends UIModalController<Props, State> {
 
     // Events
     onCopyPressed = () => {
-        this.hide();
         (async () => {
             await Clipboard.setString(this.getMessage());
             UIToastMessage.showMessage(UILocalized.MessageCopiedToClipboard);
@@ -114,24 +117,33 @@ export default class UIShareScreen extends UIModalController<Props, State> {
         return this.state.message;
     }
 
+    getCancelImage(): ?string {
+        return UIAssets.btnClose();
+    }
+
     // Render
 
     renderContentView(contentHeight: number) {
         return (
             <View style={styles.container}>
-                <Text style={styles.titleText}>
-                    {UILocalized.Share}
-                </Text>
-                <View style={styles.messageContainer}>
+                <UILabel
+                    role={UILabel.Role.Subtitle}
+                    text={UILocalized.Share}
+                />
+                <UILabel
+                    role={UILabel.Role.Note}
+                    text={UILocalized.ShareToTalk}
+                    style={styles.note}
+                />
+                <ScrollView contentContainerStyle={styles.messageContainer}>
                     <UILabel
-                        role={UILabel.Role.Description}
+                        role={UILabel.Role.AccentRegular}
                         text={this.getMessage()}
                     />
-                </View>
+                </ScrollView>
                 <UIButton
                     testID="copy_button"
-                    style={styles.button}
-                    title={UILocalized.Copy}
+                    title={UILocalized.CopyToClipboard}
                     buttonShape={UIButton.ButtonShape.Radius}
                     onPress={this.onCopyPressed}
                 />
