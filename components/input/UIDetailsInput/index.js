@@ -924,7 +924,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         const containerStyle = [
             styles.commentStyle,
-            UIStyle.margin.topTiny(),
+            UIStyle.margin.topSmall(),
             UIStyle.margin.bottomSmall(),
         ];
         const textStyle = [
