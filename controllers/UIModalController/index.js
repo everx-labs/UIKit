@@ -4,7 +4,7 @@ import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
-import type { Style } from 'react-style-proptype/src/Style.flow';
+
 import {
     PanGestureHandler,
     TapGestureHandler,
@@ -26,7 +26,6 @@ import UIStyle from '../../helpers/UIStyle';
 import UIColor from '../../helpers/UIColor';
 import UIConstant from '../../helpers/UIConstant';
 import UIModalNavigationBar from './UIModalNavigationBar';
-import SlideAnimation from './utils/SlideAnimation';
 
 import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
@@ -249,7 +248,22 @@ export default class UIModalController<Props, State> extends UIController<
             ({ width, height } = Dimensions.get('window'));
         }
 
-        const outterNavBarHeight = this.dismissible ? UIDevice.navigationBarHeight() : 0; // navigation bar height above the modal controller
+        const outerNavBarHeight = this.dismissible
+            ? UIDevice.navigationBarHeight()
+            : 0; // navigation bar height above the modal controller
+
+        const dialogStyle = [
+            styles.dialog, // general style for dialog with all rounded corners and background color
+            styles.dialogOverflow,
+            this.animation === UIModalController.animations.slide()
+                ? { transform: [{ translateY: this.dy }] }
+                : { opacity: this.getDYDependentOpacity() },
+        ];
+
+        const containerStyle = [
+            UIStyle.Common.absoluteFillContainer(),
+            this.zIndex ? { zIndex: this.zIndex } : null,
+        ];
 
         if (UIDevice.isDesktop() || UIDevice.isTablet()) {
             if (!this.fullscreen) {
@@ -257,48 +271,52 @@ export default class UIModalController<Props, State> extends UIController<
                 width = Math.min(width, fullScreenDialogWidth);
                 height = Math.min(height, fullScreenDialogHeight);
                 // -------
-                // Basically we are trying to make a modal with a standard size (i.e fullScreenDialogWidth)
-                // But sometimes controller could specify minimum size
+                // Basically we are trying to make a modal with the standard size
+                // (i.e fullScreenDialogWidth), but sometimes controller could specify minimum size
                 width = Math.max(width, this.minWidth);
                 height = Math.max(height, this.minHeight);
-                // or maxium
+                // or maximum size
                 width = Math.min(width, this.maxWidth);
                 height = Math.min(height, this.maxHeight);
                 // -------
                 if (this.fromBottom) {
                     const screenHeight = Dimensions.get('window').height;
                     height = Math.min(screenHeight, screenHeight - (screenHeight - height) / 2);
+                    // Change borders when opening from the bottom
+                    dialogStyle.push(styles.dialogBorders);
+                    // Change container when opening from the bottom
+                    containerStyle.push(styles.containerToTheEnd);
                 }
             }
+            // Add calculated width & height
+            dialogStyle.push({ width, height });
+            // Center the container
+            containerStyle.push(styles.containerCentered);
+            // Calculate content height
+            const contentHeight = height - outerNavBarHeight;
 
             return {
                 width,
                 height,
-                dialogStyle: [
-                    styles.dialog, // general style for dialog with rounded corners (all) and background color
-                    styles.dialogOverflow,
-                    this.fromBottom ? styles.dialogBorders : null,
-                    { width, height },
-                    this.animation === UIModalController.animations.slide()
-                        ? { transform: [{ translateY: this.dy }] }
-                        : { opacity: this.getDYDependentOpacity() },
-                ],
-                contentHeight: height - outterNavBarHeight,
-                containerStyle: [
-                    UIStyle.Common.absoluteFillContainer(),
-                    styles.containerCentered,
-                    this.fromBottom ? styles.containerToTheEnd : null,
-                    this.zIndex ? { zIndex: this.zIndex } : null,
-                ],
+                dialogStyle,
+                contentHeight,
+                containerStyle,
             };
         }
 
         // Mobile
-        const containerPaddingTop = UIDevice.statusBarHeight() + outterNavBarHeight;
-
+        const containerPaddingTop = UIDevice.statusBarHeight() + outerNavBarHeight;
         const bottomInset = this.fromBottom ? 0 : this.getSafeAreaInsets().bottom;
         const innerNavBarHeight = this.getNavigationBarHeight();
         const contentHeight = height - containerPaddingTop - innerNavBarHeight - bottomInset;
+
+        // Change borders when opening from the mobile
+        dialogStyle.push(styles.dialogBorders);
+        // "Flex" the dialog & container when opening from the mobile
+        dialogStyle.push(UIStyle.common.flex());
+        containerStyle.push(UIStyle.common.flex());
+        // Add padding for container
+        containerStyle.push({ paddingTop: containerPaddingTop });
 
         // Looks like it's something that used before
         // Grep across the project didn't get any use of it
@@ -313,22 +331,8 @@ export default class UIModalController<Props, State> extends UIController<
             width,
             height,
             contentHeight,
-            containerStyle: [
-                UIStyle.Common.absoluteFillContainer(),
-                UIStyle.common.flex(),
-                {
-                    paddingTop: containerPaddingTop,
-                },
-            ],
-            dialogStyle: [
-                styles.dialog, // general style for dialog with rounded corners (all) and background color
-                styles.dialogOverflow,
-                styles.dialogBorders,
-                UIStyle.common.flex(),
-                this.animation === UIModalController.animations.slide()
-                    ? { transform: [{ translateY: this.dy }] }
-                    : { opacity: this.getDYDependentOpacity() },
-            ],
+            containerStyle,
+            dialogStyle,
         };
     }
 
@@ -547,11 +551,13 @@ export default class UIModalController<Props, State> extends UIController<
             this.onReleaseSwipe(translationY);
         }
     };
+
     onTapHandlerStateChange = ({ nativeEvent: { state } }: RNGHEvent<{ state: RNGHState }>) => {
         if (state === RNGHState.ACTIVE && this.dismissible) {
             this.hide();
         }
     };
+
     renderContainer() {
         const backgroundColor = this.getBackgroundColor();
         const { containerStyle, contentHeight, dialogStyle } = this.getDialogStyle();
