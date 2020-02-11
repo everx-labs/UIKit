@@ -131,6 +131,7 @@ export default class UIModalController<Props, State> extends UIController<
     minWidth: number = 0;
     minHeight: number = 0;
     modalOnWeb: boolean;
+    zIndex: ?number;
 
     static animations = {
         fade: () => 'fade',
@@ -280,6 +281,7 @@ export default class UIModalController<Props, State> extends UIController<
                     UIStyle.Common.absoluteFillContainer(),
                     styles.containerCentered,
                     this.fromBottom ? styles.containerToTheEnd : null,
+                    this.zIndex ? { zIndex: this.zIndex } : null,
                 ],
             };
         }
