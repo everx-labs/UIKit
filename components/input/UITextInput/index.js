@@ -94,7 +94,7 @@ class UITextInput extends UIComponent<Props, State> {
         return (
             <Text
                 style={[
-                    UITextStyle.secondaryBodyRegular,
+                    UIStyle.text.secondaryBodyRegular(),
                     styles.beginningTag,
                     textStyle,
                 ]}

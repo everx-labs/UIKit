@@ -98,9 +98,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
     // preventing to be able to select any option from the menu.
     openMenu() {
         this.onOpenMenu(true);
-
         this.clearHideTimeout();
-
         this.countdown = setTimeout(() => this.hideMenu(), 60000); // 1 min
     }
 
@@ -235,10 +233,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                         onLayout={this.onTriggerLayout}
                         style={containerStyle}
                     >
-                        <View
-                            pointerEvents="none"
-                            style={style}
-                        >
+                        <View pointerEvents="none" style={style}>
                             {children}
                         </View>
                     </TouchableOpacity>
