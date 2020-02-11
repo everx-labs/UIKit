@@ -19,6 +19,7 @@ type Props = {
     maxDecimals: number,
     onPress?: () => void,
     displayNameOnly?: boolean,
+    notActive?: boolean,
 };
 
 type State = {
@@ -32,6 +33,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         maxDecimals: UIConstant.maxDecimalDigits(),
         onPress: () => {},
         displayNameOnly: false,
+        notActive: false,
     };
 
     // constructor
@@ -87,6 +89,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     renderAccount() {
+        const { notActive } = this.props;
         const account = this.getAccount();
 
         if (!account) {
@@ -101,7 +104,9 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                     style={[
                         UIStyle.flex,
                         UIStyle.marginRightDefault,
-                        UITextStyle.actionBodyMedium,
+                        notActive
+                            ? UITextStyle.secondaryBodyRegular
+                            : UITextStyle.actionBodyMedium,
                     ]}
                     numberOfLines={1}
                     ellipsizeMode="middle"
@@ -128,16 +133,28 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     render() {
-        const { containerStyle, onPress, displayNameOnly } = this.props;
+        const {
+            containerStyle,
+            onPress,
+            displayNameOnly,
+            notActive,
+        } = this.props;
 
         return (
-            <TouchableOpacity
-                style={containerStyle}
-                onPress={onPress}
-            >
-                {this.renderAccount()}
-                {displayNameOnly ? null : this.renderFooter()}
-            </TouchableOpacity>
+            notActive ? (
+                <View style={containerStyle}>
+                    {this.renderAccount()}
+                    {displayNameOnly ? null : this.renderFooter()}
+                </View>
+            ) : (
+                <TouchableOpacity
+                    style={containerStyle}
+                    onPress={onPress}
+                >
+                    {this.renderAccount()}
+                    {displayNameOnly ? null : this.renderFooter()}
+                </TouchableOpacity>
+            )
         );
     }
 }
