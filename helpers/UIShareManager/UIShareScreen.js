@@ -7,6 +7,7 @@ import {
     Clipboard,
     ScrollView,
 } from 'react-native';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 // Module imports
 
@@ -117,7 +118,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
         return this.state.message;
     }
 
-    getCancelImage(): ?string {
+    getCancelImage(): ?ImageSource {
         return UIAssets.btnClose();
     }
 

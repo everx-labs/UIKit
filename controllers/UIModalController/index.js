@@ -2,6 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { Style } from 'react-style-proptype/src/Style.flow';
 import {
@@ -130,8 +131,8 @@ export default class UIModalController<Props, State> extends UIController<
     testID: ?string;
     minWidth: number = 0;
     minHeight: number = 0;
-    maxWidth: number = 0;
-    maxHeight: number = 0;
+    maxWidth: number = Number.MAX_SAFE_INTEGER;
+    maxHeight: number = Number.MAX_SAFE_INTEGER;
     modalOnWeb: boolean;
 
     static animations = {
@@ -154,8 +155,6 @@ export default class UIModalController<Props, State> extends UIController<
         this.fromBottom = false;
         this.smallStripe = false;
         this.half = false;
-        this.maxHeight = 0;
-        this.maxWidth = 0;
         this.marginBottom = new Animated.Value(0);
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
@@ -261,6 +260,9 @@ export default class UIModalController<Props, State> extends UIController<
                 // But sometimes controller could specify minimum size
                 width = Math.max(width, this.minWidth);
                 height = Math.max(height, this.minHeight);
+
+                width = Math.min(width, this.maxWidth);
+                height = Math.min(height, this.maxHeight);
                 // -------
                 if (this.fromBottom) {
                     const screenHeight = Dimensions.get('window').height;
@@ -268,8 +270,6 @@ export default class UIModalController<Props, State> extends UIController<
                 }
             }
 
-            width = this.maxWidth > 0 ? Math.min(width, this.maxWidth) : width;
-            height = this.maxHeight > 0 ? Math.min(height, this.maxHeight) : height;
             return {
                 width,
                 height,
@@ -330,7 +330,7 @@ export default class UIModalController<Props, State> extends UIController<
         };
     }
 
-    getCancelImage(): ?string {
+    getCancelImage(): ?ImageSource {
         return null;
     }
 
