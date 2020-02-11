@@ -2,6 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { Style } from 'react-style-proptype/src/Style.flow';
 import {
@@ -130,6 +131,8 @@ export default class UIModalController<Props, State> extends UIController<
     testID: ?string;
     minWidth: number = 0;
     minHeight: number = 0;
+    maxWidth: number = Number.MAX_SAFE_INTEGER;
+    maxHeight: number = Number.MAX_SAFE_INTEGER;
     modalOnWeb: boolean;
 
     static animations = {
@@ -257,12 +260,16 @@ export default class UIModalController<Props, State> extends UIController<
                 // But sometimes controller could specify minimum size
                 width = Math.max(width, this.minWidth);
                 height = Math.max(height, this.minHeight);
+                // or maxium
+                width = Math.min(width, this.maxWidth);
+                height = Math.min(height, this.maxHeight);
                 // -------
                 if (this.fromBottom) {
                     const screenHeight = Dimensions.get('window').height;
                     height = Math.min(screenHeight, screenHeight - (screenHeight - height) / 2);
                 }
             }
+
             return {
                 width,
                 height,
@@ -323,7 +330,7 @@ export default class UIModalController<Props, State> extends UIController<
         };
     }
 
-    getCancelImage() {
+    getCancelImage(): ?ImageSource {
         return null;
     }
 
