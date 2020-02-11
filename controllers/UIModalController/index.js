@@ -134,6 +134,7 @@ export default class UIModalController<Props, State> extends UIController<
     maxWidth: number = Number.MAX_SAFE_INTEGER;
     maxHeight: number = Number.MAX_SAFE_INTEGER;
     modalOnWeb: boolean;
+    zIndex: ?number;
 
     static animations = {
         fade: () => 'fade',
@@ -287,6 +288,7 @@ export default class UIModalController<Props, State> extends UIController<
                     UIStyle.Common.absoluteFillContainer(),
                     styles.containerCentered,
                     this.fromBottom ? styles.containerToTheEnd : null,
+                    this.zIndex ? { zIndex: this.zIndex } : null,
                 ],
             };
         }
