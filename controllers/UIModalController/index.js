@@ -260,7 +260,7 @@ export default class UIModalController<Props, State> extends UIController<
                 // But sometimes controller could specify minimum size
                 width = Math.max(width, this.minWidth);
                 height = Math.max(height, this.minHeight);
-
+                // or maxium
                 width = Math.min(width, this.maxWidth);
                 height = Math.min(height, this.maxHeight);
                 // -------
