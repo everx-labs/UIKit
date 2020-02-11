@@ -400,9 +400,20 @@ export default class UIModalController<Props, State> extends UIController<
     // Events
 
     // Actions
-    getSlidingAnimation(animation: Animated.Value, toValue: number, useNativeDriver: boolean) {
-        return Animated.spring(animation, {
-            toValue,
+    moveToTop(onFinish: ?() => void) {
+        Animated.spring(this.dy, {
+            toValue: 0,
+            velocity: 0,
+            tension: 15,
+            friction: 10,
+            useNativeDriver: true,
+        }).start(onFinish);
+    }
+
+    moveToBottom(onFinish: ?() => void) {
+        const maxHeight = this.getMaxHeight();
+        Animated.spring(this.dy, {
+            toValue: maxHeight,
             velocity: 0,
             tension: 15,
             friction: 10,
@@ -411,17 +422,8 @@ export default class UIModalController<Props, State> extends UIController<
             // https://github.com/facebook/react-native/issues/20783
             restSpeedThreshold: 100,
             restDisplacementThreshold: 40,
-            useNativeDriver,
-        });
-    }
-
-    moveToTop(onFinish: ?() => void) {
-        this.getSlidingAnimation(this.dy, 0, true).start(onFinish);
-    }
-
-    moveToBottom(onFinish: ?() => void) {
-        const maxHeight = this.getMaxHeight();
-        this.getSlidingAnimation(this.dy, maxHeight, true).start(onFinish);
+            useNativeDriver: true,
+        }).start(onFinish);
     }
 
     openDialog() {
