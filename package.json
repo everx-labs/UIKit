@@ -34,6 +34,7 @@
         "react-native-dropdownalert": "^3.5.0",
         "react-native-fast-image": "^6.1.1",
         "react-native-flash-message": "^0.1.9",
+        "react-native-gesture-handler": "^1.5.5",
         "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
         "react-native-indicators": "git+https://github.com/FactorBench/react-native-indicators",
         "react-native-lightbox": "^0.7.0",

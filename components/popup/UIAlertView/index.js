@@ -49,6 +49,10 @@ const styles = StyleSheet.create({
 let masterRef = null;
 
 export default class UIAlertView extends UIComponent {
+    // Pick `zIndex` for UIAlertView thus to overlap all components
+    // http://softwareas.com/whats-the-maximum-z-index/ (as per Safari 0-3 threshold)
+    static zIndex = 16777271;
+
     static showAlert(alertTitle, alertMessage, alertButtons) {
         if (masterRef) {
             masterRef.showAlert(alertTitle, alertMessage, alertButtons);
@@ -107,7 +111,7 @@ export default class UIAlertView extends UIComponent {
             overlayStyle, containerStyle, titleStyle, messageStyle, buttonStyle, buttonTextStyle,
         } = styles;
         return (<AwesomeAlert
-            alertContainerStyle={{ overflow: 'hidden' }}
+            alertContainerStyle={{ overflow: 'hidden', zIndex: UIAlertView.zIndex }}
             overlayStyle={overlayStyle}
             contentContainerStyle={containerStyle}
             show={this.state.alertVisible}
