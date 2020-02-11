@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, PanResponder } from 'react-native';
 import type { PressEvent } from 'react-native/Libraries/Types/CoreEventTypes';
 import type { GestureState, PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../helpers/UIStyle';
@@ -47,7 +48,7 @@ type Props = {
     bottomLine?: boolean,
     height: number,
     title: string,
-    cancelImage: ?string,
+    cancelImage: ?ImageSource,
     cancelText: string,
     swipeToDismiss: boolean,
     dismissStripeStyle: ViewStyleProp,
