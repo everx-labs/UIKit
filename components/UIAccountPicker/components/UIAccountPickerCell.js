@@ -99,14 +99,14 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         const name = this.getAccountName();
 
         return (
-            <View style={UIStyle.flexRow}>
+            <View style={UIStyle.common.flexRow()}>
                 <Text
                     style={[
-                        UIStyle.flex,
-                        UIStyle.marginRightDefault,
+                        UIStyle.common.flex(),
+                        UIStyle.margin.rightDefault(),
                         notActive
-                            ? UITextStyle.secondaryBodyRegular
-                            : UITextStyle.actionBodyMedium,
+                            ? UIStyle.text.secondaryBodyRegular()
+                            : UIStyle.text.actionBodyMedium(),
                     ]}
                     numberOfLines={1}
                     ellipsizeMode="middle"
@@ -126,7 +126,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         }
 
         return (
-            <Text style={[UIStyle.marginTopTiny, UITextStyle.tertiaryCaptionRegular]}>
+            <Text style={[UIStyle.margin.topTiny(), UIStyle.text.tertiaryCaptionRegular()]}>
                 {account.name}
             </Text>
         );
