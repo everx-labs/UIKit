@@ -406,6 +406,11 @@ export default class UIModalController<Props, State> extends UIController<
             velocity: 0,
             tension: 15,
             friction: 10,
+            // Spring animation finishing could take some time
+            // so tuning it up a little, more details here:
+            // https://github.com/facebook/react-native/issues/20783
+            restSpeedThreshold: 100,
+            restDisplacementThreshold: 40,
             useNativeDriver,
         });
     }
@@ -427,6 +432,9 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     async show(arg: ModalControllerShowArgs) {
+        if (this.state.controllerVisible) {
+            return;
+        }
         let open;
         if (!arg) {
             open = true;
