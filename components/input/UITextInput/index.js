@@ -8,10 +8,8 @@ import type { PointerEvents } from '../../../types';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
-import { Platform } from 'react-native-web';
 
 const styles = StyleSheet.create({
     container: {
