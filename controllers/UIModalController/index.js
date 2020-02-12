@@ -266,6 +266,9 @@ export default class UIModalController<Props, State> extends UIController<
         ];
 
         if (UIDevice.isDesktop() || UIDevice.isTablet()) {
+            // Center the container
+            containerStyle.push(styles.containerCentered);
+
             if (!this.fullscreen) {
                 // On the desktop and the tablet we need to show a modal with fixed width and height
                 width = Math.min(width, fullScreenDialogWidth);
@@ -288,10 +291,9 @@ export default class UIModalController<Props, State> extends UIController<
                     containerStyle.push(styles.containerToTheEnd);
                 }
             }
+
             // Add calculated width & height
             dialogStyle.push({ width, height });
-            // Center the container
-            containerStyle.push(styles.containerCentered);
             // Calculate content height
             const contentHeight = height - outerNavBarHeight;
 
