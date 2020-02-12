@@ -1,8 +1,6 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 
-import { StyleSheet, View } from 'react-native';
-
 import UIToggle from '../UIToggle';
 import UIDetailsSwitcher from '../UIDetailsSwitcher';
 

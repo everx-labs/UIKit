@@ -8,7 +8,6 @@ import type { PointerEvents } from '../../../types';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -72,6 +71,16 @@ class UITextInput extends UIComponent<Props, State> {
         return this.textInput && this.textInput.isFocused();
     }
 
+    getTransitProps() {
+        const result = { ...this.props };
+        delete result.containerStyle;
+        delete result.textStyle;
+        delete result.beginningTag;
+        delete result.needBorderBottom;
+        delete result.onPress;
+        return result;
+    }
+
     // Actions
     focus() {
         if (this.textInput) {
@@ -126,7 +135,7 @@ class UITextInput extends UIComponent<Props, State> {
         const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
         return (<TextInput
             ref={(component) => { this.textInput = component; }}
-            {...(this.props: TextInputTransitProps)}
+            {...(this.getTransitProps(): TextInputTransitProps)}
             value={value}
             placeholder={placeholder}
             placeholderTextColor={placeholderTextColor}
@@ -138,7 +147,7 @@ class UITextInput extends UIComponent<Props, State> {
             autoCapitalize={autoCapitalize}
             secureTextEntry={secureTextEntry}
             style={[
-                UITextStyle.primaryBodyRegular,
+                UIStyle.text.primaryBodyRegular(),
                 styles.textInput,
                 textStyle,
             ]}
