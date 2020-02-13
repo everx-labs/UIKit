@@ -46,7 +46,7 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         this.setStateSafely({ highlightError: false });
         const cardNumberRaw = input.replace(/[^0-9]/gim, '');
         const cardNumber = (cardNumberRaw.match(/\d{1,4}/g) || []).join(' ');
-        if (cardNumberRaw.length <= 16) {
+        if (cardNumberRaw.length <= 19) {
             this.setStateSafely({ text: input, textFormated: cardNumber });
             this.props.onChangeText(cardNumber);
         }
