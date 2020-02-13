@@ -432,6 +432,8 @@ export default class UIFunction {
         undetected: 'undetected',
     };
 
+	// TODO: Probably it would be better to use a library that already verifies this, or find a simpler
+	//       approach, plus add unit tests for different bank cards
     static getBankCardType({ number = '', raw = true, presumed = false }: BankCardNumberArgs) {
         const rawNumber = raw ? number : number.replace(/[^0-9]/gim, '');
         const regEx = {
