@@ -428,6 +428,7 @@ export default class UIFunction {
         masterCard: 'masterCard',
         maestro: 'maestro',
         visa: 'visa',
+        amex: 'amex',
         undetected: 'undetected',
     };
 
@@ -437,6 +438,7 @@ export default class UIFunction {
             [this.bankCardTypes.visa]: /^4[0-9]{12}(?:[0-9]{3})?$/,
             [this.bankCardTypes.masterCard]: /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/,
             [this.bankCardTypes.maestro]: /^(5[06789]|6)[0-9]*$/,
+            [this.bankCardTypes.amex]: /^3[47][0-9]{13}$/,
             // for future using
             // amex: /^3[47][0-9]{13}$/,
             // diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
@@ -451,13 +453,20 @@ export default class UIFunction {
         const numbers = {
             [this.bankCardTypes.visa]: '4916338506082832',
             [this.bankCardTypes.masterCard]: '5280934283171080',
-            [this.bankCardTypes.maestro]: '5018000000000000',
+            [this.bankCardTypes.maestro]: '5018000000000000000',
+            [this.bankCardTypes.amex]: '370000000000000',
         };
 
         const results = {};
         Object.keys(regEx).forEach((key) => {
             const fullNumber = presumed ? `${rawNumber}${numbers[key].substr(rawNumber.length)}` : rawNumber;
-            if (regEx[key].test(fullNumber) && (presumed || rawNumber.length === 16)) {
+            if (regEx[key].test(fullNumber)
+            && (
+                (presumed || rawNumber.length === 15) // For American Express
+                || (presumed || rawNumber.length === 16) // Almost all cards
+                || (presumed || rawNumber.length === 19) // For some Maestro cards
+            )
+            ) {
                 results[key] = true;
             }
         });
@@ -469,7 +478,7 @@ export default class UIFunction {
         if (arr.length) {
             return arr[0];
         }
-        if (rawNumber.length >= 14 && rawNumber.length <= 16) {
+        if (rawNumber.length >= 14 && rawNumber.length <= 19) {
             return this.bankCardTypes.undetected;
         }
         return null;
