@@ -293,8 +293,6 @@ export default class UIModalController<Props, State> extends UIController<
                     // Change container when opening from the bottom
                     containerStyle.push(styles.containerToTheEnd);
                 }
-                // Add calculated width & height
-                dialogStyle.push({ width, height });
             } else {
                 // Count on status bar when fullscreen
                 containerPaddingTop += UIDevice.statusBarHeight();
