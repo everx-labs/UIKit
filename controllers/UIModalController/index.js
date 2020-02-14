@@ -253,6 +253,8 @@ export default class UIModalController<Props, State> extends UIController<
             ? UIDevice.navigationBarHeight()
             : 0; // navigation bar height above the modal controller
 
+        let containerPaddingTop = outerNavBarHeight;
+
         const dialogStyle = [
             styles.dialog, // general style for dialog with all rounded corners and background color
             styles.dialogOverflow,
@@ -291,12 +293,20 @@ export default class UIModalController<Props, State> extends UIController<
                     // Change container when opening from the bottom
                     containerStyle.push(styles.containerToTheEnd);
                 }
+                // Add calculated width & height
+                dialogStyle.push({ width, height });
+            } else {
+                // Count on status bar when fullscreen
+                containerPaddingTop += UIDevice.statusBarHeight();
+                height -= UIDevice.statusBarHeight();
+                // Add padding for container
+                containerStyle.push({ paddingTop: containerPaddingTop });
             }
 
             // Add calculated width & height
             dialogStyle.push({ width, height });
             // Calculate content height
-            const contentHeight = height - outerNavBarHeight;
+            const contentHeight = height - containerPaddingTop;
 
             return {
                 width,
@@ -307,15 +317,15 @@ export default class UIModalController<Props, State> extends UIController<
             };
         }
 
-        // Mobile
-        const containerPaddingTop = UIDevice.statusBarHeight() + outerNavBarHeight;
+        // Mobile (always fullscreen)
+        containerPaddingTop += UIDevice.statusBarHeight(); // count on status bar (as fullscreen)
         const bottomInset = this.fromBottom ? 0 : this.getSafeAreaInsets().bottom;
         const innerNavBarHeight = this.getNavigationBarHeight();
         const contentHeight = height - containerPaddingTop - innerNavBarHeight - bottomInset;
 
         // Change borders when opening from the mobile
         dialogStyle.push(styles.dialogBorders);
-        // "Flex" the dialog & container when opening from the mobile
+        // "Flex" the dialog & container when opening from the mobile (as fullscreen)
         dialogStyle.push(UIStyle.common.flex());
         containerStyle.push(UIStyle.common.flex());
         // Add padding for container
