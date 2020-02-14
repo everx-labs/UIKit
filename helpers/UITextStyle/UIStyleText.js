@@ -44,6 +44,16 @@ export default class UIStyleText {
     static bodyRegular() {
         return UITextStyle.bodyRegular;
     }
+    // Small - fontSize: 16, lineHeight: 20
+    static smallRegular() {
+        return UITextStyle.smallRegular;
+    }
+    static smallMedium() {
+        return UITextStyle.smallMedium;
+    }
+    static smallBold() {
+        return UITextStyle.smallBold;
+    }
     // Caption - fontSize: 14, lineHeight: 20
     static captionRegular() {
         return UITextStyle.captionRegular;
@@ -57,15 +67,6 @@ export default class UIStyleText {
     }
     static tinyMedium() {
         return UITextStyle.tinyMedium;
-    }
-    static smallRegular() {
-        return UITextStyle.smallRegular;
-    }
-    static smallMedium() {
-        return UITextStyle.smallMedium;
-    }
-    static smallBold() {
-        return UITextStyle.smallBold;
     }
     // Icon - fontSize: 10, lineHeight: 16
     static iconBold() {
