@@ -34,6 +34,10 @@ type Props = {
      @default ''
      */
     testID?: string,
+    /** onLayout handler
+    * @default null
+    */
+    onLayout?: ?(e: any) => void,
 };
 
 type State = {};
@@ -114,4 +118,5 @@ UIButtonGroup.defaultProps = {
     direction: UIButtonGroup.Direction.Row,
     gutter: GUTTER,
     style: null,
+    onLayout: null,
 };
