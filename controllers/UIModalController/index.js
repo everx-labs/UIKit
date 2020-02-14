@@ -134,6 +134,7 @@ export default class UIModalController<Props, State> extends UIController<
     maxHeight: number = Number.MAX_SAFE_INTEGER;
     modalOnWeb: boolean;
     zIndex: ?number;
+    closeAnimation: ?{ stop: () => void, start: (...any) => any };
 
     static animations = {
         fade: () => 'fade',
@@ -427,7 +428,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     moveToBottom(onFinish: ?() => void) {
         const maxHeight = this.getMaxHeight();
-        Animated.spring(this.dy, {
+        this.closeAnimation = Animated.spring(this.dy, {
             toValue: maxHeight,
             velocity: 0,
             tension: 15,
@@ -438,20 +439,28 @@ export default class UIModalController<Props, State> extends UIController<
             restSpeedThreshold: 100,
             restDisplacementThreshold: 40,
             useNativeDriver: true,
-        }).start(onFinish);
+        }).start(({ finished }) => {
+            if (!finished) {
+                return;
+            }
+            if (onFinish != null) {
+                onFinish();
+            }
+            this.closeAnimation = null;
+        });
     }
 
     openDialog() {
         this.onWillAppear();
         const maxHeight = this.getMaxHeight();
+        if (this.closeAnimation != null) {
+            this.closeAnimation.stop();
+        }
         this.dy.setValue(maxHeight);
         this.moveToTop(this.onDidAppearHandler);
     }
 
     async show(arg: ModalControllerShowArgs) {
-        if (this.state.controllerVisible) {
-            return;
-        }
         let open;
         if (!arg) {
             open = true;
@@ -480,6 +489,9 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     async hide() {
+        if (this.closeAnimation != null) {
+            return;
+        }
         if (this.state.controllerVisible) {
             this.onWillHide();
             this.moveToBottom(this.onDidHideHandler);
