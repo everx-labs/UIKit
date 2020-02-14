@@ -34,6 +34,7 @@ type Props = {
     maxFractionalDigits: number,
     maxBalanceLength: number,
     useMaxBalanceLength: boolean,
+    icon?: React$Node,
 };
 
 type State = {
@@ -68,6 +69,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         maxFractionalDigits: UIConstant.maxDecimalDigits(),
         useMaxBalanceLength: true,
         maxBalanceLength: UIConstant.maxDecimalDigits() + 2,
+        icon: null,
     };
 
     // constructor
@@ -588,12 +590,26 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     render() {
         const testID = this.getTestID();
         const testIDProp = testID ? { testID } : null;
-        const visibleBalance = this.props.animated ? (
-            <View style={UIStyle.common.overflowHidden()}>
-                {this.renderAnimatedBalanceContainer()}
-                {this.renderAnimatedBalance()}
-            </View>
-        ) : this.renderBalance();
+        const visibleBalance = this.props.animated
+            ? (
+                <View
+                    style={[
+                        UIStyle.common.flexRow(),
+                        UIStyle.common.alignCenter(),
+                        UIStyle.common.overflowHidden(),
+                    ]}
+                >
+                    {this.renderAnimatedBalanceContainer()}
+                    {this.renderAnimatedBalance()}
+                    {this.props.icon}
+                </View>
+            )
+            : (
+                <View style={[UIStyle.common.flexRow(), UIStyle.common.alignCenter()]}>
+                    {this.renderBalance()}
+                    {this.props.icon}
+                </View>
+            );
         return (
             <View {...testIDProp} style={this.props.containerStyle}>
                 {visibleBalance}
