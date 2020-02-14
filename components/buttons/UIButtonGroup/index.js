@@ -34,6 +34,10 @@ type Props = {
      @default ''
      */
     testID?: string,
+    /** onLayout handler
+    * @default null
+    */
+    onLayout?: ?(e: any) => void,
 };
 
 type State = {};
@@ -100,7 +104,7 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
         groupStyle.push(this.props.style);
 
         return (
-            <View testID={this.props.testID} style={groupStyle}>
+            <View testID={this.props.testID} style={groupStyle} onLayout={this.props.onLayout}>
                 {this.renderChildren()}
             </View>
         );
@@ -114,4 +118,5 @@ UIButtonGroup.defaultProps = {
     direction: UIButtonGroup.Direction.Row,
     gutter: GUTTER,
     style: null,
+    onLayout: null,
 };
