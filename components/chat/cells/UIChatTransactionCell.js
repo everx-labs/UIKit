@@ -204,7 +204,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getTextColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit) {
+        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
             return styles.textBlack;
         }
         return styles.textWhite;
@@ -213,7 +213,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getAmountColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit) {
+        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
             const trx = this.getTransaction();
             if (trx.out && trx.amount > 0) {
                 return styles.textBlue;
@@ -226,7 +226,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getCommentColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit) {
+        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
             return styles.textGrey;
         }
         return styles.textWhite;
