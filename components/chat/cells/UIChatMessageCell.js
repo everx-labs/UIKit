@@ -427,13 +427,18 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTransactionCell() {
-        const { additionalInfo, data, status } = this.props;
+        const {
+            additionalInfo, data, status, onTouchTransaction,
+        } = this.props;
+        const onTransactionPress = onTouchTransaction
+            ? this.onTransactionPress
+            : null;
         return (
             <UIChatTransactionCell
                 message={data}
                 status={status}
                 additionalInfo={additionalInfo}
-                onPress={this.onTransactionPress}
+                onPress={onTransactionPress}
             />
         );
     }

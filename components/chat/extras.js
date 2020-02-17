@@ -48,7 +48,7 @@ export type TypeOfActionDirectionType = $Values<typeof TypeOfActionDirection>;
 export type TransactionInfo = {
     separator: string,
     amountLocalized: string,
-    amount: string,
+    amount: number,
     token: string,
     sent: boolean,
     currency?: {
