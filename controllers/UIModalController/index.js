@@ -554,7 +554,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     onReleaseSwipe = (dy: number) => {
         if (dy > UIConstant.swipeThreshold()) {
-            this.hide();
+            this.onCancelPress();
         } else {
             this.moveToTop();
         }
