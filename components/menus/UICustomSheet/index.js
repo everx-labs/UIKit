@@ -96,7 +96,7 @@ export default class UICustomSheet extends UIController<Props, State> {
         headerRight: null,
         fullWidth: false,
         masterSheet: true,
-        modal: true,
+        modal: false,
         showHeader: true,
         containerStyle: null,
         onShow: () => {},
