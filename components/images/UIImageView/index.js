@@ -1,11 +1,12 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UISpinnerOverlay from '../../UISpinnerOverlay';
 import UILocalized from '../../../helpers/UILocalized';
 import UIActionSheet from '../../menus/UIActionSheet';
+import type { MenuItemType } from '../../menus/UIActionSheet/MenuItem';
 import UIAlertView from '../../popup/UIAlertView';
 import UIColor from '../../../helpers/UIColor';
 import UIComponent from '../../UIComponent';
@@ -16,7 +17,7 @@ const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
 const LightboxMobile = Platform.OS !== 'web' ? require('react-native-lightbox').default : null;
 const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
 
-const UIImage = Platform.OS === 'web' ? Image : FastImage;
+const UIImage: any = Platform.OS === 'web' ? Image : FastImage;
 
 const styles = StyleSheet.create({
     photoContainer: {
@@ -39,18 +40,23 @@ const photoOptions = {
     mediaType: 'photo',
 };
 
+type PhotoURI = {
+    uri: string,
+};
+
 type Props = {
-    source: string,
-    sourceBig?: string,
+    testID?: ?string,
+    source: string | PhotoURI,
+    sourceBig?: string | PhotoURI,
     editable?: boolean,
     expandable?: boolean,
     disabled?: boolean,
-    photoStyle?: StylePropType,
+    photoStyle?: ViewStyleProp,
     resizeMode?: string,
     resizeMethod?: string,
-    onUploadPhoto?: () => void,
-    onDeletePhoto?: () => void,
-    onPressPhoto?: () => void,
+    onUploadPhoto: (source: string, showHUD: () => void, hideHUD: () => void, name: string) => void,
+    onDeletePhoto?: (showHUD: () => void, hideHUD: () => void) => void,
+    onPressPhoto: (showHUD: () => void, hideHUD: () => void) => void,
     onError?: (error: Error) => void,
 };
 
@@ -60,24 +66,29 @@ type State = {
 };
 
 type PickerResponse = {
-    error?: Error,
-    didCancel?: boolean,
-    uri?: string,
-};
-
-type PhotoURI = {
+    didCancel: boolean,
+    error: string,
     uri: string,
 };
 
-type MenuItem = {
-    key: string,
-    title: string,
-    onPress: () => void,
-}
-
 export default class UIImageView extends UIComponent<Props, State> {
+    static defaultProps = {
+        source: '',
+        sourceBig: undefined,
+        editable: false,
+        expandable: true,
+        disabled: false,
+        photoStyle: null,
+        resizeMode: 'cover',
+        resizeMethod: 'auto',
+        onUploadPhoto: () => {},
+        onDeletePhoto: undefined,
+        onPressPhoto: () => {},
+        testID: null,
+    };
+
     // Internals
-    menuItemsList: MenuItem[];
+    menuItemsList: MenuItemType[];
 
     // constructor
     constructor(props: Props) {
@@ -119,21 +130,26 @@ export default class UIImageView extends UIComponent<Props, State> {
             );
             this.setLightboxVisible();
         } else if (this.isEditable() && Platform.OS !== 'web') {
-            this.actionSheet.show();
+            UIActionSheet.show(this.menuItemsList);
         }
     };
 
     onPickFromCamera = () => {
+        if (!ImagePicker) {
+            return;
+        }
         ImagePicker.launchCamera(photoOptions, (response: PickerResponse) => {
             if (response.error) {
-                this.onPickImageError(response.error);
+                this.onPickImageError(new Error(response.error));
                 console.warn('[UIImageView] ImagePicker from camera Error: ', response.error);
             } else if (response.didCancel) {
                 console.log('[UIImageView] User cancelled ImagePicker from camera');
             } else {
-                const source = Platform.OS === 'ios'
-                    ? response.uri.replace('file://', '')
-                    : response.uri;
+                const { uri } = response;
+                if (!uri) {
+                    return;
+                }
+                const source = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
                 // source = { uri: 'data:image/jpeg;base64,' + response.data };
                 const name = this.extractImageName(source);
                 this.uploadPhoto(source, name);
@@ -142,16 +158,21 @@ export default class UIImageView extends UIComponent<Props, State> {
     };
 
     onPickFromGallery = () => {
+        if (!ImagePicker) {
+            return;
+        }
         ImagePicker.launchImageLibrary(photoOptions, (response: PickerResponse) => {
             if (response.error) {
-                this.onPickImageError(response.error);
+                this.onPickImageError(new Error(response.error));
                 console.warn('[UIImageView] ImagePicker from gallery Error: ', response.error);
             } else if (response.didCancel) {
                 console.log('[UIImageView] User cancelled ImagePicker from gallery');
             } else {
-                const source = Platform.OS === 'ios'
-                    ? response.uri.replace('file://', '')
-                    : response.uri;
+                const { uri } = response;
+                if (!uri) {
+                    return;
+                }
+                const source = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
                 // source = { uri: 'data:image/jpeg;base64,' + response.data };
                 const name = this.extractImageName(source);
                 this.uploadPhoto(source, name);
@@ -166,7 +187,9 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     onDeletePhoto = () => {
-        if (!this.mounted) return;
+        if (!this.mounted || !this.props.onDeletePhoto) {
+            return;
+        }
         this.props.onDeletePhoto(
             this.showSpinnerOnPhotoView,
             this.hideSpinnerOnPhotoView,
@@ -174,6 +197,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     };
 
     // Used to open the input dialog directly using ref.
+    input: any;
     openDialog() {
         if (Platform.OS === 'web' && this.input) {
             this.input.click();
@@ -196,7 +220,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         return photoURI;
     }
 
-    getPhotoBig(): PhotoURI {
+    getPhotoBig(): ?PhotoURI {
         const photoURI = this.props.sourceBig;
         if (photoURI instanceof String || typeof photoURI === 'string') {
             return { uri: photoURI };
@@ -205,11 +229,11 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     isEditable(): boolean {
-        return this.props.editable && !this.props.disabled;
+        return !!this.props.editable && !this.props.disabled;
     }
 
     isExpandable(): boolean {
-        return this.props.expandable;
+        return !!this.props.expandable;
     }
 
     isShowSpinnerOnPhotoView(): boolean {
@@ -284,7 +308,8 @@ export default class UIImageView extends UIComponent<Props, State> {
 
         reader.onload = () => {
             console.log('[UIImageView] Image from file was loaded');
-            this.uploadPhoto(reader.result, name);
+            const photo: any = reader.result;
+            this.uploadPhoto(photo, name);
         };
         reader.readAsDataURL(file);
     }
@@ -330,7 +355,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     renderLightBox() {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== 'web' || !Lightbox) {
             return null;
         }
         const photo = this.getPhoto();
@@ -405,20 +430,6 @@ export default class UIImageView extends UIComponent<Props, State> {
         );
     }
 
-    renderActionSheet() {
-        if (Platform.OS === 'web') {
-            return null;
-        }
-        return (
-            <UIActionSheet
-                ref={(component) => { this.actionSheet = component; }}
-                needCancelItem
-                menuItemsList={this.menuItemsList}
-                masterActionSheet={false}
-            />
-        );
-    }
-
     renderPhoto() {
         if (Platform.OS === 'web' || this.isEditable()) {
             const { testID } = this.props;
@@ -434,6 +445,9 @@ export default class UIImageView extends UIComponent<Props, State> {
                     {this.renderPhotoInputForWeb()}
                 </TouchableOpacity>
             );
+        }
+        if (!LightboxMobile) {
+            return null;
         }
         const { width, height } = Dimensions.get('window');
         return (
@@ -457,38 +471,7 @@ export default class UIImageView extends UIComponent<Props, State> {
             <View style={[styles.photoContainer, this.props.photoStyle]}>
                 {this.renderPhoto()}
                 {this.renderSpinnerOverlay()}
-                {this.renderActionSheet()}
             </View>
         );
     }
 }
-
-UIImageView.defaultProps = {
-    source: null,
-    sourceBig: null,
-    editable: false,
-    expandable: true,
-    disabled: false,
-    photoStyle: null,
-    resizeMode: 'cover',
-    resizeMethod: 'auto',
-    onUploadPhoto: () => {},
-    onDeletePhoto: null,
-    onPressPhoto: () => {},
-    testID: null,
-};
-
-UIImageView.propTypes = {
-    source: PropTypes.string,
-    sourceBig: PropTypes.string,
-    editable: PropTypes.bool,
-    expandable: PropTypes.bool,
-    disabled: PropTypes.bool,
-    photoStyle: StylePropType,
-    resizeMode: PropTypes.string,
-    resizeMethod: PropTypes.string,
-    onUploadPhoto: PropTypes.func,
-    onDeletePhoto: PropTypes.func,
-    onPressPhoto: PropTypes.func,
-    testID: PropTypes.string,
-};

@@ -25,14 +25,14 @@ import type {
     ChatAdditionalInfo,
     ChatMessage,
     ChatMessageStatusType,
-    TransactionExtraInfo,
+    TransactionInfo,
 } from '../extras';
 
 type Props = {
     message: any,
     additionalInfo: ChatAdditionalInfo,
     status: ChatMessageStatusType,
-    onPress: () => void,
+    onPress: ?(() => void),
 }
 
 type State = {
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
 
 export default class UIChatTransactionCell extends UIPureComponent<Props, State> {
     static defaultProps = {
-        onPress: () => {},
+        onPress: null,
     };
 
     // Getters
@@ -127,14 +127,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getAmountInCurrency(): string {
         const extra = this.getExtra();
-        const amount = `${extra.amount}`;
-
         const { currency } = extra;
         if (!currency) {
             return '';
         }
-
-        return UIFunction.amountAndCurrency(amount, currency.symbol);
+        const localizedAmountInCurrency = `${extra.amount * currency.rate}`; // TODO: localize!!!
+        return UIFunction.amountAndCurrency(localizedAmountInCurrency, currency.symbol);
     }
 
     getDate(): string {
@@ -161,13 +159,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return Moment(created).format('LT');
     }
 
-    getStaking(): ?number {
-        const trx = this.getTransaction();
-        return trx.metadata?.staking?.type;
-    }
-
-    getExtra(): TransactionExtraInfo {
-        const extra: TransactionExtraInfo = {
+    getExtra(): TransactionInfo {
+        const extra: TransactionInfo = {
             amountLocalized: this.getAmount(),
             amount: this.getAmount(),
             separator: '.',
@@ -182,7 +175,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getCardColor(): ViewStyleProp {
         const extra = this.getExtra();
-        const trx = this.getTransaction();
         const { type } = extra;
         if (type === TypeOfTransaction.Deposit) {
             return styles.cardDeposit;
@@ -191,12 +183,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         } else if (type === TypeOfTransaction.Income) {
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
+            const trx = this.getTransaction();
             if (trx.aborted) {
                 return styles.cardAborted;
             } else if (trx.deploy) {
-                return styles.cardInvite;
-            } else if (trx.staking) {
-                return styles.cardDeposit;
+                return styles.cardInvite; // deploy looks the same as invite now
             }
             return styles.cardSpending;
         } else if (type === TypeOfTransaction.Bill) {
@@ -211,26 +202,31 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getTextColor() {
-        const staking = this.getStaking();
-        if (staking !== undefined) {
+        const extra = this.getExtra();
+        const { type } = extra;
+        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
             return styles.textBlack;
         }
         return styles.textWhite;
     }
 
     getAmountColor() {
-        const staking = this.getStaking();
-        if (staking === 1 || staking === 3) {
-            return styles.textBlue;
-        } else if (staking === 0 || staking === 2) {
+        const extra = this.getExtra();
+        const { type } = extra;
+        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
+            const trx = this.getTransaction();
+            if (trx.out && trx.amount > 0) {
+                return styles.textBlue;
+            }
             return styles.textGreen;
         }
         return styles.textWhite;
     }
 
     getCommentColor() {
-        const staking = this.getStaking();
-        if (staking !== undefined) {
+        const extra = this.getExtra();
+        const { type } = extra;
+        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
             return styles.textGrey;
         }
         return styles.textWhite;
@@ -267,16 +263,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     renderTrxContent() {
         const trx = this.getTransaction();
         const extra = this.getExtra();
+        const { amountLocalized } = extra;
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
-        let amount;
-        const staking = trx.metadata?.staking?.type;
-        if (staking === 0 || staking === 2) {
-            amount = `+ ${extra.amountLocalized}`;
-        } else if (staking === 1 || staking === 3) {
-            amount = `- ${extra.amountLocalized}`;
-        } else {
-            amount = trx.out ? `− ${extra.amountLocalized}` : `+ ${extra.amountLocalized}`;
-        }
         const color = this.getCardColor();
         const textColor = this.getTextColor();
         const amountColor = this.getAmountColor();
@@ -293,7 +281,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 ]}
             >
                 <View
-                    testID={`transaction_message_${amount}`}
+                    testID={`transaction_message_${amountLocalized}`}
                     style={[
                         UIStyle.Common.flexRow(),
                         UIStyle.Margin.bottomTiny(),
@@ -309,7 +297,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         text={this.getText()}
                     />
                     <UIBalanceView
-                        balance={amount}
+                        balance={amountLocalized}
                         separator={extra.separator}
                         tokenSymbol={extra.token}
                         smartTruncator={false}
@@ -324,8 +312,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 <View style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}>
                     <UILabel
                         testID={trx.aborted
-                            ? `transaction_message_${amount}_aborted`
-                            : `transaction_message_${amount}_time`}
+                            ? `transaction_message_${amountLocalized}_aborted`
+                            : `transaction_message_${amountLocalized}_time`}
                         role={UILabel.Role.TinyRegular}
                         text={
                             trx.aborted
@@ -345,14 +333,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     render() {
-        const stake = this.getTransaction().metadata?.staking?.roundId;
-        let { onPress } = this.props;
-        if (stake) {
-            onPress = null;
-        }
         return (
             <UIScaleButton
-                onPress={onPress}
+                onPress={this.props.onPress}
                 content={this.renderTrxContent()}
             />
         );

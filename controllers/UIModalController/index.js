@@ -134,6 +134,7 @@ export default class UIModalController<Props, State> extends UIController<
     maxHeight: number = Number.MAX_SAFE_INTEGER;
     modalOnWeb: boolean;
     zIndex: ?number;
+    closeAnimation: ?{ stop: () => void, start: (...any) => any };
 
     static animations = {
         fade: () => 'fade',
@@ -252,6 +253,8 @@ export default class UIModalController<Props, State> extends UIController<
             ? UIDevice.navigationBarHeight()
             : 0; // navigation bar height above the modal controller
 
+        let containerPaddingTop = outerNavBarHeight;
+
         const dialogStyle = [
             styles.dialog, // general style for dialog with all rounded corners and background color
             styles.dialogOverflow,
@@ -266,6 +269,9 @@ export default class UIModalController<Props, State> extends UIController<
         ];
 
         if (UIDevice.isDesktop() || UIDevice.isTablet()) {
+            // Center the container
+            containerStyle.push(styles.containerCentered);
+
             if (!this.fullscreen) {
                 // On the desktop and the tablet we need to show a modal with fixed width and height
                 width = Math.min(width, fullScreenDialogWidth);
@@ -287,13 +293,18 @@ export default class UIModalController<Props, State> extends UIController<
                     // Change container when opening from the bottom
                     containerStyle.push(styles.containerToTheEnd);
                 }
+            } else {
+                // Count on status bar when fullscreen
+                containerPaddingTop += UIDevice.statusBarHeight();
+                height -= UIDevice.statusBarHeight();
+                // Add padding for container
+                containerStyle.push({ paddingTop: containerPaddingTop });
             }
+
             // Add calculated width & height
             dialogStyle.push({ width, height });
-            // Center the container
-            containerStyle.push(styles.containerCentered);
             // Calculate content height
-            const contentHeight = height - outerNavBarHeight;
+            const contentHeight = height - containerPaddingTop;
 
             return {
                 width,
@@ -304,15 +315,15 @@ export default class UIModalController<Props, State> extends UIController<
             };
         }
 
-        // Mobile
-        const containerPaddingTop = UIDevice.statusBarHeight() + outerNavBarHeight;
+        // Mobile (always fullscreen)
+        containerPaddingTop += UIDevice.statusBarHeight(); // count on status bar (as fullscreen)
         const bottomInset = this.fromBottom ? 0 : this.getSafeAreaInsets().bottom;
         const innerNavBarHeight = this.getNavigationBarHeight();
         const contentHeight = height - containerPaddingTop - innerNavBarHeight - bottomInset;
 
         // Change borders when opening from the mobile
         dialogStyle.push(styles.dialogBorders);
-        // "Flex" the dialog & container when opening from the mobile
+        // "Flex" the dialog & container when opening from the mobile (as fullscreen)
         dialogStyle.push(UIStyle.common.flex());
         containerStyle.push(UIStyle.common.flex());
         // Add padding for container
@@ -425,7 +436,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     moveToBottom(onFinish: ?() => void) {
         const maxHeight = this.getMaxHeight();
-        Animated.spring(this.dy, {
+        this.closeAnimation = Animated.spring(this.dy, {
             toValue: maxHeight,
             velocity: 0,
             tension: 15,
@@ -436,20 +447,28 @@ export default class UIModalController<Props, State> extends UIController<
             restSpeedThreshold: 100,
             restDisplacementThreshold: 40,
             useNativeDriver: true,
-        }).start(onFinish);
+        }).start(({ finished }) => {
+            if (!finished) {
+                return;
+            }
+            if (onFinish != null) {
+                onFinish();
+            }
+            this.closeAnimation = null;
+        });
     }
 
     openDialog() {
         this.onWillAppear();
         const maxHeight = this.getMaxHeight();
+        if (this.closeAnimation != null) {
+            this.closeAnimation.stop();
+        }
         this.dy.setValue(maxHeight);
         this.moveToTop(this.onDidAppearHandler);
     }
 
     async show(arg: ModalControllerShowArgs) {
-        if (this.state.controllerVisible) {
-            return;
-        }
         let open;
         if (!arg) {
             open = true;
@@ -478,6 +497,9 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     async hide() {
+        if (this.closeAnimation != null) {
+            return;
+        }
         if (this.state.controllerVisible) {
             this.onWillHide();
             this.moveToBottom(this.onDidHideHandler);
@@ -532,7 +554,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     onReleaseSwipe = (dy: number) => {
         if (dy > UIConstant.swipeThreshold()) {
-            this.hide();
+            this.onCancelPress();
         } else {
             this.moveToTop();
         }

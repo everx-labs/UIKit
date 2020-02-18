@@ -6,6 +6,7 @@ import {
     Modal,
     Platform,
     LayoutAnimation,
+    Keyboard,
     StyleSheet,
     TouchableWithoutFeedback,
     View,
@@ -96,7 +97,7 @@ export default class UICustomSheet extends UIController<Props, State> {
         headerRight: null,
         fullWidth: false,
         masterSheet: true,
-        modal: true,
+        modal: false,
         showHeader: true,
         containerStyle: null,
         onShow: () => {},
@@ -273,6 +274,9 @@ export default class UICustomSheet extends UIController<Props, State> {
         onCancel = () => {},
         modal = false,
     }: Props = {}) {
+        // Hide the keyboard before showing
+        Keyboard.dismiss();
+        // Now show the sheet
         if (this.props.masterSheet) {
             this.component = component;
             this.headerLeft = headerLeft;
