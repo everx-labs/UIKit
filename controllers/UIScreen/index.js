@@ -46,6 +46,7 @@ export default class UIScreen<Props, State>
         // Events
         this.state = {
             ...this.state,
+            narrow: true,
             screenWidth: 0,
             scrollDisabled: false,
             scrollOffset: { x: 0, y: 0 },
@@ -64,11 +65,17 @@ export default class UIScreen<Props, State>
 
     // Events
     onScreenLayoutDefault = (e: any) => {
-        const { width } = e.nativeEvent.layout;
-        this.setScreenWidth(width);
-        const narrow = this.isNarrowScreen(width);
-        this.dispatchNarrow(narrow);
-        this.onScreenLayout(width);
+        const { width, height } = e.nativeEvent.layout;
+        if (width !== this.getScreenWidth()) {
+            this.setScreenWidth(width);
+
+            const narrow = !!width && width < UIConstant.elasticWidthBroad();
+            if (narrow !== this.isNarrow()) {
+                this.setNarrow(narrow);
+                this.dispatchNarrow(narrow);
+            }
+        }
+        this.onScreenLayout(width, height);
     };
 
     onScrollDefault = (e: any) => {
@@ -82,7 +89,7 @@ export default class UIScreen<Props, State>
         //
     }
 
-    onScreenLayout(width: string) {
+    onScreenLayout(width: string, height: string) {
         //
     }
 
@@ -99,6 +106,10 @@ export default class UIScreen<Props, State>
         this.setState({ scrollOffset });
     }
 
+    setNarrow(narrow: boolean = true) {
+        this.setStateSafely({ narrow });
+    }
+
     // Getters
     getScreenWidth() {
         return this.state.screenWidth;
@@ -112,6 +123,10 @@ export default class UIScreen<Props, State>
         return this.state.scrollOffset;
     }
 
+    isNarrow() {
+        return this.state.narrow;
+    }
+
     getPreviousRouteName() {
         const { state } = this.props.navigation.dangerouslyGetParent();
         if (state.routes && state.routes.length >= 2) {
@@ -119,15 +134,6 @@ export default class UIScreen<Props, State>
             return routeName;
         }
         return null;
-    }
-
-    isNarrow() {
-        const screenWidth = this.getScreenWidth();
-        return screenWidth && screenWidth < UIConstant.elasticWidthBroad();
-    }
-
-    isNarrowScreen(width: number) {
-        return width < UIConstant.elasticWidthBroad();
     }
 
     isScrollDisabled() {
