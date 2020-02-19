@@ -39,6 +39,10 @@ export default class UIScreen<Props, State>
     presetName: string;
     scrollView: ?ScrollView;
 
+    static isNarrow(width: number) {
+        return width < UIConstant.elasticWidthBroad();
+    }
+
     constructor(props: Props & NavigationProps) {
         super(props);
         this.presetName = '';
