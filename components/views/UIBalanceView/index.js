@@ -531,6 +531,18 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         //     </View>,
     }
 
+    renderIcon() {
+        const { icon } = this.props;
+        if (!icon) {
+            return null;
+        }
+        return (
+            <View style={UIStyle.common.alignJustifyCenter()}>
+                {icon}
+            </View>
+        );
+    }
+
     /* eslint-disable-next-line */
     auxBalanceText: ?(React$Component<*> & NativeMethodsMixinType);
     renderAuxBalance() {
@@ -592,22 +604,16 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const testIDProp = testID ? { testID } : null;
         const visibleBalance = this.props.animated
             ? (
-                <View
-                    style={[
-                        UIStyle.common.flexRow(),
-                        UIStyle.common.alignCenter(),
-                        UIStyle.common.overflowHidden(),
-                    ]}
-                >
+                <View style={[UIStyle.common.flexRow(), UIStyle.common.overflowHidden()]}>
                     {this.renderAnimatedBalanceContainer()}
                     {this.renderAnimatedBalance()}
-                    {this.props.icon}
+                    {this.renderIcon()}
                 </View>
             )
             : (
-                <View style={[UIStyle.common.flexRow(), UIStyle.common.alignCenter()]}>
+                <View style={UIStyle.common.flexRow()}>
                     {this.renderBalance()}
-                    {this.props.icon}
+                    {this.renderIcon()}
                 </View>
             );
         return (
