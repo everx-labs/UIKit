@@ -4,11 +4,11 @@ import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import type { NavigationState, Scene, SceneRendererProps } from 'react-native-tab-view';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
-import UITextStyle from '../../../helpers/UITextStyle';
+import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 
 type PageScreen = ComponentType<*>;
@@ -30,9 +30,12 @@ type SceneProps = SceneRendererProps<*> & Scene<*>;
 type TabBarProps = SceneRendererProps<*>;
 
 type UITabViewProps = {
-    tabWidth?: number,
+    contentStyle: ViewStyleProp,
+    tabWidth: number,
     pages: PageCollection,
     barAlign?: string,
+    labelStyle?: TextStyleProp,
+    inactiveTintColor?: string,
     onSwitchTab?: (index: number) => void,
 };
 
@@ -52,6 +55,9 @@ const styles = StyleSheet.create({
 export default class UITabView extends UIComponent<UITabViewProps, UITypeViewState> {
     static defaultProps = {
         tabWidth: 80,
+        barAlign: 'center',
+        labelStyle: UIStyle.text.primarySmallBold(),
+        inactiveTintColor: UIColor.dark(),
     };
 
     constructor(props: UITabViewProps) {
@@ -72,26 +78,6 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
         });
         // $FlowExpectedError
         this.renderScene = SceneMap(screens);
-        const tabWidth = props.tabWidth || UITabView.defaultProps.tabWidth;
-        this.tabBarProps = {
-            activeTintColor: UIColor.primary(),
-            inactiveTintColor: UIColor.dark(),
-            style: {
-                alignSelf: this.props.barAlign || 'center',
-                backgroundColor: 'transparent',
-                width: tabWidth * this.state.routes.length,
-            },
-            tabStyle: {
-                width: tabWidth,
-                paddingHorizontal: 0,
-            },
-            labelStyle: UITextStyle.primarySmallBold,
-            scrollEnabled: false,
-            upperCaseLabel: false,
-            indicatorStyle: {
-                backgroundColor: UIColor.primary(),
-            },
-        };
     }
 
     // Events
@@ -111,6 +97,36 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
         return this.state.index;
     }
 
+    getTapBarProps() {
+        const {
+            tabWidth, inactiveTintColor, barAlign, labelStyle,
+        } = this.props;
+        return {
+            activeTintColor: UIColor.primary(),
+            inactiveTintColor,
+            style: {
+                alignSelf: barAlign,
+                backgroundColor: 'transparent',
+                width: tabWidth * this.state.routes.length,
+                shadowColor: 'transparent',
+                shadowRadius: 0,
+                borderWidth: 0, // maybe we need this
+            },
+            tabStyle: {
+                backgroundColor: 'transparent', // maybe we need this
+                borderWidth: 0, // maybe we need this
+                width: tabWidth,
+                paddingHorizontal: 0,
+            },
+            labelStyle,
+            scrollEnabled: false,
+            upperCaseLabel: false,
+            indicatorStyle: {
+                backgroundColor: UIColor.primary(),
+            },
+        };
+    }
+
     // Fields
     tabBarProps: {
         activeTintColor: string,
@@ -127,7 +143,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
             activeTintColor,
             inactiveTintColor,
             labelStyle,
-        } = this.tabBarProps;
+        } = this.getTapBarProps();
 
         const index = this.getRoutes().indexOf(route);
         const color = index === this.getIndex() ? activeTintColor : inactiveTintColor;
@@ -142,7 +158,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
         return (
             <TabBar
                 {...props}
-                {...this.tabBarProps}
+                {...this.getTapBarProps()}
                 renderLabel={labelProps => this.renderLabel(labelProps)}
             />
         );
@@ -155,6 +171,7 @@ export default class UITabView extends UIComponent<UITabViewProps, UITypeViewSta
         };
         return (
             <TabView
+                sceneContainerStyle={this.props.contentStyle}
                 navigationState={navigationState}
                 renderScene={this.renderScene}
                 renderTabBar={this.renderTabBar}
