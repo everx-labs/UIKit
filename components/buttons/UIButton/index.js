@@ -2,6 +2,7 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text, Image } from 'react-native';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import UIFont from '../../../helpers/UIFont';
@@ -98,7 +99,7 @@ export type ButtonProps = ActionProps & {
     /** uri to left icon
     @default null
     */
-    icon?: ?string,
+    icon?: ImageSource,
     /** uri to right icon
     @default null
     */
@@ -337,7 +338,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     }
 
     // render
-    renderIcon(icon: string, position: string) {
+    renderIcon(icon: ImageSource, position: string) {
         if (this.shouldShowIndicator()) {
             return null;
         }
