@@ -394,6 +394,9 @@ export default class UIStyleText {
     static actionBodyMedium() {
         return UITextStyle.actionBodyMedium;
     }
+    static actionBodyBold() {
+        return UITextStyle.actionBodyBold;
+    }
 
     // Small - fontSize: 16, lineHeight: 20
     static actionSmallMedium() {
