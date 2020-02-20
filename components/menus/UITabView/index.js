@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -15,11 +17,14 @@ export type TabViewPage = {
 
 type Props = {
     pages: TabViewPage[],
-    width?: number,
+    width: number,
+    style?: ViewStyleProp,
+    pageStyle?: ViewStyleProp,
 };
 
 type State = {
     index: number,
+    marginLeft: AnimatedValue,
 };
 
 const styles = StyleSheet.create({
@@ -32,6 +37,7 @@ const styles = StyleSheet.create({
 export default class UITabView extends UIComponent<Props, State> {
     static defaultProps: Props = {
         pages: [],
+        width: 0,
     };
 
     constructor(props: Props) {
@@ -56,7 +62,7 @@ export default class UITabView extends UIComponent<Props, State> {
     // Render
     renderTapBar() {
         return (
-            <View style={[UIStyle.common.flexRow(), UIStyle.padding.horizontal()]}>
+            <View style={UIStyle.common.flexRow()}>
                 {this.props.pages.map(({ title }: TabViewPage, index: number) => {
                     const textStyle = index === this.state.index
                         ? UIStyle.text.actionBodyBold()
@@ -83,22 +89,24 @@ export default class UITabView extends UIComponent<Props, State> {
 
     renderIndicatorLine() {
         const { width, pages } = this.props;
-        if (!pages.length || !this.props.width) {
+        if (!pages.length || !width) {
             return null;
         }
 
         const marginLeft = Animated.divide(this.state.marginLeft, new Animated.Value(-2));
         return (
-            <Animated.View
-                style={[styles.bottomLine, { width: width / pages.length, marginLeft }]}
-            />
+            <View style={[UIStyle.common.flex(), UIStyle.common.overflowHidden()]}>
+                <Animated.View
+                    style={[styles.bottomLine, { width: width / pages.length, marginLeft }]}
+                />
+            </View>
         );
     }
 
     renderPages() {
-        const { width, pages } = this.props;
+        const { width, pages, pageStyle } = this.props;
         return (
-            <View style={[UIStyle.width.full(), UIStyle.common.overflowHidden()]}>
+            <View style={[UIStyle.common.overflowHidden(), pageStyle]}>
                 <Animated.View
                     style={[UIStyle.common.flexRow(), { marginLeft: this.state.marginLeft }]}
                 >
@@ -120,7 +128,7 @@ export default class UITabView extends UIComponent<Props, State> {
         }
 
         return (
-            <View style={UIStyle.common.flex()}>
+            <View style={[UIStyle.common.flex(), this.props.style]}>
                 {this.renderTapBar()}
                 {this.renderIndicatorLine()}
                 {this.renderPages()}
