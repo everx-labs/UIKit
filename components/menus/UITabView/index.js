@@ -1,165 +1,138 @@
 // @flow
-import type { ComponentType, Node } from 'react';
 import React from 'react';
-import { Animated, StyleSheet } from 'react-native';
-import type { NavigationState, Scene, SceneRendererProps } from 'react-native-tab-view';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
-import UITextStyle from '../../../helpers/UITextStyle';
+import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
+import UITextButton from '../../buttons/UITextButton';
 
-type PageScreen = ComponentType<*>;
-type PageCollection = {
-    [string]: {
-        title: string,
-        screen: PageScreen,
-    },
-};
-
-type RouteType = {
-    key: string,
+export type TabViewPage = {
     title: string,
-    testID?: string,
-}
-
-type SceneProps = SceneRendererProps<*> & Scene<*>;
-
-type TabBarProps = SceneRendererProps<*>;
-
-type UITabViewProps = {
-    tabWidth?: number,
-    pages: PageCollection,
-    barAlign?: string,
-    onSwitchTab?: (index: number) => void,
+    component: React$Node,
 };
 
-type UITypeViewState = {
+type Props = {
+    pages: TabViewPage[],
+    width: number,
+    style?: ViewStyleProp,
+    pageStyle?: ViewStyleProp,
+};
+
+type State = {
     index: number,
-    routes: RouteType[],
-} & NavigationState<*>;
+    marginLeft: AnimatedValue,
+};
 
 const styles = StyleSheet.create({
-    label: {
-        textAlign: 'center',
-        margin: UIConstant.smallContentOffset(),
-        backgroundColor: 'transparent',
+    bottomLine: {
+        height: 2,
+        backgroundColor: UIColor.primary(),
     },
 });
 
-export default class UITabView extends UIComponent<UITabViewProps, UITypeViewState> {
-    static defaultProps = {
-        tabWidth: 80,
+export default class UITabView extends UIComponent<Props, State> {
+    static defaultProps: Props = {
+        pages: [],
+        width: 0,
     };
 
-    constructor(props: UITabViewProps) {
+    constructor(props: Props) {
         super(props);
+
         this.state = {
             index: 0,
-            routes: [],
-        };
-        const screens: { [string]: PageScreen } = {};
-        Object.keys(props.pages).forEach((key) => {
-            const page = props.pages[key];
-            this.state.routes.push({
-                key,
-                title: page.title,
-                testID: undefined,
-            });
-            screens[key] = page.screen;
-        });
-        // $FlowExpectedError
-        this.renderScene = SceneMap(screens);
-        const tabWidth = props.tabWidth || UITabView.defaultProps.tabWidth;
-        this.tabBarProps = {
-            activeTintColor: UIColor.primary(),
-            inactiveTintColor: UIColor.dark(),
-            style: {
-                alignSelf: this.props.barAlign || 'center',
-                backgroundColor: 'transparent',
-                width: tabWidth * this.state.routes.length,
-            },
-            tabStyle: {
-                width: tabWidth,
-                paddingHorizontal: 0,
-            },
-            labelStyle: UITextStyle.primarySmallBold,
-            scrollEnabled: false,
-            upperCaseLabel: false,
-            indicatorStyle: {
-                backgroundColor: UIColor.primary(),
-            },
+            marginLeft: new Animated.Value(0),
         };
     }
 
     // Events
-    onIndexChange = (index: number) => {
+    onPressTab = (index: number) => {
+        Animated.timing(this.state.marginLeft, {
+            toValue: -index * this.props.width,
+            useNativeDriver: true,
+            duration: UIConstant.animationDuration(),
+        }).start();
         this.setStateSafely({ index });
-        if (this.props.onSwitchTab) {
-            this.props.onSwitchTab(index);
-        }
     };
-
-    // Getters
-    getRoutes() {
-        return this.state.routes;
-    }
-
-    getIndex() {
-        return this.state.index;
-    }
-
-    // Fields
-    tabBarProps: {
-        activeTintColor: string,
-        inactiveTintColor: string,
-        labelStyle: TextStyleProp,
-    };
-    renderScene: (props: SceneProps) => Node;
 
     // Render
-    // don't know why Scene<string> doesn't work
-    renderLabel(props: any) {
-        const { route } = props;
-        const {
-            activeTintColor,
-            inactiveTintColor,
-            labelStyle,
-        } = this.tabBarProps;
-
-        const index = this.getRoutes().indexOf(route);
-        const color = index === this.getIndex() ? activeTintColor : inactiveTintColor;
-        const label = route.title;
+    renderTapBar() {
         return (
-            <Animated.Text style={[styles.label, labelStyle, { color }]}>
-                {label}
-            </Animated.Text>);
+            <View style={UIStyle.common.flexRow()}>
+                {this.props.pages.map(({ title }: TabViewPage, index: number) => {
+                    const textStyle = index === this.state.index
+                        ? UIStyle.text.actionBodyBold()
+                        : UIStyle.text.secondaryBodyBold();
+                    return (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <TouchableWithoutFeedback
+                            onPress={() => this.onPressTab(index)}
+                            key={`tab-view-label-${title}`}
+                        >
+                            <View style={[UIStyle.common.flex(), UIStyle.common.alignCenter()]}>
+                                <UITextButton
+                                    title={title}
+                                    textStyle={textStyle}
+                                    onPress={() => this.onPressTab(index)}
+                                />
+                            </View>
+                        </TouchableWithoutFeedback>
+                    );
+                })}
+            </View>
+        );
     }
 
-    renderTabBar = (props: TabBarProps) => {
+    renderIndicatorLine() {
+        const { width, pages } = this.props;
+        if (!pages.length || !width) {
+            return null;
+        }
+
+        const marginLeft = Animated.divide(this.state.marginLeft, new Animated.Value(-2));
         return (
-            <TabBar
-                {...props}
-                {...this.tabBarProps}
-                renderLabel={labelProps => this.renderLabel(labelProps)}
-            />
+            <View style={[UIStyle.common.flex(), UIStyle.common.overflowHidden()]}>
+                <Animated.View
+                    style={[styles.bottomLine, { width: width / pages.length, marginLeft }]}
+                />
+            </View>
         );
-    };
+    }
+
+    renderPages() {
+        const { width, pages, pageStyle } = this.props;
+        return (
+            <View style={[UIStyle.common.overflowHidden(), pageStyle]}>
+                <Animated.View
+                    style={[UIStyle.common.flexRow(), { marginLeft: this.state.marginLeft }]}
+                >
+                    {pages.map(({ title, component }: TabViewPage) => {
+                        return (
+                            <View style={{ width }} key={`tab-view-page-${title}`}>
+                                {component}
+                            </View>
+                        );
+                    })}
+                </Animated.View>
+            </View>
+        );
+    }
 
     render() {
-        const navigationState = {
-            index: this.state.index,
-            routes: this.state.routes,
-        };
+        if (!this.props.width) {
+            return null;
+        }
+
         return (
-            <TabView
-                navigationState={navigationState}
-                renderScene={this.renderScene}
-                renderTabBar={this.renderTabBar}
-                onIndexChange={this.onIndexChange}
-            />
+            <View style={[UIStyle.common.flex(), this.props.style]}>
+                {this.renderTapBar()}
+                {this.renderIndicatorLine()}
+                {this.renderPages()}
+            </View>
         );
     }
 }

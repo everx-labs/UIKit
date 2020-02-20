@@ -34,13 +34,15 @@ export type ContentSize = {
     height: number,
 }
 
+let staticNarrow = true;
+
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
     scrollView: ?ScrollView;
 
     static isNarrow(width: number) {
-        return width < UIConstant.elasticWidthBroad();
+        return width && width < UIConstant.elasticWidthBroad();
     }
 
     constructor(props: Props & NavigationProps) {
@@ -50,7 +52,7 @@ export default class UIScreen<Props, State>
         // Events
         this.state = {
             ...this.state,
-            narrow: true,
+            narrow: staticNarrow,
             screenWidth: 0,
             scrollDisabled: false,
             scrollOffset: { x: 0, y: 0 },
@@ -112,6 +114,7 @@ export default class UIScreen<Props, State>
 
     setNarrow(narrow: boolean = true) {
         this.setStateSafely({ narrow });
+        staticNarrow = narrow;
     }
 
     // Getters
