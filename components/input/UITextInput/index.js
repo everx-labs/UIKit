@@ -51,6 +51,7 @@ type TextInputTransitProps = {
 };
 
 type UITextInputProps = {
+    testID?: string,
     beginningTag?: string,
     containerStyle?: StylePropType,
     disabled?: boolean,
@@ -115,6 +116,7 @@ class UITextInput extends UIComponent<Props, State> {
 
     renderTextInput() {
         const {
+            testID,
             value,
             placeholder,
             placeholderTextColor,
@@ -134,6 +136,7 @@ class UITextInput extends UIComponent<Props, State> {
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
         return (<TextInput
+            testID={testID}
             ref={(component) => { this.textInput = component; }}
             {...(this.getTransitProps(): TextInputTransitProps)}
             value={value}
