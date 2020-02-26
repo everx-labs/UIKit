@@ -95,6 +95,10 @@ export type DetailsProps = ActionProps & {
     */
     autoFocus: boolean,
     /**
+    If false, disable auto complete
+    */
+    autoComplete?: string,
+    /**
     Prefix for input value.
     @default ''
     */
@@ -706,6 +710,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     renderTextInput() {
         const {
             accessibilityLabel,
+            autoComplete,
             autoCorrect,
             autoCapitalize,
             autoFocus,
@@ -736,6 +741,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
+                autoComplete={autoComplete}
                 autoCorrect={autoCorrect}
                 autoFocus={autoFocus}
                 editable={editable}
@@ -744,6 +750,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
                 numberOfLines={this.numOfLines()}
+                noPersonalizedLearning={noPersonalizedLearning}
                 clearButtonMode="never"
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
@@ -775,7 +782,6 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                 inputAccessoryViewID={this.props.inputAccessoryViewID}
                 {...valueProp}
                 {...testIDProp}
-                {...{ noPersonalizedLearning: noPersonalizedLearning || false }}
             />
         );
     }
@@ -1038,6 +1044,7 @@ UIDetailsInput.defaultProps = {
     mandatoryColor: UIColor.error(),
     maxLines: 1,
     needArrow: false,
+    noPersonalizedLearning: false,
     onBlur: () => {},
     onChangeText: () => {},
     onFocus: () => {},
