@@ -342,6 +342,11 @@ export type DetailsProps = ActionProps & {
     ID for InputAccessoryView
     */
     inputAccessoryViewID?: string,
+    /**
+    Set https://developer.android.com/reference/android/widget/TextView#attr_android:imeOptions to flagNoPersonalizedLearning
+    IMPORTANT: not a part of RN yet, we extended TextInput
+    */
+    noPersonalizedLearning?: boolean,
 };
 
 type DetailsState = ActionState & {
@@ -713,6 +718,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             theme,
             maxHeight,
             value,
+            noPersonalizedLearning,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
@@ -769,6 +775,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                 inputAccessoryViewID={this.props.inputAccessoryViewID}
                 {...valueProp}
                 {...testIDProp}
+                {...{ noPersonalizedLearning: noPersonalizedLearning || false }}
             />
         );
     }

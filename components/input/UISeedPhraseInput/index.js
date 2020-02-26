@@ -47,17 +47,22 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         blurOnSubmit: true,
         placeholder: UILocalized.Password,
         autoFocus: false,
-        containerStyle: { },
+        containerStyle: {},
         forceMultiLine: true,
-        keyboardType: 'default', /* Platform.OS === 'android'
+        keyboardType:
+            'default' /* Platform.OS === 'android'
             ? 'visible-password' // to fix Android bug with keyboard suggestions
-            : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
+            : 'default', */, // CRAP, we can't use the hack as it breaks the multiline support :(
         phraseToCheck: '',
         commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
         totalWords: 12, // default value
         words: [],
+        // Set an InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS flag to a keyboard on Android. Needed by security reasons
+        autoCorrect: false,
+        autoComplete: 'off',
+        noPersonalizedLearning: true,
     };
 
     static splitPhrase(phrase: string): Array<string> {
