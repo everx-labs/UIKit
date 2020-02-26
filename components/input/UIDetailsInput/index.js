@@ -97,7 +97,7 @@ export type DetailsProps = ActionProps & {
     /**
     If false, disable auto complete
     */
-    autoComplete?: string,
+    autoCompleteType?: string,
     /**
     Prefix for input value.
     @default ''
@@ -710,7 +710,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     renderTextInput() {
         const {
             accessibilityLabel,
-            autoComplete,
+            autoCompleteType,
             autoCorrect,
             autoCapitalize,
             autoFocus,
@@ -737,11 +737,12 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             ? UIColor.textPlaceholder(theme)
             : UIColor.textDisabled(theme);
         return (
+            // $FlowFixMe
             <TextInput
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
-                autoComplete={autoComplete}
+                autoCompleteType={autoCompleteType}
                 autoCorrect={autoCorrect}
                 autoFocus={autoFocus}
                 editable={editable}

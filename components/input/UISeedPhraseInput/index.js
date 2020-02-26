@@ -61,7 +61,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         words: [],
         // Set an InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS flag to a keyboard on Android. Needed by security reasons
         autoCorrect: false,
-        autoComplete: 'off',
+        autoCompleteType: 'off',
         noPersonalizedLearning: true,
     };
 
