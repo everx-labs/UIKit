@@ -188,7 +188,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                 ]}
                 onLayout={this.onMenuLayout}
             >
-                {this.props.menuItemsList.map(item => (
+                {this.props.menuItemsList.map(item => !!item && (
                     <MenuItem
                         {...item}
                         key={`${Math.random()}~MenuItem~${item.title}`}
