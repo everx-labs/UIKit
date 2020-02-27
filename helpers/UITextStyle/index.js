@@ -111,6 +111,12 @@ const UITextStyle = StyleSheet.create({
     action: {
         ...action,
     },
+    error: {
+        ...error,
+    },
+    success: {
+        ...success,
+    },
 
     // [Text]
     // Title - fontSize: 36, lineHeight: 48
