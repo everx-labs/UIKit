@@ -273,6 +273,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
         return (
             <View
+                testID={`transaction_message_${amountLocalized}`}
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
@@ -281,7 +282,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 ]}
             >
                 <View
-                    testID={`transaction_message_${amountLocalized}`}
                     style={[
                         UIStyle.Common.flexRow(),
                         UIStyle.Margin.bottomTiny(),
@@ -309,11 +309,13 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     />
                 </View>
 
-                <View style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}>
+                <View
+                    testID={trx.aborted
+                        ? `transaction_message_${amountLocalized}_aborted`
+                        : `transaction_message_${amountLocalized}_time`}
+                    style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
+                >
                     <UILabel
-                        testID={trx.aborted
-                            ? `transaction_message_${amountLocalized}_aborted`
-                            : `transaction_message_${amountLocalized}_time`}
                         role={UILabel.Role.TinyRegular}
                         text={
                             trx.aborted
