@@ -117,6 +117,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         this.removeKeyboardListener();
     }
 
