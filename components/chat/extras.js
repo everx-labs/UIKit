@@ -26,6 +26,7 @@ export const TypeOfTransaction = {
     Bill: 'bill',
     Invoice: 'invoice',
     Invite: 'invite',
+    Compliment: 'compliment',
 };
 
 export const TypeOfAction = {

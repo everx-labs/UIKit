@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     },
     cardBill: {
         backgroundColor: UIColor.white(),
+        ...UIConstant.cardShadow(),
     },
     cardInvoice: {
         backgroundColor: UIColor.white(),
@@ -75,6 +76,9 @@ const styles = StyleSheet.create({
     },
     cardInvite: {
         backgroundColor: UIColor.primary(),
+    },
+    cardCompliment: {
+        backgroundColor: UIColor.fa(),
     },
     textWhite: {
         color: UIColor.white(),
@@ -196,6 +200,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
             return styles.cardInvoice;
         } else if (type === TypeOfTransaction.Invite) {
             return styles.cardInvite;
+        } else if (type === TypeOfTransaction.Compliment) {
+            return styles.cardCompliment;
         }
 
         return null;
@@ -204,7 +210,10 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getTextColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
+        if (type === TypeOfTransaction.Deposit
+            || type === TypeOfTransaction.Withdraw
+            || type === TypeOfTransaction.Bill
+            || type === TypeOfTransaction.Compliment) {
             return styles.textBlack;
         }
         return styles.textWhite;
@@ -219,6 +228,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 return styles.textBlue;
             }
             return styles.textGreen;
+        } else if (type === TypeOfTransaction.Bill
+            || type === TypeOfTransaction.Compliment) {
+            return styles.textBlack;
         }
         return styles.textWhite;
     }
@@ -226,7 +238,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getCommentColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
+        if (type === TypeOfTransaction.Deposit
+            || type === TypeOfTransaction.Withdraw
+            || type === TypeOfTransaction.Bill
+            || type === TypeOfTransaction.Compliment
+        ) {
             return styles.textGrey;
         }
         return styles.textWhite;
