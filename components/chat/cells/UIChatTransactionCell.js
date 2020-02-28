@@ -47,12 +47,10 @@ const styles = StyleSheet.create({
         backgroundColor: UIColor.green(),
     },
     cardDeposit: {
-        backgroundColor: UIColor.white(),
-        ...UIConstant.cardShadow(),
+        backgroundColor: UIColor.primaryPlus(),
     },
     cardWithdraw: {
-        backgroundColor: UIColor.white(),
-        ...UIConstant.cardShadow(),
+        backgroundColor: UIColor.blackLight(),
     },
     cardIncome: {
         backgroundColor: UIColor.green(),
@@ -210,9 +208,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getTextColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit
-            || type === TypeOfTransaction.Withdraw
-            || type === TypeOfTransaction.Bill
+        if (type === TypeOfTransaction.Bill
             || type === TypeOfTransaction.Compliment) {
             return styles.textBlack;
         }
@@ -222,13 +218,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getAmountColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit || type === TypeOfTransaction.Withdraw) {
-            const trx = this.getTransaction();
-            if (trx.out && trx.amount > 0) {
-                return styles.textBlue;
-            }
-            return styles.textGreen;
-        } else if (type === TypeOfTransaction.Bill
+        if (type === TypeOfTransaction.Bill
             || type === TypeOfTransaction.Compliment) {
             return styles.textBlack;
         }
@@ -238,9 +228,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getCommentColor() {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit
-            || type === TypeOfTransaction.Withdraw
-            || type === TypeOfTransaction.Bill
+        if (type === TypeOfTransaction.Bill
             || type === TypeOfTransaction.Compliment
         ) {
             return styles.textGrey;
