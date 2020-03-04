@@ -23,6 +23,7 @@ type Props = ActionProps & {
     caption: string,
     truncCaption: boolean,
     details: string,
+    titleComponent?: React$Node,
     captionComponent?: React$Node,
 };
 
@@ -155,10 +156,10 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
 
     renderContentCard() {
         const {
-            title, caption, details, secondDetails, captionComponent,
+            title, caption, details, secondDetails, titleComponent, captionComponent,
         } = this.props;
         const formattedCaption = this.props.truncCaption ? this.getFormattedText(caption) : caption;
-        const captionTextComponent = caption ? (
+        const captionText = caption ? (
             <Text
                 ellipsizeMode="middle"
                 numberOfLines={1}
@@ -185,7 +186,9 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                             {formattedTitle}
                         </Text>
                     )}
-                    {captionTextComponent}
+                    {titleComponent}
+                    {!formattedTitle && !titleComponent && <View style={UIStyle.common.flex()} />}
+                    {captionText}
                     {captionComponent}
                 </View>
                 <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
