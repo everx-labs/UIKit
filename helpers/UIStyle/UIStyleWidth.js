@@ -64,6 +64,10 @@ export default class UIStyleWidth {
         return styles.halfWidthContainer;
     }
 
+    static thirdContainer() {
+        return styles.thirdWidthContainer;
+    }
+
     static twoThirdsContainer() {
         return styles.twoThirdsWidthContainer;
     }
