@@ -10,11 +10,12 @@ import UIComponent from '../../components/UIComponent';
 
 const styles = StyleSheet.create({
     inputView: {
+        flex: 1,
+    },
+    inputViewCenteredContent: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1,
-        height: 32,
     },
     beginningTag: {
         position: 'absolute',
@@ -26,7 +27,6 @@ const styles = StyleSheet.create({
     textInput: {
         height: 32,
         padding: 0,
-        zIndex: 1,
         lineHeight: null,
     },
     androidInputAlignment: {
@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
 });
 
 export default class UIDialogTextInput extends UIComponent {
+    textInputRef = React.createRef();
+
     // Events
     onChangeText = text => {
         const { beginningTag, tagSeparator, onChangeText } = this.props;
@@ -71,11 +73,15 @@ export default class UIDialogTextInput extends UIComponent {
 
     // Actions
     focus() {
-        this.textInput.focus();
+        if (this.textInputRef.current != null) {
+            this.textInputRef.current.focus();
+        }
     }
 
     blur() {
-        this.textInput.blur();
+        if (this.textInputRef.current != null) {
+            this.textInputRef.current.blur();
+        }
     }
 
     // Render
@@ -83,9 +89,7 @@ export default class UIDialogTextInput extends UIComponent {
         if (this.props.textAlign === 'left') {
             return null;
         }
-        const {
-            beginningTag, tagSeparator, placeholder,
-        } = this.props;
+        const { beginningTag, tagSeparator, placeholder } = this.props;
         return (
             <Text style={[UITextStyle.primarySubtitleLight, { color: 'transparent' }]}>
                 {`${tagSeparator}${placeholder.trim()}${tagSeparator}${tagSeparator}${beginningTag}`}
@@ -94,9 +98,7 @@ export default class UIDialogTextInput extends UIComponent {
     }
 
     renderBeginningTag() {
-        const {
-            value, beginningTag, tagSeparator, textStyle,
-        } = this.props;
+        const { value, beginningTag, tagSeparator, textStyle } = this.props;
         if (value.length || !beginningTag) {
             return null;
         }
@@ -118,14 +120,69 @@ export default class UIDialogTextInput extends UIComponent {
 
     render() {
         const {
-            beginningTag, tagSeparator, placeholder, value, editable,
-            autoFocus, autoCapitalize, maxLength, returnKeyType, keyboardType,
-            needBorderBottom, style, textStyle, secureTextEntry,
+            beginningTag,
+            tagSeparator,
+            placeholder,
+            value,
+            editable,
+            autoFocus,
+            autoCapitalize,
+            maxLength,
+            returnKeyType,
+            keyboardType,
+            needBorderBottom,
+            style,
+            textStyle,
+            secureTextEntry,
             onSubmitEditing,
         } = this.props;
         const input = value ? `${beginningTag}${value}` : ''; // ${tagSeparator} between was removed
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
-        const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: "transparent" };
+        const underlineColorAndroid = secureTextEntry
+            ? null
+            : { underlineColorAndroid: 'transparent' };
+        const inputComponent = (
+            <TextInput
+                ref={this.textInputRef}
+                value={input}
+                placeholder={`${tagSeparator}${placeholder}${tagSeparator}`}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={onSubmitEditing}
+                keyboardType={keyboardType}
+                {...returnKeyTypeProp}
+                {...underlineColorAndroid}
+                autoCapitalize={autoCapitalize}
+                secureTextEntry={secureTextEntry}
+                autoCorrect={false}
+                placeholderTextColor={UIColor.textTertiary()}
+                selectionColor={UIColor.primary()}
+                editable={editable}
+                autoFocus={autoFocus}
+                maxLength={maxLength}
+                style={[
+                    input.length
+                        ? UITextStyle.primarySubtitleRegular
+                        : UITextStyle.primarySubtitleLight,
+                    styles.textInput,
+                    textStyle,
+                    this.getTextInputAlign(),
+                ]}
+            />
+        );
+        if (Platform.OS === 'android' && this.props.textAlign === 'center') {
+            return (
+                <View
+                    style={[
+                        styles.inputView,
+                        styles.inputViewCenteredContent,
+                        style,
+                        needBorderBottom ? UIStyle.borderBottom : null,
+                    ]}
+                >
+                    {inputComponent}
+                </View>
+            );
+        }
         return (
             <View
                 style={[
@@ -134,33 +191,7 @@ export default class UIDialogTextInput extends UIComponent {
                     needBorderBottom ? UIStyle.borderBottom : null,
                 ]}
             >
-                {this.renderBeginningTag()}
-                <TextInput
-                    ref={(component) => { this.textInput = component; }}
-                    {...underlineColorAndroid}
-                    autoCapitalize={autoCapitalize}
-                    secureTextEntry={secureTextEntry}
-                    autoCorrect={false}
-                    keyboardType={keyboardType}
-                    {...returnKeyTypeProp}
-                    style={[
-                        input.length
-                            ? UITextStyle.primarySubtitleRegular
-                            : UITextStyle.primarySubtitleLight,
-                        styles.textInput,
-                        textStyle,
-                        this.getTextAlign(),
-                    ]}
-                    placeholderTextColor={UIColor.textTertiary()}
-                    selectionColor={UIColor.primary()}
-                    placeholder={`${tagSeparator}${placeholder}${tagSeparator}`}
-                    value={input}
-                    editable={editable}
-                    autoFocus={autoFocus}
-                    maxLength={maxLength}
-                    onChangeText={this.onChangeText}
-                    onSubmitEditing={onSubmitEditing}
-                />
+                {inputComponent}
             </View>
         );
     }
