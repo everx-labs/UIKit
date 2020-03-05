@@ -23,6 +23,8 @@ type Props = ActionProps & {
     caption: string,
     truncCaption: boolean,
     details: string,
+    titleComponent?: React$Node,
+    captionComponent?: React$Node,
 };
 
 type State = ActionState & {
@@ -141,7 +143,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
             outputRange: ['0deg', '360deg'],
         });
         return (
-            <View style={UIStyle.Common.alignCenter()}>
+            <View style={UIStyle.common.alignCenter()}>
                 <Animated.Image
                     source={icoProgress}
                     style={{
@@ -154,14 +156,14 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
 
     renderContentCard() {
         const {
-            title, caption, details, secondDetails, captionComponent,
+            title, caption, details, secondDetails, titleComponent, captionComponent,
         } = this.props;
         const formattedCaption = this.props.truncCaption ? this.getFormattedText(caption) : caption;
-        const captionTextComponent = caption ? (
+        const captionText = caption ? (
             <Text
                 ellipsizeMode="middle"
                 numberOfLines={1}
-                style={UIStyle.Text.primarySmallRegular()}
+                style={UIStyle.text.primarySmallRegular()}
             >
                 {formattedCaption}
             </Text>
@@ -170,30 +172,34 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         return (
             <React.Fragment>
                 <View style={styles.rowContainer}>
-                    <Text
-                        ellipsizeMode="middle"
-                        numberOfLines={1}
-                        style={[
-                            UIStyle.Text.smallMedium(),
-                            UIStyle.Common.flex(),
-                            UIStyle.Margin.rightDefault(),
-                            this.getTitleColorStyle(),
-                        ]}
-                    >
-                        {formattedTitle}
-                    </Text>
-                    {captionTextComponent}
+                    {!!formattedTitle && (
+                        <Text
+                            ellipsizeMode="middle"
+                            numberOfLines={1}
+                            style={[
+                                UIStyle.text.smallMedium(),
+                                UIStyle.common.flex(),
+                                UIStyle.margin.rightDefault(),
+                                this.getTitleColorStyle(),
+                            ]}
+                        >
+                            {formattedTitle}
+                        </Text>
+                    )}
+                    {titleComponent}
+                    {!formattedTitle && !titleComponent && <View style={UIStyle.common.flex()} />}
+                    {captionText}
                     {captionComponent}
                 </View>
-                <View style={[styles.rowContainer, UIStyle.Margin.topTiny()]}>
+                <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
                     <Text style={[
-                        UIStyle.Text.secondaryCaptionRegular(),
-                        UIStyle.Common.flex(),
+                        UIStyle.text.secondaryCaptionRegular(),
+                        UIStyle.common.flex(),
                     ]}
                     >
                         {details}
                     </Text>
-                    <Text style={UIStyle.Text.secondaryCaptionRegular()}>
+                    <Text style={UIStyle.text.secondaryCaptionRegular()}>
                         {secondDetails}
                     </Text>
                 </View>
@@ -213,12 +219,12 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         const backgroundStyle = this.getBackgroundStyle();
         return (
             <View style={[
-                UIStyle.Common.justifyCenter(),
-                UIStyle.Height.majorCell(),
+                UIStyle.common.justifyCenter(),
+                UIStyle.height.majorCell(),
                 containerStyle,
             ]}
             >
-                <View style={[UIStyle.Common.positionAbsolute(), backgroundStyle]} />
+                <View style={[UIStyle.common.positionAbsolute(), backgroundStyle]} />
                 {this.renderCard()}
             </View>
         );
