@@ -123,20 +123,23 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     addKeyboardListener() {
         if (Platform.OS === 'web') {
-            document.addEventListener('keypress', this.onWebKeyPressed);
+            // Use of 'keydown' event to support backspace key.
+            document.addEventListener('keydown', this.onWebKeyPressed);
         }
     }
 
     removeKeyboardListener() {
         if (Platform.OS === 'web') {
-            document.removeEventListener('keypress', this.onWebKeyPressed);
+            document.removeEventListener('keydown', this.onWebKeyPressed);
         }
     }
 
     // events
     onWebKeyPressed = (pressedKey: any) => {
-        if (pressedKey.charCode > 47 && pressedKey.charCode < 58) {
+        if (pressedKey.keyCode > 47 && pressedKey.keyCode < 58) {
             this.onKeyPress(`${pressedKey.key}`);
+        } else if (pressedKey.keyCode === 8) {
+            this.onDeletePress();
         }
     };
 
