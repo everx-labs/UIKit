@@ -66,6 +66,7 @@ export type UIChatMessageInfo = {
     text?: string;
     image?: string;
     document?: string;
+    sending?: boolean;
     metadata?: any;
     trx?: any;
 };

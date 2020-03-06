@@ -529,6 +529,9 @@ const ru: UILocalizedData = {
         aborted: 'Aborted at {0}',
         sending: 'Pending...',
     },
+    message: {
+        sending: 'Pending...',
+    },
 
     ConfirmIdentity: 'Чтобы продолжить, нам необходимо подтвердить вашу личность, отправив SMS-код на ваш номер телефона',
     SMSNotice: 'Может взиматься плата за SMS',

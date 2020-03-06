@@ -249,6 +249,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     formattedTime(date: ?Date): string {
         const msg = this.props.additionalInfo?.message;
+        if (msg?.info.sending) {
+            return UILocalized.message.sending;
+        }
+
         const time = date || new Date(msg?.info.created || 0);
         return Moment(time).format('LT');
     }

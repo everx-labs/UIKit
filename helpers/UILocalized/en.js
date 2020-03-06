@@ -531,6 +531,10 @@ const en: UILocalizedData = {
         sending: 'Pending...',
     },
 
+    message: {
+        sending: 'Pending...',
+    },
+
     ConfirmIdentity: 'To proceed, we need to confirm your identity by sending an SMS code to your phone number',
     SMSNotice: 'SMS fees may apply',
 
