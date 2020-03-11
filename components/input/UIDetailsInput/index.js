@@ -830,7 +830,6 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
 
     renderArrow() {
         const { theme, needArrow } = this.props;
-        console.log(theme, needArrow);
         if (!needArrow) {
             return null;
         }
