@@ -19,6 +19,7 @@ import UIActionComponent from '../../UIActionComponent';
 import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
+import iconArrowDefault from '../../../assets/ico-arrow-right/ico-arrow-right.png';
 
 import type {
     UIColorData,
@@ -829,6 +830,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
 
     renderArrow() {
         const { theme, needArrow } = this.props;
+        console.log(theme, needArrow);
         if (!needArrow) {
             return null;
         }
@@ -844,6 +846,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         return (
             <UIActionImage
                 {...icons}
+                source={theme === UIColor.Theme.Light && iconArrowDefault}
                 disabled={this.isSubmitDisabled()}
                 onPress={this.onSubmitEditing}
             />

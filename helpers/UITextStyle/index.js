@@ -312,7 +312,7 @@ const UITextStyle = StyleSheet.create({
     },
     secondarySmallMedium: {
         ...secondary,
-        ...UIFont.smallRegular(),
+        ...UIFont.smallMedium(),
     },
     secondarySmallBold: {
         ...secondary,
