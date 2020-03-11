@@ -512,6 +512,9 @@ export type UILocalizedData = {
         aborted: string,
         sending: string,
     },
+    message: {
+        sending: string
+    },
 
     ConfirmIdentity: string,
     SMSNotice: string,

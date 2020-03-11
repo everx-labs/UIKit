@@ -121,6 +121,13 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
+    onMobileChange(event: any) {
+        // Seems that it is not necessary anymore to handle the auto-growing behavior
+        // on Android. So, I'm not removing the method from the UIDetailsInput class
+        // and instead overriding it in here to avoid introduce any possible unexpected
+        // behavior.
+    }
+
     onLayout = (e: any) => {
         const { nativeEvent } = e;
         // If the browser window is resized, this forces the input

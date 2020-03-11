@@ -49,10 +49,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         autoFocus: false,
         containerStyle: {},
         forceMultiLine: true,
+        // To prevent Android keyboard suggestions
+        // Btw it could break multiline support, need to keep an eye on it
         keyboardType:
-            'default' /* Platform.OS === 'android'
-            ? 'visible-password' // to fix Android bug with keyboard suggestions
-            : 'default', */, // CRAP, we can't use the hack as it breaks the multiline support :(
+            Platform.OS === 'android'
+                ? 'visible-password'
+                : 'default',
         phraseToCheck: '',
         commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
