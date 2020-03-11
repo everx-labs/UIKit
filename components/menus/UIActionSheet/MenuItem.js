@@ -19,23 +19,25 @@ const MenuItem = (props: MenuItemType) => {
     const {
         title, details, titleStyle, detailsStyle, chosen, onPress, disabled,
     } = props;
+
     const contentStyle = details
-        ? UIStyle.Common.justifySpaceBetween()
-        : UIStyle.Common.justifyCenter();
-    const marginRight = details ? UIStyle.Margin.rightDefault() : null;
-    const defaultTitleStyle = chosen ? UIStyle.Text.primary() : UIStyle.Text.action();
-    const defaultDetailsStyle = chosen ? UIStyle.Text.primary() : UIStyle.Text.tertiary();
+        ? UIStyle.common.justifySpaceBetween()
+        : UIStyle.common.justifyCenter();
+    const marginRight = details ? UIStyle.margin.rightDefault() : null;
+    const defaultTitleStyle = chosen ? UIStyle.text.primary() : UIStyle.text.action();
+    const defaultDetailsStyle = chosen ? UIStyle.text.primary() : UIStyle.text.tertiary();
     const containerStyle = [
-        UIStyle.Common.centerLeftContainer(),
-        UIStyle.Height.buttonHeight(),
+        UIStyle.common.centerLeftContainer(),
+        UIStyle.height.buttonHeight(),
         contentStyle,
     ];
+
     const content = (
         <React.Fragment>
             <Text
                 numberOfLines={1}
                 style={[
-                    UIStyle.Text.smallMedium(),
+                    UIStyle.text.smallMedium(),
                     marginRight,
                     defaultTitleStyle,
                     titleStyle,
@@ -46,7 +48,7 @@ const MenuItem = (props: MenuItemType) => {
             <Text
                 numberOfLines={1}
                 style={[
-                    UIStyle.Text.smallRegular(),
+                    UIStyle.text.smallRegular(),
                     defaultDetailsStyle,
                     detailsStyle,
                 ]}

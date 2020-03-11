@@ -24,6 +24,7 @@ type Placement = 'top' | 'bottom' | 'left' | 'right';
 
 type Props = {
     menuItemsList: MenuItemType[],
+    menuItems: MenuItemType[],
     placement?: Placement,
     needCancelItem?: boolean,
     children?: React$Node,
@@ -31,6 +32,7 @@ type Props = {
     testID?: string,
     style?: any,
     containerStyle?: any,
+    narrow?: boolean,
 };
 
 type State = {
@@ -41,9 +43,11 @@ type State = {
 
 export default class UIMenuView extends UIComponent<Props, State> {
     static defaultProps: Props = {
-        menuItemsList: [],
+        menuItemsList: [], // deprecated,
+        menuItems: [],
         placement: 'bottom',
         needCancelItem: true, // for iOS and Android only
+        narrow: false,
         onCancelCallback: () => {}, // for iOS and Android only
     };
 
@@ -81,14 +85,15 @@ export default class UIMenuView extends UIComponent<Props, State> {
     };
 
     onOpenMenu = (ignoreFirstClick: boolean = false) => {
-        if (Platform.OS === 'web' || UIDevice.isTablet()) {
+        UIMenuView.hideMenu();
+        if (this.needPopover()) {
             this.setIsVisible();
             this.initClickListenerForWeb(ignoreFirstClick);
             UIMenuBackground.initBackgroundForTablet(() => UIMenuView.hideMenu());
             masterRef = this;
         } else {
-            const { menuItemsList, needCancelItem, onCancelCallback } = this.props;
-            UIActionSheet.show(menuItemsList, needCancelItem, onCancelCallback);
+            const { needCancelItem, onCancelCallback } = this.props;
+            UIActionSheet.show(this.getMenuItems(), needCancelItem, onCancelCallback);
         }
     };
 
@@ -134,9 +139,17 @@ export default class UIMenuView extends UIComponent<Props, State> {
         return this.state.isVisible;
     }
 
+    needPopover() {
+        return (Platform.OS === 'web' && !this.props.narrow) || UIDevice.isTablet();
+    }
+
+    getMenuItems() {
+        return this.props.menuItems.length ? this.props.menuItems : this.props.menuItemsList;
+    }
+
     // Actions
     hideMenu() {
-        if (Platform.OS === 'web' || UIDevice.isTablet()) {
+        if (this.needPopover()) {
             this.firstClickIgnored = false;
             this.setIsVisible(false);
             this.deinitClickListenerForWeb();
@@ -177,6 +190,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
     // Render
     renderMenu = () => {
         const backgroundStyle = UIColor.getBackgroundColorStyle(UIColor.backgroundPrimary());
+
         return (
             <View
                 style={[
@@ -188,7 +202,7 @@ export default class UIMenuView extends UIComponent<Props, State> {
                 ]}
                 onLayout={this.onMenuLayout}
             >
-                {this.props.menuItemsList.map(item => !!item && (
+                {this.getMenuItems().map(item => !!item && (
                     <MenuItem
                         {...item}
                         key={`${Math.random()}~MenuItem~${item.title}`}

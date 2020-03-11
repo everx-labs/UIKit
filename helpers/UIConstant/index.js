@@ -227,7 +227,7 @@ export default class UIConstant {
         return UI_SMALL_CONTENT_OFFSET;
     }
 
-    static normalContentOffset() {
+    static normalContentOffset() { // 12
         return UI_NORMAL_CONTENT_OFFSET;
     }
 
