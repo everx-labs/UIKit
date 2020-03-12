@@ -34,7 +34,7 @@ export type ContentSize = {
     height: number,
 }
 
-let staticNarrow = true;
+let staticNarrow;
 
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
