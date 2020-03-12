@@ -38,6 +38,9 @@ const photoOptions = {
         skipBackup: true,
     },
     mediaType: 'photo',
+    // We had a crash here: https://github.com/FactorBench/react-native-image-picker/blob/develop/ios/ImagePickerManager.m#L374
+    // So looks like disabling this option could fix it
+    noData: true,
 };
 
 type PhotoURI = {
@@ -150,6 +153,8 @@ export default class UIImageView extends UIComponent<Props, State> {
                     return;
                 }
                 const source = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+                // Please take a look at `noData` option, before you going to uncomment this
+                // We had a crash because of that
                 // source = { uri: 'data:image/jpeg;base64,' + response.data };
                 const name = this.extractImageName(source);
                 this.uploadPhoto(source, name);
@@ -173,6 +178,8 @@ export default class UIImageView extends UIComponent<Props, State> {
                     return;
                 }
                 const source = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+                // Please take a look at `noData` option, before you going to uncomment this
+                // We had a crash because of that
                 // source = { uri: 'data:image/jpeg;base64,' + response.data };
                 const name = this.extractImageName(source);
                 this.uploadPhoto(source, name);
