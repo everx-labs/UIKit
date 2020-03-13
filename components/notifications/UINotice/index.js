@@ -346,7 +346,7 @@ export default class UINotice
         );
         const titleComponent = this.title ? title : null;
         const subView = (
-            <View style={{ marginRight: UIConstant.normalContentOffset() }}>
+            <View style={UIStyle.margin.rightNormal()}>
                 {this.subComponent}
             </View>
         );

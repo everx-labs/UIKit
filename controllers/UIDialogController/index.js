@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import {
-    ScrollView,
     View,
     Text,
     StyleSheet,
     Animated,
     LayoutAnimation,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import UIController from '../UIController';
 import UIColor from '../../helpers/UIColor';
@@ -330,37 +330,37 @@ class UIDialogController extends UIController {
             </React.Fragment>
         );
         const testIDProp = this.testID ? { testID: `${this.testID}_wrapper` } : null;
-        const wrappedContent = this.wrapContentInScrollView
-            ? (
-                <ScrollView
-                    {...testIDProp}
-                    style={UIStyle.container.screen()}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={[
-                        UIStyle.container.page(),
-                        styles.scrollContainer,
-                        this.getContentContainerStyle(),
-                        { paddingBottom: this.getBottomPanelHeight() },
-                    ]}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    {content}
-                </ScrollView>
-            )
-            : (
-                <View
-                    {...testIDProp}
-                    style={[
-                        UIStyle.container.screen(),
-                        UIStyle.container.page(),
-                        this.getContentContainerStyle(),
-                        { paddingBottom: this.getBottomPanelHeight() },
-                    ]}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    {content}
-                </View>
-            );
+        const wrappedContent = this.wrapContentInScrollView ? (
+            <ScrollView
+                {...testIDProp}
+                style={UIStyle.container.screen()}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={[
+                    UIStyle.container.page(),
+                    styles.scrollContainer,
+                    this.getContentContainerStyle(),
+                    { paddingBottom: this.getBottomPanelHeight() },
+                ]}
+                keyboardShouldPersistTaps="handled"
+                removeClippedSubviews={false}
+            >
+                {content}
+            </ScrollView>
+        ) : (
+            <View
+                {...testIDProp}
+                style={[
+                    UIStyle.container.screen(),
+                    UIStyle.container.page(),
+                    this.getContentContainerStyle(),
+                    { paddingBottom: this.getBottomPanelHeight() },
+                ]}
+                keyboardShouldPersistTaps="handled"
+                removeClippedSubviews={false}
+            >
+                {content}
+            </View>
+        );
         const animatedContainerStyle = {
             flex: 1,
             marginBottom: this.getMarginBottom(),

@@ -159,16 +159,13 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderRows() {
-        const { detailsList } = this.props;
-        return detailsList.map<React$Node>((item, index) => {
-            const cell = this.renderCell(item);
+        const { detailsList, leftCellStyle, rightCellStyle } = this.props;
+        return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
                 caption, value, captionType, key,
             } = item;
-            const testIDCaption = caption || 'default';
-            const borderTopStyle = index > 0 && captionType !== UIDetailsTable.cellType.header
-                ? styles.borderTop
-                : null;
+            const { header, bullet } = UIDetailsTable.cellType;
+            const borderTopStyle = index > 0 && captionType !== header && styles.borderTop;
             return (
                 <View
                     style={[
@@ -180,24 +177,24 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 >
                     <View
                         style={[
-                            this.props.leftCellStyle || UIStyle.common.flex(),
+                            leftCellStyle || UIStyle.common.flex(),
                             UIStyle.margin.rightDefault(),
                         ]}
                     >
                         <Text
                             numberOfLines={1}
-                            style={captionType === UIDetailsTable.cellType.header
+                            style={captionType === header
                                 ? UIStyle.text.tertiarySmallBold()
                                 : UIStyle.text.tertiarySmallRegular()}
                         >
-                            {captionType === UIDetailsTable.cellType.bullet ? '• ' : ''}{caption}
+                            {captionType === bullet ? '• ' : ''}{caption}
                         </Text>
                     </View>
                     <View
-                        testID={`table_cell_${testIDCaption}_value`}
-                        style={this.props.rightCellStyle || UIStyle.common.flex3()}
+                        testID={`table_cell_${caption || 'default'}_value`}
+                        style={rightCellStyle || UIStyle.common.flex3()}
                     >
-                        {cell}
+                        {this.renderCell(item)}
                     </View>
                 </View>
             );

@@ -380,11 +380,11 @@ export default class UICustomSheet extends UIController<Props, State> {
         return (
             <View
                 pointerEvents="box-none"
-                style={UIStyle.screenContainer}
+                style={UIStyle.container.screen()}
             >
                 <Animated.View
                     style={[
-                        UIStyle.bottomScreenContainer,
+                        UIStyle.container.bottomScreen(),
                         styles.downMenu,
                         containerStyle,
                         styleProps,
@@ -405,13 +405,13 @@ export default class UICustomSheet extends UIController<Props, State> {
         return (
             <View
                 testID="background_layer"
-                style={[UIStyle.absoluteFillObject, paddingBottom]}
+                style={[UIStyle.common.absoluteFillObject(), paddingBottom]}
                 collapsable={false}
                 ref={this.containerRef}
             >
                 <TouchableWithoutFeedback onPress={this.onHide}>
                     <Animated.View
-                        style={[UIStyle.absoluteFillObject, { backgroundColor }]}
+                        style={[UIStyle.common.absoluteFillObject(), { backgroundColor }]}
                     />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}

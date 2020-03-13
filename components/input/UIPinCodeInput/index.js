@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, LayoutAnimation, Animated, Vibration } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, LayoutAnimation, Animated, Vibration, Platform } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
@@ -113,9 +113,36 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         super.componentDidMount();
         this.initiateIndicator();
         this.resetShake();
+        this.addKeyboardListener();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.removeKeyboardListener();
+    }
+
+    addKeyboardListener() {
+        if (Platform.OS === 'web') {
+            // Use of 'keydown' event to support backspace key.
+            document.addEventListener('keydown', this.onWebKeyPressed);
+        }
+    }
+
+    removeKeyboardListener() {
+        if (Platform.OS === 'web') {
+            document.removeEventListener('keydown', this.onWebKeyPressed);
+        }
     }
 
     // events
+    onWebKeyPressed = (pressedKey: any) => {
+        if (pressedKey.keyCode > 47 && pressedKey.keyCode < 58) {
+            this.onKeyPress(`${pressedKey.key}`);
+        } else if (pressedKey.keyCode === 8) {
+            this.onDeletePress();
+        }
+    };
+
     onKeyPress(key: string) {
         if (!this.props.disabled) {
             const pin = `${this.state.pin}${key}`;
