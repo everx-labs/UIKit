@@ -268,12 +268,16 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const { amountLocalized } = extra;
+        const amount = trx.metadata?.acquiring
+            ? amountLocalized.substr(amountLocalized.indexOf(' '))
+            : amountLocalized;
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
         const color = this.getCardColor();
         const textColor = this.getTextColor();
         const amountColor = this.getAmountColor();
         const commentColor = this.getCommentColor();
         const date = this.getDate();
+        const tokenSymbol = trx.metadata?.acquiring ? undefined : extra.token;
 
         return (
             <View
@@ -301,9 +305,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         text={this.getText()}
                     />
                     <UIBalanceView
-                        balance={amountLocalized}
+                        balance={amount}
                         separator={extra.separator}
-                        tokenSymbol={extra.token}
+                        tokenSymbol={tokenSymbol}
                         smartTruncator={false}
                         textStyle={[
                             UIStyle.Text.smallRegular(),

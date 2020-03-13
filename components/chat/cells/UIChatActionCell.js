@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     containerDown: {
         paddingHorizontal: UIConstant.spaciousContentOffset(),
         height: UIConstant.smallButtonHeight(),
-        borderBottomRightRadius: UIConstant.borderRadius(),
+        borderBottomLeftRadius: UIConstant.borderRadius(),
         borderTopLeftRadius: UIConstant.borderRadius(),
         borderTopRightRadius: UIConstant.borderRadius(),
     },
