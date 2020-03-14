@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Linking } from 'react-native';
+import { StyleSheet, Linking, Platform } from 'react-native';
 
 import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
@@ -18,6 +18,7 @@ type Props = ButtonProps & {
     @default null
     */
     href?: ?string,
+    target?: '_blank' | '_self',
 };
 
 type State = {};
@@ -28,7 +29,17 @@ export default class UILink extends UIComponent<Props, State> {
     static Size = UIButton.ButtonSize;
 
     goHref = () => {
-        if (this.props.href) { Linking.openURL(this.props.href); }
+        if (this.props.href) {
+            if (
+                Platform.OS === 'web' &&
+                this.props.target === '_blank' &&
+                window && window.open
+            ) {
+                window.open(this.props.href, '_blank');
+                return;
+            }
+            Linking.openURL(this.props.href);
+        }
     }
 
     render() {
