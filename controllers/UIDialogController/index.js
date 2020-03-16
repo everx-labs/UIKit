@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import {
-    ScrollView,
     View,
     Text,
     StyleSheet,
     Animated,
     LayoutAnimation,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import UIController from '../UIController';
 import UIColor from '../../helpers/UIColor';
