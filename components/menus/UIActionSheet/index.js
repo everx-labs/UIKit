@@ -136,6 +136,8 @@ export default class UIActionSheet extends UIComponent<Props, State> {
     }
 
     renderMenuItem = ({ item }: { item: MenuItemType }) => {
+        if (!item) return null;
+
         return (
             <MenuItem
                 {...item}
@@ -153,7 +155,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
             <React.Fragment>
                 <FlatList
                     data={this.getMenuItemsList()}
-                    keyExtractor={item => `MenuItem~${item.title}`}
+                    keyExtractor={item => `MenuItem~${item?.title}`}
                     renderItem={this.renderMenuItem}
                     scrollEnabled={false}
                     showsVerticalScrollIndicator={false}

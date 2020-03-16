@@ -92,6 +92,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         dateComponents: ['year', 'month', 'day'],
         separator: '.',
         initialEpochTime: null,
+        initialTimestamp: null,
         onChangeDate: () => {},
         age: false,
         ageMax: AGE_MAX,
@@ -183,6 +184,10 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     getComment() {
+        if (this.props.comment) {
+            return this.props.comment;
+        }
+
         const ageInfo = this.props.age && this.isDateValid() ? this.isAgeValid() : null;
         if (this.isInputInvalid() && this.state.highlightError) {
             return ageInfo ? ageInfo.ageErrorMessage : UILocalized.InvalidDate;
@@ -313,10 +318,18 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     // Actions
     loadInitialDate() {
-        const { initialEpochTime } = this.props;
+        const { initialEpochTime, initialTimestamp } = this.props;
+
+        let initialMoment;
 
         if (initialEpochTime) {
-            const dateStr = Moment(initialEpochTime).format(this.getPattern());
+            initialMoment = Moment(initialEpochTime);
+        } else if (initialTimestamp) {
+            initialMoment = Moment.unix(initialTimestamp);
+        }
+
+        if (initialMoment) {
+            const dateStr = initialMoment.format(this.getPattern());
             const value = dateStr.split(this.getSeparator()).join('');
             this.setStateSafely({ date: value });
         }
@@ -361,11 +374,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
                 {this.renderTextInput()}
                 {this.renderRequiredPlaceholder()}
                 {this.renderMissingValue()}
+                {this.renderArrow()}
             </React.Fragment>
         );
-    }
-
-    render() {
-        return super.render();
     }
 }

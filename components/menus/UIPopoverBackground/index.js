@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { View } from 'react-native';
 import { PopoverContainer } from 'react-native-simple-popover';
 import { TapGestureHandler, State as RNGHState } from 'react-native-gesture-handler';
 
@@ -18,7 +18,7 @@ type State = {
     isBackgroundActive: boolean,
 };
 
-export default class UIMenuBackground extends UIComponent<Props, State> {
+export default class UIPopoverBackground extends UIComponent<Props, State> {
     static initBackgroundForTablet(callback: () => void) {
         if (masterRef) {
             masterRef.initBackgroundForTablet(callback);
