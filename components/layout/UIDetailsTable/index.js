@@ -173,7 +173,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         UIStyle.common.flexRow(),
                         borderTopStyle,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
+                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
                 >
                     <View
                         style={[
