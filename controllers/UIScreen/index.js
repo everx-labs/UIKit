@@ -7,6 +7,7 @@ import UIConstant from '../../helpers/UIConstant';
 import UIStyle from '../../helpers/UIStyle';
 
 import type { NavigationProps } from '../../helpers/UINavigator';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
     // $FlowExpectedError
@@ -148,7 +149,7 @@ export default class UIScreen<Props, State>
     }
 
     // Virtual
-    getContentContainerStyle() {
+    getContentContainerStyle(): ?ViewStyleProp | ViewStyleProp[] {
         return null;
     }
 

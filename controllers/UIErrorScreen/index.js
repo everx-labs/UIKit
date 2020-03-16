@@ -63,7 +63,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     };
 
     // Getters
-    getContentContainerStyle() {
+    getContentContainerStyle(): ?ViewStyleProp | ViewStyleProp[] {
         return [styles.scrollContainer, this.props.style];
     }
 
@@ -92,7 +92,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     }
 
     getCaption() {
-        const { caption } = this.getNavigationParams();
+        const caption = this.props.errorCaption || this.getNavigationParams().caption;
         if (caption) {
             return caption;
         }
