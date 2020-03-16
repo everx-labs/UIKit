@@ -1,5 +1,8 @@
+// @flow
 import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+
 import UIScreen from '../UIScreen';
 import UIStyle from '../../helpers/UIStyle';
 import UIActionImage from '../../components/images/UIActionImage';
@@ -26,7 +29,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIErrorScreen extends UIScreen {
+type Props = {
+    errorCode?: number,
+    needTopBar?: boolean,
+    style?: ViewStyleProp,
+};
+
+export default class UIErrorScreen extends UIScreen<Props, {}> {
+    static defaultProps: Props = {
+        needTopBar: true,
+    };
+
     static errorCodes = {
         pageNotfound: '404',
         serviceUnavailable: '000',
@@ -51,7 +64,7 @@ export default class UIErrorScreen extends UIScreen {
 
     // Getters
     getContentContainerStyle() {
-        return styles.scrollContainer;
+        return [styles.scrollContainer, this.props.style];
     }
 
     getContentStyle() {
@@ -61,7 +74,7 @@ export default class UIErrorScreen extends UIScreen {
     }
 
     getError() {
-        const { code } = this.getNavigationParams();
+        const code = this.props.errorCode || this.getNavigationParams().code;
         const { errors, errorCodes } = UIErrorScreen;
         if (code) {
             return errors[code];
@@ -99,11 +112,13 @@ export default class UIErrorScreen extends UIScreen {
 
     // Render
     renderTopBar() {
+        if (!this.props.needTopBar) return null;
+
         return (
             <View style={[
-                UIStyle.Height.greatCell(),
-                UIStyle.Padding.horizontal(),
-                UIStyle.Common.centerLeftContainer(),
+                UIStyle.height.greatCell(),
+                UIStyle.padding.horizontal(),
+                UIStyle.common.centerLeftContainer(),
             ]}
             >
                 <UIActionImage
@@ -117,13 +132,13 @@ export default class UIErrorScreen extends UIScreen {
     renderImage() {
         return (
             <View style={[
-                UIStyle.Common.absoluteFillContainer(),
-                UIStyle.Common.justifyCenter(),
+                UIStyle.common.absoluteFillContainer(),
+                UIStyle.common.justifyCenter(),
             ]}
             >
                 <View style={this.getContentStyle()}>
                     <Image
-                        style={UIStyle.Margin.topSmall()}
+                        style={UIStyle.margin.topSmall()}
                         source={image404}
                     />
                 </View>
@@ -136,22 +151,22 @@ export default class UIErrorScreen extends UIScreen {
             <React.Fragment>
                 {this.renderImage()}
                 {this.renderTopBar()}
-                <View style={[...this.getContentStyle(), UIStyle.Common.flex()]}>
+                <View style={[...this.getContentStyle(), UIStyle.common.flex()]}>
                     <UILabel
-                        style={UIStyle.Margin.topSpacious()}
+                        style={UIStyle.margin.topSpacious()}
                         role={UILabel.Role.Title}
                         text={this.getTitle()}
                     />
                     <UILabel
-                        style={UIStyle.Margin.topMedium()}
+                        style={UIStyle.margin.topMedium()}
                         role={UILabel.Role.Description}
                         text={this.getCaption()}
                     />
                 </View>
                 <UITextButton
-                    align={UITextButton.Align.Center}
+                    align={UITextButton.align.center}
                     title={UILocalized.BackToHome}
-                    buttonStyle={[UIStyle.Common.positionAbsolute(), styles.textButton]}
+                    buttonStyle={[UIStyle.common.positionAbsolute(), styles.textButton]}
                     onPress={this.onPressBackToHome}
                 />
                 <UIBottomBar
