@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 
 type Props = {
     errorCode?: number,
+    errorCaption?: string,
     needTopBar?: boolean,
     style?: ViewStyleProp,
 };
@@ -64,7 +65,8 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
 
     // Getters
     getContentContainerStyle(): ?ViewStyleProp | ViewStyleProp[] {
-        return [styles.scrollContainer, this.props.style];
+        const result: ViewStyleProp[] = [styles.scrollContainer, this.props.style];
+        return result;
     }
 
     getContentStyle() {

@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
 import { Platform, ScrollView, View, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIController from '../../controllers/UIController';
 import UIConstant from '../../helpers/UIConstant';
 import UIStyle from '../../helpers/UIStyle';
 
 import type { NavigationProps } from '../../helpers/UINavigator';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
     // $FlowExpectedError
