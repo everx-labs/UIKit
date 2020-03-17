@@ -268,16 +268,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const trx = this.getTransaction();
         const extra = this.getExtra();
         const { amountLocalized } = extra;
-        const amount = trx.metadata?.acquiring
-            ? amountLocalized.substr(amountLocalized.indexOf(' '))
-            : amountLocalized;
         const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
         const color = this.getCardColor();
         const textColor = this.getTextColor();
         const amountColor = this.getAmountColor();
         const commentColor = this.getCommentColor();
         const date = this.getDate();
-        const tokenSymbol = trx.metadata?.acquiring ? undefined : extra.token;
         const { Aborted, Sending } = ChatMessageStatus;
         const info = (trx.aborted || trx.sending)
             ? this.getStatusString(trx.aborted ? Aborted : Sending)
@@ -309,9 +305,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         text={this.getText()}
                     />
                     <UIBalanceView
-                        balance={amount}
+                        balance={amountLocalized}
                         separator={extra.separator}
-                        tokenSymbol={tokenSymbol}
+                        tokenSymbol={extra.token}
                         smartTruncator={false}
                         textStyle={[
                             UIStyle.Text.smallRegular(),
