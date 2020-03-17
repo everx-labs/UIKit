@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
