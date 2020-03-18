@@ -88,7 +88,9 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+        	? 'click'
+        	: 'touchend';
         this.clickListener = (e: any) => {
             e.stopPropagation && e.stopPropagation();
             e.preventDefault && e.preventDefault();
