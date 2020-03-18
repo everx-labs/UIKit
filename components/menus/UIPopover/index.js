@@ -107,7 +107,7 @@ export default class UIPopover<Props, State>
                 masterRef = this;
                 setTimeout(() => {
                     this.props.onShow();
-                }, 100);
+                }, 200);
             } else {
                 this.hide();
             }
