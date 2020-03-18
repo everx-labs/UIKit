@@ -95,18 +95,19 @@ export default class UIPopover<Props, State>
         if (menuWidth > triggerWidth) {
             this.setMarginLeft(menuWidth - triggerWidth);
         }
-        this.props.onShow();
     };
 
-    onShow = (ignoreFirstClick: boolean = false) => {
+    onShow = async (ignoreFirstClick: boolean = false) => {
         if (this.needPopover()) {
             if (!this.isVisible()) {
-                this.props.onShow && this.props.onShow();
                 UIPopover.hide();
-                this.setIsVisible();
                 this.initClickListenerForWeb(ignoreFirstClick);
                 UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
+                await this.setIsVisible();
                 masterRef = this;
+                setTimeout(() => {
+                    this.props.onShow();
+                }, 100);
             } else {
                 this.hide();
             }
@@ -122,7 +123,9 @@ export default class UIPopover<Props, State>
 
     // Setters
     setIsVisible(isVisible: boolean = true) {
-        this.setStateSafely({ isVisible });
+        return new Promise<void>((resolve) => {
+            this.setStateSafely({ isVisible }, resolve);
+        });
     }
 
     setTriggerWidth(triggerWidth: number) {

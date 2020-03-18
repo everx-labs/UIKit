@@ -527,4 +527,13 @@ export default class UIFunction {
         }
         return num;
     }
+
+    static truncText(str: string, narrow: boolean, signsCount: number) {
+        const signs = signsCount || (narrow ? 5 : 9);
+        if (str.length <= signs * 2) {
+            return str;
+        }
+        const dots = '.'.repeat(signs);
+        return `${str.substr(0, signs)} ${dots} ${str.substr(str.length - signs)}`;
+    }
 }
