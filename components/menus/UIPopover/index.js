@@ -32,6 +32,7 @@ export type PopoverProps = {
     narrow?: boolean,
     component?: React$Node,
     onShow: () => void,
+    onHide?: () => void,
 };
 
 export type PopoverState = {
@@ -99,11 +100,16 @@ export default class UIPopover<Props, State>
 
     onShow = (ignoreFirstClick: boolean = false) => {
         if (this.needPopover()) {
-            UIPopover.hide();
-            this.setIsVisible();
-            this.initClickListenerForWeb(ignoreFirstClick);
-            UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
-            masterRef = this;
+            if (!this.isVisible()) {
+                this.props.onShow && this.props.onShow();
+                UIPopover.hide();
+                this.setIsVisible();
+                this.initClickListenerForWeb(ignoreFirstClick);
+                UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
+                masterRef = this;
+            } else {
+                this.hide();
+            }
         } else if (this.isMenu) {
             this.showNarrowMenu();
         } else {
@@ -162,6 +168,8 @@ export default class UIPopover<Props, State>
     }
 
     hide() {
+        this.props.onHide && this.props.onHide();
+
         if (this.needPopover()) {
             this.firstClickIgnored = false;
             this.setIsVisible(false);
