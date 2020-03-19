@@ -89,8 +89,8 @@ export default class UIDevice {
     }
 
     static isWebkit(): boolean {
-    	return !Number.isNaN(UI_IS_WEBKIT);
-	}
+        return !Number.isNaN(UI_IS_WEBKIT);
+    }
 
     static appName(): string {
         return APP_NAME;
