@@ -130,10 +130,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Clicks
     initClickListenerForWeb() {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== "web") {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? "click"
+                : "touchend";
         this.clickListener = (e: any) => {
             this.hideHints();
         };
@@ -141,23 +144,26 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     deinitClickListenerForWeb() {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== "web") {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? "click"
+                : "touchend";
         window.removeEventListener(listenerType, this.clickListener);
     }
 
     // Events
     onKeyboardWillHide = (e: any) => {
         this.hideHints();
-    }
+    };
 
     onKeyPress = (e: any): void => {
         if (this.seedPhraseHintsView) {
             this.seedPhraseHintsView.onKeyPress(e);
         }
-    }
+    };
 
     // Setters
     setTotalWords() {

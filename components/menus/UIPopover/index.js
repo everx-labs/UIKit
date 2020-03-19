@@ -185,10 +185,13 @@ export default class UIPopover<Props, State>
 
     clickListener: (e: any) => void;
     initClickListenerForWeb(ignoreFirstClick: boolean = false) {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== "web") {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? "click"
+                : "touchend";
         this.clickListener = (e: any) => {
             if (ignoreFirstClick && !this.firstClickIgnored) {
                 this.firstClickIgnored = true;
@@ -203,19 +206,23 @@ export default class UIPopover<Props, State>
     }
 
     deinitClickListenerForWeb() {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== "web") {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? "click"
+                : "touchend";
         window.removeEventListener(listenerType, this.clickListener);
     }
 
-    showNarrowMenu(): void { // Virtual
+    showNarrowMenu(): void {
+        // Virtual
         //
     }
 
     // Render
-    renderMenu(): ?React$Node[] {
+    renderMenu(): ?(React$Node[]) {
         return null;
     }
 
