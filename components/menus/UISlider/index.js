@@ -72,18 +72,18 @@ export default class UISlider extends UIComponent<Props, State> {
 
             // Handling responder events
             onPanResponderMove: (evt, gestureState) => {
-                if (
-                    !(UIDevice.isDesktopWeb() || UIDevice.isWebkit()) ||
-                    this.isMouseDown()
-                ) {
-                    return Animated.event([null, { dx: this.state.dx }], {
-                        useNativeDriver: true,
-                        listener: this.onMove
-                    })(evt, gestureState);
+                if (!UIDevice.isDesktopWeb() || this.isMouseDown()) {
+                    return Animated.event(
+                        [null, { dx: this.state.dx }],
+                        {
+                            useNativeDriver: true,
+                            listener: this.onMove,
+                        },
+                    )(evt, gestureState);
                 }
                 return true;
             },
-            onPanResponderRelease: this.onSwipeRelease
+            onPanResponderRelease: this.onSwipeRelease,
         });
     }
 
@@ -121,20 +121,17 @@ export default class UISlider extends UIComponent<Props, State> {
         Animated.sequence([
             Animated.timing(this.state.dx, {
                 toValue: currDx - newDx,
-                duration: 0
+                duration: 0,
             }),
             Animated.timing(this.state.dx, {
                 toValue: 0,
-                duration: UIConstant.animationDuration() / 2
-            })
+                duration: UIConstant.animationDuration() / 2,
+            }),
         ]).start();
     };
 
     onMove = (event: any, { dx }: DXType) => {
-        if (
-            (UIDevice.isDesktopWeb() || UIDevice.isWebkit()) &&
-            !this.isMouseDown()
-        ) {
+        if (UIDevice.isDesktopWeb() && !this.isMouseDown()) {
             this.onSwipeRelease(null, { dx });
         } else {
             const currDx = this.getMarginLeft() + dx;
@@ -217,16 +214,16 @@ export default class UISlider extends UIComponent<Props, State> {
 
     getResponder() {
         let webResponder = null;
-        if (UIDevice.isDesktopWeb() || UIDevice.isWebkit()) {
+        if (UIDevice.isDesktopWeb()) {
             webResponder = {
                 onMouseDown: this.onMouseDown,
-                onMouseUp: this.onMouseUp
+                onMouseUp: this.onMouseUp,
             };
         }
 
         return {
             ...this.panResponder.panHandlers,
-            ...webResponder
+            ...webResponder,
         };
     }
 

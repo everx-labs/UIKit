@@ -28,7 +28,9 @@ const UI_IS_TABLET = Platform.OS !== 'web' ? DeviceInfo.isTabletSync() : UI_IS_T
 
 const UI_IS_MOBILE = Platform.OS !== 'web' ? !DeviceInfo.isTabletSync() : UI_IS_MOBILE_WEB;
 
-const UI_IS_WEBKIT = new MobileDetect(window.navigator.userAgent).version('Webkit');
+const UI_IS_WEBKIT = Platform.OS !== 'web'
+    ? Number.NaN
+    : new MobileDetect(window.navigator.userAgent).version('Webkit');
 
 const APP_NAME = Platform.OS !== 'web' ? DeviceInfo.getApplicationNameSync() : '';
 
