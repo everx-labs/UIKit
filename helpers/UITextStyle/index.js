@@ -572,11 +572,14 @@ const UITextStyle = StyleSheet.create({
     },
 
     // Small - fontSize: 16, lineHeight: 20
+    actionSmallBold: {
+        ...action,
+        ...UIFont.smallBold(),
+    },
     actionSmallMedium: {
         ...action,
         ...UIFont.smallMedium(),
     },
-    // Small - fontSize: 16, lineHeight: 20
     actionSmallRegular: {
         ...action,
         ...UIFont.smallRegular(),

@@ -407,11 +407,12 @@ export default class UIStyleText {
     }
 
     // Small - fontSize: 16, lineHeight: 20
+    static actionSmallBold() {
+        return UITextStyle.actionSmallBold;
+    }
     static actionSmallMedium() {
         return UITextStyle.actionSmallMedium;
     }
-
-    // Small - fontSize: 16, lineHeight: 20
     static actionSmallRegular() {
         return UITextStyle.actionSmallRegular;
     }
