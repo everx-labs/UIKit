@@ -45,6 +45,9 @@ export const commonStyles = {
     overflowVisible: {
         overflow: 'visible',
     },
+    flexWrap: {
+        flexWrap: 'wrap',
+    },
 
     dismissStripe: {
         height: 4,
@@ -238,6 +241,10 @@ export default class UIStyleCommon {
 
     static overflowVisible() {
         return styles.overflowVisible;
+    }
+
+    static flexWrap() {
+        return styles.flexWrap;
     }
 
     static positionAbsolute() {

@@ -10,6 +10,7 @@ import UIActionComponent from '../../UIActionComponent';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import UIFunction from '../../../helpers/UIFunction';
 import UIColorPalette from '../../../helpers/UIColor/UIColorPalette';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
@@ -113,12 +114,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     }
 
     getFormattedText(str: string) {
-        const signs = this.props.narrow ? 5 : 9;
-        if (str.length <= signs * 2) {
-            return str;
-        }
-        const dots = '.'.repeat(signs);
-        return `${str.substr(0, signs)} ${dots} ${str.substr(str.length - signs)}`;
+        return UIFunction.truncText(str, this.props.narrow);
     }
 
     // Actions

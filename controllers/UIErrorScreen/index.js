@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 
 type Props = {
     errorCode?: number,
+    errorCaption?: string,
     needTopBar?: boolean,
     style?: ViewStyleProp,
 };
@@ -63,16 +64,18 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
 
     // Getters
     getContentContainerStyle(): ?ViewStyleProp | ViewStyleProp[] {
-        return [styles.scrollContainer, this.props.style];
+        const result: ViewStyleProp[] = [styles.scrollContainer, this.props.style];
+        return result;
     }
 
     getContentStyle() {
         return this.isNarrow()
-            ? [UIStyle.Width.fullPaddingContainer()]
-            : [UIStyle.Width.halfContainer(), UIStyle.Common.alignSelfCenter()];
+            ? [UIStyle.width.fullPaddingContainer()]
+            : [UIStyle.width.halfContainer(), UIStyle.common.alignSelfCenter()];
     }
 
     getError() {
+        // $FlowExpectedError
         const code = this.props.errorCode || this.getNavigationParams().code;
         const { errors, errorCodes } = UIErrorScreen;
         if (code) {
@@ -82,6 +85,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     }
 
     getTitle() {
+        // $FlowExpectedError
         const { title } = this.getNavigationParams();
         if (title) {
             return title;
@@ -91,6 +95,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     }
 
     getCaption() {
+        // $FlowExpectedError
         const caption = this.props.errorCaption || this.getNavigationParams().caption;
         if (caption) {
             return caption;
