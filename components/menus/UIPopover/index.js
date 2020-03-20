@@ -108,7 +108,7 @@ export default class UIPopover<Props, State>
 
                 setTimeout(() => {
                     this.props.onShow();
-                }, 200);
+                }, UIConstant.animationSmallDuration());
             } else {
                 this.hide();
             }
