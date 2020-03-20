@@ -11,11 +11,8 @@ import UIGrid from '../../layout/UIGrid';
 import UIGridColumn from '../../layout/UIGridColumn';
 import UILink from '../../buttons/UILink';
 import UILocalized from '../../../helpers/UILocalized';
-import UIFunction from '../../../helpers/UIFunction';
 
 import icoClose from '../../../assets/ico-close/close-blue.png';
-
-const BANNER_FEEDBACK_WAS_SHOWN = 'banner-feedback-was-shown';
 
 type Props = {
     style?: ViewStyleProp,
@@ -62,7 +59,7 @@ export default class UIPushFeedback extends UIComponent<Props, State> {
 
     onClose = () => {
         this.setStateSafely({ isVisible: false });
-        UIFunction.setCookie(BANNER_FEEDBACK_WAS_SHOWN, 1, 30);
+        this.props.onClose();
     };
 
     // Getters
@@ -72,7 +69,7 @@ export default class UIPushFeedback extends UIComponent<Props, State> {
 
     // Render
     render() {
-        if (!this.state.isVisible || UIFunction.getCookie(BANNER_FEEDBACK_WAS_SHOWN)) {
+        if (!this.state.isVisible) {
             return null;
         }
 
