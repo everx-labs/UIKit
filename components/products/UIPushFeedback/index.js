@@ -17,7 +17,7 @@ import icoClose from '../../../assets/ico-close/close-blue.png';
 type Props = {
     style?: ViewStyleProp,
     closable?: boolean,
-    onClose?: ()=>void,
+    onClose: ()=>void,
     onPress: ()=>void,
 }
 type State = {
@@ -34,8 +34,11 @@ const styles = StyleSheet.create({
 });
 
 export default class UIPushFeedback extends UIComponent<Props, State> {
-    grid: any;
+    static defaultProps = {
+        onClose: () => {},
+    };
 
+    grid: any;
     constructor(props: Props) {
         super(props);
 
