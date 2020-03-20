@@ -59,7 +59,6 @@ export default class UIPopover<Props, State>
         if (masterRef) {
             masterRef.hide();
         }
-        UICustomSheet.hide();
     }
 
     // This trick with class name required to suppress flow warning
@@ -100,11 +99,13 @@ export default class UIPopover<Props, State>
     onShow = async (ignoreFirstClick: boolean = false) => {
         if (this.needPopover()) {
             if (!this.isVisible()) {
-                UIPopover.hide();
+                UIPopover.hide(); // hide previously opened masterRef if any
+
                 this.initClickListenerForWeb(ignoreFirstClick);
                 UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
                 await this.setIsVisible();
                 masterRef = this;
+
                 setTimeout(() => {
                     this.props.onShow();
                 }, 200);
@@ -171,16 +172,16 @@ export default class UIPopover<Props, State>
     }
 
     hide() {
-        this.props.onHide && this.props.onHide();
-
         if (this.needPopover()) {
+            if (this.props.onHide) {
+                this.props.onHide();
+            }
+
             this.firstClickIgnored = false;
             this.setIsVisible(false);
             this.deinitClickListenerForWeb();
             UIPopoverBackground.hideBackgroundForTablet();
             masterRef = null;
-        } else {
-            UICustomSheet.hide();
         }
 
         this.clearHideTimeout();
@@ -191,7 +192,10 @@ export default class UIPopover<Props, State>
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? 'click'
+                : 'touchend';
         this.clickListener = (e: any) => {
             if (ignoreFirstClick && !this.firstClickIgnored) {
                 this.firstClickIgnored = true;
@@ -209,16 +213,19 @@ export default class UIPopover<Props, State>
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? 'click'
+                : 'touchend';
         window.removeEventListener(listenerType, this.clickListener);
     }
 
-    showNarrowMenu(): void { // Virtual
-        //
+    showNarrowMenu(): void {
+        // Virtual
     }
 
     // Render
-    renderMenu(): ?React$Node[] {
+    renderMenu(): ?(React$Node[]) {
         return null;
     }
 
