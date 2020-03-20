@@ -192,18 +192,20 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                     {captionText}
                     {captionComponent}
                 </View>
-                <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
-                    <Text style={[
-                        UIStyle.text.secondaryCaptionRegular(),
-                        UIStyle.common.flex(),
-                    ]}
-                    >
-                        {details}
-                    </Text>
-                    <Text style={UIStyle.text.secondaryCaptionRegular()}>
-                        {secondDetails}
-                    </Text>
-                </View>
+                {!!(details || secondDetails) && (
+                    <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
+                        <Text style={[
+                            UIStyle.text.secondaryCaptionRegular(),
+                            UIStyle.common.flex(),
+                        ]}
+                        >
+                            {details}
+                        </Text>
+                        <Text style={UIStyle.text.secondaryCaptionRegular()}>
+                            {secondDetails}
+                        </Text>
+                    </View>
+                )}
             </React.Fragment>
         );
     }
