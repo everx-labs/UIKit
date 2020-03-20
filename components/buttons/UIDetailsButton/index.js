@@ -16,6 +16,7 @@ import UIColorPalette from '../../../helpers/UIColor/UIColorPalette';
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
 type Props = ActionProps & {
+    style: ViewStyleProp,
     containerStyle: ViewStyleProp,
     progress: boolean,
     transparent: boolean,
@@ -26,6 +27,7 @@ type Props = ActionProps & {
     details: string,
     titleComponent?: React$Node,
     captionComponent?: React$Node,
+    customComponent?: React$Node,
 };
 
 type State = ActionState & {
@@ -50,6 +52,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     static defaultProps: Props = {
         ...UIActionComponent.defaultProps,
         narrow: false,
+        style: {},
         containerStyle: {},
         progress: false,
         title: '',
@@ -152,7 +155,8 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
 
     renderContentCard() {
         const {
-            title, caption, details, secondDetails, titleComponent, captionComponent,
+            title, caption, details, secondDetails,
+            titleComponent, captionComponent, customComponent,
         } = this.props;
         const formattedCaption = this.props.truncCaption ? this.getFormattedText(caption) : caption;
         const captionText = caption ? (
@@ -167,6 +171,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         const formattedTitle = this.props.truncTitle ? this.getFormattedText(title) : title;
         return (
             <React.Fragment>
+                {customComponent}
                 <View style={styles.rowContainer}>
                     {!!formattedTitle && (
                         <Text
@@ -211,13 +216,14 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     }
 
     renderContent() {
-        const { containerStyle } = this.props;
+        const { containerStyle, style } = this.props;
         const backgroundStyle = this.getBackgroundStyle();
         return (
             <View style={[
                 UIStyle.common.justifyCenter(),
                 UIStyle.height.majorCell(),
                 containerStyle,
+                style,
             ]}
             >
                 <View style={[UIStyle.common.positionAbsolute(), backgroundStyle]} />
