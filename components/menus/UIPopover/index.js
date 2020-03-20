@@ -59,7 +59,6 @@ export default class UIPopover<Props, State>
         if (masterRef) {
             masterRef.hide();
         }
-        UICustomSheet.hide();
     }
 
     // This trick with class name required to suppress flow warning
@@ -101,8 +100,12 @@ export default class UIPopover<Props, State>
     onShow = (ignoreFirstClick: boolean = false) => {
         if (this.needPopover()) {
             if (!this.isVisible()) {
-                this.props.onShow && this.props.onShow();
-                UIPopover.hide();
+                UIPopover.hide(); // hide previously opened masterRef if any
+
+                if (this.props.onShow) {
+                    this.props.onShow();
+                }
+
                 this.setIsVisible();
                 this.initClickListenerForWeb(ignoreFirstClick);
                 UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
@@ -168,16 +171,16 @@ export default class UIPopover<Props, State>
     }
 
     hide() {
-        this.props.onHide && this.props.onHide();
-
         if (this.needPopover()) {
+            if (this.props.onHide) {
+                this.props.onHide();
+            }
+
             this.firstClickIgnored = false;
             this.setIsVisible(false);
             this.deinitClickListenerForWeb();
             UIPopoverBackground.hideBackgroundForTablet();
             masterRef = null;
-        } else {
-            UICustomSheet.hide();
         }
 
         this.clearHideTimeout();
@@ -185,13 +188,13 @@ export default class UIPopover<Props, State>
 
     clickListener: (e: any) => void;
     initClickListenerForWeb(ignoreFirstClick: boolean = false) {
-        if (Platform.OS !== "web") {
+        if (Platform.OS !== 'web') {
             return;
         }
         const listenerType =
             UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? "click"
-                : "touchend";
+                ? 'click'
+                : 'touchend';
         this.clickListener = (e: any) => {
             if (ignoreFirstClick && !this.firstClickIgnored) {
                 this.firstClickIgnored = true;
@@ -206,13 +209,13 @@ export default class UIPopover<Props, State>
     }
 
     deinitClickListenerForWeb() {
-        if (Platform.OS !== "web") {
+        if (Platform.OS !== 'web') {
             return;
         }
         const listenerType =
             UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? "click"
-                : "touchend";
+                ? 'click'
+                : 'touchend';
         window.removeEventListener(listenerType, this.clickListener);
     }
 
