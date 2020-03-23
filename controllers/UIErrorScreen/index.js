@@ -151,6 +151,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     }
 
     renderContent() {
+        console.log(UIErrorScreen.componentDidMount);
         return (
             <React.Fragment>
                 {this.renderImage()}
