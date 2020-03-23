@@ -182,7 +182,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         ]}
                     >
                         <Text
-                            numberOfLines={1}
+                            // numberOfLines={1}
                             style={captionType === header
                                 ? UIStyle.text.tertiarySmallBold()
                                 : UIStyle.text.tertiarySmallRegular()}
