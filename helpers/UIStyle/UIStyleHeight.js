@@ -3,7 +3,9 @@ import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
 
 export const heightStyles = {
-    // heights
+    none: {
+        height: null,
+    },
     tinyCell: { // 16
         height: UIConstant.tinyCellHeight(),
     },
@@ -44,7 +46,10 @@ export const heightStyles = {
 const styles = StyleSheet.create(heightStyles);
 
 export default class UIStyleHeight {
-    // heights
+    static none() { // null
+        return styles.none;
+    }
+
     static tinyCell() { // 16
         return styles.tinyCell;
     }
