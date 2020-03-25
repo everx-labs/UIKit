@@ -53,7 +53,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     getDecimalSeparator(): string {
-        return this.props.decimalSeparator;
+        return this.props.decimalSeparator || '.';
     }
 
     getMaxDecimals(): number {
