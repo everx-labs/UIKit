@@ -15,6 +15,7 @@ import type { UIAccountData } from './types/UIAccountData';
 type Props = {
     title: string,
     account: UIAccountData,
+    decimalSeparator?: string, // used for localize account balance
     onPressAccount?: () => void,
     containerStyle: ViewStyleProp,
     displayNameOnly?: boolean,
@@ -28,6 +29,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
     static defaultProps = {
         title: '',
         account: null,
+        decimalSeparator: '.',
         onPressAccount: () => {},
         displayNameOnly: false,
         notActive: false,
@@ -44,6 +46,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
     renderAccountCell() {
         const {
             account,
+            decimalSeparator,
             onPressAccount,
             displayNameOnly,
             notActive,
@@ -56,6 +59,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
         return (
             <UIAccountPickerCell
                 account={account}
+                decimalSeparator={decimalSeparator}
                 onPress={onPressAccount}
                 displayNameOnly={displayNameOnly}
                 notActive={notActive}
