@@ -16,6 +16,7 @@ import type { UIAccountData } from '../types/UIAccountData';
 type Props = {
     containerStyle: ViewStyleProp,
     account: ?UIAccountData,
+    decimalSeparator: ?string,
     maxDecimals: number,
     onPress?: () => void,
     displayNameOnly?: boolean,
@@ -30,6 +31,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     static defaultProps = {
         containerStyle: {},
         account: null,
+        decimalSeparator: '.',
         maxDecimals: UIConstant.maxDecimalDigits(),
         onPress: () => {},
         displayNameOnly: false,
@@ -48,6 +50,10 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     // Getters
     getAccount(): UIAccountData {
         return this.props.account;
+    }
+
+    getDecimalSeparator(): string {
+        return this.props.decimalSeparator || '.';
     }
 
     getMaxDecimals(): number {
@@ -82,7 +88,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
             >
                 {integer}
                 <Text style={greyBodyRegular}>
-                    {`.${decimals}`}
+                    {`${this.getDecimalSeparator()}${decimals}`}
                 </Text>
             </Text>
         );
