@@ -538,13 +538,13 @@ export default class UIFunction {
     }
 
     // Return flat object, takes complex object with enclosures as an argument
-    static flattify(obj: any) {
+    static flatify(obj: any) {
         if (!obj) return {};
 
         const result = {};
         Object.keys(obj).forEach((key) => {
             if (typeof obj[key] === 'object') {
-                const flattifyResult = this.flattify(obj[key]);
+                const flattifyResult = this.flatify(obj[key]);
                 Object.keys(flattifyResult).forEach((innerKey) => {
                     result[`${key} / ${innerKey}`] = flattifyResult[innerKey];
                 });
