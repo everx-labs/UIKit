@@ -536,4 +536,23 @@ export default class UIFunction {
         const dots = '.'.repeat(signs);
         return `${str.substr(0, signs)} ${dots} ${str.substr(str.length - signs)}`;
     }
+
+    // Return flat object, takes complex object with enclosures as an argument
+    static flatify(obj: any) {
+        if (!obj) return {};
+
+        const result = {};
+        Object.keys(obj).forEach((key) => {
+            if (typeof obj[key] === 'object') {
+                const flattifyResult = this.flatify(obj[key]);
+                Object.keys(flattifyResult).forEach((innerKey) => {
+                    result[`${key} / ${innerKey}`] = flattifyResult[innerKey];
+                });
+            } else {
+                result[key] = obj[key];
+            }
+        });
+
+        return result;
+    }
 }
