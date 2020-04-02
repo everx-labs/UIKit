@@ -29,12 +29,12 @@ const FONT_WEB_REGULAR = Platform.select({
     android: { fontFamily: ['TONGems'].join(', ') },
 });
 const FONT_WEB_MEDIUM = Platform.select({
-    web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(', ') },
+    web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
     ios: { fontFamily: ['SFProText-Medium'].join(', ') },
     android: { fontFamily: ['TONGems'].join(', ') },
 });
 const FONT_WEB_BOLD = Platform.select({
-    web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(', ') },
+    web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
     ios: { fontFamily: ['SFProText-Bold'].join(', ') },
     android: { fontFamily: ['TONGems'].join(', ') },
 });
