@@ -50,45 +50,45 @@ const UI_FONT_BOLD = { ...FONT_WEB_BOLD, fontWeight: '700' };
 // const UI_FONT_BLACK = { fontWeight: '900' };
 
 const UI_FONT_KEY = {
-    fontSize: 96,
-    lineHeight: 128,
+    fontSize: 80,
+    lineHeight: 112,
     letterSpacing: -1.5,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_HEADLINE = {
     fontSize: 64,
-    lineHeight: 84,
-    letterSpacing: -0.5,
+    lineHeight: 80,
+    letterSpacing: -1,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_SUBHEAD = {
     fontSize: 48,
     lineHeight: 64,
-    letterSpacing: 0,
+    letterSpacing: -0.5,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_TITLE = {
-    fontSize: 36,
-    lineHeight: 48,
+    fontSize: 40,
+    lineHeight: 56,
     letterSpacing: 0.25,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_SUBTITLE = {
     fontSize: 24,
     lineHeight: 32,
-    letterSpacing: 0,
+    letterSpacing: 0.25,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_ACCENT = {
     fontSize: 20,
-    lineHeight: 28,
-    letterSpacing: 0.15,
+    lineHeight: 32,
+    letterSpacing: 0.25,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_BODY = {
     fontSize: 18,
     lineHeight: 24,
-    letterSpacing: 0.5,
+    letterSpacing: 0.25,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_SMALL = {
@@ -100,13 +100,13 @@ const UI_FONT_SMALL = {
 const UI_FONT_CAPTION = {
     fontSize: 14,
     lineHeight: 20,
-    letterSpacing: 0.75,
+    letterSpacing: 0.5,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_TINY = {
     fontSize: 12,
     lineHeight: 16,
-    letterSpacing: 0.4,
+    letterSpacing: 1,
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_MENU = {
@@ -116,9 +116,9 @@ const UI_FONT_MENU = {
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_ICON = {
-    fontSize: 10,
-    lineHeight: 16,
-    letterSpacing: 0.2,
+    fontSize: 8,
+    lineHeight: 12,
+    letterSpacing: 1.5,
     ...UI_FONT_FAMILY,
 };
 
