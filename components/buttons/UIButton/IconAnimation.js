@@ -2,7 +2,7 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { Animated, Easing } from 'react-native';
-import type { CompositeAnimation } from 'react-native';
+import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
 import UIComponent from '../../UIComponent';
 
@@ -106,33 +106,21 @@ export default class IconAnimation extends UIComponent<Props, State> {
     render() {
         const transform = [];
         if (this.props.animation === IconAnimation.Animation.Spin) {
-            const rotateY = this.animatedValue.interpolate(
-                spinInterpolateValues,
-            );
+            const rotateY = this.animatedValue.interpolate(spinInterpolateValues);
             transform.push({ rotateY });
         } else if (this.props.animation === IconAnimation.Animation.Round) {
-            const rotate = this.animatedValue.interpolate(
-                roundInterpolateValues,
-            );
+            const rotate = this.animatedValue.interpolate(roundInterpolateValues);
             transform.push({ rotate });
         } else if (this.props.animation === IconAnimation.Animation.Sandglass) {
-            const scaleX = this.animatedValue.interpolate(
-                sandglassInterpolateValues.x,
-            );
-            const scaleY = this.animatedValue.interpolate(
-                sandglassInterpolateValues.y,
-            );
+            const scaleX = this.animatedValue.interpolate(sandglassInterpolateValues.x);
+            const scaleY = this.animatedValue.interpolate(sandglassInterpolateValues.y);
             transform.push({ scaleX });
             transform.push({ scaleY });
         } else if (this.props.animation === IconAnimation.Animation.Pulse) {
-            const scale = this.animatedValue.interpolate(
-                scaleInterpolateValues,
-            );
+            const scale = this.animatedValue.interpolate(scaleInterpolateValues);
             transform.push({ scale });
         } else if (this.props.animation === IconAnimation.Animation.Forward) {
-            const translateX = this.animatedValue.interpolate(
-                forwardInterpolateValues,
-            );
+            const translateX = this.animatedValue.interpolate(forwardInterpolateValues);
             transform.push({ translateX });
         }
         return (
