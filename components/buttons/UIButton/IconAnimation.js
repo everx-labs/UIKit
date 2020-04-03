@@ -2,11 +2,11 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { Animated, Easing } from 'react-native';
+import type { CompositeAnimation } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 
 const iconDefault = require('../../../assets/ico-triangle/ico-triangle.png');
-
 
 const spinInterpolateValues = {
     inputRange: [0, 1],
@@ -57,14 +57,30 @@ export default class IconAnimation extends UIComponent<Props, State> {
         Forward: 'forward',
     };
 
+    animation: CompositeAnimation;
+
     constructor(props: Props) {
         super(props);
         this.animatedValue = new Animated.Value(0);
+        this.animation = Animated.timing(this.animatedValue, {
+            toValue: 1,
+            duration: this.getDuration(),
+            easing:
+                this.props.animation === IconAnimation.Animation.Pulse ||
+                this.props.animation === IconAnimation.Animation.Forward
+                    ? Easing.ease
+                    : Easing.linear,
+        });
     }
 
     componentDidMount() {
         super.componentDidMount();
         this.animate();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.animation.stop();
     }
 
     getDuration() {
@@ -79,46 +95,52 @@ export default class IconAnimation extends UIComponent<Props, State> {
 
     animate = () => {
         this.animatedValue.setValue(0);
-        const callback = this.props.animation === IconAnimation.Animation.Forward ?
-            null :
-            this.animate;
+        const callback =
+            this.props.animation === IconAnimation.Animation.Forward
+                ? null
+                : this.animate;
 
-        Animated.timing(
-            this.animatedValue,
-            {
-                toValue: 1,
-                duration: this.getDuration(),
-                easing: this.props.animation === IconAnimation.Animation.Pulse ||
-                this.props.animation === IconAnimation.Animation.Forward
-                    ? Easing.ease : Easing.linear,
-            },
-        ).start(callback);
+        this.animation.start(callback);
     };
 
     render() {
         const transform = [];
         if (this.props.animation === IconAnimation.Animation.Spin) {
-            const rotateY = this.animatedValue.interpolate(spinInterpolateValues);
+            const rotateY = this.animatedValue.interpolate(
+                spinInterpolateValues,
+            );
             transform.push({ rotateY });
         } else if (this.props.animation === IconAnimation.Animation.Round) {
-            const rotate = this.animatedValue.interpolate(roundInterpolateValues);
+            const rotate = this.animatedValue.interpolate(
+                roundInterpolateValues,
+            );
             transform.push({ rotate });
         } else if (this.props.animation === IconAnimation.Animation.Sandglass) {
-            const scaleX = this.animatedValue.interpolate(sandglassInterpolateValues.x);
-            const scaleY = this.animatedValue.interpolate(sandglassInterpolateValues.y);
+            const scaleX = this.animatedValue.interpolate(
+                sandglassInterpolateValues.x,
+            );
+            const scaleY = this.animatedValue.interpolate(
+                sandglassInterpolateValues.y,
+            );
             transform.push({ scaleX });
             transform.push({ scaleY });
         } else if (this.props.animation === IconAnimation.Animation.Pulse) {
-            const scale = this.animatedValue.interpolate(scaleInterpolateValues);
+            const scale = this.animatedValue.interpolate(
+                scaleInterpolateValues,
+            );
             transform.push({ scale });
         } else if (this.props.animation === IconAnimation.Animation.Forward) {
-            const translateX = this.animatedValue.interpolate(forwardInterpolateValues);
+            const translateX = this.animatedValue.interpolate(
+                forwardInterpolateValues,
+            );
             transform.push({ translateX });
         }
-        return (<Animated.Image
-            style={[{ transform }, this.props.iconTintStyle]}
-            source={this.props.icon}
-        />);
+        return (
+            <Animated.Image
+                style={[{ transform }, this.props.iconTintStyle]}
+                source={this.props.icon}
+            />
+        );
     }
 
     static defaultProps: Props;
