@@ -79,6 +79,18 @@ class UIDetailsTable extends UIComponent<Props, State> {
         return { value: 'false', type: UIDetailsTable.cellType.disabled };
     }
 
+    static formatNestedList(arr: DetailsList, key: string) {
+        return [{}, ...arr].map<Details>((item, index) => ({
+            ...item,
+            key,
+            captionType: index === 1
+                ? this.cellType.header
+                : index > 0
+                    ? this.cellType.bullet
+                    : this.cellType.default,
+        }));
+    }
+
     // Events
     onActionPressed(details: Details) {
         if (details.screen) {
