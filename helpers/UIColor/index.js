@@ -287,6 +287,10 @@ export default class UIColor {
         return themes[theme || current].text.placeholder;
     }
 
+    static textAccent(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.accent;
+    }
+
     static textDisabled(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].detailsInput.amount.placeholder;
     }
