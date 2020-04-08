@@ -174,7 +174,7 @@ const ru: UILocalizedData = {
     Friends: 'Друзья',
     NewContact: 'Новый контакт',
     FirstName: 'Имя',
-    MiddleName: 'Среднее Имя',
+    MiddleName: 'Среднее имя',
     LastName: 'Фамилия',
     AddContact: 'Добавить Контакт',
 
@@ -461,7 +461,7 @@ const ru: UILocalizedData = {
     FillInInformation: 'Заполните требуемую информацию ниже',
     FillInPersonalDetails: 'Заполните Ваши личные данные',
     UploadAScan: 'Загрузите скан Вашего паспорта или другого удостоверения личности',
-    DoB: 'Дата Рождения',
+    DoB: 'Дата рождения',
     DoBMin: 'Должен быть старше',
     DoBMax: 'Должен быть младше',
     Gender: 'Пол',
