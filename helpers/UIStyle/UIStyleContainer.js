@@ -254,4 +254,8 @@ export default class UIStyleContainer {
     static halfWidth() {
         return containerStyles.halfWidthContainer;
     }
+
+    static thirdWidth() {
+        return containerStyles.thirdWidthContainer;
+    }
 }
