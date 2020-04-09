@@ -178,17 +178,15 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getCardColor(): ViewStyleProp {
         const extra = this.getExtra();
         const { type } = extra;
-        if (type === TypeOfTransaction.Deposit) {
+        if (type === TypeOfTransaction.Aborted) {
+            return styles.cardAborted;
+        } else if (type === TypeOfTransaction.Deposit) {
             return styles.cardDeposit;
         } else if (type === TypeOfTransaction.Withdraw) {
             return styles.cardWithdraw;
         } else if (type === TypeOfTransaction.Income) {
             return styles.cardIncome;
         } else if (type === TypeOfTransaction.Spending) {
-            const trx = this.getTransaction();
-            if (trx.aborted) {
-                return styles.cardAborted;
-            }
             return styles.cardSpending;
         } else if (type === TypeOfTransaction.Bill) {
             return styles.cardBill;
