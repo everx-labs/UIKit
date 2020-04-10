@@ -19,6 +19,7 @@ export const ChatMessageStatus = {
 };
 
 export const TypeOfTransaction = {
+    Aborted: 'aborted',
     Deposit: 'deposit',
     Withdraw: 'withdraw',
     Income: 'income',
