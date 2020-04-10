@@ -19,13 +19,14 @@ import type {
     ControllerState,
 } from '../UIController';
 
+import UIAssets from '../../assets/UIAssets';
+import UIColor from '../../helpers/UIColor';
+import UIConstant from '../../helpers/UIConstant';
 import UIController from '../UIController';
 import UIDevice from '../../helpers/UIDevice';
 import UIFunction from '../../helpers/UIFunction';
-import UIStyle from '../../helpers/UIStyle';
-import UIColor from '../../helpers/UIColor';
-import UIConstant from '../../helpers/UIConstant';
 import UIModalNavigationBar from './UIModalNavigationBar';
+import UIStyle from '../../helpers/UIStyle';
 
 import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
@@ -348,7 +349,7 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     getCancelImage(): ?ImageSource {
-        return null;
+        return UIAssets.btnClose();
     }
 
     // Override if needed!
