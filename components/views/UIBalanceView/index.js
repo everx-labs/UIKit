@@ -108,8 +108,11 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const force = prevProps.loading !== this.props.loading && this.props.balance === '0';
-        this.updateBalance(force); // force
+        const force = (prevProps.loading !== this.props.loading && this.props.balance === '0')
+            || prevProps.balance !== this.props.balance;
+        if (force) {
+            this.updateBalance(true);
+        }
     }
 
     // Events
