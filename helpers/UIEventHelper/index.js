@@ -4,9 +4,15 @@ import { Linking, Platform } from 'react-native';
 let prevPath = null;
 
 export default class UIEventHelper {
-    static checkEventTarget(e: any, className: string) {
+    static checkEventTarget(e: any, className: string, exceptionClassName?: string) {
+        if (exceptionClassName
+            && e.target?.className?.includes
+            && e.target.className.includes(exceptionClassName)) {
+            return true;
+        }
+
         const triggers = Array.from(document.getElementsByClassName(className));
-        if (triggers && triggers.length) {
+        if (triggers?.length) {
             return triggers.reduce((contains, trigger) => {
                 if (!contains) {
                     return trigger.contains(e.target);
