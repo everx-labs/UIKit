@@ -31,6 +31,10 @@ export type PopoverProps = {
     componentStyle?: ViewStyleProp,
     narrow?: boolean,
     component?: React$Node,
+    needCloseOnClick?: boolean,
+    // if clicked element contains this className, then not to close popover
+    exceptionClassName?: string,
+    narrowContainerStyle?: ViewStyleProp,
     onShow: () => void,
     onHide?: () => void,
 };
@@ -52,6 +56,7 @@ export default class UIPopover<Props, State>
     static defaultProps: any & PopoverProps = {
         placement: 'bottom',
         narrow: false,
+        needCloseOnClick: true,
         onShow: () => {},
     };
 
@@ -116,6 +121,7 @@ export default class UIPopover<Props, State>
             this.showNarrowMenu();
         } else {
             UICustomSheet.show({
+                containerStyle: this.props.narrowContainerStyle,
                 component: this.props.component,
                 onShow: this.props.onShow,
             });
@@ -179,6 +185,7 @@ export default class UIPopover<Props, State>
 
             this.firstClickIgnored = false;
             this.setIsVisible(false);
+
             this.deinitClickListenerForWeb();
             UIPopoverBackground.hideBackgroundForTablet();
             masterRef = null;
@@ -197,11 +204,15 @@ export default class UIPopover<Props, State>
                 ? 'click'
                 : 'touchend';
         this.clickListener = (e: any) => {
+            if (!this.props.needCloseOnClick) {
+                return;
+            }
+
             if (ignoreFirstClick && !this.firstClickIgnored) {
                 this.firstClickIgnored = true;
                 return;
             }
-            const eventResult = UIEventHelper.checkEventTarget(e, MENU_TRIGGER);
+            const eventResult = UIEventHelper.checkEventTarget(e, MENU_TRIGGER, this.props.exceptionClassName);
             if (!eventResult) {
                 this.hide();
             }
