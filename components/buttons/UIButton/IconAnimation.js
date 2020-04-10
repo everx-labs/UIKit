@@ -93,8 +93,13 @@ export default class IconAnimation extends UIComponent<Props, State> {
         return 3000;
     }
 
-    animate = () => {
+    animate = ({ finished }: { finished: boolean } = { finished: true }) => {
         this.animatedValue.setValue(0);
+
+        if (!finished) {
+            return;
+        }
+
         const callback =
             this.props.animation === IconAnimation.Animation.Forward
                 ? null
