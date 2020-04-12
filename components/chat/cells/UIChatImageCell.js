@@ -63,13 +63,17 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
 
     // Actions
     async loadImage() {
-        const { image, additionalInfo } = this.props;
-        const { data } = this.state;
-        if (image && !data) {
-            const imgData = await image(additionalInfo?.message);
-            this.setState({ data: imgData.data });
-        }
-    }
+	    const { image, additionalInfo } = this.props;
+    	const { data } = this.state;
+	    if (additionalInfo?.tmpData) {
+    		this.setState({ data: additionalInfo?.tmpData });
+			return;
+	    }
+    	if (image && !data) {
+			const imgData = await image(additionalInfo?.message);
+			this.setState({ data: imgData.data });
+	    }
+	}
 
     renderImage() {
         const { parentLayout } = this.props;
