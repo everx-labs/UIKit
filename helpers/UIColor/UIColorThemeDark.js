@@ -24,6 +24,7 @@ const UIColorThemeDark: UIColorThemeData = {
         paragraph: UIColorPalette.text.darkParagraph,
         caution: UIColorPalette.text.darkCaution,
         placeholder: UIColorPalette.primary3,
+        accent: UIColorPalette.text.darkAccent,
     },
     background: {
         primary: UIColorPalette.background.darkPrimary,

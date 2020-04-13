@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     cancelImage: {
-        height: UIConstant.tinyButtonHeight(),
-        width: UIConstant.tinyButtonHeight(),
+        height: UIConstant.smallCellHeight(),
+        width: UIConstant.smallCellHeight(),
     },
     bottomLine: {
         borderBottomWidth: 1,
@@ -133,7 +133,12 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
         if (!onCancel) {
             return null;
         }
-        const image = (<Image style={styles.cancelImage} source={cancelImage} />);
+        const image = (
+            <Image
+                style={[UIStyle.margin.topSmall(), styles.cancelImage]}
+                source={cancelImage}
+            />
+        );
         const text = (
             <Text style={UIStyle.Text.actionSmallMedium()}>
                 {cancelText}
