@@ -207,6 +207,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static ButtonShape = {
         Default: 'default',
         Radius: 'radius',
+        MediumRadius: 'medium-radius',
         Rounded: 'rounded',
         Full: 'full',
     };
