@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 type Props = {
     testID?: string,
     commentTestID?: string,
-    value: string | number,
+    value: string | number | Node,
     comments: string,
     reversed: boolean,
     onPress: ?() => void,
@@ -57,12 +57,16 @@ export default class UIDetailsView extends UIComponent<Props, State> {
             role = UILabel.Role.CaptionTertiary;
         }
         return (
-            <UILabel
-                testID={testID || null}
-                style={textStyle}
-                role={textRole || role}
-                text={`${value}`}
-            />
+            typeof value === 'string' || typeof value === 'number' ? (
+                <UILabel
+                    testID={testID || null}
+                    style={textStyle}
+                    role={textRole || role}
+                    text={`${value}`}
+                />
+            ) : (
+                value
+            )
         );
     }
 
