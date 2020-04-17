@@ -133,24 +133,15 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.bodyRegular(),
     },
-    // Caption - fontSize: 14, lineHeight: 20
-    captionRegular: {
+    bodyMedium: {
         ...text,
-        ...UIFont.captionRegular(),
+        ...UIFont.bodyMedium(),
     },
-    captionMedium: {
+    bodyBold: {
         ...text,
-        ...UIFont.captionMedium(),
+        ...UIFont.bodyBold(),
     },
-    // Tiny - fontSize: 12, lineHeight: 16
-    tinyRegular: {
-        ...text,
-        ...UIFont.tinyRegular(),
-    },
-    tinyMedium: {
-        ...text,
-        ...UIFont.tinyMedium(),
-    },
+    // Small - fontSize: 16, lineHeight: 20,
     smallRegular: {
         ...text,
         ...UIFont.smallRegular(),
@@ -162,6 +153,32 @@ const UITextStyle = StyleSheet.create({
     smallBold: {
         ...text,
         ...UIFont.smallBold(),
+    },
+    // Caption - fontSize: 14, lineHeight: 20
+    captionRegular: {
+        ...text,
+        ...UIFont.captionRegular(),
+    },
+    captionMedium: {
+        ...text,
+        ...UIFont.captionMedium(),
+    },
+    captionBold: {
+        ...text,
+        ...UIFont.captionBold(),
+    },
+    // Tiny - fontSize: 12, lineHeight: 16
+    tinyRegular: {
+        ...text,
+        ...UIFont.tinyRegular(),
+    },
+    tinyMedium: {
+        ...text,
+        ...UIFont.tinyMedium(),
+    },
+    tinyBold: {
+        ...text,
+        ...UIFont.tinyBold(),
     },
 
     // Icon - fontSize: 10, lineHeight: 16
