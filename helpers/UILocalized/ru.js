@@ -468,6 +468,8 @@ const ru: UILocalizedData = {
     Citizenship: 'Гражданство',
     Residence: 'Страна проживания',
     SelectResidence: 'Выберите страну проживания…',
+    SelectCountry: 'Select country…',
+    Country: 'Country',
     Address: 'Адрес',
     City: 'Город',
     State: 'Регион',
