@@ -207,6 +207,10 @@ export default class UIStyleContainer {
         return styles.bottomOffsetScreenContainer;
     }
 
+    static bottomOffsetItemContainer() {
+        return styles.bottomOffsetItemContainer;
+    }
+
     static leftScreen() {
         return styles.leftScreenContainer;
     }

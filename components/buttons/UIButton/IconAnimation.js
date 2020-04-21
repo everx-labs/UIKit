@@ -2,11 +2,11 @@
 import React from 'react';
 import StylePropType from 'react-style-proptype';
 import { Animated, Easing } from 'react-native';
+import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
 import UIComponent from '../../UIComponent';
 
 const iconDefault = require('../../../assets/ico-triangle/ico-triangle.png');
-
 
 const spinInterpolateValues = {
     inputRange: [0, 1],
@@ -57,14 +57,30 @@ export default class IconAnimation extends UIComponent<Props, State> {
         Forward: 'forward',
     };
 
+    animation: CompositeAnimation;
+
     constructor(props: Props) {
         super(props);
         this.animatedValue = new Animated.Value(0);
+        this.animation = Animated.timing(this.animatedValue, {
+            toValue: 1,
+            duration: this.getDuration(),
+            easing:
+                this.props.animation === IconAnimation.Animation.Pulse ||
+                this.props.animation === IconAnimation.Animation.Forward
+                    ? Easing.ease
+                    : Easing.linear,
+        });
     }
 
     componentDidMount() {
         super.componentDidMount();
         this.animate();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.animation.stop();
     }
 
     getDuration() {
@@ -77,22 +93,19 @@ export default class IconAnimation extends UIComponent<Props, State> {
         return 3000;
     }
 
-    animate = () => {
+    animate = ({ finished }: { finished: boolean } = { finished: true }) => {
         this.animatedValue.setValue(0);
-        const callback = this.props.animation === IconAnimation.Animation.Forward ?
-            null :
-            this.animate;
 
-        Animated.timing(
-            this.animatedValue,
-            {
-                toValue: 1,
-                duration: this.getDuration(),
-                easing: this.props.animation === IconAnimation.Animation.Pulse ||
-                this.props.animation === IconAnimation.Animation.Forward
-                    ? Easing.ease : Easing.linear,
-            },
-        ).start(callback);
+        if (!finished) {
+            return;
+        }
+
+        const callback =
+            this.props.animation === IconAnimation.Animation.Forward
+                ? null
+                : this.animate;
+
+        this.animation.start(callback);
     };
 
     render() {
@@ -115,10 +128,12 @@ export default class IconAnimation extends UIComponent<Props, State> {
             const translateX = this.animatedValue.interpolate(forwardInterpolateValues);
             transform.push({ translateX });
         }
-        return (<Animated.Image
-            style={[{ transform }, this.props.iconTintStyle]}
-            source={this.props.icon}
-        />);
+        return (
+            <Animated.Image
+                style={[{ transform }, this.props.iconTintStyle]}
+                source={this.props.icon}
+            />
+        );
     }
 
     static defaultProps: Props;

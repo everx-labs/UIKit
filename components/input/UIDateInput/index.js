@@ -33,6 +33,12 @@ const styles = StyleSheet.create({
     },
 });
 
+type DateFormats = {
+    year?: string,
+    month?: string,
+    day?: string,
+};
+
 type Props = DetailsProps & {
     /**
     Together with separator, specifies date patern, for ex:
@@ -41,6 +47,17 @@ type Props = DetailsProps & {
     @default "['year', 'month', 'day']"
     */
     dateComponents?: string[],
+    /**
+    Specifies date components formats,
+    should be enabled by setting explicitly useDateFormats to true
+    @default { year: 'YYYY', month: 'MM', day: 'DD'}
+    */
+    dateFormats?: DateFormats,
+    /**
+    Together with dateFormats, specifies whether to use dateFormats instead of localisedPattern
+    @default false
+    */
+    useDateFormats: boolean,
     /**
     @default null
     */
@@ -90,6 +107,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     static defaultProps: Props = {
         ...UIDetailsInput.defaultProps,
         dateComponents: ['year', 'month', 'day'],
+        dateFormats: { year: 'YYYY', month: 'MM', day: 'DD' },
+        useDateFormats: false,
         separator: '.',
         initialEpochTime: null,
         initialTimestamp: null,
@@ -200,10 +219,15 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     // However, internally (programming language), in order to parse/localize
     // a date, pattern symbols have to be provided in English.
     getPattern(localizedPattern: boolean = false) {
-        const { dateComponents, separator } = this.props;
-        const dateSymbols = localizedPattern ?
+        const {
+            dateComponents,
+            dateFormats,
+            useDateFormats,
+            separator,
+        } = this.props;
+        const dateSymbols = (localizedPattern && !useDateFormats) ?
             UILocalized.DateSymbols
-            : { year: 'YYYY', month: 'MM', day: 'DD' };
+            : dateFormats;
         const defaultPattern = 'YYYY.MM.DD';
 
         if (!dateComponents || !separator) return defaultPattern;

@@ -30,6 +30,7 @@ export type UIColorThemeData = {
         paragraph: UIColorData,
         caution: UIColorData,
         placeholder: UIColorData,
+        accent: UIColorData,
     },
     background: {
         primary: UIColorData,

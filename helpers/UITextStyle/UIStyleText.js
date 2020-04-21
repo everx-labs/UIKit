@@ -52,6 +52,12 @@ export default class UIStyleText {
     static bodyRegular() {
         return UITextStyle.bodyRegular;
     }
+    static bodyMedium() {
+        return UITextStyle.bodyMedium;
+    }
+    static bodyBold() {
+        return UITextStyle.bodyBold;
+    }
     // Small - fontSize: 16, lineHeight: 20
     static smallRegular() {
         return UITextStyle.smallRegular;
