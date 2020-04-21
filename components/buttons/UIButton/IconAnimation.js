@@ -70,6 +70,7 @@ export default class IconAnimation extends UIComponent<Props, State> {
                 this.props.animation === IconAnimation.Animation.Forward
                     ? Easing.ease
                     : Easing.linear,
+            useNativeDriver: true,
         });
     }
 
