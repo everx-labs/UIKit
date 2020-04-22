@@ -33,10 +33,9 @@ export default class UINumberInput extends UIDetailsInput<Props, ActionState> {
 
     // Events
     onChangeText = (newValue: string): void => {
-        console.log(newValue, /^\d*$/.test(newValue));
         const { onChangeText } = this.props;
 
-        if (onChangeText && /^\d*$/.test(newValue)) {
+        if (onChangeText && (!newValue?.length || /^\d+$/.test(newValue))) {
             onChangeText(newValue);
         }
     };
