@@ -79,16 +79,25 @@ class UIDetailsTable extends UIComponent<Props, State> {
         return { value: 'false', type: UIDetailsTable.cellType.disabled };
     }
 
-    static formatNestedList(arr: DetailsList, key: string) {
-        return [{}, ...arr].map<Details>((item, index) => ({
+    static formatNestedList(
+        arr: DetailsList,
+        key: string,
+        needOffset?: boolean = true,
+        needBullets?: boolean = true,
+    ) {
+        const result = arr.map<Details>((item, index) => ({
             ...item,
             key,
-            captionType: index === 1
-                ? this.cellType.header
-                : index > 0
+            captionType: index
+                ? needBullets
                     ? this.cellType.bullet
-                    : this.cellType.default,
+                    : this.cellType.default
+                : this.cellType.header,
         }));
+        if (needOffset) {
+            result.unshift({ key, value: '', caption: '' });
+        }
+        return result;
     }
 
     // Events

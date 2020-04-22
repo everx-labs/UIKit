@@ -24,7 +24,7 @@ export const paddingStyles = {
     paddingTopDefault: {
         paddingTop: UIConstant.contentOffset(),
     },
-    paddingBottomSmall: {
+    paddingBottomSmall: { // 8
         paddingBottom: UIConstant.smallContentOffset(),
     },
     paddingBottomMedium: {
