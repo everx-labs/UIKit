@@ -373,7 +373,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <View style={styles.systemInfo}>
                 <Text style={[UIFont.tinyRegular(), styles.sysText]}>
-                    {additionalInfo?.message?.info?.text}
+                    {additionalInfo?.message?.info?.text || ''}
                 </Text>
             </View>
         );
