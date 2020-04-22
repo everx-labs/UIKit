@@ -8,6 +8,7 @@ export const ChatMessageContent = {
     ActionButton: 'act',
     DateSeparator: 'date',
     EmptyChat: 'empty',
+    SystemInfo: 'sysInfo',
 };
 
 export const ChatMessageStatus = {

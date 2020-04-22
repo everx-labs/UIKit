@@ -132,6 +132,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.smallContentOffset(),
         borderRadius: UIConstant.smallCellHeight() / 2,
     },
+    systemInfo: {
+        flexShrink: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    sysText: {
+        color: UIColor.grey(),
+    },
     linkActionMessageContainer: {
         marginBottom: UIConstant.tinyContentOffset(),
     },
@@ -360,6 +368,17 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderSystemInfo() {
+        const { additionalInfo } = this.props;
+        return (
+            <View style={styles.systemInfo}>
+                <Text style={[UIFont.tinyRegular(), styles.sysText]}>
+                    {additionalInfo?.message?.info?.text || ''}
+                </Text>
+            </View>
+        );
+    }
+
     renderImageCell() {
         const { data, additionalInfo } = this.props;
         if (!data) {
@@ -550,6 +569,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+        } else if (type === ChatMessageContent.SystemInfo) {
+            align = 'center';
+            cell = this.renderSystemInfo();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.EmptyChat) {
             align = 'flex-start';
