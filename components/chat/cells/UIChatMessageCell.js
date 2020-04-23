@@ -143,6 +143,12 @@ const styles = StyleSheet.create({
     linkActionMessageContainer: {
         marginBottom: UIConstant.tinyContentOffset(),
     },
+    actionLabel: {
+        backgroundColor: UIColor.primaryPlus(),
+    },
+    actionLinkText: {
+        color: UIColor.fa(),
+    },
     dateText: {
         color: UIColor.secondary(),
     },
@@ -379,6 +385,25 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderActionLabel() {
+        const { additionalInfo } = this.props;
+        const rounded = this.isReceived()
+            ? styles.leftConner
+            : styles.rightConner;
+        return (
+            <View style={[
+                styles.msgContainer,
+                rounded,
+                styles.actionLabel,
+            ]}
+            >
+                <Text style={styles.actionLinkText}>
+                    {additionalInfo?.message?.info?.text || ''}
+                </Text>
+            </View>
+        );
+    }
+
     renderImageCell() {
         const { data, additionalInfo } = this.props;
         if (!data) {
@@ -574,6 +599,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             align = 'center';
             cell = this.renderSystemInfo();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+        } else if (type === ChatMessageContent.ActionLabel) {
+            // align = 'flex-end';
+            cell = this.renderActionLabel();
         } else if (type === ChatMessageContent.EmptyChat) {
             align = 'flex-start';
             cell = this.renderEmptyChatCell();
