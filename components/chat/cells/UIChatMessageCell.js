@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     actionLabel: {
         backgroundColor: UIColor.primaryPlus(),
     },
-    actionLinkText: {
+    actionLabelText: {
         color: UIColor.fa(),
     },
     dateText: {
@@ -397,7 +397,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 styles.actionLabel,
             ]}
             >
-                <Text style={styles.actionLinkText}>
+                <Text style={styles.actionLabelText}>
                     {additionalInfo?.message?.info?.text || ''}
                 </Text>
             </View>
@@ -600,7 +600,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderSystemInfo();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.ActionLabel) {
-            // align = 'flex-end';
             cell = this.renderActionLabel();
         } else if (type === ChatMessageContent.EmptyChat) {
             align = 'flex-start';
