@@ -26,12 +26,14 @@ import type { ModalControllerProps } from '../../controllers/UIModalController';
 
 type Options = {
     message: string,
+    subtitle: ?string,
 }
 type Props = ModalControllerProps & {
     isShared: boolean,
 }
 type State = {
     message: string,
+    subtitle: string,
 }
 
 const styles = StyleSheet.create({
@@ -61,23 +63,30 @@ export default class UIShareScreen extends UIModalController<Props, State> {
 
     static share(options: Options): boolean {
         const { shared } = UIShareScreen;
+
         if (!shared) {
             return false;
         }
+
         shared.setMessage(options.message);
+        shared.setSubtitle(options.subtitle);
         shared.show();
+
         return true;
     }
 
     // constructor
     constructor(props: Props) {
         super(props);
+
         this.testID = '[UIShareScreen]';
         this.maxHeight = UIConstant.shareDialogHeight();
         this.maxWidth = UIConstant.shareDialogWidth();
+
         this.state = {
             ...this.state,
             message: '',
+            subtitle: '',
         };
     }
 
@@ -108,6 +117,10 @@ export default class UIShareScreen extends UIModalController<Props, State> {
         this.setStateSafely({ message });
     }
 
+    setSubtitle(subtitle: ?string) {
+        this.setStateSafely({ subtitle })
+    }
+
     // Getters
     isShared() {
         return this.props.isShared;
@@ -115,6 +128,10 @@ export default class UIShareScreen extends UIModalController<Props, State> {
 
     getMessage() {
         return this.state.message;
+    }
+
+    getSubtitle() {
+        return this.state.subtitle;
     }
 
     getCancelImage(): ?ImageSource {
@@ -132,7 +149,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                 />
                 <UILabel
                     role={UILabel.Role.Note}
-                    text={UILocalized.ShareToTalk}
+                    text={this.getSubtitle() || UILocalized.ShareToTalk}
                     style={styles.note}
                 />
                 <ScrollView contentContainerStyle={styles.messageContainer}>
