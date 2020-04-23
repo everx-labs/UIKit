@@ -31,9 +31,9 @@ export default class UIShareManager {
     }
 
     // Public
-    static share(message: string, success: string) {
+    static share(message: string, success: string, subtitle: ?string) {
         if (Platform.OS === 'web') {
-            UIShareScreen.share({ message });
+            UIShareScreen.share({ message, subtitle });
         } else {
             this.shareMessage(message, success);
         }
