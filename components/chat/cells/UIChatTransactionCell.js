@@ -274,9 +274,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const info = (trx.aborted || trx.sending)
             ? this.getStatusString(trx.aborted ? Aborted : Sending)
             : date;
-        if (trx?.hide) {
-            return null;
-        }
 
         return (
             <View
