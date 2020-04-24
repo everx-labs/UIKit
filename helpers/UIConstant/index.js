@@ -124,6 +124,9 @@ const INITIAL_RENDER_DATA_COUNT = 12; // good for displaying a tables of 1,2,3,4
 
 const DASH_SYMBOL = '\u2014';
 
+const FULL_SCREEN_DIALOG_WIDTH = 600;
+const FULL_SCREEN_DIALOG_HEIGHT = 600;
+
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
         elevation: 1,
@@ -571,5 +574,13 @@ export default class UIConstant {
 
     static dashSymbol() {
         return DASH_SYMBOL;
+    }
+
+    static get fullScreenDialogWidth() {
+        return FULL_SCREEN_DIALOG_WIDTH;
+    }
+
+    static get fullScreenDialogHeight() {
+        return FULL_SCREEN_DIALOG_HEIGHT;
     }
 }

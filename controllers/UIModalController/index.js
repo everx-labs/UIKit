@@ -30,8 +30,7 @@ import UIStyle from '../../helpers/UIStyle';
 
 import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
-const fullScreenDialogWidth = 600;
-const fullScreenDialogHeight = 600;
+const { fullScreenDialogWidth, fullScreenDialogHeight } = UIConstant;
 const HARDWARE_BACK_PRESS_EVENT = 'hardwareBackPress';
 
 type OnLayoutEventArgs = {
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
 
 export default class UIModalController<Props, State> extends UIController<
     ModalControllerProps & Props,
-    ModalControllerState & State,
+    ModalControllerState & State
 > {
     fullscreen: boolean;
     dismissible: boolean;
