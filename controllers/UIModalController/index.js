@@ -30,8 +30,7 @@ import UIStyle from '../../helpers/UIStyle';
 
 import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
-const fullScreenDialogWidth = UIConstant.fullScreenDialogWidth;
-const fullScreenDialogHeight = UIConstant.fullScreenDialogHeight;
+const { fullScreenDialogWidth, fullScreenDialogHeight } = UIConstant;
 const HARDWARE_BACK_PRESS_EVENT = 'hardwareBackPress';
 
 type OnLayoutEventArgs = {
