@@ -122,7 +122,7 @@ const MAX_TEXT_LINE_LENGTH = 200;
 
 const INITIAL_RENDER_DATA_COUNT = 12; // good for displaying a tables of 1,2,3,4 columns
 
-const DASH_SYMBOL = '\u2014'
+const DASH_SYMBOL = '\u2014';
 
 const FULL_SCREEN_DIALOG_WIDTH = 600;
 const FULL_SCREEN_DIALOG_HEIGHT = 600;
