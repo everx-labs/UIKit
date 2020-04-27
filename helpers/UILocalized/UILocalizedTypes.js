@@ -568,4 +568,17 @@ export type UILocalizedData = {
     WelcomeTo000: string,
     BackToHome: string,
     serviceUnavailable: string,
+
+    // Common
+    // Time
+    hours: string,
+    minutes: string,
+    hours01: string,
+    hours11: string,
+    hours24: string,
+    hours50: string,
+    minutes01: string,
+    minutes11: string,
+    minutes24: string,
+    minutes50: string,
 }
