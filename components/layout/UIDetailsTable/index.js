@@ -116,7 +116,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     // Getters
-    getTextStyle(type: ?string, value: ?string) {
+    getTextStyle(type: ?string, value: ?string | number) {
         if (type === UIDetailsTable.cellType.success) {
             return UIStyle.text.successSmallRegular();
         } else if (type === UIDetailsTable.cellType.error) {
