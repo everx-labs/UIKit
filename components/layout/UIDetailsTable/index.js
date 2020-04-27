@@ -64,6 +64,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
         error: 'error',
         numberPercent: 'numberPercent',
         disabled: 'disabled',
+        bool: 'bool',
+    };
+
+    static captionType = {
+        default: 'default',
         header: 'header',
         bullet: 'bullet',
     };
@@ -71,13 +76,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
     static defaultProps: Props = {
         detailsList: [],
     };
-
-    static getBooleanCell(bool: boolean) {
-        if (bool) {
-            return { value: 'true' };
-        }
-        return { value: 'false', type: UIDetailsTable.cellType.disabled };
-    }
 
     static formatNestedList(
         arr: DetailsList,
@@ -90,9 +88,9 @@ class UIDetailsTable extends UIComponent<Props, State> {
             key,
             captionType: index
                 ? needBullets
-                    ? this.cellType.bullet
-                    : this.cellType.default
-                : this.cellType.header,
+                    ? this.captionType.bullet
+                    : this.captionType.default
+                : this.captionType.header,
         }));
         if (needOffset) {
             result.unshift({ key, value: '', caption: '' });
@@ -118,7 +116,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     // Getters
-    getTextStyle(type: ?string) {
+    getTextStyle(type: ?string, value: ?string | number) {
         if (type === UIDetailsTable.cellType.success) {
             return UIStyle.text.successSmallRegular();
         } else if (type === UIDetailsTable.cellType.error) {
@@ -127,10 +125,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return UIStyle.text.primarySmallMedium();
         } else if (type === UIDetailsTable.cellType.disabled) {
             return UIStyle.text.tertiarySmallRegular();
-        } else if (type === UIDetailsTable.cellType.default || !type) {
-            return UIStyle.text.secondarySmallRegular();
+        } else if (type === UIDetailsTable.cellType.bool && !value) {
+            return UIStyle.text.tertiarySmallRegular();
         }
-        return null;
+        return UIStyle.text.secondarySmallRegular();
     }
 
     renderTextCell(value: number | string, details: string) {
@@ -150,7 +148,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         const {
             type, value, limit, component, onPress,
         } = details;
-        const textStyle = this.getTextStyle(type);
+        const textStyle = this.getTextStyle(type, value);
         if ((!value && value !== 0) && !component) {
             return null;
         }
@@ -172,9 +170,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
         } else if (component) {
             return component;
         }
+
         return (
             <Text style={[textStyle, UIStyle.common.flex()]}>
-                {value}
+                {type === UIDetailsTable.cellType.bool ? JSON.stringify(value) : value}
             </Text>
         );
     }
@@ -185,7 +184,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const {
                 caption, value, captionType, key,
             } = item;
-            const { header, bullet } = UIDetailsTable.cellType;
+            const { header, bullet } = UIDetailsTable.captionType;
             const borderTopStyle = index > 0 && captionType !== header && styles.borderTop;
             return (
                 <View
