@@ -5,6 +5,7 @@ import Moment from 'moment';
 
 import UIDetailsInput from '../UIDetailsInput';
 
+import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 import UIFunction from '../../../helpers/UIFunction';
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
     missingValueView: {
         zIndex: -1,
         position: 'absolute',
+        alignItems: 'center',
         top: null,
         left: 0,
         bottom: null,
@@ -374,8 +376,11 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         }
 
         const missing = this.getPattern(true).substring(date.length);
+        const bottomOffset = Platform.OS == 'android'
+        	? UIConstant.normalContentOffset()
+        	: UIConstant.smallContentOffset();
         return (
-            <View style={styles.missingValueView}>
+            <View style={[styles.missingValueView, { bottom: bottomOffset }]}>
                 <Text
                     style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
