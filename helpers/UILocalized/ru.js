@@ -591,6 +591,19 @@ const ru: UILocalizedData = {
     WelcomeTo000: 'Welcome to 000',
     BackToHome: 'Back to Home',
     serviceUnavailable: 'Service unavailable',
+
+    // Common
+    // Time
+    hours: 'hours',
+    minutes: 'minutes',
+    hours01: 'hour',
+    hours11: 'hours',
+    hours24: 'hours',
+    hours50: 'hours',
+    minutes01: 'minute',
+    minutes11: 'minutes',
+    minutes24: 'minutes',
+    minutes50: 'minutes',
 };
 
 export default ru;
