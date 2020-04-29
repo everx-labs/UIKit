@@ -141,7 +141,12 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     // Setters
     async setBalance(balance: string, isCallback: boolean = false) {
-        if (balance === this.getCachedBalance()) { // balance is the same, no need to re-render!
+        // balance is the same, no ned to ree-render!
+        const needRerender = this.props.cacheKey
+            ? this.getBalance() === this.getCachedBalance()
+            : true;
+
+        if (needRerender && balance === this.getCachedBalance()) {
             return;
         }
 
