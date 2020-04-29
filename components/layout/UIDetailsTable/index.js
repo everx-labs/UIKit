@@ -26,6 +26,13 @@ export type Details = {
 
 export type DetailsList = Details[];
 
+export type FormatNestedListArgs = {
+    list: DetailsList,
+    key: string,
+    needOffset?: boolean,
+    needBullets?: boolean,
+}
+
 type Props = {
     navigation?: ReactNavigation,
     detailsList: DetailsList,
@@ -70,28 +77,56 @@ class UIDetailsTable extends UIComponent<Props, State> {
     static captionType = {
         default: 'default',
         header: 'header',
+        headerBullet: 'header-bullet',
         bullet: 'bullet',
+        bullet2: 'bullet2',
     };
 
     static defaultProps: Props = {
         detailsList: [],
     };
 
-    static formatNestedList(
-        arr: DetailsList,
-        key: string,
-        needOffset?: boolean = true,
-        needBullets?: boolean = true,
-    ) {
-        const result = arr.map<Details>((item, index) => ({
-            ...item,
-            key,
-            captionType: index
-                ? needBullets
-                    ? this.captionType.bullet
-                    : this.captionType.default
-                : this.captionType.header,
-        }));
+    static formatNestedList(args: FormatNestedListArgs | DetailsList, keyParam?: string) {
+        let list;
+        let key;
+        let needOffset;
+        let needBullets;
+        if (args instanceof Array) {
+            list = args;
+            key = keyParam;
+            needOffset = true;
+            needBullets = true;
+        } else {
+            list = args.list;
+            key = args.key;
+            needOffset = args.needOffset !== undefined ? args.needOffset : true;
+            needBullets = args.needBullets !== undefined ? args.needBullets : true;
+        }
+        const result = list.map<Details>((item, index) => {
+            let captionType = this.captionType.default;
+            const { caption } = item;
+            if (index) {
+                if (needBullets) {
+                    if (item.captionType === this.captionType.bullet) {
+                        captionType = this.captionType.bullet2;
+                    } else if (item.captionType === this.captionType.header) {
+                        captionType = this.captionType.headerBullet;
+                    } else {
+                        captionType = this.captionType.bullet;
+                    }
+                }
+            } else {
+                captionType = this.captionType.header;
+            }
+
+            return {
+                ...item,
+                key,
+                caption,
+                captionType,
+            };
+        });
+
         if (needOffset) {
             result.unshift({ key, value: '', caption: '' });
         }
@@ -104,14 +139,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
             this.navigateTo(details.screen);
         } else if (this.props.onPress) {
             this.props.onPress(details);
-        }
-    }
-
-    // Actions
-    navigateTo(screen: ?string) {
-        const { navigation } = this.props;
-        if (navigation && screen) {
-            navigation.push(screen);
         }
     }
 
@@ -131,6 +158,26 @@ class UIDetailsTable extends UIComponent<Props, State> {
         return UIStyle.text.secondarySmallRegular();
     }
 
+    getBulletSign(captionType?: string) {
+        const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
+        if (captionType === bullet || captionType === headerBullet) {
+            return '•   ';
+        }
+        if (captionType === bullet2) {
+            return '    -   ';
+        }
+        return '';
+    }
+
+    // Actions
+    navigateTo(screen: ?string) {
+        const { navigation } = this.props;
+        if (navigation && screen) {
+            navigation.push(screen);
+        }
+    }
+
+    // Render
     renderTextCell(value: number | string, details: string) {
         return (
             <Text>
@@ -184,8 +231,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const {
                 caption, value, captionType, key,
             } = item;
-            const { header, bullet } = UIDetailsTable.captionType;
-            const borderTopStyle = index > 0 && captionType !== header && styles.borderTop;
+            const { header, headerBullet } = UIDetailsTable.captionType;
+            const borderTopStyle = index > 0 &&
+                captionType !== header &&
+                captionType !== headerBullet &&
+                styles.borderTop;
             return (
                 <View
                     style={[
@@ -202,11 +252,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         ]}
                     >
                         <Text
-                            style={captionType === header
+                            style={captionType === header || captionType === headerBullet
                                 ? UIStyle.text.tertiarySmallBold()
                                 : UIStyle.text.tertiarySmallRegular()}
                         >
-                            {captionType === bullet ? '• ' : ''}{caption}
+                            {this.getBulletSign(captionType)}{caption}
                         </Text>
                     </View>
                     <View
