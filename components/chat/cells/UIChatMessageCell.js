@@ -579,7 +579,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     render() {
         const {
-            type, status, additionalInfo,
+            type, status, additionalInfo, data,
         } = this.props;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
@@ -626,8 +626,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderInformationCell('Message/Cell type not supported.');
         }
 
+        const testIDValue = data?.info?.trx?.amount ? data.info.trx.amount.toFixed(9) : data;
+        const testID = `chat_message_${testIDValue}`
         return (
             <View
+                testID={testID}
                 style={[
                     styles.container, {
                         alignSelf: align,
