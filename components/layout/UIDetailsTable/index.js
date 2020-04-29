@@ -80,6 +80,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         headerBullet: 'header-bullet',
         bullet: 'bullet',
         bullet2: 'bullet2',
+        bullet3: 'bullet2',
     };
 
     static defaultProps: Props = {
