@@ -584,6 +584,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
+        let testID = '';
 
         let margin = null;
         let align = status === ChatMessageStatus.Received ? 'flex-start' : 'flex-end';
@@ -607,6 +608,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+            testID = `chat_message_${ data?.info?.trx?.amount?.toFixed(9) }`
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
         } else if (type === ChatMessageContent.Invite) {
@@ -615,19 +617,24 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
+            testID = `chat_message_image`
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
+            testID = `chat_message_document`
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
         } else if (type === ChatMessageContent.LinkActionMessage) {
             cell = this.renderLinkActionMessageCell();
+            testID = `chat_message_link`
         } else {
             cell = this.renderInformationCell('Message/Cell type not supported.');
         }
 
-        const testIDValue = data?.info?.trx?.amount ? data.info.trx.amount.toFixed(9) : data;
-        const testID = `chat_message_${testIDValue}`
+        if (!testID) {
+            testID = `chat_message_${data}`
+        }
+
         return (
             <View
                 testID={testID}
