@@ -116,6 +116,7 @@ export default class UIModalController<Props, State> extends UIController<
 > {
     fullscreen: boolean;
     dismissible: boolean;
+    disableSwipeToDismiss: boolean;
     fromBottom: boolean;
     smallStripe: boolean;
     half: boolean;
@@ -148,6 +149,7 @@ export default class UIModalController<Props, State> extends UIController<
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
+        this.disableSwipeToDismiss = false;
         this.adjustBottomSafeAreaInsetDynamically = true;
         this.adjustKeyboardInsetDynamically = true;
         this.onCancel = null;
@@ -561,7 +563,7 @@ export default class UIModalController<Props, State> extends UIController<
     };
 
     onPan = ({ nativeEvent: { translationY } }: RNGHEvent<{ translationY: number }>) => {
-        if (translationY > 0 && this.dismissible) {
+        if (translationY > 0 && this.dismissible && !this.disableSwipeToDismiss) {
             this.dy.setValue(translationY);
         }
     };
@@ -569,7 +571,8 @@ export default class UIModalController<Props, State> extends UIController<
     onPanHandlerStateChange = ({
         nativeEvent: { state, translationY },
     }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
-        if ((state === RNGHState.END || state === RNGHState.CANCELLED) && this.dismissible) {
+        if ((state === RNGHState.END || state === RNGHState.CANCELLED)
+        	&& this.dismissible && !this.disableSwipeToDismiss) {
             this.onReleaseSwipe(translationY);
         }
     };
@@ -587,7 +590,7 @@ export default class UIModalController<Props, State> extends UIController<
         return (
             <Animated.View style={containerStyle}>
                 <TapGestureHandler
-                    enabled={this.dismissible}
+                    enabled={this.dismissible && !this.disableSwipeToDismiss}
                     waitFor={this.panHandlerRef}
                     onHandlerStateChange={this.onTapHandlerStateChange}
                 >
@@ -610,7 +613,7 @@ export default class UIModalController<Props, State> extends UIController<
                     </PanGestureHandler>
                 </TapGestureHandler>
                 <PanGestureHandler
-                    enabled={this.dismissible}
+                    enabled={this.dismissible && !this.disableSwipeToDismiss}
                     onGestureEvent={this.onPan}
                     onHandlerStateChange={this.onPanHandlerStateChange}
                 >
