@@ -561,7 +561,7 @@ export default class UIModalController<Props, State> extends UIController<
     };
 
     onPan = ({ nativeEvent: { translationY } }: RNGHEvent<{ translationY: number }>) => {
-        if (translationY > 0 && this.dismissible) {
+        if (translationY > 0 && this.dismissible && this.shouldSwipeToDismiss()) {
             this.dy.setValue(translationY);
         }
     };
@@ -569,7 +569,8 @@ export default class UIModalController<Props, State> extends UIController<
     onPanHandlerStateChange = ({
         nativeEvent: { state, translationY },
     }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
-        if ((state === RNGHState.END || state === RNGHState.CANCELLED) && this.dismissible) {
+        if ((state === RNGHState.END || state === RNGHState.CANCELLED)
+        && this.dismissible && this.shouldSwipeToDismiss()) {
             this.onReleaseSwipe(translationY);
         }
     };
@@ -587,12 +588,12 @@ export default class UIModalController<Props, State> extends UIController<
         return (
             <Animated.View style={containerStyle}>
                 <TapGestureHandler
-                    enabled={this.dismissible}
+                    enabled={this.dismissible && this.shouldSwipeToDismiss()}
                     waitFor={this.panHandlerRef}
                     onHandlerStateChange={this.onTapHandlerStateChange}
                 >
                     <PanGestureHandler
-                        enabled={this.dismissible}
+                        enabled={this.dismissible && this.shouldSwipeToDismiss()}
                         ref={this.panHandlerRef}
                         onGestureEvent={this.onPan}
                         onHandlerStateChange={this.onPanHandlerStateChange}
@@ -610,7 +611,7 @@ export default class UIModalController<Props, State> extends UIController<
                     </PanGestureHandler>
                 </TapGestureHandler>
                 <PanGestureHandler
-                    enabled={this.dismissible}
+                    enabled={this.dismissible && this.shouldSwipeToDismiss()}
                     onGestureEvent={this.onPan}
                     onHandlerStateChange={this.onPanHandlerStateChange}
                 >
