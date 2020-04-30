@@ -33,11 +33,13 @@ type Props = {
     errorCaption?: string,
     needTopBar?: boolean,
     style?: ViewStyleProp,
+    onPressBackToHome?: () => void,
 };
 
 export default class UIErrorScreen extends UIScreen<Props, {}> {
     static defaultProps: Props = {
         needTopBar: true,
+        onPressBackToHome: () => {},
     };
 
     static errorCodes = {
@@ -111,7 +113,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
 
     // Events
     onPressBackToHome = () => {
-        // Virtual
+        this.props.onPressBackToHome();
     };
 
     // Render
