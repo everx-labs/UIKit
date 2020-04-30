@@ -590,7 +590,7 @@ const ru: UILocalizedData = {
     TheRequestedServiceIsDownToGetUpAsapTryAgainLater: 'The requested service is down to get up ASAP. Try again later.',
     WelcomeTo000: 'Welcome to 000',
     BackToHome: 'Back to Home',
-    serviceUnavailable: 'Service unavailable',
+    serviceUnavailable: 'Service temporarily unavailable',
 
     // Common
     // Time
