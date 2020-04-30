@@ -116,7 +116,6 @@ export default class UIModalController<Props, State> extends UIController<
 > {
     fullscreen: boolean;
     dismissible: boolean;
-    disableSwipeToDismiss: boolean;
     fromBottom: boolean;
     smallStripe: boolean;
     half: boolean;
@@ -149,7 +148,6 @@ export default class UIModalController<Props, State> extends UIController<
         this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
-        this.disableSwipeToDismiss = false;
         this.adjustBottomSafeAreaInsetDynamically = true;
         this.adjustKeyboardInsetDynamically = true;
         this.onCancel = null;
@@ -590,7 +588,7 @@ export default class UIModalController<Props, State> extends UIController<
         return (
             <Animated.View style={containerStyle}>
                 <TapGestureHandler
-                    enabled={this.dismissible && !this.disableSwipeToDismiss}
+                    enabled={this.dismissible}
                     waitFor={this.panHandlerRef}
                     onHandlerStateChange={this.onTapHandlerStateChange}
                 >
