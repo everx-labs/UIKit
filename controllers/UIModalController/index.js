@@ -563,7 +563,7 @@ export default class UIModalController<Props, State> extends UIController<
     };
 
     onPan = ({ nativeEvent: { translationY } }: RNGHEvent<{ translationY: number }>) => {
-        if (translationY > 0 && this.dismissible && !this.disableSwipeToDismiss) {
+        if (translationY > 0 && this.dismissible && this.shouldSwipeToDismiss()) {
             this.dy.setValue(translationY);
         }
     };
@@ -572,7 +572,7 @@ export default class UIModalController<Props, State> extends UIController<
         nativeEvent: { state, translationY },
     }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
         if ((state === RNGHState.END || state === RNGHState.CANCELLED)
-        	&& this.dismissible && !this.disableSwipeToDismiss) {
+        	&& this.dismissible && this.shouldSwipeToDismiss()) {
             this.onReleaseSwipe(translationY);
         }
     };
@@ -595,7 +595,6 @@ export default class UIModalController<Props, State> extends UIController<
                     onHandlerStateChange={this.onTapHandlerStateChange}
                 >
                     <PanGestureHandler
-                        enabled={this.dismissible}
                         ref={this.panHandlerRef}
                         onGestureEvent={this.onPan}
                         onHandlerStateChange={this.onPanHandlerStateChange}
@@ -613,7 +612,6 @@ export default class UIModalController<Props, State> extends UIController<
                     </PanGestureHandler>
                 </TapGestureHandler>
                 <PanGestureHandler
-                    enabled={this.dismissible && !this.disableSwipeToDismiss}
                     onGestureEvent={this.onPan}
                     onHandlerStateChange={this.onPanHandlerStateChange}
                 >

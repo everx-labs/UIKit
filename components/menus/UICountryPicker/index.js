@@ -102,7 +102,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.language = null;
         this.disabledCountries = [];
         this.modalOnWeb = false;
-        this.disableSwipeToDismiss = true;
 
         this.state = {
             expression: '',
