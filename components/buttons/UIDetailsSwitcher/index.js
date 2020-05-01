@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 import UIDetailsView from '../../views/UIDetailsView';
 import UIComponent from '../../UIComponent';

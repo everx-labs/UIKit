@@ -5,6 +5,7 @@ import Moment from 'moment';
 import isEmail from 'validator/lib/isEmail';
 
 import UIConstant from '../../helpers/UIConstant';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
@@ -420,22 +421,26 @@ export default class UIFunction {
     static setCookie(key: string, value: string, days: number) {
         const date = new Date();
         date.setDate(date.getDate() + days);
-        document.cookie = `${key}=${value}; path=/; expires=${date.toUTCString()}`;
+        document.cookie = `${key}=${value}; path=/; expires=${date.toUTCString()}; SameSite=None; Secure`;
     }
 
     static bankCardTypes = {
         masterCard: 'masterCard',
         maestro: 'maestro',
         visa: 'visa',
+        amex: 'amex',
         undetected: 'undetected',
     };
 
+    // TODO: Probably it would be better to use a library that already verifies this, or find a simpler
+    //       approach, plus add unit tests for different bank cards
     static getBankCardType({ number = '', raw = true, presumed = false }: BankCardNumberArgs) {
         const rawNumber = raw ? number : number.replace(/[^0-9]/gim, '');
         const regEx = {
             [this.bankCardTypes.visa]: /^4[0-9]{12}(?:[0-9]{3})?$/,
             [this.bankCardTypes.masterCard]: /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/,
             [this.bankCardTypes.maestro]: /^(5[06789]|6)[0-9]*$/,
+            [this.bankCardTypes.amex]: /^3[47][0-9]{13}$/,
             // for future using
             // amex: /^3[47][0-9]{13}$/,
             // diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
@@ -450,13 +455,20 @@ export default class UIFunction {
         const numbers = {
             [this.bankCardTypes.visa]: '4916338506082832',
             [this.bankCardTypes.masterCard]: '5280934283171080',
-            [this.bankCardTypes.maestro]: '5018000000000000',
+            [this.bankCardTypes.maestro]: '5018000000000000000',
+            [this.bankCardTypes.amex]: '370000000000000',
         };
 
         const results = {};
         Object.keys(regEx).forEach((key) => {
             const fullNumber = presumed ? `${rawNumber}${numbers[key].substr(rawNumber.length)}` : rawNumber;
-            if (regEx[key].test(fullNumber) && (presumed || rawNumber.length === 16)) {
+            if (regEx[key].test(fullNumber)
+            && (
+                (presumed || rawNumber.length === 15) // For American Express
+                || (presumed || rawNumber.length === 16) // Almost all cards
+                || (presumed || rawNumber.length === 19) // For some Maestro cards
+            )
+            ) {
                 results[key] = true;
             }
         });
@@ -468,7 +480,7 @@ export default class UIFunction {
         if (arr.length) {
             return arr[0];
         }
-        if (rawNumber.length >= 14 && rawNumber.length <= 16) {
+        if (rawNumber.length >= 14 && rawNumber.length <= 19) {
             return this.bankCardTypes.undetected;
         }
         return null;
@@ -494,5 +506,53 @@ export default class UIFunction {
             }
         }
         return cursorFormatted;
+    }
+
+    static combineStyles(stylesArray: ViewStyleProp | ViewStyleProp[] | TextStyleProp | TextStyleProp[]) {
+        let result = [];
+        stylesArray.forEach((item) => {
+            result = Array.isArray(item)
+                ? [...result, ...item]
+                : [...result, item];
+        });
+        return result;
+    }
+
+    static roundToMeaningDigit(num: number) {
+        const fraction = num - Math.trunc(num);
+        for (let i = 0; i < 10; i += 1) {
+            if (fraction * (10 ** i) >= 1) {
+                return Math.trunc(num) + Number(fraction.toFixed(i));
+            }
+        }
+        return num;
+    }
+
+    static truncText(str: string, narrow: boolean, signsCount: number) {
+        const signs = signsCount || (narrow ? 5 : 9);
+        if (str.length <= signs * 2) {
+            return str;
+        }
+        const dots = '.'.repeat(signs);
+        return `${str.substr(0, signs)} ${dots} ${str.substr(str.length - signs)}`;
+    }
+
+    // Return flat object, takes complex object with enclosures as an argument
+    static flatify(obj: any) {
+        if (!obj) return {};
+
+        const result = {};
+        Object.keys(obj).forEach((key) => {
+            if (typeof obj[key] === 'object') {
+                const flattifyResult = this.flatify(obj[key]);
+                Object.keys(flattifyResult).forEach((innerKey) => {
+                    result[`${key} / ${innerKey}`] = flattifyResult[innerKey];
+                });
+            } else {
+                result[key] = obj[key];
+            }
+        });
+
+        return result;
     }
 }

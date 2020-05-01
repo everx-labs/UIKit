@@ -76,6 +76,7 @@ const ru: UILocalizedData = {
     Yes: 'Да',
     No: 'Нет',
     Copy: 'Копировать',
+    CopyToClipboard: 'Копировать в буфер',
     Select: 'Выбрать',
     SelectAll: 'Выбрать все',
     DeselectAll: 'Отменить выбор',
@@ -96,7 +97,8 @@ const ru: UILocalizedData = {
     In: 'через',
     Sec: 'сек.',
     Description: 'Описание',
-    Share: 'Поделиться',
+    Share: 'Скопировать И Поделиться Этой Ссылкой',
+    ShareToTalk: 'Your TON wallet address link to allow friends talk and make transactions with you.',
     ShareLink: 'Поделиться ссылкой',
     Report: 'Пожаловаться',
     PleaseDoNotCloseTheApp: 'Пожалуйста, не закрывайте приложение',
@@ -172,7 +174,7 @@ const ru: UILocalizedData = {
     Friends: 'Друзья',
     NewContact: 'Новый контакт',
     FirstName: 'Имя',
-    MiddleName: 'Среднее Имя',
+    MiddleName: 'Среднее имя',
     LastName: 'Фамилия',
     AddContact: 'Добавить Контакт',
 
@@ -459,14 +461,19 @@ const ru: UILocalizedData = {
     FillInInformation: 'Заполните требуемую информацию ниже',
     FillInPersonalDetails: 'Заполните Ваши личные данные',
     UploadAScan: 'Загрузите скан Вашего паспорта или другого удостоверения личности',
-    DoB: 'Дата Рождения',
+    DoB: 'Дата рождения',
     DoBMin: 'Должен быть старше',
     DoBMax: 'Должен быть младше',
     Gender: 'Пол',
     Citizenship: 'Гражданство',
     Residence: 'Страна проживания',
     SelectResidence: 'Выберите страну проживания…',
+    SelectCountry: 'Select country…',
+    Country: 'Country',
     Address: 'Адрес',
+    City: 'Город',
+    State: 'Регион',
+    PostalCode: 'Почтовый индекс',
     Male: 'Мужчина',
     Female: 'Женщина',
     RequestedFiles: 'Запрашиваемые файлы',
@@ -527,6 +534,9 @@ const ru: UILocalizedData = {
         aborted: 'Aborted at {0}',
         sending: 'Pending...',
     },
+    message: {
+        sending: 'Pending...',
+    },
 
     ConfirmIdentity: 'Чтобы продолжить, нам необходимо подтвердить вашу личность, отправив SMS-код на ваш номер телефона',
     SMSNotice: 'Может взиматься плата за SMS',
@@ -568,6 +578,8 @@ const ru: UILocalizedData = {
     DescribeYourIssueOrIdea: 'Describe your issue or idea',
     YourEmail: 'Your email',
     SendFeedback: 'Send feedback',
+    PushFeedbackShort: 'Give feedback to contribute to the story',
+    PushFeedbackLong: 'Give your feedback to help us make the story better. Click here to share.',
 
     // Seed Phrase Input:
     seedPhraseTypo: 'Seems we have a typo here, try again', // TODO: Translate
@@ -578,7 +590,20 @@ const ru: UILocalizedData = {
     TheRequestedServiceIsDownToGetUpAsapTryAgainLater: 'The requested service is down to get up ASAP. Try again later.',
     WelcomeTo000: 'Welcome to 000',
     BackToHome: 'Back to Home',
-    serviceUnavailable: 'Service unavailable',
+    serviceUnavailable: 'Service temporarily unavailable',
+
+    // Common
+    // Time
+    hours: 'hours',
+    minutes: 'minutes',
+    hours01: 'hour',
+    hours11: 'hours',
+    hours24: 'hours',
+    hours50: 'hours',
+    minutes01: 'minute',
+    minutes11: 'minutes',
+    minutes24: 'minutes',
+    minutes50: 'minutes',
 };
 
 export default ru;

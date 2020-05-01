@@ -1,14 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
-import { StyleSheet, View } from 'react-native';
-
-import UIDetailsView from '../../views/UIDetailsView';
 import UIToggle from '../UIToggle';
-import UIConstant from '../../../helpers/UIConstant';
-import UIComponent from '../../UIComponent';
-import UIStyle from '../../../helpers/UIStyle';
 import UIDetailsSwitcher from '../UIDetailsSwitcher';
 
 type State = {};
@@ -63,9 +56,6 @@ type Props = {
   iconInactive?: ?string,
 };
 
-const styles = StyleSheet.create({
-});
-
 export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
     static Position = UIDetailsSwitcher.Position;
 
@@ -74,19 +64,16 @@ export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
             active, colored, testID, iconActive, iconInactive,
         } = this.props;
 
-        return (<UIToggle
-            iconActive={iconActive}
-            iconInactive={iconInactive}
-            testID={testID}
-            containerStyle={this.getSwitcherStyle()}
-            active={active}
-            colored={colored}
-        />
+        return (
+            <UIToggle
+                iconActive={iconActive}
+                iconInactive={iconInactive}
+                testID={testID}
+                containerStyle={this.getSwitcherStyle()}
+                active={active}
+                colored={colored}
+            />
         );
-    }
-
-    render() {
-        return super.render();
     }
 
     static defaultProps: Props;

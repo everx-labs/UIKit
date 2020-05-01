@@ -8,9 +8,9 @@ import UITextButton from '../../buttons/UITextButton';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
-import UIMenuView from '../../menus/UIMenuView';
 import UIButtonGroup from '../../buttons/UIButtonGroup';
 import UIDetailsInput from '../../input/UIDetailsInput';
+import UIPopoverMenu from '../../menus/UIPopoverMenu';
 
 import type { DetailsProps } from '../../input/UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
@@ -121,6 +121,13 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
+    onMobileChange(event: any) {
+        // Seems that it is not necessary anymore to handle the auto-growing behavior
+        // on Android. So, I'm not removing the method from the UIDetailsInput class
+        // and instead overriding it in here to avoid introduce any possible unexpected
+        // behavior.
+    }
+
     onLayout = (e: any) => {
         const { nativeEvent } = e;
         // If the browser window is resized, this forces the input
@@ -196,7 +203,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         return (
             <View style={styles.btnMenuContainer}>
                 <View style={styles.btnMenu}>
-                    <UIMenuView
+                    <UIPopoverMenu
                         testID="menu_view"
                         menuItemsList={items}
                         placement="top"
@@ -204,7 +211,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                         <View style={styles.btnMenu}>
                             <Image source={img} />
                         </View>
-                    </UIMenuView>
+                    </UIPopoverMenu>
                 </View>
             </View>
         );

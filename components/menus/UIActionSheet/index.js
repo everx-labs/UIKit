@@ -14,6 +14,7 @@ type Props = {
     menuItemsList: MenuItemType[],
     needCancelItem: boolean,
     masterActionSheet: boolean,
+    fullWidth: boolean,
     onCancel: () => void,
 };
 type State = {
@@ -24,13 +25,22 @@ type State = {
 let masterRef = null;
 
 export default class UIActionSheet extends UIComponent<Props, State> {
+    static defaultProps: Props = {
+        masterActionSheet: true,
+        menuItemsList: [],
+        needCancelItem: true,
+        fullWidth: true,
+        onCancel: () => {},
+    }
+
     static show(
         menuItemsList: MenuItemType[],
         needCancelItem?: boolean,
         onCancelCallback?: () => void,
+        fullWidth: boolean = true,
     ) {
         if (masterRef) {
-            masterRef.show(menuItemsList, needCancelItem, onCancelCallback);
+            masterRef.show(menuItemsList, needCancelItem, onCancelCallback, fullWidth);
         }
     }
 
@@ -40,6 +50,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         }
     }
 
+    fullWidth: boolean;
     onCancel: () => void;
     customSheet: ?UICustomSheet;
     menuItemsList: MenuItemType[];
@@ -85,8 +96,10 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         menuItemsList?: MenuItemType[],
         needCancelItem?: boolean,
         onCancel?: () => void,
+        fullWidth: boolean = true,
     ) {
         this.onCancel = onCancel || this.props.onCancel;
+        this.fullWidth = fullWidth != null ? fullWidth : this.props.fullWidth;
         this.setStateSafely({
             menuItemsList: menuItemsList || this.props.menuItemsList,
             needCancelItem: needCancelItem !== undefined
@@ -123,6 +136,8 @@ export default class UIActionSheet extends UIComponent<Props, State> {
     }
 
     renderMenuItem = ({ item }: { item: MenuItemType }) => {
+        if (!item) return null;
+
         return (
             <MenuItem
                 {...item}
@@ -140,7 +155,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
             <React.Fragment>
                 <FlatList
                     data={this.getMenuItemsList()}
-                    keyExtractor={item => `MenuItem~${item.title}`}
+                    keyExtractor={item => `MenuItem~${item?.title}`}
                     renderItem={this.renderMenuItem}
                     scrollEnabled={false}
                     showsVerticalScrollIndicator={false}
@@ -157,18 +172,9 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 masterSheet={false}
                 showHeader={false}
                 component={this.renderMenu()}
-                fullWidth
+                fullWidth={this.fullWidth}
                 onCancel={this.onCancel}
             />
         );
     }
-
-    static defaultProps: Props;
 }
-
-UIActionSheet.defaultProps = {
-    masterActionSheet: true,
-    menuItemsList: [],
-    needCancelItem: true,
-    onCancel: () => {},
-};

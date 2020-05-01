@@ -76,6 +76,7 @@ const en: UILocalizedData = {
     Yes: 'Yes',
     No: 'No',
     Copy: 'Copy',
+    CopyToClipboard: 'Copy to clipboard',
     Select: 'Select',
     SelectAll: 'Select All',
     DeselectAll: 'Deselect All',
@@ -96,7 +97,8 @@ const en: UILocalizedData = {
     In: 'in',
     Sec: 'sec.',
     Description: 'Description',
-    Share: 'Share',
+    Share: 'Copy & Share This Link',
+    ShareToTalk: 'Your TON wallet address link to allow friends talk and make transactions with you.',
     ShareLink: 'Share Link',
     Report: 'Report',
     PleaseDoNotCloseTheApp: 'Please, do not close the app',
@@ -171,9 +173,9 @@ const en: UILocalizedData = {
     Contacts: 'Contacts',
     Friends: 'Friends',
     NewContact: 'New Contact',
-    FirstName: 'First Name',
-    MiddleName: 'Middle Name',
-    LastName: 'Last Name',
+    FirstName: 'First name',
+    MiddleName: 'Middle name',
+    LastName: 'Last name',
     AddContact: 'Add Contact',
 
     Online: 'online',
@@ -460,14 +462,19 @@ const en: UILocalizedData = {
     FillInInformation: 'Fill in the required information below',
     FillInPersonalDetails: 'Fill in your personal details',
     UploadAScan: 'Upload a scan of your passport or other ID',
-    DoB: 'Date of Birth',
+    DoB: 'Date of birth',
     DoBMin: 'Must be older than',
     DoBMax: 'Must be younger than',
     Gender: 'Gender',
     Citizenship: 'Citizenship',
-    Residence: 'Residence',
+    Residence: 'Country of residence',
     SelectResidence: 'Select the country of residence…',
+    SelectCountry: 'Select country…',
+    Country: 'Country',
     Address: 'Address',
+    City: 'City',
+    State: 'State',
+    PostalCode: 'Postal code',
     Male: 'Male',
     Female: 'Female',
     RequestedFiles: 'Requested Files',
@@ -529,6 +536,10 @@ const en: UILocalizedData = {
         sending: 'Pending...',
     },
 
+    message: {
+        sending: 'Pending...',
+    },
+
     ConfirmIdentity: 'To proceed, we need to confirm your identity by sending an SMS code to your phone number',
     SMSNotice: 'SMS fees may apply',
 
@@ -569,6 +580,8 @@ const en: UILocalizedData = {
     DescribeYourIssueOrIdea: 'Describe your issue or idea',
     YourEmail: 'Your email',
     SendFeedback: 'Send feedback',
+    PushFeedbackShort: 'Give feedback to contribute to the story',
+    PushFeedbackLong: 'Give your feedback to help us make the story better. Click here to share.',
 
     // Seed Phrase Input:
     seedPhraseTypo: 'Seems we have a typo here, try again',
@@ -579,7 +592,20 @@ const en: UILocalizedData = {
     TheRequestedServiceIsDownToGetUpAsapTryAgainLater: 'The requested service is down to get up ASAP. Try again later.',
     WelcomeTo000: 'Welcome to 000',
     BackToHome: 'Back to Home',
-    serviceUnavailable: 'Service unavailable',
+    serviceUnavailable: 'Service temporarily unavailable',
+
+    // Common
+    // Time
+    hours: 'hours',
+    minutes: 'minutes',
+    hours01: 'hour',
+    hours11: 'hours',
+    hours24: 'hours',
+    hours50: 'hours',
+    minutes01: 'minute',
+    minutes11: 'minutes',
+    minutes24: 'minutes',
+    minutes50: 'minutes',
 };
 
 export default en;

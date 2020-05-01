@@ -1,10 +1,15 @@
 // @flow
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import { StyleSheet, Platform, Dimensions, Animated, PanResponder } from 'react-native';
-import PopupDialog, { FadeAnimation } from 'react-native-popup-dialog';
+import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
-import type { Style } from 'react-style-proptype/src/Style.flow';
+
+import {
+    PanGestureHandler,
+    TapGestureHandler,
+    State as RNGHState,
+} from 'react-native-gesture-handler';
 
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type {
@@ -14,19 +19,19 @@ import type {
     ControllerState,
 } from '../UIController';
 
+import UIAssets from '../../assets/UIAssets';
+import UIColor from '../../helpers/UIColor';
+import UIConstant from '../../helpers/UIConstant';
 import UIController from '../UIController';
 import UIDevice from '../../helpers/UIDevice';
 import UIFunction from '../../helpers/UIFunction';
-import UIStyle from '../../helpers/UIStyle';
-import UIColor from '../../helpers/UIColor';
-import UIConstant from '../../helpers/UIConstant';
 import UIModalNavigationBar from './UIModalNavigationBar';
-import SlideAnimation from './utils/SlideAnimation';
+import UIStyle from '../../helpers/UIStyle';
 
 import type { SafeAreaInsets } from '../../helpers/UIDevice';
 
-const fullScreenDialogWidth = 600;
-const fullScreenDialogHeight = 600;
+const { fullScreenDialogWidth, fullScreenDialogHeight } = UIConstant;
+const HARDWARE_BACK_PRESS_EVENT = 'hardwareBackPress';
 
 type OnLayoutEventArgs = {
     nativeEvent: {
@@ -38,6 +43,8 @@ type OnLayoutEventArgs = {
         },
     },
 };
+
+type RNGHEvent<T> = { nativeEvent: T };
 
 export type ModalControllerProps = ControllerProps & {
     onWillAppear?: () => void,
@@ -53,26 +60,41 @@ export type ModalControllerState = ControllerState & {
     header?: React$Node,
 };
 
-export type ModalControllerShowArgs = ?boolean | {
-    open?: boolean,
-    onCancel?: () => void,
-    onSubmit?: () => void,
-    onSelect?: (any) => void,
-};
+export type ModalControllerShowArgs =
+    | ?boolean
+    | {
+          open?: boolean,
+          onCancel?: () => void,
+          onSubmit?: () => void,
+          onSelect?: any => void,
+      };
 
 const styles = StyleSheet.create({
+    containerCentered: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    containerToTheEnd: {
+        justifyContent: 'flex-end',
+    },
+    dialog: {
+        borderRadius: UIConstant.borderRadius(),
+        backgroundColor: UIColor.backgroundPrimary(UIColor.Theme.Light),
+    },
     dialogOverflow: {
         overflow: 'hidden',
     },
     dialogBorders: {
-        borderTopLeftRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
-        borderTopRightRadius: Platform.OS === 'ios' ? UIConstant.borderRadius() : 0,
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-    },
-    modalOnWebDialogBorders: {
-        borderTopLeftRadius: UIConstant.borderRadius(),
-        borderTopRightRadius: UIConstant.borderRadius(),
+        borderTopLeftRadius: Platform.select({
+            ios: UIConstant.borderRadius(),
+            android: 0,
+            web: UIConstant.borderRadius(),
+        }),
+        borderTopRightRadius: Platform.select({
+            ios: UIConstant.borderRadius(),
+            android: 0,
+            web: UIConstant.borderRadius(),
+        }),
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
     },
@@ -90,7 +112,7 @@ const styles = StyleSheet.create({
 
 export default class UIModalController<Props, State> extends UIController<
     ModalControllerProps & Props,
-    ModalControllerState & State,
+    ModalControllerState & State
 > {
     fullscreen: boolean;
     dismissible: boolean;
@@ -102,19 +124,21 @@ export default class UIModalController<Props, State> extends UIController<
     onCancel: ?() => void;
     onSelect: ?(any) => void;
     onSubmit: ?() => void;
-    bgAlpha: ?ColorValue;
-    dialog: ?PopupDialog;
     marginBottom: Animated.Value;
     dy: Animated.Value;
-    animation: SlideAnimation | FadeAnimation;
+    animation: 'slide' | 'fade';
     testID: ?string;
     minWidth: number = 0;
     minHeight: number = 0;
+    maxWidth: number = Number.MAX_SAFE_INTEGER;
+    maxHeight: number = Number.MAX_SAFE_INTEGER;
     modalOnWeb: boolean;
+    zIndex: ?number;
+    closeAnimation: ?{ stop: () => void, start: (...any) => any };
 
     static animations = {
-        fade: () => new FadeAnimation({ toValue: 1 }),
-        slide: () => new SlideAnimation({ slideFrom: 'bottom' }),
+        fade: () => 'fade',
+        slide: () => 'slide',
     };
 
     panResponder: PanResponderInstance;
@@ -126,7 +150,6 @@ export default class UIModalController<Props, State> extends UIController<
         this.dismissible = true;
         this.adjustBottomSafeAreaInsetDynamically = true;
         this.adjustKeyboardInsetDynamically = true;
-        this.dialog = null;
         this.onCancel = null;
         this.onSubmit = null;
         this.onSelect = null;
@@ -140,29 +163,6 @@ export default class UIModalController<Props, State> extends UIController<
         this.state = {
             ...(this.state: ModalControllerState & State),
         };
-        this.panResponder = PanResponder.create({
-            // Ask to be the responder:
-            onStartShouldSetPanResponder: () => this.dismissible,
-            onMoveShouldSetPanResponder: (evt, gestureState) => {
-                // Need small delay before moving for correct work
-                // on android (working of input focus not correct)
-                if (gestureState.dy < 30) {
-                    return false;
-                }
-
-                return this.dismissible;
-            },
-
-            // Handling responder events
-            onPanResponderMove: (evt, gestureState) => {
-                if (gestureState.dy > 0) {
-                    this.dy.setValue(gestureState.dy);
-                }
-            },
-            onPanResponderRelease: (evt, gestureState) => {
-                this.onReleaseSwipe(gestureState.dy);
-            },
-        });
     }
 
     async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
@@ -181,6 +181,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     onDidAppear() {
         this.initKeyboardListeners();
+        BackHandler.addEventListener(HARDWARE_BACK_PRESS_EVENT, this.hardwareBackEventHandler);
 
         const { onDidAppear } = this.props;
         if (onDidAppear) {
@@ -190,6 +191,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     onWillHide() {
         this.deinitKeyboardListeners();
+        BackHandler.removeEventListener(HARDWARE_BACK_PRESS_EVENT, this.hardwareBackEventHandler);
 
         const { onWillHide } = this.props;
         if (onWillHide) {
@@ -198,9 +200,7 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     onDidHide() {
-        this.setControllerVisible(false, () => {
-            this.dy.setValue(0);
-        });
+        this.setControllerVisible(false);
 
         const { onDidHide } = this.props;
         if (onDidHide) {
@@ -223,18 +223,15 @@ export default class UIModalController<Props, State> extends UIController<
         }
     };
 
+    hardwareBackEventHandler = (): boolean => {
+        this.onCancelPress();
+        return true;
+    };
+
     onLayout = (e: OnLayoutEventArgs) => {
         const { layout } = e.nativeEvent;
         const { width, height } = layout;
         this.setSize(width, height);
-    };
-
-    onReleaseSwipe = (dy: number) => {
-        if (dy > UIConstant.swipeThreshold()) {
-            this.onCancelPress();
-        } else {
-            this.returnToTop();
-        }
     };
 
     // Getters
@@ -249,77 +246,97 @@ export default class UIModalController<Props, State> extends UIController<
     getDialogStyle() {
         let { width, height } = this.state;
         if (!width || !height) {
-            ({
-                width,
-                height,
-            } = Dimensions.get('window'));
+            ({ width, height } = Dimensions.get('window'));
         }
 
-        const statusBarHeight = UIDevice.statusBarHeight();
-        const navBarHeight = Platform.OS === 'web' || !this.dismissible
-            ? 0
-            : UIDevice.navigationBarHeight(); // navigation bar height above the modal controller
-        const modalForWebTopOffset = Platform.OS === 'web' && this.modalOnWeb ? (height / 2.0) : 0;
+        const outerNavBarHeight = this.dismissible
+            ? UIDevice.navigationBarHeight()
+            : 0; // navigation bar height above the modal controller
 
-        const containerStyle: Style = {
-            top: -1, // fix for 1px top offset
-            paddingTop: statusBarHeight + navBarHeight + modalForWebTopOffset,
-            width,
-            height,
-        };
+        let containerPaddingTop = outerNavBarHeight;
 
-        let dialogStyle: Style | Style[] = [
+        const dialogStyle = [
+            styles.dialog, // general style for dialog with all rounded corners and background color
             styles.dialogOverflow,
-            this.modalOnWeb ? styles.modalOnWebDialogBorders : styles.dialogBorders,
+            this.animation === UIModalController.animations.slide()
+                ? { transform: [{ translateY: this.dy }] }
+                : { opacity: this.getDYDependentOpacity() },
         ];
 
-        // Need to enlarge the controller in order to hide a "bouncing" bottom border.
-        // It works for PopupDialog ONLY in case we have some space above the dialog!
-        let enlargeHeightForBounce = navBarHeight > UIConstant.coverBounceOffset();
-        if (!this.fullscreen && (UIDevice.isDesktop() || UIDevice.isTablet())) {
-            width = Math.min(width, fullScreenDialogWidth);
-            height = Math.min(height, fullScreenDialogHeight);
-            if (width === fullScreenDialogWidth && height === fullScreenDialogHeight) {
-                dialogStyle = styles.dialogOverflow;
-                enlargeHeightForBounce = false; // no need to enlarge centered modal controller
+        const containerStyle = [
+            UIStyle.Common.absoluteFillContainer(),
+            this.zIndex ? { zIndex: this.zIndex } : null,
+        ];
+
+        if (UIDevice.isDesktop() || UIDevice.isTablet()) {
+            // Center the container
+            containerStyle.push(styles.containerCentered);
+
+            if (!this.fullscreen) {
+                // On the desktop and the tablet we need to show a modal with fixed width and height
+                width = Math.min(width, fullScreenDialogWidth);
+                height = Math.min(height, fullScreenDialogHeight);
+                // -------
+                // Basically we are trying to make a modal with the standard size
+                // (i.e fullScreenDialogWidth), but sometimes controller could specify minimum size
+                width = Math.max(width, this.minWidth);
+                height = Math.max(height, this.minHeight);
+                // or maximum size
+                width = Math.min(width, this.maxWidth);
+                height = Math.min(height, this.maxHeight);
+                // -------
+                if (this.fromBottom) {
+                    const screenHeight = Dimensions.get('window').height;
+                    height = Math.min(screenHeight, screenHeight - (screenHeight - height) / 2);
+                    // Change borders when opening from the bottom
+                    dialogStyle.push(styles.dialogBorders);
+                    // Change container when opening from the bottom
+                    containerStyle.push(styles.containerToTheEnd);
+                }
+            } else {
+                // Count on status bar when fullscreen
+                containerPaddingTop += UIDevice.statusBarHeight();
+                height -= UIDevice.statusBarHeight();
+                // Add padding for container
+                containerStyle.push({ paddingTop: containerPaddingTop });
             }
+
+            // Add calculated width & height
+            dialogStyle.push({ width, height });
+            // Calculate content height
+            const contentHeight = height - containerPaddingTop;
+
+            return {
+                width,
+                height,
+                dialogStyle,
+                contentHeight,
+                containerStyle,
+            };
         }
 
-        if (this.half && !(UIDevice.isDesktop() || UIDevice.isTablet())) {
-            height /= 2;
-            containerStyle.justifyContent = 'flex-end';
-        } else {
-            height -= statusBarHeight + navBarHeight;
-        }
+        // Mobile (always fullscreen)
+        containerPaddingTop += UIDevice.statusBarHeight(); // count on status bar (as fullscreen)
+        const bottomInset = this.fromBottom ? 0 : this.getSafeAreaInsets().bottom;
+        const innerNavBarHeight = this.getNavigationBarHeight();
+        const contentHeight = height - containerPaddingTop - innerNavBarHeight - bottomInset;
 
-        let contentHeight = height - this.getSafeAreaInsets().bottom;
+        // Change borders when opening from the mobile
+        dialogStyle.push(styles.dialogBorders);
+        // "Flex" the dialog & container when opening from the mobile (as fullscreen)
+        dialogStyle.push(UIStyle.common.flex());
+        containerStyle.push(UIStyle.common.flex());
+        // Add padding for container
+        containerStyle.push({ paddingTop: containerPaddingTop });
 
-        if (this.dismissible) {
-            contentHeight -= this.getNavigationBarHeight();
-        }
-
-        // eslint-disable-next-line no-underscore-dangle
-        if (
-            (this.fromBottom || this.state.keyboardVisible) &&
-            (UIDevice.isDesktop() || UIDevice.isTablet())
-        ) {
-            const screenHeight = Dimensions.get('window').height;
-            const halfFullScreenDialogHeight = Math.min(screenHeight, fullScreenDialogHeight) / 2;
-            const halfScreenHeight = screenHeight / 2;
-
-            containerStyle.justifyContent = 'flex-end';
-            height = halfScreenHeight + halfFullScreenDialogHeight;
-
-            contentHeight = height - this.getSafeAreaInsets().bottom;
-            if (this.dismissible) {
-                contentHeight -= this.getNavigationBarHeight();
-            }
-        }
-
-        if (enlargeHeightForBounce) {
-            height += UIConstant.coverBounceOffset();
-            containerStyle.paddingTop += UIConstant.coverBounceOffset();
-        }
+        // Looks like it's something that used before
+        // Grep across the project didn't get any use of it
+        // if (this.half) {
+        //     height /= 2;
+        //     containerStyle.push({ justifyContent: 'flex-end' });
+        // } else {
+        //     // height -= statusBarHeight + navBarHeight;
+        // }
 
         return {
             width,
@@ -330,22 +347,25 @@ export default class UIModalController<Props, State> extends UIController<
         };
     }
 
-    getCancelImage() {
-        return null;
+    getCancelImage(): ?ImageSource {
+        return UIAssets.btnClose();
     }
 
     // Override if needed!
     shouldSwipeToDismiss() {
-        return Platform.OS !== 'web';
+        return Platform.OS !== 'web'; // this.dismissible;
     }
 
-    interpolateColor(): ColorValue {
+    getMaxHeight() {
         const { height } = Dimensions.get('window');
-        const maxValue = height - UIDevice.statusBarHeight() - this.getNavigationBarHeight();
+        return height - UIDevice.statusBarHeight();
+    }
+
+    getDYDependentOpacity(): ColorValue {
+        const maxHeight = this.getMaxHeight();
         return (this.dy: any).interpolate({
-            inputRange: [0, maxValue],
-            outputRange: [UIColor.overlay60(), UIColor.overlay0()],
-            useNativeDriver: true,
+            inputRange: [0, maxHeight],
+            outputRange: [1, 0],
         });
     }
 
@@ -385,11 +405,6 @@ export default class UIModalController<Props, State> extends UIController<
         });
     }
 
-    setInitialSwipeState() {
-        this.dy.setValue(0);
-        this.bgAlpha = this.interpolateColor();
-    }
-
     setHeader(header: React$Node) {
         this.setStateSafely({ header });
     }
@@ -397,11 +412,9 @@ export default class UIModalController<Props, State> extends UIController<
     // Getters
     getBackgroundColor() {
         if (Platform.OS === 'web' && this.modalOnWeb) {
-            return this.bgAlpha;
+            return UIColor.overlay60();
         }
-        return Platform.OS === 'web' && this.fullscreen
-            ? 'transparent'
-            : this.bgAlpha;
+        return Platform.OS === 'web' && this.fullscreen ? 'transparent' : UIColor.overlay60();
     }
 
     isHeaderLineVisible() {
@@ -411,11 +424,48 @@ export default class UIModalController<Props, State> extends UIController<
     // Events
 
     // Actions
+    moveToTop(onFinish: ?() => void) {
+        Animated.spring(this.dy, {
+            toValue: 0,
+            velocity: 0,
+            tension: 15,
+            friction: 10,
+            useNativeDriver: true,
+        }).start(onFinish);
+    }
+
+    moveToBottom(onFinish: ?() => void) {
+        const maxHeight = this.getMaxHeight();
+        this.closeAnimation = Animated.spring(this.dy, {
+            toValue: maxHeight,
+            velocity: 0,
+            tension: 15,
+            friction: 10,
+            // Spring animation finishing could take some time
+            // so tuning it up a little, more details here:
+            // https://github.com/facebook/react-native/issues/20783
+            restSpeedThreshold: 100,
+            restDisplacementThreshold: 40,
+            useNativeDriver: true,
+        }).start(({ finished }) => {
+            if (!finished) {
+                return;
+            }
+            if (onFinish != null) {
+                onFinish();
+            }
+            this.closeAnimation = null;
+        });
+    }
+
     openDialog() {
         this.onWillAppear();
-        if (this.dialog) {
-            this.dialog.show();
+        const maxHeight = this.getMaxHeight();
+        if (this.closeAnimation != null) {
+            this.closeAnimation.stop();
         }
+        this.dy.setValue(maxHeight);
+        this.moveToTop(this.onDidAppearHandler);
     }
 
     async show(arg: ModalControllerShowArgs) {
@@ -440,7 +490,6 @@ export default class UIModalController<Props, State> extends UIController<
                 this.onSelect = arg.onSelect;
             }
         }
-        this.setInitialSwipeState();
         await UIFunction.makeAsync(this.setControllerVisible.bind(this))(true);
         if (open) {
             this.openDialog();
@@ -448,21 +497,13 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     async hide() {
-        if (this.dialog) {
-            this.dialog.dismiss();
-            this.onWillHide();
+        if (this.closeAnimation != null) {
+            return;
         }
-    }
-
-    returnToTop() {
-        Animated.spring(this.dy, {
-            toValue: 0,
-            // Use same options as in popup-dialog animation module
-            // may delete them for more standard anim and bounciness
-            velocity: 0,
-            tension: 65,
-            friction: 10,
-        }).start();
+        if (this.state.controllerVisible) {
+            this.onWillHide();
+            this.moveToBottom(this.onDidHideHandler);
+        }
     }
 
     // Render
@@ -504,78 +545,91 @@ export default class UIModalController<Props, State> extends UIController<
         );
     }
 
-    renderDialog() {
-        const {
-            width, height, contentHeight, containerStyle, dialogStyle,
-        } = this.getDialogStyle();
-
-        const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
-        return (
-            <PopupDialog
-                {...testIDProp}
-                ref={(popupDialog) => { this.dialog = popupDialog; }}
-                width={width}
-                height={height}
-                containerStyle={containerStyle}
-                dialogStyle={[
-                    {
-                        minWidth: this.minWidth,
-                        minHeight: this.minHeight,
-                    },
-                    dialogStyle,
-                    // Only inline style working in this prop
-                    this.fromBottom && {
-                        borderBottomLeftRadius: 0,
-                        borderBottomRightRadius: 0,
-                    },
-                ]}
-                dialogAnimation={this.animation} //
-                dialogTitle={this.renderModalNavigationBar()}
-                dismissOnTouchOutside={false}
-                onDismissed={this.onDidHideHandler}
-                onShown={this.onDidAppearHandler}
-                overlayBackgroundColor="transparent"
-            >
-                <Animated.View
-                    style={[
-                        contentHeight != null
-                            ? {
-                                  height: contentHeight + this.getSafeAreaInsets().bottom,
-                              }
-                            : UIStyle.common.flex(),
-                        this.adjustKeyboardInsetDynamically
-                            ? { paddingBottom: this.marginBottom }
-                            : null,
-                    ]}
-                >
-                    {this.renderContentView(contentHeight)}
-                </Animated.View>
-                {this.renderSpinnerOverlay()}
-            </PopupDialog>
-        );
-    }
-
     // eslint-disable-next-line no-unused-vars
     renderContentView(contentHeight: number): React$Node {
         return null;
     }
 
+    panHandlerRef = React.createRef<TapGestureHandler>();
+
+    onReleaseSwipe = (dy: number) => {
+        if (dy > UIConstant.swipeThreshold()) {
+            this.onCancelPress();
+        } else {
+            this.moveToTop();
+        }
+    };
+
+    onPan = ({ nativeEvent: { translationY } }: RNGHEvent<{ translationY: number }>) => {
+        if (translationY > 0 && this.dismissible && this.shouldSwipeToDismiss()) {
+            this.dy.setValue(translationY);
+        }
+    };
+
+    onPanHandlerStateChange = ({
+        nativeEvent: { state, translationY },
+    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
+        if ((state === RNGHState.END || state === RNGHState.CANCELLED)
+        && this.dismissible && this.shouldSwipeToDismiss()) {
+            this.onReleaseSwipe(translationY);
+        }
+    };
+
+    onTapHandlerStateChange = ({ nativeEvent: { state } }: RNGHEvent<{ state: RNGHState }>) => {
+        if (state === RNGHState.ACTIVE && this.dismissible) {
+            this.hide();
+        }
+    };
+
     renderContainer() {
         const backgroundColor = this.getBackgroundColor();
+        const { containerStyle, contentHeight, dialogStyle } = this.getDialogStyle();
+        const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
         return (
-            <Animated.View
-                style={[
-                    // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
-                    // And this brings a layout bug to Safari
-                    UIStyle.Common.absoluteFillContainer(),
-                    { backgroundColor },
-                ]}
-                onLayout={this.onLayout}
-                {...this.panResponder.panHandlers}
-            >
-                <Animated.View style={{ marginTop: this.dy }}>
-                    {this.renderDialog()}
-                </Animated.View>
+            <Animated.View style={containerStyle}>
+                <TapGestureHandler
+                    enabled={this.dismissible && this.shouldSwipeToDismiss()}
+                    waitFor={this.panHandlerRef}
+                    onHandlerStateChange={this.onTapHandlerStateChange}
+                >
+                    <PanGestureHandler
+                        enabled={this.dismissible && this.shouldSwipeToDismiss()}
+                        ref={this.panHandlerRef}
+                        onGestureEvent={this.onPan}
+                        onHandlerStateChange={this.onPanHandlerStateChange}
+                    >
+                        <Animated.View
+                            style={[
+                                // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
+                                // And this brings a layout bug to Safari
+                                UIStyle.Common.absoluteFillContainer(),
+                                { backgroundColor },
+                                { opacity: this.getDYDependentOpacity() },
+                            ]}
+                            onLayout={this.onLayout}
+                        />
+                    </PanGestureHandler>
+                </TapGestureHandler>
+                <PanGestureHandler
+                    enabled={this.dismissible && this.shouldSwipeToDismiss()}
+                    onGestureEvent={this.onPan}
+                    onHandlerStateChange={this.onPanHandlerStateChange}
+                >
+                    <Animated.View {...testIDProp} style={dialogStyle}>
+                        {this.renderModalNavigationBar()}
+                        <Animated.View
+                            style={[
+                                UIStyle.common.flex(),
+                                this.adjustKeyboardInsetDynamically
+                                    ? { paddingBottom: this.marginBottom }
+                                    : null,
+                            ]}
+                        >
+                            {this.renderContentView(contentHeight)}
+                        </Animated.View>
+                        {this.renderSpinnerOverlay()}
+                    </Animated.View>
+                </PanGestureHandler>
             </Animated.View>
         );
     }
@@ -587,6 +641,4 @@ export default class UIModalController<Props, State> extends UIController<
 
         return this.renderContainer();
     }
-
-    // Internals
 }

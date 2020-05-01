@@ -26,6 +26,13 @@ export type Details = {
 
 export type DetailsList = Details[];
 
+export type FormatNestedListArgs = {
+    list: DetailsList,
+    key: string,
+    needOffset?: boolean,
+    needBullets?: boolean,
+}
+
 type Props = {
     navigation?: ReactNavigation,
     detailsList: DetailsList,
@@ -64,19 +71,66 @@ class UIDetailsTable extends UIComponent<Props, State> {
         error: 'error',
         numberPercent: 'numberPercent',
         disabled: 'disabled',
+        bool: 'bool',
+    };
+
+    static captionType = {
+        default: 'default',
         header: 'header',
+        headerBullet: 'header-bullet',
         bullet: 'bullet',
+        bullet2: 'bullet2',
     };
 
     static defaultProps: Props = {
         detailsList: [],
     };
 
-    static getBooleanCell(bool: boolean) {
-        if (bool) {
-            return { value: 'true' };
+    static formatNestedList(args: FormatNestedListArgs | DetailsList, keyParam?: string) {
+        let list;
+        let key;
+        let needOffset;
+        let needBullets;
+        if (args instanceof Array) {
+            list = args;
+            key = keyParam;
+            needOffset = true;
+            needBullets = true;
+        } else {
+            list = args.list;
+            key = args.key;
+            needOffset = args.needOffset !== undefined ? args.needOffset : true;
+            needBullets = args.needBullets !== undefined ? args.needBullets : true;
         }
-        return { value: 'false', type: UIDetailsTable.cellType.disabled };
+        const result = list.map<Details>((item, index) => {
+            let captionType = this.captionType.default;
+            const { caption } = item;
+            if (index) {
+                if (needBullets) {
+                    if (item.captionType === this.captionType.bullet) {
+                        captionType = this.captionType.bullet2;
+                    } else if (item.captionType === this.captionType.header) {
+                        captionType = this.captionType.headerBullet;
+                    } else {
+                        captionType = this.captionType.bullet;
+                    }
+                }
+            } else {
+                captionType = this.captionType.header;
+            }
+
+            return {
+                ...item,
+                key,
+                caption,
+                captionType,
+            };
+        });
+
+        if (needOffset) {
+            result.unshift({ key, value: '', caption: '' });
+        }
+        return result;
     }
 
     // Events
@@ -88,16 +142,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
     }
 
-    // Actions
-    navigateTo(screen: ?string) {
-        const { navigation } = this.props;
-        if (navigation && screen) {
-            navigation.push(screen);
-        }
-    }
-
     // Getters
-    getTextStyle(type: ?string) {
+    getTextStyle(type: ?string, value: ?string | number) {
         if (type === UIDetailsTable.cellType.success) {
             return UIStyle.text.successSmallRegular();
         } else if (type === UIDetailsTable.cellType.error) {
@@ -106,12 +152,32 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return UIStyle.text.primarySmallMedium();
         } else if (type === UIDetailsTable.cellType.disabled) {
             return UIStyle.text.tertiarySmallRegular();
-        } else if (type === UIDetailsTable.cellType.default || !type) {
-            return UIStyle.text.secondarySmallRegular();
+        } else if (type === UIDetailsTable.cellType.bool && !value) {
+            return UIStyle.text.tertiarySmallRegular();
         }
-        return null;
+        return UIStyle.text.secondarySmallRegular();
     }
 
+    getBulletSign(captionType?: string) {
+        const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
+        if (captionType === bullet || captionType === headerBullet) {
+            return '•   ';
+        }
+        if (captionType === bullet2) {
+            return '    -   ';
+        }
+        return '';
+    }
+
+    // Actions
+    navigateTo(screen: ?string) {
+        const { navigation } = this.props;
+        if (navigation && screen) {
+            navigation.push(screen);
+        }
+    }
+
+    // Render
     renderTextCell(value: number | string, details: string) {
         return (
             <Text>
@@ -129,7 +195,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         const {
             type, value, limit, component, onPress,
         } = details;
-        const textStyle = this.getTextStyle(type);
+        const textStyle = this.getTextStyle(type, value);
         if ((!value && value !== 0) && !component) {
             return null;
         }
@@ -151,24 +217,25 @@ class UIDetailsTable extends UIComponent<Props, State> {
         } else if (component) {
             return component;
         }
+
         return (
             <Text style={[textStyle, UIStyle.common.flex()]}>
-                {value}
+                {type === UIDetailsTable.cellType.bool ? JSON.stringify(value) : value}
             </Text>
         );
     }
 
     renderRows() {
-        const { detailsList } = this.props;
-        return detailsList.map<React$Node>((item, index) => {
-            const cell = this.renderCell(item);
+        const { detailsList, leftCellStyle, rightCellStyle } = this.props;
+        return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
                 caption, value, captionType, key,
             } = item;
-            const testIDCaption = caption || 'default';
-            const borderTopStyle = index > 0 && captionType !== UIDetailsTable.cellType.header
-                ? styles.borderTop
-                : null;
+            const { header, headerBullet } = UIDetailsTable.captionType;
+            const borderTopStyle = index > 0 &&
+                captionType !== header &&
+                captionType !== headerBullet &&
+                styles.borderTop;
             return (
                 <View
                     style={[
@@ -176,28 +243,27 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         UIStyle.common.flexRow(),
                         borderTopStyle,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
+                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
                 >
                     <View
                         style={[
-                            this.props.leftCellStyle || UIStyle.common.flex(),
+                            leftCellStyle || UIStyle.common.flex(),
                             UIStyle.margin.rightDefault(),
                         ]}
                     >
                         <Text
-                            numberOfLines={1}
-                            style={captionType === UIDetailsTable.cellType.header
+                            style={captionType === header || captionType === headerBullet
                                 ? UIStyle.text.tertiarySmallBold()
                                 : UIStyle.text.tertiarySmallRegular()}
                         >
-                            {captionType === UIDetailsTable.cellType.bullet ? '• ' : ''}{caption}
+                            {this.getBulletSign(captionType)}{caption}
                         </Text>
                     </View>
                     <View
-                        testID={`table_cell_${testIDCaption}_value`}
-                        style={this.props.rightCellStyle || UIStyle.common.flex3()}
+                        testID={`table_cell_${caption || 'default'}_value`}
+                        style={rightCellStyle || UIStyle.common.flex3()}
                     >
-                        {cell}
+                        {this.renderCell(item)}
                     </View>
                 </View>
             );

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import { Platform, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIDetailsInput from '../UIDetailsInput';
 
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = DetailsProps & {
-    containerStyle?: StylePropType,
+    containerStyle?: ViewStyleProp | ViewStyleProp[],
     inputPlaceholder?: string,
     trailingValue?: string,
     rightButton?: string,
@@ -186,6 +186,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
                 {this.renderTrailingValue()}
                 {this.renderToken()}
                 {this.renderRightButton()}
+                {this.renderArrow()}
             </React.Fragment>
         );
     }

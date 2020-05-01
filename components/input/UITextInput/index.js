@@ -8,7 +8,6 @@ import type { PointerEvents } from '../../../types';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
 
@@ -52,6 +51,7 @@ type TextInputTransitProps = {
 };
 
 type UITextInputProps = {
+    testID?: string,
     beginningTag?: string,
     containerStyle?: StylePropType,
     disabled?: boolean,
@@ -70,6 +70,16 @@ class UITextInput extends UIComponent<Props, State> {
     // Getters
     isFocused() {
         return this.textInput && this.textInput.isFocused();
+    }
+
+    getTransitProps() {
+        const result = { ...this.props };
+        delete result.containerStyle;
+        delete result.textStyle;
+        delete result.beginningTag;
+        delete result.needBorderBottom;
+        delete result.onPress;
+        return result;
     }
 
     // Actions
@@ -94,7 +104,7 @@ class UITextInput extends UIComponent<Props, State> {
         return (
             <Text
                 style={[
-                    UITextStyle.secondaryBodyRegular,
+                    UIStyle.text.secondaryBodyRegular(),
                     styles.beginningTag,
                     textStyle,
                 ]}
@@ -106,6 +116,7 @@ class UITextInput extends UIComponent<Props, State> {
 
     renderTextInput() {
         const {
+            testID,
             value,
             placeholder,
             placeholderTextColor,
@@ -125,8 +136,9 @@ class UITextInput extends UIComponent<Props, State> {
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
         return (<TextInput
+            testID={testID}
             ref={(component) => { this.textInput = component; }}
-            {...(this.props: TextInputTransitProps)}
+            {...(this.getTransitProps(): TextInputTransitProps)}
             value={value}
             placeholder={placeholder}
             placeholderTextColor={placeholderTextColor}
@@ -138,7 +150,7 @@ class UITextInput extends UIComponent<Props, State> {
             autoCapitalize={autoCapitalize}
             secureTextEntry={secureTextEntry}
             style={[
-                UITextStyle.primaryBodyRegular,
+                UIStyle.text.primaryBodyRegular(),
                 styles.textInput,
                 textStyle,
             ]}

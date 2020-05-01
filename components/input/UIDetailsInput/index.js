@@ -19,6 +19,7 @@ import UIActionComponent from '../../UIActionComponent';
 import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
+import iconArrowDefault from '../../../assets/ico-arrow-right/ico-arrow-right.png';
 
 import type {
     UIColorData,
@@ -94,6 +95,10 @@ export type DetailsProps = ActionProps & {
     @default false
     */
     autoFocus: boolean,
+    /**
+    If false, disable auto complete
+    */
+    autoCompleteType?: string,
     /**
     Prefix for input value.
     @default ''
@@ -342,6 +347,11 @@ export type DetailsProps = ActionProps & {
     ID for InputAccessoryView
     */
     inputAccessoryViewID?: string,
+    /**
+    Set https://developer.android.com/reference/android/widget/TextView#attr_android:imeOptions to flagNoPersonalizedLearning
+    IMPORTANT: not a part of RN yet, we extended TextInput
+    */
+    noPersonalizedLearning?: boolean,
 };
 
 type DetailsState = ActionState & {
@@ -701,6 +711,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     renderTextInput() {
         const {
             accessibilityLabel,
+            autoCompleteType,
             autoCorrect,
             autoCapitalize,
             autoFocus,
@@ -713,6 +724,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             theme,
             maxHeight,
             value,
+            noPersonalizedLearning,
         } = this.props;
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
@@ -726,10 +738,12 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             ? UIColor.textPlaceholder(theme)
             : UIColor.textDisabled(theme);
         return (
+            // $FlowFixMe
             <TextInput
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
+                autoCompleteType={autoCompleteType}
                 autoCorrect={autoCorrect}
                 autoFocus={autoFocus}
                 editable={editable}
@@ -738,6 +752,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                 {...maxLengthProp}
                 multiline={this.isMultiline()}
                 numberOfLines={this.numOfLines()}
+                noPersonalizedLearning={noPersonalizedLearning}
                 clearButtonMode="never"
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
@@ -830,6 +845,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         return (
             <UIActionImage
                 {...icons}
+                source={theme === UIColor.Theme.Light && iconArrowDefault}
                 disabled={this.isSubmitDisabled()}
                 onPress={this.onSubmitEditing}
             />
@@ -924,7 +940,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
         const containerStyle = [
             styles.commentStyle,
-            UIStyle.margin.topTiny(),
+            UIStyle.margin.topSmall(),
             UIStyle.margin.bottomSmall(),
         ];
         const textStyle = [
@@ -1031,6 +1047,7 @@ UIDetailsInput.defaultProps = {
     mandatoryColor: UIColor.error(),
     maxLines: 1,
     needArrow: false,
+    noPersonalizedLearning: false,
     onBlur: () => {},
     onChangeText: () => {},
     onFocus: () => {},

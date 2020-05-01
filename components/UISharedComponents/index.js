@@ -15,13 +15,13 @@ export default class UISharedComponents extends UIComponent {
             <React.Fragment>
                 <UISpinnerOverlay masterSpinner />
                 <UINotice />
-                <UIAlertView />
                 <UIDropdownAlert />
-                <UIActionSheet />
                 <UICustomSheet />
+                <UIActionSheet />
+                <UIAlertView />
                 <UICompatibilityView />
                 <UILayoutManager />
             </React.Fragment>
-        );
+        ); // UIActionSheet & UIAlertView should be placed above the content
     }
 }

@@ -93,6 +93,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     countryPicker: ?CountryPicker;
     countryPickerInput: ?UISearchBar;
     disabledCountries: ?string[];
+    excludedCountries: ?string[];
 
     constructor(props: Props) {
         super(props);
@@ -101,6 +102,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.cca2 = null;
         this.language = null;
         this.disabledCountries = [];
+        this.excludedCountries = [];
         this.modalOnWeb = false;
 
         this.state = {
@@ -169,12 +171,14 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 language = 'eng',
                 cca2 = 'US',
                 disabledCountries = [],
+                excludedCountries = [],
                 modalOnWeb = false,
             } = args;
             this.fullscreen = fullscreen;
             this.cca2 = cca2;
             this.language = language;
             this.disabledCountries = disabledCountries;
+            this.excludedCountries = excludedCountries;
             this.modalOnWeb = modalOnWeb;
         }
         await super.show(args);
@@ -219,6 +223,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                     renderFilter={() => null}
                     disabledCountries={this.disabledCountries}
                     disabledCountryText={UILocalized.serviceUnavailable}
+                    excludedCountries={this.excludedCountries}
                     styles={countryPickerStyle}
                     onChange={this.onPickCountry}
                 />

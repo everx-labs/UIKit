@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+
 import UIScreen from '../UIScreen';
 import UIStyle from '../../helpers/UIStyle';
 import UIActionImage from '../../components/images/UIActionImage';
@@ -26,7 +28,18 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIErrorScreen extends UIScreen {
+type Props = {
+    errorCode?: number,
+    errorCaption?: string,
+    needTopBar?: boolean,
+    style?: ViewStyleProp,
+};
+
+export default class UIErrorScreen extends UIScreen<Props, {}> {
+    static defaultProps: Props = {
+        needTopBar: true,
+    };
+
     static errorCodes = {
         pageNotfound: '404',
         serviceUnavailable: '000',
@@ -50,18 +63,20 @@ export default class UIErrorScreen extends UIScreen {
     };
 
     // Getters
-    getContentContainerStyle() {
-        return styles.scrollContainer;
+    getContentContainerStyle(): ?ViewStyleProp | ViewStyleProp[] {
+        const result: ViewStyleProp[] = [styles.scrollContainer, this.props.style];
+        return result;
     }
 
     getContentStyle() {
         return this.isNarrow()
-            ? [UIStyle.Width.fullPaddingContainer()]
-            : [UIStyle.Width.halfContainer(), UIStyle.Common.alignSelfCenter()];
+            ? [UIStyle.width.fullPaddingContainer()]
+            : [UIStyle.width.halfContainer(), UIStyle.common.alignSelfCenter()];
     }
 
     getError() {
-        const { code } = this.getNavigationParams();
+        // $FlowExpectedError
+        const code = this.props.errorCode || this.getNavigationParams().code;
         const { errors, errorCodes } = UIErrorScreen;
         if (code) {
             return errors[code];
@@ -70,6 +85,7 @@ export default class UIErrorScreen extends UIScreen {
     }
 
     getTitle() {
+        // $FlowExpectedError
         const { title } = this.getNavigationParams();
         if (title) {
             return title;
@@ -79,7 +95,8 @@ export default class UIErrorScreen extends UIScreen {
     }
 
     getCaption() {
-        const { caption } = this.getNavigationParams();
+        // $FlowExpectedError
+        const caption = this.props.errorCaption || this.getNavigationParams().caption;
         if (caption) {
             return caption;
         }
@@ -99,11 +116,13 @@ export default class UIErrorScreen extends UIScreen {
 
     // Render
     renderTopBar() {
+        if (!this.props.needTopBar) return null;
+
         return (
             <View style={[
-                UIStyle.Height.greatCell(),
-                UIStyle.Padding.horizontal(),
-                UIStyle.Common.centerLeftContainer(),
+                UIStyle.height.greatCell(),
+                UIStyle.padding.horizontal(),
+                UIStyle.common.centerLeftContainer(),
             ]}
             >
                 <UIActionImage
@@ -117,13 +136,13 @@ export default class UIErrorScreen extends UIScreen {
     renderImage() {
         return (
             <View style={[
-                UIStyle.Common.absoluteFillContainer(),
-                UIStyle.Common.justifyCenter(),
+                UIStyle.common.absoluteFillContainer(),
+                UIStyle.common.justifyCenter(),
             ]}
             >
                 <View style={this.getContentStyle()}>
                     <Image
-                        style={UIStyle.Margin.topSmall()}
+                        style={UIStyle.margin.topSmall()}
                         source={image404}
                     />
                 </View>
@@ -136,22 +155,22 @@ export default class UIErrorScreen extends UIScreen {
             <React.Fragment>
                 {this.renderImage()}
                 {this.renderTopBar()}
-                <View style={[...this.getContentStyle(), UIStyle.Common.flex()]}>
+                <View style={[...this.getContentStyle(), UIStyle.common.flex()]}>
                     <UILabel
-                        style={UIStyle.Margin.topSpacious()}
+                        style={UIStyle.margin.topSpacious()}
                         role={UILabel.Role.Title}
                         text={this.getTitle()}
                     />
                     <UILabel
-                        style={UIStyle.Margin.topMedium()}
+                        style={UIStyle.margin.topMedium()}
                         role={UILabel.Role.Description}
                         text={this.getCaption()}
                     />
                 </View>
                 <UITextButton
-                    align={UITextButton.Align.Center}
+                    align={UITextButton.align.center}
                     title={UILocalized.BackToHome}
-                    buttonStyle={[UIStyle.Common.positionAbsolute(), styles.textButton]}
+                    buttonStyle={[UIStyle.common.positionAbsolute(), styles.textButton]}
                     onPress={this.onPressBackToHome}
                 />
                 <UIBottomBar

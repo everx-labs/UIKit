@@ -1,13 +1,11 @@
 // @flow
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import { StyleSheet, View } from 'react-native';
 
-import UIButton from '../UIButton';
 import UIComponent from '../../UIComponent';
-import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const GUTTER = UIConstant.contentOffset();
 
@@ -25,7 +23,7 @@ type Props = {
     /** button group container style
     @default null
     */
-    style?: StylePropType,
+    style?: ViewStyleProp,
     /** @ignore */
     children?: any,
     /** Gap between buttons
@@ -36,6 +34,10 @@ type Props = {
      @default ''
      */
     testID?: string,
+    /** onLayout handler
+    * @default null
+    */
+    onLayout?: ?(e: any) => void,
 };
 
 type State = {};
@@ -102,7 +104,7 @@ export default class UIButtonGroup extends UIComponent<Props, State> {
         groupStyle.push(this.props.style);
 
         return (
-            <View testID={this.props.testID} style={groupStyle}>
+            <View testID={this.props.testID} style={groupStyle} onLayout={this.props.onLayout}>
                 {this.renderChildren()}
             </View>
         );
@@ -116,5 +118,6 @@ UIButtonGroup.defaultProps = {
     direction: UIButtonGroup.Direction.Row,
     gutter: GUTTER,
     style: null,
+    onLayout: null,
     testID: 'UIButtonGroup'
 };

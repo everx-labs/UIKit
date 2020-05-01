@@ -28,6 +28,10 @@ const UI_IS_TABLET = Platform.OS !== 'web' ? DeviceInfo.isTabletSync() : UI_IS_T
 
 const UI_IS_MOBILE = Platform.OS !== 'web' ? !DeviceInfo.isTabletSync() : UI_IS_MOBILE_WEB;
 
+const UI_IS_WEBKIT = Platform.OS !== 'web'
+    ? Number.NaN
+    : new MobileDetect(window.navigator.userAgent).version('Webkit');
+
 const APP_NAME = Platform.OS !== 'web' ? DeviceInfo.getApplicationNameSync() : '';
 
 const APP_VERSION = Platform.OS !== 'web' ? DeviceInfo.getReadableVersionSync() : '';
@@ -84,6 +88,10 @@ export default class UIDevice {
 
     static isMobile(): boolean {
         return UI_IS_MOBILE;
+    }
+
+    static isWebkit(): boolean {
+        return !Number.isNaN(UI_IS_WEBKIT);
     }
 
     static appName(): string {

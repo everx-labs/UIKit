@@ -147,6 +147,11 @@ export const containerStyles = {
         maxWidth: UIConstant.elasticWidthHuge() / 2,
         alignSelf: 'center',
     },
+    thirdWidthContainer: {
+        width: '33%',
+        maxWidth: UIConstant.elasticWidthHuge() / 3,
+        alignSelf: 'center',
+    },
     twoThirdsWidthContainer: {
         width: '66%',
         maxWidth: UIConstant.elasticWidthHuge() / 3 * 2,
@@ -202,6 +207,10 @@ export default class UIStyleContainer {
         return styles.bottomOffsetScreenContainer;
     }
 
+    static bottomOffsetItemContainer() {
+        return styles.bottomOffsetItemContainer;
+    }
+
     static leftScreen() {
         return styles.leftScreenContainer;
     }
@@ -244,5 +253,9 @@ export default class UIStyleContainer {
 
     static halfWidth() {
         return containerStyles.halfWidthContainer;
+    }
+
+    static thirdWidth() {
+        return containerStyles.thirdWidthContainer;
     }
 }

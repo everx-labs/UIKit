@@ -6,11 +6,14 @@ export const paddingStyles = {
     paddingDefault: { // 16
         padding: UIConstant.contentOffset(),
     },
-    paddingSmall: {
+    paddingSmall: { // 8
         padding: UIConstant.smallContentOffset(),
     },
-    paddingHorizontal: {
+    paddingHorizontal: { // 16
         paddingHorizontal: UIConstant.contentOffset(),
+    },
+    paddingHorizontalNormal: { // 12
+        paddingHorizontal: UIConstant.normalContentOffset(),
     },
     paddingVertical: {
         paddingVertical: UIConstant.contentOffset(),
@@ -21,7 +24,7 @@ export const paddingStyles = {
     paddingTopDefault: {
         paddingTop: UIConstant.contentOffset(),
     },
-    paddingBottomSmall: {
+    paddingBottomSmall: { // 8
         paddingBottom: UIConstant.smallContentOffset(),
     },
     paddingBottomMedium: {
@@ -72,12 +75,16 @@ export default class UIStylePadding {
         return styles.paddingDefault;
     }
 
-    static small() {
+    static small() { // 8
         return styles.paddingSmall;
     }
 
     static horizontal() {
         return styles.paddingHorizontal;
+    }
+
+    static horizontalNormal() {
+        return styles.paddingHorizontalNormal;
     }
 
     static vertical() {

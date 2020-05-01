@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, PanResponder } from 'react-native';
 import type { PressEvent } from 'react-native/Libraries/Types/CoreEventTypes';
 import type { GestureState, PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../helpers/UIStyle';
@@ -28,8 +29,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     cancelImage: {
-        height: UIConstant.tinyButtonHeight(),
-        width: UIConstant.tinyButtonHeight(),
+        height: UIConstant.smallCellHeight(),
+        width: UIConstant.smallCellHeight(),
     },
     bottomLine: {
         borderBottomWidth: 1,
@@ -47,7 +48,7 @@ type Props = {
     bottomLine?: boolean,
     height: number,
     title: string,
-    cancelImage: ?string,
+    cancelImage: ?ImageSource,
     cancelText: string,
     swipeToDismiss: boolean,
     dismissStripeStyle: ViewStyleProp,
@@ -132,7 +133,12 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
         if (!onCancel) {
             return null;
         }
-        const image = (<Image style={styles.cancelImage} source={cancelImage} />);
+        const image = (
+            <Image
+                style={[UIStyle.margin.topSmall(), styles.cancelImage]}
+                source={cancelImage}
+            />
+        );
         const text = (
             <Text style={UIStyle.Text.actionSmallMedium()}>
                 {cancelText}

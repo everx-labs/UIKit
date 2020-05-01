@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         flexDirection: 'row',
-        width: '100%',
         marginHorizontal: UIConstant.contentOffset(),
     },
     bottomSeparator: {

@@ -34,6 +34,7 @@ type Props = {
     maxFractionalDigits: number,
     maxBalanceLength: number,
     useMaxBalanceLength: boolean,
+    icon?: React$Node,
 };
 
 type State = {
@@ -68,6 +69,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         maxFractionalDigits: UIConstant.maxDecimalDigits(),
         useMaxBalanceLength: true,
         maxBalanceLength: UIConstant.maxDecimalDigits() + 2,
+        icon: null,
     };
 
     // constructor
@@ -106,8 +108,11 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const force = prevProps.loading !== this.props.loading && this.props.balance === '0';
-        this.updateBalance(force); // force
+        const force = (prevProps.loading !== this.props.loading && this.props.balance === '0')
+            || prevProps.balance !== this.props.balance;
+        if (force) {
+            this.updateBalance(true);
+        }
     }
 
     // Events
@@ -136,6 +141,15 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     // Setters
     async setBalance(balance: string, isCallback: boolean = false) {
+        // balance is the same, no ned to re-render!
+        const needRerender = this.props.cacheKey
+            ? this.getBalance() === this.getCachedBalance()
+            : true;
+
+        if (needRerender && balance === this.getCachedBalance()) {
+            return;
+        }
+
         if (!this.props.animated) {
             this.setCachedBalance(balance);
             this.setStateSafely({ balance, newBalance: '' });
@@ -177,7 +191,8 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         //         start: (callback) => { callback(); },
         //     }
         // );
-        // const startWidthAnim = setWidthAnim(balance.length > balanceLen || balanceWidthValue === 0);
+        // const startWidthAnim
+        //    = setWidthAnim(balance.length > balanceLen || balanceWidthValue === 0);
         // $FlowExpectedError
         // startWidthAnim.start(
 
@@ -343,7 +358,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     updateBalance(force: boolean = false) {
-        const { balance, separator, loading, useMaxBalanceLength, maxBalanceLength } = this.props;
+        const {
+            balance, separator, loading, useMaxBalanceLength, maxBalanceLength,
+        } = this.props;
         const loadingCondition = loading && this.balance !== '0';
         const updatingCondition = (balance !== this.balance && !loading) || force;
         if (!loadingCondition && !updatingCondition) {
@@ -360,7 +377,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits)}`
                 : `${balance}${this.getSeparatorAndZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
-            floorBalance = useMaxBalanceLength && integer.length > maxBalanceLength ? integer : formattedBalance;
+            floorBalance = useMaxBalanceLength && integer.length > maxBalanceLength
+                ? integer
+                : formattedBalance;
         }
         this.setAuxBalance(floorBalance, () => { // start component layout and measuring
             this.measureAuxBalanceText();
@@ -520,6 +539,18 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         //     </View>,
     }
 
+    renderIcon() {
+        const { icon } = this.props;
+        if (!icon) {
+            return null;
+        }
+        return (
+            <View style={UIStyle.common.alignJustifyCenter()}>
+                {icon}
+            </View>
+        );
+    }
+
     /* eslint-disable-next-line */
     auxBalanceText: ?(React$Component<*> & NativeMethodsMixinType);
     renderAuxBalance() {
@@ -579,12 +610,20 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     render() {
         const testID = this.getTestID();
         const testIDProp = testID ? { testID } : null;
-        const visibleBalance = this.props.animated ? (
-            <View style={UIStyle.common.overflowHidden()}>
-                {this.renderAnimatedBalanceContainer()}
-                {this.renderAnimatedBalance()}
-            </View>
-        ) : this.renderBalance();
+        const visibleBalance = this.props.animated
+            ? (
+                <View style={[UIStyle.common.flexRow(), UIStyle.common.overflowHidden()]}>
+                    {this.renderAnimatedBalanceContainer()}
+                    {this.renderAnimatedBalance()}
+                    {this.renderIcon()}
+                </View>
+            )
+            : (
+                <View style={UIStyle.common.flexRow()}>
+                    {this.renderBalance()}
+                    {this.renderIcon()}
+                </View>
+            );
         return (
             <View {...testIDProp} style={this.props.containerStyle}>
                 {visibleBalance}

@@ -6,26 +6,32 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import UIColor from '../../../helpers/UIColor';
 
 type Props = {
+    vertical?: boolean,
     error?: boolean,
     color?: ?string,
     style?: ViewStyleProp,
 }
 
 const styles = StyleSheet.create({
-    container: {
+    horizontal: {
         height: 1,
+    },
+    vertical: {
+        width: 1,
     },
 });
 
 const UISeparator = (props: Props) => {
     const color = props.color || (props.error ? UIColor.error() : UIColor.light());
     const backgroundStyle = UIColor.getBackgroundColorStyle(color);
-    return <View style={[styles.container, backgroundStyle, props.style]} />;
+    const style = props.vertical ? styles.vertical : styles.horizontal;
+    return <View style={[style, backgroundStyle, props.style]} />;
 };
 
 export default UISeparator;
 
 UISeparator.defaultProps = {
+    vertical: false,
     error: false,
     color: null,
     style: {},

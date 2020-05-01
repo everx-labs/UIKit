@@ -8,6 +8,7 @@ import { Popover } from 'react-native-simple-popover';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
+import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
 import UIStyle from '../../../helpers/UIStyle';
 import UIDevice from '../../../helpers/UIDevice';
@@ -46,17 +47,24 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         blurOnSubmit: true,
         placeholder: UILocalized.Password,
         autoFocus: false,
-        containerStyle: { },
+        containerStyle: {},
         forceMultiLine: true,
-        keyboardType: 'default', /* Platform.OS === 'android'
-            ? 'visible-password' // to fix Android bug with keyboard suggestions
-            : 'default', */ // CRAP, we can't use the hack as it breaks the multiline support :(
+        // To prevent Android keyboard suggestions
+        // Btw it could break multiline support, need to keep an eye on it
+        keyboardType:
+            Platform.OS === 'android'
+                ? 'visible-password'
+                : 'default',
         phraseToCheck: '',
         commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
         totalWords: 12, // default value
         words: [],
+        // Set an InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS flag to a keyboard on Android. Needed by security reasons
+        autoCorrect: false,
+        autoCompleteType: 'off',
+        noPersonalizedLearning: true,
     };
 
     static splitPhrase(phrase: string): Array<string> {
@@ -122,10 +130,13 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     // Clicks
     initClickListenerForWeb() {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== "web") {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? "click"
+                : "touchend";
         this.clickListener = (e: any) => {
             this.hideHints();
         };
@@ -133,23 +144,26 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     }
 
     deinitClickListenerForWeb() {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== "web") {
             return;
         }
-        const listenerType = UIDevice.isDesktopWeb() ? 'click' : 'touchend';
+        const listenerType =
+            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+                ? "click"
+                : "touchend";
         window.removeEventListener(listenerType, this.clickListener);
     }
 
     // Events
     onKeyboardWillHide = (e: any) => {
         this.hideHints();
-    }
+    };
 
     onKeyPress = (e: any): void => {
         if (this.seedPhraseHintsView) {
             this.seedPhraseHintsView.onKeyPress(e);
         }
-    }
+    };
 
     // Setters
     setTotalWords() {
@@ -440,22 +454,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     areSeedPhrasesEqual(currentPhrase?: string): boolean {
         const { phraseToCheck } = this.props;
         const typedPhrase = currentPhrase || this.getValue();
-
-        const wA = UISeedPhraseInput.splitPhrase(phraseToCheck);
-        const wB = UISeedPhraseInput.splitPhrase(typedPhrase);
-
-        let result = false;
-        if (wA.length === wB.length) {
-            result = true;
-            for (let i = 0; i < wA.length; i += 1) {
-                if (wA[i] !== wB[i]) {
-                    result = false;
-                    break;
-                }
-            }
-        }
-
-        return result;
+        return UIFunction.normalizeKeyPhrase(typedPhrase)
+            === UIFunction.normalizeKeyPhrase(phraseToCheck);
     }
 
     rerenderPopoverForAndroid() {

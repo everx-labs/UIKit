@@ -72,7 +72,7 @@ const UI_LARGE_AVATAR_SIZE = 64;
 
 const UI_ICON_SIZE = 24;
 
-const UI_DISABLED_OUTLINE = Platform.OS === 'web' ? { outlineStyle: 'none' } : null;
+const UI_DISABLED_OUTLINE = Platform.OS === 'web' && !global.__TEST__ ? { outlineStyle: 'none' } : null;
 
 const UI_SEPARATOR_SYMBOL = '~';
 
@@ -112,6 +112,9 @@ const UI_INFINITE_SCROLL_TRESHOLD = 0.25; // quarter of the visible page (before
 
 const UI_PROFILE_PHOTO_SIZE = 72;
 
+const UI_SHARE_DIALOG_WIDTH = 412;
+const UI_SHARE_DIALOG_HEIGHT = 472;
+
 const MIN_DECIMAL_DIGITS = 3;
 const MAX_DECIMAL_DIGITS = 9;
 
@@ -120,6 +123,9 @@ const MAX_TEXT_LINE_LENGTH = 200;
 const INITIAL_RENDER_DATA_COUNT = 12; // good for displaying a tables of 1,2,3,4 columns
 
 const DASH_SYMBOL = '\u2014';
+
+const FULL_SCREEN_DIALOG_WIDTH = 600;
+const FULL_SCREEN_DIALOG_HEIGHT = 600;
 
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
@@ -224,7 +230,7 @@ export default class UIConstant {
         return UI_SMALL_CONTENT_OFFSET;
     }
 
-    static normalContentOffset() {
+    static normalContentOffset() { // 12
         return UI_NORMAL_CONTENT_OFFSET;
     }
 
@@ -366,7 +372,7 @@ export default class UIConstant {
         return UI_DETAILS_CELL_HEIGHT;
     }
 
-    static majorCellHeight() {
+    static majorCellHeight() { // 80
         return UI_MAJOR_CELL_HEIGHT;
     }
 
@@ -501,6 +507,15 @@ export default class UIConstant {
         return UI_TOOLTIP_MAX_HEIGHT;
     }
 
+    // Share Dialog for web
+    static shareDialogWidth() {
+        return UI_SHARE_DIALOG_WIDTH;
+    }
+
+    static shareDialogHeight() {
+        return UI_SHARE_DIALOG_HEIGHT;
+    }
+
     // Symbols
     static separatorSymbol() {
         return UI_SEPARATOR_SYMBOL;
@@ -559,5 +574,13 @@ export default class UIConstant {
 
     static dashSymbol() {
         return DASH_SYMBOL;
+    }
+
+    static get fullScreenDialogWidth() {
+        return FULL_SCREEN_DIALOG_WIDTH;
+    }
+
+    static get fullScreenDialogHeight() {
+        return FULL_SCREEN_DIALOG_HEIGHT;
     }
 }

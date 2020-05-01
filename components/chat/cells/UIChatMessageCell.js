@@ -132,8 +132,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.smallContentOffset(),
         borderRadius: UIConstant.smallCellHeight() / 2,
     },
+    systemInfo: {
+        flexShrink: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    sysText: {
+        color: UIColor.grey(),
+    },
     linkActionMessageContainer: {
         marginBottom: UIConstant.tinyContentOffset(),
+    },
+    actionLabel: {
+        backgroundColor: UIColor.primaryPlus(),
+    },
+    actionLabelText: {
+        color: UIColor.fa(),
     },
     dateText: {
         color: UIColor.secondary(),
@@ -249,6 +263,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     formattedTime(date: ?Date): string {
         const msg = this.props.additionalInfo?.message;
+        if (msg?.info.sending) {
+            return UILocalized.message.sending;
+        }
+
         const time = date || new Date(msg?.info.created || 0);
         return Moment(time).format('LT');
     }
@@ -356,6 +374,36 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderSystemInfo() {
+        const { additionalInfo } = this.props;
+        return (
+            <View style={styles.systemInfo}>
+                <Text style={[UIFont.tinyRegular(), styles.sysText]}>
+                    {additionalInfo?.message?.info?.text || ''}
+                </Text>
+            </View>
+        );
+    }
+
+    renderActionLabel() {
+        const { additionalInfo } = this.props;
+        const rounded = this.isReceived()
+            ? styles.leftConner
+            : styles.rightConner;
+        return (
+            <View style={[
+                styles.msgContainer,
+                rounded,
+                styles.actionLabel,
+            ]}
+            >
+                <Text style={styles.actionLabelText}>
+                    {additionalInfo?.message?.info?.text || ''}
+                </Text>
+            </View>
+        );
+    }
+
     renderImageCell() {
         const { data, additionalInfo } = this.props;
         if (!data) {
@@ -427,13 +475,18 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTransactionCell() {
-        const { additionalInfo, data, status } = this.props;
+        const {
+            additionalInfo, data, status, onTouchTransaction,
+        } = this.props;
+        const onTransactionPress = onTouchTransaction
+            ? this.onTransactionPress
+            : null;
         return (
             <UIChatTransactionCell
                 message={data}
                 status={status}
                 additionalInfo={additionalInfo}
-                onPress={this.onTransactionPress}
+                onPress={onTransactionPress}
             />
         );
     }
@@ -542,6 +595,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             align = 'center';
             cell = this.renderDateSeparator();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+        } else if (type === ChatMessageContent.SystemInfo) {
+            align = 'center';
+            cell = this.renderSystemInfo();
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+        } else if (type === ChatMessageContent.ActionLabel) {
+            cell = this.renderActionLabel();
         } else if (type === ChatMessageContent.EmptyChat) {
             align = 'flex-start';
             cell = this.renderEmptyChatCell();

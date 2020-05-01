@@ -5,6 +5,7 @@ import Moment from 'moment';
 
 import UIDetailsInput from '../UIDetailsInput';
 
+import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
 import UILocalized from '../../../helpers/UILocalized';
 import UIFunction from '../../../helpers/UIFunction';
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
     missingValueView: {
         zIndex: -1,
         position: 'absolute',
+        alignItems: 'center',
         top: null,
         left: 0,
         bottom: null,
@@ -33,6 +35,12 @@ const styles = StyleSheet.create({
     },
 });
 
+type DateFormats = {
+    year?: string,
+    month?: string,
+    day?: string,
+};
+
 type Props = DetailsProps & {
     /**
     Together with separator, specifies date patern, for ex:
@@ -41,6 +49,17 @@ type Props = DetailsProps & {
     @default "['year', 'month', 'day']"
     */
     dateComponents?: string[],
+    /**
+    Specifies date components formats,
+    should be enabled by setting explicitly useDateFormats to true
+    @default { year: 'YYYY', month: 'MM', day: 'DD'}
+    */
+    dateFormats?: DateFormats,
+    /**
+    Together with dateFormats, specifies whether to use dateFormats instead of localisedPattern
+    @default false
+    */
+    useDateFormats: boolean,
     /**
     @default null
     */
@@ -90,8 +109,11 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     static defaultProps: Props = {
         ...UIDetailsInput.defaultProps,
         dateComponents: ['year', 'month', 'day'],
+        dateFormats: { year: 'YYYY', month: 'MM', day: 'DD' },
+        useDateFormats: false,
         separator: '.',
         initialEpochTime: null,
+        initialTimestamp: null,
         onChangeDate: () => {},
         age: false,
         ageMax: AGE_MAX,
@@ -183,6 +205,10 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     getComment() {
+        if (this.props.comment) {
+            return this.props.comment;
+        }
+
         const ageInfo = this.props.age && this.isDateValid() ? this.isAgeValid() : null;
         if (this.isInputInvalid() && this.state.highlightError) {
             return ageInfo ? ageInfo.ageErrorMessage : UILocalized.InvalidDate;
@@ -195,10 +221,15 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     // However, internally (programming language), in order to parse/localize
     // a date, pattern symbols have to be provided in English.
     getPattern(localizedPattern: boolean = false) {
-        const { dateComponents, separator } = this.props;
-        const dateSymbols = localizedPattern ?
+        const {
+            dateComponents,
+            dateFormats,
+            useDateFormats,
+            separator,
+        } = this.props;
+        const dateSymbols = (localizedPattern && !useDateFormats) ?
             UILocalized.DateSymbols
-            : { year: 'YYYY', month: 'MM', day: 'DD' };
+            : dateFormats;
         const defaultPattern = 'YYYY.MM.DD';
 
         if (!dateComponents || !separator) return defaultPattern;
@@ -313,10 +344,18 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     // Actions
     loadInitialDate() {
-        const { initialEpochTime } = this.props;
+        const { initialEpochTime, initialTimestamp } = this.props;
+
+        let initialMoment;
 
         if (initialEpochTime) {
-            const dateStr = Moment(initialEpochTime).format(this.getPattern());
+            initialMoment = Moment(initialEpochTime);
+        } else if (initialTimestamp) {
+            initialMoment = Moment.unix(initialTimestamp);
+        }
+
+        if (initialMoment) {
+            const dateStr = initialMoment.format(this.getPattern());
             const value = dateStr.split(this.getSeparator()).join('');
             this.setStateSafely({ date: value });
         }
@@ -337,8 +376,11 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         }
 
         const missing = this.getPattern(true).substring(date.length);
+        const bottomOffset = Platform.OS == 'android'
+        	? UIConstant.normalContentOffset()
+        	: UIConstant.smallContentOffset();
         return (
-            <View style={styles.missingValueView}>
+            <View style={[styles.missingValueView, { bottom: bottomOffset }]}>
                 <Text
                     style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
@@ -361,11 +403,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
                 {this.renderTextInput()}
                 {this.renderRequiredPlaceholder()}
                 {this.renderMissingValue()}
+                {this.renderArrow()}
             </React.Fragment>
         );
-    }
-
-    render() {
-        return super.render();
     }
 }

@@ -6,6 +6,7 @@ import {
     Modal,
     Platform,
     LayoutAnimation,
+    Keyboard,
     StyleSheet,
     TouchableWithoutFeedback,
     View,
@@ -21,6 +22,7 @@ import UIController from '../../../controllers/UIController';
 import UIModalNavigationBar from '../../../controllers/UIModalController/UIModalNavigationBar';
 
 import type { ContentInset, AnimationParameters } from '../../../controllers/UIController';
+import { KeyboardAvoidingView } from 'react-native-web';
 
 const headerHeight = UIConstant.bigCellHeight();
 
@@ -96,7 +98,7 @@ export default class UICustomSheet extends UIController<Props, State> {
         headerRight: null,
         fullWidth: false,
         masterSheet: true,
-        modal: true,
+        modal: false,
         showHeader: true,
         containerStyle: null,
         onShow: () => {},
@@ -273,6 +275,9 @@ export default class UICustomSheet extends UIController<Props, State> {
         onCancel = () => {},
         modal = false,
     }: Props = {}) {
+        // Hide the keyboard before showing
+        Keyboard.dismiss();
+        // Now show the sheet
         if (this.props.masterSheet) {
             this.component = component;
             this.headerLeft = headerLeft;
@@ -376,11 +381,11 @@ export default class UICustomSheet extends UIController<Props, State> {
         return (
             <View
                 pointerEvents="box-none"
-                style={UIStyle.screenContainer}
+                style={UIStyle.container.screen()}
             >
                 <Animated.View
                     style={[
-                        UIStyle.bottomScreenContainer,
+                        UIStyle.container.bottomScreen(),
                         styles.downMenu,
                         containerStyle,
                         styleProps,
@@ -401,13 +406,13 @@ export default class UICustomSheet extends UIController<Props, State> {
         return (
             <View
                 testID="background_layer"
-                style={[UIStyle.absoluteFillObject, paddingBottom]}
+                style={[UIStyle.common.absoluteFillObject(), paddingBottom]}
                 collapsable={false}
                 ref={this.containerRef}
             >
                 <TouchableWithoutFeedback onPress={this.onHide}>
                     <Animated.View
-                        style={[UIStyle.absoluteFillObject, { backgroundColor }]}
+                        style={[UIStyle.common.absoluteFillObject(), { backgroundColor }]}
                     />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}

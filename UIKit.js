@@ -42,6 +42,7 @@ import UIEmailInput from './components/input/UIEmailInput';
 import UIErrorScreen from './controllers/UIErrorScreen';
 import UIEventHelper from './helpers/UIEventHelper';
 import UIFeedback from './components/products/UIFeedback';
+import UIPushFeedback from './components/products/UIPushFeedback';
 import UIFlashMessage from './helpers/UIFlashMessage';
 import UIFont from './helpers/UIFont';
 import UITextStyle from './helpers/UITextStyle';
@@ -60,8 +61,6 @@ import UILinkInput from './components/input/UILinkInput';
 import UIListHeader from './components/text/UIListHeader';
 import UILoadMoreButton from './components/buttons/UILoadMoreButton';
 import UILocalized from './helpers/UILocalized';
-import UIMenuView from './components/menus/UIMenuView';
-import UIMenuBackground from './components/menus/UIMenuBackground';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';
@@ -78,6 +77,9 @@ import UINumberInput from './components/input/UINumberInput';
 import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
 import UIPhoneInput from './components/input/UIPhoneInput';
 import UIPinCodeInput from './components/input/UIPinCodeInput';
+import UIPopover from './components/menus/UIPopover';
+import UIPopoverMenu from './components/menus/UIPopoverMenu';
+import UIPopoverBackground from './components/menus/UIPopoverBackground';
 import UIProfilePhoto from './components/profile/UIProfilePhoto';
 import UIProfileInitials from './components/profile/UIProfileInitials';
 import UIProfileView from './components/profile/UIProfileView';
@@ -135,9 +137,13 @@ import type {
     UIColorData,
     UIColorThemeNameType,
 } from './helpers/UIColor/UIColorTypes';
-import type { MenuItemType } from './components/menus/UIMenuView';
+import type { MenuItemType } from './components/menus/UIActionSheet/MenuItem';
 import type { UIFeedbackSubmitFunc } from './components/products/UIFeedback';
 import type { ContentOffset } from './controllers/UIScreen';
+
+// deprecated
+const UIMenuView = UIPopoverMenu;
+const UIMenuBackground = UIPopoverBackground;
 
 export {
     UIAccountPicker,
@@ -184,6 +190,7 @@ export {
     UIErrorScreen,
     UIEventHelper,
     UIFeedback,
+    UIPushFeedback,
     UIFlashMessage,
     UIFont,
     UIFunction,
@@ -220,6 +227,9 @@ export {
     UIPasswordPrompt,
     UIPhoneInput,
     UIPinCodeInput,
+    UIPopover,
+    UIPopoverMenu,
+    UIPopoverBackground,
     UIProfileInitials,
     UIProfilePhoto,
     UIProfileView,

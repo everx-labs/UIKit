@@ -74,6 +74,7 @@ export type UILocalizedData = {
     Yes: string,
     No: string,
     Copy: string,
+    CopyToClipboard: string,
     Select: string,
     SelectAll: string,
     DeselectAll: string,
@@ -95,6 +96,7 @@ export type UILocalizedData = {
     Sec: string,
     Description: string,
     Share: string,
+    ShareToTalk: string,
     ShareLink: string,
     Report: string,
     PleaseDoNotCloseTheApp: string,
@@ -450,6 +452,12 @@ export type UILocalizedData = {
     Citizenship: string,
     Residence: string,
     SelectResidence: string,
+    SelectCountry: string,
+    Country: string,
+    Address: string,
+    City: string,
+    State: string,
+    PostalCode: string,
     Male: string,
     Female: string,
     RequestedFiles: string,
@@ -510,6 +518,9 @@ export type UILocalizedData = {
         aborted: string,
         sending: string,
     },
+    message: {
+        sending: string
+    },
 
     ConfirmIdentity: string,
     SMSNotice: string,
@@ -548,6 +559,8 @@ export type UILocalizedData = {
     DescribeYourIssueOrIdea: string,
     YourEmail: string,
     SendFeedback: string,
+    PushFeedbackShort: string,
+    PushFeedbackLong: string,
 
     // Cross-services
     WeCanTFindThePageYouReLookingFor: string,
@@ -555,4 +568,17 @@ export type UILocalizedData = {
     WelcomeTo000: string,
     BackToHome: string,
     serviceUnavailable: string,
+
+    // Common
+    // Time
+    hours: string,
+    minutes: string,
+    hours01: string,
+    hours11: string,
+    hours24: string,
+    hours50: string,
+    minutes01: string,
+    minutes11: string,
+    minutes24: string,
+    minutes50: string,
 }

@@ -8,6 +8,8 @@ export const ChatMessageContent = {
     ActionButton: 'act',
     DateSeparator: 'date',
     EmptyChat: 'empty',
+    SystemInfo: 'sysInfo',
+    ActionLabel: 'actionLabel',
 };
 
 export const ChatMessageStatus = {
@@ -19,6 +21,7 @@ export const ChatMessageStatus = {
 };
 
 export const TypeOfTransaction = {
+    Aborted: 'aborted',
     Deposit: 'deposit',
     Withdraw: 'withdraw',
     Income: 'income',
@@ -26,6 +29,7 @@ export const TypeOfTransaction = {
     Bill: 'bill',
     Invoice: 'invoice',
     Invite: 'invite',
+    Compliment: 'compliment',
 };
 
 export const TypeOfAction = {
@@ -48,7 +52,7 @@ export type TypeOfActionDirectionType = $Values<typeof TypeOfActionDirection>;
 export type TransactionInfo = {
     separator: string,
     amountLocalized: string,
-    amount: string,
+    amount: number,
     token: string,
     sent: boolean,
     currency?: {
@@ -65,6 +69,7 @@ export type UIChatMessageInfo = {
     text?: string;
     image?: string;
     document?: string;
+    sending?: boolean;
     metadata?: any;
     trx?: any;
 };

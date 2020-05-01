@@ -31,14 +31,42 @@ export default class UIStyleText {
         return UITextStyle.action;
     }
 
+    static error() {
+        return UITextStyle.error;
+    }
+
+    static success() {
+        return UITextStyle.success;
+    }
+
     // [Text]
     // Title - fontSize: 36, lineHeight: 48
     static titleLight() {
         return UITextStyle.titleLight;
     }
+    // Title - fontSize: 36, lineHeight: 48
+    static subtitleBold() {
+        return UITextStyle.subtitleBold;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static bodyRegular() {
         return UITextStyle.bodyRegular;
+    }
+    static bodyMedium() {
+        return UITextStyle.bodyMedium;
+    }
+    static bodyBold() {
+        return UITextStyle.bodyBold;
+    }
+    // Small - fontSize: 16, lineHeight: 20
+    static smallRegular() {
+        return UITextStyle.smallRegular;
+    }
+    static smallMedium() {
+        return UITextStyle.smallMedium;
+    }
+    static smallBold() {
+        return UITextStyle.smallBold;
     }
     // Caption - fontSize: 14, lineHeight: 20
     static captionRegular() {
@@ -53,15 +81,6 @@ export default class UIStyleText {
     }
     static tinyMedium() {
         return UITextStyle.tinyMedium;
-    }
-    static smallRegular() {
-        return UITextStyle.smallRegular;
-    }
-    static smallMedium() {
-        return UITextStyle.smallMedium;
-    }
-    static smallBold() {
-        return UITextStyle.smallBold;
     }
     // Icon - fontSize: 10, lineHeight: 16
     static iconBold() {
@@ -389,13 +408,17 @@ export default class UIStyleText {
     static actionBodyMedium() {
         return UITextStyle.actionBodyMedium;
     }
-
-    // Small - fontSize: 16, lineHeight: 20
-    static actionSmallMedium() {
-        return UITextStyle.actionSmallMedium;
+    static actionBodyBold() {
+        return UITextStyle.actionBodyBold;
     }
 
     // Small - fontSize: 16, lineHeight: 20
+    static actionSmallBold() {
+        return UITextStyle.actionSmallBold;
+    }
+    static actionSmallMedium() {
+        return UITextStyle.actionSmallMedium;
+    }
     static actionSmallRegular() {
         return UITextStyle.actionSmallRegular;
     }

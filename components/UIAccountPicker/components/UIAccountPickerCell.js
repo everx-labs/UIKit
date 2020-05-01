@@ -16,9 +16,11 @@ import type { UIAccountData } from '../types/UIAccountData';
 type Props = {
     containerStyle: ViewStyleProp,
     account: ?UIAccountData,
+    decimalSeparator: ?string,
     maxDecimals: number,
     onPress?: () => void,
     displayNameOnly?: boolean,
+    notActive?: boolean,
 };
 
 type State = {
@@ -29,9 +31,11 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     static defaultProps = {
         containerStyle: {},
         account: null,
+        decimalSeparator: '.',
         maxDecimals: UIConstant.maxDecimalDigits(),
         onPress: () => {},
         displayNameOnly: false,
+        notActive: false,
     };
 
     // constructor
@@ -46,6 +50,10 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     // Getters
     getAccount(): UIAccountData {
         return this.props.account;
+    }
+
+    getDecimalSeparator(): string {
+        return this.props.decimalSeparator || '.';
     }
 
     getMaxDecimals(): number {
@@ -80,13 +88,14 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
             >
                 {integer}
                 <Text style={greyBodyRegular}>
-                    {`.${decimals}`}
+                    {`${this.getDecimalSeparator()}${decimals}`}
                 </Text>
             </Text>
         );
     }
 
     renderAccount() {
+        const { notActive } = this.props;
         const account = this.getAccount();
 
         if (!account) {
@@ -96,12 +105,14 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         const name = this.getAccountName();
 
         return (
-            <View style={UIStyle.flexRow}>
+            <View style={UIStyle.common.flexRow()}>
                 <Text
                     style={[
-                        UIStyle.flex,
-                        UIStyle.marginRightDefault,
-                        UITextStyle.actionBodyMedium,
+                        UIStyle.common.flex(),
+                        UIStyle.margin.rightDefault(),
+                        notActive
+                            ? UIStyle.text.secondaryBodyRegular()
+                            : UIStyle.text.actionBodyMedium(),
                     ]}
                     numberOfLines={1}
                     ellipsizeMode="middle"
@@ -121,23 +132,35 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         }
 
         return (
-            <Text style={[UIStyle.marginTopTiny, UITextStyle.tertiaryCaptionRegular]}>
+            <Text style={[UIStyle.margin.topTiny(), UIStyle.text.tertiaryCaptionRegular()]}>
                 {account.name}
             </Text>
         );
     }
 
     render() {
-        const { containerStyle, onPress, displayNameOnly } = this.props;
+        const {
+            containerStyle,
+            onPress,
+            displayNameOnly,
+            notActive,
+        } = this.props;
 
         return (
-            <TouchableOpacity
-                style={containerStyle}
-                onPress={onPress}
-            >
-                {this.renderAccount()}
-                {displayNameOnly ? null : this.renderFooter()}
-            </TouchableOpacity>
+            notActive ? (
+                <View style={containerStyle}>
+                    {this.renderAccount()}
+                    {displayNameOnly ? null : this.renderFooter()}
+                </View>
+            ) : (
+                <TouchableOpacity
+                    style={containerStyle}
+                    onPress={onPress}
+                >
+                    {this.renderAccount()}
+                    {displayNameOnly ? null : this.renderFooter()}
+                </TouchableOpacity>
+            )
         );
     }
 }
