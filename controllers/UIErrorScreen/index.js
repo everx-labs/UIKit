@@ -64,6 +64,11 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
         };
     };
 
+    static testID = 'UIErrorScreen';
+    static testIDs = {
+        backToHomeButton: `${this.testID}-back-to-home-button`,
+    };
+
     // Getters
     getContentContainerStyle(): ?ViewStyleProp | ViewStyleProp[] {
         const result: ViewStyleProp[] = [styles.scrollContainer, this.props.style];
@@ -157,7 +162,10 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
             <React.Fragment>
                 {this.renderImage()}
                 {this.renderTopBar()}
-                <View style={[...this.getContentStyle(), UIStyle.common.flex()]}>
+                <View
+                    style={[...this.getContentStyle(), UIStyle.common.flex()]}
+                    testID={UIErrorScreen.testID}
+                >
                     <UILabel
                         style={UIStyle.margin.topSpacious()}
                         role={UILabel.Role.Title}
@@ -170,6 +178,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                     />
                 </View>
                 <UITextButton
+                    testID={UIErrorScreen.testIDs.backToHomeButton}
                     align={UITextButton.align.center}
                     title={UILocalized.BackToHome}
                     buttonStyle={[UIStyle.common.positionAbsolute(), styles.textButton]}
