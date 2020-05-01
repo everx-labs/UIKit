@@ -583,7 +583,7 @@ const ru: UILocalizedData = {
 
     // Seed Phrase Input:
     seedPhraseTypo: 'Seems we have a typo here, try again', // TODO: Translate
-    greatMemory: 'Great memory, access restored!', // TODO: Translate
+    greatMemory: 'Great memory!', // TODO: Translate
 
     // Cross-services
     WeCanTFindThePageYouReLookingFor: 'We can\'t find the page you\'re looking for.',
