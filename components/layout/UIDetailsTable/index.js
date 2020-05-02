@@ -121,7 +121,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
             return {
                 ...item,
-                key,
+                key: `${item.key ? `${item.key}-` : ''}${key || ''}`,
                 caption,
                 captionType,
             };
@@ -243,7 +243,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         UIStyle.common.flexRow(),
                         borderTopStyle,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
+                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
                 >
                     <View
                         style={[

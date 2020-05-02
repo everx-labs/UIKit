@@ -66,7 +66,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
 
     static testID = 'UIErrorScreen';
     static testIDs = {
-        backToHomeButton: `${this.testID}-back-to-home-button`,
+        BACK_TO_HOME_BUTTON: `${this.testID}-back-to-home-button`,
     };
 
     // Getters
@@ -178,7 +178,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                     />
                 </View>
                 <UITextButton
-                    testID={UIErrorScreen.testIDs.backToHomeButton}
+                    testID={UIErrorScreen.testIDs.BACK_TO_HOME_BUTTON}
                     align={UITextButton.align.center}
                     title={UILocalized.BackToHome}
                     buttonStyle={[UIStyle.common.positionAbsolute(), styles.textButton]}
