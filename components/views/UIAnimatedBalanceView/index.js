@@ -22,10 +22,7 @@ type State = {
     queuedBalance: ?$PropertyType<Props, 'balance'>,
 };
 
-export default class UIAnimatedBalanceView extends React.Component<
-    Props,
-    State,
-> {
+export default class UIAnimatedBalanceView extends React.Component<Props, State> {
     static getDerivedStateFromProps(props: Props, state: State) {
         // Take a look at `onAnimationEnd` method, to understand what is going on
         if (state.isAnimationInProgress) {
@@ -74,22 +71,19 @@ export default class UIAnimatedBalanceView extends React.Component<
     };
 
     render() {
+        const { testID, icon, containerStyle, ...rest } = this.props;
         return (
             <View
-                testID={this.props.testID}
-                style={[
-                    UIStyle.common.flexRow(),
-                    UIStyle.common.alignCenter(),
-                    this.props.containerStyle,
-                ]}
+                testID={testID}
+                style={[UIStyle.common.flexRow(), UIStyle.common.alignCenter(), containerStyle]}
             >
                 <UIAnimatedBalanceInner
-                    {...this.props}
+                    {...rest}
                     balance={this.state.balance}
                     onAnimationStart={this.onAnimationStart}
                     onAnimationEnd={this.onAnimationEnd}
                 />
-                {this.props.icon}
+                {icon}
             </View>
         );
     }

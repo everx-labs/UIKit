@@ -4,10 +4,7 @@ import { Animated, StyleSheet, Text, View } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
-import type {
-    ViewStyleProp,
-    TextStyleProp,
-} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -18,8 +15,8 @@ export type Props = {
     loading?: boolean,
     textStyle?: ViewStyleProp,
     fractionalTextStyle?: ViewStyleProp,
-    maxFractionalDigits?: number,
-    maxBalanceLength?: number,
+    maxFractionalDigits?: ?number,
+    maxBalanceLength?: ?number,
 };
 
 const BalanceSymbolKind = Object.freeze({
@@ -132,9 +129,7 @@ export default class UIAnimatedBalanceInner extends React.Component<
             }
 
             acc.push({
-                kind: separatorIndex
-                    ? BalanceSymbolKind.fractional
-                    : BalanceSymbolKind.integer,
+                kind: separatorIndex ? BalanceSymbolKind.fractional : BalanceSymbolKind.integer,
                 value: symbol,
             });
 
@@ -210,10 +205,7 @@ export default class UIAnimatedBalanceInner extends React.Component<
                     {this.props.balance}
                 </Text>
                 <View
-                    style={[
-                        UIStyle.common.positionAbsolute(),
-                        UIStyle.common.flexRow(),
-                    ]}
+                    style={[UIStyle.common.positionAbsolute(), UIStyle.common.flexRow()]}
                     onLayout={this.onBalanceLayout}
                 >
                     {this.state.nextBalance.map((symbol, index) => (
@@ -231,28 +223,16 @@ export default class UIAnimatedBalanceInner extends React.Component<
                     ))}
                 </View>
                 {this.state.prevBalance && (
-                    <View
-                        style={[
-                            UIStyle.common.positionAbsolute(),
-                            UIStyle.common.flexRow(),
-                        ]}
-                    >
+                    <View style={[UIStyle.common.positionAbsolute(), UIStyle.common.flexRow()]}>
                         {this.state.prevBalance.map((symbol, index) => (
                             <UIAnimatedBalanceSymbol
                                 key={`prev-${index}`}
-                                animation={this.getAnimation(index).interpolate(
-                                    {
-                                        inputRange: [0, 1],
-                                        outputRange: [
-                                            0,
-                                            this.balanceLineHeight,
-                                        ],
-                                    },
-                                )}
+                                animation={this.getAnimation(index).interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [0, this.balanceLineHeight],
+                                })}
                                 textStyle={this.props.textStyle}
-                                fractionalTextStyle={
-                                    this.props.fractionalTextStyle
-                                }
+                                fractionalTextStyle={this.props.fractionalTextStyle}
                             >
                                 {symbol}
                             </UIAnimatedBalanceSymbol>
