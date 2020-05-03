@@ -10,6 +10,7 @@ import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
 import UICard from './components/views/UICard';
 import UIBalanceView from './components/views/UIBalanceView';
+import UIAnimatedBalanceView from './components/views/UIAnimatedBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
@@ -157,6 +158,7 @@ export {
     UIBackgroundView,
     UIBadge,
     UIBalanceView,
+    UIAnimatedBalanceView,
     UIBottomBar,
     UIBullet,
     UIButton,
