@@ -103,6 +103,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
             needOffset = args.needOffset !== undefined ? args.needOffset : true;
             needBullets = args.needBullets !== undefined ? args.needBullets : true;
         }
+
+        const generatedKey = key || list[0].caption || '';
         const result = list.map<Details>((item, index) => {
             let captionType = this.captionType.default;
             const { caption } = item;
@@ -122,14 +124,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
             return {
                 ...item,
-                key: `${item.key ? `${item.key}-` : ''}${key || ''}`,
+                key: `${item.key ? `${item.key}-` : ''}${generatedKey}`,
                 caption,
                 captionType,
             };
         });
 
         if (needOffset) {
-            result.unshift({ key, value: '', caption: '' });
+            result.unshift({ key: generatedKey, value: '', caption: '' });
         }
         return result;
     }
