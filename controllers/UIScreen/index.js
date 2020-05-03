@@ -41,6 +41,7 @@ export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
     scrollView: ?ScrollView;
+    listenScrollOffset: boolean;
 
     static isNarrow(width: number) {
         return width && width < UIConstant.elasticWidthBroad();
@@ -49,6 +50,7 @@ export default class UIScreen<Props, State>
     constructor(props: Props & NavigationProps) {
         super(props);
         this.presetName = '';
+        this.listenScrollOffset = true;
 
         // Events
         this.state = {
@@ -87,7 +89,9 @@ export default class UIScreen<Props, State>
 
     onScrollDefault = (e: any) => {
         const { contentOffset, contentSize } = e.nativeEvent;
-        this.setScrollOffset(contentOffset);
+        if (this.listenScrollOffset) {
+            this.setScrollOffset(contentOffset);
+        }
         this.onScroll(contentOffset, contentSize);
     };
 

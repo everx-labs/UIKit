@@ -34,6 +34,7 @@ export type FormatNestedListArgs = {
 }
 
 type Props = {
+    narrow?: boolean,
     navigation?: ReactNavigation,
     detailsList: DetailsList,
     style?: ViewStyleProp,
@@ -160,11 +161,13 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     getBulletSign(captionType?: string) {
         const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
+        const spaceRight = this.props.narrow ? ' ' : '   ';
+        const spaceLeft = this.props.narrow ? '  ' : '    ';
         if (captionType === bullet || captionType === headerBullet) {
-            return '•   ';
+            return `•${spaceRight}`;
         }
         if (captionType === bullet2) {
-            return '    -   ';
+            return `${spaceLeft}-${spaceRight}`;
         }
         return '';
     }
