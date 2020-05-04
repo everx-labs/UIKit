@@ -78,10 +78,12 @@ class UIDetailsTable extends UIComponent<Props, State> {
     static captionType = {
         default: 'default',
         header: 'header',
+        bold: 'bold',
+        topOffset: 'top-offset',
+        boldTopOffset: 'bold-top-offset',
         headerBullet: 'header-bullet',
         bullet: 'bullet',
         bullet2: 'bullet2',
-        topOffset: 'top-offset',
     };
 
     static defaultProps: Props = {
@@ -158,15 +160,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     getBulletSign(captionType?: string) {
-        const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
-        const spaceRight = this.props.narrow ? ' ' : '   ';
-        const spaceLeft = this.props.narrow ? '  ' : '    ';
-        if (captionType === bullet || captionType === headerBullet) {
-            return `•${spaceRight}`;
-        }
-        if (captionType === bullet2) {
-            return `${spaceLeft}-${spaceRight}`;
-        }
+        // const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
+        // const space = this.props.narrow ? '  ' : '    ';
+        // if (captionType === bullet || captionType === headerBullet) {
+        //     return space;
+        // }
+        // if (captionType === bullet2) {
+        //     return `${space}${space}`;
+        // }
         return '';
     }
 
@@ -226,17 +227,44 @@ class UIDetailsTable extends UIComponent<Props, State> {
         );
     }
 
+    renderCaption(caption: string, captionType: string) {
+        const { leftCellStyle } = this.props;
+        const {
+            header, headerBullet, bold, boldTopOffset,
+        } = UIDetailsTable.captionType;
+
+        return (
+            <View
+                style={[
+                    leftCellStyle || UIStyle.common.flex(),
+                    UIStyle.margin.rightDefault(),
+                ]}
+            >
+                <Text
+                    style={[header, headerBullet, bold, boldTopOffset].includes(captionType)
+                        ? UIStyle.text.tertiarySmallBold()
+                        : UIStyle.text.tertiarySmallRegular()}
+                >
+                    {this.getBulletSign(captionType)}{caption}
+                </Text>
+            </View>
+        );
+    }
+
     renderRows() {
-        const { detailsList, leftCellStyle, rightCellStyle } = this.props;
+        const { detailsList, rightCellStyle } = this.props;
         return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
                 caption, value, captionType, key,
             } = item;
-            const { header, headerBullet, topOffset } = UIDetailsTable.captionType;
+            const {
+                header, headerBullet, topOffset, boldTopOffset,
+            } = UIDetailsTable.captionType;
             // const borderTopStyle = index > 0 &&
             //     ![header, headerBullet, topOffset].includes(captionType) &&
             //     styles.borderTop;
-            const marginTopStyle = [header, topOffset].includes(captionType) && UIStyle.padding.topHuge();
+            const marginTopStyle = [header, topOffset, boldTopOffset].includes(captionType)
+                && UIStyle.padding.topHuge();
 
             return (
                 <View
@@ -248,26 +276,16 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     ]}
                     key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
                 >
-                    <View
-                        style={[
-                            leftCellStyle || UIStyle.common.flex(),
-                            UIStyle.margin.rightDefault(),
-                        ]}
-                    >
-                        <Text
-                            style={captionType === header || captionType === headerBullet
-                                ? UIStyle.text.tertiarySmallBold()
-                                : UIStyle.text.tertiarySmallRegular()}
+                    {this.renderCaption(caption, captionType)}
+
+                    {![header, headerBullet].includes(captionType) && (
+                        <View
+                            testID={`table_cell_${caption || 'default'}_value`}
+                            style={rightCellStyle || UIStyle.common.flex3()}
                         >
-                            {this.getBulletSign(captionType)}{caption}
-                        </Text>
-                    </View>
-                    <View
-                        testID={`table_cell_${caption || 'default'}_value`}
-                        style={rightCellStyle || UIStyle.common.flex3()}
-                    >
-                        {this.renderCell(item)}
-                    </View>
+                            {this.renderCell(item)}
+                        </View>
+                    )}
                 </View>
             );
         });
