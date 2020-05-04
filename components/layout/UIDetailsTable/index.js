@@ -34,6 +34,7 @@ export type FormatNestedListArgs = {
 }
 
 type Props = {
+    narrow?: boolean,
     navigation?: ReactNavigation,
     detailsList: DetailsList,
     style?: ViewStyleProp,
@@ -80,6 +81,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         headerBullet: 'header-bullet',
         bullet: 'bullet',
         bullet2: 'bullet2',
+        topOffset: 'top-offset',
     };
 
     static defaultProps: Props = {
@@ -89,20 +91,22 @@ class UIDetailsTable extends UIComponent<Props, State> {
     static formatNestedList(args: FormatNestedListArgs | DetailsList, keyParam?: string) {
         let list;
         let key;
-        let needOffset;
+        // let needOffset;
         let needBullets;
         if (args instanceof Array) {
             list = args;
             key = keyParam;
-            needOffset = true;
+            // needOffset = true;
             needBullets = true;
         } else {
             list = args.list;
             key = args.key;
-            needOffset = args.needOffset !== undefined ? args.needOffset : true;
+            // needOffset = args.needOffset !== undefined ? args.needOffset : true;
             needBullets = args.needBullets !== undefined ? args.needBullets : true;
         }
-        const result = list.map<Details>((item, index) => {
+
+        const generatedKey = key || list[0].caption || '';
+        return list.map<Details>((item, index) => {
             let captionType = this.captionType.default;
             const { caption } = item;
             if (index) {
@@ -121,16 +125,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
             return {
                 ...item,
-                key,
+                key: `${item.key ? `${item.key}-` : ''}${generatedKey}`,
                 caption,
                 captionType,
             };
         });
-
-        if (needOffset) {
-            result.unshift({ key, value: '', caption: '' });
-        }
-        return result;
     }
 
     // Events
@@ -160,11 +159,13 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     getBulletSign(captionType?: string) {
         const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
+        const spaceRight = this.props.narrow ? ' ' : '   ';
+        const spaceLeft = this.props.narrow ? '  ' : '    ';
         if (captionType === bullet || captionType === headerBullet) {
-            return '•   ';
+            return `•${spaceRight}`;
         }
         if (captionType === bullet2) {
-            return '    -   ';
+            return `${spaceLeft}-${spaceRight}`;
         }
         return '';
     }
@@ -231,19 +232,21 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const {
                 caption, value, captionType, key,
             } = item;
-            const { header, headerBullet } = UIDetailsTable.captionType;
-            const borderTopStyle = index > 0 &&
-                captionType !== header &&
-                captionType !== headerBullet &&
-                styles.borderTop;
+            const { header, headerBullet, topOffset } = UIDetailsTable.captionType;
+            // const borderTopStyle = index > 0 &&
+            //     ![header, headerBullet, topOffset].includes(captionType) &&
+            //     styles.borderTop;
+            const marginTopStyle = [header, topOffset].includes(captionType) && UIStyle.padding.topHuge();
+
             return (
                 <View
                     style={[
                         UIStyle.padding.vertical(),
                         UIStyle.common.flexRow(),
-                        borderTopStyle,
+                        marginTopStyle,
+                        index > 0 && styles.borderTop,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
+                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
                 >
                     <View
                         style={[

@@ -33,11 +33,13 @@ type Props = {
     errorCaption?: string,
     needTopBar?: boolean,
     style?: ViewStyleProp,
+    onPressBackToHome?: () => void,
 };
 
 export default class UIErrorScreen extends UIScreen<Props, {}> {
     static defaultProps: Props = {
         needTopBar: true,
+        onPressBackToHome: () => {},
     };
 
     static errorCodes = {
@@ -60,6 +62,11 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
         return {
             header: null,
         };
+    };
+
+    static testID = 'UIErrorScreen';
+    static testIDs = {
+        BACK_TO_HOME_BUTTON: `${this.testID}-back-to-home-button`,
     };
 
     // Getters
@@ -111,7 +118,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
 
     // Events
     onPressBackToHome = () => {
-        // Virtual
+        this.props.onPressBackToHome();
     };
 
     // Render
@@ -155,7 +162,10 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
             <React.Fragment>
                 {this.renderImage()}
                 {this.renderTopBar()}
-                <View style={[...this.getContentStyle(), UIStyle.common.flex()]}>
+                <View
+                    style={[...this.getContentStyle(), UIStyle.common.flex()]}
+                    testID={UIErrorScreen.testID}
+                >
                     <UILabel
                         style={UIStyle.margin.topSpacious()}
                         role={UILabel.Role.Title}
@@ -168,6 +178,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                     />
                 </View>
                 <UITextButton
+                    testID={UIErrorScreen.testIDs.BACK_TO_HOME_BUTTON}
                     align={UITextButton.align.center}
                     title={UILocalized.BackToHome}
                     buttonStyle={[UIStyle.common.positionAbsolute(), styles.textButton]}
