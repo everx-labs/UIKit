@@ -38,7 +38,10 @@ export default class UILinkInput extends UIComponent<DetailsProps, ActionState> 
     render() {
         return (
             <UIDetailsInput
-                ref={(component) => { this.linkInput = component; }}
+                ref={(component) => {
+                    this.linkInput = component;
+                }}
+                // $FlowFixMe
                 {...this.props}
                 keyboardType="url"
                 beginningTag={this.beginningTag()}

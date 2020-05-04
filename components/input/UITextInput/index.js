@@ -35,13 +35,13 @@ const styles = StyleSheet.create({
 type TextInputTransitProps = {
     value: string,
     placeholder?: string,
-    placeholderTextColor? : string,
+    placeholderTextColor?: string,
     editable?: boolean,
     multiline?: boolean,
     secureTextEntry?: boolean,
     autoFocus?: boolean,
     autoCapitalize?: AutoCapitalize,
-    keyboardType?: KeyboardType,
+    keyboardType?: KeyboardType | null,
     returnKeyType?: ReturnKeyType | null,
     maxLength?: number | null,
     onFocus?: () => void,
@@ -61,7 +61,7 @@ type UITextInputProps = {
     className?: string,
 };
 
-type Props = TextInputTransitProps & UITextInputProps;
+type Props = UITextInputProps & TextInputTransitProps;
 type State = {};
 
 class UITextInput extends UIComponent<Props, State> {
@@ -72,14 +72,20 @@ class UITextInput extends UIComponent<Props, State> {
         return this.textInput && this.textInput.isFocused();
     }
 
-    getTransitProps() {
-        const result = { ...this.props };
-        delete result.containerStyle;
-        delete result.textStyle;
-        delete result.beginningTag;
-        delete result.needBorderBottom;
-        delete result.onPress;
-        return result;
+    getTransitProps(): $Exact<TextInputTransitProps> {
+        const {
+            testID,
+            beginningTag,
+            containerStyle,
+            disabled,
+            needBorderBottom,
+            onPress,
+            textStyle,
+            className,
+            // $FlowFixMe
+            ...rest
+        } = this.props;
+        return rest;
     }
 
     // Actions
@@ -133,42 +139,52 @@ class UITextInput extends UIComponent<Props, State> {
             multiline,
             secureTextEntry,
         } = this.props;
-        const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
-        const underlineColorAndroid = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
-        return (<TextInput
-            testID={testID}
-            ref={(component) => { this.textInput = component; }}
-            {...(this.getTransitProps(): TextInputTransitProps)}
-            value={value}
-            placeholder={placeholder}
-            placeholderTextColor={placeholderTextColor}
-            autoCorrect={false}
-            autoFocus={autoFocus}
-            editable={editable}
-            multiline={multiline}
-            {...underlineColorAndroid}
-            autoCapitalize={autoCapitalize}
-            secureTextEntry={secureTextEntry}
-            style={[
-                UIStyle.text.primaryBodyRegular(),
-                styles.textInput,
-                textStyle,
-            ]}
-            selectionColor={UIColor.primary()}
-            keyboardType={keyboardType}
-            {...returnKeyTypeProp}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onChangeText={newValue => onChangeText(newValue)}
-            onSubmitEditing={onSubmitEditing}
-        />);
+        const returnKeyTypeProp: ?{|
+            returnKeyType: ReturnKeyType,
+        |} = returnKeyType ? { returnKeyType } : null;
+        const underlineColorAndroid: ?{|
+            underlineColorAndroid: string,
+        |} = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
+        return (
+            <TextInput
+                testID={testID}
+                ref={component => {
+                    this.textInput = component;
+                }}
+                {...this.getTransitProps()}
+                value={value}
+                placeholder={placeholder}
+                placeholderTextColor={placeholderTextColor}
+                autoCorrect={false}
+                autoFocus={autoFocus}
+                editable={editable}
+                multiline={multiline}
+                {...underlineColorAndroid}
+                autoCapitalize={autoCapitalize}
+                secureTextEntry={secureTextEntry}
+                style={[
+                    UIStyle.text.primaryBodyRegular(),
+                    styles.textInput,
+                    textStyle,
+                ]}
+                selectionColor={UIColor.primary()}
+                keyboardType={keyboardType}
+                // $FlowFixMe
+                {...returnKeyTypeProp}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onChangeText={newValue => onChangeText(newValue)}
+                onSubmitEditing={onSubmitEditing}
+            />
+        );
     }
 
     renderInputView(pointerEvents: PointerEvents = 'auto') {
-        const setClassNameTrick: {} = {
+        const setClassNameTrick = {
             className: this.props.className,
         };
         return (
+            // $FlowExpectedError
             <View
                 style={[
                     styles.container,
@@ -196,33 +212,31 @@ class UITextInput extends UIComponent<Props, State> {
         return this.renderInputView();
     }
 
-    static defaultProps: Props;
+    static defaultProps: Props = {
+        textStyle: {},
+        containerStyle: {},
+        value: '',
+        placeholder: '',
+        placeholderTextColor: UIColor.textTertiary(),
+        beginningTag: '',
+        needBorderBottom: false,
+        disabled: false,
+        editable: true,
+        multiline: false,
+        secureTextEntry: false,
+        autoFocus: false,
+        autoCapitalize: 'words',
+        keyboardType: 'default',
+        returnKeyType: null,
+        className: '',
+        maxLength: null,
+        onPress: null,
+        onFocus: () => {},
+        onBlur: () => {},
+        onChangeText: () => {},
+        onSubmitEditing: () => {},
+        testID: 'uiTextInput',
+    };
 }
 
 export default UITextInput;
-
-UITextInput.defaultProps = {
-    textStyle: {},
-    containerStyle: {},
-    value: '',
-    placeholder: '',
-    placeholderTextColor: UIColor.textTertiary(),
-    beginningTag: '',
-    needBorderBottom: false,
-    disabled: false,
-    editable: true,
-    multiline: false,
-    secureTextEntry: false,
-    autoFocus: false,
-    autoCapitalize: 'words',
-    keyboardType: 'default',
-    returnKeyType: null,
-    className: '',
-    maxLength: null,
-    onPress: null,
-    onFocus: () => {},
-    onBlur: () => {},
-    onChangeText: () => {},
-    onSubmitEditing: () => {},
-    testID: 'uiTextInput',
-};

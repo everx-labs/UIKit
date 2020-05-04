@@ -94,6 +94,7 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
             <UIDetailsInput
                 commentTestID="email_input_comment"
                 ref={(component) => { this.emailInput = component; }}
+                // $FlowFixMe
                 {...this.props}
                 {...commentColorProp}
                 onBlur={this.onBlur}

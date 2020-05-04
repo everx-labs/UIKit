@@ -134,7 +134,10 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         return (
             <UIDetailsInput
                 commentTestID="phone_input_comment"
-                ref={(component) => { this.phoneInput = component; }}
+                ref={(component) => {
+                    this.phoneInput = component;
+                }}
+                // $FlowFixMe
                 {...this.props}
                 {...commentColorProp}
                 onBlur={this.onBlur}

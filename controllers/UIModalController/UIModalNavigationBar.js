@@ -173,14 +173,14 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // }
 
     render() {
-        const panHandlers = this.panResponder ? { ...this.panResponder.panHandlers } : {};
+        const panHandlers = this.panResponder
+            ? { ...this.panResponder.panHandlers }
+            : {};
         return (
+            // $FlowExpectedError
             <View
                 testID="NavigationBar container"
-                style={[
-                    styles.navigationView,
-                    { height: this.props.height },
-                ]}
+                style={[styles.navigationView, { height: this.props.height }]}
                 {...panHandlers}
             >
                 {this.renderContent()}

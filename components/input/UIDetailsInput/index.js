@@ -930,23 +930,20 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const testID = this.getCommentTestID();
         const testIDProp = testID ? { testID } : null;
         const commentRight = this.getCommentRight();
-        const commentRightTestID = this.getCommentRightTestID();
-        const commentRightTestIDProp = commentRightTestID ? { commentRightTestID } : null;
         if (!comment && !commentRight) {
             return null;
         }
         const defaultColorStyle = UIColor.textTertiaryStyle(theme);
         const commentColor = this.commentColor();
-        const colorStyle = commentColor ? UIColor.getColorStyle(commentColor) : null;
+        const colorStyle = commentColor
+            ? UIColor.getColorStyle(commentColor)
+            : null;
         const containerStyle = [
             styles.commentStyle,
             UIStyle.margin.topSmall(),
             UIStyle.margin.bottomSmall(),
         ];
-        const textStyle = [
-            colorStyle,
-            UIStyle.text.captionRegular(),
-        ];
+        const textStyle = [colorStyle, UIStyle.text.captionRegular()];
         const containerViewStyle = [
             UIStyle.common.flex(),
             UIStyle.common.flexRow(),
@@ -963,7 +960,6 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             ] : null;
         const commentRightLabel = (
             <UILabel
-                {...commentRightTestIDProp}
                 role={UILabel.Role.CaptionTertiary}
                 style={[
                     ...textStyle,

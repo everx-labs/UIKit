@@ -40,17 +40,20 @@ const LabelRole = Object.freeze({
 
 export type LabelRoleValue = $Values<typeof LabelRole>;
 
-type Props = {
+type Props = {|
     style: ?ViewStyleProp,
     text: string,
     role: LabelRoleValue,
     useDefaultSpace?: boolean,
     testID?: ?string,
-}
+    numberOfLines?: number,
+    selectable?: boolean,
+    ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip',
+|};
 
 type State = {
     //
-}
+};
 
 export default class UILabel extends UIComponent<Props, State> {
     static Role = LabelRole;
