@@ -21,8 +21,11 @@ export const paddingStyles = {
     paddingVerticalNormal: {
         paddingVertical: UIConstant.normalContentOffset(),
     },
-    paddingTopDefault: {
+    paddingTopDefault: { // 16
         paddingTop: UIConstant.contentOffset(),
+    },
+    paddingTopHuge: { // 32
+        paddingTop: UIConstant.hugeContentOffset(),
     },
     paddingBottomSmall: { // 8
         paddingBottom: UIConstant.smallContentOffset(),
@@ -95,8 +98,12 @@ export default class UIStylePadding {
         return styles.paddingVerticalNormal;
     }
 
-    static topDefault() {
+    static topDefault() { // 16
         return styles.paddingTopDefault;
+    }
+
+    static topHuge() { // 32
+        return styles.paddingTopHuge;
     }
 
     static bottomSmall() {
