@@ -202,6 +202,9 @@ export default class UIController<Props, State>
 
         this.handlePathAndParams();
         this.listenToNavigation();
+
+        // $FlowFixMe
+        this.state = {};
     }
 
     componentDidMount() {
