@@ -160,7 +160,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             : null;
         const stateCustomColorStyle = this.getStateCustomColorStyle();
         const flexGrow = details ? styles.flexGrow1 : styles.flexGrow0;
-        const numberOfLines = multiLine ? {} : { numberOfLines: 1 };
+        const numberOfLines = multiLine ? null : { numberOfLines: 1 };
 
         return (
             <Text

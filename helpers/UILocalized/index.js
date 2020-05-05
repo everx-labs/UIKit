@@ -8,6 +8,8 @@ import en from './en';
 import ru from './ru';
 import type { UILocalizedData } from './UILocalizedTypes';
 
+type LocalizedLangContent = { [string]: string };
+
 class UILocalized extends LocalizedStrings {
     setLanguages(languages: string[]) {
         const props = {};
@@ -29,7 +31,7 @@ class UILocalized extends LocalizedStrings {
         return this.getLanguage(); // this.getInterfaceLanguage().substring(0, 2); // en_US
     }
 
-    localizedStringForValue(value, base) {
+    localizedStringForValue(value: number, base: string) {
         let localizedString = '';
         if (value === 1) {
             localizedString = this[`${base}01`];
@@ -54,9 +56,9 @@ class UILocalized extends LocalizedStrings {
     }
 
     setLocalizedStrings(
-        localizedStrings,
-        defaultLang = 'en',
-        preferedLanguage = this.getInterfaceLanguage(),
+        localizedStrings: { [string]: LocalizedLangContent },
+        defaultLang: string = 'en',
+        preferedLanguage: string = this.getInterfaceLanguage(),
     ) {
         const localizedStringsWithDefaultLang = {
             [defaultLang]: localizedStrings[defaultLang],
@@ -71,7 +73,11 @@ class UILocalized extends LocalizedStrings {
         this.setLanguage(preferedLanguage);
     }
 
-    checkConsistency(localizedStrings = this.getContent()) {
+    checkConsistency(
+        localizedStrings: {
+            [string]: LocalizedLangContent,
+        } = this.getContent(),
+    ) {
         const values = {};
         const langs = Object.keys(localizedStrings);
         langs.forEach((lang) => {
@@ -88,7 +94,11 @@ class UILocalized extends LocalizedStrings {
         Object.keys(values).forEach((key) => {
             const value = values[key];
             if (Object.keys(value).length !== langs.length) {
-                console.log('[UILocalized] Failed to find all transaltions for key:', key, value);
+                console.log(
+                    '[UILocalized] Failed to find all transaltions for key:',
+                    key,
+                    value,
+                );
             }
         });
     }
@@ -100,10 +110,11 @@ type LocalizedStringsMethods = {
     getAvailableLanguages(): string[],
     formatString(str: string, ...values: any[]): string,
     getString(key: string, language: string): string | null,
-}
+};
 
-const localized: UILocalizedData & UILocalized & LocalizedStringsMethods =
-    new UILocalized({ en }); // by default only `en` is used
+const localized: UILocalizedData &
+    UILocalized &
+    LocalizedStringsMethods = new UILocalized({ en }); // by default only `en` is used
 
 Moment.locale(localized.getLocale());
 

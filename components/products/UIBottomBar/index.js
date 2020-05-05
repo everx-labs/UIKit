@@ -145,33 +145,35 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 textStyle={this.textStyle()}
                 textHoverStyle={primaryColorStyle}
                 textTappedStyle={primaryColorStyle}
-                onPress={() => { Linking.openURL(`mailto:${email}`); }}
+                onPress={() => {
+                    Linking.openURL(`mailto:${email}`);
+                }}
             />
         );
     }
 
     renderContacts(able: boolean) {
         const {
-            companyName, address, phoneNumber, postalCode, location, info,
+            companyName,
+            address,
+            phoneNumber,
+            postalCode,
+            location,
+            info,
         } = this.props;
         const textStyle = [this.textStyle(), UIStyle.Text.alignCenter()];
         if (!able || this.hasNoContacts()) {
             return null;
         }
-        const itemProps: {} = {
-            itemScope: true,
-            itemType: 'http://schema.org/Organization',
-        };
         return (
+            // $FlowExpectedError
             <View
                 testID="bottomBar"
                 style={bottomTextStyle}
-                {...itemProps}
+                itemScope
+                itemType="http://schema.org/Organization"
             >
-                <Text
-                    style={textStyle}
-                    {...UIBottomBar.getItemProp('name')}
-                >
+                <Text style={textStyle} {...UIBottomBar.getItemProp('name')}>
                     {companyName}
                 </Text>
                 <Text

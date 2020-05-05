@@ -160,9 +160,6 @@ export default class UIModalController<Props, State> extends UIController<
         this.dy = new Animated.Value(0);
         this.animation = UIModalController.animations.slide();
         this.modalOnWeb = false;
-        this.state = {
-            ...(this.state: ModalControllerState & State),
-        };
     }
 
     async loadSafeAreaInsets(): Promise<SafeAreaInsets> {

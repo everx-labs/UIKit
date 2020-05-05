@@ -1,6 +1,19 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, LayoutAnimation, Animated, Vibration, Platform } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    TouchableOpacity,
+    LayoutAnimation,
+    Animated,
+    Vibration,
+    Platform,
+} from 'react-native';
+
+import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
+import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
 
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
@@ -16,7 +29,7 @@ type State = {
     wrongPin: boolean,
     rightPin: boolean,
     description: string,
-    shakeMargin: number,
+    shakeMargin: AnimatedValue | AnimatedInterpolation,
 };
 
 type Props = {
@@ -105,7 +118,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             wrongPin: false,
             rightPin: false,
             description: '',
-            shakeMargin: 0,
+            shakeMargin: new Animated.Value(0),
         };
     }
 
