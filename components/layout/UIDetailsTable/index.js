@@ -30,7 +30,6 @@ export type FormatNestedListArgs = {
     list: DetailsList,
     key: string,
     needOffset?: boolean,
-    needBullets?: boolean,
 }
 
 type Props = {
@@ -81,9 +80,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
         bold: 'bold',
         topOffset: 'top-offset',
         boldTopOffset: 'bold-top-offset',
-        headerBullet: 'header-bullet',
-        bullet: 'bullet',
-        bullet2: 'bullet2',
     };
 
     static defaultProps: Props = {
@@ -94,34 +90,21 @@ class UIDetailsTable extends UIComponent<Props, State> {
         let list;
         let key;
         // let needOffset;
-        let needBullets;
         if (args instanceof Array) {
             list = args;
             key = keyParam;
             // needOffset = true;
-            needBullets = true;
         } else {
             list = args.list;
             key = args.key;
             // needOffset = args.needOffset !== undefined ? args.needOffset : true;
-            needBullets = args.needBullets !== undefined ? args.needBullets : true;
         }
 
         const generatedKey = key || list[0].caption || '';
         return list.map<Details>((item, index) => {
             let captionType = this.captionType.default;
             const { caption } = item;
-            if (index) {
-                if (needBullets) {
-                    if (item.captionType === this.captionType.bullet) {
-                        captionType = this.captionType.bullet2;
-                    } else if (item.captionType === this.captionType.header) {
-                        captionType = this.captionType.headerBullet;
-                    } else {
-                        captionType = this.captionType.bullet;
-                    }
-                }
-            } else {
+            if (!index) {
                 captionType = this.captionType.header;
             }
 
@@ -157,18 +140,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return UIStyle.text.tertiarySmallRegular();
         }
         return UIStyle.text.secondarySmallRegular();
-    }
-
-    getBulletSign(captionType: ?string) {
-        // const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
-        // const space = this.props.narrow ? '  ' : '    ';
-        // if (captionType === bullet || captionType === headerBullet) {
-        //     return space;
-        // }
-        // if (captionType === bullet2) {
-        //     return `${space}${space}`;
-        // }
-        return '';
     }
 
     // Actions
@@ -229,9 +200,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     renderCaption(caption: ?string, captionType: ?string) {
         const { leftCellStyle } = this.props;
-        const {
-            header, headerBullet, bold, boldTopOffset,
-        } = UIDetailsTable.captionType;
+        const { header, bold, boldTopOffset } = UIDetailsTable.captionType;
 
         return (
             <View
@@ -241,11 +210,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 ]}
             >
                 <Text
-                    style={[header, headerBullet, bold, boldTopOffset].includes(captionType)
+                    style={[header, bold, boldTopOffset].includes(captionType)
                         ? UIStyle.text.tertiarySmallBold()
                         : UIStyle.text.tertiarySmallRegular()}
                 >
-                    {this.getBulletSign(captionType)}{caption}
+                    {caption}
                 </Text>
             </View>
         );
@@ -257,12 +226,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const {
                 caption, value, captionType, key,
             } = item;
-            const {
-                header, headerBullet, topOffset, boldTopOffset,
-            } = UIDetailsTable.captionType;
-            // const borderTopStyle = index > 0 &&
-            //     ![header, headerBullet, topOffset].includes(captionType) &&
-            //     styles.borderTop;
+            const { header, topOffset, boldTopOffset } = UIDetailsTable.captionType;
             const marginTopStyle = [header, topOffset, boldTopOffset].includes(captionType)
                 && UIStyle.padding.topHuge();
 
@@ -278,7 +242,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 >
                     {this.renderCaption(caption, captionType)}
 
-                    {![header, headerBullet].includes(captionType) && (
+                    {![header].includes(captionType) && (
                         <View
                             testID={`table_cell_${caption || 'default'}_value`}
                             style={rightCellStyle || UIStyle.common.flex3()}
