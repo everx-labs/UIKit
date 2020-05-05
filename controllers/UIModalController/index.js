@@ -174,11 +174,15 @@ export default class UIModalController<Props, State> extends UIController<
         if (onWillAppear) {
             onWillAppear();
         }
+
+        BackHandler.addEventListener(
+            HARDWARE_BACK_PRESS_EVENT,
+            this.hardwareBackEventHandler,
+        );
     }
 
     onDidAppear() {
         this.initKeyboardListeners();
-        BackHandler.addEventListener(HARDWARE_BACK_PRESS_EVENT, this.hardwareBackEventHandler);
 
         const { onDidAppear } = this.props;
         if (onDidAppear) {
