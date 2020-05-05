@@ -159,7 +159,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         return UIStyle.text.secondarySmallRegular();
     }
 
-    getBulletSign(captionType?: string) {
+    getBulletSign(captionType: ?string) {
         // const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
         // const space = this.props.narrow ? '  ' : '    ';
         // if (captionType === bullet || captionType === headerBullet) {
@@ -227,7 +227,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         );
     }
 
-    renderCaption(caption: string, captionType: string) {
+    renderCaption(caption: ?string, captionType: ?string) {
         const { leftCellStyle } = this.props;
         const {
             header, headerBullet, bold, boldTopOffset,
