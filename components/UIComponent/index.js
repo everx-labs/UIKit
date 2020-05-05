@@ -2,6 +2,8 @@
 import { Component } from 'react';
 
 export default class UIComponent<Props, State> extends Component<Props, State> {
+    state: Object = {}; // initialize state
+
     componentDidMount() {
         this.mounted = true;
     }
