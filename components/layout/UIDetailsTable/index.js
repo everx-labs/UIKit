@@ -30,7 +30,6 @@ export type FormatNestedListArgs = {
     list: DetailsList,
     key: string,
     needOffset?: boolean,
-    needBullets?: boolean,
 }
 
 type Props = {
@@ -78,10 +77,9 @@ class UIDetailsTable extends UIComponent<Props, State> {
     static captionType = {
         default: 'default',
         header: 'header',
-        headerBullet: 'header-bullet',
-        bullet: 'bullet',
-        bullet2: 'bullet2',
+        bold: 'bold',
         topOffset: 'top-offset',
+        boldTopOffset: 'bold-top-offset',
     };
 
     static defaultProps: Props = {
@@ -92,34 +90,21 @@ class UIDetailsTable extends UIComponent<Props, State> {
         let list;
         let key;
         // let needOffset;
-        let needBullets;
         if (args instanceof Array) {
             list = args;
             key = keyParam;
             // needOffset = true;
-            needBullets = true;
         } else {
             list = args.list;
             key = args.key;
             // needOffset = args.needOffset !== undefined ? args.needOffset : true;
-            needBullets = args.needBullets !== undefined ? args.needBullets : true;
         }
 
         const generatedKey = key || list[0].caption || '';
         return list.map<Details>((item, index) => {
             let captionType = this.captionType.default;
             const { caption } = item;
-            if (index) {
-                if (needBullets) {
-                    if (item.captionType === this.captionType.bullet) {
-                        captionType = this.captionType.bullet2;
-                    } else if (item.captionType === this.captionType.header) {
-                        captionType = this.captionType.headerBullet;
-                    } else {
-                        captionType = this.captionType.bullet;
-                    }
-                }
-            } else {
+            if (!index) {
                 captionType = this.captionType.header;
             }
 
@@ -155,19 +140,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return UIStyle.text.tertiarySmallRegular();
         }
         return UIStyle.text.secondarySmallRegular();
-    }
-
-    getBulletSign(captionType?: string) {
-        const { bullet, bullet2, headerBullet } = UIDetailsTable.captionType;
-        const spaceRight = this.props.narrow ? ' ' : '   ';
-        const spaceLeft = this.props.narrow ? '  ' : '    ';
-        if (captionType === bullet || captionType === headerBullet) {
-            return `•${spaceRight}`;
-        }
-        if (captionType === bullet2) {
-            return `${spaceLeft}-${spaceRight}`;
-        }
-        return '';
     }
 
     // Actions
@@ -226,17 +198,37 @@ class UIDetailsTable extends UIComponent<Props, State> {
         );
     }
 
+    renderCaption(caption: ?string, captionType: ?string) {
+        const { leftCellStyle } = this.props;
+        const { header, bold, boldTopOffset } = UIDetailsTable.captionType;
+
+        return (
+            <View
+                style={[
+                    leftCellStyle || UIStyle.common.flex(),
+                    UIStyle.margin.rightDefault(),
+                ]}
+            >
+                <Text
+                    style={[header, bold, boldTopOffset].includes(captionType)
+                        ? UIStyle.text.tertiarySmallBold()
+                        : UIStyle.text.tertiarySmallRegular()}
+                >
+                    {caption}
+                </Text>
+            </View>
+        );
+    }
+
     renderRows() {
-        const { detailsList, leftCellStyle, rightCellStyle } = this.props;
+        const { detailsList, rightCellStyle } = this.props;
         return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
                 caption, value, captionType, key,
             } = item;
-            const { header, headerBullet, topOffset } = UIDetailsTable.captionType;
-            // const borderTopStyle = index > 0 &&
-            //     ![header, headerBullet, topOffset].includes(captionType) &&
-            //     styles.borderTop;
-            const marginTopStyle = [header, topOffset].includes(captionType) && UIStyle.padding.topHuge();
+            const { header, topOffset, boldTopOffset } = UIDetailsTable.captionType;
+            const marginTopStyle = [header, topOffset, boldTopOffset].includes(captionType)
+                && UIStyle.padding.topHuge();
 
             return (
                 <View
@@ -248,26 +240,16 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     ]}
                     key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
                 >
-                    <View
-                        style={[
-                            leftCellStyle || UIStyle.common.flex(),
-                            UIStyle.margin.rightDefault(),
-                        ]}
-                    >
-                        <Text
-                            style={captionType === header || captionType === headerBullet
-                                ? UIStyle.text.tertiarySmallBold()
-                                : UIStyle.text.tertiarySmallRegular()}
+                    {this.renderCaption(caption, captionType)}
+
+                    {![header].includes(captionType) && (
+                        <View
+                            testID={`table_cell_${caption || 'default'}_value`}
+                            style={rightCellStyle || UIStyle.common.flex3()}
                         >
-                            {this.getBulletSign(captionType)}{caption}
-                        </Text>
-                    </View>
-                    <View
-                        testID={`table_cell_${caption || 'default'}_value`}
-                        style={rightCellStyle || UIStyle.common.flex3()}
-                    >
-                        {this.renderCell(item)}
-                    </View>
+                            {this.renderCell(item)}
+                        </View>
+                    )}
                 </View>
             );
         });
