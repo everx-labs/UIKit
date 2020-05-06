@@ -155,6 +155,10 @@ export default class UIAnimatedBalanceInner extends React.Component<
     }
 
     componentDidUpdate() {
+        if (this.balanceLineHeightWasUpdated) {
+            this.balanceLineHeightWasUpdated = false;
+            return;
+        }
         this.props.onAnimationStart();
         Animated.parallel(
             // eslint-disable-next-line arrow-parens
@@ -177,7 +181,11 @@ export default class UIAnimatedBalanceInner extends React.Component<
 
     onBalanceLayout = (e: any) => {
         const { height } = e.nativeEvent.layout;
-        this.balanceLineHeight = height;
+        if (this.balanceLineHeight !== height) {
+            this.balanceLineHeight = height;
+            this.balanceLineHeightWasUpdated = true;
+            this.forceUpdate();
+        }
     };
 
     getAnimation(index: number) {
@@ -190,6 +198,7 @@ export default class UIAnimatedBalanceInner extends React.Component<
 
     animationsPool: { [number]: Animated.Value } = {};
     balanceLineHeight: number = 0;
+    balanceLineHeightWasUpdated = false;
 
     render() {
         return (
@@ -205,7 +214,7 @@ export default class UIAnimatedBalanceInner extends React.Component<
                     {this.props.balance}
                 </Text>
                 <View
-                    style={[UIStyle.common.positionAbsolute(), UIStyle.common.flexRow()]}
+                    style={[StyleSheet.absoluteFill, UIStyle.common.flexRow()]}
                     onLayout={this.onBalanceLayout}
                 >
                     {this.state.nextBalance.map((symbol, index) => (
@@ -223,7 +232,12 @@ export default class UIAnimatedBalanceInner extends React.Component<
                     ))}
                 </View>
                 {this.state.prevBalance && (
-                    <View style={[UIStyle.common.positionAbsolute(), UIStyle.common.flexRow()]}>
+                    <View
+                        style={[
+                            StyleSheet.absoluteFill,
+                            UIStyle.common.flexRow(),
+                        ]}
+                    >
                         {this.state.prevBalance.map((symbol, index) => (
                             <UIAnimatedBalanceSymbol
                                 key={`prev-${index}`}
