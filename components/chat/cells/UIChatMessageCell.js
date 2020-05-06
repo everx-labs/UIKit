@@ -608,7 +608,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
-            testID = `chat_message_${ data?.info?.trx?.amount?.toFixed(9) }`
+            testID = `chat_message_${ data?.info?.trx?.amount }`
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
         } else if (type === ChatMessageContent.Invite) {
