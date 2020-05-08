@@ -72,6 +72,10 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         icon: null,
     };
 
+    static testIds = {
+        auxBalance: 'renderAuxBalance',
+    };
+
     // constructor
     balance: ?string;
     balanceLineHeight: number;
@@ -560,7 +564,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
             && (integer.length < this.props.maxBalanceLength || !this.props.useMaxBalanceLength);
         return (
             <Text
-                testID="renderAuxBalance"
+                testID={UIBalanceView.testIds.auxBalance}
                 ref={(component) => { this.auxBalanceText = component; }}
                 style={[
                     UIStyle.container.topScreen(),
