@@ -529,6 +529,10 @@ export default class UIFunction {
     }
 
     static truncText(str: string, narrow: boolean, signsCount: number) {
+        if (!str) {
+            return '';
+        }
+
         const signs = signsCount || (narrow ? 5 : 9);
         if (str.length <= signs * 2) {
             return str;
