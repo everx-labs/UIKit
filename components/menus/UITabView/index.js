@@ -93,7 +93,7 @@ export default class UITabView extends UIComponent<Props, State> {
             return null;
         }
 
-        const marginLeft = Animated.divide(this.state.marginLeft, new Animated.Value(-2));
+        const marginLeft = Animated.divide(this.state.marginLeft, new Animated.Value(-pages.length));
         return (
             <View style={[UIStyle.common.flex(), UIStyle.common.overflowHidden()]}>
                 <Animated.View
