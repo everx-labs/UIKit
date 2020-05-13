@@ -632,7 +632,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         if (!testID) {
-            testID = `chat_message_${data.toString()}`
+            if (data) {
+                testID = `chat_message_${data.toString()}`
+            } else {
+                testID = `chat_message_empty`
+            }
         }
 
         return (
