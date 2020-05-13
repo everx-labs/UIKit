@@ -75,7 +75,7 @@ export default class UIDetailsCheckbox extends UIDetailsSwitcher<Props, State> {
 
     renderSwitcher(): React$Node {
         const {
-            active, disabled, testID, iconActive, iconInactive,
+            active, disabled, testID, iconActive, iconInactive, type,
         } = this.props;
 
         return (<UICheckboxItem
@@ -85,6 +85,7 @@ export default class UIDetailsCheckbox extends UIDetailsSwitcher<Props, State> {
             containerStyle={this.getSwitcherStyle()}
             selected={active}
             editable={!disabled}
+            type={type}
         />
         );
     }
