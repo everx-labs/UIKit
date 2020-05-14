@@ -131,14 +131,10 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     };
 
     onPickCountry = (country: Country) => {
-        const countryCCA2 = country.cca2 || '';
-        const disabledCountries = this.getDisabledCountries();
-        if (disabledCountries.indexOf(countryCCA2) === -1) {
-            this.hide();
-            this.setExpression('');
-            if (this.onSelect) {
-                this.onSelect(country);
-            }
+        this.hide();
+        this.setExpression('');
+        if (this.onSelect) {
+            this.onSelect(country);
         }
     };
 
