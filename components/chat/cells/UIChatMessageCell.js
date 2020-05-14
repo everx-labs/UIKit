@@ -579,11 +579,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     render() {
         const {
-            type, status, additionalInfo,
+            type, status, additionalInfo, data,
         } = this.props;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
+        let testID = '';
 
         let margin = null;
         let align = status === ChatMessageStatus.Received ? 'flex-start' : 'flex-end';
@@ -607,6 +608,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+            testID = `chat_message_${ data?.info?.trx?.amount }`
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
         } else if (type === ChatMessageContent.Invite) {
@@ -615,19 +617,31 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
+            testID = `chat_message_image`
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
+            testID = `chat_message_document`
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
         } else if (type === ChatMessageContent.LinkActionMessage) {
             cell = this.renderLinkActionMessageCell();
+            testID = `chat_message_link`
         } else {
             cell = this.renderInformationCell('Message/Cell type not supported.');
         }
 
+        if (!testID) {
+            if (data) {
+                testID = `chat_message_${data.toString()}`
+            } else {
+                testID = `chat_message_empty`
+            }
+        }
+
         return (
             <View
+                testID={testID}
                 style={[
                     styles.container, {
                         alignSelf: align,
