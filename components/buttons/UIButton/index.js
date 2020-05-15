@@ -372,8 +372,6 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         style.push(propStyle || this.getIconTintStyle());
 
         const iconResult = iconHovered || icon || iconDefault;
-        style.push({ minWidth: UIConstant.iconSize() });
-
         return <Image source={iconResult} style={style} key={`buttonIcon~${position}`} />;
     }
 
