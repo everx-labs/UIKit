@@ -11,9 +11,9 @@ import UITextButton from '../../buttons/UITextButton';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 
-export type Details = {
+export type DetailsRow = {
     caption: ?string,
-    value: ?string | number,
+    value?: ?string | number,
     limit?: number,
     type?: string,
     captionType?: string,
@@ -24,7 +24,7 @@ export type Details = {
     key?: string,
 };
 
-export type DetailsList = Details[];
+export type DetailsList = DetailsRow[];
 
 export type FormatNestedListArgs = {
     list: DetailsList,
@@ -37,7 +37,7 @@ type Props = {
     navigation?: ReactNavigation,
     detailsList: DetailsList,
     style?: ViewStyleProp,
-    onPress?: (details: Details) => void,
+    onPress?: (details: DetailsRow) => void,
     leftCellStyle?: ViewStyleProp,
     rightCellStyle?: ViewStyleProp,
 }
@@ -101,7 +101,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
 
         const generatedKey = key || list[0].caption || '';
-        return list.map<Details>((item, index) => {
+        return list.map<DetailsRow>((item, index) => {
             let captionType = this.captionType.default;
             const { caption } = item;
             if (!index) {
@@ -118,7 +118,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     // Events
-    onActionPressed(details: Details) {
+    onActionPressed(details: DetailsRow) {
         if (details.screen) {
             this.navigateTo(details.screen);
         } else if (this.props.onPress) {
@@ -164,7 +164,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         );
     }
 
-    renderCell(details: Details) {
+    renderCell(details: DetailsRow) {
         const {
             type, value, limit, component, onPress,
         } = details;
@@ -238,7 +238,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         marginTopStyle,
                         index > 0 && styles.borderTop,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
+                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
                 >
                     {this.renderCaption(caption, captionType)}
 

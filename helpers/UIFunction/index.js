@@ -559,4 +559,12 @@ export default class UIFunction {
 
         return result;
     }
+
+    static capitalize(str: string): string {
+        return str.charAt(0).toUpperCase() + str.substring(1);
+    }
+
+    static isNil(arg: any): boolean {
+        return arg === null || arg === undefined;
+    }
 }
