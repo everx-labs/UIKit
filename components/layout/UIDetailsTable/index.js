@@ -238,7 +238,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         marginTopStyle,
                         index > 0 && styles.borderTop,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}`}
+                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
                 >
                     {this.renderCaption(caption, captionType)}
 
