@@ -104,6 +104,14 @@ export type ButtonProps = ActionProps & {
     @default null
     */
     iconR?: ?string,
+    /** uri to left hover icon
+    @default null
+    */
+    iconHover?: ImageSource,
+    /** uri to right hover icon
+    @default null
+    */
+    iconRHover?: ?string,
     /** Custom style for left icon
     @default null
     */
@@ -349,17 +357,24 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         const style = [];
         const hovered = this.isHover() || this.isTapped();
         let propStyle = null;
+        let iconHovered = null;
 
         if (position === 'left') {
             if (this.props.title) style.push(UIStyle.margin.rightSmall());
             propStyle = hovered ? this.props.iconHoverStyle : this.props.iconStyle;
+            iconHovered = hovered ? this.props.iconHover : null;
         } else if (position === 'right') {
             if (this.props.title) style.push(UIStyle.margin.leftSmall());
             propStyle = hovered ? this.props.iconRHoverStyle : this.props.iconRStyle;
+            iconHovered = hovered ? this.props.iconRHover : null;
         }
 
         style.push(propStyle || this.getIconTintStyle());
-        return <Image source={icon || iconDefault} style={style} key={`buttonIcon~${position}`} />;
+
+        const iconResult = iconHovered || icon || iconDefault;
+        style.push({ minWidth: UIConstant.iconSize() });
+
+        return <Image source={iconResult} style={style} key={`buttonIcon~${position}`} />;
     }
 
     renderIconL() {
@@ -644,9 +659,11 @@ UIButton.defaultProps = {
     hasIcon: false,
     hasIconR: false,
     icon: null,
+    iconHover: null,
     theme: UIColor.Theme.Light,
     title: '',
     iconR: null,
+    iconRHover: null,
     iconStyle: null,
     iconHoverStyle: null,
     iconRStyle: null,
