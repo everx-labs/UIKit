@@ -381,7 +381,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
                 ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits)}`
                 : `${balance}${this.getSeparatorAndZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
-            floorBalance = useMaxBalanceLength && integer.length > maxBalanceLength
+            floorBalance = useMaxBalanceLength && integer.length >= maxBalanceLength
                 ? integer
                 : formattedBalance;
         }
