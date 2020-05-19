@@ -3,6 +3,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
+import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -56,7 +57,7 @@ export default class UITabView extends UIComponent<Props, State> {
     };
 
     // Getters
-    getMarginLeft(width: number): AnimatedValue {
+    getMarginLeft(width: number): AnimatedMultiplication {
         return Animated.multiply(this.animatedIndex, new Animated.Value(-width));
     }
 
