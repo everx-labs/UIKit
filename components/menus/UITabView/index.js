@@ -3,6 +3,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
+import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -24,7 +25,7 @@ type Props = {
 };
 
 type State = {
-    index: AnimatedValue,
+    integerIndex: number,
 };
 
 const styles = StyleSheet.create({
@@ -40,34 +41,32 @@ export default class UITabView extends UIComponent<Props, State> {
         width: 0,
     };
 
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            index: new Animated.Value(0),
-        };
-    }
+    animatedIndex: AnimatedValue = new Animated.Value(0);
+    state = {
+        integerIndex: 0,
+    };
 
     // Events
     onPressTab = (index: number) => {
-        Animated.timing(this.state.index, {
+        Animated.timing(this.animatedIndex, {
             toValue: index,
             useNativeDriver: true,
             duration: UIConstant.animationDuration(),
         }).start();
+        this.setStateSafely({ integerIndex: index });
     };
 
     // Getters
-    getMarginLeft(width: number): AnimatedValue {
-        return Animated.multiply(this.state.index, new Animated.Value(-width));
+    getMarginLeft(width: number): AnimatedMultiplication {
+        return Animated.multiply(this.animatedIndex, new Animated.Value(-width));
     }
 
     // Render
     renderTapBar() {
         return (
-            <View style={UIStyle.common.flexRow()}>
+            <Animated.View style={UIStyle.common.flexRow()}>
                 {this.props.pages.map(({ title }: TabViewPage, index: number) => {
-                    const textStyle = index === this.state.index._value
+                    const textStyle = index === this.state.integerIndex
                         ? UIStyle.text.actionBodyBold()
                         : UIStyle.text.secondaryBodyBold();
                     return (
@@ -86,7 +85,7 @@ export default class UITabView extends UIComponent<Props, State> {
                         </TouchableWithoutFeedback>
                     );
                 })}
-            </View>
+            </Animated.View>
         );
     }
 
