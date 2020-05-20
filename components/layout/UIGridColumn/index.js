@@ -20,6 +20,10 @@ type Props = {
     @default null
      */
     style?: any,
+    /** pointerEvents
+    * @default null
+    */
+    pointerEvents?: any,
 };
 
 type State = {
@@ -32,7 +36,7 @@ export default class UIGridColumn extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={this.props.style}>
+            <View style={this.props.style} pointerEvents={this.props.pointerEvents}>
                 {this.props.children}
             </View>
         );
@@ -44,4 +48,5 @@ export default class UIGridColumn extends UIComponent<Props, State> {
 UIGridColumn.defaultProps = {
     style: null,
     medium: 1,
+    pointerEvents: null,
 };
