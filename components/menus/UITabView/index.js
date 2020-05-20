@@ -41,6 +41,10 @@ export default class UITabView extends UIComponent<Props, State> {
         width: 0,
     };
 
+    static testIDs = {
+        tabTitle: title => `tabTitle_${title}`,
+    };
+
     animatedIndex: AnimatedValue = new Animated.Value(0);
     state = {
         integerIndex: 0,
@@ -80,6 +84,7 @@ export default class UITabView extends UIComponent<Props, State> {
                                     title={title}
                                     textStyle={textStyle}
                                     onPress={() => this.onPressTab(index)}
+                                    testID={UITabView.testIDs.tabTitle(title)}
                                 />
                             </View>
                         </TouchableWithoutFeedback>

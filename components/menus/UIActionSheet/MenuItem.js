@@ -31,6 +31,9 @@ const MenuItem = (props: MenuItemType) => {
         UIStyle.height.buttonHeight(),
         contentStyle,
     ];
+    const testIDs = {
+      menuItem: value => `menuItem_${value}`,
+    };
 
     const content = (
         <React.Fragment>
@@ -42,6 +45,7 @@ const MenuItem = (props: MenuItemType) => {
                     defaultTitleStyle,
                     titleStyle,
                 ]}
+                testID={testIDs.menuItem(title)}
             >
                 {title}
             </Text>
