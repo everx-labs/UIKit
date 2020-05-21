@@ -250,6 +250,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     componentDidMount() {
         super.componentDidMount();
+        this.preloadHoverIcons();
         this.setInsetIfFooter();
     }
 
@@ -359,6 +360,16 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     }
 
     // Actions
+    preloadHoverIcons() {
+        const { iconHover, iconRHover } = this.props;
+        if (iconHover) {
+            Image.prefetch(iconHover.uri);
+        }
+        if (iconRHover) {
+            Image.prefetch(iconRHover.uri);
+        }
+    }
+
     setInsetIfFooter() {
         if (!this.props.footer) {
             return;
@@ -397,7 +408,6 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         }
 
         style.push(propStyle || this.getIconTintStyle());
-
         const iconResult = iconHovered || icon || iconDefault;
         return <Image source={iconResult} style={style} key={`buttonIcon~${position}`} />;
     }
