@@ -186,10 +186,7 @@ export type ButtonProps = ActionProps & {
     testID?: string,
 };
 
-type State = ActionState & {
-    iconHover?: ImageSource,
-    iconRHover?: ImageSource,
-};
+type State = ActionState;
 
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static buttonSize = {
@@ -366,10 +363,14 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     preloadHoverIcons() {
         const { iconHover, iconRHover } = this.props;
         if (iconHover) {
-            this.setState({ iconHover: Image.prefetch(iconHover) });
+            Image.prefetch(Platform.OS === 'web' ? iconHover.uri : iconHover).then((result) => {
+                // nothing to do, it's prefetched
+            });
         }
         if (iconRHover) {
-            this.setState({ iconRHover: Image.prefetch(iconRHover) });
+            Image.prefetch(Platform.OS === 'web' ? iconRHover.uri : iconRHover).then((result) => {
+                // nothing to do, it's prefetched
+            });
         }
     }
 
@@ -403,15 +404,14 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (position === 'left') {
             if (this.props.title) style.push(UIStyle.margin.rightSmall());
             propStyle = hovered ? this.props.iconHoverStyle : this.props.iconStyle;
-            iconHovered = hovered ? this.state.iconHover : null;
+            iconHovered = hovered ? this.props.iconHover : null;
         } else if (position === 'right') {
             if (this.props.title) style.push(UIStyle.margin.leftSmall());
             propStyle = hovered ? this.props.iconRHoverStyle : this.props.iconRStyle;
-            iconHovered = hovered ? this.state.iconRHover : null;
+            iconHovered = hovered ? this.props.iconRHover : null;
         }
 
         style.push(propStyle || this.getIconTintStyle());
-
         const iconResult = iconHovered || icon || iconDefault;
         return <Image source={iconResult} style={style} key={`buttonIcon~${position}`} />;
     }
