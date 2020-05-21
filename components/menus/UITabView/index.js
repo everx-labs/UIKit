@@ -42,7 +42,7 @@ export default class UITabView extends UIComponent<Props, State> {
     };
 
     static testIDs = {
-        tabTitle: title => `tabTitle_${title}`,
+        tabTitle: (title: string) => `tabTitle_${title}`,
     };
 
     animatedIndex: AnimatedValue = new Animated.Value(0);
