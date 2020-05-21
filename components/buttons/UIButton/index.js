@@ -363,14 +363,10 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     preloadHoverIcons() {
         const { iconHover, iconRHover } = this.props;
         if (iconHover) {
-            Image.prefetch(Platform.OS === 'web' ? iconHover.uri : iconHover).then((result) => {
-                // nothing to do, it's prefetched
-            });
+            Image.prefetch(Platform.OS === 'web' ? iconHover.uri : iconHover);
         }
         if (iconRHover) {
-            Image.prefetch(Platform.OS === 'web' ? iconRHover.uri : iconRHover).then((result) => {
-                // nothing to do, it's prefetched
-            });
+            Image.prefetch(Platform.OS === 'web' ? iconRHover.uri : iconRHover);
         }
     }
 
