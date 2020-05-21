@@ -186,7 +186,10 @@ export type ButtonProps = ActionProps & {
     testID?: string,
 };
 
-type State = ActionState;
+type State = ActionState & {
+    iconHover?: ImageSource,
+    iconRHover?: ImageSource,
+};
 
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static buttonSize = {
@@ -250,6 +253,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     componentDidMount() {
         super.componentDidMount();
+        this.preloadHoverIcons();
         this.setInsetIfFooter();
     }
 
@@ -359,6 +363,16 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     }
 
     // Actions
+    preloadHoverIcons() {
+        const { iconHover, iconRHover } = this.props;
+        if (iconHover) {
+            this.setState({ iconHover: Image.prefetch(iconHover) });
+        }
+        if (iconRHover) {
+            this.setState({ iconRHover: Image.prefetch(iconRHover) });
+        }
+    }
+
     setInsetIfFooter() {
         if (!this.props.footer) {
             return;
@@ -389,11 +403,11 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (position === 'left') {
             if (this.props.title) style.push(UIStyle.margin.rightSmall());
             propStyle = hovered ? this.props.iconHoverStyle : this.props.iconStyle;
-            iconHovered = hovered ? this.props.iconHover : null;
+            iconHovered = hovered ? this.state.iconHover : null;
         } else if (position === 'right') {
             if (this.props.title) style.push(UIStyle.margin.leftSmall());
             propStyle = hovered ? this.props.iconRHoverStyle : this.props.iconRStyle;
-            iconHovered = hovered ? this.props.iconRHover : null;
+            iconHovered = hovered ? this.state.iconRHover : null;
         }
 
         style.push(propStyle || this.getIconTintStyle());
