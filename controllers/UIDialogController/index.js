@@ -233,7 +233,6 @@ class UIDialogController extends UIController {
             style={UIStyle.marginTopMedium}
             editable={!this.shouldShowIndicator()}
             autoFocus={this.textInputAutoFocus}
-            autoCapitalize="words"
             textAlign="center"
             returnKeyType="next"
             beginningTag={this.textInputBeginningTag}

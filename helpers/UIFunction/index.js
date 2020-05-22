@@ -222,10 +222,8 @@ export default class UIFunction {
     static phoneNumberInputKeyboardType() {
         if (Platform.OS === 'web') {
             return 'default';
-        } else if (Platform.OS === 'ios') {
-            return 'number-pad';
         }
-        return 'numeric';
+        return 'phone-pad';
     }
 
     // Detects country of the phone
