@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import UIColor from '../../../helpers/UIColor';
@@ -111,6 +111,7 @@ export default class UIAlertView extends UIComponent {
             overlayStyle, containerStyle, titleStyle, messageStyle, buttonStyle, buttonTextStyle,
         } = styles;
         return (<AwesomeAlert
+            useNativeDriver={Platform.OS === 'android'}
             alertContainerStyle={{ overflow: 'hidden', zIndex: UIAlertView.zIndex }}
             overlayStyle={overlayStyle}
             contentContainerStyle={containerStyle}
