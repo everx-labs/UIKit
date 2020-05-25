@@ -726,6 +726,13 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             value,
             noPersonalizedLearning,
         } = this.props;
+
+        // The keyboarftype used for UISeedPhraseInput on Android breaks the multiline native behavior
+        // that autogrows the input text, in order to fix it, we handle the onContentSizeChange to set
+        // manually the input height, but on Android the behavior is not synchronized, using this to set
+        // a minimum height, based on a state, fixes the problem.
+        const minHeight = Platform.OS === 'android' ? { minHeight: this.state.inputHeight } : null;
+        
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
@@ -776,6 +783,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                                 ? 5 // seems to be smth connected to iOS's textContainerInset
                                 : 0,
                         maxHeight,
+                        ...minHeight,
                     },
                 ]}
                 selectionColor={UIColor.primary()}
