@@ -22,7 +22,7 @@ export type TabViewProps = {
     indicatorWidth?: number,
     style?: ViewStyleProp,
     pageStyle?: ViewStyleProp,
-    initialIndex: number,
+    initialIndex?: number,
 };
 
 type State = {
@@ -45,7 +45,7 @@ export default class UITabView extends UIComponent<TabViewProps, State> {
 
     animatedIndex: AnimatedValue = new Animated.Value(this.props.initialIndex);
     state = {
-        integerIndex: this.props.initialIndex,
+        integerIndex: this.props.initialIndex || 0,
     };
 
     // Events
