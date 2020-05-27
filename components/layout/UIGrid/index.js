@@ -93,6 +93,10 @@ type Props = {
     * @default null
     */
     onLayout?: ?(e: any) => void,
+    /** pointerEvents
+    * @default null
+    */
+    pointerEvents?: any,
 };
 
 type State = {
@@ -172,6 +176,7 @@ export default class UIGrid extends UIComponent<Props, State> {
                 {
                     style: [childStyle, child.props.style],
                     key: `child-${rank}`,
+                    pointerEvents: this.props.pointerEvents,
                 },
             );
         });
@@ -185,7 +190,7 @@ export default class UIGrid extends UIComponent<Props, State> {
         ];
 
         return (
-            <View style={rowStyle} key={`row-${rank}`}>
+            <View style={rowStyle} key={`row-${rank}`} pointerEvents={this.props.pointerEvents}>
                 {this.renderChildren(children)}
             </View>
         );
@@ -235,7 +240,7 @@ export default class UIGrid extends UIComponent<Props, State> {
         ];
 
         return (
-            <View style={containerStyle} onLayout={this.onLayout}>
+            <View style={containerStyle} onLayout={this.onLayout} pointerEvents={this.props.pointerEvents}>
                 {rows.map((childrenRow, rank) => this.renderRow(childrenRow, rank))}
             </View>
         );
@@ -251,4 +256,5 @@ UIGrid.defaultProps = {
     style: null,
     width: 0,
     onLayout: null,
+    pointerEvents: null,
 };

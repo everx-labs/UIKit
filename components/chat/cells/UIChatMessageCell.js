@@ -5,6 +5,7 @@ import {
     View,
     Text,
     TouchableHighlight,
+    Platform,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import Moment from 'moment';
@@ -117,11 +118,13 @@ const styles = StyleSheet.create({
     },
     urlReceived: {
         color: UIColor.primary(),
-        textDecorationLine: 'underline',
+        // Some android devices seem to render the underline wrongly
+        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
     urlSent: {
         color: UIColor.fa(),
-        textDecorationLine: 'underline',
+        // Some android devices seem to render the underline wrongly
+        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
     dateSeparator: {
         flexShrink: 1,

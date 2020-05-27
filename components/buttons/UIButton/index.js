@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
@@ -12,6 +12,7 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIBadge from '../../design/UIBadge';
 import UINotice from '../../notifications/UINotice';
 import UIActionComponent from '../../UIActionComponent';
+import UITooltip from '../../notifications/UITooltip';
 
 import IconAnimation from './IconAnimation';
 
@@ -43,6 +44,11 @@ const styles = StyleSheet.create({
     },
     buttonContainerStyle: {
         flex: 1,
+    },
+    // web-only style
+    tooltipContainerStyle: {
+        padding: UIConstant.mediumContentOffset(),
+        width: 'auto',
     },
 });
 
@@ -170,6 +176,10 @@ export type ButtonProps = ActionProps & {
     @default ''
     */
     title?: string,
+    /** button title style
+    @default ''
+    */
+    tooltip?: string,
     /** @ignore */
     theme?: string,
     /** @default 'uiButton' */
@@ -240,6 +250,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     componentDidMount() {
         super.componentDidMount();
+        this.preloadHoverIcons();
         this.setInsetIfFooter();
     }
 
@@ -249,6 +260,23 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     }
 
     // Events
+    // Virtual
+    onEnter = () => {
+        const webStyle = (
+            Platform.OS === 'web' ?
+                styles.tooltipContainerStyle :
+                null
+        );
+        if (this.props.tooltip) {
+            UITooltip.showOnMouseForWeb(this.props.tooltip, webStyle);
+        }
+    };
+
+    onLeave = () => {
+        if (this.props.tooltip) {
+            UITooltip.hideOnMouseForWeb();
+        }
+    };
 
     // Getters
     getButtonHeight() {
@@ -332,6 +360,16 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     }
 
     // Actions
+    preloadHoverIcons() {
+        const { iconHover, iconRHover } = this.props;
+        if (iconHover) {
+            Image.prefetch(iconHover.uri);
+        }
+        if (iconRHover) {
+            Image.prefetch(iconRHover.uri);
+        }
+    }
+
     setInsetIfFooter() {
         if (!this.props.footer) {
             return;
@@ -370,10 +408,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         }
 
         style.push(propStyle || this.getIconTintStyle());
-
         const iconResult = iconHovered || icon || iconDefault;
-        style.push({ minWidth: UIConstant.iconSize() });
-
         return <Image source={iconResult} style={style} key={`buttonIcon~${position}`} />;
     }
 
@@ -672,6 +707,7 @@ UIButton.defaultProps = {
     textAlign: UIButton.textAlign.center,
     textStyle: null,
     textHoverStyle: null,
+    tooltip: '',
     indicatorAnimation: null,
     iconIndicator: undefined,
     iconIndicatorStyle: null,

@@ -111,6 +111,7 @@ export default class UIAlertView extends UIComponent {
             overlayStyle, containerStyle, titleStyle, messageStyle, buttonStyle, buttonTextStyle,
         } = styles;
         return (<AwesomeAlert
+            useNativeDriver
             alertContainerStyle={{ overflow: 'hidden', zIndex: UIAlertView.zIndex }}
             overlayStyle={overlayStyle}
             contentContainerStyle={containerStyle}

@@ -117,6 +117,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
         });
     }
 
+    static testIDs = {
+        detailsTextButton: 'detailsTextButton',
+    };
+
     // Events
     onActionPressed(details: DetailsRow) {
         if (details.screen) {
@@ -185,6 +189,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     textStyle={UIStyle.text.actionSmallMedium()}
                     title={value}
                     onPress={onPress || (() => this.onActionPressed(details))}
+                    testID={UIDetailsTable.testIDs.detailsTextButton}
                 />
             );
         } else if (component) {
