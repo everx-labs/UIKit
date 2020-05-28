@@ -45,7 +45,7 @@ const UI_FONT_LIGHT = { ...FONT_WEB_LIGHT, fontWeight: '300' };
 const UI_FONT_REGULAR = { ...FONT_WEB_REGULAR, fontWeight: '400' };
 const UI_FONT_MEDIUM = { ...FONT_WEB_MEDIUM, fontWeight: '500' };
 // const UI_FONT_SEMIBOLD = { fontWeight: '600' };
-const UI_FONT_BOLD = { ...FONT_WEB_BOLD, fontWeight: '700' };
+const UI_FONT_BOLD = { ...FONT_WEB_BOLD, fontWeight: Platform.OS === 'android' ? 'bold' : '700' };
 // const UI_FONT_HEAVY = { fontWeight: '800' };
 // const UI_FONT_BLACK = { fontWeight: '900' };
 

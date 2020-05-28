@@ -5,6 +5,8 @@ import {
     View,
     Text,
     TouchableHighlight,
+    TouchableWithoutFeedback,
+    Clipboard,
     Platform,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
@@ -20,6 +22,8 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
 import UILocalized from '../../../helpers/UILocalized';
 import UILabel from '../../text/UILabel';
+
+import UIToastMessage from '../../notifications/UIToastMessage';
 
 import UIChatImageCell from './UIChatImageCell';
 import UIChatDocumentCell from './UIChatDocumentCell';
@@ -551,7 +555,15 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderTextCell() {
         const { data } = this.props;
-        return this.wrapInMessageContainer(this.renderText(data || ''));
+        return (
+            <TouchableWithoutFeedback onLongPress={() => {
+                Clipboard.setString(data);
+                UIToastMessage.showMessage(UILocalized.MessageCopiedToClipboard);
+            }}
+            >
+                {this.wrapInMessageContainer(this.renderText(data || ''))}
+            </TouchableWithoutFeedback>
+        );
     }
 
     renderText(text: string) {
