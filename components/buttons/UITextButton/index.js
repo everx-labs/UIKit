@@ -68,7 +68,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
 
     static defaultProps: Props = {
         ...UIActionComponent.defaultProps,
-        align: UITextButton.Align.Left,
+        align: UITextButton.align.left,
         details: '',
         icon: null,
         backIcon: null,
