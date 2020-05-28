@@ -556,7 +556,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { data } = this.props;
         return (
             <TouchableWithoutFeedback onLongPress={
-                () => UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard)}
+                () => {
+                    if (data && (data instanceof String || typeof data === 'string')) {
+                        UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
+                    }
+                }}
             >
                 {this.wrapInMessageContainer(this.renderText(data || ''))}
             </TouchableWithoutFeedback>
