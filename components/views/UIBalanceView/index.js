@@ -88,7 +88,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         super(props);
 
         this.state = {
-            balance: this.getCachedBalance() || this.props.balance,
+            balance: this.getCachedBalance(),
             newBalance: '', // new value for digits animation
             marginTops: [],
             balanceWidth: new Animated.Value(0),
