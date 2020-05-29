@@ -47,7 +47,8 @@ export default class UITabView extends UIComponent<TabViewProps, State> {
         tabTitle: (title: string) => `tabTitle_${title}`,
     };
 
-    animatedIndex: AnimatedValue = new Animated.Value(this.props.initialIndex);
+    animatedIndex: AnimatedValue = new Animated.Value(this.props.initialIndex || 0);
+
     state = {
         integerIndex: this.props.initialIndex || 0,
     };
