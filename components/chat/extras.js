@@ -1,3 +1,5 @@
+// @flow
+
 export const ChatMessageContent = {
     SimpleText: 'stm',
     Invite: 'inv',

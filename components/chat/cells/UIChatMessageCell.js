@@ -9,7 +9,6 @@ import {
     Platform,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
-import Moment from 'moment';
 
 import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { LayoutEvent, Layout } from 'react-native/Libraries/Types/CoreEventTypes';
@@ -19,7 +18,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
-import UILocalized from '../../../helpers/UILocalized';
+import UILocalized, { formatDate } from '../../../helpers/UILocalized';
 import UILabel from '../../text/UILabel';
 
 import UIShareManager from '../../../helpers/UIShareManager';
@@ -274,7 +273,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         const time = date || new Date(msg?.info.created || 0);
-        return Moment(time).format('LT');
+        return formatDate(time);
     }
 
     wrapInMessageContainer(children: React$Element<*>, isSticker: boolean = false): React$Element<*> {

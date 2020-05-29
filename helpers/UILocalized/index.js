@@ -118,4 +118,24 @@ const localized: UILocalizedData &
 
 Moment.locale(localized.getLocale());
 
+export function formatTime(time: number): string {
+    return Moment(time).format('LT');
+}
+
+export function formatDate(time: number): string {
+    const today = new Date();
+    const date = new Date(time);
+    today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+    const todayTime = today.getTime();
+    const dateTime = date.getTime();
+    const isToday = todayTime === dateTime;
+    const isYesterday = (todayTime - dateTime) === (24 * 3600 * 1000);
+    return (isToday || isYesterday) ? (
+        `${isToday ? localized.Today : localized.Yesterday} at ${formatTime(time)}`
+    ) : (
+        Moment(time).format('D MMM LT')
+    );
+}
+
 export default localized;

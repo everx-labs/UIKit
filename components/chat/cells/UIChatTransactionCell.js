@@ -5,7 +5,6 @@ import {
     View,
     StyleSheet,
 } from 'react-native';
-import Moment from 'moment';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -17,7 +16,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
-import UILocalized from '../../../helpers/UILocalized';
+import UILocalized, { formatDate, formatTime } from '../../../helpers/UILocalized';
 
 import { ChatMessageStatus, TypeOfTransaction } from '../extras';
 
@@ -139,26 +138,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getDate(): string {
         const { created } = this.getMessage().info;
-        const today = new Date();
-        const date = new Date(created);
-        today.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
-        const todayTime = today.getTime();
-        const dateTime = date.getTime();
-        const isToday = todayTime === dateTime;
-        const isYesterday = (todayTime - dateTime) === (24 * 3600 * 1000);
-        const moment = (isToday || isYesterday) ? (
-            `${isToday ? UILocalized.Today : UILocalized.Yesterday}, ${Moment(created).format('LT')}`
-        ) : (
-            Moment(created).format('D MMM LT')
-        );
-
-        return moment;
+        return formatDate(created);
     }
 
     getTime(): string {
         const { created } = this.getMessage().info;
-        return Moment(created).format('LT');
+        return formatTime(created);
     }
 
     getExtra(): TransactionInfo {
@@ -238,7 +223,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getStatusString(status: ChatMessageStatus): string {
-        const time = this.getTime();
+        const time = this.getDate();
         if (status === ChatMessageStatus.Rejected) {
             return UILocalized.formatString(
                 UILocalized.TransactionStatus.rejected,
@@ -289,21 +274,19 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     style={[
                         UIStyle.Common.flexRow(),
                         UIStyle.Margin.bottomTiny(),
-                        UIStyle.Common.justifySpaceBetween(),
+                        UIStyle.Common.justifyStart(),
                     ]}
                 >
-                    <UILabel
-                        style={[
-                            UIStyle.Margin.rightHuge(),
-                            textColor,
-                        ]}
-                        role={UILabel.Role.SmallMedium}
-                        text={this.getText()}
-                    />
                     <UIBalanceView
                         balance={amountLocalized}
                         separator={extra.separator}
-                        tokenSymbol={extra.token}
+                        icon={(
+                            <UILabel
+                                style={UIStyle.margin.leftTiny()}
+                                role={UILabel.Role.SmallRegular}
+                                text={extra.token}
+                            />
+                        )}
                         smartTruncator={false}
                         textStyle={[
                             UIStyle.Text.smallRegular(),
@@ -317,12 +300,19 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     testID={trx.aborted
                         ? `transaction_message_${amountLocalized}_aborted`
                         : `transaction_message_${amountLocalized}_time`}
-                    style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
+                    style={[UIStyle.Common.flexRow()]}
                 >
+                    {!trx.aborted && !trx.sending && (
+                        <UILabel
+                            style={textColor}
+                            role={UILabel.Role.TinyRegular}
+                            text={`${this.getText()}, `}
+                        />
+                    )}
                     <UILabel
                         role={UILabel.Role.TinyRegular}
                         text={info}
-                        style={[UIStyle.Margin.rightHuge(), commentColor]}
+                        style={commentColor}
                     />
                     <UILabel
                         style={styles.textMetadata}
