@@ -88,7 +88,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         super(props);
 
         this.state = {
-            balance: this.getCachedBalance(),
+            balance: this.getCachedBalance() || this.props.balance,
             newBalance: '', // new value for digits animation
             marginTops: [],
             balanceWidth: new Animated.Value(0),
@@ -310,7 +310,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     getCachedBalance(): string {
         const key = this.getCacheKey();
-        return (key && cachedBalance[key]) || this.props.balance || '';
+        return (key && cachedBalance[key]) || '';
     }
 
     getPreSymbols() {
