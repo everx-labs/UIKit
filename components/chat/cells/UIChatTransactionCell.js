@@ -274,7 +274,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const info = (trx.aborted || trx.sending)
             ? this.getStatusString(trx.aborted ? Aborted : Sending)
             : date;
-
         return (
             <View
                 testID={`transaction_message_${amountLocalized}`}
@@ -310,6 +309,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                             amountColor,
                         ]}
                         fractionalTextStyle={amountColor}
+                        cacheKey={`transaction_chat_cell_${trx.id}`}
                     />
                 </View>
 
