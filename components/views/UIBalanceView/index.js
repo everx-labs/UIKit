@@ -310,7 +310,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     getCachedBalance(): string {
         const key = this.getCacheKey();
-        return (key && cachedBalance[key]) || '';
+        return (key && cachedBalance[key]) || this.props.balance || '';
     }
 
     getPreSymbols() {
