@@ -97,6 +97,20 @@ const styleProperties = {
 
 const styles = StyleSheet.create(styleProperties);
 
+
+function throttle(func: () => void, limit: number) {
+    let timeout: ?TimeoutID = null;
+    return () => {
+        if (timeout != null) {
+            return;
+        }
+        func();
+        timeout = setTimeout(() => {
+            timeout = null;
+        }, limit);
+    };
+}
+
 export default class UIPinCodeInput extends UIComponent<Props, State> {
     static defaultProps = {
         pinTitle: '',
@@ -179,9 +193,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         this.setPin(str);
     };
 
+    onChangePin = throttle(() => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    }, UIConstant.animationDuration())
+
     // setters
     setPin(pin: string) {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        this.onChangePin();
         this.setStateSafely({ pin }, () => {
             if (pin.length === this.props.pinCodeLenght) {
                 this.props.pinCodeEnter(pin);
