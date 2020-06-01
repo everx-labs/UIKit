@@ -127,6 +127,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return Math.abs(trx.amount || 0.0);
     }
 
+    getAmountForTestID(): number {
+        const { amount } = this.getExtra();
+        return amount.toFixed(1);
+    }
+
     getAmountInCurrency(): string {
         const extra = this.getExtra();
         const { currency } = extra;
@@ -276,7 +281,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
             : date;
         return (
             <View
-                testID={`transaction_message_${amountLocalized}`}
+                testID={`transaction_message_${this.getAmountForTestID()}`}
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
@@ -315,8 +320,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
                 <View
                     testID={trx.aborted
-                        ? `transaction_message_${amountLocalized}_aborted`
-                        : `transaction_message_${amountLocalized}_time`}
+                        ? `transaction_message_${this.getAmountForTestID()}_aborted`
+                        : `transaction_message_${this.getAmountForTestID()}_time`}
                     style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
                 >
                     <UILabel
