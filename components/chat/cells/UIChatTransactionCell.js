@@ -128,8 +128,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getAmountForTestID(): number {
-        const { amountLocalized } = this.getExtra();
-        return Number(amountLocalized.slice(2)).toFixed(1);
+        const { amount } = this.getExtra();
+        return amount.toFixed(1);
     }
 
     getAmountInCurrency(): string {
