@@ -11,6 +11,7 @@ import type { PopoverProps, PopoverState } from '../UIPopover';
 type Props = PopoverProps & {
     menuItemsList: MenuItemType[],
     menuItems: MenuItemType[],
+    reversedColors?: boolean,
     needCancelItem: boolean, // for iOS and Android only
     onCancelCallback: () => void, // for iOS and Android only
 };
@@ -20,6 +21,7 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
         ...UIPopover.defaultProps,
         menuItemsList: [], // deprecated,
         menuItems: [],
+        reversedColors: false,
         needCancelItem: true, // for iOS and Android only
         onCancelCallback: () => {}, // for iOS and Android only
     };
@@ -55,6 +57,7 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
             <MenuItem
                 {...item}
                 key={`${Math.random()}~MenuItem~${item.title}`}
+                reversedColors={this.props.reversedColors}
                 onPress={() => {
                     if (item.onPress) item.onPress();
                     UIPopover.hide();

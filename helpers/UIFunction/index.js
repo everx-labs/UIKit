@@ -535,8 +535,7 @@ export default class UIFunction {
         if (str.length <= signs * 2) {
             return str;
         }
-        const dots = '.'.repeat(signs);
-        return `${str.substr(0, signs)} ${dots} ${str.substr(str.length - signs)}`;
+        return `${str.substr(0, signs)} ... ${str.substr(str.length - signs)}`;
     }
 
     // Return flat object, takes complex object with enclosures as an argument
