@@ -97,7 +97,7 @@ export default class UIPopover<Props, State>
         const { width: menuWidth } = e.nativeEvent.layout;
         const triggerWidth = this.getTriggerWidth();
         if (menuWidth > triggerWidth) {
-            this.setMarginLeft(menuWidth - triggerWidth);
+            this.setMarginLeft((triggerWidth - menuWidth) / 2);
         }
     };
 

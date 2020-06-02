@@ -126,6 +126,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return Math.abs(trx.amount || 0.0);
     }
 
+    getAmountForTestID(): number {
+        const { amount } = this.getExtra();
+        return amount.toFixed(1);
+    }
+
     getAmountInCurrency(): string {
         const extra = this.getExtra();
         const { currency } = extra;
@@ -259,10 +264,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const info = (trx.aborted || trx.sending)
             ? this.getStatusString(trx.aborted ? Aborted : Sending)
             : date;
-
         return (
             <View
-                testID={`transaction_message_${amountLocalized}`}
+                testID={`transaction_message_${this.getAmountForTestID()}`}
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
@@ -293,14 +297,15 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                             amountColor,
                         ]}
                         fractionalTextStyle={amountColor}
+                        cacheKey={`transaction_chat_cell_${trx.id}`}
                     />
                 </View>
 
                 <View
                     testID={trx.aborted
-                        ? `transaction_message_${amountLocalized}_aborted`
-                        : `transaction_message_${amountLocalized}_time`}
-                    style={[UIStyle.Common.flexRow()]}
+                        ? `transaction_message_${this.getAmountForTestID()}_aborted`
+                        : `transaction_message_${this.getAmountForTestID()}_time`}
+                    style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
                 >
                     {!trx.aborted && !trx.sending && (
                         <UILabel
