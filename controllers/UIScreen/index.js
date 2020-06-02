@@ -135,8 +135,8 @@ export default class UIScreen<Props, State>
         return this.state.scrollOffset;
     }
 
-    isNarrow() {
-        return this.state.narrow;
+    getNavigation() {
+        return this.props.navigation;
     }
 
     getPreviousRouteName() {
@@ -146,6 +146,10 @@ export default class UIScreen<Props, State>
             return routeName;
         }
         return null;
+    }
+
+    isNarrow() {
+        return this.state.narrow;
     }
 
     isScrollDisabled() {
