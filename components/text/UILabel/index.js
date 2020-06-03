@@ -15,6 +15,8 @@ const LabelRole = Object.freeze({
     Subtitle: 'subtitle',
     SubtitleRegular: 'subtitleRegular',
     Description: 'description',
+    DescriptionSmall: 'descriptionSmall',
+    DescriptionSmallError: 'descriptionSmallError',
     DescriptionMedium: 'descriptionMedium',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
     DescriptionTertiary: 'descriptionTertiary',
@@ -94,6 +96,10 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primarySubtitleRegular());
         } else if (role === UILabel.Role.Description) { // Body - fontSize: 18, lineHeight: 24
             result.push(UIStyle.Text.primaryBodyRegular());
+        } else if (role === UILabel.Role.DescriptionSmall) { // Body - fontSize: 16, lineHeight: 20
+            result.push(UIStyle.Text.secondarySmallRegular());
+        } else if (role === UILabel.Role.DescriptionSmallError) { // Body - fontSize: 16, lineHeight: 20
+            result.push(UIStyle.Text.errorSmallRegular());
         } else if (role === UILabel.Role.DescriptionMedium) {
             result.push(UIStyle.Text.primaryBodyMedium());
         } else if (role === UILabel.Role.BoldDescription) {
