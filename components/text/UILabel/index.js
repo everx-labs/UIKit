@@ -16,7 +16,7 @@ const LabelRole = Object.freeze({
     SubtitleRegular: 'subtitleRegular',
     Description: 'description',
     DescriptionSmall: 'descriptionSmall',
-    DescriptionSmallError: 'descriptionSmallWarning',
+    DescriptionSmallError: 'descriptionSmallError',
     DescriptionMedium: 'descriptionMedium',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
     DescriptionTertiary: 'descriptionTertiary',
