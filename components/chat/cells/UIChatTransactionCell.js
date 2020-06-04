@@ -1,11 +1,7 @@
 // @flow
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-} from 'react-native';
-import Moment from 'moment';
+import { StyleSheet, View } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -17,19 +13,19 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
-import UILocalized from '../../../helpers/UILocalized';
-
-import { ChatMessageStatus, TypeOfTransaction } from '../extras';
+import UILocalized, { formatDate, formatTime } from '../../../helpers/UILocalized';
 
 import type {
     ChatAdditionalInfo,
-    ChatMessage,
     ChatMessageStatusType,
     TransactionInfo,
+    UIChatMessage,
 } from '../extras';
+import { ChatMessageStatus, TypeOfTransaction } from '../extras';
 
 type Props = {
     message: any,
+    isReceived: boolean,
     additionalInfo: ChatAdditionalInfo,
     status: ChatMessageStatusType,
     onPress: ?(() => void),
@@ -110,7 +106,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     };
 
     // Getters
-    getMessage(): ChatMessage {
+    getMessage(): UIChatMessage {
         return this.props.message;
     }
 
@@ -144,26 +140,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getDate(): string {
         const { created } = this.getMessage().info;
-        const today = new Date();
-        const date = new Date(created);
-        today.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
-        const todayTime = today.getTime();
-        const dateTime = date.getTime();
-        const isToday = todayTime === dateTime;
-        const isYesterday = (todayTime - dateTime) === (24 * 3600 * 1000);
-        const moment = (isToday || isYesterday) ? (
-            `${isToday ? UILocalized.Today : UILocalized.Yesterday}, ${Moment(created).format('LT')}`
-        ) : (
-            Moment(created).format('D MMM LT')
-        );
-
-        return moment;
+        return formatDate(created);
     }
 
     getTime(): string {
         const { created } = this.getMessage().info;
-        return Moment(created).format('LT');
+        return formatTime(created);
     }
 
     getExtra(): TransactionInfo {
@@ -243,7 +225,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getStatusString(status: ChatMessageStatus): string {
-        const time = this.getTime();
+        const time = this.getDate();
         if (status === ChatMessageStatus.Rejected) {
             return UILocalized.formatString(
                 UILocalized.TransactionStatus.rejected,
@@ -260,25 +242,26 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return '';
     }
 
-    isReceived(): boolean {
-        return this.getStatus() === ChatMessageStatus.Received;
+    get isReceived(): boolean {
+        return this.props.isReceived;
     }
 
     // Render
     renderTrxContent() {
         const trx = this.getTransaction();
-        const extra = this.getExtra();
-        const { amountLocalized } = extra;
-        const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
+        const { separator, token, amountLocalized } = this.getExtra();
+        const conner = this.isReceived ? styles.leftConner : styles.rightConner;
+        const status = this.getStatus();
         const color = this.getCardColor();
         const textColor = this.getTextColor();
         const amountColor = this.getAmountColor();
         const commentColor = this.getCommentColor();
         const date = this.getDate();
         const { Aborted, Sending } = ChatMessageStatus;
-        const info = (trx.aborted || trx.sending)
-            ? this.getStatusString(trx.aborted ? Aborted : Sending)
-            : date;
+        const isAborted = status === Aborted;
+        const isSending = status === Sending;
+        const info = (isAborted || isSending) ? this.getStatusString(status) : date;
+
         return (
             <View
                 testID={`transaction_message_${this.getAmountForTestID()}`}
@@ -293,21 +276,19 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     style={[
                         UIStyle.Common.flexRow(),
                         UIStyle.Margin.bottomTiny(),
-                        UIStyle.Common.justifySpaceBetween(),
+                        UIStyle.Common.justifyStart(),
                     ]}
                 >
-                    <UILabel
-                        style={[
-                            UIStyle.Margin.rightHuge(),
-                            textColor,
-                        ]}
-                        role={UILabel.Role.SmallMedium}
-                        text={this.getText()}
-                    />
                     <UIBalanceView
                         balance={amountLocalized}
-                        separator={extra.separator}
-                        tokenSymbol={extra.token}
+                        separator={separator}
+                        icon={(
+                            <UILabel
+                                style={UIStyle.margin.leftTiny()}
+                                role={UILabel.Role.SmallRegular}
+                                text={token}
+                            />
+                        )}
                         smartTruncator={false}
                         textStyle={[
                             UIStyle.Text.smallRegular(),
@@ -319,15 +300,22 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 </View>
 
                 <View
-                    testID={trx.aborted
+                    testID={status === Aborted
                         ? `transaction_message_${this.getAmountForTestID()}_aborted`
                         : `transaction_message_${this.getAmountForTestID()}_time`}
                     style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
                 >
+                    {!isAborted && !isSending && (
+                        <UILabel
+                            style={textColor}
+                            role={UILabel.Role.TinyRegular}
+                            text={`${this.getText()}, `}
+                        />
+                    )}
                     <UILabel
                         role={UILabel.Role.TinyRegular}
                         text={info}
-                        style={[UIStyle.Margin.rightHuge(), commentColor]}
+                        style={commentColor}
                     />
                     <UILabel
                         style={styles.textMetadata}

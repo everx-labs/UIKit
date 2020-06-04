@@ -1,3 +1,5 @@
+// TODO: Add flow
+
 export const ChatMessageContent = {
     SimpleText: 'stm',
     Invite: 'inv',
@@ -98,5 +100,6 @@ export type UIChatCellInfo = {
     data: any,
     type: ChatMessageContentType,
     status: ChatMessageStatusType,
+    isReceived: boolean,
     additionalInfo: ChatAdditionalInfo,
 };
