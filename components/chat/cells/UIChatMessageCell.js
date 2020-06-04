@@ -503,7 +503,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderLinkActionMessageCell() {
         const { isReceived, additionalInfo } = this.props;
-        const style = isReceived ? null : styles.linkActionMessageContainer;
+        const style = isReceived ? styles.linkActionMessageContainer : null;
 
         return (
             <View style={style}>
