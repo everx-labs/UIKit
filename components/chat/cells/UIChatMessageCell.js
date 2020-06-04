@@ -508,7 +508,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <View style={style}>
                 {this.renderTextCell()}
-                {!isReceived && !additionalInfo?.processed && (
+                {isReceived && !additionalInfo?.processed && (
                     <View style={styles.verticalSeparator}>
                         {this.renderActionCell()}
                     </View>
