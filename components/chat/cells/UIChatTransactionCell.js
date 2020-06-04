@@ -243,7 +243,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     get isReceived(): boolean {
-        return !this.props.isReceived;
+        return this.props.isReceived;
     }
 
     // Render
