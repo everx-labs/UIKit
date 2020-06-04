@@ -1,10 +1,7 @@
 // @flow
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -18,17 +15,17 @@ import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
 import UILocalized, { formatDate, formatTime } from '../../../helpers/UILocalized';
 
-import { ChatMessageStatus, TypeOfTransaction } from '../extras';
-
 import type {
     ChatAdditionalInfo,
-    ChatMessage,
     ChatMessageStatusType,
     TransactionInfo,
+    UIChatMessage,
 } from '../extras';
+import { ChatMessageStatus, TypeOfTransaction } from '../extras';
 
 type Props = {
     message: any,
+    isReceived: boolean,
     additionalInfo: ChatAdditionalInfo,
     status: ChatMessageStatusType,
     onPress: ?(() => void),
@@ -109,7 +106,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     };
 
     // Getters
-    getMessage(): ChatMessage {
+    getMessage(): UIChatMessage {
         return this.props.message;
     }
 
@@ -245,25 +242,26 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return '';
     }
 
-    isReceived(): boolean {
-        return this.getStatus() === ChatMessageStatus.Received;
+    get isReceived(): boolean {
+        return !this.props.isReceived;
     }
 
     // Render
     renderTrxContent() {
         const trx = this.getTransaction();
-        const extra = this.getExtra();
-        const { amountLocalized } = extra;
-        const conner = this.isReceived() ? styles.leftConner : styles.rightConner;
+        const { separator, token, amountLocalized } = this.getExtra();
+        const conner = this.isReceived ? styles.leftConner : styles.rightConner;
+        const status = this.getStatus();
         const color = this.getCardColor();
         const textColor = this.getTextColor();
         const amountColor = this.getAmountColor();
         const commentColor = this.getCommentColor();
         const date = this.getDate();
         const { Aborted, Sending } = ChatMessageStatus;
-        const info = (trx.aborted || trx.sending)
-            ? this.getStatusString(trx.aborted ? Aborted : Sending)
-            : date;
+        const isAborted = status === Aborted;
+        const isSending = status === Sending;
+        const info = (isAborted || isSending) ? this.getStatusString(status) : date;
+
         return (
             <View
                 testID={`transaction_message_${this.getAmountForTestID()}`}
@@ -283,12 +281,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 >
                     <UIBalanceView
                         balance={amountLocalized}
-                        separator={extra.separator}
+                        separator={separator}
                         icon={(
                             <UILabel
                                 style={UIStyle.margin.leftTiny()}
                                 role={UILabel.Role.SmallRegular}
-                                text={extra.token}
+                                text={token}
                             />
                         )}
                         smartTruncator={false}
@@ -302,12 +300,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 </View>
 
                 <View
-                    testID={trx.aborted
+                    testID={status === Aborted
                         ? `transaction_message_${this.getAmountForTestID()}_aborted`
                         : `transaction_message_${this.getAmountForTestID()}_time`}
                     style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
                 >
-                    {!trx.aborted && !trx.sending && (
+                    {!isAborted && !isSending && (
                         <UILabel
                             style={textColor}
                             role={UILabel.Role.TinyRegular}

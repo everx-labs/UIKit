@@ -45,6 +45,7 @@ import type {
 type Props = {
     type?: ChatMessageContentType,
     status?: ChatMessageStatusType,
+    isReceived?: boolean,
     data?: any,
     additionalInfo?: ChatAdditionalInfo,
 
@@ -182,6 +183,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     static defaultProps = {
         type: ChatMessageContent.EmptyChat,
         status: ChatMessageStatus.Received,
+        isReceived: false,
         data: null,
         additionalInfo: { message: null, lastFromChain: true },
 
@@ -243,16 +245,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return this.state.layout;
     }
 
-    getTextAlign(): { textAlign: string } {
-        return this.isReceived() ? { textAlign: 'left' } : { textAlign: 'right' };
-    }
-
     getActionDirection(): TypeOfActionDirection {
         return this.props.additionalInfo?.message?.info?.direction || TypeOfActionDirection.None;
     }
 
     getFontColor(): TextStyleProp {
-        return this.isReceived()
+        return this.isReceived
             ? UIStyle.Color.getColorStyle(UIColor.textSecondary(UIColor.Theme.Light))
             : UIStyle.Color.getColorStyle(UIColor.textSecondary(UIColor.Theme.Dark));
     }
@@ -262,8 +260,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return status || ChatMessageStatus.Received;
     }
 
-    isReceived(): boolean {
-        return this.getStatus() === ChatMessageStatus.Received;
+    get isReceived(): boolean {
+        return this.props.isReceived;
     }
 
     formattedTime(date: ?Date): string {
@@ -272,11 +270,17 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             return UILocalized.message.sending;
         }
 
-        const time = date || new Date(msg?.info.created || 0);
-        return formatDate(time);
+        if (date) {
+            return formatDate(date.valueOf());
+        }
+
+        return formatDate(msg?.info.created || Date.now());
     }
 
-    wrapInMessageContainer(children: React$Element<*>, isSticker: boolean = false): React$Element<*> {
+    wrapInMessageContainer(
+        children: React$Element<any>,
+        isSticker: boolean = false,
+    ): React$Element<any> {
         const { additionalInfo } = this.props;
 
         const bg = isSticker ? { backgroundColor: 'transparent' } : null;
@@ -285,7 +289,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         let rounded = {};
 
         if (additionalInfo?.lastFromChain) {
-            rounded = this.isReceived()
+            rounded = this.isReceived
                 ? styles.leftConner
                 : styles.rightConner;
         }
@@ -346,7 +350,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderTime() {
         const { data } = this.props;
-        const textStyle = this.isReceived() ? styles.timeTextLeft : styles.timeTextRight;
+        const textStyle = this.isReceived ? styles.timeTextLeft : styles.timeTextRight;
         const msgTime = this.formattedTime();
         let testID;
         if (data instanceof String || typeof data === 'string') {
@@ -392,7 +396,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderActionLabel() {
         const { additionalInfo } = this.props;
-        const rounded = this.isReceived()
+        const rounded = this.isReceived
             ? styles.leftConner
             : styles.rightConner;
         return (
@@ -435,7 +439,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             this.wrapInMessageContainer(<UIChatDocumentCell
                 document={data}
                 additionalInfo={additionalInfo}
-                isReceived={this.isReceived()}
+                isReceived={this.isReceived}
                 onOpenPDF={(docData, docName) => {
                     if (onOpenPDF) {
                         onOpenPDF(docData, docName);
@@ -481,7 +485,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderTransactionCell() {
         const {
-            additionalInfo, data, status, onTouchTransaction,
+            additionalInfo, data, status, onTouchTransaction, isReceived,
         } = this.props;
         const onTransactionPress = onTouchTransaction
             ? this.onTransactionPress
@@ -490,6 +494,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             <UIChatTransactionCell
                 message={data}
                 status={status}
+                isReceived={isReceived}
                 additionalInfo={additionalInfo}
                 onPress={onTransactionPress}
             />
@@ -497,23 +502,17 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderLinkActionMessageCell() {
-        const { status, additionalInfo } = this.props;
-        const style = status === ChatMessageStatus.Received
-            ? styles.linkActionMessageContainer
-            : null;
-
+        const { isReceived, additionalInfo } = this.props;
+        const style = isReceived ? null : styles.linkActionMessageContainer;
 
         return (
             <View style={style}>
                 {this.renderTextCell()}
-                {
-                    status === ChatMessageStatus.Received && !additionalInfo?.processed ?
-                        (
-                            <View style={styles.verticalSeparator}>
-                                {this.renderActionCell()}
-                            </View>
-                        ) : null
-                }
+                {!isReceived && !additionalInfo?.processed && (
+                    <View style={styles.verticalSeparator}>
+                        {this.renderActionCell()}
+                    </View>
+                )}
             </View>
         );
     }
@@ -567,7 +566,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderText(text: string) {
-        const urlStyle = this.isReceived() ? styles.urlReceived : styles.urlSent;
+        const urlStyle = this.isReceived ? styles.urlReceived : styles.urlSent;
         let testID;
 
         if (text) {
@@ -593,16 +592,14 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     render() {
-        const {
-            type, status, additionalInfo, data,
-        } = this.props;
+        const { type, additionalInfo, data } = this.props;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
         let testID = '';
 
         let margin = null;
-        let align = status === ChatMessageStatus.Received ? 'flex-start' : 'flex-end';
+        let align = this.isReceived ? 'flex-start' : 'flex-end';
         if (additionalInfo?.lastFromChain) {
             margin = { marginBottom: UIConstant.normalContentOffset() - currentMargin };
         }
