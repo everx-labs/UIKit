@@ -45,7 +45,7 @@ import type {
 type Props = {
     type?: ChatMessageContentType,
     status?: ChatMessageStatusType,
-    isReceived?: boolean,
+    isReceived: boolean,
     data?: any,
     additionalInfo?: ChatAdditionalInfo,
 
