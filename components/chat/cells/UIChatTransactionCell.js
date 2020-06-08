@@ -300,9 +300,6 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 </View>
 
                 <View
-                    testID={status === Aborted
-                        ? `transaction_message_${this.getAmountForTestID()}_aborted`
-                        : `transaction_message_${this.getAmountForTestID()}_time`}
                     style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
                 >
                     {!isAborted && !isSending && (
@@ -313,6 +310,9 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         />
                     )}
                     <UILabel
+                        testID={status === Aborted
+                            ? `transaction_message_${this.getAmountForTestID()}_aborted`
+                            : `transaction_message_${this.getAmountForTestID()}_time`}
                         role={UILabel.Role.TinyRegular}
                         text={info}
                         style={commentColor}
