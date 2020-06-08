@@ -33,7 +33,9 @@ type UploadFileInputProps = {
     containerStyle: ViewStyleProp,
     fileType?: string,
     uploadText: string,
+    editable?: boolean,
     floatingTitleText?: string,
+    floatingTitle: boolean,
     theme?: UIColorThemeNameType,
     onChangeFile: (e: any) => void,
     testID?: string,
@@ -43,7 +45,9 @@ const uploadFileDefaultProps = {
     containerStyle: {},
     fileType: 'document',
     uploadText: '',
+    editable: true,
     floatingTitleText: '',
+    floatingTitle: true,
     theme: UIColor.Theme.Light,
     onChangeFile: (e: any) => {},
 };
@@ -84,8 +88,10 @@ export default class UIUploadFileInput<Props, State> extends UIComponent<Props &
     }
 
     renderFloatingTitle() {
-        const { floatingTitleText, uploadText, theme } = this.props;
-        const text = !this.getFile() ? ' ' : floatingTitleText || uploadText;
+        const {
+            floatingTitleText, uploadText, theme, floatingTitle,
+        } = this.props;
+        const text = !this.getFile() ? (floatingTitle ? floatingTitleText : ' ') : floatingTitleText || uploadText;
         const colorStyle = UIColor.textTertiaryStyle(theme);
 
         return (
@@ -126,7 +132,7 @@ export default class UIUploadFileInput<Props, State> extends UIComponent<Props &
         return (
             <UITextButton
                 title={this.getFile() && this.getFile().name || this.props.uploadText}
-                onPress={() => this.showFilePicker()}
+                onPress={this.props.editable === false ? null : () => this.showFilePicker()}
             />
         );
     }
