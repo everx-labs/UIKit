@@ -15,8 +15,6 @@ import UIStyleWidth, { widthStyles } from './UIStyleWidth';
 import UIStyleColor from './UIStyleColor';
 import UIStyleContainer from './UIStyleContainer';
 
-const profilePhotoSize = 72;
-
 const UIStyle = StyleSheet.create({
     ...commonStyles,
     ...widthStyles,
@@ -48,15 +46,6 @@ const UIStyle = StyleSheet.create({
         width: 32,
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
-    },
-
-    // profile photo
-    profilePhoto: {
-        backgroundColor: UIColor.backgroundSecondary(),
-        width: profilePhotoSize,
-        height: profilePhotoSize,
-        borderRadius: profilePhotoSize / 2.0,
         overflow: 'hidden',
     },
 

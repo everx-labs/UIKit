@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
+import { Animated, StyleSheet, Text, View, Image } from 'react-native';
+
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-
-import { Animated, StyleSheet, Text, View } from 'react-native';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 import UIActionComponent from '../../UIActionComponent';
@@ -20,6 +20,7 @@ type Props = ActionProps & {
     containerStyle: ViewStyleProp,
     progress: boolean,
     transparent: boolean,
+    image: string,
     title: number | string,
     truncTitle: boolean,
     caption: string,
@@ -46,6 +47,12 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
     },
+    avatar: {
+        width: UIConstant.defaultCellHeight(),
+        height: UIConstant.defaultCellHeight(),
+        borderRadius: UIConstant.defaultCellHeight() / 2.0,
+        overflow: 'hidden',
+    },
 });
 
 export default class UIDetailsButton extends UIActionComponent<Props, State> {
@@ -55,6 +62,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         style: {},
         containerStyle: {},
         progress: false,
+        image: '',
         title: '',
         truncTitle: false,
         caption: '',
@@ -153,10 +161,9 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         );
     }
 
-    renderContentCard() {
+    renderTitleCaption() {
         const {
-            title, caption, details, secondDetails,
-            titleComponent, captionComponent, customComponent,
+            title, caption, titleComponent, captionComponent,
         } = this.props;
         const formattedCaption = this.props.truncCaption ? this.getFormattedText(caption) : caption;
         const captionText = caption ? (
@@ -169,52 +176,79 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
             </Text>
         ) : null;
         const formattedTitle = this.props.truncTitle ? this.getFormattedText(title) : title;
+
         return (
-            <React.Fragment>
-                {customComponent}
-                <View style={styles.rowContainer}>
-                    {!!formattedTitle && (
-                        <Text
-                            ellipsizeMode="middle"
-                            numberOfLines={1}
-                            style={[
-                                UIStyle.text.smallMedium(),
-                                UIStyle.common.flex(),
-                                UIStyle.margin.rightDefault(),
-                                this.getTitleColorStyle(),
-                            ]}
-                        >
-                            {formattedTitle}
-                        </Text>
-                    )}
-                    {titleComponent}
-                    {!formattedTitle && !titleComponent && <View style={UIStyle.common.flex()} />}
-                    {captionText}
-                    {captionComponent}
-                </View>
-                {!!(details || secondDetails) && (
-                    <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
-                        <Text style={[
-                            UIStyle.text.secondaryCaptionRegular(),
+            <View style={styles.rowContainer}>
+                {!!formattedTitle && (
+                    <Text
+                        ellipsizeMode="middle"
+                        numberOfLines={1}
+                        style={[
+                            UIStyle.text.smallMedium(),
                             UIStyle.common.flex(),
+                            UIStyle.margin.rightDefault(),
+                            this.getTitleColorStyle(),
                         ]}
-                        >
-                            {details}
-                        </Text>
-                        <Text style={UIStyle.text.secondaryCaptionRegular()}>
-                            {secondDetails}
-                        </Text>
-                    </View>
+                    >
+                        {formattedTitle}
+                    </Text>
                 )}
-            </React.Fragment>
+                {titleComponent}
+                {!formattedTitle && !titleComponent && <View style={UIStyle.common.flex()} />}
+                {captionText}
+                {captionComponent}
+            </View>
+        );
+    }
+
+    renderDetails() {
+        const { secondDetails, details } = this.props;
+        return !!(details || secondDetails) && (
+            <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
+                <Text style={[
+                    UIStyle.text.secondaryCaptionRegular(),
+                    UIStyle.common.flex(),
+                ]}
+                >
+                    {details}
+                </Text>
+                <Text style={UIStyle.text.secondaryCaptionRegular()}>
+                    {secondDetails}
+                </Text>
+            </View>
+        );
+    }
+
+    renderContentCard() {
+        const { customComponent } = this.props;
+        return (
+            <View style={[UIStyle.common.flex(), UIStyle.common.flexColumn()]}>
+                {customComponent}
+                {this.renderTitleCaption()}
+                {this.renderDetails()}
+            </View>
         );
     }
 
     renderCard() {
-        if (this.props.progress) {
+        const { progress, image, narrow } = this.props;
+        if (progress) {
             return this.renderProgressCard();
         }
-        return this.renderContentCard();
+        return (
+            <View style={UIStyle.container.centerLeft()}>
+                {!!image && (
+                    <Image
+                        source={image}
+                        style={[
+                            styles.avatar,
+                            narrow ? UIStyle.margin.rightSmall() : UIStyle.margin.rightDefault(),
+                        ]}
+                    />
+                )}
+                {this.renderContentCard()}
+            </View>
+        );
     }
 
     renderContent() {
