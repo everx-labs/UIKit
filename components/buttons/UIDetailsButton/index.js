@@ -20,6 +20,7 @@ type Props = ActionProps & {
     containerStyle: ViewStyleProp,
     progress: boolean,
     transparent: boolean,
+    index: ?number,
     image: string,
     title: number | string,
     truncTitle: boolean,
@@ -62,6 +63,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         style: {},
         containerStyle: {},
         progress: false,
+        index: null,
         image: '',
         title: '',
         truncTitle: false,
@@ -231,12 +233,24 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     }
 
     renderCard() {
-        const { progress, image, narrow } = this.props;
+        const {
+            progress, image, narrow, index,
+        } = this.props;
         if (progress) {
             return this.renderProgressCard();
         }
         return (
             <View style={UIStyle.container.centerLeft()}>
+                {index !== null && (
+                    <Text
+                        style={[
+                            UIStyle.text.primarySmallMedium(),
+                            narrow ? UIStyle.margin.rightTiny() : UIStyle.margin.rightSmall(),
+                        ]}
+                    >
+                        {index}.
+                    </Text>
+                )}
                 {!!image && (
                     <Image
                         source={image}
