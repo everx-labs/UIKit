@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         bottom: 0,
-        width: '100%',
+        left: 0,
+        right: 0,
         backgroundColor: UIColor.backgroundPrimary(),
         maxWidth: UIConstant.elasticWidthMax(),
     },
@@ -299,10 +300,20 @@ class UIDialogController extends UIController {
         return null;
     }
 
-    onLayoutBottomContainer = (e) => {
-        this.setStateSafely({
-            bottomPanelHeight: e.nativeEvent.layout.height,
-        });
+    onLayoutBottomContainer = e => {
+        const { height } = e.nativeEvent.layout;
+
+        if (!height) {
+            return;
+        }
+
+        const bottomPanelHeight = Math.round(height);
+
+        if (bottomPanelHeight !== this.state.bottomPanelHeight) {
+            this.setStateSafely({
+                bottomPanelHeight,
+            });
+        }
     };
 
     renderContentContainer() {
