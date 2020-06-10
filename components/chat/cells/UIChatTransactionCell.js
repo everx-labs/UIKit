@@ -279,23 +279,10 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                         UIStyle.Common.justifyStart(),
                     ]}
                 >
-                    <UIBalanceView
-                        balance={amountLocalized}
-                        separator={separator}
-                        icon={(
-                            <UILabel
-                                style={UIStyle.margin.leftTiny()}
-                                role={UILabel.Role.SmallRegular}
-                                text={token}
-                            />
-                        )}
-                        smartTruncator={false}
-                        textStyle={[
-                            UIStyle.Text.smallRegular(),
-                            amountColor,
-                        ]}
-                        fractionalTextStyle={amountColor}
-                        cacheKey={`transaction_chat_cell_${trx.id}`}
+                    <UILabel
+                        style={amountColor}
+                        role={UILabel.Role.SmallRegular}
+                        text={`${amountLocalized} ${token}`}
                     />
                 </View>
 
