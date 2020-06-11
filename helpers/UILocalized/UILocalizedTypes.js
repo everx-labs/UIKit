@@ -203,7 +203,7 @@ export type UILocalizedData = {
     Members: string,
     WhomWouldYouLikeToMessage: string,
     AddMembers: string,
-    AddSubsribers: string,
+    AddSubscribers: string,
     AddAdministrator: string,
     GroupName: string,
     Group: string,

@@ -205,7 +205,7 @@ const ru: UILocalizedData = {
     Members: 'Участники',
     WhomWouldYouLikeToMessage: 'Кому бы Вы хотели написать?',
     AddMembers: 'Добавить участников',
-    AddSubsribers: 'Добавить подписчиков',
+    AddSubscribers: 'Добавить подписчиков',
     AddAdministrator: 'Добавить администратора',
     GroupName: 'Название группы',
     Group: 'Группа',
