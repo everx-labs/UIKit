@@ -565,7 +565,7 @@ export default class UIFunction {
         return arg === null || arg === undefined;
     }
 
-    static toFixedOrEmpty(arg: ?number, fractionDigits: number) {
+    static toFixedOrEmpty(arg: ?number, fractionDigits: number): string {
         return this.isNil(arg) ? '' : arg.toFixed(fractionDigits);
     }
 }
