@@ -80,7 +80,7 @@ export default class UIProfilePhoto extends UIComponent<Props, {}> {
         return (
             <View style={[styles.container, style]}>
                 <UIImageView
-                    source={source}
+                    source={source || ''}
                     photoStyle={photoStyle}
                     editable={editable}
                     onUploadPhoto={onUploadPhoto}
