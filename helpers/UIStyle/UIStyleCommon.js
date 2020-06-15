@@ -65,6 +65,14 @@ export const commonStyles = {
         position: 'absolute',
     },
 
+    profilePhoto: {
+        backgroundColor: UIColor.backgroundSecondary(),
+        width: UIConstant.profilePhotoSize(),
+        height: UIConstant.profilePhotoSize(),
+        borderRadius: UIConstant.profilePhotoSize() / 2.0,
+        overflow: 'hidden',
+    },
+
     ...containerStyles,
     ...flexStyles,
 };
@@ -270,5 +278,9 @@ export default class UIStyleCommon {
 
     static dismissStripe() {
         return styles.dismissStripe;
+    }
+
+    static profilePhoto() {
+        return styles.profilePhoto;
     }
 }

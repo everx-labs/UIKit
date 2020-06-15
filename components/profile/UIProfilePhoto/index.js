@@ -1,7 +1,7 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Image } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
@@ -10,6 +10,14 @@ import UIImageView from '../../images/UIImageView';
 import UIComponent from '../../UIComponent';
 
 const cameraImage = require('../../../assets/ico-camera/ico-camera.png');
+
+type Props = {
+    style: ViewStyleProp,
+    editable: boolean,
+    source: ?string,
+    onUploadPhoto: (source: string, showHUD: () => void, hideHUD: () => void, name: string) => void,
+    onDeletePhoto?: (showHUD: () => void, hideHUD: () => void) => void,
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -23,7 +31,15 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIProfilePhoto extends UIComponent {
+export default class UIProfilePhoto extends UIComponent<Props, {}> {
+    static defaultProps: Props = {
+        style: {},
+        editable: false,
+        source: null,
+        onUploadPhoto: () => {},
+        onDeletePhoto: () => {},
+    };
+
     // Render
     renderOverlay() {
         if (!this.props.editable) {
@@ -31,7 +47,11 @@ export default class UIProfilePhoto extends UIComponent {
         }
         return (
             <View
-                style={[UIStyle.absoluteFillObject, UIStyle.profilePhoto, styles.overlay]}
+                style={[
+                    UIStyle.common.absoluteFillObject(),
+                    UIStyle.common.profilePhoto(),
+                    styles.overlay,
+                ]}
                 pointerEvents="none"
             />
         );
@@ -49,18 +69,22 @@ export default class UIProfilePhoto extends UIComponent {
     }
 
     render() {
-        const { absoluteFillObject, profilePhoto } = UIStyle;
-        const photoStyle = this.props.editable
-            ? StyleSheet.flatten([absoluteFillObject, profilePhoto])
-            : profilePhoto;
+        const {
+            editable, style, source, onUploadPhoto, onDeletePhoto,
+        } = this.props;
+        const photoStyle = editable
+            ? StyleSheet.flatten([
+                UIStyle.common.absoluteFillObject(), UIStyle.common.profilePhoto(),
+            ])
+            : UIStyle.common.profilePhoto();
         return (
-            <View style={[styles.container, this.props.style]}>
+            <View style={[styles.container, style]}>
                 <UIImageView
-                    source={this.props.source}
+                    source={source}
                     photoStyle={photoStyle}
-                    editable={this.props.editable}
-                    onUploadPhoto={this.props.onUploadPhoto}
-                    onDeletePhoto={this.props.onDeletePhoto}
+                    editable={editable}
+                    onUploadPhoto={onUploadPhoto}
+                    onDeletePhoto={onDeletePhoto}
                 />
                 {this.renderOverlay()}
                 {this.renderCameraIcon()}
@@ -68,19 +92,3 @@ export default class UIProfilePhoto extends UIComponent {
         );
     }
 }
-
-UIProfilePhoto.defaultProps = {
-    style: {},
-    editable: false,
-    source: null,
-    onUploadPhoto: () => {},
-    onDeletePhoto: () => {},
-};
-
-UIProfilePhoto.propTypes = {
-    style: StylePropType,
-    editable: PropTypes.bool,
-    source: PropTypes.string,
-    onUploadPhoto: PropTypes.func,
-    onDeletePhoto: PropTypes.func,
-};

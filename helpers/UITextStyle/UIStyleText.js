@@ -48,6 +48,9 @@ export default class UIStyleText {
     static subtitleBold() {
         return UITextStyle.subtitleBold;
     }
+    static subtitleRegular() {
+        return UITextStyle.subtitleRegular;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static bodyRegular() {
         return UITextStyle.bodyRegular;
