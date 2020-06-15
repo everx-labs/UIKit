@@ -73,9 +73,9 @@ export default class UIProfilePhoto extends UIComponent<Props, {}> {
             editable, style, source, onUploadPhoto, onDeletePhoto,
         } = this.props;
         const photoStyle = editable
-            ? StyleSheet.flatten([
+            ? [
                 UIStyle.common.absoluteFillObject(), UIStyle.common.profilePhoto(),
-            ])
+            ]
             : UIStyle.common.profilePhoto();
         return (
             <View style={[styles.container, style]}>
