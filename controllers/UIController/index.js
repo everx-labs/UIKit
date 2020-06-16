@@ -645,5 +645,6 @@ export default class UIController<Props, State>
     path: string;
     params: Params;
 
+    // $FlowExpectedError: flow don't see a type for View for some reason
     containerRef = React.createRef<View>();
 }

@@ -142,6 +142,7 @@ export default class UILayoutManager extends UIComponent<Props, State> {
                 toValue: 1,
                 duration: showDuration,
                 delay,
+                useNativeDriver: true,
             }).start();
         }
     }
@@ -164,6 +165,7 @@ export default class UILayoutManager extends UIComponent<Props, State> {
         Animated.timing(this.state.opacity, {
             toValue: 0,
             duration: animation.hideDuration,
+            useNativeDriver: true,
         }).start(callback);
     }
 

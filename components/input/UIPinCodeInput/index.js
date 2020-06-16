@@ -264,9 +264,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     }
 
     shakeIndicator() {
+        // TODO: think how to use `useNativeDriver` here!
         Animated.timing(this.shakeValue, {
             toValue: 1,
             duration: 250,
+            useNativeDriver: false,
         }).start(() => this.resetShake());
     }
 

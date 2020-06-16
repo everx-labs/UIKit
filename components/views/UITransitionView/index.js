@@ -61,9 +61,11 @@ export default class UITransitionView extends UIComponent<Props, State> {
         Animated.parallel([
             Animated.spring(this.getCurrentItemOpacity(), { // looks better than `timing`
                 toValue: 1.0,
+                useNativeDriver: true,
             }),
             Animated.spring(this.getPrevItemOpacity(), {
                 toValue: 0.0,
+                useNativeDriver: true,
             }),
         ]).start();
     };

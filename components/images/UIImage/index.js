@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Image } from 'react-native';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -8,7 +9,7 @@ import UIColor from '../../../helpers/UIColor';
 
 type Props = {
     color?: string,
-    source: string,
+    source: ImageSource,
     style?: ViewStyleProp,
 };
 

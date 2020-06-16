@@ -1,7 +1,11 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, Image, View, Platform } from 'react-native';
-import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {
+    ViewStyleProp,
+    TextStyleProp,
+} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIActionComponent from '../../UIActionComponent';
@@ -37,8 +41,8 @@ type Props = ActionProps & {
     style?: ViewStyleProp,
     details: string,
     detailsStyle?: TextStyleProp,
-    icon: ?string,
-    backIcon: ?string,
+    icon: ?ImageSource,
+    backIcon: ?ImageSource,
     iconColor?: string,
     iconHoverColor?: string,
     textStyle?: TextStyleProp,
@@ -115,7 +119,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
     }
 
     // Render
-    renderIcon(icon: string, isBack: boolean) {
+    renderIcon(icon: ImageSource, isBack: boolean) {
         if (!icon) {
             return null;
         }

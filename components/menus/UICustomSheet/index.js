@@ -201,10 +201,12 @@ export default class UICustomSheet extends UIController<Props, State> {
             duration: UIConstant.animationDuration(),
             easing: LayoutAnimation.Types.keyboard,
         };
+        // TODO: think how to use `useNativeDriver` here!
         Animated.timing(this.marginBottom, {
             toValue: contentInset.bottom + UIConstant.contentOffset(),
             duration,
             easing: UIController.getEasingFunction(easing),
+            useNativeDriver: false,
         }).start();
     }
 
@@ -309,26 +311,32 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     slideFromBottom() {
+        // TODO: think how to use `useNativeDriver` here
         Animated.spring(this.marginBottom, {
             toValue: UIConstant.contentOffset(),
+            useNativeDriver: false,
         }).start(this.onShow);
     }
 
     slideToBottom(callback: () => void) {
         const offset = this.getHeight() + this.getSafeAreaInsets().bottom;
+        // TODO: think how to use `useNativeDriver` here
         Animated.timing(this.marginBottom, {
             toValue: -offset,
             duration: UIConstant.animationDuration(),
+            useNativeDriver: false,
         }).start(callback);
     }
 
     // same in UIModalController
     returnToTop() {
+        // TODO: think how to use `useNativeDriver` here
         Animated.spring(this.dy, {
             toValue: 0,
             velocity: 0,
             tension: 65,
             friction: 10,
+            useNativeDriver: false,
         }).start();
     }
 
@@ -362,7 +370,10 @@ export default class UICustomSheet extends UIController<Props, State> {
                         height={headerHeight}
                         swipeToDismiss
                         dismissStripeStyle={styles.smallDismissStripe}
-                        onMove={Animated.event([null, { dy: this.dy }])}
+                        // TODO: think how to use `useNativeDriver` here!
+                        onMove={Animated.event([null, { dy: this.dy }], {
+                            useNativeDriver: false,
+                        })}
                         onRelease={this.onReleaseSwipe}
                         onCancel={this.onHide}
                     />

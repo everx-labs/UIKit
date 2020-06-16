@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 // @flow
-import React from 'react';
+import * as React from 'react';
 import { Platform, TextInput, Text, View, StyleSheet, Image } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -362,7 +362,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     $Shape<Props & DetailsProps>,
     $Shape<State & DetailsState>,
 > {
-    textInput: ?TextInput;
+    textInput: ?React.ElementRef<typeof TextInput>;
     auxTextInput: ?any;
 
     static defaultProps: Props & DetailsProps;
@@ -494,7 +494,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     // the reference is always 'null', but, on the parent control (the Popover), there is
     // a property called '_elements', there you can access to the refenrence, so, we can
     // pass it here.
-    setTextInputRef(inputRef: TextInput) {
+    setTextInputRef(inputRef: ?React.ElementRef<typeof TextInput>) {
         this.textInput = inputRef;
     }
 

@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import UIComponent from '../../UIComponent';
 
@@ -10,14 +11,13 @@ import icoActive from '../../../assets/ico-toggle-active/ico-toggle-active.png';
 import icoOn from '../../../assets/ico-toggle-on/ico-toggle-on.png';
 import icoOff from '../../../assets/ico-toggle-off/ico-toggle-off.png';
 
-
 type Props = {
-    iconActive: ?string,
-    iconInactive: ?string,
+    iconActive: ?ImageSource,
+    iconInactive: ?ImageSource,
     containerStyle: ViewStyleProp,
     active: boolean,
     colored: boolean,
-    onPress: (boolean) => void,
+    onPress: boolean => void,
     testID: ?string,
 };
 

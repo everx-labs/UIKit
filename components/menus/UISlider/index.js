@@ -73,13 +73,10 @@ export default class UISlider extends UIComponent<Props, State> {
             // Handling responder events
             onPanResponderMove: (evt, gestureState) => {
                 if (!UIDevice.isDesktopWeb() || this.isMouseDown()) {
-                    return Animated.event(
-                        [null, { dx: this.state.dx }],
-                        {
-                            useNativeDriver: true,
-                            listener: this.onMove,
-                        },
-                    )(evt, gestureState);
+                    return Animated.event([null, { dx: this.state.dx }], {
+                        useNativeDriver: true,
+                        listener: this.onMove,
+                    })(evt, gestureState);
                 }
                 return true;
             },
@@ -97,13 +94,17 @@ export default class UISlider extends UIComponent<Props, State> {
         const deltaX = (newActiveIndex - activeIndex) * itemWidth;
         this.setMarginLeft(-newActiveIndex * itemWidth);
         Animated.sequence([
+            // TODO: think how to use `useNativeDriver` here
             Animated.timing(this.state.dx, {
                 toValue: deltaX,
                 duration: 0,
+                useNativeDriver: false,
             }),
+            // TODO: think how to use `useNativeDriver` here
             Animated.timing(this.state.dx, {
                 toValue: 0,
                 duration: UIConstant.animationDuration(),
+                useNativeDriver: false,
             }),
         ]).start();
     };
@@ -119,13 +120,17 @@ export default class UISlider extends UIComponent<Props, State> {
         this.setMarginLeft(newDx);
         this.setActiveIndex(newIndex);
         Animated.sequence([
+            // TODO: think how to use `useNativeDriver` here
             Animated.timing(this.state.dx, {
                 toValue: currDx - newDx,
                 duration: 0,
+                useNativeDriver: false,
             }),
+            // TODO: think how to use `useNativeDriver` here
             Animated.timing(this.state.dx, {
                 toValue: 0,
                 duration: UIConstant.animationDuration() / 2,
+                useNativeDriver: false,
             }),
         ]).start();
     };

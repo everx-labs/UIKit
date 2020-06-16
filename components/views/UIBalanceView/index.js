@@ -212,10 +212,12 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
             const animations = [];
             for (let i = 0; i < len; i += 1) {
+                // TODO: see if we can use `useNativeDriver` here!
                 const anim = Animated.timing(this.getMarginTop(i), {
                     toValue: 0,
                     duration: UIConstant.animationDuration(),
                     delay: i * (UIConstant.animationDuration() / 5),
+                    useNativeDriver: false,
                 });
                 animations.push(anim);
             }
