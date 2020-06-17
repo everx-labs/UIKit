@@ -1,7 +1,11 @@
 // @flow
 import React from 'react';
 import { TouchableOpacity, Image, Text, View } from 'react-native';
-import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {
+    TextStyleProp,
+    ViewStyleProp,
+} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
@@ -25,12 +29,12 @@ type Props = {
     Icon to show content
     @default UIKit/assets/ico-unfold/ico-show.png
     */
-    iconShow: string | number,
+    iconShow: ImageSource,
     /**
     Icon to hide content
     @default UIKit/assets/ico-unfold/ico-hide.png
     */
-    iconHide: string | number,
+    iconHide: ImageSource,
     /**
     Position of fold/unfold icon to text, one of UIUnfold.Position.Right, UIUnfold.Position.Left
     @default UIUnfold.Position.Right

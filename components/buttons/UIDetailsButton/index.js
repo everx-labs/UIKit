@@ -135,13 +135,13 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         Animated.timing(this.state.spinValue, {
             toValue: 1,
             duration: 2000,
-        })
-            .start(() => {
-                if (this.mounted) {
-                    this.setSpinValue(new Animated.Value(0));
-                    this.animateRotation();
-                }
-            });
+            useNativeDriver: true,
+        }).start(() => {
+            if (this.mounted) {
+                this.setSpinValue(new Animated.Value(0));
+                this.animateRotation();
+            }
+        });
     }
 
     // Render

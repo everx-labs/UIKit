@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import StylePropType from 'react-style-proptype';
 
 import { TextInput, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
@@ -65,10 +65,11 @@ type Props = UITextInputProps & TextInputTransitProps;
 type State = {};
 
 class UITextInput extends UIComponent<Props, State> {
-    textInput: ?TextInput;
+    textInput: React.Ref<typeof TextInput>;
 
     // Getters
     isFocused() {
+        // $FlowFixMe: somehow TextInput is any
         return this.textInput && this.textInput.isFocused();
     }
 
@@ -91,12 +92,14 @@ class UITextInput extends UIComponent<Props, State> {
     // Actions
     focus() {
         if (this.textInput) {
+            // $FlowFixMe: somehow TextInput is any
             this.textInput.focus();
         }
     }
 
     blur() {
         if (this.textInput) {
+            // $FlowFixMe: somehow TextInput is any
             this.textInput.blur();
         }
     }

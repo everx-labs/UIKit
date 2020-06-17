@@ -382,15 +382,19 @@ export default class UIModalController<Props, State> extends UIController<
         }
 
         if (animation) {
+            // TODO: think how to use `useNativeDriver` here
             Animated.timing(this.marginBottom, {
                 toValue: bottomInset,
                 duration: animation.duration,
                 easing: UIController.getEasingFunction(animation.easing),
+                useNativeDriver: false,
             }).start();
         } else {
+            // TODO: think how to use `useNativeDriver` here
             Animated.spring(this.marginBottom, {
                 toValue: bottomInset,
                 duration: UIConstant.animationDuration(),
+                useNativeDriver: false,
             }).start();
         }
     }

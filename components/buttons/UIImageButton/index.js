@@ -27,7 +27,7 @@ const assets = {
 
 type Props = {
     image: ButtonImage,
-    customImage?: ImageSource,
+    customImage: ?ImageSource,
     onPress: () => void,
     buttonStyle?: ViewStyleProp,
 };
@@ -61,7 +61,7 @@ export default class UIImageButton extends UIComponent<Props, State> {
         return this.props.buttonStyle;
     }
 
-    getImage(): ImageSource {
+    getImage(): ?ImageSource {
         const { image, customImage } = this.props;
         if (image === UIImageButton.Images.custom) {
             return customImage;

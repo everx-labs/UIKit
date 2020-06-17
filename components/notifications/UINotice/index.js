@@ -310,22 +310,27 @@ export default class UINotice
 
     animateOpening() {
         const containerWidth = this.getContainerWidth();
-        this.setMarginLeft(new Animated.Value(-containerWidth - contentOffset), () => {
-            Animated.spring(this.state.marginLeft, {
-                toValue: cardShadowWidth,
-                duration: UIConstant.animationDuration(),
-            })
-                .start();
-        });
+        this.setMarginLeft(
+            new Animated.Value(-containerWidth - contentOffset),
+            () => {
+                // TODO: need to think how to use `useNativeDriver`
+                Animated.spring(this.state.marginLeft, {
+                    toValue: cardShadowWidth,
+                    duration: UIConstant.animationDuration(),
+                    useNativeDriver: false,
+                }).start();
+            },
+        );
     }
 
     animateClosing() {
         const containerWidth = this.getContainerWidth();
+        // TODO: need to think how use `useNativeDriver`
         Animated.timing(this.state.marginLeft, {
             toValue: -containerWidth - contentOffset,
             duration: UIConstant.animationDuration(),
-        })
-            .start(() => hideMessage());
+            useNativeDriver: false,
+        }).start(() => hideMessage());
     }
 
     // Render

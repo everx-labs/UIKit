@@ -51,12 +51,14 @@ export default class UIScaleButton extends UIActionComponent<Props, State> {
     scaleIn() {
         Animated.spring(this.state.scale, {
             toValue: this.props.scaleInFactor,
+            useNativeDriver: true,
         }).start();
     }
 
     scaleOut() {
         Animated.spring(this.state.scale, {
             toValue: 1.0,
+            useNativeDriver: true,
         }).start();
     }
 
