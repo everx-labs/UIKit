@@ -57,8 +57,10 @@ export default class UIBadge extends UIComponent {
 
     // render
     render() {
-        const { badge, style, textStyle } = this.props;
-        if (badge === 0) return null;
+        const {
+            badge, style, textStyle, allowZero,
+        } = this.props;
+        if (!allowZero && badge === 0) return null;
 
         const { container, badgeText } = styles;
         return (
@@ -76,6 +78,7 @@ UIBadge.defaultProps = {
     textStyle: {},
     badge: 0,
     inverted: false,
+    allowZero: false,
 };
 
 UIBadge.propTypes = {
@@ -83,4 +86,5 @@ UIBadge.propTypes = {
     textStyle: StylePropType,
     badge: PropTypes.number,
     inverted: PropTypes.bool,
+    allowZero: PropTypes.bool,
 };
