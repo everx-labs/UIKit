@@ -281,29 +281,36 @@ export default class UIController<Props, State>
         // and compare with previous coordinate, that guarantee
         // that we get correct Y point, without knowledge of current animation time.
         const measureAndApply = prevY => {
-            requestAnimationFrame(
+            setTimeout(
                 this.isKeyboardShown.maybeCall(() => {
                     if (this.containerRef.current != null) {
                         this.containerRef.current.measureInWindow(
-                            this.isKeyboardShown.maybeCall((x, y, width, height) => {
-                                if (y !== prevY) {
-                                    measureAndApply(y);
-                                    return;
-                                }
-                                const pageY = Platform.select({
-                                    ios: y,
-                                    android: y + StatusBar.currentHeight,
-                                });
-                                const containerBottomY = pageY + height;
-                                const keyboardOverlapHeight = Math.max(
-                                    containerBottomY - keyboardFrame.screenY,
-                                    0,
-                                );
-                                this.setBottomInset(keyboardOverlapHeight, animation);
-                            }),
+                            this.isKeyboardShown.maybeCall(
+                                (x, y, width, height) => {
+                                    if (y !== prevY) {
+                                        measureAndApply(y);
+                                        return;
+                                    }
+                                    const pageY = Platform.select({
+                                        ios: y,
+                                        android: y + StatusBar.currentHeight,
+                                    });
+                                    const containerBottomY = pageY + height;
+                                    const keyboardOverlapHeight = Math.max(
+                                        containerBottomY -
+                                            keyboardFrame.screenY,
+                                        0,
+                                    );
+                                    this.setBottomInset(
+                                        keyboardOverlapHeight,
+                                        animation,
+                                    );
+                                },
+                            ),
                         );
                     }
                 }),
+                20,
             );
         };
         measureAndApply();
