@@ -65,7 +65,7 @@ type Props = UITextInputProps & TextInputTransitProps;
 type State = {};
 
 class UITextInput extends UIComponent<Props, State> {
-    textInput: React.Ref<typeof TextInput>;
+    textInput: ?React.ElementRef<typeof TextInput>;
 
     // Getters
     isFocused() {
