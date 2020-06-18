@@ -6,11 +6,36 @@ import 'moment/locale/ru';
 
 import en from './en';
 import ru from './ru';
+import UIConstant from '../UIConstant';
+import UIFunction from '../UIFunction';
+import type { StringLocaleInfo, NumberPartsOptions, NumberParts } from '../UIFunction';
 import type { UILocalizedData } from './UILocalizedTypes';
 
 type LocalizedLangContent = { [string]: string };
 
 class UILocalized extends LocalizedStrings {
+    // eslint-disable-next-line class-methods-use-this
+    amountToLocale(
+        number: string | number,
+        localeInfo: StringLocaleInfo,
+        options: NumberPartsOptions = {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: UIConstant.maxDecimalDigits(),
+        },
+    ): string {
+        let parts: ?NumberParts;
+        try {
+            const numberString = number instanceof String || typeof number === 'string'
+                ? number
+                : UIFunction.getNumberString(number);
+            parts = UIFunction.getNumberParts(numberString, localeInfo, options);
+        } catch (error) {
+            // failed to get number parts with error
+            parts = null;
+        }
+        return parts?.valueString || `${number}`;
+    }
+
     setLanguages(languages: string[]) {
         const props = {};
         languages.forEach((language) => {
@@ -73,11 +98,9 @@ class UILocalized extends LocalizedStrings {
         this.setLanguage(preferedLanguage);
     }
 
-    checkConsistency(
-        localizedStrings: {
+    checkConsistency(localizedStrings: {
             [string]: LocalizedLangContent,
-        } = this.getContent(),
-    ) {
+        } = this.getContent()) {
         const values = {};
         const langs = Object.keys(localizedStrings);
         langs.forEach((lang) => {
