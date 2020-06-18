@@ -3,9 +3,11 @@ import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumb
 import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
 import isEmail from 'validator/lib/isEmail';
+import BigNumber from 'bignumber.js';
+
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIConstant from '../../helpers/UIConstant';
-import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');
@@ -22,6 +24,40 @@ type BankCardNumberArgs = {
     raw?: boolean,
     presumed?: boolean,
 }
+
+export type NumberParts = {
+    value: number,
+    integer: string,
+    decimal: string,
+    valueString: string,
+};
+
+export type NumberPartsOptions = {
+    minimumFractionDigits: number,
+    maximumFractionDigits: number,
+}
+
+type NumberFormatInfo = {
+    grouping: string,
+    thousands: string,
+    decimal: string,
+};
+
+// This stores the order of the date and the separator character
+// for a locale configuration. i.e.  for the date: 07.06.1986
+// the position for each part is: day = 0, month = 1, year = 2
+// and the separator is: '.'
+type DateFormatInfo = {
+    separator: string,
+    localePattern: string,
+    components: string[],
+};
+
+export type StringLocaleInfo = {
+    name: string,
+    numbers: NumberFormatInfo,
+    dates: DateFormatInfo,
+};
 
 export default class UIFunction {
     // 'No operation' closure. Useful in case when callback/handler must be specified but
@@ -53,7 +89,6 @@ export default class UIFunction {
             });
         };
     }
-
 
     // Process money convertion
     static numberFromMoneyString(string, currency = {
@@ -149,7 +184,96 @@ export default class UIFunction {
 
     // Allows to print small numbers with "-e" suffix
     static getNumberString(number: number, digits: number = 10): string {
+        if (Math.abs(number) > 1) { // Apply BigNumber conversion only for non-small numbers!
+            try {
+                return new BigNumber(number).toString();
+            } catch (error) {
+                // Failed to convert the number to string with BigNumber instance
+            }
+        }
         return number.toFixed(digits).replace(/\.?0+$/, '');
+    }
+
+    //
+    static normalizedAmount(s: ?string, localeInfo: StringLocaleInfo): ?string {
+        if (s === undefined || s === null) {
+            return null;
+        }
+        let normalized = UIFunction.replaceAll(`${s}`, ' ', '');
+        const { grouping, thousands, decimal } = localeInfo.numbers;
+        normalized = UIFunction.replaceAll(normalized, grouping, '');
+        normalized = UIFunction.replaceAll(normalized, thousands, '');
+        normalized = normalized.replace(decimal, '.');
+        return normalized;
+    }
+
+    static replaceAll(s: string, search: string, replace: string): string {
+        if (search === '') {
+            return s;
+        }
+        return s.split(search).join(replace);
+    }
+
+    //
+    static getNumberParts(
+        value: string,
+        localeInfo: StringLocaleInfo,
+        options: NumberPartsOptions = {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 9,
+        },
+    ): ?NumberParts {
+        // Normalize passed value
+        const normalizedValue = UIFunction.normalizedAmount(value, localeInfo);
+        if (normalizedValue === undefined || normalizedValue === null
+            || Number.isNaN(Number(normalizedValue))) {
+            // The string can't be parsed as a number
+            return null;
+        }
+        // If the string contains more than one decimal separator return null.
+        const defaultSeparator = '.';
+        const splitParts = normalizedValue.split(defaultSeparator);
+        // Two is the max number of parts
+        if (splitParts.length > 2) {
+            // The string can't be parsed as a number with more than one separator
+            return null;
+        }
+        // Calculate and combine the result values into a single TONNumberParts object
+        const result = {
+            value: 0,
+            integer: '0',
+            decimal: '',
+            valueString: '0',
+        };
+        // Fix value by rounding it from above
+        const fixedValue = (splitParts[1]?.length || 0) > options.maximumFractionDigits
+            ? UIFunction.toFixedDown(normalizedValue, options.maximumFractionDigits)
+            : normalizedValue;
+        // Remove unwanted leading zeros
+        const trimmedValue = fixedValue.replace(/^0+/, '');
+        const plainValue = !trimmedValue.length || trimmedValue.startsWith(defaultSeparator)
+            ? `0${trimmedValue}`
+            : trimmedValue;
+        // Set resulted value
+        result.value = Number(plainValue);
+        // Find value components
+        const components = plainValue.split(defaultSeparator);
+        result.integer = components[0] || '0';
+        result.decimal = components[1] || '';
+        const trailingZerosToAdd = options.minimumFractionDigits - result.decimal.length;
+        if (trailingZerosToAdd > 0) {
+            result.decimal = `${result.decimal}${'0'.repeat(trailingZerosToAdd)}`;
+        }
+        // Localize value string
+        const integerString
+                = result.integer.replace(/\B(?=(\d{3})+(?!\d))/g, localeInfo.numbers.thousands);
+        const separatorString = plainValue.indexOf(defaultSeparator) >= 0 || trailingZerosToAdd > 0
+            ? localeInfo.numbers.decimal
+            : '';
+        const decimalString = result.decimal || '';
+        result.valueString = `${integerString}${separatorString}${decimalString}`;
+        // Return result
+        return result;
     }
 
     static numericText(text) {

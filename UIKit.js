@@ -113,6 +113,7 @@ import UITransactionView from './components/views/UITransactionView';
 import UITransitionView from './components/views/UITransitionView';
 import UIUploadFileInput from './components/input/UIUploadFileInput';
 import UIUserAgent from './helpers/UIUserAgent';
+import UITransferInput from './components/input/UITransferInput';
 
 // Types
 import type { UIAccountData } from './components/UIAccountPicker/types/UIAccountData';
@@ -141,6 +142,7 @@ import type {
 import type { MenuItemType } from './components/menus/UIActionSheet/MenuItem';
 import type { UIFeedbackSubmitFunc } from './components/products/UIFeedback';
 import type { ContentOffset } from './controllers/UIScreen';
+import type { NumberParts, StringLocaleInfo } from './helpers/UIFunction';
 
 // deprecated
 const UIMenuView = UIPopoverMenu;
@@ -261,6 +263,7 @@ export {
     UITokenCell,
     UITooltip,
     UITransactionView,
+    UITransferInput,
     UITransitionView,
     UIUploadFileInput,
     UIUserAgent,
@@ -272,6 +275,8 @@ export type {
     NavigationProps,
     ActionProps,
     MenuItemType,
+    NumberParts,
+    StringLocaleInfo,
     PointerEvents,
     PositionObject,
     ReactNavigation,

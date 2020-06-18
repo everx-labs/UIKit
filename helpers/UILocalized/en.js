@@ -535,6 +535,8 @@ const en: UILocalizedData = {
         aborted: 'Aborted at {0}',
         sending: 'Pending...',
     },
+    fee: 'Fees',
+    feeAmount: '≈ {0}',
 
     message: {
         sending: 'Pending...',

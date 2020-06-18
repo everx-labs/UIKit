@@ -521,6 +521,8 @@ export type UILocalizedData = {
     message: {
         sending: string
     },
+    fee: string,
+    feeAmount: string,
 
     ConfirmIdentity: string,
     SMSNotice: string,
