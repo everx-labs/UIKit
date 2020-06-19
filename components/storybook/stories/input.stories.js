@@ -161,7 +161,7 @@ storiesOf(Constants.CategoryInput, module)
         <InputTester>
             <UIPinCodeInput
                 pinTitle="pinTitle"
-                pinCodeLenght={4}
+                pinCodeLength={4}
                 pinToConfirm="1234"
                 pinDescription="pinDescription"
                 pinCodeEnter={(pin) => { }}
