@@ -3,7 +3,7 @@ import React from 'react';
 import {
     StyleSheet, View, Text,
     Image, TouchableOpacity, Dimensions,
-    TouchableWithoutFeedback, Animated,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
 
