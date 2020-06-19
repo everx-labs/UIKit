@@ -73,7 +73,7 @@ export default class UIToastMessage {
 
     static Duration = {
         Long: UIConstant.toastDurationLong(),
-        Short: UIConstant.toastDurationLong(),
+        Short: UIConstant.toastDurationShort(),
     }
 
     static showMessage(args: string | ToastObject, duration?: number) {
