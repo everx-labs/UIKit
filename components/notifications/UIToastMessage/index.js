@@ -1,6 +1,10 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import {
+    StyleSheet, View, Text,
+    Image, TouchableOpacity, Dimensions,
+    TouchableWithoutFeedback, Animated,
+} from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
 
 import UIConstant from '../../../helpers/UIConstant';
@@ -61,6 +65,11 @@ export default class UIToastMessage {
         Left: 'flex-start',
     }
 
+    static Duration = {
+        Long: UIConstant.toastDurationLong(),
+        Short: UIConstant.toastDurationLong(),
+    }
+
     static showMessage(args: string | ToastObject, duration?: number) {
         if (typeof args === 'string') {
             this.prepareAndShowMessage({ message: args, duration });
@@ -78,7 +87,8 @@ export default class UIToastMessage {
     // Actions
     static prepareAndShowMessage(args: ToastObject) {
         const {
-            message, type, placement, autoHide = true, action, duration,
+            message, type, placement, 
+            autoHide = true, action, duration = this.Duration.Long,
         } = args;
         this.message = message || '';
         this.type = type || this.Type.Default;
@@ -88,7 +98,7 @@ export default class UIToastMessage {
         const messageObject: MessageObject = {
             message: '', // unused but required param
             animated: true,
-            duration: duration || 5000,
+            duration,
             autoHide,
         };
         UINotice.showToastMessage(messageObject, messageComponent);
@@ -121,17 +131,19 @@ export default class UIToastMessage {
     static renderMessageComponent() {
         const color = this.type === this.Type.Alert ? UIColor.error() : UIColor.black();
         return (
-            <View style={[styles.containerStyle, { alignItems: this.placement }]}>
-                <View style={[styles.toastStyle, { backgroundColor: color }]}>
-                    <Text
-                        testID={`message_${this.type}`}
-                        style={styles.titleStyle}
-                    >
-                        {this.message}
-                    </Text>
-                    {this.renderCloseButton()}
+            <TouchableWithoutFeedback onPress={() => hideMessage()} >
+                <View style={[styles.containerStyle, { alignItems: this.placement }]}>
+                    <View style={[styles.toastStyle, { backgroundColor: color }]}>
+                        <Text
+                            testID={`message_${this.type}`}
+                            style={styles.titleStyle}
+                        >
+                            {this.message}
+                        </Text>
+                        {this.renderCloseButton()}
+                    </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         );
-    }
+    }   
 }
