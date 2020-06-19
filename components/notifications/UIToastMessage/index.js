@@ -89,7 +89,7 @@ export default class UIToastMessage {
     static type: string;
     static placement: Placement;
     static action: NoticeAction;
-    static touchX = new Animated.Value(0);
+    static touchY = new Animated.Value(0);
     static shouldClose = false;
     static swiping = false;
 
@@ -110,7 +110,7 @@ export default class UIToastMessage {
             duration,
             autoHide,
         };
-        this.touchX.setValue(0);
+        this.touchY.setValue(0);
         UINotice.showToastMessage(messageObject, messageComponent);
     }
 
@@ -138,21 +138,30 @@ export default class UIToastMessage {
         return null;
     }
 
-    static _onPanGestureEvent = ({ nativeEvent: { translationX } }: RNGHEvent<{ translationX: number }>) => {
-        this.swiping = true;
-        this.touchX.setValue(translationX);
-        this.shouldClose = Math.abs(translationX) > 100;
-        Animated.event([{nativeEvent: {x: this.touchX}}], { useNativeDriver: true });
+    static _onPanGestureEvent = ({ nativeEvent: { translationY } }: RNGHEvent<{ translationY: number }>) => {
+        // Only swipes down:
+        if (translationY > 0){
+            this.swiping = true;
+            this.touchY.setValue(translationY);
+            this.shouldClose = Math.abs(translationY) > UIConstant.tinyContentOffset();
+            Animated.event([{nativeEvent: {y: this.touchY}}], { useNativeDriver: true });
+        }
     };
 
     static _onPanHandlerStateChange = ({
-        nativeEvent: { state, translationX },
-    }: RNGHEvent<{ state: RNGHState, translationX: number }>) => {
+        nativeEvent: { state, translationY },
+    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
         if (this.shouldClose) {
             hideMessage();
-            setTimeout(() => this.touchX.setValue(0), UIConstant.animationDuration());
+            // Hiding the toast message includes a "fading" animation, after hiding we need to
+            // reset the component position, in order to avoid restoring the position while the
+            // fading animation is still "happening", we set a timeout to wait for the animation
+            // to complete, and then restore the position once is not visible. 
+            setTimeout(() => this.touchY.setValue(0), UIConstant.animationDuration());
         } else {
-            this.touchX.setValue(0)
+            // If the toast wasn't dragged enough distance to close, we want to reset its initial
+            // position immediately.
+            this.touchY.setValue(0)
         }
         this.shouldClose = false;
     };
@@ -161,14 +170,14 @@ export default class UIToastMessage {
         const color = this.type === this.Type.Alert ? UIColor.error() : UIColor.black();
         return (
             <PanGestureHandler onGestureEvent={this._onPanGestureEvent} onHandlerStateChange={this._onPanHandlerStateChange} >
-                <Animated.View style={[styles.containerStyle, {transform: [{translateX: Animated.add(this.touchX, new Animated.Value(0))}]}]}>
-                    <TouchableWithoutFeedback onPress={() => {
-                            if (!this.swiping) {
-                                hideMessage()
-                            }
-                            this.swiping = false;
-                        } 
-                    }>
+                <TouchableWithoutFeedback onPress={() => {
+                        if (!this.swiping) {
+                            hideMessage()
+                        }
+                        this.swiping = false;
+                    } 
+                }>
+                    <Animated.View style={[styles.containerStyle, {transform: [{translateY: Animated.add(this.touchY, new Animated.Value(0))}]}]}>
                         <View style={[styles.toastStyle, { backgroundColor: color }]}>
                             <Text
                                 testID={`message_${this.type}`}
@@ -178,8 +187,8 @@ export default class UIToastMessage {
                             </Text>
                             {this.renderCloseButton()}
                         </View>
-                    </TouchableWithoutFeedback>
-                </Animated.View>
+                    </Animated.View>
+                </TouchableWithoutFeedback>
             </PanGestureHandler>
         );
     }   
