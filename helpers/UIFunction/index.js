@@ -692,4 +692,8 @@ export default class UIFunction {
     static toFixedOrEmpty(arg: ?number, fractionDigits: number): string {
         return this.isNil(arg) ? '' : arg.toFixed(fractionDigits);
     }
+
+    static remove0xIfNeeded(str: string = ''): string {
+        return str.slice(0, 2) === '0x' ? str.slice(2) : str;
+    }
 }
