@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform, Text, TextInput } from 'react-native';
 import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
@@ -691,6 +691,18 @@ export default class UIFunction {
 
     static toFixedOrEmpty(arg: ?number, fractionDigits: number): string {
         return this.isNil(arg) ? '' : arg.toFixed(fractionDigits);
+    }
+
+    /**
+     * Disable font scaling by default for Text and TextInput components
+     */
+    static disableScaling() {
+        // $FlowFixMe
+        Text.defaultProps = Text.defaultProps || {};
+        Text.defaultProps.allowFontScaling = false;
+        // $FlowFixMe
+        TextInput.defaultProps = TextInput.defaultProps || {};
+        TextInput.defaultProps.allowFontScaling = false
     }
 
     static remove0xIfNeeded(str: string = ''): string {
