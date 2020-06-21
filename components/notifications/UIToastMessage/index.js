@@ -143,7 +143,7 @@ export default class UIToastMessage {
         if (translationY > 0){
             this.swiping = true;
             this.touchY.setValue(translationY);
-            this.shouldClose = Math.abs(translationY) > UIConstant.tinyContentOffset();
+            this.shouldClose = Math.abs(translationY) > UIConstant.contentOffset();
             Animated.event([{nativeEvent: {y: this.touchY}}], { useNativeDriver: true });
         }
     };
@@ -161,7 +161,10 @@ export default class UIToastMessage {
         } else {
             // If the toast wasn't dragged enough distance to close, we want to reset its initial
             // position immediately.
-            this.touchY.setValue(0)
+            Animated.timing(this.touchY, {
+                toValue: 0,
+                duration: UIConstant.animationSmallDuration()
+            }).start();
         }
         this.shouldClose = false;
     };
