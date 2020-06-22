@@ -1,7 +1,15 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import {
+    StyleSheet, View, Text,
+    Image, TouchableOpacity, Dimensions,
+    TouchableWithoutFeedback, Animated
+} from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
+
+import {
+    PanGestureHandler,
+} from 'react-native-gesture-handler';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -50,6 +58,8 @@ type ToastObject = {
     duration?: number,
 }
 
+type RNGHEvent<T> = { nativeEvent: T };
+
 export default class UIToastMessage {
     static Type = {
         Default: 'default',
@@ -59,6 +69,11 @@ export default class UIToastMessage {
     static Place = {
         Center: 'center',
         Left: 'flex-start',
+    }
+
+    static Duration = {
+        Long: UIConstant.toastDurationLong(),
+        Short: UIConstant.toastDurationShort(),
     }
 
     static showMessage(args: string | ToastObject, duration?: number) {
@@ -74,11 +89,15 @@ export default class UIToastMessage {
     static type: string;
     static placement: Placement;
     static action: NoticeAction;
+    static touchY = new Animated.Value(0);
+    static shouldClose = false;
+    static swiping = false;
 
     // Actions
     static prepareAndShowMessage(args: ToastObject) {
         const {
-            message, type, placement, autoHide = true, action, duration,
+            message, type, placement, 
+            autoHide = true, action, duration = this.Duration.Long,
         } = args;
         this.message = message || '';
         this.type = type || this.Type.Default;
@@ -88,9 +107,10 @@ export default class UIToastMessage {
         const messageObject: MessageObject = {
             message: '', // unused but required param
             animated: true,
-            duration: duration || 5000,
+            duration,
             autoHide,
         };
+        this.touchY.setValue(0);
         UINotice.showToastMessage(messageObject, messageComponent);
     }
 
@@ -118,20 +138,63 @@ export default class UIToastMessage {
         return null;
     }
 
+    static _onPanGestureEvent = ({ nativeEvent: { translationY } }: RNGHEvent<{ translationY: number }>) => {
+        // Only swipes down:
+        if (translationY > 0){
+            this.swiping = true;
+            this.touchY.setValue(translationY);
+            this.shouldClose = Math.abs(translationY) > UIConstant.mediumContentOffset();
+            Animated.event([{nativeEvent: {y: this.touchY}}], { useNativeDriver: true });
+        }
+    };
+
+    static _onPanHandlerStateChange = ({
+        nativeEvent: { state, translationY },
+    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
+        if (this.shouldClose) {
+            // Moves toast outside screen and then it "closes" it.
+            Animated.spring(this.touchY, {
+                speed: 40,
+                toValue: UIConstant.enormousContentOffset(),
+                useNativeDriver: true,
+            }).start(() => {
+                hideMessage();
+            });
+        } else {
+            // If the toast wasn't dragged enough distance to close, we want to
+            // reset its initial position.
+            Animated.spring(this.touchY, {
+                toValue: 0,
+                useNativeDriver: true, // for smother animation
+            }).start();
+        }
+        this.shouldClose = false;
+    };
+
     static renderMessageComponent() {
         const color = this.type === this.Type.Alert ? UIColor.error() : UIColor.black();
         return (
-            <View style={[styles.containerStyle, { alignItems: this.placement }]}>
-                <View style={[styles.toastStyle, { backgroundColor: color }]}>
-                    <Text
-                        testID={`message_${this.type}`}
-                        style={styles.titleStyle}
-                    >
-                        {this.message}
-                    </Text>
-                    {this.renderCloseButton()}
-                </View>
-            </View>
+            <PanGestureHandler onGestureEvent={this._onPanGestureEvent} onHandlerStateChange={this._onPanHandlerStateChange} >
+                <Animated.View style={[styles.containerStyle, {transform: [{translateY: Animated.add(this.touchY, new Animated.Value(0))}]}]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                            if (!this.swiping) {
+                                hideMessage()
+                            }
+                            this.swiping = false;
+                        } 
+                    }>
+                        <View style={[styles.toastStyle, { backgroundColor: color }]}>
+                            <Text
+                                testID={`message_${this.type}`}
+                                style={styles.titleStyle}
+                            >
+                                {this.message}
+                            </Text>
+                            {this.renderCloseButton()}
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Animated.View>
+            </PanGestureHandler>
         );
-    }
+    }   
 }
