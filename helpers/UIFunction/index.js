@@ -79,7 +79,7 @@ export default class UIFunction {
     // Async Helpers
     /** Converts callback style function into Promise */
     static makeAsync(original: any): (...args: any) => Promise<any> {
-        return (...args) => {
+        return (...args: any) => {
             return new Promise((resolve, reject) => {
                 original(...args, (err, value) => {
                     return err ? reject(err) : resolve(value);
