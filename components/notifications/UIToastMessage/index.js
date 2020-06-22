@@ -143,7 +143,7 @@ export default class UIToastMessage {
         if (translationY > 0){
             this.swiping = true;
             this.touchY.setValue(translationY);
-            this.shouldClose = Math.abs(translationY) > UIConstant.contentOffset();
+            this.shouldClose = Math.abs(translationY) > UIConstant.mediumContentOffset();
             Animated.event([{nativeEvent: {y: this.touchY}}], { useNativeDriver: true });
         }
     };
@@ -152,18 +152,20 @@ export default class UIToastMessage {
         nativeEvent: { state, translationY },
     }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
         if (this.shouldClose) {
-            hideMessage();
-            // Hiding the toast message includes a "fading" animation, after hiding we need to
-            // reset the component position, in order to avoid restoring the position while the
-            // fading animation is still "happening", we set a timeout to wait for the animation
-            // to complete, and then restore the position once is not visible. 
-            setTimeout(() => this.touchY.setValue(0), UIConstant.animationDuration());
+            // Moves toast outside screen and then it "closes" it.
+            Animated.spring(this.touchY, {
+                speed: 40,
+                toValue: UIConstant.enormousContentOffset(),
+                useNativeDriver: true,
+            }).start(() => {
+                hideMessage();
+            });
         } else {
-            // If the toast wasn't dragged enough distance to close, we want to reset its initial
-            // position immediately.
-            Animated.timing(this.touchY, {
+            // If the toast wasn't dragged enough distance to close, we want to
+            // reset its initial position.
+            Animated.spring(this.touchY, {
                 toValue: 0,
-                duration: UIConstant.animationSmallDuration()
+                useNativeDriver: true, // for smother animation
             }).start();
         }
         this.shouldClose = false;
@@ -173,14 +175,14 @@ export default class UIToastMessage {
         const color = this.type === this.Type.Alert ? UIColor.error() : UIColor.black();
         return (
             <PanGestureHandler onGestureEvent={this._onPanGestureEvent} onHandlerStateChange={this._onPanHandlerStateChange} >
-                <TouchableWithoutFeedback onPress={() => {
-                        if (!this.swiping) {
-                            hideMessage()
-                        }
-                        this.swiping = false;
-                    } 
-                }>
-                    <Animated.View style={[styles.containerStyle, {transform: [{translateY: Animated.add(this.touchY, new Animated.Value(0))}]}]}>
+                <Animated.View style={[styles.containerStyle, {transform: [{translateY: Animated.add(this.touchY, new Animated.Value(0))}]}]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                            if (!this.swiping) {
+                                hideMessage()
+                            }
+                            this.swiping = false;
+                        } 
+                    }>
                         <View style={[styles.toastStyle, { backgroundColor: color }]}>
                             <Text
                                 testID={`message_${this.type}`}
@@ -190,8 +192,8 @@ export default class UIToastMessage {
                             </Text>
                             {this.renderCloseButton()}
                         </View>
-                    </Animated.View>
-                </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback>
+                </Animated.View>
             </PanGestureHandler>
         );
     }   
