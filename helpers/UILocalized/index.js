@@ -1,5 +1,5 @@
 // @flow
-
+import BigNumber from 'bignumber.js';
 import LocalizedStrings from 'react-native-localization';
 import Moment from 'moment';
 import 'moment/locale/ru';
@@ -16,7 +16,7 @@ type LocalizedLangContent = { [string]: string };
 class UILocalized extends LocalizedStrings {
     // eslint-disable-next-line class-methods-use-this
     amountToLocale(
-        number: string | number,
+        number: BigNumber | string | number,
         localeInfo: StringLocaleInfo,
         options: NumberPartsOptions = {
             minimumFractionDigits: 0,
@@ -25,9 +25,14 @@ class UILocalized extends LocalizedStrings {
     ): string {
         let parts: ?NumberParts;
         try {
-            const numberString = number instanceof String || typeof number === 'string'
-                ? number
-                : UIFunction.getNumberString(number);
+            let numberString;
+            if (number instanceof BigNumber) {
+                numberString = number.toFixed();
+            } else if (number instanceof String || typeof number === 'string') {
+                numberString = number;
+            } else { // number
+                numberString = UIFunction.getNumberString(number);
+            }
             parts = UIFunction.getNumberParts(numberString, localeInfo, options);
         } catch (error) {
             // failed to get number parts with error
