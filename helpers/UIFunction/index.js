@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape, no-plusplus */
+// @flow
+
 import { Platform, Text, TextInput } from 'react-native';
 import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
@@ -53,6 +56,12 @@ type DateFormatInfo = {
     components: string[],
 };
 
+type CurrencyInfo = {
+    code: string,
+    symbol: string,
+    precision: number,
+};
+
 export type StringLocaleInfo = {
     name: string,
     numbers: NumberFormatInfo,
@@ -69,7 +78,7 @@ export default class UIFunction {
 
     // Async Helpers
     /** Converts callback style function into Promise */
-    static makeAsync(original) {
+    static makeAsync(original: any): (...args: any) => Promise<any> {
         return (...args) => {
             return new Promise((resolve, reject) => {
                 original(...args, (err, value) => {
@@ -80,8 +89,8 @@ export default class UIFunction {
     }
 
     /** Same as makeAsync, but callback args reversed: (value, err) */
-    static makeAsyncRev(original) {
-        return (...args) => {
+    static makeAsyncRev(original: any): (...args: any) => Promise<any> {
+        return (...args: any) => {
             return new Promise((resolve, reject) => {
                 original(...args, (value, err) => {
                     return err ? reject(err) : resolve(value);
@@ -90,8 +99,8 @@ export default class UIFunction {
         };
     }
 
-    // Process money convertion
-    static numberFromMoneyString(string, currency = {
+    // Process money conversion
+    static numberFromMoneyString(string: string, currency: CurrencyInfo = {
         code: 'USD',
         symbol: '$',
         precision: 0,
@@ -106,7 +115,7 @@ export default class UIFunction {
         // return Number((string || '0').replace(/[$,]/g, ''));
     }
 
-    static moneyStringFromNumber(number, currency = {
+    static moneyStringFromNumber(number: number, currency: CurrencyInfo = {
         code: 'USD',
         symbol: '$',
         precision: 0,
@@ -120,31 +129,30 @@ export default class UIFunction {
         return CurrencyFormatter.format(Number(number), options);
     }
 
-    static toFixedDown(number, fixed = 2) {
+    static toFixedDown(number: number | string, fixed: number = 2) {
         const reg = new RegExp(`(^-?\\d+\\.\\d{${fixed}})`);
         const match = number.toString().match(reg);
         return match ? match[0] : Number(number).toFixed(fixed);
     }
 
     // Functions to determine a new caret position for numeric formatted text !!!
+    /**
+     * @deprecated method to remove
+     */
     static calculateNewCaretPosition(
-        currentCaretPos, currentText, newText,
-        currency = {
+        currentCaretPos: number,
+        currentText: string,
+        newText: string,
+        /* currency: CurrencyInfo = {
             code: 'USD',
             symbol: '$',
             precision: 0,
-        },
+        }, */
     ) {
-        const { precision } = currency;
-        const precisionBefore = Math.max(0, (currentCaretPos - currentText.length) + precision);
-        const textBeforeCurrentCaret
-            = this.numericText(
-                currentText.slice(0, currentCaretPos),
-                {
-                    ...currency,
-                    precision: precisionBefore,
-                },
-            );
+        // const { precision } = currency;
+        // const precisionBefore = Math.max(0, (currentCaretPos - currentText.length) + precision);
+        // const currencyBefore = { ...currency, precision: precisionBefore };
+        const textBeforeCurrentCaret = this.numericText(currentText.slice(0, currentCaretPos));
         let newCaretPos = 0;
         for (let i = 0; i < textBeforeCurrentCaret.length; i += 1) {
             const digit = textBeforeCurrentCaret.charAt(i);
@@ -161,9 +169,9 @@ export default class UIFunction {
 
     // Returns a string that represents the formatted number using the locale configuration.
     static amountToLocale(
-        number,
-        locale,
-        options = {
+        number: number,
+        locale: string,
+        options: $Shape<Intl$NumberFormatOptions> = {
             minimumFractionDigits: 0,
             maximumFractionDigits: UIConstant.maxDecimalDigits(),
         },
@@ -173,20 +181,20 @@ export default class UIFunction {
 
     // Returns string of amount and currency in required order (default is
     static amountAndCurrency(
-        amount,
-        currency,
+        amount: string,
+        currency: string,
         currencyPosition: CurrencyPositionType = CurrencyPosition.Before,
     ) {
         return currencyPosition === CurrencyPosition.Before
-            ? `${currency} ${amount}`
-            : `${amount} ${currency}`;
+            ? `${currency} ${amount}`
+            : `${amount} ${currency}`;
     }
 
     // Allows to print small numbers with "-e" suffix
     static getNumberString(number: number, digits: number = 10): string {
         if (Math.abs(number) > 1) { // Apply BigNumber conversion only for non-small numbers!
             try {
-                return new BigNumber(number).toString();
+                return new BigNumber(number.toString()).toString();
             } catch (error) {
                 // Failed to convert the number to string with BigNumber instance
             }
@@ -276,7 +284,7 @@ export default class UIFunction {
         return result;
     }
 
-    static numericText(text) {
+    static numericText(text: string) {
         return parseDigits(text);
     }
 
@@ -296,7 +304,7 @@ export default class UIFunction {
         return valid;
     }
 
-    static removeCallingCode(phone, callingCode) {
+    static removeCallingCode(phone: string, callingCode: string) {
         if (callingCode) {
             // remove `+`, `countryCallingCode` and ` `
             if (phone.startsWith('+')) {
@@ -306,7 +314,11 @@ export default class UIFunction {
         return phone;
     }
 
-    static formatPhoneText(text, removeCountryCode = false, cleanIfFailed = false) {
+    static formatPhoneText(
+        text: string,
+        removeCountryCode: boolean = false,
+        cleanIfFailed: boolean = false,
+    ) {
         // If validation for text is not there, the app crashes when sending
         // a profile without phone number to UserInfoScreen.
         let phone = text ? `+${this.numericText(text)}` : '';
@@ -330,14 +342,14 @@ export default class UIFunction {
 
     // Used for phone formatting without country code
     // In this case we should know the country
-    static formatPhoneInput(input, country) {
+    static formatPhoneInput(input: string, country: Object) {
         let phone = this.numericText(input);
         try {
             const asYouType = new AsYouType(country.iso);
             phone = asYouType.input(`+${country.callingCode}${input}`);
             phone = this.removeCallingCode(phone, country.callingCode);
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone ${phone} with excepetion`, exception);
+            console.log(`[UIFunction] Failed to parse phone ${phone} with exception`, exception);
         }
         return phone;
     }
@@ -351,7 +363,7 @@ export default class UIFunction {
     }
 
     // Detects country of the phone
-    static countryISOFromPhone(phone) {
+    static countryISOFromPhone(phone: string) {
         let countryCode = null;
         try {
             const parsedResult = parsePhoneNumberFromString(`+${phone}`);
@@ -419,6 +431,7 @@ export default class UIFunction {
 
     static roundNumber(number: number, scale: number = 2) {
         if (!(`${number}`).includes('e')) {
+            // $FlowExpectedError
             return +(`${Math.round(`${number}e+${scale}`)}e-${scale}`);
         }
         const arr = (`${number}`).split('e');
@@ -426,6 +439,7 @@ export default class UIFunction {
         if (+arr[1] + scale > 0) {
             sig = '+';
         }
+        // $FlowExpectedError
         return +(`${Math.round(`${+arr[0]}e${sig}${+arr[1] + scale}`)}e-${scale}`);
     }
 
@@ -536,6 +550,7 @@ export default class UIFunction {
     }
 
     static getCookie(name: string) {
+        // $FlowExpectedError
         const matches = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
@@ -554,9 +569,13 @@ export default class UIFunction {
         undetected: 'undetected',
     };
 
-    // TODO: Probably it would be better to use a library that already verifies this, or find a simpler
-    //       approach, plus add unit tests for different bank cards
-    static getBankCardType({ number = '', raw = true, presumed = false }: BankCardNumberArgs) {
+    // TODO: Probably it would be better to use a library that already verifies this, or find
+    // a simpler approach, plus add unit tests for different bank cards
+    static getBankCardType({
+        number = '',
+        raw = true,
+        presumed = false,
+    }: BankCardNumberArgs): { [string]: boolean } | ?string {
         const rawNumber = raw ? number : number.replace(/[^0-9]/gim, '');
         const regEx = {
             [this.bankCardTypes.visa]: /^4[0-9]{12}(?:[0-9]{3})?$/,
@@ -609,7 +628,11 @@ export default class UIFunction {
     }
 
     // for numeric inputs that can be formatted with different separators
-    static adjustCursorPosition(textSource: string, cursorSource: number, textFormatted: string): number {
+    static adjustCursorPosition(
+        textSource: string,
+        cursorSource: number,
+        textFormatted: string,
+    ): number {
         const digits = '0123456789';
         const cursorInDigits = cursorSource - textSource.split('').filter((s, r) => !digits.includes(s) && r < cursorSource).length;
 
@@ -630,7 +653,7 @@ export default class UIFunction {
         return cursorFormatted;
     }
 
-    static combineStyles(stylesArray: ViewStyleProp | ViewStyleProp[] | TextStyleProp | TextStyleProp[]) {
+    static combineStyles(stylesArray: (ViewStyleProp | TextStyleProp)[]) {
         let result = [];
         stylesArray.forEach((item) => {
             result = Array.isArray(item)
@@ -650,7 +673,7 @@ export default class UIFunction {
         return num;
     }
 
-    static truncText(str: string, narrow: boolean, signsCount: number) {
+    static truncText(str: string, narrow: boolean, signsCount?: number) {
         if (!str) {
             return '';
         }
@@ -686,11 +709,11 @@ export default class UIFunction {
     }
 
     static isNil(arg: any): boolean {
-        return arg === null || arg === undefined;
+        return arg == null;
     }
 
     static toFixedOrEmpty(arg: ?number, fractionDigits: number): string {
-        return this.isNil(arg) ? '' : arg.toFixed(fractionDigits);
+        return arg == null ? '' : arg.toFixed(fractionDigits);
     }
 
     /**
@@ -702,7 +725,7 @@ export default class UIFunction {
         Text.defaultProps.allowFontScaling = false;
         // $FlowFixMe
         TextInput.defaultProps = TextInput.defaultProps || {};
-        TextInput.defaultProps.allowFontScaling = false
+        TextInput.defaultProps.allowFontScaling = false;
     }
 
     static remove0xIfNeeded(str: string = ''): string {

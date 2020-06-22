@@ -178,7 +178,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
         if (type === UIDetailsTable.cellType.numberPercent && limit && limit !== 0 && typeof value === 'number') {
             const primary = UIFunction.getNumberString(value);
-            const percent = (primary / limit) * 100;
+            const percent = (value / limit) * 100;
             const formattedPercent = UIFunction.getNumberString(percent);
             const secondary = ` (${formattedPercent} %)`;
             return this.renderTextCell(primary, secondary);

@@ -483,7 +483,7 @@ export default class UIModalController<Props, State> extends UIController<
             if (!arg.open) {
                 open = true;
             } else {
-                open = arg.open;
+                ({ open } = arg);
             }
             if (arg.onCancel) {
                 this.onCancel = arg.onCancel;

@@ -126,6 +126,9 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
     // Render
     renderCardLogos() {
         const presumedCards = this.getPresumedCardTypes();
+        if (!(presumedCards instanceof Object)) {
+            return null;
+        }
         const { visa, masterCard, maestro } = UIFunction.bankCardTypes;
         const visaImage = presumedCards[visa]
             ? <Image source={UIAssets.icoVisa()} />
