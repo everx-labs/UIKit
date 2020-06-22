@@ -310,7 +310,7 @@ export default class UIController<Props, State>
                         );
                     }
                 }),
-                20,
+                30,
             );
         };
         measureAndApply();
