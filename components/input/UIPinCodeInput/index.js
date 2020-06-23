@@ -4,16 +4,9 @@ import {
     StyleSheet,
     Text,
     View,
-    FlatList,
     TouchableOpacity,
-    LayoutAnimation,
-    Animated,
-    Vibration,
     Platform,
 } from 'react-native';
-
-import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
-import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
 
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
@@ -21,19 +14,19 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UILabel from '../../text/UILabel';
-
 import UILocalized from '../../../helpers/UILocalized';
 
+import UIPinCodeDots from './UIPinCodeDots';
+
 type State = {
-    pin: string,
+    values: Array<number>,
     wrongPin: boolean,
     rightPin: boolean,
     description: string,
-    shakeMargin: AnimatedValue | AnimatedInterpolation,
 };
 
 type Props = {
-    pinCodeLenght: number,
+    pinCodeLength: number,
     pinToConfirm?: string,
     pinTitle?: string,
     pinDescription?: string,
@@ -45,9 +38,7 @@ type Props = {
     commentTestID?: string,
 };
 
-const dotSize = UIConstant.tinyCellHeight();
-
-const styleProperties = {
+const styles = StyleSheet.create({
     key: {
         // Coefficient 1.01 need for ios version because
         // new font symbols interval bigger than default font.
@@ -57,59 +48,7 @@ const styleProperties = {
         justifyContent: 'center',
         marginHorizontal: UIConstant.contentOffset(),
     },
-    dotView: {
-        width: UIConstant.smallContentOffset() + dotSize + UIConstant.smallContentOffset(),
-        height: UIConstant.smallContentOffset() + dotSize + UIConstant.smallContentOffset(),
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: UIConstant.smallContentOffset(),
-    },
-    dotBlue: {
-        width: dotSize,
-        height: dotSize,
-        borderRadius: dotSize / 2,
-        backgroundColor: UIColor.primary(),
-    },
-    dotRed: {
-        width: dotSize,
-        height: dotSize,
-        borderRadius: dotSize / 2,
-        backgroundColor: UIColor.error(),
-    },
-    dotGreen: {
-        width: dotSize,
-        height: dotSize,
-        borderRadius: dotSize / 2,
-        backgroundColor: UIColor.success(),
-    },
-    dotGray: {
-        width: dotSize / 2,
-        height: dotSize / 2,
-        borderRadius: dotSize / 4,
-        backgroundColor: UIColor.grey3(),
-    },
-    animatedView: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: UIConstant.mediumCellHeight(),
-    },
-};
-
-const styles = StyleSheet.create(styleProperties);
-
-
-function throttle(func: () => void, limit: number) {
-    let timeout: ?TimeoutID = null;
-    return () => {
-        if (timeout != null) {
-            return;
-        }
-        func();
-        timeout = setTimeout(() => {
-            timeout = null;
-        }, limit);
-    };
-}
+});
 
 export default class UIPinCodeInput extends UIComponent<Props, State> {
     static defaultProps = {
@@ -119,26 +58,20 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         disabled: false,
     };
 
-    indicator: Array<number>;
-    shakeValue: any;
-
     // constructor
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            pin: '',
+            values: [],
             wrongPin: false,
             rightPin: false,
             description: '',
-            shakeMargin: new Animated.Value(0),
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
-        this.initiateIndicator();
-        this.resetShake();
         this.addKeyboardListener();
     }
 
@@ -163,113 +96,94 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     // events
     onWebKeyPressed = (pressedKey: any) => {
         if (pressedKey.keyCode > 47 && pressedKey.keyCode < 58) {
-            this.onKeyPress(`${pressedKey.key}`);
+            this.onKeyPress(pressedKey.key);
         } else if (pressedKey.keyCode === 8) {
             this.onDeletePress();
         }
     };
 
-    onKeyPress(key: string) {
-        if (!this.props.disabled) {
-            const pin = `${this.state.pin}${key}`;
-            this.setPin(pin);
-            if (this.props.pinToConfirm
-                && pin.length === this.props.pinCodeLenght
-                && pin !== this.props.pinToConfirm) {
-                this.wrongPin();
+    onKeyPress(key: number) {
+        if (this.props.disabled) {
+            return;
+        }
+        const values = [...this.state.values, key];
+
+        if (values.length > this.props.pinCodeLength) {
+            return;
+        }
+
+        this.setState({ values });
+
+        const pin = values.join('');
+        this.props.pinCodeEnter(pin);
+
+        if (
+            this.props.pinToConfirm &&
+            values.length === this.props.pinCodeLength
+        ) {
+            if (pin !== this.props.pinToConfirm) {
+                if (this.dotsRef.current) {
+                    this.dotsRef.current.showWrongPin();
+                }
             }
         }
     }
 
     onDeletePress = () => {
-        const { length } = this.state.pin;
-        const pin = this.state.pin.substr(0, length - 1);
-        this.setPin(pin);
+        const values = [...this.state.values];
+        values.pop();
+        this.setState({ values });
     };
 
     onPressPredefined = () => {
-        // generate string consisted of '1' and with length = props.pinCodeLenght
-        const str = Array.prototype.join.call({ length: (this.props.pinCodeLenght || -1) + 1 }, '1');
-        this.setPin(str);
+        if (this.props.disabled) {
+            return;
+        }
+
+        // generate string consisted of '1' and with length = props.pinCodeLength
+        const str = Array.prototype.join.call(
+            { length: (this.props.pinCodeLength || -1) + 1 },
+            '1',
+        );
+        this.setState({ values: str.split('').map(n => +n) });
+        this.props.pinCodeEnter(str);
     };
 
-    onChangePin = throttle(() => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-    }, UIConstant.animationDuration())
-
-    // setters
-    setPin(pin: string) {
-        this.onChangePin();
-        this.setStateSafely({ pin }, () => {
-            if (pin.length === this.props.pinCodeLenght) {
-                this.props.pinCodeEnter(pin);
-            }
-        });
-    }
-
     // actions
-    initiateIndicator() {
-        this.indicator = [];
-        for (let i = 1; i <= this.props.pinCodeLenght; i += 1) {
-            this.indicator.push(i);
-        }
-    }
 
     resetPin() {
-        this.setStateSafely({ pin: '' }, () => {
-            this.props.pinCodeEnter('');
-        });
-    }
-
-    wrongPin(description?: string): Promise<void> {
-        const delay = UIConstant.animationDuration();
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                this.setStateSafely({ wrongPin: true, description });
-                Vibration.vibrate(500);
-                this.shakeIndicator();
-            }, delay);
-            setTimeout(() => {
-                this.setStateSafely({ wrongPin: false, description: '' });
-                this.resetPin();
-                resolve();
-            }, delay + UIConstant.animationAccentInteractionDurationNormal());
-        });
-    }
-
-    rightPin(description?: string): Promise<void> {
-        const delay = UIConstant.animationDuration();
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                this.setStateSafely({ rightPin: true, description });
-            }, delay);
-
-            setTimeout(() => {
-                this.setStateSafely({ rightPin: false, description: '' });
-                this.resetPin();
-                resolve();
-            }, delay + UIConstant.animationAccentInteractionDurationFast());
-        });
-    }
-
-    resetShake() {
-        this.shakeValue = new Animated.Value(0);
-        const shakeMargin = this.shakeValue.interpolate({
-            inputRange: [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
-            outputRange: [0, -10, 10, -10, 10, -10, 0],
-        });
         this.setState({
-            shakeMargin,
+            values: [],
         });
+        this.props.pinCodeEnter('');
     }
 
-    shakeIndicator() {
-        // TODO: think how to use `useNativeDriver` here!
-        Animated.timing(this.shakeValue, {
-            toValue: 1,
-            duration: 250,
-            useNativeDriver: false,
-        }).start(() => this.resetShake());
+    async wrongPin(description?: string) {
+        this.setState({
+            wrongPin: true,
+            description,
+        });
+        await (this.dotsRef.current && this.dotsRef.current.showWrongPin());
+        this.setState({
+            wrongPin: false,
+            description: '',
+            values: [],
+        });
+        this.props.pinCodeEnter('');
+    }
+
+    async rightPin(description?: string) {
+        this.setState({
+            rightPin: true,
+            description,
+        });
+        await (this.dotsRef.current && this.dotsRef.current.showRightPin());
+        this.setState({
+            rightPin: false,
+            description: '',
+            values: [],
+        });
+        this.props.pinCodeEnter('');
     }
 
     // render
@@ -285,56 +199,15 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         );
     }
 
-    renderItem(item: number) {
-        let dotStyle;
-        let testID = 'pinValueNotSet';
-        if (this.state.wrongPin) {
-            dotStyle = styles.dotRed;
-        } else if (item > this.state.pin.length) {
-            dotStyle = styles.dotGray;
-        } else if (this.state.rightPin) {
-            dotStyle = styles.dotGreen;
-        } else {
-            dotStyle = styles.dotBlue;
-            testID = 'pinValueSet';
-        }
-
-
-        return (
-            <View
-                testID={testID}
-                style={styles.dotView}
-            >
-                <View style={dotStyle} />
-            </View>
-        );
-    }
-
-    renderIndicator() {
-        return (
-            <Animated.View style={[styles.animatedView, { marginLeft: this.state.shakeMargin }]}>
-                <FlatList
-                    horizontal
-                    data={this.indicator}
-                    extraData={this.state}
-                    renderItem={({ item }) => this.renderItem(item)}
-                    keyExtractor={item => `${item}`}
-                />
-            </Animated.View>
-        );
-    }
-
     renderDescription() {
         // eslint-disable-next-line no-nested-ternary
         const color = this.state.wrongPin
             ? UIColor.error()
             : this.state.rightPin
-                ? UIColor.success()
-                : this.props.pinDescriptionColor;
+            ? UIColor.success()
+            : this.props.pinDescriptionColor;
 
-        const description = (this.state.wrongPin || this.state.rightPin)
-            ? this.state.description
-            : this.props.pinDescription;
+        const description = this.state.description || this.props.pinDescription;
 
         const descStyle = StyleSheet.create({
             descColor: {
@@ -356,85 +229,149 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     }
 
     renderKeyboard() {
-        const disabled = this.state.pin.length === this.props.pinCodeLenght;
+        const disabled = this.state.values.length === this.props.pinCodeLength;
+        const opacityStyle = this.props.disabled ? { opacity: 0.5 } : null;
         return (
             <View testID="digitKeyboard">
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomTiny()]}>
                     <TouchableOpacity
                         testID="pincode_digit_1"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('1')}
+                        onPress={() => this.onKeyPress(1)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>1</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            1
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_2"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('2')}
+                        onPress={() => this.onKeyPress(2)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>2</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            2
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_3"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('3')}
+                        onPress={() => this.onKeyPress(3)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>3</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            3
+                        </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomTiny()]}>
                     <TouchableOpacity
                         testID="pincode_digit_4"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('4')}
+                        onPress={() => this.onKeyPress(4)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>4</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            4
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_5"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('5')}
+                        onPress={() => this.onKeyPress(5)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>5</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            5
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_6"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('6')}
+                        onPress={() => this.onKeyPress(6)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>6</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            6
+                        </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomTiny()]}>
                     <TouchableOpacity
                         testID="pincode_digit_7"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('7')}
+                        onPress={() => this.onKeyPress(7)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>7</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            7
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_8"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('8')}
+                        onPress={() => this.onKeyPress(8)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>8</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            8
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_9"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('9')}
+                        onPress={() => this.onKeyPress(9)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>9</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            9
+                        </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomMedium()]}>
@@ -443,30 +380,53 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         disabled={!this.props.usePredefined}
                         onPress={this.onPressPredefined}
                     >
-                        <Text style={UITextStyle.primaryCaptionMedium}>
+                        <Text
+                            style={[
+                                UITextStyle.primaryCaptionMedium,
+                                opacityStyle,
+                            ]}
+                        >
                             {this.props.usePredefined ? 'DEV' : ''}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_0"
                         style={styles.key}
-                        onPress={() => this.onKeyPress('0')}
+                        onPress={() => this.onKeyPress(0)}
                         disabled={disabled}
                     >
-                        <Text style={UITextStyle.primaryTitleLight}>0</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryTitleLight,
+                                opacityStyle,
+                            ]}
+                        >
+                            0
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         testID="pincode_digit_delete"
                         style={styles.key}
                         onPress={this.onDeletePress}
-                        disabled={this.state.pin.length === 0}
+                        disabled={this.state.values.length === 0}
                     >
-                        <Text style={UITextStyle.primaryCaptionMedium}>{UILocalized.Delete}</Text>
+                        <Text
+                            style={[
+                                UITextStyle.primaryCaptionMedium,
+                                this.state.values.length === 0 && {
+                                    opacity: 0.5,
+                                },
+                            ]}
+                        >
+                            {UILocalized.Delete}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
         );
     }
+
+    dotsRef = React.createRef<UIPinCodeDots>();
 
     render() {
         const { testID } = this.props;
@@ -478,7 +438,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             >
                 <View style={[UIStyle.flexJustifyCenter, UIStyle.alignCenter]}>
                     {this.renderLabel()}
-                    {this.renderIndicator()}
+                    <UIPinCodeDots
+                        ref={this.dotsRef}
+                        length={6}
+                        values={this.state.values}
+                    />
                     {this.renderDescription()}
                 </View>
                 {this.renderKeyboard()}
