@@ -728,7 +728,11 @@ export default class UIFunction {
         TextInput.defaultProps.allowFontScaling = false;
     }
 
-    static remove0xIfNeeded(str: string = ''): string {
+    static remove0x(str: string = ''): string {
         return str.slice(0, 2) === '0x' ? str.slice(2) : str;
+    }
+
+    static formatHex(str: string = ''): string {
+        return this.remove0x(str).padStart(64, '0');
     }
 }

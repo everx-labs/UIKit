@@ -18,10 +18,10 @@ export type DetailsRow = {
     type?: string,
     captionType?: string,
     screen?: string,
-    tag?: any,
     component?: React$Node,
     onPress?: () => void,
     key?: string,
+    showAlways?: boolean,
 };
 
 export type DetailsList = DetailsRow[];
@@ -95,26 +95,17 @@ class UIDetailsTable extends UIComponent<Props, State> {
             key = keyParam;
             // needOffset = true;
         } else {
-            list = args.list;
-            key = args.key;
+            ({ list, key } = args);
             // needOffset = args.needOffset !== undefined ? args.needOffset : true;
         }
 
         const generatedKey = key || list[0].caption || '';
-        return list.map<DetailsRow>((item, index) => {
-            let captionType = this.captionType.default;
-            const { caption } = item;
-            if (!index) {
-                captionType = this.captionType.header;
-            }
-
-            return {
-                ...item,
-                key: `${item.key ? `${item.key}-` : ''}${generatedKey}`,
-                caption,
-                captionType,
-            };
-        });
+        return list.map<DetailsRow>((item, index) => ({
+            ...item,
+            key: `${item.key ? `${item.key}-` : ''}${generatedKey}`,
+            caption: item.caption,
+            captionType: !index ? this.captionType.header : this.captionType.default,
+        }));
     }
 
     static testIDs = {
@@ -173,9 +164,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
             type, value, limit, component, onPress,
         } = details;
         const textStyle = this.getTextStyle(type, value);
-        if ((!value && value !== 0) && !component) {
-            return null;
-        }
+
         if (type === UIDetailsTable.cellType.numberPercent && limit && limit !== 0 && typeof value === 'number') {
             const primary = UIFunction.getNumberString(value);
             const percent = (value / limit) * 100;
@@ -229,9 +218,15 @@ class UIDetailsTable extends UIComponent<Props, State> {
         const { detailsList, rightCellStyle } = this.props;
         return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
-                caption, value, captionType, key,
+                caption, value, captionType, key, showAlways, component,
             } = item;
+
             const { header, topOffset, boldTopOffset } = UIDetailsTable.captionType;
+
+            if ((value == null || value === '') && !showAlways && !component && captionType !== header) {
+                return null;
+            }
+
             const marginTopStyle = [header, topOffset, boldTopOffset].includes(captionType)
                 && UIStyle.padding.topHuge();
 
