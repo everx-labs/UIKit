@@ -33,7 +33,11 @@ class UILocalized extends LocalizedStrings {
             } else { // number
                 numberString = UIFunction.getNumberString(number);
             }
-            parts = UIFunction.getNumberParts(numberString, localeInfo, options);
+            if (Number.isNaN(Number(numberString))) { // Check if not normalized
+                throw Error('[UILocalized] Passed number is not normalized');
+            }
+            const isNormalized = true; // since "normalized" means "not localized"
+            parts = UIFunction.getNumberParts(numberString, localeInfo, options, isNormalized);
         } catch (error) {
             // failed to get number parts with error
             parts = null;
