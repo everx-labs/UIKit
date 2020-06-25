@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     TouchableWithoutFeedback,
     Platform,
+    Animated,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 
@@ -207,6 +208,15 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         };
     }
 
+    animatedBubble = new Animated.Value(1);
+    bubbleScaleAnimation(scaleIn: boolean = false) {
+        Animated.spring(this.animatedBubble, {
+            toValue: scaleIn ? UIConstant.animationScaleInFactor() : 1.0,
+            friction: 3,
+            useNativeDriver: true,
+        }).start();
+    }
+
     onLayout(e: LayoutEvent) {
         const { layout } = e.nativeEvent;
         this.setStateSafely({ layout });
@@ -303,8 +313,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             style = styles.msgSending;
         }
 
+        const animation = { transform: [{ scale: this.animatedBubble }] };
         return (
-            <View style={styles.wrapMsgContainer}>
+            <Animated.View style={[styles.wrapMsgContainer, animation]}>
                 {this.renderAvatar()}
                 <View
                     style={[
@@ -318,7 +329,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                     {children}
                     {this.renderTime()}
                 </View>
-            </View>
+            </Animated.View>
         );
     }
 
@@ -553,9 +564,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderTextCell() {
         const { data } = this.props;
         return (
-            <TouchableWithoutFeedback onLongPress={
+            <TouchableWithoutFeedback
+                onPressOut={() => this.bubbleScaleAnimation()}
+                onLongPress={
                 () => {
                     if (data && (data instanceof String || typeof data === 'string')) {
+                        this.bubbleScaleAnimation(true);
                         UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
                     }
                 }}

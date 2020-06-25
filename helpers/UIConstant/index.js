@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 
 import UIColor from '../UIColor';
 
+const UI_ANIMATION_SCALE_IN_FACTOR = 0.95;
 const UI_ANIMATION_DURATION = 250;
 const UI_ANIMATION_SMALL_DURATION = 100;
 const UI_TOAST_DURATION_SHORT = 1500;
@@ -175,6 +176,10 @@ const UI_CARD_SHADOW_WIDTH = 40;
 
 export default class UIConstant {
     // Animations
+    static animationScaleInFactor() {
+        return UI_ANIMATION_SCALE_IN_FACTOR;
+    }
+
     static animationDuration() {
         return UI_ANIMATION_DURATION;
     }
