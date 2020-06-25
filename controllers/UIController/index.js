@@ -406,7 +406,7 @@ export default class UIController<Props, State>
     }
 
     // Navigation
-    handlePathAndParams() {
+    handlePathAndParams(paramsArg?: any) {
         const { routeName } = this.getNavigationState();
         const pathAndParams = pathAndParamsForScreens[routeName];
         if (pathAndParams) {
@@ -414,7 +414,7 @@ export default class UIController<Props, State>
             this.params = pathAndParams.params;
             // Add current parameters to the path if needed
             if (this.params) {
-                const params = this.getNavigationParams();
+                const params = paramsArg || this.getNavigationParams();
                 const parameters = {};
                 Object.keys(params)
                     .forEach((key) => {
@@ -446,6 +446,11 @@ export default class UIController<Props, State>
                     this.path += `${symbol}${key}=${parameters[key]}`;
                 }
             });
+    }
+
+    pushParams(paramsArg: any) {
+        this.handlePathAndParams(paramsArg);
+        this.pushStateIfNeeded();
     }
 
     navigationListeners: { remove(): void }[];
