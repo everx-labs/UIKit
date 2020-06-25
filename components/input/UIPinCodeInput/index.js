@@ -6,6 +6,7 @@ import {
     View,
     TouchableOpacity,
     Platform,
+    Image,
 } from 'react-native';
 
 import UIComponent from '../../UIComponent';
@@ -17,6 +18,12 @@ import UILabel from '../../text/UILabel';
 import UILocalized from '../../../helpers/UILocalized';
 
 import UIPinCodeDots from './UIPinCodeDots';
+import UIAssets from '../../../assets/UIAssets';
+
+const BiometryType = Object.freeze({
+    Fingerprint: 'Fingerprint',
+    Face: 'Face',
+});
 
 type State = {
     values: Array<number>,
@@ -36,6 +43,8 @@ type Props = {
     pinCodeEnter: (pin: string) => void,
     testID?: string,
     commentTestID?: string,
+    biometryType?: ?$Values<BiometryType>,
+    onBiometryPress?: () => void,
 };
 
 const styles = StyleSheet.create({
@@ -56,7 +65,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         pinDescription: ' \n ',
         usePredefined: false,
         disabled: false,
+        biometryType: null,
+        onBiometryLogin: null,
     };
+
+    static BiometryType = BiometryType;
 
     // constructor
     constructor(props: Props) {
@@ -135,6 +148,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         this.setState({ values });
     };
 
+    onPressBiometry = async () => {
+        const pin = await this.props.onBiometryPress();
+
+        this.setState({ values: pin.split('').map(n => +n) });
+        this.props.pinCodeEnter(pin);
+    }
+
     onPressPredefined = () => {
         if (this.props.disabled) {
             return;
@@ -204,8 +224,8 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const color = this.state.wrongPin
             ? UIColor.error()
             : this.state.rightPin
-            ? UIColor.success()
-            : this.props.pinDescriptionColor;
+                ? UIColor.success()
+                : this.props.pinDescriptionColor;
 
         const description = this.state.description || this.props.pinDescription;
 
@@ -225,6 +245,20 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 numberOfLines={2}
                 selectable={false}
             />
+        );
+    }
+
+    renderBiometryLogin() {
+        const { biometryType } = this.props;
+
+        if (!biometryType) {
+            return null;
+        }
+
+        const icon = biometryType === BiometryType.Face ? UIAssets.faceId : UIAssets.touchId;
+
+        return (
+            <Image source={icon} />
         );
     }
 
@@ -376,17 +410,20 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomMedium()]}>
                     <TouchableOpacity
+                        testID="pincode_digit_delete"
                         style={styles.key}
-                        disabled={!this.props.usePredefined}
-                        onPress={this.onPressPredefined}
+                        onPress={this.onDeletePress}
+                        disabled={this.state.values.length === 0}
                     >
                         <Text
                             style={[
                                 UITextStyle.primaryCaptionMedium,
-                                opacityStyle,
+                                this.state.values.length === 0 && {
+                                    opacity: 0.5,
+                                },
                             ]}
                         >
-                            {this.props.usePredefined ? 'DEV' : ''}
+                            {UILocalized.Delete}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -405,21 +442,21 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        testID="pincode_digit_delete"
+                        testID="pincode_biometry"
                         style={styles.key}
-                        onPress={this.onDeletePress}
-                        disabled={this.state.values.length === 0}
+                        onPress={this.props.usePredefined
+                            ? this.onPressPredefined
+                            : this.onPressBiometry
+                        }
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryCaptionMedium,
-                                this.state.values.length === 0 && {
-                                    opacity: 0.5,
-                                },
-                            ]}
-                        >
-                            {UILocalized.Delete}
-                        </Text>
+                        {this.props.usePredefined && (
+                            <Text style={UITextStyle.primaryCaptionMedium}>
+                                DEV
+                            </Text>
+                        )}
+                        {!this.props.usePredefined && (
+                            this.renderBiometryLogin()
+                        )}
                     </TouchableOpacity>
                 </View>
             </View>

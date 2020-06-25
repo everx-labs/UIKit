@@ -5,6 +5,10 @@ const icoVisa = require('./bank-cards/ico-visa/visa.png');
 const icoMaestro = require('./bank-cards/ico-maestro/maestro.png');
 const btnClose = require('./btn_close/btn_close.png');
 
+// Security
+const touchId = require('./touch-id/touch-id.png');
+const faceId = require('./face-id/face-id.png');
+
 export default class UIAssets {
     // Icons
     static icoArrowLeft() {
@@ -31,5 +35,13 @@ export default class UIAssets {
 
     static icoMaestro() {
         return icoMaestro;
+    }
+
+    static get faceId() {
+        return faceId;
+    }
+
+    static get touchId() {
+        return touchId;
     }
 }
