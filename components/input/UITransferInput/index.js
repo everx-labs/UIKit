@@ -168,7 +168,13 @@ export default class UITransferInput extends UIComponent<Props, State> {
         const localizedSeparator = localeInfo.numbers.decimal;
         let parts: ?NumberParts;
         try {
-            parts = UIFunction.getNumberParts(text, localeInfo);
+            const isNormalized = !Number.isNaN(Number(text));
+            parts = UIFunction.getNumberParts(
+                text,
+                localeInfo,
+                undefined,
+                isNormalized, // here possible normalized and not normalized strings
+            );
         } catch (error) {
             parts = null;
         }

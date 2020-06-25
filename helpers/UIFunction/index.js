@@ -230,9 +230,12 @@ export default class UIFunction {
             minimumFractionDigits: 0,
             maximumFractionDigits: 9,
         },
+        isNormalized?: boolean = false,
     ): ?NumberParts {
         // Normalize passed value
-        const normalizedValue = UIFunction.normalizedAmount(value, localeInfo);
+        const normalizedValue = isNormalized
+            ? value
+            : UIFunction.normalizedAmount(value, localeInfo);
         if (normalizedValue === undefined || normalizedValue === null
             || Number.isNaN(Number(normalizedValue))) {
             // The string can't be parsed as a number
