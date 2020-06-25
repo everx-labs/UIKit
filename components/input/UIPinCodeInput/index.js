@@ -122,9 +122,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             values.length === this.props.pinCodeLength
         ) {
             if (pin !== this.props.pinToConfirm) {
-                if (this.dotsRef.current) {
-                    this.dotsRef.current.showWrongPin();
-                }
+                this.wrongPin();
             }
         }
     }
