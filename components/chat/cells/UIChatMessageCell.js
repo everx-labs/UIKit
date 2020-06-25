@@ -213,6 +213,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         Animated.spring(this.animatedBubble, {
             toValue: grow ? 1.1 : 1.0,
             friction: 3,
+            useNativeDriver: true,
         }).start();
     }
 
