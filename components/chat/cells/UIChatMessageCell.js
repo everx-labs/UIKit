@@ -209,9 +209,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     animatedBubble = new Animated.Value(1);
-    bubbleScaleAnimation(grow: boolean = true) {
+    bubbleScaleAnimation(scaleIn: boolean = false) {
         Animated.spring(this.animatedBubble, {
-            toValue: grow ? 1.1 : 1.0,
+            toValue: scaleIn ? UIConstant.animationScaleInFactor() : 1.0,
             friction: 3,
             useNativeDriver: true,
         }).start();
@@ -565,11 +565,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { data } = this.props;
         return (
             <TouchableWithoutFeedback
-                onPressOut={() => this.bubbleScaleAnimation(false)}
+                onPressOut={() => this.bubbleScaleAnimation()}
                 onLongPress={
                 () => {
                     if (data && (data instanceof String || typeof data === 'string')) {
-                        this.bubbleScaleAnimation();
+                        this.bubbleScaleAnimation(true);
                         UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
                     }
                 }}

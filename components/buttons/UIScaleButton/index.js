@@ -5,6 +5,7 @@ import { Animated } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIActionComponent from '../../UIActionComponent';
+import UIConstant from '../../../helpers/UIConstant';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
@@ -15,13 +16,11 @@ type Props = ActionProps & {
 
 type State = ActionState;
 
-const SCALE_IN_FACTOR = 0.95;
-
 export default class UIScaleButton extends UIActionComponent<Props, State> {
     static defaultProps = {
         ...UIActionComponent.defaultProps,
         style: {},
-        scaleInFactor: SCALE_IN_FACTOR,
+        scaleInFactor: UIConstant.animationScaleInFactor(),
     }
 
     // constructor
