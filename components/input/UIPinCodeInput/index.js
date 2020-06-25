@@ -43,7 +43,7 @@ type Props = {
     pinCodeEnter: (pin: string) => void,
     testID?: string,
     commentTestID?: string,
-    biometryType?: ?$Values<BiometryType>,
+    biometryType?: ?$Values<typeof BiometryType>,
     onBiometryPress?: () => void,
 };
 
@@ -149,10 +149,16 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     };
 
     onPressBiometry = async () => {
+        if (!this.props.onBiometryPress) {
+            return;
+        }
+
         const pin = await this.props.onBiometryPress();
 
-        this.setState({ values: pin.split('').map(n => +n) });
-        this.props.pinCodeEnter(pin);
+        if (pin) {
+            this.setState({ values: pin.split('').map(n => +n) });
+            this.props.pinCodeEnter(pin);
+        }
     }
 
     onPressPredefined = () => {
@@ -251,7 +257,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderBiometryLogin() {
         const { biometryType } = this.props;
 
-        if (!biometryType) {
+        if (!biometryType || !this.props.onBiometryPress) {
             return null;
         }
 
