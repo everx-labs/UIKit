@@ -44,7 +44,7 @@ type Props = {
     testID?: string,
     commentTestID?: string,
     biometryType?: ?$Values<typeof BiometryType>,
-    onBiometryPress?: () => void,
+    getPasscodeWithBiometry?: () => Promise<string>,
 };
 
 const styles = StyleSheet.create({
@@ -146,12 +146,12 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         this.setState({ values });
     };
 
-    onPressBiometry = async () => {
-        if (!this.props.onBiometryPress) {
+    onBiometryPress = async () => {
+        if (!this.props.getPasscodeWithBiometry) {
             return;
         }
 
-        const pin = await this.props.onBiometryPress();
+        const pin = await this.props.getPasscodeWithBiometry();
 
         if (pin) {
             this.setState({ values: pin.split('').map(n => +n) });
@@ -159,7 +159,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         }
     }
 
-    onPressPredefined = () => {
+    onPredefinedPress = () => {
         if (this.props.disabled) {
             return;
         }
@@ -174,7 +174,6 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     };
 
     // actions
-
     resetPin() {
         this.setState({
             values: [],
@@ -255,7 +254,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderBiometryLogin() {
         const { biometryType } = this.props;
 
-        if (!biometryType || !this.props.onBiometryPress) {
+        if (!biometryType || !this.props.getPasscodeWithBiometry) {
             return null;
         }
 
@@ -449,8 +448,8 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         testID="pincode_biometry"
                         style={styles.key}
                         onPress={this.props.usePredefined
-                            ? this.onPressPredefined
-                            : this.onPressBiometry
+                            ? this.onPredefinedPress
+                            : this.onBiometryPress
                         }
                     >
                         {this.props.usePredefined && (
