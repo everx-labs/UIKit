@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
     key: {
         // Coefficient 1.01 need for ios version because
         // new font symbols interval bigger than default font.
-        width: UIConstant.largeButtonHeight() * 1.01,
-        height: UIConstant.largeButtonHeight(),
+        width: UIConstant.extraLargeButtonHeight() * 1.01,
+        height: UIConstant.extraLargeButtonHeight(),
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: UIConstant.contentOffset(),
+        marginHorizontal: UIConstant.smallContentOffset(),
     },
 });
 

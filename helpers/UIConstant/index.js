@@ -49,6 +49,7 @@ const UI_SMALL_BUTTON_HEIGHT = 32;
 const UI_MEDIUM_BUTTON_HEIGHT = 40;
 const UI_DEFAULT_BUTTON_HEIGHT = 48;
 const UI_LARGE_BUTTON_HEIGHT = 56;
+const UI_EXTRA_LARGE_BUTTON_HEIGHT = 72;
 
 const UI_TINY_CELL_HEIGHT = 16;
 const UI_LITTLE_CELL_HEIGHT = 20;
@@ -345,6 +346,10 @@ export default class UIConstant {
 
     static largeButtonHeight() { // 56
         return UI_LARGE_BUTTON_HEIGHT;
+    }
+
+    static extraLargeButtonHeight() { // 72
+        return UI_EXTRA_LARGE_BUTTON_HEIGHT;
     }
 
     static tinyCellHeight() {
