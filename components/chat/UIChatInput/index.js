@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { Platform, Image, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Platform, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UITextButton from '../../buttons/UITextButton';
@@ -160,13 +160,13 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         if (val.length > 0) {
             return (
                 <View style={menuMore ? styles.btnSend : UIStyle.Margin.rightDefault()}>
-                    <TouchableHighlight
+                    <TouchableOpacity
                         style={styles.btnMenuContainer}
                         testID="send_btn"
                         onPress={() => this.onSendText(val)}
                     >
                         <Image source={btnSend} />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
             );
         }
