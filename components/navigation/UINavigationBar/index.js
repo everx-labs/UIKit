@@ -82,6 +82,7 @@ type UINavigationBarOptions = {
     searchBar?: boolean,
     headerLeft?: React$Node,
     headerRight?: React$Node,
+    headerCenter?: React$Node,
     headerStyle?: {},
 }
 
