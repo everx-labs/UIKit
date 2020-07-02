@@ -200,7 +200,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
                         {...testIDProp}
                         style={[styles.buttonsContainer, buttonsContainerStyle]}
                     >
-                        {this.getHeaderCenter() /* wrapped in `absolute` container */}
+                        {this.getHeaderCenter() /* `absolute` container, rendered bellow buttons */}
                         {this.getHeaderLeft()}
                         {this.getHeaderRight()}
                     </View>
