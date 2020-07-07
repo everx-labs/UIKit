@@ -40,6 +40,7 @@ type Props = {
     onPress?: (details: DetailsRow) => void,
     leftCellStyle?: ViewStyleProp,
     rightCellStyle?: ViewStyleProp,
+    rowSeparator?: boolean,
 }
 
 type State = {};
@@ -84,6 +85,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     static defaultProps: Props = {
         detailsList: [],
+        rowSeparator: true,
     };
 
     static formatNestedList(args: FormatNestedListArgs | DetailsList, keyParam?: string) {
@@ -215,7 +217,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderRows() {
-        const { detailsList, rightCellStyle } = this.props;
+        const { detailsList, rightCellStyle, rowSeparator } = this.props;
         return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
                 caption, value, captionType, key, showAlways, component,
@@ -236,7 +238,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         UIStyle.padding.vertical(),
                         UIStyle.common.flexRow(),
                         marginTopStyle,
-                        index > 0 && styles.borderTop,
+                        index > 0 && rowSeparator && styles.borderTop,
                     ]}
                     key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
                 >
