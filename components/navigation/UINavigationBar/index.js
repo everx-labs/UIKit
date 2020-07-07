@@ -40,6 +40,15 @@ const styles = StyleSheet.create({
     navigatorHeader: {
         ...StyleSheet.flatten(UIStyle.navigatorHeader),
     },
+    headerCenter: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: '20%', // to leave some space for headerLeft
+        right: '20%', // to leave some space for headerRight
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 export interface ReactNavigation {
@@ -66,23 +75,23 @@ export interface ReactNavigation {
 
 export type CreateNavigationOptions = (options: { navigation: ReactNavigation }) => {};
 
-export type AnyComponent = Object;
-
 type UINavigationBarOptions = {
     title?: string,
     titleRight?: React$Node,
     useDefaultStyle?: boolean,
     searchBar?: boolean,
-    headerLeft?: AnyComponent,
-    headerRight?: AnyComponent,
+    headerLeft?: React$Node,
+    headerRight?: React$Node,
+    headerCenter?: React$Node,
     headerStyle?: {},
 }
 
 type UINavigationBarProps = {
     title?: string,
     titleRight?: React$Node,
-    headerLeft?: ?AnyComponent,
-    headerRight?: ?AnyComponent,
+    headerLeft?: React$Node,
+    headerRight?: React$Node,
+    headerCenter?: React$Node,
     containerStyle?: ViewStyleProp,
     buttonsContainerStyle?: ViewStyleProp,
 }
@@ -92,6 +101,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         title: '',
         headerLeft: null,
         headerRight: null,
+        headerCenter: null,
     };
 
     static navigationOptions(navigation: ReactNavigation, options: UINavigationBarOptions) {
@@ -125,6 +135,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
                         titleRight={options.titleRight}
                         headerLeft={headerLeft}
                         headerRight={options.headerRight}
+                        headerCenter={options.headerCenter}
                     />
                 ),
             };
@@ -143,11 +154,19 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         return this.props.title;
     }
 
-    getHeaderLeft(): ?AnyComponent {
+    getHeaderLeft(): ?React$Node {
         return this.props.headerLeft;
     }
 
-    getHeaderRight(): ?AnyComponent {
+    getHeaderCenter(): ?React$Node {
+        return (
+            <View style={styles.headerCenter} >
+                {this.props.headerCenter}
+            </View>
+        );
+    }
+
+    getHeaderRight(): ?React$Node {
         return this.props.headerRight;
     }
 
@@ -181,6 +200,7 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
                         {...testIDProp}
                         style={[styles.buttonsContainer, buttonsContainerStyle]}
                     >
+                        {this.getHeaderCenter() /* `absolute` container, rendered bellow buttons */}
                         {this.getHeaderLeft()}
                         {this.getHeaderRight()}
                     </View>

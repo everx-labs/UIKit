@@ -65,6 +65,7 @@ const ru: UILocalizedData = {
     Done: 'Готово',
     Continue: 'Продолжить',
     Close: 'Закрыть',
+    Add: 'Добавить',
     Edit: 'Изменить',
     Delete: 'Удалить',
     Manage: 'Управлять',
