@@ -37,6 +37,14 @@ export default class UIPinCodeDots extends React.Component<
         toValue: 1,
         useNativeDriver: true,
     });
+    resetTimeoutId: ?TimeoutID = null;
+
+    componentWillUnmount() {
+        this.shakeAnimation.stop();
+        if (this.resetTimeoutId) {
+            clearTimeout(this.resetTimeoutId);
+        }
+    }
 
     showWrongPin(): Promise<void> {
         this.setState({ wrongPin: true });
@@ -44,7 +52,7 @@ export default class UIPinCodeDots extends React.Component<
 
         return new Promise((resolve) => {
             this.shakeAnimation.start(() => {
-                setTimeout(() => {
+                this.resetTimeoutId = setTimeout(() => {
                     this.setState({ wrongPin: false });
                 }, UIConstant.animationAccentInteractionDurationFast());
                 this.shakeValue.setValue(0);
@@ -57,7 +65,7 @@ export default class UIPinCodeDots extends React.Component<
         this.setState({ rightPin: true });
 
         return new Promise((resolve) => {
-            setTimeout(() => {
+            this.resetTimeoutId = setTimeout(() => {
                 this.setState({ rightPin: false });
                 resolve();
             }, UIConstant.animationDuration() + UIConstant.animationAccentInteractionDurationFast());
