@@ -47,6 +47,12 @@ export default class UIPinCodeDots extends React.Component<
     }
 
     showWrongPin(): Promise<void> {
+        if (this.resetTimeoutId) {
+            this.setState({ wrongPin: false });
+            clearTimeout(this.resetTimeoutId);
+            return Promise.resolve();
+        }
+
         this.setState({ wrongPin: true });
         Vibration.vibrate(500);
 
@@ -62,6 +68,12 @@ export default class UIPinCodeDots extends React.Component<
     }
 
     showRightPin(): Promise<void> {
+        if (this.resetTimeoutId) {
+            this.setState({ rightPin: false });
+            clearTimeout(this.resetTimeoutId);
+            return Promise.resolve();
+        }
+
         this.setState({ rightPin: true });
 
         return new Promise((resolve) => {
