@@ -54,6 +54,7 @@ export default class UIPinCodeDots extends React.Component<
         if (this.resetTimeoutId) {
             // If there was some state before, clear it
             clearTimeout(this.resetTimeoutId);
+            this.resetTimeoutId = null;
         }
     }
 
@@ -64,7 +65,7 @@ export default class UIPinCodeDots extends React.Component<
         return new Promise((resolve) => {
             this.shakeAnimation.start(() => {
                 this.resetTimeoutId = setTimeout(() => {
-                    this.setState({ wrongPin: false });
+                    this.resetState({ wrongPin: false });
                 }, UIConstant.animationAccentInteractionDurationFast());
                 this.shakeValue.setValue(0);
                 resolve();
@@ -77,7 +78,7 @@ export default class UIPinCodeDots extends React.Component<
 
         return new Promise((resolve) => {
             this.resetTimeoutId = setTimeout(() => {
-                this.setState({ rightPin: false });
+                this.resetState({ rightPin: false });
                 resolve();
             }, UIConstant.animationDuration() + UIConstant.animationAccentInteractionDurationFast());
         });
