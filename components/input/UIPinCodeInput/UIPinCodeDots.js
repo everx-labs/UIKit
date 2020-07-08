@@ -16,12 +16,14 @@ const styles = StyleSheet.create({
     },
 });
 
+type State = { wrongPin: boolean, rightPin: boolean };
+
 export default class UIPinCodeDots extends React.Component<
     {
         length: number,
         values: Array<number>,
     },
-    { wrongPin: boolean, rightPin: boolean },
+    State,
 > {
     state = {
         wrongPin: false,
@@ -46,14 +48,17 @@ export default class UIPinCodeDots extends React.Component<
         }
     }
 
-    showWrongPin(): Promise<void> {
+    resetState(state: $Shape<State>) {
+        // Reset state, to prevent race conditions
+        this.setState({ wrongPin: false, rightPin: false, ...state });
         if (this.resetTimeoutId) {
-            this.setState({ wrongPin: false });
+            // If there was some state before, clear it
             clearTimeout(this.resetTimeoutId);
-            return Promise.resolve();
         }
+    }
 
-        this.setState({ wrongPin: true });
+    showWrongPin(): Promise<void> {
+        this.resetState({ wrongPin: true });
         Vibration.vibrate(500);
 
         return new Promise((resolve) => {
@@ -68,13 +73,7 @@ export default class UIPinCodeDots extends React.Component<
     }
 
     showRightPin(): Promise<void> {
-        if (this.resetTimeoutId) {
-            this.setState({ rightPin: false });
-            clearTimeout(this.resetTimeoutId);
-            return Promise.resolve();
-        }
-
-        this.setState({ rightPin: true });
+        this.resetState({ rightPin: true });
 
         return new Promise((resolve) => {
             this.resetTimeoutId = setTimeout(() => {
