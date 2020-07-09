@@ -202,36 +202,30 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return null;
         }
 
-        if (menuPlus.length === 1) {
+        const activeButton = () => {
+            if (menuPlus.length === 1) {
+                return (
+                    <TouchableOpacity onPress={menuPlus[0].onPress}>
+                        <Image source={btnPlus} />
+                    </TouchableOpacity>
+                );
+            }
             return (
-                <View style={styles.btnMenuContainer}>
-                    <View style={styles.btnMenu}>
-                        {!menuPlusDisabled
-                            ? (
-                                <TouchableOpacity onPress={menuPlus[0].onPress}>
-                                    <Image source={btnPlus} />
-                                </TouchableOpacity>
-                            )
-                            : (<Image source={btnPlusDisabled} />)
-                        }
-                    </View>
-                </View>
+                <UIPopoverMenu
+                    testID="menu_view"
+                    menuItemsList={menuPlus}
+                    placement="top"
+                >
+                    <Image source={btnPlus} />
+                </UIPopoverMenu>
             );
-        }
+        };
 
         return (
             <View style={styles.btnMenuContainer}>
                 <View style={styles.btnMenu}>
                     {!menuPlusDisabled
-                        ? (
-                            <UIPopoverMenu
-                                testID="menu_view"
-                                menuItemsList={menuPlus}
-                                placement="top"
-                            >
-                                <Image source={btnPlus} />
-                            </UIPopoverMenu>
-                        )
+                        ? activeButton()
                         : (<Image source={btnPlusDisabled} />)
                     }
                 </View>
@@ -246,37 +240,30 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return null;
         }
 
-        if (menuMore.length === 1) {
+        const activeButton = () => {
+            if (menuMore.length === 1) {
+                return (
+                    <TouchableOpacity onPress={menuMore[0].onPress}>
+                        <Image source={btnDots} />
+                    </TouchableOpacity>
+                );
+            }
             return (
-                <View style={styles.btnMenuContainer}>
-                    <View style={styles.btnMenu}>
-                        {!menuMoreDisabled
-                            ? (
-                                <TouchableOpacity onPress={menuMore[0].onPress}>
-                                    <Image source={btnDots} />
-                                </TouchableOpacity>
-                            )
-                            // TODO: support btnDotsDisabled
-                            : (<Image source={btnDots} />)
-                        }
-                    </View>
-                </View>
+                <UIPopoverMenu
+                    testID="menu_view"
+                    menuItemsList={menuMore}
+                    placement="top"
+                >
+                    <Image source={btnDots} />
+                </UIPopoverMenu>
             );
-        }
+        };
 
         return (
             <View style={styles.btnMenuContainer}>
                 <View style={styles.btnMenu}>
                     {!menuMoreDisabled
-                        ? (
-                            <UIPopoverMenu
-                                testID="menu_view"
-                                menuItemsList={menuMore}
-                                placement="top"
-                            >
-                                <Image source={btnDots} />
-                            </UIPopoverMenu>
-                        )
+                        ? (activeButton())
                         // TODO: support btnDotsDisabled
                         : (<Image source={btnDots} />)
                     }
