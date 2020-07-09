@@ -198,23 +198,34 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     renderPlusMenu() {
         const { menuPlus, menuPlusDisabled } = this.props;
 
-        if (!menuPlus) {
+        if (!menuPlus || menuPlus.length === 0) {
             return null;
         }
+
+        const activeButton = () => {
+            if (menuPlus.length === 1) {
+                return (
+                    <TouchableOpacity onPress={menuPlus[0].onPress}>
+                        <Image source={btnPlus} />
+                    </TouchableOpacity>
+                );
+            }
+            return (
+                <UIPopoverMenu
+                    testID="menu_view"
+                    menuItemsList={menuPlus}
+                    placement="top"
+                >
+                    <Image source={btnPlus} />
+                </UIPopoverMenu>
+            );
+        };
 
         return (
             <View style={styles.btnMenuContainer}>
                 <View style={styles.btnMenu}>
                     {!menuPlusDisabled
-                        ? (
-                            <UIPopoverMenu
-                                testID="menu_view"
-                                menuItemsList={menuPlus}
-                                placement="top"
-                            >
-                                <Image source={btnPlus} />
-                            </UIPopoverMenu>
-                        )
+                        ? activeButton()
                         : (<Image source={btnPlusDisabled} />)
                     }
                 </View>
@@ -225,23 +236,34 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     renderMoreMenu() {
         const { menuMore, menuMoreDisabled } = this.props;
 
-        if (!menuMore) {
+        if (!menuMore || menuMore.length === 0) {
             return null;
         }
+
+        const activeButton = () => {
+            if (menuMore.length === 1) {
+                return (
+                    <TouchableOpacity onPress={menuMore[0].onPress}>
+                        <Image source={btnDots} />
+                    </TouchableOpacity>
+                );
+            }
+            return (
+                <UIPopoverMenu
+                    testID="menu_view"
+                    menuItemsList={menuMore}
+                    placement="top"
+                >
+                    <Image source={btnDots} />
+                </UIPopoverMenu>
+            );
+        };
 
         return (
             <View style={styles.btnMenuContainer}>
                 <View style={styles.btnMenu}>
                     {!menuMoreDisabled
-                        ? (
-                            <UIPopoverMenu
-                                testID="menu_view"
-                                menuItemsList={menuMore}
-                                placement="top"
-                            >
-                                <Image source={btnDots} />
-                            </UIPopoverMenu>
-                        )
+                        ? activeButton()
                         // TODO: support btnDotsDisabled
                         : (<Image source={btnDots} />)
                     }
