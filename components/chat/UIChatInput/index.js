@@ -156,13 +156,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         }
     }
 
-    onImageAttachPress = () => {
-        const { onImageAttach } = this.props;
-        if (onImageAttach) {
-            onImageAttach();
-        }
-    }
-
     // Render
     renderQuickAction() {
         const { quickAction, menuMore } = this.props;
