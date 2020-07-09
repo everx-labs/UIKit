@@ -206,9 +206,14 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return (
                 <View style={styles.btnMenuContainer}>
                     <View style={styles.btnMenu}>
-                        <TouchableOpacity onPress={menuPlus[0].onPress}>
-                            <Image source={btnPlus} />
-                        </TouchableOpacity>
+                        {!menuPlusDisabled
+                            ? (
+                                <TouchableOpacity onPress={menuPlus[0].onPress}>
+                                    <Image source={btnPlus} />
+                                </TouchableOpacity>
+                            )
+                            : (<Image source={btnPlusDisabled} />)
+                        }
                     </View>
                 </View>
             );
@@ -245,9 +250,15 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return (
                 <View style={styles.btnMenuContainer}>
                     <View style={styles.btnMenu}>
-                        <TouchableOpacity onPress={menuMore[0].onPress}>
-                            <Image source={btnDots} />
-                        </TouchableOpacity>
+                        {!menuMoreDisabled
+                            ? (
+                                <TouchableOpacity onPress={menuMore[0].onPress}>
+                                    <Image source={btnDots} />
+                                </TouchableOpacity>
+                            )
+                            // TODO: support btnDotsDisabled
+                            : (<Image source={btnDots} />)
+                        }
                     </View>
                 </View>
             );
