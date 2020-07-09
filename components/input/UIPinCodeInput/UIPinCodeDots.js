@@ -16,12 +16,14 @@ const styles = StyleSheet.create({
     },
 });
 
+type State = { wrongPin: boolean, rightPin: boolean };
+
 export default class UIPinCodeDots extends React.Component<
     {
         length: number,
         values: Array<number>,
     },
-    { wrongPin: boolean, rightPin: boolean },
+    State,
 > {
     state = {
         wrongPin: false,
@@ -37,15 +39,33 @@ export default class UIPinCodeDots extends React.Component<
         toValue: 1,
         useNativeDriver: true,
     });
+    resetTimeoutId: ?TimeoutID = null;
+
+    componentWillUnmount() {
+        this.shakeAnimation.stop();
+        if (this.resetTimeoutId) {
+            clearTimeout(this.resetTimeoutId);
+        }
+    }
+
+    resetState(state: $Shape<State>) {
+        // Reset state, to prevent race conditions
+        this.setState({ wrongPin: false, rightPin: false, ...state });
+        if (this.resetTimeoutId) {
+            // If there was some state before, clear it
+            clearTimeout(this.resetTimeoutId);
+            this.resetTimeoutId = null;
+        }
+    }
 
     showWrongPin(): Promise<void> {
-        this.setState({ wrongPin: true });
+        this.resetState({ wrongPin: true });
         Vibration.vibrate(500);
 
         return new Promise((resolve) => {
             this.shakeAnimation.start(() => {
-                setTimeout(() => {
-                    this.setState({ wrongPin: false });
+                this.resetTimeoutId = setTimeout(() => {
+                    this.resetState({ wrongPin: false });
                 }, UIConstant.animationAccentInteractionDurationFast());
                 this.shakeValue.setValue(0);
                 resolve();
@@ -54,11 +74,11 @@ export default class UIPinCodeDots extends React.Component<
     }
 
     showRightPin(): Promise<void> {
-        this.setState({ rightPin: true });
+        this.resetState({ rightPin: true });
 
         return new Promise((resolve) => {
-            setTimeout(() => {
-                this.setState({ rightPin: false });
+            this.resetTimeoutId = setTimeout(() => {
+                this.resetState({ rightPin: false });
                 resolve();
             }, UIConstant.animationDuration() + UIConstant.animationAccentInteractionDurationFast());
         });
