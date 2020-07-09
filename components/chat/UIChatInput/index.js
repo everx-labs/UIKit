@@ -246,7 +246,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                 <View style={styles.btnMenuContainer}>
                     <View style={styles.btnMenu}>
                         <TouchableOpacity onPress={menuMore[0].onPress}>
-                            <Image source={btnPlus} />
+                            <Image source={btnDots} />
                         </TouchableOpacity>
                     </View>
                 </View>
