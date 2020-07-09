@@ -198,7 +198,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     renderPlusMenu() {
         const { menuPlus, menuPlusDisabled } = this.props;
 
-        if (!menuPlus) {
+        if (!menuPlus || menuPlus.length === 0) {
             return null;
         }
 
@@ -237,8 +237,20 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     renderMoreMenu() {
         const { menuMore, menuMoreDisabled } = this.props;
 
-        if (!menuMore) {
+        if (!menuMore || menuMore.length === 0) {
             return null;
+        }
+
+        if (menuMore.length === 1) {
+            return (
+                <View style={styles.btnMenuContainer}>
+                    <View style={styles.btnMenu}>
+                        <TouchableOpacity onPress={menuMore[0].onPress}>
+                            <Image source={btnPlus} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            );
         }
 
         return (
