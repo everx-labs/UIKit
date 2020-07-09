@@ -23,8 +23,6 @@ import btnPlusDisabled from '../../../assets/btn_plus_disabled/btn_plus_disabled
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
-    onlyImagesAttach: boolean, // if true menuPlus does not work
-    onImageAttach: () => void,
     menuPlus?: ?MenuItemType[],
     menuMore?: ?MenuItemType[],
     menuPlusDisabled?: boolean,
@@ -205,17 +203,17 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     renderPlusMenu() {
-        const { menuPlus, menuPlusDisabled, onlyImagesAttach } = this.props;
+        const { menuPlus, menuPlusDisabled } = this.props;
 
         if (!menuPlus) {
             return null;
         }
 
-        if (onlyImagesAttach) {
+        if (menuPlus.length === 1) {
             return (
                 <View style={styles.btnMenuContainer}>
                     <View style={styles.btnMenu}>
-                        <TouchableOpacity onPress={this.onImageAttachPress}>
+                        <TouchableOpacity onPress={menuPlus[0].onPress}>
                             <Image source={btnPlus} />
                         </TouchableOpacity>
                     </View>
