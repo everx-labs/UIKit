@@ -263,7 +263,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             <View style={styles.btnMenuContainer}>
                 <View style={styles.btnMenu}>
                     {!menuMoreDisabled
-                        ? (activeButton())
+                        ? activeButton()
                         // TODO: support btnDotsDisabled
                         : (<Image source={btnDots} />)
                     }
