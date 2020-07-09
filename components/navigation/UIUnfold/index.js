@@ -41,6 +41,11 @@ type Props = {
     */
     iconPosition?: ?string,
     /**
+    Position of button to content, one of UIUnfold.Position.Top, UIUnfold.Position.Bottom
+    @default UIUnfold.Position.Top
+    */
+    buttonPosition?: ?string,
+    /**
     Component to fold/unfold
     @default null
     */
@@ -90,6 +95,8 @@ export default class UIUnfold extends UIComponent<Props, State> {
     static position = {
         right: 'right',
         left: 'left',
+        top: 'top',
+        bottom: 'bottom',
     };
     static size = {
         m: 'm',
@@ -100,6 +107,8 @@ export default class UIUnfold extends UIComponent<Props, State> {
     static Position = {
         Right: 'right',
         Left: 'left',
+        Top: 'top',
+        Bottom: 'bottom',
     };
     static Size = {
         M: 'm',
@@ -113,6 +122,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
         iconShow: iconShowDefault,
         iconHide: iconHideDefault,
         iconPosition: UIUnfold.position.right,
+        buttonPosition: UIUnfold.position.top,
         content: null,
         style: null,
         textStyle: null,
@@ -157,7 +167,7 @@ export default class UIUnfold extends UIComponent<Props, State> {
     // Render
     renderButton() {
         const {
-            showButton, textStyle, iconHide, iconShow, titleHide, titleShow, iconPosition,
+            showButton, textStyle, iconHide, iconShow, titleHide, titleShow, iconPosition, buttonPosition,
         } = this.props;
         const { unfolded } = this.state;
         const image = unfolded ? <Image source={iconHide} /> : <Image source={iconShow} />;
@@ -166,12 +176,13 @@ export default class UIUnfold extends UIComponent<Props, State> {
         const iconLeft = isRight ? null : icon;
         const iconRight = isRight ? icon : null;
         const title = unfolded ? titleHide : titleShow;
+        const isTop = buttonPosition === UIUnfold.position.top;
 
         const containerStyle = [
             UIStyle.common.flex(),
             UIStyle.common.flexRow(),
             UIStyle.common.alignCenter(),
-            UIStyle.margin.bottomDefault(),
+            isTop ? UIStyle.margin.bottomDefault() : UIStyle.margin.topDefault(),
         ];
 
         if (title && iconRight) {
@@ -207,12 +218,18 @@ export default class UIUnfold extends UIComponent<Props, State> {
     }
 
     render() {
-        const { style, content } = this.props;
-        return (
+        const { style, content, buttonPosition } = this.props;
+        return buttonPosition === UIUnfold.position.top ? (
             <View onLayout={this.props.onLayout} style={[UIStyle.margin.topDefault(), style]}>
                 {this.renderButton()}
                 {this.state.unfolded ? content : null}
             </View>
-        );
+        ) :
+            (
+                <View onLayout={this.props.onLayout} style={[UIStyle.margin.topDefault(), style]}>
+                    {this.state.unfolded ? content : null}
+                    {this.renderButton()}
+                </View>
+            );
     }
 }
