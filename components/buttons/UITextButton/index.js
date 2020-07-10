@@ -38,7 +38,6 @@ type Props = ActionProps & {
     style?: ViewStyleProp,
     containerStyle?: ViewStyleProp,
     buttonStyle?: ViewStyleProp,
-    style?: ViewStyleProp,
     details: string,
     detailsStyle?: TextStyleProp,
     icon: ?ImageSource,
