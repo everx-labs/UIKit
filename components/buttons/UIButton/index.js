@@ -171,6 +171,10 @@ export type ButtonProps = ActionProps & {
     /** button title style
     @default null
     */
+   countStyle?: StylePropType,
+   /** count text style
+    @default null
+    */
     textHoverStyle?: StylePropType,
     /** Visible button title
     @default ''
@@ -492,7 +496,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (!this.props.count) return null;
 
         const data = (
-            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.margin.leftSmall()]}>
+            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.margin.leftSmall(), this.props.countStyle]}>
                 {this.props.count}
             </Text>);
 
