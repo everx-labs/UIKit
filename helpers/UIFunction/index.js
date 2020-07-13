@@ -230,7 +230,7 @@ export default class UIFunction {
             minimumFractionDigits: 0,
             maximumFractionDigits: 9,
         },
-        isNormalized?: boolean = false,
+        isNormalized: boolean = false,
     ): ?NumberParts {
         // Normalize passed value
         const normalizedValue = isNormalized

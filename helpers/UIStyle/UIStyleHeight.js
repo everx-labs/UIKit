@@ -35,7 +35,7 @@ export const heightStyles = {
         minHeight: UIConstant.greatCellHeight(),
     },
 
-    buttonHeight: {
+    buttonHeight: { // 48
         height: UIConstant.buttonHeight(),
     },
     fullHeight: {
@@ -86,7 +86,7 @@ export default class UIStyleHeight {
         return styles.minHeightGreatCell;
     }
 
-    static buttonHeight() {
+    static buttonHeight() { // 48
         return styles.buttonHeight;
     }
 
