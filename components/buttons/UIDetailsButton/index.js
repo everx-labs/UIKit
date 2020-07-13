@@ -236,28 +236,21 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         const {
             progress, image, narrow, index,
         } = this.props;
+        const margin = narrow ? UIStyle.margin.rightSmall() : UIStyle.margin.rightDefault();
         if (progress) {
             return this.renderProgressCard();
         }
         return (
             <View style={UIStyle.container.centerLeft()}>
                 {index !== null && (
-                    <Text
-                        style={[
-                            UIStyle.text.primarySmallMedium(),
-                            narrow ? UIStyle.margin.rightTiny() : UIStyle.margin.rightSmall(),
-                        ]}
-                    >
+                    <Text style={[UIStyle.text.primarySmallMedium(), margin]}>
                         {index}.
                     </Text>
                 )}
                 {!!image && (
                     <Image
                         source={image}
-                        style={[
-                            styles.avatar,
-                            narrow ? UIStyle.margin.rightSmall() : UIStyle.margin.rightDefault(),
-                        ]}
+                        style={[styles.avatar, margin]}
                     />
                 )}
                 {this.renderContentCard()}
