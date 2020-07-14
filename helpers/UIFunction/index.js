@@ -9,6 +9,7 @@ import isEmail from 'validator/lib/isEmail';
 import BigNumber from 'bignumber.js';
 
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { BigNum } from '../../types/BigNum';
 
 import UIConstant from '../../helpers/UIConstant';
 
@@ -29,7 +30,7 @@ type BankCardNumberArgs = {
 }
 
 export type NumberParts = {
-    value: number,
+    value: BigNum,
     integer: string,
     decimal: string,
     valueString: string,
@@ -191,10 +192,11 @@ export default class UIFunction {
     }
 
     // Allows to print small numbers with "-e" suffix
-    static getNumberString(number: number, digits: number = 10): string {
-        if (Math.abs(number) > 1) { // Apply BigNumber conversion only for non-small numbers!
+    static getNumberString(number: number | BigNum, digits: number = 10): string {
+        // $FlowExpectedError
+        if (!(number instanceof BigNumber) && (Math.abs(number) > 1)) { // Apply BigNumber conversion only for non-small numbers!
             try {
-                return new BigNumber(number.toString()).toString();
+                return new BigNumber(number.toFixed()).toFixed();
             } catch (error) {
                 // Failed to convert the number to string with BigNumber instance
             }
@@ -251,7 +253,7 @@ export default class UIFunction {
         }
         // Calculate and combine the result values into a single TONNumberParts object
         const result = {
-            value: 0,
+            value: new BigNumber(0),
             integer: '0',
             decimal: '',
             valueString: '0',
@@ -266,7 +268,7 @@ export default class UIFunction {
             ? `0${trimmedValue}`
             : trimmedValue;
         // Set resulted value
-        result.value = Number(plainValue);
+        result.value = new BigNumber(plainValue);
         // Find value components
         const components = plainValue.split(defaultSeparator);
         result.integer = components[0] || '0';
