@@ -193,6 +193,7 @@ export default class UIFunction {
 
     // Allows to print small numbers with "-e" suffix
     static getNumberString(number: number | BigNum, digits: number = 10): string {
+        // $FlowExpectedError
         if (!(number instanceof BigNumber) && (Math.abs(number) > 1)) { // Apply BigNumber conversion only for non-small numbers!
             try {
                 return new BigNumber(number.toFixed()).toFixed();
