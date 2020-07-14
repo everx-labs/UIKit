@@ -201,9 +201,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
             inputPlaceholder: '',
         };
 
-        const finalValue = valueString;
-
-        this.setStateSafely({ valueString: finalValue, inputPlaceholder });
+        this.setStateSafely({ valueString, inputPlaceholder });
     }
 
     // Render
