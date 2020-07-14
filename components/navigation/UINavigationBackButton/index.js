@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
-
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { RouteProp } from '@react-navigation/native';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIAssets from '../../../assets/UIAssets';
@@ -14,6 +14,7 @@ type Props = {
     containerStyle: ViewStyleProp,
     icon: any,
     navigation: Object,
+    route: RouteProp<empty, string>,
 };
 
 type State = {};
@@ -32,7 +33,7 @@ export default class UINavigationBackButton extends UIComponent<Props, State> {
     }
 
     getNavigationParams() {
-        return this.props.navigation.state.params;
+        return this.props.route.params;
     }
 
     getContainerStyle() {
@@ -49,7 +50,7 @@ export default class UINavigationBackButton extends UIComponent<Props, State> {
         const testIDProp = testID ? { testID } : null;
         const params = this.getNavigationParams();
         if (params && params.initialRoute) {
-            return (<View />);
+            return <View />;
         }
         return (
             <TouchableOpacity

@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { RouteProp } from '@react-navigation/native';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -56,7 +57,7 @@ export interface ReactNavigation {
 
     goBack(): void;
 
-    addListener(event: any, callback: (payload: any) => void): { remove(): void };
+    addListener(event: any, callback: (payload: any) => void): () => void;
 
     isFocused(): boolean;
 
@@ -104,15 +105,27 @@ export default class UINavigationBar extends UIComponent<UINavigationBarProps, *
         headerCenter: null,
     };
 
-    static navigationOptions(navigation: ReactNavigation, options: UINavigationBarOptions) {
+    static navigationOptions(
+        navigation: ReactNavigation,
+        route: RouteProp<empty, string>,
+        options: UINavigationBarOptions,
+    ) {
+        // TODO: delete this hack!
+        if (options == null) {
+            options = ((route: any): UINavigationBarOptions);
+        }
         let effective;
         // if headerLeft option unspecified, we use back button
-        const headerLeft = ('headerLeft' in options)
-            ? options.headerLeft
-            : (<UINavigationBackButton
-                navigation={navigation}
-                testID={`back_btn_${options.title || ''}`}
-            />);
+        const headerLeft =
+            'headerLeft' in options
+                ? options.headerLeft
+                : () => (
+                      <UINavigationBackButton
+                          navigation={navigation}
+                          route={route}
+                          testID={`back_btn_${options.title || ''}`}
+                      />
+                  );
 
         const hasLeftOrRight = headerLeft || options.headerRight;
 
