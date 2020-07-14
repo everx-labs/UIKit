@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import BigNumber from 'bignumber.js';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIAmountInput from '../UIAmountInput';
@@ -12,6 +13,7 @@ import UIStyle from '../../../helpers/UIStyle';
 
 import type { NumberParts, StringLocaleInfo } from '../../../helpers/UIFunction';
 import type { UIColorData } from '../../../helpers/UIColor/UIColorTypes';
+import type { BigNum } from '../../../types/BigNum';
 
 type Props = {
     containerStyle?: ViewStyleProp,
@@ -20,22 +22,22 @@ type Props = {
     onSubmitEditing?: () => void,
     autoFocus?: boolean,
     button?: Object,
-    value?: ?number,
+    value?: ?BigNum,
     token?: string,
     comment?: string,
     commentRight?: string,
     commentColor?: UIColorData,
     maxDecimals: number,
-    onValueChange?: (number: ?number) => void,
+    onValueChange?: (number: ?BigNum) => void,
     onBlur?: () => void,
     rightButton?: string,
     onRightButtonPress?: () => void,
     testID?: string,
-    minValue?: number,
+    minValue?: BigNum,
     minValueMessage?: string,
-    maxValue?: number,
+    maxValue?: BigNum,
     maxValueMessage?: string,
-    fees?: number,
+    fees?: BigNum,
     localeInfo: StringLocaleInfo,
 };
 
@@ -50,15 +52,13 @@ const options = {
     maximumFractionDigits: decimalDigits,
 };
 
-const MAX_INPUT_AMOUNT = 9000000; // Round the max value instead of using Number.MAX_SAFE_INTEGER-1
-
 export default class UITransferInput extends UIComponent<Props, State> {
     static defaultProps = {
         value: undefined,
         maxDecimals: UIConstant.maxDecimalDigits(),
         minValue: undefined,
         maxValue: undefined,
-        fees: 0,
+        fees: new BigNumber(0),
     };
 
     amountInput: ?UIAmountInput;
@@ -92,7 +92,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
         return this.props.maxDecimals;
     }
 
-    getValue(): ?number {
+    getValue(): ?BigNum {
         return this.props.value;
     }
 
@@ -102,7 +102,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
         if (value == null) {
             return UILocalized.formatString(minValueMessage, minValue);
         }
-        return minValue != null && minValueMessage != null && value < minValue
+        return minValue != null && minValueMessage != null && value.lt(minValue)
             ? UILocalized.formatString(minValueMessage, minValue)
             : undefined;
     }
@@ -112,13 +112,16 @@ export default class UITransferInput extends UIComponent<Props, State> {
         const { maxValue, maxValueMessage, value } = this.props;
         const fees = this.getFees();
 
-        return maxValue != null && maxValueMessage != null && value + fees >= maxValue - fees
+        return maxValue != null
+            && maxValueMessage != null
+            && value != null
+            && value.plus(fees).gte(maxValue.minus(fees))
             ? maxValueMessage
             : undefined;
     }
 
-    getFees(): number {
-        return this.props.fees || 0;
+    getFees(): BigNum {
+        return this.props.fees || new BigNumber(0);
     }
 
     // Setters
@@ -160,7 +163,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
 
     // Helpers
     parseText(text: string): ?{
-        value: ?number,
+        value: ?BigNum,
         valueString: string,
         inputPlaceholder: string,
     } {
@@ -182,9 +185,6 @@ export default class UITransferInput extends UIComponent<Props, State> {
             return null;
         }
         const value = !text ? undefined : parts.value;
-        if (value && value > MAX_INPUT_AMOUNT) {
-            return this.parseText(MAX_INPUT_AMOUNT.toString());
-        }
         const valueString = !text ? '' : parts.valueString;
         const zeros = Math.min(UIConstant.minDecimalDigits(), this.getMaxDecimals());
         const decimalPlaceholder = '0'.repeat(zeros);
@@ -192,7 +192,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
         return { value, valueString, inputPlaceholder };
     }
 
-    parseValue(value: ?number) {
+    parseValue(value: ?BigNum) {
         const text = value === undefined || value === null
             ? ''
             : UIFunction.getNumberString(value);
@@ -201,11 +201,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
             inputPlaceholder: '',
         };
 
-        let finalValue = valueString;
-        if (valueString === 'Infinity') {
-            const max = this.parseText(MAX_INPUT_AMOUNT.toString());
-            finalValue = max?.valueString || '0';
-        }
+        const finalValue = valueString;
 
         this.setStateSafely({ valueString: finalValue, inputPlaceholder });
     }
