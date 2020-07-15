@@ -9,7 +9,7 @@ import UIConstant from '../../../helpers/UIConstant';
 import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
 import UIStyle from '../../../helpers/UIStyle';
-import UINavigationBackButton from '../UINavigationBackButton';
+import UIReactNavigationBackButton from '../UIReactNavigationBackButton';
 import UISearchBar from '../../input/UISearchBar';
 import UIComponent from '../../UIComponent';
 
@@ -120,7 +120,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
             'headerLeft' in options
                 ? options.headerLeft
                 : () => (
-                      <UINavigationBackButton
+                      <UIReactNavigationBackButton
                           navigation={navigation}
                           route={route}
                           testID={`back_btn_${options.title || ''}`}
@@ -138,12 +138,16 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
             effective = {
                 headerStyle: [
                     styles.navigatorHeader,
-                    { height: UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1) },
+                    {
+                        height:
+                            UIDevice.navigationBarHeight() *
+                            (hasLeftOrRight ? 2 : 1),
+                    },
                     options.headerStyle || {},
                 ],
                 headerLeft: null, // only way to suppress unattended back button
                 headerTitle: (
-                    <UINavigationBar
+                    <UIReactNavigationBar
                         title={options.title}
                         titleRight={options.titleRight}
                         headerLeft={headerLeft}
