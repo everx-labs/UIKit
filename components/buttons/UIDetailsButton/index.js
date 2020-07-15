@@ -73,6 +73,13 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         details: '',
     };
 
+    static testIds = {
+        cardValue_1: 'cardValue_1',
+        cardValue_2: 'cardValue_2',
+        cardValue_3: 'cardValue_3',
+        cardValue_4: 'cardValue_4'
+    };
+
     constructor(props: Props) {
         super(props);
 
@@ -173,6 +180,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                 ellipsizeMode="middle"
                 numberOfLines={1}
                 style={UIStyle.text.primarySmallRegular()}
+                testID={UIDetailsButton.testIds.cardValue_4}
             >
                 {formattedCaption}
             </Text>
@@ -191,6 +199,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                             UIStyle.margin.rightDefault(),
                             this.getTitleColorStyle(),
                         ]}
+                        testID={UIDetailsButton.testIds.cardValue_1}
                     >
                         {formattedTitle}
                     </Text>
@@ -207,14 +216,16 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         const { secondDetails, details } = this.props;
         return !!(details || secondDetails) && (
             <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
-                <Text style={[
-                    UIStyle.text.secondaryCaptionRegular(),
-                    UIStyle.common.flex(),
-                ]}
+                <Text
+                    style={[
+                        UIStyle.text.secondaryCaptionRegular(),
+                        UIStyle.common.flex(),
+                    ]}
+                    testID={UIDetailsButton.testIds.cardValue_2}
                 >
                     {details}
                 </Text>
-                <Text style={UIStyle.text.secondaryCaptionRegular()}>
+                <Text style={UIStyle.text.secondaryCaptionRegular()} testID={UIDetailsButton.testIds.cardValue_3}>
                     {secondDetails}
                 </Text>
             </View>
