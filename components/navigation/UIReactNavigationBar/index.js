@@ -74,30 +74,35 @@ export interface ReactNavigation {
     push(routeName: string): void;
 }
 
-export type CreateNavigationOptions = (options: { navigation: ReactNavigation }) => {};
+export type CreateNavigationOptions = (options: {
+    navigation: ReactNavigation,
+}) => {};
 
 type UINavigationBarOptions = {
     title?: string,
     titleRight?: React$Node,
     useDefaultStyle?: boolean,
     searchBar?: boolean,
-    headerLeft?: React$Node,
+    headerLeft?: () => React$Node,
     headerRight?: React$Node,
     headerCenter?: React$Node,
     headerStyle?: {},
-}
+};
 
 type UINavigationBarProps = {
     title?: string,
     titleRight?: React$Node,
-    headerLeft?: React$Node,
+    headerLeft: () => React$Node,
     headerRight?: React$Node,
     headerCenter?: React$Node,
     containerStyle?: ViewStyleProp,
     buttonsContainerStyle?: ViewStyleProp,
-}
+};
 
-export default class UIReactNavigationBar extends UIComponent<UINavigationBarProps, *> {
+export default class UIReactNavigationBar extends UIComponent<
+    UINavigationBarProps,
+    *,
+> {
     static defaultProps = {
         title: '',
         headerLeft: null,
@@ -117,7 +122,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
         let effective;
         // if headerLeft option unspecified, we use back button
         const headerLeft =
-            'headerLeft' in options
+            'headerLeft' in options && options.headerLeft != null
                 ? options.headerLeft
                 : () => (
                       <UIReactNavigationBackButton
@@ -160,6 +165,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
         if (options.searchBar) {
             effective = {
                 ...effective,
+                // $FlowFixMe
                 ...UISearchBar.handleHeader(navigation),
             };
         }
@@ -171,15 +177,13 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
         return this.props.title;
     }
 
-    getHeaderLeft(): ?React$Node {
-        return this.props.headerLeft;
+    getHeaderLeft(): React$Node {
+        return this.props.headerLeft();
     }
 
     getHeaderCenter(): ?React$Node {
         return (
-            <View style={styles.headerCenter} >
-                {this.props.headerCenter}
-            </View>
+            <View style={styles.headerCenter}>{this.props.headerCenter}</View>
         );
     }
 

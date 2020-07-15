@@ -453,20 +453,20 @@ export default class UIController<Props, State>
         this.pushStateIfNeeded();
     }
 
-    navigationListeners: (() => void | { remove(): void })[];
+    navigationListeners: { remove(): void }[];
     listenToNavigation() {
         if (!this.props.navigation) {
             return;
         }
         this.navigationListeners = [
-            this.props.navigation.addListener('willFocus', (payload) => {
+            this.props.navigation.addListener('willFocus', payload => {
                 console.log(
                     `[UIController] Controller ${this.constructor.name} will focus with payload:`,
                     payload,
                 );
                 this.componentWillFocus();
             }),
-            this.props.navigation.addListener('willBlur', (payload) => {
+            this.props.navigation.addListener('willBlur', payload => {
                 console.log(
                     `[UIController] Controller ${this.constructor.name} will blur with payload:`,
                     payload,
@@ -478,7 +478,14 @@ export default class UIController<Props, State>
 
     stopListeningToNavigation() {
         if (this.navigationListeners) {
-            this.navigationListeners.forEach(unsubscribe => 'remove' in unsubscribe ? unsubscribe.remove() : unsubscribe());
+            this.navigationListeners.forEach(unsubscribe => {
+                if ('remove' in unsubscribe) {
+                    unsubscribe.remove();
+                } else {
+                    // $FlowExpectedError
+                    unsubscribe();
+                }
+            });
         }
     }
 
