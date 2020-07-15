@@ -1,13 +1,13 @@
-import icoArrowLeft from './ico-arrow-left/ico-arrow-left.png';
-import icoPlus from './ico-plus/ico-plus.png';
-import icoMastercard from './bank-cards/ico-mastercard/mastercard.png';
-import icoVisa from './bank-cards/ico-visa/visa.png';
-import icoMaestro from './bank-cards/ico-maestro/maestro.png';
-import btnClose from './btn_close/btn_close.png';
+const icoArrowLeft = require('./ico-arrow-left/ico-arrow-left.png');
+const icoPlus = require('./ico-plus/ico-plus.png');
+const icoMastercard = require('./bank-cards/ico-mastercard/mastercard.png');
+const icoVisa = require('./bank-cards/ico-visa/visa.png');
+const icoMaestro = require('./bank-cards/ico-maestro/maestro.png');
+const btnClose = require('./btn_close/btn_close.png');
 
 // Security
-import touchId from './touch-id/touch-id.png';
-import faceId from './face-id/face-id.png';
+const touchId = require('./touch-id/touch-id.png');
+const faceId = require('./face-id/face-id.png');
 
 export default class UIAssets {
     // Icons
