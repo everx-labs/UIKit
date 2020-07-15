@@ -453,7 +453,7 @@ export default class UIController<Props, State>
         this.pushStateIfNeeded();
     }
 
-    navigationListeners: { remove(): void }[];
+    navigationListeners: (() => void | { remove(): void })[];
     listenToNavigation() {
         if (!this.props.navigation) {
             return;
@@ -478,7 +478,7 @@ export default class UIController<Props, State>
 
     stopListeningToNavigation() {
         if (this.navigationListeners) {
-            this.navigationListeners.forEach(listener => listener.remove());
+            this.navigationListeners.forEach(unsubscribe => 'remove' in unsubscribe ? unsubscribe.remove() : unsubscribe());
         }
     }
 
