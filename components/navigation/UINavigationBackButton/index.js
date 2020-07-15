@@ -18,6 +18,11 @@ type Props = {
 
 type State = {};
 
+/**
+ * @deprecated utility for navigation used with react-navigation v2
+ *
+ * Actual version is for react-navigation v5 - UIReactNavigationBackButton
+ */
 export default class UINavigationBackButton extends UIComponent<Props, State> {
     static defaultProps = {
         containerStyle: {},

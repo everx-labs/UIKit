@@ -94,9 +94,17 @@ type UINavigationBarProps = {
     headerCenter?: React$Node,
     containerStyle?: ViewStyleProp,
     buttonsContainerStyle?: ViewStyleProp,
-}
+};
 
-export default class UINavigationBar extends UIComponent<UINavigationBarProps, *> {
+/**
+ * @deprecated utility for navigation used with react-navigation v2
+ *
+ * Actual version is for react-navigation v5 - UIReactNavigationBar
+ */
+export default class UINavigationBar extends UIComponent<
+    UINavigationBarProps,
+    *,
+> {
     static defaultProps = {
         title: '',
         headerLeft: null,
