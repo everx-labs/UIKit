@@ -205,7 +205,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         const activeButton = () => {
             if (menuPlus.length === 1) {
                 return (
-                    <TouchableOpacity onPress={menuPlus[0].onPress}>
+                    <TouchableOpacity
+                        testID="menu_view"
+                        onPress={menuPlus[0].onPress}
+                    >
                         <Image source={btnPlus} />
                     </TouchableOpacity>
                 );
