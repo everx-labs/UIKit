@@ -74,10 +74,10 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     };
 
     static testIds = {
-        cardValue_1: 'cardValue_1',
-        cardValue_2: 'cardValue_2',
-        cardValue_3: 'cardValue_3',
-        cardValue_4: 'cardValue_4'
+        title: 'title',
+        details: 'details',
+        secondDetails: 'secondDetails',
+        caption: 'caption'
     };
 
     constructor(props: Props) {
@@ -180,7 +180,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                 ellipsizeMode="middle"
                 numberOfLines={1}
                 style={UIStyle.text.primarySmallRegular()}
-                testID={UIDetailsButton.testIds.cardValue_4}
+                testID={UIDetailsButton.testIds.caption}
             >
                 {formattedCaption}
             </Text>
@@ -199,7 +199,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                             UIStyle.margin.rightDefault(),
                             this.getTitleColorStyle(),
                         ]}
-                        testID={UIDetailsButton.testIds.cardValue_1}
+                        testID={UIDetailsButton.testIds.title}
                     >
                         {formattedTitle}
                     </Text>
@@ -221,11 +221,14 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                         UIStyle.text.secondaryCaptionRegular(),
                         UIStyle.common.flex(),
                     ]}
-                    testID={UIDetailsButton.testIds.cardValue_2}
+                    testID={UIDetailsButton.testIds.details}
                 >
                     {details}
                 </Text>
-                <Text style={UIStyle.text.secondaryCaptionRegular()} testID={UIDetailsButton.testIds.cardValue_3}>
+                <Text
+                    style={UIStyle.text.secondaryCaptionRegular()}
+                    testID={UIDetailsButton.testIds.secondDetails}
+                >
                     {secondDetails}
                 </Text>
             </View>
