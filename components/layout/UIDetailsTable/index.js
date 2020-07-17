@@ -106,7 +106,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
             ...item,
             key: `${item.key ? `${item.key}-` : ''}${generatedKey}`,
             caption: item.caption,
-            captionType: !index ? this.captionType.header : this.captionType.default,
+            captionType: item.captionType
+                || (!index ? this.captionType.header : this.captionType.default),
         }));
     }
 
