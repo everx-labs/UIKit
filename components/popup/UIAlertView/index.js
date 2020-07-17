@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, BackHandler, Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import UIColor from '../../../helpers/UIColor';
@@ -91,14 +91,43 @@ export default class UIAlertView extends UIComponent {
         }
     }
 
+    // Back button
+    backHandler: any;
+    startListeningToBackButton() {
+        if (Platform.OS !== 'android') {
+            return;
+        }
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            this.onCancelPressed();
+            return true;
+        });
+    }
+
+    stopListeningToBackButton() {
+        if (this.backHandler) {
+            this.backHandler.remove();
+        }
+    }
+
+    onCancelPressed = () => {
+        this.hideAlert();
+
+        const cancelButton = this.state.alertButtons[0];
+        if (cancelButton && cancelButton.onPress) {
+            cancelButton.onPress();
+        }
+    };
+
     // actions
     showAlert(alertTitle, alertMessage, alertButtons) {
+        this.startListeningToBackButton();
         this.setState({
             alertVisible: true, alertTitle, alertMessage, alertButtons,
         });
     }
 
     hideAlert() {
+        this.stopListeningToBackButton();
         this.setState({ alertVisible: false });
     }
 
@@ -143,13 +172,7 @@ export default class UIAlertView extends UIComponent {
             ]}
             cancelButtonColor="transparent"
             confirmButtonColor="transparent"
-            onCancelPressed={() => {
-                this.hideAlert();
-
-                if (cancelButton && cancelButton.onPress) {
-                    cancelButton.onPress();
-                }
-            }}
+            onCancelPressed={this.onCancelPressed}
             onConfirmPressed={() => {
                 this.hideAlert();
 
