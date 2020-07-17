@@ -2,13 +2,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { RouteProp } from '@react-navigation/native';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIDevice from '../../../helpers/UIDevice';
 import UIFont from '../../../helpers/UIFont';
 import UIStyle from '../../../helpers/UIStyle';
-import UINavigationBackButton from '../UINavigationBackButton';
+import UIReactNavigationBackButton from '../UIReactNavigationBackButton';
 import UISearchBar from '../../input/UISearchBar';
 import UIComponent from '../../UIComponent';
 
@@ -56,7 +57,7 @@ export interface ReactNavigation {
 
     goBack(): void;
 
-    addListener(event: any, callback: (payload: any) => void): { remove(): void };
+    addListener(event: any, callback: (payload: any) => void): () => void;
 
     isFocused(): boolean;
 
@@ -73,35 +74,32 @@ export interface ReactNavigation {
     push(routeName: string): void;
 }
 
-export type CreateNavigationOptions = (options: { navigation: ReactNavigation }) => {};
+export type CreateNavigationOptions = (options: {
+    navigation: ReactNavigation,
+}) => {};
 
 type UINavigationBarOptions = {
     title?: string,
     titleRight?: React$Node,
     useDefaultStyle?: boolean,
     searchBar?: boolean,
-    headerLeft?: React$Node,
+    headerLeft?: () => React$Node,
     headerRight?: React$Node,
     headerCenter?: React$Node,
     headerStyle?: {},
-}
+};
 
 type UINavigationBarProps = {
     title?: string,
     titleRight?: React$Node,
-    headerLeft?: React$Node,
+    headerLeft: () => React$Node,
     headerRight?: React$Node,
     headerCenter?: React$Node,
     containerStyle?: ViewStyleProp,
     buttonsContainerStyle?: ViewStyleProp,
 };
 
-/**
- * @deprecated utility for navigation used with react-navigation v2
- *
- * Actual version is for react-navigation v5 - UIReactNavigationBar
- */
-export default class UINavigationBar extends UIComponent<
+export default class UIReactNavigationBar extends UIComponent<
     UINavigationBarProps,
     *,
 > {
@@ -112,15 +110,27 @@ export default class UINavigationBar extends UIComponent<
         headerCenter: null,
     };
 
-    static navigationOptions(navigation: ReactNavigation, options: UINavigationBarOptions) {
+    static navigationOptions(
+        navigation: ReactNavigation,
+        route: RouteProp<empty, string>,
+        options: UINavigationBarOptions,
+    ) {
+        // TODO: delete this hack!
+        if (options == null) {
+            options = ((route: any): UINavigationBarOptions);
+        }
         let effective;
         // if headerLeft option unspecified, we use back button
-        const headerLeft = ('headerLeft' in options)
-            ? options.headerLeft
-            : (<UINavigationBackButton
-                navigation={navigation}
-                testID={`back_btn_${options.title || ''}`}
-            />);
+        const headerLeft =
+            'headerLeft' in options && options.headerLeft != null
+                ? options.headerLeft
+                : () => (
+                      <UIReactNavigationBackButton
+                          navigation={navigation}
+                          route={route}
+                          testID={`back_btn_${options.title || ''}`}
+                      />
+                  );
 
         const hasLeftOrRight = headerLeft || options.headerRight;
 
@@ -133,12 +143,16 @@ export default class UINavigationBar extends UIComponent<
             effective = {
                 headerStyle: [
                     styles.navigatorHeader,
-                    { height: UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1) },
+                    {
+                        height:
+                            UIDevice.navigationBarHeight() *
+                            (hasLeftOrRight ? 2 : 1),
+                    },
                     options.headerStyle || {},
                 ],
                 headerLeft: null, // only way to suppress unattended back button
                 headerTitle: (
-                    <UINavigationBar
+                    <UIReactNavigationBar
                         title={options.title}
                         titleRight={options.titleRight}
                         headerLeft={headerLeft}
@@ -151,6 +165,7 @@ export default class UINavigationBar extends UIComponent<
         if (options.searchBar) {
             effective = {
                 ...effective,
+                // $FlowFixMe
                 ...UISearchBar.handleHeader(navigation),
             };
         }
@@ -162,15 +177,13 @@ export default class UINavigationBar extends UIComponent<
         return this.props.title;
     }
 
-    getHeaderLeft(): ?React$Node {
-        return this.props.headerLeft;
+    getHeaderLeft(): React$Node {
+        return this.props.headerLeft();
     }
 
     getHeaderCenter(): ?React$Node {
         return (
-            <View style={styles.headerCenter} >
-                {this.props.headerCenter}
-            </View>
+            <View style={styles.headerCenter}>{this.props.headerCenter}</View>
         );
     }
 

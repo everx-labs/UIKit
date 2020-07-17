@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { View, Text } from 'react-native';
-import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UIColor from '../../../helpers/UIColor';
@@ -9,6 +9,7 @@ import UIActionComponent from '../../UIActionComponent';
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 export type MenuItemType = ActionProps & {
+    style?: ViewStyleProp,
     title: string,
     titleStyle?: TextStyleProp,
     details?: string,
@@ -33,7 +34,7 @@ export default class MenuItem extends UIActionComponent<MenuItemType, ActionStat
 
     renderContent() {
         const {
-            title, details, titleStyle, detailsStyle, chosen, disabled, reversedColors,
+            title, details, titleStyle, detailsStyle, chosen, disabled, reversedColors, style,
         } = this.props;
 
         const contentStyle = details
@@ -53,6 +54,7 @@ export default class MenuItem extends UIActionComponent<MenuItemType, ActionStat
             UIStyle.common.centerLeftContainer(),
             UIStyle.height.buttonHeight(),
             contentStyle,
+            style,
         ];
 
         const content = (

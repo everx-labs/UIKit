@@ -1,4 +1,5 @@
 // TODO: Add flow
+import { BigNum } from '../../types/BigNum';
 
 export const ChatMessageContent = {
     SimpleText: 'stm',
@@ -54,7 +55,7 @@ export type TypeOfActionDirectionType = $Values<typeof TypeOfActionDirection>;
 export type TransactionInfo = {
     separator: string,
     amountLocalized: string,
-    amount: number,
+    amount: BigNum,
     token: string,
     sent: boolean,
     currency?: {

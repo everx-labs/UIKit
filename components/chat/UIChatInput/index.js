@@ -19,11 +19,15 @@ import type { MenuItemType } from '../../menus/UIActionSheet/MenuItem';
 import btnPlus from '../../../assets/btn_plus/btn_plus.png';
 import btnDots from '../../../assets/btn_dots/btn_dots.png';
 import btnSend from '../../../assets/btn_msg_send/btn_msg_send.png';
+import btnPlusDisabled from '../../../assets/btn_plus_disabled/btn_plus_disabled.png';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     menuPlus?: ?MenuItemType[],
     menuMore?: ?MenuItemType[],
+    menuPlusDisabled?: boolean,
+    menuMoreDisabled?: boolean,
+
     quickAction?: ?MenuItemType[],
 
     onSendText?: (text: string) => void,
@@ -191,27 +195,81 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderMenu(isMenuPlus: boolean = false) {
-        const { menuPlus, menuMore } = this.props;
-        if ((isMenuPlus && !menuPlus) || (!isMenuPlus && !menuMore)) {
+    renderPlusMenu() {
+        const { menuPlus, menuPlusDisabled } = this.props;
+
+        if (!menuPlus || menuPlus.length === 0) {
             return null;
         }
 
-        const items = isMenuPlus ? menuPlus : menuMore;
-        const img = isMenuPlus ? btnPlus : btnDots;
+        const activeButton = () => {
+            if (menuPlus.length === 1) {
+                return (
+                    <TouchableOpacity
+                        testID="menu_view"
+                        onPress={menuPlus[0].onPress}
+                    >
+                        <Image source={btnPlus} />
+                    </TouchableOpacity>
+                );
+            }
+            return (
+                <UIPopoverMenu
+                    testID="menu_view"
+                    menuItemsList={menuPlus}
+                    placement="top"
+                >
+                    <Image source={btnPlus} />
+                </UIPopoverMenu>
+            );
+        };
 
         return (
             <View style={styles.btnMenuContainer}>
                 <View style={styles.btnMenu}>
-                    <UIPopoverMenu
-                        testID="menu_view"
-                        menuItemsList={items}
-                        placement="top"
-                    >
-                        <View style={styles.btnMenu}>
-                            <Image source={img} />
-                        </View>
-                    </UIPopoverMenu>
+                    {!menuPlusDisabled
+                        ? activeButton()
+                        : (<Image source={btnPlusDisabled} />)
+                    }
+                </View>
+            </View>
+        );
+    }
+
+    renderMoreMenu() {
+        const { menuMore, menuMoreDisabled } = this.props;
+
+        if (!menuMore || menuMore.length === 0) {
+            return null;
+        }
+
+        const activeButton = () => {
+            if (menuMore.length === 1) {
+                return (
+                    <TouchableOpacity onPress={menuMore[0].onPress}>
+                        <Image source={btnDots} />
+                    </TouchableOpacity>
+                );
+            }
+            return (
+                <UIPopoverMenu
+                    testID="menu_view"
+                    menuItemsList={menuMore}
+                    placement="top"
+                >
+                    <Image source={btnDots} />
+                </UIPopoverMenu>
+            );
+        };
+
+        return (
+            <View style={styles.btnMenuContainer}>
+                <View style={styles.btnMenu}>
+                    {!menuMoreDisabled
+                        ? activeButton()
+                        // TODO: support btnDotsDisabled
+                        : (<Image source={btnDots} />)
+                    }
                 </View>
             </View>
         );
@@ -220,7 +278,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     renderTextFragment() {
         return (
             <React.Fragment>
-                {this.renderMenu(true)}
+                {this.renderPlusMenu()}
                 <View style={[UIStyle.displayFlex.x1(), styles.inputMsg]}>
                     <View>
                         {this.renderAuxTextInput()}
@@ -228,7 +286,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                     </View>
                 </View>
                 {this.renderQuickAction()}
-                {this.renderMenu()}
+                {this.renderMoreMenu()}
             </React.Fragment>
         );
     }

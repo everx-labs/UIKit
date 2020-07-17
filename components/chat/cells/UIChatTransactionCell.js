@@ -2,13 +2,13 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import BigNumber from 'bignumber.js';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIPureComponent from '../../UIPureComponent';
 import UIScaleButton from '../../buttons/UIScaleButton';
 import UILabel from '../../text/UILabel';
-import UIBalanceView from '../../views/UIBalanceView';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -22,6 +22,8 @@ import type {
     UIChatMessage,
 } from '../extras';
 import { ChatMessageStatus, TypeOfTransaction } from '../extras';
+
+import type { BigNum } from '../../../types/BigNum';
 
 type Props = {
     message: any,
@@ -118,12 +120,12 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return this.getMessage().info.trx;
     }
 
-    getAmount(): number {
+    getAmount(): BigNum {
         const trx = this.getTransaction();
-        return Math.abs(trx.amount || 0.0);
+        return trx.amount || new BigNumber(0);
     }
 
-    getAmountForTestID(): number {
+    getAmountForTestID(): string {
         const { amount } = this.getExtra();
         return amount.toFixed(1);
     }
@@ -150,7 +152,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getExtra(): TransactionInfo {
         const extra: TransactionInfo = {
-            amountLocalized: this.getAmount(),
+            amountLocalized: this.getAmount().toFixed(),
             amount: this.getAmount(),
             separator: '.',
             token: '',
@@ -248,8 +250,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     // Render
     renderTrxContent() {
-        const trx = this.getTransaction();
-        const { separator, token, amountLocalized } = this.getExtra();
+        const { token, amountLocalized } = this.getExtra();
         const conner = this.isReceived ? styles.leftConner : styles.rightConner;
         const status = this.getStatus();
         const color = this.getCardColor();

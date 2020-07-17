@@ -63,6 +63,7 @@ export type UILocalizedData = {
     Done: string,
     Continue: string,
     Close: string,
+    Add: string,
     Edit: string,
     Delete: string,
     Manage: string,
