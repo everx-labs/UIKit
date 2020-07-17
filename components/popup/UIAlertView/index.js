@@ -109,14 +109,14 @@ export default class UIAlertView extends UIComponent {
         }
     }
 
-    onCancelPressed() {
+    onCancelPressed = () => {
         this.hideAlert();
 
         const cancelButton = this.state.alertButtons[0];
         if (cancelButton && cancelButton.onPress) {
             cancelButton.onPress();
         }
-    }
+    };
 
     // actions
     showAlert(alertTitle, alertMessage, alertButtons) {
@@ -172,7 +172,7 @@ export default class UIAlertView extends UIComponent {
             ]}
             cancelButtonColor="transparent"
             confirmButtonColor="transparent"
-            onCancelPressed={() => { this.onCancelPressed(); }}
+            onCancelPressed={this.onCancelPressed}
             onConfirmPressed={() => {
                 this.hideAlert();
 
