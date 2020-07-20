@@ -472,6 +472,7 @@ const ru: UILocalizedData = {
     SelectCountry: 'Select country…',
     Country: 'Country',
     Address: 'Адрес',
+    Apartment: 'Apt / Ste / Unit',
     City: 'Город',
     State: 'Регион',
     PostalCode: 'Почтовый индекс',
