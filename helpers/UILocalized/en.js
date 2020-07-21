@@ -473,6 +473,7 @@ const en: UILocalizedData = {
     SelectCountry: 'Select country…',
     Country: 'Country',
     Address: 'Address',
+    Apartment: 'Apt / Ste / Unit',
     City: 'City',
     State: 'State',
     PostalCode: 'Postal code',

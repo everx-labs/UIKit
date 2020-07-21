@@ -456,6 +456,7 @@ export type UILocalizedData = {
     SelectCountry: string,
     Country: string,
     Address: string,
+    Apartment: string,
     City: string,
     State: string,
     PostalCode: string,
