@@ -144,7 +144,7 @@ export default class UIDetailsSwitcher<Props, State>
                 style={[
                     UIStyle.common.flexRow(),
                     UIStyle.common.alignCenter(),
-                    this.props.style,
+                    this.props.disabled ? this.props.style : null,
                 ]}
                 pointerEvents="box-only"
             >
@@ -155,7 +155,7 @@ export default class UIDetailsSwitcher<Props, State>
 
 
         return this.props.disabled ? button : (
-            <TouchableOpacity onPress={this.onPress}>
+            <TouchableOpacity onPress={this.onPress} style={this.props.style}>
                 {button}
             </TouchableOpacity>
         );
