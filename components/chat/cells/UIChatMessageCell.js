@@ -169,11 +169,23 @@ const styles = StyleSheet.create({
         marginTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
     },
+    cardIncome: {
+        backgroundColor: UIColor.green(),
+    },
+    cardSpending: {
+        backgroundColor: UIColor.blackLight(),
+    },
     leftConner: {
         borderBottomLeftRadius: 0,
     },
     rightConner: {
         borderBottomRightRadius: 0,
+    },
+    leftTopConner: {
+        borderTopLeftRadius: 0,
+    },
+    rightTopConner: {
+        borderTopRightRadius: 0,
     },
     verticalSeparator: {
         marginTop: UIConstant.tinyContentOffset() / 2,
@@ -512,6 +524,28 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderTransactionCommentCell() {
+        const { additionalInfo } = this.props;
+        const rounded = this.isReceived
+            ? styles.leftTopConner
+            : styles.rightTopConner;
+        const background = this.isReceived
+            ? styles.cardIncome
+            : styles.cardSpending;
+        return (
+            <View style={[
+                styles.msgContainer,
+                rounded,
+                background,
+            ]}
+            >
+                <Text style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}>
+                    {additionalInfo?.message.info.text || ''}
+                </Text>
+            </View>
+        );
+    }
+
     renderLinkActionMessageCell() {
         const { isReceived, additionalInfo } = this.props;
         const style = isReceived ? styles.linkActionMessageContainer : null;
@@ -567,12 +601,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             <TouchableWithoutFeedback
                 onPressOut={() => this.bubbleScaleAnimation()}
                 onLongPress={
-                () => {
-                    if (data && (data instanceof String || typeof data === 'string')) {
-                        this.bubbleScaleAnimation(true);
-                        UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
-                    }
-                }}
+                    () => {
+                        if (data && (data instanceof String || typeof data === 'string')) {
+                            this.bubbleScaleAnimation(true);
+                            UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
+                        }
+                    }}
             >
                 {this.wrapInMessageContainer(this.renderText(data || ''))}
             </TouchableWithoutFeedback>
@@ -635,6 +669,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderTransactionCell();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
+        } else if (type === ChatMessageContent.TransactionComment) {
+            // hack to became comment close to parent transaction bubble
+            margin = { marginTop: -UIConstant.tinyContentOffset() };
+            cell = this.renderTransactionCommentCell();
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
         } else if (type === ChatMessageContent.Invite) {

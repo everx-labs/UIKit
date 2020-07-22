@@ -7,6 +7,7 @@ export const ChatMessageContent = {
     AttachmentImage: 'aim',
     AttachmentDocument: 'doc',
     TransactionInChat: 'trx',
+    TransactionComment: 'trxComment',
     LinkActionMessage: 'lam',
     ActionButton: 'act',
     DateSeparator: 'date',
