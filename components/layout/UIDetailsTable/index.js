@@ -181,7 +181,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     textStyle={UIStyle.text.actionSmallMedium()}
                     title={value}
                     onPress={onPress || (() => this.onActionPressed(details))}
-                    testID={`table_cell_${caption || 'default'}_value`}
+                    testID={`table_cell_clickable_${caption || 'default'}_value`}
                 />
             );
         } else if (component) {
