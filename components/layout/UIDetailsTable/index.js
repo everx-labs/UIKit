@@ -164,7 +164,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     renderCell(details: DetailsRow) {
         const {
-            type, value, limit, component, onPress,
+            type, value, limit, component, onPress, caption,
         } = details;
         const textStyle = this.getTextStyle(type, value);
 
@@ -181,7 +181,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     textStyle={UIStyle.text.actionSmallMedium()}
                     title={value}
                     onPress={onPress || (() => this.onActionPressed(details))}
-                    testID={UIDetailsTable.testIDs.detailsTextButton}
+                    testID={`table_cell_clickable_${caption || 'default'}_value`}
                 />
             );
         } else if (component) {
