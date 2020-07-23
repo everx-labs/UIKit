@@ -79,6 +79,12 @@ export default class UIContractAddressInput extends UIDetailsInput<Props, State>
 
     // Getters
     isAddressValid(address: string) {
+        const availableSymbols = '-:0123456789abcdef';
+        let hasWrongSymbol = [...address.toLowerCase()].some((symbol) => {
+            return !availableSymbols.includes(symbol);
+        });
+        if (hasWrongSymbol) return false;
+
         const semicolonIdx = address.indexOf(':');
         if (semicolonIdx === -1) {
             return false;
@@ -92,7 +98,7 @@ export default class UIContractAddressInput extends UIDetailsInput<Props, State>
             return false;
         }
         const hexSymbols = '0123456789abcdef';
-        const hasWrongSymbol = [...hexAddress.toLowerCase()].some((symbol) => {
+        hasWrongSymbol = [...hexAddress.toLowerCase()].some((symbol) => {
             return !hexSymbols.includes(symbol);
         });
         return !hasWrongSymbol;
