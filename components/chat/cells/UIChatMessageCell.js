@@ -169,11 +169,23 @@ const styles = StyleSheet.create({
         marginTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
     },
-    leftConner: {
+    greenBubble: {
+        backgroundColor: UIColor.green(),
+    },
+    blackBubble: {
+        backgroundColor: UIColor.blackLight(),
+    },
+    leftBottomCorner: {
         borderBottomLeftRadius: 0,
     },
-    rightConner: {
+    rightBottomCorner: {
         borderBottomRightRadius: 0,
+    },
+    leftTopCorner: {
+        borderTopLeftRadius: 0,
+    },
+    rightTopCorner: {
+        borderTopRightRadius: 0,
     },
     verticalSeparator: {
         marginTop: UIConstant.tinyContentOffset() / 2,
@@ -300,8 +312,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
         if (additionalInfo?.lastFromChain) {
             rounded = this.isReceived
-                ? styles.leftConner
-                : styles.rightConner;
+                ? styles.leftBottomCorner
+                : styles.rightBottomCorner;
         }
 
         let style = styles.msgSending;
@@ -408,8 +420,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderActionLabel() {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
-            ? styles.leftConner
-            : styles.rightConner;
+            ? styles.leftBottomCorner
+            : styles.rightBottomCorner;
         return (
             <View style={[
                 styles.msgContainer,
@@ -512,6 +524,28 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderTransactionCommentCell() {
+        const { additionalInfo } = this.props;
+        const rounded = this.isReceived
+            ? styles.leftTopCorner
+            : styles.rightTopCorner;
+        const background = this.isReceived
+            ? styles.greenBubble
+            : styles.blackBubble;
+        return (
+            <View style={[
+                styles.msgContainer,
+                rounded,
+                background,
+            ]}
+            >
+                <Text style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}>
+                    {additionalInfo?.message.info.text || ''}
+                </Text>
+            </View>
+        );
+    }
+
     renderLinkActionMessageCell() {
         const { isReceived, additionalInfo } = this.props;
         const style = isReceived ? styles.linkActionMessageContainer : null;
@@ -567,12 +601,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             <TouchableWithoutFeedback
                 onPressOut={() => this.bubbleScaleAnimation()}
                 onLongPress={
-                () => {
-                    if (data && (data instanceof String || typeof data === 'string')) {
-                        this.bubbleScaleAnimation(true);
-                        UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
-                    }
-                }}
+                    () => {
+                        if (data && (data instanceof String || typeof data === 'string')) {
+                            this.bubbleScaleAnimation(true);
+                            UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
+                        }
+                    }}
             >
                 {this.wrapInMessageContainer(this.renderText(data || ''))}
             </TouchableWithoutFeedback>
@@ -635,6 +669,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderTransactionCell();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
+        } else if (type === ChatMessageContent.TransactionComment) {
+            // hack to move comment closer to the parent transaction bubble
+            margin = { marginTop: -UIConstant.tinyContentOffset() };
+            cell = this.renderTransactionCommentCell();
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
         } else if (type === ChatMessageContent.Invite) {
