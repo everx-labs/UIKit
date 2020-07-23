@@ -169,22 +169,22 @@ const styles = StyleSheet.create({
         marginTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
     },
-    cardIncome: {
+    greenBubble: {
         backgroundColor: UIColor.green(),
     },
-    cardSpending: {
+    blackBubble: {
         backgroundColor: UIColor.blackLight(),
     },
-    leftConner: {
+    leftBottomCorner: {
         borderBottomLeftRadius: 0,
     },
-    rightConner: {
+    rightBottonCorner: {
         borderBottomRightRadius: 0,
     },
-    leftTopConner: {
+    leftTopCorner: {
         borderTopLeftRadius: 0,
     },
-    rightTopConner: {
+    rightTopCorner: {
         borderTopRightRadius: 0,
     },
     verticalSeparator: {
@@ -312,8 +312,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
         if (additionalInfo?.lastFromChain) {
             rounded = this.isReceived
-                ? styles.leftConner
-                : styles.rightConner;
+                ? styles.leftBottomCorner
+                : styles.rightBottonCorner;
         }
 
         let style = styles.msgSending;
@@ -420,8 +420,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderActionLabel() {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
-            ? styles.leftConner
-            : styles.rightConner;
+            ? styles.leftBottomCorner
+            : styles.rightBottonCorner;
         return (
             <View style={[
                 styles.msgContainer,
@@ -527,11 +527,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderTransactionCommentCell() {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
-            ? styles.leftTopConner
-            : styles.rightTopConner;
+            ? styles.leftTopCorner
+            : styles.rightTopCorner;
         const background = this.isReceived
-            ? styles.cardIncome
-            : styles.cardSpending;
+            ? styles.greenBubble
+            : styles.blackBubble;
         return (
             <View style={[
                 styles.msgContainer,
@@ -670,7 +670,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
         } else if (type === ChatMessageContent.TransactionComment) {
-            // hack to became comment close to parent transaction bubble
+            // hack to move comment closer to the parent transaction bubble
             margin = { marginTop: -UIConstant.tinyContentOffset() };
             cell = this.renderTransactionCommentCell();
         } else if (type === ChatMessageContent.SimpleText) {
