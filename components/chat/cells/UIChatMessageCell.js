@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     leftBottomCorner: {
         borderBottomLeftRadius: 0,
     },
-    rightBottonCorner: {
+    rightBottomCorner: {
         borderBottomRightRadius: 0,
     },
     leftTopCorner: {
@@ -313,7 +313,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         if (additionalInfo?.lastFromChain) {
             rounded = this.isReceived
                 ? styles.leftBottomCorner
-                : styles.rightBottonCorner;
+                : styles.rightBottomCorner;
         }
 
         let style = styles.msgSending;
@@ -421,7 +421,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
             ? styles.leftBottomCorner
-            : styles.rightBottonCorner;
+            : styles.rightBottomCorner;
         return (
             <View style={[
                 styles.msgContainer,
