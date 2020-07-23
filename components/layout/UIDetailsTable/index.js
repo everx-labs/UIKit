@@ -11,9 +11,11 @@ import UITextButton from '../../buttons/UITextButton';
 
 import type { ReactNavigation } from '../../navigation/UINavigationBar';
 
+type Value = ?(string | number | boolean);
+
 export type DetailsRow = {
     caption: ?string,
-    value?: ?string | number,
+    value?: Value,
     limit?: number,
     type?: string,
     captionType?: string,
@@ -125,7 +127,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     // Getters
-    getTextStyle(type: ?string, value: ?string | number) {
+    getTextStyle(type: ?string, value: Value) {
         if (type === UIDetailsTable.cellType.success) {
             return UIStyle.text.successSmallRegular();
         } else if (type === UIDetailsTable.cellType.error) {
@@ -134,7 +136,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return UIStyle.text.primarySmallMedium();
         } else if (type === UIDetailsTable.cellType.disabled) {
             return UIStyle.text.tertiarySmallRegular();
-        } else if (type === UIDetailsTable.cellType.bool && !value) {
+        } else if ((type === UIDetailsTable.cellType.bool && !value) || value === false) {
             return UIStyle.text.tertiarySmallRegular();
         }
         return UIStyle.text.secondarySmallRegular();
@@ -190,7 +192,9 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
         return (
             <Text style={[textStyle, UIStyle.common.flex()]}>
-                {type === UIDetailsTable.cellType.bool ? JSON.stringify(value) : value}
+                {type === UIDetailsTable.cellType.bool || value === true || value === false
+                    ? JSON.stringify(value)
+                    : value}
             </Text>
         );
     }
@@ -241,7 +245,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                         marginTopStyle,
                         index > 0 && rowSeparator && styles.borderTop,
                     ]}
-                    key={`details-table-row-${caption || ''}-${value || ''}-${key || ''}-${captionType || ''}`}
+                    key={`details-table-row-${caption || ''}-${JSON.stringify(value) || ''}-${key || ''}-${captionType || ''}`}
                 >
                     {this.renderCaption(caption, captionType)}
 
