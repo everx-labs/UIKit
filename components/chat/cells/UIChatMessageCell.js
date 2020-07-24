@@ -581,7 +581,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
-    renderInviteCell() {
+    renderSystemCell() {
         const { data } = this.props;
 
         return (
@@ -600,13 +600,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <TouchableWithoutFeedback
                 onPressOut={() => this.bubbleScaleAnimation()}
-                onLongPress={
-                    () => {
-                        if (data && (data instanceof String || typeof data === 'string')) {
-                            this.bubbleScaleAnimation(true);
-                            UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
-                        }
-                    }}
+                onLongPress={() => {
+                    if (data && (data instanceof String || typeof data === 'string')) {
+                        this.bubbleScaleAnimation(true);
+                        UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
+                    }
+                }}
             >
                 {this.wrapInMessageContainer(this.renderText(data || ''))}
             </TouchableWithoutFeedback>
@@ -675,9 +674,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderTransactionCommentCell();
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
-        } else if (type === ChatMessageContent.Invite) {
+        } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
-            cell = this.renderInviteCell();
+            cell = this.renderSystemCell();
             margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();

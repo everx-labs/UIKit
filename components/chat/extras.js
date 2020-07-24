@@ -4,6 +4,7 @@ import { BigNum } from '../../types/BigNum';
 export const ChatMessageContent = {
     SimpleText: 'stm',
     Invite: 'inv',
+    System: 'sys',
     AttachmentImage: 'aim',
     AttachmentDocument: 'doc',
     TransactionInChat: 'trx',
@@ -14,6 +15,13 @@ export const ChatMessageContent = {
     EmptyChat: 'empty',
     SystemInfo: 'sysInfo',
     ActionLabel: 'actionLabel',
+};
+
+export const ChatMessageMetaContent = {
+    Text: 'text',
+    Invite: 'invite',
+    Blocking: 'blocking',
+    Unblocking: 'unblocking',
 };
 
 export const ChatMessageStatus = {
@@ -52,6 +60,7 @@ export type ChatMessageStatusType = $Values<typeof ChatMessageStatus>;
 export type TypeOfTransactionType = $Values<typeof TypeOfTransaction>;
 export type TypeOfActionType = $Values<typeof TypeOfAction>;
 export type TypeOfActionDirectionType = $Values<typeof TypeOfActionDirection>;
+export type ChatMessageMetaContentType = $Values<typeof ChatMessageMetaContent>;
 
 export type TransactionInfo = {
     separator: string,
@@ -96,6 +105,8 @@ export type ChatAdditionalInfo = {
     docName: ?string,
     fileSize: ?number,
     actionType: ?TypeOfActionType,
+    linkTitle?: string,
+    processed?: boolean,
 };
 
 export type UIChatCellInfo = {
