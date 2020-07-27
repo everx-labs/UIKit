@@ -13,7 +13,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
-import UILocalized, { formatDate, formatTime } from '../../../helpers/UILocalized';
+import UILocalized, { formatDate } from '../../../helpers/UILocalized';
 
 import type {
     ChatAdditionalInfo,
@@ -136,22 +136,18 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         if (!currency) {
             return '';
         }
-        const localizedAmountInCurrency = `${extra.amount * currency.rate}`; // TODO: localize!!!
+        const localizedAmountInCurrency = `${extra.amount.toNumber() * currency.rate}`; // TODO: localize!!!
         return UIFunction.amountAndCurrency(localizedAmountInCurrency, currency.symbol);
     }
 
     getDate(): string {
         const { created } = this.getMessage().info;
-        return formatDate(created);
-    }
-
-    getTime(): string {
-        const { created } = this.getMessage().info;
-        return formatTime(created);
+        return created ? formatDate(created) : '';
     }
 
     getExtra(): TransactionInfo {
         const extra: TransactionInfo = {
+            type: null,
             amountLocalized: this.getAmount().toFixed(),
             amount: this.getAmount(),
             separator: '.',
@@ -160,6 +156,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 rate: 1.0,
                 symbol: '',
             },
+            sent: true,
         };
         return this.props.additionalInfo?.transactionInfo || extra;
     }
@@ -226,7 +223,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return status || ChatMessageStatus.Received;
     }
 
-    getStatusString(status: ChatMessageStatus): string {
+    getStatusString(status: ChatMessageStatusType): string {
         const time = this.getDate();
         if (status === ChatMessageStatus.Rejected) {
             return UILocalized.formatString(
