@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { View } from 'react-native';
 import BigNumber from 'bignumber.js';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -39,6 +40,7 @@ type Props = {
     maxValueMessage?: string,
     fees?: BigNum,
     localeInfo: StringLocaleInfo,
+    customComponent?: React$Node,
 };
 
 type State = {
@@ -252,10 +254,23 @@ export default class UITransferInput extends UIComponent<Props, State> {
         );
     }
 
-    renderFees() {
-        if (!this.getFees()) {
+    renderCustomComponent() {
+        return this.props.customComponent || null;
+    }
+
+    renderInfoBlock() {
+        if (!this.getFees() || this.getFees().eq(new BigNumber(0))) {
             return null;
         }
+        return (
+            <View style={UIStyle.displayFlex.row()}>
+                {this.renderFees()}
+                {this.renderOperationTime()}
+            </View>
+        );
+    }
+
+    renderFees() {
         const { localeInfo } = this.props;
         return (
             <UIDetailsView
@@ -267,7 +282,21 @@ export default class UITransferInput extends UIComponent<Props, State> {
                 )}
                 comments={UILocalized.fee}
                 commentsStyle={UIStyle.text.tertiaryTinyRegular()}
-                containerStyle={UIStyle.margin.topDefault()}
+                containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
+                textStyle={UIStyle.text.secondaryBodyRegular()}
+            />
+        );
+    }
+
+    renderOperationTime() {
+        return (
+            <UIDetailsView
+                reversed
+                disabled
+                value={UILocalized.operationTime}
+                comments={UILocalized.immediately}
+                commentsStyle={UIStyle.text.tertiaryTinyRegular()}
+                containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
                 textStyle={UIStyle.text.secondaryBodyRegular()}
             />
         );
@@ -277,7 +306,8 @@ export default class UITransferInput extends UIComponent<Props, State> {
         return (
             <React.Fragment>
                 {this.renderInput()}
-                {this.renderFees()}
+                {this.renderCustomComponent()}
+                {this.renderInfoBlock()}
             </React.Fragment>
         );
     }
