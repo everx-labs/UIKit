@@ -296,12 +296,13 @@ const en: UILocalizedData = {
     ChatWith: 'Chat with',
     DoYouWantToBlockThisUser: 'Do you want to block this user?',
     TypeMessage: 'Write a message...',
-    FailedToLoadDocument: 'Failed to load document',
+    FailedToLoadDocument: 'Failed to load document.',
 
     // Wallet
     WeNeedYourPassword: 'We need your local password to perform operations on this device',
     WeNeedYourPasswordToUpgradeWallet: 'We need your local password to upgrade your wallet',
     Password: 'Password',
+    MasterPassword: 'Master Password',
     ConfirmPassword: 'Confirm Password',
     WrongPassword: 'Wrong password',
     UpgradingWallet: 'Upgrading your wallet...',
@@ -554,7 +555,7 @@ const en: UILocalizedData = {
         'Access denied',
         'Unknown error',
     ],
-    LimitSetSuccess: 'The limit has been set successfully',
+    LimitSetSuccess: 'The limit has been set successfully.',
     LimitRemoveSuccess: 'The limit has been deleted',
 
     Gram01: 'Gram', // 01 gram

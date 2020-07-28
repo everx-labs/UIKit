@@ -301,6 +301,7 @@ const ru: UILocalizedData = {
     WeNeedYourPassword: 'Введите Ваш пароль, чтобы выполнять операции на этом устройстве',
     WeNeedYourPasswordToUpgradeWallet: 'Введите Ваш пароль, чтобы обновить Ваш кошелек',
     Password: 'Пароль',
+    MasterPassword: 'Master Password',
     ConfirmPassword: 'Подтвердите пароль',
     WrongPassword: 'Неверный пароль',
     UpgradingWallet: 'Обновление Вашего кошелька...',
@@ -552,7 +553,7 @@ const ru: UILocalizedData = {
         'Доступ запрещен',
         'Неизвестная ошибка',
     ],
-    LimitSetSuccess: 'Лимит был успешно установлен',
+    LimitSetSuccess: 'Лимит был успешно установлен.',
     LimitRemoveSuccess: 'Лимит был удален',
 
     Gram01: 'Gram', // 01 gram
