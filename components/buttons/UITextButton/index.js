@@ -40,7 +40,7 @@ type Props = ActionProps & {
     buttonStyle?: ViewStyleProp,
     details: string,
     detailsStyle?: TextStyleProp,
-    disableIconDefaultColor?: boolean,
+    disableIconColor?: boolean,
     icon: ?ImageSource,
     backIcon: ?ImageSource,
     iconColor?: string,
@@ -125,7 +125,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         }
 
         const {
-            theme, disabled, iconHoverColor, title, disableIconDefaultColor,
+            theme, disabled, iconHoverColor, title, disableIconColor,
         } = this.props;
         const tapped = this.isTapped();
         const hover = this.isHover();
@@ -134,7 +134,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         const stateColorStyle = disabled || tapped || hover
             ? iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
             : null;
-        const iconColor = !disableIconDefaultColor ? stateColorStyle || this.props.iconColor || defaultColor : null;
+        const iconColor = !disableIconColor ? stateColorStyle || this.props.iconColor || defaultColor : null;
         const styleColor = iconColor ? UIStyle.color.getTintColorStyle(iconColor) : null;
 
         const iconStyle = [styleColor];
