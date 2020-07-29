@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import {
     View,
@@ -20,7 +19,7 @@ import UIComponent from '../../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
-import icoGlass from '../../../assets/ico-glass/ico-glass.png';
+import icoGlass from '../../../assets/ico-glass/search-thin.png';
 import icoClear from '../../../assets/ico-clear/ico-clear.png';
 
 const styles = StyleSheet.create({
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     textStyle: {
-        ...UIFont.smallRegular(),
+        ...UIFont.bodyRegular(),
         width: '100%',
     },
     searchContainer: {
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
     },
     cancelButton: {
         justifyContent: 'center',
-        marginHorizontal: UIConstant.contentOffset(),
+        marginLeft: UIConstant.smallContentOffset(),
     },
 });
 
@@ -58,6 +57,7 @@ type Props = {
     onSetIntegratedHeader?: (header: React$Node) => React$Node,
     containerStyle: ViewStyleProp,
     bottomSeparator: boolean,
+    bottomSeparatorStyle?: ViewStyleProp,
     renderGlass: boolean,
     onFocus?: () => void,
     autoFocus?: boolean,
@@ -74,6 +74,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
         onChangeExpression: () => {},
         containerStyle: {},
         bottomSeparator: true,
+        bottomSeparatorStyle: {},
         renderGlass: false,
         onFocus: () => {},
         autoFocus: false,
@@ -202,7 +203,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
                 source={icoGlass}
                 style={[
                     UIStyle.alignSelfCenter,
-                    UIStyle.marginRightDefault,
+                    UIStyle.marginRightSmall,
                 ]}
             />
         );
@@ -210,10 +211,12 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     renderCancelButton() {
         const { value } = this.props;
+
         if (!this.isFocused() || !value?.length) {
             return null;
         }
-        return (//
+
+        return (
             <TouchableOpacity style={styles.cancelButton} onPress={() => this.onCancel()}>
                 <Image
                     testID="search_bar_cancel"
@@ -235,10 +238,19 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     render() {
         const {
-            value, placeholder, testID, containerStyle, bottomSeparator, autoFocus,
+            value,
+            placeholder,
+            testID,
+            containerStyle,
+            bottomSeparator,
+            bottomSeparatorStyle,
+            autoFocus,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
-        const separator = bottomSeparator ? <View style={styles.bottomSeparator} /> : null;
+        const separator = bottomSeparator
+            ? <View style={[styles.bottomSeparator, bottomSeparatorStyle]} />
+            : null;
+
         return (
             <View style={containerStyle}>
                 <View style={styles.searchContainer}>
