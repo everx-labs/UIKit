@@ -886,7 +886,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         if (!required) {
             return null;
         }
-        if (this.props.value) {
+        if ((this.state.focused && !this.getSecondaryPlaceholder()) || this.props.value) {
             return null;
         }
         const placeholder = this.state.focused
