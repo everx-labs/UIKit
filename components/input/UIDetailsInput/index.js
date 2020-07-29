@@ -278,7 +278,8 @@ export type DetailsProps = ActionProps & {
     */
     placeholder?: string,
     /**
-    The string that will be rendered before text input has been entered but field is focused
+    The placeholder string that is rendered before the start of text input entering
+    meanwhile the field is focused
     @default ''
     */
     secondaryPlaceholder?: string,
