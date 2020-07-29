@@ -44,6 +44,7 @@ type Props = ActionProps & {
     backIcon: ?ImageSource,
     iconColor?: string,
     iconHoverColor?: string,
+    noIconColor?: boolean,
     textStyle?: TextStyleProp,
     textHoverStyle?: TextStyleProp,
     textTappedStyle?: TextStyleProp,
@@ -75,6 +76,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         details: '',
         icon: null,
         backIcon: null,
+        noIconColor: false,
         theme: UIColor.Theme.Light,
         title: '',
         tooltip: null,
@@ -133,12 +135,14 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         const stateColorStyle = disabled || tapped || hover
             ? iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
             : null;
-        const iconColor = stateColorStyle || this.props.iconColor || defaultColor;
+        const iconColor = this.props.noIconColor
+            ? null
+            : stateColorStyle || this.props.iconColor || defaultColor;
         const styleColor = iconColor ? UIStyle.color.getTintColorStyle(iconColor) : null;
 
         const iconStyle = [styleColor];
         if (title) {
-            iconStyle.push(isBack ? UIStyle.margin.leftDefault() : UIStyle.margin.rightDefault());
+            iconStyle.push(isBack ? UIStyle.margin.leftSmall() : UIStyle.margin.rightSmall());
         }
 
         return (<Image
