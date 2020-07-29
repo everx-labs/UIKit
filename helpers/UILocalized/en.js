@@ -539,6 +539,8 @@ const en: UILocalizedData = {
     },
     fee: 'Fees',
     feeAmount: '≈ {0}',
+    operationTime: 'Operation time',
+    immediately: 'Immediately',
 
     message: {
         sending: 'Pending...',

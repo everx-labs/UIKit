@@ -278,6 +278,12 @@ export type DetailsProps = ActionProps & {
     */
     placeholder?: string,
     /**
+    The placeholder string that is rendered before the start of text input entering
+    meanwhile the field is focused
+    @default ''
+    */
+    secondaryPlaceholder?: string,
+    /**
     Use this flag to render * symbol, indicating that field is required.
     @default false
     */
@@ -572,6 +578,10 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         return this.props.placeholder;
     }
 
+    getSecondaryPlaceholder(): string {
+        return this.props.secondaryPlaceholder;
+    }
+
     getRequired(): boolean {
         return this.props.required;
     }
@@ -609,8 +619,12 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const required = this.getRequired();
         if (required) {
             return '';
+        } else if (this.hidePlaceholder()) {
+            return ' ';
+        } else if (this.isFocused()) {
+            return this.getSecondaryPlaceholder();
         }
-        return this.hidePlaceholder() || this.isFocused() ? ' ' : this.getPlaceholder();
+        return this.getPlaceholder();
     }
 
 
@@ -732,7 +746,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         // manually the input height, but on Android the behavior is not synchronized, using this to set
         // a minimum height, based on a state, fixes the problem.
         const minHeight = Platform.OS === 'android' ? { minHeight: this.state.inputHeight } : null;
-        
+
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
         const maxLengthProp = maxLength ? { maxLength } : null;
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
@@ -872,10 +886,12 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         if (!required) {
             return null;
         }
-        if (this.state.focused || this.props.value) {
+        if (this.props.value) {
             return null;
         }
-        const placeholder = this.getPlaceholder();
+        const placeholder = this.state.focused
+            ? this.getSecondaryPlaceholder()
+            : this.getPlaceholder();
         return (
             <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.common.positionAbsolute()]}>
                 {placeholder}
@@ -1061,6 +1077,7 @@ UIDetailsInput.defaultProps = {
     onSelectionChange: null,
     onPressComment: null,
     placeholder: '',
+    secondaryPlaceholder: '',
     required: false,
     secureTextEntry: false,
     selection: null,

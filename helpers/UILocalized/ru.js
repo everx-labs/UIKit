@@ -541,6 +541,8 @@ const ru: UILocalizedData = {
     },
     fee: 'Fees',
     feeAmount: '≈ {0}',
+    operationTime: 'Operation time',
+    immediately: 'Immediately',
 
     ConfirmIdentity: 'Чтобы продолжить, нам необходимо подтвердить вашу личность, отправив SMS-код на ваш номер телефона',
     SMSNotice: 'Может взиматься плата за SMS',
