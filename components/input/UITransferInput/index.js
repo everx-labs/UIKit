@@ -293,8 +293,8 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIDetailsView
                 reversed
                 disabled
-                value={UILocalized.operationTime}
-                comments={UILocalized.immediately}
+                value={UILocalized.immediately}
+                comments={UILocalized.operationTime}
                 commentsStyle={UIStyle.text.tertiaryTinyRegular()}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
                 textStyle={UIStyle.text.secondaryBodyRegular()}

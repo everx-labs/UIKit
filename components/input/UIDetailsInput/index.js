@@ -596,6 +596,9 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
 
     getValue() {
         const { value } = this.props;
+        if (!value) {
+            return '';
+        }
         return `${value}`;
     }
 
