@@ -138,7 +138,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
 
         const iconStyle = [styleColor];
         if (title) {
-            iconStyle.push(isBack ? UIStyle.margin.leftDefault() : UIStyle.margin.rightDefault());
+            iconStyle.push(isBack ? UIStyle.margin.leftSmall() : UIStyle.margin.rightSmall());
         }
 
         return (<Image
