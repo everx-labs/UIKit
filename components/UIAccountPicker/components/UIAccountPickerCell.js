@@ -21,6 +21,7 @@ type Props = {
     onPress?: () => void,
     displayNameOnly?: boolean,
     notActive?: boolean,
+    tokenSymbol?: string,
 };
 
 type State = {
@@ -36,6 +37,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         onPress: () => {},
         displayNameOnly: false,
         notActive: false,
+        tokenSymbol: '',
     };
 
     // constructor
@@ -58,6 +60,10 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
 
     getMaxDecimals(): number {
         return this.props.maxDecimals;
+    }
+
+    getTokenSymbol(): string {
+        return ` ${this.props.tokenSymbol || ''}` || '';
     }
 
     getAccountName(): string {
@@ -88,7 +94,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
             >
                 {integer}
                 <Text style={greyBodyRegular}>
-                    {`${this.getDecimalSeparator()}${decimals}`}
+                    {`${this.getDecimalSeparator()}${decimals}${this.getTokenSymbol()}`}
                 </Text>
             </Text>
         );

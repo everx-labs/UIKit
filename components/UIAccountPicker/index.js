@@ -20,6 +20,7 @@ type Props = {
     containerStyle: ViewStyleProp,
     displayNameOnly?: boolean,
     notActive?: boolean,
+    tokenSymbol?: string,
 };
 type State = {
     // Empty
@@ -33,6 +34,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
         onPressAccount: () => {},
         displayNameOnly: false,
         notActive: false,
+        tokenSymbol: '',
     };
 
     renderTitle() {
@@ -50,6 +52,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
             onPressAccount,
             displayNameOnly,
             notActive,
+            tokenSymbol,
         } = this.props;
 
         if (!account) {
@@ -63,6 +66,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
                 onPress={onPressAccount}
                 displayNameOnly={displayNameOnly}
                 notActive={notActive}
+                tokenSymbol={tokenSymbol}
             />
         );
     }
