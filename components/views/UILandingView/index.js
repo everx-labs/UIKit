@@ -1,11 +1,11 @@
 // @flow
 // In this file some lines disabled because input types conflicts.
 import React from 'react';
-import { Image, Platform, StyleSheet } from 'react-native';
+import { View, Image, Platform, StyleSheet } from 'react-native';
 
 import type { FastImageSource } from 'react-native-fast-image';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
-import type { ImageStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ImageStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIStyle from '../../../helpers/UIStyle';
 import UILabel from '../../text/UILabel';
@@ -23,6 +23,7 @@ type Props = {
     content?: string,
     testID?: string,
     iconStyle?: ImageStyleProp,
+    containerStyle?: ViewStyleProp,
 };
 
 type State = {};
@@ -45,32 +46,34 @@ export default class UILandingView extends UIComponent<Props, State> {
     // Render
     render() {
         const {
-            icon, title, description, testID, content,
+            icon, title, description, testID, content, containerStyle,
         } = this.props;
         const testIDProp = testID ? { testID } : null;
 
         return (
             <React.Fragment {...testIDProp} >
-                {/* $FlowFixMe */}
-                <ImageComponent
-                    style={this.props.iconStyle || styles.icon}
-                    source={icon}
-                />
-                <UILabel
-                    style={UIStyle.Margin.topDefault()}
-                    role={UILabel.Role.Subtitle}
-                    text={title}
-                />
-                <UILabel
-                    style={[
-                        UIStyle.Margin.topSmall(),
-                        !content && styles.descriptionLabel,
-                    ]}
-                    useDefaultSpace
-                    role={UILabel.Role.Description}
-                    text={description}
-                />
-                {content}
+                <View style={containerStyle}>
+                    {/* $FlowFixMe */}
+                    <ImageComponent
+                        style={this.props.iconStyle || styles.icon}
+                        source={icon}
+                    />
+                    <UILabel
+                        style={UIStyle.Margin.topDefault()}
+                        role={UILabel.Role.Subtitle}
+                        text={title}
+                    />
+                    <UILabel
+                        style={[
+                            UIStyle.Margin.topSmall(),
+                            !content && styles.descriptionLabel,
+                        ]}
+                        useDefaultSpace
+                        role={UILabel.Role.Description}
+                        text={description}
+                    />
+                    {content}
+                </View>
             </React.Fragment>
         );
     }

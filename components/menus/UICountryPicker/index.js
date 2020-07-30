@@ -7,7 +7,7 @@ import UIModalController from '../../../controllers/UIModalController';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
 import UISearchBar from '../../input/UISearchBar';
-import UISeparator from '../../../components/design/UISeparator';
+
 import { primary, quaternary } from '../../../helpers/UITextStyle';
 import type {
     ModalControllerProps,
@@ -15,6 +15,7 @@ import type {
     ModalControllerShowArgs,
 } from '../../../controllers/UIModalController';
 import UIFont from '../../../helpers/UIFont';
+import UIColor from '../../../helpers/UIColor';
 
 let shared;
 
@@ -46,11 +47,16 @@ const countryPickerStyle = StyleSheet.create({
     },
     countryName: {
         ...primary,
-        ...UIFont.smallMedium(),
+        ...UIFont.bodyMedium(),
     },
     disabledCountryName: {
         ...quaternary,
-        ...UIFont.smallMedium(),
+        ...UIFont.bodyRegular(),
+    },
+    separator: {
+        marginVertical: 1,
+        marginHorizontal: UIConstant.contentOffset(),
+        backgroundColor: UIColor.grey2(),
     },
 });
 
@@ -201,6 +207,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         if (!this.countryPicker) {
             return null;
         }
+
         return (
             <React.Fragment>
                 <UISearchBar
@@ -208,6 +215,8 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                     placeholder={`${UILocalized.Search}...`}
                     ref={(component) => { this.countryPickerInput = component; }}
                     onChangeExpression={this.onChangeExpression}
+                    bottomSeparatorStyle={countryPickerStyle.separator}
+                    renderGlass
                 />
             </React.Fragment>
         );
@@ -217,7 +226,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         return (
             <React.Fragment>
                 {this.renderSearchBar()}
-                <UISeparator />
                 <CountryPicker
                     ref={(component) => { this.countryPicker = component; }}
                     cca2={this.cca2}
