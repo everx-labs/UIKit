@@ -45,7 +45,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         autoCapitalize: 'none',
         returnKeyType: 'done',
         blurOnSubmit: true,
-        placeholder: UILocalized.Password,
+        placeholder: UILocalized.MasterPassword,
         autoFocus: false,
         containerStyle: {},
         forceMultiLine: true,

@@ -300,6 +300,7 @@ export type UILocalizedData = {
     WeNeedYourPassword: string,
     WeNeedYourPasswordToUpgradeWallet: string,
     Password: string,
+    MasterPassword: string,
     ConfirmPassword: string,
     WrongPassword: string,
     UpgradingWallet: string,
