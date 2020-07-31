@@ -19,7 +19,7 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
-import UILocalized, { formatDate } from '../../../helpers/UILocalized';
+import UILocalized, { formatTime } from '../../../helpers/UILocalized';
 import UILabel from '../../text/UILabel';
 
 import UIShareManager from '../../../helpers/UIShareManager';
@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
     container: {
         width: '80%',
         flexDirection: 'row',
-        marginVertical: UIConstant.tinyContentOffset() / 2,
+        marginVertical: UIConstant.smallContentOffset() / 2,
         alignItems: 'flex-end',
     },
     emptyChatCell: {
-        marginVertical: UIConstant.tinyContentOffset() / 2,
+        marginVertical: UIConstant.smallContentOffset() / 2,
         flexDirection: 'row',
         alignItems: 'flex-end',
         alignSelf: 'flex-start',
@@ -293,10 +293,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         if (date) {
-            return formatDate(date.valueOf());
+            return formatTime(date.valueOf());
         }
 
-        return formatDate(msg?.info.created || Date.now());
+        return formatTime(msg?.info.created || Date.now());
     }
 
     wrapInMessageContainer(

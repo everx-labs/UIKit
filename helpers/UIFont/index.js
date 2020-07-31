@@ -109,6 +109,12 @@ const UI_FONT_TINY = {
     letterSpacing: 1,
     ...UI_FONT_FAMILY,
 };
+const UI_FONT_MICRO = {
+    fontSize: 8,
+    lineHeight: 12,
+    letterSpacing: 1,
+    ...UI_FONT_FAMILY,
+};
 const UI_FONT_MENU = {
     fontSize: 13,
     lineHeight: 16,
@@ -270,6 +276,10 @@ export default class UIFont {
 
     static tinyMedium() {
         return UI_FONT_TINY_MEDIUM;
+    }
+
+    static microRegular() {
+        return UI_FONT_MICRO;
     }
 
     static menuBold() {
