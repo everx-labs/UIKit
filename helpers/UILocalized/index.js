@@ -150,7 +150,7 @@ const localized: UILocalizedData &
 
 Moment.locale(localized.getLocale());
 
-export const TIME_FORMAT = 'hh:mm';
+export const TIME_FORMAT = 'HH:mm';
 
 export function formatTime(time: number, format: string = TIME_FORMAT): string {
     return Moment(time).format(format);
