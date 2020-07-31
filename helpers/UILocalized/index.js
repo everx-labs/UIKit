@@ -150,8 +150,10 @@ const localized: UILocalizedData &
 
 Moment.locale(localized.getLocale());
 
-export function formatTime(time: number): string {
-    return Moment(time).format('LT');
+export const TIME_FORMAT = 'HH:mm';
+
+export function formatTime(time: number, format: string = TIME_FORMAT): string {
+    return Moment(time).format(format);
 }
 
 export function formatDate(time: number): string {
@@ -166,7 +168,7 @@ export function formatDate(time: number): string {
     return (isToday || isYesterday) ? (
         `${isToday ? localized.Today : localized.Yesterday} at ${formatTime(time)}`
     ) : (
-        Moment(time).format('D MMM LT')
+        Moment(time).format(`D MMM ${TIME_FORMAT}`)
     );
 }
 
