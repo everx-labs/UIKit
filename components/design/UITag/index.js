@@ -104,33 +104,33 @@ export default class UITag extends UIActionComponent<Props, State> {
     };
 
     // Getters
-    getTagColorStyle() {
+    getTagColor() {
         const { tagColor } = this.props;
 
         let color;
         switch (tagColor) {
         case UITag.tagColor.black:
-            color = '#20262A';
+            color = UIColor.tagBlack();
             break;
         case UITag.tagColor.green:
-            color = '#228007';
+            color = UIColor.tagGreen();
             break;
         case UITag.tagColor.red:
-            color = '#CE0014';
+            color = UIColor.tagRed();
             break;
         default:
-            color = '#F5F5F5';
+            color = UIColor.tagDefault();
             break;
         }
 
-        return { backgroundColor: color };
+        return color;
     }
 
     getTitleFont() {
         return styles.titleFont;
     }
 
-    getTitleColorStyle() {
+    getTitleColor() {
         const { tagColor } = this.props;
         let color;
         switch (tagColor) {
@@ -144,11 +144,11 @@ export default class UITag extends UIActionComponent<Props, State> {
             color = UIColor.white();
             break;
         default:
-            color = '#20262A';
+            color = UIColor.tagBlack();
             break;
         }
 
-        return { color };
+        return color;
     }
 
     // Actions
@@ -162,7 +162,7 @@ export default class UITag extends UIActionComponent<Props, State> {
                 key={`tagTitle:${title}`}
                 style={[
                     this.getTitleFont(),
-                    this.getTitleColorStyle(),
+                    UIStyle.color.getColorStyle(this.getTitleColor()),
                     titleStyle,
                 ]}
             >
@@ -180,8 +180,8 @@ export default class UITag extends UIActionComponent<Props, State> {
                     UIStyle.common.alignCenter(),
                     UIStyle.common.justifyCenter(),
                     UIStyle.common.alignSelfCenter(),
+                    UIStyle.color.getBackgroundColorStyle(this.getTagColor()),
                     styles.container,
-                    this.getTagColorStyle(),
                     style,
                 ]}
             >
