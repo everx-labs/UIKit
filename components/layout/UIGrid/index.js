@@ -143,7 +143,7 @@ export default class UIGrid extends UIComponent<Props, State> {
     }
 
     getContainerPadding() {
-        const maxWidth = SIZINGS[this.props.type].maxWidth;
+        const { maxWidth } = SIZINGS[this.props.type];
         if (
             !maxWidth ||
             this.state.width < maxWidth

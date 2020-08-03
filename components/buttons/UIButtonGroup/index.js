@@ -119,5 +119,5 @@ UIButtonGroup.defaultProps = {
     gutter: GUTTER,
     style: null,
     onLayout: null,
-    testID: 'UIButtonGroup'
+    testID: 'UIButtonGroup',
 };

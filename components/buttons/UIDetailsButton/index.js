@@ -77,7 +77,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         title: 'title',
         details: 'details',
         secondDetails: 'secondDetails',
-        caption: 'caption'
+        caption: 'caption',
     };
 
     constructor(props: Props) {

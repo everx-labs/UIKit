@@ -71,7 +71,9 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
     };
 
     render() {
-        const { testID, icon, containerStyle, ...rest } = this.props;
+        const {
+            testID, icon, containerStyle, ...rest
+        } = this.props;
         return (
             <View
                 testID={testID}

@@ -173,8 +173,7 @@ export default class UIAnimatedBalanceInner extends React.Component<
                     delay: index * (UIConstant.animationDuration() / 5),
                     useNativeDriver: true,
                 });
-            }),
-        ).start(() => {
+            })).start(() => {
             this.props.onAnimationEnd();
         });
     }

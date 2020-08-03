@@ -51,7 +51,7 @@ class InputTester extends UIComponent {
                         child,
                         {
                             onChangeText: (newText) => {
-                                const values = this.state.values;
+                                const { values } = this.state;
                                 values[rank] = newText;
                                 this.setStateSafely({ values });
                             },

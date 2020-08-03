@@ -125,12 +125,12 @@ export default class UIReactNavigationBar extends UIComponent<
             'headerLeft' in options && options.headerLeft != null
                 ? options.headerLeft
                 : () => (
-                      <UIReactNavigationBackButton
-                          navigation={navigation}
-                          route={route}
-                          testID={`back_btn_${options.title || ''}`}
-                      />
-                  );
+                    <UIReactNavigationBackButton
+                        navigation={navigation}
+                        route={route}
+                        testID={`back_btn_${options.title || ''}`}
+                    />
+                );
 
         const hasLeftOrRight = headerLeft || options.headerRight;
 

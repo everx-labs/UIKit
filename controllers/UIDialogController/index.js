@@ -300,7 +300,7 @@ class UIDialogController extends UIController {
         return null;
     }
 
-    onLayoutBottomContainer = e => {
+    onLayoutBottomContainer = (e) => {
         const { height } = e.nativeEvent.layout;
 
         if (!height) {
