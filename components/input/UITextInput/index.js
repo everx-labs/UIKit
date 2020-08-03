@@ -151,7 +151,7 @@ class UITextInput extends UIComponent<Props, State> {
         return (
             <TextInput
                 testID={testID}
-                ref={component => {
+                ref={(component) => {
                     this.textInput = component;
                 }}
                 {...this.getTransitProps()}

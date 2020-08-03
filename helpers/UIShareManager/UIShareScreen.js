@@ -118,7 +118,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     }
 
     setSubtitle(subtitle: ?string) {
-        this.setStateSafely({ subtitle })
+        this.setStateSafely({ subtitle });
     }
 
     // Getters

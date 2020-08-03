@@ -1,6 +1,6 @@
 module.exports = {
     setupFiles: [
-      '<rootDir>/jest-setup.js'
+        '<rootDir>/jest-setup.js',
     ],
     setupFilesAfterEnv: [
         '@testing-library/react-native/cleanup-after-each',

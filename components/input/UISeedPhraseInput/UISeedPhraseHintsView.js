@@ -77,21 +77,21 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         this.hintsListRef = null;
 
         this.state = {
-            wordThatChanged: "",
-            currentHighlight: -1
+            wordThatChanged: '',
+            currentHighlight: -1,
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
 
-        if (Platform.OS !== "web") {
+        if (Platform.OS !== 'web') {
             return;
         }
         const listenerType =
             UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? "click"
-                : "touchend";
+                ? 'click'
+                : 'touchend';
         this.clickListener = (e: any) => {
             e.stopPropagation && e.stopPropagation();
             e.preventDefault && e.preventDefault();
@@ -103,13 +103,13 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     componentWillUnmount() {
         super.componentWillUnmount();
 
-        if (Platform.OS !== "web") {
+        if (Platform.OS !== 'web') {
             return;
         }
         const listenerType =
             UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? "click"
-                : "touchend";
+                ? 'click'
+                : 'touchend';
         const meRef: any = ReactDOM.findDOMNode(this);
         meRef && meRef.removeEventListener(listenerType, this.clickListener);
     }
