@@ -13,8 +13,12 @@ import UITooltip from '../../notifications/UITooltip';
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 
 
+const tagHeight = 24;
+
 const styles = StyleSheet.create({
     container: {
+        height: tagHeight,
+        borderRadius: tagHeight / 2.0,
         overflow: 'hidden',
         paddingHorizontal: UIConstant.smallContentOffset(),
     },
@@ -61,8 +65,6 @@ export type Props = ActionProps & {
 
 type State = ActionState;
 
-const tagHeight = 24;
-
 export default class UITag extends UIActionComponent<Props, State> {
     static tagColor = {
         default: 'default',
@@ -102,14 +104,6 @@ export default class UITag extends UIActionComponent<Props, State> {
     };
 
     // Getters
-    getTagHeightStyle() {
-        return { height: tagHeight };
-    }
-
-    getTagRadius() {
-        return { borderRadius: tagHeight / 2.0 };
-    }
-
     getTagColorStyle() {
         const { tagColor } = this.props;
 
@@ -165,7 +159,7 @@ export default class UITag extends UIActionComponent<Props, State> {
 
         return (
             <Text
-                key="tagTitle"
+                key={`tagTitle:${title}`}
                 style={[
                     this.getTitleFont(),
                     this.getTitleColorStyle(),
@@ -187,9 +181,7 @@ export default class UITag extends UIActionComponent<Props, State> {
                     UIStyle.common.justifyCenter(),
                     UIStyle.common.alignSelfCenter(),
                     styles.container,
-                    this.getTagHeightStyle(),
                     this.getTagColorStyle(),
-                    this.getTagRadius(),
                     style,
                 ]}
             >
