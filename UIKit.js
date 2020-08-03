@@ -105,6 +105,7 @@ import UIStepBar from './components/menus/UIStepBar';
 import UIStubPage from './components/products/UIStubPage';
 import UIStyle from './helpers/UIStyle';
 import UITabView from './components/menus/UITabView';
+import UITag from './components/design/UITag';
 import UITextButton from './components/buttons/UITextButton';
 import UITextInput from './components/input/UITextInput';
 import UIToastMessage from './components/notifications/UIToastMessage';
@@ -260,6 +261,7 @@ export {
     UIStubPage,
     UIStyle,
     UITabView,
+    UITag,
     UITextButton,
     UITextInput,
     UIToastMessage,

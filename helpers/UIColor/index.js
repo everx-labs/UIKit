@@ -207,6 +207,22 @@ export default class UIColor {
         return UIColorPalette.overlay0;
     }
 
+    static tagBlack() {
+        return UIColorPalette.tag.black;
+    }
+
+    static tagGreen() {
+        return UIColorPalette.tag.green;
+    }
+
+    static tagRed() {
+        return UIColorPalette.tag.red;
+    }
+
+    static tagDefault() {
+        return UIColorPalette.tag.default;
+    }
+
     // Text colors
     static textPrimary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].text.primary.normal;
