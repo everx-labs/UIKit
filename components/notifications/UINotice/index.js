@@ -86,6 +86,7 @@ type State = {
     pageWidth: number,
     externalMessageComponent: Node,
     flashContainerLayoutWidth: number,
+    showOnTop: boolean,
 };
 
 type Props = {};
@@ -209,7 +210,7 @@ export default class UINotice
         return this.state.pageWidth;
     }
 
-    get showOnTop(): number {
+    get showOnTop(): boolean {
         return this.state.showOnTop;
     }
 
