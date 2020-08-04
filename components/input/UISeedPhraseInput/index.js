@@ -111,6 +111,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.deinitClickListenerForWeb();
     }
 
+    componentDidUpdate(prevProps: Props) {
+        if (this.props.isSeedPhraseValid && !prevProps.isSeedPhraseValid) {
+            Keyboard.dismiss();
+        }
+    }
+
     // Keyboard
     initKeyboardListeners() {
         if (Platform.OS === 'web') {
@@ -369,7 +375,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.onChangeText(newPhrase, (finalValue) => {
             const { textInput } = this;
             if (textInput) {
-                textInput.focus();
+                if (!this.props.isSeedPhraseValid) {
+                    textInput.focus();
+                }
 
                 // Apply a fix to move the cursor to the right
                 if (Platform.OS === 'web') {
