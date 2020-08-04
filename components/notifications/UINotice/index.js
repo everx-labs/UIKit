@@ -289,7 +289,11 @@ export default class UINotice
         this.animateOpening();
     }
 
-    showToastMessage(messageObject: MessageObject, messageComponent: Node, showOnTop = false) {
+    showToastMessage(
+        messageObject: MessageObject,
+        messageComponent: Node,
+        showOnTop: boolean = false,
+    ) {
         this.setExternalMessageComponent(messageComponent);
         this.setShowOnTop(showOnTop);
         const bottom = this.getMaxInset();
