@@ -155,6 +155,8 @@ export default class UINotice
 
             externalMessageComponent: null,
             flashContainerLayoutWidth: 0,
+
+            showOnTop: false,
         };
     }
 
