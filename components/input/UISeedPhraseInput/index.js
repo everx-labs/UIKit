@@ -111,7 +111,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         this.deinitClickListenerForWeb();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: Props) {
         if (this.props.isSeedPhraseValid && !prevProps.isSeedPhraseValid) {
             Keyboard.dismiss();
         }
