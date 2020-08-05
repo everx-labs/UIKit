@@ -6,14 +6,23 @@ export const paddingStyles = {
     paddingDefault: { // 16
         padding: UIConstant.contentOffset(),
     },
+    paddingTiny: { // 8
+        padding: UIConstant.tinyContentOffset(),
+    },
     paddingSmall: { // 8
         padding: UIConstant.smallContentOffset(),
+    },
+    paddingHorizontalTiny: { // 4
+        paddingHorizontal: UIConstant.tinyContentOffset(),
     },
     paddingHorizontal: { // 16
         paddingHorizontal: UIConstant.contentOffset(),
     },
     paddingHorizontalNormal: { // 12
         paddingHorizontal: UIConstant.normalContentOffset(),
+    },
+    paddingVerticalTiny: { // 4
+        paddingVertical: UIConstant.tinyContentOffset(),
     },
     paddingVertical: {
         paddingVertical: UIConstant.contentOffset(),
@@ -81,8 +90,16 @@ export default class UIStylePadding {
         return styles.paddingDefault;
     }
 
+    static tiny() { // 8
+        return styles.paddingTiny;
+    }
+
     static small() { // 8
         return styles.paddingSmall;
+    }
+
+    static horizontalTiny() {
+        return styles.paddingHorizontalTiny;
     }
 
     static horizontal() {
@@ -91,6 +108,10 @@ export default class UIStylePadding {
 
     static horizontalNormal() {
         return styles.paddingHorizontalNormal;
+    }
+
+    static verticalTiny() {
+        return styles.paddingVerticalTiny;
     }
 
     static vertical() {
