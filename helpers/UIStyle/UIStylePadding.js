@@ -6,7 +6,7 @@ export const paddingStyles = {
     paddingDefault: { // 16
         padding: UIConstant.contentOffset(),
     },
-    paddingTiny: { // 8
+    paddingTiny: { // 4
         padding: UIConstant.tinyContentOffset(),
     },
     paddingSmall: { // 8
