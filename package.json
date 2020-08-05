@@ -32,7 +32,7 @@
         "react-native-android-keyboard-adjust": "^1.1.1",
         "react-native-awesome-alerts": "^1.0.8",
         "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
-        "react-native-device-info": "^3.1.4",
+        "react-native-device-info": "5.6.3",
         "react-native-dropdownalert": "4.3.0",
         "react-native-fast-image": "^6.1.1",
         "react-native-flash-message": "^0.1.9",
