@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
     },
     icon: {
-        height: 24,
-        width: 24,
+        height: UIConstant.iconSize(),
+        width: UIConstant.iconSize(),
     },
     btnSend: {
         height: UIConstant.defaultCellHeight(),
@@ -208,7 +208,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return null;
         }
 
-        const activeButton = () => {
+        if (!menuPlusDisabled) {
             if (menuPlus.length === 1) {
                 return (
                     <TouchableOpacity
@@ -220,6 +220,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                     </TouchableOpacity>
                 );
             }
+
             return (
                 <UIPopoverMenu
                     testID="menu_view"
@@ -229,14 +230,11 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                     <Image source={btnPlus} style={styles.icon} />
                 </UIPopoverMenu>
             );
-        };
+        }
 
         return (
-            <View style={[menuPlusDisabled && styles.buttonContainer]}>
-                {!menuPlusDisabled
-                    ? activeButton()
-                    : (<Image source={btnPlusDisabled} style={styles.icon} />)
-                }
+            <View style={styles.buttonContainer}>
+                <Image source={btnPlusDisabled} style={styles.icon} />
             </View>
         );
     }
