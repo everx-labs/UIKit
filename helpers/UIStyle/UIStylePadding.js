@@ -90,7 +90,7 @@ export default class UIStylePadding {
         return styles.paddingDefault;
     }
 
-    static tiny() { // 8
+    static tiny() { // 4
         return styles.paddingTiny;
     }
 
