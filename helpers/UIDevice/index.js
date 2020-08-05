@@ -24,21 +24,21 @@ const UI_IS_MOBILE_WEB = Platform.OS === 'web'
 const UI_IS_TABLET_WEB = Platform.OS === 'web'
         && (new MobileDetect(window.navigator.userAgent)).tablet();
 
-const UI_IS_TABLET = Platform.OS !== 'web' ? DeviceInfo.isTabletSync() : UI_IS_TABLET_WEB;
+const UI_IS_TABLET = Platform.OS !== 'web' ? DeviceInfo.isTablet() : UI_IS_TABLET_WEB;
 
-const UI_IS_MOBILE = Platform.OS !== 'web' ? !DeviceInfo.isTabletSync() : UI_IS_MOBILE_WEB;
+const UI_IS_MOBILE = Platform.OS !== 'web' ? !DeviceInfo.isTablet() : UI_IS_MOBILE_WEB;
 
 const UI_IS_WEBKIT = Platform.OS !== 'web'
     ? Number.NaN
     : new MobileDetect(window.navigator.userAgent).version('Webkit');
 
-const APP_NAME = Platform.OS !== 'web' ? DeviceInfo.getApplicationNameSync() : '';
+const APP_NAME = Platform.OS !== 'web' ? DeviceInfo.getApplicationName() : '';
 
-const APP_VERSION = Platform.OS !== 'web' ? DeviceInfo.getReadableVersionSync() : '';
+const APP_VERSION = Platform.OS !== 'web' ? DeviceInfo.getReadableVersion() : '';
 
-const DEVICE_MODEL = Platform.OS !== 'web' ? DeviceInfo.getModelSync() : 'Browser'; // TODO:
+const DEVICE_MODEL = Platform.OS !== 'web' ? DeviceInfo.getModel() : 'Browser'; // TODO:
 
-const SYSTEM_VERSION = Platform.OS !== 'web' ? DeviceInfo.getSystemVersionSync() : 'Web'; // TODO:
+const SYSTEM_VERSION = Platform.OS !== 'web' ? DeviceInfo.getSystemVersion() : 'Web'; // TODO:
 
 export default class UIDevice {
     static statusBarHeight(): number {

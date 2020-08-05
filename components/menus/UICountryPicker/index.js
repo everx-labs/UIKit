@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import CountryPicker, { getAllCountries, Language } from 'react-native-country-picker-modal';
+import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 
 import UIModalController from '../../../controllers/UIModalController';
 import UIConstant from '../../../helpers/UIConstant';
@@ -101,7 +101,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     disabledCountries: ?string[];
     excludedCountries: ?string[];
     isLanguages: ?boolean;
-    languagesList: ?Language[];
 
     constructor(props: Props) {
         super(props);
@@ -113,7 +112,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.excludedCountries = [];
         this.modalOnWeb = false;
         this.isLanguages = false;
-        this.languagesList = [];
 
         this.state = {
             expression: '',
@@ -133,7 +131,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             shared = null;
         }
     }
-
 
     // Events
     onCancel = () => {
@@ -180,7 +177,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 excludedCountries = [],
                 modalOnWeb = false,
                 isLanguages = false,
-                languagesList = [],
             } = args;
             this.fullscreen = fullscreen;
             this.cca2 = cca2;
@@ -189,7 +185,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             this.excludedCountries = excludedCountries;
             this.modalOnWeb = modalOnWeb;
             this.isLanguages = isLanguages;
-            this.languagesList = languagesList;
         }
         await super.show(args);
 
@@ -238,8 +233,9 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                     excludedCountries={this.excludedCountries}
                     styles={countryPickerStyle}
                     onChange={this.onPickCountry}
-                    isLanguages={this.isLanguages}
-                    languagesList={this.languagesList}
+                    dataType={this.isLanguages ?
+                        CountryPicker.dataTypes.languages :
+                        CountryPicker.dataTypes.countries}
                 />
             </React.Fragment>
         );

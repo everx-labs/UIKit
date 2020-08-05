@@ -57,6 +57,7 @@ type ToastObject = {
     autoHide?: boolean,
     action?: NoticeAction,
     duration?: number,
+    showOnTop?: boolean,
 }
 
 type RNGHEvent<T> = { nativeEvent: T };
@@ -99,6 +100,7 @@ export default class UIToastMessage {
         const {
             message, type, placement,
             autoHide = true, action, duration = this.Duration.Long,
+            showOnTop,
         } = args;
         this.message = message || '';
         this.type = type || this.Type.Default;
@@ -112,7 +114,7 @@ export default class UIToastMessage {
             autoHide,
         };
         this.touchY.setValue(0);
-        UINotice.showToastMessage(messageObject, messageComponent);
+        UINotice.showToastMessage(messageObject, messageComponent, showOnTop);
     }
 
     static closeToast() {
