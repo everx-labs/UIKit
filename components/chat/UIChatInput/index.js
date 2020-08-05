@@ -31,7 +31,7 @@ type Props = DetailsProps & {
     quickAction?: ?MenuItemType[],
 
     onSendText?: (text: string) => void,
-    onHeightChange: (height: number) => {},
+    onHeightChange: (height: number) => void,
 };
 
 type State = ActionState & {
@@ -286,7 +286,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTextFragment() {
+    renderTextFragment(): React$Node {
         return (
             <View style={[styles.container]}>
                 {this.renderPlusMenu()}

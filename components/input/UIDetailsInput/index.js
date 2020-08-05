@@ -909,7 +909,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         );
     }
 
-    renderTextFragment() {
+    renderTextFragment(): React$Node {
         return (
             <React.Fragment>
                 {this.renderPrefixIcon()}
