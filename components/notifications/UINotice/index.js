@@ -26,6 +26,7 @@ import UIComponent from '../../UIComponent';
 
 import icoCloseBlue from '../../../assets/ico-close/close-blue.png';
 import icoCloseGrey from '../../../assets/ico-close/close-grey.png';
+import UIAlertView from '../../popup/UIAlertView';
 
 const cardShadowWidth = UIConstant.cardShadowWidth();
 const doubleOffset = 2 * cardShadowWidth;
@@ -85,6 +86,7 @@ type State = {
     pageWidth: number,
     externalMessageComponent: Node,
     flashContainerLayoutWidth: number,
+    showOnTop: boolean,
 };
 
 type Props = {};
@@ -130,9 +132,10 @@ export default class UINotice
     static showToastMessage(
         messageObject: MessageObject,
         messageComponent: Node,
+        showOnTop: boolean = false,
     ) {
         if (masterRef) {
-            masterRef.showToastMessage(messageObject, messageComponent);
+            masterRef.showToastMessage(messageObject, messageComponent, showOnTop);
         }
     }
 
@@ -153,6 +156,8 @@ export default class UINotice
 
             externalMessageComponent: null,
             flashContainerLayoutWidth: 0,
+
+            showOnTop: false,
         };
     }
 
@@ -192,6 +197,10 @@ export default class UINotice
         this.setStateSafely({ externalMessageComponent });
     }
 
+    setShowOnTop(showOnTop: boolean) {
+        this.setStateSafely({ showOnTop });
+    }
+
     // Getters
     getMarginLeft(): AnimatedValue {
         return this.state.marginLeft;
@@ -199,6 +208,10 @@ export default class UINotice
 
     getPageWidth(): number {
         return this.state.pageWidth;
+    }
+
+    get showOnTop(): boolean {
+        return this.state.showOnTop;
     }
 
     getContainerWidth() {
@@ -277,8 +290,13 @@ export default class UINotice
         this.animateOpening();
     }
 
-    showToastMessage(messageObject: MessageObject, messageComponent: Node) {
+    showToastMessage(
+        messageObject: MessageObject,
+        messageComponent: Node,
+        showOnTop: boolean = false,
+    ) {
         this.setExternalMessageComponent(messageComponent);
+        this.setShowOnTop(showOnTop);
         const bottom = this.getMaxInset();
 
         // toast message is centered
@@ -417,7 +435,10 @@ export default class UINotice
         return (
             <SafeAreaView style={UIStyle.Common.flex()} pointerEvents="box-none">
                 <View
-                    style={UIStyle.Common.flex()}
+                    style={[
+                        UIStyle.Common.flex(),
+                        this.showOnTop && { zIndex: UIAlertView.zIndex },
+                    ]}
                     onLayout={this.onFlashContainerLayout}
                     pointerEvents="box-none"
                 >
