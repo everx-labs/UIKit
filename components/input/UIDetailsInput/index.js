@@ -402,7 +402,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         }
     };
 
-    onMobileChange(event: any) {
+    onMobileChange = (event: any) => {
         if (event && event.nativeEvent) {
             const { contentSize } = event.nativeEvent;
             const height = contentSize?.height || 0;
@@ -410,7 +410,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         }
     }
 
-    onWebChange() {
+    onWebChange = () => {
         this.setStateSafely({}, () => {
             const aux = this.auxTextInput;
             if (aux?._node) {
@@ -420,7 +420,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         });
     }
 
-    onHeightChange(height: number) {
+    onHeightChange = (height: number) => {
         const { onHeightChange } = this.props;
         if (height) {
             this.setInputAreaHeight(height);
@@ -430,7 +430,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         }
     }
 
-    setInputAreaHeight(height: number) {
+    setInputAreaHeight = (height: number) => {
         const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
         const inH = newSize;
         this.onContentSizeChange(inH);

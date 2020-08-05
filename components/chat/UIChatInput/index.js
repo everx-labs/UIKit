@@ -291,7 +291,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             <View style={[styles.container]}>
                 {this.renderPlusMenu()}
                 <View style={[UIStyle.displayFlex.x1(), styles.inputMsg]}>
-                    <View style={UIStyle.padding.verticalNormal()}>
+                    <View>
                         {this.renderAuxTextInput()}
                         {this.renderTextInput()}
                     </View>
