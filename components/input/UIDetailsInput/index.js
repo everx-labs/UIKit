@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     textInputAux: {
+        paddingBottom: 0,
         marginBottom: -UIConstant.smallCellHeight(),
         height: UIConstant.smallCellHeight(),
         backgroundColor: 'transparent',
