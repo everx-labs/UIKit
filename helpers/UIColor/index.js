@@ -219,6 +219,10 @@ export default class UIColor {
         return UIColorPalette.tag.red;
     }
 
+    static tagBlue() {
+        return UIColorPalette.tag.blue;
+    }
+
     static tagDefault() {
         return UIColorPalette.tag.default;
     }
