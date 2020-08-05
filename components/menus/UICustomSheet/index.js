@@ -365,7 +365,7 @@ export default class UICustomSheet extends UIController<Props, State> {
                 <View style={styles.headerLeft}>
                     {this.headerLeft}
                 </View>
-                <View style={UIStyle.common.flex3()}>
+                <View>
                     <UIModalNavigationBar
                         height={headerHeight}
                         swipeToDismiss
