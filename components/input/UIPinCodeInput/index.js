@@ -8,6 +8,7 @@ import {
     Platform,
     Image,
 } from 'react-native';
+import debounce from 'lodash/debounce';
 
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
@@ -115,14 +116,19 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         }
     };
 
-    onKeyPress(key: number) {
-        if (this.props.disabled) {
-            return;
-        }
-        const values = [...this.state.values, key];
+    pressedKeysQueue = [];
 
-        if (values.length > this.props.pinCodeLength) {
-            return;
+    processPressed = debounce(() => {
+        const values = [...this.state.values];
+
+        while (this.pressedKeysQueue.length) {
+            const key = this.pressedKeysQueue.shift();
+
+            if (values.length === this.props.pinCodeLength) {
+                break;
+            }
+
+            values.push(key);
         }
 
         this.setState({ values });
@@ -130,14 +136,19 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const pin = values.join('');
         this.props.pinCodeEnter(pin);
 
-        if (
-            this.props.pinToConfirm &&
-            values.length === this.props.pinCodeLength
-        ) {
+        if (this.props.pinToConfirm && values.length === this.props.pinCodeLength) {
             if (pin !== this.props.pinToConfirm) {
                 this.wrongPin();
             }
         }
+    }, 50);
+
+    onKeyPress(key: number) {
+        if (this.props.disabled) {
+            return;
+        }
+        this.pressedKeysQueue.push(key);
+        this.processPressed();
     }
 
     onDeletePress = () => {
@@ -192,6 +203,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             description: '',
             values: [],
         });
+        this.pressedKeysQueue = [];
         this.props.pinCodeEnter('');
     }
 
@@ -206,6 +218,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             description: '',
             values: [],
         });
+        this.pressedKeysQueue = [];
         this.props.pinCodeEnter('');
     }
 
