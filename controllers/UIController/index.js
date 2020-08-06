@@ -208,8 +208,7 @@ export default class UIController<Props, State>
 
     componentDidMount() {
         super.componentDidMount();
-        this.initKeyboardListeners();
-        this.loadSafeAreaInsets();
+        this.initSequence();
     }
 
     componentWillUnmount() {
@@ -224,6 +223,11 @@ export default class UIController<Props, State>
 
     componentWillBlur() {
         //
+    }
+
+    initSequence() {
+        this.initKeyboardListeners();
+        this.loadSafeAreaInsets();
     }
 
     async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
@@ -502,6 +506,7 @@ export default class UIController<Props, State>
 
     // Keyboard
     initKeyboardListeners() {
+        this.deinitKeyboardListeners();
         if (Platform.OS === 'ios') {
             this.keyboardWillShowListener = Keyboard.addListener(
                 'keyboardWillShow',
