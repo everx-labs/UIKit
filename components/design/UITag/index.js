@@ -42,6 +42,7 @@ export type Props = ActionProps & {
      UITag.tagColor.black,
      UITag.tagColor.green,
      UITag.tagColor.red,
+     UITag.tagColor.blue,
      @default UITag.tagColor.default
      */
     tagColor?: string,
@@ -71,6 +72,7 @@ export default class UITag extends UIActionComponent<Props, State> {
         black: 'black',
         green: 'green',
         red: 'red',
+        blue: 'blue',
     };
 
     static defaultProps: Props = {
@@ -118,6 +120,9 @@ export default class UITag extends UIActionComponent<Props, State> {
         case UITag.tagColor.red:
             color = UIColor.tagRed();
             break;
+        case UITag.tagColor.blue:
+            color = UIColor.tagBlue();
+            break;
         default:
             color = UIColor.tagDefault();
             break;
@@ -132,23 +137,12 @@ export default class UITag extends UIActionComponent<Props, State> {
 
     getTitleColor() {
         const { tagColor } = this.props;
-        let color;
-        switch (tagColor) {
-        case UITag.tagColor.black:
-            color = UIColor.white();
-            break;
-        case UITag.tagColor.green:
-            color = UIColor.white();
-            break;
-        case UITag.tagColor.red:
-            color = UIColor.white();
-            break;
-        default:
-            color = UIColor.tagBlack();
-            break;
+
+        if (tagColor === UITag.tagColor.default) {
+            return UIColor.tagBlack();
         }
 
-        return color;
+        return UIColor.white();
     }
 
     // Actions
