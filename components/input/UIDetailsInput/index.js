@@ -407,7 +407,9 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         if (event && event.nativeEvent) {
             const { contentSize } = event.nativeEvent;
             const height = contentSize?.height || 0;
-            this.onHeightChange(height);
+            if (height > 0) {
+                this.onHeightChange(height);
+            }
         }
     }
 
@@ -422,9 +424,10 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     onHeightChange = (height: number) => {
-        const { onHeightChange } = this.props;
         if (height) {
             this.setInputAreaHeight(height);
+
+            const { onHeightChange } = this.props;
             if (onHeightChange) {
                 onHeightChange(height);
             }

@@ -133,17 +133,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-
-    onMobileChange = (event: any) => {
-        if (this.props.onHeightChange && event && event.nativeEvent) {
-            const { contentSize } = event.nativeEvent;
-            const height = contentSize?.height || 0;
-            if (height > 0) {
-                this.props.onHeightChange(height);
-            }
-        }
-    }
-
     onLayout = (e: any) => {
         const { nativeEvent } = e;
         // If the browser window is resized, this forces the input
@@ -156,6 +145,16 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             this.setStateSafely({ inputWidth: layout.width });
         }
     };
+
+    /**
+     * @overridden
+     */
+    onHeightChange = (height: number) => {
+        const { onHeightChange } = this.props;
+        if (onHeightChange) {
+            onHeightChange(height);
+        }
+    }
 
     onContentSizeChange = (height: number) => {
         this.setInputHeight(height);
