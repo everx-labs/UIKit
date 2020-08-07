@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     textInputAux: {
+        paddingBottom: 0,
         marginBottom: -UIConstant.smallCellHeight(),
         height: UIConstant.smallCellHeight(),
         backgroundColor: 'transparent',
@@ -402,15 +403,17 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         }
     };
 
-    onMobileChange(event: any) {
+    onMobileChange = (event: any) => {
         if (event && event.nativeEvent) {
             const { contentSize } = event.nativeEvent;
             const height = contentSize?.height || 0;
-            this.onHeightChange(height);
+            if (height > 0) {
+                this.onHeightChange(height);
+            }
         }
     }
 
-    onWebChange() {
+    onWebChange = () => {
         this.setStateSafely({}, () => {
             const aux = this.auxTextInput;
             if (aux?._node) {
@@ -420,17 +423,21 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         });
     }
 
-    onHeightChange(height: number) {
-        const { onHeightChange } = this.props;
+    onHeightChange = (height: number) => {
         if (height) {
-            this.setInputAreaHeight(height);
+            this.setInputAreaHeightOnWeb(height);
+
+            const { onHeightChange } = this.props;
             if (onHeightChange) {
                 onHeightChange(height);
             }
         }
     }
 
-    setInputAreaHeight(height: number) {
+    setInputAreaHeightOnWeb = (height: number) => {
+        if (Platform.OS !== 'web') {
+            return;
+        }
         const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
         const inH = newSize;
         this.onContentSizeChange(inH);
@@ -909,7 +916,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         );
     }
 
-    renderTextFragment() {
+    renderTextFragment(): React$Node {
         return (
             <React.Fragment>
                 {this.renderPrefixIcon()}

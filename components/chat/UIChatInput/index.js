@@ -16,10 +16,10 @@ import type { DetailsProps } from '../../input/UIDetailsInput';
 import type { ActionState } from '../../UIActionComponent';
 import type { MenuItemType } from '../../menus/UIActionSheet/MenuItem';
 
-import btnPlus from '../../../assets/btn_plus/btn_plus.png';
+import btnPlus from '../../../assets/icon-plus/add.png';
+import btnPlusDisabled from '../../../assets/icon-plus-disabled/add.png';
 import btnDots from '../../../assets/btn_dots/btn_dots.png';
 import btnSend from '../../../assets/btn_msg_send/btn_msg_send.png';
-import btnPlusDisabled from '../../../assets/btn_plus_disabled/btn_plus_disabled.png';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
@@ -27,10 +27,12 @@ type Props = DetailsProps & {
     menuMore?: ?MenuItemType[],
     menuPlusDisabled?: boolean,
     menuMoreDisabled?: boolean,
+    showBorder?: boolean,
 
     quickAction?: ?MenuItemType[],
 
     onSendText?: (text: string) => void,
+    onHeightChange: (height: number) => void,
 };
 
 type State = ActionState & {
@@ -40,18 +42,20 @@ type State = ActionState & {
 };
 
 const styles = StyleSheet.create({
-    btnMenuContainer: {
-        alignSelf: 'flex-end',
-        marginHorizontal: UIConstant.smallContentOffset(),
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: UIConstant.defaultCellHeight(),
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
     },
-    btnMenu: {
-        alignItems: 'center',
+    buttonContainer: {
+        padding: UIConstant.normalContentOffset(),
         justifyContent: 'center',
-        height: UIConstant.smallButtonHeight(),
-        width: UIConstant.smallButtonHeight(),
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+    },
+    icon: {
+        height: UIConstant.iconSize(),
+        width: UIConstant.iconSize(),
     },
     btnSend: {
         height: UIConstant.defaultCellHeight(),
@@ -64,6 +68,10 @@ const styles = StyleSheet.create({
             ios: UIConstant.smallContentOffset(),
             android: UIConstant.smallContentOffset(),
         }),
+    },
+    inputView: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 
@@ -125,13 +133,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
-    onMobileChange(event: any) {
-        // Seems that it is not necessary anymore to handle the auto-growing behavior
-        // on Android. So, I'm not removing the method from the UIDetailsInput class
-        // and instead overriding it in here to avoid introduce any possible unexpected
-        // behavior.
-    }
-
     onLayout = (e: any) => {
         const { nativeEvent } = e;
         // If the browser window is resized, this forces the input
@@ -156,6 +157,11 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         }
     }
 
+    // Styles
+    textViewStyle(): * {
+        return styles.inputView;
+    }
+
     // Render
     renderQuickAction() {
         const { quickAction, menuMore } = this.props;
@@ -163,34 +169,35 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
         if (val.length > 0) {
             return (
-                <View style={menuMore ? styles.btnSend : UIStyle.Margin.rightDefault()}>
+                <View>
                     <TouchableOpacity
-                        style={styles.btnMenuContainer}
+                        style={styles.buttonContainer}
                         testID="send_btn"
                         onPress={() => this.onSendText(val)}
                     >
-                        <Image source={btnSend} />
+                        <Image source={btnSend} style={styles.icon} />
                     </TouchableOpacity>
                 </View>
             );
         }
+
         if (!quickAction) {
             return null;
         }
+
         return (
-            <UIButtonGroup style={menuMore ? null : UIStyle.Margin.rightSmall()}>
-                {
-                    quickAction.map((action, index) => (
-                        <UITextButton
-                            // eslint-disable-next-line
-                            key={`quickAction~${index}`}
-                            buttonStyle={styles.btnMenuContainer}
-                            testID={action.testID}
-                            onPress={action.onPress}
-                            title={action.title}
-                        />
-                    ))
-                }
+            <UIButtonGroup>
+                {quickAction.map((action, index) => (
+                    <UITextButton
+                        // eslint-disable-next-line
+                        key={`quickAction~${index}`}
+                        buttonStyle={styles.buttonContainer}
+                        textStyle={UIStyle.text.bodyRegular()}
+                        testID={action.testID}
+                        onPress={action.onPress}
+                        title={action.title}
+                    />
+                ))}
             </UIButtonGroup>
         );
     }
@@ -202,36 +209,33 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return null;
         }
 
-        const activeButton = () => {
+        if (!menuPlusDisabled) {
             if (menuPlus.length === 1) {
                 return (
                     <TouchableOpacity
                         testID="menu_view"
                         onPress={menuPlus[0].onPress}
+                        style={styles.buttonContainer}
                     >
-                        <Image source={btnPlus} />
+                        <Image source={btnPlus} style={styles.icon} />
                     </TouchableOpacity>
                 );
             }
+
             return (
                 <UIPopoverMenu
                     testID="menu_view"
                     menuItemsList={menuPlus}
                     placement="top"
                 >
-                    <Image source={btnPlus} />
+                    <Image source={btnPlus} style={styles.icon} />
                 </UIPopoverMenu>
             );
-        };
+        }
 
         return (
-            <View style={styles.btnMenuContainer}>
-                <View style={styles.btnMenu}>
-                    {!menuPlusDisabled
-                        ? activeButton()
-                        : (<Image source={btnPlusDisabled} />)
-                    }
-                </View>
+            <View style={styles.buttonContainer}>
+                <Image source={btnPlusDisabled} style={styles.icon} />
             </View>
         );
     }
@@ -263,8 +267,8 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         };
 
         return (
-            <View style={styles.btnMenuContainer}>
-                <View style={styles.btnMenu}>
+            <View style={styles.buttonContainer}>
+                <View style={styles.icon}>
                     {!menuMoreDisabled
                         ? activeButton()
                         // TODO: support btnDotsDisabled
@@ -275,9 +279,9 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderTextFragment() {
+    renderTextFragment(): React$Node {
         return (
-            <React.Fragment>
+            <View style={[styles.container]}>
                 {this.renderPlusMenu()}
                 <View style={[UIStyle.displayFlex.x1(), styles.inputMsg]}>
                     <View>
@@ -287,7 +291,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                 </View>
                 {this.renderQuickAction()}
                 {this.renderMoreMenu()}
-            </React.Fragment>
+            </View>
         );
     }
 }

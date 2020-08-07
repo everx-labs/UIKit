@@ -6,14 +6,23 @@ export const paddingStyles = {
     paddingDefault: { // 16
         padding: UIConstant.contentOffset(),
     },
+    paddingTiny: { // 4
+        padding: UIConstant.tinyContentOffset(),
+    },
     paddingSmall: { // 8
         padding: UIConstant.smallContentOffset(),
+    },
+    paddingHorizontalTiny: { // 4
+        paddingHorizontal: UIConstant.tinyContentOffset(),
     },
     paddingHorizontal: { // 16
         paddingHorizontal: UIConstant.contentOffset(),
     },
     paddingHorizontalNormal: { // 12
         paddingHorizontal: UIConstant.normalContentOffset(),
+    },
+    paddingVerticalTiny: { // 4
+        paddingVertical: UIConstant.tinyContentOffset(),
     },
     paddingVertical: {
         paddingVertical: UIConstant.contentOffset(),
@@ -29,6 +38,9 @@ export const paddingStyles = {
     },
     paddingTopHuge: { // 32
         paddingTop: UIConstant.hugeContentOffset(),
+    },
+    paddingBottomTiny: { // 4
+        paddingBottom: UIConstant.tinyContentOffset(),
     },
     paddingBottomSmall: { // 8
         paddingBottom: UIConstant.smallContentOffset(),
@@ -53,6 +65,9 @@ export const paddingStyles = {
     },
     paddingBottomGiant: { // 136
         paddingBottom: UIConstant.giantContentOffset(),
+    },
+    paddingBottomNormal: {
+        paddingBottom: UIConstant.normalContentOffset(),
     },
     paddingBottomDefault: {
         paddingBottom: UIConstant.contentOffset(),
@@ -81,8 +96,16 @@ export default class UIStylePadding {
         return styles.paddingDefault;
     }
 
+    static tiny() { // 4
+        return styles.paddingTiny;
+    }
+
     static small() { // 8
         return styles.paddingSmall;
+    }
+
+    static horizontalTiny() {
+        return styles.paddingHorizontalTiny;
     }
 
     static horizontal() {
@@ -91,6 +114,10 @@ export default class UIStylePadding {
 
     static horizontalNormal() {
         return styles.paddingHorizontalNormal;
+    }
+
+    static verticalTiny() {
+        return styles.paddingVerticalTiny;
     }
 
     static vertical() {
@@ -113,8 +140,16 @@ export default class UIStylePadding {
         return styles.paddingTopHuge;
     }
 
+    static bottomTiny() {
+        return styles.paddingBottomTiny;
+    }
+
     static bottomSmall() {
         return styles.paddingBottomSmall;
+    }
+
+    static bottomNormal() {
+        return styles.paddingBottomNormal;
     }
 
     static bottomDefault() {
