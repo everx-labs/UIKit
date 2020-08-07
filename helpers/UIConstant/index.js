@@ -39,6 +39,8 @@ const UI_TREMENDOUS_CONTENT_OFFSET = 96;
 const UI_ENORMOUS_CONTENT_OFFSET = 104;
 const UI_GIANT_CONTENT_OFFSET = 136;
 
+const UI_CHAT_INPUT_MAX_HEIGHT = 172;
+
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 8;
 
@@ -402,6 +404,10 @@ export default class UIConstant {
 
     static hugeCellHeight() {
         return UI_HUGE_CELL_HEIGHT;
+    }
+
+    static chatInputMaxHeight() {
+        return UI_CHAT_INPUT_MAX_HEIGHT;
     }
 
     static giantCellHeight() {

@@ -27,6 +27,7 @@ type Props = DetailsProps & {
     menuMore?: ?MenuItemType[],
     menuPlusDisabled?: boolean,
     menuMoreDisabled?: boolean,
+    showBorder?: boolean,
 
     quickAction?: ?MenuItemType[],
 
@@ -132,6 +133,16 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     // Events
+
+    onMobileChange = (event: any) => {
+        if (this.props.onHeightChange && event && event.nativeEvent) {
+            const { contentSize } = event.nativeEvent;
+            const height = contentSize?.height || 0;
+            if (height > 0) {
+                this.props.onHeightChange(height);
+            }
+        }
+    }
 
     onLayout = (e: any) => {
         const { nativeEvent } = e;
