@@ -82,6 +82,7 @@ const UIColorPalette = {
         black: '#20262A',
         green: '#228007',
         red: '#CE0014',
+        blue: '#0088CC',
         default: '#F5F5F5',
     },
 
