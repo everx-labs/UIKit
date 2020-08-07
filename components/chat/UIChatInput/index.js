@@ -146,16 +146,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         }
     };
 
-    /**
-     * @overridden
-     */
-    onHeightChange = (height: number) => {
-        const { onHeightChange } = this.props;
-        if (onHeightChange) {
-            onHeightChange(height);
-        }
-    }
-
     onContentSizeChange = (height: number) => {
         this.setInputHeight(height);
     };

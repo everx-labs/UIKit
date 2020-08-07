@@ -425,7 +425,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
 
     onHeightChange = (height: number) => {
         if (height) {
-            this.setInputAreaHeight(height);
+            this.setInputAreaHeightOnWeb(height);
 
             const { onHeightChange } = this.props;
             if (onHeightChange) {
@@ -434,7 +434,10 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         }
     }
 
-    setInputAreaHeight = (height: number) => {
+    setInputAreaHeightOnWeb = (height: number) => {
+        if (Platform.OS !== 'web') {
+            return;
+        }
         const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
         const inH = newSize;
         this.onContentSizeChange(inH);
