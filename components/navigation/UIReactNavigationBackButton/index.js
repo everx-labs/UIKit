@@ -55,6 +55,9 @@ export default class UIReactNavigationBackButton extends UIComponent<
         if (params && params.initialRoute) {
             return <View />;
         }
+        if (!this.getNavigation().canGoBack()) {
+            return <View />;
+        }
         return (
             <TouchableOpacity
                 {...testIDProp}
