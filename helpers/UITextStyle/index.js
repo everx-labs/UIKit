@@ -158,6 +158,10 @@ const UITextStyle = StyleSheet.create({
         ...text,
         ...UIFont.smallBold(),
     },
+    smallRegularHigh: {
+        ...text,
+        ...UIFont.smallRegularHigh(),
+    },
     // Caption - fontSize: 14, lineHeight: 20
     captionRegular: {
         ...text,
