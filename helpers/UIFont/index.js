@@ -97,6 +97,12 @@ const UI_FONT_SMALL = {
     letterSpacing: 0.25,
     ...UI_FONT_FAMILY,
 };
+const UI_FONT_SMALL_HIGH = {
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0.25,
+    ...UI_FONT_FAMILY,
+};
 const UI_FONT_CAPTION = {
     fontSize: 14,
     lineHeight: 20,
@@ -149,6 +155,7 @@ const UI_FONT_BODY_REGULAR = { ...UI_FONT_BODY, ...UI_FONT_REGULAR };
 const UI_FONT_BODY_MEDIUM = { ...UI_FONT_BODY, ...UI_FONT_MEDIUM };
 const UI_FONT_SMALL_BOLD = { ...UI_FONT_SMALL, ...UI_FONT_BOLD };
 const UI_FONT_SMALL_REGULAR = { ...UI_FONT_SMALL, ...UI_FONT_REGULAR };
+const UI_FONT_SMALL_REGULAR_HIGH = { ...UI_FONT_SMALL_HIGH, ...UI_FONT_REGULAR };
 const UI_FONT_SMALL_MEDIUM = { ...UI_FONT_SMALL, ...UI_FONT_MEDIUM };
 const UI_FONT_CAPTION_BOLD = { ...UI_FONT_CAPTION, ...UI_FONT_BOLD };
 const UI_FONT_CAPTION_REGULAR = { ...UI_FONT_CAPTION, ...UI_FONT_REGULAR };
@@ -248,6 +255,10 @@ export default class UIFont {
 
     static smallRegular() {
         return UI_FONT_SMALL_REGULAR;
+    }
+
+    static smallRegularHigh() {
+        return UI_FONT_SMALL_REGULAR_HIGH;
     }
 
     static smallMedium() {

@@ -71,6 +71,9 @@ export default class UIStyleText {
     static smallBold() {
         return UITextStyle.smallBold;
     }
+    static smallRegularHigh() {
+        return UITextStyle.smallRegularHigh;
+    }
     // Caption - fontSize: 14, lineHeight: 20
     static captionRegular() {
         return UITextStyle.captionRegular;
