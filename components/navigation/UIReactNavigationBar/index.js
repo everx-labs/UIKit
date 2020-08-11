@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { RouteProp, NavigationProp, ParamListBase } from '@react-navigation/native';
 import { TransitionPresets, Header } from '@react-navigation/stack';
@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
     },
     navigatorHeader: {
         ...StyleSheet.flatten(UIStyle.reactNavigationHeader),
+    },
+    defaultNavigationHeader: {
+        borderBottomWidth: 0,
+        elevation: Platform.select({
+            android: 0,
+        }),
     },
     headerCenter: {
         position: 'absolute',
@@ -135,9 +141,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
 
         if (options.useDefaultStyle) {
             effective = {
-                headerStyle: {
-                    borderBottomWidth: 0,
-                },
+                headerStyle: styles.defaultNavigationHeader,
                 ...options,
                 headerLeft,
             };
@@ -198,7 +202,10 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
         return {
             ...effective,
             // https://reactnavigation.org/docs/stack-navigator#pre-made-configs
-            ...TransitionPresets.SlideFromRightIOS,
+            ...Platform.select({
+                android: {},
+                default: TransitionPresets.SlideFromRightIOS,
+            }),
             animationEnabled: true,
         };
     }
