@@ -3,7 +3,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { RouteProp, NavigationProp, ParamListBase } from '@react-navigation/native';
-import { TransitionPresets } from '@react-navigation/stack';
+import { TransitionPresets, Header } from '@react-navigation/stack';
+import type { StackHeaderProps } from '@react-navigation/stack';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
         color: UIColor.black(),
     },
     navigatorHeader: {
-        ...StyleSheet.flatten(UIStyle.navigatorHeader),
+        ...StyleSheet.flatten(UIStyle.reactNavigationHeader),
     },
     headerCenter: {
         position: 'absolute',
@@ -141,11 +142,30 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
                 headerLeft,
             };
         } else {
+            // This is a hack around navigation height
+            // Problem is with safe area insets that kinda hard to get
+            // at that point, as this function is
+            // - sync (it wouldn't be possible to use UIDevice.safeAreaInsets())
+            // - not a react component (so hooks is not abailable)
+            // Also I didn't want to pass it in options explicitly,
+            // as it required to modify a lot of places
+            let headerTopInset = 0;
             effective = {
+                header: (props: StackHeaderProps) => {
+                    if (props.insets?.top) {
+                        headerTopInset = props.insets?.top;
+                    }
+                    return <Header {...props} />;
+                },
                 headerStyle: [
                     styles.navigatorHeader,
                     {
-                        height: UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1),
+                        get height() {
+                            return (
+                                headerTopInset +
+                                UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1)
+                            );
+                        },
                     },
                     options.headerStyle || {},
                 ],
@@ -162,8 +182,9 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
                 headerTitleContainerStyle: {
                     left: 0,
                     right: 0,
-                    // $FlowFixMe
-                    ...options.headerTitleContainerStyle,
+                    position: 'absolute',
+                    marginHorizontal: 0,
+                    ...StyleSheet.flatten(options.headerTitleContainerStyle || {}),
                 },
             };
         }
