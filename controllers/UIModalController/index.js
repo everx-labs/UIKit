@@ -582,7 +582,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     onTapHandlerStateChange = ({ nativeEvent: { state } }: RNGHEvent<{ state: RNGHState }>) => {
         if (state === RNGHState.ACTIVE && this.dismissible) {
-            this.hide();
+            this.onCancelPress();
         }
     };
 

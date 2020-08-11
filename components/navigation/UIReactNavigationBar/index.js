@@ -88,6 +88,7 @@ type UINavigationBarOptions = {
     headerRight?: () => React$Node,
     headerCenter?: React$Node,
     headerStyle?: {},
+    headerTitleContainerStyle: ViewStyleProp,
 };
 
 type UINavigationBarProps = {
@@ -161,6 +162,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
                 headerTitleContainerStyle: {
                     left: 0,
                     right: 0,
+                    // $FlowFixMe
                     ...options.headerTitleContainerStyle,
                 },
             };
@@ -174,6 +176,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
         }
         return {
             ...effective,
+            // https://reactnavigation.org/docs/stack-navigator#pre-made-configs
             ...TransitionPresets.SlideFromRightIOS,
             animationEnabled: true,
         };
