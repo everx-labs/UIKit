@@ -58,6 +58,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: UIConstant.smallContentOffset(),
     },
+    space: {
+        flexGrow: 1,
+        width: 1,
+        minHeight: 1,
+        maxHeight: UIConstant.bigCellHeight(),
+    },
 });
 
 export default class UIPinCodeInput extends UIComponent<Props, State> {
@@ -248,14 +254,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const descStyle = StyleSheet.create({
             descColor: {
                 color,
-                minHeight: UIConstant.mediumCellHeight(),
             },
         });
 
         return (
             <UILabel
                 testID={this.props.commentTestID}
-                style={[UIStyle.Margin.bottomMassive(), descStyle.descColor]}
+                style={descStyle.descColor}
                 role={UILabel.Role.CaptionTertiary}
                 text={description}
                 numberOfLines={2}
@@ -487,9 +492,12 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         return (
             <View
                 {...testIDProp}
-                style={[UIStyle.fullWidthCenterContainer, UIStyle.flex]}
+                style={[
+                    UIStyle.width.fullCenterContainer(),
+                    UIStyle.displayFlex.flexJustifyEnd(),
+                ]}
             >
-                <View style={[UIStyle.flexJustifyCenter, UIStyle.alignCenter]}>
+                <View style={UIStyle.displayFlex.alignJustifyCenter()}>
                     {this.renderLabel()}
                     <UIPinCodeDots
                         ref={this.dotsRef}
@@ -498,6 +506,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     />
                     {this.renderDescription()}
                 </View>
+                <View style={styles.space} />
                 {this.renderKeyboard()}
             </View>
         );
