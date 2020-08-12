@@ -40,6 +40,7 @@ const countryPickerStyle = StyleSheet.create({
     },
     itemCountryName: {
         borderBottomWidth: 0,
+        height: UIConstant.smallCellHeight(),
     },
     modalContainer: {
         flex: 1,
