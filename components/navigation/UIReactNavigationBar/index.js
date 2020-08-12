@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { RouteProp, NavigationProp, ParamListBase } from '@react-navigation/native';
-import { TransitionPresets, Header } from '@react-navigation/stack';
+// import { TransitionPresets, Header } from '@react-navigation/stack';
 import type { StackHeaderProps } from '@react-navigation/stack';
 
 import UIColor from '../../../helpers/UIColor';
@@ -150,7 +150,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
             // Problem is with safe area insets that kinda hard to get
             // at that point, as this function is
             // - sync (it wouldn't be possible to use UIDevice.safeAreaInsets())
-            // - not a react component (so hooks is not abailable)
+            // - not a react component (so hooks is not available)
             // Also I didn't want to pass it in options explicitly,
             // as it required to modify a lot of places
             let headerTopInset = 0;
@@ -159,7 +159,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
                     if (props.insets?.top) {
                         headerTopInset = props.insets?.top;
                     }
-                    return <Header {...props} />;
+                    return null; /* <Header {...props} />; */
                 },
                 headerStyle: [
                     styles.navigatorHeader,
@@ -167,7 +167,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
                         get height() {
                             return (
                                 headerTopInset +
-                                UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1)
+                                (UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1))
                             );
                         },
                     },
@@ -204,7 +204,7 @@ export default class UIReactNavigationBar extends UIComponent<UINavigationBarPro
             // https://reactnavigation.org/docs/stack-navigator#pre-made-configs
             ...Platform.select({
                 android: {},
-                default: TransitionPresets.SlideFromRightIOS,
+                // default: TransitionPresets.SlideFromRightIOS,
             }),
             animationEnabled: true,
         };
