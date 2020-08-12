@@ -1,6 +1,12 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Animated, {
+    interpolate,
+    interpolateColors,
+    spring,
+    SpringUtils,
+} from 'react-native-reanimated';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -36,6 +42,8 @@ type UIPinCodeDotState = {
     savedIsValueDefined: boolean,
 };
 
+const springConfig = SpringUtils.makeDefaultConfig();
+
 export default class UIPinCodeDot extends React.Component<
     UIPinCodeDotProps,
     UIPinCodeDotState,
@@ -59,23 +67,19 @@ export default class UIPinCodeDot extends React.Component<
 
     componentDidUpdate() {
         if (this.state.show) {
-            this.animationShow.start();
-            return;
-        }
-        if (this.state.hide) {
-            this.animationHide.start();
+            spring(this.animation, {
+                ...springConfig,
+                toValue: 1,
+            }).start();
+        } else if (this.state.hide) {
+            spring(this.animation, {
+                ...springConfig,
+                toValue: 0,
+            }).start();
         }
     }
 
     animation = new Animated.Value(0);
-    animationShow = Animated.spring(this.animation, {
-        toValue: 1,
-        useNativeDriver: false, // reanimated could animate color with useNativeDriver true :(
-    });
-    animationHide = Animated.spring(this.animation, {
-        toValue: 0,
-        useNativeDriver: false, // reanimated could animate color with useNativeDriver true :(
-    });
 
     render() {
         return (
@@ -84,16 +88,16 @@ export default class UIPinCodeDot extends React.Component<
                     style={[
                         styles.dotGray,
                         {
-                            backgroundColor: this.animation.interpolate({
+                            backgroundColor: interpolateColors(this.animation, {
                                 inputRange: [0, 1],
-                                outputRange: [
+                                outputColorRange: [
                                     UIColor.grey3(),
                                     this.props.color,
                                 ],
                             }),
                             transform: [
                                 {
-                                    scale: this.animation.interpolate({
+                                    scale: interpolate(this.animation, {
                                         inputRange: [0, 1],
                                         outputRange: [1, 2],
                                     }),

@@ -1,6 +1,10 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Animated, Vibration } from 'react-native';
+import { StyleSheet, Vibration } from 'react-native';
+import Animated, {
+    spring,
+    SpringUtils,
+} from 'react-native-reanimated';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -16,6 +20,8 @@ const styles = StyleSheet.create({
     },
 });
 
+const springConfig = SpringUtils.makeDefaultConfig();
+
 type State = { wrongPin: boolean, rightPin: boolean };
 
 export default class UIPinCodeDots extends React.Component<
@@ -30,23 +36,18 @@ export default class UIPinCodeDots extends React.Component<
         rightPin: false,
     };
 
+    componentWillUnmount() {
+        if (this.resetTimeoutId) {
+            clearTimeout(this.resetTimeoutId);
+        }
+    }
+
     shakeValue = new Animated.Value(0);
     shakeOffset = this.shakeValue.interpolate({
         inputRange: [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
         outputRange: [0, -10, 10, -10, 10, -10, 0],
     });
-    shakeAnimation = Animated.spring(this.shakeValue, {
-        toValue: 1,
-        useNativeDriver: true,
-    });
     resetTimeoutId: ?TimeoutID = null;
-
-    componentWillUnmount() {
-        this.shakeAnimation.stop();
-        if (this.resetTimeoutId) {
-            clearTimeout(this.resetTimeoutId);
-        }
-    }
 
     resetState(state: $Shape<State>) {
         // Reset state, to prevent race conditions
@@ -60,16 +61,24 @@ export default class UIPinCodeDots extends React.Component<
 
     showWrongPin(): Promise<void> {
         this.resetState({ wrongPin: true });
+
         Vibration.vibrate(500);
 
         return new Promise((resolve) => {
-            this.shakeAnimation.start(() => {
+            const onFinish = () => {
                 this.resetTimeoutId = setTimeout(() => {
                     this.resetState({ wrongPin: false });
                 }, UIConstant.animationAccentInteractionDurationFast());
                 this.shakeValue.setValue(0);
                 resolve();
-            });
+            };
+
+            spring(this.shakeValue, {
+                ...springConfig,
+                toValue: 1,
+            }).start(); // has no callback
+
+            setTimeout(onFinish, UIConstant.animationDuration());
         });
     }
 
@@ -80,7 +89,8 @@ export default class UIPinCodeDots extends React.Component<
             this.resetTimeoutId = setTimeout(() => {
                 this.resetState({ rightPin: false });
                 resolve();
-            }, UIConstant.animationDuration() + UIConstant.animationAccentInteractionDurationFast());
+            }, UIConstant.animationDuration()
+                + UIConstant.animationAccentInteractionDurationFast());
         });
     }
 

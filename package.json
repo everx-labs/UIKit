@@ -44,6 +44,7 @@
         "react-native-localization": "^2.0.3",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-popup-dialog": "^0.11.46",
+        "react-native-reanimated": "^1.13.0",
         "react-native-simple-popover": "^2.1.0",
         "react-native-status-bar-height": "^1.0.1",
         "react-style-proptype": "^3.2.1",
