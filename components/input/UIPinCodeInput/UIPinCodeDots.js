@@ -1,10 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Vibration } from 'react-native';
-import Animated, {
-    spring,
-    SpringUtils,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
@@ -20,7 +17,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const springConfig = SpringUtils.makeDefaultConfig();
+const springConfig = Animated.SpringUtils.makeDefaultConfig();
 
 type State = { wrongPin: boolean, rightPin: boolean };
 
@@ -43,7 +40,7 @@ export default class UIPinCodeDots extends React.Component<
     }
 
     shakeValue = new Animated.Value(0);
-    shakeOffset = this.shakeValue.interpolate({
+    shakeOffset = Animated.interpolate(this.shakeValue, {
         inputRange: [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
         outputRange: [0, -10, 10, -10, 10, -10, 0],
     });
@@ -73,7 +70,7 @@ export default class UIPinCodeDots extends React.Component<
                 resolve();
             };
 
-            spring(this.shakeValue, {
+            Animated.spring(this.shakeValue, {
                 ...springConfig,
                 toValue: 1,
             }).start(); // has no callback
