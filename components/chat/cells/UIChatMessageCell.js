@@ -59,7 +59,10 @@ type Props = {
 
 type State = {
     layout: Layout,
+    isOneLineMessage: ?boolean,
 }
+
+const oneLineHeight = (UIConstant.verticalContentOffset() * 2) + UIConstant.smallCellHeight();
 
 const styles = StyleSheet.create({
     container: {
@@ -159,14 +162,11 @@ const styles = StyleSheet.create({
     dateText: {
         color: UIColor.secondary(),
     },
-    timeTextLeft: {
-        textAlign: 'left',
-        marginTop: UIConstant.verticalContentOffset() / 2,
-        color: UIColor.textQuaternary(),
-    },
-    timeTextRight: {
+    timeText: {
         textAlign: 'right',
-        marginTop: UIConstant.verticalContentOffset() / 2,
+        alignSelf: 'flex-end',
+        paddingLeft: UIConstant.smallContentOffset(),
+        paddingTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
     },
     greenBubble: {
@@ -217,6 +217,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 x: 0,
                 y: 0,
             },
+            isOneLineMessage: null,
         };
     }
 
@@ -231,7 +232,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     onLayout(e: LayoutEvent) {
         const { layout } = e.nativeEvent;
-        this.setStateSafely({ layout });
+        const isOneLineMessage = layout.height <= oneLineHeight;
+        this.setStateSafely({ layout, isOneLineMessage });
     }
 
     onPressUrl(url: string, matchIndex: number = 0) {
@@ -326,6 +328,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         const animation = { transform: [{ scale: this.animatedBubble }] };
+
         return (
             <Animated.View style={[styles.wrapMsgContainer, animation]}>
                 {this.renderAvatar()}
@@ -334,6 +337,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         styles.msgContainer,
                         style,
                         rounded,
+                        this.state.isOneLineMessage && UIStyle.common.flexRow(),
                         bg,
                     ]}
                 >
@@ -373,9 +377,13 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     renderTime() {
         const { data } = this.props;
-        const textStyle = this.isReceived ? styles.timeTextLeft : styles.timeTextRight;
         const msgTime = this.formattedTime();
         let testID;
+
+        if (this.state.isOneLineMessage === null) {
+            return null;
+        }
+
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
                 testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
@@ -385,10 +393,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else {
             testID = 'chat_text_message_time';
         }
+
         return (
             <Text
                 testID={testID}
-                style={[UIFont.tinyRegular(), textStyle]}
+                style={[UIFont.tinyRegular(), styles.timeText]}
             >
                 {msgTime}
             </Text>
@@ -711,6 +720,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         justifyContent: align,
                     },
                     margin,
+                    this.state.isOneLineMessage === null && UIStyle.common.noOpacity(),
                 ]}
                 onLayout={e => this.onLayout(e)}
             >
