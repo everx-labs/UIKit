@@ -257,7 +257,6 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const descStyle = StyleSheet.create({
             descColor: {
                 color,
-                // minHeight: UIConstant.mediumCellHeight(),
             },
         });
 
@@ -496,9 +495,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         return (
             <View
                 {...testIDProp}
-                style={[UIStyle.fullWidthCenterContainer, UIStyle.flex, styles.main]}
+                style={[
+                    UIStyle.fullWidthCenterContainer,
+                    UIStyle.flex,
+                    styles.main,
+                ]}
             >
-                <View style={[UIStyle.justifyCenter, UIStyle.alignCenter]}>
+                <View style={UIStyle.displayFlex.alignJustifyCenter()}>
                     {this.renderLabel()}
                     <UIPinCodeDots
                         ref={this.dotsRef}
