@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { RouteProp } from '@react-navigation/native';
+import type { RouteProp, NavigationProp, ParamListBase } from '@react-navigation/native';
+// import { TransitionPresets, Header } from '@react-navigation/stack';
+import type { StackHeaderProps } from '@react-navigation/stack';
 
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
@@ -39,7 +41,13 @@ const styles = StyleSheet.create({
         color: UIColor.black(),
     },
     navigatorHeader: {
-        ...StyleSheet.flatten(UIStyle.navigatorHeader),
+        ...StyleSheet.flatten(UIStyle.reactNavigationHeader),
+    },
+    defaultNavigationHeader: {
+        borderBottomWidth: 0,
+        elevation: Platform.select({
+            android: 0,
+        }),
     },
     headerCenter: {
         position: 'absolute',
@@ -84,25 +92,23 @@ type UINavigationBarOptions = {
     useDefaultStyle?: boolean,
     searchBar?: boolean,
     headerLeft?: () => React$Node,
-    headerRight?: React$Node,
+    headerRight?: () => React$Node,
     headerCenter?: React$Node,
     headerStyle?: {},
+    headerTitleContainerStyle: ViewStyleProp,
 };
 
 type UINavigationBarProps = {
     title?: string,
     titleRight?: React$Node,
-    headerLeft: () => React$Node,
+    headerLeft: React$Node,
     headerRight?: React$Node,
     headerCenter?: React$Node,
     containerStyle?: ViewStyleProp,
     buttonsContainerStyle?: ViewStyleProp,
 };
 
-export default class UIReactNavigationBar extends UIComponent<
-    UINavigationBarProps,
-    *,
-> {
+export default class UIReactNavigationBar extends UIComponent<UINavigationBarProps, *> {
     static defaultProps = {
         title: '',
         headerLeft: null,
@@ -111,55 +117,79 @@ export default class UIReactNavigationBar extends UIComponent<
     };
 
     static navigationOptions(
-        navigation: ReactNavigation,
+        navigation: NavigationProp<ParamListBase>,
         route: RouteProp<empty, string>,
         options: UINavigationBarOptions,
     ) {
-        // TODO: delete this hack!
-        if (options == null) {
-            options = ((route: any): UINavigationBarOptions);
-        }
         let effective;
         // if headerLeft option unspecified, we use back button
-        const headerLeft =
-            'headerLeft' in options && options.headerLeft != null
-                ? options.headerLeft
-                : () => (
-                    <UIReactNavigationBackButton
-                        navigation={navigation}
-                        route={route}
-                        testID={`back_btn_${options.title || ''}`}
-                    />
-                );
+        let headerLeft;
+
+        if ('headerLeft' in options && options.headerLeft != null) {
+            ({ headerLeft } = options);
+        } else {
+            headerLeft = () => (
+                <UIReactNavigationBackButton
+                    navigation={navigation}
+                    route={route}
+                    testID={`back_btn_${options.title || ''}`}
+                />
+            );
+        }
 
         const hasLeftOrRight = headerLeft || options.headerRight;
 
         if (options.useDefaultStyle) {
             effective = {
+                headerStyle: styles.defaultNavigationHeader,
                 ...options,
                 headerLeft,
             };
         } else {
+            // This is a hack around navigation height
+            // Problem is with safe area insets that kinda hard to get
+            // at that point, as this function is
+            // - sync (it wouldn't be possible to use UIDevice.safeAreaInsets())
+            // - not a react component (so hooks is not available)
+            // Also I didn't want to pass it in options explicitly,
+            // as it required to modify a lot of places
+            let headerTopInset = 0;
             effective = {
+                header: (props: StackHeaderProps) => {
+                    if (props.insets?.top) {
+                        headerTopInset = props.insets?.top;
+                    }
+                    return null; /* <Header {...props} />; */
+                },
                 headerStyle: [
                     styles.navigatorHeader,
                     {
-                        height:
-                            UIDevice.navigationBarHeight() *
-                            (hasLeftOrRight ? 2 : 1),
+                        get height() {
+                            return (
+                                headerTopInset +
+                                (UIDevice.navigationBarHeight() * (hasLeftOrRight ? 2 : 1))
+                            );
+                        },
                     },
                     options.headerStyle || {},
                 ],
                 headerLeft: null, // only way to suppress unattended back button
-                headerTitle: (
+                headerTitle: () => (
                     <UIReactNavigationBar
                         title={options.title}
                         titleRight={options.titleRight}
-                        headerLeft={headerLeft}
-                        headerRight={options.headerRight}
+                        headerLeft={headerLeft()}
+                        headerRight={options.headerRight && options.headerRight()}
                         headerCenter={options.headerCenter}
                     />
                 ),
+                headerTitleContainerStyle: {
+                    left: 0,
+                    right: 0,
+                    position: 'absolute',
+                    marginHorizontal: 0,
+                    ...StyleSheet.flatten(options.headerTitleContainerStyle || {}),
+                },
             };
         }
         if (options.searchBar) {
@@ -169,7 +199,15 @@ export default class UIReactNavigationBar extends UIComponent<
                 ...UISearchBar.handleHeader(navigation),
             };
         }
-        return effective;
+        return {
+            ...effective,
+            // https://reactnavigation.org/docs/stack-navigator#pre-made-configs
+            ...Platform.select({
+                android: {},
+                // default: TransitionPresets.SlideFromRightIOS,
+            }),
+            animationEnabled: true,
+        };
     }
 
     // Getters
@@ -178,13 +216,11 @@ export default class UIReactNavigationBar extends UIComponent<
     }
 
     getHeaderLeft(): React$Node {
-        return this.props.headerLeft();
+        return this.props.headerLeft;
     }
 
     getHeaderCenter(): ?React$Node {
-        return (
-            <View style={styles.headerCenter}>{this.props.headerCenter}</View>
-        );
+        return <View style={styles.headerCenter}>{this.props.headerCenter}</View>;
     }
 
     getHeaderRight(): ?React$Node {
@@ -207,25 +243,20 @@ export default class UIReactNavigationBar extends UIComponent<
 
     // Component
     render(): React$Node {
-        const {
-            title, containerStyle, buttonsContainerStyle,
-        } = this.props;
+        const { title, containerStyle, buttonsContainerStyle } = this.props;
 
         const testIDProp = title ? { testID: `navBar_headers_${title}` } : null;
-        const hasButtons = (this.getHeaderLeft() || this.getHeaderRight());
+        const hasButtons = this.getHeaderLeft() || this.getHeaderRight();
 
         return (
             <View style={containerStyle || styles.container}>
-                {hasButtons &&
-                    <View
-                        {...testIDProp}
-                        style={[styles.buttonsContainer, buttonsContainerStyle]}
-                    >
+                {hasButtons && (
+                    <View {...testIDProp} style={[styles.buttonsContainer, buttonsContainerStyle]}>
                         {this.getHeaderCenter() /* `absolute` container, rendered bellow buttons */}
                         {this.getHeaderLeft()}
                         {this.getHeaderRight()}
                     </View>
-                }
+                )}
                 {this.renderTitleView()}
             </View>
         );

@@ -34,6 +34,15 @@ const UIStyle = StyleSheet.create({
             android: 0,
         }),
     },
+    reactNavigationHeader: {
+        backgroundColor: UIColor.backgroundPrimary(),
+        borderWidth: 0,
+        height: UIDevice.navigationBarHeight(),
+        borderBottomColor: 'transparent',
+        elevation: Platform.select({
+            android: 0,
+        }),
+    },
     navigatorHeaderTitle: {
         ...UIFont.bodyMedium(),
         textAlign: 'center',
