@@ -64,9 +64,7 @@ import UILoadMoreButton from './components/buttons/UILoadMoreButton';
 import UILocalized from './helpers/UILocalized';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
-import UIReactNavigationBackButton from './components/navigation/UIReactNavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';
-import UIReactNavigationBar from './components/navigation/UIReactNavigationBar';
 import UINavigationCloseButton from './components/navigation/UINavigationCloseButton';
 import UINavigationIconButton from './components/navigation/UINavigationIconButton';
 import UINavigationPlusButton from './components/navigation/UINavigationPlusButton';
@@ -220,9 +218,7 @@ export {
     UIMenuView,
     UIModalController,
     UINavigationBackButton,
-    UIReactNavigationBackButton,
     UINavigationBar,
-    UIReactNavigationBar,
     UINavigationCloseButton,
     UINavigationIconButton,
     UINavigationPlusButton,
