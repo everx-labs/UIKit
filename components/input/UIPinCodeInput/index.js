@@ -49,9 +49,6 @@ type Props = {
 };
 
 const styles = StyleSheet.create({
-    main: {
-        justifyContent: 'flex-end',
-    },
     key: {
         // Coefficient 1.01 need for ios version because
         // new font symbols interval bigger than default font.
@@ -496,9 +493,8 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             <View
                 {...testIDProp}
                 style={[
-                    UIStyle.fullWidthCenterContainer,
-                    UIStyle.flex,
-                    styles.main,
+                    UIStyle.width.fullCenterContainer(),
+                    UIStyle.displayFlex.flexJustifyEnd(),
                 ]}
             >
                 <View style={UIStyle.displayFlex.alignJustifyCenter()}>
