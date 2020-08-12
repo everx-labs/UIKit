@@ -39,6 +39,10 @@ const UIStyle = StyleSheet.create({
         borderWidth: 0,
         height: UIDevice.navigationBarHeight(),
         borderBottomColor: 'transparent',
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
         elevation: Platform.select({
             android: 0,
         }),

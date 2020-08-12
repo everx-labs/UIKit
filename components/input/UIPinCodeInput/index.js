@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         width: 1,
         minHeight: 1,
-        maxHeight: UIConstant.bigCellHeight(),
+        maxHeight: UIConstant.pincodeKeyboardOffset(),
     },
 });
 
