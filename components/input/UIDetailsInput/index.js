@@ -425,7 +425,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
 
     onHeightChange = (height: number) => {
         if (height) {
-            this.setInputAreaHeightOnWeb(height);
+            this.adjustInputAreaHeightIfNeeded(height);
 
             const { onHeightChange } = this.props;
             if (onHeightChange) {
@@ -434,8 +434,10 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         }
     }
 
-    setInputAreaHeightOnWeb = (height: number) => {
-        if (Platform.OS !== 'web') {
+    adjustInputAreaHeightIfNeeded = (height: number) => {
+        if (Platform.OS !== 'web' // Mobile inputs have the own multiline native auto-grow behaviour
+            && this.keyboardType() !== 'visible-password') { // But this type breaks Android's input
+            // No need to adjust the height
             return;
         }
         const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
@@ -751,10 +753,11 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             noPersonalizedLearning,
         } = this.props;
 
-        // The keyboarftype used for UISeedPhraseInput on Android breaks the multiline native behavior
-        // that autogrows the input text, in order to fix it, we handle the onContentSizeChange to set
-        // manually the input height, but on Android the behavior is not synchronized, using this to set
-        // a minimum height, based on a state, fixes the problem.
+        // The keyboardType used for UISeedPhraseInput on Android breaks the multiline native
+        // behavior that auto-grows the input text.
+        // In order to fix it, we handle the `onContentSizeChange` to set manually the input height,
+        // but on Android the behavior is not synchronized.
+        // Using this to set a minimum height, based on a state, fixes the problem.
         const minHeight = Platform.OS === 'android' ? { minHeight: this.state.inputHeight } : null;
 
         const accessibilityLabelProp = accessibilityLabel ? { accessibilityLabel } : null;
@@ -762,7 +765,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         const blurOnSubmitProp = blurOnSubmit ? { blurOnSubmit } : null;
         const testIDProp = testID ? { testID } : null;
-        // Existance of value prop is define either component controlled or uncontrolled
+        // Existence of value prop is define either component controlled or uncontrolled
         // https://reactjs.org/docs/uncontrolled-components.html
         const valueProp = value != null ? { value: this.getValue() } : null;
         const placeholderColor = editable

@@ -4,15 +4,15 @@ import { StyleSheet, View, Animated } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
+import UIStyle from '../../../helpers/UIStyle';
 
 const dotSize = UIConstant.tinyCellHeight();
 
 const styles = StyleSheet.create({
-    dotGray: {
+    dot: {
         width: dotSize / 2,
         height: dotSize / 2,
         borderRadius: dotSize / 4,
-        backgroundColor: UIColor.grey3(),
     },
     dotView: {
         width:
@@ -68,13 +68,23 @@ export default class UIPinCodeDot extends React.Component<
     }
 
     animation = new Animated.Value(0);
+
     animationShow = Animated.spring(this.animation, {
         toValue: 1,
-        useNativeDriver: false, // reanimated could animate color with useNativeDriver true :(
+        useNativeDriver: true,
     });
     animationHide = Animated.spring(this.animation, {
         toValue: 0,
-        useNativeDriver: false, // reanimated could animate color with useNativeDriver true :(
+        useNativeDriver: true,
+    });
+
+    invertedAnimation = this.animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0],
+    });
+    scaleAnimation = this.animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 2],
     });
 
     render() {
@@ -82,23 +92,22 @@ export default class UIPinCodeDot extends React.Component<
             <View style={styles.dotView}>
                 <Animated.View
                     style={[
-                        styles.dotGray,
+                        UIStyle.common.positionAbsolute(),
+                        UIStyle.color.getBackgroundColorStyle(UIColor.grey3()),
+                        styles.dot,
                         {
-                            backgroundColor: this.animation.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [
-                                    UIColor.grey3(),
-                                    this.props.color,
-                                ],
-                            }),
-                            transform: [
-                                {
-                                    scale: this.animation.interpolate({
-                                        inputRange: [0, 1],
-                                        outputRange: [1, 2],
-                                    }),
-                                },
-                            ],
+                            opacity: this.invertedAnimation,
+                            transform: [{ scale: this.scaleAnimation }],
+                        },
+                    ]}
+                />
+                <Animated.View
+                    style={[
+                        UIStyle.color.getBackgroundColorStyle(this.props.color),
+                        styles.dot,
+                        {
+                            opacity: this.animation,
+                            transform: [{ scale: this.scaleAnimation }],
                         },
                     ]}
                 />

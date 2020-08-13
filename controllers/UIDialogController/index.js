@@ -157,10 +157,12 @@ class UIDialogController extends UIController {
             duration: UIConstant.animationDuration(),
             easing: LayoutAnimation.Types.keyboard,
         };
+        // TODO: think how to use `useNativeDriver` here
         Animated.timing(this.marginBottom, {
             toValue: bottomInset,
             duration,
             easing: UIController.getEasingFunction(easing),
+            useNativeDriver: false,
         }).start();
     }
 
