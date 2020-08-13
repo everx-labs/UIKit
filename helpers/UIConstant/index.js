@@ -38,6 +38,7 @@ const UI_VAST_CONTENT_OFFSET = 80;
 const UI_TREMENDOUS_CONTENT_OFFSET = 96;
 const UI_ENORMOUS_CONTENT_OFFSET = 104;
 const UI_GIANT_CONTENT_OFFSET = 136;
+const UI_PINCODE_KEYBOARD_OFFSET = 174;
 
 const UI_CHAT_INPUT_MAX_HEIGHT = 172;
 
@@ -298,6 +299,10 @@ export default class UIConstant {
 
     static giantContentOffset() {
         return UI_GIANT_CONTENT_OFFSET;
+    }
+
+    static pincodeKeyboardOffset() {
+        return UI_PINCODE_KEYBOARD_OFFSET;
     }
 
     static horizontalContentOffset() {

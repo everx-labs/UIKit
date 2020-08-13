@@ -376,14 +376,14 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTime() {
-        const { data } = this.props;
-        const msgTime = this.formattedTime();
-        let testID;
-
         if (this.state.isOneLineMessage === null) {
+            // No ready to render yet
             return null;
         }
 
+        // Calculate the testID prop
+        let testID;
+        const { data } = this.props;
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
                 testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
@@ -394,6 +394,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             testID = 'chat_text_message_time';
         }
 
+        // Get the formatted message time
+        const msgTime = this.formattedTime();
         return (
             <Text
                 testID={testID}
@@ -720,6 +722,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         justifyContent: align,
                     },
                     margin,
+                    // Not ready to be visibly
                     this.state.isOneLineMessage === null && UIStyle.common.noOpacity(),
                 ]}
                 onLayout={e => this.onLayout(e)}
