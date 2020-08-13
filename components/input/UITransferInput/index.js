@@ -274,6 +274,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
         const { localeInfo } = this.props;
         return (
             <UIDetailsView
+                testID="fees"
                 reversed
                 disabled
                 value={UILocalized.formatString(
@@ -291,6 +292,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
     renderOperationTime() {
         return (
             <UIDetailsView
+                testID="operation_time"
                 reversed
                 disabled
                 value={UILocalized.immediately}

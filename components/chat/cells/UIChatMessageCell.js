@@ -539,7 +539,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 background,
             ]}
             >
-                <Text style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}>
+                <Text
+                    testID={`transaction_comment_${additionalInfo?.message.info.text || ''}`} 
+                    style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}
+                >
                     {additionalInfo?.message.info.text || ''}
                 </Text>
             </View>
