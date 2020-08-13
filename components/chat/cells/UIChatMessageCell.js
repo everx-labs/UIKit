@@ -722,7 +722,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         justifyContent: align,
                     },
                     margin,
-                    // Not ready to be visibly
+                    // Not ready to be visible
                     this.state.isOneLineMessage === null && UIStyle.common.noOpacity(),
                 ]}
                 onLayout={e => this.onLayout(e)}
