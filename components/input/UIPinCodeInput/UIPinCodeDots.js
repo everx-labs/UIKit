@@ -30,6 +30,13 @@ export default class UIPinCodeDots extends React.Component<
         rightPin: false,
     };
 
+    componentWillUnmount() {
+        this.shakeAnimation.stop();
+        if (this.resetTimeoutId) {
+            clearTimeout(this.resetTimeoutId);
+        }
+    }
+
     shakeValue = new Animated.Value(0);
     shakeOffset = this.shakeValue.interpolate({
         inputRange: [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
@@ -40,13 +47,6 @@ export default class UIPinCodeDots extends React.Component<
         useNativeDriver: true,
     });
     resetTimeoutId: ?TimeoutID = null;
-
-    componentWillUnmount() {
-        this.shakeAnimation.stop();
-        if (this.resetTimeoutId) {
-            clearTimeout(this.resetTimeoutId);
-        }
-    }
 
     resetState(state: $Shape<State>) {
         // Reset state, to prevent race conditions
@@ -80,7 +80,8 @@ export default class UIPinCodeDots extends React.Component<
             this.resetTimeoutId = setTimeout(() => {
                 this.resetState({ rightPin: false });
                 resolve();
-            }, UIConstant.animationDuration() + UIConstant.animationAccentInteractionDurationFast());
+            }, UIConstant.animationDuration()
+                + UIConstant.animationAccentInteractionDurationFast());
         });
     }
 
