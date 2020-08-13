@@ -337,6 +337,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         styles.msgContainer,
                         style,
                         rounded,
+                        // use row direction for a single line, but wrap the time in case this line is long
                         this.state.isOneLineMessage && UIStyle.common.flexRowWrap(),
                         bg,
                     ]}
