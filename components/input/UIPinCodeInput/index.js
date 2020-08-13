@@ -147,7 +147,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 this.wrongPin();
             }
         }
-    }, 50);
+    }, 16); // equals to one frame duration, a-ka floor(1000 / 60).
 
     onKeyPress(key: number) {
         if (this.props.disabled) {
