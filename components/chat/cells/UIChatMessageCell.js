@@ -337,7 +337,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         styles.msgContainer,
                         style,
                         rounded,
-                        this.state.isOneLineMessage && UIStyle.common.flexRow(),
+                        this.state.isOneLineMessage && UIStyle.common.flexRowWrap(),
                         bg,
                     ]}
                 >
