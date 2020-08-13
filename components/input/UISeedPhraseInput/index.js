@@ -51,17 +51,15 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         forceMultiLine: true,
         // To prevent Android keyboard suggestions
         // Btw it could break multiline support, need to keep an eye on it
-        keyboardType:
-            Platform.OS === 'android'
-                ? 'visible-password'
-                : 'default',
+        keyboardType: Platform.OS === 'android' ? 'visible-password' : 'default',
         phraseToCheck: '',
         commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
         totalWords: 12, // default value
         words: [],
-        // Set an InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS flag to a keyboard on Android. Needed by security reasons
+        // Set an InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS flag to a keyboard on Android.
+        // Needed by security reasons.
         autoCorrect: false,
         autoCompleteType: 'off',
         noPersonalizedLearning: true,
