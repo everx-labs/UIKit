@@ -464,20 +464,6 @@ export default class UIController<Props, State>
         }
         try {
             this.navigationListeners = [
-                this.props.navigation.addListener('willFocus', payload => {
-                    console.log(
-                        `[UIController] Controller ${this.constructor.name} will focus with payload:`,
-                        payload,
-                    );
-                    this.componentWillFocus();
-                }),
-                this.props.navigation.addListener('willBlur', payload => {
-                    console.log(
-                        `[UIController] Controller ${this.constructor.name} will blur with payload:`,
-                        payload,
-                    );
-                    this.componentWillBlur();
-                }),
                 this.props.navigation.addListener('focus', payload => {
                     console.log(
                         `[UIController] Controller ${this.constructor.name} will focus with payload:`,
@@ -494,7 +480,23 @@ export default class UIController<Props, State>
                 }),
             ];
         } catch (error) {
-            // nothing to do
+            // Fallback to react-navigation v2
+            this.navigationListeners = [
+                this.props.navigation.addListener('willFocus', payload => {
+                    console.log(
+                        `[UIController] Controller ${this.constructor.name} will focus with payload:`,
+                        payload,
+                    );
+                    this.componentWillFocus();
+                }),
+                this.props.navigation.addListener('willBlur', payload => {
+                    console.log(
+                        `[UIController] Controller ${this.constructor.name} will blur with payload:`,
+                        payload,
+                    );
+                    this.componentWillBlur();
+                }),
+            ];
         }
     }
 
