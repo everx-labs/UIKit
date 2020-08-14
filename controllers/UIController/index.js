@@ -477,6 +477,20 @@ export default class UIController<Props, State>
                 );
                 this.componentWillBlur();
             }),
+            this.props.navigation.addListener('focus', payload => {
+                console.log(
+                    `[UIController] Controller ${this.constructor.name} will focus with payload:`,
+                    payload,
+                );
+                this.componentWillFocus();
+            }),
+            this.props.navigation.addListener('blur', payload => {
+                console.log(
+                    `[UIController] Controller ${this.constructor.name} will blur with payload:`,
+                    payload,
+                );
+                this.componentWillBlur();
+            }),
         ];
     }
 
