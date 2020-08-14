@@ -192,7 +192,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                         // eslint-disable-next-line
                         key={`quickAction~${index}`}
                         buttonStyle={styles.buttonContainer}
-                        textStyle={UIStyle.text.smallRegularHigh()}
+                        textStyle={UIStyle.text.bodyRegular()}
                         testID={action.testID}
                         onPress={action.onPress}
                         title={action.title}

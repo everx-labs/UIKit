@@ -149,6 +149,10 @@ export const marginStyles = {
         marginLeft: UIConstant.smallContentOffset(),
         marginRight: UIConstant.smallContentOffset(),
     },
+    marginHorizontalTinyOffset: {
+        marginLeft: UIConstant.tinyContentOffset(),
+        marginRight: UIConstant.tinyContentOffset(),
+    },
 
     marginDefault: { // 16
         margin: UIConstant.contentOffset(),
@@ -299,6 +303,9 @@ export default class UIStyleMargin {
     }
 
     // Horizontal
+    static horizontalTinyOffset() { // 8
+        return styles.marginHorizontalTinyOffset;
+    }
     static horizontalSmallOffset() { // 8
         return styles.marginHorizontalSmallOffset;
     }
