@@ -22,6 +22,7 @@ const UI_TINY_BORDER_RADIUS = 2;
 const UI_SMALL_BORDER_RADIUS = 4;
 const UI_DEFAULT_BORDER_RADIUS = 8;
 const UI_MEDIUM_BORDER_RADIUS = 16;
+const UI_ALERT_BORDER_RADIUS = 12;
 
 const UI_TINY_CONTENT_OFFSET = 4;
 const UI_SMALL_CONTENT_OFFSET = 8;
@@ -133,6 +134,8 @@ const DASH_SYMBOL = '\u2014';
 
 const FULL_SCREEN_DIALOG_WIDTH = 600;
 const FULL_SCREEN_DIALOG_HEIGHT = 600;
+
+const UI_ALERT_WIDTH = 272;
 
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
@@ -328,6 +331,10 @@ export default class UIConstant {
 
     static mediumBorderRadius() {
         return UI_MEDIUM_BORDER_RADIUS;
+    }
+
+    static alertBorderRadius() {
+        return UI_ALERT_BORDER_RADIUS;
     }
 
     // Button heights
@@ -605,6 +612,10 @@ export default class UIConstant {
 
     static dashSymbol() {
         return DASH_SYMBOL;
+    }
+
+    static alertWidth() {
+        return UI_ALERT_WIDTH;
     }
 
     static get fullScreenDialogWidth() {

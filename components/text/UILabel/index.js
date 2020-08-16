@@ -39,6 +39,7 @@ const LabelRole = Object.freeze({
     AccentBold: 'accentBold',
     AccentRegular: 'accentRegular',
     IconQuaternary: 'iconQuaternary',
+    AlertTitle: 'alertTitle',
 });
 
 export type LabelRoleValue = $Values<typeof LabelRole>;
@@ -145,6 +146,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.errorCaptionRegular());
         } else if (role === UILabel.Role.IconQuaternary) {
             result.push(UIStyle.Text.quaternaryIconRegular());
+        } else if (role === UILabel.Role.AlertTitle) {
+            result.push(UIStyle.Text.primaryBodyBold());
         }
         return result;
     }
