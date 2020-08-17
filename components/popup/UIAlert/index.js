@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard, Animated } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
@@ -100,6 +100,18 @@ export default class UIAlert extends UIComponent<Props, State> {
         }
     }
 
+    componentDidUpdate(oldProps: Props) {
+        if (this.props.isVisible !== oldProps.isVisible) {
+            if (this.props.isVisible) {
+                if (this.props.content) {
+                    this.showAlert(this.props.content);
+                }
+            } else {
+                this.hideAlert();
+            }
+        }
+    }
+
     isAlertVisible(): boolean {
         return this.props.isVisible || this.state.isVisible;
     }
@@ -109,11 +121,29 @@ export default class UIAlert extends UIComponent<Props, State> {
     }
 
     showAlert(content: UIAlertContent) {
-        this.setStateSafely({ content, isVisible: true });
+        Keyboard.dismiss();
+        this.setStateSafely({ content, isVisible: true }, () => {
+            this.alertAnimation();
+        });
     }
 
     hideAlert() {
-        this.setStateSafely({ isVisible: false });
+        this.alertAnimation(
+            false,
+            () => {
+                this.setStateSafely({ isVisible: false });
+            },
+        );
+    }
+
+    animatedValue = new Animated.Value(0.01);
+    alertAnimation(appear: boolean = true, callback: () => void = () => {}) {
+        Animated.spring(this.animatedValue, {
+            toValue: appear ? 1.0 : 0.01,
+            useNativeDriver: true,
+        }).start(() => {
+            callback();
+        });
     }
 
     renderTitle() {
@@ -191,13 +221,14 @@ export default class UIAlert extends UIComponent<Props, State> {
             return null;
         }
 
+        const animation = { transform: [{ scale: this.animatedValue }] };
         return (
             <View style={[UIStyle.container.absoluteFill(), styles.container]}>
-                <View style={styles.alert} >
+                <Animated.View style={[styles.alert, animation]}>
                     {this.renderTitle()}
                     {this.renderDescription()}
                     {this.renderButtons()}
-                </View>
+                </Animated.View>
             </View>
         );
     }
