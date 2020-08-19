@@ -229,7 +229,6 @@ const en: UILocalizedData = {
     WhomWouldYouLikeToAdd: 'Who would you like to add?',
     UnreadMessages: 'Unread messages',
     SayHello: 'Say "Hello"',
-    NotDeliveredTapToResend: 'Not delivered. Tap to resend.',
 
     // WalletExporter
     BackupWalletSuggestion: 'Please backup your account! In order to do so we will present you with 12 words. Please write them down and keep them safe! They will be used to restore your account or open it on another device.',

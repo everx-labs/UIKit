@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 
-import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { LayoutEvent, Layout } from 'react-native/Libraries/Types/CoreEventTypes';
 
 import UIPureComponent from '../../UIPureComponent';
@@ -49,6 +49,8 @@ type Props = {
     isReceived: boolean,
     data?: any,
     additionalInfo?: ChatAdditionalInfo,
+    messageDetails?: string,
+    messageDetailsStyle?: ViewStyleProp | ViewStyleProp[],
 
     onTouchMedia?: (objectToReturn: any) => void,
     onOpenPDF?: (docData: any, docName: string) => void,
@@ -130,9 +132,8 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         backgroundColor: UIColor.primary(),
     },
-    textAborted: {
+    messageDetails: {
         paddingTop: UIConstant.tinyContentOffset(),
-        color: UIColor.error(),
         letterSpacing: 0.5,
         textAlign: 'right',
     },
@@ -672,7 +673,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     render() {
-        const { type, additionalInfo, data } = this.props;
+        const {
+            type, additionalInfo, data, messageDetails, messageDetailsStyle,
+        } = this.props;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
@@ -735,8 +738,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             }
         }
 
-        const isAborted = this.props.status === ChatMessageStatus.Aborted;
         const isCalculatedHeight = this.state.isOneLineMessage !== null;
+        const position = { alignSelf: align, justifyContent: align };
 
         return (
             <View
@@ -750,22 +753,16 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 ]}
             >
                 <View
-                    style={[
-                        {
-                            alignSelf: align,
-                            justifyContent: align,
-                        },
-                        styles.container,
-                    ]}
+                    style={[position, styles.container]}
                     onLayout={e => this.onLayout(e)}
                 >
                     {cell}
                 </View>
-                {isCalculatedHeight && isAborted && (
+                {isCalculatedHeight && messageDetails && (
                     <UILabel
-                        style={styles.textAborted}
+                        style={[styles.messageDetails, messageDetailsStyle]}
                         role={UILabel.Role.TinyRegular}
-                        text={UILocalized.NotDeliveredTapToResend}
+                        text={messageDetails}
                     />
                 )}
             </View>

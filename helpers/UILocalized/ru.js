@@ -229,7 +229,6 @@ const ru: UILocalizedData = {
     WhomWouldYouLikeToAdd: 'Кого бы Вы хотели добавить?',
     UnreadMessages: 'Непрочитанные сообщения',
     SayHello: 'Скажи "Привет"',
-    NotDeliveredTapToResend: 'Not delivered. Tap to resend.',
 
     // WalletExporter
     BackupWalletSuggestion: 'Сделайте резервную копию своей учетной записи! Для этого мы представим вам 12 слов. Пожалуйста, запишите их и храните в безопасности! Они будут использоваться для восстановления вашей учетной записи или открытия ее на другом устройстве.',
