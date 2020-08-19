@@ -227,6 +227,7 @@ export type UILocalizedData = {
     WhomWouldYouLikeToAdd: string,
     UnreadMessages: string,
     SayHello: string,
+    NotDeliveredTapToResend: string,
 
     // WalletExporter
     BackupWalletSuggestion: string,
