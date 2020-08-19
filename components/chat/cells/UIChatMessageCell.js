@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
         paddingTop: UIConstant.tinyContentOffset(),
         letterSpacing: 0.5,
         textAlign: 'right',
+        color: UIColor.grey(),
     },
     urlReceived: {
         color: UIColor.primary(),
