@@ -4,6 +4,9 @@ import { Linking, Platform } from 'react-native';
 let prevPath = null;
 
 export default class UIEventHelper {
+    /**
+     * @deprecated method. Since react-native-web@^0.12.0 stopped using `className`
+     */
     static checkEventTarget(e: any, className: string, exceptionClassName?: string) {
         if (exceptionClassName
             && e.target?.className?.includes

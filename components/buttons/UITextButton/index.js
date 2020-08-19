@@ -196,7 +196,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         );
     }
 
-    renderContent(): React$Node {
+    renderContent(): React$Element<any> {
         const {
             align, icon, backIcon, multiLine, containerStyle, buttonStyle,
         } = this.props;

@@ -51,7 +51,7 @@ type Props = {
     label: string,
     caption: string,
     disclaimer: string,
-    titleClassName?: string,
+    titleClassName?: string, // TODO: remove, as react-native-web@^0.12.0 does not support it
     onSubmit: (string) => void,
 };
 
@@ -219,6 +219,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
                     {/* $FlowFixMe */}
                     <Text
                         style={UIStyle.text.whiteKeyBold()}
+                        // TODO: remove, as react-native-web@^0.12.0 does not support it
                         className={titleClassName}
                         innerTextForCSS={title}
                     >

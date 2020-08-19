@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { Platform, StyleSheet, View, Text, StatusBar } from 'react-native';
+import { StyleSheet, View, Text, StatusBar } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 import UILocalized from '../../../helpers/UILocalized';
 import UIColor from '../../../helpers/UIColor';
@@ -9,9 +10,6 @@ import UITextStyle from '../../../helpers/UITextStyle';
 import UIDevice from '../../../helpers/UIDevice';
 import UIComponent from '../../UIComponent';
 
-const NetInfo = Platform.OS === 'web'
-    ? (require('react-native') || {}).NetInfo // to suppress flow warning!
-    : require('@react-native-community/netinfo');
 
 const STATUS_HEIGHT = 24; // Based on Figma design
 
@@ -22,6 +20,14 @@ const styles = StyleSheet.create({
         backgroundColor: UIColor.blackLight(),
     },
 });
+
+type NetInfoState = {
+    type: string,
+    isConnected: boolean,
+    isInternetReachable: boolean,
+    isWifiEnabled: boolean,
+    details: any,
+}
 
 type Props = {
     onConnected: (boolean) => void,
@@ -66,23 +72,26 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
     }
 
     // Actions
+    unsubscribe: ?() => void;
     startListeningToConnectionInfo() {
-        NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+        this.unsubscribe = NetInfo.addEventListener(this.handleConnectionChange);
     }
 
     stopListeningToConnectionInfo() {
-        NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 
-    handleConnectionChange = (connected: boolean) => {
-        this.setConnected(connected);
+    handleConnectionChange = ({ isConnected }: NetInfoState) => {
+        this.setConnected(isConnected);
         // Change status bar color style
-        const statusBarStyle = connected ? 'dark-content' : 'light-content';
+        const statusBarStyle = isConnected ? 'dark-content' : 'light-content';
         StatusBar.setBarStyle(statusBarStyle, true);
-        const statusBarColor = connected ? 'white' : 'black';
+        const statusBarColor = isConnected ? 'white' : 'black';
         StatusBar.setBackgroundColor(statusBarColor, true);
         // Pass connection status to props
-        this.props.onConnected(connected);
+        this.props.onConnected(isConnected);
     };
 
     // Render

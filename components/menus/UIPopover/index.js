@@ -15,10 +15,10 @@ import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
 import UIConstant from '../../../helpers/UIConstant';
 
-import type { ClassNameProp } from '../../../types';
-
 let masterRef = null;
-const MENU_TRIGGER = 'menu-trigger';
+
+const POPOVER_MENU = 'popover-menu';
+const POPOVER_TRIGGER = 'popover-button';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
@@ -66,12 +66,6 @@ export default class UIPopover<Props, State>
         }
     }
 
-    // This trick with class name required to suppress flow warning
-    // on undeclared className prop.
-    static setClassNameTrick: ClassNameProp = {
-        className: MENU_TRIGGER,
-    };
-
     firstClickIgnored: boolean;
     countdown: ?TimeoutID;
     isMenu: boolean;
@@ -101,32 +95,7 @@ export default class UIPopover<Props, State>
         }
     };
 
-    onShow = async (ignoreFirstClick: boolean = false) => {
-        if (this.needPopover()) {
-            if (!this.isVisible()) {
-                UIPopover.hide(); // hide previously opened masterRef if any
-
-                this.initClickListenerForWeb(ignoreFirstClick);
-                UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
-                await this.setIsVisible();
-                masterRef = this;
-
-                setTimeout(() => {
-                    this.props.onShow();
-                }, UIConstant.animationSmallDuration());
-            } else {
-                this.hide();
-            }
-        } else if (this.isMenu) {
-            this.showNarrowMenu();
-        } else {
-            UICustomSheet.show({
-                containerStyle: this.props.narrowContainerStyle,
-                component: this.props.component,
-                onShow: this.props.onShow,
-            });
-        }
-    };
+    onShow = () => this.showMenu(false);
 
     // Setters
     setIsVisible(isVisible: boolean = true) {
@@ -166,9 +135,40 @@ export default class UIPopover<Props, State>
     // otherwise, the menu will hide automatically once releasing the touch/click
     // preventing to be able to select any option from the menu.
     show() {
-        this.onShow(true);
+        this.showMenu(true);
         this.clearHideTimeout();
         this.countdown = setTimeout(() => this.hide(), 60000); // 1 min
+    }
+
+    async showMenu(ignoreFirstClick: boolean = false) {
+        if (this.needPopover()) {
+            if (!this.isVisible()) {
+                UIPopover.hide(); // hide previously opened masterRef if any
+
+                this.initClickListenerForWeb(ignoreFirstClick);
+                UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
+                await this.setIsVisible();
+                masterRef = this;
+
+                setTimeout(() => {
+                    this.props.onShow();
+                }, UIConstant.animationSmallDuration());
+            } else {
+                this.hide();
+            }
+        } else if (this.isMenu) {
+            this.showNarrowMenu();
+        } else {
+            UICustomSheet.show({
+                containerStyle: this.props.narrowContainerStyle,
+                component: this.props.component,
+                onShow: this.props.onShow,
+            });
+        }
+    }
+
+    showNarrowMenu(): void {
+        // Virtual
     }
 
     clearHideTimeout() {
@@ -212,10 +212,31 @@ export default class UIPopover<Props, State>
                 this.firstClickIgnored = true;
                 return;
             }
-            const eventResult = UIEventHelper.checkEventTarget(e, MENU_TRIGGER, this.props.exceptionClassName);
-            if (!eventResult) {
-                this.hide();
+
+            // Check the click on the popover menu
+            const popover = document.getElementById(POPOVER_MENU);
+            if (popover && popover.contains(e.target)) {
+                return;
             }
+
+            // Check the click on the button which calls the popover
+            const trigger = document.getElementById(POPOVER_TRIGGER);
+            if (trigger && trigger.contains(e.target)) {
+                return;
+            }
+
+            // Legacy code with an exception `className`. TODO: remove
+            const eventResult = UIEventHelper.checkEventTarget(
+                e,
+                '',
+                this.props.exceptionClassName,
+            );
+            if (eventResult) {
+                return;
+            }
+
+            // Hide in rest cases
+            this.hide();
         };
         window.addEventListener(listenerType, this.clickListener);
     }
@@ -231,10 +252,6 @@ export default class UIPopover<Props, State>
         window.removeEventListener(listenerType, this.clickListener);
     }
 
-    showNarrowMenu(): void {
-        // Virtual
-    }
-
     // Render
     renderMenu(): ?(React$Node[]) {
         return null;
@@ -246,7 +263,7 @@ export default class UIPopover<Props, State>
             : [styles.slimContainer, UIStyle.padding.default()];
         return (
             <View
-                {...UIPopover.setClassNameTrick}
+                nativeID={POPOVER_MENU}
                 style={[
                     UIStyle.border.radiusDefault(),
                     UIStyle.common.cardShadow(),
@@ -281,7 +298,7 @@ export default class UIPopover<Props, State>
                 component={this.renderPopover}
             >
                 <TouchableOpacity
-                    {...UIPopover.setClassNameTrick}
+                    nativeID={POPOVER_TRIGGER}
                     {...testIDProp}
                     onPress={this.onShow}
                     onLayout={this.onTriggerLayout}
