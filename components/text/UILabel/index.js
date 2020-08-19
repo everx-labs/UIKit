@@ -52,7 +52,6 @@ type Props = {|
     numberOfLines?: number,
     selectable?: boolean,
     ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip',
-    selectable?: boolean,
 |};
 
 type State = {
@@ -66,7 +65,6 @@ export default class UILabel extends UIComponent<Props, State> {
         style: null,
         text: '',
         role: UILabel.Role.Description,
-        selectable: true,
     };
 
     // constructor
@@ -183,7 +181,6 @@ export default class UILabel extends UIComponent<Props, State> {
         const {
             useDefaultSpace,
             role, text, testID,
-            selectable,
             ...props
         } = this.props;
         const textForTestID = text && text.replace ? text.replace(/[^a-zA-Z0-9]/g, '') : 'custom_component';
@@ -192,7 +189,6 @@ export default class UILabel extends UIComponent<Props, State> {
                 {...props}
                 testID={testID || `label_text_${textForTestID}`}
                 style={textStyle}
-                selectable={selectable}
             >
                 {this.getText()}
             </Text>
