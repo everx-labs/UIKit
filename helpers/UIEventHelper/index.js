@@ -14,15 +14,18 @@ export default class UIEventHelper {
             return true;
         }
 
-        const triggers = Array.from(document.getElementsByClassName(className));
-        if (triggers?.length) {
-            return triggers.reduce((contains, trigger) => {
-                if (!contains) {
-                    return trigger.contains(e.target);
-                }
-                return contains;
-            }, false);
+        if (className) {
+            const triggers = Array.from(document.getElementsByClassName(className));
+            if (triggers?.length) {
+                return triggers.reduce((contains, trigger) => {
+                    if (!contains) {
+                        return trigger.contains(e.target);
+                    }
+                    return contains;
+                }, false);
+            }
         }
+
         return false;
     }
 
