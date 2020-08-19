@@ -30,6 +30,7 @@ type Props = {
     textStyle: ViewStyleProp,
     commentsStyle: ViewStyleProp,
     disabled?: boolean,
+    selectable?: boolean,
 };
 
 type State = {};
@@ -45,12 +46,13 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         textRole: undefined,
         textStyle: {},
         commentsStyle: {},
+        selectable: true,
     };
 
     // Render
     renderValue() {
         const {
-            value, textStyle, textRole, onPress, disabled, testID,
+            value, textStyle, textRole, onPress, disabled, testID, selectable
         } = this.props;
         let role = onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular;
         if (disabled) {
@@ -63,6 +65,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
                     style={textStyle}
                     role={textRole || role}
                     text={`${value}`}
+                    selectable={selectable}
                 />
             ) : (
                 <View>
