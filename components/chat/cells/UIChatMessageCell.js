@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 
-import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { LayoutEvent, Layout } from 'react-native/Libraries/Types/CoreEventTypes';
 
 import UIPureComponent from '../../UIPureComponent';
@@ -49,12 +49,15 @@ type Props = {
     isReceived: boolean,
     data?: any,
     additionalInfo?: ChatAdditionalInfo,
+    messageDetails?: string,
+    messageDetailsStyle?: ViewStyleProp | ViewStyleProp[],
 
     onTouchMedia?: (objectToReturn: any) => void,
     onOpenPDF?: (docData: any, docName: string) => void,
     onPressUrl?: (url: string) => void,
     onTouchTransaction?: (trx: any) => void,
     onTouchAction?: (action: any) => void,
+    onTouchText?: () => void,
 }
 
 type State = {
@@ -65,10 +68,12 @@ type State = {
 const oneLineHeight = (UIConstant.verticalContentOffset() * 2) + UIConstant.smallCellHeight();
 
 const styles = StyleSheet.create({
+    row: {
+        marginVertical: UIConstant.smallContentOffset() / 2,
+    },
     container: {
         width: '80%',
         flexDirection: 'row',
-        marginVertical: UIConstant.smallContentOffset() / 2,
         alignItems: 'flex-end',
     },
     emptyChatCell: {
@@ -119,9 +124,19 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         backgroundColor: UIColor.fa(),
     },
+    msgAborted: {
+        alignItems: 'flex-start',
+        backgroundColor: UIColor.error(),
+    },
     msgSent: {
         alignItems: 'flex-end',
         backgroundColor: UIColor.primary(),
+    },
+    messageDetails: {
+        paddingTop: UIConstant.tinyContentOffset(),
+        letterSpacing: 0.5,
+        textAlign: 'right',
+        color: UIColor.grey(),
     },
     urlReceived: {
         color: UIColor.primary(),
@@ -204,6 +219,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         onOpenPDF: () => {},
         onTouchTransaction: () => {},
         onTouchAction: () => {},
+        onTouchText: () => {},
     };
 
     // constructor
@@ -325,6 +341,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             style = styles.msgSent;
         } else if (this.getStatus() === ChatMessageStatus.Sending) {
             style = styles.msgSending;
+        } else if (this.getStatus() === ChatMessageStatus.Aborted) {
+            style = styles.msgAborted;
         }
 
         const animation = { transform: [{ scale: this.animatedBubble }] };
@@ -337,7 +355,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         styles.msgContainer,
                         style,
                         rounded,
-                        // use row direction for a single line, but wrap the time in case this line is long
+                        // use row direction for a single line,
+                        // but wrap the time in case this line is long
                         this.state.isOneLineMessage && UIStyle.common.flexRowWrap(),
                         bg,
                     ]}
@@ -552,7 +571,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             ]}
             >
                 <Text
-                    testID={`transaction_comment_${additionalInfo?.message.info.text || ''}`} 
+                    testID={`transaction_comment_${additionalInfo?.message.info.text || ''}`}
                     style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}
                 >
                     {additionalInfo?.message.info.text || ''}
@@ -615,6 +634,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <TouchableWithoutFeedback
                 onPressOut={() => this.bubbleScaleAnimation()}
+                onPress={this.props.onTouchText}
                 onLongPress={() => {
                     if (data && (data instanceof String || typeof data === 'string')) {
                         this.bubbleScaleAnimation(true);
@@ -654,7 +674,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     render() {
-        const { type, additionalInfo, data } = this.props;
+        const {
+            type, additionalInfo, data, messageDetails, messageDetailsStyle,
+        } = this.props;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
@@ -717,21 +739,33 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             }
         }
 
+        const isCalculatedHeight = this.state.isOneLineMessage !== null;
+        const position = { alignSelf: align, justifyContent: align };
+
         return (
             <View
                 testID={testID}
                 style={[
-                    styles.container, {
-                        alignSelf: align,
-                        justifyContent: align,
-                    },
+                    UIStyle.common.flex(),
+                    styles.row,
                     margin,
                     // Not ready to be visible
-                    this.state.isOneLineMessage === null && UIStyle.common.noOpacity(),
+                    !isCalculatedHeight && UIStyle.common.noOpacity(),
                 ]}
-                onLayout={e => this.onLayout(e)}
             >
-                {cell}
+                <View
+                    style={[position, styles.container]}
+                    onLayout={e => this.onLayout(e)}
+                >
+                    {cell}
+                </View>
+                {isCalculatedHeight && messageDetails && (
+                    <UILabel
+                        style={[styles.messageDetails, messageDetailsStyle]}
+                        role={UILabel.Role.TinyRegular}
+                        text={messageDetails}
+                    />
+                )}
             </View>
         );
     }
