@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
 import type { ActionProps, ActionState } from '../../UIActionComponent';
 import UIActionComponent from '../../UIActionComponent';
@@ -57,10 +57,12 @@ export default class UIActionImage extends UIActionComponent<Props, State> {
         }
         const colorStyle = color ? UIStyle.Color.getTintColorStyle(color) : null;
         return (
-            <Image
-                source={source}
-                style={[colorStyle, style]}
-            />
+            <View>
+                <Image
+                    source={source}
+                    style={[colorStyle, style]}
+                />
+            </View>
         );
     }
 

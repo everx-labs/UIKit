@@ -263,7 +263,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={UIStyle.displayFlex.row()}>
+            <View style={UIStyle.flex.row()}>
                 {this.renderFees()}
                 {this.renderOperationTime()}
             </View>

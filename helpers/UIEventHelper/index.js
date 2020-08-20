@@ -4,6 +4,9 @@ import { Linking, Platform } from 'react-native';
 let prevPath = null;
 
 export default class UIEventHelper {
+    /**
+     * @deprecated method. Since react-native-web@^0.12.0 stopped using `className`
+     */
     static checkEventTarget(e: any, className: string, exceptionClassName?: string) {
         if (exceptionClassName
             && e.target?.className?.includes
@@ -11,15 +14,18 @@ export default class UIEventHelper {
             return true;
         }
 
-        const triggers = Array.from(document.getElementsByClassName(className));
-        if (triggers?.length) {
-            return triggers.reduce((contains, trigger) => {
-                if (!contains) {
-                    return trigger.contains(e.target);
-                }
-                return contains;
-            }, false);
+        if (className) {
+            const triggers = Array.from(document.getElementsByClassName(className));
+            if (triggers?.length) {
+                return triggers.reduce((contains, trigger) => {
+                    if (!contains) {
+                        return trigger.contains(e.target);
+                    }
+                    return contains;
+                }, false);
+            }
         }
+
         return false;
     }
 
