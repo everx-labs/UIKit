@@ -1,18 +1,19 @@
+Note: To show the alert, it has to contain at least one button, and title or description
 Example:
 
 As a standard component:
 ```js
 <UIAlert
-    masterAlert={false}
+    shared={false}
     isVisible={your_flag_for_visibility}
     content={
         {
             title: 'This is the title',
             description: 'This is the alert description',
-            buttons: // Receives an array of pair of buttons (named `buttonA` and `buttonB`, B is optional)
+            buttons: // Receives an array of button arrays
             [
-                { buttonA: { title: 'Button Left', onPress: () => {} }, buttonB: { title: 'Button Right', onPress: () => {} } },
-                { buttonA: { title: 'Single Button', onPress: () => {} } },
+                [{ title: 'Button Left', onPress: () => {} }, { title: 'Button Right', onPress: () => {} }],
+                [{ title: 'Single Button', onPress: () => {} }],
             ],
             }
         }
@@ -29,10 +30,10 @@ UIAlert.showAlert(
     {
         title: 'This is the title',
         description: 'This is the alert description',
-        buttons: // Receives an array of pair of buttons (named `buttonA` and `buttonB`, B is optional)
+        buttons: // Receives an array of button arrays
         [
-            { buttonA: { title: 'Button Left', onPress: () => {} }, buttonB: { title: 'Button Right', onPress: () => {} } },
-            { buttonA: { title: 'Single Button', onPress: () => {} } },
+            [{ title: 'Button Left', onPress: () => {} }, { title: 'Button Right', onPress: () => {} }],
+            [{ title: 'Single Button', onPress: () => {} }],
         ],
     }
 );
