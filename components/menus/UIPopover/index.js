@@ -95,7 +95,7 @@ export default class UIPopover<Props, State>
         }
     };
 
-    onShow = () => this.showMenu(false);
+    onShow = () => this.showMenu();
 
     // Setters
     setIsVisible(isVisible: boolean = true) {
@@ -135,17 +135,17 @@ export default class UIPopover<Props, State>
     // otherwise, the menu will hide automatically once releasing the touch/click
     // preventing to be able to select any option from the menu.
     show() {
-        this.showMenu(true);
+        this.showMenu();
         this.clearHideTimeout();
         this.countdown = setTimeout(() => this.hide(), 60000); // 1 min
     }
 
-    async showMenu(ignoreFirstClick: boolean = false) {
+    async showMenu() {
         if (this.needPopover()) {
             if (!this.isVisible()) {
                 UIPopover.hide(); // hide previously opened masterRef if any
 
-                this.initClickListenerForWeb(ignoreFirstClick);
+                this.initClickListenerForWeb();
                 UIPopoverBackground.initBackgroundForTablet(() => UIPopover.hide());
                 await this.setIsVisible();
                 masterRef = this;
@@ -195,7 +195,7 @@ export default class UIPopover<Props, State>
     }
 
     clickListener: (e: any) => void;
-    initClickListenerForWeb(ignoreFirstClick: boolean = false) {
+    initClickListenerForWeb() {
         if (Platform.OS !== 'web') {
             return;
         }
@@ -208,7 +208,7 @@ export default class UIPopover<Props, State>
                 return;
             }
 
-            if (ignoreFirstClick && !this.firstClickIgnored) {
+            if (!this.firstClickIgnored) {
                 this.firstClickIgnored = true;
                 return;
             }
