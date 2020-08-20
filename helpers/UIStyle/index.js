@@ -97,6 +97,7 @@ UIStyle.margin = UIStyleMargin;
 UIStyle.padding = UIStylePadding;
 UIStyle.text = UIStyleText;
 UIStyle.width = UIStyleWidth;
+UIStyle.flex = UIStyleFlex;
 
 // flex already exists in UIStyle
 UIStyle.displayFlex = UIStyleFlex;

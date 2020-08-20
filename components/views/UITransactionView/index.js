@@ -201,8 +201,8 @@ export default class UITransactionView extends UIComponent<Props, State> {
         return (
             <View style={[this.getStyles().container, this.props.containerStyle]}>
                 {this.renderAvatar()}
-                <View style={[UIStyle.flex, UIStyle.flexRow, UIStyle.alignCenter]}>
-                    <View style={[UIStyle.flex, UIStyle.flexColumn, UIStyle.Margin.rightDefault()]}>
+                <View style={[UIStyle.common.flex(), UIStyle.flexRow, UIStyle.alignCenter]}>
+                    <View style={[UIStyle.common.flex(), UIStyle.flexColumn, UIStyle.Margin.rightDefault()]}>
                         {this.renderTitle()}
                         {this.renderDescription()}
                     </View>

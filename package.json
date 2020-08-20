@@ -21,7 +21,6 @@
         "@quentin-sommer/react-useragent": "^2.0.0",
         "@react-native-community/netinfo": "^5.9.6",
         "bignumber.js": "^9.0.0",
-        "@react-navigation/stack": "^5.9.0",
         "bowser": "^1.9.4",
         "currency-formatter": "^1.4.3",
         "lodash": "4.17.14",

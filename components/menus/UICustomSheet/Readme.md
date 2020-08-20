@@ -52,7 +52,7 @@ class FeedbackForm extends UIComponent {
     // Render
     render() {
         return (
-            <View style={UIStyle.flex}>
+            <View style={UIStyle.common.flex()}>
                 <View style={[UIStyle.greatCellHeight, UIStyle.centerLeftContainer]}>
                     <Text style={UITextStyle.primaryAccentBold}>
                         Send feedback
