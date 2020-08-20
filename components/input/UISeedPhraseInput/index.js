@@ -208,8 +208,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
-        const flex = rightButton && rightButton.length > 0 ? UIStyle.flex : null;
-        return flex;
+        return rightButton && rightButton.length > 0 ? UIStyle.common.flex() : null;
     }
 
     getInputHeight(): number {
