@@ -62,10 +62,7 @@ type Props = {
 
 type State = {
     layout: Layout,
-    isOneLineMessage: ?boolean,
 }
-
-const oneLineHeight = (UIConstant.verticalContentOffset() * 2) + UIConstant.smallCellHeight();
 
 const styles = StyleSheet.create({
     row: {
@@ -84,14 +81,16 @@ const styles = StyleSheet.create({
     },
     msgContainer: {
         flexShrink: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.horizontalContentOffset(),
         paddingVertical: UIConstant.verticalContentOffset(),
     },
     wrapMsgContainer: {
-        flexDirection: 'row',
         flexShrink: 1,
+        flexDirection: 'row',
         alignItems: 'flex-end',
     },
     msgContainerInformation: {
@@ -233,7 +232,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 x: 0,
                 y: 0,
             },
-            isOneLineMessage: null,
         };
     }
 
@@ -248,8 +246,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     onLayout(e: LayoutEvent) {
         const { layout } = e.nativeEvent;
-        const isOneLineMessage = layout.height <= oneLineHeight;
-        this.setStateSafely({ layout, isOneLineMessage });
+        this.setStateSafely({ layout });
     }
 
     onPressUrl(url: string, matchIndex: number = 0) {
@@ -355,9 +352,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         styles.msgContainer,
                         style,
                         rounded,
-                        // use row direction for a single line,
-                        // but wrap the time in case this line is long
-                        this.state.isOneLineMessage && UIStyle.common.flexRowWrap(),
                         bg,
                     ]}
                 >
@@ -396,11 +390,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTime() {
-        if (this.state.isOneLineMessage === null) {
-            // No ready to render yet
-            return null;
-        }
-
         // Calculate the testID prop
         let testID;
         const { data } = this.props;
@@ -739,7 +728,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             }
         }
 
-        const isCalculatedHeight = this.state.isOneLineMessage !== null;
         const position = { alignSelf: align, justifyContent: align };
 
         return (
@@ -749,8 +737,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                     UIStyle.common.flex(),
                     styles.row,
                     margin,
-                    // Not ready to be visible
-                    !isCalculatedHeight && UIStyle.common.noOpacity(),
                 ]}
             >
                 <View
@@ -759,7 +745,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 >
                     {cell}
                 </View>
-                {isCalculatedHeight && messageDetails && (
+                {messageDetails && (
                     <UILabel
                         style={[styles.messageDetails, messageDetailsStyle]}
                         role={UILabel.Role.TinyRegular}
