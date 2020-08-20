@@ -27,6 +27,7 @@ type Props = ActionProps & {
     caption: string,
     truncCaption: boolean,
     details: string,
+    truncDetails: string,
     titleComponent?: React$Node,
     captionComponent?: React$Node,
     customComponent?: React$Node,
@@ -70,6 +71,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         caption: '',
         truncCaption: false,
         fixedCaption: '',
+        truncDetails: false,
         details: '',
     };
 
@@ -172,9 +174,9 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
 
     renderTitleCaption() {
         const {
-            title, caption, titleComponent, captionComponent,
+            title, truncTitle, caption, truncCaption, titleComponent, captionComponent,
         } = this.props;
-        const formattedCaption = this.props.truncCaption ? this.getFormattedText(caption) : caption;
+        const formattedCaption = truncCaption ? this.getFormattedText(caption) : caption;
         const captionText = caption ? (
             <Text
                 ellipsizeMode="middle"
@@ -185,7 +187,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                 {formattedCaption}
             </Text>
         ) : null;
-        const formattedTitle = this.props.truncTitle ? this.getFormattedText(title) : title;
+        const formattedTitle = truncTitle ? this.getFormattedText(title) : title;
 
         return (
             <View style={styles.rowContainer}>
@@ -213,17 +215,14 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     }
 
     renderDetails() {
-        const { secondDetails, details } = this.props;
+        const { secondDetails, details, truncDetails } = this.props;
         return !!(details || secondDetails) && (
             <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
                 <Text
-                    style={[
-                        UIStyle.text.secondaryCaptionRegular(),
-                        UIStyle.common.flex(),
-                    ]}
+                    style={[UIStyle.text.secondaryCaptionRegular(), UIStyle.common.flex()]}
                     testID={UIDetailsButton.testIds.details}
                 >
-                    {details}
+                    {truncDetails ? this.getFormattedText(details) : details}
                 </Text>
                 <Text
                     style={UIStyle.text.secondaryCaptionRegular()}

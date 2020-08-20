@@ -3,9 +3,6 @@ import { StyleSheet } from 'react-native';
 import { containerStyles } from './UIStyleContainer';
 
 export const flexStyles = {
-    flex: {
-        flex: 1,
-    },
     flex1: {
         flex: 1,
     },
@@ -78,7 +75,7 @@ const styles = StyleSheet.create(flexStyles);
 
 export default class UIStyleFlex {
     static x1() {
-        return styles.flex;
+        return styles.flex1;
     }
 
     static x2() {

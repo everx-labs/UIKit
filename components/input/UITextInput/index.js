@@ -58,7 +58,6 @@ type UITextInputProps = {
     needBorderBottom?: boolean,
     onPress?: (() => void) | null,
     textStyle?: StylePropType,
-    className?: string,
 };
 
 type Props = UITextInputProps & TextInputTransitProps;
@@ -82,7 +81,6 @@ class UITextInput extends UIComponent<Props, State> {
             needBorderBottom,
             onPress,
             textStyle,
-            className,
             // $FlowFixMe
             ...rest
         } = this.props;
@@ -183,11 +181,7 @@ class UITextInput extends UIComponent<Props, State> {
     }
 
     renderInputView(pointerEvents: PointerEvents = 'auto') {
-        const setClassNameTrick = {
-            className: this.props.className,
-        };
         return (
-            // $FlowExpectedError
             <View
                 style={[
                     styles.container,
@@ -195,7 +189,6 @@ class UITextInput extends UIComponent<Props, State> {
                     this.props.containerStyle,
                 ]}
                 pointerEvents={pointerEvents}
-                {...setClassNameTrick}
             >
                 {this.renderBeginningTag()}
                 {this.renderTextInput()}
@@ -231,7 +224,6 @@ class UITextInput extends UIComponent<Props, State> {
         autoCapitalize: 'words',
         keyboardType: 'default',
         returnKeyType: null,
-        className: '',
         maxLength: null,
         onPress: null,
         onFocus: () => {},

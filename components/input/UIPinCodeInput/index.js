@@ -494,10 +494,10 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 {...testIDProp}
                 style={[
                     UIStyle.width.fullCenterContainer(),
-                    UIStyle.displayFlex.flexJustifyEnd(),
+                    UIStyle.flex.flexJustifyEnd(),
                 ]}
             >
-                <View style={UIStyle.displayFlex.alignJustifyCenter()}>
+                <View style={UIStyle.flex.alignJustifyCenter()}>
                     {this.renderLabel()}
                     <UIPinCodeDots
                         ref={this.dotsRef}
