@@ -81,7 +81,7 @@ const styles = StyleSheet.create(commonStyles);
 
 export default class UIStyleCommon {
     static flex() {
-        return styles.flex;
+        return styles.flex1;
     }
     static flex2() {
         return styles.flex2;
