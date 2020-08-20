@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 
-import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { LayoutEvent, Layout } from 'react-native/Libraries/Types/CoreEventTypes';
 
 import UIPureComponent from '../../UIPureComponent';
@@ -49,12 +49,15 @@ type Props = {
     isReceived: boolean,
     data?: any,
     additionalInfo?: ChatAdditionalInfo,
+    messageDetails?: string,
+    messageDetailsStyle?: ViewStyleProp | ViewStyleProp[],
 
     onTouchMedia?: (objectToReturn: any) => void,
     onOpenPDF?: (docData: any, docName: string) => void,
     onPressUrl?: (url: string) => void,
     onTouchTransaction?: (trx: any) => void,
     onTouchAction?: (action: any) => void,
+    onTouchText?: () => void,
 }
 
 type State = {
@@ -62,10 +65,12 @@ type State = {
 }
 
 const styles = StyleSheet.create({
+    row: {
+        marginVertical: UIConstant.smallContentOffset() / 2,
+    },
     container: {
         width: '80%',
         flexDirection: 'row',
-        marginVertical: UIConstant.smallContentOffset() / 2,
         alignItems: 'flex-end',
     },
     emptyChatCell: {
@@ -76,14 +81,16 @@ const styles = StyleSheet.create({
     },
     msgContainer: {
         flexShrink: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.horizontalContentOffset(),
         paddingVertical: UIConstant.verticalContentOffset(),
     },
     wrapMsgContainer: {
-        flexDirection: 'row',
         flexShrink: 1,
+        flexDirection: 'row',
         alignItems: 'flex-end',
     },
     msgContainerInformation: {
@@ -116,9 +123,19 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         backgroundColor: UIColor.fa(),
     },
+    msgAborted: {
+        alignItems: 'flex-start',
+        backgroundColor: UIColor.error(),
+    },
     msgSent: {
         alignItems: 'flex-end',
         backgroundColor: UIColor.primary(),
+    },
+    messageDetails: {
+        paddingTop: UIConstant.tinyContentOffset(),
+        letterSpacing: 0.5,
+        textAlign: 'right',
+        color: UIColor.grey(),
     },
     urlReceived: {
         color: UIColor.primary(),
@@ -159,14 +176,11 @@ const styles = StyleSheet.create({
     dateText: {
         color: UIColor.secondary(),
     },
-    timeTextLeft: {
-        textAlign: 'left',
-        marginTop: UIConstant.verticalContentOffset() / 2,
-        color: UIColor.textQuaternary(),
-    },
-    timeTextRight: {
+    timeText: {
         textAlign: 'right',
-        marginTop: UIConstant.verticalContentOffset() / 2,
+        alignSelf: 'flex-end',
+        paddingLeft: UIConstant.smallContentOffset(),
+        paddingTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
     },
     greenBubble: {
@@ -204,6 +218,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         onOpenPDF: () => {},
         onTouchTransaction: () => {},
         onTouchAction: () => {},
+        onTouchText: () => {},
     };
 
     // constructor
@@ -323,15 +338,20 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             style = styles.msgSent;
         } else if (this.getStatus() === ChatMessageStatus.Sending) {
             style = styles.msgSending;
+        } else if (this.getStatus() === ChatMessageStatus.Aborted) {
+            style = styles.msgAborted;
         }
 
         const animation = { transform: [{ scale: this.animatedBubble }] };
+        const isText = this.props.type === ChatMessageContent.SimpleText;
+
         return (
             <Animated.View style={[styles.wrapMsgContainer, animation]}>
                 {this.renderAvatar()}
                 <View
                     style={[
                         styles.msgContainer,
+                        !isText && UIStyle.common.flexColumn(),
                         style,
                         rounded,
                         bg,
@@ -372,10 +392,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     renderTime() {
-        const { data } = this.props;
-        const textStyle = this.isReceived ? styles.timeTextLeft : styles.timeTextRight;
-        const msgTime = this.formattedTime();
+        // Calculate the testID prop
         let testID;
+        const { data } = this.props;
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
                 testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
@@ -385,10 +404,13 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } else {
             testID = 'chat_text_message_time';
         }
+
+        // Get the formatted message time
+        const msgTime = this.formattedTime();
         return (
             <Text
                 testID={testID}
-                style={[UIFont.tinyRegular(), textStyle]}
+                style={[UIFont.tinyRegular(), styles.timeText]}
             >
                 {msgTime}
             </Text>
@@ -539,7 +561,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 background,
             ]}
             >
-                <Text style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}>
+                <Text
+                    testID={`transaction_comment_${additionalInfo?.message.info.text || ''}`}
+                    style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}
+                >
                     {additionalInfo?.message.info.text || ''}
                 </Text>
             </View>
@@ -600,6 +625,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <TouchableWithoutFeedback
                 onPressOut={() => this.bubbleScaleAnimation()}
+                onPress={this.props.onTouchText}
                 onLongPress={() => {
                     if (data && (data instanceof String || typeof data === 'string')) {
                         this.bubbleScaleAnimation(true);
@@ -639,7 +665,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     render() {
-        const { type, additionalInfo, data } = this.props;
+        const {
+            type, additionalInfo, data, messageDetails, messageDetailsStyle,
+        } = this.props;
 
         const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
@@ -702,19 +730,30 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             }
         }
 
+        const position = { alignSelf: align, justifyContent: align };
+
         return (
             <View
                 testID={testID}
                 style={[
-                    styles.container, {
-                        alignSelf: align,
-                        justifyContent: align,
-                    },
+                    UIStyle.common.flex(),
+                    styles.row,
                     margin,
                 ]}
-                onLayout={e => this.onLayout(e)}
             >
-                {cell}
+                <View
+                    style={[position, styles.container]}
+                    onLayout={e => this.onLayout(e)}
+                >
+                    {cell}
+                </View>
+                {messageDetails && (
+                    <UILabel
+                        style={[styles.messageDetails, messageDetailsStyle]}
+                        role={UILabel.Role.TinyRegular}
+                        text={messageDetails}
+                    />
+                )}
             </View>
         );
     }

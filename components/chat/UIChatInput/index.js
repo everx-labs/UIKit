@@ -192,7 +192,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                         // eslint-disable-next-line
                         key={`quickAction~${index}`}
                         buttonStyle={styles.buttonContainer}
-                        textStyle={UIStyle.text.smallRegularHigh()}
+                        textStyle={UIStyle.text.bodyRegular()}
                         testID={action.testID}
                         onPress={action.onPress}
                         title={action.title}
@@ -283,7 +283,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         return (
             <View style={[styles.container]}>
                 {this.renderPlusMenu()}
-                <View style={[UIStyle.displayFlex.x1(), styles.inputMsg]}>
+                <View style={[UIStyle.flex.x1(), styles.inputMsg]}>
                     <View>
                         {this.renderAuxTextInput()}
                         {this.renderTextInput()}

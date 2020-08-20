@@ -3,7 +3,6 @@ import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 
 import UIPureComponent from '../UIPureComponent';
-import type { EventProps } from '../../types';
 
 export type ActionState = {
     tapped: boolean,
@@ -108,27 +107,33 @@ export default class UIActionComponent<Props, State>
 
     // Render
     // Virtual
-    renderContent(): React$Node {
-        return null;
+    renderContent(): React$Element<any> {
+        throw new Error('Not implemented method `renderContent` of UIActionComponent');
     }
 
     render(): React$Node {
         const { onPress, testID } = this.props;
-        const eventProps: EventProps = {
-            onMouseEnter: this.onMouseEnter,
-            onMouseLeave: this.onMouseLeave,
-            onPress: this.onPress,
-        };
+
         const testIDProp = testID ? { testID } : null;
+
+        const element = this.renderContent();
+
         return (
             <TouchableWithoutFeedback
                 {...testIDProp}
                 disabled={this.isDisabled() || this.shouldShowIndicator() || !onPress}
+                onPress={this.onPress}
                 onPressIn={this.onPressIn}
                 onPressOut={this.onPressOut}
-                {...eventProps}
             >
-                {this.renderContent()}
+                {React.cloneElement(element, {
+                    onMouseEnter: this.onMouseEnter,
+                    onMouseLeave: this.onMouseLeave,
+                    style: [element.props.style, {
+                        cursor: 'pointer',
+                        touchAction: 'manipulation',
+                    }],
+                })}
             </TouchableWithoutFeedback>
         );
     }

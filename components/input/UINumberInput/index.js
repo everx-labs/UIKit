@@ -23,8 +23,7 @@ export default class UINumberInput extends UIDetailsInput<Props, ActionState> {
     // Getters
     containerStyle(): ViewStyleProp {
         const { rightButton } = this.props;
-        const flex = rightButton && rightButton.length > 0 ? UIStyle.flex : null;
-        return flex;
+        return rightButton && rightButton.length > 0 ? UIStyle.common.flex() : null;
     }
 
     keyboardType(): KeyboardType {
