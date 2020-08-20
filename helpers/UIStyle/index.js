@@ -99,7 +99,7 @@ UIStyle.text = UIStyleText;
 UIStyle.width = UIStyleWidth;
 UIStyle.flex = UIStyleFlex;
 
-// flex already exists in UIStyle
+// Deprecated
 UIStyle.displayFlex = UIStyleFlex;
 
 // Deprecated
