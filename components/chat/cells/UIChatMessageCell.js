@@ -343,6 +343,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         const animation = { transform: [{ scale: this.animatedBubble }] };
+        const isText = this.props.type === ChatMessageContent.SimpleText;
 
         return (
             <Animated.View style={[styles.wrapMsgContainer, animation]}>
@@ -350,6 +351,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 <View
                     style={[
                         styles.msgContainer,
+                        !isText && UIStyle.common.flexColumn(),
                         style,
                         rounded,
                         bg,
