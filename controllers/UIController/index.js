@@ -462,22 +462,42 @@ export default class UIController<Props, State>
         if (!this.props.navigation) {
             return;
         }
-        this.navigationListeners = [
-            this.props.navigation.addListener('willFocus', payload => {
-                console.log(
-                    `[UIController] Controller ${this.constructor.name} will focus with payload:`,
-                    payload,
-                );
-                this.componentWillFocus();
-            }),
-            this.props.navigation.addListener('willBlur', payload => {
-                console.log(
-                    `[UIController] Controller ${this.constructor.name} will blur with payload:`,
-                    payload,
-                );
-                this.componentWillBlur();
-            }),
-        ];
+        try {
+            this.navigationListeners = [
+                this.props.navigation.addListener('focus', payload => {
+                    console.log(
+                        `[UIController] Controller ${this.constructor.name} will focus with payload:`,
+                        payload,
+                    );
+                    this.componentWillFocus();
+                }),
+                this.props.navigation.addListener('blur', payload => {
+                    console.log(
+                        `[UIController] Controller ${this.constructor.name} will blur with payload:`,
+                        payload,
+                    );
+                    this.componentWillBlur();
+                }),
+            ];
+        } catch (error) {
+            // Fallback to react-navigation v2
+            this.navigationListeners = [
+                this.props.navigation.addListener('willFocus', payload => {
+                    console.log(
+                        `[UIController] Controller ${this.constructor.name} will focus with payload:`,
+                        payload,
+                    );
+                    this.componentWillFocus();
+                }),
+                this.props.navigation.addListener('willBlur', payload => {
+                    console.log(
+                        `[UIController] Controller ${this.constructor.name} will blur with payload:`,
+                        payload,
+                    );
+                    this.componentWillBlur();
+                }),
+            ];
+        }
     }
 
     stopListeningToNavigation() {
