@@ -75,7 +75,7 @@ export default class UIScreen<Props, State>
     // Events
     onScreenLayoutDefault = (e: any) => {
         const { width, height } = e.nativeEvent.layout;
-        if (width !== this.getScreenWidth()) {
+        if (width && width !== this.getScreenWidth()) {
             this.setScreenWidth(width);
 
             const narrow = !!width && width < UIConstant.elasticWidthBroad();
@@ -83,8 +83,8 @@ export default class UIScreen<Props, State>
                 this.setNarrow(narrow);
                 this.dispatchNarrow(narrow);
             }
+            this.onScreenLayout(width, height);
         }
-        this.onScreenLayout(width, height);
     };
 
     onScrollDefault = (e: any) => {
