@@ -199,10 +199,11 @@ export default class UIPopover<Props, State>
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
+
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit()
+            ? 'click'
+            : 'touchend';
+
         this.clickListener = (e: any) => {
             if (!this.props.needCloseOnClick) {
                 return;
@@ -238,6 +239,8 @@ export default class UIPopover<Props, State>
             // Hide in rest cases
             this.hide();
         };
+
+        // Hide the popover if the click happens outside of the predefined components
         window.addEventListener(listenerType, this.clickListener);
     }
 
