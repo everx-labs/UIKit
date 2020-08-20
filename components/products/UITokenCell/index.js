@@ -102,7 +102,7 @@ class UITokenCell extends UIComponent<Props, State> {
         return (
             <React.Fragment>
                 {this.renderAvatar()}
-                <View style={[UIStyle.common.flex(), UIStyle.marginRightDefault]}>
+                <View style={[UIStyle.flex.x1(), UIStyle.marginRightDefault]}>
                     {this.renderTitle()}
                     {this.renderDetails()}
                 </View>
