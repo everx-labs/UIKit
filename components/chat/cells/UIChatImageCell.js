@@ -97,9 +97,8 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
                 resizeMode="contain"
                 resizeMethod="auto"
                 photoStyle={{
+                    marginTop: UIConstant.tinyContentOffset() / 2,
                     borderRadius: UIConstant.borderRadius(),
-                    marginTop: UIConstant.smallContentOffset(),
-                    marginBottom: UIConstant.smallContentOffset(),
                     width,
                     height,
                     maxHeight: maxS,
@@ -114,6 +113,10 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     renderSpinnerOverlay() {
         return (
             <UISpinnerOverlay
+                containerStyle={{
+                    top: UIConstant.tinyContentOffset() / 2,
+                    borderRadius: UIConstant.borderRadius(),
+                }}
                 visible={!this.state.data}
             />
         );
