@@ -178,6 +178,8 @@ const UI_CARD_SHADOW = Platform.OS === 'android'
 
 const UI_CARD_SHADOW_WIDTH = 40;
 
+const MAX_FILE_SIZE = 10000000;
+
 export default class UIConstant {
     // Animations
     static animationScaleInFactor() {
@@ -605,6 +607,10 @@ export default class UIConstant {
 
     static dashSymbol() {
         return DASH_SYMBOL;
+    }
+
+    static maxFileSize() {
+        return MAX_FILE_SIZE;
     }
 
     static get fullScreenDialogWidth() {
