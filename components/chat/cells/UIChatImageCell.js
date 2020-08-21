@@ -49,7 +49,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     getSize(): UIChatImageSize {
-        return this.props.additionalInfo.imageSize || this.props.imageSize;
+        return this.props.additionalInfo?.imageSize || this.props.imageSize;
     }
 
     getUrl(): string {
