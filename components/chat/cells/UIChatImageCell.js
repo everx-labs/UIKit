@@ -66,7 +66,8 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         const { image, additionalInfo } = this.props;
         const { data } = this.state;
         if (image && !data) {
-            const imgData = await image(additionalInfo?.message);
+            const msg = additionalInfo?.message;
+            const imgData = msg?.info.sending ? { data: msg?.info.image } : await image(msg);
             this.setState({ data: imgData.data });
         }
     }
@@ -111,13 +112,10 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     renderSpinnerOverlay() {
+        const sending = this.props.additionalInfo?.message?.info?.sending;
         return (
             <UISpinnerOverlay
-                containerStyle={{
-                    top: UIConstant.tinyContentOffset() / 2,
-                    borderRadius: UIConstant.borderRadius(),
-                }}
-                visible={!this.state.data}
+                visible={!this.state.data || sending}
             />
         );
     }
