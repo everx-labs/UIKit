@@ -551,9 +551,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const rounded = this.isReceived
             ? styles.leftTopCorner
             : styles.rightTopCorner;
-        const background = this.isReceived
+        let background = this.isReceived
             ? styles.greenBubble
             : styles.blackBubble;
+        if (additionalInfo?.message.info.aborted) { // TODO: make it better in terms of structuring!
+            background = styles.msgAborted;
+        }
         return (
             <View style={[
                 styles.msgContainer,
