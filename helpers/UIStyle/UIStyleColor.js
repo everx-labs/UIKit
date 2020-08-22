@@ -1,6 +1,5 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import type { DangerouslyImpreciseStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../UIColor';
 import type { UIColorData, UIColorThemeNameType } from '../UIColor/UIColorTypes';
@@ -32,7 +31,7 @@ export default class UIStyleColor {
         TintColor: 'tintColor',
     };
 
-    static getStyle(color: UIColorData, colorStyle: ColorStyle): DangerouslyImpreciseStyleProp {
+    static getStyle(color: UIColorData, colorStyle: ColorStyle): Object {
         const colorStyles = colorStyleSheets[colorStyle];
         if (!colorStyles) {
             return null;
