@@ -268,6 +268,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
         return (
             <View style={styles.buttonContainer}>
+                {/* $FlowFixMe */ /* TODO: WTF is overlayColor and where is it coming from? */}
                 <View style={styles.icon}>
                     {!menuMoreDisabled
                         ? activeButton()
