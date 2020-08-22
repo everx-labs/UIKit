@@ -57,6 +57,10 @@ const styles = StyleSheet.create({
         height: UIConstant.iconSize(),
         width: UIConstant.iconSize(),
     },
+    iconView: {
+        height: UIConstant.iconSize(),
+        width: UIConstant.iconSize(),
+    },
     btnSend: {
         height: UIConstant.defaultCellHeight(),
         justifyContent: 'center',
@@ -268,8 +272,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
         return (
             <View style={styles.buttonContainer}>
-                {/* $FlowFixMe */ /* TODO: WTF is overlayColor and where is it coming from? */}
-                <View style={styles.icon}>
+                <View style={styles.iconView}>
                     {!menuMoreDisabled
                         ? activeButton()
                         // TODO: support btnDotsDisabled

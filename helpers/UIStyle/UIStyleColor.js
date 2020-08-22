@@ -40,7 +40,7 @@ export default class UIStyleColor {
         if (!sheet) {
             sheet = StyleSheet.create({
                 style: {
-                    // $FlowFixMe // TODO: Do something with that weird `overlayColor` warning
+                    // $FlowFixMe
                     [colorStyle]: color,
                 },
             });
