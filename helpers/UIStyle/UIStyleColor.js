@@ -1,10 +1,11 @@
 // @flow
 import { StyleSheet } from 'react-native';
+import type { DangerouslyImpreciseStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIColor from '../UIColor';
 import type { UIColorData, UIColorThemeNameType } from '../UIColor/UIColorTypes';
 
-type ColorStyle = 'color' | 'backgroundColor' | 'borderBottomColor' | 'borderTopColor' | 'tintColor';
+type ColorStyle = string;
 
 const colorStyleSheets: { [ColorStyle]: Object } = {
     color: {},
@@ -31,7 +32,7 @@ export default class UIStyleColor {
         TintColor: 'tintColor',
     };
 
-    static getStyle(color: UIColorData, colorStyle: ColorStyle) {
+    static getStyle(color: UIColorData, colorStyle: ColorStyle): DangerouslyImpreciseStyleProp {
         const colorStyles = colorStyleSheets[colorStyle];
         if (!colorStyles) {
             return null;
@@ -40,7 +41,6 @@ export default class UIStyleColor {
         if (!sheet) {
             sheet = StyleSheet.create({
                 style: {
-                    // $FlowFixMe
                     [colorStyle]: color,
                 },
             });
