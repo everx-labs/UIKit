@@ -218,10 +218,11 @@ export default class UIAnimatedBalanceInner extends React.Component<
                 >
                     {this.state.nextBalance.map((symbol, index) => (
                         <UIAnimatedBalanceSymbol
+                            // eslint-disable-next-line react/no-array-index-key
                             key={`next-${index}`}
                             animation={this.getAnimation(index).interpolate({
                                 inputRange: [0, 1],
-                                outputRange: [-this.balanceLineHeight, 0],
+                                outputRange: ([-this.balanceLineHeight, 0]: $ReadOnlyArray<number>),
                             })}
                             textStyle={this.props.textStyle}
                             fractionalTextStyle={this.props.fractionalTextStyle}
@@ -239,10 +240,14 @@ export default class UIAnimatedBalanceInner extends React.Component<
                     >
                         {this.state.prevBalance.map((symbol, index) => (
                             <UIAnimatedBalanceSymbol
+                                // eslint-disable-next-line react/no-array-index-key
                                 key={`prev-${index}`}
                                 animation={this.getAnimation(index).interpolate({
                                     inputRange: [0, 1],
-                                    outputRange: [0, this.balanceLineHeight],
+                                    outputRange: ([
+                                        0,
+                                        this.balanceLineHeight,
+                                    ]: $ReadOnlyArray<number>),
                                 })}
                                 textStyle={this.props.textStyle}
                                 fractionalTextStyle={this.props.fractionalTextStyle}

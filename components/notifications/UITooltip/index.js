@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Platform, Text, StyleSheet, Dimensions } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 import type { Node } from 'react';
 import type { EventProps } from '../../../types';
 
@@ -81,7 +80,10 @@ export default class UITooltip extends UIComponent<Props, State> {
     static showOnMouseForWeb(message: string, tooltipContainerStyle?: ViewStyleProp) {
         UITooltip.initMouseMoveListenerForWeb();
         UILayoutManager.showComponent({
-            component: UITooltip.renderTooltip(message, tooltipContainerStyle || styles.onMouseContainer),
+            component: UITooltip.renderTooltip(
+                message,
+                tooltipContainerStyle || styles.onMouseContainer,
+            ),
             animation: tooltipAnimation,
         });
     }
@@ -262,7 +264,7 @@ export default class UITooltip extends UIComponent<Props, State> {
 
     mouseOverListener: () => void;
     mouseOutListener: () => void;
-    trigger: ?NativeMethodsMixinType;
+    trigger: ?React$ElementRef<*>;
     isVisible: boolean;
 
     constructor(props: Props) {

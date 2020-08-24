@@ -13,8 +13,7 @@ import UIComponent from '../../UIComponent';
 
 const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
 
-// $FlowFixMe
-const ImageComponent = Platform.OS === 'web' ? Image : FastImage;
+const ImageComponent: any = Platform.OS === 'web' ? Image : FastImage;
 
 type Props = {
     icon: ImageSource | FastImageSource,
@@ -51,11 +50,10 @@ export default class UILandingView extends UIComponent<Props, State> {
 
         return (
             <React.Fragment {...testIDProp} >
-                {/* $FlowFixMe */}
                 <ImageComponent
                     style={this.props.iconStyle || styles.icon}
                     source={icon}
-                />
+                />)
                 <UILabel
                     style={UIStyle.Margin.topDefault()}
                     role={UILabel.Role.Subtitle}

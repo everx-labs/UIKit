@@ -1,9 +1,12 @@
 // @flow
 import { StyleSheet } from 'react-native';
+
 import UIColor from '../UIColor';
 import type { UIColorData, UIColorThemeNameType } from '../UIColor/UIColorTypes';
 
-const colorStyleSheets = {
+type ColorStyle = string;
+
+const colorStyleSheets: { [ColorStyle]: Object } = {
     color: {},
     backgroundColor: {},
     borderBottomColor: {},
@@ -28,7 +31,7 @@ export default class UIStyleColor {
         TintColor: 'tintColor',
     };
 
-    static getStyle(color: UIColorData, colorStyle: string) {
+    static getStyle(color: UIColorData, colorStyle: ColorStyle): Object {
         const colorStyles = colorStyleSheets[colorStyle];
         if (!colorStyles) {
             return null;

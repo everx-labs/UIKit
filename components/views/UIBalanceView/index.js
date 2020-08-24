@@ -4,7 +4,6 @@ import { Animated, StyleSheet, Text, View } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { NativeMethodsMixinType } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -461,7 +460,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         const shift = newDigit ? 0 : this.balanceLineHeight;
         const marginTop = this.getMarginTop(index) ? this.getMarginTop(index).interpolate({
             inputRange: [-this.balanceLineHeight, 0],
-            outputRange: [-this.balanceLineHeight + shift, shift],
+            outputRange: ([-this.balanceLineHeight + shift, shift]: $ReadOnlyArray<number>),
         }) : 0;
         return (
             <Animated.View
@@ -558,7 +557,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
     }
 
     /* eslint-disable-next-line */
-    auxBalanceText: ?(React$Component<*> & NativeMethodsMixinType);
+    auxBalanceText: ?React$ElementRef<*>;
     renderAuxBalance() {
         const auxBalance = this.getAuxBalance();
         const integer = auxBalance.split(this.getSeparator())[0];

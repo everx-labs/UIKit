@@ -117,7 +117,7 @@ const ru: UILocalizedData = {
     LinkCopiedToClipboard: 'Ссылка скопирована в буфер.',
     MessageCopiedToClipboard: 'Сообщение скопировано в буфер',
     HashCopiedToClipboard: 'Hash copied to clipboard.',
-    FileIsTooBig: 'Извините, мы не можем это обработать. Файл слишком большой.',
+    FileIsTooBig: 'Извините, мы не можем это обработать. Файл слишком большой (лимит: {0} MB).',
     Important: 'ВАЖНО!',
     UserIsNotAuthorized: 'Пользователь не авторизован',
     WalletIsNotInitialized: 'Кошелек не инициализирован',

@@ -80,11 +80,11 @@ export default class UIPinCodeDot extends React.Component<
 
     invertedAnimation = this.animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [1, 0],
+        outputRange: ([1, 0]: $ReadOnlyArray<number>),
     });
     scaleAnimation = this.animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [1, 2],
+        outputRange: ([1, 2]: $ReadOnlyArray<number>),
     });
 
     render() {

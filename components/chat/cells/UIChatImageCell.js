@@ -49,7 +49,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     getSize(): UIChatImageSize {
-        return this.props.imageSize;
+        return this.props.additionalInfo?.imageSize || this.props.imageSize;
     }
 
     getUrl(): string {
@@ -75,29 +75,30 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         const { parentLayout } = this.props;
         const image = this.getImage();
 
+        const maxImageCellSize = 2 * UIConstant.giantCellHeight();
+        const minS = UIConstant.chatCellHeight();
         const maxS = parentLayout ?
-            parentLayout.width - (2 * UIConstant.contentOffset())
+            Math.min(parentLayout.width - (2 * UIConstant.contentOffset()), maxImageCellSize)
             : 50;
 
         let { width, height } = this.getSize();
         const p = width < height ? width / height : height / width;
 
         if (width > height) {
-            width = width > maxS ? maxS : width;
+            width = Math.max(width > maxS ? maxS : width, minS);
             height = width * p;
         } else {
-            height = height > maxS ? maxS : height;
+            height = Math.max(height > maxS ? maxS : height, minS);
             width = height * p;
         }
 
         return (
             <UIImageView
-                resizeMode="cover"
-                resizeMethod="scale"
+                resizeMode="contain"
+                resizeMethod="auto"
                 photoStyle={{
+                    marginTop: UIConstant.tinyContentOffset() / 2,
                     borderRadius: UIConstant.borderRadius(),
-                    marginTop: UIConstant.smallContentOffset(),
-                    marginBottom: UIConstant.smallContentOffset(),
                     width,
                     height,
                     maxHeight: maxS,
@@ -112,6 +113,10 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     renderSpinnerOverlay() {
         return (
             <UISpinnerOverlay
+                containerStyle={{
+                    top: UIConstant.tinyContentOffset() / 2,
+                    borderRadius: UIConstant.borderRadius(),
+                }}
                 visible={!this.state.data}
             />
         );
