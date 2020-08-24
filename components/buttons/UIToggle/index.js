@@ -49,21 +49,29 @@ export default class UIToggle extends UIComponent<Props, {}> {
         } else {
             source = active ? (iconActive || icoActive) : (iconInactive || icoInactive);
         }
-        return (<Image source={source} />);
+
+        return <Image source={source} />;
     }
 
     render() {
         const { containerStyle, testID } = this.props;
         const testIDProp = testID ? { testID } : null;
+        const element = this.renderIcon();
+
         return (
-            <View style={containerStyle}>
-                <TouchableWithoutFeedback
-                    {...testIDProp}
-                    onPress={this.onPress}
-                >
-                    {this.renderIcon()}
-                </TouchableWithoutFeedback>
-            </View>
+            <TouchableWithoutFeedback
+                {...testIDProp}
+                onPress={this.onPress}
+            >
+                <View style={containerStyle}>
+                    {React.cloneElement(element, {
+                        style: [element.props.style, {
+                            cursor: 'pointer',
+                            touchAction: 'manipulation',
+                        }],
+                    })}
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
