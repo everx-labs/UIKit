@@ -52,7 +52,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     // Render
     renderValue() {
         const {
-            value, textStyle, textRole, onPress, disabled, testID, selectable
+            value, textStyle, textRole, onPress, disabled, testID, selectable,
         } = this.props;
         let role = onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular;
         if (disabled) {
@@ -115,7 +115,11 @@ export default class UIDetailsView extends UIComponent<Props, State> {
             <Wrapper
                 {...testIDProp}
                 {...onPressProp}
-                style={UIFunction.combineStyles([styles.container, containerStyle, style])}
+                style={UIFunction.combineStyles([
+                    (styles.container: ViewStyleProp),
+                    containerStyle,
+                    style,
+                ])}
             >
                 {this.renderContentView()}
             </Wrapper>

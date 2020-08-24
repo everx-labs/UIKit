@@ -45,7 +45,7 @@ const LabelRole = Object.freeze({
 export type LabelRoleValue = $Values<typeof LabelRole>;
 
 type Props = {|
-    style: ?ViewStyleProp,
+    style: ?TextStyleProp,
     text: string,
     role: LabelRoleValue,
     useDefaultSpace?: boolean,
@@ -207,7 +207,8 @@ export default class UILabel extends UIComponent<Props, State> {
         if (defaultSpaceStyle) {
             textStyle.push(defaultSpaceStyle);
             return (
-                <View style={this.props.style}>
+                // TODO: split UILabel style into View's `containerStyle` and a regular Text `style`
+                <View style={(this.props.style: any)}>
                     {this.renderText(textStyle)}
                 </View>
             );

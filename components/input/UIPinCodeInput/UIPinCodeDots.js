@@ -40,7 +40,7 @@ export default class UIPinCodeDots extends React.Component<
     shakeValue = new Animated.Value(0);
     shakeOffset = this.shakeValue.interpolate({
         inputRange: [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
-        outputRange: [0, -10, 10, -10, 10, -10, 0],
+        outputRange: ([0, -10, 10, -10, 10, -10, 0]: $ReadOnlyArray<number>),
     });
     shakeAnimation = Animated.spring(this.shakeValue, {
         toValue: 1,

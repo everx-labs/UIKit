@@ -45,7 +45,11 @@ export default class UILink extends UIComponent<Props, State> {
     render() {
         if (this.props.href) {
             return (
-                <UIButton {...this.props} onPress={this.goHref} buttonStyle={UIButton.ButtonStyle.Link} />
+                <UIButton
+                    {...this.props}
+                    onPress={this.goHref}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                />
             );
         }
         return (
