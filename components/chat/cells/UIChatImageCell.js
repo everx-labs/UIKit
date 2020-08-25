@@ -3,8 +3,6 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import type { Layout } from 'react-native/Libraries/Types/CoreEventTypes';
-
 import UIPureComponent from '../../UIPureComponent';
 import UIImageView from '../../images/UIImageView';
 import UISpinnerOverlay from '../../UISpinnerOverlay';
@@ -17,7 +15,6 @@ type Props = {
     image: ?any,
     imageSize: ?UIChatImageSize,
     additionalInfo: ?ChatAdditionalInfo,
-    parentLayout: ?Layout,
 }
 
 type State = {
@@ -27,7 +24,6 @@ type State = {
 const IMAGE_SIZE = 1024;
 export default class UIChatImageCell extends UIPureComponent<Props, State> {
     static defaultProps = {
-        parentLayout: null,
         imageSize: { width: IMAGE_SIZE, height: IMAGE_SIZE },
     };
 
@@ -54,7 +50,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
 
     getUrl(): string {
         const msg = this.props.additionalInfo?.message;
-        const url = msg?.info.image?.url || `img${Math.random()}`;
+        const url = msg?.mid || msg?.info.image?.url || `img${Math.random()}`;
 
         return url;
     }
@@ -68,19 +64,15 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         if (image && !data) {
             const msg = additionalInfo?.message;
             const imgData = msg?.info.sending ? { data: msg?.info.image } : await image(msg);
-            this.setState({ data: imgData.data });
+            this.setState({ data: imgData.data }, () => this.forceUpdate());
         }
     }
 
     renderImage() {
-        const { parentLayout } = this.props;
         const image = this.getImage();
 
-        const maxImageCellSize = 2 * UIConstant.giantCellHeight();
+        const maxS = 2 * UIConstant.giantCellHeight();
         const minS = UIConstant.chatCellHeight();
-        const maxS = parentLayout ?
-            Math.min(parentLayout.width - (2 * UIConstant.contentOffset()), maxImageCellSize)
-            : 50;
 
         let { width, height } = this.getSize();
         const p = width < height ? width / height : height / width;
@@ -106,7 +98,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
                     maxWidth: maxS,
                 }}
                 source={image}
-                key={`imageContent${this.getUrl()}${Math.random() * 10000}`}
+                key={`imageContent${this.getUrl()}`}
             />
         );
     }
@@ -115,6 +107,10 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         const sending = this.props.additionalInfo?.message?.info?.sending;
         return (
             <UISpinnerOverlay
+                containerStyle={{
+                    top: UIConstant.tinyContentOffset() / 2,
+                    borderRadius: UIConstant.borderRadius(),
+                }}
                 visible={!this.state.data || sending}
             />
         );
