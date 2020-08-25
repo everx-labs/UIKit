@@ -65,7 +65,7 @@ export default class UILandingView extends UIComponent<Props, State> {
                         !content && styles.descriptionLabel,
                     ]}
                     useDefaultSpace
-                    role={UILabel.Role.Description}
+                    role={UILabel.Role.DescriptionSmall}
                     text={description}
                 />
                 {content}
