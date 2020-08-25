@@ -48,7 +48,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         return this.props.additionalInfo?.imageSize || this.props.imageSize;
     }
 
-    getUrl(): string {
+    getID(): string {
         const msg = this.props.additionalInfo?.message;
         const url = msg?.mid || msg?.info.image?.url || `img${Math.random()}`;
 
@@ -98,7 +98,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
                     maxWidth: maxS,
                 }}
                 source={image}
-                key={`imageContent${this.getUrl()}`}
+                key={`imageContent${this.getID()}`}
             />
         );
     }
@@ -120,7 +120,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         return (
             <View
                 style={UIStyle.Common.flex()}
-                key={`imageViewContent${this.getUrl()}`}
+                key={`imageViewContent${this.getID()}`}
             >
                 {this.renderImage()}
                 {this.renderSpinnerOverlay()}
