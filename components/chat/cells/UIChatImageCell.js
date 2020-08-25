@@ -64,7 +64,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         if (image && !data) {
             const msg = additionalInfo?.message;
             const imgData = msg?.info.sending ? { data: msg?.info.image } : await image(msg);
-            this.setState({ data: imgData.data }, () => this.forceUpdate());
+            this.setState({ data: imgData.data });
         }
     }
 
