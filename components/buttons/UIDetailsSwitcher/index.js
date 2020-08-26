@@ -114,7 +114,7 @@ export default class UIDetailsSwitcher<Props, State>
 
         if (!comments) {
             return (
-                <Text style={[UIStyle.text.primarySmallMedium(), UIStyle.common.flex()]}>
+                <Text style={[UIStyle.text.primaryBodyMedium(), UIStyle.common.flex()]}>
                     {details}
                 </Text>
             );
