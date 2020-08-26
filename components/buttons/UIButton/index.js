@@ -305,7 +305,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         case UIButton.buttonSize.small:
             return styles.titleS;
         default:
-            return styles.titleM;
+            return styles.titleL;
         }
     }
 
