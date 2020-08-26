@@ -86,8 +86,18 @@ const EmptyInset: ContentInset = Object.freeze({
 
 const keyboardPanningScreens = [];
 
-export default class UIController<Props, State>
-    extends UIComponent<Props & ControllerProps, State & ControllerState> {
+const configuration = {
+    navigationVersion: 2,
+};
+
+export default class UIController<Props, State> extends UIComponent<
+    Props & ControllerProps,
+    State & ControllerState,
+> {
+    static configureNavigationVersion(version: number) {
+        configuration.navigationVersion = version;
+    }
+
     static onGetAndroidDisplayCutout = (): * => {
         return {
             left: 0,
@@ -193,13 +203,19 @@ export default class UIController<Props, State>
     // constructor
     hasSpinnerOverlay: boolean;
 
+    // Guard for react-navigation v5 first mount focus event
+    isFocused = false;
+
     constructor(props: Props & ControllerProps) {
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
         this.hasSpinnerOverlay = false;
 
-        this.handlePathAndParams();
+        if (configuration.navigationVersion < 5) {
+            this.handlePathAndParams();
+        }
+
         this.listenToNavigation();
 
         // $FlowFixMe
@@ -209,20 +225,36 @@ export default class UIController<Props, State>
     componentDidMount() {
         super.componentDidMount();
         this.initSequence();
+
+        if (
+            configuration.navigationVersion >= 5 &&
+            this.props.navigation &&
+            this.props.navigation.isFocused()
+        ) {
+            this.isFocused = true;
+            this.componentWillFocus();
+        }
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
         this.deinitKeyboardListeners();
         this.stopListeningToNavigation();
+
+        if (configuration.navigationVersion >= 5 && this.isFocused) {
+            this.componentWillBlur();
+        }
     }
 
     componentWillFocus() {
-        this.pushStateIfNeeded();
+        this.isFocused = true;
+        if (configuration.navigationVersion < 5) {
+            this.pushStateIfNeeded();
+        }
     }
 
     componentWillBlur() {
-        //
+        this.isFocused = false;
     }
 
     initSequence() {
@@ -386,6 +418,11 @@ export default class UIController<Props, State>
     }
 
     getNavigationState() {
+        if (configuration.navigationVersion >= 5) {
+            // $FlowFixMe
+            return this.props.route?.state || {};
+        }
+
         const { navigation } = this.props;
         if (navigation) {
             return navigation.state || {};
@@ -394,6 +431,10 @@ export default class UIController<Props, State>
     }
 
     getNavigationParams() {
+        if (configuration.navigationVersion >= 5) {
+            // $FlowFixMe
+            return this.props.route?.params || {};
+        }
         const state = this.getNavigationState();
         if (state) {
             return state.params || {};
@@ -469,6 +510,9 @@ export default class UIController<Props, State>
                         `[UIController] Controller ${this.constructor.name} will focus with payload:`,
                         payload,
                     );
+                    if (this.isFocused) {
+                        return;
+                    }
                     this.componentWillFocus();
                 }),
                 this.props.navigation.addListener('blur', payload => {
@@ -476,6 +520,9 @@ export default class UIController<Props, State>
                         `[UIController] Controller ${this.constructor.name} will blur with payload:`,
                         payload,
                     );
+                    if (!this.isFocused) {
+                        return;
+                    }
                     this.componentWillBlur();
                 }),
             ];
