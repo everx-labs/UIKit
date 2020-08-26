@@ -127,16 +127,16 @@ export default class UIColor {
         return UIColorPalette.grey3;
     }
 
-    static msgSeparator() {
-        return UIColorPalette.background.separatorChat;
-    }
-
     static light() {
         return UIColorPalette.light;
     }
 
     static lightQuinary() {
         return UIColorPalette.background.lightQuinary;
+    }
+
+    static msgSeparator() {
+        return UIColorPalette.separatorChat;
     }
 
     static notWhite() {
@@ -338,6 +338,10 @@ export default class UIColor {
 
     static backgroundWhiteLight(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.whiteLight;
+    }
+
+    static backgroundPositive(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.positive;
     }
 
     // border

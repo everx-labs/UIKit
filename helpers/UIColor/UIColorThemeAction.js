@@ -32,6 +32,7 @@ const UIColorThemeAction: UIColorThemeData = {
         quarter: UIColorPalette.primaryPlus,
         quinary: UIColorPalette.background.darkQuinary,
         whiteLight: UIColorPalette.background.darkWhiteLight,
+        positive: UIColorPalette.background.darkPositive,
     },
     button: {
         background: {

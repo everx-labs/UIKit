@@ -3,6 +3,15 @@ import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
 
 export const paddingStyles = {
+    paddingNone: {
+        padding: 0,
+    },
+    paddingHorizontalNone: {
+        paddingHorizontal: 0,
+    },
+    paddingVerticalNone: {
+        paddingVertical: 0,
+    },
     paddingDefault: { // 16
         padding: UIConstant.contentOffset(),
     },
@@ -98,6 +107,10 @@ export const paddingStyles = {
 const styles = StyleSheet.create(paddingStyles);
 
 export default class UIStylePadding {
+    static none() { // 0
+        return styles.paddingNone;
+    }
+
     static default() { // 16
         return styles.paddingDefault;
     }
@@ -110,27 +123,35 @@ export default class UIStylePadding {
         return styles.paddingSmall;
     }
 
-    static horizontalTiny() {
-        return styles.paddingHorizontalTiny;
+    static horizontalNone() { // 0
+        return styles.paddingHorizontalNone;
     }
 
-    static horizontal() {
+    static horizontal() { // 16
         return styles.paddingHorizontal;
     }
 
-    static horizontalNormal() {
+    static horizontalTiny() { // 4
+        return styles.paddingHorizontalTiny;
+    }
+
+    static horizontalNormal() { // 12
         return styles.paddingHorizontalNormal;
     }
 
-    static verticalTiny() {
-        return styles.paddingVerticalTiny;
+    static verticalNone() { // 0
+        return styles.paddingVerticalNone;
     }
 
-    static vertical() {
+    static vertical() { // 16
         return styles.paddingVertical;
     }
 
-    static verticalNormal() {
+    static verticalTiny() { // 4
+        return styles.paddingVerticalTiny;
+    }
+
+    static verticalNormal() { // 12
         return styles.paddingVerticalNormal;
     }
 
@@ -154,19 +175,19 @@ export default class UIStylePadding {
         return styles.paddingTopHuge;
     }
 
-    static bottomTiny() {
+    static bottomTiny() { // 4
         return styles.paddingBottomTiny;
     }
 
-    static bottomSmall() {
+    static bottomSmall() { // 8
         return styles.paddingBottomSmall;
     }
 
-    static bottomNormal() {
+    static bottomNormal() { // 12
         return styles.paddingBottomNormal;
     }
 
-    static bottomDefault() {
+    static bottomDefault() { // 16
         return styles.paddingBottomDefault;
     }
 
@@ -174,15 +195,15 @@ export default class UIStylePadding {
         return styles.paddingBottomSpacious;
     }
 
-    static bottomMassive() {
+    static bottomMassive() { // 72
         return styles.paddingBottomMassive;
     }
 
-    static bottomVast() {
+    static bottomVast() { // 80
         return styles.paddingBottomVast;
     }
 
-    static bottomEnormous() {
+    static bottomEnormous() { // 104
         return styles.paddingBottomEnormous;
     }
 
@@ -190,31 +211,31 @@ export default class UIStylePadding {
         return styles.paddingBottomGiant;
     }
 
-    static leftDefault() {
+    static leftDefault() { // 16
         return styles.paddingLeftDefault;
     }
 
-    static rightDefault() {
+    static rightDefault() { // 16
         return styles.paddingRightDefault;
     }
 
-    static rightHuge() {
+    static rightHuge() { // 32
         return styles.paddingRightHuge;
     }
 
-    static rightGreat() {
+    static rightGreat() { // 48
         return styles.paddingRightGreat;
     }
 
-    static bottomMedium() {
+    static bottomMedium() { // 24
         return styles.paddingBottomMedium;
     }
 
-    static bottomHuge() {
+    static bottomHuge() { // 32
         return styles.paddingBottomHuge;
     }
 
-    static bottomMajor() {
+    static bottomMajor() { // 64
         return styles.paddingBottomMajor;
     }
 }
