@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
-        marginLeft: 'auto', // Need for correct positioning to left side in message cell
+        marginLeft: 'auto', // Need for correct positioning to right side in message cell
     },
     greenBubble: {
         backgroundColor: UIColor.green(),
