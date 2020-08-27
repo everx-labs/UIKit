@@ -27,6 +27,7 @@ type Props = DetailsProps & {
     menuMore?: ?MenuItemType[],
     menuPlusDisabled?: boolean,
     menuMoreDisabled?: boolean,
+    isFakeChat?: boolean,
     showBorder?: boolean,
 
     quickAction?: ?MenuItemType[],
@@ -85,6 +86,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         autoCapitalize: 'sentences',
         placeholder: UILocalized.TypeMessage,
         hideBottomLine: true,
+        isFakeChat: false,
         autoFocus: false,
         containerStyle: { },
         floatingTitle: false,
@@ -168,7 +170,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderQuickAction() {
-        const { quickAction, menuMore } = this.props;
+        const { quickAction } = this.props;
         const val = this.getValue();
 
         if (val.length > 0) {
@@ -207,9 +209,9 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     renderPlusMenu() {
-        const { menuPlus, menuPlusDisabled } = this.props;
+        const { menuPlus, menuPlusDisabled, isFakeChat } = this.props;
 
-        if (!menuPlus || menuPlus.length === 0) {
+        if (isFakeChat || !menuPlus || menuPlus.length === 0) {
             return null;
         }
 
@@ -283,15 +285,25 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         );
     }
 
+    renderInputArea() {
+        if (this.props.isFakeChat) {
+            return null;
+        }
+
+        return (
+            <View>
+                {this.renderAuxTextInput()}
+                {this.renderTextInput()}
+            </View>
+        );
+    }
+
     renderTextFragment(): React$Node {
         return (
             <View style={[styles.container]}>
                 {this.renderPlusMenu()}
                 <View style={[UIStyle.flex.x1(), styles.inputMsg]}>
-                    <View>
-                        {this.renderAuxTextInput()}
-                        {this.renderTextInput()}
-                    </View>
+                    {this.renderInputArea()}
                 </View>
                 {this.renderQuickAction()}
                 {this.renderMoreMenu()}
