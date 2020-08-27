@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     textCell: {
         textAlign: 'left',
         maxWidth: '100%',
+        marginRight: 'auto',
     },
     msgSending: {
         alignItems: 'flex-end',
