@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'flex-end',
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.horizontalContentOffset(),
         paddingVertical: UIConstant.verticalContentOffset(),
@@ -181,6 +180,7 @@ const styles = StyleSheet.create({
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
+        marginLeft: 'auto', // Need for correct positioning to right side in message cell
     },
     greenBubble: {
         backgroundColor: UIColor.green(),
