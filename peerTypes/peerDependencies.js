@@ -1,4 +1,8 @@
 // @flow
+declare module '@react-native-community/netinfo' {
+    declare module.exports: any
+}
+
 declare module 'react-dom' {
     declare module.exports: any
 }
