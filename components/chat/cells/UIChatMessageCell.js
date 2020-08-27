@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'flex-end',
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.horizontalContentOffset(),
         paddingVertical: UIConstant.verticalContentOffset(),
@@ -113,7 +112,6 @@ const styles = StyleSheet.create({
     textCell: {
         textAlign: 'left',
         maxWidth: '100%',
-        marginRight: 'auto', // Need for correct positioning to left side in message cell
     },
     msgSending: {
         alignItems: 'flex-end',
@@ -182,6 +180,7 @@ const styles = StyleSheet.create({
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
+        marginLeft: 'auto', // Need for correct positioning to left side in message cell
     },
     greenBubble: {
         backgroundColor: UIColor.green(),
