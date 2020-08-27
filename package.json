@@ -50,16 +50,16 @@
         "validator": "10.11.0"
     },
     "devDependencies": {
-        "@babel/core": "7.8.3",
-        "@babel/preset-flow": "7.8.3",
+        "@babel/core": "7.9.0",
+        "@babel/preset-flow": "7.9.0",
         "@testing-library/react-native": "5.0.3",
         "babel-eslint": "9.0.0",
-        "babel-jest": "24.9.0",
-        "flow-bin": "0.95.1",
-        "jest": "24.9.0",
-        "metro-react-native-babel-preset": "0.56.0",
+        "babel-jest": "26.0.1",
+        "flow-bin": "0.122.0",
+        "jest": "26.0.1",
+        "metro-react-native-babel-preset": "0.63.0",
         "pre-commit": "1.2.2",
-        "react-test-renderer": "16.8.6"
+        "react-test-renderer": "16.13.1"
     },
     "repository": {
         "type": "git",
