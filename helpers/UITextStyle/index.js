@@ -489,6 +489,11 @@ const UITextStyle = StyleSheet.create({
         ...success,
         ...UIFont.smallRegular(),
     },
+    // Body - fontSize: 18, lineHeight: 24
+    successBodyRegular: {
+        ...success,
+        ...UIFont.bodyRegular(),
+    },
 
     // [Text tertiary]
     // Title - fontSize: 36, lineHeight: 48

@@ -320,6 +320,9 @@ export default class UIStyleText {
     static successSmallRegular() {
         return UITextStyle.successSmallRegular;
     }
+    static successBodyRegular() {
+        return UITextStyle.successBodyRegular;
+    }
 
     // [Text tertiary]
     // Title - fontSize: 36, lineHeight: 48

@@ -53,7 +53,7 @@ export default class UILandingView extends UIComponent<Props, State> {
                 <ImageComponent
                     style={this.props.iconStyle || styles.icon}
                     source={icon}
-                />)
+                />
                 <UILabel
                     style={UIStyle.Margin.topDefault()}
                     role={UILabel.Role.Subtitle}
@@ -65,7 +65,7 @@ export default class UILandingView extends UIComponent<Props, State> {
                         !content && styles.descriptionLabel,
                     ]}
                     useDefaultSpace
-                    role={UILabel.Role.Description}
+                    role={UILabel.Role.DescriptionSmall}
                     text={description}
                 />
                 {content}

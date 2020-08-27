@@ -39,6 +39,7 @@ export type UIColorThemeData = {
         quarter: UIColorData,
         quinary: UIColorData,
         whiteLight: UIColorData,
+        positive: UIColorData,
     },
     button: {
         background: {
