@@ -63,11 +63,11 @@ declare module 'react-native-device-info' {
     declare module.exports: any
 }
 
-declare module 'react-native-gesture-handler' {
+declare module 'react-native-fast-image' {
     declare module.exports: any
 }
 
-declare module 'react-native-fast-image' {
+declare module 'react-native-gesture-handler' {
     declare module.exports: any
 }
 
