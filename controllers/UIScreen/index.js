@@ -40,7 +40,7 @@ let staticNarrow;
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
     presetName: string;
-    scrollView: ?ScrollView;
+    scrollView: ?React$ElementRef<*>;
     listenScrollOffset: boolean;
 
     static isNarrow(width: number) {

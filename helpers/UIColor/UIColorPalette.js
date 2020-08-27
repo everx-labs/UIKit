@@ -39,6 +39,8 @@ const UIColorPalette = {
     overlay20: 'rgba(16, 32, 39, 0.2)',
     overlay0: 'rgba(16, 32, 39, 0)',
 
+    separatorChat: '#9FA6A9',
+
     success: '#27AE60',
     warning: '#F2C94C',
     error: '#CC0022',
@@ -72,7 +74,8 @@ const UIColorPalette = {
         darkQuinary: '#85AFC4',
         lightWhiteLight: '#F5F5F5',
         darkWhiteLight: '#F5F5F5',
-        separatorChat: '#9FA6A9',
+        lightPositive: '#2EAC09',
+        darkPositive: '#2EAC09', // TODO: ask Eugene about the real value
     },
     avatar: [
         '#EF5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#1E88E5', '#0288D1',

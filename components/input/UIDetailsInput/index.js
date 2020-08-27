@@ -772,7 +772,6 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             ? UIColor.textPlaceholder(theme)
             : UIColor.textDisabled(theme);
         return (
-            // $FlowFixMe
             <TextInput
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
@@ -817,6 +816,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                 underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
                 inputAccessoryViewID={this.props.inputAccessoryViewID}
+                // $FlowFixMe
                 {...valueProp}
                 {...testIDProp}
             />

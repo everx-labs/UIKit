@@ -11,6 +11,7 @@ import UIAlertView from '../../popup/UIAlertView';
 import UIColor from '../../../helpers/UIColor';
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
+import { UIConstant } from '../../../UIKit';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
@@ -303,8 +304,11 @@ export default class UIImageView extends UIComponent<Props, State> {
             console.log('[UIImageView] Canceled load image from file');
             return;
         }
-        if (file.size >= 10000000) { // in decimal
-            UIAlertView.showAlert(UILocalized.Error, UILocalized.FileIsTooBig, [{
+        if (file.size >= UIConstant.maxFileSize()) { // in decimal
+            const msg = UILocalized.formatString(
+                UILocalized.FileIsTooBig, UIConstant.maxFileSize() / 1000000,
+            );
+            UIAlertView.showAlert(UILocalized.Error, msg, [{
                 title: UILocalized.OK,
                 onPress: () => {
                     // nothing

@@ -12,7 +12,6 @@ import {
 import ParsedText from 'react-native-parsed-text';
 
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { LayoutEvent, Layout } from 'react-native/Libraries/Types/CoreEventTypes';
 
 import UIPureComponent from '../../UIPureComponent';
 import UIColor from '../../../helpers/UIColor';
@@ -61,7 +60,7 @@ type Props = {
 }
 
 type State = {
-    layout: Layout,
+    // empty
 }
 
 const styles = StyleSheet.create({
@@ -221,20 +220,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         onTouchText: () => {},
     };
 
-    // constructor
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            layout: {
-                width: 0,
-                height: 0,
-                x: 0,
-                y: 0,
-            },
-        };
-    }
-
     animatedBubble = new Animated.Value(1);
     bubbleScaleAnimation(scaleIn: boolean = false) {
         Animated.spring(this.animatedBubble, {
@@ -242,11 +227,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             friction: 3,
             useNativeDriver: true,
         }).start();
-    }
-
-    onLayout(e: LayoutEvent) {
-        const { layout } = e.nativeEvent;
-        this.setStateSafely({ layout });
     }
 
     onPressUrl(url: string, matchIndex: number = 0) {
@@ -277,10 +257,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             onTouchAction();
         }
     };
-
-    getLayout(): Layout {
-        return this.state.layout;
-    }
 
     getActionDirection(): TypeOfActionDirection {
         return this.props.additionalInfo?.message?.info?.direction || TypeOfActionDirection.None;
@@ -467,7 +443,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             this.wrapInMessageContainer(<UIChatImageCell
                 image={data}
-                parentLayout={this.getLayout()}
                 additionalInfo={additionalInfo}
             />)
         );
@@ -551,9 +526,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const rounded = this.isReceived
             ? styles.leftTopCorner
             : styles.rightTopCorner;
-        const background = this.isReceived
+        let background = this.isReceived
             ? styles.greenBubble
             : styles.blackBubble;
+        if (additionalInfo?.message.info.aborted) { // TODO: make it better in terms of structuring!
+            background = styles.msgAborted;
+        }
         return (
             <View style={[
                 styles.msgContainer,
@@ -743,7 +721,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             >
                 <View
                     style={[position, styles.container]}
-                    onLayout={e => this.onLayout(e)}
                 >
                     {cell}
                 </View>

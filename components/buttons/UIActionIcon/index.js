@@ -85,7 +85,10 @@ export default class UIActionIcon extends UIComponent<Props, State> {
         return (
             <UIButton
                 {...this.props}
-                style={UIFunction.combineStyles([this.props.style, widthStyle])}
+                style={UIFunction.combineStyles([
+                    this.props.style,
+                    (widthStyle: ViewStyleProp),
+                ])}
                 hasIcon
             />
         );

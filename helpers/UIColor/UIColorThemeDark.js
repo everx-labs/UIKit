@@ -33,6 +33,7 @@ const UIColorThemeDark: UIColorThemeData = {
         quarter: UIColorPalette.background.darkQuarter,
         quinary: UIColorPalette.background.darkQuinary,
         whiteLight: UIColorPalette.background.darkWhiteLight,
+        positive: UIColorPalette.background.darkPositive,
     },
     button: {
         background: {

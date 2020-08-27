@@ -117,7 +117,7 @@ const en: UILocalizedData = {
     LinkCopiedToClipboard: 'Link copied to clipboard.',
     MessageCopiedToClipboard: 'Message copied to clipboard.',
     HashCopiedToClipboard: 'Hash copied to clipboard.',
-    FileIsTooBig: 'Sorry we cannot process this. File is too big.',
+    FileIsTooBig: 'Sorry we cannot process this. File is too big (max: {0} MB).',
     Important: 'IMPORTANT!',
     UserIsNotAuthorized: 'User is not authorized',
     WalletIsNotInitialized: 'Wallet is not initialized',

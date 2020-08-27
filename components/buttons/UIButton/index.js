@@ -305,7 +305,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         case UIButton.buttonSize.small:
             return styles.titleS;
         default:
-            return styles.titleM;
+            return styles.titleL;
         }
     }
 
@@ -475,17 +475,23 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (!this.props.data) return null;
 
         const data = (
-            <Text style={[UIStyle.text.tertiaryTinyBold(), UIStyle.margin.leftSmall()]}>
+            <Text
+                style={[
+                    UIStyle.text.tertiaryTinyBold(),
+                    UIStyle.margin.leftSmall(),
+                ]}
+            >
                 {this.props.data}
             </Text>);
 
         if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
 
         return (
-            <View style={[
-                UIStyle.common.flex(),
-                UIStyle.container.centerRight(),
-            ]}
+            <View
+                style={[
+                    UIStyle.common.flex(),
+                    UIStyle.container.centerRight(),
+                ]}
             >
                 {data}
             </View>
@@ -496,17 +502,24 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (!this.props.count) return null;
 
         const data = (
-            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.margin.leftSmall(), this.props.countStyle]}>
+            <Text
+                style={[
+                    UIStyle.text.tertiaryBodyRegular(),
+                    UIStyle.margin.leftSmall(),
+                    this.props.countStyle,
+                ]}
+            >
                 {this.props.count}
             </Text>);
 
         if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
 
         return (
-            <View style={[
-                UIStyle.common.flex(),
-                UIStyle.container.centerRight(),
-            ]}
+            <View
+                style={[
+                    UIStyle.common.flex(),
+                    UIStyle.container.centerRight(),
+                ]}
             >
                 {data}
             </View>

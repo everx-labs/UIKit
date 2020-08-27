@@ -15,6 +15,7 @@ import UILocalized from '../../../helpers/UILocalized';
 
 type Props = DetailsProps & {
     style?: ViewStyleProp,
+    customWithLength?: number,
 };
 
 type State = {
@@ -42,11 +43,15 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
 
     // Events
     onChangeCardNumber = (input: string) => {
+        const { customWithLength } = this.props;
+
         this.textChanged = true;
         this.setStateSafely({ highlightError: false });
         const cardNumberRaw = input.replace(/[^0-9]/gim, '');
         const cardNumber = (cardNumberRaw.match(/\d{1,4}/g) || []).join(' ');
-        if (cardNumberRaw.length <= 19) {
+
+        if ((customWithLength && cardNumberRaw.length <= customWithLength) ||
+            cardNumberRaw.length <= 19) {
             this.setStateSafely({ text: input, textFormated: cardNumber });
             this.props.onChangeText(cardNumber);
         }
@@ -88,6 +93,13 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
     }
 
     isValidCardNumber(value: string = this.props.value) {
+        const { customWithLength } = this.props;
+
+        if (customWithLength) {
+            const valueRaw = value.replace(/[^0-9]/gim, '');
+            return valueRaw.length === customWithLength;
+        }
+
         return UIFunction.getBankCardType({
             number: value,
             raw: false,
@@ -125,6 +137,12 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
 
     // Render
     renderCardLogos() {
+        const { customWithLength } = this.props;
+
+        if (customWithLength) {
+            return null;
+        }
+
         const presumedCards = this.getPresumedCardTypes();
         if (!(presumedCards instanceof Object)) {
             return null;

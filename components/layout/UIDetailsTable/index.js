@@ -129,17 +129,17 @@ class UIDetailsTable extends UIComponent<Props, State> {
     // Getters
     getTextStyle(type: ?string, value: Value) {
         if (type === UIDetailsTable.cellType.success) {
-            return UIStyle.text.successSmallRegular();
+            return UIStyle.text.successBodyRegular();
         } else if (type === UIDetailsTable.cellType.error) {
-            return UIStyle.text.errorSmallRegular();
+            return UIStyle.text.errorBodyRegular();
         } else if (type === UIDetailsTable.cellType.accent) {
-            return UIStyle.text.primarySmallMedium();
+            return UIStyle.text.primaryBodyMedium();
         } else if (type === UIDetailsTable.cellType.disabled) {
-            return UIStyle.text.tertiarySmallRegular();
+            return UIStyle.text.tertiaryBodyRegular();
         } else if ((type === UIDetailsTable.cellType.bool && !value) || value === false) {
-            return UIStyle.text.tertiarySmallRegular();
+            return UIStyle.text.tertiaryBodyRegular();
         }
-        return UIStyle.text.secondarySmallRegular();
+        return UIStyle.text.secondaryBodyRegular();
     }
 
     // Actions
@@ -212,8 +212,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
             >
                 <Text
                     style={[header, bold, boldTopOffset].includes(captionType)
-                        ? UIStyle.text.tertiarySmallBold()
-                        : UIStyle.text.tertiarySmallRegular()}
+                        ? UIStyle.text.primaryBodyBold()
+                        : UIStyle.text.primaryBodyRegular()}
                 >
                     {caption}
                 </Text>

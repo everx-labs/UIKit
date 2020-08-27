@@ -39,12 +39,13 @@ const LabelRole = Object.freeze({
     AccentBold: 'accentBold',
     AccentRegular: 'accentRegular',
     IconQuaternary: 'iconQuaternary',
+    AlertTitle: 'alertTitle',
 });
 
 export type LabelRoleValue = $Values<typeof LabelRole>;
 
 type Props = {|
-    style: ?ViewStyleProp,
+    style: ?TextStyleProp,
     text: string,
     role: LabelRoleValue,
     useDefaultSpace?: boolean,
@@ -145,6 +146,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.errorCaptionRegular());
         } else if (role === UILabel.Role.IconQuaternary) {
             result.push(UIStyle.Text.quaternaryIconRegular());
+        } else if (role === UILabel.Role.AlertTitle) {
+            result.push(UIStyle.Text.primaryBodyBold());
         }
         return result;
     }
@@ -204,7 +207,8 @@ export default class UILabel extends UIComponent<Props, State> {
         if (defaultSpaceStyle) {
             textStyle.push(defaultSpaceStyle);
             return (
-                <View style={this.props.style}>
+                // TODO: split UILabel style into View's `containerStyle` and a regular Text `style`
+                <View style={(this.props.style: any)}>
                     {this.renderText(textStyle)}
                 </View>
             );
