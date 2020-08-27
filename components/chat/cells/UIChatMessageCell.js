@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     textCell: {
         textAlign: 'left',
         maxWidth: '100%',
-        marginRight: 'auto',
+        marginRight: 'auto', // Need for correct positioning to left side in message cell
     },
     msgSending: {
         alignItems: 'flex-end',
