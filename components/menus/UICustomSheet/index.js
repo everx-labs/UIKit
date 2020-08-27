@@ -22,7 +22,6 @@ import UIController from '../../../controllers/UIController';
 import UIModalNavigationBar from '../../../controllers/UIModalController/UIModalNavigationBar';
 
 import type { ContentInset, AnimationParameters } from '../../../controllers/UIController';
-import { KeyboardAvoidingView } from 'react-native-web';
 
 const headerHeight = UIConstant.bigCellHeight();
 
