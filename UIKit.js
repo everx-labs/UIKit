@@ -8,7 +8,6 @@ import UIAlertView from './components/popup/UIAlertView';
 import UIAmountInput from './components/input/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
-import UICard from './components/views/UICard';
 import UIBalanceView from './components/views/UIBalanceView';
 import UIAnimatedBalanceView from './components/views/UIAnimatedBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
@@ -16,6 +15,8 @@ import UIBullet from './components/docs/UIBullet';
 import UIButton from './components/buttons/UIButton';
 import UIButtonGroup from './components/buttons/UIButtonGroup';
 import UIBankCardNumberInput from './components/input/UIBankCardNumberInput';
+import UIBreadCrumbs from './components/navigation/UIBreadCrumbs';
+import UICard from './components/views/UICard';
 import UIChatInput from './components/chat/UIChatInput';
 import UIChatMessageCell from './components/chat/cells/UIChatMessageCell';
 import UICheckboxItem from './components/buttons/UICheckboxItem';
@@ -167,6 +168,7 @@ export {
     UIButton,
     UIButtonGroup,
     UIBankCardNumberInput,
+    UIBreadCrumbs,
     UICard,
     UIChatInput,
     UIChatMessageCell,
