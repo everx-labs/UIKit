@@ -83,6 +83,7 @@ export type UIChatMessageInfo = {
     image?: string;
     document?: string;
     sending?: boolean;
+    encrypted?: boolean;
     metadata?: any;
     trx?: any;
 };
