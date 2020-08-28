@@ -8,6 +8,7 @@ import {
     TouchableWithoutFeedback,
     Platform,
     Animated,
+    Image,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 
@@ -41,6 +42,7 @@ import type {
     ChatAdditionalInfo,
     TypeOfActionDirectionType,
 } from '../extras';
+import UIAssets from '../../../assets/UIAssets';
 
 type Props = {
     type?: ChatMessageContentType,
@@ -202,6 +204,10 @@ const styles = StyleSheet.create({
     },
     verticalSeparator: {
         marginTop: UIConstant.tinyContentOffset() / 2,
+    },
+    keyThin: {
+        paddingLeft: UIConstant.smallContentOffset(),
+        marginLeft: 'auto',
     },
 });
 
@@ -545,6 +551,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 >
                     {additionalInfo?.message.info.text || ''}
                 </Text>
+                {additionalInfo?.message.info.encrypted && (
+                    <View style={styles.keyThin}>
+                        <Image source={UIAssets.keyThin} />
+                    </View>
+                )}
             </View>
         );
     }
