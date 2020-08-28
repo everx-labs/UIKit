@@ -38,8 +38,11 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
     };
 
     getLastRoutes() {
-        const { numberOfLastRoutesShown, pathMap, narrow } = this.props;
-        const { routes } = this.props.navigation.dangerouslyGetParent().state || {};
+        const {
+            numberOfLastRoutesShown, pathMap, narrow, navigation,
+        } = this.props;
+        const { state } = navigation ? navigation.dangerouslyGetParent() : {};
+        const { routes } = state || {};
         const num = narrow ? 1 : numberOfLastRoutesShown;
 
         if (routes) {
@@ -62,6 +65,12 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
         const lastRoutes = this.getLastRoutes();
         if (!lastRoutes.length) return null;
 
+        const slash = (
+            <Text style={[UIStyle.margin.rightNormal(), UIStyle.text.quaternarySmallRegular()]}>
+                /
+            </Text>
+        );
+
         return (
             <View style={[UIStyle.container.centerLeft()]}>
                 {lastRoutes.map(({ routeName, paramValues }, index) => {
@@ -80,13 +89,7 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
                                 style={UIStyle.margin.rightNormal()}
                                 onPress={() => this.props.navigation.pop(lastRoutes.length - index)}
                             />
-                            <Text style={[
-                                UIStyle.margin.rightNormal(),
-                                UIStyle.text.quaternarySmallRegular(),
-                            ]}
-                            >
-                                /
-                            </Text>
+                            {index < lastRoutes.length - 1 && slash}
                         </React.Fragment>
                     );
                 })}
