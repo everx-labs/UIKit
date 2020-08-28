@@ -8,6 +8,7 @@ import {
     TouchableWithoutFeedback,
     Platform,
     Animated,
+    Image,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 
@@ -41,6 +42,7 @@ import type {
     ChatAdditionalInfo,
     TypeOfActionDirectionType,
 } from '../extras';
+import UIAssets from '../../../assets/UIAssets';
 
 type Props = {
     type?: ChatMessageContentType,
@@ -82,7 +84,6 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'flex-end',
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.horizontalContentOffset(),
         paddingVertical: UIConstant.verticalContentOffset(),
@@ -181,6 +182,7 @@ const styles = StyleSheet.create({
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
         color: UIColor.textQuaternary(),
+        marginLeft: 'auto', // Need for correct positioning to right side in message cell
     },
     greenBubble: {
         backgroundColor: UIColor.green(),
@@ -202,6 +204,10 @@ const styles = StyleSheet.create({
     },
     verticalSeparator: {
         marginTop: UIConstant.tinyContentOffset() / 2,
+    },
+    keyThin: {
+        paddingLeft: UIConstant.smallContentOffset(),
+        marginLeft: 'auto',
     },
 });
 
@@ -545,6 +551,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 >
                     {additionalInfo?.message.info.text || ''}
                 </Text>
+                {additionalInfo?.message.info.encrypted && (
+                    <View style={styles.keyThin}>
+                        <Image source={UIAssets.keyThin} />
+                    </View>
+                )}
             </View>
         );
     }
