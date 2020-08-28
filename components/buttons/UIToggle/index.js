@@ -39,7 +39,7 @@ export default class UIToggle extends UIComponent<Props, {}> {
     };
 
     // Render
-    renderIcon() {
+    renderIcon(): React$Element<any> {
         const {
             active, colored, iconActive, iconInactive,
         } = this.props;
