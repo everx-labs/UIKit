@@ -740,4 +740,8 @@ export default class UIFunction {
     static formatHex(str: string = ''): string {
         return this.remove0x(str).padStart(64, '0');
     }
+
+    static summarizeByKey(arr: any[], key: string): number {
+        return arr.reduce((prev, curr) => prev + curr[key], 0);
+    }
 }

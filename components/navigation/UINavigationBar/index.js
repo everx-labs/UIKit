@@ -71,6 +71,8 @@ export interface ReactNavigation {
     dangerouslyGetParent(): any;
 
     push(routeName: string): void;
+
+    pop(num: number): void;
 }
 
 export type CreateNavigationOptions = (options: { navigation: ReactNavigation }) => {};
