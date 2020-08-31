@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     },
     msgReceived: {
         alignItems: 'flex-start',
-        backgroundColor: UIColor.fa(),
+        backgroundColor: UIColor.grey5(),
     },
     msgAborted: {
         alignItems: 'flex-start',
@@ -151,8 +151,9 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor: UIColor.overlay40(),
+        backgroundColor: UIColor.grey5(),
         height: UIConstant.smallCellHeight(),
+        paddingVertical: UIConstant.tinyContentOffset() / 2,
         paddingHorizontal: UIConstant.smallContentOffset(),
         borderRadius: UIConstant.smallCellHeight() / 2,
     },
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
         color: UIColor.fa(),
     },
     dateText: {
-        color: UIColor.secondary(),
+        color: UIColor.grey4(),
     },
     timeText: {
         textAlign: 'right',
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
         backgroundColor: UIColor.green(),
     },
     blackBubble: {
-        backgroundColor: UIColor.blackLight(),
+        backgroundColor: UIColor.black(),
     },
     leftBottomCorner: {
         borderBottomLeftRadius: 0,
@@ -235,6 +236,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }).start();
     }
 
+    // eslint-disable-next-line no-unused-vars
     onPressUrl(url: string, matchIndex: number = 0) {
         const { onPressUrl } = this.props;
         if (onPressUrl) {
@@ -306,11 +308,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const userName = isSticker ? null : this.renderName();
 
         let rounded = {};
-
-        if (additionalInfo?.lastFromChain) {
-            rounded = this.isReceived
-                ? styles.leftBottomCorner
-                : styles.rightBottomCorner;
+        if (this.isReceived) {
+            rounded = additionalInfo?.firstFromChain ? styles.leftTopCorner : null;
+        } else {
+            rounded = additionalInfo?.lastFromChain ? styles.rightBottomCorner : null;
         }
 
         let style = styles.msgSending;
@@ -424,7 +425,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderActionLabel() {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
-            ? styles.leftBottomCorner
+            ? styles.leftTopCorner
             : styles.rightBottomCorner;
         return (
             <View style={[
@@ -530,7 +531,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderTransactionCommentCell() {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
-            ? styles.leftTopCorner
+            ? null
             : styles.rightTopCorner;
         let background = this.isReceived
             ? styles.greenBubble
@@ -547,7 +548,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             >
                 <Text
                     testID={`transaction_comment_${additionalInfo?.message.info.text || ''}`}
-                    style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}
+                    style={[styles.actionLabelText, UIFont.smallRegularHigh(), styles.textCell]}
                 >
                     {additionalInfo?.message.info.text || ''}
                 </Text>
@@ -658,24 +659,23 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             type, additionalInfo, data, messageDetails, messageDetailsStyle,
         } = this.props;
 
-        const currentMargin = (UIConstant.tinyContentOffset() / 2);
+        const currentMargin = UIConstant.tinyContentOffset();
+        const defaultMarginSize = UIConstant.smallContentOffset();
+        const smallMarginSize = UIConstant.tinyContentOffset();
+
         let cell = null;
         let testID = '';
 
-        let margin = null;
+        let margin = { marginBottom: 0, marginTop: defaultMarginSize };
         let align = this.isReceived ? 'flex-start' : 'flex-end';
-        if (additionalInfo?.lastFromChain) {
-            margin = { marginBottom: UIConstant.normalContentOffset() - currentMargin };
-        }
 
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
-            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+            margin = { marginVertical: (defaultMarginSize * 2) - currentMargin };
         } else if (type === ChatMessageContent.SystemInfo) {
             align = 'center';
             cell = this.renderSystemInfo();
-            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.ActionLabel) {
             cell = this.renderActionLabel();
         } else if (type === ChatMessageContent.EmptyChat) {
@@ -683,24 +683,39 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderEmptyChatCell();
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
-            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
         } else if (type === ChatMessageContent.TransactionComment) {
             // hack to move comment closer to the parent transaction bubble
-            margin = { marginTop: -UIConstant.tinyContentOffset() };
+            margin = { marginBottom: 0 };
             cell = this.renderTransactionCommentCell();
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
+
+            if (!additionalInfo?.firstFromChain) {
+                margin = { marginBottom: 0, marginTop: smallMarginSize };
+            }
         } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
             cell = this.renderSystemCell();
-            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
+            margin = { marginVertical: defaultMarginSize };
+
+            if (additionalInfo?.firstFromChain) {
+                margin = { marginBottom: defaultMarginSize, marginTop: defaultMarginSize * 2 };
+            }
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
+
+            if (!additionalInfo?.firstFromChain) {
+                margin = { marginBottom: 0, marginTop: smallMarginSize };
+            }
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
+
+            if (!additionalInfo?.firstFromChain) {
+                margin = { marginBottom: 0, marginTop: smallMarginSize };
+            }
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);

@@ -23,6 +23,8 @@ const UIColorPalette = {
     grey1: '#EBEDEE',
     grey2: '#DDE1E2',
     grey3: '#CED3D6',
+    grey4: '#7D8589',
+    grey5: '#F1F2F3',
     light: '#CFD8DC',
     whiteLight: '#F5F5F5',
     notWhite: '#F8F9F9',

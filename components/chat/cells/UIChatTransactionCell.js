@@ -39,9 +39,9 @@ type State = {
 
 const styles = StyleSheet.create({
     trxCard: {
-        height: UIConstant.greatCellHeight(),
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.normalContentOffset(),
+        paddingVertical: UIConstant.smallContentOffset(),
         backgroundColor: UIColor.green(),
     },
     cardDeposit: {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         backgroundColor: UIColor.green(),
     },
     cardSpending: {
-        backgroundColor: UIColor.blackLight(),
+        backgroundColor: UIColor.black(),
     },
     cardRejected: {
         backgroundColor: UIColor.caution(),
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         color: UIColor.grey1(),
     },
     leftConner: {
-        borderBottomLeftRadius: 0,
+        borderTopLeftRadius: 0,
     },
     rightConner: {
         borderBottomRightRadius: 0,
@@ -248,7 +248,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     // Render
     renderTrxContent() {
         const { token, amountLocalized } = this.getExtra();
-        const conner = this.isReceived ? styles.leftConner : styles.rightConner;
+        const corner = this.isReceived ? styles.leftConner : styles.rightConner;
         const status = this.getStatus();
         const color = this.getCardColor();
         const textColor = this.getTextColor();
@@ -266,7 +266,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
-                    conner,
+                    corner,
                     color,
                 ]}
             >

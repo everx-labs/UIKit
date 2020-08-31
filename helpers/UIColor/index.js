@@ -127,6 +127,14 @@ export default class UIColor {
         return UIColorPalette.grey3;
     }
 
+    static grey4() {
+        return UIColorPalette.grey4;
+    }
+
+    static grey5() {
+        return UIColorPalette.grey5;
+    }
+
     static light() {
         return UIColorPalette.light;
     }
