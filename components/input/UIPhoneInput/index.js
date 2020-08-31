@@ -69,32 +69,9 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         }
     }
 
-    getSelection() {
-        if (Platform.OS !== 'web') {
-            return null;
-        }
-        return this.adjustSelection(this.state.selection);
-    }
-
     onSelectionChange = (e: any): void => {
         this.setStateSafely({ selection: e.nativeEvent?.selection });
     };
-
-    adjustSelection(selectionToAdjust: {start: number, end: number}) {
-        if (Platform.OS === 'web') {
-            if (!this.textChanged) {
-                return selectionToAdjust;
-            }
-            this.textChanged = false;
-        }
-
-        const cursorPosition = UIFunction.adjustCursorPosition(
-            this.state.text,
-            selectionToAdjust.start,
-            this.state.textFormated,
-        );
-        return { start: cursorPosition, end: cursorPosition };
-    }
 
     onChangeText = (text: string) => {
         const { onChangeText } = this.props;
@@ -128,7 +105,6 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
 
     // Render
     render() {
-        const selection = this.getSelection();
         const commentColor = this.getCommentColor();
         const commentColorProp = commentColor ? { commentColor } : null;
         return (
@@ -145,7 +121,6 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
                 onChangeText={this.onChangeText}
                 mandatory={this.props.mandatory}
                 onSelectionChange={this.onSelectionChange}
-                selection={selection}
             />
         );
     }
