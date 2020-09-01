@@ -68,13 +68,11 @@ const UIStyle = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         maxWidth: UIConstant.elasticWidthMax(),
-        height: '100%',
         alignSelf: 'center',
         borderRadius: UIConstant.smallBorderRadius(),
         padding: UIConstant.contentOffset(),
     },
     masterViewController: {
-        flex: 1,
         minWidth: UIConstant.masterScreenWidth(),
         maxWidth: UIConstant.masterScreenWidth(),
         overflow: 'hidden',
