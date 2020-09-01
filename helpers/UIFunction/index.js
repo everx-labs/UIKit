@@ -718,7 +718,11 @@ export default class UIFunction {
     }
 
     static toFixedOrEmpty(arg: ?number, fractionDigits: number): string {
-        return arg == null ? '' : arg.toFixed(fractionDigits);
+        return arg == null
+            ? ''
+            : arg === 0
+                ? '0'
+                : arg.toFixed(fractionDigits);
     }
 
     /**

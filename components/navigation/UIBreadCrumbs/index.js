@@ -79,7 +79,7 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
                     const title = `${this.props.screenTitleMapper(routeName)} ${id ? '- ' : ''}${id}`;
 
                     return (
-                        <React.Fragment key={`bread-crumbs-${title}`}>
+                        <React.Fragment key={`bread-crumbs-${title}-${index}`}>
                             <UITextButton
                                 title={title}
                                 textStyle={[
