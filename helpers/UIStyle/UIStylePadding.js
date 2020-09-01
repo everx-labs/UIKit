@@ -154,7 +154,7 @@ export default class UIStylePadding {
         return styles.paddingVerticalTiny;
     }
 
-    static verticalSmall() { // 4
+    static verticalSmall() { // 8
         return styles.paddingVerticalSmall;
     }
 
