@@ -700,7 +700,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             margin = { marginVertical: defaultMarginSize };
 
             if (additionalInfo?.firstFromChain) {
-                margin = { marginBottom: defaultMarginSize, marginTop: defaultMarginSize * 2 };
+                margin = { marginBottom: defaultMarginSize, marginTop: UIConstant.contentOffset() };
             }
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
