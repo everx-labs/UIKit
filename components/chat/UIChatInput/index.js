@@ -49,10 +49,11 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     buttonContainer: {
-        padding: UIConstant.normalContentOffset(),
+        padding: UIConstant.contentOffset(),
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'flex-end',
+        height: UIConstant.largeButtonHeight(),
     },
     icon: {
         height: UIConstant.iconSize(),
@@ -63,15 +64,16 @@ const styles = StyleSheet.create({
         width: UIConstant.iconSize(),
     },
     btnSend: {
-        height: UIConstant.defaultCellHeight(),
+        height: UIConstant.contentOffset(),
         justifyContent: 'center',
         alignSelf: 'flex-end',
     },
     inputMsg: {
         marginVertical: 0,
         paddingBottom: Platform.select({ // compensate mobile textContainer's default padding
-            ios: UIConstant.smallContentOffset(),
-            android: UIConstant.smallContentOffset(),
+            ios: UIConstant.normalContentOffset(),
+            android: UIConstant.normalContentOffset(),
+            web: UIConstant.tinyContentOffset(),
         }),
     },
     inputView: {

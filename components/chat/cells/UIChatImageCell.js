@@ -90,7 +90,6 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
                 resizeMode="contain"
                 resizeMethod="auto"
                 photoStyle={{
-                    marginTop: UIConstant.tinyContentOffset() / 2,
                     borderRadius: UIConstant.borderRadius(),
                     width,
                     height,
