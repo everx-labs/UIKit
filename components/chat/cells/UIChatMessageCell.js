@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: UIConstant.tinyContentOffset() / 2,
         paddingHorizontal: UIConstant.smallContentOffset(),
-        textAlign: 'center',
     },
     timeText: {
         textAlign: 'right',
