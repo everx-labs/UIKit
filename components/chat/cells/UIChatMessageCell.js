@@ -672,7 +672,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
-            margin = { marginVertical: (defaultMarginSize * 2) - currentMargin };
+            margin = { marginVertical: UIConstant.normalContentOffset() };
         } else if (type === ChatMessageContent.SystemInfo) {
             align = 'center';
             cell = this.renderSystemInfo();
