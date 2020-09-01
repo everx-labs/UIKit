@@ -65,6 +65,16 @@ type State = {
     // empty
 }
 
+type RenderOptions = {
+    isSticker?: boolean,
+    isImage?: boolean,
+}
+
+type RenderTimeOptions = {
+    absolute?: boolean,
+    background?: boolean,
+}
+
 const styles = StyleSheet.create({
     row: {
         marginVertical: UIConstant.smallContentOffset() / 2,
@@ -85,8 +95,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         borderRadius: UIConstant.borderRadius(),
-        paddingHorizontal: UIConstant.horizontalContentOffset(),
-        paddingVertical: UIConstant.verticalContentOffset(),
     },
     wrapMsgContainer: {
         flexShrink: 1,
@@ -177,12 +185,28 @@ const styles = StyleSheet.create({
     dateText: {
         color: UIColor.grey4(),
     },
+    absoluteDate: {
+        position: 'absolute',
+        right: UIConstant.horizontalContentOffset(),
+        bottom: UIConstant.verticalContentOffset(),
+    },
+    dateWithBackground: {
+        backgroundColor: UIColor.black(),
+        opacity: 0.6,
+        borderRadius: 10,
+        paddingVertical: UIConstant.tinyContentOffset() / 2,
+        paddingHorizontal: UIConstant.smallContentOffset(),
+        textAlign: 'center',
+    },
     timeText: {
         textAlign: 'right',
         alignSelf: 'flex-end',
+        color: UIColor.textQuaternary(),
+        letterSpacing: 'initial',
+    },
+    timeTextContainer: {
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
-        color: UIColor.textQuaternary(),
         marginLeft: 'auto', // Need for correct positioning to right side in message cell
     },
     greenBubble: {
@@ -300,9 +324,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     wrapInMessageContainer(
         children: React$Element<any>,
-        isSticker: boolean = false,
+        options: RenderOptions = {},
     ): React$Element<any> {
         const { additionalInfo } = this.props;
+        const { isSticker, isImage } = options;
 
         const bg = isSticker ? { backgroundColor: 'transparent' } : null;
         const userName = isSticker ? null : this.renderName();
@@ -329,10 +354,17 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const isText = this.props.type === ChatMessageContent.SimpleText;
 
         return (
-            <Animated.View style={[styles.wrapMsgContainer, animation]}>
+            <Animated.View
+                style={[
+                    styles.wrapMsgContainer,
+                    animation,
+                ]}
+            >
                 {this.renderAvatar()}
                 <View
                     style={[
+                        !isImage && UIStyle.padding.verticalSmall(),
+                        !isImage && UIStyle.padding.horizontalNormal(),
                         styles.msgContainer,
                         !isText && UIStyle.common.flexColumn(),
                         style,
@@ -342,7 +374,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 >
                     {userName}
                     {children}
-                    {this.renderTime()}
+                    {this.renderTime({ absolute: isImage, background: isImage })}
                 </View>
             </Animated.View>
         );
@@ -374,10 +406,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return null; // TODO:
     }
 
-    renderTime() {
+    renderTime(options: RenderTimeOptions = {}) {
         // Calculate the testID prop
         let testID;
         const { data } = this.props;
+        const { absolute, background } = options;
+
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
                 testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
@@ -391,12 +425,23 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         // Get the formatted message time
         const msgTime = this.formattedTime();
         return (
-            <Text
-                testID={testID}
-                style={[UIFont.tinyRegular(), styles.timeText]}
+            <View
+                style={[
+                    absolute && styles.absoluteDate,
+                    background && styles.dateWithBackground,
+                    !background && styles.timeTextContainer,
+                ]}
             >
-                {msgTime}
-            </Text>
+                <Text
+                    testID={testID}
+                    style={[
+                        UIFont.tinyRegular(), styles.timeText,
+                        background && UIColor.getColorStyle(UIColor.white()),
+                    ]}
+                >
+                    {msgTime}
+                </Text>
+            </View>
         );
     }
 
@@ -430,6 +475,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <View style={[
                 styles.msgContainer,
+                UIStyle.padding.verticalSmall(),
+                UIStyle.padding.horizontalNormal(),
                 rounded,
                 styles.actionLabel,
             ]}
@@ -448,10 +495,13 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         return (
-            this.wrapInMessageContainer(<UIChatImageCell
-                image={data}
-                additionalInfo={additionalInfo}
-            />)
+            this.wrapInMessageContainer(
+                <UIChatImageCell
+                    image={data}
+                    additionalInfo={additionalInfo}
+                />,
+                { isImage: true },
+            )
         );
     }
 
@@ -542,6 +592,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <View style={[
                 styles.msgContainer,
+                UIStyle.padding.verticalSmall(),
+                UIStyle.padding.horizontalNormal(),
                 rounded,
                 background,
             ]}
@@ -659,9 +711,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             type, additionalInfo, data, messageDetails, messageDetailsStyle,
         } = this.props;
 
-        const currentMargin = UIConstant.tinyContentOffset();
         const defaultMarginSize = UIConstant.smallContentOffset();
-        const smallMarginSize = UIConstant.tinyContentOffset();
+        const halfMarginSize = UIConstant.tinyContentOffset();
 
         let cell = null;
         let testID = '';
@@ -692,7 +743,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderTextCell();
 
             if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: smallMarginSize };
+                margin = { marginBottom: 0, marginTop: halfMarginSize };
             }
         } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
@@ -707,14 +758,14 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             testID = 'chat_message_image';
 
             if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: smallMarginSize };
+                margin = { marginBottom: 0, marginTop: halfMarginSize };
             }
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
 
             if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: smallMarginSize };
+                margin = { marginBottom: 0, marginTop: halfMarginSize };
             }
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();

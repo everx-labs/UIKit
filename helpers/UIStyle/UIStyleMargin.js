@@ -163,6 +163,9 @@ export const marginStyles = {
         marginRight: UIConstant.contentOffset(),
         marginBottom: UIConstant.contentOffset(),
     },
+    none: {
+        margin: 0,
+    },
 };
 
 const styles = StyleSheet.create(marginStyles);
@@ -325,5 +328,9 @@ export default class UIStyleMargin {
     }
     static bottomLeftRight() {
         return styles.marginLeftRight;
+    }
+
+    static none() { // 0
+        return styles.none;
     }
 }
