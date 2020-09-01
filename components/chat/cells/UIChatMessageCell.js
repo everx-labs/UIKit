@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         alignSelf: 'flex-end',
         color: UIColor.textQuaternary(),
-        letterSpacing: 'initial',
     },
     timeTextContainer: {
         paddingLeft: UIConstant.smallContentOffset(),
