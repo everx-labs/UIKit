@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'flex-end',
-        height: 56,
+        height: UIConstant.largeButtonHeight(),
     },
     icon: {
         height: UIConstant.iconSize(),
