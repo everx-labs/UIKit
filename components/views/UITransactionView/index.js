@@ -190,7 +190,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={UIStyle.flex.row()}>
+            <View style={[UIStyle.flex.row(), UIStyle.margin.topTiny()]}>
                 <View style={this.styles.commentWrapper}>
                     <UILabel
                         role={UILabel.Role.TinySecondary}
