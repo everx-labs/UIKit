@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableOpacity,
     View,
     Image,
@@ -11,23 +10,22 @@ import {
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIConstant from '../../../helpers/UIConstant';
+import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFont from '../../../helpers/UIFont';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIComponent from '../../UIComponent';
-import UIColor from '../../../helpers/UIColor';
 import UIProfileInitials from '../../profile/UIProfileInitials';
-import UIBalanceView from '../UIBalanceView';
+import UILabel from '../../text/UILabel';
 
 type Props = {
-    amount: string,
-    separator: string,
+    amount: string | React$Element<any>,
+    amountColor: string,
+    comment: string,
     description: string,
     title: string,
     initials: string,
     icon?: any,
     testID?: string,
-    cacheKey?: string,
     containerStyle: ViewStyleProp,
     detailsMode: boolean,
     onPress: () => void,
@@ -37,62 +35,60 @@ type State = {
     //
 };
 
+const commentWrapper = {
+    flexShrink: 1,
+    flexDirection: 'row',
+    maxWidth: '100%',
+    borderRadius: UIConstant.borderRadius(),
+    borderTopLeftRadius: 0,
+    backgroundColor: UIColor.backgroundTertiary(),
+    paddingHorizontal: UIConstant.normalContentOffset(),
+    paddingVertical: UIConstant.smallContentOffset(),
+};
+
 const tableStyles = StyleSheet.create({
-    container: {
-        height: UIConstant.largeCellHeight(),
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     avatarContainer: {
         width: UIConstant.mediumAvatarSize(),
         height: UIConstant.mediumAvatarSize(),
         marginRight: UIConstant.contentOffset(),
     },
-    paymentAvatarContainer: {
-        width: UIConstant.mediumAvatarSize(),
-        height: UIConstant.mediumAvatarSize(),
-        marginRight: UIConstant.contentOffset(),
+    avatarIcon: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    avatarStyle: {
-        backgroundColor: UIColor.backgroundQuarter(),
-        borderRadius: UIConstant.mediumAvatarSize() / 2.0,
+    container: {
+        flexDirection: 'row',
+        paddingVertical: UIConstant.normalContentOffset(),
     },
+    commentWrapper,
 });
 
 const detailsStyles = StyleSheet.create({
-    container: {
-        height: UIConstant.detailsCellHeight(),
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     avatarContainer: {
         width: UIConstant.detailsAvatarSize(),
         height: UIConstant.detailsAvatarSize(),
         marginRight: UIConstant.contentOffset(),
     },
-    paymentAvatarContainer: {
-        width: UIConstant.detailsAvatarSize(),
-        height: UIConstant.detailsAvatarSize(),
-        marginRight: UIConstant.contentOffset(),
+    avatarIcon: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    avatarStyle: {
-        backgroundColor: UIColor.backgroundQuarter(),
-        borderRadius: UIConstant.detailsAvatarSize() / 2.0,
+    container: {
+        flexDirection: 'row',
+        paddingVertical: UIConstant.normalContentOffset(),
     },
+    commentWrapper,
 });
 
 export default class UITransactionView extends UIComponent<Props, State> {
     static defaultProps = {
         amount: '',
+        amountColor: UIColor.textPrimary(),
+        comment: '',
         description: '',
         title: '',
-        separator: '.',
         icon: null,
         initials: '',
         containerStyle: null,
@@ -105,118 +101,132 @@ export default class UITransactionView extends UIComponent<Props, State> {
         return this.props.detailsMode;
     }
 
-    getStyles() {
+    get styles() {
         return this.isDetailsMode() ? detailsStyles : tableStyles;
     }
 
-    getSeparator(): string {
-        return this.props.separator || '.';
-    }
-
-    getAmount(): string {
+    get amount(): string | React$Element<any> {
         return this.props.amount || '0';
     }
 
-    getDescription(): string {
+    get comment(): string {
+        return this.props.comment || '';
+    }
+
+    get description(): string {
         return this.props.description || '';
     }
 
-    getTitle(): string {
+    get title(): string {
         return this.props.title || '';
     }
 
-    getIcon(): ?any {
+    get amountColor(): string {
+        return this.props.amountColor;
+    }
+
+    get icon(): ?any {
         return this.props.icon;
     }
 
-    getInitials(): string {
+    get initials(): string {
         return this.props.initials || '';
     }
 
-    getTestID(): ?string {
+    get testID(): ?string {
         return this.props.testID;
-    }
-
-    getCacheKey(): ?string {
-        return this.props.cacheKey;
     }
 
     // Render
     renderAvatar() {
-        const icon = this.getIcon();
+        const { icon } = this;
         if (icon) {
             return (
-                <View style={this.getStyles().paymentAvatarContainer}>
+                <View style={[this.styles.avatarContainer, this.styles.avatarIcon]}>
                     <Image source={icon} />
                 </View>
             );
         }
 
-        const { avatarContainer } = this.getStyles();
-        return (
-            <UIProfileInitials
-                id={this.getTitle()}
-                initials={this.getInitials()}
-                containerStyle={avatarContainer}
-                textStyle={{ ...UIFont.accentRegular() }}
-                avatarSize={this.isDetailsMode()
-                    ? UIConstant.detailsAvatarSize()
-                    : UIConstant.mediumAvatarSize()}
-            />
-        );
+        const { initials } = this;
+        if (initials) {
+            return (
+                <UIProfileInitials
+                    id={this.title}
+                    initials={initials}
+                    containerStyle={this.styles.avatarContainer}
+                    textStyle={{ ...UIFont.accentRegular() }}
+                    avatarSize={this.isDetailsMode()
+                        ? UIConstant.detailsAvatarSize()
+                        : UIConstant.mediumAvatarSize()}
+                />
+            );
+        }
+
+        return null;
     }
 
     renderTitle() {
-        const title = this.getTitle();
-        const style = [UITextStyle.primarySmallMedium];
-        return <Text style={style} numberOfLines={1}>{title}</Text>;
+        return (<UILabel
+            role={UILabel.Role.DescriptionMedium}
+            text={this.title}
+        />);
     }
 
     renderDescription() {
-        const description = this.getDescription();
-        return description.length ?
-            (
-                <Text style={UITextStyle.secondaryCaptionRegular}>
-                    {description}
-                </Text>
-            )
-            : null;
+        const { description } = this;
+        if (!description) {
+            return null;
+        }
+        return (<UILabel
+            role={UILabel.Role.Caption}
+            text={description}
+        />);
+    }
+
+    renderComment() {
+        const { comment } = this;
+        if (!comment) {
+            return null;
+        }
+        return (
+            <View style={this.styles.commentWrapper}>
+                <UILabel
+                    role={UILabel.Role.TinySecondary}
+                    text={this.comment}
+                    numberOfLines={1}
+                />
+            </View>
+        );
     }
 
     renderAmount() {
-        const cacheKey = this.getCacheKey();
-        const cacheKeyProp = cacheKey ? { cacheKey } : {};
-        return (
-            <UIBalanceView
-                {...cacheKeyProp}
-                balance={this.getAmount()}
-                separator={this.getSeparator()}
-                smartTruncator={false}
-                textStyle={[UIStyle.Text.smallRegular(), UIStyle.Common.textAlignRight()]}
-            />
-        );
+        return (<UILabel
+            role={UILabel.Role.Description}
+            text={this.amount}
+            style={UIStyle.color.getColorStyle(this.amountColor)}
+        />);
     }
 
     renderContent() {
         return (
-            <View style={[this.getStyles().container, this.props.containerStyle]}>
+            <View style={[this.styles.container, this.props.containerStyle]}>
                 {this.renderAvatar()}
                 <View
                     style={[
                         UIStyle.flex.x1(),
                         UIStyle.flex.row(),
-                        UIStyle.flex.alignCenter(),
                     ]}
                 >
                     <View
                         style={[
                             UIStyle.flex.x1(),
                             UIStyle.flex.column(),
-                            UIStyle.margin.rightDefault(),
                         ]}
                     >
                         {this.renderTitle()}
                         {this.renderDescription()}
+                        {this.renderComment()}
                     </View>
                     {this.renderAmount()}
                 </View>
@@ -225,7 +235,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
     }
 
     render() {
-        const testID = this.getTestID();
+        const { testID } = this;
         const testIDProp = testID ? { testID } : null;
 
         return (

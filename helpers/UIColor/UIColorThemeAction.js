@@ -24,6 +24,7 @@ const UIColorThemeAction: UIColorThemeData = {
         caution: UIColorPalette.text.darkCaution,
         placeholder: UIColorPalette.primary3,
         accent: UIColorPalette.text.darkAccent,
+        positive: UIColorPalette.text.darkPositive,
     },
     background: {
         primary: UIColorPalette.background.darkPrimary,

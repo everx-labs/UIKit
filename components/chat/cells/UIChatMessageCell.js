@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     },
     msgReceived: {
         alignItems: 'flex-start',
-        backgroundColor: UIColor.grey5(),
+        backgroundColor: UIColor.backgroundTertiary(),
     },
     msgAborted: {
         alignItems: 'flex-start',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor: UIColor.grey5(),
+        backgroundColor: UIColor.backgroundTertiary(),
         height: UIConstant.smallCellHeight(),
         paddingVertical: UIConstant.tinyContentOffset() / 2,
         paddingHorizontal: UIConstant.smallContentOffset(),
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         color: UIColor.fa(),
     },
     dateText: {
-        color: UIColor.grey4(),
+        color: UIColor.textTertiary(),
     },
     absoluteDate: {
         position: 'absolute',
