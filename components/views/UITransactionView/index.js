@@ -19,7 +19,6 @@ import UILabel from '../../text/UILabel';
 
 type Props = {
     amount: string | React$Element<any>,
-    amountColor: string,
     comment: string,
     description: string,
     title: string,
@@ -85,7 +84,6 @@ const detailsStyles = StyleSheet.create({
 export default class UITransactionView extends UIComponent<Props, State> {
     static defaultProps = {
         amount: '',
-        amountColor: UIColor.textPrimary(),
         comment: '',
         description: '',
         title: '',
@@ -119,10 +117,6 @@ export default class UITransactionView extends UIComponent<Props, State> {
 
     get title(): string {
         return this.props.title || '';
-    }
-
-    get amountColor(): string {
-        return this.props.amountColor;
     }
 
     get icon(): ?any {
@@ -206,7 +200,6 @@ export default class UITransactionView extends UIComponent<Props, State> {
         return (<UILabel
             role={UILabel.Role.Description}
             text={this.amount}
-            style={UIStyle.color.getColorStyle(this.amountColor)}
         />);
     }
 
