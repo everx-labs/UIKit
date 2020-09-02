@@ -13,7 +13,7 @@ const UIColorThemeDark: UIColorThemeData = {
     text: {
         primary: {
             normal: UIColorPalette.text.darkPrimary,
-            disabled: UIColorPalette.text.darkSecondary,
+            disabled: UIColorPalette.text.darkNeutral,
             tapped: UIColorPalette.primary2,
             hover: UIColorPalette.primary1,
         },

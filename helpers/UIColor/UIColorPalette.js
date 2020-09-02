@@ -62,6 +62,8 @@ const UIColorPalette = {
         darkCaution: '#FF9800',
         lightAccent: '#007AB8',
         darkAccent: '#007AB8',
+        lightNeutral: '#ABB4B8',
+        darkNeutral: '#ABB4B8',
     },
     background: {
         lightPrimary: '#FFFFFF',

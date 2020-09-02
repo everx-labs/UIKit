@@ -134,7 +134,9 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         const stateColorStyle = disabled || tapped || hover
             ? iconHoverColor || UIColor.stateTextPrimary(theme, disabled, tapped, hover)
             : null;
-        const iconColor = !disableIconColor ? stateColorStyle || this.props.iconColor || defaultColor : null;
+        const iconColor = !disableIconColor
+            ? stateColorStyle || this.props.iconColor || defaultColor
+            : null;
         const styleColor = iconColor ? UIStyle.color.getTintColorStyle(iconColor) : null;
 
         const iconStyle = [styleColor];
