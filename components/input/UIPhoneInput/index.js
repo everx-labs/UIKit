@@ -14,6 +14,7 @@ export type PhoneState = {
     highlightError: boolean,
     selection: { start: number, end: number },
     textFormated: string,
+    prevText: string,
     text: string,
 };
 
@@ -30,6 +31,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
             highlightError: false,
             selection: { start: 0, end: 0 },
             textFormated: '',
+            prevText: '',
             text: '',
         };
 
@@ -69,17 +71,40 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         }
     }
 
+    getSelection() {
+        if (Platform.OS !== 'web') {
+            return null;
+        }
+        return this.adjustSelection(this.state.selection);
+    }
+
     onSelectionChange = (e: any): void => {
         this.setStateSafely({ selection: e.nativeEvent?.selection });
     };
+
+    adjustSelection(selectionToAdjust: {start: number, end: number}) {
+        if (Platform.OS === 'web') {
+            if (!this.textChanged) {
+                return selectionToAdjust;
+            }
+            this.textChanged = false;
+        }
+
+        const cursorPosition = UIFunction.adjustCursorPosition2(
+            this.state.prevText,
+            this.state.textFormated,
+        );
+        return { start: cursorPosition, end: cursorPosition };
+    }
 
     onChangeText = (text: string) => {
         const { onChangeText } = this.props;
         this.setStateSafely({ highlightError: false });
         this.textChanged = true;
+        const prevText = this.state.textFormated;
         if (onChangeText) {
             const input = UIFunction.formatPhoneText(text);
-            this.setStateSafely({ text, textFormated: input });
+            this.setStateSafely({ text, textFormated: input, prevText });
             onChangeText(input);
         }
     };
@@ -105,6 +130,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
 
     // Render
     render() {
+        const selection = this.getSelection();
         const commentColor = this.getCommentColor();
         const commentColorProp = commentColor ? { commentColor } : null;
         return (
@@ -121,6 +147,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
                 onChangeText={this.onChangeText}
                 mandatory={this.props.mandatory}
                 onSelectionChange={this.onSelectionChange}
+                selection={selection}
             />
         );
     }
