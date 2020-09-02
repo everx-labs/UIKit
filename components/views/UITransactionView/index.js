@@ -190,12 +190,14 @@ export default class UITransactionView extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={this.styles.commentWrapper}>
-                <UILabel
-                    role={UILabel.Role.TinySecondary}
-                    text={this.comment}
-                    numberOfLines={1}
-                />
+            <View style={UIStyle.flex.row()}>
+                <View style={this.styles.commentWrapper}>
+                    <UILabel
+                        role={UILabel.Role.TinySecondary}
+                        text={this.comment}
+                        numberOfLines={1}
+                    />
+                </View>
             </View>
         );
     }
