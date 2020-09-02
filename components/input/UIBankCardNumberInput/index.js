@@ -23,6 +23,7 @@ type State = {
     selection: { start: number, end: number },
     textFormated: string,
     text: string,
+    prevCard: string,
 };
 
 export default class UIBankCardNumberInput extends UIComponent<Props, State> {
@@ -36,6 +37,7 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
             selection: { start: 0, end: 0 },
             textFormated: '',
             text: '',
+            prevCard: '',
         };
 
         this.textChanged = false;
@@ -50,9 +52,10 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
         const cardNumberRaw = input.replace(/[^0-9]/gim, '');
         const cardNumber = (cardNumberRaw.match(/\d{1,4}/g) || []).join(' ');
 
+        const prevCard = this.state.textFormated;
         if ((customWithLength && cardNumberRaw.length <= customWithLength) ||
             cardNumberRaw.length <= 19) {
-            this.setStateSafely({ text: input, textFormated: cardNumber });
+            this.setStateSafely({ text: input, textFormated: cardNumber, prevCard });
             this.props.onChangeText(cardNumber);
         }
     };
@@ -77,9 +80,8 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
             this.textChanged = false;
         }
 
-        const cursorPosition = UIFunction.adjustCursorPosition(
-            this.state.text,
-            selectionToAdjust.start,
+        const cursorPosition = UIFunction.adjustCursorPosition2(
+            this.state.prevCard,
             this.state.textFormated,
         );
         return { start: cursorPosition, end: cursorPosition };

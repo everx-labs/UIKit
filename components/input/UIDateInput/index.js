@@ -103,6 +103,7 @@ type State = ActionState & {
     selection: { start: number, end: number },
     textFormated: string,
     text: string,
+    prevDate: string,
 };
 
 export default class UIDateInput extends UIDetailsInput<Props, State> {
@@ -129,6 +130,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         this.state = {
             ...this.state,
             date: '',
+            prevDate: '',
             highlightError: false,
             selection: { start: 0, end: 0 },
             textFormated: '',
@@ -151,7 +153,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const newDate = date.split(this.getSeparator()).join('');
         if (Number.isNaN(Number(newDate))) return;
 
-        this.setStateSafely({ date: newDate, text: date }, () => {
+        const prevDate = this.state.date;
+
+        this.setStateSafely({ date: newDate, text: date, prevDate }, () => {
             this.textChanged = true;
             if (onChangeDate) {
                 const dateObj = this.getDateObj();
@@ -189,9 +193,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             this.textChanged = false;
         }
 
-        const cursorPosition = UIFunction.adjustCursorPosition(
-            this.state.text,
-            selectionToAdjust.start,
+        const cursorPosition = UIFunction.adjustCursorPosition2(
+            this.state.prevDate,
             this.getValue(),
         );
         return { start: cursorPosition, end: cursorPosition };
