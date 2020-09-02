@@ -14,6 +14,7 @@ export type PhoneState = {
     highlightError: boolean,
     selection: { start: number, end: number },
     textFormated: string,
+    prevText: string,
     text: string,
 };
 
@@ -30,6 +31,7 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
             highlightError: false,
             selection: { start: 0, end: 0 },
             textFormated: '',
+            prevText: '',
             text: '',
         };
 
@@ -88,9 +90,8 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
             this.textChanged = false;
         }
 
-        const cursorPosition = UIFunction.adjustCursorPosition(
-            this.state.text,
-            selectionToAdjust.start,
+        const cursorPosition = UIFunction.adjustCursorPosition2(
+            this.state.prevText,
             this.state.textFormated,
         );
         return { start: cursorPosition, end: cursorPosition };
@@ -100,9 +101,10 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
         const { onChangeText } = this.props;
         this.setStateSafely({ highlightError: false });
         this.textChanged = true;
+        const prevText = this.state.textFormated;
         if (onChangeText) {
             const input = UIFunction.formatPhoneText(text);
-            this.setStateSafely({ text, textFormated: input });
+            this.setStateSafely({ text, textFormated: input, prevText });
             onChangeText(input);
         }
     };

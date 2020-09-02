@@ -633,6 +633,37 @@ export default class UIFunction {
     }
 
     // for numeric inputs that can be formatted with different separators
+    static adjustCursorPosition2(
+        prevText: string,
+        currentText: string,
+    ): number {
+        let idx = 0;
+        let idxF = 0;
+
+        const digits = '0123456789';
+        const a = prevText.replace(/\D/g, '');
+        const b = currentText.replace(/\D/g, '');
+
+        while (idx < b.length && idx < a.length) {
+            if (a[idx] !== b[idx]) {
+                break;
+            }
+            idx++;
+        }
+
+        idx = b.length > a.length ? idx + 1 : idx;
+        let i = 0;
+        do {
+            while (idxF < currentText.length && !digits.includes(currentText[idxF])) {
+                idxF++;
+            }
+            idxF++;
+            i++;
+        } while (i < idx);
+
+        return idxF;
+    }
+
     static adjustCursorPosition(
         textSource: string,
         cursorSource: number,
