@@ -1,15 +1,16 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import UIComponent from '../../UIComponent';
 
+import UILabel from '../../text/UILabel';
+
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
-import UIStyle from '../../../helpers/UIStyle';
 
 const buttonHeight = 30;
 
@@ -75,15 +76,14 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
                 disabled={this.props.isLoadingMore}
             >
                 <View style={[styles.wrapper, this.props.wrapperStyle]}>
-                    <Text
+                    <UILabel
+                        role={UILabel.Role.Caption}
                         style={[
-                            UIStyle.text.secondaryTinyRegular(),
                             this.props.textStyle,
                             { opacity: this.props.isLoadingMore ? 0 : 1 },
                         ]}
-                    >
-                        {this.props.label}
-                    </Text>
+                        text={this.props.label}
+                    />
                     {this.renderIndicator()}
                 </View>
             </TouchableOpacity>

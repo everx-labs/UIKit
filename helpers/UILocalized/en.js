@@ -135,7 +135,6 @@ const en: UILocalizedData = {
     Username: 'Username',
     UploadAvatar: 'Upload photo',
     DoYouWantToLogOut: 'Do you want to log out?',
-    EthereumWalletBalance: 'Ethereum wallet balance',
     Addresses: 'Addresses',
     BackupAccount: 'Backup account',
 
