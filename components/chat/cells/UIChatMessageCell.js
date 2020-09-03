@@ -182,9 +182,6 @@ const styles = StyleSheet.create({
     actionLabelText: {
         color: UIColor.fa(),
     },
-    dateText: {
-        color: UIColor.textTertiary(),
-    },
     absoluteDate: {
         position: 'absolute',
         right: UIConstant.horizontalContentOffset(),
@@ -447,9 +444,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { data } = this.props;
         return (
             <View style={styles.dateSeparator}>
-                <Text style={[UIFont.tinyRegular(), styles.dateText]}>
-                    {data}
-                </Text>
+                <UILabel
+                    role={UILabel.Role.TinyRegular}
+                    style={UIStyle.color.getColorStyle(UIColor.textTertiary())}
+                    text={data}
+                />
             </View>
         );
     }

@@ -11,8 +11,7 @@ import UILabel from '../../text/UILabel';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
-
-const buttonHeight = 30;
+import UIStyle from '../../../helpers/UIStyle';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,11 +20,13 @@ const styles = StyleSheet.create({
         marginVertical: UIConstant.contentOffset(),
     },
     wrapper: {
-        backgroundColor: UIColor.overlay20(),
+        flexShrink: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: buttonHeight,
-        borderRadius: buttonHeight / 2,
+        backgroundColor: UIColor.backgroundTertiary(),
+        height: UIConstant.smallCellHeight(),
+        borderRadius: UIConstant.smallCellHeight() / 2,
+        paddingVertical: UIConstant.tinyContentOffset() / 2,
         paddingHorizontal: UIConstant.smallContentOffset(),
     },
     indicator: {
@@ -77,8 +78,9 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
             >
                 <View style={[styles.wrapper, this.props.wrapperStyle]}>
                     <UILabel
-                        role={UILabel.Role.Caption}
+                        role={UILabel.Role.TinyRegular}
                         style={[
+                            UIStyle.color.getColorStyle(UIColor.textTertiary()),
                             this.props.textStyle,
                             { opacity: this.props.isLoadingMore ? 0 : 1 },
                         ]}
