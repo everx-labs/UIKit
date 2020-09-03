@@ -27,6 +27,7 @@ const LabelRole = Object.freeze({
     TinyRegular: 'tinyRegular',
     TinyMedium: 'tinyMedium',
     TinyTertiary: 'tinyTertiary',
+    TinySecondary: 'tinySecondary',
     Note: 'note',
     SecondaryBody: 'secondaryBody', // TODO: rename as bodySecondary
     BodySecondaryMedium: 'bodySecondaryMedium',
@@ -46,7 +47,7 @@ export type LabelRoleValue = $Values<typeof LabelRole>;
 
 type Props = {|
     style: ?TextStyleProp,
-    text: string,
+    text: string | React$Element<any>,
     role: LabelRoleValue,
     useDefaultSpace?: boolean,
     testID?: ?string,
@@ -128,6 +129,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.primaryTinyMedium());
         } else if (role === UILabel.Role.TinyTertiary) {
             result.push(UIStyle.Text.tertiaryTinyRegular());
+        } else if (role === UILabel.Role.TinySecondary) {
+            result.push(UIStyle.Text.secondaryTinyRegular());
         } else if (role === UILabel.Role.Note) {
             result.push(UIStyle.Text.secondarySmallRegular());
         } else if (role === UILabel.Role.AccentBold) { // Accent - fontSize: 20, lineHeight: 28
@@ -175,7 +178,7 @@ export default class UILabel extends UIComponent<Props, State> {
         return null;
     }
 
-    getText(): string {
+    getText(): string | React$Element<any> {
         return this.props.text || '';
     }
 

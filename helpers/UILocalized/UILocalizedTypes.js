@@ -133,7 +133,6 @@ export type UILocalizedData = {
     Username: string,
     UploadAvatar: string,
     DoYouWantToLogOut: string,
-    EthereumWalletBalance: string,
     Addresses: string,
     BackupAccount: string,
 

@@ -1,24 +1,20 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import CenterView from '../CenterView';
-import FullWidthView from '../FullWidthView';
 
 import { storiesOf } from '../helpers/storiesOf';
 import Constants from '../helpers/constants';
 import { getUri } from '../helpers/getUri';
 
 import {
-    UIGrid,
     UITransactionView,
     UIBalanceView,
     UIStyle,
     UIColor,
-    UIComponent,
     UICard,
     UIButtonGroup,
     UIQuote,
 } from '../../../UIKit';
-
 
 const icoActiveDefault = getUri(require('../../../assets/ico-toggle-active/ico-toggle-active.png'), 24, 24);
 const iconDefault = getUri(require('../../../assets/ico-triangle/ico-triangle.png'), 24, 24);
@@ -36,8 +32,6 @@ storiesOf(Constants.CategoryView, module)
             testID="transactionCellView"
             amount="100,0"
             title="Jose Aguilar"
-            description="Sender"
-            separator=","
             initials="JA"
             onPress={() => {}}
         />

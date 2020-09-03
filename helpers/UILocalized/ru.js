@@ -135,7 +135,6 @@ const ru: UILocalizedData = {
     Username: 'Имя пользователя',
     UploadAvatar: 'Загрузить фото',
     DoYouWantToLogOut: 'Вы хотите разлогиниться?',
-    EthereumWalletBalance: 'Баланс Ethereum кошелька',
     Addresses: 'Адреса',
     BackupAccount: 'Резервная копия аккаунта',
 

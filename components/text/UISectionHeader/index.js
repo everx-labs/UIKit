@@ -5,7 +5,6 @@ import StylePropType from 'react-style-proptype';
 import { View, StyleSheet, Text } from 'react-native';
 
 import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIComponent from '../../UIComponent';
@@ -13,7 +12,7 @@ import UIComponent from '../../UIComponent';
 const styles = StyleSheet.create({
     sectionHeader: {
         backgroundColor: UIColor.backgroundPrimary(),
-        height: UIConstant.floatingLabelHeight(), // UIConstant.smallButtonHeight(),
+        height: UIConstant.floatingLabelHeight(),
     },
     sectionDivider: {
         backgroundColor: UIColor.backgroundPrimary(),
@@ -52,10 +51,10 @@ class UISectionHeader extends UIComponent {
                         this.props.containerStyle,
                     ]}
                 >
-                    <Text style={UITextStyle.tertiaryTinyBold}>
+                    <Text style={UIStyle.text.tertiaryTinyBold()}>
                         {this.getTitle()}
                     </Text>
-                    <Text style={UITextStyle.tertiaryTinyRegular}>
+                    <Text style={UIStyle.text.tertiaryTinyRegular()}>
                         {this.getTitleRight()}
                     </Text>
                 </View>
