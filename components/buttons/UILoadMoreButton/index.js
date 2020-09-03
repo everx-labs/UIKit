@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         alignItems: 'center',
-        marginVertical: UIConstant.contentOffset(),
+        paddingVertical: UIConstant.contentOffset(),
     },
     wrapper: {
         flexShrink: 1,
