@@ -1,14 +1,15 @@
+// @flow
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import UITextStyle from '../../../helpers/UITextStyle';
+import UIComponent from '../../UIComponent';
+
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UILocalized from '../../../helpers/UILocalized';
-import UIComponent from '../../UIComponent';
+import UIStyle from '../../../helpers/UIStyle';
 
 const buttonHeight = 30;
 
@@ -32,7 +33,29 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UILoadMoreButton extends UIComponent {
+type Props = {
+    containerStyle: ViewStyleProp,
+    wrapperStyle: ViewStyleProp,
+    textStyle: ViewStyleProp,
+    onLoadMore: () => void,
+    isLoadingMore: boolean,
+    label: string,
+}
+
+type State = {
+    //
+}
+
+export default class UILoadMoreButton extends UIComponent<Props, State> {
+    static defaultProps = {
+        containerStyle: {},
+        wrapperStyle: {},
+        textStyle: {},
+        onLoadMore: () => {},
+        isLoadingMore: false,
+        label: UILocalized.LoadMore,
+    };
+
     renderIndicator() {
         if (!this.props.isLoadingMore) {
             return null;
@@ -54,7 +77,7 @@ export default class UILoadMoreButton extends UIComponent {
                 <View style={[styles.wrapper, this.props.wrapperStyle]}>
                     <Text
                         style={[
-                            UITextStyle.secondaryTinyRegular,
+                            UIStyle.text.secondaryTinyRegular(),
                             this.props.textStyle,
                             { opacity: this.props.isLoadingMore ? 0 : 1 },
                         ]}
@@ -67,21 +90,3 @@ export default class UILoadMoreButton extends UIComponent {
         );
     }
 }
-
-UILoadMoreButton.defaultProps = {
-    containerStyle: {},
-    wrapperStyle: {},
-    textStyle: {},
-    onLoadMore: () => {},
-    isLoadingMore: false,
-    label: UILocalized.LoadMore,
-};
-
-UILoadMoreButton.propTypes = {
-    containerStyle: StylePropType,
-    wrapperStyle: StylePropType,
-    textStyle: StylePropType,
-    onLoadMore: PropTypes.func,
-    isLoadingMore: PropTypes.bool,
-    label: PropTypes.string,
-};
