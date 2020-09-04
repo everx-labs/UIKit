@@ -133,10 +133,14 @@ export default class UIDetailsSwitcher<Props, State>
     }
 
     render() {
-        const left = (this.props.switcherPosition === UIDetailsSwitcher.Position.Right) ?
+        const {
+            disabled, style, switcherPosition, testID,
+        } = this.props;
+
+        const left = (switcherPosition === UIDetailsSwitcher.Position.Right) ?
             this.renderDetailsView() : this.renderSwitcher();
 
-        const right = (this.props.switcherPosition === UIDetailsSwitcher.Position.Right) ?
+        const right = (switcherPosition === UIDetailsSwitcher.Position.Right) ?
             this.renderSwitcher() : this.renderDetailsView();
 
         const button = (
@@ -144,7 +148,7 @@ export default class UIDetailsSwitcher<Props, State>
                 style={[
                     UIStyle.common.flexRow(),
                     UIStyle.common.alignCenter(),
-                    this.props.disabled ? this.props.style : null,
+                    disabled ? style : null,
                 ]}
                 pointerEvents="box-only"
             >
@@ -153,9 +157,14 @@ export default class UIDetailsSwitcher<Props, State>
             </View>
         );
 
+        const testIDProp = testID ? { testID } : null;
 
-        return this.props.disabled ? button : (
-            <TouchableOpacity onPress={this.onPress} style={this.props.style}>
+        return disabled ? button : (
+            <TouchableOpacity
+                onPress={this.onPress}
+                style={style}
+                {...testIDProp}
+            >
                 {button}
             </TouchableOpacity>
         );
