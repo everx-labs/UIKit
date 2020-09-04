@@ -61,14 +61,13 @@ export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
 
     renderSwitcher(): React$Node {
         const {
-            active, colored, testID, iconActive, iconInactive,
+            active, colored, iconActive, iconInactive,
         } = this.props;
 
         return (
             <UIToggle
                 iconActive={iconActive}
                 iconInactive={iconInactive}
-                testID={testID}
                 containerStyle={this.getSwitcherStyle()}
                 active={active}
                 colored={colored}

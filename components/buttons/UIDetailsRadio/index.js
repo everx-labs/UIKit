@@ -71,13 +71,12 @@ export default class UIDetailsRadio extends UIDetailsSwitcher<Props, State> {
 
     renderSwitcher(): React$Node {
         const {
-            active, colored, testID, iconActive, iconInactive,
+            active, iconActive, iconInactive,
         } = this.props;
 
         return (<UIRadioButtonItem
             iconActive={iconActive}
             iconInactive={iconInactive}
-            testID={testID}
             radioStyle={this.getSwitcherStyle()}
             selected={active}
         />
