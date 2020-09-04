@@ -416,8 +416,8 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     onWebChange = () => {
         this.setStateSafely({}, () => {
             const aux = this.auxTextInput;
-            if (aux?._node) {
-                const height = aux?._node.scrollHeight || 0;
+            if (aux) {
+                const height = aux.scrollHeight || 0;
                 this.onHeightChange(height);
             }
         });
