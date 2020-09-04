@@ -25,21 +25,8 @@ export default class UIIdleDetector extends PureComponent<Props, State> {
         timeForInactivity: 1000,
     };
 
-    panResponder: PanResponderInstance;
-    timeout: ?TimeoutID;
-
-    clearTimer() {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-    }
-
-    UNSAFE_componentWillMount() {
-        this.panResponder = PanResponder.create({
-            onMoveShouldSetPanResponderCapture: this.onShouldSetPanResponderCapture,
-            onPanResponderTerminationRequest: this.onShouldSetPanResponderCapture,
-            onStartShouldSetPanResponderCapture: this.onShouldSetPanResponderCapture,
-        });
+    // Lifecycle
+    componentDidMount() {
         this.onActivityDetected();
     }
 
@@ -47,23 +34,38 @@ export default class UIIdleDetector extends PureComponent<Props, State> {
         this.clearTimer();
     }
 
+    // Events
     onActivityDetected() {
         this.restart();
-    }
-
-    onTimeout = () => {
-        this.props.onIdle();
-    };
-
-    restart() {
-        this.clearTimer();
-        this.timeout = setTimeout(this.onTimeout, this.props.timeForInactivity);
     }
 
     onShouldSetPanResponderCapture = () => {
         this.onActivityDetected();
         return false;
     };
+
+    onTimeout = () => {
+        this.props.onIdle();
+    };
+
+    panResponder: PanResponderInstance = PanResponder.create({
+        onMoveShouldSetPanResponderCapture: this.onShouldSetPanResponderCapture,
+        onPanResponderTerminationRequest: this.onShouldSetPanResponderCapture,
+        onStartShouldSetPanResponderCapture: this.onShouldSetPanResponderCapture,
+    });
+    timeout: ?TimeoutID;
+
+    // Actions
+    restart() {
+        this.clearTimer();
+        this.timeout = setTimeout(this.onTimeout, this.props.timeForInactivity);
+    }
+
+    clearTimer() {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+    }
 
     render() {
         const {
