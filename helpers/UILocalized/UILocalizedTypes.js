@@ -509,7 +509,6 @@ export type UILocalizedData = {
     ConfirmAndTransfer: string,
     YourTransactionCouldNotBeCompleted: string,
     YourTransactionCompleted: string,
-    ViewOnEtherscan: string,
     TransactionStatus: {
         rejected: string,
         aborted: string,

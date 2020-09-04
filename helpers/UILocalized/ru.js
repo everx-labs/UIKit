@@ -525,7 +525,6 @@ const ru: UILocalizedData = {
     ConfirmAndTransfer: 'Подтвердить & Перевести',
     YourTransactionCouldNotBeCompleted: 'Ваша транзакция не может быть завершена',
     YourTransactionCompleted: 'Ваша транзакция завершена',
-    ViewOnEtherscan: 'Ссылка на транзакцию в Etherscan',
     TransactionStatus: {
         rejected: 'Rejected at {0}',
         aborted: 'Aborted at {0}',

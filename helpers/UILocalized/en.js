@@ -526,7 +526,6 @@ const en: UILocalizedData = {
     ConfirmAndTransfer: 'Confirm & Transfer',
     YourTransactionCouldNotBeCompleted: 'Your transaction could not be completed',
     YourTransactionCompleted: 'Your transaction has been completed',
-    ViewOnEtherscan: 'View on Etherscan',
     TransactionStatus: {
         rejected: 'Rejected at {0}',
         aborted: 'Aborted at {0}',
