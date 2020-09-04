@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import {
     View,
@@ -57,6 +56,8 @@ const styles = StyleSheet.create({
     },
 });
 
+const HINTS_VIEW = 'hints-view';
+
 export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
     static defaultProps = {
         words: [],
@@ -84,34 +85,40 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
-
-        if (Platform.OS !== 'web') {
-            return;
-        }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
-        this.clickListener = (e: any) => {
-            e.stopPropagation && e.stopPropagation();
-            e.preventDefault && e.preventDefault();
-        };
-        const meRef: any = ReactDOM.findDOMNode(this);
-        meRef && meRef.addEventListener(listenerType, this.clickListener);
+        this.initClickListenerForWeb();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.deinitClickListenerForWeb();
+    }
 
+    initClickListenerForWeb() {
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
-        const meRef: any = ReactDOM.findDOMNode(this);
-        meRef && meRef.removeEventListener(listenerType, this.clickListener);
+
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
+        this.clickListener = (e: any) => {
+            const hints = document.getElementById(HINTS_VIEW);
+            if (hints && hints.contains(e.target)) {
+                return;
+            }
+
+            if (e.stopPropagation) e.stopPropagation();
+            if (e.preventDefault) e.preventDefault();
+        };
+
+        window.addEventListener(listenerType, this.clickListener);
+    }
+
+    deinitClickListenerForWeb() {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
+        window.removeEventListener(listenerType, this.clickListener);
     }
 
     // Setters
@@ -249,7 +256,10 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
         // Calculate the padding bottom to view cells even if clipped
         const paddingBottom = UIConstant.defaultCellHeight() * (maxHintsToShow - 1);
         return (
-            <View style={[styles.hintsContainer, { width, height, marginTop }]}>
+            <View
+                nativeID={HINTS_VIEW}
+                style={[styles.hintsContainer, { width, height, marginTop }]}
+            >
                 <FlatList
                     contentContainerStyle={{ paddingBottom }}
                     ref={(ref) => { this.hintsListRef = ref; }}
