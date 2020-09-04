@@ -137,11 +137,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
-        this.clickListener = (e: any) => {
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
+        this.clickListener = () => {
             this.hideHints();
         };
         window.addEventListener(listenerType, this.clickListener);
@@ -151,10 +148,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
         window.removeEventListener(listenerType, this.clickListener);
     }
 
@@ -378,11 +372,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
                 // Apply a fix to move the cursor to the right
                 if (Platform.OS === 'web') {
-                    // $FlowFixMe
-                    const node: any = textInput._node;
-                    if (node) {
-                        node.setSelectionRange(finalValue.length, finalValue.length);
-                    }
+                    textInput.setSelectionRange(finalValue.length, finalValue.length);
                 } else if (Platform.OS === 'ios') {
                     // nothing
                 } else if (Platform.OS === 'android') {
