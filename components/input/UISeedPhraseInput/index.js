@@ -137,11 +137,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
-        this.clickListener = (e: any) => {
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
+        this.clickListener = () => {
             this.hideHints();
         };
         window.addEventListener(listenerType, this.clickListener);
@@ -151,10 +148,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
         window.removeEventListener(listenerType, this.clickListener);
     }
 

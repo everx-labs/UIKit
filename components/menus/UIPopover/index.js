@@ -200,9 +200,7 @@ export default class UIPopover<Props, State>
             return;
         }
 
-        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-            ? 'click'
-            : 'touchend';
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
 
         this.clickListener = (e: any) => {
             if (!this.props.needCloseOnClick) {
@@ -248,10 +246,7 @@ export default class UIPopover<Props, State>
         if (Platform.OS !== 'web') {
             return;
         }
-        const listenerType =
-            UIDevice.isDesktopWeb() || UIDevice.isWebkit()
-                ? 'click'
-                : 'touchend';
+        const listenerType = UIDevice.isDesktopWeb() || UIDevice.isWebkit() ? 'click' : 'touchend';
         window.removeEventListener(listenerType, this.clickListener);
     }
 
