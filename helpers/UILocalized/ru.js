@@ -511,11 +511,6 @@ const ru: UILocalizedData = {
     Events: 'События',
     Pay: 'Заплатить',
 
-    // Tokens
-    TON: 'TON',
-    Ethereum: 'Эфириум',
-    Binance: 'Бинанс',
-
     // Transactions
     Exchange: 'Обмен',
     ChooseDepositToken: 'Выбрать токен для обмена',

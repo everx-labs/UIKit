@@ -495,11 +495,6 @@ export type UILocalizedData = {
     Events: string,
     Pay: string,
 
-    // Tokens
-    TON: string,
-    Ethereum: string,
-    Binance: string,
-
     // Transactions
     Exchange: string,
     ChooseDepositToken: string,

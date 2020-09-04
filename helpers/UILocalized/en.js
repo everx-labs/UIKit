@@ -512,11 +512,6 @@ const en: UILocalizedData = {
     Events: 'Events',
     Pay: 'Pay',
 
-    // Tokens
-    TON: 'TON',
-    Ethereum: 'Ethereum',
-    Binance: 'Binance',
-
     // Transactions
     Exchange: 'Exchange',
     ChooseDepositToken: 'Choose Deposit Token',
