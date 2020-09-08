@@ -4,12 +4,29 @@ import LocalizedStrings from 'react-native-localization';
 import Moment from 'moment';
 import 'moment/locale/ru';
 
-import en from './en';
-import ru from './ru';
+import en from './en.json';
+import ru from './ru.json';
 import UIConstant from '../UIConstant';
 import UIFunction from '../UIFunction';
 import type { StringLocaleInfo, NumberPartsOptions, NumberParts } from '../UIFunction';
-import type { UILocalizedData } from './UILocalizedTypes';
+import type { UILocalizedData } from './types';
+import { predefinedConstants } from './constants';
+
+const languageNames = { en: 'English', ru: 'Русский' };
+
+export type Language = $Keys<typeof languageNames>;
+
+const languages: { [Language]: UILocalizedData} = { en, ru };
+
+Object.keys(languages).forEach((lang) => {
+    let content = JSON.stringify(languages[lang]);
+
+    Object.keys(predefinedConstants).forEach((key: string) => {
+        content = content.replace(new RegExp(`{${key}}`, 'g'), predefinedConstants[key]);
+    });
+
+    languages[lang] = JSON.parse(content);
+});
 
 type LocalizedLangContent = { [string]: string };
 
@@ -45,14 +62,14 @@ class UILocalized extends LocalizedStrings {
         return parts?.valueString || `${number}`;
     }
 
-    setLanguages(languages: string[]) {
+    setLanguages(langs: string[]) {
         const props = {};
-        languages.forEach((language) => {
+        langs.forEach((language) => {
             let strings = null;
             if (language === 'en') {
-                strings = en;
+                strings = languages.en;
             } else if (language === 'ru') {
-                strings = ru;
+                strings = languages.ru;
             } else {
                 // not supported
             }
@@ -146,7 +163,7 @@ type LocalizedStringsMethods = {
 
 const localized: UILocalizedData &
     UILocalized &
-    LocalizedStringsMethods = new UILocalized({ en }); // by default only `en` is used
+    LocalizedStringsMethods = new UILocalized(languages);
 
 Moment.locale(localized.getLocale());
 
