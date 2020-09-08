@@ -174,6 +174,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
         }
         return (<UILabel
             role={UILabel.Role.Caption}
+            style={UIStyle.margin.topTiny()}
             text={description}
         />);
     }
