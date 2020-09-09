@@ -9,7 +9,6 @@ const UI_FONT_FAMILY = {
 };
 
 const emojiFonts = [
-    'TONGems',
     '"Apple Color Emoji"',
     '"Segoe UI Emoji"',
     '"Segoe MDL2 Assets"',
@@ -20,23 +19,19 @@ const emojiFonts = [
 const fontFamilies = ['"IBM Plex Sans"', ...emojiFonts];
 const FONT_WEB_LIGHT = Platform.select({
     web: { fontFamily: ['PTRootUIWebLight', ...fontFamilies].join(', ') },
-    ios: { fontFamily: ['SFProText-Light'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Light'].join(', ') },
 });
 const FONT_WEB_REGULAR = Platform.select({
     web: { fontFamily: ['PTRootUIWebRegular', ...fontFamilies].join(', ') },
-    ios: { fontFamily: ['SFProText-Regular'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Regular'].join(', ') },
 });
 const FONT_WEB_MEDIUM = Platform.select({
     web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
-    ios: { fontFamily: ['SFProText-Medium'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Medium'].join(', ') },
 });
 const FONT_WEB_BOLD = Platform.select({
     web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
-    ios: { fontFamily: ['SFProText-Bold'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Bold'].join(', ') },
 });
 
 // const UI_FONT_THIN = { fontWeight: '100' };
