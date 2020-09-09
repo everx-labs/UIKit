@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     stickerCell: {
         backgroundColor: 'transparent',
-        padding: 0,
+        paddingBottom: UIConstant.mediumContentOffset(),
     },
     msgSending: {
         alignItems: 'flex-end',
@@ -374,7 +374,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 >
                     {userName}
                     {children}
-                    {this.renderTime({ absolute: isImage, background: isImage })}
+                    {this.renderTime(options)}
                 </View>
             </Animated.View>
         );
@@ -406,11 +406,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return null; // TODO:
     }
 
-    renderTime(options: RenderTimeOptions = {}) {
+    renderTime(options: RenderOptions = {}) {
         // Calculate the testID prop
         let testID;
         const { data } = this.props;
-        const { absolute, background } = options;
+        const { isImage, isSticker } = options;
 
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
@@ -424,19 +424,22 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
         // Get the formatted message time
         const msgTime = this.formattedTime();
+        const bgSticker = { backgroundColor: UIColor.backgroundWhiteLight() };
         return (
             <View
                 style={[
-                    absolute && styles.absoluteDate,
-                    background && styles.dateWithBackground,
-                    !background && styles.timeTextContainer,
+                    (isImage || isSticker) && styles.absoluteDate,
+                    (isImage || isSticker) && styles.dateWithBackground,
+                    !isImage && !isSticker && styles.timeTextContainer,
+                    isSticker && bgSticker,
                 ]}
             >
                 <Text
                     testID={testID}
                     style={[
                         UIFont.tinyRegular(), styles.timeText,
-                        background && UIColor.getColorStyle(UIColor.white()),
+                        isImage && UIColor.getColorStyle(UIColor.white()),
+                        isSticker && UIColor.getColorStyle(UIColor.black()),
                     ]}
                 >
                     {msgTime}
@@ -517,7 +520,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             this.wrapInMessageContainer(<UIChatStickerCell
                 sticker={data}
                 additionalInfo={additionalInfo}
-            />, true)
+            />, { isSticker: true })
         );
     }
 
