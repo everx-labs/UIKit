@@ -12,7 +12,6 @@ import UILabel from '../../text/UILabel';
 import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
-import UIFunction from '../../../helpers/UIFunction';
 import UILocalized, { formatDate } from '../../../helpers/UILocalized';
 
 import type {
@@ -28,9 +27,9 @@ import type { BigNum } from '../../../types/BigNum';
 type Props = {
     message: any,
     isReceived: boolean,
-    additionalInfo: ChatAdditionalInfo,
-    status: ChatMessageStatusType,
-    onPress: ?(() => void),
+    additionalInfo?: ChatAdditionalInfo,
+    status?: ChatMessageStatusType,
+    onPress?: () => void,
 }
 
 type State = {
@@ -103,10 +102,6 @@ const styles = StyleSheet.create({
 });
 
 export default class UIChatTransactionCell extends UIPureComponent<Props, State> {
-    static defaultProps = {
-        onPress: null,
-    };
-
     // Getters
     getMessage(): UIChatMessage {
         return this.props.message;
@@ -120,24 +115,13 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         return this.getMessage().info.trx;
     }
 
-    getAmount(): BigNum {
+    getTransactionValue(): BigNum {
         const trx = this.getTransaction();
         return trx.amount || new BigNumber(0);
     }
 
-    getAmountForTestID(): string {
-        const { amount } = this.getExtra();
-        return amount.toFixed(1);
-    }
-
-    getAmountInCurrency(): string {
-        const extra = this.getExtra();
-        const { currency } = extra;
-        if (!currency) {
-            return '';
-        }
-        const localizedAmountInCurrency = `${extra.amount.toNumber() * currency.rate}`; // TODO: localize!!!
-        return UIFunction.amountAndCurrency(localizedAmountInCurrency, currency.symbol);
+    getValueForTestID(): string {
+        return this.getTransactionValue().toFixed(1);
     }
 
     getDate(): string {
@@ -146,23 +130,17 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     }
 
     getExtra(): TransactionInfo {
+        const value = this.getTransactionValue();
         const extra: TransactionInfo = {
             type: null,
-            amountLocalized: this.getAmount().toFixed(),
-            amount: this.getAmount(),
-            separator: '.',
-            token: '',
-            currency: {
-                rate: 1.0,
-                symbol: '',
-            },
-            sent: true,
+            amount: value.toFixed(),
         };
         return this.props.additionalInfo?.transactionInfo || extra;
     }
 
     getCardColor(): ViewStyleProp {
         const extra = this.getExtra();
+
         const { type } = extra;
         if (type === TypeOfTransaction.Aborted) {
             return styles.cardAborted;
@@ -247,7 +225,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     // Render
     renderTrxContent() {
-        const { token, amountLocalized } = this.getExtra();
+        const { amount } = this.getExtra();
         const corner = this.isReceived ? styles.leftConner : styles.rightConner;
         const status = this.getStatus();
         const color = this.getCardColor();
@@ -262,7 +240,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
         return (
             <View
-                testID={`transaction_message_${this.getAmountForTestID()}`}
+                testID={`transaction_message_${this.getValueForTestID()}`}
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
@@ -280,7 +258,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     <UILabel
                         style={amountColor}
                         role={UILabel.Role.SmallRegular}
-                        text={`${amountLocalized} ${token}`}
+                        text={amount}
                     />
                 </View>
 
@@ -296,16 +274,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     )}
                     <UILabel
                         testID={status === Aborted
-                            ? `transaction_message_${this.getAmountForTestID()}_aborted`
-                            : `transaction_message_${this.getAmountForTestID()}_time`}
+                            ? `transaction_message_${this.getValueForTestID()}_aborted`
+                            : `transaction_message_${this.getValueForTestID()}_time`}
                         role={UILabel.Role.TinyRegular}
                         text={info}
                         style={commentColor}
-                    />
-                    <UILabel
-                        style={styles.textMetadata}
-                        role={UILabel.Role.TinyRegular}
-                        text={this.getAmountInCurrency()}
                     />
                 </View>
             </View>

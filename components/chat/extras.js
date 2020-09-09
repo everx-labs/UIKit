@@ -1,5 +1,4 @@
-// TODO: Add flow
-import { BigNum } from '../../types/BigNum';
+// @flow
 
 export const ChatMessageContent = {
     SimpleText: 'stm',
@@ -63,29 +62,23 @@ export type TypeOfActionDirectionType = $Values<typeof TypeOfActionDirection>;
 export type ChatMessageMetaContentType = $Values<typeof ChatMessageMetaContent>;
 
 export type TransactionInfo = {
-    separator: string,
-    amountLocalized: string,
-    amount: BigNum,
-    token: string,
-    sent: boolean,
-    currency?: {
-        rate: number,
-        symbol: string,
-    },
+    amount: string | React$Element<any>,
     type: ?TypeOfTransactionType,
 };
 
 export type UIChatMessageInfo = {
-    type?: ChatMessageContentType;
-    created?: number;
-    sender?: string;
-    text?: string;
-    image?: string;
-    document?: string;
-    sending?: boolean;
-    encrypted?: boolean;
-    metadata?: any;
-    trx?: any;
+    type?: ChatMessageContentType,
+    created?: number,
+    sender?: string,
+    text?: string,
+    image?: string,
+    document?: string,
+    sending?: boolean,
+    encrypted?: boolean,
+    metadata?: any,
+    trx?: any,
+    aborted?: boolean,
+    direction?: TypeOfActionDirectionType,
 };
 
 export type UIChatMessage = {
@@ -100,6 +93,7 @@ export type UIChatImageSize = {
 
 export type ChatAdditionalInfo = {
     message: UIChatMessage,
+    firstFromChain: boolean,
     lastFromChain: boolean,
     transactionInfo: ?TransactionInfo,
     imageSize: ?UIChatImageSize;
@@ -108,6 +102,7 @@ export type ChatAdditionalInfo = {
     actionType: ?TypeOfActionType,
     linkTitle?: string,
     processed?: boolean,
+    link?: string,
 };
 
 export type UIChatCellInfo = {

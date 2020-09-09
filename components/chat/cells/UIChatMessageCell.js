@@ -285,7 +285,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
     };
 
-    getActionDirection(): TypeOfActionDirection {
+    getActionDirection(): TypeOfActionDirectionType {
         return this.props.additionalInfo?.message?.info?.direction || TypeOfActionDirection.None;
     }
 
@@ -563,7 +563,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         } = this.props;
         const onTransactionPress = onTouchTransaction
             ? this.onTransactionPress
-            : null;
+            : undefined;
         return (
             <UIChatTransactionCell
                 message={data}
