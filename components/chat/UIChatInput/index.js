@@ -21,8 +21,8 @@ import btnPlusDisabled from '../../../assets/icon-plus-disabled/add.png';
 import btnDots from '../../../assets/btn_dots/btn_dots.png';
 import btnSend from '../../../assets/btn_msg_send/btn_msg_send.png';
 
-import stickerEnabled from '../../../assets/btn_sticker/stickerEnabled.png';
-import stickerDisabled from '../../../assets/btn_sticker/stickerDisabled.png';
+import stickerEnabled from '../../../assets/btn_sticker_enabled/stickerEnabled.png';
+import stickerDisabled from '../../../assets/btn_sticker_disabled/stickerDisabled.png';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
