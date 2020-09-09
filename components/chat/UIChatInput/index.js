@@ -32,7 +32,7 @@ type Props = DetailsProps & {
     menuMoreDisabled?: boolean,
     inputHidden?: boolean,
     showBorder?: boolean,
-    stickersDisabled?: boolean,
+    hasStickers?: boolean,
 
     quickAction?: ?MenuItemType[],
 
@@ -100,7 +100,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         floatingTitle: false,
         hideFloatingTitle: true,
         forceMultiLine: true,
-        stickersDisabled: false,
+        hasStickers: false,
         keyboardType: 'default',
 
         onSendText: (text: string) => {},
@@ -310,7 +310,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     renderStickerButton() {
-        if (this.props.stickersDisabled) {
+        if (!this.props.hasStickers) {
             return null;
         }
 
