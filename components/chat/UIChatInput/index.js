@@ -21,18 +21,23 @@ import btnPlusDisabled from '../../../assets/icon-plus-disabled/add.png';
 import btnDots from '../../../assets/btn_dots/btn_dots.png';
 import btnSend from '../../../assets/btn_msg_send/btn_msg_send.png';
 
+import stickerEnabled from '../../../assets/btn_sticker/stickerEnabled.png';
+import stickerDisabled from '../../../assets/btn_sticker/stickerDisabled.png';
+
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     menuPlus?: ?MenuItemType[],
     menuMore?: ?MenuItemType[],
     menuPlusDisabled?: boolean,
     menuMoreDisabled?: boolean,
+    stickersVisible?: boolean,
     inputHidden?: boolean,
     showBorder?: boolean,
 
     quickAction?: ?MenuItemType[],
 
     onSendText?: (text: string) => void,
+    onStickersPress?: () => void,
     onHeightChange: (height: number) => void,
 };
 
@@ -92,6 +97,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         floatingTitle: false,
         hideFloatingTitle: true,
         forceMultiLine: true,
+        stickersVisible: false,
         keyboardType: 'default',
 
         onSendText: (text: string) => {},
@@ -162,6 +168,14 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             onSendText(text);
         }
     }
+
+    onStickersPress = () => {
+        const { onStickersPress } = this.props;
+
+        if (onStickersPress) {
+            onStickersPress();
+        }
+    };
 
     // Styles
     textViewStyle(): * {
@@ -285,6 +299,29 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         );
     }
 
+    renderSticker() {
+        const val = this.getValue();
+
+        if (val.length > 0) {
+            this.onStickersPress();
+            return null;
+        }
+
+        const { stickersVisible } = this.props;
+        return (
+            <TouchableOpacity
+                style={styles.buttonContainer}
+                testID="stickers_btn"
+                onPress={() => this.onStickersPress()}
+            >
+                <Image
+                    style={styles.icon}
+                    source={stickersVisible ? stickerDisabled : stickerEnabled }
+                />
+            </TouchableOpacity>
+        );
+    }
+
     renderInputArea() {
         if (this.props.inputHidden) {
             return null;
@@ -305,6 +342,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                 <View style={[UIStyle.flex.x1(), styles.inputMsg]}>
                     {this.renderInputArea()}
                 </View>
+                {this.renderSticker()}
                 {this.renderQuickAction()}
                 {this.renderMoreMenu()}
             </View>
