@@ -6,6 +6,7 @@ export const ChatMessageContent = {
     Invite: 'inv',
     System: 'sys',
     AttachmentImage: 'aim',
+    Sticker: 'stk',
     AttachmentDocument: 'doc',
     TransactionInChat: 'trx',
     TransactionComment: 'trxComment',
@@ -81,6 +82,7 @@ export type UIChatMessageInfo = {
     sender?: string;
     text?: string;
     image?: string;
+    sticker?: string;
     document?: string;
     sending?: boolean;
     encrypted?: boolean;

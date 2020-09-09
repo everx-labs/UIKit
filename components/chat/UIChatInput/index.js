@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { Platform, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, Image, View, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UITextButton from '../../buttons/UITextButton';
@@ -21,6 +21,9 @@ import btnPlusDisabled from '../../../assets/icon-plus-disabled/add.png';
 import btnDots from '../../../assets/btn_dots/btn_dots.png';
 import btnSend from '../../../assets/btn_msg_send/btn_msg_send.png';
 
+import stickerEnabled from '../../../assets/btn_sticker_enabled/stickerEnabled.png';
+import stickerDisabled from '../../../assets/btn_sticker_disabled/stickerDisabled.png';
+
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
     menuPlus?: ?MenuItemType[],
@@ -34,12 +37,14 @@ type Props = DetailsProps & {
 
     onSendText?: (text: string) => void,
     onHeightChange: (height: number) => void,
+    onStickersPress?: (visible: boolean) => void,
 };
 
 type State = ActionState & {
     inputHeight: number,
     inputWidth: number,
     heightChanging: boolean,
+    stickersVisible: boolean,
 };
 
 const styles = StyleSheet.create({
@@ -97,6 +102,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         keyboardType: 'default',
 
         onSendText: (text: string) => {},
+        onStickersPress: () => {},
     };
 
     constructor(props: Props) {
@@ -107,15 +113,32 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             heightChanging: false,
+            stickersVisible: false,
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
+        this.initKeyboardListener();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.deinitKeyboardListeners();
+    }
+
+    keyboardWillShowListener: any;
+    initKeyboardListener() {
+        this.keyboardWillShowListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+            () => this.onStickersPress(false),
+        );
+    }
+
+    deinitKeyboardListeners() {
+        if (this.keyboardWillShowListener) {
+            this.keyboardWillShowListener.remove();
+        }
     }
 
     // Setters
@@ -164,6 +187,15 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             onSendText(text);
         }
     }
+
+    onStickersPress = (newState: boolean) => {
+        const { onStickersPress } = this.props;
+
+        this.setStateSafely({ stickersVisible: newState });
+        if (onStickersPress) {
+            onStickersPress(newState);
+        }
+    };
 
     // Styles
     textViewStyle(): * {
@@ -287,6 +319,29 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         );
     }
 
+    renderStickerButton() {
+        const val = this.getValue();
+
+        if (val.length > 0) {
+            this.onStickersPress(false);
+            return null;
+        }
+
+        const { stickersVisible } = this.state;
+        return (
+            <TouchableOpacity
+                style={styles.buttonContainer}
+                testID="stickers_btn"
+                onPress={() => this.onStickersPress(!stickersVisible)}
+            >
+                <Image
+                    style={styles.icon}
+                    source={stickersVisible ? stickerDisabled : stickerEnabled}
+                />
+            </TouchableOpacity>
+        );
+    }
+
     renderInputArea() {
         if (this.props.inputHidden) {
             return null;
@@ -307,6 +362,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                 <View style={[UIStyle.flex.x1(), styles.inputMsg]}>
                     {this.renderInputArea()}
                 </View>
+                {this.renderStickerButton()}
                 {this.renderQuickAction()}
                 {this.renderMoreMenu()}
             </View>
