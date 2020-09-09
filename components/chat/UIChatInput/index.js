@@ -317,7 +317,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         );
     }
 
-    renderSticker() {
+    renderStickerButton() {
         const val = this.getValue();
 
         if (val.length > 0) {
@@ -360,7 +360,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                 <View style={[UIStyle.flex.x1(), styles.inputMsg]}>
                     {this.renderInputArea()}
                 </View>
-                {this.renderSticker()}
+                {this.renderStickerButton()}
                 {this.renderQuickAction()}
                 {this.renderMoreMenu()}
             </View>
