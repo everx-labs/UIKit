@@ -312,7 +312,7 @@ export type DetailsProps = ActionProps & {
     */
     selection?: ?{start: number, end: number},
     /**
-    If maxLengh is set, show how many symbols left to enter.
+    If maxLength is set, show how many symbols left to enter.
     @default false
     */
     showSymbolsLeft: boolean,
@@ -325,7 +325,10 @@ export type DetailsProps = ActionProps & {
     @ignore
     */
     theme?: UIColorThemeNameType,
-    token?: string,
+    /**
+    The token symbol
+    */
+    token?: string | React$Element<any>,
     /**
     The value to show for the text input.
     @default ''
