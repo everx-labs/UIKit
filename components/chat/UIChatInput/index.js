@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { Platform, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, Image, View, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UITextButton from '../../buttons/UITextButton';
@@ -117,10 +117,26 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
     componentDidMount() {
         super.componentDidMount();
+        this.initKeyboardListener();
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.deinitKeyboardListeners();
+    }
+
+    keyboardWillShowListener: any;
+    initKeyboardListener() {
+        this.keyboardWillShowListener = Keyboard.addListener(
+            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+            () => this.onStickersPress(false),
+        );
+    }
+
+    deinitKeyboardListeners() {
+        if (this.keyboardWillShowListener) {
+            this.keyboardWillShowListener.remove();
+        }
     }
 
     // Setters
