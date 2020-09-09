@@ -30,21 +30,21 @@ type Props = DetailsProps & {
     menuMore?: ?MenuItemType[],
     menuPlusDisabled?: boolean,
     menuMoreDisabled?: boolean,
-    stickersVisible?: boolean,
     inputHidden?: boolean,
     showBorder?: boolean,
 
     quickAction?: ?MenuItemType[],
 
     onSendText?: (text: string) => void,
-    onStickersPress?: () => void,
     onHeightChange: (height: number) => void,
+    onStickersPress?: (visible: boolean) => void,
 };
 
 type State = ActionState & {
     inputHeight: number,
     inputWidth: number,
     heightChanging: boolean,
+    stickersVisible: boolean,
 };
 
 const styles = StyleSheet.create({
@@ -97,10 +97,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         floatingTitle: false,
         hideFloatingTitle: true,
         forceMultiLine: true,
-        stickersVisible: false,
         keyboardType: 'default',
 
         onSendText: (text: string) => {},
+        onStickersPress: () => {},
     };
 
     constructor(props: Props) {
@@ -111,6 +111,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             heightChanging: false,
+            stickersVisible: false,
         };
     }
 
@@ -169,11 +170,12 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         }
     }
 
-    onStickersPress = () => {
+    onStickersPress = (newState: boolean) => {
         const { onStickersPress } = this.props;
 
+        this.setStateSafely({ stickersVisible: newState });
         if (onStickersPress) {
-            onStickersPress();
+            onStickersPress(newState);
         }
     };
 
@@ -303,20 +305,20 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         const val = this.getValue();
 
         if (val.length > 0) {
-            this.onStickersPress();
+            this.onStickersPress(false);
             return null;
         }
 
-        const { stickersVisible } = this.props;
+        const { stickersVisible } = this.state;
         return (
             <TouchableOpacity
                 style={styles.buttonContainer}
                 testID="stickers_btn"
-                onPress={() => this.onStickersPress()}
+                onPress={() => this.onStickersPress(!stickersVisible)}
             >
                 <Image
                     style={styles.icon}
-                    source={stickersVisible ? stickerDisabled : stickerEnabled }
+                    source={stickersVisible ? stickerDisabled : stickerEnabled}
                 />
             </TouchableOpacity>
         );
