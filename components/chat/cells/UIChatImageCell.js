@@ -71,7 +71,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     renderImage() {
         const image = this.getImage();
 
-        const maxS = (2 * UIConstant.giantCellHeight()) - (2 * UIConstant.contentOffset());
+        const maxS = 2 * UIConstant.giantCellHeight();
         const minS = UIConstant.chatCellHeight();
 
         let { width, height } = this.getSize();
@@ -90,6 +90,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
                 resizeMode="contain"
                 resizeMethod="auto"
                 photoStyle={{
+                    marginTop: UIConstant.tinyContentOffset() / 2,
                     borderRadius: UIConstant.borderRadius(),
                     width,
                     height,

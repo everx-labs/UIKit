@@ -25,6 +25,7 @@ import UILabel from '../../text/UILabel';
 import UIShareManager from '../../../helpers/UIShareManager';
 
 import UIChatImageCell from './UIChatImageCell';
+import UIChatStickerCell from './UIChatStickerCell';
 import UIChatDocumentCell from './UIChatDocumentCell';
 import UIChatTransactionCell from './UIChatTransactionCell';
 import UIChatActionCell from './UIChatActionCell';
@@ -65,16 +66,6 @@ type State = {
     // empty
 }
 
-type RenderOptions = {
-    isSticker?: boolean,
-    isImage?: boolean,
-}
-
-type RenderTimeOptions = {
-    absolute?: boolean,
-    background?: boolean,
-}
-
 const styles = StyleSheet.create({
     row: {
         marginVertical: UIConstant.smallContentOffset() / 2,
@@ -95,6 +86,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         borderRadius: UIConstant.borderRadius(),
+        paddingHorizontal: UIConstant.horizontalContentOffset(),
+        paddingVertical: UIConstant.verticalContentOffset(),
     },
     wrapMsgContainer: {
         flexShrink: 1,
@@ -123,13 +116,17 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         maxWidth: '100%',
     },
+    stickerCell: {
+        backgroundColor: 'transparent',
+        padding: 0,
+    },
     msgSending: {
         alignItems: 'flex-end',
         backgroundColor: UIColor.backgroundQuinary(),
     },
     msgReceived: {
         alignItems: 'flex-start',
-        backgroundColor: UIColor.backgroundTertiary(),
+        backgroundColor: UIColor.fa(),
     },
     msgAborted: {
         alignItems: 'flex-start',
@@ -159,9 +156,8 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor: UIColor.backgroundTertiary(),
+        backgroundColor: UIColor.overlay40(),
         height: UIConstant.smallCellHeight(),
-        paddingVertical: UIConstant.tinyContentOffset() / 2,
         paddingHorizontal: UIConstant.smallContentOffset(),
         borderRadius: UIConstant.smallCellHeight() / 2,
     },
@@ -182,33 +178,22 @@ const styles = StyleSheet.create({
     actionLabelText: {
         color: UIColor.fa(),
     },
-    absoluteDate: {
-        position: 'absolute',
-        right: UIConstant.horizontalContentOffset(),
-        bottom: UIConstant.verticalContentOffset(),
-    },
-    dateWithBackground: {
-        backgroundColor: UIColor.black(),
-        opacity: 0.6,
-        borderRadius: 10,
-        paddingVertical: UIConstant.tinyContentOffset() / 2,
-        paddingHorizontal: UIConstant.smallContentOffset(),
+    dateText: {
+        color: UIColor.secondary(),
     },
     timeText: {
         textAlign: 'right',
         alignSelf: 'flex-end',
-        color: UIColor.textQuaternary(),
-    },
-    timeTextContainer: {
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
+        color: UIColor.textQuaternary(),
         marginLeft: 'auto', // Need for correct positioning to right side in message cell
     },
     greenBubble: {
         backgroundColor: UIColor.green(),
     },
     blackBubble: {
-        backgroundColor: UIColor.black(),
+        backgroundColor: UIColor.blackLight(),
     },
     leftBottomCorner: {
         borderBottomLeftRadius: 0,
@@ -255,7 +240,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }).start();
     }
 
-    // eslint-disable-next-line no-unused-vars
     onPressUrl(url: string, matchIndex: number = 0) {
         const { onPressUrl } = this.props;
         if (onPressUrl) {
@@ -319,19 +303,19 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     wrapInMessageContainer(
         children: React$Element<any>,
-        options: RenderOptions = {},
+        isSticker: boolean = false,
     ): React$Element<any> {
         const { additionalInfo } = this.props;
-        const { isSticker, isImage } = options;
 
-        const bg = isSticker ? { backgroundColor: 'transparent' } : null;
+        const sticker = isSticker ? styles.stickerCell : null;
         const userName = isSticker ? null : this.renderName();
 
         let rounded = {};
-        if (this.isReceived) {
-            rounded = additionalInfo?.firstFromChain ? styles.leftTopCorner : null;
-        } else {
-            rounded = additionalInfo?.lastFromChain ? styles.rightBottomCorner : null;
+
+        if (additionalInfo?.lastFromChain) {
+            rounded = this.isReceived
+                ? styles.leftBottomCorner
+                : styles.rightBottomCorner;
         }
 
         let style = styles.msgSending;
@@ -349,27 +333,20 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const isText = this.props.type === ChatMessageContent.SimpleText;
 
         return (
-            <Animated.View
-                style={[
-                    styles.wrapMsgContainer,
-                    animation,
-                ]}
-            >
+            <Animated.View style={[styles.wrapMsgContainer, animation]}>
                 {this.renderAvatar()}
                 <View
                     style={[
-                        !isImage && UIStyle.padding.verticalSmall(),
-                        !isImage && UIStyle.padding.horizontalNormal(),
                         styles.msgContainer,
                         !isText && UIStyle.common.flexColumn(),
                         style,
                         rounded,
-                        bg,
+                        sticker,
                     ]}
                 >
                     {userName}
                     {children}
-                    {this.renderTime({ absolute: isImage, background: isImage })}
+                    {this.renderTime()}
                 </View>
             </Animated.View>
         );
@@ -401,12 +378,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return null; // TODO:
     }
 
-    renderTime(options: RenderTimeOptions = {}) {
+    renderTime() {
         // Calculate the testID prop
         let testID;
         const { data } = this.props;
-        const { absolute, background } = options;
-
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
                 testID = `chat_text_message_${data.split(' ')[0]} ${data.split(' ')[1]}_time`;
@@ -420,23 +395,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         // Get the formatted message time
         const msgTime = this.formattedTime();
         return (
-            <View
-                style={[
-                    absolute && styles.absoluteDate,
-                    background && styles.dateWithBackground,
-                    !background && styles.timeTextContainer,
-                ]}
+            <Text
+                testID={testID}
+                style={[UIFont.tinyRegular(), styles.timeText]}
             >
-                <Text
-                    testID={testID}
-                    style={[
-                        UIFont.tinyRegular(), styles.timeText,
-                        background && UIColor.getColorStyle(UIColor.white()),
-                    ]}
-                >
-                    {msgTime}
-                </Text>
-            </View>
+                {msgTime}
+            </Text>
         );
     }
 
@@ -444,11 +408,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { data } = this.props;
         return (
             <View style={styles.dateSeparator}>
-                <UILabel
-                    role={UILabel.Role.TinyRegular}
-                    style={UIStyle.color.getColorStyle(UIColor.textTertiary())}
-                    text={data}
-                />
+                <Text style={[UIFont.tinyRegular(), styles.dateText]}>
+                    {data}
+                </Text>
             </View>
         );
     }
@@ -467,13 +429,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderActionLabel() {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
-            ? styles.leftTopCorner
+            ? styles.leftBottomCorner
             : styles.rightBottomCorner;
         return (
             <View style={[
                 styles.msgContainer,
-                UIStyle.padding.verticalSmall(),
-                UIStyle.padding.horizontalNormal(),
                 rounded,
                 styles.actionLabel,
             ]}
@@ -492,13 +452,24 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         return (
-            this.wrapInMessageContainer(
-                <UIChatImageCell
-                    image={data}
-                    additionalInfo={additionalInfo}
-                />,
-                { isImage: true },
-            )
+            this.wrapInMessageContainer(<UIChatImageCell
+                image={data}
+                additionalInfo={additionalInfo}
+            />)
+        );
+    }
+
+    renderStickerCell() {
+        const { data, additionalInfo } = this.props;
+        if (!data) {
+            return null;
+        }
+
+        return (
+            this.wrapInMessageContainer(<UIChatStickerCell
+                sticker={data}
+                additionalInfo={additionalInfo}
+            />, true)
         );
     }
 
@@ -578,7 +549,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     renderTransactionCommentCell() {
         const { additionalInfo } = this.props;
         const rounded = this.isReceived
-            ? null
+            ? styles.leftTopCorner
             : styles.rightTopCorner;
         let background = this.isReceived
             ? styles.greenBubble
@@ -589,15 +560,13 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return (
             <View style={[
                 styles.msgContainer,
-                UIStyle.padding.verticalSmall(),
-                UIStyle.padding.horizontalNormal(),
                 rounded,
                 background,
             ]}
             >
                 <Text
                     testID={`transaction_comment_${additionalInfo?.message.info.text || ''}`}
-                    style={[styles.actionLabelText, UIFont.smallRegularHigh(), styles.textCell]}
+                    style={[styles.actionLabelText, UIFont.smallRegular(), styles.textCell]}
                 >
                     {additionalInfo?.message.info.text || ''}
                 </Text>
@@ -708,22 +677,24 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             type, additionalInfo, data, messageDetails, messageDetailsStyle,
         } = this.props;
 
-        const defaultMarginSize = UIConstant.smallContentOffset();
-        const halfMarginSize = UIConstant.tinyContentOffset();
-
+        const currentMargin = (UIConstant.tinyContentOffset() / 2);
         let cell = null;
         let testID = '';
 
-        let margin = { marginBottom: 0, marginTop: defaultMarginSize };
+        let margin = null;
         let align = this.isReceived ? 'flex-start' : 'flex-end';
+        if (additionalInfo?.lastFromChain) {
+            margin = { marginBottom: UIConstant.normalContentOffset() - currentMargin };
+        }
 
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
-            margin = { marginVertical: UIConstant.normalContentOffset() };
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.SystemInfo) {
             align = 'center';
             cell = this.renderSystemInfo();
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.ActionLabel) {
             cell = this.renderActionLabel();
         } else if (type === ChatMessageContent.EmptyChat) {
@@ -731,39 +702,27 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             cell = this.renderEmptyChatCell();
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
         } else if (type === ChatMessageContent.TransactionComment) {
             // hack to move comment closer to the parent transaction bubble
-            margin = { marginBottom: 0 };
+            margin = { marginTop: -UIConstant.tinyContentOffset() };
             cell = this.renderTransactionCommentCell();
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
-
-            if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
-            }
         } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
             cell = this.renderSystemCell();
-            margin = { marginVertical: defaultMarginSize };
-
-            if (additionalInfo?.firstFromChain) {
-                margin = { marginBottom: defaultMarginSize, marginTop: UIConstant.contentOffset() };
-            }
+            margin = { marginVertical: UIConstant.normalContentOffset() - currentMargin };
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
-
-            if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
-            }
+        } else if (type === ChatMessageContent.Sticker) {
+            cell = this.renderStickerCell();
+            testID = 'chat_message_sticker';
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
-
-            if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
-            }
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
