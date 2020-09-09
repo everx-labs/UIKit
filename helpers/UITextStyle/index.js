@@ -501,6 +501,11 @@ const UITextStyle = StyleSheet.create({
         ...tertiary,
         ...UIFont.titleLight(),
     },
+    // Subtitle - fontSize: 24, lineHeight: 32
+    tertiarySubtitleRegular: {
+        ...tertiary,
+        ...UIFont.subtitleRegular(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     tertiaryBodyRegular: {
         ...tertiary,
