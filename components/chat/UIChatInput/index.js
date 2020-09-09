@@ -32,6 +32,7 @@ type Props = DetailsProps & {
     menuMoreDisabled?: boolean,
     inputHidden?: boolean,
     showBorder?: boolean,
+    hasStickers?: boolean,
 
     quickAction?: ?MenuItemType[],
 
@@ -129,6 +130,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
     keyboardWillShowListener: any;
     initKeyboardListener() {
+        if (!this.props.hasStickers) {
+            return;
+        }
+
         this.keyboardWillShowListener = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
             () => this.onStickersPress(false),
@@ -136,6 +141,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     deinitKeyboardListeners() {
+        if (!this.props.hasStickers) {
+            return;
+        }
+
         if (this.keyboardWillShowListener) {
             this.keyboardWillShowListener.remove();
         }
@@ -320,6 +329,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     }
 
     renderStickerButton() {
+        if (!this.props.hasStickers) {
+            return null;
+        }
+
         const val = this.getValue();
 
         if (val.length > 0) {
