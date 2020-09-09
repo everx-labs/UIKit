@@ -111,4 +111,5 @@ export type UIChatCellInfo = {
     status: ChatMessageStatusType,
     isReceived: boolean,
     additionalInfo: ChatAdditionalInfo,
+    key: string,
 };
