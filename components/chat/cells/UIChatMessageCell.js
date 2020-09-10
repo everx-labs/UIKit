@@ -517,10 +517,13 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
 
         return (
-            this.wrapInMessageContainer(<UIChatStickerCell
-                sticker={data}
-                additionalInfo={additionalInfo}
-            />, { isSticker: true })
+            this.wrapInMessageContainer(
+                <UIChatStickerCell
+                    sticker={data}
+                    additionalInfo={additionalInfo}
+                />, 
+                { isSticker: true }
+            )
         );
     }
 
