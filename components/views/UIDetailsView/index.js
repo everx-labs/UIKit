@@ -4,6 +4,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
+import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
 import UIFunction from '../../../helpers/UIFunction';
@@ -80,7 +81,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         return (
             <UILabel
                 testID={commentTestID || null}
-                style={commentsStyle}
+                style={[UIStyle.margin.topTiny(), commentsStyle]}
                 role={UILabel.Role.CaptionTertiary}
                 text={comments}
             />
