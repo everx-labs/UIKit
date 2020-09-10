@@ -1,14 +1,15 @@
 // @flow
 import React from 'react';
 import {
-    StyleSheet,
-    View,
-    Text,
-    TouchableHighlight,
-    TouchableWithoutFeedback,
-    Platform,
     Animated,
     Image,
+    Platform,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 
@@ -557,20 +558,22 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    getTransactionHandler() {
+        return this.props.onTouchTransaction ? this.onTransactionPress : null;
+    }
+
     renderTransactionCell() {
         const {
-            additionalInfo, data, status, onTouchTransaction, isReceived,
+            additionalInfo, data, status, isReceived,
         } = this.props;
-        const onTransactionPress = onTouchTransaction
-            ? this.onTransactionPress
-            : undefined;
+
         return (
             <UIChatTransactionCell
                 message={data}
                 status={status}
                 isReceived={isReceived}
                 additionalInfo={additionalInfo}
-                onPress={onTransactionPress}
+                onPress={this.getTransactionHandler()}
             />
         );
     }
@@ -583,17 +586,21 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         let background = this.isReceived
             ? styles.greenBubble
             : styles.blackBubble;
+
         if (additionalInfo?.message.info.aborted) { // TODO: make it better in terms of structuring!
             background = styles.msgAborted;
         }
+
         return (
-            <View style={[
-                styles.msgContainer,
-                UIStyle.padding.verticalSmall(),
-                UIStyle.padding.horizontalNormal(),
-                rounded,
-                background,
-            ]}
+            <TouchableOpacity
+                style={[
+                    styles.msgContainer,
+                    UIStyle.padding.verticalSmall(),
+                    UIStyle.padding.horizontalNormal(),
+                    rounded,
+                    background,
+                ]}
+                onPress={this.getTransactionHandler()}
             >
                 <Text
                     testID={`transaction_comment_${additionalInfo?.message.info.text || ''}`}
@@ -606,7 +613,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         <Image source={UIAssets.keyThin} />
                     </View>
                 )}
-            </View>
+            </TouchableOpacity>
         );
     }
 

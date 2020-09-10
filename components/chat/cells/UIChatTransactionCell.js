@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     trxCard: {
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.normalContentOffset(),
-        paddingVertical: UIConstant.smallContentOffset(),
+        paddingVertical: UIConstant.normalContentOffset(),
         backgroundColor: UIColor.green(),
     },
     cardDeposit: {
