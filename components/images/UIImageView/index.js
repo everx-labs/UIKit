@@ -461,7 +461,7 @@ export default class UIImageView extends UIComponent<Props, State> {
             return null;
         }
         const { width, height } = Dimensions.get('window');
-        return (
+        const expandable = this.isExpandable() ? (
             <LightboxMobile
                 style={[styles.photoContainer, this.props.photoStyle]}
                 underlayColor={UIColor.overlayWithAlpha(0.32)}
@@ -474,7 +474,9 @@ export default class UIImageView extends UIComponent<Props, State> {
             >
                 {this.renderPhotoContent()}
             </LightboxMobile>
-        );
+        ) : this.renderPhotoContent();
+
+        return expandable;
     }
 
     render() {

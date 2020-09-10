@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import UIPureComponent from '../../UIPureComponent';
+import UIImageView from '../../images/UIImageView';
 import UISpinnerOverlay from '../../UISpinnerOverlay';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
@@ -35,11 +36,10 @@ export default class UIChatStickerCell extends UIPureComponent<Props, State> {
         const image = { uri: `${this.props.sticker}` };
 
         return (
-            <Image
-                resizeMode="contain"
-                resizeMethod="auto"
-                style={styles.sticker}
+            <UIImageView
+                photoStyle={styles.sticker}
                 source={image}
+                expandable={false}
                 key={`stickerContent${this.getID()}`}
             />
         );
