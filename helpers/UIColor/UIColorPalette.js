@@ -46,6 +46,7 @@ const UIColorPalette = {
     error: '#CC0022',
     caution: '#CC4400',
     text: {
+        blackPrimary: '#20262A', // TODO: Check lightPrimary
         lightPrimary: '#000000',
         darkPrimary: '#FFFFFF',
         lightParagraph: '#000000',

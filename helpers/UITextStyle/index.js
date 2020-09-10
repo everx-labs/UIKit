@@ -96,6 +96,9 @@ const UITextStyle = StyleSheet.create({
     bold: {
         ...UIFont.bold(),
     },
+    normal: {
+        ...UIFont.medium(),
+    },
 
     // [Colors]
     // Primary

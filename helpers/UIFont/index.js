@@ -173,6 +173,10 @@ export default class UIFont {
         return UI_FONT_BOLD;
     }
 
+    static medium() {
+        return UI_FONT_MEDIUM;
+    }
+
     static keyBold() {
         return UI_FONT_KEY_BOLD;
     }

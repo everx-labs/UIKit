@@ -7,7 +7,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import UIStyle from '../../../helpers/UIStyle';
 
-import UIAnimatedBalanceInner from './UIAnimatedBalanceInner';
+import UIAnimatedBalanceOpacity from './UIAnimatedBalanceOpacity';
 import type { Props as InnerProps } from './UIAnimatedBalanceInner';
 
 type Props = InnerProps & {
@@ -59,7 +59,8 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
         // To prevent updates of balance during animation, we not pass balance with props
         // but rather keep it in state, and if a new update come when animation is still going,
         // we store new value to a `queuedBalance` variable
-        // Then when animation ends we just get it (if it present) and set to the state instead of old one
+        // Then when animation ends we just get it (if it present)
+        // and set to the state instead of old one
         newState.isAnimationInProgress = false;
 
         if (this.state.queuedBalance) {
@@ -79,7 +80,7 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
                 testID={testID}
                 style={[UIStyle.common.flexRow(), UIStyle.common.alignCenter(), containerStyle]}
             >
-                <UIAnimatedBalanceInner
+                <UIAnimatedBalanceOpacity
                     {...rest}
                     balance={this.state.balance}
                     onAnimationStart={this.onAnimationStart}
