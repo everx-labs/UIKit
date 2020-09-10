@@ -13,8 +13,8 @@ import type { ChatAdditionalInfo, UIChatImageSize } from '../extras';
 
 type Props = {
     image: ?any,
-    imageSize: ?UIChatImageSize,
-    additionalInfo: ?ChatAdditionalInfo,
+    imageSize?: UIChatImageSize,
+    additionalInfo?: ChatAdditionalInfo,
 }
 
 type State = {
@@ -22,11 +22,9 @@ type State = {
 }
 
 const IMAGE_SIZE = 1024;
-export default class UIChatImageCell extends UIPureComponent<Props, State> {
-    static defaultProps = {
-        imageSize: { width: IMAGE_SIZE, height: IMAGE_SIZE },
-    };
 
+export default class UIChatImageCell extends UIPureComponent<Props, State> {
+    // Constructor
     constructor(props: Props) {
         super(props);
 
@@ -45,14 +43,14 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     getSize(): UIChatImageSize {
-        return this.props.additionalInfo?.imageSize || this.props.imageSize;
+        return this.props.additionalInfo?.imageSize
+            || this.props.imageSize
+            || { width: IMAGE_SIZE, height: IMAGE_SIZE };
     }
 
     getID(): string {
         const msg = this.props.additionalInfo?.message;
-        const url = msg?.mid || msg?.info.image?.url || `img${Math.random()}`;
-
-        return url;
+        return msg?.mid || msg?.info.image || `img${Math.random()}`;
     }
 
     // Setters

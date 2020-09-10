@@ -26,6 +26,7 @@ import UILabel from '../../text/UILabel';
 import UIShareManager from '../../../helpers/UIShareManager';
 
 import UIChatImageCell from './UIChatImageCell';
+import UIChatStickerCell from './UIChatStickerCell';
 import UIChatDocumentCell from './UIChatDocumentCell';
 import UIChatTransactionCell from './UIChatTransactionCell';
 import UIChatActionCell from './UIChatActionCell';
@@ -123,6 +124,10 @@ const styles = StyleSheet.create({
     textCell: {
         textAlign: 'left',
         maxWidth: '100%',
+    },
+    stickerCell: {
+        backgroundColor: 'transparent',
+        paddingBottom: UIConstant.mediumContentOffset(),
     },
     msgSending: {
         alignItems: 'flex-end',
@@ -286,7 +291,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         }
     };
 
-    getActionDirection(): TypeOfActionDirection {
+    getActionDirection(): TypeOfActionDirectionType {
         return this.props.additionalInfo?.message?.info?.direction || TypeOfActionDirection.None;
     }
 
@@ -325,7 +330,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         const { additionalInfo } = this.props;
         const { isSticker, isImage } = options;
 
-        const bg = isSticker ? { backgroundColor: 'transparent' } : null;
+        const sticker = isSticker ? styles.stickerCell : null;
         const userName = isSticker ? null : this.renderName();
 
         let rounded = {};
@@ -365,12 +370,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                         !isText && UIStyle.common.flexColumn(),
                         style,
                         rounded,
-                        bg,
+                        sticker,
                     ]}
                 >
                     {userName}
                     {children}
-                    {this.renderTime({ absolute: isImage, background: isImage })}
+                    {this.renderTime(options)}
                 </View>
             </Animated.View>
         );
@@ -402,11 +407,11 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return null; // TODO:
     }
 
-    renderTime(options: RenderTimeOptions = {}) {
+    renderTime(options: RenderOptions = {}) {
         // Calculate the testID prop
         let testID;
         const { data } = this.props;
-        const { absolute, background } = options;
+        const { isImage, isSticker } = options;
 
         if (data instanceof String || typeof data === 'string') {
             if (data.split(' ')[1]) {
@@ -420,19 +425,22 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
         // Get the formatted message time
         const msgTime = this.formattedTime();
+        const bgSticker = { backgroundColor: UIColor.backgroundWhiteLight() };
         return (
             <View
                 style={[
-                    absolute && styles.absoluteDate,
-                    background && styles.dateWithBackground,
-                    !background && styles.timeTextContainer,
+                    (isImage || isSticker) && styles.absoluteDate,
+                    (isImage || isSticker) && styles.dateWithBackground,
+                    !isImage && !isSticker && styles.timeTextContainer,
+                    isSticker && bgSticker,
                 ]}
             >
                 <Text
                     testID={testID}
                     style={[
                         UIFont.tinyRegular(), styles.timeText,
-                        background && UIColor.getColorStyle(UIColor.white()),
+                        isImage && UIColor.getColorStyle(UIColor.white()),
+                        isSticker && UIColor.getColorStyle(UIColor.black()),
                     ]}
                 >
                     {msgTime}
@@ -503,6 +511,23 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 
+    renderStickerCell() {
+        const { data, additionalInfo } = this.props;
+        if (!data) {
+            return null;
+        }
+
+        return (
+            this.wrapInMessageContainer(
+                <UIChatStickerCell
+                    sticker={data}
+                    additionalInfo={additionalInfo}
+                />, 
+                { isSticker: true }
+            )
+        );
+    }
+
     renderDocumentCell() {
         const { data, onOpenPDF, additionalInfo } = this.props;
 
@@ -559,7 +584,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
     }
 
     getTransactionHandler() {
-        return this.props.onTouchTransaction ? this.onTransactionPress : null;
+        return this.props.onTouchTransaction ? this.onTransactionPress : undefined;
     }
 
     renderTransactionCell() {
@@ -764,6 +789,9 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             if (!additionalInfo?.firstFromChain) {
                 margin = { marginBottom: 0, marginTop: halfMarginSize };
             }
+        } else if (type === ChatMessageContent.Sticker) {
+            cell = this.renderStickerCell();
+            testID = 'chat_message_sticker';
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';

@@ -21,7 +21,7 @@ type Props = {
     onPress?: () => void,
     displayNameOnly?: boolean,
     notActive?: boolean,
-    tokenSymbol?: string,
+    tokenSymbol?: string | React$Element<any>,
 };
 
 type State = {
@@ -62,8 +62,8 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         return this.props.maxDecimals;
     }
 
-    getTokenSymbol(): string {
-        return ` ${this.props.tokenSymbol || ''}` || '';
+    getTokenSymbol(): string | React$Element<any> {
+        return this.props.tokenSymbol || '';
     }
 
     getAccountName(): string {
@@ -82,11 +82,17 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         if (!stringNumber) {
             return null;
         }
+
         const { primaryBodyRegular, greyBodyRegular } = UITextStyle;
+
         const [integer, fractional] = stringNumber.split('.');
+
         const decimals = (fractional && fractional.length > 0)
             ? fractional
             : '0'.repeat(UIConstant.minDecimalDigits());
+
+        const tokenSymbol = this.getTokenSymbol();
+
         return (
             <Text
                 testID={`balance_value_${this.getAccountName()}`}
@@ -94,7 +100,9 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
             >
                 {integer}
                 <Text style={greyBodyRegular}>
-                    {`${this.getDecimalSeparator()}${decimals}${this.getTokenSymbol()}`}
+                    {`${this.getDecimalSeparator()}${decimals}`}
+                    {tokenSymbol ? ' ' : '' /* space between */}
+                    {tokenSymbol}
                 </Text>
             </Text>
         );

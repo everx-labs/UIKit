@@ -333,6 +333,10 @@ export default class UIStyleText {
     static tertiaryTitleLight() {
         return UITextStyle.tertiaryTitleLight;
     }
+    // Subtitle - fontSize: 24, lineHeight: 32
+    static tertiarySubtitleRegular() {
+        return UITextStyle.tertiarySubtitleRegular;
+    }
     // Body - fontSize: 18, lineHeight: 24
     static tertiaryBodyRegular() {
         return UITextStyle.tertiaryBodyRegular;

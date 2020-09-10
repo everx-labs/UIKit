@@ -4,6 +4,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import UIConstant from '../../../helpers/UIConstant';
+import UIStyle from '../../../helpers/UIStyle';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
 import UIFunction from '../../../helpers/UIFunction';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 type Props = {
     testID?: string,
     commentTestID?: string,
-    value: any,
+    value: string | React$Element<any>,
     comments: string,
     reversed: boolean,
     onPress: ?() => void,
@@ -59,19 +60,13 @@ export default class UIDetailsView extends UIComponent<Props, State> {
             role = UILabel.Role.CaptionTertiary;
         }
         return (
-            typeof value === 'string' || typeof value === 'number' ? (
-                <UILabel
-                    testID={testID || null}
-                    style={textStyle}
-                    role={textRole || role}
-                    text={`${value}`}
-                    selectable={selectable}
-                />
-            ) : (
-                <View>
-                    {value}
-                </View>
-            )
+            <UILabel
+                testID={testID || null}
+                style={textStyle}
+                role={textRole || role}
+                text={value}
+                selectable={selectable}
+            />
         );
     }
 
@@ -80,7 +75,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         return (
             <UILabel
                 testID={commentTestID || null}
-                style={commentsStyle}
+                style={[UIStyle.margin.topTiny(), commentsStyle]}
                 role={UILabel.Role.CaptionTertiary}
                 text={comments}
             />

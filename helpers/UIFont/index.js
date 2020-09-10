@@ -9,7 +9,6 @@ const UI_FONT_FAMILY = {
 };
 
 const emojiFonts = [
-    'TONGems',
     '"Apple Color Emoji"',
     '"Segoe UI Emoji"',
     '"Segoe MDL2 Assets"',
@@ -20,23 +19,19 @@ const emojiFonts = [
 const fontFamilies = ['"IBM Plex Sans"', ...emojiFonts];
 const FONT_WEB_LIGHT = Platform.select({
     web: { fontFamily: ['PTRootUIWebLight', ...fontFamilies].join(', ') },
-    ios: { fontFamily: ['SFProText-Light'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Light'].join(', ') },
 });
 const FONT_WEB_REGULAR = Platform.select({
     web: { fontFamily: ['PTRootUIWebRegular', ...fontFamilies].join(', ') },
-    ios: { fontFamily: ['SFProText-Regular'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Regular'].join(', ') },
 });
 const FONT_WEB_MEDIUM = Platform.select({
     web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
-    ios: { fontFamily: ['SFProText-Medium'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Medium'].join(', ') },
 });
 const FONT_WEB_BOLD = Platform.select({
     web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
-    ios: { fontFamily: ['SFProText-Bold'].join(', ') },
-    android: { fontFamily: ['TONGems'].join(', ') },
+    default: { fontFamily: ['SFProText-Bold'].join(', ') },
 });
 
 // const UI_FONT_THIN = { fontWeight: '100' };
@@ -52,73 +47,109 @@ const UI_FONT_BOLD = { ...FONT_WEB_BOLD, fontWeight: Platform.OS === 'android' ?
 const UI_FONT_KEY = {
     fontSize: 80,
     lineHeight: 112,
-    letterSpacing: -1.5,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: 0.0,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_HEADLINE = {
     fontSize: 64,
     lineHeight: 80,
-    letterSpacing: -1,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: 0.26,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_SUBHEAD = {
     fontSize: 48,
     lineHeight: 64,
-    letterSpacing: -0.5,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: 0.38,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_TITLE = {
     fontSize: 40,
     lineHeight: 56,
-    letterSpacing: 0.25,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: 0.40,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_SUBTITLE = {
     fontSize: 24,
     lineHeight: 32,
-    letterSpacing: 0.25,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: 0.36,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_ACCENT = {
     fontSize: 20,
     lineHeight: 32,
-    letterSpacing: 0.25,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: 0.38,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_BODY = {
     fontSize: 18,
     lineHeight: 24,
-    letterSpacing: 0.25,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: -0.45,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_SMALL = {
     fontSize: 16,
     lineHeight: 20,
-    letterSpacing: 0.25,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: -0.32,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_SMALL_HIGH = {
     fontSize: 16,
     lineHeight: 24,
-    letterSpacing: 0.25,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: -0.32,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_CAPTION = {
     fontSize: 14,
     lineHeight: 20,
-    letterSpacing: 0.5,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: -0.15,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_TINY = {
     fontSize: 12,
     lineHeight: 16,
-    letterSpacing: 1,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: 0.0,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_MICRO = {
     fontSize: 8,
     lineHeight: 12,
-    letterSpacing: 1,
+    letterSpacing: Platform.select({
+        web: 1.0,
+        default: 1.0,
+    }),
     ...UI_FONT_FAMILY,
 };
 const UI_FONT_MENU = {

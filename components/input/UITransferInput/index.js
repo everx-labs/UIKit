@@ -24,7 +24,7 @@ type Props = {
     autoFocus?: boolean,
     button?: Object,
     value?: ?BigNum,
-    token?: string,
+    token?: string | React$Element<any>,
     comment?: string,
     commentRight?: string,
     commentColor?: UIColorData,
