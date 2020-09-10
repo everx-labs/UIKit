@@ -93,6 +93,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         ...UIDetailsInput.defaultProps,
         autoCapitalize: 'sentences',
         placeholder: UILocalized.TypeMessage,
+        secondaryPlaceholder: UILocalized.TypeMessage,
         hideBottomLine: true,
         inputHidden: false,
         autoFocus: false,
@@ -241,7 +242,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                         // eslint-disable-next-line
                         key={`quickAction~${index}`}
                         buttonStyle={styles.buttonContainer}
-                        textStyle={UIStyle.text.bodyRegular()}
+                        textStyle={UIStyle.text.bodyMedium()}
                         testID={action.testID}
                         onPress={action.onPress}
                         title={action.title}
