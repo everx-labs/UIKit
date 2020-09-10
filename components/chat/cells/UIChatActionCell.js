@@ -14,9 +14,9 @@ import type { TypeOfActionType, TypeOfActionDirectionType } from '../extras';
 type Props = {
     text: string,
     typeOfAction: TypeOfActionType,
-    onPress?: (action: TypeOfActionType) => void,
+    onPress?: () => void,
     testID?: string | null,
-    actionDirection?: TypeOfActionDirectionType,
+    actionDirection: TypeOfActionDirectionType,
 }
 
 type State = {

@@ -93,6 +93,9 @@ export const paddingStyles = {
     paddingBottomHuge: {
         paddingBottom: UIConstant.hugeContentOffset(),
     },
+    paddingRightSmall: {
+        paddingLeft: UIConstant.smallContentOffset(),
+    },
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
     },
@@ -101,6 +104,9 @@ export const paddingStyles = {
     },
     paddingRightGreat: {
         paddingRight: UIConstant.greatContentOffset(),
+    },
+    paddingLeftSmall: {
+        paddingLeft: UIConstant.smallContentOffset(),
     },
     paddingLeftDefault: {
         paddingLeft: UIConstant.contentOffset(),
@@ -218,8 +224,16 @@ export default class UIStylePadding {
         return styles.paddingBottomGiant;
     }
 
+    static leftSmall() { // 8
+        return styles.paddingLeftSmall;
+    }
+
     static leftDefault() { // 16
         return styles.paddingLeftDefault;
+    }
+
+    static rightSmall() { // 8
+        return styles.paddingRightSmall;
     }
 
     static rightDefault() { // 16

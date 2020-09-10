@@ -20,7 +20,7 @@ type Props = {
     containerStyle: ViewStyleProp,
     displayNameOnly?: boolean,
     notActive?: boolean,
-    tokenSymbol?: string,
+    tokenSymbol?: string | React$Element<any>,
 };
 type State = {
     // Empty

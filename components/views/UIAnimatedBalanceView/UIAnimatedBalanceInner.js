@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     mainText: {
         letterSpacing: 0,
         color: 'transparent',
+        paddingRight: 1, // important for Android which cuts the content from the right
     },
 });
 
