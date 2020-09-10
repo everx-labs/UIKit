@@ -16,7 +16,7 @@ type Props = {
     typeOfAction: TypeOfActionType,
     onPress?: () => void,
     testID?: string | null,
-    actionDirection?: TypeOfActionDirectionType,
+    actionDirection: TypeOfActionDirectionType,
 }
 
 type State = {
@@ -84,7 +84,7 @@ export default class UIChatActionCell extends UIPureComponent<Props, State> {
     }
 
     getActionDirection(): TypeOfActionDirectionType {
-        return this.props.actionDirection || TypeOfActionDirection.None;
+        return this.props.actionDirection;
     }
 
     getContainerStyle() {
