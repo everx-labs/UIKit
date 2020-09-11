@@ -165,7 +165,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                 return Animated.timing(animation, {
                     toValue: 1,
                     duration: UIConstant.animationDuration(),
-                    delay: index * (UIConstant.animationDuration() / 5),
+                    delay: index * (UIConstant.animationDuration() / 10),
                     useNativeDriver: true,
                 });
             })).start(() => {
