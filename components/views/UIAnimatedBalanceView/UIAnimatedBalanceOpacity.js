@@ -215,10 +215,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                         <UIAnimatedBalanceSymbol
                             // eslint-disable-next-line react/no-array-index-key
                             key={`next-${index}`}
-                            animation={this.getAnimation(index).interpolate({
-                                inputRange: [0, 1],
-                                outputRange: ([0, 1]: $ReadOnlyArray<number>),
-                            })}
+                            animation={this.getAnimation(index)}
                             textStyle={this.props.textStyle}
                             fractionalTextStyle={this.props.fractionalTextStyle}
                         >
@@ -239,10 +236,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                                 key={`prev-${index}`}
                                 animation={this.getAnimation(index).interpolate({
                                     inputRange: [0, 1],
-                                    outputRange: ([
-                                        1,
-                                        0,
-                                    ]: $ReadOnlyArray<number>),
+                                    outputRange: ([1, 0]: $ReadOnlyArray<number>),
                                 })}
                                 textStyle={this.props.textStyle}
                                 fractionalTextStyle={this.props.fractionalTextStyle}
