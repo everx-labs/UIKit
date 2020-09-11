@@ -323,6 +323,15 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         }
     };
 
+    /**
+     * @override as it's important to know about the changes in the height for seed phrase input
+     */
+    adjustInputAreaHeightIfNeeded = (height: number) => {
+        const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
+        const inH = newSize;
+        this.onContentSizeChange(inH);
+    }
+
     onContentSizeChange = (height: number) => {
         this.setInputHeight(height);
         this.rerenderPopoverForAndroid();
