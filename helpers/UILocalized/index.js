@@ -163,7 +163,7 @@ type LocalizedStringsMethods = {
 
 const localized: UILocalizedData &
     UILocalized &
-    LocalizedStringsMethods = new UILocalized(languages);
+    LocalizedStringsMethods = new UILocalized({ en });
 
 Moment.locale(localized.getLocale());
 
