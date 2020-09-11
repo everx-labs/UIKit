@@ -435,8 +435,8 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     adjustInputAreaHeightIfNeeded = (height: number) => {
-        if (Platform.OS !== 'web' // Mobile inputs have the own multiline native auto-grow behaviour
-            && this.keyboardType() !== 'visible-password') { // But this type breaks Android's input
+        if (Platform.OS !== 'web') {
+            // Mobile inputs have the own multiline native auto-grow behaviour
             // No need to adjust the height
             return;
         }
