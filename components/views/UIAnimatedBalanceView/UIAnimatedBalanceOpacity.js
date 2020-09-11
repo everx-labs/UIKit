@@ -29,7 +29,11 @@ type BalanceSymbol = {
 };
 
 const styles = StyleSheet.create({
-    container: { overflow: 'hidden', position: 'relative' },
+    container: {
+        overflow: 'hidden',
+        position: 'relative',
+        paddingRight: 5, // important for Android which cuts the content from the right},
+    },
     mainText: {
         letterSpacing: 0,
         color: 'transparent',
