@@ -14,6 +14,10 @@ export default class UIStyleText {
         return UITextStyle.bold;
     }
 
+    static medium() {
+        return UITextStyle.medium;
+    }
+
     // [Colors]
     static primary() {
         return UITextStyle.primary;
