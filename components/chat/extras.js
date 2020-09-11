@@ -119,3 +119,17 @@ export type UIChatCellInfo = {
     isReceived: boolean,
     additionalInfo: ChatAdditionalInfo,
 };
+
+export type UISticker = {
+    name: string,
+    keywords?: ?string[],
+    url: string,
+};
+
+export type UIStickerPackage = {
+    id: string,
+    date: number,
+    description: string,
+    name: string,
+    stickers: FBSticker[],
+};
