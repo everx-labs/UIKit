@@ -131,5 +131,5 @@ export type UIStickerPackage = {
     date: number,
     description: string,
     name: string,
-    stickers: FBSticker[],
+    stickers: UISticker[],
 };
