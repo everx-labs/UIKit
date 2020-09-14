@@ -13,7 +13,7 @@ const ImageComponent: any = Platform.OS === 'web' ? Image : FastImage;
 
 type Props = {
     color?: string,
-    source: ImageSource,
+    source: ImageSource | { uri: string },
     style?: ViewStyleProp,
 };
 
@@ -30,6 +30,6 @@ const UIImage = ({ color, source, style }: Props) => {
 export { UIImage as default };
 
 UIImage.defaultProps = {
-    color: null,
+    color: '',
     style: {},
 };
