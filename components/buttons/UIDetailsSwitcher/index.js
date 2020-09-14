@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import UIDetailsView from '../../views/UIDetailsView';
@@ -29,6 +29,10 @@ type DetailsSwitcherProps = {
      @default false
      */
     disabled?: boolean,
+    /** Details text style
+     @default null
+     */
+    textStyle?: TextStyleProp,
     /**
      shape of checkbox, one of:
      UIDetailsSwitcher.Type.Square
@@ -76,6 +80,7 @@ export default class UIDetailsSwitcher<Props, State>
         switcherPosition: UIDetailsSwitcher.Position.Right,
         disabled: false,
         type: UIDetailsSwitcher.Type.Square,
+        textStyle: null,
         style: null,
         details: '',
         comments: '',
@@ -105,7 +110,7 @@ export default class UIDetailsSwitcher<Props, State>
     // Render
     renderDetailsView() {
         const {
-            details, comments,
+            details, comments, textStyle,
         } = this.props;
 
         if (!comments && !details) {
@@ -114,7 +119,7 @@ export default class UIDetailsSwitcher<Props, State>
 
         if (!comments) {
             return (
-                <Text style={[UIStyle.text.primaryBodyMedium(), UIStyle.common.flex()]}>
+                <Text style={[UIStyle.text.primaryBodyMedium(), UIStyle.common.flex(), textStyle]}>
                     {details}
                 </Text>
             );
