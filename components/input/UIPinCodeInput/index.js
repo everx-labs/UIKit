@@ -401,10 +401,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={this.onDeletePress}
                         disabled={this.state.values.length === 0}
                     >
-                        <Image
-                            source={UIAssets.icoDelete}
-                            style={this.state.values.length === 0 && { opacity: 0.5 }}
-                        />
+                        <Image source={UIAssets.icoDelete} />
                     </BorderlessButton>
                 </View>
             </View>
