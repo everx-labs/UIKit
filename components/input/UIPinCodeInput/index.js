@@ -8,6 +8,7 @@ import {
     Platform,
     Image,
 } from 'react-native';
+import { BorderlessButton as RNGHBorderlessButton } from 'react-native-gesture-handler';
 import debounce from 'lodash/debounce';
 
 import UIComponent from '../../UIComponent';
@@ -20,6 +21,12 @@ import UILocalized from '../../../helpers/UILocalized';
 
 import UIPinCodeDots from './UIPinCodeDots';
 import UIAssets from '../../../assets/UIAssets';
+
+const BorderlessButton = Platform.select({
+    web: TouchableOpacity,
+    android: TouchableOpacity,
+    default: RNGHBorderlessButton,
+});
 
 const BiometryType = Object.freeze({
     Fingerprint: 'Fingerprint',
@@ -50,13 +57,10 @@ type Props = {
 
 const styles = StyleSheet.create({
     key: {
-        // Coefficient 1.01 need for ios version because
-        // new font symbols interval bigger than default font.
-        width: UIConstant.extraLargeButtonHeight() * 1.01,
-        height: UIConstant.extraLargeButtonHeight(),
+        width: UIConstant.extraLargeButtonHeight() * 1.25,
+        height: UIConstant.extraLargeButtonHeight() * 1.03,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: UIConstant.smallContentOffset(),
     },
     space: {
         flexGrow: 1,
@@ -150,7 +154,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 this.wrongPin();
             }
         }
-    }, 16); // equals to one frame duration, a-ka floor(1000 / 60).
+    });
 
     onKeyPress(key: number) {
         if (this.props.disabled) {
@@ -291,197 +295,117 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const opacityStyle = this.props.disabled ? { opacity: 0.5 } : null;
         return (
             <View testID="digitKeyboard">
-                <View style={[UIStyle.flexRow, UIStyle.Margin.bottomTiny()]}>
-                    <TouchableOpacity
+                <View style={[UIStyle.flexRow]}>
+                    <BorderlessButton
                         testID="pincode_digit_1"
                         style={styles.key}
                         onPress={() => this.onKeyPress(1)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            1
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>1</Text>
+                    </BorderlessButton>
+                    <BorderlessButton
                         testID="pincode_digit_2"
                         style={styles.key}
                         onPress={() => this.onKeyPress(2)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            2
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>2</Text>
+                    </BorderlessButton>
+                    <BorderlessButton
                         testID="pincode_digit_3"
                         style={styles.key}
                         onPress={() => this.onKeyPress(3)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            3
-                        </Text>
-                    </TouchableOpacity>
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>3</Text>
+                    </BorderlessButton>
                 </View>
-                <View style={[UIStyle.flexRow, UIStyle.Margin.bottomTiny()]}>
-                    <TouchableOpacity
+                <View style={[UIStyle.flexRow]}>
+                    <BorderlessButton
                         testID="pincode_digit_4"
                         style={styles.key}
                         onPress={() => this.onKeyPress(4)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            4
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>4</Text>
+                    </BorderlessButton>
+                    <BorderlessButton
                         testID="pincode_digit_5"
                         style={styles.key}
                         onPress={() => this.onKeyPress(5)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            5
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>5</Text>
+                    </BorderlessButton>
+                    <BorderlessButton
                         testID="pincode_digit_6"
                         style={styles.key}
                         onPress={() => this.onKeyPress(6)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            6
-                        </Text>
-                    </TouchableOpacity>
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>6</Text>
+                    </BorderlessButton>
                 </View>
-                <View style={[UIStyle.flexRow, UIStyle.Margin.bottomTiny()]}>
-                    <TouchableOpacity
+                <View style={[UIStyle.flexRow]}>
+                    <BorderlessButton
                         testID="pincode_digit_7"
                         style={styles.key}
                         onPress={() => this.onKeyPress(7)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            7
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>7</Text>
+                    </BorderlessButton>
+                    <BorderlessButton
                         testID="pincode_digit_8"
                         style={styles.key}
                         onPress={() => this.onKeyPress(8)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            8
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>8</Text>
+                    </BorderlessButton>
+                    <BorderlessButton
                         testID="pincode_digit_9"
                         style={styles.key}
                         onPress={() => this.onKeyPress(9)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            9
-                        </Text>
-                    </TouchableOpacity>
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>9</Text>
+                    </BorderlessButton>
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomMedium()]}>
-                    <TouchableOpacity
-                        testID="pincode_digit_delete"
+                    <BorderlessButton
+                        testID="pincode_biometry"
                         style={styles.key}
-                        onPress={this.onDeletePress}
-                        disabled={this.state.values.length === 0}
+                        onPress={
+                            this.props.usePredefined ? this.onPredefinedPress : this.onBiometryPress
+                        }
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryCaptionMedium,
-                                this.state.values.length === 0 && {
-                                    opacity: 0.5,
-                                },
-                            ]}
-                        >
-                            {UILocalized.Delete}
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        {this.props.usePredefined && (
+                            <Text style={UITextStyle.primaryCaptionMedium}>DEV</Text>
+                        )}
+                        {!this.props.usePredefined && this.renderBiometryLogin()}
+                    </BorderlessButton>
+
+                    <BorderlessButton
                         testID="pincode_digit_0"
                         style={styles.key}
                         onPress={() => this.onKeyPress(0)}
                         disabled={disabled}
                     >
-                        <Text
-                            style={[
-                                UITextStyle.primaryTitleLight,
-                                opacityStyle,
-                            ]}
-                        >
-                            0
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        testID="pincode_biometry"
+                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>0</Text>
+                    </BorderlessButton>
+                    <BorderlessButton
+                        testID="pincode_digit_delete"
                         style={styles.key}
-                        onPress={this.props.usePredefined
-                            ? this.onPredefinedPress
-                            : this.onBiometryPress
-                        }
+                        onPress={this.onDeletePress}
+                        disabled={this.state.values.length === 0}
                     >
-                        {this.props.usePredefined && (
-                            <Text style={UITextStyle.primaryCaptionMedium}>
-                                DEV
-                            </Text>
-                        )}
-                        {!this.props.usePredefined && (
-                            this.renderBiometryLogin()
-                        )}
-                    </TouchableOpacity>
+                        <Image
+                            source={UIAssets.icoDelete}
+                            style={this.state.values.length === 0 && { opacity: 0.5 }}
+                        />
+                    </BorderlessButton>
                 </View>
             </View>
         );
