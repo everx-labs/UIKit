@@ -310,6 +310,15 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         return this.props.isReceived;
     }
 
+    getRoundedCornerStyle(): ViewStyleProp | ViewStyleProp[] {
+        const { additionalInfo } = this.props;
+        if (this.isReceived) {
+            return additionalInfo?.firstFromChain ? styles.leftTopCorner : null;
+        }
+
+        return additionalInfo?.lastFromChain ? styles.rightBottomCorner : null;
+    }
+
     formattedTime(date: ?Date): string {
         const msg = this.props.additionalInfo?.message;
         if (msg?.info.sending) {
@@ -327,18 +336,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         children: React$Element<any>,
         options: RenderOptions = {},
     ): React$Element<any> {
-        const { additionalInfo } = this.props;
         const { isSticker, isImage } = options;
 
         const sticker = isSticker ? styles.stickerCell : null;
         const userName = isSticker ? null : this.renderName();
 
-        let rounded = {};
-        if (this.isReceived) {
-            rounded = additionalInfo?.firstFromChain ? styles.leftTopCorner : null;
-        } else {
-            rounded = additionalInfo?.lastFromChain ? styles.rightBottomCorner : null;
-        }
+        const rounded = this.getRoundedCornerStyle();
 
         let style = styles.msgSending;
         if (this.getStatus() === ChatMessageStatus.Received) {
@@ -505,6 +508,7 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 <UIChatImageCell
                     image={data}
                     additionalInfo={additionalInfo}
+                    style={this.getRoundedCornerStyle()}
                 />,
                 { isImage: true },
             )
@@ -522,8 +526,8 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 <UIChatStickerCell
                     sticker={data}
                     additionalInfo={additionalInfo}
-                />, 
-                { isSticker: true }
+                />,
+                { isSticker: true },
             )
         );
     }
