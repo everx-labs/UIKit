@@ -62,7 +62,7 @@ import UILink from './components/buttons/UILink';
 import UILinkInput from './components/input/UILinkInput';
 import UIListHeader from './components/text/UIListHeader';
 import UILoadMoreButton from './components/buttons/UILoadMoreButton';
-import UILocalized, { UILocalizedService } from './helpers/UILocalized';
+import UILocalized from './helpers/UILocalized';
 import UIModalController from './controllers/UIModalController';
 import UINavigationBackButton from './components/navigation/UINavigationBackButton';
 import UINavigationBar from './components/navigation/UINavigationBar';
