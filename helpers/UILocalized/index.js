@@ -63,6 +63,7 @@ export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: an
     return preparedLanguages;
 }
 
+// All available languages
 const languages = prepareLocales<UILocalizedData>({ en, ru }, predefinedConstants);
 
 type LocalizedLangContent = { [string]: string };
@@ -190,6 +191,7 @@ type LocalizedStringsMethods = {
     getString(key: string, language: string): string | null,
 };
 
+// Enable only english language by default, other languages load in language service
 const localized: UILocalizedData &
     UILocalizedService &
     LocalizedStringsMethods = new UILocalizedService({ en });
