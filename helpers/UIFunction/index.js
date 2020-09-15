@@ -196,7 +196,7 @@ export default class UIFunction {
         // $FlowExpectedError
         if (!(number instanceof BigNumber) && (Math.abs(number) > 1)) { // Apply BigNumber conversion only for non-small numbers!
             try {
-                return new BigNumber(number.toFixed()).toFixed();
+                return new BigNumber(number.toString()).toString();
             } catch (error) {
                 // Failed to convert the number to string with BigNumber instance
             }
