@@ -1,5 +1,5 @@
 // @flow
-import { Platform } from 'react-native';
+import { Platform, PixelRatio } from 'react-native';
 import SafeArea from 'react-native-safe-area';
 import MobileDetect from 'mobile-detect';
 import DeviceInfo from 'react-native-device-info';
@@ -108,5 +108,18 @@ export default class UIDevice {
 
     static systemVersion(): string {
         return SYSTEM_VERSION;
+    }
+
+    static imageScale(): string {
+        const ratio = PixelRatio.get();
+
+        let scale = '@3x';
+        if (ratio < 2) {
+            scale = '';
+        } else if (ratio < 3) {
+            scale = '@2x';
+        }
+
+        return scale;
     }
 }
