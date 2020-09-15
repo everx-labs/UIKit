@@ -31,7 +31,7 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         country: 'FR',
     },
     it: {
-        name: 'Italia',
+        name: 'Italiano',
         country: 'IT',
     },
     tr: {
