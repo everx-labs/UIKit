@@ -64,7 +64,8 @@ export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: an
 }
 
 // All available languages
-const languages = prepareLocales<UILocalizedData>({ en, ru }, predefinedConstants);
+const availableLanguages = { en, ru };
+const languages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
 
 type LocalizedLangContent = { [string]: string };
 
