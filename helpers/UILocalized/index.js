@@ -12,25 +12,64 @@ import type { StringLocaleInfo, NumberPartsOptions, NumberParts } from '../UIFun
 import type { UILocalizedData } from './types';
 import { predefinedConstants } from './constants';
 
-const languageNames = { en: 'English', ru: 'Русский' };
+export type LanguageInfo = {
+    name: string,
+    country: string,
+}
 
-export type Language = $Keys<typeof languageNames>;
+export const languagesInfo: { [string]: LanguageInfo } = {
+    en: {
+        name: 'English',
+        country: 'US',
+    },
+    ru: {
+        name: 'Русский',
+        country: 'RU',
+    },
+    fr: {
+        name: 'Français',
+        country: 'FR',
+    },
+    it: {
+        name: 'Italiano',
+        country: 'IT',
+    },
+    tr: {
+        name: 'Türk',
+        country: 'TR',
+    },
+    kr: {
+        name: '한국어',
+        country: 'KR',
+    },
+};
 
-const languages: { [Language]: UILocalizedData} = { en, ru };
+export type Language = $Keys<typeof languagesInfo>;
+export type Languages<T> = { [Language]: T }
 
-Object.keys(languages).forEach((lang) => {
-    let content = JSON.stringify(languages[lang]);
+export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: any }): Languages<T> {
+    const preparedLanguages: Languages<T> = {};
 
-    Object.keys(predefinedConstants).forEach((key: string) => {
-        content = content.replace(new RegExp(`{${key}}`, 'g'), predefinedConstants[key]);
+    Object.keys(langs).forEach((lang: Language) => {
+        let content = JSON.stringify(langs[lang]) || '';
+
+        Object.keys(constants).forEach((key: string) => {
+            content = content.replace(new RegExp(`{${key}}`, 'g'), constants[key]);
+        });
+
+        preparedLanguages[lang] = JSON.parse(content);
     });
 
-    languages[lang] = JSON.parse(content);
-});
+    return preparedLanguages;
+}
+
+// All available languages
+const availableLanguages = { en, ru };
+const languages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
 
 type LocalizedLangContent = { [string]: string };
 
-class UILocalized extends LocalizedStrings {
+export class UILocalizedService extends LocalizedStrings {
     // eslint-disable-next-line class-methods-use-this
     amountToLocale(
         number: BigNumber | string | number,
@@ -62,18 +101,10 @@ class UILocalized extends LocalizedStrings {
         return parts?.valueString || `${number}`;
     }
 
-    setLanguages(langs: string[]) {
+    setLanguages(langs: Language[]) {
         const props = {};
         langs.forEach((language) => {
-            let strings = null;
-            if (language === 'en') {
-                strings = languages.en;
-            } else if (language === 'ru') {
-                strings = languages.ru;
-            } else {
-                // not supported
-            }
-            props[language] = strings;
+            props[language] = languages[language] || null;
         });
         this.setContent(props);
     }
@@ -109,7 +140,7 @@ class UILocalized extends LocalizedStrings {
     setLocalizedStrings(
         localizedStrings: { [string]: LocalizedLangContent },
         defaultLang: string = 'en',
-        preferedLanguage: string = this.getInterfaceLanguage(),
+        preferredLanguage: string = this.getInterfaceLanguage(),
     ) {
         const localizedStringsWithDefaultLang = {
             [defaultLang]: localizedStrings[defaultLang],
@@ -121,7 +152,7 @@ class UILocalized extends LocalizedStrings {
             localizedStringsWithDefaultLang[lang] = localizedStrings[lang];
         });
         this.setContent(localizedStringsWithDefaultLang);
-        this.setLanguage(preferedLanguage);
+        this.setLanguage(preferredLanguage);
     }
 
     checkConsistency(localizedStrings: {
@@ -161,9 +192,10 @@ type LocalizedStringsMethods = {
     getString(key: string, language: string): string | null,
 };
 
+// Enable only english language by default, other languages load in language service
 const localized: UILocalizedData &
-    UILocalized &
-    LocalizedStringsMethods = new UILocalized(languages);
+    UILocalizedService &
+    LocalizedStringsMethods = new UILocalizedService({ en });
 
 Moment.locale(localized.getLocale());
 

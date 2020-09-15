@@ -91,7 +91,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         }
     }
 
-    static getAllCountries() {
+    static getAllCountries(): Country[] {
         return getAllCountries();
     }
 

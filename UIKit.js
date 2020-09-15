@@ -151,6 +151,8 @@ import type { UISticker, UIStickerPackage } from './components/chat/extras';
 const UIMenuView = UIPopoverMenu;
 const UIMenuBackground = UIPopoverBackground;
 
+export * from './helpers/UILocalized';
+
 export {
     UIAccountPicker,
     UIAccountPickerScreen,
