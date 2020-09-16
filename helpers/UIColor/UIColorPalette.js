@@ -80,6 +80,8 @@ const UIColorPalette = {
         darkWhiteLight: '#F5F5F5',
         lightPositive: '#2EAC09',
         darkPositive: '#2EAC09', // TODO: ask Eugene about the real value
+        lightBrake: '#D6DADC',
+        darkBrake: '#D6DADC', // TODO: ask Eugene about the real value
     },
     avatar: [
         '#EF5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#1E88E5', '#0288D1',
