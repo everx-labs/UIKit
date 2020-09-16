@@ -16,10 +16,12 @@ import UIFont from '../../../helpers/UIFont';
 import UIComponent from '../../UIComponent';
 import UIProfileInitials from '../../profile/UIProfileInitials';
 import UILabel from '../../text/UILabel';
+import UIAssets from '../../../assets/UIAssets';
 
 type Props = {
     amount: string | React$Element<any>,
     comment: string,
+    encrypted: boolean,
     description: string,
     title: string,
     initials: string,
@@ -45,6 +47,12 @@ const commentWrapper = {
     paddingVertical: UIConstant.smallContentOffset(),
 };
 
+const keyThin = {
+    flexBasis: UIConstant.tinyButtonHeight(),
+    paddingLeft: UIConstant.smallContentOffset(),
+    marginLeft: 'auto',
+};
+
 const tableStyles = StyleSheet.create({
     avatarContainer: {
         width: UIConstant.mediumAvatarSize(),
@@ -61,6 +69,7 @@ const tableStyles = StyleSheet.create({
         paddingVertical: UIConstant.normalContentOffset(),
     },
     commentWrapper,
+    keyThin,
 });
 
 const detailsStyles = StyleSheet.create({
@@ -79,12 +88,14 @@ const detailsStyles = StyleSheet.create({
         paddingVertical: UIConstant.normalContentOffset(),
     },
     commentWrapper,
+    keyThin,
 });
 
 export default class UITransactionView extends UIComponent<Props, State> {
     static defaultProps = {
         amount: '',
         comment: '',
+        encrypted: false,
         description: '',
         title: '',
         icon: null,
@@ -109,6 +120,10 @@ export default class UITransactionView extends UIComponent<Props, State> {
 
     get comment(): string {
         return this.props.comment || '';
+    }
+
+    get encrypted(): boolean {
+        return this.props.encrypted;
     }
 
     get description(): string {
@@ -180,7 +195,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
     }
 
     renderComment() {
-        const { comment } = this;
+        const { comment, encrypted } = this;
         if (!comment) {
             return null;
         }
@@ -191,7 +206,13 @@ export default class UITransactionView extends UIComponent<Props, State> {
                         role={UILabel.Role.TinySecondary}
                         text={this.comment}
                         numberOfLines={1}
+                        style={encrypted ? UIStyle.margin.rightNormal() : null}
                     />
+                    {encrypted && (
+                        <View style={this.styles.keyThin}>
+                            <Image source={UIAssets.keyThinDark} />
+                        </View>
+                    )}
                 </View>
             </View>
         );
