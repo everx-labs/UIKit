@@ -1,5 +1,5 @@
 import React from 'react';
-import StylePropType from 'react-style-proptype';
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIToggle from '../UIToggle';
 import UIDetailsSwitcher from '../UIDetailsSwitcher';
@@ -9,7 +9,7 @@ type Props = {
   /** container style
   @default null
   */
-  style?: ?StylePropType,
+  style?: ViewStyleProp,
   /** Text along with the toggle
   @default ''
   */
@@ -34,6 +34,10 @@ type Props = {
   @default UIDetailsToggle.Position.Right
   */
   switcherPosition?: string,
+  /** Details text style
+   @default null
+   */
+  textStyle?: TextStyleProp,
   /** Defines whether toggle is colored or default
   * @default false
   */
@@ -82,6 +86,7 @@ UIDetailsToggle.defaultProps = {
     switcherPosition: UIDetailsToggle.Position.Right,
     colored: false,
     style: null,
+    textStyle: null,
     details: '',
     comments: '',
     active: false,
