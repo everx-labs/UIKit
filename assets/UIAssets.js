@@ -5,6 +5,7 @@ const icoVisa = require('./bank-cards/ico-visa/visa.png');
 const icoMaestro = require('./bank-cards/ico-maestro/maestro.png');
 const btnClose = require('./btn_close/btn_close.png');
 const keyThin = require('./key-thin/key-thin.png');
+const keyThinDark = require('./key-thin/key-thin-dark.png');
 const icoDelete = require('./ico-delete/delete.png');
 
 // Security
@@ -49,6 +50,10 @@ export default class UIAssets {
 
     static get keyThin() {
         return keyThin;
+    }
+
+    static get keyThinDark() {
+        return keyThinDark;
     }
 
     static get icoDelete() {
