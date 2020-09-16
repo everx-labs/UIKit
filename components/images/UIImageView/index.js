@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Platform, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { Platform, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UISpinnerOverlay from '../../UISpinnerOverlay';
@@ -11,14 +11,12 @@ import UIAlertView from '../../popup/UIAlertView';
 import UIColor from '../../../helpers/UIColor';
 import UIComponent from '../../UIComponent';
 import UIStyle from '../../../helpers/UIStyle';
-import { UIConstant } from '../../../UIKit';
+import UIConstant from '../../../helpers/UIConstant';
+import UIImage from '../UIImage';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
 const LightboxMobile = Platform.OS !== 'web' ? require('react-native-lightbox').default : null;
-const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
-
-const UIImage: any = Platform.OS === 'web' ? Image : FastImage;
 
 const styles = StyleSheet.create({
     photoContainer: {

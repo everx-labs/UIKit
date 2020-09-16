@@ -2,6 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import { View } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIPureComponent from '../../UIPureComponent';
 import UIImageView from '../../images/UIImageView';
@@ -15,6 +16,7 @@ type Props = {
     image: ?any,
     imageSize?: UIChatImageSize,
     additionalInfo?: ChatAdditionalInfo,
+    style?: ViewStyleProp | ViewStyleProp[],
 }
 
 type State = {
@@ -87,13 +89,16 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
             <UIImageView
                 resizeMode="contain"
                 resizeMethod="auto"
-                photoStyle={{
-                    borderRadius: UIConstant.borderRadius(),
-                    width,
-                    height,
-                    maxHeight: maxS,
-                    maxWidth: maxS,
-                }}
+                photoStyle={[
+                    {
+                        borderRadius: UIConstant.borderRadius(),
+                        width,
+                        height,
+                        maxHeight: maxS,
+                        maxWidth: maxS,
+                    },
+                    this.props.style,
+                ]}
                 source={image}
                 key={`imageContent${this.getID()}`}
             />
