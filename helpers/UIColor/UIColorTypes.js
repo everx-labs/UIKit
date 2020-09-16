@@ -41,6 +41,7 @@ export type UIColorThemeData = {
         quinary: UIColorData,
         whiteLight: UIColorData,
         positive: UIColorData,
+        brake: UIColorData,
     },
     button: {
         background: {

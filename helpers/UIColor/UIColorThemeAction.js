@@ -34,6 +34,7 @@ const UIColorThemeAction: UIColorThemeData = {
         quinary: UIColorPalette.background.darkQuinary,
         whiteLight: UIColorPalette.background.darkWhiteLight,
         positive: UIColorPalette.background.darkPositive,
+        brake: UIColorPalette.background.darkBrake,
     },
     button: {
         background: {

@@ -348,6 +348,10 @@ export default class UIColor {
         return themes[theme || current].background.positive;
     }
 
+    static backgroundBrake(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.brake;
+    }
+
     // border
     static borderBottomLightColor(theme: ?UIColorThemeNameType) {
         const { borderBottom } = themes[theme || current];
