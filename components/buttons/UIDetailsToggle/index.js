@@ -1,5 +1,4 @@
 import React from 'react';
-import StylePropType from 'react-style-proptype';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIToggle from '../UIToggle';
