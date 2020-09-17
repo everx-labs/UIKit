@@ -226,7 +226,9 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                         textStyle={UIStyle.text.bodyMedium()}
                         testID={action.testID}
                         onPress={action.onPress}
+                        icon={action.icon}
                         title={action.title}
+                        disableIconColor
                     />
                 ))}
             </UIButtonGroup>
