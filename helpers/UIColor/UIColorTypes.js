@@ -36,6 +36,7 @@ export type UIColorThemeData = {
     },
     background: {
         primary: UIColorData,
+        primaryInverted: UIColorData,
         secondary: UIColorData,
         tertiary: UIColorData,
         quarter: UIColorData,

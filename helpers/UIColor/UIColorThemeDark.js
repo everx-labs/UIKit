@@ -30,6 +30,7 @@ const UIColorThemeDark: UIColorThemeData = {
     },
     background: {
         primary: UIColorPalette.background.darkPrimary,
+        primaryInverted: UIColorPalette.background.darkPrimaryInverted,
         secondary: UIColorPalette.background.darkSecondary,
         tertiary: UIColorPalette.background.darkTertiary,
         quarter: UIColorPalette.background.darkQuarter,

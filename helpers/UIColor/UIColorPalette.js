@@ -48,6 +48,7 @@ const UIColorPalette = {
     text: {
         lightPrimary: '#20262A',
         darkPrimary: '#FFFFFF',
+        darkPrimaryInverted: '#EBEDEE',
         lightParagraph: '#000000',
         darkParagraph: '#FFFFFF',
         lightSecondary: '#364046',
@@ -69,7 +70,9 @@ const UIColorPalette = {
     },
     background: {
         lightPrimary: '#FFFFFF',
+        lightPrimaryInverted: '#15191C',
         darkPrimary: '#263238',
+        darkPrimaryInverted: '#EBEDEE',
         lightSecondary: '#F7F8F8',
         darkSecondary: '#232E33',
         lightTertiary: '#F1F2F3',

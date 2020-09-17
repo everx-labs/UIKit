@@ -263,7 +263,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 </View>
 
                 <View
-                    style={[UIStyle.Common.flexRow(), UIStyle.Common.justifySpaceBetween()]}
+                    style={[UIStyle.Common.flexRow(), UIStyle.Common.justifyStart()]}
                 >
                     {!isAborted && !isSending && (
                         <UILabel
