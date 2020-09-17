@@ -26,6 +26,7 @@ const UIColorThemeLight: UIColorThemeData = {
         placeholder: UIColorPalette.text.lightTertiary,
         accent: UIColorPalette.text.lightAccent,
         positive: UIColorPalette.text.lightPositive,
+        negative: UIColorPalette.text.lightNegative,
     },
     background: {
         primary: UIColorPalette.background.lightPrimary,
@@ -35,6 +36,7 @@ const UIColorThemeLight: UIColorThemeData = {
         quinary: UIColorPalette.background.lightQuinary,
         whiteLight: UIColorPalette.background.lightWhiteLight,
         positive: UIColorPalette.background.lightPositive,
+        negative: UIColorPalette.background.lightNegative,
         brake: UIColorPalette.background.lightBrake,
     },
     button: {

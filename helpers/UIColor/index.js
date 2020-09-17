@@ -319,6 +319,10 @@ export default class UIColor {
         return themes[theme || current].text.positive;
     }
 
+    static textNegative(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].text.negative;
+    }
+
     // Background colors
     static backgroundPrimary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.primary;
@@ -346,6 +350,10 @@ export default class UIColor {
 
     static backgroundPositive(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.positive;
+    }
+
+    static backgroundNegative(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.negative;
     }
 
     static backgroundBrake(theme?: ?UIColorThemeNameType): UIColorData {

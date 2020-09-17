@@ -32,6 +32,7 @@ export type UIColorThemeData = {
         placeholder: UIColorData,
         accent: UIColorData,
         positive: UIColorData,
+        negative: UIColorData,
     },
     background: {
         primary: UIColorData,
@@ -41,6 +42,7 @@ export type UIColorThemeData = {
         quinary: UIColorData,
         whiteLight: UIColorData,
         positive: UIColorData,
+        negative: UIColorData,
         brake: UIColorData,
     },
     button: {
