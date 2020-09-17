@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     animatedView: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: UIConstant.mediumCellHeight(),
+        height: UIConstant.bigCellHeight(),
         flexDirection: 'row',
     },
 });

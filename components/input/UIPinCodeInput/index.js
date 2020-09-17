@@ -17,7 +17,6 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UITextStyle from '../../../helpers/UITextStyle';
 import UILabel from '../../text/UILabel';
-import UILocalized from '../../../helpers/UILocalized';
 
 import UIPinCodeDots from './UIPinCodeDots';
 import UIAssets from '../../../assets/UIAssets';
@@ -57,8 +56,8 @@ type Props = {
 
 const styles = StyleSheet.create({
     key: {
-        width: UIConstant.extraLargeButtonHeight() * 1.25,
-        height: UIConstant.extraLargeButtonHeight() * 1.03,
+        width: 90, // 1 + 88 + 1
+        height: 74, // 1 + 72 + 1
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -239,8 +238,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderLabel() {
         return (
             <UILabel
-                style={UIStyle.Margin.bottomDefault()}
-                role={UILabel.Role.SecondaryBody}
+                role={UILabel.Role.Description}
                 text={this.props.pinTitle}
                 numberOfLines={1}
                 selectable={false}
@@ -268,9 +266,9 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             <UILabel
                 testID={this.props.commentTestID}
                 style={descStyle.descColor}
-                role={UILabel.Role.CaptionTertiary}
+                role={UILabel.Role.Caption}
                 text={description}
-                numberOfLines={2}
+                numberOfLines={1}
                 selectable={false}
             />
         );
