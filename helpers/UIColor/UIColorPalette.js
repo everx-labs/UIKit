@@ -68,7 +68,7 @@ const UIColorPalette = {
     background: {
         lightPrimary: '#FFFFFF',
         darkPrimary: '#263238',
-        lightSecondary: '#FAFAFA',
+        lightSecondary: '#F7F8F8',
         darkSecondary: '#232E33',
         lightTertiary: '#F1F2F3',
         darkTertiary: '#2F3D45',
