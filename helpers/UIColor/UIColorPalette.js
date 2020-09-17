@@ -64,6 +64,8 @@ const UIColorPalette = {
         darkNeutral: '#ABB4B8', // TODO: ask Eugene about the real value
         lightPositive: '#228007',
         darkPositive: '#228007', // TODO: ask Eugene about the real value
+        lightNegative: '#CE0014',
+        darkNegative: '#CE0014', // TODO: ask Eugene about the real value
     },
     background: {
         lightPrimary: '#FFFFFF',
@@ -80,6 +82,8 @@ const UIColorPalette = {
         darkWhiteLight: '#F5F5F5',
         lightPositive: '#2EAC09',
         darkPositive: '#2EAC09', // TODO: ask Eugene about the real value
+        lightNegative: '#CE0014',
+        darkNegative: '#CE0014', // TODO: ask Eugene about the real value
         lightBrake: '#D6DADC',
         darkBrake: '#D6DADC', // TODO: ask Eugene about the real value
     },

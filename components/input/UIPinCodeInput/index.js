@@ -249,9 +249,9 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderDescription() {
         // eslint-disable-next-line no-nested-ternary
         const color = this.state.wrongPin
-            ? UIColor.error()
+            ? UIColor.textNegative()
             : this.state.rightPin
-                ? UIColor.success()
+                ? UIColor.textPositive()
                 : this.props.pinDescriptionColor;
 
         const description = this.state.description || this.props.pinDescription;

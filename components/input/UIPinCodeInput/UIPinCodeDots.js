@@ -92,9 +92,9 @@ export default class UIPinCodeDots extends React.Component<
         for (let i = 0; i < length; i += 1) {
             let dotColor = UIColor.primary();
             if (this.state.wrongPin) {
-                dotColor = UIColor.error();
+                dotColor = UIColor.backgroundNegative();
             } else if (this.state.rightPin) {
-                dotColor = UIColor.success();
+                dotColor = UIColor.backgroundPositive();
             }
 
             dots.push(<UIPinCodeDot
