@@ -42,6 +42,7 @@ type Props = {
     onPress?: (details: DetailsRow) => void,
     leftCellStyle?: ViewStyleProp,
     rightCellStyle?: ViewStyleProp,
+    rowContainerStyle?: ViewStyleProp,
     rowSeparator?: boolean,
 }
 
@@ -222,7 +223,12 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderRows() {
-        const { detailsList, rightCellStyle, rowSeparator } = this.props;
+        const {
+            detailsList,
+            rightCellStyle,
+            rowSeparator,
+            rowContainerStyle,
+        } = this.props;
         return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
                 caption, value, captionType, key, showAlways, component,
@@ -242,6 +248,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     style={[
                         UIStyle.padding.vertical(),
                         UIStyle.common.flexRow(),
+                        rowContainerStyle,
                         marginTopStyle,
                         index > 0 && rowSeparator && styles.borderTop,
                     ]}
