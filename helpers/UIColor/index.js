@@ -327,6 +327,9 @@ export default class UIColor {
     static backgroundPrimary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.primary;
     }
+    static backgroundPrimaryInverted(theme?: ?UIColorThemeNameType): UIColorData {
+        return themes[theme || current].background.primaryInverted;
+    }
 
     static backgroundSecondary(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.secondary;

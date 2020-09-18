@@ -30,6 +30,7 @@ const UIColorThemeLight: UIColorThemeData = {
     },
     background: {
         primary: UIColorPalette.background.lightPrimary,
+        primaryInverted: UIColorPalette.background.lightPrimaryInverted,
         secondary: UIColorPalette.background.lightSecondary,
         tertiary: UIColorPalette.background.lightTertiary,
         quarter: UIColorPalette.background.lightQuarter,

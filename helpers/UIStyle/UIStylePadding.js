@@ -94,7 +94,7 @@ export const paddingStyles = {
         paddingBottom: UIConstant.hugeContentOffset(),
     },
     paddingRightSmall: {
-        paddingLeft: UIConstant.smallContentOffset(),
+        paddingRight: UIConstant.smallContentOffset(),
     },
     paddingRightDefault: {
         paddingRight: UIConstant.contentOffset(),
