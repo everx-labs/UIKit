@@ -33,6 +33,7 @@ type Props = DetailsProps & {
     inputHidden?: boolean,
     showBorder?: boolean,
     hasStickers?: boolean,
+    stickersActive?: boolean,
 
     quickAction?: ?MenuItemType[],
 
@@ -45,7 +46,6 @@ type State = ActionState & {
     inputHeight: number,
     inputWidth: number,
     heightChanging: boolean,
-    stickersVisible: boolean,
 };
 
 const styles = StyleSheet.create({
@@ -116,7 +116,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             inputHeight: UIConstant.smallCellHeight(),
             inputWidth: UIConstant.toastWidth(),
             heightChanging: false,
-            stickersVisible: false,
         };
     }
 
@@ -168,12 +167,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         this.setInputHeight(height);
     };
 
-    onFocus = () => {
-        this.setFocused();
-        this.props.onFocus();
-        this.onStickersPress(false);
-    }
-
     onSendText(text: string) {
         const { onSendText } = this.props;
         if (onSendText) {
@@ -183,8 +176,6 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
     onStickersPress = (newState: boolean) => {
         const { onStickersPress } = this.props;
-
-        this.setStateSafely({ stickersVisible: newState });
         if (onStickersPress) {
             onStickersPress(newState);
         }
@@ -326,16 +317,16 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             return null;
         }
 
-        const { stickersVisible } = this.state;
+        const { stickersActive } = this.props;
         return (
             <TouchableOpacity
                 style={styles.buttonContainer}
                 testID="stickers_btn"
-                onPress={() => this.onStickersPress(!stickersVisible)}
+                onPress={() => this.onStickersPress(!stickersActive)}
             >
                 <Image
                     style={styles.icon}
-                    source={stickersVisible ? stickerDisabled : stickerEnabled}
+                    source={!stickersActive ? stickerEnabled : stickerDisabled}
                 />
             </TouchableOpacity>
         );
