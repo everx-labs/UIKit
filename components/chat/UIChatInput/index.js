@@ -169,6 +169,8 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     };
 
     onFocus = () => {
+        this.setFocused();
+        this.props.onFocus();
         this.onStickersPress(false);
     }
 
