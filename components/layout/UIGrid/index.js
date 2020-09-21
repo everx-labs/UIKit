@@ -11,15 +11,15 @@ const ROW_GUTTER = 0;
 const SIZINGS = {
     C6: {
         minWidth: 320,
-        maxWidth: 1200,
+        maxWidth: 992,
         maxColumns: 6,
         bounds: [
             {
-                width: 600,
+                width: 496,
                 columns: 3,
             },
             {
-                width: 1200,
+                width: 992,
                 columns: 6,
             },
         ],
