@@ -65,7 +65,7 @@ function prepareArray(array: any[], options: Options) {
     return array.map(item => prepareValue(item, options));
 }
 
-function prepareValue(value: Object | Array<any> | string, options: Options) {
+function prepareValue(value: Object | Array<any> | string | boolean, options: Options) {
     if (Array.isArray(value)) {
         return prepareArray(value, options);
     }
@@ -94,6 +94,10 @@ function prepareValue(value: Object | Array<any> | string, options: Options) {
 
     if (typeof value === 'object') {
         return prepareObject(value, options);
+    }
+
+    if (typeof value === 'boolean') {
+        return value;
     }
 
     throw new Error('Value of a wrong type was passed');
