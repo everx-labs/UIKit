@@ -63,11 +63,11 @@ export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: an
     return preparedLanguages;
 }
 
-function prepareKey(object: { [string]: any }, constants: { [string]: any }) {
+function prepareKeys(object: { [string]: any }, constants: { [string]: any }) {
     Object.keys(object).forEach(key => {
         if (Array.isArray(object[key])) {
             object[key].forEach(obj => {
-                prepareKey(obj, constants);
+                prepareKeys(obj, constants);
             })
         }
 
@@ -78,14 +78,14 @@ function prepareKey(object: { [string]: any }, constants: { [string]: any }) {
         }
 
         if (typeof object[key] === "object") {
-            prepareKey(object[key], constants);
+            prepareKeys(object[key], constants);
         }
     })
 }
 
 export function prepareImages<T>(langs: Languages<T>, constants: { [string]: any }): Languages<T> {
     Object.keys(langs).forEach(lang => {
-        prepareKey(langs[lang], constants);
+        prepareKeys(langs[lang], constants);
     })
 }
 
