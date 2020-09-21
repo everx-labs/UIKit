@@ -64,9 +64,7 @@ export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: an
 }
 
 function prepareKey(object: { [string]: any }, constants: { [string]: any }) {
-    // console.info(Object.keys(constants));
     Object.keys(object).forEach(key => {
-        // console.info('prepareKey', key, typeof object[key]);
         if (Array.isArray(object[key])) {
             object[key].forEach(obj => {
                 prepareKey(obj, constants);
