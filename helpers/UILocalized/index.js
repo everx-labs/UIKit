@@ -96,6 +96,10 @@ function prepareValue(value: Object | Array<any> | string, options: Options) {
         return prepareObject(value, options);
     }
 
+    if (typeof value === 'boolean') {
+        return value;
+    }
+
     throw new Error('Value of a wrong type was passed');
 }
 
