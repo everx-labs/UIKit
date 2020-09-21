@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable no-use-before-define */
 import BigNumber from 'bignumber.js';
 import LocalizedStrings from 'react-native-localization';
 import Moment from 'moment';
@@ -54,10 +55,9 @@ interface Options {
 
 function prepareObject(object: { [string]: any }, options: Options) {
     const result = {};
-    Object.keys(object).forEach(key => {
+    Object.keys(object).forEach((key) => {
         result[key] = prepareValue(object[key], options);
-    })
-
+    });
     return result;
 }
 
@@ -65,34 +65,38 @@ function prepareArray(array: any[], options: Options) {
     return array.map(item => prepareValue(item, options));
 }
 
-function prepareValue(value: Object | Array | string, options: Options) {
+function prepareValue(value: Object | Array<any> | string, options: Options) {
     if (Array.isArray(value)) {
-        return prepareArray(value, options)
+        return prepareArray(value, options);
     }
 
-    if (typeof value === "string") {
-        if (options.images && /^{IMG_[A-Z]*}$/.test(value)) {
+    if (typeof value === 'string' || value instanceof String) {
+        const { images } = options;
+        if (images && /^{IMG_[A-Z]*}$/.test(value)) {
             const key = value.replace(/[{}]/g, '');
-            return options.images[key];
+            return images[key];
         }
 
-        if (options.constants) {
+        const { constants } = options;
+        if (constants) {
             const foundConstants = value.match(/{([A-Z0-9_]*)}/g);
 
             if (foundConstants) {
-                foundConstants.forEach(constant => {
+                foundConstants.forEach((constant) => {
                     const key = constant.replace(/[{}]/g, '');
-                    value.replaceAll(constant, options.constants[key]);
-                })
+                    value.replace(new RegExp(constant, 'g'), constants[key]);
+                });
             }
         }
 
         return value;
     }
 
-    if (typeof value === "object") {
+    if (typeof value === 'object') {
         return prepareObject(value, options);
     }
+
+    throw new Error('Value of a wrong type was passed');
 }
 
 export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: any }): Languages<T> {
@@ -112,17 +116,23 @@ export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: an
 }
 
 export function prepareImages<T>(langs: Languages<T>, constants: { [string]: any }): Languages<T> {
-    Object.keys(langs).forEach(lang => {
-        prepareObject(langs[lang], constants);
-    })
+    const preparedLanguages: Languages<T> = {};
+
+    Object.keys(langs).forEach((lang) => {
+        // $FlowExpectedError
+        preparedLanguages[lang] = prepareObject(langs[lang], constants);
+    });
+
+    return preparedLanguages;
 }
 
 export function prepare<T>(langs: Languages<T>, options: Options): Languages<T> {
     const preparedLanguages: Languages<T> = {};
 
-    Object.keys(langs).forEach(lang => {
+    Object.keys(langs).forEach((lang) => {
+        // $FlowExpectedError
         preparedLanguages[lang] = prepareObject(langs[lang], options);
-    })
+    });
 
     return preparedLanguages;
 }
