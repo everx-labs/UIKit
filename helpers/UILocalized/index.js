@@ -82,7 +82,7 @@ function prepareValue(value: Object | Array | string, options: Options) {
             if (foundConstants) {
                 foundConstants.forEach(constant => {
                     const key = constant.replace(/[{}]/g, '');
-                    value.replace(constant, options.constants[key]);
+                    value.replaceAll(constant, options.constants[key]);
                 })
             }
         }
