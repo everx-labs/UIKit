@@ -47,6 +47,54 @@ export const languagesInfo: { [string]: LanguageInfo } = {
 export type Language = $Keys<typeof languagesInfo>;
 export type Languages<T> = { [Language]: T }
 
+interface Options {
+    constants?: { [string]: string },
+    images?: { [string]: any },
+}
+
+function prepareObject(object: { [string]: any }, options: Options) {
+    const result = {};
+    Object.keys(object).forEach(key => {
+        result[key] = prepareValue(object[key], options);
+    })
+
+    return result;
+}
+
+function prepareArray(array: any[], options: Options) {
+    return array.map(item => prepareValue(item, options));
+}
+
+function prepareValue(value: Object | Array | string, options: Options) {
+    if (Array.isArray(value)) {
+        return prepareArray(value, options)
+    }
+
+    if (typeof value === "string") {
+        if (options.images && /^{IMG_[A-Z]*}$/.test(value)) {
+            const key = value.replace(/[{}]/g, '');
+            return options.images[key];
+        }
+
+        if (options.constants) {
+            const foundConstants = value.match(/{([A-Z0-9_]*)}/g);
+
+            if (foundConstants) {
+                foundConstants.forEach(constant => {
+                    const key = constant.replace(/[{}]/g, '');
+                    value.replaceAll(constant, options.constants[key]);
+                })
+            }
+        }
+
+        return value;
+    }
+
+    if (typeof value === "object") {
+        return prepareObject(value, options);
+    }
+}
+
 export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: any }): Languages<T> {
     const preparedLanguages: Languages<T> = {};
 
@@ -59,6 +107,22 @@ export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: an
 
         preparedLanguages[lang] = JSON.parse(content);
     });
+
+    return preparedLanguages;
+}
+
+export function prepareImages<T>(langs: Languages<T>, constants: { [string]: any }): Languages<T> {
+    Object.keys(langs).forEach(lang => {
+        prepareObject(langs[lang], constants);
+    })
+}
+
+export function prepare<T>(langs: Languages<T>, options: Options): Languages<T> {
+    const preparedLanguages: Languages<T> = {};
+
+    Object.keys(langs).forEach(lang => {
+        preparedLanguages[lang] = prepareObject(langs[lang], options);
+    })
 
     return preparedLanguages;
 }
