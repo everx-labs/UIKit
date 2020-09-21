@@ -63,6 +63,34 @@ export function prepareLocales<T>(langs: Languages<T>, constants: { [string]: an
     return preparedLanguages;
 }
 
+function prepareKey(object: { [string]: any }, constants: { [string]: any }) {
+    // console.info(Object.keys(constants));
+    Object.keys(object).forEach(key => {
+        // console.info('prepareKey', key, typeof object[key]);
+        if (Array.isArray(object[key])) {
+            object[key].forEach(obj => {
+                prepareKey(obj, constants);
+            })
+        }
+
+        if (typeof object[key] === "string") {
+            if (/^{IMG_[A-Z]*}$/.test(object[key])) {
+                object[key] = constants[object[key].replace(/[{}]/g, '')];
+            }
+        }
+
+        if (typeof object[key] === "object") {
+            prepareKey(object[key], constants);
+        }
+    })
+}
+
+export function prepareImages<T>(langs: Languages<T>, constants: { [string]: any }): Languages<T> {
+    Object.keys(langs).forEach(lang => {
+        prepareKey(langs[lang], constants);
+    })
+}
+
 // All available languages
 const availableLanguages = { en, ru };
 const languages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
