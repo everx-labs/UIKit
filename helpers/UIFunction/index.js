@@ -45,6 +45,7 @@ type NumberFormatInfo = {
     grouping: string,
     thousands: string,
     decimal: string,
+    decimalGrouping: string,
 };
 
 // This stores the order of the date and the separator character
@@ -210,9 +211,12 @@ export default class UIFunction {
             return null;
         }
         let normalized = UIFunction.replaceAll(`${s}`, ' ', '');
-        const { grouping, thousands, decimal } = localeInfo.numbers;
+        const {
+            grouping, thousands, decimal, decimalGrouping,
+        } = localeInfo.numbers;
         normalized = UIFunction.replaceAll(normalized, grouping, '');
         normalized = UIFunction.replaceAll(normalized, thousands, '');
+        normalized = UIFunction.replaceAll(normalized, decimalGrouping, '');
         normalized = normalized.replace(decimal, '.');
         return normalized;
     }
@@ -284,7 +288,8 @@ export default class UIFunction {
             ? localeInfo.numbers.decimal
             : '';
         const decimalString = result.decimal || '';
-        result.valueString = `${integerString}${separatorString}${decimalString}`;
+        const decFormatted = decimalString.match(/.{1,3}/g)?.join(localeInfo.numbers.decimalGrouping) || '';
+        result.valueString = `${integerString}${separatorString}${decFormatted}`;
         // Return result
         return result;
     }
