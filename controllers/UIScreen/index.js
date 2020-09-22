@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { Platform, ScrollView, View, StyleSheet } from 'react-native';
+import { Platform, View, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIController from '../../controllers/UIController';
@@ -199,13 +200,13 @@ export default class UIScreen<Props, State>
         const scrollStyle = this.isScrollDisabled() ? styles.scrollDisabled : null;
         return (
             <View
-                style={UIStyle.common.flex()}
+                style={UIStyle.flex.x1()}
                 onLayout={this.onScreenLayoutDefault}
             >
                 {this.renderTopContent()}
                 <ScrollView
                     ref={(component) => { this.scrollView = component; }}
-                    style={[UIStyle.common.flex(), scrollStyle]}
+                    style={[UIStyle.flex.x1(), scrollStyle]}
                     contentContainerStyle={this.getContentContainerStyle()}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                     onScroll={this.onScrollDefault}
