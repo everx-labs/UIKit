@@ -65,9 +65,9 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         smartTruncator: true,
         animated: false,
         loading: false,
-        maxFractionalDigits: UIConstant.maxDecimalDigits(),
+        maxFractionalDigits: UIConstant.maxDecimalDigits() + 2, // +2 decimal grouping
         useMaxBalanceLength: true,
-        maxBalanceLength: UIConstant.maxDecimalDigits() + 2,
+        maxBalanceLength: UIConstant.maxDecimalDigits() + 4, // +1 number, sep, +2 decimal grouping
         icon: null,
     };
 
