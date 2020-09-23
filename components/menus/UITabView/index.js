@@ -131,8 +131,8 @@ const UITabView = ({
     );
 };
 
-UITabView.testIDs = {
-    tabTitle: (title: string) => `tabTitle_${title}`,
-};
+// UITabView.testIDs = {
+//     tabTitle: (title: string) => `tabTitle_${title}`,
+// };
 
 export default UITabView;
