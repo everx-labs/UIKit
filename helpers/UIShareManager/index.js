@@ -12,6 +12,7 @@ export type ShareOptions = {
     url: string,
     type: string,
     subject?: string,
+    excludedActivityTypes?: string[],
 };
 
 export default class UIShareManager {
