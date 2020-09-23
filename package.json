@@ -22,7 +22,8 @@
         "react-native-fast-image": "^7.0.2",
         "react-native-gesture-handler": "^1.7.0",
         "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
-        "react-native-safe-area": "^0.5.1"
+        "react-native-safe-area": "^0.5.1",
+        "react-native-share": "3.8.3"
     },
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
@@ -45,7 +46,6 @@
         "react-native-localization": "2.1.3",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-popup-dialog": "0.11.46",
-        "react-native-share": "3.8.3",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
         "react-style-proptype": "3.2.2",
