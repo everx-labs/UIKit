@@ -4,7 +4,7 @@ import { Platform, Share, Clipboard } from 'react-native';
 import UIToastMessage from '../../components/notifications/UIToastMessage';
 import UIShareScreen from './UIShareScreen';
 
-const RNShare = Platform.OS === 'web' ? undefined : require('react-native-share');
+const RNShare = Platform.OS === 'web' ? undefined : require('react-native-share').default;
 
 export type ShareOptions = {
     title?: string,
