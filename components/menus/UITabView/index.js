@@ -32,16 +32,16 @@ const styles = StyleSheet.create({
 });
 
 const UITabView = ({
-    pages,
+    pages = [],
     width,
     indicatorWidth,
     style,
     pageStyle,
-    initialIndex,
+    initialIndex = 0,
 }: TabViewProps) => {
     // const animatedIndex = useRef(new Animated.Value(initialIndex)).current;
     // const [animatedIndex] = useState<AnimatedValue>(new Animated.Value(initialIndex));
-    const [integerIndex, setIntegerIndex] = useState<number>(initialIndex);
+    const [integerIndex, setIntegerIndex] = useState<number>(initialIndex || 0);
     const animatedIndex = 0;
     // const integerIndex = 0;
 
@@ -129,12 +129,6 @@ const UITabView = ({
             {pagesComponent}
         </View>
     );
-};
-
-UITabView.defaultProps = {
-    pages: [],
-    width: 0,
-    initialIndex: 0,
 };
 
 UITabView.testIDs = {
