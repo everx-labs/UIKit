@@ -23,7 +23,7 @@
         "react-native-gesture-handler": "^1.7.0",
         "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
         "react-native-safe-area": "^0.5.1",
-        "react-native-share": "3.8.3"
+        "react-native-share": "^3.8.3"
     },
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
