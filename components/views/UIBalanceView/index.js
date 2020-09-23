@@ -65,7 +65,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         smartTruncator: true,
         animated: false,
         loading: false,
-        maxFractionalDigits: UIConstant.maxDecimalDigits() + 2, // +2 decimal grouping
+        maxFractionalDigits: UIConstant.maxDecimalDigits(),
         useMaxBalanceLength: true,
         maxBalanceLength: UIConstant.maxDecimalDigits() + 4, // +1 number, sep, +2 decimal grouping
         icon: null,
@@ -322,7 +322,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
 
     getSeparatorAndZeroes() {
         const { maxFractionalDigits, separator } = this.props;
-        const zeroes = '0'.repeat(maxFractionalDigits);
+        const zeroes = '0'.repeat(maxFractionalDigits).match(/.{1,3}/g)?.join('\u2009') || '';
         return `${maxFractionalDigits ? separator : ''}${zeroes}`;
     }
 
@@ -379,7 +379,7 @@ export default class UIBalanceView extends UIComponent<Props, State> {
             this.balance = balance;
             const stringParts = `${balance}`.split(separator);
             const formattedBalance = stringParts.length > 1
-                ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits)}`
+                ? `${stringParts[0]}${separator}${stringParts[1].substring(0, this.props.maxFractionalDigits + Math.max(0, Math.ceil(this.props.maxFractionalDigits / 3) - 1))}`
                 : `${balance}${this.getSeparatorAndZeroes()}`;
             const integer = formattedBalance.split(separator)[0];
             floorBalance = useMaxBalanceLength && integer.length >= maxBalanceLength
