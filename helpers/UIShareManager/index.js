@@ -1,9 +1,18 @@
 // @flow
-
 import { Platform, Share, Clipboard } from 'react-native';
 
 import UIToastMessage from '../../components/notifications/UIToastMessage';
 import UIShareScreen from './UIShareScreen';
+
+const RNShare = Platform.OS === 'web' ? undefined : require('react-native-share');
+
+export type ShareOptions = {
+    title?: string,
+    message?: string,
+    url: string,
+    type: string,
+    subject?: string,
+};
 
 export default class UIShareManager {
     // Private
@@ -36,6 +45,20 @@ export default class UIShareManager {
             UIShareScreen.share({ message, subtitle });
         } else {
             this.shareMessage(message, success);
+        }
+    }
+
+    static async shareImage(shareOptions: ShareOptions) {
+        if (Platform.OS === 'web') {
+            return;
+        }
+
+        try {
+            // $FlowExpectedError
+            const result = await RNShare.open(shareOptions);
+            console.log('[UIShareManager] Image successfully shared with result:', result);
+        } catch (error) {
+            console.warn('[UIShareManager] Failed to share image with error:', error);
         }
     }
 }

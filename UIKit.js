@@ -146,6 +146,7 @@ import type { UIFeedbackSubmitFunc } from './components/products/UIFeedback';
 import type { ContentOffset } from './controllers/UIScreen';
 import type { NumberParts, StringLocaleInfo } from './helpers/UIFunction';
 import type { UISticker, UIStickerPackage } from './components/chat/extras';
+import type { ShareOptions } from './helpers/UIShareManager';
 
 // deprecated
 const UIMenuView = UIPopoverMenu;
@@ -299,4 +300,5 @@ export type {
     UIFeedbackSubmitFunc,
     UISticker,
     UIStickerPackage,
+    ShareOptions,
 };
