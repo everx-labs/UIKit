@@ -36,6 +36,7 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         this.loadImage();
     }
 
@@ -63,8 +64,12 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         const { data } = this.state;
         if (image && !data) {
             const msg = additionalInfo?.message;
-            const imgData = msg?.info.sending ? { data: msg?.info.image } : await image(msg);
-            this.setStateSafely({ data: imgData.data });
+            try {
+                const imgData = msg?.info.sending ? { data: msg?.info.image } : await image(msg);
+                this.setStateSafely({ data: imgData.data });
+            } catch (error) {
+                console.error('Failed to load an image with error:', error);
+            }
         }
     }
 
