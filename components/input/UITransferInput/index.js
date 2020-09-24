@@ -123,7 +123,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
             return;
         }
 
-        this.setStateSafely({ valueString: parsed.valueString });
+        this.setStateSafely({ valueString: parsed.valueString.trim() });
 
         const newValue = parsed.value;
         if (this.props.onValueChange && this.getValue() !== newValue) {
