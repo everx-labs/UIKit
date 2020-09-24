@@ -31,6 +31,8 @@ type Props = ActionProps & {
     titleComponent?: React$Node,
     captionComponent?: React$Node,
     customComponent?: React$Node,
+    disableHighlight?: boolean,
+    titleIsText?: boolean,
 };
 
 type State = ActionState & {
@@ -196,8 +198,8 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                         ellipsizeMode="middle"
                         numberOfLines={1}
                         style={[
-                            UIStyle.text.smallMedium(),
-                            UIStyle.common.flex(),
+                            UIStyle.text.bodyMedium(),
+                            UIStyle.flex.x1(),
                             UIStyle.margin.rightDefault(),
                             this.getTitleColorStyle(),
                         ]}
