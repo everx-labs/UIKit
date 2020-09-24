@@ -77,18 +77,6 @@ export default class UITransferInput extends UIComponent<Props, State> {
         this.parseValue(this.getValue());
     }
 
-    componentDidUpdate(prevProps: Props) {
-        const newValue = this.getValue();
-        const { localeInfo } = this.props;
-        const localizedSeparator = localeInfo.numbers.decimal;
-        if (
-            prevProps.value !== newValue
-            && !new RegExp(`\\${localizedSeparator}(\\d*0+)?$`).test(this.state.valueString)
-        ) {
-            this.parseValue(newValue);
-        }
-    }
-
     // Getters
     getMaxDecimals(): number {
         return this.props.maxDecimals;
