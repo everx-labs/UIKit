@@ -75,11 +75,14 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
     },
     inputMsg: {
+        flex: 1,
         marginVertical: 0,
         paddingBottom: Platform.select({ // compensate mobile textContainer's default padding
             ios: UIConstant.normalContentOffset(),
+            default: UIConstant.tinyContentOffset(),
+        }),
+        paddingTop: Platform.select({ // compensate mobile textContainer's default padding
             android: UIConstant.normalContentOffset(),
-            web: UIConstant.tinyContentOffset(),
         }),
     },
     inputView: {
@@ -336,9 +339,9 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         if (this.props.inputHidden) {
             return null;
         }
-
+        const minHeight = Platform.OS === 'android' ? { height: this.state.inputHeight } : null;
         return (
-            <View>
+            <View style={minHeight}>
                 {this.renderAuxTextInput()}
                 {this.renderTextInput()}
             </View>
@@ -347,9 +350,9 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
 
     renderTextFragment(): React$Node {
         return (
-            <View style={[styles.container]}>
+            <View style={styles.container}>
                 {this.renderPlusMenu()}
-                <View style={[UIStyle.flex.x1(), styles.inputMsg]}>
+                <View style={styles.inputMsg}>
                     {this.renderInputArea()}
                 </View>
                 {this.renderStickerButton()}
