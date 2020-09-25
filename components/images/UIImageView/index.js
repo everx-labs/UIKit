@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Platform, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
+import { Platform, StyleSheet, View, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UISpinnerOverlay from '../../UISpinnerOverlay';
@@ -72,6 +72,12 @@ type PickerResponse = {
     error: string,
     uri: string,
 };
+
+// This is used to calculate the height of the 
+// navigation bar (bottom of screen) on Android.
+const screenHeight = Dimensions.get('screen').height;
+const windowHeight = Dimensions.get('window').height;
+const navbarHeight = (screenHeight - windowHeight) - StatusBar.currentHeight;
 
 export default class UIImageView extends UIComponent<Props, State> {
     static defaultProps = {
@@ -403,9 +409,9 @@ export default class UIImageView extends UIComponent<Props, State> {
                     visible={this.state.showSpinnerOnPhotoView}
                 />,
                 <UIImage
-                    resizeMode="contain"
-                    resizeMethod="auto"
-                    style={UIStyle.Common.flex()}
+                    resizeMode={this.props.resizeMode}
+                    resizeMethod={this.props.resizeMethod}
+                    style={[UIStyle.Common.flex(), { top: navbarHeight }]}
                     source={photo}
                 />,
             ]);
