@@ -5,6 +5,7 @@ const icoVisa = require('./bank-cards/ico-visa/visa.png');
 const icoMaestro = require('./bank-cards/ico-maestro/maestro.png');
 const btnClose = require('./btn_close/btn_close.png');
 const keyThin = require('./key-thin/key-thin.png');
+const keyThinWhite = require('./key-thin/key-thin-white.png');
 const keyThinDark = require('./key-thin/key-thin-dark.png');
 const keyThinGrey = require('./key-thin/key-thin-grey.png');
 const icoDelete = require('./ico-delete/delete.png');
@@ -49,16 +50,24 @@ export default class UIAssets {
         return touchId;
     }
 
+    // height 24px
     static get keyThin() {
         return keyThin;
     }
 
+    // square
     static get keyThinDark() {
         return keyThinDark;
     }
 
+    // square
     static get keyThinGrey() {
         return keyThinGrey;
+    }
+
+    // square
+    static get keyThinWhite() {
+        return keyThinWhite;
     }
 
     static get icoDelete() {

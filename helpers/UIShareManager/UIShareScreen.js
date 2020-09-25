@@ -18,6 +18,7 @@ import UILabel from '../../components/text/UILabel';
 import UILocalized from '../../helpers/UILocalized';
 import UIColor from '../UIColor';
 import UIFont from '../UIFont';
+import UIStyle from '../UIStyle';
 import UIAssets from '../../assets/UIAssets';
 
 import type { ModalControllerProps } from '../../controllers/UIModalController';
@@ -162,6 +163,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                     testID="copy_button"
                     title={UILocalized.CopyToClipboard}
                     buttonShape={UIButton.ButtonShape.Radius}
+                    style={UIStyle.margin.topDefault()}
                     onPress={this.onCopyPressed}
                 />
             </View>
