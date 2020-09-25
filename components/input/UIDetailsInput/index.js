@@ -561,12 +561,14 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const textColorStyle = UIColor.textPrimaryStyle(theme);
         const fontStyle = UIStyle.text.bodyRegular();
         delete fontStyle.lineHeight;
+        const androidFix = Platform.OS === 'android' ? { fontFamily: null } : undefined;
         return [
             styles.textInput,
             fontStyle,
             textColorStyle,
             UIStyle.common.flex(),
             inputStyle,
+            androidFix,
         ];
     }
 
