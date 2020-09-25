@@ -86,3 +86,7 @@ declare module 'react-native-safe-area' {
 declare module 'react-native-share' {
     declare module.exports: any
 }
+
+declare module 'react-native-qrcode-svg' {
+    declare module.exports: any
+}

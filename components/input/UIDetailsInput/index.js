@@ -562,7 +562,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const fontStyle = UIStyle.text.bodyRegular();
         delete fontStyle.lineHeight;
         // We remove the fontFamily for Android in oder to eliminate jumping input behaviour
-        const androidFix = Platform.OS === 'android' ? { fontFamily: null } : undefined;
+        const androidFix = Platform.OS === 'android' ? { fontFamily: undefined } : {};
         return [
             styles.textInput,
             fontStyle,
