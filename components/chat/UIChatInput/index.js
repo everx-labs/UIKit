@@ -78,11 +78,14 @@ const styles = StyleSheet.create({
         flex: 1,
         marginVertical: 0,
         paddingBottom: Platform.select({ // compensate mobile textContainer's default padding
-            ios: UIConstant.normalContentOffset(),
-            default: UIConstant.tinyContentOffset(),
+            android: 10,
+            ios: 17,
+            web: 15,
         }),
         paddingTop: Platform.select({ // compensate mobile textContainer's default padding
-            android: UIConstant.normalContentOffset(),
+            android: 10,
+            ios: 0, // has it's own top padding in a native text container
+            web: 10,
         }),
     },
     inputView: {
