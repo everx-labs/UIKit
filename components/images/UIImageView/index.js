@@ -133,7 +133,7 @@ export default class UIImageView extends UIComponent<Props, State> {
 
         const screenHeight = Dimensions.get('screen').height;
         const windowHeight = Dimensions.get('window').height;
-        const navbarHeight = (screenHeight - windowHeight) - StatusBar.currentHeight;
+        const navbarHeight = (screenHeight - windowHeight) - (StatusBar.currentHeight || 0);
         if (navbarHeight !== this.state.navbarHeight) {
             this.setStateSafely({ navbarHeight });
         }
@@ -318,9 +318,7 @@ export default class UIImageView extends UIComponent<Props, State> {
             return;
         }
         if (file.size >= UIConstant.maxFileSize()) { // in decimal
-            const msg = UILocalized.formatString(
-                UILocalized.FileIsTooBig, UIConstant.maxFileSize() / 1000000,
-            );
+            const msg = UILocalized.formatString(UILocalized.FileIsTooBig, UIConstant.maxFileSize() / 1000000);
             UIAlertView.showAlert(UILocalized.Error, msg, [{
                 title: UILocalized.OK,
                 onPress: () => {
