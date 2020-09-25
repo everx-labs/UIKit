@@ -15,12 +15,18 @@ type Props = {
     color?: string,
     source: ImageSource | { uri: string },
     style?: ViewStyleProp,
+    resizeMode?: string,
+    resizeMethod?: string,
 };
 
-const UIImage = ({ color, source, style }: Props) => {
+const UIImage = ({
+    color, source, style, resizeMode, resizeMethod,
+}: Props) => {
     const colorStyle = color ? UIColor.getTintColorStyle(color) : null;
     return (
         <ImageComponent
+            resizeMode={resizeMode}
+            resizeMethod={resizeMethod}
             source={source}
             style={[colorStyle, style]}
         />
@@ -31,5 +37,7 @@ export { UIImage as default };
 
 UIImage.defaultProps = {
     color: '',
+    resizeMode: 'cover',
+    resizeMethod: 'auto',
     style: {},
 };
