@@ -2,6 +2,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
@@ -46,7 +47,9 @@ type Props = {
     rowSeparator?: boolean,
 }
 
-type State = {};
+type State = {
+    captionMinWidth: number,
+};
 
 const styles = StyleSheet.create({
     borderTop: {
@@ -118,6 +121,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
         detailsTextButton: 'detailsTextButton',
     };
 
+    state = {
+        captionMinWidth: 0,
+    }
+
     // Events
     onActionPressed(details: DetailsRow) {
         if (details.screen) {
@@ -148,6 +155,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
         const { navigation } = this.props;
         if (navigation && screen) {
             navigation.push(screen);
+        }
+    }
+
+    calculateMinWidth = (e: ViewLayoutEvent) => {
+        const { layout } = e.nativeEvent;
+        if (this.state.captionMinWidth < layout.width) {
+            // 5px for correct calculating width
+            this.setStateSafely({ captionMinWidth: layout.width + 5 });
         }
     }
 
@@ -206,8 +221,13 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
         return (
             <View
+                onLayout={this.calculateMinWidth}
                 style={[
                     leftCellStyle || UIStyle.common.flex(),
+                    this.state.captionMinWidth > 0 && {
+                        minWidth: this.state.captionMinWidth,
+                        maxWidth: '40%',
+                    },
                     UIStyle.margin.rightDefault(),
                 ]}
             >

@@ -85,8 +85,8 @@
     "Copy": "Копировать",
     "CopyNumber": "Скопировать номер",
     "CopyRight": "2018–{CURRENT_YEAR} © TON Labs",
-    "CopyToClipboard": "Копировать в буфер",
-    "Country": "Country",
+    "CopyToClipboard": "Скопировать",
+    "Country": "Страна",
     "Create": "Создать",
     "CreateAUsername": "Создайте имя пользователя",
     "CreateChannel": "Создать канал",
@@ -243,7 +243,7 @@
     "MakePublic": "Сделать публичным",
     "Male": "Мужчина",
     "Manage": "Управлять",
-    "MasterPassword": "Master Password",
+    "MasterPassword": "Мастер-пароль",
     "max": "макс.",
     "Member01": "участник",
     "Member11": "участник",
@@ -251,7 +251,7 @@
     "Member50": "участников",
     "Members": "Участники",
     "message": {
-        "sending": "Pending..."
+        "sending": "В ожидании..."
     },
     "MessageCopiedToClipboard": "Сообщение скопировано в буфер",
     "Messenger": "Чаты",
@@ -376,9 +376,9 @@
     "SendFeedback": "Send feedback",
     "SendMessage": "Отправить сообщение",
     "serviceUnavailable": "Service unavailable",
-    "Share": "Скопировать И Поделиться Этой Ссылкой",
+    "Share": "Скопируй и поделись ссылкой",
     "ShareLink": "Поделиться ссылкой",
-    "ShareToTalk": "Your TON wallet address link to allow friends talk and make transactions with you.",
+    "ShareToTalk": "Ссылка на твой адрес Surf позволит твоим друзьям связаться с тобой и посылать токены.",
     "SingleOperationLimit": "Лимит на одну операцию",
     "Skip": "Пропустить",
     "SmartContractAddress": "Адрес смарт-контракта",
@@ -417,9 +417,9 @@
     "TransactionFrom": "You have received a transaction from",
     "Transactions": "Транзакции",
     "TransactionStatus": {
-        "aborted": "Aborted at {0}",
-        "rejected": "Rejected at {0}",
-        "sending": "Pending..."
+        "aborted": "Прерван в {0}",
+        "rejected": "Отклонен в {0}",
+        "sending": "В ожидании..."
     },
     "TwoStepAuth_EnterPasswordHelp": "Вы включили двухэтапную аутентификацию. Теперь ваш аккаунт защищён дополнительным паролем.",
     "TwoStepAuth_EnterPasswordInvalid": "Неверный пароль. Попробуйте ещё раз.",
