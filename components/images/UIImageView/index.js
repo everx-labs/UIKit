@@ -65,6 +65,7 @@ type Props = {
 type State = {
     showSpinnerOnPhotoView: boolean,
     lightboxVisible: boolean,
+    navbarHeight: number,
 };
 
 type PickerResponse = {
@@ -72,12 +73,6 @@ type PickerResponse = {
     error: string,
     uri: string,
 };
-
-// This is used to calculate the height of the 
-// navigation bar (bottom of screen) on Android.
-const screenHeight = Dimensions.get('screen').height;
-const windowHeight = Dimensions.get('window').height;
-const navbarHeight = (screenHeight - windowHeight) - StatusBar.currentHeight;
 
 export default class UIImageView extends UIComponent<Props, State> {
     static defaultProps = {
@@ -118,6 +113,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         this.state = {
             showSpinnerOnPhotoView: false,
             lightboxVisible: false,
+            navbarHeight: 0,
         };
     }
 
@@ -130,6 +126,19 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     // Events
+    onImageLayout = () => {
+        if (Platform.OS !== 'android') {
+            return;
+        }
+
+        const screenHeight = Dimensions.get('screen').height;
+        const windowHeight = Dimensions.get('window').height;
+        const navbarHeight = (screenHeight - windowHeight) - StatusBar.currentHeight;
+        if (navbarHeight !== this.state.navbarHeight) {
+            this.setStateSafely({ navbarHeight });
+        }
+    }
+
     onPressPhoto = () => {
         if (!this.isEditable() && this.isExpandable()) {
             this.props.onPressPhoto(
@@ -408,12 +417,17 @@ export default class UIImageView extends UIComponent<Props, State> {
                 <UISpinnerOverlay
                     visible={this.state.showSpinnerOnPhotoView}
                 />,
-                <UIImage
-                    resizeMode={this.props.resizeMode}
-                    resizeMethod={this.props.resizeMethod}
-                    style={[UIStyle.Common.flex(), { top: navbarHeight }]}
-                    source={photo}
-                />,
+                <View
+                    style={[UIStyle.Common.flex(), { top: this.state.navbarHeight }]}
+                    onLayout={this.onImageLayout}
+                >
+                    <UIImage
+                        resizeMode={this.props.resizeMode}
+                        resizeMethod={this.props.resizeMethod}
+                        style={UIStyle.Common.flex()}
+                        source={photo}
+                    />
+                </View>,
             ]);
         }
         return ([

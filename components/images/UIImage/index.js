@@ -37,7 +37,7 @@ export { UIImage as default };
 
 UIImage.defaultProps = {
     color: '',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     resizeMethod: 'auto',
     style: {},
 };
