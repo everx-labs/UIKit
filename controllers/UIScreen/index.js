@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-import { Platform, View, StyleSheet } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Platform, View, StyleSheet, ScrollView } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import UIController from '../../controllers/UIController';
