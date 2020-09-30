@@ -105,6 +105,7 @@ export type ChatAdditionalInfo = {
     linkTitle?: string,
     processed?: boolean,
     link?: string,
+    encType?: string,
 };
 
 export type UIChatCellInfo = {
