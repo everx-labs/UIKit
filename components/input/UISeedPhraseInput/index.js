@@ -432,7 +432,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
     identifyWordThatChanged(currentWords: Array<string>, callback: ?(() => void)) {
         let i = 0;
-        let index = 0;
+        let index = !this.lastWords.length ? 0 : -1;
         while (i < this.lastWords.length && i < currentWords.length) {
             if (this.lastWords[i] !== currentWords[i]) {
                 index = i;
