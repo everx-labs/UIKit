@@ -84,6 +84,7 @@ export type UILocalizedData = {|
     +ContinueWithPassword: string,
     +ConvertToSupergroup: string,
     +ConvertToSupergroupDetails: string,
+    +CopiedToClipboard: string,
     +Copy: string,
     +CopyNumber: string,
     +CopyRight: string,

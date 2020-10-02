@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Animated, StyleSheet, Text, View, Image } from 'react-native';
+import { Animated, StyleSheet, Text, View, Image, Clipboard } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -11,7 +11,10 @@ import UIColor from '../../../helpers/UIColor';
 import UIConstant from '../../../helpers/UIConstant';
 import UIStyle from '../../../helpers/UIStyle';
 import UIFunction from '../../../helpers/UIFunction';
+import UILocalized from '../../../helpers/UILocalized';
 import UIColorPalette from '../../../helpers/UIColor/UIColorPalette';
+import UITextButton from '../UITextButton';
+import UIToastMessage from '../../notifications/UIToastMessage';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
@@ -100,6 +103,12 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         }
     }
 
+    onPressCopy = () => {
+        const title = this.props.title || '';
+        Clipboard.setString(title);
+        UIToastMessage.showMessage(`${UILocalized.CopiedToClipboard}.`);
+    }
+
     // Setters
     setSpinValue(spinValue: AnimatedValue) {
         this.setStateSafely({ spinValue });
@@ -174,6 +183,17 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         );
     }
 
+    renderCopy() {
+        if (this.props.narrow || !this.isHover()) return null;
+
+        return (<UITextButton
+            title={UILocalized.Copy}
+            style={[UIStyle.height.littleCell(), UIStyle.margin.leftDefault()]}
+            textStyle={UIStyle.text.primaryBodyMedium()}
+            onPress={this.onPressCopy}
+        />);
+    }
+
     renderTitleCaption() {
         const {
             title, truncTitle, caption, truncCaption, titleComponent, captionComponent,
@@ -206,6 +226,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                         testID={UIDetailsButton.testIds.title}
                     >
                         {formattedTitle}
+                        {this.renderCopy()}
                     </Text>
                 )}
                 {titleComponent}
