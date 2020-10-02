@@ -6,6 +6,7 @@ import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/Vie
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
+import UIConstant from '../../../helpers/UIConstant';
 import UIFunction from '../../../helpers/UIFunction';
 import UIComponent from '../../UIComponent';
 import UITextButton from '../../buttons/UITextButton';
@@ -166,7 +167,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
         if (this.state.captionMinWidth < layout.width) {
             // 10px for correct calculating width
             this.setStateSafely({
-                captionMinWidth: layout.width < maxWidth ? layout.width + 10 : maxWidth,
+                captionMinWidth: Math.min(
+                    layout.width + UIConstant.normalContentOffset(),
+                    maxWidth,
+                ),
             });
         }
     }
