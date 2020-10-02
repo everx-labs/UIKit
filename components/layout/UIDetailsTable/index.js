@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
     },
 });
 
+const MAX_PERCENT_CELL_WIDTH = 0.4;
+
 class UIDetailsTable extends UIComponent<Props, State> {
     // deprecated
     static CellType = {
@@ -163,7 +165,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     calculateMinWidth = (e: ViewLayoutEvent) => {
         const { layout } = e.nativeEvent;
-        const maxWidth = this.state.widthComponent * 0.4;
+        const maxWidth = this.state.widthComponent * MAX_PERCENT_CELL_WIDTH;
         if (this.state.captionMinWidth < layout.width) {
             // 10px for correct calculating width
             this.setStateSafely({
@@ -240,7 +242,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     leftCellStyle || UIStyle.common.flex(),
                     this.state.captionMinWidth > 0 && {
                         minWidth: this.state.captionMinWidth,
-                        maxWidth: this.state.widthComponent * 0.4,
+                        maxWidth: this.state.widthComponent * MAX_PERCENT_CELL_WIDTH,
                     },
                     UIStyle.margin.rightDefault(),
                 ]}
