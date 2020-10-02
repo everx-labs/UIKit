@@ -106,7 +106,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     onPressCopy = () => {
         const title = this.props.title || '';
         Clipboard.setString(title);
-        UIToastMessage.showMessage(`${UILocalized.CopiedToClipboard}.`);
+        UIToastMessage.showMessage(UILocalized.CopiedToClipboard);
     }
 
     // Setters
