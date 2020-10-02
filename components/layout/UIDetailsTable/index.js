@@ -49,6 +49,7 @@ type Props = {
 
 type State = {
     captionMinWidth: number,
+    widthComponent: number,
 };
 
 const styles = StyleSheet.create({
@@ -123,6 +124,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     state = {
         captionMinWidth: 0,
+        widthComponent: 0,
     }
 
     // Events
@@ -160,10 +162,18 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     calculateMinWidth = (e: ViewLayoutEvent) => {
         const { layout } = e.nativeEvent;
+        const maxWidth = this.state.widthComponent * 0.4;
         if (this.state.captionMinWidth < layout.width) {
-            // 5px for correct calculating width
-            this.setStateSafely({ captionMinWidth: layout.width + 5 });
+            // 10px for correct calculating width
+            this.setStateSafely({
+                captionMinWidth: layout.width < maxWidth ? layout.width + 10 : maxWidth,
+            });
         }
+    }
+
+    setWidthComponent = (e: ViewLayoutEvent) => {
+        const { layout } = e.nativeEvent;
+        this.setStateSafely({ widthComponent: layout.width });
     }
 
     // Render
@@ -226,7 +236,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     leftCellStyle || UIStyle.common.flex(),
                     this.state.captionMinWidth > 0 && {
                         minWidth: this.state.captionMinWidth,
-                        maxWidth: '40%',
+                        maxWidth: this.state.widthComponent * 0.4,
                     },
                     UIStyle.margin.rightDefault(),
                 ]}
@@ -291,7 +301,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={this.props.style}>
+            <View style={this.props.style} onLayout={this.setWidthComponent}>
                 {this.renderRows()}
             </View>
         );
