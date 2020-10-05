@@ -4,8 +4,6 @@ import BigNumber from 'bignumber.js';
 import LocalizedStrings from 'react-native-localization';
 
 import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
-import 'dayjs/locale/fr';
 
 import en from './en.json';
 import ru from './ru.json';
