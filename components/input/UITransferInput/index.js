@@ -85,7 +85,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
 
         if (
             prevProps.value !== newValue
-            && !new RegExp(`\\${localizedSeparator}(\\d*0+(\\${decG})?){0,}$`)
+            && !new RegExp(`\\${localizedSeparator}(\\d(\\${decG})?){0,}$`)
                 .test(this.state.valueString)
         ) {
             this.parseValue(newValue);

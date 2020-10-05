@@ -6,6 +6,7 @@ import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/Vie
 
 import UIColor from '../../../helpers/UIColor';
 import UIStyle from '../../../helpers/UIStyle';
+import UIConstant from '../../../helpers/UIConstant';
 import UIFunction from '../../../helpers/UIFunction';
 import UIComponent from '../../UIComponent';
 import UITextButton from '../../buttons/UITextButton';
@@ -49,6 +50,7 @@ type Props = {
 
 type State = {
     captionMinWidth: number,
+    widthComponent: number,
 };
 
 const styles = StyleSheet.create({
@@ -57,6 +59,8 @@ const styles = StyleSheet.create({
         borderTopColor: UIColor.current.background.whiteLight,
     },
 });
+
+const MAX_PERCENT_CELL_WIDTH = 0.4;
 
 class UIDetailsTable extends UIComponent<Props, State> {
     // deprecated
@@ -123,6 +127,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     state = {
         captionMinWidth: 0,
+        widthComponent: 0,
     }
 
     // Events
@@ -160,10 +165,21 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     calculateMinWidth = (e: ViewLayoutEvent) => {
         const { layout } = e.nativeEvent;
+        const maxWidth = this.state.widthComponent * MAX_PERCENT_CELL_WIDTH;
         if (this.state.captionMinWidth < layout.width) {
-            // 5px for correct calculating width
-            this.setStateSafely({ captionMinWidth: layout.width + 5 });
+            // 10px for correct calculating width
+            this.setStateSafely({
+                captionMinWidth: Math.min(
+                    layout.width + UIConstant.normalContentOffset(),
+                    maxWidth,
+                ),
+            });
         }
+    }
+
+    setWidthComponent = (e: ViewLayoutEvent) => {
+        const { layout } = e.nativeEvent;
+        this.setStateSafely({ widthComponent: layout.width });
     }
 
     // Render
@@ -226,7 +242,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     leftCellStyle || UIStyle.common.flex(),
                     this.state.captionMinWidth > 0 && {
                         minWidth: this.state.captionMinWidth,
-                        maxWidth: '40%',
+                        maxWidth: this.state.widthComponent * MAX_PERCENT_CELL_WIDTH,
                     },
                     UIStyle.margin.rightDefault(),
                 ]}
@@ -291,7 +307,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={this.props.style}>
+            <View style={this.props.style} onLayout={this.setWidthComponent}>
                 {this.renderRows()}
             </View>
         );
