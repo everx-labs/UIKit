@@ -2,8 +2,8 @@
 /* eslint-disable no-use-before-define */
 import BigNumber from 'bignumber.js';
 import LocalizedStrings from 'react-native-localization';
-import Moment from 'moment';
-import 'moment/locale/ru';
+
+import dayjs from 'dayjs';
 
 import en from './en.json';
 import ru from './ru.json';
@@ -275,12 +275,12 @@ const localized: UILocalizedData &
     UILocalizedService &
     LocalizedStringsMethods = new UILocalizedService({ en });
 
-Moment.locale(localized.getLocale());
+dayjs.locale(localized.getLocale());
 
 export const TIME_FORMAT = 'HH:mm';
 
 export function formatTime(time: number, format: string = TIME_FORMAT): string {
-    return Moment(time).format(format);
+    return dayjs(time).format(format);
 }
 
 export function formatDate(time: number): string {
@@ -295,7 +295,7 @@ export function formatDate(time: number): string {
     return (isToday || isYesterday) ? (
         `${isToday ? localized.Today : localized.Yesterday} at ${formatTime(time)}`
     ) : (
-        Moment(time).format(`D MMM ${TIME_FORMAT}`)
+        dayjs(time).format(`D MMM ${TIME_FORMAT}`)
     );
 }
 

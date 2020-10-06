@@ -4,7 +4,7 @@
 import { Platform, Text, TextInput } from 'react-native';
 import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
-import Moment from 'moment';
+import dayjs from 'dayjs';
 import isEmail from 'validator/lib/isEmail';
 import BigNumber from 'bignumber.js';
 
@@ -429,7 +429,7 @@ export default class UIFunction {
     static formatMessageDate(date: Date, shortFormat: boolean = true) {
         const format = shortFormat ? 'l' : 'll';
         // Same as Telegram formatting
-        return Moment(date).calendar(null, {
+        return dayjs(date).calendar(null, {
             sameDay: 'LT',
             nextDay: 'ddd',
             lastDay: 'ddd',
