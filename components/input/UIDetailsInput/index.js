@@ -420,7 +420,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         this.setStateSafely({}, () => {
             const aux = this.auxTextInput;
             if (aux) {
-                const height = aux.scrollHeight || 0;
+                const height = (aux._node ? aux._node.scrollHeight : aux.scrollHeight) || 0;
                 this.onHeightChange(height);
             }
         });
