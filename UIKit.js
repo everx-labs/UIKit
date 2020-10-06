@@ -1,4 +1,4 @@
-import './configs/DayJSConfig';
+import './configs';
 
 import UIAccountPicker from './components/UIAccountPicker';
 import UIAccountPickerScreen from './components/UIAccountPicker/controllers/UIAccountPickerScreen';
