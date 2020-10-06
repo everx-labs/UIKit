@@ -1,3 +1,5 @@
+import './configs/DayJSConfig';
+
 import UIAccountPicker from './components/UIAccountPicker';
 import UIAccountPickerScreen from './components/UIAccountPicker/controllers/UIAccountPickerScreen';
 import UIActionComponent from './components/UIActionComponent';
