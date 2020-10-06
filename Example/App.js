@@ -32,6 +32,8 @@ import {
     UIImageButton,
     UILoadMoreButton,
     UIRadioButtonList,
+    UIScaleButton,
+    UITextButton,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -246,6 +248,54 @@ const Buttons = ({ navigation }) => (
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UILoadMoreButton label="Load more" isLoadingMore />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 50,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIScaleButton</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIScaleButton>
+                <Text>Scale example</Text>
+            </UIScaleButton>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIScaleButton scaleInFactor={2}>
+                <Text>Scale example factor 2</Text>
+            </UIScaleButton>
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 50,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UITextButton</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITextButton title="Text button" />
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITextButton
+                title="Text button with details"
+                details="Some details"
+            />
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITextButton disabled title="Disabled text button" />
         </View>
     </ScrollView>
 );
