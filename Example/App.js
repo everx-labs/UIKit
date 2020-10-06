@@ -31,6 +31,7 @@ import {
     UIDetailsToggle,
     UIImageButton,
     UILoadMoreButton,
+    UIRadioButtonList,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -254,6 +255,7 @@ const Checkbox = () => {
     const [selected2, setSelected2] = useState(false);
     const [selected3, setSelected3] = useState(false);
     const [selected4, setSelected4] = useState(false);
+    const [selectedRadio, setSelectedRadio] = useState(0);
     return (
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             <View
@@ -302,7 +304,7 @@ const Checkbox = () => {
                     details="Example checkbox"
                     comments="with comment"
                     active={selected2}
-                    onPress={() => setSelected2(!selected)}
+                    onPress={() => setSelected2(!selected2)}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -310,7 +312,7 @@ const Checkbox = () => {
                     details="Example checkbox"
                     comments="with comment"
                     active={selected2}
-                    onPress={() => setSelected2(!selected)}
+                    onPress={() => setSelected2(!selected2)}
                     switcherPosition={UIDetailsCheckbox.Position.Left}
                 />
             </View>
@@ -332,7 +334,7 @@ const Checkbox = () => {
                     details="Example radio"
                     comments="with comment"
                     active={selected3}
-                    onPress={() => setSelected3(!selected)}
+                    onPress={() => setSelected3(!selected3)}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -340,7 +342,7 @@ const Checkbox = () => {
                     details="Example radio"
                     comments="with comment"
                     active={selected3}
-                    onPress={() => setSelected3(!selected)}
+                    onPress={() => setSelected3(!selected3)}
                     switcherPosition={UIDetailsRadio.Position.Left}
                 />
             </View>
@@ -362,7 +364,7 @@ const Checkbox = () => {
                     details="Example toggle"
                     comments="with comment"
                     active={selected4}
-                    onPress={() => setSelected4(!selected)}
+                    onPress={() => setSelected4(!selected4)}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -370,9 +372,35 @@ const Checkbox = () => {
                     details="Example toggle"
                     comments="with comment"
                     active={selected4}
-                    onPress={() => setSelected4(!selected)}
+                    onPress={() => setSelected4(!selected4)}
                     colored
                     switcherPosition={UIDetailsToggle.Position.Left}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIRadioButtonList</Text>
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIRadioButtonList
+                    onSelect={(index) => setSelectedRadio(index)}
+                    state={{
+                        selected: selectedRadio,
+                        radiobuttonList: [
+                            { title: "first" },
+                            { title: "second" },
+                            { title: "third" },
+                        ],
+                    }}
                 />
             </View>
         </ScrollView>
