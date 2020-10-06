@@ -34,6 +34,7 @@ import {
     UIRadioButtonList,
     UIScaleButton,
     UITextButton,
+    UIToggle,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -306,6 +307,7 @@ const Checkbox = () => {
     const [selected3, setSelected3] = useState(false);
     const [selected4, setSelected4] = useState(false);
     const [selectedRadio, setSelectedRadio] = useState(0);
+    const [selectedToggle, setSelectedToggle] = useState(false);
     return (
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             <View
@@ -451,6 +453,33 @@ const Checkbox = () => {
                             { title: "third" },
                         ],
                     }}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIToggle</Text>
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIToggle
+                    active={selectedToggle}
+                    onPress={() => setSelectedToggle(!selectedToggle)}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIToggle
+                    colored
+                    containerStyle={{ marginLeft: 16 }}
+                    active={selectedToggle}
+                    onPress={() => setSelectedToggle(!selectedToggle)}
                 />
             </View>
         </ScrollView>
