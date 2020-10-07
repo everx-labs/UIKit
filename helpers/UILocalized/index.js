@@ -134,12 +134,8 @@ export function prepare<T>(langs: Languages<T>, options: Languages<Options>): La
     const preparedLanguages: Languages<T> = {};
 
     Object.keys(langs).forEach((lang) => {
-        const preparedOptions = {
-            constants: options[lang]?.constants || null,
-            images: options[lang]?.images || null,
-        };
         // $FlowExpectedError
-        preparedLanguages[lang] = prepareObject(langs[lang], preparedOptions);
+        preparedLanguages[lang] = prepareObject(langs[lang], options[lang]);
     });
 
     return preparedLanguages;
