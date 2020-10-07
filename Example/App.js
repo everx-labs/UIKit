@@ -51,6 +51,10 @@ import {
     UITextInput,
     UITransferInput,
     UIUploadFileInput,
+    UIBadge,
+    UIDot,
+    UISeparator,
+    UITag,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -73,6 +77,11 @@ const Main = ({ navigation }) => (
             onPress={() => navigation.navigate("inputs")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Inputs"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("design")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Design"
         />
     </SafeAreaView>
 );
@@ -937,6 +946,75 @@ const Inputs = () => {
     );
 };
 
+const Design = () => (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIBadge</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIBadge badge={1} />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 50,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIDot</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIDot />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 50,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UISeparator</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UISeparator style={{ width: 300 }} />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 50,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UITag</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITag title="Tag title" />
+        </View>
+    </ScrollView>
+);
+
 // const Detail1Stack = createStackNavigator();
 // const Detail1 = () => (
 //     <Detail1Stack.Navigator initialRouteName="foo">
@@ -973,6 +1051,7 @@ const App: () => React$Node = () => {
                     <SurfSplit.Screen name="buttons" component={Buttons} />
                     <SurfSplit.Screen name="checkbox" component={Checkbox} />
                     <SurfSplit.Screen name="inputs" component={Inputs} />
+                    <SurfSplit.Screen name="design" component={Design} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />
