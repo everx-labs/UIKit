@@ -72,14 +72,14 @@ function prepareValue(value: Object | Array<any> | string | boolean, options: Op
 
     if (typeof value === 'string' || value instanceof String) {
         const { images } = options;
-        if (images && /^{IMG_[A-Z]*}$/.test(value)) {
+        if (images && /^{IMG_[A-Z_0-9]*}$/.test(value)) {
             const key = value.replace(/[{}]/g, '');
             return images[key];
         }
 
         const { constants } = options;
         if (constants) {
-            const foundConstants = value.match(/{([A-Z0-9_]*)}/g);
+            const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
 
             if (foundConstants) {
                 foundConstants.forEach((constant) => {
@@ -130,12 +130,12 @@ export function prepareImages<T>(langs: Languages<T>, constants: { [string]: any
     return preparedLanguages;
 }
 
-export function prepare<T>(langs: Languages<T>, options: Options): Languages<T> {
+export function prepare<T>(langs: Languages<T>, options: Languages<Options>): Languages<T> {
     const preparedLanguages: Languages<T> = {};
 
     Object.keys(langs).forEach((lang) => {
         // $FlowExpectedError
-        preparedLanguages[lang] = prepareObject(langs[lang], options);
+        preparedLanguages[lang] = prepareObject(langs[lang], options[lang]);
     });
 
     return preparedLanguages;
