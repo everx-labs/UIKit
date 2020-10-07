@@ -17,6 +17,7 @@ import {
     ScrollView,
     Image,
 } from "react-native";
+import BigNumber from "bignumber.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useReduxDevToolsExtension } from "@react-navigation/devtools";
@@ -35,6 +36,21 @@ import {
     UIScaleButton,
     UITextButton,
     UIToggle,
+    UIAmountInput,
+    UIBankCardNumberInput,
+    UIContractAddressInput,
+    UIDateInput,
+    UIDetailsInput,
+    UIEmailInput,
+    UILinkInput,
+    UINumberInput,
+    UIPhoneInput,
+    UIPinCodeInput,
+    UISearchBar,
+    UISeedPhraseInput,
+    UITextInput,
+    UITransferInput,
+    UIUploadFileInput,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -52,6 +68,11 @@ const Main = ({ navigation }) => (
             onPress={() => navigation.navigate("checkbox")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Checkbox"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("inputs")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Inputs"
         />
     </SafeAreaView>
 );
@@ -486,6 +507,436 @@ const Checkbox = () => {
     );
 };
 
+function getNumberFormatInfo() {
+    const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
+    const parts = formatParser.exec((111222333.444).toLocaleString()) || [
+        "",
+        "",
+        "",
+        ".",
+    ];
+    return {
+        grouping: parts[1],
+        thousands: parts[2],
+        decimal: parts[3],
+        decimalGrouping: "\u2009",
+    };
+}
+
+function getDateFormatInfo() {
+    const date = new Date(1986, 5, 7);
+    const d = date.getDate();
+    const m = date.getMonth() + 1;
+    const y = date.getFullYear();
+
+    // TODO: Uncomment once updated to RN0.59
+    // const options = {
+    //    year: 'numeric',
+    //    month: '2-digit',
+    //    day: 'numeric',
+    // };
+    // Not working for android due to RN using JavaScriptCore engine in non-debug mode
+    // const localeDate = date.toLocaleDateString(undefined, options);
+    const localeDate = "07/06/1986";
+    const formatParser = /(\d{1,4})(\D{1})(\d{1,4})\D{1}(\d{1,4})/g;
+    const parts = formatParser.exec(localeDate) || ["", "7", ".", "6", "1986"];
+
+    const separator = parts[2] || ".";
+    const components = ["year", "month", "day"];
+    const symbols = {
+        year: "YYYY",
+        month: "MM",
+        day: "DD",
+    };
+
+    const shortDateNumbers = [];
+    const splitDate = localeDate.split(separator);
+    splitDate.forEach((component) => shortDateNumbers.push(Number(component)));
+
+    if (shortDateNumbers?.length === 3) {
+        components[shortDateNumbers.indexOf(d)] = "day";
+        components[shortDateNumbers.indexOf(m)] = "month";
+        components[shortDateNumbers.indexOf(y)] = "year";
+    }
+
+    // TODO: Need to find a better way to get the pattern.
+    let localePattern = `${symbols[components[0]]}${separator}`;
+    localePattern = `${localePattern}${symbols[components[1]]}`;
+    localePattern = `${localePattern}${separator}${symbols[components[2]]}`;
+
+    return {
+        separator,
+        localePattern,
+        components,
+    };
+}
+
+let localeInfo = {
+    name: "",
+    numbers: getNumberFormatInfo(),
+    dates: getDateFormatInfo(),
+};
+
+const Inputs = () => {
+    const [amount, setAmount] = useState("");
+    const [bankCardNumber, setBankCardNumber] = useState("");
+    const [contractAddress, setContractAddress] = useState("");
+    const [date, setDate] = useState("");
+    const [details, setDetails] = useState("");
+    const [email, setEmail] = useState("");
+    const [link, setLink] = useState("");
+    const [number, setNumber] = useState("");
+    const [phone, setPhone] = useState("");
+    const [search, setSearch] = useState("");
+    const [seedPhrase, setSeedPhrase] = useState("");
+    const mnemonicWords = ["report", "meadow", "village", "slight"];
+    const [text, setText] = useState("");
+    const [transfer, setTransfer] = useState(new BigNumber(0));
+    return (
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIAmountInput</Text>
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIAmountInput
+                    placeholder="Amount"
+                    comment="Some comment here"
+                    value={amount}
+                    onChangeText={(newText) => setAmount(newText)}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIAmountInput
+                    placeholder="Amount"
+                    comment="Some comment here"
+                    value={amount}
+                    trailingValue="$"
+                    onChangeText={(newText) => setAmount(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIBankCardNumberInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIBankCardNumberInput
+                    value={bankCardNumber}
+                    onChangeText={(newText) => setBankCardNumber(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIContractAddressInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIContractAddressInput
+                    value={contractAddress}
+                    onChangeText={(newText) => setContractAddress(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIDateInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIDateInput
+                    value={date}
+                    onChangeText={(newText) => setDate(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIDetailsInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIDetailsInput
+                    placeholder="Details"
+                    comment="Some comment here"
+                    value={details}
+                    onChangeText={(newText) => setDetails(newText)}
+                />
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIDetailsInput
+                    placeholder="Multiline details"
+                    comment="Some comment here"
+                    value={details}
+                    onChangeText={(newText) => setDetails(newText)}
+                    maxLines={3}
+                    containerStyle={{ marginTop: 16 }}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIEmailInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIEmailInput
+                    placeholder="Email"
+                    comment="Some comment here"
+                    value={email}
+                    onChangeText={(newText) => setEmail(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UILinkInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UILinkInput
+                    placeholder="Link"
+                    comment="Some comment here"
+                    value={link}
+                    onChangeText={(newText) => setLink(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UINumberInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UINumberInput
+                    placeholder="Number"
+                    comment="Some comment here"
+                    value={number}
+                    onChangeText={(newText) => setNumber(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIPhoneInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIPhoneInput
+                    placeholder="Phone"
+                    comment="Some comment here"
+                    value={phone}
+                    onChangeText={(newText) => setPhone(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIPinCodeInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIPinCodeInput
+                    pinCodeLength={6}
+                    pinTitle="Pin title"
+                    pinDescription="Description"
+                    pinCodeEnter={(pin) => {}}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UISearchBar</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UISearchBar
+                    value={search}
+                    placeholder="Your search expression"
+                    onChangeExpression={(newExpression) =>
+                        setSearch(newExpression)
+                    }
+                />
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UISearchBar
+                    value={search}
+                    placeholder="Your search expression"
+                    onChangeExpression={(newExpression) =>
+                        setSearch(newExpression)
+                    }
+                    renderGlass
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UISeedPhraseInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UISeedPhraseInput
+                    value={search}
+                    value={seedPhrase}
+                    onChangeText={(newText) => setSeedPhrase(newText)}
+                    phraseToCheck={mnemonicWords.join(" - ")}
+                    totalWords={12}
+                    words={mnemonicWords}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UITextInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UITextInput
+                    value={search}
+                    placeholder="Your text"
+                    beginningTag="@"
+                    value={text}
+                    onChangeText={(newText) => setText(newText)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UITransferInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UITransferInput
+                    value={transfer}
+                    placeholder="Your transfer"
+                    maxDecimals={3}
+                    value={transfer}
+                    onValueChange={(num) => setTransfer(num)}
+                    localeInfo={localeInfo}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIUploadFileInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIUploadFileInput uploadText="Upload file" />
+            </View>
+        </ScrollView>
+    );
+};
+
 // const Detail1Stack = createStackNavigator();
 // const Detail1 = () => (
 //     <Detail1Stack.Navigator initialRouteName="foo">
@@ -521,6 +972,7 @@ const App: () => React$Node = () => {
                     <SurfSplit.Screen name="main" component={Main} />
                     <SurfSplit.Screen name="buttons" component={Buttons} />
                     <SurfSplit.Screen name="checkbox" component={Checkbox} />
+                    <SurfSplit.Screen name="inputs" component={Inputs} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />
