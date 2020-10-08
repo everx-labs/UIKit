@@ -36,6 +36,7 @@ type Props = ActionProps & {
     customComponent?: React$Node,
     disableHighlight?: boolean,
     titleIsText?: boolean,
+    copyTarget?: string,
 };
 
 type State = ActionState & {
@@ -63,6 +64,11 @@ const styles = StyleSheet.create({
 });
 
 export default class UIDetailsButton extends UIActionComponent<Props, State> {
+    static copyTargets = {
+        title: 'title',
+        details: 'details',
+    }
+
     static defaultProps: Props = {
         ...UIActionComponent.defaultProps,
         narrow: false,
@@ -78,6 +84,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         fixedCaption: '',
         truncDetails: false,
         details: '',
+        copyTarget: this.copyTargets.title,
     };
 
     static testIds = {
@@ -104,8 +111,9 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     }
 
     onPressCopy = () => {
-        const title = this.props.title || '';
-        Clipboard.setString(title);
+        const { title, details, copyTarget } = this.props;
+        const str = copyTarget === UIDetailsButton.copyTargets.title ? title : details || '';
+        Clipboard.setString(str);
         UIToastMessage.showMessage(UILocalized.CopiedToClipboard);
     }
 
@@ -184,19 +192,25 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     }
 
     renderCopy() {
-        if (this.props.narrow || !this.isHover()) return null;
+        const { narrow, copyTarget } = this.props;
+        if (narrow || !this.isHover()) return null;
 
-        return (<UITextButton
-            title={UILocalized.Copy}
-            style={[UIStyle.height.littleCell(), UIStyle.margin.leftDefault()]}
-            textStyle={UIStyle.text.primaryBodyMedium()}
-            onPress={this.onPressCopy}
-        />);
+        return (
+            <UITextButton
+                title={UILocalized.Copy}
+                style={[UIStyle.height.tinyCell(), UIStyle.margin.leftDefault()]}
+                textStyle={
+                    copyTarget === UIDetailsButton.copyTargets.title
+                        ? UIStyle.text.primaryBodyMedium()
+                        : UIStyle.text.primarySmallMedium()}
+                onPress={this.onPressCopy}
+            />
+        );
     }
 
     renderTitleCaption() {
         const {
-            title, truncTitle, caption, truncCaption, titleComponent, captionComponent,
+            title, truncTitle, caption, truncCaption, titleComponent, captionComponent, copyTarget,
         } = this.props;
         const formattedCaption = truncCaption ? this.getFormattedText(caption) : caption;
         const captionText = caption ? (
@@ -226,7 +240,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                         testID={UIDetailsButton.testIds.title}
                     >
                         {formattedTitle}
-                        {this.renderCopy()}
+                        {copyTarget === UIDetailsButton.copyTargets.title && this.renderCopy()}
                     </Text>
                 )}
                 {titleComponent}
@@ -238,14 +252,17 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     }
 
     renderDetails() {
-        const { secondDetails, details, truncDetails } = this.props;
+        const {
+            secondDetails, details, truncDetails, copyTarget,
+        } = this.props;
         return !!(details || secondDetails) && (
             <View style={[styles.rowContainer, UIStyle.margin.topTiny()]}>
                 <Text
-                    style={[UIStyle.text.secondaryCaptionRegular(), UIStyle.common.flex()]}
+                    style={[UIStyle.text.secondaryCaptionRegular(), UIStyle.flex.x1()]}
                     testID={UIDetailsButton.testIds.details}
                 >
                     {truncDetails ? this.getFormattedText(details) : details}
+                    {copyTarget === UIDetailsButton.copyTargets.details && this.renderCopy()}
                 </Text>
                 <Text
                     style={UIStyle.text.secondaryCaptionRegular()}
@@ -260,7 +277,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     renderContentCard() {
         const { customComponent } = this.props;
         return (
-            <View style={[UIStyle.common.flex(), UIStyle.common.flexColumn()]}>
+            <View style={[UIStyle.flex.x1(), UIStyle.flex.column()]}>
                 {customComponent}
                 {this.renderTitleCaption()}
                 {this.renderDetails()}
