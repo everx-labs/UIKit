@@ -55,6 +55,9 @@ import {
     UIDot,
     UISeparator,
     UITag,
+    UIActionImage,
+    UIImage,
+    UIImageView,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -82,6 +85,11 @@ const Main = ({ navigation }) => (
             onPress={() => navigation.navigate("design")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Design"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("images")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Images"
         />
     </SafeAreaView>
 );
@@ -1015,6 +1023,75 @@ const Design = () => (
     </ScrollView>
 );
 
+const Images = () => (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIActionImage</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIActionImage
+                iconEnabled={UIAssets.keyThinDark}
+                iconDisabled={UIAssets.keyThinGrey}
+                iconHovered={UIAssets.keyThinWhite}
+            />
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIActionImage
+                iconEnabled={UIAssets.keyThinDark}
+                iconDisabled={UIAssets.keyThinGrey}
+                iconHovered={UIAssets.keyThinWhite}
+                disabled
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIImage</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIImage source={UIAssets.keyThinDark} />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIImageView (press it)</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIImageView
+                photoStyle={{ width: 100, height: 100 }}
+                source={UIAssets.keyThinDark}
+                editable
+            />
+        </View>
+    </ScrollView>
+);
+
 const App: () => React$Node = () => {
     const navRef = React.useRef();
     useReduxDevToolsExtension(navRef);
@@ -1038,6 +1115,7 @@ const App: () => React$Node = () => {
                     <SurfSplit.Screen name="checkbox" component={Checkbox} />
                     <SurfSplit.Screen name="inputs" component={Inputs} />
                     <SurfSplit.Screen name="design" component={Design} />
+                    <SurfSplit.Screen name="images" component={Images} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />
