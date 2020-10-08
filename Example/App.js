@@ -23,6 +23,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useReduxDevToolsExtension } from "@react-navigation/devtools";
 import { createSurfSplitNavigator } from "react-navigation-surf";
 import {
+    UIColor,
     UIButton,
     UILayoutManager,
     UICheckboxItem,
@@ -58,6 +59,9 @@ import {
     UIActionImage,
     UIImage,
     UIImageView,
+    UIDetailsTable,
+    UIGrid,
+    UIGridColumn,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -90,6 +94,11 @@ const Main = ({ navigation }) => (
             onPress={() => navigation.navigate("images")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Images"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("layouts")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Layouts"
         />
     </SafeAreaView>
 );
@@ -1092,6 +1101,323 @@ const Images = () => (
     </ScrollView>
 );
 
+const Layouts = () => (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIDetailsTable</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIDetailsTable
+                detailsList={[
+                    {
+                        caption: "row 1",
+                        value: "value 1",
+                    },
+                    {
+                        caption: "row 2",
+                        value: "value 2",
+                        type: UIDetailsTable.CellType.Success,
+                    },
+                    {
+                        caption: "row 3",
+                        value: "value 3",
+                        type: UIDetailsTable.CellType.Action,
+                    },
+                    {
+                        caption: "row 4",
+                        value: "value 4",
+                        type: UIDetailsTable.CellType.Accent,
+                    },
+                    {
+                        caption: "row 5",
+                        value: "7,900,404 (98.8 %)",
+                        type: UIDetailsTable.CellType.NumberPercent,
+                    },
+                    {
+                        caption: "row 6",
+                        value: "100.00000000",
+                        type: UIDetailsTable.CellType.Gram,
+                    },
+                ]}
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIDetailsTable</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIGrid type={UIGrid.Type.C6} style={styles.grid}>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={3}
+                >
+                    <UIButton
+                        title="3 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.warning() }}
+                    medium={3}
+                >
+                    <UIButton
+                        title="3 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+            </UIGrid>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIGrid type={UIGrid.Type.C8} style={styles.grid}>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.warning() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={2}
+                >
+                    <UIButton
+                        title="2 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.warning() }}
+                    medium={4}
+                >
+                    <UIButton
+                        title="4 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.warning() }}
+                    medium={3}
+                >
+                    <UIButton
+                        title="3 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.warning() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+            </UIGrid>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIGrid
+                type={UIGrid.Type.C12}
+                style={styles.grid}
+                gutter={4}
+                rowGutter={8}
+            >
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={4}
+                >
+                    <UIButton
+                        title="4 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={4}
+                >
+                    <UIButton
+                        title="4 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={4}
+                >
+                    <UIButton
+                        title="4 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+                <UIGridColumn
+                    style={{ backgroundColor: UIColor.success() }}
+                    medium={1}
+                >
+                    <UIButton
+                        title="1 cells"
+                        buttonStyle={UIButton.ButtonStyle.Border}
+                    />
+                </UIGridColumn>
+            </UIGrid>
+        </View>
+    </ScrollView>
+);
+
 const App: () => React$Node = () => {
     const navRef = React.useRef();
     useReduxDevToolsExtension(navRef);
@@ -1116,6 +1442,7 @@ const App: () => React$Node = () => {
                     <SurfSplit.Screen name="inputs" component={Inputs} />
                     <SurfSplit.Screen name="design" component={Design} />
                     <SurfSplit.Screen name="images" component={Images} />
+                    <SurfSplit.Screen name="layouts" component={Layouts} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />
