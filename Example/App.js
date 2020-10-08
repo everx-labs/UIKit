@@ -16,6 +16,7 @@ import {
     SafeAreaView,
     ScrollView,
     Image,
+    Platform,
 } from "react-native";
 import BigNumber from "bignumber.js";
 import { NavigationContainer } from "@react-navigation/native";
@@ -52,6 +53,7 @@ import {
     UITextInput,
     UITransferInput,
     UIUploadFileInput,
+    UICountryPicker,
     UIBadge,
     UIDot,
     UISeparator,
@@ -62,6 +64,14 @@ import {
     UIDetailsTable,
     UIGrid,
     UIGridColumn,
+    UIActionSheet,
+    UICustomSheet,
+    UIPopover,
+    UIPopoverBackground,
+    UIPopoverMenu,
+    UISlider,
+    UIStepBar,
+    UITabView,
 } from "../UIKit";
 import UIAssets from "../assets/UIAssets";
 
@@ -99,6 +109,11 @@ const Main = ({ navigation }) => (
             onPress={() => navigation.navigate("layouts")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Layouts"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("menus")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Menus"
         />
     </SafeAreaView>
 );
@@ -1162,7 +1177,7 @@ const Layouts = () => (
                 borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
-            <Text>UIDetailsTable</Text>
+            <Text>UIGrid</Text>
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIGrid type={UIGrid.Type.C6} style={styles.grid}>
@@ -1418,11 +1433,245 @@ const Layouts = () => (
     </ScrollView>
 );
 
+const actionSheet = React.createRef<UIActionSheet>();
+const customSheet = React.createRef<UICustomSheet>();
+
+const Menus = () => {
+    const [activeIndex, setActiveIndex] = useState(0);
+    return (
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIActionSheet</Text>
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UITextButton
+                    title="Show ActionSheet"
+                    onPress={() =>
+                        actionSheet.current.show(
+                            [
+                                {
+                                    title: "Item 1",
+                                    onPress: () => alert("Action 1 was called"),
+                                },
+                                {
+                                    title: "Item 2",
+                                    onPress: () => alert("Action 2 was called"),
+                                },
+                            ],
+                            true
+                        )
+                    }
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UICountryPicker</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UITextButton
+                    title="Show UICountryPicker"
+                    onPress={() => UICountryPicker.show({})}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UICustomSheet</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UITextButton
+                    title="Show UICustomSheet"
+                    onPress={() => customSheet.current.show()}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIPopover</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIPopover
+                    placement="top"
+                    component={<Text>This is a popover</Text>}
+                >
+                    <UITextButton title="Show UIPopover" />
+                </UIPopover>
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIPopoverMenu</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIPopoverMenu
+                    placement="top"
+                    menuItemsList={[
+                        {
+                            title: "Item 1",
+                            onPress: () => alert("Action 1 was called"),
+                        },
+                        {
+                            title: "Item 2",
+                            onPress: () => alert("Action 2 was called"),
+                        },
+                    ]}
+                >
+                    <UITextButton title="Show UIPopoverMenu" />
+                </UIPopoverMenu>
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UISlider</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UISlider
+                    itemsList={[
+                        {
+                            title: "Card 1",
+                            details: "details",
+                        },
+                        {
+                            title: "Card 2",
+                            details: "details",
+                        },
+                        {
+                            title: "Card 3",
+                            details: "details",
+                        },
+                        {
+                            title: "Card 4",
+                            details: "details",
+                        },
+                        {
+                            title: "Card 5",
+                            details: "details",
+                        },
+                    ]}
+                    itemRenderer={({ title, details }) => (
+                        <View
+                            key={`slider-item-${title}-${details}`}
+                            style={{ width: 200, height: 200 }}
+                        >
+                            <Text>{title}</Text>
+                            <Text>{details}</Text>
+                        </View>
+                    )}
+                    itemWidth={256}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UIStepBar</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UIStepBar
+                    itemsList={["Item 1", "Item 2", "Item 3", "Item 4"]}
+                    activeIndex={activeIndex}
+                    onPress={(i) => setActiveIndex(i)}
+                />
+            </View>
+            <View
+                style={{
+                    width: "96%",
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: "2%",
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgba(0,0,0,.1)",
+                }}
+            >
+                <Text>UITabView</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UITabView
+                    width={95}
+                    pages={[
+                        {
+                            title: "Left",
+                            screen: () => <Text>Some left content</Text>,
+                        },
+                        {
+                            title: "Center",
+                            screen: () => <Text>Some center content</Text>,
+                        },
+                        {
+                            title: "Right",
+                            screen: () => <Text>Some right content</Text>,
+                        },
+                    ]}
+                />
+            </View>
+        </ScrollView>
+    );
+};
+
 const App: () => React$Node = () => {
     const navRef = React.useRef();
     useReduxDevToolsExtension(navRef);
 
-    return (
+    const main = (
         <>
             <NavigationContainer ref={navRef} linking={{ prefixes: ["/"] }}>
                 <SurfSplit.Navigator
@@ -1443,11 +1692,36 @@ const App: () => React$Node = () => {
                     <SurfSplit.Screen name="design" component={Design} />
                     <SurfSplit.Screen name="images" component={Images} />
                     <SurfSplit.Screen name="layouts" component={Layouts} />
+                    <SurfSplit.Screen name="menus" component={Menus} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />
+            <UIActionSheet ref={actionSheet} masterSheet={false} />
+            <UIActionSheet />
+            <UICountryPicker isShared />
+            <UICustomSheet
+                ref={customSheet}
+                masterSheet={false}
+                component={
+                    <>
+                        <Text>This is custom sheet!</Text>
+                        <UIButton
+                            title="close"
+                            onPress={() => {
+                                customSheet.current?.hide();
+                            }}
+                        />
+                    </>
+                }
+            />
         </>
     );
+
+    if (Platform.OS !== "web") {
+        return main;
+    }
+
+    return <UIPopoverBackground>{main}</UIPopoverBackground>;
 };
 
 const styles = StyleSheet.create({

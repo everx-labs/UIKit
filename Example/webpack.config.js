@@ -152,7 +152,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: [".web.js", ".js"],
+        extensions: [".web.js", ".js", ".json"],
         alias: {
             "@react-native-community/async-storage":
                 "react-native-web/dist/exports/AsyncStorage",
