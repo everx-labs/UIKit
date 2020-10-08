@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Animated, StyleSheet, Text, View, Image, Clipboard } from 'react-native';
+import { Animated, StyleSheet, Text, View, Image } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -14,7 +14,7 @@ import UIFunction from '../../../helpers/UIFunction';
 import UILocalized from '../../../helpers/UILocalized';
 import UIColorPalette from '../../../helpers/UIColor/UIColorPalette';
 import UITextButton from '../UITextButton';
-import UIToastMessage from '../../notifications/UIToastMessage';
+import UIShareManager from '../../../helpers/UIShareManager';
 
 import icoProgress from '../../../assets/ico-progress/progress.png';
 
@@ -36,7 +36,7 @@ type Props = ActionProps & {
     customComponent?: React$Node,
     disableHighlight?: boolean,
     titleIsText?: boolean,
-    copyTarget?: string,
+    copyTarget: ?string,
 };
 
 type State = ActionState & {
@@ -84,7 +84,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         fixedCaption: '',
         truncDetails: false,
         details: '',
-        copyTarget: this.copyTargets.title,
+        copyTarget: null,
     };
 
     static testIds = {
@@ -113,8 +113,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     onPressCopy = () => {
         const { title, details, copyTarget } = this.props;
         const str = copyTarget === UIDetailsButton.copyTargets.title ? title : details || '';
-        Clipboard.setString(str);
-        UIToastMessage.showMessage(UILocalized.CopiedToClipboard);
+        UIShareManager.copyToClipboard(str, UILocalized.CopiedToClipboard);
     }
 
     // Setters
