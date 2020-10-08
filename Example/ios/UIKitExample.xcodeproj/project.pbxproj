@@ -18,8 +18,15 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
 		3859348FE07244B0607B925C /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF68B5907CECB93FEE6BD62 /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a */; };
+		83B4B93FB91DCDF93E35FF91 /* libPods-UIKitExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */; };
 		A36A7FF409E30BD254F04641 /* libPods-ReactNavigationSurf-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4483DD005711A94A23B8B839 /* libPods-ReactNavigationSurf-tvOSTests.a */; };
-		DCF525B49AE8613EC4C481FD /* libPods-ReactNavigationSurf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */; };
+		A63C5DF1252EF7F10024AA83 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */; };
+		A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */; };
+		A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */; };
+		A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */; };
+		A9FFE61E4C14237EF4E5251B /* libPods-UIKitExample-UIKitExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */; };
+		C6B086BB07A3517EAC4310E8 /* libPods-UIKitExample-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */; };
+		D2D9D630BBD44660184620B6 /* libPods-UIKitExample-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,31 +48,47 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* ReactNavigationSurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactNavigationSurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* UIKitExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIKitExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNavigationSurfTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* ReactNavigationSurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactNavigationSurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0599A40149174638195124F1 /* Pods-UIKitExample-UIKitExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-UIKitExampleTests.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* UIKitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ReactNavigationSurf/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ReactNavigationSurf/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ReactNavigationSurf/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactNavigationSurf/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactNavigationSurf/main.m; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* ReactNavigationSurf-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ReactNavigationSurf-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* ReactNavigationSurf-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ReactNavigationSurf-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BE8DF481CF4A66EDEF6AF9D /* Pods-UIKitExample-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOSTests/Pods-UIKitExample-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E47B1E0B4A5D006451C7 /* UIKitExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UIKitExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* UIKitExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UIKitExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B20525732C8538644827907 /* Pods-UIKitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample/Pods-UIKitExample.debug.xcconfig"; sourceTree = "<group>"; };
 		3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4483DD005711A94A23B8B839 /* libPods-ReactNavigationSurf-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4722F4DF2801567DBF7D754C /* Pods-UIKitExample-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOS/Pods-UIKitExample-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		497E81DB1805FCE954E1ECE4 /* Pods-UIKitExample-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOS.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOS/Pods-UIKitExample-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		697F6A2495B147C2B50869CC /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-ReactNavigationSurfTests/Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig"; sourceTree = "<group>"; };
 		7318379B65F0B868B457795F /* Pods-ReactNavigationSurf-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOS/Pods-ReactNavigationSurf-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		73989467B48B018703E22EDE /* Pods-ReactNavigationSurf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf/Pods-ReactNavigationSurf.debug.xcconfig"; sourceTree = "<group>"; };
 		74CB3C7999866CB70E7474E5 /* Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOSTests/Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8AE3D25E3B79BE8FFA7C74AD /* Pods-UIKitExample-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOSTests/Pods-UIKitExample-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-UIKitExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9555C60EBB07695A97BCD7EB /* Pods-ReactNavigationSurf-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOS/Pods-ReactNavigationSurf-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.ttf"; path = "../../assets/fonts/SFProText-Regular.ttf"; sourceTree = "<group>"; };
+		A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "../../assets/fonts/SFProText-Bold.ttf"; sourceTree = "<group>"; };
+		A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Medium.ttf"; path = "../../assets/fonts/SFProText-Medium.ttf"; sourceTree = "<group>"; };
+		A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Light.ttf"; path = "../../assets/fonts/SFProText-Light.ttf"; sourceTree = "<group>"; };
 		AE025ECA7E246D7BBD62B1EE /* Pods-ReactNavigationSurf-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOSTests/Pods-ReactNavigationSurf-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		B8EA9B17B8E835A33F0E5DA3 /* libPods-ReactNavigationSurf-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E21460888583133CC543BC /* Pods-ReactNavigationSurf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf/Pods-ReactNavigationSurf.release.xcconfig"; sourceTree = "<group>"; };
 		EAF68B5907CECB93FEE6BD62 /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf-ReactNavigationSurfTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F40460B8FBCC7AEAF18A7F0A /* Pods-UIKitExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample/Pods-UIKitExample.release.xcconfig"; sourceTree = "<group>"; };
 		FB116A9CDBFAAB40C921E2F4 /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-ReactNavigationSurfTests/Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +98,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3859348FE07244B0607B925C /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a in Frameworks */,
+				A9FFE61E4C14237EF4E5251B /* libPods-UIKitExample-UIKitExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCF525B49AE8613EC4C481FD /* libPods-ReactNavigationSurf.a in Frameworks */,
+				83B4B93FB91DCDF93E35FF91 /* libPods-UIKitExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1411AB629B56AE2635288F72 /* libPods-ReactNavigationSurf-tvOS.a in Frameworks */,
+				C6B086BB07A3517EAC4310E8 /* libPods-UIKitExample-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,19 +124,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				A36A7FF409E30BD254F04641 /* libPods-ReactNavigationSurf-tvOSTests.a in Frameworks */,
+				D2D9D630BBD44660184620B6 /* libPods-UIKitExample-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* ReactNavigationSurfTests */ = {
+		00E356EF1AD99517003FC87E /* UIKitExampleTests */ = {
 			isa = PBXGroup;
 			children = (
 				00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = ReactNavigationSurfTests;
+			path = UIKitExampleTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -122,7 +148,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* ReactNavigationSurf */ = {
+		13B07FAE1A68108700A75B9A /* UIKitExample */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -133,7 +159,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = ReactNavigationSurf;
+			name = UIKitExample;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -145,6 +171,10 @@
 				EAF68B5907CECB93FEE6BD62 /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a */,
 				B8EA9B17B8E835A33F0E5DA3 /* libPods-ReactNavigationSurf-tvOS.a */,
 				4483DD005711A94A23B8B839 /* libPods-ReactNavigationSurf-tvOSTests.a */,
+				5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */,
+				903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */,
+				29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */,
+				ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -159,11 +189,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* ReactNavigationSurf */,
+				13B07FAE1A68108700A75B9A /* UIKitExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* ReactNavigationSurfTests */,
+				00E356EF1AD99517003FC87E /* UIKitExampleTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				A63C5DEC252EF7CF0024AA83 /* Resources */,
 				F1C06A65FCFB57C82C3593B9 /* Pods */,
 			);
 			indentWidth = 2;
@@ -174,12 +205,23 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* ReactNavigationSurf.app */,
-				00E356EE1AD99517003FC87E /* ReactNavigationSurfTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* ReactNavigationSurf-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* ReactNavigationSurf-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* UIKitExample.app */,
+				00E356EE1AD99517003FC87E /* UIKitExampleTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* UIKitExample-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* UIKitExample-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A63C5DEC252EF7CF0024AA83 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */,
+				A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */,
+				A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */,
+				A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		F1C06A65FCFB57C82C3593B9 /* Pods */ = {
@@ -193,36 +235,44 @@
 				9555C60EBB07695A97BCD7EB /* Pods-ReactNavigationSurf-tvOS.release.xcconfig */,
 				74CB3C7999866CB70E7474E5 /* Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig */,
 				AE025ECA7E246D7BBD62B1EE /* Pods-ReactNavigationSurf-tvOSTests.release.xcconfig */,
+				3B20525732C8538644827907 /* Pods-UIKitExample.debug.xcconfig */,
+				F40460B8FBCC7AEAF18A7F0A /* Pods-UIKitExample.release.xcconfig */,
+				9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */,
+				0599A40149174638195124F1 /* Pods-UIKitExample-UIKitExampleTests.release.xcconfig */,
+				4722F4DF2801567DBF7D754C /* Pods-UIKitExample-tvOS.debug.xcconfig */,
+				497E81DB1805FCE954E1ECE4 /* Pods-UIKitExample-tvOS.release.xcconfig */,
+				8AE3D25E3B79BE8FFA7C74AD /* Pods-UIKitExample-tvOSTests.debug.xcconfig */,
+				1BE8DF481CF4A66EDEF6AF9D /* Pods-UIKitExample-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* ReactNavigationSurfTests */ = {
+		00E356ED1AD99517003FC87E /* UIKitExampleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ReactNavigationSurfTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UIKitExampleTests" */;
 			buildPhases = (
 				835D8AAE5BFD46033004B2B8 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				08762156B710109B675474F4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = ReactNavigationSurfTests;
+			name = UIKitExampleTests;
 			productName = ReactNavigationSurfTests;
-			productReference = 00E356EE1AD99517003FC87E /* ReactNavigationSurfTests.xctest */;
+			productReference = 00E356EE1AD99517003FC87E /* UIKitExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* ReactNavigationSurf */ = {
+		13B07F861A680F5B00A75B9A /* UIKitExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ReactNavigationSurf" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "UIKitExample" */;
 			buildPhases = (
 				EE680C6F5F4B8C7F1A7F4011 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -230,19 +280,20 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				6859997AE6A071E3DB3CD433 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ReactNavigationSurf;
+			name = UIKitExample;
 			productName = ReactNavigationSurf;
-			productReference = 13B07F961A680F5B00A75B9A /* ReactNavigationSurf.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* UIKitExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* ReactNavigationSurf-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* UIKitExample-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ReactNavigationSurf-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOS" */;
 			buildPhases = (
 				9C6B62F986608769DC2D7612 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
@@ -255,14 +306,14 @@
 			);
 			dependencies = (
 			);
-			name = "ReactNavigationSurf-tvOS";
+			name = "UIKitExample-tvOS";
 			productName = "ReactNavigationSurf-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* ReactNavigationSurf-tvOS.app */;
+			productReference = 2D02E47B1E0B4A5D006451C7 /* UIKitExample-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* ReactNavigationSurf-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* UIKitExample-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ReactNavigationSurf-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOSTests" */;
 			buildPhases = (
 				0EE596F1C19CE9098EE356FB /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
@@ -274,9 +325,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "ReactNavigationSurf-tvOSTests";
+			name = "UIKitExample-tvOSTests";
 			productName = "ReactNavigationSurf-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* ReactNavigationSurf-tvOSTests.xctest */;
+			productReference = 2D02E4901E0B4A5D006451C7 /* UIKitExample-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -305,7 +356,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ReactNavigationSurf" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "UIKitExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -318,10 +369,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* ReactNavigationSurf */,
-				00E356ED1AD99517003FC87E /* ReactNavigationSurfTests */,
-				2D02E47A1E0B4A5D006451C7 /* ReactNavigationSurf-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* ReactNavigationSurf-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* UIKitExample */,
+				00E356ED1AD99517003FC87E /* UIKitExampleTests */,
+				2D02E47A1E0B4A5D006451C7 /* UIKitExample-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* UIKitExample-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -339,7 +390,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				A63C5DF1252EF7F10024AA83 /* SFProText-Regular.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */,
+				A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */,
+				A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,7 +428,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		08762156B710109B675474F4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		0EE596F1C19CE9098EE356FB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -390,7 +467,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ReactNavigationSurf-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -411,6 +488,28 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		6859997AE6A071E3DB3CD433 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UIKitExample/Pods-UIKitExample-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UIKitExample/Pods-UIKitExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		835D8AAE5BFD46033004B2B8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -426,7 +525,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ReactNavigationSurf-ReactNavigationSurfTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-UIKitExampleTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -448,7 +547,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ReactNavigationSurf-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -470,7 +569,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ReactNavigationSurf-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -557,12 +656,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* ReactNavigationSurf */;
+			target = 13B07F861A680F5B00A75B9A /* UIKitExample */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* ReactNavigationSurf-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* UIKitExample-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -582,7 +681,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB116A9CDBFAAB40C921E2F4 /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig */;
+			baseConfigurationReference = 9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -599,13 +698,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactNavigationSurf.app/ReactNavigationSurf";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample.app/UIKitExample";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 697F6A2495B147C2B50869CC /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig */;
+			baseConfigurationReference = 0599A40149174638195124F1 /* Pods-UIKitExample-UIKitExampleTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -619,13 +718,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactNavigationSurf.app/ReactNavigationSurf";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample.app/UIKitExample";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73989467B48B018703E22EDE /* Pods-ReactNavigationSurf.debug.xcconfig */;
+			baseConfigurationReference = 3B20525732C8538644827907 /* Pods-UIKitExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -643,7 +742,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ReactNavigationSurf;
+				PRODUCT_NAME = UIKitExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -652,7 +751,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2E21460888583133CC543BC /* Pods-ReactNavigationSurf.release.xcconfig */;
+			baseConfigurationReference = F40460B8FBCC7AEAF18A7F0A /* Pods-UIKitExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -665,7 +764,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ReactNavigationSurf;
+				PRODUCT_NAME = UIKitExample;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -673,7 +772,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7318379B65F0B868B457795F /* Pods-ReactNavigationSurf-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 4722F4DF2801567DBF7D754C /* Pods-UIKitExample-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -701,7 +800,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9555C60EBB07695A97BCD7EB /* Pods-ReactNavigationSurf-tvOS.release.xcconfig */;
+			baseConfigurationReference = 497E81DB1805FCE954E1ECE4 /* Pods-UIKitExample-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -729,7 +828,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74CB3C7999866CB70E7474E5 /* Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 8AE3D25E3B79BE8FFA7C74AD /* Pods-UIKitExample-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -749,14 +848,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.ReactNavigationSurf-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactNavigationSurf-tvOS.app/ReactNavigationSurf-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample-tvOS.app/UIKitExample-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE025ECA7E246D7BBD62B1EE /* Pods-ReactNavigationSurf-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 1BE8DF481CF4A66EDEF6AF9D /* Pods-UIKitExample-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -776,7 +875,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.ReactNavigationSurf-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactNavigationSurf-tvOS.app/ReactNavigationSurf-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample-tvOS.app/UIKitExample-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -897,7 +996,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ReactNavigationSurfTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UIKitExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -906,7 +1005,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ReactNavigationSurf" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "UIKitExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -915,7 +1014,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ReactNavigationSurf-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -924,7 +1023,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ReactNavigationSurf-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -933,7 +1032,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ReactNavigationSurf" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "UIKitExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

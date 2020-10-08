@@ -1015,20 +1015,6 @@ const Design = () => (
     </ScrollView>
 );
 
-// const Detail1Stack = createStackNavigator();
-// const Detail1 = () => (
-//     <Detail1Stack.Navigator initialRouteName="foo">
-//         <Detail1Stack.Screen name="foo" component={Detail1Foo} />
-//         <Detail1Stack.Screen name="bar" component={Detail1Bar} />
-//     </Detail1Stack.Navigator>
-// );
-
-const Detail2 = () => (
-    <SafeAreaView>
-        <Text style={styles.title}>Detail 2</Text>
-    </SafeAreaView>
-);
-
 const App: () => React$Node = () => {
     const navRef = React.useRef();
     useReduxDevToolsExtension(navRef);
