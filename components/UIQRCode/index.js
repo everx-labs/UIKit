@@ -10,12 +10,17 @@ type Props = {
     value: string,
     getRef?: () => void; // doesn't work in web
     size?: number,
+    logo?: number,
+    logoSize?: number,
+    logoMargin?: number,
+    logoBackgroundColor?: string,
 };
 type State = {
     // Empty
 };
 
-const defaultSize = UIConstant.majorCellHeight() * 2;
+const defaultSize = UIConstant.majorCellHeight() * 2; // 160px
+const defaultLogoSize = UIConstant.majorCellHeight() / 2; // 40px
 
 export default class UIQRCode extends UIPureComponent<Props, State> {
     render() {
@@ -25,6 +30,10 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
                 quietZone={UIConstant.smallContentOffset()}
                 value={this.props.value}
                 getRef={Platform.OS === 'web' ? undefined : this.props.getRef}
+                logo={this.props.logo}
+                logoSize={this.props.logoSize || defaultLogoSize}
+                logoMargin={this.props.logoMargin} // 2px by default
+                logoBackgroundColor={this.props.logoBackgroundColor || 'white'}
             />
         );
     }
