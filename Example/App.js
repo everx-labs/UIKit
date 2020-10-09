@@ -25,6 +25,7 @@ import { useReduxDevToolsExtension } from "@react-navigation/devtools";
 import { createSurfSplitNavigator } from "react-navigation-surf";
 import {
     UIColor,
+    UIStyle,
     UIButton,
     UILayoutManager,
     UICheckboxItem,
@@ -76,56 +77,26 @@ import {
     UINotificationBadge,
     UIToastMessage,
     UITooltip,
+    UIAlertView,
+    UIDropdownAlert,
+    UIPasswordPrompt,
+    UIBackgroundView,
+    UIBottomBar,
+    UIFeedback,
+    UIPushFeedback,
+    UIStubPage,
+    UITokenCell,
+    UIProfileInitials,
+    UIProfilePhoto,
+    UIProfileView,
+    UILabel,
+    UIListHeader,
+    UISectionHeader,
 } from "../UIKit";
+import UIAlert from "../components/popup/UIAlert";
 import UIAssets from "../assets/UIAssets";
 
 const SurfSplit = createSurfSplitNavigator();
-
-const Main = ({ navigation }) => (
-    <SafeAreaView>
-        <Text style={styles.title}>Main</Text>
-        <UIButton
-            onPress={() => navigation.navigate("buttons")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Buttons"
-        />
-        <UIButton
-            onPress={() => navigation.navigate("checkbox")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Checkbox"
-        />
-        <UIButton
-            onPress={() => navigation.navigate("inputs")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Inputs"
-        />
-        <UIButton
-            onPress={() => navigation.navigate("design")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Design"
-        />
-        <UIButton
-            onPress={() => navigation.navigate("images")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Images"
-        />
-        <UIButton
-            onPress={() => navigation.navigate("layouts")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Layouts"
-        />
-        <UIButton
-            onPress={() => navigation.navigate("menus")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Menus"
-        />
-        <UIButton
-            onPress={() => navigation.navigate("notifications")}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Notifications"
-        />
-    </SafeAreaView>
-);
 
 const Buttons = ({ navigation }) => (
     <ScrollView contentContainerStyle={{ alignItems: "center" }}>
@@ -1777,6 +1748,475 @@ const Notifications = () => (
     </ScrollView>
 );
 
+const Popups = () => (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIAlert</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITextButton
+                title="Show UIAlert"
+                onPress={() =>
+                    UIAlert.showAlert({
+                        title: "This is the title",
+                        description: "This is the alert description",
+                        // Receives an array of button arrays
+                        buttons: [
+                            [
+                                { title: "Button Left", onPress: () => {} },
+                                { title: "Button Right", onPress: () => {} },
+                            ],
+                            [{ title: "Single Button", onPress: () => {} }],
+                        ],
+                    })
+                }
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIAlertView</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITextButton
+                title="Show UIAlertView"
+                onPress={() =>
+                    UIAlertView.showAlert("Title", "Some message here", [
+                        { title: "Ok" },
+                    ])
+                }
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIDropdownAlert</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITextButton
+                title="Show UIDropdownAlert"
+                onPress={() =>
+                    UIDropdownAlert.showNotification(
+                        "This is a UIDropdownAlert"
+                    )
+                }
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIPasswordPrompt</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UITextButton
+                title="Show UIPasswordPrompt"
+                onPress={() =>
+                    UIPasswordPrompt.showPrompt({
+                        title: "This is password prompt",
+                        shouldConfirm: true,
+                    })
+                }
+            />
+        </View>
+    </ScrollView>
+);
+
+const Products = () => (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIBackgroundView</Text>
+        </View>
+        <View
+            style={{
+                width: 300,
+                height: 300,
+                paddingVertical: 20,
+                position: "relative",
+            }}
+        >
+            <UIBackgroundView
+                screenWidth={300}
+                presetName={UIBackgroundView.PresetNames.Secondary}
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIBottomBar</Text>
+        </View>
+        <View style={{ maxWidth: 500, height: 180, paddingVertical: 20 }}>
+            <UIBottomBar
+                leftText="Feedback"
+                companyName="Wallet solutions OÜ"
+                address="Jõe 2"
+                postalCode="10151"
+                location="Tallinn, Estonia"
+                email="os@ton.space"
+                phoneNumber="+372 7124030"
+                copyRight="2018-2019 © TON Labs"
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIFeedback</Text>
+        </View>
+        <View style={{ maxWidth: 500, paddingVertical: 20 }}>
+            <UIFeedback />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIPushFeedback</Text>
+        </View>
+        <View style={{ maxWidth: 500, paddingVertical: 20 }}>
+            <UIPushFeedback />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIStubPage</Text>
+        </View>
+        <View style={{ maxWidth: 500, paddingVertical: 20 }}>
+            <UIStubPage
+                title="labs."
+                needBottomIcon={false}
+                presetName={UIBackgroundView.PresetNames.Action}
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UITokenCell</Text>
+        </View>
+        <View style={{ width: 300, paddingVertical: 20 }}>
+            <UITokenCell title="GRAM" details="balance" balance="100.0000" />
+        </View>
+    </ScrollView>
+);
+
+const Profile = () => (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIProfileInitials</Text>
+        </View>
+        <View
+            style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UIProfileInitials
+                containerStyle={[
+                    UIStyle.Margin.bottomDefault(),
+                    UIStyle.Margin.rightDefault(),
+                ]}
+                id={1}
+                initials={"AM"}
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIProfilePhoto</Text>
+        </View>
+        <View
+            style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UIProfilePhoto source={UIAssets.faceId} />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIProfilePhoto</Text>
+        </View>
+        <View
+            style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UIProfileView
+                editable
+                containerStyle={{ marginRight: 16 }}
+                photo={UIAssets.faceId}
+                hasSecondName
+                name="John"
+                secondName="Doe"
+                namePlaceholder="Name"
+                secondNamePlaceholder="Second name"
+                details="Details"
+                autoCapitalize="words"
+            />
+        </View>
+    </ScrollView>
+);
+
+const TextScreen = () => (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UILabel</Text>
+        </View>
+        <View
+            style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UILabel
+                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                role={UILabel.Role.Description}
+            />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UIListHeader</Text>
+        </View>
+        <View
+            style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UIListHeader title="List header" />
+        </View>
+        <View
+            style={{
+                width: "96%",
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: "2%",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+            }}
+        >
+            <Text>UISectionHeader</Text>
+        </View>
+        <View
+            style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UISectionHeader
+                title="Section header"
+                titleRight="Title on the right side" // This will be rendered on the right side of the header
+                containerStyle={{ marginBottom: 16 }}
+            />
+        </View>
+        <View
+            style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UISectionHeader
+                title="Section header with border on top"
+                needBorder
+            />
+        </View>
+    </ScrollView>
+);
+
+const Main = ({ navigation }) => (
+    <SafeAreaView>
+        <Text style={styles.title}>Main</Text>
+        <UIButton
+            onPress={() => navigation.navigate("buttons")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Buttons"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("checkbox")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Checkbox"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("inputs")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Inputs"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("design")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Design"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("images")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Images"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("layouts")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Layouts"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("menus")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Menus"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("notifications")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Notifications"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("popups")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Popups"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("products")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Products"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("profile")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Profile"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("text")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Text"
+        />
+    </SafeAreaView>
+);
+
 const App: () => React$Node = () => {
     const navRef = React.useRef();
     useReduxDevToolsExtension(navRef);
@@ -1807,6 +2247,10 @@ const App: () => React$Node = () => {
                         name="notifications"
                         component={Notifications}
                     />
+                    <SurfSplit.Screen name="popups" component={Popups} />
+                    <SurfSplit.Screen name="products" component={Products} />
+                    <SurfSplit.Screen name="profile" component={Profile} />
+                    <SurfSplit.Screen name="text" component={TextScreen} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />
@@ -1831,6 +2275,10 @@ const App: () => React$Node = () => {
             <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
                 <UINotice />
             </View>
+            <UIAlert />
+            <UIAlertView />
+            <UIDropdownAlert />
+            <UIPasswordPrompt />
         </>
     );
 
