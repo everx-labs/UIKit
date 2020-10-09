@@ -239,7 +239,9 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                         testID={UIDetailsButton.testIds.title}
                     >
                         {formattedTitle}
-                        {copyTarget === UIDetailsButton.copyTargets.title && this.renderCopy()}
+                        {copyTarget === UIDetailsButton.copyTargets.title
+                            ? this.renderCopy()
+                            : null}
                     </Text>
                 )}
                 {titleComponent}
@@ -261,7 +263,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
                     testID={UIDetailsButton.testIds.details}
                 >
                     {truncDetails ? this.getFormattedText(details) : details}
-                    {copyTarget === UIDetailsButton.copyTargets.details && this.renderCopy()}
+                    {copyTarget === UIDetailsButton.copyTargets.details ? this.renderCopy() : null}
                 </Text>
                 <Text
                     style={UIStyle.text.secondaryCaptionRegular()}
