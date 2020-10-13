@@ -11,7 +11,7 @@ import BigNumber from 'bignumber.js';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { BigNum } from '../../types/BigNum';
 
-import UIConstant from '../../helpers/UIConstant';
+import UIConstant from '../UIConstant';
 
 const currencies = require('currency-formatter/currencies.json');
 const countries = require('../../assets/countries/countries.json');

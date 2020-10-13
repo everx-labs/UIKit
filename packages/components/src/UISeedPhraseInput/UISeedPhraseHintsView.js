@@ -13,11 +13,10 @@ import {
     UIConstant,
     UIDevice,
 } from '@uikit/core';
+import type { EventProps } from '@uikit/core/types';
 
 import UIComponent from '../UIComponent';
 import UILabel from '../UILabel';
-
-import type { EventProps } from '../../../types'; // TODO
 
 type Props = {
     words: string[],
@@ -234,6 +233,7 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
                 testID={`profile_backup_key_phrase_${hint}`}
                 style={[styles.cellHint, cellType]}
                 onPress={() => this.onHintSelected(hint)}
+                // $FlowFixMe
                 {...eventProps}
             >
                 <UILabel

@@ -371,6 +371,10 @@ const UITextStyle = StyleSheet.create({
 
     // [Text Quaternary]
     // Body - fontSize: 18, lineHeight: 24
+    quaternary: {
+        ...quaternary,
+    },
+    
     quaternaryBodyRegular: {
         ...quaternary,
         ...UIFont.bodyRegular(),

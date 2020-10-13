@@ -9,7 +9,7 @@ import {
     UIConstant,
     UITextStyle,
 } from '@uikit/core';
-import type { UIColorThemeNameType } from '../../../helpers/UIColor/UIColorTypes'; //TODO
+import type { UIColorThemeNameType } from '@uikit/core/UIColor/UIColorTypes';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';

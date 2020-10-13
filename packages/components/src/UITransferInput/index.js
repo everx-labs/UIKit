@@ -10,13 +10,13 @@ import {
     UILocalized,
     UIStyle,
 } from '@uikit/core';
-import type { NumberParts, StringLocaleInfo } from '../../../helpers/UIFunction'; // TODO
-import type { UIColorData } from '../../../helpers/UIColor/UIColorTypes'; // TODO
+import type { NumberParts, StringLocaleInfo } from '@uikit/core/UIFunction';
+import type { UIColorData } from '@uikit/core/UIColor/UIColorTypes';
+import type { BigNum } from '@uikit/core/types/BigNum';
 
 import UIComponent from '../UIComponent';
 import UIAmountInput from '../UIAmountInput';
 import UIDetailsView from '../UIDetailsView';
-import type { BigNum } from '../../../types/BigNum'; // TODO
 
 type Props = {
     containerStyle?: ViewStyleProp,

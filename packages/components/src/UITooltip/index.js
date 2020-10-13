@@ -3,19 +3,19 @@ import React from 'react';
 import type { Node } from 'react';
 import { View, TouchableOpacity, Platform, Text, StyleSheet, Dimensions } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { EventProps } from '../../../types'; // TODO
 
 import {
     UIConstant,
     UIColor,
-    UILayoutManager,
     UITextStyle,
     UIDevice,
     UIStyle,
 } from '@uikit/core';
-import type { Position } from '@uikit/core'; // TODO
+import type { EventProps } from '@uikit/core/types';
 
 import UIComponent from '../UIComponent';
+import UILayoutManager from '../UILayoutManager';
+import type { Position } from '../UILayoutManager';
 
 type Props = {
     message: string,
@@ -354,6 +354,7 @@ export default class UITooltip extends UIComponent<Props, State> {
         return (
             <View
                 style={this.props.containerStyle}
+                // $FlowFixMe
                 {...onMouseEvents}
             >
                 {this.renderTrigger()}

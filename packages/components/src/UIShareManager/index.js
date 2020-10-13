@@ -1,7 +1,7 @@
 // @flow
 import { Platform, Share, Clipboard } from 'react-native';
 
-import UIToastMessage from '../../components/notifications/UIToastMessage';
+import UIToastMessage from '../UIToastMessage';
 import UIShareScreen from './UIShareScreen';
 
 const RNShare = Platform.OS === 'web' ? undefined : require('react-native-share').default;

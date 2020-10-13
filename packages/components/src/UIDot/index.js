@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIColor, UIConstant } from '@uikit/core';
 
@@ -25,10 +26,21 @@ const styles = StyleSheet.create({
     },
 });
 
-class UIDot extends UIComponent {
+type Props = {
+    color: string,
+    type: ViewStyleProp,
+    iconContainer?: ViewStyleProp,
+}
+
+class UIDot extends UIComponent<Props, null> {
     static Type = {
         Dot: styles.dot,
         Line: styles.line,
+    };
+
+    static defaultProps = {
+        color: UIColor.grey1(),
+        type: UIDot.Type.Dot,
     };
 
     render() {
@@ -43,8 +55,3 @@ class UIDot extends UIComponent {
 }
 
 export default UIDot;
-
-UIDot.defaultProps = {
-    color: UIColor.grey1(),
-    type: UIDot.Type.Dot,
-};

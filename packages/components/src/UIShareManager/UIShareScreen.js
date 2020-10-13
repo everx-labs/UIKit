@@ -8,22 +8,21 @@ import {
 } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-// Module imports
+import {
+    UILocalized,
+    UIColor,
+    UIFont,
+    UIStyle,
+    UIConstant,
+} from '@uikit/core';
+import { UIModalController } from '@uikit/navigation';
+import type { ModalControllerProps } from '@uikit/navigation/UIModalController';
 
-import UIModalController from '../../controllers/UIModalController';
-import UIToastMessage from '../../components/notifications/UIToastMessage';
-import UIConstant from '../../helpers/UIConstant';
-import UIButton from '../../components/buttons/UIButton';
-import UILabel from '../../components/text/UILabel';
-import UILocalized from '../../helpers/UILocalized';
-import UIColor from '../UIColor';
-import UIFont from '../UIFont';
-import UIStyle from '../UIStyle';
-import UIAssets from '../../assets/UIAssets';
+import UIToastMessage from '../UIToastMessage';
+import UIButton from '../UIButton';
+import UILabel from '../UILabel';
 
-import type { ModalControllerProps } from '../../controllers/UIModalController';
-
-// End imports
+import UIAssets from '../../assets/UIAssets'; // TODO
 
 type Options = {
     message: string,

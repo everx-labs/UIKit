@@ -3,7 +3,7 @@ import React from 'react';
 import { Image, View, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UIAssets from '../../../assets/UIAssets'; // ?
+import UIAssets from '../../../assets/UIAssets'; // TODO
 
 import {
     UIColor,

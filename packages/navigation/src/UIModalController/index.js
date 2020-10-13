@@ -18,7 +18,7 @@ import {
     UIFunction,
     UIStyle,
 } from '@uikit/core';
-import type { SafeAreaInsets } from '@uikit/core';
+import type { SafeAreaInsets } from '@uikit/core/UIDevice';
 
 import type {
     AnimationParameters,

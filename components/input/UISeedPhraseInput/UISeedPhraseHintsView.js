@@ -16,7 +16,7 @@ import UIDevice from '../../../helpers/UIDevice';
 import UIComponent from '../../UIComponent';
 import UILabel from '../../text/UILabel';
 
-import type { EventProps } from '../../../types';
+import type { EventProps } from '../../types';
 
 type Props = {
     words: string[],

@@ -23,12 +23,12 @@ import {
     UILocalized,
     UIStyle,
 } from '@uikit/core';
-import type { SafeAreaInsets } from '@uikit/core'; // TODO
-
-import UIAlertView from '../UIAlertView';
-import UIComponent from '../UIComponent';
-import UISpinnerOverlay from '../UISpinnerOverlay';
-
+import type { SafeAreaInsets } from '@uikit/core/UIDevice';
+import {
+    UIAlertView,
+    UIComponent,
+    UISpinnerOverlay,
+} from '@uikit/components';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'

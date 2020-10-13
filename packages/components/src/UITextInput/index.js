@@ -4,13 +4,13 @@ import StylePropType from 'react-style-proptype';
 import { TextInput, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import type { ReturnKeyType, AutoCapitalize, KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 
-import type { PointerEvents } from '../../../types'; // TODO
 
 import {
     UIColor,
     UIStyle,
     UIConstant,
 } from '@uikit/core';
+import type { PointerEvents } from '@uikit/core/types';
 
 import UIComponent from '../UIComponent';
 

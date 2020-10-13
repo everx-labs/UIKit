@@ -14,8 +14,6 @@ import {
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';
 
-import type { ReactNavigation } from '../../navigation/UINavigationBar'; // TODO
-
 type Value = ?(string | number | boolean);
 
 export type DetailsRow = {

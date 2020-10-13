@@ -14,7 +14,6 @@ import {
 import FlashMessage, { hideMessage, showMessage } from 'react-native-flash-message';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
-import type { PositionObject } from '../../../types'; // TODO
 
 import {
     UIConstant,
@@ -24,6 +23,7 @@ import {
     UIStyle,
     UITextStyle,
 } from '@uikit/core';
+import type { PositionObject } from '@uikit/core/types';
 
 import UIComponent from '../UIComponent';
 import UIAlertView from '../UIAlertView';

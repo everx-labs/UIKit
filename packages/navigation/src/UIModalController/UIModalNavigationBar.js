@@ -12,8 +12,7 @@ import {
     UILocalized,
     UIConstant,
 } from '@uikit/core';
-
-import UIComponent from '../UIComponent';
+import { UIComponent } from '@uikit/components';
 
 const styles = StyleSheet.create({
     navigationView: {

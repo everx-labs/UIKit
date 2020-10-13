@@ -10,9 +10,14 @@ import {
     UIColor,
     UIConstant,
     UIStyle,
-    UIStyleColor, // TODO
+    UIStyleColor,
     UIFont,
 } from '@uikit/core';
+import type {
+    UIColorData,
+    UIColorThemeNameType,
+} from '@uikit/core/UIColor/UIColorTypes';
+import type { EventProps } from '@uikit/core/types';
 
 import UILabel from '../UILabel';
 import UITextButton from '../UITextButton';
@@ -24,13 +29,6 @@ import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-mi
 import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
 import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
 import iconArrowDefault from '../../../assets/ico-arrow-right/ico-arrow-right.png';
-
-import type {
-    UIColorData,
-    UIColorThemeNameType,
-} from '../../../helpers/UIColor/UIColorTypes'; // TODO
-
-import type { EventProps } from '../../../types'; // TODO
 
 const styles = StyleSheet.create({
     container: {
@@ -1057,8 +1055,9 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         };
         return (
             <View
-                {...eventProps}
                 style={[this.containerStyle(), this.props.containerStyle, this.props.style]}
+                // $FlowFixMe
+                {...eventProps}
             >
                 {this.renderFloatingTitle()}
                 {this.renderTextView()}

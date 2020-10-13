@@ -1,5 +1,5 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, BackHandler, Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -47,12 +47,25 @@ const styles = StyleSheet.create({
 
 let masterRef = null;
 
-export default class UIAlertView extends UIComponent {
+type Props = {
+    masterAlert: boolean,
+};
+
+type AlertButtons = { title: string, color?: string, onPress?: () => void }[];
+
+type State = {
+    alertVisible: boolean,
+    alertTitle: string,
+    alertMessage: string,
+    alertButtons: AlertButtons,
+}
+
+export default class UIAlertView extends UIComponent<Props, State> {
     // Pick `zIndex` for UIAlertView thus to overlap all components
     // http://softwareas.com/whats-the-maximum-z-index/ (as per Safari 0-3 threshold)
     static zIndex = 16777271;
 
-    static showAlert(alertTitle, alertMessage, alertButtons) {
+    static showAlert(alertTitle: string, alertMessage: string, alertButtons: AlertButtons) {
         if (masterRef) {
             masterRef.showAlert(alertTitle, alertMessage, alertButtons);
         }
@@ -64,8 +77,12 @@ export default class UIAlertView extends UIComponent {
         }
     }
 
+    static defaultProps = {
+        masterAlert: true,
+    };
+
     // constructor
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -118,7 +135,7 @@ export default class UIAlertView extends UIComponent {
     };
 
     // actions
-    showAlert(alertTitle, alertMessage, alertButtons) {
+    showAlert(alertTitle: string, alertMessage: string, alertButtons: AlertButtons) {
         this.startListeningToBackButton();
         this.setState({
             alertVisible: true, alertTitle, alertMessage, alertButtons,
@@ -182,11 +199,3 @@ export default class UIAlertView extends UIComponent {
         />);
     }
 }
-
-UIAlertView.defaultProps = {
-    masterAlert: true,
-};
-
-UIAlertView.propTypes = {
-    masterAlert: PropTypes.bool,
-};
