@@ -1,13 +1,14 @@
 // @flow
 import React from 'react';
 import {
-    StyleSheet, View, Text,
+    StyleSheet, View,
 } from 'react-native';
 
 import UIComponent from '../../UIComponent';
 import UIConstant from '../../../helpers/UIConstant';
 import UIColor from '../../../helpers/UIColor';
-import UIFont from '../../../helpers/UIFont';
+import UIStyle from '../../../helpers/UIStyle';
+import UILabel from '../../text/UILabel';
 
 type Props = {
     text: ?string,
@@ -22,12 +23,10 @@ const styles = StyleSheet.create({
         marginLeft: UIConstant.contentOffset(),
         marginRight: UIConstant.contentOffset(),
         padding: UIConstant.normalContentOffset(),
-        backgroundColor: UIColor.redE71717(),
         borderRadius: UIConstant.borderRadius(),
     },
     textStyle: {
         color: UIColor.white(),
-        ...UIFont.smallMedium(),
     },
 });
 
@@ -37,12 +36,15 @@ export default class UIBanner extends UIComponent<Props, State> {
             <View
                 style={[
                     styles.containerStyle,
+                    UIStyle.color.getBackgroundColorStyle(UIColor.backgroundNegative()),
                     { display: this.props.text ? 'flex' : 'none' },
                 ]}
             >
-                <Text style={styles.textStyle}>
-                    {this.props.text}
-                </Text>
+                <UILabel
+                    role={UILabel.Role.SmallMedium}
+                    text={this.props.text || ''}
+                    style={styles.textStyle}
+                />
             </View>
         );
     }

@@ -175,10 +175,6 @@ export default class UIColor {
         return UIColorPalette.error;
     }
 
-    static redE71717() {
-        return UIColorPalette.redE71717;
-    }
-
     static hue005D8C() {
         return UIColorPalette.hue005D8C;
     }
