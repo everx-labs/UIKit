@@ -10,6 +10,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 // Localizations
 import 'dayjs/locale/ru';
 import 'dayjs/locale/fr';
+import 'dayjs/locale/pt-br';
 
 // Plugins
 dayjs.extend(customParseFormat);
