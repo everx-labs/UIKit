@@ -45,6 +45,7 @@ const UIColorPalette = {
     warning: '#F2C94C',
     error: '#CC0022',
     caution: '#CC4400',
+    redE71717: '#E71717',
     text: {
         lightPrimary: '#20262A',
         darkPrimary: '#FFFFFF',
