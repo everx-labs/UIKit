@@ -19,7 +19,6 @@ import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';
 import UITooltip from '../UITooltip';
 
-
 const TOOLTIP_WIDTH = 'auto';
 
 const styles = StyleSheet.create({

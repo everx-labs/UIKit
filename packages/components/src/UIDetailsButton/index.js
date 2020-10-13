@@ -12,11 +12,11 @@ import {
     UIFunction,
     UIColorPalette,
 } from '@uikit/core';
+import icoProgress from '@uikit/assets/ico-progress/progress.png';
 
 import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';
 
-import icoProgress from '../../../assets/ico-progress/progress.png'; // ?
 
 type Props = ActionProps & {
     style: ViewStyleProp,

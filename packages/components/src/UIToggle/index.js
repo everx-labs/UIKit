@@ -4,12 +4,12 @@ import { View, Image, TouchableWithoutFeedback } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-import UIComponent from '../UIComponent';
+import icoInactive from '@uikit/assets/ico-toggle-inactive/ico-toggle-inactive.png';
+import icoActive from '@uikit/assets/ico-toggle-active/ico-toggle-active.png';
+import icoOn from '@uikit/assets/ico-toggle-on/ico-toggle-on.png';
+import icoOff from '@uikit/assets/ico-toggle-off/ico-toggle-off.png';
 
-import icoInactive from '../../../assets/ico-toggle-inactive/ico-toggle-inactive.png'; // TODO
-import icoActive from '../../../assets/ico-toggle-active/ico-toggle-active.png';
-import icoOn from '../../../assets/ico-toggle-on/ico-toggle-on.png';
-import icoOff from '../../../assets/ico-toggle-off/ico-toggle-off.png';
+import UIComponent from '../UIComponent';
 
 type Props = {
     iconActive: ?ImageSource,

@@ -17,12 +17,11 @@ import {
     UIConstant,
     UITextStyle,
 } from '@uikit/core';
+import UIAssets from '@uikit/assets';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';
 import UILabel from '../UILabel';
-
-import UIAssets from '../../../assets/UIAssets'; // TODO
 
 const BorderlessButton = Platform.select({
     web: TouchableOpacity,

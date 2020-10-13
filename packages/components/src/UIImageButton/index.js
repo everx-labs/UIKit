@@ -16,14 +16,14 @@ type ButtonImage = 'back' | 'close-primary' | 'close-secondary'
                     | 'menu-contained';
 
 const assets = {
-    back: () => require('../../../assets/ico-arrow-left/ico-arrow-left.png'),
-    'close-primary': () => require('../../../assets/ico-close/close-blue.png'),
-    'close-secondary': () => require('../../../assets/ico-close/close-grey.png'),
-    'close-dark-theme-secondary': () => require('../../../assets/ico-close/close-dark-theme-secondary.png'),
-    'close-light': () => require('../../../assets/ico-close/close-light.png'),
-    'close-black': () => require('../../../assets/ico-close/close-black.png'),
-    menu: () => require('../../../assets/ico-open-menu/open-menu.png'),
-    'menu-contained': () => require('../../../assets/ico-menu-contained/menu.png'),
+    back: () => require('@uikit/assets/ico-arrow-left/ico-arrow-left.png'),
+    'close-primary': () => require('@uikit/assets/ico-close/close-blue.png'),
+    'close-secondary': () => require('@uikit/assets/ico-close/close-grey.png'),
+    'close-dark-theme-secondary': () => require('@uikit/assets/ico-close/close-dark-theme-secondary.png'),
+    'close-light': () => require('@uikit/assets/ico-close/close-light.png'),
+    'close-black': () => require('@uikit/assets/ico-close/close-black.png'),
+    menu: () => require('@uikit/assets/ico-open-menu/open-menu.png'),
+    'menu-contained': () => require('@uikit/assets/ico-menu-contained/menu.png'),
     custom: () => null,
 };
 

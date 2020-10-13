@@ -17,12 +17,11 @@ import {
 } from '@uikit/core';
 import { UIModalController } from '@uikit/navigation';
 import type { ModalControllerProps } from '@uikit/navigation/UIModalController';
+import UIAssets from '@uikit/assets';
 
 import UIToastMessage from '../UIToastMessage';
 import UIButton from '../UIButton';
 import UILabel from '../UILabel';
-
-import UIAssets from '../../assets/UIAssets'; // TODO
 
 type Options = {
     message: string,

@@ -11,8 +11,8 @@ import {
 
 import UIComponent from '../UIComponent';
 
-import icoRadiobuttonActive from '../../../assets/ico-radiobutton-active/ico-radiobutton-active.png';
-import icoRadiobuttonInactive from '../../../assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
+import icoRadiobuttonActive from '@uikit/assets/ico-radiobutton-active/ico-radiobutton-active.png';
+import icoRadiobuttonInactive from '@uikit/assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
 
 const styles = StyleSheet.create({
     radiobuttonItem: {

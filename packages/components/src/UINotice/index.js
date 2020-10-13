@@ -24,11 +24,11 @@ import {
     UITextStyle,
 } from '@uikit/core';
 import type { PositionObject } from '@uikit/core/types';
+import icoCloseBlue from '@uikit/assets/ico-close/close-blue.png';
+import icoCloseGrey from '@uikit/assets/ico-close/close-grey.png';
 
 import UIComponent from '../UIComponent';
 import UIAlertView from '../UIAlertView';
-import icoCloseBlue from '../../../assets/ico-close/close-blue.png';
-import icoCloseGrey from '../../../assets/ico-close/close-grey.png';
 
 const cardShadowWidth = UIConstant.cardShadowWidth();
 const doubleOffset = 2 * cardShadowWidth;

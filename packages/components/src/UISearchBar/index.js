@@ -22,8 +22,8 @@ import UIComponent from '../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
-import icoGlass from '../../../assets/ico-glass/search-thin.png';
-import icoClear from '../../../assets/ico-clear/ico-clear.png';
+import icoGlass from '@uikit/assets/ico-glass/search-thin.png';
+import icoClear from '@uikit/assets/ico-clear/ico-clear.png';
 
 const styles = StyleSheet.create({
     searchInput: {

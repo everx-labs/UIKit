@@ -25,10 +25,10 @@ import UIActionImage from '../UIActionImage';
 import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';
 
-import iconDisabled from '../../../assets/ico-arrow-right/arrow-right-primary-minus.png';
-import iconEnabled from '../../../assets/ico-arrow-right/arrow-right-primary-1.png';
-import iconHovered from '../../../assets/ico-arrow-right/arrow-right-white.png';
-import iconArrowDefault from '../../../assets/ico-arrow-right/ico-arrow-right.png';
+import iconDisabled from '@uikit/assets/ico-arrow-right/arrow-right-primary-minus.png';
+import iconEnabled from '@uikit/assets/ico-arrow-right/arrow-right-primary-1.png';
+import iconHovered from '@uikit/assets/ico-arrow-right/arrow-right-white.png';
+import iconArrowDefault from '@uikit/assets/ico-arrow-right/ico-arrow-right.png';
 
 const styles = StyleSheet.create({
     container: {

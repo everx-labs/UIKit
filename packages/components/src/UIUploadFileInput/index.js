@@ -10,11 +10,11 @@ import {
     UITextStyle,
 } from '@uikit/core';
 import type { UIColorThemeNameType } from '@uikit/core/UIColor/UIColorTypes';
+import iconClose from '@uikit/assets/ico-close/remove.png';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';
 
-import iconClose from '../../../assets/ico-close/remove.png';
 
 const styles = StyleSheet.create({
     container: {

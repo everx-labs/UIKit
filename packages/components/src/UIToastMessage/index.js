@@ -16,11 +16,10 @@ import {
     UIColor,
     UIFont,
 } from '@uikit/core';
+import icoClose from '@uikit/assets/ico-close/close-light.png';
 
 import UINotice from '../UINotice';
 import type { MessageObject, NoticeAction } from '../UINotice';
-
-import icoClose from '../../../assets/ico-close/close-light.png'; // TODO
 
 const { width } = Dimensions.get('window');
 const pageToastWidth = width - (UIConstant.contentOffset() * 2);

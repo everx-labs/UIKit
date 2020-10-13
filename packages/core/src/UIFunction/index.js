@@ -2,19 +2,19 @@
 // @flow
 
 import { Platform, Text, TextInput } from 'react-native';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
 import Moment from 'moment';
 import isEmail from 'validator/lib/isEmail';
 import BigNumber from 'bignumber.js';
+import currencies from 'currency-formatter/currencies.json';
 
-import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { BigNum } from '../../types/BigNum';
+import countries from '@uikit/assets/countries/countries.json';
 
 import UIConstant from '../UIConstant';
+import type { BigNum } from '../../types/BigNum';
 
-const currencies = require('currency-formatter/currencies.json');
-const countries = require('../../assets/countries/countries.json');
 
 export const CurrencyPosition = Object.freeze({
     Before: 'before',

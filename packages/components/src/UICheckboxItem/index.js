@@ -5,23 +5,20 @@ import StylePropType from 'react-style-proptype';
 import { Image, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
 import { UIColor } from '@uikit/core';
+import icoSquareCheckboxActive
+    from '@uikit/assets/ico-checkbox-square-active/ico-checkbox-square-active.png';
+import icoSquareCheckboxInactive
+    from '@uikit/assets/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
+import icoSquareCheckboxActiveAction
+    from '@uikit/assets/ico-checkbox-square-active/active-action.png';
+import icoSquareCheckboxInactiveAction
+    from '@uikit/assets/ico-checkbox-square-inactive/inactive-action.png';
+import icoCircleCheckboxActive
+    from '@uikit/assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
+import icoCircleCheckboxInactive
+    from '@uikit/assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png';
 
 import UIComponent from '../../UIComponent';
-
-import icoSquareCheckboxActive
-    from '../../../assets/ico-checkbox-square-active/ico-checkbox-square-active.png';
-import icoSquareCheckboxInactive
-    from '../../../assets/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
-
-import icoSquareCheckboxActiveAction
-    from '../../../assets/ico-checkbox-square-active/active-action.png';
-import icoSquareCheckboxInactiveAction
-    from '../../../assets/ico-checkbox-square-inactive/inactive-action.png';
-
-import icoCircleCheckboxActive
-    from '../../../assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
-import icoCircleCheckboxInactive
-    from '../../../assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png';
 
 const checkboxSize = 24;
 

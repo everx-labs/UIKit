@@ -11,6 +11,7 @@ import {
     UIConstant,
     UIStyle,
 } from '@uikit/core';
+import iconDefault from '@uikit/assets/ico-triangle/ico-triangle.png';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';
@@ -18,8 +19,6 @@ import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';
 import UITooltip from '../UITooltip';
 import IconAnimation from './IconAnimation';
-
-const iconDefault = require('../../../assets/ico-triangle/ico-triangle.png'); // TODO
 
 const styles = StyleSheet.create({
     container: {

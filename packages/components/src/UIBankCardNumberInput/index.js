@@ -3,14 +3,13 @@ import React from 'react';
 import { Image, View, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UIAssets from '../../../assets/UIAssets'; // TODO
-
 import {
     UIColor,
     UILocalized,
     UIStyle,
     UIFunction,
 } from '@uikit/core';
+import UIAssets from '@uikit/assets';
 
 import UIComponent from '../UIComponent';
 import UIDetailsInput from '../UIDetailsInput';

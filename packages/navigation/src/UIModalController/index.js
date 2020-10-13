@@ -19,6 +19,7 @@ import {
     UIStyle,
 } from '@uikit/core';
 import type { SafeAreaInsets } from '@uikit/core/UIDevice';
+import UIAssets from '@uikit/assets';
 
 import type {
     AnimationParameters,
@@ -27,7 +28,6 @@ import type {
     ControllerState,
 } from '../UIController';
 
-import UIAssets from '../../assets/UIAssets'; // ?
 import UIController from '../UIController';
 import UIModalNavigationBar from './UIModalNavigationBar';
 
