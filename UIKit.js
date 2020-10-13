@@ -11,6 +11,7 @@ import UIAmountInput from './components/input/UIAmountInput';
 import UIBackgroundView from './components/products/UIBackgroundView';
 import UIBadge from './components/design/UIBadge';
 import UIBalanceView from './components/views/UIBalanceView';
+import UIBanner from './components/notifications/UIBanner';
 import UIAnimatedBalanceView from './components/views/UIAnimatedBalanceView';
 import UIBottomBar from './components/products/UIBottomBar';
 import UIBullet from './components/docs/UIBullet';
@@ -169,6 +170,7 @@ export {
     UIBackgroundView,
     UIBadge,
     UIBalanceView,
+    UIBanner,
     UIAnimatedBalanceView,
     UIBottomBar,
     UIBullet,
