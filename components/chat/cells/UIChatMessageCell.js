@@ -592,86 +592,76 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
         let cell = null;
         let testID = '';
 
-        let padding = {
-            paddingTop: UIConstant.smallContentOffset(),
-            paddingBottom: lastFromChain ? 0 : UIConstant.smallContentOffset(),
-        };
+        // Make bubbles look more natural for chat messages
+        let padding = type === ChatMessageContent.SimpleText
+            || type === ChatMessageContent.AttachmentImage
+            || type === ChatMessageContent.AttachmentDocument
+            ? {
+                paddingTop: firstFromChain ? UIConstant.smallContentOffset() : 0,
+                paddingBottom: lastFromChain ? 0 : UIConstant.tinyContentOffset(),
+            }
+            : {
+                paddingTop: UIConstant.smallContentOffset(),
+                paddingBottom: lastFromChain ? 0 : UIConstant.smallContentOffset(),
+            };
 
         let align = this.isReceived ? 'flex-start' : 'flex-end';
 
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
+            // Make paddings bigger and even
             padding = {
                 paddingTop: UIConstant.contentOffset(),
                 paddingBottom: UIConstant.contentOffset(),
             };
-        } else if (type === ChatMessageContent.SystemInfo) {
-            align = 'center';
-            cell = this.renderSystemInfo();
-        } else if (type === ChatMessageContent.ActionLabel) {
-            cell = this.renderActionLabel();
-        } else if (type === ChatMessageContent.EmptyChat) {
-            align = 'flex-start';
-            cell = this.renderEmptyChatCell();
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
 
-            if (!lastFromChain) {
-                padding.paddingBottom = 0;
-            }
+            // Remove bottom padding for transactions
+            padding.paddingBottom = 0;
         } else if (type === ChatMessageContent.TransactionComment) {
             cell = this.renderTransactionCommentCell();
 
-            // to move comment closer to the parent transaction bubble
-            padding.paddingTop = firstFromChain ? UIConstant.tinyContentOffset() : 0;
-        } else if (type === ChatMessageContent.SimpleText) {
-            cell = this.renderTextCell();
-
-            padding = {
-                paddingTop: firstFromChain ? UIConstant.smallContentOffset() : 0,
-                paddingBottom: lastFromChain ? 0 : UIConstant.tinyContentOffset(),
-            };
+            // Move comment closer to the parent transaction bubble
+            padding.paddingTop = UIConstant.tinyContentOffset();
         } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
             cell = this.renderSystemCell();
 
+            // Systems messages have different paddings too
             padding = {
                 paddingTop: firstFromChain
                     ? UIConstant.contentOffset()
                     : UIConstant.smallContentOffset(),
                 paddingBottom: UIConstant.smallContentOffset(),
             };
+        } else if (type === ChatMessageContent.SimpleText) {
+            cell = this.renderTextCell();
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
-
-            if (!firstFromChain) {
-                padding = {
-                    paddingTop: UIConstant.tinyContentOffset(),
-                    paddingBottom: 0,
-                };
-            }
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
-
-            if (!firstFromChain) {
-                padding = {
-                    paddingTop: UIConstant.tinyContentOffset(),
-                    paddingBottom: 0,
-                };
-            }
         } else if (type === ChatMessageContent.Sticker) {
             cell = this.renderStickerCell();
             testID = 'chat_message_sticker';
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
+        } else if (type === ChatMessageContent.ActionLabel) {
+            cell = this.renderActionLabel();
         } else if (type === ChatMessageContent.LinkActionMessage) {
             cell = this.renderLinkActionMessageCell();
             testID = 'chat_message_link';
+        } else if (type === ChatMessageContent.SystemInfo) {
+            align = 'center';
+            cell = this.renderSystemInfo();
+        } else if (type === ChatMessageContent.EmptyChat) {
+            align = 'flex-start';
+            cell = this.renderEmptyChatCell();
         } else {
             cell = this.renderInformationCell('Message/Cell type not supported.');
         }
