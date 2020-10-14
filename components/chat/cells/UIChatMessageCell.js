@@ -617,18 +617,12 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
 
             if (!lastFromChain) {
-                padding = {
-                    paddingTop: UIConstant.smallContentOffset(),
-                    paddingBottom: UIConstant.tinyContentOffset(),
-                };
+                padding.paddingBottom = UIConstant.tinyContentOffset();
             }
         } else if (type === ChatMessageContent.TransactionComment) {
             cell = this.renderTransactionCommentCell();
 
-            padding = {
-                paddingTop: 0, // to move comment closer to the parent transaction bubble
-                paddingBottom: UIConstant.smallContentOffset(),
-            };
+            padding.paddingTop = 0; // to move comment closer to the parent transaction bubble
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
 
@@ -640,17 +634,12 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             align = 'center';
             cell = this.renderSystemCell();
 
-            if (firstFromChain) {
-                padding = {
-                    paddingTop: UIConstant.contentOffset(),
-                    paddingBottom: UIConstant.smallContentOffset(),
-                };
-            } else {
-                padding = {
-                    paddingTop: UIConstant.smallContentOffset(),
-                    paddingBottom: UIConstant.smallContentOffset(),
-                };
-            }
+            padding = {
+                paddingTop: firstFromChain
+                    ? UIConstant.contentOffset()
+                    : UIConstant.smallContentOffset(),
+                paddingBottom: UIConstant.smallContentOffset(),
+            };
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
@@ -661,9 +650,6 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                     paddingBottom: 0,
                 };
             }
-        } else if (type === ChatMessageContent.Sticker) {
-            cell = this.renderStickerCell();
-            testID = 'chat_message_sticker';
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
@@ -674,6 +660,9 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                     paddingBottom: 0,
                 };
             }
+        } else if (type === ChatMessageContent.Sticker) {
+            cell = this.renderStickerCell();
+            testID = 'chat_message_sticker';
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
