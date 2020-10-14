@@ -21,13 +21,14 @@ type State = {
 
 const defaultSize = UIConstant.majorCellHeight() * 2; // 160px
 const defaultLogoSize = UIConstant.majorCellHeight() / 2; // 40px
+const quietZone = UIConstant.smallContentOffset(); // 8px
 
 export default class UIQRCode extends UIPureComponent<Props, State> {
     render() {
         return (
             <QRCode
-                size={this.props.size || defaultSize}
-                quietZone={UIConstant.smallContentOffset()}
+                size={this.props.size || (defaultSize + (quietZone * 2))}
+                quietZone={quietZone}
                 value={this.props.value}
                 getRef={Platform.OS === 'web' ? undefined : this.props.getRef}
                 logo={this.props.logo}
