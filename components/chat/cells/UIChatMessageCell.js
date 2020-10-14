@@ -585,19 +585,23 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             type, additionalInfo, data, messageDetails, messageDetailsStyle,
         } = this.props;
 
-        const defaultMarginSize = UIConstant.smallContentOffset();
-        const halfMarginSize = UIConstant.tinyContentOffset();
+        const defaultPaddingSize = UIConstant.smallContentOffset();
+        const halfPaddingSize = UIConstant.tinyContentOffset();
 
         let cell = null;
         let testID = '';
 
-        let margin = { marginBottom: 0, marginTop: defaultMarginSize };
+        let padding = {};
+
+        if (additionalInfo?.lastFromChain) {
+            padding = { paddingBottom: 0 };
+        }
         let align = this.isReceived ? 'flex-start' : 'flex-end';
 
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
-            margin = { marginVertical: UIConstant.normalContentOffset() };
+            padding = { paddingVertical: UIConstant.contentOffset() };
         } else if (type === ChatMessageContent.SystemInfo) {
             align = 'center';
             cell = this.renderSystemInfo();
@@ -609,30 +613,45 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
+
+            if (!additionalInfo?.lastFromChain) {
+                padding = { paddingBottom: halfPaddingSize };
+            }
         } else if (type === ChatMessageContent.TransactionComment) {
             // hack to move comment closer to the parent transaction bubble
-            margin = { marginBottom: 0 };
+            padding = { paddingTop: 0, paddingBottom: defaultPaddingSize };
             cell = this.renderTransactionCommentCell();
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
 
-            if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
+            if (additionalInfo?.firstFromChain && !additionalInfo?.lastFromChain) {
+                padding = { paddingBottom: halfPaddingSize, paddingTop: defaultPaddingSize };
+            }
+
+            if (!additionalInfo?.firstFromChain && !additionalInfo?.lastFromChain) {
+                padding = { paddingBottom: halfPaddingSize, paddingTop: 0 };
+            }
+
+            if (additionalInfo?.lastFromChain && !additionalInfo?.firstFromChain) {
+                padding = { paddingBottom: 0, paddingTop: 0 };
             }
         } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
             cell = this.renderSystemCell();
-            margin = { marginVertical: defaultMarginSize };
+            padding = { paddingVertical: defaultPaddingSize };
 
             if (additionalInfo?.firstFromChain) {
-                margin = { marginBottom: defaultMarginSize, marginTop: UIConstant.contentOffset() };
+                padding = {
+                    paddingBottom: defaultPaddingSize,
+                    paddingTop: UIConstant.contentOffset(),
+                };
             }
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
 
             if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
+                padding = { paddingBottom: 0, paddingTop: halfPaddingSize };
             }
         } else if (type === ChatMessageContent.Sticker) {
             cell = this.renderStickerCell();
@@ -642,7 +661,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             testID = 'chat_message_document';
 
             if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
+                padding = { paddingBottom: 0, paddingTop: halfPaddingSize };
             }
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
@@ -670,7 +689,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                 style={[
                     UIStyle.common.flex(),
                     styles.row,
-                    margin,
+                    padding,
                 ]}
                 onLayout={this.props.onLayout}
             >
@@ -694,7 +713,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
 
 const styles = StyleSheet.create({
     row: {
-        marginVertical: UIConstant.smallContentOffset() / 2,
+        paddingVertical: UIConstant.smallContentOffset(),
     },
     container: {
         width: '80%',
