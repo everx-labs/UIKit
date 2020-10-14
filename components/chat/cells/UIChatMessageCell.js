@@ -585,23 +585,25 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             type, additionalInfo, data, messageDetails, messageDetailsStyle,
         } = this.props;
 
-        const defaultPaddingSize = UIConstant.smallContentOffset();
-        const halfPaddingSize = UIConstant.tinyContentOffset();
+        const { firstFromChain, lastFromChain } = additionalInfo || {};
 
         let cell = null;
         let testID = '';
 
-        let padding = {};
+        let padding = {
+            paddingTop: UIConstant.smallContentOffset(),
+            paddingBottom: lastFromChain ? 0 : UIConstant.smallContentOffset(),
+        };
 
-        if (additionalInfo?.lastFromChain) {
-            padding = { paddingBottom: 0 };
-        }
         let align = this.isReceived ? 'flex-start' : 'flex-end';
 
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
-            padding = { paddingVertical: UIConstant.contentOffset() };
+            padding = {
+                paddingTop: UIConstant.contentOffset(),
+                paddingBottom: UIConstant.contentOffset(),
+            };
         } else if (type === ChatMessageContent.SystemInfo) {
             align = 'center';
             cell = this.renderSystemInfo();
@@ -614,44 +616,50 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             cell = this.renderTransactionCell();
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
 
-            if (!additionalInfo?.lastFromChain) {
-                padding = { paddingBottom: halfPaddingSize };
+            if (!lastFromChain) {
+                padding = {
+                    paddingTop: UIConstant.smallContentOffset(),
+                    paddingBottom: UIConstant.tinyContentOffset(),
+                };
             }
         } else if (type === ChatMessageContent.TransactionComment) {
-            // hack to move comment closer to the parent transaction bubble
-            padding = { paddingTop: 0, paddingBottom: defaultPaddingSize };
             cell = this.renderTransactionCommentCell();
+
+            padding = {
+                paddingTop: 0, // to move comment closer to the parent transaction bubble
+                paddingBottom: UIConstant.smallContentOffset(),
+            };
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
 
-            if (additionalInfo?.firstFromChain && !additionalInfo?.lastFromChain) {
-                padding = { paddingBottom: halfPaddingSize, paddingTop: defaultPaddingSize };
-            }
-
-            if (!additionalInfo?.firstFromChain && !additionalInfo?.lastFromChain) {
-                padding = { paddingBottom: halfPaddingSize, paddingTop: 0 };
-            }
-
-            if (additionalInfo?.lastFromChain && !additionalInfo?.firstFromChain) {
-                padding = { paddingBottom: 0, paddingTop: 0 };
-            }
+            padding = {
+                paddingTop: firstFromChain ? UIConstant.smallContentOffset() : 0,
+                paddingBottom: lastFromChain ? 0 : UIConstant.tinyContentOffset(),
+            };
         } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
             cell = this.renderSystemCell();
-            padding = { paddingVertical: defaultPaddingSize };
 
-            if (additionalInfo?.firstFromChain) {
+            if (firstFromChain) {
                 padding = {
-                    paddingBottom: defaultPaddingSize,
                     paddingTop: UIConstant.contentOffset(),
+                    paddingBottom: UIConstant.smallContentOffset(),
+                };
+            } else {
+                padding = {
+                    paddingTop: UIConstant.smallContentOffset(),
+                    paddingBottom: UIConstant.smallContentOffset(),
                 };
             }
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
 
-            if (!additionalInfo?.firstFromChain) {
-                padding = { paddingBottom: 0, paddingTop: halfPaddingSize };
+            if (!firstFromChain) {
+                padding = {
+                    paddingTop: UIConstant.tinyContentOffset(),
+                    paddingBottom: 0,
+                };
             }
         } else if (type === ChatMessageContent.Sticker) {
             cell = this.renderStickerCell();
@@ -660,8 +668,11 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
 
-            if (!additionalInfo?.firstFromChain) {
-                padding = { paddingBottom: 0, paddingTop: halfPaddingSize };
+            if (!firstFromChain) {
+                padding = {
+                    paddingTop: UIConstant.tinyContentOffset(),
+                    paddingBottom: 0,
+                };
             }
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
@@ -688,7 +699,6 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                 testID={testID}
                 style={[
                     UIStyle.common.flex(),
-                    styles.row,
                     padding,
                 ]}
                 onLayout={this.props.onLayout}
@@ -712,9 +722,6 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
 
 
 const styles = StyleSheet.create({
-    row: {
-        paddingVertical: UIConstant.smallContentOffset(),
-    },
     container: {
         width: '80%',
         flexDirection: 'row',
