@@ -619,12 +619,13 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
 
             if (!lastFromChain) {
-                padding.paddingBottom = UIConstant.tinyContentOffset();
+                padding.paddingBottom = 0;
             }
         } else if (type === ChatMessageContent.TransactionComment) {
             cell = this.renderTransactionCommentCell();
 
-            padding.paddingTop = 0; // to move comment closer to the parent transaction bubble
+            // to move comment closer to the parent transaction bubble
+            padding.paddingTop = firstFromChain ? UIConstant.tinyContentOffset() : 0;
         } else if (type === ChatMessageContent.SimpleText) {
             cell = this.renderTextCell();
 
