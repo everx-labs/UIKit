@@ -92,7 +92,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
     shouldComponentUpdate(nextProps: Props): boolean {
         return !isEqual(this.props.data, nextProps.data)
             || this.props.status !== nextProps.status
-            || !isEqual(this.props.additionalInfo !== nextProps.additionalInfo);
+            || !isEqual(this.props.additionalInfo, nextProps.additionalInfo);
     }
 
     animatedBubble = new Animated.Value(1);
