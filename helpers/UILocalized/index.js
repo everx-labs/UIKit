@@ -43,6 +43,10 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         name: '한국어',
         country: 'KR',
     },
+    pt_BR: {
+        name: 'Português (Br)',
+        country: 'BR',
+    },
 };
 
 export type Language = $Keys<typeof languagesInfo>;
