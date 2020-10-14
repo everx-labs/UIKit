@@ -1,122 +1,256 @@
-import UIAccountPicker from './components/UIAccountPicker';
-import UIAccountPickerScreen from './components/UIAccountPicker/controllers/UIAccountPickerScreen';
-import UIActionComponent from './components/UIActionComponent';
-import UIActionIcon from './components/buttons/UIActionIcon';
-import UIActionImage from './components/images/UIActionImage';
-import UIActionSheet from './components/menus/UIActionSheet';
-import UIAlertView from './components/popup/UIAlertView';
-import UIAmountInput from './components/input/UIAmountInput';
-import UIBackgroundView from './components/products/UIBackgroundView';
-import UIBadge from './components/design/UIBadge';
-import UIBalanceView from './components/views/UIBalanceView';
-import UIAnimatedBalanceView from './components/views/UIAnimatedBalanceView';
-import UIBottomBar from './components/products/UIBottomBar';
-import UIBullet from './components/docs/UIBullet';
-import UIButton from './components/buttons/UIButton';
-import UIButtonGroup from './components/buttons/UIButtonGroup';
-import UIBankCardNumberInput from './components/input/UIBankCardNumberInput';
-import UIBreadCrumbs from './components/navigation/UIBreadCrumbs';
-import UICard from './components/views/UICard';
-import UIChatInput from './components/chat/UIChatInput';
-import UIChatMessageCell from './components/chat/cells/UIChatMessageCell';
-import UICheckboxItem from './components/buttons/UICheckboxItem';
-import UIColor from './helpers/UIColor';
-import UIColorPalette from './helpers/UIColor/UIColorPalette';
-import UICompatibilityView from './helpers/UICompatibilityView';
-import UIComponent from './components/UIComponent';
-import UIConstant from './helpers/UIConstant';
-import UIController from './controllers/UIController';
-import UICountryPicker from './components/menus/UICountryPicker';
-import UICustomSheet from './components/menus/UICustomSheet';
-import UIDateInput from './components/input/UIDateInput';
-import UIDetailsButton from './components/buttons/UIDetailsButton';
-import UIDetailsInput from './components/input/UIDetailsInput';
-import UIDetailsToggle from './components/buttons/UIDetailsToggle';
-import UIDetailsCheckbox from './components/buttons/UIDetailsCheckbox';
-import UIDetailsRadio from './components/buttons/UIDetailsRadio';
-import UIDetailsView from './components/views/UIDetailsView';
-import UIDetailsTable from './components/layout/UIDetailsTable';
-import UIDevice from './helpers/UIDevice';
-import UIDialogController from './controllers/UIDialogController';
-import UIDot from './components/design/UIDot';
-import UIDropdownAlert from './components/popup/UIDropdownAlert';
-import UIEmailInput from './components/input/UIEmailInput';
-import UIErrorScreen from './controllers/UIErrorScreen';
-import UIEventHelper from './helpers/UIEventHelper';
-import UIFeedback from './components/products/UIFeedback';
-import UIPushFeedback from './components/products/UIPushFeedback';
-import UIFlashMessage from './helpers/UIFlashMessage';
-import UIFont from './helpers/UIFont';
-import UITextStyle from './helpers/UITextStyle';
-import UIFunction from './helpers/UIFunction';
-import UIGrid from './components/layout/UIGrid';
-import UIGridColumn from './components/layout/UIGridColumn';
-import UIIdleDetector from './components/UIIdleDetector';
-import UIImage from './components/images/UIImage';
-import UIImageButton from './components/buttons/UIImageButton';
-import UIImageView from './components/images/UIImageView';
-import UILabel from './components/text/UILabel';
-import UILandingView from './components/views/UILandingView';
-import UILayoutManager from './helpers/UILayoutManager';
-import UILink from './components/buttons/UILink';
-import UILinkInput from './components/input/UILinkInput';
-import UIListHeader from './components/text/UIListHeader';
-import UILoadMoreButton from './components/buttons/UILoadMoreButton';
-import UILocalized from './helpers/UILocalized';
-import UIModalController from './controllers/UIModalController';
-import UINavigationBackButton from './components/navigation/UINavigationBackButton';
-import UINavigationBar from './components/navigation/UINavigationBar';
-import UINavigationCloseButton from './components/navigation/UINavigationCloseButton';
-import UINavigationIconButton from './components/navigation/UINavigationIconButton';
-import UINavigationPlusButton from './components/navigation/UINavigationPlusButton';
-import UINavigationTextButton from './components/navigation/UINavigationTextButton';
-import UIUnfold from './components/navigation/UIUnfold';
-import UINavigator from './helpers/UINavigator';
-import UINetworkStatus from './components/notifications/UINetworkStatus';
-import UINotice from './components/notifications/UINotice';
-import UINotificationBadge from './components/notifications/UINotificationBadge';
-import UINumberInput from './components/input/UINumberInput';
-import UIPasswordPrompt from './components/popup/UIPasswordPrompt';
-import UIPhoneInput from './components/input/UIPhoneInput';
-import UIPinCodeInput from './components/input/UIPinCodeInput';
-import UIPopover from './components/menus/UIPopover';
-import UIPopoverMenu from './components/menus/UIPopoverMenu';
-import UIPopoverBackground from './components/menus/UIPopoverBackground';
-import UIProfilePhoto from './components/profile/UIProfilePhoto';
-import UIProfileInitials from './components/profile/UIProfileInitials';
-import UIProfileView from './components/profile/UIProfileView';
-import UIPureComponent from './components/UIPureComponent';
-import UIQRCode from './components/UIQRCode';
-import UIQuote from './components/views/UIQuote';
-import UIRadioButtonList from './components/buttons/UIRadioButtonList';
-import UIScaleButton from './components/buttons/UIScaleButton';
-import UIScreen from './controllers/UIScreen';
-import UISearchBar from './components/input/UISearchBar';
-import UISectionHeader from './components/text/UISectionHeader';
-import UISeedPhraseInput from './components/input/UISeedPhraseInput';
-import UIContractAddressInput from './components/input/UIContractAddressInput';
-import UISeparator from './components/design/UISeparator';
-import UIShareManager from './helpers/UIShareManager';
-import UIShareScreen from './helpers/UIShareManager/UIShareScreen';
-import UISlider from './components/menus/UISlider';
-import UISpinnerOverlay from './components/UISpinnerOverlay';
-import UISplitViewController from './controllers/UISplitViewController';
-import UIStepBar from './components/menus/UIStepBar';
-import UIStubPage from './components/products/UIStubPage';
-import UIStyle from './helpers/UIStyle';
-import UITabView from './components/menus/UITabView';
-import UITag from './components/design/UITag';
-import UITextButton from './components/buttons/UITextButton';
-import UITextInput from './components/input/UITextInput';
-import UIToastMessage from './components/notifications/UIToastMessage';
-import UITokenCell from './components/products/UITokenCell';
-import UIToggle from './components/buttons/UIToggle';
-import UITooltip from './components/notifications/UITooltip';
-import UITransactionView from './components/views/UITransactionView';
-import UITransitionView from './components/views/UITransitionView';
-import UIUploadFileInput from './components/input/UIUploadFileInput';
-import UIUserAgent from './helpers/UIUserAgent';
-import UITransferInput from './components/input/UITransferInput';
+// import  from './components/UIAccountPicker';
+// import  from './components/UIAccountPicker/controllers/UIAccountPickerScreen';
+// import  from './components/products/UIBackgroundView';
+// import  from './components/views/UIBalanceView';
+// import  from './components/views/UIAnimatedBalanceView';
+// import  from './components/products/UIBottomBar';
+// import  from './components/docs/UIBullet';
+// import  from './components/navigation/UIBreadCrumbs';
+// import  from './components/views/UICard';
+// import  from './components/chat/UIChatInput';
+// import  from './components/chat/cells/UIChatMessageCell';
+// import  from './helpers/UICompatibilityView';
+// import  from './components/input/UIDetailsInput';
+// import  from './components/buttons/UIDetailsCheckbox';
+// import  from './controllers/UIErrorScreen';
+// import  from './components/products/UIFeedback';
+// import  from './components/products/UIPushFeedback';
+// import  from './helpers/UIFlashMessage';
+// import  from './components/UIIdleDetector';
+// import  from './components/views/UILandingView';
+// import  from './helpers/UILayoutManager';
+// import  from './components/navigation/UINavigationBackButton';
+// import  from './components/navigation/UINavigationBar';
+// import  from './components/navigation/UINavigationCloseButton';
+// import  from './components/navigation/UINavigationIconButton';
+// import  from './components/navigation/UINavigationPlusButton';
+// import  from './components/navigation/UINavigationTextButton';
+// import  from './components/navigation/UIUnfold';
+// import  from './helpers/UINavigator';
+// import  from './components/profile/UIProfilePhoto';
+// import  from './components/profile/UIProfileInitials';
+// import  from './components/profile/UIProfileView';
+// import  from './components/UIQRCode';
+// import  from './components/views/UIQuote';
+// import  from './controllers/UIScreen';
+// import  from './helpers/UIShareManager';
+// import  from './helpers/UIShareManager/UIShareScreen';
+// import  from './controllers/UISplitViewController';
+// import  from './components/products/UIStubPage';
+// import  from './components/input/UITextInput';
+// import  from './components/products/UITokenCell';
+// import  from './components/views/UITransactionView';
+// import  from './components/views/UITransitionView';
+// import  from './components/input/UITransferInput';
+export {
+    UIActionComponent,
+    UIActionIcon,
+    UIActionImage,
+    UIActionSheet,
+    UIAlertView,
+    UIAmountInput,
+    UIBackgroundView,
+    UIBadge,
+    UIBullet,
+    UIButton,
+    UIButtonGroup,
+    UIBankCardNumberInput,
+    UICard,
+    UICheckboxItem,
+    UICompatibilityView,
+    UIComponent,
+    UICountryPicker,
+    UICustomSheet,
+    UIDateInput,
+    UIDetailsButton,
+    UIDetailsInput,
+    UIDetailsCheckbox,
+    UIDetailsToggle,
+    UIDetailsRadio,
+    UIDetailsView,
+    UIDetailsTable,
+    UIDot,
+    UIDropdownAlert,
+    UIEmailInput,
+    UIGrid,
+    UIGridColumn,
+    UIImage,
+    UIImageButton,
+    UIImageView,
+    UILabel,
+    UILayoutManager,
+    UILink,
+    UILinkInput,
+    UIListHeader,
+    UILoadMoreButton,
+    UINetworkStatus,
+    UINotice,
+    UINotificationBadge,
+    UINumberInput,
+    UIPasswordPrompt,
+    UIPhoneInput,
+    UIPinCodeInput,
+    UIPopover,
+    UIPopoverMenu,
+    UIPopoverBackground,
+    UIPureComponent,
+    UIQRCode,
+    UIRadioButtonList,
+    UIScaleButton,
+    UISearchBar,
+    UISectionHeader,
+    UISeedPhraseInput,  
+    UIShareManager,
+    UIShareScreen,
+    UIContractAddressInput,
+    UISeparator,
+    UISlider,
+    UISpinnerOverlay,
+    UIStepBar,
+    UITabView,
+    UITag,
+    UITextButton,
+    UITextInput,
+    UIToastMessage,
+    UIToggle,
+    UITooltip,
+    UITransferInput,
+    UIUploadFileInput,
+} from './packages/components/src';
+// import  from './components/UIActionComponent';
+// import  from './components/buttons/UIActionIcon';
+// import  from './components/images/UIActionImage';
+// import  from './components/menus/UIActionSheet';
+// import  from './components/popup/UIAlertView';
+// import  from './components/input/UIAmountInput';
+// import  from './components/design/UIBadge';
+// import  from './components/buttons/UIButton';
+// import  from './components/buttons/UIButtonGroup';
+// import  from './components/input/UIBankCardNumberInput';
+// import  from './components/buttons/UICheckboxItem';
+export {
+    UIColor,
+    UIColorPalette,
+    UIConstant,
+    UIDevice,
+    UIEventHelper,
+    UIFont,
+    UITextStyle,
+    UIFunction,
+    UILocalized,
+    UIStyle,
+    UIUserAgent,
+} from './packages/core/src';
+export {
+    UIController,
+    UIModalController,
+    UIDialogController,
+    UIErrorScreen,
+    UIBreadCrumbs,
+    UIScreen,
+    UIUnfold,
+} from './packages/navigation/src';
+export {
+    UIBottomBar,
+    UISplitViewController,
+    UINavigationBackButton,
+    UINavigationBar,
+    UINavigationCloseButton,
+    UINavigationIconButton,
+    UINavigationPlusButton,
+    UINavigationTextButton,
+    UINavigator,
+    UIAccountPicker,
+    UIAccountPickerScreen,
+    UIBalanceView,
+    UIAnimatedBalanceView,
+    UIFeedback,
+    UIPushFeedback,
+    UIFlashMessage,
+    UIIdleDetector,
+    UILandingView,
+    UIProfilePhoto,
+    UIProfileInitials,
+    UIProfileView,
+    UIQuote,
+    UIStubPage,
+    UITokenCell,
+    UITransactionView,
+    UITransitionView,
+} from './packages/legacy/src';
+import {
+    UIChatInput,
+    UIChatMessageCell,
+    UIChatActionCell,
+    UIChatDocumentCell,
+    UIChatImageCell,
+    UIChatStickerCell,
+    UIChatTransactionCell,
+} from './packages/chat/src';
+// import  from './helpers/UIColor';
+// import  from './helpers/UIColor/UIColorPalette';
+// import  from './components/UIComponent';
+// import  from './helpers/UIConstant';
+// import  from './controllers/UIController';
+// import  from './components/menus/UICountryPicker';
+// import  from './components/menus/UICustomSheet';
+// import  from './components/input/UIDateInput';
+// import  from './components/buttons/UIDetailsButton';
+// import  from './components/buttons/UIDetailsToggle';
+// import  from './components/buttons/UIDetailsRadio';
+// import  from './components/views/UIDetailsView';
+// import  from './components/layout/UIDetailsTable';
+// import  from './helpers/UIDevice';
+// import  from './components/design/UIDot';
+// import  from './components/popup/UIDropdownAlert';
+// import  from './components/input/UIEmailInput';
+// import  from './helpers/UIEventHelper';
+// import  from './helpers/UIFont';
+// import  from './helpers/UITextStyle';
+// import  from './helpers/UIFunction';
+// import  from './components/layout/UIGrid';
+// import  from './components/layout/UIGridColumn';
+// import  from './components/images/UIImage';
+// import  from './components/buttons/UIImageButton';
+// import  from './components/images/UIImageView';
+// import  from './components/text/UILabel';
+// import  from './components/buttons/UILink';
+// import  from './components/input/UILinkInput';
+// import  from './components/text/UIListHeader';
+// import  from './components/buttons/UILoadMoreButton';
+// import  from './helpers/UILocalized';
+// import  from './controllers/UIModalController';
+// import  from './components/notifications/UINetworkStatus';
+// import  from './components/notifications/UINotice';
+// import  from './components/notifications/UINotificationBadge';
+// import  from './components/input/UINumberInput';
+// import  from './components/popup/UIPasswordPrompt';
+// import  from './components/input/UIPhoneInput';
+// import  from './components/input/UIPinCodeInput';
+// import  from './components/menus/UIPopover';
+// import  from './components/menus/UIPopoverMenu';
+// import  from './components/menus/UIPopoverBackground';
+// import  from './components/UIPureComponent';
+// import  from './components/buttons/UIRadioButtonList';
+// import  from './components/buttons/UIScaleButton';
+// import  from './components/input/UISearchBar';
+// import  from './components/text/UISectionHeader';
+// import  from './components/input/UISeedPhraseInput';
+// import  from './components/input/UIContractAddressInput';
+// import  from './components/design/UISeparator';
+// import  from './components/menus/UISlider';
+// import  from './components/UISpinnerOverlay';
+// import  from './components/menus/UIStepBar';
+// import  from './helpers/UIStyle';
+// import  from './components/menus/UITabView';
+// import  from './components/design/UITag';
+// import  from './components/buttons/UITextButton';
+// import  from './components/notifications/UIToastMessage';
+// import  from './components/buttons/UIToggle';
+// import  from './components/notifications/UITooltip';
+// import  from './components/input/UIUploadFileInput';
+// import  from './helpers/UIUserAgent';
+// import  from './controllers/UIDialogController';
 
 // Types
 import type { UIAccountData } from './components/UIAccountPicker/types/UIAccountData';
