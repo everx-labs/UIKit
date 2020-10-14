@@ -27,7 +27,7 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
     render() {
         return (
             <QRCode
-                size={this.props.size || (defaultSize + (quietZone * 2))}
+                size={(this.props.size || defaultSize) + (quietZone * 2)}
                 quietZone={quietZone}
                 value={this.props.value}
                 getRef={Platform.OS === 'web' ? undefined : this.props.getRef}
