@@ -266,8 +266,8 @@ export default class UIFunction {
         const fixedValue = (splitParts[1]?.length || 0) > options.maximumFractionDigits
             ? UIFunction.toFixedDown(normalizedValue, options.maximumFractionDigits)
             : normalizedValue;
-        // Remove unwanted leading zeros
-        const trimmedValue = fixedValue.replace(/^0+/, '');
+        // Remove unwanted leading zeros and trailing whitespaces
+        const trimmedValue = fixedValue.replace(/^0+/, '').trim();
         const plainValue = !trimmedValue.length || trimmedValue.startsWith(defaultSeparator)
             ? `0${trimmedValue}`
             : trimmedValue;
