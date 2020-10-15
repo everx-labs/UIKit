@@ -32,6 +32,9 @@ export const commonStyles = {
     opacity30: {
         opacity: 0.3,
     },
+    opacity70: {
+        opacity: 0.7,
+    },
     fullOpacity: {
         opacity: 1,
     },
@@ -236,6 +239,10 @@ export default class UIStyleCommon {
 
     static opacity30() {
         return styles.opacity30;
+    }
+
+    static opacity70() {
+        return styles.opacity70;
     }
 
     static fullOpacity() {
