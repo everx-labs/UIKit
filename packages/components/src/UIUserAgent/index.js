@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserAgent } from '@quentin-sommer/react-useragent';
 
-import { UIComponent } from '@uikit/components';
+import UIComponent from '../UIComponent';
 
 class UIUserAgent extends UIComponent {
     static Browsers = {

@@ -3,12 +3,11 @@ import React from 'react';
 import { FlatList } from 'react-native';
 
 import { UILocalized } from '@uikit/core';
-
-import UIComponent from '../UIComponent';
-import UICustomSheet from '../UICustomSheet';
+import { UIComponent } from '@uikit/components';
 
 import MenuItem from './MenuItem';
 import type { MenuItemType } from './MenuItem';
+import UICustomSheet from '../UICustomSheet';
 
 type Props = {
     menuItemsList: MenuItemType[],

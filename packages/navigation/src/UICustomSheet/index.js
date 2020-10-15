@@ -19,8 +19,10 @@ import {
     UIConstant,
     UIStyle,
 } from '@uikit/core';
-import { UIController, UIModalNavigationBar } from '@uikit/navigation';
-import type { ContentInset, AnimationParameters } from '@uikit/navigation/UIController';
+
+import UIController from '../UIController'
+import type { ContentInset, AnimationParameters } from '../UIController';
+import UIModalNavigationBar from '../UIModalController/UIModalNavigationBar';
 
 const headerHeight = UIConstant.bigCellHeight();
 

@@ -8,7 +8,8 @@ import {
     UITextStyle,
     UILocalized,
 } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+
+import UIComponent from '../UIComponent';
 
 const styles = StyleSheet.create({
     container: {

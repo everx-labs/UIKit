@@ -8,7 +8,6 @@ import {
     UILocalized,
 } from '@uikit/core';
 import {
-    UICustomSheet,
     UIButton,
     UIComponent,
     UIDetailsInput,
@@ -17,6 +16,7 @@ import {
 } from '@uikit/components';
 import type { DetailsProps } from '@uikit/components/UIDetailsInput';
 import type { ActionState } from '@uikit/components/UIActionComponent';
+import { UICustomSheet } from '@uikit/navigation';
 
 export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void;
 

@@ -8,7 +8,8 @@ import {
     UIStyle,
     UIConstant,
 } from '@uikit/core';
-import { UIImageView, UIComponent } from '@uikit/components';
+import { UIComponent } from '@uikit/components';
+import { UIImageView } from '@uikit/navigation';
 
 const cameraImage = require('../../../assets/ico-camera/ico-camera.png');
 

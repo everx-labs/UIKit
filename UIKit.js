@@ -1,8 +1,8 @@
+// @flow
 export {
     UIActionComponent,
     UIActionIcon,
     UIActionImage,
-    UIActionSheet,
     UIAlert,
     UIAlertView,
     UIAmountInput,
@@ -16,15 +16,13 @@ export {
     UICheckboxItem,
     UICompatibilityView,
     UIComponent,
-    UICountryPicker,
-    UICustomSheet,
     UIDateInput,
     UIDetailsButton,
     UIDetailsInput,
     UIDetailsCheckbox,
     UIDetailsToggle,
     UIDetailsRadio,
-    UIDetailsSwicher,
+    UIDetailsSwitcher,
     UIDetailsView,
     UIDetailsTable,
     UIDot,
@@ -34,7 +32,6 @@ export {
     UIGridColumn,
     UIImage,
     UIImageButton,
-    UIImageView,
     UILabel,
     UILayoutManager,
     UILink,
@@ -45,10 +42,8 @@ export {
     UINotice,
     UINotificationBadge,
     UINumberInput,
-    UIPasswordPrompt,
     UIPhoneInput,
     UIPinCodeInput,
-    UIPopover,
     UIPureComponent,
     UIQRCode,
     UIRadioButtonList,
@@ -56,8 +51,6 @@ export {
     UISearchBar,
     UISectionHeader,
     UISeedPhraseInput,  
-    UIShareManager,
-    UIShareScreen,
     UIContractAddressInput,
     UISeparator,
     UISlider,
@@ -72,6 +65,7 @@ export {
     UITooltip,
     UITransferInput,
     UIUploadFileInput,
+    UIUserAgent,
 } from './packages/components/src';
 export {
     UIColor,
@@ -89,15 +83,21 @@ export {
     formatTime,
     formatDate,
     UIStyle,
-    UIUserAgent,
 } from './packages/core/src';
 export {
+    UIActionSheet,
     UIController,
+    UICountryPicker,
+    UICustomSheet,
     UIModalController,
     UIDialogController,
+    UIImageView,
     UIErrorScreen,
     UIBreadCrumbs,
+    UIPopover,
     UIScreen,
+    UIShareManager,
+    UIShareScreen,
     UIUnfold,
 } from './packages/navigation/src';
 export {
@@ -128,6 +128,7 @@ export {
     UITokenCell,
     UITransactionView,
     UITransitionView,
+    UIPasswordPrompt,
 } from './packages/legacy/src';
 export {
     UIChatInput,
@@ -142,7 +143,7 @@ export {
 import {
     UIPopoverMenu,
     UIPopoverBackground,
-} from './packages/components/src';
+} from './packages/navigation/src';
 // deprecated
 const UIMenuView = UIPopoverMenu;
 const UIMenuBackground = UIPopoverBackground;
@@ -177,8 +178,8 @@ export type { NumberParts, StringLocaleInfo } from './packages/core/src/UIFuncti
 export type { ActionProps } from './packages/components/src/UIActionComponent';
 export type { DetailsList } from './packages/components/src/UIDetailsTable';
 export type { LabelRoleValue } from './packages/components/src/UILabel';
-export type { MenuItemType } from './packages/components/src/UIActionSheet/MenuItem';
-export type { ShareOptions } from './packages/components/src/UIShareManager';
+export type { MenuItemType } from './packages/navigation/src/UIActionSheet/MenuItem';
+export type { ShareOptions } from './packages/navigation/src/UIShareManager';
 export type { ContentInset } from './packages/navigation/src/UIController';
 export type { ContentOffset } from './packages/navigation/src/UIScreen';
 export type { UISticker, UIStickerPackage } from './packages/chat/src/extras';

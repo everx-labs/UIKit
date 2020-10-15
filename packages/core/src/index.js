@@ -17,4 +17,3 @@ export {
 export { default as UIStyle } from './UIStyle';
 export { default as UIStyleColor } from './UIStyle/UIStyleColor';
 export { default as UITextStyle } from './UITextStyle';
-export { default as UIUserAgent } from './UIUserAgent';

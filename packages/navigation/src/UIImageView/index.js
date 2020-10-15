@@ -9,13 +9,15 @@ import {
     UIStyle,
     UIConstant,
 } from '@uikit/core';
+import {
+    UISpinnerOverlay,
+    UIAlertView,
+    UIComponent,
+    UIImage,
+} from '@uikit/components';
 
-import UISpinnerOverlay from '../UISpinnerOverlay';
 import UIActionSheet from '../UIActionSheet';
 import type { MenuItemType } from '../UIActionSheet/MenuItem';
-import UIAlertView from '../UIAlertView';
-import UIComponent from '../UIComponent';
-import UIImage from '../UIImage';
 
 const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
 const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;

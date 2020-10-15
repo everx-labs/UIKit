@@ -15,13 +15,15 @@ import {
     UIStyle,
     UIConstant,
 } from '@uikit/core';
-import { UIModalController } from '@uikit/navigation';
-import type { ModalControllerProps } from '@uikit/navigation/UIModalController';
 import UIAssets from '@uikit/assets';
+import {
+    UIToastMessage,
+    UIButton,
+    UILabel,
+} from '@uikit/components';
 
-import UIToastMessage from '../UIToastMessage';
-import UIButton from '../UIButton';
-import UILabel from '../UILabel';
+import UIModalController from '../UIModalController';
+import type { ModalControllerProps } from '../UIModalController';
 
 type Options = {
     message: string,

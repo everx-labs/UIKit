@@ -7,7 +7,7 @@ import {
     UIStyle,
     UIConstant,
 } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import UIComponent from '../UIComponent';
 
 type Props = {
     presetName: string,

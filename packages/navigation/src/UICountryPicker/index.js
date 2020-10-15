@@ -11,14 +11,14 @@ import {
     UIFont,
     UIColor,
 } from '@uikit/core';
-import { UIModalController } from '@uikit/navigation';
+import { UISearchBar } from '@uikit/components';
+
+import UIModalController from '../UIModalController';
 import type {
     ModalControllerProps,
     ModalControllerState,
     ModalControllerShowArgs,
-} from '@uikit/navigation/UIModalController';
-
-import UISearchBar from '../UISearchBar';
+} from '../UIModalController';
 
 let shared;
 

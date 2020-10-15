@@ -12,10 +12,10 @@ import {
     UIStyle,
     UIConstant,
 } from '@uikit/core';
+import { UIComponent } from '@uikit/components';
 
 import UIPopoverBackground from '../UIPopoverBackground';
 import UICustomSheet from '../UICustomSheet';
-import UIComponent from '../UIComponent';
 
 let masterRef = null;
 

@@ -26,3 +26,4 @@ export { default as UISharedComponents } from './UISharedComponents';
 export { default as UITokenCell } from './UITokenCell';
 export { default as UITransactionView } from './UITransactionView';
 export { default as UITransitionView } from './UITransitionView';
+export { default as UIPasswordPrompt } from './UIPasswordPrompt';

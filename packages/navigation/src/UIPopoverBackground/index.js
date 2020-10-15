@@ -5,8 +5,7 @@ import { PopoverContainer } from 'react-native-simple-popover';
 import { TapGestureHandler, State as RNGHState } from 'react-native-gesture-handler';
 
 import { UIStyle, UIDevice } from '@uikit/core';
-
-import UIComponent from '../UIComponent';
+import { UIComponent } from '@uikit/components';
 
 let masterRef = null;
 

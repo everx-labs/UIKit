@@ -26,9 +26,9 @@ import {
 import {
     UIPureComponent,
     UILabel,
-    UIShareManager,
 } from '@uikit/components';
 import UIAssets from '@uikit/assets';
+import { UIShareManager } from '@uikit/navigation'; 
 
 import UIChatImageCell from './UIChatImageCell';
 import UIChatStickerCell from './UIChatStickerCell';

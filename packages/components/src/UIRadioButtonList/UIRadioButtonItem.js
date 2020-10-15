@@ -8,11 +8,10 @@ import {
     UIStyle,
     UITextStyle,
 } from '@uikit/core';
-
-import UIComponent from '../UIComponent';
-
 import icoRadiobuttonActive from '@uikit/assets/ico-radiobutton-active/ico-radiobutton-active.png';
 import icoRadiobuttonInactive from '@uikit/assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
+
+import UIComponent from '../UIComponent';
 
 const styles = StyleSheet.create({
     radiobuttonItem: {
