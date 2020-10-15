@@ -47,13 +47,14 @@ const UIToggle = ({
             {...testIDProp}
             onPress={onPresHandler}
         >
-            <View style={containerStyle}>
+            <View
+                style={[containerStyle, {
+                    cursor: 'pointer',
+                    touchAction: 'manipulation',
+                }]}
+            >
                 <Image
                     source={source}
-                    style={{
-                        cursor: 'pointer',
-                        touchAction: 'manipulation',
-                    }}
                 />
             </View>
         </TouchableWithoutFeedback>
