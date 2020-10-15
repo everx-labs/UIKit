@@ -233,10 +233,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
         const amountColor = this.getAmountColor();
         const commentColor = this.getCommentColor();
         const date = this.getDate();
-        const { Aborted, Sending } = ChatMessageStatus;
+        const { Aborted, Sending, Rejected } = ChatMessageStatus;
         const isAborted = status === Aborted;
         const isSending = status === Sending;
-        const info = (isAborted || isSending) ? this.getStatusString(status) : date;
+        const isRejected = status === Rejected;
+        const info = (isAborted || isRejected) ? this.getStatusString(status) : date;
 
         return (
             <View
@@ -246,6 +247,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     styles.trxCard,
                     corner,
                     color,
+                    isSending && UIStyle.common.opacity70(),
                 ]}
             >
                 <View
@@ -265,7 +267,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                 <View
                     style={[UIStyle.Common.flexRow(), UIStyle.Common.justifyStart()]}
                 >
-                    {!isAborted && !isSending && (
+                    {!isAborted && (
                         <UILabel
                             style={textColor}
                             role={UILabel.Role.TinyRegular}

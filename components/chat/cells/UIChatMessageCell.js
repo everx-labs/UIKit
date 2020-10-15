@@ -164,9 +164,6 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
 
     formattedTime(date: ?Date): string {
         const msg = this.props.additionalInfo?.message;
-        if (msg?.info.sending) {
-            return UILocalized.message.sending;
-        }
 
         if (date) {
             return formatTime(date.valueOf());
@@ -587,7 +584,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
             type, additionalInfo, data, messageDetails, messageDetailsStyle,
         } = this.props;
 
-        const { firstFromChain, lastFromChain } = additionalInfo || {};
+        const { firstFromChain, lastFromChain, message } = additionalInfo || {};
 
         let cell = null;
         let testID = '';
@@ -682,6 +679,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                 style={[
                     UIStyle.common.flex(),
                     padding,
+                    message?.info?.sending && UIStyle.common.opacity70(),
                 ]}
                 onLayout={this.props.onLayout}
             >
