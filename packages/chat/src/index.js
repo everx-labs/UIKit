@@ -6,4 +6,3 @@ export { default as UIChatImageCell } from './cells/UIChatImageCell';
 export { default as UIChatMessageCell } from './cells/UIChatMessageCell';
 export { default as UIChatStickerCell } from './cells/UIChatStickerCell';
 export { default as UIChatTransactionCell } from './cells/UIChatTransactionCell';
-// export { default as } from './cells/';

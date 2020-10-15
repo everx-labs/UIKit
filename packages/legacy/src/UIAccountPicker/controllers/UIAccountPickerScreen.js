@@ -165,7 +165,7 @@ class UIAccountPickerScreen extends UIModalController<Props, State> {
                     keyboardShouldPersistTaps="handled"
                     data={this.getFilteredAccounts()}
                     renderItem={({ item }) => this.renderCell(item)}
-                    keyExtractor={item => item}
+                    keyExtractor={item => item.address}
                 />
             </View>
         );

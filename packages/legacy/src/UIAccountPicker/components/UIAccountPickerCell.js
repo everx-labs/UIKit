@@ -50,7 +50,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     // Getters
-    getAccount(): UIAccountData {
+    getAccount(): ?UIAccountData {
         return this.props.account;
     }
 
@@ -68,13 +68,13 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
 
     getAccountName(): string {
         const { displayNameOnly } = this.props;
-        const { name, address } = this.getAccount();
+        const account = this.getAccount() || {};
 
         if (displayNameOnly) {
-            return name || address;
+            return account.name || account.address || '';
         }
 
-        return address;
+        return account.address || '';
     }
 
     // Render

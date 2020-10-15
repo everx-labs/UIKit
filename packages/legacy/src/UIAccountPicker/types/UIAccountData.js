@@ -1,3 +1,4 @@
+// @flow
 export type UIAccountData = {
     address: string,
     name: string,

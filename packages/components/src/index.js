@@ -14,6 +14,7 @@ export { default as UIButton } from './UIButton';
 export { default as UIButtonGroup } from './UIButtonGroup';
 export { default as UICard } from './UICard';
 export { default as UICheckboxItem } from './UICheckboxItem';
+export { default as UICompatibilityView } from './UICompatibilityView';
 export { default as UIComponent } from './UIComponent';
 export { default as UIContractAddressInput } from './UIContractAddressInput';
 export { default as UICountryPicker } from './UICountryPicker';
