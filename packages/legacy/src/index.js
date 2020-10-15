@@ -22,6 +22,7 @@ export { default as UIProfileInitials } from './UIProfileInitials';
 export { default as UIProfileView } from './UIProfileView';
 export { default as UIQuote } from './UIQuote';
 export { default as UIStubPage } from './UIStubPage';
+export { default as UISharedComponents } from './UISharedComponents';
 export { default as UITokenCell } from './UITokenCell';
 export { default as UITransactionView } from './UITransactionView';
 export { default as UITransitionView } from './UITransitionView';
