@@ -40,10 +40,7 @@ module.exports = {
                         "../node_modules/react-native-web/"
                     ),
                     path.resolve(__dirname, "../UIKit.js"),
-                    path.resolve(__dirname, "../components/"),
-                    path.resolve(__dirname, "../controllers/"),
-                    path.resolve(__dirname, "../helpers/"),
-                    path.resolve(__dirname, "../assets/"),
+                    path.resolve(__dirname, "../packages/"),
                     path.resolve(
                         __dirname,
                         "../node_modules/react-native-indicators/"

@@ -142,7 +142,7 @@ export {
 import {
     UIPopoverMenu,
     UIPopoverBackground,
-} from '@uikit/components';
+} from './packages/components/src';
 // deprecated
 const UIMenuView = UIPopoverMenu;
 const UIMenuBackground = UIPopoverBackground;

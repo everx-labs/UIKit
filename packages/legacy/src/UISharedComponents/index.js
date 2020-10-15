@@ -1,13 +1,16 @@
 import React from 'react';
-import UIComponent from '../UIComponent';
-import UISpinnerOverlay from '../UISpinnerOverlay';
-import UINotice from '../notifications/UINotice';
-import UIAlertView from '../popup/UIAlertView';
-import UIDropdownAlert from '../popup/UIDropdownAlert';
-import UIActionSheet from '../menus/UIActionSheet';
-import UICustomSheet from '../menus/UICustomSheet';
-import UICompatibilityView from '../../helpers/UICompatibilityView';
-import UILayoutManager from '../../helpers/UILayoutManager';
+
+import {
+    UIComponent,
+    UISpinnerOverlay,
+    UINotice,
+    UIAlertView,
+    UIDropdownAlert,
+    UIActionSheet,
+    UICustomSheet,
+    UICompatibilityView,
+    UILayoutManager,
+} from '@uikit/components';
 
 export default class UISharedComponents extends UIComponent {
     render() {

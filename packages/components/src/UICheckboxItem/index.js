@@ -5,6 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { Image, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
 import { UIColor } from '@uikit/core';
+import { UIComponent } from '@uikit/components';
 import icoSquareCheckboxActive
     from '@uikit/assets/ico-checkbox-square-active/ico-checkbox-square-active.png';
 import icoSquareCheckboxInactive
@@ -17,8 +18,6 @@ import icoCircleCheckboxActive
     from '@uikit/assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
 import icoCircleCheckboxInactive
     from '@uikit/assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png';
-
-import UIComponent from '../../UIComponent';
 
 const checkboxSize = 24;
 

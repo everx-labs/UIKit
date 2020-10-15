@@ -77,6 +77,7 @@ import {
     UINotificationBadge,
     UIToastMessage,
     UITooltip,
+    UIAlert,
     UIAlertView,
     UIDropdownAlert,
     UIPasswordPrompt,
@@ -93,8 +94,7 @@ import {
     UIListHeader,
     UISectionHeader,
 } from "../UIKit";
-import UIAlert from "../components/popup/UIAlert";
-import UIAssets from "../assets/UIAssets";
+import UIAssets from "../packages/assets";
 
 const SurfSplit = createSurfSplitNavigator();
 

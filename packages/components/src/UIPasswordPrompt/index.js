@@ -12,10 +12,8 @@ import {
     UIDevice,
     UITextStyle,
 } from '@uikit/core';
-
-import UIController from '../UIController';
-import UITextInput from '../UITextInput';
-import UITextButton from '../UITextButton';
+import { UIController } from '@uikit/navigation';
+import { UITextInput, UITextButton } from '@uikit/components';
 
 const statusBarHeight = UIDevice.statusBarHeight();
 

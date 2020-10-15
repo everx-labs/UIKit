@@ -8,7 +8,7 @@
         "flow": "flow check",
         "test:coverage": "jest --coverage",
         "language:createTypes": "node ./scripts/convertLocaleFileToFlowTypes.js",
-        "web": "webpack-dev-server -d --config Example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached"
+        "web": "webpack-dev-server -d --config example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached"
     },
     "pre-commit": [
         "flow"

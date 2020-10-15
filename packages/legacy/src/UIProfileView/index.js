@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { View, Text, StyleSheet } from 'react-native';
 
-import UIConstant from '../../../helpers/UIConstant';
-import UIStyle from '../../../helpers/UIStyle';
-import UITextStyle from '../../../helpers/UITextStyle';
-import UIProfileInitials from '../UIProfileInitials';
+import {
+    UIConstant,
+    UIStyle,
+    UITextStyle,
+} from '@uikit/core';
+import { UIComponent, UITextInput } from '@uikit/components';
+
 import UIProfilePhoto from '../UIProfilePhoto';
-import UITextInput from '../../input/UITextInput';
-import UIComponent from '../../UIComponent';
+import UIProfileInitials from '../UIProfileInitials';
 
 const styles = StyleSheet.create({
     container: {
