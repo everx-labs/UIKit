@@ -77,6 +77,8 @@ export {
     UITextStyle,
     UIFunction,
     UILocalized,
+    UILocalizedService,
+    languagesInfo,
     prepareLocales,
     prepareImages,
     prepare,
@@ -138,7 +140,14 @@ export {
     UIChatImageCell,
     UIChatStickerCell,
     UIChatTransactionCell,
+    ChatMessageContent,
+    ChatMessageMetaContent,
+    ChatMessageStatus,
+    TypeOfTransaction,
+    TypeOfAction,
+    TypeOfActionDirection,
 } from './packages/chat/src';
+export { default as UIAssets } from './packages/assets';
 
 import {
     UIPopoverMenu,
@@ -182,4 +191,8 @@ export type { MenuItemType } from './packages/navigation/src/UIActionSheet/MenuI
 export type { ShareOptions } from './packages/navigation/src/UIShareManager';
 export type { ContentInset } from './packages/navigation/src/UIController';
 export type { ContentOffset } from './packages/navigation/src/UIScreen';
-export type { UISticker, UIStickerPackage } from './packages/chat/src/extras';
+export type {
+    UISticker,
+    UIStickerPackage,
+    UIChatCellInfo,
+} from './packages/chat/src/extras';

@@ -8,6 +8,8 @@ export { default as UIFont } from './UIFont';
 export { default as UIFunction } from './UIFunction';
 export { 
     default as UILocalized,
+    UILocalizedService,
+    languagesInfo,
     prepareLocales,
     prepareImages,
     prepare,
