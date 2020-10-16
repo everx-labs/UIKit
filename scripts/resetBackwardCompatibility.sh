@@ -1,5 +1,6 @@
 find ./packages/legacy/src/UIAccountPicker/components/ -type f -name '*.js' -print0 | xargs -0 sed -i '' -e 's/..\/..\/..\/..\/core\/src/@uikit\/core/g'
 find ./packages/legacy/src/UIAccountPicker/controllers/ -type f -name '*.js' -print0 | xargs -0 sed -i '' -e 's/..\/..\/..\/..\/core\/src/@uikit\/core/g'
+find ./packages -type f -name '*.js' -print0 | xargs -0 sed -i '' -e 's/..\/..\/..\/core\/types/@uikit\/core\/types/g'
 find ./packages -type f -name '*.js' -print0 | xargs -0 sed -i '' -e 's/..\/..\/..\/core\/src/@uikit\/core/g'
 
 find ./packages/legacy/src/UIAccountPicker/components/ -type f -name '*.js' -print0 | xargs -0 sed -i '' -e 's/..\/..\/..\/..\/components\/src/@uikit\/components/g'

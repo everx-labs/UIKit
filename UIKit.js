@@ -1,4 +1,3 @@
-// @flow
 export {
     UIActionComponent,
     UIActionIcon,
@@ -183,13 +182,25 @@ export type {
     UIColorData,
     UIColorThemeNameType,
 } from './packages/core/src/UIColor/UIColorTypes';
-export type { NumberParts, StringLocaleInfo } from './packages/core/src/UIFunction';
+export type {
+    NumberParts,
+    StringLocaleInfo,
+    NumberPartsOptions,
+} from './packages/core/src/UIFunction';
 export type { ActionProps } from './packages/components/src/UIActionComponent';
 export type { DetailsList } from './packages/components/src/UIDetailsTable';
 export type { LabelRoleValue } from './packages/components/src/UILabel';
 export type { MenuItemType } from './packages/navigation/src/UIActionSheet/MenuItem';
 export type { ShareOptions } from './packages/navigation/src/UIShareManager';
-export type { ContentInset } from './packages/navigation/src/UIController';
+export type { Country } from './packages/navigation/src/UICountryPicker';
+export type {
+    ContentInset,
+    ControllerProps,
+} from './packages/navigation/src/UIController';
+export type {
+    ModalControllerProps,
+    ModalControllerState,
+} from './packages/navigation/src/UIModalController';
 export type { ContentOffset } from './packages/navigation/src/UIScreen';
 export type {
     UISticker,
