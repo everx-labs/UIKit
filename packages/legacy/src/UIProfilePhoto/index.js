@@ -11,7 +11,7 @@ import {
 import { UIComponent } from '@uikit/components';
 import { UIImageView } from '@uikit/navigation';
 
-const cameraImage = require('../../../assets/ico-camera/ico-camera.png');
+const cameraImage = require('@uikit/assets/ico-camera/ico-camera.png');
 
 type Props = {
     style: ViewStyleProp,
