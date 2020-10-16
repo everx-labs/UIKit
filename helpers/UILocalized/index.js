@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 
 import en from './en.json';
 import ru from './ru.json';
+import fr from './fr.json';
 import UIConstant from '../UIConstant';
 import UIFunction from '../UIFunction';
 import type { StringLocaleInfo, NumberPartsOptions, NumberParts } from '../UIFunction';
@@ -146,7 +147,7 @@ export function prepare<T>(langs: Languages<T>, options: Languages<Options>): La
 }
 
 // All available languages
-const availableLanguages = { en, ru };
+const availableLanguages = { en, ru, fr };
 const languages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
 
 type LocalizedLangContent = { [string]: string };
