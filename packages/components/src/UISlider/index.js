@@ -23,7 +23,7 @@ import UIDot from '../UIDot';
 type Props = {
     containerStyle: ViewStyleProp,
     maxWidth: number,
-    itemsList: [],
+    itemsList: any[],
     itemRenderer: (item: any) => ?React$Node,
     itemWidth: number,
 };

@@ -13,13 +13,11 @@ import {
     UITextButton,
     UIButtonGroup,
     UIDetailsInput,
-    UIPopoverMenu,
 } from '@uikit/components';
-
+import { UIPopoverMenu } from '@uikit/navigation';
 import type { DetailsProps } from '@uikit/components/UIDetailsInput';
 import type { ActionState } from '@uikit/components/UIActionComponent';
-import type { MenuItemType } from '@uikit/components/UIActionSheet/MenuItem';
-
+import type { MenuItemType } from '@uikit/navigation/UIActionSheet/MenuItem';
 import btnPlus from '@uikit/assets/icon-plus/add.png';
 import btnPlusDisabled from '@uikit/assets/icon-plus-disabled/add.png';
 import btnDots from '@uikit/assets/btn_dots/btn_dots.png';

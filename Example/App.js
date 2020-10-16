@@ -26,6 +26,8 @@ import { createSurfSplitNavigator } from "react-navigation-surf";
 import {
     UIColor,
     UIStyle,
+} from "@uikit/core";
+import {
     UIButton,
     UILayoutManager,
     UICheckboxItem,
@@ -33,7 +35,7 @@ import {
     UIDetailsCheckbox,
     UIDetailsRadio,
     UIDetailsToggle,
-    UIImageButton,
+    UIDetailsTable,
     UILoadMoreButton,
     UIRadioButtonList,
     UIScaleButton,
@@ -54,22 +56,15 @@ import {
     UITextInput,
     UITransferInput,
     UIUploadFileInput,
-    UICountryPicker,
     UIBadge,
     UIDot,
     UISeparator,
     UITag,
     UIActionImage,
     UIImage,
-    UIImageView,
-    UIDetailsTable,
+    UIImageButton,
     UIGrid,
     UIGridColumn,
-    UIActionSheet,
-    UICustomSheet,
-    UIPopover,
-    UIPopoverBackground,
-    UIPopoverMenu,
     UISlider,
     UIStepBar,
     UITabView,
@@ -80,21 +75,32 @@ import {
     UIAlert,
     UIAlertView,
     UIDropdownAlert,
-    UIPasswordPrompt,
     UIBackgroundView,
+    UILabel,
+    UIListHeader,
+    UISectionHeader,
+} from "@uikit/components";
+import {
+    UICountryPicker,
+    UIImageView,
+    UIActionSheet,
+    UICustomSheet,
+    UIPopover,
+    UIPopoverBackground,
+    UIPopoverMenu,
+} from "@uikit/navigation";
+import {
     UIBottomBar,
     UIFeedback,
     UIPushFeedback,
+    UIPasswordPrompt,
     UIStubPage,
     UITokenCell,
     UIProfileInitials,
     UIProfilePhoto,
     UIProfileView,
-    UILabel,
-    UIListHeader,
-    UISectionHeader,
-} from "../UIKit";
-import UIAssets from "../packages/assets";
+} from '@uikit/legacy';
+import UIAssets from "@uikit/assets";
 
 const SurfSplit = createSurfSplitNavigator();
 
@@ -659,6 +665,7 @@ const Inputs = () => {
                 <Text>UIBankCardNumberInput</Text>
             </View>
             <View style={{ paddingVertical: 20 }}>
+                {/* $FlowFixMe */}
                 <UIBankCardNumberInput
                     value={bankCardNumber}
                     onChangeText={(newText) => setBankCardNumber(newText)}
@@ -1071,6 +1078,7 @@ const Images = () => (
             <Text>UIImage</Text>
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            {/* $FlowFixMe */}
             <UIImage source={UIAssets.keyThinDark} />
         </View>
         <View
@@ -1137,11 +1145,6 @@ const Layouts = () => (
                         caption: "row 5",
                         value: "7,900,404 (98.8 %)",
                         type: UIDetailsTable.CellType.NumberPercent,
-                    },
-                    {
-                        caption: "row 6",
-                        value: "100.00000000",
-                        type: UIDetailsTable.CellType.Gram,
                     },
                 ]}
             />
@@ -1436,21 +1439,23 @@ const Menus = () => {
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UITextButton
                     title="Show ActionSheet"
-                    onPress={() =>
-                        actionSheet.current.show(
-                            [
-                                {
-                                    title: "Item 1",
-                                    onPress: () => alert("Action 1 was called"),
-                                },
-                                {
-                                    title: "Item 2",
-                                    onPress: () => alert("Action 2 was called"),
-                                },
-                            ],
-                            true
-                        )
-                    }
+                    onPress={() => {
+                        if (actionSheet.current) {
+                            actionSheet.current.show(
+                                [
+                                    {
+                                        title: "Item 1",
+                                        onPress: () => alert("Action 1 was called"),
+                                    },
+                                    {
+                                        title: "Item 2",
+                                        onPress: () => alert("Action 2 was called"),
+                                    },
+                                ],
+                                true
+                            );
+                        }
+                    }}
                 />
             </View>
             <View
@@ -1488,7 +1493,11 @@ const Menus = () => {
             <View style={{ paddingVertical: 20 }}>
                 <UITextButton
                     title="Show UICustomSheet"
-                    onPress={() => customSheet.current.show()}
+                    onPress={() => {
+                        if (customSheet.current) {
+                            customSheet.current.show()
+                        }
+                    }}
                 />
             </View>
             <View
@@ -1630,15 +1639,15 @@ const Menus = () => {
                     pages={[
                         {
                             title: "Left",
-                            screen: () => <Text>Some left content</Text>,
+                            component: <Text>Some left content</Text>,
                         },
                         {
                             title: "Center",
-                            screen: () => <Text>Some center content</Text>,
+                            component: <Text>Some center content</Text>,
                         },
                         {
                             title: "Right",
-                            screen: () => <Text>Some right content</Text>,
+                            component: <Text>Some right content</Text>,
                         },
                     ]}
                 />
@@ -1938,7 +1947,7 @@ const Products = () => (
             <Text>UIPushFeedback</Text>
         </View>
         <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-            <UIPushFeedback />
+            <UIPushFeedback  onPress={() => {}} />
         </View>
         <View
             style={{
@@ -2256,7 +2265,7 @@ const App: () => React$Node = () => {
             <UILayoutManager />
             <UIActionSheet ref={actionSheet} masterSheet={false} />
             <UIActionSheet />
-            <UICountryPicker isShared />
+            <UICountryPicker navigation={navRef.current} isShared />
             <UICustomSheet
                 ref={customSheet}
                 masterSheet={false}

@@ -7,9 +7,9 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { UIConstant, UIStyle } from '@uikit/core';
 import {
     UIPureComponent,
-    UIImageView,
     UISpinnerOverlay,
 } from '@uikit/components';
+import { UIImageView } from '@uikit/navigation';
 
 import type { ChatAdditionalInfo, UIChatImageSize } from '../extras';
 

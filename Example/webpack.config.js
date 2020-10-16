@@ -39,7 +39,7 @@ module.exports = {
                         __dirname,
                         "../node_modules/react-native-web/"
                     ),
-                    path.resolve(__dirname, "../UIKit.js"),
+                    // path.resolve(__dirname, "../UIKit.js"),
                     path.resolve(__dirname, "../packages/"),
                     path.resolve(
                         __dirname,

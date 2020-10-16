@@ -32,6 +32,7 @@ node_modules/react-native/flow/
 
 [options]
 emoji=true
+sharedmemory.hash_table_pow=21
 
 esproposal.decorators=ignore
 esproposal.optional_chaining=enable
