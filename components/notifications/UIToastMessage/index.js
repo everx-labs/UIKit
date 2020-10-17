@@ -162,14 +162,20 @@ export default class UIToastMessage {
     static renderCloseButton() {
         if (this.type === this.Type.Alert) {
             return (
-                <TouchableOpacity onPress={() => this.closeToast()} >
+                <TouchableOpacity
+                    testID="toast-action-button"
+                    onPress={() => this.closeToast()}
+                >
                     <Image source={icoClose} />
                 </TouchableOpacity>
             );
         }
         if (this.type === this.Type.Default && this.action.title) {
             return (
-                <TouchableOpacity onPress={() => this.closeToast()} >
+                <TouchableOpacity
+                    testID="toast-action-button"
+                    onPress={() => this.closeToast()}
+                >
                     <Text style={styles.actionTitleStyle}>{this.action.title}</Text>
                 </TouchableOpacity>
             );
