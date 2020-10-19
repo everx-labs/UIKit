@@ -10,16 +10,15 @@
 		00E356F31AD99517003FC87E /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1411AB629B56AE2635288F72 /* libPods-ReactNavigationSurf-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8EA9B17B8E835A33F0E5DA3 /* libPods-ReactNavigationSurf-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
 		3859348FE07244B0607B925C /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF68B5907CECB93FEE6BD62 /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a */; };
 		83B4B93FB91DCDF93E35FF91 /* libPods-UIKitExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */; };
 		A36A7FF409E30BD254F04641 /* libPods-ReactNavigationSurf-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4483DD005711A94A23B8B839 /* libPods-ReactNavigationSurf-tvOSTests.a */; };
+		A60D4178253DCC370046B610 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A60D4177253DCC370046B610 /* Images.xcassets */; };
 		A63C5DF1252EF7F10024AA83 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */; };
 		A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */; };
 		A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */; };
@@ -47,18 +46,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* UIKitExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIKitExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNavigationSurfTests.m; sourceTree = "<group>"; };
 		0599A40149174638195124F1 /* Pods-UIKitExample-UIKitExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-UIKitExampleTests.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* UIKitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ReactNavigationSurf/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ReactNavigationSurf/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ReactNavigationSurf/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactNavigationSurf/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactNavigationSurf/main.m; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1BE8DF481CF4A66EDEF6AF9D /* Pods-UIKitExample-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOSTests/Pods-UIKitExample-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* UIKitExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UIKitExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +74,7 @@
 		903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-UIKitExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9555C60EBB07695A97BCD7EB /* Pods-ReactNavigationSurf-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOS/Pods-ReactNavigationSurf-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A60D4177253DCC370046B610 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.ttf"; path = "../../assets/fonts/SFProText-Regular.ttf"; sourceTree = "<group>"; };
 		A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "../../assets/fonts/SFProText-Bold.ttf"; sourceTree = "<group>"; };
 		A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Medium.ttf"; path = "../../assets/fonts/SFProText-Medium.ttf"; sourceTree = "<group>"; };
@@ -151,15 +149,14 @@
 		13B07FAE1A68108700A75B9A /* UIKitExample */ = {
 			isa = PBXGroup;
 			children = (
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				A60D4177253DCC370046B610 /* Images.xcassets */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = UIKitExample;
+			path = UIKitExample;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -389,10 +386,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				A63C5DF1252EF7F10024AA83 /* SFProText-Regular.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */,
+				A60D4178253DCC370046B610 /* Images.xcassets in Resources */,
 				A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */,
 				A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */,
 			);
@@ -402,7 +399,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +424,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		08762156B710109B675474F4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -673,7 +669,6 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = ReactNavigationSurf;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
