@@ -3,27 +3,33 @@
     "version": "1.0.0",
     "description": "",
     "main": "UIKit.js",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "Example"
+    ],
     "scripts": {
         "test": "jest",
         "flow": "flow check",
         "test:coverage": "jest --coverage",
-        "language:createTypes": "node ./scripts/convertLocaleFileToFlowTypes.js"
+        "language:createTypes": "node ./scripts/convertLocaleFileToFlowTypes.js",
+        "web": "webpack-dev-server -d --config example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached"
     },
     "pre-commit": [
         "flow"
     ],
     "peerDependencies": {
         "@react-native-community/netinfo": "^5.9.6",
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1",
+        "react": "^16.11.0",
+        "react-dom": "^16.11.0",
         "react-native": "^0.63.0",
         "react-native-android-keyboard-adjust": "^1.2.0",
         "react-native-device-info": "^5.6.3",
         "react-native-fast-image": "^7.0.2",
         "react-native-gesture-handler": "^1.7.0",
-        "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
-        "react-native-safe-area": "^0.5.1",
+        "react-native-image-picker": "*",
         "react-native-qrcode-svg": "^6.0.6",
+        "react-native-safe-area": "^0.5.1",
         "react-native-share": "^3.8.3",
         "react-native-svg": "^12.1.0"
     },
@@ -63,6 +69,7 @@
         "flow-bin": "0.122.0",
         "jest": "26.0.1",
         "json-to-flowtype-generator": "0.9.3",
+        "lerna": "^3.22.1",
         "metro-react-native-babel-preset": "0.63.0",
         "pre-commit": "1.2.2",
         "prettier": "2.1.1",
