@@ -15,10 +15,8 @@ import {
 } from '@uikit/core';
 import icoProgress from '@uikit/assets/ico-progress/progress.png';
 import { UIShareManager } from '@uikit/navigation';
-
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
-import UITextButton from '../UITextButton';
+import { UIActionComponent, UITextButton } from '@uikit/components';
+import type { ActionProps, ActionState } from '@uilit/components/UIActionComponent';
 
 
 type Props = ActionProps & {
