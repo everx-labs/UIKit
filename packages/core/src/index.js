@@ -1,4 +1,6 @@
 // @flow
+import './configs';
+
 export { default as UIColor } from './UIColor'; 
 export { default as UIColorPalette } from './UIColor/UIColorPalette';
 export { default as UIConstant } from './UIConstant';

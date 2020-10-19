@@ -5,7 +5,7 @@ import { Platform, Text, TextInput } from 'react-native';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { AsYouType, parsePhoneNumberFromString, parseDigits } from 'libphonenumber-js';
 import CurrencyFormatter from 'currency-formatter';
-import Moment from 'moment';
+import dayjs from 'dayjs';
 import isEmail from 'validator/lib/isEmail';
 import BigNumber from 'bignumber.js';
 import currencies from 'currency-formatter/currencies.json';
@@ -266,8 +266,8 @@ export default class UIFunction {
         const fixedValue = (splitParts[1]?.length || 0) > options.maximumFractionDigits
             ? UIFunction.toFixedDown(normalizedValue, options.maximumFractionDigits)
             : normalizedValue;
-        // Remove unwanted leading zeros
-        const trimmedValue = fixedValue.replace(/^0+/, '');
+        // Remove unwanted leading zeros and trailing whitespaces
+        const trimmedValue = fixedValue.replace(/^0+/, '').trim();
         const plainValue = !trimmedValue.length || trimmedValue.startsWith(defaultSeparator)
             ? `0${trimmedValue}`
             : trimmedValue;
@@ -429,7 +429,7 @@ export default class UIFunction {
     static formatMessageDate(date: Date, shortFormat: boolean = true) {
         const format = shortFormat ? 'l' : 'll';
         // Same as Telegram formatting
-        return Moment(date).calendar(null, {
+        return dayjs(date).calendar(null, {
             sameDay: 'LT',
             nextDay: 'ddd',
             lastDay: 'ddd',

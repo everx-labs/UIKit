@@ -8,6 +8,7 @@ export {
     UIAmountInput,
     UIBackgroundView,
     UIBadge,
+    UIBanner,
     UIBullet,
     UIButton,
     UIButtonGroup,
@@ -17,7 +18,6 @@ export {
     UICompatibilityView,
     UIComponent,
     UIDateInput,
-    UIDetailsButton,
     UIDetailsInput,
     UIDetailsCheckbox,
     UIDetailsToggle,
@@ -104,6 +104,7 @@ export {
 } from './packages/navigation/src';
 export {
     UIBottomBar,
+    UIDetailsButton,
     UISplitViewController,
     UINavigationBackButton,
     UINavigationBar,

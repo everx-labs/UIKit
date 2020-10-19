@@ -12,6 +12,7 @@ import {
     View,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
+import isEqual from 'lodash/isEqual';
 
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -24,11 +25,11 @@ import {
     formatTime,
 } from '@uikit/core';
 import {
-    UIPureComponent,
+    UIComponent,
     UILabel,
 } from '@uikit/components';
 import UIAssets from '@uikit/assets';
-import { UIShareManager } from '@uikit/navigation'; 
+import { UIShareManager } from '@uikit/navigation';
 
 import UIChatImageCell from './UIChatImageCell';
 import UIChatStickerCell from './UIChatStickerCell';
@@ -65,6 +66,7 @@ type Props = {
     onTouchTransaction?: (trx: any) => void,
     onTouchAction?: (action: any) => void,
     onTouchText?: () => void,
+    onLayout?: (e: any) => void,
 }
 
 type State = {
@@ -76,172 +78,7 @@ type RenderOptions = {
     isImage?: boolean,
 }
 
-type RenderTimeOptions = {
-    absolute?: boolean,
-    background?: boolean,
-}
-
-const styles = StyleSheet.create({
-    row: {
-        marginVertical: UIConstant.smallContentOffset() / 2,
-    },
-    container: {
-        width: '80%',
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-    },
-    emptyChatCell: {
-        marginVertical: UIConstant.smallContentOffset() / 2,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        alignSelf: 'flex-start',
-    },
-    msgContainer: {
-        flexShrink: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        borderRadius: UIConstant.borderRadius(),
-    },
-    wrapMsgContainer: {
-        flexShrink: 1,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-    },
-    msgContainerInformation: {
-        padding: 5,
-        width: '100%',
-        borderRadius: UIConstant.borderRadius(),
-        backgroundColor: UIColor.warning(),
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    msgContainerEmpty: {
-        alignSelf: 'flex-start',
-        borderRadius: UIConstant.borderRadius(),
-        borderColor: UIColor.light(),
-        borderWidth: 1,
-        backgroundColor: UIColor.white(),
-        paddingHorizontal: UIConstant.horizontalContentOffset(),
-        paddingVertical: UIConstant.verticalContentOffset(),
-        marginBottom: UIConstant.contentOffset(),
-    },
-    textCell: {
-        textAlign: 'left',
-        maxWidth: '100%',
-    },
-    stickerCell: {
-        backgroundColor: 'transparent',
-        paddingBottom: UIConstant.mediumContentOffset(),
-    },
-    msgSending: {
-        alignItems: 'flex-end',
-        backgroundColor: UIColor.backgroundQuinary(),
-    },
-    msgReceived: {
-        alignItems: 'flex-start',
-        backgroundColor: UIColor.backgroundTertiary(),
-    },
-    msgAborted: {
-        alignItems: 'flex-start',
-        backgroundColor: UIColor.error(),
-    },
-    msgSent: {
-        alignItems: 'flex-end',
-        backgroundColor: UIColor.primary(),
-    },
-    messageDetails: {
-        paddingTop: UIConstant.tinyContentOffset(),
-        letterSpacing: 0.5,
-        textAlign: 'right',
-        color: UIColor.grey(),
-    },
-    urlReceived: {
-        color: UIColor.primary(),
-        // Some android devices seem to render the underline wrongly
-        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
-    },
-    urlSent: {
-        color: UIColor.fa(),
-        // Some android devices seem to render the underline wrongly
-        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
-    },
-    dateSeparator: {
-        flexShrink: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: UIColor.backgroundTertiary(),
-        height: UIConstant.smallCellHeight(),
-        paddingVertical: UIConstant.tinyContentOffset() / 2,
-        paddingHorizontal: UIConstant.smallContentOffset(),
-        borderRadius: UIConstant.smallCellHeight() / 2,
-    },
-    systemInfo: {
-        flexShrink: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-    },
-    sysText: {
-        color: UIColor.grey(),
-    },
-    linkActionMessageContainer: {
-        marginBottom: UIConstant.tinyContentOffset(),
-    },
-    actionLabel: {
-        backgroundColor: UIColor.primaryPlus(),
-    },
-    actionLabelText: {
-        color: UIColor.fa(),
-    },
-    absoluteDate: {
-        position: 'absolute',
-        right: UIConstant.horizontalContentOffset(),
-        bottom: UIConstant.verticalContentOffset(),
-    },
-    dateWithBackground: {
-        backgroundColor: UIColor.black(),
-        opacity: 0.6,
-        borderRadius: 10,
-        paddingVertical: UIConstant.tinyContentOffset() / 2,
-        paddingHorizontal: UIConstant.smallContentOffset(),
-    },
-    timeText: {
-        textAlign: 'right',
-        alignSelf: 'flex-end',
-        color: UIColor.textQuaternary(),
-    },
-    timeTextContainer: {
-        paddingLeft: UIConstant.smallContentOffset(),
-        paddingTop: UIConstant.verticalContentOffset() / 2,
-        marginLeft: 'auto', // Need for correct positioning to right side in message cell
-    },
-    greenBubble: {
-        backgroundColor: UIColor.green(),
-    },
-    blackBubble: {
-        backgroundColor: UIColor.black(),
-    },
-    leftBottomCorner: {
-        borderBottomLeftRadius: 0,
-    },
-    rightBottomCorner: {
-        borderBottomRightRadius: 0,
-    },
-    leftTopCorner: {
-        borderTopLeftRadius: 0,
-    },
-    rightTopCorner: {
-        borderTopRightRadius: 0,
-    },
-    verticalSeparator: {
-        marginTop: UIConstant.tinyContentOffset() / 2,
-    },
-    keyThin: {
-        paddingLeft: UIConstant.smallContentOffset(),
-        marginLeft: 'auto',
-    },
-});
-
-export default class UIChatMessageCell extends UIPureComponent<Props, State> {
+export default class UIChatMessageCell extends UIComponent<Props, State> {
     static defaultProps = {
         type: ChatMessageContent.EmptyChat,
         status: ChatMessageStatus.Received,
@@ -255,6 +92,12 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         onTouchAction: () => {},
         onTouchText: () => {},
     };
+
+    shouldComponentUpdate(nextProps: Props): boolean {
+        return !isEqual(this.props.data, nextProps.data)
+            || this.props.status !== nextProps.status
+            || !isEqual(this.props.additionalInfo, nextProps.additionalInfo);
+    }
 
     animatedBubble = new Animated.Value(1);
     bubbleScaleAnimation(scaleIn: boolean = false) {
@@ -325,9 +168,6 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
 
     formattedTime(date: ?Date): string {
         const msg = this.props.additionalInfo?.message;
-        if (msg?.info.sending) {
-            return UILocalized.message.sending;
-        }
 
         if (date) {
             return formatTime(date.valueOf());
@@ -748,71 +588,81 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
             type, additionalInfo, data, messageDetails, messageDetailsStyle,
         } = this.props;
 
-        const defaultMarginSize = UIConstant.smallContentOffset();
-        const halfMarginSize = UIConstant.tinyContentOffset();
+        const { firstFromChain, lastFromChain, message } = additionalInfo || {};
 
         let cell = null;
         let testID = '';
 
-        let margin = { marginBottom: 0, marginTop: defaultMarginSize };
+        // Make bubbles look more natural for chat messages
+        let padding = type === ChatMessageContent.SimpleText
+            || type === ChatMessageContent.AttachmentImage
+            || type === ChatMessageContent.AttachmentDocument
+            ? {
+                paddingTop: firstFromChain ? UIConstant.smallContentOffset() : 0,
+                paddingBottom: lastFromChain ? 0 : UIConstant.tinyContentOffset(),
+            }
+            : {
+                paddingTop: UIConstant.smallContentOffset(),
+                paddingBottom: lastFromChain ? 0 : UIConstant.smallContentOffset(),
+            };
+
         let align = this.isReceived ? 'flex-start' : 'flex-end';
 
         if (type === ChatMessageContent.DateSeparator) {
             align = 'center';
             cell = this.renderDateSeparator();
-            margin = { marginVertical: UIConstant.normalContentOffset() };
-        } else if (type === ChatMessageContent.SystemInfo) {
-            align = 'center';
-            cell = this.renderSystemInfo();
-        } else if (type === ChatMessageContent.ActionLabel) {
-            cell = this.renderActionLabel();
-        } else if (type === ChatMessageContent.EmptyChat) {
-            align = 'flex-start';
-            cell = this.renderEmptyChatCell();
+            // Make paddings bigger and even
+            padding = {
+                paddingTop: UIConstant.contentOffset(),
+                paddingBottom: UIConstant.contentOffset(),
+            };
         } else if (type === ChatMessageContent.TransactionInChat) {
             cell = this.renderTransactionCell();
             testID = `chat_message_${data?.info?.trx?.amount || 'trx'}`;
-        } else if (type === ChatMessageContent.TransactionComment) {
-            // hack to move comment closer to the parent transaction bubble
-            margin = { marginBottom: 0 };
-            cell = this.renderTransactionCommentCell();
-        } else if (type === ChatMessageContent.SimpleText) {
-            cell = this.renderTextCell();
 
-            if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
-            }
+            // Remove bottom padding for transactions
+            padding.paddingBottom = 0;
+        } else if (type === ChatMessageContent.TransactionComment) {
+            cell = this.renderTransactionCommentCell();
+
+            // Move comment closer to the parent transaction bubble
+            padding.paddingTop = UIConstant.tinyContentOffset();
         } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
             align = 'center';
             cell = this.renderSystemCell();
-            margin = { marginVertical: defaultMarginSize };
 
-            if (additionalInfo?.firstFromChain) {
-                margin = { marginBottom: defaultMarginSize, marginTop: UIConstant.contentOffset() };
-            }
+            // Systems messages have different paddings too
+            padding = {
+                paddingTop: firstFromChain
+                    ? UIConstant.contentOffset()
+                    : UIConstant.smallContentOffset(),
+                paddingBottom: UIConstant.smallContentOffset(),
+            };
+        } else if (type === ChatMessageContent.SimpleText) {
+            cell = this.renderTextCell();
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
-
-            if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
-            }
-        } else if (type === ChatMessageContent.Sticker) {
-            cell = this.renderStickerCell();
-            testID = 'chat_message_sticker';
         } else if (type === ChatMessageContent.AttachmentDocument) {
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
-
-            if (!additionalInfo?.firstFromChain) {
-                margin = { marginBottom: 0, marginTop: halfMarginSize };
-            }
+        } else if (type === ChatMessageContent.Sticker) {
+            cell = this.renderStickerCell();
+            testID = 'chat_message_sticker';
         } else if (type === ChatMessageContent.ActionButton) {
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
+        } else if (type === ChatMessageContent.ActionLabel) {
+            cell = this.renderActionLabel();
         } else if (type === ChatMessageContent.LinkActionMessage) {
             cell = this.renderLinkActionMessageCell();
             testID = 'chat_message_link';
+        } else if (type === ChatMessageContent.SystemInfo) {
+            align = 'center';
+            cell = this.renderSystemInfo();
+        } else if (type === ChatMessageContent.EmptyChat) {
+            align = 'flex-start';
+            cell = this.renderEmptyChatCell();
         } else {
             cell = this.renderInformationCell('Message/Cell type not supported.');
         }
@@ -832,9 +682,10 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
                 testID={testID}
                 style={[
                     UIStyle.common.flex(),
-                    styles.row,
-                    margin,
+                    padding,
+                    message?.info?.sending && UIStyle.common.opacity70(),
                 ]}
+                onLayout={this.props.onLayout}
             >
                 <View
                     style={[position, styles.container]}
@@ -852,3 +703,161 @@ export default class UIChatMessageCell extends UIPureComponent<Props, State> {
         );
     }
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        width: '80%',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+    },
+    emptyChatCell: {
+        marginVertical: UIConstant.smallContentOffset() / 2,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        alignSelf: 'flex-start',
+    },
+    msgContainer: {
+        flexShrink: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        borderRadius: UIConstant.borderRadius(),
+    },
+    wrapMsgContainer: {
+        flexShrink: 1,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+    },
+    msgContainerInformation: {
+        padding: 5,
+        width: '100%',
+        borderRadius: UIConstant.borderRadius(),
+        backgroundColor: UIColor.warning(),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    msgContainerEmpty: {
+        alignSelf: 'flex-start',
+        borderRadius: UIConstant.borderRadius(),
+        borderColor: UIColor.light(),
+        borderWidth: 1,
+        backgroundColor: UIColor.white(),
+        paddingHorizontal: UIConstant.horizontalContentOffset(),
+        paddingVertical: UIConstant.verticalContentOffset(),
+        marginBottom: UIConstant.contentOffset(),
+    },
+    textCell: {
+        textAlign: 'left',
+        maxWidth: '100%',
+    },
+    stickerCell: {
+        backgroundColor: 'transparent',
+        paddingBottom: UIConstant.mediumContentOffset(),
+    },
+    msgSending: {
+        alignItems: 'flex-end',
+        backgroundColor: UIColor.backgroundQuinary(),
+    },
+    msgReceived: {
+        alignItems: 'flex-start',
+        backgroundColor: UIColor.backgroundTertiary(),
+    },
+    msgAborted: {
+        alignItems: 'flex-start',
+        backgroundColor: UIColor.error(),
+    },
+    msgSent: {
+        alignItems: 'flex-end',
+        backgroundColor: UIColor.primary(),
+    },
+    messageDetails: {
+        paddingTop: UIConstant.tinyContentOffset(),
+        letterSpacing: 0.5,
+        textAlign: 'right',
+        color: UIColor.grey(),
+    },
+    urlReceived: {
+        color: UIColor.primary(),
+        // Some android devices seem to render the underline wrongly
+        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
+    },
+    urlSent: {
+        color: UIColor.fa(),
+        // Some android devices seem to render the underline wrongly
+        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
+    },
+    dateSeparator: {
+        flexShrink: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        backgroundColor: UIColor.backgroundTertiary(),
+        height: UIConstant.smallCellHeight(),
+        paddingVertical: UIConstant.tinyContentOffset() / 2,
+        paddingHorizontal: UIConstant.smallContentOffset(),
+        borderRadius: UIConstant.smallCellHeight() / 2,
+    },
+    systemInfo: {
+        flexShrink: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    sysText: {
+        color: UIColor.grey(),
+    },
+    linkActionMessageContainer: {
+        marginBottom: UIConstant.tinyContentOffset(),
+    },
+    actionLabel: {
+        backgroundColor: UIColor.primaryPlus(),
+    },
+    actionLabelText: {
+        color: UIColor.fa(),
+    },
+    absoluteDate: {
+        position: 'absolute',
+        right: UIConstant.horizontalContentOffset(),
+        bottom: UIConstant.verticalContentOffset(),
+    },
+    dateWithBackground: {
+        backgroundColor: UIColor.black(),
+        opacity: 0.6,
+        borderRadius: 10,
+        paddingVertical: UIConstant.tinyContentOffset() / 2,
+        paddingHorizontal: UIConstant.smallContentOffset(),
+    },
+    timeText: {
+        textAlign: 'right',
+        alignSelf: 'flex-end',
+        color: UIColor.textQuaternary(),
+    },
+    timeTextContainer: {
+        paddingLeft: UIConstant.smallContentOffset(),
+        paddingTop: UIConstant.verticalContentOffset() / 2,
+        marginLeft: 'auto', // Need for correct positioning to right side in message cell
+    },
+    greenBubble: {
+        backgroundColor: UIColor.green(),
+    },
+    blackBubble: {
+        backgroundColor: UIColor.black(),
+    },
+    leftBottomCorner: {
+        borderBottomLeftRadius: 0,
+    },
+    rightBottomCorner: {
+        borderBottomRightRadius: 0,
+    },
+    leftTopCorner: {
+        borderTopLeftRadius: 0,
+    },
+    rightTopCorner: {
+        borderTopRightRadius: 0,
+    },
+    verticalSeparator: {
+        marginTop: UIConstant.tinyContentOffset() / 2,
+    },
+    keyThin: {
+        paddingLeft: UIConstant.smallContentOffset(),
+        marginLeft: 'auto',
+    },
+});

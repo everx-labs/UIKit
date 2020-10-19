@@ -193,7 +193,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                 />
                 <UIBottomBar
                     isNarrow={this.isNarrow()}
-                    copyRight={UILocalized.CopyRight}
+                    copyRight={`2018–${(new Date()).getFullYear()} © TON Labs`}
                     copyRightIcon={icoTonLabsBlack}
                 />
             </React.Fragment>

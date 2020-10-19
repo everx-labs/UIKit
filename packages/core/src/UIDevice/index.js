@@ -90,6 +90,10 @@ export default class UIDevice {
         return UI_IS_MOBILE;
     }
 
+    static async isEmulator(): Promise<boolean> {
+        return DeviceInfo.isEmulator();
+    }
+
     static isWebkit(): boolean {
         return !Number.isNaN(UI_IS_WEBKIT);
     }

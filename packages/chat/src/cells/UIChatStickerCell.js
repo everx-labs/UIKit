@@ -9,7 +9,6 @@ import {
 import {
     UIPureComponent,
     UIImage,
-    UISpinnerOverlay,
 } from '@uikit/components';
 
 import type { ChatAdditionalInfo } from '../extras';
@@ -48,27 +47,17 @@ export default class UIChatStickerCell extends UIPureComponent<Props, State> {
         );
     }
 
-    renderSpinnerOverlay() {
-        const sending = this.props.additionalInfo?.message?.info?.sending;
-        return (
-            <UISpinnerOverlay
-                containerStyle={{
-                    top: UIConstant.tinyContentOffset() / 2,
-                    borderRadius: UIConstant.borderRadius(),
-                }}
-                visible={sending}
-            />
-        );
-    }
-
     render() {
+        const isSending = this.props.additionalInfo?.message?.info?.sending;
         return (
             <View
-                style={UIStyle.Common.flex()}
+                style={[
+                    UIStyle.Common.flex(),
+                    isSending && UIStyle.common.opacity70(),
+                ]}
                 key={`stickerViewContent${this.getID()}`}
             >
                 {this.renderImage()}
-                {this.renderSpinnerOverlay()}
             </View>
         );
     }

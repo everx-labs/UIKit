@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet, View, Text, Platform } from 'react-native';
-import Moment from 'moment';
+import dayjs from 'dayjs';
 
 import {
     UIConstant,
@@ -292,7 +292,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     }
 
     getMomentObj() {
-        return Moment(this.getValue(), this.getPattern());
+        return dayjs(this.getValue(), this.getPattern());
     }
 
     getDateObj() {
@@ -326,8 +326,8 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
     isDateInRange() {
         const { validateRange } = this.props;
         const momentObj = this.getMomentObj();
-        const start = validateRange[0] && Moment(validateRange[0]);
-        const end = validateRange[1] && Moment(validateRange[1]);
+        const start = validateRange[0] && dayjs(validateRange[0]);
+        const end = validateRange[1] && dayjs(validateRange[1]);
         const isMomentBeforeEnd = !end || momentObj.isBefore(end);
         const isMomentAfterStart = !start || momentObj.isAfter(start);
         return isMomentBeforeEnd && isMomentAfterStart;
@@ -335,7 +335,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     isDateValid() {
         const date = this.getValue();
-        const validDate = Moment(date, this.getPattern()).isValid();
+        const validDate = dayjs(date, this.getPattern()).isValid();
         const validLength = date.length === this.getPattern(true).length || date.length === 0;
         return (validDate && validLength && this.isDateInRange());
     }
@@ -353,9 +353,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         let initialMoment;
 
         if (initialEpochTime) {
-            initialMoment = Moment(initialEpochTime);
+            initialMoment = dayjs(initialEpochTime);
         } else if (initialTimestamp) {
-            initialMoment = Moment.unix(initialTimestamp);
+            initialMoment = dayjs.unix(initialTimestamp);
         }
 
         if (initialMoment) {
@@ -380,9 +380,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         }
 
         const missing = this.getPattern(true).substring(date.length);
-        const bottomOffset = Platform.OS == 'android'
-        	? UIConstant.normalContentOffset()
-        	: UIConstant.smallContentOffset();
+        const bottomOffset = Platform.OS === 'android'
+            ? UIConstant.normalContentOffset()
+            : UIConstant.smallContentOffset();
         return (
             <View style={[styles.missingValueView, { bottom: bottomOffset }]}>
                 <Text

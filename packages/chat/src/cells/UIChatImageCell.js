@@ -5,10 +5,7 @@ import { View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIConstant, UIStyle } from '@uikit/core';
-import {
-    UIPureComponent,
-    UISpinnerOverlay,
-} from '@uikit/components';
+import { UIPureComponent } from '@uikit/components';
 import { UIImageView } from '@uikit/navigation';
 
 import type { ChatAdditionalInfo, UIChatImageSize } from '../extras';
@@ -111,27 +108,17 @@ export default class UIChatImageCell extends UIPureComponent<Props, State> {
         );
     }
 
-    renderSpinnerOverlay() {
-        const sending = this.props.additionalInfo?.message?.info?.sending;
-        return (
-            <UISpinnerOverlay
-                containerStyle={{
-                    top: UIConstant.tinyContentOffset() / 2,
-                    borderRadius: UIConstant.borderRadius(),
-                }}
-                visible={!this.state.data || sending}
-            />
-        );
-    }
-
     render() {
+        const isSending = this.props.additionalInfo?.message?.info?.sending;
         return (
             <View
-                style={UIStyle.Common.flex()}
+                style={[
+                    UIStyle.Common.flex(),
+                    isSending && UIStyle.common.opacity70(),
+                ]}
                 key={`imageViewContent${this.getID()}`}
             >
                 {this.renderImage()}
-                {this.renderSpinnerOverlay()}
             </View>
         );
     }

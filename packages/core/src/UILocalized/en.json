@@ -82,6 +82,7 @@
     "ContinueWithPassword": "Continue with password",
     "ConvertToSupergroup": "Convert To Supergroup",
     "ConvertToSupergroupDetails": "In supergroups:\n• New members can see the full message history\n• Deleted messages will disappear for all members\n• Admins can pin important messages\n• The creator can set a public link for the group",
+    "CopiedToClipboard": "Copied to clipboard",
     "Copy": "Copy",
     "CopyNumber": "Copy Number",
     "CopyRight": "2018–{CURRENT_YEAR} © TON Labs",

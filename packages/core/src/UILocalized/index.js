@@ -2,11 +2,12 @@
 /* eslint-disable no-use-before-define */
 import BigNumber from 'bignumber.js';
 import LocalizedStrings from 'react-native-localization';
-import Moment from 'moment';
-import 'moment/locale/ru';
+
+import dayjs from 'dayjs';
 
 import en from './en.json';
 import ru from './ru.json';
+import fr from './fr.json';
 import UIConstant from '../UIConstant';
 import UIFunction from '../UIFunction';
 import type { StringLocaleInfo, NumberPartsOptions, NumberParts } from '../UIFunction';
@@ -43,6 +44,10 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         name: '한국어',
         country: 'KR',
     },
+    pt_BR: {
+        name: 'Português (Br)',
+        country: 'BR',
+    },
 };
 
 export type Language = $Keys<typeof languagesInfo>;
@@ -72,14 +77,14 @@ function prepareValue(value: Object | Array<any> | string | boolean, options: Op
 
     if (typeof value === 'string' || value instanceof String) {
         const { images } = options;
-        if (images && /^{IMG_[A-Z]*}$/.test(value)) {
+        if (images && /^{IMG_[A-Z_0-9]*}$/.test(value)) {
             const key = value.replace(/[{}]/g, '');
             return images[key];
         }
 
         const { constants } = options;
         if (constants) {
-            const foundConstants = value.match(/{([A-Z0-9_]*)}/g);
+            const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
 
             if (foundConstants) {
                 foundConstants.forEach((constant) => {
@@ -130,19 +135,19 @@ export function prepareImages<T>(langs: Languages<T>, constants: { [string]: any
     return preparedLanguages;
 }
 
-export function prepare<T>(langs: Languages<T>, options: Options): Languages<T> {
+export function prepare<T>(langs: Languages<T>, options: Languages<Options>): Languages<T> {
     const preparedLanguages: Languages<T> = {};
 
     Object.keys(langs).forEach((lang) => {
         // $FlowExpectedError
-        preparedLanguages[lang] = prepareObject(langs[lang], options);
+        preparedLanguages[lang] = prepareObject(langs[lang], options[lang]);
     });
 
     return preparedLanguages;
 }
 
 // All available languages
-const availableLanguages = { en, ru };
+const availableLanguages = { en, ru, fr };
 const languages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
 
 type LocalizedLangContent = { [string]: string };
@@ -275,12 +280,12 @@ const localized: UILocalizedData &
     UILocalizedService &
     LocalizedStringsMethods = new UILocalizedService({ en });
 
-Moment.locale(localized.getLocale());
+dayjs.locale(localized.getLocale());
 
 export const TIME_FORMAT = 'HH:mm';
 
 export function formatTime(time: number, format: string = TIME_FORMAT): string {
-    return Moment(time).format(format);
+    return dayjs(time).format(format);
 }
 
 export function formatDate(time: number): string {
@@ -295,7 +300,7 @@ export function formatDate(time: number): string {
     return (isToday || isYesterday) ? (
         `${isToday ? localized.Today : localized.Yesterday} at ${formatTime(time)}`
     ) : (
-        Moment(time).format(`D MMM ${TIME_FORMAT}`)
+        dayjs(time).format(`D MMM ${TIME_FORMAT}`)
     );
 }
 
