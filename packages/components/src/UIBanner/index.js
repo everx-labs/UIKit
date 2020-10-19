@@ -9,7 +9,8 @@ import {
     UIColor,
     UIStyle,
 } from '@uikit/core';
-import { UIComponent, UILabel } from '@uikit/components';
+import UIComponent from '../UIComponent';
+import UILabel from '../UILabel';
 
 type Props = {
     text: ?string,
