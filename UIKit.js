@@ -50,7 +50,7 @@ export {
     UIScaleButton,
     UISearchBar,
     UISectionHeader,
-    UISeedPhraseInput,  
+    UISeedPhraseInput,
     UIContractAddressInput,
     UISeparator,
     UISlider,
@@ -208,4 +208,6 @@ export type {
     UISticker,
     UIStickerPackage,
     UIChatCellInfo,
+    ChatMessageStatusType,
+    UIChatMessage,
 } from './packages/chat/src/extras';
