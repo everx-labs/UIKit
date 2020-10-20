@@ -3,9 +3,9 @@
   "extends": "airbnb",
   "plugins": ["module-resolver"],
   "rules": {
-    "module-resolver/use-alias": ["error", {
+    "module-resolver/use-alias": 0, /*["error", {
       "ignoreDepth": 1
-    }],
+    }],*/
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/jsx-indent-props": [1, 4],
     "react/jsx-indent": ["error", 4],
