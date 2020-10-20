@@ -118,7 +118,9 @@ export default class UIUnfold extends UIComponent<Props, State> {
         titleShow: null,
         titleHide: null,
         showButton: true,
+        // $FlowFixMeProps
         iconShow: iconShowDefault,
+        // $FlowFixMeProps
         iconHide: iconHideDefault,
         iconPosition: UIUnfold.position.right,
         buttonPosition: UIUnfold.position.top,
@@ -129,23 +131,28 @@ export default class UIUnfold extends UIComponent<Props, State> {
         size: UIUnfold.size.m,
     };
 
+    static getDerivedStateFromProps(props: Props, state: State) {
+        return {
+            ...state,
+            unfolded: props.unfolded,
+        };
+    }
+
     constructor(props: Props) {
         super(props);
+
         this.state = {
             unfolded: props.unfolded,
         };
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (this.state.unfolded !== nextProps.unfolded) {
-            this.setState({ unfolded: nextProps.unfolded });
-        }
-    }
-
     // Events
     onPress = () => {
-        if (this.props.onPress) { this.props.onPress(!this.state.unfolded); }
-        this.setState({ unfolded: !this.state.unfolded });
+        const unfolded = !this.state.unfolded;
+        if (this.props.onPress) {
+            this.props.onPress(unfolded);
+        }
+        this.setStateSafely({ unfolded });
     };
 
     // Getters

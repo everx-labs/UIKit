@@ -103,8 +103,8 @@ export default class UIAlert extends UIComponent<Props, State> {
         }
     }
 
-    componentDidUpdate(oldProps: Props) {
-        if (this.props.isVisible !== oldProps.isVisible) {
+    componentDidUpdate(prevProps: Props) {
+        if (this.props.isVisible !== prevProps.isVisible) {
             this.showIfNeeded();
         }
     }
