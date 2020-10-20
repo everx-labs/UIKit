@@ -246,7 +246,11 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
         return (
             <View
-                testID={`transaction_message_${this.getValueForTestID()}`}
+                testID={
+                    isSending
+                        ? `transaction_message_${this.getValueForTestID()}_pending`
+                        : `transaction_message_${this.getValueForTestID()}`
+                }
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
