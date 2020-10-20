@@ -131,7 +131,6 @@ export {
     UITokenCell,
     UITransactionView,
     UITransitionView,
-    UIPasswordPrompt,
 } from './packages/legacy/src';
 export {
     UIChatInput,

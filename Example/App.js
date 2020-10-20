@@ -92,7 +92,6 @@ import {
     UIDetailsButton,
     UIFeedback,
     UIPushFeedback,
-    UIPasswordPrompt,
     UIStubPage,
     UITokenCell,
     UIProfileInitials,
@@ -1830,30 +1829,6 @@ const Popups = () => (
                 }
             />
         </View>
-        <View
-            style={{
-                width: '96%',
-                paddingLeft: 40,
-                paddingBottom: 10,
-                marginHorizontal: '2%',
-                marginTop: 20,
-                borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
-            }}
-        >
-            <Text>UIPasswordPrompt</Text>
-        </View>
-        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-            <UITextButton
-                title="Show UIPasswordPrompt"
-                onPress={() =>
-                    UIPasswordPrompt.showPrompt({
-                        title: 'This is password prompt',
-                        shouldConfirm: true,
-                    })
-                }
-            />
-        </View>
     </ScrollView>
 );
 
@@ -2282,7 +2257,6 @@ const App: () => React$Node = () => {
             <UIAlert />
             <UIAlertView />
             <UIDropdownAlert />
-            <UIPasswordPrompt />
         </>
     );
 
