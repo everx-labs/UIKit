@@ -24,6 +24,10 @@
   "homepage": "https://github.com/tonlabs/UIKit/packages/chat#readme",
   "dependencies": {
     "@react-native-community/netinfo": "^5.9.6",
+    "@uikit/assets": "^2.0.0",
+    "@uikit/components": "^2.0.0",
+    "@uikit/core": "^2.0.0",
+    "@uikit/navigation": "^2.0.0",
     "bignumber.js": "9.0.0",
     "lodash": "4.17.14",
     "moment": "2.24.0",

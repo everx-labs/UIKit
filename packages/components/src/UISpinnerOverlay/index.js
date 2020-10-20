@@ -76,8 +76,6 @@ type Props = {
 }
 
 type State = {
-    titleContent: string,
-    textContent: string,
     visible: boolean,
 };
 
@@ -113,8 +111,6 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
         super(props);
 
         this.state = {
-            titleContent: this.props.titleContent,
-            textContent: this.props.textContent,
             visible: false,
         };
     }
@@ -124,11 +120,6 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
         if (this.props.masterSpinner) {
             masterRef = this;
         }
-        this.processProps(this.props);
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        this.processProps(nextProps);
     }
 
     componentWillUnmount() {
@@ -139,14 +130,6 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
     }
 
     // Setters
-    setTitleContent(titleContent: string) {
-        this.setStateSafely({ titleContent });
-    }
-
-    setTextContent(textContent: string) {
-        this.setStateSafely({ textContent });
-    }
-
     setVisible(visible: boolean = true) {
         this.setStateSafely({ visible });
     }
@@ -165,14 +148,9 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
         this.setVisible(false);
     }
 
-    // Processing
-    processProps(props: Props) {
-        this.setTitleContent(props.titleContent);
-        this.setTextContent(props.textContent);
-    }
-
     // Render
     renderTitleContent() {
+        const { titleContent } = this.props;
         return (
             <Text
                 style={[
@@ -180,18 +158,19 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
                     styles.titleContent,
                     this.props.titleStyle,
                     {
-                        backgroundColor: !this.state.titleContent
+                        backgroundColor: !titleContent
                             ? 'transparent'
                             : 'white',
                     },
                 ]}
             >
-                {this.state.titleContent}
+                {titleContent}
             </Text>
         );
     }
 
     renderTextContent() {
+        const { textContent } = this.props;
         return (
             <Text
                 style={[
@@ -199,13 +178,13 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
                     styles.textContent,
                     this.props.textStyle,
                     {
-                        backgroundColor: !this.state.textContent
+                        backgroundColor: !textContent
                             ? 'transparent'
                             : UIColor.primary(),
                     },
                 ]}
             >
-                {this.state.textContent}
+                {textContent}
             </Text>
         );
     }

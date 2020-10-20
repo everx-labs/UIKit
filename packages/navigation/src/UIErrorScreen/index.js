@@ -13,9 +13,11 @@ import {
     UILabel,
     UITextButton,
 } from '@uikit/components';
+// TODO: remove from here to get rid of cycled dependency between the packages!
 import { UIBottomBar } from '@uikit/legacy';
 import image404 from '@uikit/assets/404/404.png';
 import icoTonLabsBlack from '@uikit/assets/logo/tonlabs/tonlabs-black.png';
+// TODO: remove from here to get rid of cycled dependency between the packages!
 import type { CreateNavigationOptions } from '@uikit/legacy/UINavigationBar';
 
 import UIScreen from '../UIScreen';

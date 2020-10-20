@@ -222,10 +222,11 @@ export default class UIAlert extends UIComponent<Props, State> {
                     key={`alert_rowOfButtons_${index}_${btnIndex}`}
                 />);
             });
-            btnRows.push(
+            btnRows.push((
                 <View style={UIStyle.common.flexRow()} key={`alert_rowOfButtons_${index}`}>
                     {btns}
-                </View>);
+                </View>
+            ));
         });
 
         return (

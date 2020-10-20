@@ -23,6 +23,9 @@
   },
   "homepage": "https://github.com/tonlabs/UIKit/packages/navigation#readme",
   "dependencies": {
+    "@uikit/assets": "^2.0.0",
+    "@uikit/components": "^2.0.0",
+    "@uikit/core": "^2.0.0",
     "react-native-gesture-handler": "^1.7.0"
   },
   "devDependencies": {
