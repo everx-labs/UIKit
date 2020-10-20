@@ -2,7 +2,7 @@
 // @flow
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
@@ -22,6 +22,7 @@ export type TabViewProps = {
     indicatorWidth?: number,
     style?: ViewStyleProp,
     pageStyle?: ViewStyleProp,
+    titleStyle?: TextStyleProp,
     initialIndex?: number,
 };
 
@@ -37,13 +38,14 @@ const styles = StyleSheet.create({
 });
 
 const UITabView = ({
-    pages = [],
-    width,
-    indicatorWidth,
-    style,
-    pageStyle,
-    initialIndex = 0,
-}: TabViewProps) => {
+                       pages = [],
+                       width,
+                       indicatorWidth,
+                       style,
+                       pageStyle,
+                       titleStyle,
+                       initialIndex = 0,
+                   }: TabViewProps) => {
     const [animatedIndex] = useState<AnimatedValue>(new Animated.Value(initialIndex));
     const [integerIndex, setIntegerIndex] = useState<number>(initialIndex);
 
@@ -66,7 +68,7 @@ const UITabView = ({
     const tapBar = (
         <Animated.View style={UIStyle.flex.row()}>
             {pages.map(({ title }: TabViewPage, index: number) => {
-                const textStyle = index === integerIndex
+                const titleStyleDefault = index === integerIndex
                     ? UIStyle.text.actionBodyBold()
                     : UIStyle.text.secondaryBodyBold();
                 return (
@@ -78,7 +80,7 @@ const UITabView = ({
                         <View style={[UIStyle.flex.x1(), UIStyle.flex.alignCenter()]}>
                             <UITextButton
                                 title={title}
-                                textStyle={textStyle}
+                                textStyle={[titleStyleDefault, titleStyle]}
                                 // onPress={() => onPressTab(index)}
                                 testID={tabViewTestIDs.tabTitle(title)}
                             />
