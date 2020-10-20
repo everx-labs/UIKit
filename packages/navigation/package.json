@@ -23,7 +23,11 @@
   },
   "homepage": "https://github.com/tonlabs/UIKit/packages/navigation#readme",
   "dependencies": {
-    "react-native-gesture-handler": "^1.7.0"
+    "@uikit/assets": "^2.0.0",
+    "@uikit/components": "^2.0.0",
+    "@uikit/core": "^2.0.0",
+    "react-native-gesture-handler": "^1.7.0",
+    "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git"
   },
   "devDependencies": {
     "react": "^16.11.0",

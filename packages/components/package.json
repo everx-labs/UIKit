@@ -24,6 +24,8 @@
   "homepage": "https://github.com/tonlabs/UIKit/packages/components#readme",
   "dependencies": {
     "@react-native-community/netinfo": "^5.9.6",
+    "@uikit/assets": "^2.0.0",
+    "@uikit/core": "^2.0.0",
     "bignumber.js": "9.0.0",
     "dayjs": "1.9.1",
     "lodash": "4.17.14",

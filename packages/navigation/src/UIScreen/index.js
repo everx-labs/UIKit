@@ -7,6 +7,7 @@ import {
     UIConstant,
     UIStyle,
 } from '@uikit/core';
+// TODO: remove from here to get rid of cycled dependency between the packages!
 import type { NavigationProps } from '@uikit/legacy/UINavigator';
 
 import UIController from '../UIController';
