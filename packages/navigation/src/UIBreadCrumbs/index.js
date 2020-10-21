@@ -9,6 +9,7 @@ import {
     UIFunction,
 } from '@uikit/core';
 import { UIComponent, UITextButton } from '@uikit/components';
+// TODO: remove from here to get rid of cycled dependency between the packages!
 import type { ReactNavigation } from '@uikit/legacy/UINavigationBar';
 
 // export type BreadCrumbScreen = {

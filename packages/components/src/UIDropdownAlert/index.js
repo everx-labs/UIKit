@@ -1,6 +1,6 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { UIColor, UIStyle } from '@uikit/core';
 
@@ -10,7 +10,19 @@ const DropdownAlert = Platform.OS === 'web' ? null : require('react-native-dropd
 
 let masterRef = null;
 
-export default class UIDropdownAlert extends UIComponent {
+type Props = {
+    masterAlert: boolean,
+};
+
+type State = {
+    //
+};
+
+export default class UIDropdownAlert extends UIComponent<Props, State> {
+    static defaultProps = {
+        masterAlert: true,
+    };
+
     static showNotification(notificationMessage: string, notificationTitle = ' ', callback?: Function) {
         if (masterRef) {
             masterRef.showNotification(notificationMessage, notificationTitle, callback);
@@ -55,23 +67,15 @@ export default class UIDropdownAlert extends UIComponent {
                 inactiveStatusBarStyle="dark-content"
                 activeStatusBarStyle="light-content"
                 activeStatusBarBackgroundColor={UIColor.black()}
-                defaultTextContainer={[
+                defaultTextContainer={StyleSheet.flatten([
                     UIStyle.container.center(),
                     UIStyle.common.flexColumn(),
-                ]}
-                containerStyle={[
+                ])}
+                containerStyle={StyleSheet.flatten([
                     UIStyle.text.tinyRegular(),
                     UIStyle.color.getBackgroundColorStyle(UIColor.black()),
-                ]}
+                ])}
             />
         );
     }
 }
-
-UIDropdownAlert.defaultProps = {
-    masterAlert: true,
-};
-
-UIDropdownAlert.propTypes = {
-    masterAlert: PropTypes.bool,
-};
