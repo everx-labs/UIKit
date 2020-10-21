@@ -69,7 +69,7 @@
         "flow-bin": "0.122.0",
         "jest": "26.0.1",
         "json-to-flowtype-generator": "0.9.3",
-        "lerna": "^3.22.1",
+        "lerna": "3.22.1",
         "metro-react-native-babel-preset": "0.63.0",
         "pre-commit": "1.2.2",
         "prettier": "2.1.1",
