@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
 });
 
 const UITabView = ({
-                       pages = [],
-                       width,
-                       indicatorWidth,
-                       style,
-                       pageStyle,
-                       titleStyle,
-                       initialIndex = 0,
-                   }: TabViewProps) => {
+   pages = [],
+   width,
+   indicatorWidth,
+   style,
+   pageStyle,
+   titleStyle,
+   initialIndex = 0,
+}: TabViewProps) => {
     const [animatedIndex] = useState<AnimatedValue>(new Animated.Value(initialIndex));
     const [integerIndex, setIntegerIndex] = useState<number>(initialIndex);
 
