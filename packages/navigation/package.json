@@ -34,8 +34,8 @@
     "react-style-proptype": "3.2.2"
   },
   "devDependencies": {
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
     "react-native-android-keyboard-adjust": "^1.2.0",
     "react-native-gesture-handler": "^1.7.0",
@@ -44,8 +44,8 @@
     "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
     "react-native-android-keyboard-adjust": "^1.2.0",
     "react-native-gesture-handler": "^1.7.0",
