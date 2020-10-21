@@ -35,7 +35,13 @@
   },
   "devDependencies": {
     "react": "^16.11.0",
-    "react-native": "^0.63.0"
+    "react-dom": "^16.11.0",
+    "react-native": "^0.63.0",
+    "react-native-android-keyboard-adjust": "^1.2.0",
+    "react-native-gesture-handler": "^1.7.0",
+    "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
+    "react-native-share": "^3.8.3",
+    "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
     "react": "^16.11.0",
