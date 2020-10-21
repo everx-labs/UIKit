@@ -384,6 +384,10 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             focused: false,
             tapped: false,
             hover: false,
+            selection: {
+                start: 0,
+                end: 0,
+            },
         };
     }
 
@@ -603,7 +607,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     getSelection() {
-        return this.props.selection;
+        return this.state.selection;
     }
 
     hidePlaceholder() {
@@ -778,8 +782,11 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         const placeholderColor = editable
             ? UIColor.textPlaceholder(theme)
             : UIColor.textDisabled(theme);
+
+        const secureInput = true;
         return (
             <TextInput
+
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
@@ -804,7 +811,21 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
                 placeholder={this.getInlinePlaceholder()}
                 placeholderTextColor={placeholderColor}
                 ref={(component) => { this.textInput = component; }}
-                onSelectionChange={this.onSelectionChange}
+                // onSelectionChange={this.onSelectionChange}
+                onSelectionChange={({ nativeEvent: { selection } }) => {
+                    console.log('QQ', selection);
+                    console.log('VALUE', value);
+                    if (selection.start !== selection.end) {
+                        this.setStateSafely({
+                            selection: {
+                                start: value.length,
+                                end: value.length,
+                            },
+                        });
+                    } else {
+                        this.setStateSafely(selection);
+                    }
+                }}
                 selection={this.getSelection()}
                 {...returnKeyTypeProp}
                 {...blurOnSubmitProp}
