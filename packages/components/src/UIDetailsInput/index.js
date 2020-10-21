@@ -805,7 +805,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             : UIColor.textDisabled(theme);
         return (
             <TextInput
-                // contextMenuHidden
+                // contextMenuHidden={this.props.copyingLocked && value.length !== 0} // iOS only
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
