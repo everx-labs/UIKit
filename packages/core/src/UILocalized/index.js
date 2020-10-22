@@ -5,9 +5,9 @@ import LocalizedStrings from 'react-native-localization';
 
 import dayjs from 'dayjs';
 
-import en from './en.json';
-import ru from './ru.json';
-import fr from './fr.json';
+// All available languages
+import * as availableLanguages from './languages';
+
 import UIConstant from '../UIConstant';
 import UIFunction from '../UIFunction';
 import type { StringLocaleInfo, NumberPartsOptions, NumberParts } from '../UIFunction';
@@ -47,6 +47,18 @@ export const languagesInfo: { [string]: LanguageInfo } = {
     pt_BR: {
         name: 'Português (Br)',
         country: 'BR',
+    },
+    de: {
+        name: 'Deutsch',
+        country: 'DE',
+    },
+    es: {
+        name: 'Español',
+        country: 'ES',
+    },
+    zh_CN: {
+        name: '汉语',
+        country: 'CN',
     },
 };
 
@@ -146,8 +158,6 @@ export function prepare<T>(langs: Languages<T>, options: Languages<Options>): La
     return preparedLanguages;
 }
 
-// All available languages
-const availableLanguages = { en, ru, fr };
 const languages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
 
 type LocalizedLangContent = { [string]: string };
@@ -278,7 +288,7 @@ type LocalizedStringsMethods = {
 // Enable only english language by default, other languages load in language service
 const localized: UILocalizedData &
     UILocalizedService &
-    LocalizedStringsMethods = new UILocalizedService({ en });
+    LocalizedStringsMethods = new UILocalizedService({ en: languages.en });
 
 dayjs.locale(localized.getLocale());
 
