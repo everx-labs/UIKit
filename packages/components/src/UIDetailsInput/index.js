@@ -507,7 +507,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     };
 
     onSelectionChange = (e: any): void => {
-        if (this.props.copyingLocked) { // more priority than external prop
+        if (this.props.copyingLocked && Platform.OS !== 'ios') { // more priority than external prop
             const { nativeEvent: { selection } } = e;
             const value = this.getValue();
             if (selection.start !== selection.end) {
@@ -805,7 +805,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             : UIColor.textDisabled(theme);
         return (
             <TextInput
-                // contextMenuHidden={this.props.copyingLocked && value.length !== 0} // iOS only
+                contextMenuHidden={this.props.copyingLocked && value.length !== 0} // iOS only
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}

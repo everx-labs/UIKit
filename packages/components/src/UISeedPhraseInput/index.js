@@ -64,7 +64,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         autoCorrect: false,
         autoCompleteType: 'off',
         noPersonalizedLearning: true,
-        copyingLocked: true,
+        copyingLocked: false, // should be enbled in release-4.0.6
     };
 
     static splitPhrase(phrase: string): Array<string> {
