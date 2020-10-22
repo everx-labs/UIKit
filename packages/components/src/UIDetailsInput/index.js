@@ -308,7 +308,7 @@ export type DetailsProps = ActionProps & {
     */
     secureTextEntry: boolean,
     /**
-    If true, text became unselectable for copy to clipboard
+    If true, text becomes unselectable for copy to clipboard
     @default false
     */
     copyingLocked: boolean,
