@@ -11,6 +11,11 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/fr';
 import 'dayjs/locale/pt-br';
+import 'dayjs/locale/de';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/ja';
+import 'dayjs/locale/ko';
+import 'dayjs/locale/es';
 
 // Plugins
 dayjs.extend(customParseFormat);
