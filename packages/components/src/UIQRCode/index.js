@@ -25,6 +25,10 @@ const defaultLogoSize = UIConstant.majorCellHeight() / 2; // 40px
 const quietZone = UIConstant.smallContentOffset(); // 8px
 
 export default class UIQRCode extends UIPureComponent<Props, State> {
+    getSize(): number {
+        return (this.props.size || defaultSize) + (quietZone * 2);
+    }
+
     getRef = (svg: any) => {
         if (!this.props.getPng) {
             // no need to process if `getPng` not defined
@@ -43,7 +47,7 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
             // get canvas context for drawing on canvas
             const context = canvas.getContext('2d');
             // set canvas size
-            const size = (this.props.size || defaultSize) + (quietZone * 2);
+            const size = this.getSize();
             canvas.width = size;
             canvas.height = size;
             // create image in memory(not in DOM)
@@ -53,7 +57,9 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
             const download = canv => {
                 // snapshot canvas as png
                 const pngBase64 = canv.toDataURL('image/png').split(';base64,')[1];
-                this.props.getPng(pngBase64);
+                if (this.props.getPng) {
+                    this.props.getPng(pngBase64);
+                }
 
             };
             // later when image loads run this
@@ -88,7 +94,9 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
         const timeHack = this.props.logo ? 100 : 0;
         setTimeout(()=> {
             svg.toDataURL(async base64 => {
-                this.props.getPng(base64);
+                if (this.props.getPng) {
+                    this.props.getPng(base64);
+                }
             });
         }, timeHack);
     }
@@ -99,7 +107,7 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
                 nativeID={`uri-qr-${this.props.value}`}
             >
                 <QRCode
-                    size={(this.props.size || defaultSize) + (quietZone * 2)}
+                    size={this.getSize()}
                     quietZone={quietZone}
                     value={this.props.value}
                     getRef={this.getRef}
