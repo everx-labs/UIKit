@@ -307,11 +307,16 @@ export function formatDate(time: number): string {
     const dateTime = date.getTime();
     const isToday = todayTime === dateTime;
     const isYesterday = (todayTime - dateTime) === (24 * 3600 * 1000);
-    return (isToday || isYesterday) ? (
-        `${isToday ? localized.Today : localized.Yesterday} at ${formatTime(time)}`
-    ) : (
-        dayjs(time).format(`D MMM ${TIME_FORMAT}`)
-    );
+
+    if (isToday) {
+        return localized.formatString(localized.TodayAt, formatTime(time));
+    }
+
+    if (isYesterday) {
+        return localized.formatString(localized.YesterdayAt, formatTime(time));
+    }
+
+    return dayjs(time).format(`D MMM ${TIME_FORMAT}`);
 }
 
 export default localized;
