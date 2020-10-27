@@ -5,7 +5,7 @@ import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleS
 
 import { UIStyle, UIColor } from '@uikit/core';
 import { UIActionComponent } from '@uikit/components';
-import type { ActionProps, ActionState } from '@uikit/components/UIActionComponent';
+import type { ActionProps, ActionState } from '@uikit/components';
 
 export type MenuItemType = ActionProps & {
     style?: ViewStyleProp,

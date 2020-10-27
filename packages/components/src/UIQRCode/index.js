@@ -9,7 +9,7 @@ import UIPureComponent from '../UIPureComponent';
 
 type Props = {
     value: string,
-    getPng?: () => void; // returns base64
+    getPng?: (base64: string) => void; // returns base64
     size?: number,
     logo?: number,
     logoSize?: number,

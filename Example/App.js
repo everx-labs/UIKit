@@ -17,9 +17,12 @@ import {
     Platform,
 } from 'react-native';
 import BigNumber from 'bignumber.js';
+// $FlowFixMe
 import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
+// $FlowFixMe
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
+// $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
 
 import {

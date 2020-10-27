@@ -6,10 +6,8 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
-import UIColor from '../../../helpers/UIColor';
-import UIConstant from '../../../helpers/UIConstant';
-import UIStyle from '../../../helpers/UIStyle';
-import UITextButton from '../../buttons/UITextButton';
+import { UIColor, UIConstant, UIStyle } from '@uikit/core';
+import { UITextButton } from '@uikit/components';
 
 export type TabViewPage = {
     title: string,
