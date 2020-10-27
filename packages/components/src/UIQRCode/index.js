@@ -26,6 +26,10 @@ const quietZone = UIConstant.smallContentOffset(); // 8px
 
 export default class UIQRCode extends UIPureComponent<Props, State> {
     getRef = (svg: any) => {
+        if (!this.props.getPng) {
+            // no need to process if `getPng` not defined
+            return;
+        }
         // QRCode lib returns non-valid svg object in web, so use custom method
         if (Platform.OS === 'web') {
             const element = document.getElementById(`uri-qr-${this.props.value}`)?.children[0];
@@ -49,9 +53,7 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
             const download = canv => {
                 // snapshot canvas as png
                 const pngBase64 = canv.toDataURL('image/png').split(';base64,')[1];
-                if (this.props.getPng) {
-                    this.props.getPng(pngBase64);
-                }
+                this.props.getPng(pngBase64);
 
             };
             // later when image loads run this
@@ -86,9 +88,7 @@ export default class UIQRCode extends UIPureComponent<Props, State> {
         const timeHack = this.props.logo ? 100 : 0;
         setTimeout(()=> {
             svg.toDataURL(async base64 => {
-                if (this.props.getPng) {
-                    this.props.getPng(base64);
-                }
+                this.props.getPng(base64);
             });
         }, timeHack);
     }
