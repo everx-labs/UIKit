@@ -7,7 +7,6 @@ import {
     UILocalized,
     UIColor,
     UIStyle,
-    UITextStyle,
     UIDevice,
 } from '@uikit/core';
 
@@ -17,6 +16,8 @@ const STATUS_HEIGHT = 24; // Based on Figma design
 
 const styles = StyleSheet.create({
     connectionSnack: {
+        alignItems: 'center',
+        justifyContent: 'center',
         paddingTop: UIDevice.statusBarHeight(),
         height: UIDevice.statusBarHeight() + STATUS_HEIGHT,
         backgroundColor: UIColor.blackLight(),
@@ -103,8 +104,8 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={[styles.connectionSnack, UIStyle.centerContainer]}>
-                <Text style={UITextStyle.secondaryDarkTinyRegular}>
+            <View style={styles.connectionSnack}>
+                <Text style={UIStyle.text.secondaryDarkTinyRegular()}>
                     {UILocalized.PleaseGoOnline}
                 </Text>
             </View>
