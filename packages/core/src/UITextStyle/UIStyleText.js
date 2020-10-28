@@ -133,6 +133,12 @@ export default class UIStyleText {
     static primarySubtitleRegular() {
         return UITextStyle.primarySubtitleRegular;
     }
+
+    // Promo - fontSize: 22, lineHeight: 32
+    static primaryPromoMedium() {
+        return UITextStyle.primaryPromoMedium;
+    }
+
     // Accent - fontSize: 20, lineHeight: 28
     static primaryAccentRegular() {
         return UITextStyle.primaryAccentRegular;
