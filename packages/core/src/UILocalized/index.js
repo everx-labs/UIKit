@@ -61,7 +61,7 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         country: 'CN',
     },
     ja: {
-        name: '日本語 (',
+        name: '日本語',
         country: 'JP',
     },
 };
