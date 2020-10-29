@@ -28,6 +28,9 @@ export const flexStyles = {
     alignSelfCenter: {
         alignSelf: 'center',
     },
+    inlineFlex: {
+        display: 'inline-flex',
+    },
     alignEnd: {
         alignItems: 'flex-end',
     },
@@ -84,6 +87,10 @@ export default class UIStyleFlex {
 
     static x3() {
         return styles.flex3;
+    }
+
+    static inlineFlex() {
+        return styles.inlineFlex;
     }
 
     static column() {
