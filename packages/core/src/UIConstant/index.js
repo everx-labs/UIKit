@@ -137,7 +137,7 @@ const FULL_SCREEN_DIALOG_HEIGHT = 600;
 
 const UI_ALERT_WIDTH = 272;
 
-const UI_HIT_SLOP_DEFAULT = { top: 10, left: 20, bottom: 10, right: 20 };
+const UI_HIT_SLOP_NAVIGATION = { top: 10, left: 20, bottom: 10, right: 20 };
 
 const UI_COMMON_SHADOW = Platform.OS === 'android'
     ? {
@@ -627,8 +627,8 @@ export default class UIConstant {
         return MAX_FILE_SIZE;
     }
 
-    static hitSlopDefault() {
-        return UI_HIT_SLOP_DEFAULT;
+    static navigationHitSlop() {
+        return UI_HIT_SLOP_NAVIGATION;
     }
 
     static get fullScreenDialogWidth() {
