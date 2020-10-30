@@ -48,6 +48,7 @@ export type LabelRoleValue = $Values<typeof LabelRole>;
 type Props = {|
     style: ?TextStyleProp,
     text: string | React$Element<any>,
+    externalTextStyle: ?TextStyleProp,
     role: LabelRoleValue,
     useDefaultSpace?: boolean,
     testID?: ?string,
@@ -186,7 +187,7 @@ export default class UILabel extends UIComponent<Props, State> {
     renderText(textStyle: TextStyleProp[]): React$Node {
         const {
             useDefaultSpace,
-            role, text, testID,
+            role, text, testID, externalTextStyle,
             ...props
         } = this.props;
         const textForTestID = text && text.replace ? text.replace(/[^a-zA-Z0-9]/g, '') : 'custom_component';
@@ -194,7 +195,7 @@ export default class UILabel extends UIComponent<Props, State> {
             <Text
                 {...props}
                 testID={testID || `label_text_${textForTestID}`}
-                style={textStyle}
+                style={[textStyle, externalTextStyle]}
             >
                 {this.getText()}
             </Text>
