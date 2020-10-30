@@ -60,6 +60,10 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         name: '汉语',
         country: 'CN',
     },
+    ja: {
+        name: '日本語',
+        country: 'JP',
+    },
 };
 
 export type Language = $Keys<typeof languagesInfo>;
