@@ -260,6 +260,11 @@ const UITextStyle = StyleSheet.create({
         ...primary,
         ...UIFont.accentBold(),
     },
+    // Body - fontSize: 22, lineHeight: 32
+    primaryPromoMedium: {
+        ...primary,
+        ...UIFont.promoMedium(),
+    },
     // Body - fontSize: 18, lineHeight: 24
     primaryBodyRegular: {
         ...primary,
@@ -374,7 +379,7 @@ const UITextStyle = StyleSheet.create({
     quaternary: {
         ...quaternary,
     },
-    
+
     quaternaryBodyRegular: {
         ...quaternary,
         ...UIFont.bodyRegular(),

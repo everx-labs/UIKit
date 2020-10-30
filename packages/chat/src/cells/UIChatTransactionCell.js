@@ -267,8 +267,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     ]}
                 >
                     <UILabel
-                        style={amountColor}
-                        role={UILabel.Role.SmallRegular}
+                        style={[amountColor]}
+                        role={UILabel.Role.PromoMedium}
                         text={amount}
                     />
                 </View>
