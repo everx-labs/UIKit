@@ -251,7 +251,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 <Text
                     style={[header, bold, boldTopOffset].includes(captionType)
                         ? UIStyle.text.primaryBodyBold()
-                        : UIStyle.text.primaryBodyRegular()}
+                        : UIStyle.text.primarySmallRegular()}
                 >
                     {caption}
                 </Text>

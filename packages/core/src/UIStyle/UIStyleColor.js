@@ -94,6 +94,10 @@ export default class UIStyleColor {
         return this.getColorStyle(UIColor.textTertiary(theme));
     }
 
+    static textQuaternary(theme?: ?UIColorThemeNameType) {
+        return this.getColorStyle(UIColor.textQuaternary(theme));
+    }
+
     static borderBottomLight(theme: ?UIColorThemeNameType) {
         const borderColor = UIColor.borderBottomLightColor(theme);
         return this.getBorderBottomColorStyle(borderColor);
