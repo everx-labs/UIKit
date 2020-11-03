@@ -90,6 +90,10 @@ type Props = {
     * @default 0
     */
     width?: number,
+    /** maxWidth of grid
+    * @default 0
+    */
+    maxWidth?: number,
     /** onLayout handler
     * @default null
     */
@@ -144,7 +148,7 @@ export default class UIGrid extends UIComponent<Props, State> {
     }
 
     getContainerPadding() {
-        const { maxWidth } = SIZINGS[this.props.type];
+        const maxWidth = this.props.maxWidth || SIZINGS[this.props.type].maxWidth;
         if (
             !maxWidth ||
             this.state.width < maxWidth
@@ -256,6 +260,7 @@ UIGrid.defaultProps = {
     type: UIGrid.Type.C8,
     style: null,
     width: 0,
+    maxWidth: 0,
     onLayout: null,
     pointerEvents: null,
 };
