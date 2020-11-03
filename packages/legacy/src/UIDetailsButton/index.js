@@ -16,8 +16,7 @@ import {
 import icoProgress from '@uikit/assets/ico-progress/progress.png';
 import { UIShareManager } from '@uikit/navigation';
 import { UIActionComponent, UITextButton } from '@uikit/components';
-import type { ActionProps, ActionState } from '@uilit/components/UIActionComponent';
-
+import type { ActionProps, ActionState } from '@uikit/components';
 
 type Props = ActionProps & {
     style: ViewStyleProp,

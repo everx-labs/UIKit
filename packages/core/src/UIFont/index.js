@@ -98,6 +98,15 @@ const UI_FONT_ACCENT = {
     }),
     ...UI_FONT_FAMILY,
 };
+const UI_FONT_PROMO = {
+    fontSize: 22,
+    lineHeight: 32,
+    letterSpacing: Platform.select({
+        web: 0.0,
+        default: -0.4,
+    }),
+    ...UI_FONT_FAMILY,
+};
 const UI_FONT_BODY = {
     fontSize: 18,
     lineHeight: 24,
@@ -181,6 +190,7 @@ const UI_FONT_SUBTITLE_LIGHT = { ...UI_FONT_SUBTITLE, ...UI_FONT_LIGHT };
 const UI_FONT_ACCENT_BOLD = { ...UI_FONT_ACCENT, ...UI_FONT_BOLD };
 const UI_FONT_ACCENT_REGULAR = { ...UI_FONT_ACCENT, ...UI_FONT_REGULAR };
 const UI_FONT_ACCENT_MEDIUM = { ...UI_FONT_ACCENT, ...UI_FONT_MEDIUM };
+const UI_FONT_PROMO_MEDIUM = { ...UI_FONT_PROMO, ...UI_FONT_MEDIUM };
 const UI_FONT_BODY_BOLD = { ...UI_FONT_BODY, ...UI_FONT_BOLD };
 const UI_FONT_BODY_REGULAR = { ...UI_FONT_BODY, ...UI_FONT_REGULAR };
 const UI_FONT_BODY_MEDIUM = { ...UI_FONT_BODY, ...UI_FONT_MEDIUM };
@@ -270,6 +280,10 @@ export default class UIFont {
 
     static accentMedium() {
         return UI_FONT_ACCENT_MEDIUM;
+    }
+
+    static promoMedium() {
+        return UI_FONT_PROMO_MEDIUM;
     }
 
     static bodyBold() {

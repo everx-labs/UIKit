@@ -20,6 +20,7 @@ const LabelRole = Object.freeze({
     DescriptionMedium: 'descriptionMedium',
     BoldDescription: 'boldDescription', // TODO: rename descriptionBold
     DescriptionTertiary: 'descriptionTertiary',
+    PromoMedium: 'promoMedium',
     SmallMedium: 'smallMedium',
     SmallBold: 'smallBold',
     SmallRegular: 'smallRegular',
@@ -151,6 +152,8 @@ export default class UILabel extends UIComponent<Props, State> {
             result.push(UIStyle.Text.quaternaryIconRegular());
         } else if (role === UILabel.Role.AlertTitle) {
             result.push(UIStyle.Text.primaryBodyBold());
+        } else if (role === UILabel.Role.PromoMedium) {
+            result.push(UIStyle.Text.primaryPromoMedium());
         }
         return result;
     }

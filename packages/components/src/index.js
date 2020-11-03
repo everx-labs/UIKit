@@ -65,3 +65,5 @@ export { default as UITooltip } from './UITooltip';
 export { default as UITransferInput } from './UITransferInput';
 export { default as UIUploadFileInput } from './UIUploadFileInput';
 export { default as UIUserAgent } from './UIUserAgent';
+
+export type { ActionProps, ActionState } from './UIActionComponent';

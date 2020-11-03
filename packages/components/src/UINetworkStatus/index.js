@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Text, StatusBar } from 'react-native';
+import { Platform, StyleSheet, View, Text, StatusBar } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
 import {
     UILocalized,
     UIColor,
     UIStyle,
-    UITextStyle,
     UIDevice,
 } from '@uikit/core';
 
@@ -17,6 +16,8 @@ const STATUS_HEIGHT = 24; // Based on Figma design
 
 const styles = StyleSheet.create({
     connectionSnack: {
+        alignItems: 'center',
+        justifyContent: 'center',
         paddingTop: UIDevice.statusBarHeight(),
         height: UIDevice.statusBarHeight() + STATUS_HEIGHT,
         backgroundColor: UIColor.blackLight(),
@@ -91,7 +92,9 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
         const statusBarStyle = isConnected ? 'dark-content' : 'light-content';
         StatusBar.setBarStyle(statusBarStyle, true);
         const statusBarColor = isConnected ? 'white' : 'black';
-        StatusBar.setBackgroundColor(statusBarColor, true);
+        if (Platform.OS === 'android') {
+            StatusBar.setBackgroundColor(statusBarColor, true);
+        }
         // Pass connection status to props
         this.props.onConnected(isConnected);
     };
@@ -103,8 +106,8 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <View style={[styles.connectionSnack, UIStyle.centerContainer]}>
-                <Text style={UITextStyle.secondaryDarkTinyRegular}>
+            <View style={styles.connectionSnack}>
+                <Text style={UIStyle.text.secondaryDarkTinyRegular()}>
                     {UILocalized.PleaseGoOnline}
                 </Text>
             </View>

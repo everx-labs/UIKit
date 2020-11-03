@@ -308,7 +308,12 @@ export type DetailsProps = ActionProps & {
     */
     secureTextEntry: boolean,
     /**
-    Set cursor position.
+    If true, text becomes unselectable for copy to clipboard
+    @default false
+    */
+    copyingLocked: boolean,
+    /**
+    Set cursor position. May not work correctly with `copyingLocked = true`
     @default null
     */
     selection?: ?{start: number, end: number},
@@ -365,8 +370,14 @@ export type DetailsProps = ActionProps & {
     noPersonalizedLearning?: boolean,
 };
 
+type Selection = {
+    start: number,
+    end: number,
+};
+
 type DetailsState = ActionState & {
     focused: boolean,
+    selection: ?Selection,
 };
 
 export default class UIDetailsInput<Props, State> extends UIActionComponent<
@@ -384,6 +395,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             focused: false,
             tapped: false,
             hover: false,
+            selection: undefined,
         };
     }
 
@@ -495,6 +507,19 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     };
 
     onSelectionChange = (e: any): void => {
+        if (this.props.copyingLocked && Platform.OS !== 'ios') { // more priority than external prop
+            const { nativeEvent: { selection } } = e;
+            const value = this.getValue();
+            if (selection.start !== selection.end) {
+                const selectionToSet = {
+                    start: value.length,
+                    end: value.length,
+                };
+                this.setStateSafely({ selection: selectionToSet }, () => { // set cursor to end
+                    this.setStateSafely({ selection: undefined }); // stop control cursor
+                });
+            }
+        }
         if (this.props.onSelectionChange) {
             this.props.onSelectionChange(e);
         }
@@ -603,7 +628,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     getSelection() {
-        return this.props.selection;
+        return this.state.selection || this.props.selection;
     }
 
     hidePlaceholder() {
@@ -780,6 +805,7 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
             : UIColor.textDisabled(theme);
         return (
             <TextInput
+                contextMenuHidden={this.props.copyingLocked && value.length !== 0} // iOS only
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
                 autoCapitalize={autoCapitalize}
@@ -1110,4 +1136,5 @@ UIDetailsInput.defaultProps = {
     visible: true,
     prefixIcon: null,
     prefixIconColor: null,
+    copyingLocked: false,
 };

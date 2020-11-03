@@ -11,7 +11,7 @@ import {
     UIConstant,
     UIStyle,
     UILocalized,
-    formatDate,
+    formatTime,
 } from '@uikit/core';
 import {
     UIPureComponent,
@@ -131,7 +131,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getDate(): string {
         const { created } = this.getMessage().info;
-        return created ? formatDate(created) : '';
+        return created ? formatTime(created) : '';
     }
 
     getExtra(): TransactionInfo {
@@ -267,8 +267,8 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
                     ]}
                 >
                     <UILabel
-                        style={amountColor}
-                        role={UILabel.Role.SmallRegular}
+                        style={[amountColor]}
+                        role={UILabel.Role.PromoMedium}
                         text={amount}
                     />
                 </View>

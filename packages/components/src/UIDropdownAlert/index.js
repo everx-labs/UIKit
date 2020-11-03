@@ -23,7 +23,11 @@ export default class UIDropdownAlert extends UIComponent<Props, State> {
         masterAlert: true,
     };
 
-    static showNotification(notificationMessage: string, notificationTitle = ' ', callback?: Function) {
+    static showNotification(
+        notificationMessage: string,
+        notificationTitle: string = ' ',
+        callback?: Function,
+    ) {
         if (masterRef) {
             masterRef.showNotification(notificationMessage, notificationTitle, callback);
         }
@@ -44,15 +48,19 @@ export default class UIDropdownAlert extends UIComponent<Props, State> {
         }
     }
 
-    // actions
+    // Actions
+    notificationCallback: ?Function;
+    dropdownAlert: ?React$ElementRef<any>;
     showNotification(notificationMessage: string, notificationTitle: string, callback?: Function) {
         this.notificationCallback = callback;
-        this.dropdownAlert.alertWithType('custom', notificationTitle, notificationMessage);
+        if (this.dropdownAlert) {
+            this.dropdownAlert.alertWithType('custom', notificationTitle, notificationMessage);
+        }
     }
 
-    // render
+    // Render
     render() {
-        if (Platform.OS === 'web') {
+        if (!DropdownAlert) {
             return null;
         }
         return (
