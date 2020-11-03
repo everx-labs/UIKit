@@ -627,7 +627,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
 
             // Move comment closer to the parent transaction bubble
             padding.paddingTop = UIConstant.tinyContentOffset();
-        } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
+        } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) { // drop invite
             align = 'center';
             cell = this.renderSystemCell();
 
@@ -643,24 +643,24 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
-        } else if (type === ChatMessageContent.AttachmentDocument) {
+        } else if (type === ChatMessageContent.AttachmentDocument) { // drop for now
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
         } else if (type === ChatMessageContent.Sticker) {
             cell = this.renderStickerCell();
             testID = 'chat_message_sticker';
-        } else if (type === ChatMessageContent.ActionButton) {
+        } else if (type === ChatMessageContent.ActionButton) { // Check chain rider
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
-        } else if (type === ChatMessageContent.ActionLabel) {
+        } else if (type === ChatMessageContent.ActionLabel) { // drop
             cell = this.renderActionLabel();
-        } else if (type === ChatMessageContent.LinkActionMessage) {
+        } else if (type === ChatMessageContent.LinkActionMessage) { // drop for now
             cell = this.renderLinkActionMessageCell();
             testID = 'chat_message_link';
-        } else if (type === ChatMessageContent.SystemInfo) {
+        } else if (type === ChatMessageContent.SystemInfo) { // drop
             align = 'center';
             cell = this.renderSystemInfo();
-        } else if (type === ChatMessageContent.EmptyChat) {
+        } else if (type === ChatMessageContent.EmptyChat) { // drop
             align = 'flex-start';
             cell = this.renderEmptyChatCell();
         } else {
