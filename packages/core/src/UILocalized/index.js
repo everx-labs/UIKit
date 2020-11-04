@@ -6,7 +6,7 @@ import LocalizedStrings from 'react-native-localization';
 import dayjs from 'dayjs';
 
 // All available languages
-import * as availableLanguages from './languages';
+import * as availableLanguages from '../../../localization/src/languages';
 
 import UIConstant from '../UIConstant';
 import UIFunction from '../UIFunction';
