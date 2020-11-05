@@ -76,14 +76,6 @@ export {
     UIFont,
     UITextStyle,
     UIFunction,
-    UILocalized,
-    UILocalizedService,
-    languagesInfo,
-    prepareLocales,
-    prepareImages,
-    prepare,
-    formatTime,
-    formatDate,
     UIStyle,
 } from './packages/core/src';
 export {

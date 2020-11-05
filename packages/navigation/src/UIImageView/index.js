@@ -4,7 +4,6 @@ import { Platform, StyleSheet, View, TouchableOpacity, Dimensions, StatusBar } f
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {
-    UILocalized,
     UIColor,
     UIStyle,
     UIConstant,
@@ -15,6 +14,8 @@ import {
     UIComponent,
     UIImage,
 } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIActionSheet from '../UIActionSheet';
 import type { MenuItemType } from '../UIActionSheet/MenuItem';
@@ -101,7 +102,7 @@ export default class UIImageView extends UIComponent<Props, State> {
     // constructor
     constructor(props: Props) {
         super(props);
-        const { FromCamera, FromGallery } = UILocalized;
+        const { FromCamera, FromGallery } = uiLocalized;
         this.menuItemsList = [
             {
                 key: 'item 1',
@@ -284,7 +285,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (this.props.onDeletePhoto) {
             this.menuItemsList.push({
                 key: 'item 3',
-                title: UILocalized.DeletePhoto,
+                title: uiLocalized.DeletePhoto,
                 textStyle: { color: UIColor.error() },
                 onPress: this.onDeletePhoto,
             });
@@ -323,9 +324,9 @@ export default class UIImageView extends UIComponent<Props, State> {
             return;
         }
         if (file.size >= UIConstant.maxFileSize()) { // in decimal
-            const msg = UILocalized.formatString(UILocalized.FileIsTooBig, UIConstant.maxFileSize() / 1000000);
-            UIAlertView.showAlert(UILocalized.Error, msg, [{
-                title: UILocalized.OK,
+            const msg = uiLocalized.formatString(uiLocalized.FileIsTooBig, UIConstant.maxFileSize() / 1000000);
+            UIAlertView.showAlert(uiLocalized.Error, msg, [{
+                title: uiLocalized.OK,
                 onPress: () => {
                     // nothing
                 },

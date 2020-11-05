@@ -7,9 +7,9 @@ class Example extends ThemeSwitcher {
             <View style={{ height: 120 }}>
                 <UIBottomBar
                     theme={this.getTheme()}
-                    accentText={UILocalized.Contact}
-                    accentEmail={UILocalized.PressEmail}
-                    copyRight={UILocalized.CopyRight}
+                    accentText={uiLocalized.Contact}
+                    accentEmail={uiLocalized.PressEmail}
+                    copyRight={uiLocalized.CopyRight}
                 />
             </View>
         );

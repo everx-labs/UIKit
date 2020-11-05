@@ -5,7 +5,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {
-    UILocalized,
     UIConstant,
     UIColor,
     UIFont,
@@ -16,6 +15,9 @@ import {
     UIToastMessage,
     UISpinnerOverlay,
 } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import fileBlue from '@uikit/assets/ico-file-income-blue/fileBlue.png';
 import fileWhite from '@uikit/assets/ico-file-income-white/fileWhite.png';
 import cloudBlack from '@uikit/assets/ico-cloud-black/cloudBlack.png';
@@ -122,7 +124,7 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
             const docData = await downloader(info.message);
             callback(docData, docName);
         } catch (error) {
-            UIToastMessage.showMessage(UILocalized.FailedToLoadDocument);
+            UIToastMessage.showMessage(uiLocalized.FailedToLoadDocument);
         } finally {
             this.hideSpinner();
         }

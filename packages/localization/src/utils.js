@@ -86,7 +86,7 @@ export function prepareLocales<T>(langs: Languages<T>, constants: LanguageConsta
 }
 
 /**
- * Prepare localization with languages object
+ * Prepare localization with languages object works with images
  * Method works slower then prepareLocales
  * @see prepareLocales
  *

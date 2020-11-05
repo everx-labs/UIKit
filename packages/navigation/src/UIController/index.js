@@ -20,7 +20,6 @@ import {
     UIDevice,
     UIEventHelper,
     UIFunction,
-    UILocalized,
     UIStyle,
 } from '@uikit/core';
 import type { SafeAreaInsets } from '@uikit/core/UIDevice';
@@ -29,6 +28,8 @@ import {
     UIComponent,
     UISpinnerOverlay,
 } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
@@ -131,7 +132,7 @@ export default class UIController<Props, State> extends UIComponent<
 
     static showAlertWithTitleAndMessage(title: string, message: string, callback?: () => void) {
         UIAlertView.showAlert(title, message, [{
-            title: UILocalized.OK,
+            title: uiLocalized.OK,
             onPress: () => {
                 if (callback) {
                     callback();
@@ -141,17 +142,17 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     static showErrorWithMessage(message: string, callback?: () => void) {
-        this.showAlertWithTitleAndMessage(UILocalized.Error, message, callback);
+        this.showAlertWithTitleAndMessage(uiLocalized.Error, message, callback);
     }
 
     static showSuccessWithMessage(message: string, callback?: () => void) {
-        this.showAlertWithTitleAndMessage(UILocalized.Success, message, callback);
+        this.showAlertWithTitleAndMessage(uiLocalized.Success, message, callback);
     }
 
     static showCannotDoActionError(action: string, error: any) {
         setTimeout(() => {
-            const message = UILocalized.formatString(
-                UILocalized.SorryWeCannotDoActionAtTheMoment,
+            const message = uiLocalized.formatString(
+                uiLocalized.SorryWeCannotDoActionAtTheMoment,
                 action,
             );
             const errorText = JSON.stringify(error);

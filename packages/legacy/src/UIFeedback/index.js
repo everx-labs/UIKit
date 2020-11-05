@@ -5,7 +5,6 @@ import { Text, View } from 'react-native';
 import {
     UIFunction,
     UIStyle,
-    UILocalized,
 } from '@uikit/core';
 import {
     UIButton,
@@ -17,6 +16,8 @@ import {
 import type { DetailsProps } from '@uikit/components/UIDetailsInput';
 import type { ActionState } from '@uikit/components/UIActionComponent';
 import { UICustomSheet } from '@uikit/navigation';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void;
 
@@ -55,7 +56,7 @@ class UIFeedback extends UIComponent<Props, State> {
             return;
         }
         UICustomSheet.hide();
-        UIToastMessage.showMessage(UILocalized.ThanksForYourFeedback);
+        UIToastMessage.showMessage(uiLocalized.ThanksForYourFeedback);
         this.props.onSubmitFeedBack({ email, feedback });
     };
 
@@ -109,14 +110,14 @@ class UIFeedback extends UIComponent<Props, State> {
             <View style={UIStyle.Common.flex()}>
                 <View style={[UIStyle.Height.greatCell(), UIStyle.Common.centerLeftContainer()]}>
                     <Text style={UIStyle.Text.primaryAccentBold()}>
-                        {UILocalized.SendFeedback}
+                        {uiLocalized.SendFeedback}
                     </Text>
                 </View>
                 <UIEmailInput
                     ref={(component) => { this.emailInput = component; }}
                     containerStyle={UIStyle.Height.greatCell()}
                     value={this.getEmail()}
-                    placeholder={UILocalized.YourEmail}
+                    placeholder={uiLocalized.YourEmail}
                     onChangeText={this.onChangeEmail}
                     onSubmitEditing={this.onSubmitEmail}
                 />
@@ -124,14 +125,14 @@ class UIFeedback extends UIComponent<Props, State> {
                     ref={(component) => { this.feedbackInput = component; }}
                     containerStyle={[UIStyle.Height.greatCell(), UIStyle.Margin.topDefault()]}
                     value={this.getFeedback()}
-                    placeholder={UILocalized.DescribeYourIssueOrIdea}
+                    placeholder={uiLocalized.DescribeYourIssueOrIdea}
                     maxLines={this.props.numberOfLines}
                     onChangeText={this.onChangeFeedback}
                     onSubmitEditing={this.onSubmitFeedBack}
                 />
                 <UIButton
                     disabled={this.isSubmitDisabled()}
-                    title={UILocalized.Send}
+                    title={uiLocalized.Send}
                     style={UIStyle.Margin.topDefault()}
                     onPress={this.onSubmitFeedBack}
                 />

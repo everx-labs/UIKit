@@ -2,10 +2,10 @@
 import dayjs from 'dayjs';
 import LocalizedStrings from 'react-native-localization';
 import BigNumber from 'bignumber.js';
-import { UIConstant, UIFunction, UILocalizedService } from '@uikit/core';
+import { UIConstant, UIFunction } from '@uikit/core';
 import type { NumberParts, NumberPartsOptions } from '@uikit/core';
 
-import * as UIKitLanguages from './languages';
+import UIKitLanguages from './languages';
 import type { Language, Languages, LocalizedStringsMethods, StringLocaleInfo } from '../types';
 import { getDateFormatInfo, getNumberFormatInfo } from './utils';
 import type { UILocalizedData } from './languages/types';
@@ -93,10 +93,38 @@ export class LocalizationService<T> extends LocalizedStrings {
         this.setLanguage(language);
         dayjs.locale(language);
     };
+
+    formatTime = (time: number, format: string = TIME_FORMAT): string => {
+        return dayjs(time).format(format);
+    }
+
+    formatDate = (time: number): string => {
+        const today = new Date();
+        const date = new Date(time);
+        today.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
+        const todayTime = today.getTime();
+        const dateTime = date.getTime();
+        const isToday = todayTime === dateTime;
+        const isYesterday = (todayTime - dateTime) === (24 * 3600 * 1000);
+
+        if (isToday) {
+            return this.formatString(uiLocalized.TodayAt, this.formatTime(time));
+        }
+
+        if (isYesterday) {
+            return this.formatString(uiLocalized.YesterdayAt, this.formatTime(time));
+        }
+
+        return dayjs(time).format(`D MMM ${TIME_FORMAT}`);
+    }
 }
 
 // eslint-disable-next-line max-len
-type LocalizedInstance = UILocalizedData & LocalizationService<UILocalizedData> & LocalizedStringsMethods
+type LocalizedInstance = { ...UILocalizedData } & LocalizationService<UILocalizedData> & LocalizedStringsMethods
 
-export const uiLocalized: LocalizedInstance = new UILocalizedService({ languages: UIKitLanguages });
+export const uiLocalized: LocalizedInstance = new LocalizationService<UILocalizedData>({
+    languages: UIKitLanguages,
+});
 
+export const TIME_FORMAT = 'HH:mm';

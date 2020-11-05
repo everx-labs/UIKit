@@ -1,6 +1,9 @@
 // @flow
-export en from './en.json';
-export fr from './fr.json';
-export pt_BR from './pt_BR.json';
-export ru from './ru.json';
-export zh_CN from './zh_CN.json';
+/* eslint-disable camelcase */
+import en from './en.json';
+import ru from './ru.json';
+import fr from './fr.json';
+import pt_BR from './pt_BR.json';
+import zh_CN from './zh_CN.json';
+
+export default { en, ru, fr, zh_CN, pt_BR };
