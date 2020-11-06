@@ -3,6 +3,5 @@
     "compilerOptions": {
       "paths": {},
       "experimentalDecorators": true
-    },
-    "exclude": ["./cells/*", "./UIChatInput/*", "./extras.js"]
+    }
 }
