@@ -40,6 +40,13 @@ const getRoundedCornerStyle = (options: ChatMessageMeta) => {
     return options.lastFromChain ? styles.rightBottomCorner : null;
 };
 
+const getBubbleContainer = (status: ChatMessageStatus) => {
+    if (status === ChatMessageStatus.Received) {
+        return styles.containerReceived;
+    }
+    return styles.container;
+};
+
 const getBubbleStyle = (status: ChatMessageStatus) => {
     if (status === ChatMessageStatus.Received) {
         return styles.msgReceived;
@@ -60,7 +67,7 @@ const BubbleTime = (props: ChatMessageMeta) => {
     const msgTime = formatTime(props.time || Date.now());
 
     return (
-        <View>
+        <View style={styles.timeTextContainer}>
             <Text
                 testID={testID}
                 style={[UIFont.tinyRegular(), styles.timeText]}
@@ -98,7 +105,7 @@ export const BubblePlainText = (props: PlainTextMessage) => {
     };
 
     return (
-        <View>
+        <View style={[getBubbleContainer(props.status)]}>
             <TouchableWithoutFeedback
                 onPressOut={() => bubbleScaleAnimation()}
                 onPress={props.onTouchText}
@@ -118,6 +125,8 @@ export const BubblePlainText = (props: PlainTextMessage) => {
                 >
                     <View
                         style={[
+                            UIStyle.padding.verticalSmall(),
+                            UIStyle.padding.horizontalNormal(),
                             styles.msgContainer,
                             getBubbleStyle(props.status),
                             getRoundedCornerStyle(props),
@@ -154,6 +163,16 @@ export const BubblePlainText = (props: PlainTextMessage) => {
 BubblePlainText.diaplyName = "BubblePlainText";
 
 const styles = StyleSheet.create({
+    container: {
+        paddingLeft: "20%",
+        alignSelf: "flex-end",
+        justifyContent: "flex-end",
+    },
+    containerReceived: {
+        paddingRight: "20%",
+        alignSelf: "flex-start",
+        justifyContent: "flex-start",
+    },
     textCell: {
         textAlign: "left",
         maxWidth: "100%",
@@ -167,6 +186,11 @@ const styles = StyleSheet.create({
         color: UIColor.fa(),
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === "android" ? "none" : "underline",
+    },
+    timeTextContainer: {
+        paddingLeft: UIConstant.smallContentOffset(),
+        paddingTop: UIConstant.verticalContentOffset() / 2,
+        marginLeft: "auto", // Need for correct positioning to right side in message cell
     },
     timeText: {
         textAlign: "right",
@@ -183,7 +207,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         borderRadius: UIConstant.borderRadius(),
-        paddingRight: "20%",
     },
     rightBottomCorner: {
         borderBottomRightRadius: 0,

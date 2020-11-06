@@ -100,6 +100,45 @@ import {
 import UIAssets from "@uikit/assets";
 import { UIChatList } from "@tonlabs/uikit.chats";
 
+if (Platform.OS === "web") {
+    // Head Element
+    const headElement = document.getElementsByTagName("head")[0];
+
+    // Import PTRootUIWeb
+    const ptRootFontBold = headElement.appendChild(
+        document.createElement("link")
+    );
+    ptRootFontBold.setAttribute(
+        "href",
+        "https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css"
+    );
+    ptRootFontBold.setAttribute("rel", "stylesheet");
+    const ptRootFontLight = headElement.appendChild(
+        document.createElement("link")
+    );
+    ptRootFontLight.setAttribute(
+        "href",
+        "https://tonlabs.io/fonts/PT%20Root%20UI_Light.css"
+    );
+    ptRootFontLight.setAttribute("rel", "stylesheet");
+    const ptRootFontMedium = headElement.appendChild(
+        document.createElement("link")
+    );
+    ptRootFontMedium.setAttribute(
+        "href",
+        "https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css"
+    );
+    ptRootFontMedium.setAttribute("rel", "stylesheet");
+    const ptRootFontRegular = headElement.appendChild(
+        document.createElement("link")
+    );
+    ptRootFontRegular.setAttribute(
+        "href",
+        "https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css"
+    );
+    ptRootFontRegular.setAttribute("rel", "stylesheet");
+}
+
 const SurfSplit = createSurfSplitNavigator();
 
 const Buttons = ({ navigation }) => (
@@ -2121,18 +2160,53 @@ const Chat = () => (
     <UIChatList
         areStickersVisible={false}
         onLoadEarlierMessages={() => {}}
-        canLoadMore={false}
+        canLoadMore={true}
         isLoadingMore={false}
         messages={[
             {
-                key: "123",
+                type: "stm",
+                status: "sending",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                text: "This one is in process of sending...",
+            },
+            {
+                type: "stm",
+                status: "received",
+                time: Math.floor(Date.now() - 2 * 60 * 1000),
+                sender: "0:123",
+                text: "How r u?",
+            },
+            {
                 type: "stm",
                 status: "sent",
-                time: Math.floor(Date.now() / 1000 - 100),
-                sender: "0:123",
-                text: "Hi!",
+                time: Math.floor(Date.now() - 4 * 60 * 1000),
+                sender: "0:000",
+                text: "This one is from me",
             },
-        ]}
+            {
+                type: "stm",
+                status: "received",
+                time: Math.floor(Date.now() - 5 * 60 * 1000),
+                sender: "0:123",
+                text:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            },
+            {
+                type: "stm",
+                status: "received",
+                time: Math.floor(Date.now() - 5 * 60 * 1000),
+                sender: "0:123",
+                text: "Hi there!",
+            },
+            {
+                type: "stm",
+                status: "received",
+                time: new Date("10 06 2020 10:00").getTime(),
+                sender: "0:123",
+                text: "Hi from past!",
+            },
+        ].map((m, i) => ((m.key = i), m))}
     />
 );
 

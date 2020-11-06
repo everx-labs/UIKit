@@ -8,7 +8,7 @@ export class UIChatListFormatter {
         const sections: { [key: number]: ChatMessage[] } = {};
 
         messages.forEach((message, index) => {
-            const messageTime = new Date(message.time * 1000);
+            const messageTime = new Date(message.time);
             messageTime.setHours(0, 0, 0, 0);
 
             if (index > 0) {
@@ -29,6 +29,8 @@ export class UIChatListFormatter {
                     (isTransaction && !nextIsTransactionComment) ||
                     (!isSystem && nextIsSystem) ||
                     (isSystem && !nextIsSystem);
+            } else {
+                message.lastFromChain = true;
             }
 
             if (index < messages.length - 1) {
@@ -47,6 +49,8 @@ export class UIChatListFormatter {
                     (!isSystem && prevIsSystem) ||
                     prevIsTransaction ||
                     isTransaction;
+            } else {
+                message.firstFromChain = true;
             }
 
             if (sections[messageTime.getTime()]) {

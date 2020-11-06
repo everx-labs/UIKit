@@ -297,5 +297,8 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
 });
 
 const styles = StyleSheet.create({
-    messagesList: {},
+    messagesList: {
+        paddingHorizontal: UIConstant.contentOffset(),
+        paddingVertical: UIConstant.contentOffset(),
+    },
 });

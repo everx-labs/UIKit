@@ -20,7 +20,7 @@ const getLabel = (time: number) => {
         return "yesterday"; // TODO: use localized
     }
 
-    return dayjs(new Date(time)).fromNow();
+    return dayjs(time).fromNow();
 };
 
 // TODO: maybe better to pass date instead i.e. move logic from a store?
