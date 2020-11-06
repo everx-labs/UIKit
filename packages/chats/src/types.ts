@@ -9,8 +9,11 @@ export enum ChatMessageStatus {
 export type ChatMessageMeta = {
     key: string;
     status: ChatMessageStatus;
-    created?: number;
+    time: number;
+    created?: number; // TODO: what is it?
     sender?: string;
+    firstFromChain?: boolean;
+    lastFromChain?: boolean;
 };
 
 export enum ChatMessageType {
@@ -27,6 +30,8 @@ export enum ChatMessageType {
 export type PlainTextMessage = ChatMessageMeta & {
     type: ChatMessageType.PlainText;
     text: string;
+    onTouchText?: () => void | Promise<void>;
+    onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
 
 export type SystemMessage = ChatMessageMeta & {

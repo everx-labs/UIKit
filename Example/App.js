@@ -6,8 +6,8 @@
  * @flow
  */
 
-import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import "react-native-gesture-handler";
+import React, { useState } from "react";
 import {
     StyleSheet,
     View,
@@ -15,20 +15,17 @@ import {
     SafeAreaView,
     ScrollView,
     Platform,
-} from 'react-native';
-import BigNumber from 'bignumber.js';
+} from "react-native";
+import BigNumber from "bignumber.js";
 // $FlowFixMe
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from "@react-navigation/native";
 // import { createStackNavigator } from '@react-navigation/stack';
 // $FlowFixMe
-import { useReduxDevToolsExtension } from '@react-navigation/devtools';
+import { useReduxDevToolsExtension } from "@react-navigation/devtools";
 // $FlowFixMe
-import { createSurfSplitNavigator } from 'react-navigation-surf';
+import { createSurfSplitNavigator } from "react-navigation-surf";
 
-import {
-    UIColor,
-    UIStyle,
-} from '@uikit/core';
+import { UIColor, UIStyle } from "@uikit/core";
 import {
     UIButton,
     UILayoutManager,
@@ -37,7 +34,6 @@ import {
     UIDetailsRadio,
     UIDetailsToggle,
     UIDetailsTable,
-    UILoadMoreButton,
     UIRadioButtonList,
     UIScaleButton,
     UITextButton,
@@ -80,7 +76,7 @@ import {
     UILabel,
     UIListHeader,
     UISectionHeader,
-} from '@uikit/components';
+} from "@uikit/components";
 import {
     UICountryPicker,
     UIImageView,
@@ -89,7 +85,7 @@ import {
     UIPopover,
     UIPopoverBackground,
     UIPopoverMenu,
-} from '@uikit/navigation';
+} from "@uikit/navigation";
 import {
     UIBottomBar,
     UIDetailsButton,
@@ -100,22 +96,23 @@ import {
     UIProfileInitials,
     UIProfilePhoto,
     UIProfileView,
-} from '@uikit/legacy';
-import UIAssets from '@uikit/assets';
+} from "@uikit/legacy";
+import UIAssets from "@uikit/assets";
+import { UIChatList } from "@tonlabs/uikit.chats";
 
 const SurfSplit = createSurfSplitNavigator();
 
 const Buttons = ({ navigation }) => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIButton</Text>
@@ -130,8 +127,8 @@ const Buttons = ({ navigation }) => (
             style={{
                 maxWidth: 300,
                 paddingVertical: 20,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                flexDirection: "row",
+                justifyContent: "space-between",
             }}
         >
             <UIButton title="Large" buttonSize={UIButton.ButtonSize.Large} />
@@ -146,8 +143,8 @@ const Buttons = ({ navigation }) => (
             style={{
                 maxWidth: 300,
                 paddingVertical: 20,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                flexDirection: "row",
+                justifyContent: "space-between",
             }}
         >
             <UIButton
@@ -168,8 +165,8 @@ const Buttons = ({ navigation }) => (
             style={{
                 maxWidth: 300,
                 paddingVertical: 20,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                flexDirection: "row",
+                justifyContent: "space-between",
             }}
         >
             <UIButton title="Full" buttonStyle={UIButton.ButtonStyle.Full} />
@@ -202,13 +199,13 @@ const Buttons = ({ navigation }) => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIDetailsButton</Text>
@@ -234,13 +231,13 @@ const Buttons = ({ navigation }) => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIImageButton</Text>
@@ -258,7 +255,7 @@ const Buttons = ({ navigation }) => (
             style={{
                 maxWidth: 300,
                 paddingVertical: 20,
-                backgroundColor: 'black',
+                backgroundColor: "black",
             }}
         >
             <UIImageButton
@@ -269,7 +266,7 @@ const Buttons = ({ navigation }) => (
             style={{
                 maxWidth: 300,
                 paddingVertical: 20,
-                backgroundColor: 'black',
+                backgroundColor: "black",
             }}
         >
             <UIImageButton image={UIImageButton.Images.closeLight} />
@@ -282,32 +279,13 @@ const Buttons = ({ navigation }) => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
-            }}
-        >
-            <Text>UILoadMoreButton</Text>
-        </View>
-        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-            <UILoadMoreButton label="Load more" />
-        </View>
-        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-            <UILoadMoreButton label="Load more" isLoadingMore />
-        </View>
-        <View
-            style={{
-                width: '96%',
-                paddingLeft: 40,
-                paddingBottom: 10,
-                marginHorizontal: '2%',
-                marginTop: 50,
-                borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIScaleButton</Text>
@@ -324,13 +302,13 @@ const Buttons = ({ navigation }) => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UITextButton</Text>
@@ -358,16 +336,16 @@ const Checkbox = () => {
     const [selectedRadio, setSelectedRadio] = useState(0);
     const [selectedToggle, setSelectedToggle] = useState(false);
     return (
-        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 20,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UICheckboxItem</Text>
@@ -389,13 +367,13 @@ const Checkbox = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIDetailsCheckbox</Text>
@@ -419,13 +397,13 @@ const Checkbox = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIDetailsRadio</Text>
@@ -449,13 +427,13 @@ const Checkbox = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIDetailsToggle</Text>
@@ -480,39 +458,39 @@ const Checkbox = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIRadioButtonList</Text>
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIRadioButtonList
-                    onSelect={index => setSelectedRadio(index)}
+                    onSelect={(index) => setSelectedRadio(index)}
                     state={{
                         selected: selectedRadio,
                         radiobuttonList: [
-                            { title: 'first' },
-                            { title: 'second' },
-                            { title: 'third' },
+                            { title: "first" },
+                            { title: "second" },
+                            { title: "third" },
                         ],
                     }}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIToggle</Text>
@@ -538,16 +516,16 @@ const Checkbox = () => {
 function getNumberFormatInfo() {
     const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
     const parts = formatParser.exec((111222333.444).toLocaleString()) || [
-        '',
-        '',
-        '',
-        '.',
+        "",
+        "",
+        "",
+        ".",
     ];
     return {
         grouping: parts[1],
         thousands: parts[2],
         decimal: parts[3],
-        decimalGrouping: '\u2009',
+        decimalGrouping: "\u2009",
     };
 }
 
@@ -565,26 +543,26 @@ function getDateFormatInfo() {
     // };
     // Not working for android due to RN using JavaScriptCore engine in non-debug mode
     // const localeDate = date.toLocaleDateString(undefined, options);
-    const localeDate = '07/06/1986';
+    const localeDate = "07/06/1986";
     const formatParser = /(\d{1,4})(\D{1})(\d{1,4})\D{1}(\d{1,4})/g;
-    const parts = formatParser.exec(localeDate) || ['', '7', '.', '6', '1986'];
+    const parts = formatParser.exec(localeDate) || ["", "7", ".", "6", "1986"];
 
-    const separator = parts[2] || '.';
-    const components = ['year', 'month', 'day'];
+    const separator = parts[2] || ".";
+    const components = ["year", "month", "day"];
     const symbols = {
-        year: 'YYYY',
-        month: 'MM',
-        day: 'DD',
+        year: "YYYY",
+        month: "MM",
+        day: "DD",
     };
 
     const shortDateNumbers = [];
     const splitDate = localeDate.split(separator);
-    splitDate.forEach(component => shortDateNumbers.push(Number(component)));
+    splitDate.forEach((component) => shortDateNumbers.push(Number(component)));
 
     if (shortDateNumbers?.length === 3) {
-        components[shortDateNumbers.indexOf(d)] = 'day';
-        components[shortDateNumbers.indexOf(m)] = 'month';
-        components[shortDateNumbers.indexOf(y)] = 'year';
+        components[shortDateNumbers.indexOf(d)] = "day";
+        components[shortDateNumbers.indexOf(m)] = "month";
+        components[shortDateNumbers.indexOf(y)] = "year";
     }
 
     // TODO: Need to find a better way to get the pattern.
@@ -600,37 +578,37 @@ function getDateFormatInfo() {
 }
 
 const localeInfo = {
-    name: '',
+    name: "",
     numbers: getNumberFormatInfo(),
     dates: getDateFormatInfo(),
 };
 
 const Inputs = () => {
-    const [amount, setAmount] = useState('');
-    const [bankCardNumber, setBankCardNumber] = useState('');
-    const [contractAddress, setContractAddress] = useState('');
-    const [date, setDate] = useState('');
-    const [details, setDetails] = useState('');
-    const [email, setEmail] = useState('');
-    const [link, setLink] = useState('');
-    const [number, setNumber] = useState('');
-    const [phone, setPhone] = useState('');
-    const [search, setSearch] = useState('');
-    const [seedPhrase, setSeedPhrase] = useState('');
-    const mnemonicWords = ['report', 'meadow', 'village', 'slight'];
-    const [text, setText] = useState('');
+    const [amount, setAmount] = useState("");
+    const [bankCardNumber, setBankCardNumber] = useState("");
+    const [contractAddress, setContractAddress] = useState("");
+    const [date, setDate] = useState("");
+    const [details, setDetails] = useState("");
+    const [email, setEmail] = useState("");
+    const [link, setLink] = useState("");
+    const [number, setNumber] = useState("");
+    const [phone, setPhone] = useState("");
+    const [search, setSearch] = useState("");
+    const [seedPhrase, setSeedPhrase] = useState("");
+    const mnemonicWords = ["report", "meadow", "village", "slight"];
+    const [text, setText] = useState("");
     const [transfer, setTransfer] = useState(new BigNumber(0));
     return (
-        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 20,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIAmountInput</Text>
@@ -640,7 +618,7 @@ const Inputs = () => {
                     placeholder="Amount"
                     comment="Some comment here"
                     value={amount}
-                    onChangeText={newText => setAmount(newText)}
+                    onChangeText={(newText) => setAmount(newText)}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -649,18 +627,18 @@ const Inputs = () => {
                     comment="Some comment here"
                     value={amount}
                     trailingValue="$"
-                    onChangeText={newText => setAmount(newText)}
+                    onChangeText={(newText) => setAmount(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIBankCardNumberInput</Text>
@@ -669,18 +647,18 @@ const Inputs = () => {
                 {/* $FlowFixMe */}
                 <UIBankCardNumberInput
                     value={bankCardNumber}
-                    onChangeText={newText => setBankCardNumber(newText)}
+                    onChangeText={(newText) => setBankCardNumber(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIContractAddressInput</Text>
@@ -688,18 +666,18 @@ const Inputs = () => {
             <View style={{ paddingVertical: 20 }}>
                 <UIContractAddressInput
                     value={contractAddress}
-                    onChangeText={newText => setContractAddress(newText)}
+                    onChangeText={(newText) => setContractAddress(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIDateInput</Text>
@@ -707,18 +685,18 @@ const Inputs = () => {
             <View style={{ paddingVertical: 20 }}>
                 <UIDateInput
                     value={date}
-                    onChangeText={newText => setDate(newText)}
+                    onChangeText={(newText) => setDate(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIDetailsInput</Text>
@@ -728,7 +706,7 @@ const Inputs = () => {
                     placeholder="Details"
                     comment="Some comment here"
                     value={details}
-                    onChangeText={newText => setDetails(newText)}
+                    onChangeText={(newText) => setDetails(newText)}
                 />
             </View>
             <View style={{ paddingVertical: 20 }}>
@@ -736,20 +714,20 @@ const Inputs = () => {
                     placeholder="Multiline details"
                     comment="Some comment here"
                     value={details}
-                    onChangeText={newText => setDetails(newText)}
+                    onChangeText={(newText) => setDetails(newText)}
                     maxLines={3}
                     containerStyle={{ marginTop: 16 }}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIEmailInput</Text>
@@ -759,18 +737,18 @@ const Inputs = () => {
                     placeholder="Email"
                     comment="Some comment here"
                     value={email}
-                    onChangeText={newText => setEmail(newText)}
+                    onChangeText={(newText) => setEmail(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UILinkInput</Text>
@@ -780,18 +758,18 @@ const Inputs = () => {
                     placeholder="Link"
                     comment="Some comment here"
                     value={link}
-                    onChangeText={newText => setLink(newText)}
+                    onChangeText={(newText) => setLink(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UINumberInput</Text>
@@ -801,18 +779,18 @@ const Inputs = () => {
                     placeholder="Number"
                     comment="Some comment here"
                     value={number}
-                    onChangeText={newText => setNumber(newText)}
+                    onChangeText={(newText) => setNumber(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIPhoneInput</Text>
@@ -822,18 +800,18 @@ const Inputs = () => {
                     placeholder="Phone"
                     comment="Some comment here"
                     value={phone}
-                    onChangeText={newText => setPhone(newText)}
+                    onChangeText={(newText) => setPhone(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIPinCodeInput</Text>
@@ -848,13 +826,13 @@ const Inputs = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UISearchBar</Text>
@@ -863,7 +841,7 @@ const Inputs = () => {
                 <UISearchBar
                     value={search}
                     placeholder="Your search expression"
-                    onChangeExpression={newExpression =>
+                    onChangeExpression={(newExpression) =>
                         setSearch(newExpression)
                     }
                 />
@@ -872,7 +850,7 @@ const Inputs = () => {
                 <UISearchBar
                     value={search}
                     placeholder="Your search expression"
-                    onChangeExpression={newExpression =>
+                    onChangeExpression={(newExpression) =>
                         setSearch(newExpression)
                     }
                     renderGlass
@@ -880,13 +858,13 @@ const Inputs = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UISeedPhraseInput</Text>
@@ -895,21 +873,21 @@ const Inputs = () => {
                 <UISeedPhraseInput
                     value={search}
                     value={seedPhrase}
-                    onChangeText={newText => setSeedPhrase(newText)}
-                    phraseToCheck={mnemonicWords.join(' - ')}
+                    onChangeText={(newText) => setSeedPhrase(newText)}
+                    phraseToCheck={mnemonicWords.join(" - ")}
                     totalWords={12}
                     words={mnemonicWords}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UITextInput</Text>
@@ -920,18 +898,18 @@ const Inputs = () => {
                     placeholder="Your text"
                     beginningTag="@"
                     value={text}
-                    onChangeText={newText => setText(newText)}
+                    onChangeText={(newText) => setText(newText)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UITransferInput</Text>
@@ -942,19 +920,19 @@ const Inputs = () => {
                     placeholder="Your transfer"
                     maxDecimals={3}
                     value={transfer}
-                    onValueChange={num => setTransfer(num)}
+                    onValueChange={(num) => setTransfer(num)}
                     localeInfo={localeInfo}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIUploadFileInput</Text>
@@ -967,16 +945,16 @@ const Inputs = () => {
 };
 
 const Design = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIBadge</Text>
@@ -986,13 +964,13 @@ const Design = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIDot</Text>
@@ -1002,13 +980,13 @@ const Design = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UISeparator</Text>
@@ -1018,13 +996,13 @@ const Design = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UITag</Text>
@@ -1036,16 +1014,16 @@ const Design = () => (
 );
 
 const Images = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIActionImage</Text>
@@ -1067,13 +1045,13 @@ const Images = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIImage</Text>
@@ -1084,13 +1062,13 @@ const Images = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIImageView (press it)</Text>
@@ -1106,16 +1084,16 @@ const Images = () => (
 );
 
 const Layouts = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIDetailsTable</Text>
@@ -1124,27 +1102,27 @@ const Layouts = () => (
             <UIDetailsTable
                 detailsList={[
                     {
-                        caption: 'row 1',
-                        value: 'value 1',
+                        caption: "row 1",
+                        value: "value 1",
                     },
                     {
-                        caption: 'row 2',
-                        value: 'value 2',
+                        caption: "row 2",
+                        value: "value 2",
                         type: UIDetailsTable.CellType.Success,
                     },
                     {
-                        caption: 'row 3',
-                        value: 'value 3',
+                        caption: "row 3",
+                        value: "value 3",
                         type: UIDetailsTable.CellType.Action,
                     },
                     {
-                        caption: 'row 4',
-                        value: 'value 4',
+                        caption: "row 4",
+                        value: "value 4",
                         type: UIDetailsTable.CellType.Accent,
                     },
                     {
-                        caption: 'row 5',
-                        value: '7,900,404 (98.8 %)',
+                        caption: "row 5",
+                        value: "7,900,404 (98.8 %)",
                         type: UIDetailsTable.CellType.NumberPercent,
                     },
                 ]}
@@ -1152,13 +1130,13 @@ const Layouts = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIGrid</Text>
@@ -1423,16 +1401,16 @@ const customSheet = React.createRef<UICustomSheet>();
 const Menus = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     return (
-        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 20,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIActionSheet</Text>
@@ -1445,15 +1423,17 @@ const Menus = () => {
                             actionSheet.current.show(
                                 [
                                     {
-                                        title: 'Item 1',
-                                        onPress: () => alert('Action 1 was called'),
+                                        title: "Item 1",
+                                        onPress: () =>
+                                            alert("Action 1 was called"),
                                     },
                                     {
-                                        title: 'Item 2',
-                                        onPress: () => alert('Action 2 was called'),
+                                        title: "Item 2",
+                                        onPress: () =>
+                                            alert("Action 2 was called"),
                                     },
                                 ],
-                                true,
+                                true
                             );
                         }
                     }}
@@ -1461,13 +1441,13 @@ const Menus = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UICountryPicker</Text>
@@ -1480,13 +1460,13 @@ const Menus = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UICustomSheet</Text>
@@ -1503,13 +1483,13 @@ const Menus = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIPopover</Text>
@@ -1524,13 +1504,13 @@ const Menus = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIPopoverMenu</Text>
@@ -1540,12 +1520,12 @@ const Menus = () => {
                     placement="top"
                     menuItemsList={[
                         {
-                            title: 'Item 1',
-                            onPress: () => alert('Action 1 was called'),
+                            title: "Item 1",
+                            onPress: () => alert("Action 1 was called"),
                         },
                         {
-                            title: 'Item 2',
-                            onPress: () => alert('Action 2 was called'),
+                            title: "Item 2",
+                            onPress: () => alert("Action 2 was called"),
                         },
                     ]}
                 >
@@ -1554,13 +1534,13 @@ const Menus = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UISlider</Text>
@@ -1569,24 +1549,24 @@ const Menus = () => {
                 <UISlider
                     itemsList={[
                         {
-                            title: 'Card 1',
-                            details: 'details',
+                            title: "Card 1",
+                            details: "details",
                         },
                         {
-                            title: 'Card 2',
-                            details: 'details',
+                            title: "Card 2",
+                            details: "details",
                         },
                         {
-                            title: 'Card 3',
-                            details: 'details',
+                            title: "Card 3",
+                            details: "details",
                         },
                         {
-                            title: 'Card 4',
-                            details: 'details',
+                            title: "Card 4",
+                            details: "details",
                         },
                         {
-                            title: 'Card 5',
-                            details: 'details',
+                            title: "Card 5",
+                            details: "details",
                         },
                     ]}
                     itemRenderer={({ title, details }) => (
@@ -1603,33 +1583,33 @@ const Menus = () => {
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UIStepBar</Text>
             </View>
             <View style={{ paddingVertical: 20 }}>
                 <UIStepBar
-                    itemsList={['Item 1', 'Item 2', 'Item 3', 'Item 4']}
+                    itemsList={["Item 1", "Item 2", "Item 3", "Item 4"]}
                     activeIndex={activeIndex}
-                    onPress={i => setActiveIndex(i)}
+                    onPress={(i) => setActiveIndex(i)}
                 />
             </View>
             <View
                 style={{
-                    width: '96%',
+                    width: "96%",
                     paddingLeft: 40,
                     paddingBottom: 10,
-                    marginHorizontal: '2%',
+                    marginHorizontal: "2%",
                     marginTop: 50,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
+                    borderBottomColor: "rgba(0,0,0,.1)",
                 }}
             >
                 <Text>UITabView</Text>
@@ -1639,15 +1619,15 @@ const Menus = () => {
                     width={95}
                     pages={[
                         {
-                            title: 'Left',
+                            title: "Left",
                             component: <Text>Some left content</Text>,
                         },
                         {
-                            title: 'Center',
+                            title: "Center",
                             component: <Text>Some center content</Text>,
                         },
                         {
-                            title: 'Right',
+                            title: "Right",
                             component: <Text>Some right content</Text>,
                         },
                     ]}
@@ -1658,16 +1638,16 @@ const Menus = () => {
 };
 
 const Notifications = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UINotice</Text>
@@ -1676,19 +1656,21 @@ const Notifications = () => (
             <UITextButton
                 title="Show default notice with message only"
                 onPress={() =>
-                    UINotice.showMessage('System is going down at midnight tonight. We’ll notify you when it’s back up.')
+                    UINotice.showMessage(
+                        "System is going down at midnight tonight. We’ll notify you when it’s back up."
+                    )
                 }
             />
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UINotificationBadge</Text>
@@ -1698,13 +1680,13 @@ const Notifications = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIToastMessage</Text>
@@ -1713,19 +1695,21 @@ const Notifications = () => (
             <UITextButton
                 title="Show default notice with message only"
                 onPress={() =>
-                    UIToastMessage.showMessage('System is going down at midnight tonight.')
+                    UIToastMessage.showMessage(
+                        "System is going down at midnight tonight."
+                    )
                 }
             />
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 50,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UITooltip</Text>
@@ -1743,7 +1727,7 @@ const Notifications = () => (
             <UITextButton
                 title="Show onMouse tooltip"
                 onPress={() =>
-                    UITooltip.showOnMouseForWeb('Message of onMouse tooltip')
+                    UITooltip.showOnMouseForWeb("Message of onMouse tooltip")
                 }
             />
             <UITextButton
@@ -1755,16 +1739,16 @@ const Notifications = () => (
 );
 
 const Popups = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIAlert</Text>
@@ -1774,15 +1758,15 @@ const Popups = () => (
                 title="Show UIAlert"
                 onPress={() =>
                     UIAlert.showAlert({
-                        title: 'This is the title',
-                        description: 'This is the alert description',
+                        title: "This is the title",
+                        description: "This is the alert description",
                         // Receives an array of button arrays
                         buttons: [
                             [
-                                { title: 'Button Left', onPress: () => {} },
-                                { title: 'Button Right', onPress: () => {} },
+                                { title: "Button Left", onPress: () => {} },
+                                { title: "Button Right", onPress: () => {} },
                             ],
-                            [{ title: 'Single Button', onPress: () => {} }],
+                            [{ title: "Single Button", onPress: () => {} }],
                         ],
                     })
                 }
@@ -1790,13 +1774,13 @@ const Popups = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIAlertView</Text>
@@ -1805,21 +1789,21 @@ const Popups = () => (
             <UITextButton
                 title="Show UIAlertView"
                 onPress={() =>
-                    UIAlertView.showAlert('Title', 'Some message here', [
-                        { title: 'Ok' },
+                    UIAlertView.showAlert("Title", "Some message here", [
+                        { title: "Ok" },
                     ])
                 }
             />
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIDropdownAlert</Text>
@@ -1828,7 +1812,9 @@ const Popups = () => (
             <UITextButton
                 title="Show UIDropdownAlert"
                 onPress={() =>
-                    UIDropdownAlert.showNotification('This is a UIDropdownAlert')
+                    UIDropdownAlert.showNotification(
+                        "This is a UIDropdownAlert"
+                    )
                 }
             />
         </View>
@@ -1836,16 +1822,16 @@ const Popups = () => (
 );
 
 const Products = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIBackgroundView</Text>
@@ -1855,7 +1841,7 @@ const Products = () => (
                 width: 300,
                 height: 300,
                 paddingVertical: 20,
-                position: 'relative',
+                position: "relative",
             }}
         >
             <UIBackgroundView
@@ -1865,13 +1851,13 @@ const Products = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIBottomBar</Text>
@@ -1890,13 +1876,13 @@ const Products = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIFeedback</Text>
@@ -1906,13 +1892,13 @@ const Products = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIPushFeedback</Text>
@@ -1922,13 +1908,13 @@ const Products = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIStubPage</Text>
@@ -1942,13 +1928,13 @@ const Products = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UITokenCell</Text>
@@ -1960,16 +1946,16 @@ const Products = () => (
 );
 
 const Profile = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIProfileInitials</Text>
@@ -1991,13 +1977,13 @@ const Profile = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIProfilePhoto</Text>
@@ -2012,13 +1998,13 @@ const Profile = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIProfilePhoto</Text>
@@ -2046,16 +2032,16 @@ const Profile = () => (
 );
 
 const TextScreen = () => (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UILabel</Text>
@@ -2073,13 +2059,13 @@ const TextScreen = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UIListHeader</Text>
@@ -2094,13 +2080,13 @@ const TextScreen = () => (
         </View>
         <View
             style={{
-                width: '96%',
+                width: "96%",
                 paddingLeft: 40,
                 paddingBottom: 10,
-                marginHorizontal: '2%',
+                marginHorizontal: "2%",
                 marginTop: 20,
                 borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
+                borderBottomColor: "rgba(0,0,0,.1)",
             }}
         >
             <Text>UISectionHeader</Text>
@@ -2131,68 +2117,92 @@ const TextScreen = () => (
     </ScrollView>
 );
 
+const Chat = () => (
+    <UIChatList
+        areStickersVisible={false}
+        onLoadEarlierMessages={() => {}}
+        canLoadMore={false}
+        isLoadingMore={false}
+        messages={[
+            {
+                key: "123",
+                type: "stm",
+                status: "sent",
+                time: Math.floor(Date.now() / 1000 - 100),
+                sender: "0:123",
+                text: "Hi!",
+            },
+        ]}
+    />
+);
+
 const Main = ({ navigation }) => (
     <SafeAreaView>
         <Text style={styles.title}>Main</Text>
         <UIButton
-            onPress={() => navigation.navigate('buttons')}
+            onPress={() => navigation.navigate("buttons")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Buttons"
         />
         <UIButton
-            onPress={() => navigation.navigate('checkbox')}
+            onPress={() => navigation.navigate("checkbox")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Checkbox"
         />
         <UIButton
-            onPress={() => navigation.navigate('inputs')}
+            onPress={() => navigation.navigate("inputs")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Inputs"
         />
         <UIButton
-            onPress={() => navigation.navigate('design')}
+            onPress={() => navigation.navigate("design")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Design"
         />
         <UIButton
-            onPress={() => navigation.navigate('images')}
+            onPress={() => navigation.navigate("images")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Images"
         />
         <UIButton
-            onPress={() => navigation.navigate('layouts')}
+            onPress={() => navigation.navigate("layouts")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Layouts"
         />
         <UIButton
-            onPress={() => navigation.navigate('menus')}
+            onPress={() => navigation.navigate("menus")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Menus"
         />
         <UIButton
-            onPress={() => navigation.navigate('notifications')}
+            onPress={() => navigation.navigate("notifications")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Notifications"
         />
         <UIButton
-            onPress={() => navigation.navigate('popups')}
+            onPress={() => navigation.navigate("popups")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Popups"
         />
         <UIButton
-            onPress={() => navigation.navigate('products')}
+            onPress={() => navigation.navigate("products")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Products"
         />
         <UIButton
-            onPress={() => navigation.navigate('profile')}
+            onPress={() => navigation.navigate("profile")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Profile"
         />
         <UIButton
-            onPress={() => navigation.navigate('text')}
+            onPress={() => navigation.navigate("text")}
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Text"
+        />
+        <UIButton
+            onPress={() => navigation.navigate("chat")}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Chat"
         />
     </SafeAreaView>
 );
@@ -2203,7 +2213,7 @@ const App: () => React$Node = () => {
 
     const main = (
         <>
-            <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
+            <NavigationContainer ref={navRef} linking={{ prefixes: ["/"] }}>
                 <SurfSplit.Navigator
                     initialRouteName="buttons"
                     screenOptions={{
@@ -2231,6 +2241,7 @@ const App: () => React$Node = () => {
                     <SurfSplit.Screen name="products" component={Products} />
                     <SurfSplit.Screen name="profile" component={Profile} />
                     <SurfSplit.Screen name="text" component={TextScreen} />
+                    <SurfSplit.Screen name="chat" component={Chat} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />
@@ -2263,7 +2274,7 @@ const App: () => React$Node = () => {
         </>
     );
 
-    if (Platform.OS !== 'web') {
+    if (Platform.OS !== "web") {
         return main;
     }
 
@@ -2273,23 +2284,23 @@ const App: () => React$Node = () => {
 const styles = StyleSheet.create({
     body: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: "row",
         padding: 10,
     },
     main: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         minWidth: 300,
         marginRight: 10,
         borderRadius: 5,
     },
     detail: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         flex: 1,
         borderRadius: 5,
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
 });
 

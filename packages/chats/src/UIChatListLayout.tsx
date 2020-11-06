@@ -24,14 +24,15 @@ type ListElement = SectionHeader | Row | SectionFooter;
 
 export interface Parameters {
     getItemHeight: (
-        rowData: any,
-        sectionIndex: number,
-        rowIndex: number
+        rowData?: any,
+        sectionIndex?: number,
+        rowIndex?: number
     ) => number;
-    getSeparatorHeight?: (sectionIndex: number, rowIndex?: number) => number;
+    getSeparatorHeight?: (sectionIndex?: number, rowIndex?: number) => number;
     getSectionHeaderHeight?: (sectionIndex: number) => number;
     getSectionFooterHeight?: (sectionIndex: number) => number;
     listHeaderHeight?: () => number;
+    listFooterHeight?: () => number;
 }
 
 export const sectionListGetItemLayout = ({

@@ -1,0 +1,68 @@
+import { ChatMessageType } from "./types";
+import type { ChatMessage } from "./types";
+
+type Section = { time: number; data: ChatMessage[]; key?: number };
+
+export class UIChatListFormatter {
+    static getSections(messages: ChatMessage[]): Section[] {
+        const sections: { [key: number]: ChatMessage[] } = {};
+
+        messages.forEach((message, index) => {
+            const messageTime = new Date(message.time * 1000);
+            messageTime.setHours(0, 0, 0, 0);
+
+            if (index > 0) {
+                const nextMessage = messages[index - 1];
+                const isTransaction =
+                    message.type === ChatMessageType.Transaction;
+                const isSystem = message.type === ChatMessageType.System;
+                const nextIsSystem =
+                    nextMessage?.type === ChatMessageType.System;
+                const nextIsTransaction =
+                    nextMessage?.type === ChatMessageType.Transaction;
+                const nextIsTransactionComment =
+                    nextMessage?.type === ChatMessageType.TransactionComment;
+
+                message.lastFromChain =
+                    message.sender !== nextMessage?.sender ||
+                    nextIsTransaction ||
+                    (isTransaction && !nextIsTransactionComment) ||
+                    (!isSystem && nextIsSystem) ||
+                    (isSystem && !nextIsSystem);
+            }
+
+            if (index < messages.length - 1) {
+                const prevMessage = messages[index + 1];
+                const isSystem = message.type === ChatMessageType.System;
+                const isTransaction =
+                    message.type === ChatMessageType.Transaction;
+                const prevIsSystem =
+                    prevMessage?.type === ChatMessageType.System;
+                const prevIsTransaction =
+                    prevMessage?.type === ChatMessageType.Transaction;
+
+                message.firstFromChain =
+                    message.sender !== prevMessage?.sender ||
+                    (isSystem && !prevIsSystem) ||
+                    (!isSystem && prevIsSystem) ||
+                    prevIsTransaction ||
+                    isTransaction;
+            }
+
+            if (sections[messageTime.getTime()]) {
+                sections[messageTime.getTime()].push(message);
+            } else {
+                sections[messageTime.getTime()] = [message];
+            }
+        });
+
+        return Object.keys(sections).map((t) => {
+            const time = Number(t);
+            return {
+                time,
+                data: sections[time],
+                key: time,
+            };
+        });
+    }
+}

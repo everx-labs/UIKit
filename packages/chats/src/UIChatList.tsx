@@ -1,16 +1,28 @@
 import * as React from "react";
-import { Platform, SectionList, View } from "react-native";
+import { Platform, SectionList, View, StyleSheet } from "react-native";
 import {
     TapGestureHandler,
     ScrollView,
     State as RNGHState,
 } from "react-native-gesture-handler";
-import { Animated } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 import { UIConstant } from "@uikit/core";
 
 import { sectionListGetItemLayout } from "./UIChatListLayout";
+import { UIChatListFormatter } from "./UIChatListFormatter";
+import { ChatMessageType } from "./types";
 import type { ChatMessage } from "./types";
+import { BubblePlainText } from "./BubblePlainText";
+import { BubbleSystem } from "./BubbleSystem";
+import { BubbleTransaction } from "./BubbleTransaction";
+import { BubbleTransactionComment } from "./BubbleTransactionComment";
+import { BubbleImage } from "./BubbleImage";
+import { BubbleDocument } from "./BubbleDocument";
+import { BubbleSticker } from "./BubbleSticker";
+import { BubbleActionButton } from "./BubbleActionButton";
+import { DateSeparator } from "./DateSeparator";
+import { UILoadMoreButton } from "./UILoadMoreButton";
 
 type RNGHEvent<T> = { nativeEvent: T };
 
@@ -19,6 +31,7 @@ type Props = {
     onLoadEarlierMessages(): void;
     canLoadMore: boolean;
     isLoadingMore: boolean;
+    messages: ChatMessage[];
 };
 
 const onHandlerStateChange = ({
@@ -33,7 +46,6 @@ const onHandlerStateChange = ({
 // thus not affecting the content width of SectionList to prevent layout issues
 const style = Platform.select({ web: { overflowY: "overlay" } });
 
-// TODO: proper type of the item
 const keyExtractor = (item: ChatMessage) => {
     return item.key;
 };
@@ -41,38 +53,53 @@ const keyExtractor = (item: ChatMessage) => {
 const renderBubble = (message: ChatMessage) => {
     switch (message.type) {
         case ChatMessageType.PlainText:
-            return <BubblePlainText />;
+            return <BubblePlainText {...message} />;
         case ChatMessageType.System:
-            return <BubbleSystem />;
+            return <BubbleSystem {...message} />;
         case ChatMessageType.Transaction:
-            return <BubbleTransaction />;
+            return <BubbleTransaction {...message} />;
         case ChatMessageType.TransactionComment:
-            return <BubbleTransactionComment />;
+            return <BubbleTransactionComment {...message} />;
         case ChatMessageType.Image:
-            return <BubbleImage />;
+            return <BubbleImage {...message} />;
         case ChatMessageType.Document:
-            return <BubbleDocument />;
+            return <BubbleDocument {...message} />;
         case ChatMessageType.Sticker:
-            return <BubbleSticker />;
+            return <BubbleSticker {...message} />;
         case ChatMessageType.ActionButton:
-            return <BubbleActionButton />;
+            return <BubbleActionButton {...message} />;
         default:
             return null;
     }
 };
 
-const renderItem = (onLayoutCell) => ({ item }: { item: ChatMessage }) => {
+const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
+    item,
+}: {
+    item: ChatMessage;
+}) => {
     // TODO: do we need to wrap it somehow?
     return (
-        <View onLayout={(e) => onLayoutCell(item.key, e)}>
+        <View
+            onLayout={(e) => onLayoutCell(item.key, e)}
+            style={{
+                // TODO: move to styles?
+                paddingTop: item.firstFromChain
+                    ? UIConstant.smallContentOffset()
+                    : 0,
+                paddingBottom: item.lastFromChain
+                    ? 0
+                    : UIConstant.tinyContentOffset(),
+            }}
+        >
             {renderBubble(item)}
         </View>
     );
 };
 
-const renderSectionTitle = ({ section }: { section: { title: string } }) => {
-    return <DateSeparator title={title} />;
-};
+const renderSectionTitle = ({ section }: { section: { title: string } }) => (
+    <DateSeparator time={section.time} />
+);
 
 export const UIChatList = React.forwardRef((props: Props, ref) => {
     const keyboardDismissProp = React.useMemo(() => {
@@ -93,21 +120,21 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
         return "interactive";
     }, [props.areStickersVisible]);
 
-    const cellHeight = React.useRef(new Map());
+    const cellsHeight = React.useRef(new Map());
 
     const getItemLayout = React.useCallback(
         sectionListGetItemLayout({
-            getItemHeight: (rowData, sectionIndex, rowIndex) => {
+            getItemHeight: (rowData: ChatMessage) => {
                 return cellsHeight.current.get(rowData.key) || 0;
             },
-            getSectionFooterHeight: (sectionIndex: number) => {
+            getSectionFooterHeight: () => {
                 return (
                     UIConstant.smallCellHeight() +
                     UIConstant.contentOffset() * 2
                 );
             },
             listFooterHeight: () => {
-                if (!this.store.canLoadMore) {
+                if (!props.canLoadMore) {
                     return 0;
                 }
                 return (
@@ -218,13 +245,21 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
         );
     }, []);
 
+    // TODO: proper contentInset
+    const contentInset = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    };
+
     return (
         <TapGestureHandler
             onHandlerStateChange={onHandlerStateChange}
             enabled={props.areStickersVisible}
         >
             <SectionList
-                nativeID={CHAT_SECTION_LIST}
+                nativeID="chatSectionList"
                 testID="chat_container"
                 {...keyboardDismissProp}
                 contentInset={contentInset}
@@ -242,7 +277,7 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
                 scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                 style={style}
                 contentContainerStyle={styles.messagesList}
-                // sections={(this.store.sections: any[])}
+                sections={UIChatListFormatter.getSections(props.messages)}
                 onViewableItemsChanged={checkVisualStyle}
                 keyExtractor={keyExtractor}
                 renderItem={renderItemInternal}
@@ -259,4 +294,8 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
             />
         </TapGestureHandler>
     );
+});
+
+const styles = StyleSheet.create({
+    messagesList: {},
 });
