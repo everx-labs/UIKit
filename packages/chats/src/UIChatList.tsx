@@ -1,11 +1,16 @@
 import * as React from "react";
-import { Platform, SectionList, View, StyleSheet } from "react-native";
+import {
+    Platform,
+    SectionList,
+    View,
+    StyleSheet,
+    Animated,
+} from "react-native";
 import {
     TapGestureHandler,
     ScrollView,
     State as RNGHState,
 } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
 
 import { UIConstant } from "@uikit/core";
 
@@ -78,12 +83,10 @@ const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
 }: {
     item: ChatMessage;
 }) => {
-    // TODO: do we need to wrap it somehow?
     return (
         <View
             onLayout={(e) => onLayoutCell(item.key, e)}
             style={{
-                // TODO: move to styles?
                 paddingTop: item.firstFromChain
                     ? UIConstant.smallContentOffset()
                     : 0,
@@ -148,11 +151,11 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
     const contentHeight = React.useRef(0);
     const listContentOffset = React.useRef({ y: 0 });
 
-    const topOpacity = React.useRef(new Animated.Value(0)); // TODO: is it 0?
+    const topOpacity = React.useRef(new Animated.Value(0));
 
     const linesAnimationInProgress = React.useRef(false);
     const linesIsShown = React.useRef(false);
-    // TODO: how to use it without re-creating on every re-render?
+
     const showLinesAnimation = React.useRef(
         Animated.spring(topOpacity.current, {
             toValue: 1,

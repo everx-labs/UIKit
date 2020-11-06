@@ -42,13 +42,16 @@ export class UIChatListFormatter {
                     prevMessage?.type === ChatMessageType.System;
                 const prevIsTransaction =
                     prevMessage?.type === ChatMessageType.Transaction;
+                const durationTooLong =
+                    message.time - (prevMessage?.time - 0) > 3 * 60 * 60 * 1000; // 3 hours
 
                 message.firstFromChain =
                     message.sender !== prevMessage?.sender ||
                     (isSystem && !prevIsSystem) ||
                     (!isSystem && prevIsSystem) ||
                     prevIsTransaction ||
-                    isTransaction;
+                    isTransaction ||
+                    durationTooLong;
             } else {
                 message.firstFromChain = true;
             }

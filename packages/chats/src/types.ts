@@ -10,8 +10,7 @@ export type ChatMessageMeta = {
     key: string;
     status: ChatMessageStatus;
     time: number;
-    created?: number; // TODO: what is it?
-    sender?: string;
+    sender: string;
     firstFromChain?: boolean;
     lastFromChain?: boolean;
 };
@@ -61,7 +60,7 @@ export type TransactionMessage = ChatMessageMeta & {
 
 export type TransactionCommentMessage = ChatMessageMeta & {
     type: ChatMessageType.TransactionComment;
-    text: string; // TODO
+    text: string;
     encrypted?: boolean;
     encType?: string;
 };

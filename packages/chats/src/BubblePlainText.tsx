@@ -5,9 +5,9 @@ import {
     Platform,
     View,
     Text,
+    Animated,
 } from "react-native";
 import ParsedText from "react-native-parsed-text";
-import Animated from "react-native-reanimated";
 import {
     UILocalized,
     UIColor,
@@ -60,42 +60,32 @@ const getBubbleStyle = (status: ChatMessageStatus) => {
     return styles.msgSending;
 };
 
-const BubbleTime = (props: ChatMessageMeta) => {
-    // TODO: check what logic was there before
-    const testID = "chat_text_message_time";
+// For e2e tests, to create unique id as in those tests
+// we don't know much about messages
+const createUniqTestId = (pattern, variable) => pattern.replace("%", variable);
 
-    const msgTime = formatTime(props.time || Date.now());
-
-    return (
-        <View style={styles.timeTextContainer}>
-            <Text
-                testID={testID}
-                style={[UIFont.tinyRegular(), styles.timeText]}
-            >
-                {msgTime}
-            </Text>
-        </View>
+const createTestId = (pattern: string, text: string) => {
+    return createUniqTestId(
+        pattern,
+        "_" + text.split(" ").slice(0, 2).join(" ")
     );
 };
+
+const BubbleTime = (props: ChatMessageMeta) => (
+    <View style={styles.timeTextContainer}>
+        <Text
+            testID={createTestId("chat_text_message%_time", props.text)}
+            style={[UIFont.tinyRegular(), styles.timeText]}
+        >
+            {formatTime(props.time || Date.now())}
+        </Text>
+    </View>
+);
 
 BubbleTime.displayName = "BubbleTime";
 
 export const BubblePlainText = (props: PlainTextMessage) => {
-    let testID;
-
-    if (props.text) {
-        if (props.text.split(" ")[1]) {
-            testID = `chat_text_message_${props.text.split(" ")[0]} ${
-                props.text.split(" ")[1]
-            }`;
-        } else {
-            testID = `chat_text_message_${props.text.split(" ")[0]}`;
-        }
-    } else {
-        testID = "chat_text_message";
-    }
-
-    const scale = React.useRef(new Animated.Value(1));
+    const scale = React.useRef(new Animated.Value(1)).current;
     const bubbleScaleAnimation = (scaleIn: boolean = false) => {
         Animated.spring(scale, {
             toValue: scaleIn ? UIConstant.animationScaleInFactor() : 1.0,
@@ -133,7 +123,10 @@ export const BubblePlainText = (props: PlainTextMessage) => {
                         ]}
                     >
                         <ParsedText
-                            testID={testID}
+                            testID={createTestId(
+                                "chat_text_message%",
+                                props.text
+                            )}
                             key={`chat_text_key_${props.key}`}
                             style={[
                                 getFontColor(props.status),

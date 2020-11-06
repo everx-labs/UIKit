@@ -23,7 +23,6 @@ const getLabel = (time: number) => {
     return dayjs(time).fromNow();
 };
 
-// TODO: maybe better to pass date instead i.e. move logic from a store?
 export const DateSeparator = React.memo(({ time }: { time: number }) => (
     <View style={styles.container}>
         <View style={styles.dateSeparator}>
