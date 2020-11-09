@@ -2164,6 +2164,16 @@ const Chat = () => (
         isLoadingMore={false}
         messages={[
             {
+                type: "trx",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "income",
+                    amount: new BigNumber(1),
+                },
+            },
+            {
                 type: "stm",
                 status: "sending",
                 time: Math.floor(Date.now() - 1 * 60 * 1000),

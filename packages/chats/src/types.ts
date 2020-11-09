@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 export enum ChatMessageStatus {
     Sent = "sent",
     Sending = "sending",
@@ -53,8 +55,9 @@ export enum TransactionType {
 export type TransactionMessage = ChatMessageMeta & {
     type: ChatMessageType.Transaction;
     info: {
-        type: TransactionType;
-        amount: number;
+        type: TransactionType; // TODO: so it's a status, right? :thinking:
+        amount: BigNumber;
+        text?: string;
     };
 };
 
