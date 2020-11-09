@@ -155,6 +155,8 @@ export {
     UIMenuView,
 };
 
+export { uiLocalized as UILocalized } from './packages/localization';
+
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';
 export type {
