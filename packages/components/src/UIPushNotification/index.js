@@ -1,10 +1,14 @@
 // @flow
 import React from 'react';
 import {
-    StyleSheet, View, Text,
-    TouchableWithoutFeedback,
+    StyleSheet, View, Text, Animated,
+    TouchableWithoutFeedback, Dimensions,
 } from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
+import {
+    PanGestureHandler,
+    State as RNGHState,
+} from 'react-native-gesture-handler';
 
 import {
     UIConstant,
@@ -15,20 +19,31 @@ import {
 import UINotice from '../UINotice';
 import type { MessageObject, NoticeAction } from '../UINotice';
 
+type RNGHEvent<T> = { nativeEvent: T };
+
+const { width } = Dimensions.get('window');
+const pageToastWidth = width - (UIConstant.contentOffset() * 2);
+
 const styles = StyleSheet.create({
     pnStyle: {
-        width: '100%',
+        width: Math.min(UIConstant.toastWidth(), pageToastWidth),
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         alignSelf: 'center',
         padding: UIConstant.contentOffset(),
+        top: UIConstant.contentOffset(),
+        left: UIConstant.contentOffset(),
+        right: UIConstant.contentOffset(),
+        borderRadius: UIConstant.alertBorderRadius(),
+        backgroundColor: UIColor.backgroundPrimary(),
+        ...UIConstant.commonShadow(),
     },
     titleStyle: {
-        color: UIColor.fa(),
+        color: UIColor.textPrimary(),
         ...UIFont.captionBold(),
     },
     msgStyle: {
-        color: UIColor.fa(),
+        color: UIColor.textPrimary(),
         ...UIFont.captionRegular(),
     },
 });
@@ -58,6 +73,8 @@ export default class UIPushNotification {
     static placement: Placement;
     static onPress: () => void;
     static shouldClose = false;
+    static touchY = new Animated.Value(0);
+    static swiping = false;
 
     // Actions
     static prepareAndShowNotification(args: ToastObject) {
@@ -77,6 +94,7 @@ export default class UIPushNotification {
             autoHide,
             position: { top: 0 },
         };
+        this.touchY.setValue(0);
         UINotice.showToastMessage(messageObject, messageComponent, showOnTop);
     }
 
@@ -85,26 +103,82 @@ export default class UIPushNotification {
         hideMessage();
     }
 
+    // Events
+    static onPanGestureEvent = ({
+        nativeEvent: { translationY },
+    }: RNGHEvent<{ translationY: number }>) => {
+        if (translationY < 0) {
+            this.swiping = true;
+            this.touchY.setValue(translationY);
+            this.shouldClose = Math.abs(translationY) > UIConstant.mediumContentOffset();
+            Animated.event([{ nativeEvent: { y: this.touchY } }], { useNativeDriver: true });
+        }
+    };
+
+    static onPanHandlerStateChange = ({
+        nativeEvent: { state, translationY },
+    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
+        if (this.shouldClose) {
+            // Moves toast outside screen and then it "closes" it.
+            Animated.spring(this.touchY, {
+                speed: 40,
+                toValue: -UIConstant.enormousContentOffset(),
+                useNativeDriver: true,
+            }).start(() => {
+                hideMessage();
+            });
+        } else {
+            // If the toast wasn't dragged enough distance to close, we want to
+            // reset its initial position.
+            Animated.spring(this.touchY, {
+                toValue: 0,
+                useNativeDriver: true, // for smother animation
+            }).start();
+        }
+        this.shouldClose = false;
+    };
+
     static renderMessageComponent() {
         return (
-            <TouchableWithoutFeedback
-                onPress={() => this.closeNotification()}
+            <PanGestureHandler
+                onGestureEvent={this.onPanGestureEvent}
+                onHandlerStateChange={this.onPanHandlerStateChange}
             >
-                <View style={[styles.pnStyle, { backgroundColor: UIColor.black() }]}>
-                    <Text
-                        testID={`title_notification`}
-                        style={styles.titleStyle}
+                <Animated.View
+                    style={[
+                        styles.containerStyle,
+                        {
+                            transform: [{
+                                translateY: Animated.add(this.touchY, new Animated.Value(0)),
+                            }],
+                        },
+                    ]}
+                >
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            if (!this.swiping) {
+                                this.closeNotification();
+                            }
+                            this.swiping = false;
+                        }}
                     >
-                        {this.title}
-                    </Text>
-                    <Text
-                        testID={`message_notification`}
-                        style={styles.msgStyle}
-                    >
-                        {this.message}
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
+                        <View style={styles.pnStyle}>
+                            {/* <Text
+                                testID={`title_notification`}
+                                style={styles.titleStyle}
+                            >
+                                {this.title}
+                            </Text> */}
+                            <Text
+                                testID={`message_notification`}
+                                style={styles.msgStyle}
+                            >
+                                {this.message}
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Animated.View>
+            </PanGestureHandler>
         );
     }
 }
