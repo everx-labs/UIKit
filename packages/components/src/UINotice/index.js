@@ -310,10 +310,11 @@ export default class UINotice
             0,
         );
         const offset = parentSpace / 2;
+        const position = messageObject.position || ({ bottom, right: offset, left: offset }: any);
 
         showMessage({
             animationDuration: UIConstant.animationDuration(),
-            position: ({ bottom, right: offset, left: offset }: any),
+            position,
             ...messageObject,
         });
     }
