@@ -9,6 +9,7 @@ import UIKitLanguages from './languages';
 import type { Language, Languages, LocalizedStringsMethods, StringLocaleInfo } from '../types';
 import { getDateFormatInfo, getNumberFormatInfo } from './utils';
 import type { UILocalizedData } from './languages/types';
+import { languagesInfo } from './constants';
 
 
 const defaultLocaleInfo: StringLocaleInfo = {
@@ -117,6 +118,14 @@ export class LocalizationService<T> extends LocalizedStrings {
         }
 
         return dayjs(time).format(`D MMM ${TIME_FORMAT}`);
+    }
+
+    get decimalSeparator(): string {
+        return this.localeInfo.numbers.decimal;
+    }
+
+    get languageName() {
+        return languagesInfo[this.getLanguage()].name;
     }
 }
 
