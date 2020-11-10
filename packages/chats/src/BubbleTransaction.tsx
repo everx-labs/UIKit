@@ -12,6 +12,7 @@ import { UILabel } from "@uikit/components";
 
 import { ChatMessageStatus, TransactionType } from "./types";
 import type { TransactionMessage } from "./types";
+import { useBubblePosition, BubblePosition } from "./useBubblePosition";
 
 const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
@@ -21,36 +22,35 @@ const getContainerTestID = (message: TransactionMessage) =>
         ? `transaction_message_${getValueForTestID(message)}_pending`
         : `transaction_message_${getValueForTestID(message)}`;
 
-const getBubbleContainer = (status: ChatMessageStatus) => {
-    if (status === ChatMessageStatus.Received) {
-        return styles.containerReceived;
+const getBubbleContainer = (position: BubblePosition) => {
+    if (position === BubblePosition.left) {
+        return styles.containerLeft;
+    } else if (position === BubblePosition.right) {
+        return styles.containerRight;
     }
-    return styles.container;
+    return null;
 };
 
-const getCardColor = (message: TransactionMessage) => {
+const getBubbleColor = (message: TransactionMessage) => {
     const { type } = message.info;
 
     if (type === TransactionType.Aborted) {
         return styles.cardAborted;
-    } else if (type === TransactionType.Deposit) {
-        return styles.cardDeposit;
     } else if (type === TransactionType.Withdraw) {
         return styles.cardWithdraw;
     } else if (type === TransactionType.Income) {
         return styles.cardIncome;
-    } else if (type === TransactionType.Spending) {
-        return styles.cardSpending;
-    } else if (type === TransactionType.Bill) {
-        return styles.cardBill;
-    } else if (type === TransactionType.Invoice) {
-        return styles.cardInvoice;
-    } else if (type === TransactionType.Invite) {
-        return styles.cardInvite;
-    } else if (type === TransactionType.Compliment) {
-        return styles.cardCompliment;
     }
 
+    return null;
+};
+
+const getBubbleCornerStyle = (position: BubblePosition) => {
+    if (position === BubblePosition.left) {
+        return styles.leftCorner;
+    } else if (position === BubblePosition.right) {
+        return styles.rightCorner;
+    }
     return null;
 };
 
@@ -76,8 +76,8 @@ const getCommentText = (message: TransactionMessage) => {
     return `${message.info.text || ""}, `; // TODO: check how it could be empty and why we use it
 };
 
-const TransactionSublabel = (props: TransactionMessage) => {
-    if (props.status === ChatMessageStatus.Aborted) {
+function TransactionSublabel(props: TransactionMessage) {
+    if (props.info.type === TransactionType.Aborted) {
         return (
             <>
                 <UILabel
@@ -94,24 +94,7 @@ const TransactionSublabel = (props: TransactionMessage) => {
             </>
         );
     }
-    if (props.status === ChatMessageStatus.Rejected) {
-        return (
-            <>
-                <UILabel
-                    testID={`transaction_message_${getValueForTestID(
-                        props
-                    )}_time`}
-                    role={UILabel.Role.TinyRegular}
-                    text={UILocalized.formatString(
-                        UILocalized.TransactionStatus.rejected,
-                        formatDate(props.time)
-                    )}
-                    style={styles.textWhite}
-                />
-            </>
-        );
-    }
-    if (props.status === ChatMessageStatus.Sending) {
+    if (props.status === ChatMessageStatus.Pending) {
         return (
             <>
                 <UILabel
@@ -141,20 +124,22 @@ const TransactionSublabel = (props: TransactionMessage) => {
             />
         </>
     );
-};
+}
 
 export function BubbleTransaction(props: TransactionMessage) {
     const { amount } = props.info;
+    const position = useBubblePosition(props.status);
 
     return (
-        <View style={[getBubbleContainer(props.status)]}>
+        <View style={[getBubbleContainer(position)]}>
             <View
                 testID={getContainerTestID(props)}
                 style={[
                     UIStyle.Common.justifyCenter(),
                     styles.trxCard,
-                    getCardColor(props),
-                    props.status === ChatMessageStatus.Sending &&
+                    getBubbleColor(props),
+                    getBubbleCornerStyle(position),
+                    props.status === ChatMessageStatus.Pending &&
                         UIStyle.common.opacity70(),
                 ]}
             >
@@ -185,12 +170,12 @@ export function BubbleTransaction(props: TransactionMessage) {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    containerRight: {
         paddingLeft: "20%",
         alignSelf: "flex-end",
         justifyContent: "flex-end",
     },
-    containerReceived: {
+    containerLeft: {
         paddingRight: "20%",
         alignSelf: "flex-start",
         justifyContent: "flex-start",
@@ -201,34 +186,14 @@ const styles = StyleSheet.create({
         paddingVertical: UIConstant.normalContentOffset(),
         backgroundColor: UIColor.green(),
     },
-    cardAborted: {
-        backgroundColor: UIColor.error(),
-    },
-    cardDeposit: {
-        backgroundColor: UIColor.primaryPlus(),
-    },
-    cardWithdraw: {
-        backgroundColor: UIColor.primaryPlus(),
-    },
     cardIncome: {
         backgroundColor: UIColor.green(),
     },
-    cardSpending: {
+    cardWithdraw: {
         backgroundColor: UIColor.black(),
     },
-    cardBill: {
-        backgroundColor: UIColor.white(),
-        ...UIConstant.cardShadow(),
-    },
-    cardInvoice: {
-        backgroundColor: UIColor.white(),
-        ...UIConstant.cardShadow(),
-    },
-    cardInvite: {
-        backgroundColor: UIColor.primary(),
-    },
-    cardCompliment: {
-        backgroundColor: UIColor.fa(),
+    cardAborted: {
+        backgroundColor: UIColor.error(),
     },
     textWhite: {
         // TODO: rename it
@@ -241,5 +206,11 @@ const styles = StyleSheet.create({
     textBlack: {
         // TODO: rename it
         color: UIColor.black(),
+    },
+    leftCorner: {
+        borderTopLeftRadius: 0,
+    },
+    rightCorner: {
+        borderBottomRightRadius: 0,
     },
 });

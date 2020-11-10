@@ -1,12 +1,19 @@
 import BigNumber from "bignumber.js";
 
+// Semantically describe a bubble position
+// By default:
+// Sent is places on the left side
+// Pending is also on the left
+// Received - on the right
+//
+// This could be changed in some global config (not there yet).
 export enum ChatMessageStatus {
     Sent = "sent",
-    Sending = "sending",
+    Pending = "pending",
     Received = "received",
-    Rejected = "rejected",
-    Aborted = "aborted",
 }
+
+// Aborted = "aborted", // TODO: make property on text bubbles to handle aborted state!
 
 export type ChatMessageMeta = {
     key: string;
@@ -31,6 +38,7 @@ export enum ChatMessageType {
 export type PlainTextMessage = ChatMessageMeta & {
     type: ChatMessageType.PlainText;
     text: string;
+    isAborted: boolean; // TODO: support it
     onTouchText?: () => void | Promise<void>;
     onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
@@ -41,15 +49,15 @@ export type SystemMessage = ChatMessageMeta & {
 };
 
 export enum TransactionType {
-    Aborted = "aborted",
-    Deposit = "deposit",
-    Withdraw = "withdraw",
     Income = "income",
-    Spending = "spending",
-    Bill = "bill",
-    Invoice = "invoice",
-    Invite = "invite",
-    Compliment = "compliment",
+    Withdraw = "withdraw",
+    Aborted = "aborted",
+    // Spending = "spending",
+    // Deposit = "deposit",
+    // Bill = "bill",
+    // Invoice = "invoice",
+    // Invite = "invite",
+    // Compliment = "compliment",
 }
 
 export type TransactionMessage = ChatMessageMeta & {

@@ -2165,12 +2165,66 @@ const Chat = () => (
         messages={[
             {
                 type: "trx",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "aborted",
+                    amount: new BigNumber(1),
+                },
+            },
+            {
+                type: "trx",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "aborted",
+                    amount: new BigNumber(1),
+                },
+            },
+            {
+                type: "trx",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "withdraw",
+                    amount: new BigNumber(1),
+                    text: "Sent",
+                },
+            },
+            {
+                type: "trx",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "withdraw",
+                    amount: new BigNumber(1),
+                    text: "Sent",
+                },
+            },
+            {
+                type: "trx",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "income",
+                    amount: new BigNumber(9999.123456789),
+                    text: "Received",
+                },
+            },
+            {
+                type: "trx",
                 status: "received",
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
                 sender: "0:000",
                 info: {
                     type: "income",
                     amount: new BigNumber(1),
+                    text: "Received",
                 },
             },
             {
