@@ -35,6 +35,10 @@ export class LocalizationService<T> extends LocalizedStrings {
         this.localeInfo = localeInfo;
     }
 
+    setLanguages = (languages: Language[]) => {
+        this.languages = languages;
+    }
+
     amountToLocale(
         number: BigNumber | string | number,
         options: NumberPartsOptions = {
@@ -92,9 +96,9 @@ export class LocalizationService<T> extends LocalizedStrings {
         this.localeInfo = localeInfo;
     }
 
-    changeLanguage = async (language: Language) => {
+    changeLanguage = (language: Language) => {
         this.setLanguage(language);
-        dayjs.locale(language);
+        dayjs.locale(this.dayJSLocale);
     };
 
     formatTime = (time: number, format: string = TIME_FORMAT): string => {
@@ -127,7 +131,27 @@ export class LocalizationService<T> extends LocalizedStrings {
     }
 
     get languageName() {
-        return languagesInfo[this.getLanguage()].name;
+        const language = this.getLanguageFromString(this.getLanguage());
+        return languagesInfo[language].name;
+    }
+
+    get dayJSLocale() {
+        const language = this.getLanguageFromString(this.getLanguage());
+        return languagesInfo[language].dayJS;
+    }
+
+    getLanguageFromString(language: string): Language {
+        if (this.languages.includes(language)) {
+            return language;
+        }
+
+        const [lang] = this.getInterfaceLanguage().split('-');
+
+        if (this.languages.includes(lang)) {
+            return lang;
+        }
+
+        return 'en';
     }
 }
 

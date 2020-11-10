@@ -15,6 +15,7 @@ export type LocalizedStringsMethods = {
 export type LanguageInfo = {
     name: string,
     country: string, // Works with UICountryPicker
+    dayJS: string, // Works with DayJS
 }
 
 export interface LanguageOptions {
