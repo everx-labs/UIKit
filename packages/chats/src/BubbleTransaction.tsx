@@ -83,7 +83,22 @@ const getCommentColor = (message: TransactionMessage) => {
 };
 
 const getCommentText = (message: TransactionMessage) => {
-    return `${message.info.text || ""}, `; // TODO: check how it could be empty and why we use it
+    return `${message.info.text || ""}, `; // TODO: move translations to UILocalized
+};
+
+const getActionString = (type: TransactionType) => {
+    if (type === TransactionType.Aborted) {
+        return "Tap to resend"; // TODO: TONLocalized.chats.message.tapToResend
+    }
+
+    return null;
+};
+
+const getActionStringStyle = (type: TransactionType) => {
+    if (type === TransactionType.Aborted) {
+        return UIStyle.color.getColorStyle(UIColor.error());
+    }
+    return null;
 };
 
 function TransactionSublabel(props: TransactionMessage) {
@@ -178,6 +193,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
 
 export function BubbleTransaction(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
+    const actionString = getActionString(props.info.type);
 
     return (
         <View style={getBubbleContainer(position)}>
@@ -186,6 +202,16 @@ export function BubbleTransaction(props: TransactionMessage) {
                 content={
                     <View style={getBubbleInner(position)}>
                         <BubbleTransactionMain {...props} />
+                        {actionString && (
+                            <UILabel
+                                style={[
+                                    styles.actionString,
+                                    getActionStringStyle(props.info.type),
+                                ]}
+                                role={UILabel.Role.TinyRegular}
+                                text={actionString}
+                            />
+                        )}
                         {props.comment && (
                             <BubbleTransactionComment
                                 {...props.comment}
@@ -252,5 +278,11 @@ const styles = StyleSheet.create({
     },
     rightCorner: {
         borderBottomRightRadius: 0,
+    },
+    actionString: {
+        paddingTop: UIConstant.tinyContentOffset(),
+        letterSpacing: 0.5,
+        textAlign: "right",
+        color: UIColor.grey(),
     },
 });
