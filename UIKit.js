@@ -52,6 +52,7 @@ export {
     UISectionHeader,
     UISeedPhraseInput,
     UIContractAddressInput,
+    UIPushNotification,
     UISeparator,
     UISlider,
     UISpinnerOverlay,
