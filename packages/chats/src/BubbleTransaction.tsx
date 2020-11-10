@@ -8,17 +8,18 @@ import {
     UIConstant,
     formatDate,
 } from "@uikit/core";
-import { UILabel } from "@uikit/components";
+import { UILabel, UIScaleButton } from "@uikit/components";
 
 import { ChatMessageStatus, TransactionType } from "./types";
 import type { TransactionMessage } from "./types";
 import { useBubblePosition, BubblePosition } from "./useBubblePosition";
+import { BubbleTransactionComment } from "./BubbleTransactionComment";
 
 const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
 
 const getContainerTestID = (message: TransactionMessage) =>
-    message.status === ChatMessageStatus.Sending
+    message.status === ChatMessageStatus.Pending
         ? `transaction_message_${getValueForTestID(message)}_pending`
         : `transaction_message_${getValueForTestID(message)}`;
 
@@ -27,6 +28,15 @@ const getBubbleContainer = (position: BubblePosition) => {
         return styles.containerLeft;
     } else if (position === BubblePosition.right) {
         return styles.containerRight;
+    }
+    return null;
+};
+
+const getBubbleInner = (position: BubblePosition) => {
+    if (position === BubblePosition.left) {
+        return styles.innerLeft;
+    } else if (position === BubblePosition.right) {
+        return styles.innerRight;
     }
     return null;
 };
@@ -57,18 +67,18 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
 const getAmountColor = (message: TransactionMessage) => {
     const { type } = message.info;
 
-    if (type === TransactionType.Bill || type === TransactionType.Compliment) {
-        return styles.textGrey;
-    }
+    // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
+    //     return styles.textGrey;
+    // }
     return styles.textWhite;
 };
 
 const getCommentColor = (message: TransactionMessage) => {
     const { type } = message.info;
 
-    if (type === TransactionType.Bill || type === TransactionType.Compliment) {
-        return styles.textBlack;
-    }
+    // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
+    //     return styles.textBlack;
+    // }
     return styles.textWhite;
 };
 
@@ -126,45 +136,67 @@ function TransactionSublabel(props: TransactionMessage) {
     );
 }
 
-export function BubbleTransaction(props: TransactionMessage) {
+function BubbleTransactionMain(props: TransactionMessage) {
+    const position = useBubblePosition(props.status);
     const { amount } = props.info;
+    return (
+        <View
+            testID={getContainerTestID(props)}
+            style={[
+                UIStyle.Common.justifyCenter(),
+                styles.trxCard,
+                getBubbleColor(props),
+                getBubbleCornerStyle(position),
+                props.status === ChatMessageStatus.Pending &&
+                    UIStyle.common.opacity70(),
+            ]}
+        >
+            <View
+                style={[
+                    UIStyle.Common.flexRow(),
+                    UIStyle.Margin.bottomTiny(),
+                    UIStyle.Common.justifyStart(),
+                ]}
+            >
+                <UILabel
+                    style={[getAmountColor(props)]}
+                    role={UILabel.Role.PromoMedium}
+                    text={amount.toFixed()}
+                />
+            </View>
+            <View
+                style={[
+                    UIStyle.Common.flexRow(),
+                    UIStyle.Common.justifyStart(),
+                ]}
+            >
+                <TransactionSublabel {...props} />
+            </View>
+        </View>
+    );
+}
+
+export function BubbleTransaction(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
 
     return (
-        <View style={[getBubbleContainer(position)]}>
-            <View
-                testID={getContainerTestID(props)}
-                style={[
-                    UIStyle.Common.justifyCenter(),
-                    styles.trxCard,
-                    getBubbleColor(props),
-                    getBubbleCornerStyle(position),
-                    props.status === ChatMessageStatus.Pending &&
-                        UIStyle.common.opacity70(),
-                ]}
-            >
-                <View
-                    style={[
-                        UIStyle.Common.flexRow(),
-                        UIStyle.Margin.bottomTiny(),
-                        UIStyle.Common.justifyStart(),
-                    ]}
-                >
-                    <UILabel
-                        style={[getAmountColor(props)]}
-                        role={UILabel.Role.PromoMedium}
-                        text={amount.toFixed()}
-                    />
-                </View>
-                <View
-                    style={[
-                        UIStyle.Common.flexRow(),
-                        UIStyle.Common.justifyStart(),
-                    ]}
-                >
-                    <TransactionSublabel {...props} />
-                </View>
-            </View>
+        <View style={getBubbleContainer(position)}>
+            <UIScaleButton
+                onPress={props.onPress}
+                content={
+                    <View style={getBubbleInner(position)}>
+                        <BubbleTransactionMain {...props} />
+                        {props.comment && (
+                            <BubbleTransactionComment
+                                {...props.comment}
+                                status={props.status}
+                                type={props.info.type}
+                                onPress={props.onPress}
+                            />
+                        )}
+                    </View>
+                }
+            />
         </View>
     );
 }
@@ -179,6 +211,14 @@ const styles = StyleSheet.create({
         paddingRight: "20%",
         alignSelf: "flex-start",
         justifyContent: "flex-start",
+    },
+    innerLeft: {
+        flexDirection: "column",
+        alignItems: "flex-start",
+    },
+    innerRight: {
+        flexDirection: "column",
+        alignItems: "flex-end",
     },
     trxCard: {
         borderRadius: UIConstant.borderRadius(),

@@ -55,14 +55,14 @@ const getBubbleContainer = (position: BubblePosition) => {
     return null;
 };
 
-const getBubbleStyle = (status: ChatMessageStatus) => {
-    if (status === ChatMessageStatus.Received) {
+const getBubbleStyle = (message: PlainTextMessage) => {
+    if (message.status === ChatMessageStatus.Received) {
         return styles.msgReceived;
-    } else if (status === ChatMessageStatus.Sent) {
+    } else if (message.status === ChatMessageStatus.Sent) {
         return styles.msgSent;
-    } else if (status === ChatMessageStatus.Sending) {
+    } else if (message.status === ChatMessageStatus.Pending) {
         return styles.msgSending;
-    } else if (status === ChatMessageStatus.Aborted) {
+    } else if (message.isAborted) {
         return styles.msgAborted;
     }
     return styles.msgSending;
@@ -127,7 +127,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                             UIStyle.padding.verticalSmall(),
                             UIStyle.padding.horizontalNormal(),
                             styles.msgContainer,
-                            getBubbleStyle(props.status),
+                            getBubbleStyle(props),
                             getRoundedCornerStyle(props, position),
                         ]}
                     >

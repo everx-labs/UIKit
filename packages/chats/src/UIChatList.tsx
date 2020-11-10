@@ -16,12 +16,12 @@ import { UIConstant } from "@uikit/core";
 
 import { sectionListGetItemLayout } from "./UIChatListLayout";
 import { UIChatListFormatter } from "./UIChatListFormatter";
+import type { Section } from "./UIChatListFormatter";
 import { ChatMessageType } from "./types";
 import type { ChatMessage } from "./types";
 import { BubblePlainText } from "./BubblePlainText";
 import { BubbleSystem } from "./BubbleSystem";
 import { BubbleTransaction } from "./BubbleTransaction";
-import { BubbleTransactionComment } from "./BubbleTransactionComment";
 import { BubbleImage } from "./BubbleImage";
 import { BubbleDocument } from "./BubbleDocument";
 import { BubbleSticker } from "./BubbleSticker";
@@ -63,8 +63,6 @@ const renderBubble = (message: ChatMessage) => {
             return <BubbleSystem {...message} />;
         case ChatMessageType.Transaction:
             return <BubbleTransaction {...message} />;
-        case ChatMessageType.TransactionComment:
-            return <BubbleTransactionComment {...message} />;
         case ChatMessageType.Image:
             return <BubbleImage {...message} />;
         case ChatMessageType.Document:
@@ -100,7 +98,7 @@ const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
     );
 };
 
-const renderSectionTitle = ({ section }: { section: { title: string } }) => (
+const renderSectionTitle = ({ section }: { section: Section }) => (
     <DateSeparator time={section.time} />
 );
 

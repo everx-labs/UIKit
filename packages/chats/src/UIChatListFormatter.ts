@@ -1,7 +1,7 @@
 import { ChatMessageType } from "./types";
 import type { ChatMessage } from "./types";
 
-type Section = { time: number; data: ChatMessage[]; key?: number };
+export type Section = { time: number; data: ChatMessage[]; key?: number };
 
 export class UIChatListFormatter {
     static getSections(messages: ChatMessage[]): Section[] {
@@ -20,13 +20,11 @@ export class UIChatListFormatter {
                     nextMessage?.type === ChatMessageType.System;
                 const nextIsTransaction =
                     nextMessage?.type === ChatMessageType.Transaction;
-                const nextIsTransactionComment =
-                    nextMessage?.type === ChatMessageType.TransactionComment;
 
                 message.lastFromChain =
                     message.sender !== nextMessage?.sender ||
                     nextIsTransaction ||
-                    (isTransaction && !nextIsTransactionComment) ||
+                    isTransaction ||
                     (!isSystem && nextIsSystem) ||
                     (isSystem && !nextIsSystem);
             } else {

@@ -28,7 +28,6 @@ export enum ChatMessageType {
     PlainText = "stm",
     System = "sys",
     Transaction = "trx",
-    TransactionComment = "trxComment",
     Image = "aim",
     Document = "doc",
     Sticker = "stk",
@@ -60,20 +59,20 @@ export enum TransactionType {
     // Compliment = "compliment",
 }
 
+export type TransactionComment = {
+    text: string;
+    encrypted: boolean;
+};
+
 export type TransactionMessage = ChatMessageMeta & {
     type: ChatMessageType.Transaction;
     info: {
-        type: TransactionType; // TODO: so it's a status, right? :thinking:
+        type: TransactionType;
         amount: BigNumber;
         text?: string;
     };
-};
-
-export type TransactionCommentMessage = ChatMessageMeta & {
-    type: ChatMessageType.TransactionComment;
-    text: string;
-    encrypted?: boolean;
-    encType?: string;
+    comment?: TransactionComment;
+    onPress?: () => void | Promise<void>;
 };
 
 export type ImageMessage = ChatMessageMeta & {
@@ -117,7 +116,6 @@ export type ChatMessage =
     | PlainTextMessage
     | SystemMessage
     | TransactionMessage
-    | TransactionCommentMessage
     | ImageMessage
     | DocumentMessage
     | StickerMessage

@@ -2172,6 +2172,12 @@ const Chat = () => (
                     type: "aborted",
                     amount: new BigNumber(1),
                 },
+                comment: {
+                    text: "Pocket money",
+                },
+                onPress() {
+                    console.log("hey");
+                },
             },
             {
                 type: "trx",
@@ -2192,6 +2198,10 @@ const Chat = () => (
                     type: "withdraw",
                     amount: new BigNumber(1),
                     text: "Sent",
+                },
+                comment: {
+                    text: "Some money",
+                    encrypted: true,
                 },
             },
             {
@@ -2225,6 +2235,10 @@ const Chat = () => (
                     type: "income",
                     amount: new BigNumber(1),
                     text: "Received",
+                },
+                comment: {
+                    text: "Take it",
+                    encrypted: true,
                 },
             },
             {
