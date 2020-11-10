@@ -17,7 +17,7 @@ import {
 } from '@uikit/core';
 
 import UINotice from '../UINotice';
-import type { MessageObject, NoticeAction } from '../UINotice';
+import type { MessageObject } from '../UINotice';
 
 type RNGHEvent<T> = { nativeEvent: T };
 
@@ -85,7 +85,7 @@ export default class UIPushNotification {
         } = args;
         this.title = title || '';
         this.message = message || '';
-        this.onPress = onPress ? onPress : () => {};
+        this.onPress = onPress || (() => {});
         const messageComponent = this.renderMessageComponent();
         const messageObject: MessageObject = {
             message: '', // unused but required param
@@ -163,16 +163,20 @@ export default class UIPushNotification {
                         }}
                     >
                         <View style={styles.pnStyle}>
-                            {this.title.length &&  (
-                                <Text
-                                    testID={`title_notification`}
-                                    style={styles.titleStyle}
-                                >
-                                    {this.title}
-                                </Text>
-                            )}
+                            {
+                                this.title.length > 0
+                                    ? (
+                                        <Text
+                                            testID="title_notification"
+                                            style={styles.titleStyle}
+                                        >
+                                            {this.title}
+                                        </Text>
+                                    )
+                                    : undefined
+                            }
                             <Text
-                                testID={`message_notification`}
+                                testID="message_notification"
                                 style={styles.msgStyle}
                             >
                                 {this.message}
