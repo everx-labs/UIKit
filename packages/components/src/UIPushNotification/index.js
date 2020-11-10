@@ -53,7 +53,7 @@ type ToastObject = {
     message: string,
     type?: string,
     autoHide?: boolean,
-    action?: NoticeAction,
+    onPress?: () => void,
     duration?: number,
     showOnTop?: boolean,
 }
@@ -61,7 +61,7 @@ type ToastObject = {
 export default class UIPushNotification {
     static showNotification(args: string | ToastObject, duration?: number) {
         if (typeof args === 'string') {
-            this.prepareAndShowNotification({ message: args, duration });
+            this.prepareAndShowNotification({ message: args, title: '', duration });
         } else {
             this.prepareAndShowNotification(args);
         }
@@ -70,7 +70,6 @@ export default class UIPushNotification {
     // Internals
     static title: string;
     static message: string;
-    static placement: Placement;
     static onPress: () => void;
     static shouldClose = false;
     static touchY = new Animated.Value(0);
@@ -80,12 +79,13 @@ export default class UIPushNotification {
     static prepareAndShowNotification(args: ToastObject) {
         const {
             message, title,
-            autoHide = true, onPress,
+            autoHide = true,
+            onPress,
             showOnTop,
         } = args;
         this.title = title || '';
         this.message = message || '';
-        this.onPress = onPress;
+        this.onPress = onPress ? onPress : () => {};
         const messageComponent = this.renderMessageComponent();
         const messageObject: MessageObject = {
             message: '', // unused but required param
@@ -163,12 +163,14 @@ export default class UIPushNotification {
                         }}
                     >
                         <View style={styles.pnStyle}>
-                            {/* <Text
-                                testID={`title_notification`}
-                                style={styles.titleStyle}
-                            >
-                                {this.title}
-                            </Text> */}
+                            {this.title.length &&  (
+                                <Text
+                                    testID={`title_notification`}
+                                    style={styles.titleStyle}
+                                >
+                                    {this.title}
+                                </Text>
+                            )}
                             <Text
                                 testID={`message_notification`}
                                 style={styles.msgStyle}
