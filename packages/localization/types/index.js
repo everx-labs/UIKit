@@ -22,7 +22,7 @@ export interface LanguageOptions {
     images?: { [string]: any },
 }
 
-export interface LanguageConstants {
+export type LanguageConstants = {
     [string]: any,
 }
 

@@ -5,12 +5,14 @@ import BigNumber from 'bignumber.js';
 import { UIConstant, UIFunction } from '@uikit/core';
 import type { NumberParts, NumberPartsOptions } from '@uikit/core';
 
-import UIKitLanguages from './languages';
+import availableLanguages from './languages';
 import type { Language, Languages, LocalizedStringsMethods, StringLocaleInfo } from '../types';
-import { getDateFormatInfo, getNumberFormatInfo } from './utils';
+import { getDateFormatInfo, getNumberFormatInfo, prepareLocales } from './utils';
 import type { UILocalizedData } from './languages/types';
-import { languagesInfo } from './constants';
+import { languagesInfo, predefinedConstants } from './constants';
 
+
+const preparedLanguages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
 
 const defaultLocaleInfo: StringLocaleInfo = {
     name: '',
@@ -133,7 +135,7 @@ export class LocalizationService<T> extends LocalizedStrings {
 type LocalizedInstance = { ...UILocalizedData } & LocalizationService<UILocalizedData> & LocalizedStringsMethods
 
 export const uiLocalized: LocalizedInstance = new LocalizationService<UILocalizedData>({
-    languages: UIKitLanguages,
+    languages: preparedLanguages,
 });
 
 export const TIME_FORMAT = 'HH:mm';
