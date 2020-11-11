@@ -1,4 +1,5 @@
-import BigNumber from "bignumber.js";
+import type { ImageSourcePropType } from "react-native";
+import type BigNumber from "bignumber.js";
 
 // Semantically describe a bubble position
 // By default:
@@ -93,6 +94,7 @@ export type DocumentMessage = ChatMessageMeta & {
 
 export type StickerMessage = ChatMessageMeta & {
     type: ChatMessageType.Sticker;
+    source: ImageSourcePropType;
 };
 
 export enum TypeOfAction {
