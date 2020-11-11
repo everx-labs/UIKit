@@ -39,6 +39,7 @@ const UIColorThemeDark: UIColorThemeData = {
         positive: UIColorPalette.background.darkPositive,
         negative: UIColorPalette.background.darkNegative,
         brake: UIColorPalette.background.darkBrake,
+        notification: UIColorPalette.background.notification,
     },
     button: {
         background: {
