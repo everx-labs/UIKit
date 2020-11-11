@@ -25,6 +25,9 @@ const { width } = Dimensions.get('window');
 const pageToastWidth = width - (UIConstant.contentOffset() * 2);
 
 const styles = StyleSheet.create({
+    containerStyle: {
+        // TODO: seems like it's missing
+    },
     pnStyle: {
         width: Math.min(UIConstant.toastWidth(), pageToastWidth),
         flexDirection: 'column',
