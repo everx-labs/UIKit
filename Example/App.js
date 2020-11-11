@@ -2195,7 +2195,7 @@ const Chat = () => (
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
                 sender: "0:000",
                 info: {
-                    type: "withdraw",
+                    type: "expense",
                     amount: new BigNumber(1),
                     text: "Sent",
                 },
@@ -2210,7 +2210,7 @@ const Chat = () => (
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
                 sender: "0:000",
                 info: {
-                    type: "withdraw",
+                    type: "expense",
                     amount: new BigNumber(1),
                     text: "Sent",
                 },
