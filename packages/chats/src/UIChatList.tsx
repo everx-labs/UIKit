@@ -85,6 +85,7 @@ const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
         <View
             onLayout={(e) => onLayoutCell(item.key, e)}
             style={{
+                // TODO: this one is incorrect, there are different paddings for bubbles
                 paddingTop: item.firstFromChain
                     ? UIConstant.smallContentOffset()
                     : 0,

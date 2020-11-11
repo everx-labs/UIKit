@@ -2164,6 +2164,13 @@ const Chat = () => (
         isLoadingMore={false}
         messages={[
             {
+                type: "sys",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
+                sender: "0:000", // TODO: is this mandatory field for system message?
+                text: "This is a system message",
+            },
+            {
                 type: "trx",
                 status: "sent",
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
