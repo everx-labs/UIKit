@@ -21,8 +21,6 @@ import {
     UIConstant,
     UIStyle,
     UIFont,
-    UILocalized,
-    formatTime,
 } from '@uikit/core';
 import {
     UIComponent,
@@ -30,6 +28,8 @@ import {
 } from '@uikit/components';
 import UIAssets from '@uikit/assets';
 import { UIShareManager } from '@uikit/navigation';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIChatImageCell from './UIChatImageCell';
 import UIChatStickerCell from './UIChatStickerCell';
@@ -170,10 +170,10 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
         const msg = this.props.additionalInfo?.message;
 
         if (date) {
-            return formatTime(date.valueOf());
+            return uiLocalized.formatTime(date.valueOf());
         }
 
-        return formatTime(msg?.info.created || Date.now());
+        return uiLocalized.formatTime(msg?.info.created || Date.now());
     }
 
     wrapInMessageContainer(
@@ -424,7 +424,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                             UIStyle.Color.getColorStyle(UIColor.textPrimary()),
                         ]}
                     >
-                        {UILocalized.SayHello}
+                        {uiLocalized.SayHello}
                     </Text>
                 </View>
             </View>
@@ -548,7 +548,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                 onLongPress={() => {
                     if (data && (data instanceof String || typeof data === 'string')) {
                         this.bubbleScaleAnimation(true);
-                        UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
+                        UIShareManager.copyToClipboard(data, uiLocalized.MessageCopiedToClipboard);
                     }
                 }}
             >

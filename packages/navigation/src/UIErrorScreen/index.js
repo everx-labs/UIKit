@@ -5,7 +5,6 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import {
     UIStyle,
-    UILocalized,
     UIConstant,
 } from '@uikit/core';
 import {
@@ -19,6 +18,8 @@ import image404 from '@uikit/assets/404/404.png';
 import icoTonLabsBlack from '@uikit/assets/logo/tonlabs/tonlabs-black.png';
 // TODO: remove from here to get rid of cycled dependency between the packages!
 import type { CreateNavigationOptions } from '@uikit/legacy/UINavigationBar';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIScreen from '../UIScreen';
 
@@ -57,11 +58,11 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     static errors = {
         [UIErrorScreen.errorCodes.pageNotfound]: {
             title: '404',
-            caption: UILocalized.WeCanTFindThePageYouReLookingFor,
+            caption: uiLocalized.WeCanTFindThePageYouReLookingFor,
         },
         [UIErrorScreen.errorCodes.serviceUnavailable]: {
-            title: UILocalized.WelcomeTo000,
-            caption: UILocalized.TheRequestedServiceIsDownToGetUpAsapTryAgainLater,
+            title: uiLocalized.WelcomeTo000,
+            caption: uiLocalized.TheRequestedServiceIsDownToGetUpAsapTryAgainLater,
         },
     };
 
@@ -189,7 +190,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                 <UITextButton
                     testID={UIErrorScreen.testIDs.BACK_TO_HOME_BUTTON}
                     align={UITextButton.align.center}
-                    title={UILocalized.BackToHome}
+                    title={uiLocalized.BackToHome}
                     buttonStyle={[UIStyle.common.positionAbsolute(), styles.textButton]}
                     onPress={this.onPressBackToHome}
                 />

@@ -9,7 +9,6 @@ import {
     UIConstant,
     UIStyle,
     UIColor,
-    UILocalized,
 } from '@uikit/core';
 import {
     UIComponent,
@@ -17,6 +16,8 @@ import {
     UITooltip,
 } from '@uikit/components';
 import type { UIColorThemeNameType } from '@uikit/core/UIColor/UIColorTypes';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const styles = StyleSheet.create({
     container: {
@@ -292,7 +293,7 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             <UITooltip message={disclaimer}>
                 <Text style={textStyle}>
                     {'. '}
-                    {UILocalized.Disclaimer}
+                    {uiLocalized.Disclaimer}
                 </Text>
             </UITooltip>
         );

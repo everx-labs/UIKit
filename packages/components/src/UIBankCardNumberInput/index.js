@@ -5,11 +5,12 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import {
     UIColor,
-    UILocalized,
     UIStyle,
     UIFunction,
 } from '@uikit/core';
 import UIAssets from '@uikit/assets';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
 import UIDetailsInput from '../UIDetailsInput';
@@ -130,13 +131,13 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
     getComment() {
         const { value, comment } = this.props;
         if (value && !this.isValidCardNumber() && this.state.highlightError) {
-            return UILocalized.InvalidBankCardNumber;
+            return uiLocalized.InvalidBankCardNumber;
         }
         return comment || '';
     }
 
     getPlaceholder() {
-        return this.props.placeholder || UILocalized.BankCardNumber;
+        return this.props.placeholder || uiLocalized.BankCardNumber;
     }
 
     // Render

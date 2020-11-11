@@ -3,9 +3,10 @@ import React from 'react';
 
 import {
     UIFunction,
-    UILocalized,
     UIColor,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
 import UIDetailsInput from '../UIDetailsInput';
@@ -59,13 +60,13 @@ export default class UIEmailInput extends UIComponent<DetailsProps, ActionState 
 
     getPlaceholder() {
         const { placeholder } = this.props;
-        return placeholder || UILocalized.EmailAddress;
+        return placeholder || uiLocalized.EmailAddress;
     }
 
     getComment() {
         const { value, comment } = this.props;
         if (value && this.isSubmitDisabled() && this.state.highlightError) {
-            return UILocalized.InvalidEmail;
+            return uiLocalized.InvalidEmail;
         }
         return comment;
     }

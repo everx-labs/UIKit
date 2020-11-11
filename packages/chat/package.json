@@ -29,7 +29,6 @@
     "@uikit/navigation": "~2.0.0",
     "bignumber.js": "9.0.0",
     "lodash": "4.17.14",
-    "moment": "2.24.0",
     "react-native-flash-message": "0.1.13",
     "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
     "react-style-proptype": "3.2.2"

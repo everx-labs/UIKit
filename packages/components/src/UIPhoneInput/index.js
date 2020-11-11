@@ -4,9 +4,10 @@ import { Platform } from 'react-native';
 
 import {
     UIFunction,
-    UILocalized,
     UIColor,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
 import UIDetailsInput from '../UIDetailsInput';
@@ -54,13 +55,13 @@ export default class UIPhoneInput extends UIComponent<DetailsProps, State & Phon
     }
 
     getPlaceholder() {
-        return this.props.placeholder || UILocalized.Phone;
+        return this.props.placeholder || uiLocalized.Phone;
     }
 
     getComment() {
         const { value, comment } = this.props;
         if (value && this.isSubmitDisabled() && this?.state?.highlightError) {
-            return UILocalized.InvalidPhone;
+            return uiLocalized.InvalidPhone;
         }
         return comment;
     }

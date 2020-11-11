@@ -6,12 +6,13 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 
 import {
     UIConstant,
-    UILocalized,
     UITextStyle,
     UIFont,
     UIColor,
 } from '@uikit/core';
 import { UISearchBar } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIModalController from '../UIModalController';
 import type {
@@ -211,7 +212,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             <React.Fragment>
                 <UISearchBar
                     value={this.getExpression()}
-                    placeholder={`${UILocalized.Search}...`}
+                    placeholder={`${uiLocalized.Search}...`}
                     ref={(component) => { this.countryPickerInput = component; }}
                     onChangeExpression={this.onChangeExpression}
                     bottomSeparatorStyle={countryPickerStyle.separator}
@@ -233,7 +234,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                     filterable
                     renderFilter={() => null}
                     disabledCountries={this.disabledCountries}
-                    disabledCountryText={UILocalized.serviceUnavailable}
+                    disabledCountryText={uiLocalized.serviceUnavailable}
                     excludedCountries={this.excludedCountries}
                     styles={countryPickerStyle}
                     onChange={this.onPickCountry}

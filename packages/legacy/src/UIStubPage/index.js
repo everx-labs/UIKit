@@ -6,7 +6,6 @@ import {
     UIConstant,
     UIStyle,
     UIColor,
-    UILocalized,
 } from '@uikit/core';
 import {
     UIComponent,
@@ -14,6 +13,9 @@ import {
     UIToastMessage,
     UIBackgroundView,
 } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import icoTonLabs from '@uikit/assets/logo/tonlabs/tonlabs-primary-minus.png';
 
 import UIBottomBar from '../UIBottomBar';
@@ -71,7 +73,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         needBottomIcon: true,
         title: '',
         label: '',
-        caption: UILocalized.GetNotifiedWhenWeLaunch,
+        caption: uiLocalized.GetNotifiedWhenWeLaunch,
         disclaimer: '',
         onSubmit: () => {},
     };
@@ -105,7 +107,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
     onSubmit = () => {
         this.setSubmitted();
         setTimeout(() => {
-            UIToastMessage.showMessage(UILocalized.ThanksForCooperation);
+            UIToastMessage.showMessage(uiLocalized.ThanksForCooperation);
         }, UIConstant.feedbackDelay());
         const email = this.getEmail();
         // ReactGA.event({ category: 'Form', action: 'onSubmit' });
@@ -169,7 +171,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
             return (
                 <View style={UIStyle.height.greatCell()}>
                     <Text style={[UIStyle.text.whiteBodyRegular(), UIStyle.margin.topHuge()]}>
-                        {UILocalized.WillGetInTouchWithYouSoon}
+                        {uiLocalized.WillGetInTouchWithYouSoon}
                     </Text>
                 </View>
             );
@@ -194,9 +196,9 @@ export default class UIStubPage extends UIComponent<Props, State> {
         return (
             <UIBottomBar
                 theme={UIColor.Theme.Action}
-                accentText={UILocalized.Contact}
-                accentEmail={UILocalized.PressEmail}
-                copyRight={UILocalized.CopyRight}
+                accentText={uiLocalized.Contact}
+                accentEmail={uiLocalized.PressEmail}
+                copyRight={uiLocalized.CopyRight}
                 disclaimer={this.props.disclaimer}
             />
         );
@@ -210,7 +212,7 @@ export default class UIStubPage extends UIComponent<Props, State> {
         const bottomIcon = needBottomIcon
             ? <Image source={icoTonLabs} style={styles.bottomIcon} />
             : null;
-        const labelText = label || UILocalized.TONLabel;
+        const labelText = label || uiLocalized.TONLabel;
         return (
             <View
                 onLayout={this.onLayout}

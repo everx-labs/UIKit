@@ -7,9 +7,10 @@ import { MaterialIndicator } from 'react-native-indicators';
 import {
     UIColor,
     UIConstant,
-    UILocalized,
     UIStyle,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UILabel from '../UILabel';
 import UIComponent from '../UIComponent';
@@ -56,7 +57,7 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
         textStyle: {},
         onLoadMore: () => {},
         isLoadingMore: false,
-        label: UILocalized.LoadMore,
+        label: uiLocalized.LoadMore,
     };
 
     renderIndicator() {

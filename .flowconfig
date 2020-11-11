@@ -53,6 +53,8 @@ module.name_mapper='^@uikit/\([^/]*\)$' -> '<PROJECT_ROOT>/packages/\1/src/'
 module.name_mapper='^@uikit/\([^/]*\)/types\(.*\)$' -> '<PROJECT_ROOT>/packages/\1/types\2'
 module.name_mapper='^@uikit/\([^/]*\)/\(.*\)$' -> '<PROJECT_ROOT>/packages/\1/src/\2'
 
+module.name_mapper='^@tonlabs/uikit.\(.*\)$' -> '<PROJECT_ROOT>/packages/\1'
+
 suppress_type=$FlowIssue
 suppress_type=$FlowFixMe
 suppress_type=$FlowFixMeProps
