@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
 import { Platform, View } from 'react-native';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {
     UIColor,
     UIConstant,
-    UILocalized,
     UIStyle,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIDetailsInput from '../UIDetailsInput';
 import type { DetailsProps } from '../UIDetailsInput';
@@ -32,7 +32,7 @@ export default class UIContractAddressInput extends UIDetailsInput<Props, State>
         autoCapitalize: 'none',
         returnKeyType: 'done',
         blurOnSubmit: true,
-        placeholder: UILocalized.SmartContractAddress,
+        placeholder: uiLocalized.SmartContractAddress,
         autoFocus: false,
         forceMultiLine: true,
         keyboardType: 'default', /* Platform.OS === 'android'
@@ -126,7 +126,7 @@ export default class UIContractAddressInput extends UIDetailsInput<Props, State>
     getComment() {
         const { value, comment, verify } = this.props;
         if (verify && value && !this.isAddressValid(value) && this.state.highlightError) {
-            return UILocalized.InvalidContractAddress;
+            return uiLocalized.InvalidContractAddress;
         }
         return comment;
     }

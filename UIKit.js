@@ -77,14 +77,6 @@ export {
     UIFont,
     UITextStyle,
     UIFunction,
-    UILocalized,
-    UILocalizedService,
-    languagesInfo,
-    prepareLocales,
-    prepareImages,
-    prepare,
-    formatTime,
-    formatDate,
     UIStyle,
 } from './packages/core/src';
 export {
@@ -163,6 +155,8 @@ export {
     UIMenuBackground,
     UIMenuView,
 };
+
+export { uiLocalized as UILocalized } from './packages/localization';
 
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';

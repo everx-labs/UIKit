@@ -9,10 +9,11 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import {
     UIStyle,
     UIColor,
-    UILocalized,
     UIConstant,
 } from '@uikit/core';
 import { UIComponent } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const styles = StyleSheet.create({
     navigationView: {
@@ -66,7 +67,7 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
         title: '',
         bottomLine: false,
         cancelImage: null,
-        cancelText: UILocalized.Cancel,
+        cancelText: uiLocalized.Cancel,
         swipeToDismiss: false,
         dismissStripeStyle: null,
         onCancel: null,

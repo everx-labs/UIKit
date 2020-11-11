@@ -2,10 +2,12 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 
-import { UIStyle, UILocalized } from '@uikit/core';
+import { UIStyle } from '@uikit/core';
 import { UIModalController } from '@uikit/navigation';
 import type { ModalControllerProps } from '@uikit/navigation/UIModalController';
 import { UISearchBar } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIAccountPickerCell from '../components/UIAccountPickerCell';
 import type { UIAccountData } from '../types/UIAccountData';
@@ -136,7 +138,7 @@ class UIAccountPickerScreen extends UIModalController<Props, State> {
         return (
             <UISearchBar
                 value={this.getExpression()}
-                placeholder={UILocalized.SearchByAccount}
+                placeholder={uiLocalized.SearchByAccount}
                 onChangeExpression={newExpression => this.onChangeExpression(newExpression)}
             />
         );

@@ -11,12 +11,13 @@ import {
     UIStyle,
     UIFunction,
     UIColorPalette,
-    UILocalized,
 } from '@uikit/core';
 import icoProgress from '@uikit/assets/ico-progress/progress.png';
 import { UIShareManager } from '@uikit/navigation';
 import { UIActionComponent, UITextButton } from '@uikit/components';
 import type { ActionProps, ActionState } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 type Props = ActionProps & {
     style: ViewStyleProp,
@@ -113,7 +114,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
     onPressCopy = () => {
         const { title, details, copyTarget } = this.props;
         const str = copyTarget === UIDetailsButton.copyTargets.title ? title : details || '';
-        UIShareManager.copyToClipboard(str, UILocalized.CopiedToClipboard);
+        UIShareManager.copyToClipboard(str, uiLocalized.CopiedToClipboard);
     }
 
     // Setters
@@ -196,7 +197,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
 
         return (
             <UITextButton
-                title={UILocalized.Copy}
+                title={uiLocalized.Copy}
                 style={[UIStyle.height.tinyCell(), UIStyle.margin.leftDefault()]}
                 textStyle={
                     copyTarget === UIDetailsButton.copyTargets.title

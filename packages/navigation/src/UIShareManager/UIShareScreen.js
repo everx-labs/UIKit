@@ -9,7 +9,6 @@ import {
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import {
-    UILocalized,
     UIColor,
     UIFont,
     UIStyle,
@@ -21,6 +20,8 @@ import {
     UIButton,
     UILabel,
 } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIModalController from '../UIModalController';
 import type { ModalControllerProps } from '../UIModalController';
@@ -109,7 +110,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     onCopyPressed = () => {
         (async () => {
             await Clipboard.setString(this.getMessage());
-            UIToastMessage.showMessage(UILocalized.MessageCopiedToClipboard);
+            UIToastMessage.showMessage(uiLocalized.MessageCopiedToClipboard);
         })();
     };
 
@@ -146,11 +147,11 @@ export default class UIShareScreen extends UIModalController<Props, State> {
             <View style={styles.container}>
                 <UILabel
                     role={UILabel.Role.Subtitle}
-                    text={UILocalized.Share}
+                    text={uiLocalized.Share}
                 />
                 <UILabel
                     role={UILabel.Role.Note}
-                    text={this.getSubtitle() || UILocalized.ShareToTalk}
+                    text={this.getSubtitle() || uiLocalized.ShareToTalk}
                     style={styles.note}
                 />
                 <ScrollView contentContainerStyle={styles.messageContainer}>
@@ -161,7 +162,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                 </ScrollView>
                 <UIButton
                     testID="copy_button"
-                    title={UILocalized.CopyToClipboard}
+                    title={uiLocalized.CopyToClipboard}
                     buttonShape={UIButton.ButtonShape.Radius}
                     style={UIStyle.margin.topDefault()}
                     onPress={this.onCopyPressed}

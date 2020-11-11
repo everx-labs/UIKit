@@ -2,8 +2,9 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { UILocalized } from '@uikit/core';
 import { UIComponent } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import MenuItem from './MenuItem';
 import type { MenuItemType } from './MenuItem';
@@ -124,7 +125,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         }
         return (
             <MenuItem
-                title={UILocalized.Cancel}
+                title={uiLocalized.Cancel}
                 onPress={() => {
                     if (this.customSheet) {
                         this.customSheet.hide(this.onCancel);

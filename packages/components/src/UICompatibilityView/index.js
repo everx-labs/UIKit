@@ -6,8 +6,9 @@ import Bowser from 'bowser';
 import {
     UIStyle,
     UITextStyle,
-    UILocalized,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
 
@@ -22,7 +23,7 @@ export default class UICompatibilityView extends UIComponent<null, null> {
     static renderNotCompatible() {
         return (
             <Text style={UITextStyle.primaryBodyRegular}>
-                {UILocalized.WeAreSorryButYourBrowserVersionIsNotCompatible}
+                {uiLocalized.WeAreSorryButYourBrowserVersionIsNotCompatible}
             </Text>
         );
     }

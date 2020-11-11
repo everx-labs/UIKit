@@ -7,12 +7,13 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import {
     UIConstant,
     UIFunction,
-    UILocalized,
     UIStyle,
 } from '@uikit/core';
 import type { NumberParts, StringLocaleInfo } from '@uikit/core/UIFunction';
 import type { UIColorData } from '@uikit/core/UIColor/UIColorTypes';
 import type { BigNum } from '@uikit/core/types/BigNum';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
 import UIAmountInput from '../UIAmountInput';
@@ -107,10 +108,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
         const { minValue, minValueMessage, value } = this.props;
 
         if (value == null) {
-            return UILocalized.formatString(minValueMessage, minValue);
+            return uiLocalized.formatString(minValueMessage, minValue);
         }
         return minValue != null && minValueMessage != null && value.lt(minValue)
-            ? UILocalized.formatString(minValueMessage, minValue)
+            ? uiLocalized.formatString(minValueMessage, minValue)
             : undefined;
     }
 
@@ -276,17 +277,16 @@ export default class UITransferInput extends UIComponent<Props, State> {
     }
 
     renderFees() {
-        const { localeInfo } = this.props;
         return (
             <UIDetailsView
                 testID="fees"
                 reversed
                 disabled
-                value={UILocalized.formatString(
-                    UILocalized.feeAmount,
-                    UILocalized.amountToLocale(this.getFees(), localeInfo, options),
+                value={uiLocalized.formatString(
+                    uiLocalized.feeAmount,
+                    uiLocalized.amountToLocale(this.getFees(), options),
                 )}
-                comments={UILocalized.fee}
+                comments={uiLocalized.fee}
                 commentsStyle={UIStyle.text.tertiaryTinyRegular()}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
                 textStyle={UIStyle.text.secondaryBodyRegular()}
@@ -300,8 +300,8 @@ export default class UITransferInput extends UIComponent<Props, State> {
                 testID="operation_time"
                 reversed
                 disabled
-                value={UILocalized.immediately}
-                comments={UILocalized.operationTime}
+                value={uiLocalized.immediately}
+                comments={uiLocalized.operationTime}
                 commentsStyle={UIStyle.text.tertiaryTinyRegular()}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
                 textStyle={UIStyle.text.secondaryBodyRegular()}
