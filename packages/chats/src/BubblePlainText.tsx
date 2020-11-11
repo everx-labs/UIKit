@@ -19,7 +19,7 @@ import {
 import { UIShareManager } from "@uikit/navigation";
 
 import { ChatMessageStatus } from "./types";
-import type { PlainTextMessage, ChatMessageMeta } from "./types";
+import type { PlainTextMessage } from "./types";
 import { useBubblePosition, BubblePosition } from "./useBubblePosition";
 
 const getUrlStyle = (status: ChatMessageStatus) =>
@@ -70,7 +70,8 @@ const getBubbleStyle = (message: PlainTextMessage) => {
 
 // For e2e tests, to create unique id as in those tests
 // we don't know much about messages
-const createUniqTestId = (pattern, variable) => pattern.replace("%", variable);
+const createUniqTestId = (pattern: string, variable: string) =>
+    pattern.replace("%", variable);
 
 const createTestId = (pattern: string, text: string) => {
     return createUniqTestId(
@@ -79,7 +80,7 @@ const createTestId = (pattern: string, text: string) => {
     );
 };
 
-function BubbleTime(props: ChatMessageMeta) {
+function BubbleTime(props: PlainTextMessage) {
     return (
         <View style={styles.timeTextContainer}>
             <Text

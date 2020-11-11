@@ -2284,7 +2284,7 @@ const Chat = () => (
                 sender: "0:123",
                 text: "Hi from past!",
             },
-        ].map((m, i) => ((m.key = i), m))}
+        ].map((m: any, i: number) => ((m.key = i), m))}
     />
 );
 

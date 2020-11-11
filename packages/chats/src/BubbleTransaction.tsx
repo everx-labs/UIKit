@@ -46,7 +46,7 @@ const getBubbleColor = (message: TransactionMessage) => {
 
     if (type === TransactionType.Aborted) {
         return styles.cardAborted;
-    } else if (type === TransactionType.Withdraw) {
+    } else if (type === TransactionType.Expense) {
         return styles.cardWithdraw;
     } else if (type === TransactionType.Income) {
         return styles.cardIncome;
@@ -65,7 +65,7 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
 };
 
 const getAmountColor = (message: TransactionMessage) => {
-    const { type } = message.info;
+    // const { type } = message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return styles.textGrey;
@@ -74,7 +74,7 @@ const getAmountColor = (message: TransactionMessage) => {
 };
 
 const getCommentColor = (message: TransactionMessage) => {
-    const { type } = message.info;
+    // const { type } = message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return styles.textBlack;

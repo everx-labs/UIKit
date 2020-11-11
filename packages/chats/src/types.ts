@@ -2,9 +2,9 @@ import BigNumber from "bignumber.js";
 
 // Semantically describe a bubble position
 // By default:
-// Sent is places on the left side
-// Pending is also on the left
-// Received - on the right
+// Sent is places on the right side
+// Pending is also on the right
+// Received - on the left
 //
 // This could be changed in some global config (not there yet).
 export enum ChatMessageStatus {
@@ -49,7 +49,7 @@ export type SystemMessage = ChatMessageMeta & {
 
 export enum TransactionType {
     Income = "income",
-    Withdraw = "withdraw",
+    Expense = "expense",
     Aborted = "aborted",
     // Spending = "spending",
     // Deposit = "deposit",

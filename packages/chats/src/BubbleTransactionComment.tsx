@@ -25,7 +25,7 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
 const getBubbleColor = (type: TransactionType) => {
     if (type === TransactionType.Aborted) {
         return styles.cardAborted;
-    } else if (type === TransactionType.Withdraw) {
+    } else if (type === TransactionType.Expense) {
         return styles.cardWithdraw;
     } else if (type === TransactionType.Income) {
         return styles.cardIncome;
