@@ -19,7 +19,8 @@ import {
 import { UIShareManager } from "@uikit/navigation";
 
 import { ChatMessageStatus } from "./types";
-import type { PlainTextMessage, ChatMessageMeta } from "./types";
+import type { PlainTextMessage } from "./types";
+import { useBubblePosition, BubblePosition } from "./useBubblePosition";
 
 const getUrlStyle = (status: ChatMessageStatus) =>
     status === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
@@ -33,28 +34,35 @@ const getFontColor = (status: ChatMessageStatus) =>
               UIColor.textSecondary(UIColor.Theme.Dark)
           );
 
-const getRoundedCornerStyle = (options: ChatMessageMeta) => {
-    if (options.status === ChatMessageStatus.Received) {
-        return options.firstFromChain ? styles.leftTopCorner : null;
+const getRoundedCornerStyle = (
+    options: ChatMessageMeta,
+    position: BubblePosition
+) => {
+    if (position === BubblePosition.left && options.firstFromChain) {
+        return styles.leftTopCorner;
+    } else if (position === BubblePosition.right && options.lastFromChain) {
+        return styles.rightBottomCorner;
     }
-    return options.lastFromChain ? styles.rightBottomCorner : null;
+    return null;
 };
 
-const getBubbleContainer = (status: ChatMessageStatus) => {
-    if (status === ChatMessageStatus.Received) {
-        return styles.containerReceived;
+const getBubbleContainer = (position: BubblePosition) => {
+    if (position === BubblePosition.left) {
+        return styles.containerLeft;
+    } else if (position === BubblePosition.right) {
+        return styles.containerRight;
     }
-    return styles.container;
+    return null;
 };
 
-const getBubbleStyle = (status: ChatMessageStatus) => {
-    if (status === ChatMessageStatus.Received) {
+const getBubbleStyle = (message: PlainTextMessage) => {
+    if (message.status === ChatMessageStatus.Received) {
         return styles.msgReceived;
-    } else if (status === ChatMessageStatus.Sent) {
+    } else if (message.status === ChatMessageStatus.Sent) {
         return styles.msgSent;
-    } else if (status === ChatMessageStatus.Sending) {
+    } else if (message.status === ChatMessageStatus.Pending) {
         return styles.msgSending;
-    } else if (status === ChatMessageStatus.Aborted) {
+    } else if (message.isAborted) {
         return styles.msgAborted;
     }
     return styles.msgSending;
@@ -62,7 +70,8 @@ const getBubbleStyle = (status: ChatMessageStatus) => {
 
 // For e2e tests, to create unique id as in those tests
 // we don't know much about messages
-const createUniqTestId = (pattern, variable) => pattern.replace("%", variable);
+const createUniqTestId = (pattern: string, variable: string) =>
+    pattern.replace("%", variable);
 
 const createTestId = (pattern: string, text: string) => {
     return createUniqTestId(
@@ -71,20 +80,20 @@ const createTestId = (pattern: string, text: string) => {
     );
 };
 
-const BubbleTime = (props: ChatMessageMeta) => (
-    <View style={styles.timeTextContainer}>
-        <Text
-            testID={createTestId("chat_text_message%_time", props.text)}
-            style={[UIFont.tinyRegular(), styles.timeText]}
-        >
-            {formatTime(props.time || Date.now())}
-        </Text>
-    </View>
-);
+function BubbleTime(props: PlainTextMessage) {
+    return (
+        <View style={styles.timeTextContainer}>
+            <Text
+                testID={createTestId("chat_text_message%_time", props.text)}
+                style={[UIFont.tinyRegular(), styles.timeText]}
+            >
+                {formatTime(props.time || Date.now())}
+            </Text>
+        </View>
+    );
+}
 
-BubbleTime.displayName = "BubbleTime";
-
-export const BubblePlainText = (props: PlainTextMessage) => {
+export function BubblePlainText(props: PlainTextMessage) {
     const scale = React.useRef(new Animated.Value(1)).current;
     const bubbleScaleAnimation = (scaleIn: boolean = false) => {
         Animated.spring(scale, {
@@ -93,9 +102,10 @@ export const BubblePlainText = (props: PlainTextMessage) => {
             useNativeDriver: true,
         }).start();
     };
+    const position = useBubblePosition(props.status);
 
     return (
-        <View style={[getBubbleContainer(props.status)]}>
+        <View style={[getBubbleContainer(position)]}>
             <TouchableWithoutFeedback
                 onPressOut={() => bubbleScaleAnimation()}
                 onPress={props.onTouchText}
@@ -118,8 +128,8 @@ export const BubblePlainText = (props: PlainTextMessage) => {
                             UIStyle.padding.verticalSmall(),
                             UIStyle.padding.horizontalNormal(),
                             styles.msgContainer,
-                            getBubbleStyle(props.status),
-                            getRoundedCornerStyle(props),
+                            getBubbleStyle(props),
+                            getRoundedCornerStyle(props, position),
                         ]}
                     >
                         <ParsedText
@@ -151,17 +161,15 @@ export const BubblePlainText = (props: PlainTextMessage) => {
             </TouchableWithoutFeedback>
         </View>
     );
-};
-
-BubblePlainText.diaplyName = "BubblePlainText";
+}
 
 const styles = StyleSheet.create({
-    container: {
+    containerRight: {
         paddingLeft: "20%",
         alignSelf: "flex-end",
         justifyContent: "flex-end",
     },
-    containerReceived: {
+    containerLeft: {
         paddingRight: "20%",
         alignSelf: "flex-start",
         justifyContent: "flex-start",

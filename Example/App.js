@@ -2164,6 +2164,84 @@ const Chat = () => (
         isLoadingMore={false}
         messages={[
             {
+                type: "trx",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "aborted",
+                    amount: new BigNumber(1),
+                },
+                comment: {
+                    text: "Pocket money",
+                },
+                onPress() {
+                    console.log("hey");
+                },
+            },
+            {
+                type: "trx",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "aborted",
+                    amount: new BigNumber(1),
+                },
+            },
+            {
+                type: "trx",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "expense",
+                    amount: new BigNumber(1),
+                    text: "Sent",
+                },
+                comment: {
+                    text: "Some money",
+                    encrypted: true,
+                },
+            },
+            {
+                type: "trx",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "expense",
+                    amount: new BigNumber(1),
+                    text: "Sent",
+                },
+            },
+            {
+                type: "trx",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "income",
+                    amount: new BigNumber(9999.123456789),
+                    text: "Received",
+                },
+            },
+            {
+                type: "trx",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                info: {
+                    type: "income",
+                    amount: new BigNumber(1),
+                    text: "Received",
+                },
+                comment: {
+                    text: "Take it",
+                    encrypted: true,
+                },
+            },
+            {
                 type: "stm",
                 status: "sending",
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
@@ -2206,7 +2284,7 @@ const Chat = () => (
                 sender: "0:123",
                 text: "Hi from past!",
             },
-        ].map((m, i) => ((m.key = i), m))}
+        ].map((m: any, i: number) => ((m.key = i), m))}
     />
 );
 
