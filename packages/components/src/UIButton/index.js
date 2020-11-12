@@ -340,9 +340,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         } else {
             const tapped = this.isTapped();
             const hover = this.isHover();
-            color = !(tapped || hover) && buttonColor ? buttonColor :
-                    (tapped || hover) && buttonColorHover ? buttonColorHover :
-                    UIColor.buttonBackground(theme, tapped, hover);
+            if ((tapped || hover) && buttonColorHover) {
+                color = buttonColorHover;
+            } else if ((!tapped && !hover) && buttonColor) {
+                color = buttonColor;
+            } else {
+                color = UIColor.buttonBackground(theme, tapped, hover);
+            }
         }
         return color;
     }
