@@ -363,10 +363,6 @@ export default class UIColor {
         return themes[theme || current].background.brake;
     }
 
-    static backgroundNotification(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.notification;
-    }
-
     // border
     static borderBottomLightColor(theme: ?UIColorThemeNameType) {
         const { borderBottom } = themes[theme || current];
