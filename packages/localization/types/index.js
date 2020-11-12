@@ -1,16 +1,12 @@
 // @flow
+import BigNumber from 'bignumber.js';
+
+import type { NumberPartsOptions } from '@uikit/core';
+
 import { languagesInfo } from '../src/constants';
 
 export type Language = $Keys<typeof languagesInfo>;
 export type Languages<T> = { [Language]: T }
-
-export type LocalizedStringsMethods = {
-    setLanguage(language?: string): void,
-    getInterfaceLanguage(): string,
-    getAvailableLanguages(): string[],
-    formatString(str: string, ...values: any[]): string,
-    getString(key: string, language: string): string | null,
-};
 
 export type LanguageInfo = {
     name: string,
@@ -48,4 +44,26 @@ export type StringLocaleInfo = {
     name: string,
     numbers: NumberFormatInfo,
     dates: DateFormatInfo,
+};
+
+export type LocalizedStringsMethods = {
+    setLanguage(language?: string): void,
+    getInterfaceLanguage(): string,
+    getAvailableLanguages(): string[],
+    formatString(str: string, ...values: any[]): string,
+    getString(key: string, language: string): string | null,
+    getLanguage(): string,
+    getLanguageFromString(language: string): Language,
+    amountToLocale(number: BigNumber | string | number, options?: NumberPartsOptions): string,
+    localizedStringForValue(value: number, base: string): string,
+
+    changeLocaleInfo: (localeInfo: StringLocaleInfo) => void,
+    changeLanguage: (language: Language) => void,
+    setLanguages: (languages: Language[]) => void,
+    formatTime: (time: number, format?: string) => string,
+    formatDate: (time: number) => string,
+
+    decimalSeparator: string,
+    languageName: string,
+    dayJSLocale: string,
 };
