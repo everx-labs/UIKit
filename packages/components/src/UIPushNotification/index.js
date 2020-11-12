@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         padding: UIConstant.contentOffset(),
         top: UIConstant.contentOffset(),
-        left: UIConstant.contentOffset(),
-        right: UIConstant.contentOffset(),
         borderRadius: UIConstant.alertBorderRadius(),
         backgroundColor: UIColor.backgroundPrimary(),
         ...UIConstant.commonShadow(),
