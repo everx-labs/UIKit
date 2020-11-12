@@ -41,7 +41,7 @@ export class LocalizationService<T> extends LocalizedStrings {
 
     amountToLocale(
         number: BigNumber | string | number,
-        options: NumberPartsOptions = {
+        options?: NumberPartsOptions = {
             minimumFractionDigits: 0,
             maximumFractionDigits: UIConstant.maxDecimalDigits(),
         },
@@ -101,7 +101,7 @@ export class LocalizationService<T> extends LocalizedStrings {
         dayjs.locale(this.dayJSLocale);
     };
 
-    formatTime = (time: number, format: string = TIME_FORMAT): string => {
+    formatTime = (time: number, format?: string = TIME_FORMAT): string => {
         return dayjs(time).format(format);
     }
 
@@ -155,11 +155,9 @@ export class LocalizationService<T> extends LocalizedStrings {
     }
 }
 
-// eslint-disable-next-line max-len
-type LocalizedInstance = { ...UILocalizedData } & LocalizationService<UILocalizedData> & LocalizedStringsMethods
+export type LocalizedInstance<T> = T & LocalizedStringsMethods
 
-export const uiLocalized: LocalizedInstance = new LocalizationService<UILocalizedData>({
-    languages: preparedLanguages,
-});
+export const uiLocalized: LocalizedInstance<UILocalizedData>
+    = (new LocalizationService<UILocalizedData>({ languages: preparedLanguages }): any);
 
 export const TIME_FORMAT = 'HH:mm';
