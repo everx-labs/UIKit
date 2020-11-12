@@ -8,14 +8,8 @@ import {
     Animated,
 } from "react-native";
 import ParsedText from "react-native-parsed-text";
-import {
-    UILocalized,
-    UIColor,
-    UIFont,
-    formatTime,
-    UIConstant,
-    UIStyle,
-} from "@uikit/core";
+import { UIColor, UIFont, UIConstant, UIStyle } from "@uikit/core";
+import { uiLocalized } from "@tonlabs/uikit.localization";
 import { UIShareManager } from "@uikit/navigation";
 
 import { ChatMessageStatus } from "./types";
@@ -87,7 +81,7 @@ function BubbleTime(props: PlainTextMessage) {
                 testID={createTestId("chat_text_message%_time", props.text)}
                 style={[UIFont.tinyRegular(), styles.timeText]}
             >
-                {formatTime(props.time || Date.now())}
+                {uiLocalized.formatTime(props.time || Date.now())}
             </Text>
         </View>
     );

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 
-import { UIConstant, UIColor, UIFont, UIStyle, formatTime } from "@uikit/core";
+import { UIConstant, UIColor, UIFont, UIStyle } from "@uikit/core";
+import { uiLocalized } from "@tonlabs/uikit.localization";
 import { UIImage } from "@uikit/components";
 
 import { ChatMessageStatus } from "./types";
@@ -43,7 +44,7 @@ export const BubbleSticker = (props: StickerMessage) => {
                         // testID={testID} TODO: do we need it here?
                         style={[UIFont.tinyRegular(), styles.timeText]}
                     >
-                        {formatTime(props.time || Date.now())}
+                        {uiLocalized.formatTime(props.time || Date.now())}
                     </Text>
                 </View>
             </View>

@@ -1,13 +1,8 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 
-import {
-    UIColor,
-    UIStyle,
-    UILocalized,
-    UIConstant,
-    formatDate,
-} from "@uikit/core";
+import { UIColor, UIStyle, UIConstant } from "@uikit/core";
+import { uiLocalized } from "@tonlabs/uikit.localization";
 import { UILabel, UIScaleButton } from "@uikit/components";
 
 import { ChatMessageStatus, TransactionType } from "./types";
@@ -110,9 +105,9 @@ function TransactionSublabel(props: TransactionMessage) {
                         props
                     )}_aborted`}
                     role={UILabel.Role.TinyRegular}
-                    text={UILocalized.formatString(
-                        UILocalized.TransactionStatus.aborted,
-                        formatDate(props.time)
+                    text={uiLocalized.formatString(
+                        uiLocalized.TransactionStatus.aborted,
+                        uiLocalized.formatDate(props.time)
                     )}
                     style={styles.textWhite}
                 />
@@ -145,7 +140,7 @@ function TransactionSublabel(props: TransactionMessage) {
                 testID={`transaction_message_${getValueForTestID(props)}_time`}
                 role={UILabel.Role.TinyRegular}
                 style={getCommentColor(props)}
-                text={formatDate(props.time)}
+                text={uiLocalized.formatDate(props.time)}
             />
         </>
     );
