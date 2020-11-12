@@ -2149,6 +2149,20 @@ const Chat = () => (
         isLoadingMore={false}
         messages={[
             {
+                type: "act",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                text: "This is action",
+            },
+            {
+                type: "act",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                text: "This is action",
+            },
+            {
                 type: 'stk',
                 status: 'pending',
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
