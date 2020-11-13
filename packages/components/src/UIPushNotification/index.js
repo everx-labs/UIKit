@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         padding: UIConstant.contentOffset(),
         top: UIConstant.contentOffset(),
         borderRadius: UIConstant.alertBorderRadius(),
-        backgroundColor: UIColor.backgroundNotification(),
+        backgroundColor: UIColor.backgroundPrimary(),
         ...UIConstant.commonShadow(),
     },
     titleStyle: {
