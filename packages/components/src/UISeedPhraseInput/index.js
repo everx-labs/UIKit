@@ -343,6 +343,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
         const { onChangeText, onChangeIsValidPhrase } = this.props;
         const split = UISeedPhraseInput.splitPhrase(newValue);
+        this.hideHints();
         if (split.length > this.totalWords) {
             return;
         }
