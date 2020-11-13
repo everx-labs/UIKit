@@ -107,10 +107,11 @@ export default class UITransferInput extends UIComponent<Props, State> {
     getMinValueMessage(): ?string {
         const { minValue, minValueMessage, value } = this.props;
 
-        if (value == null) {
+        if (value == null && minValueMessage != null) {
             return uiLocalized.formatString(minValueMessage, minValue);
         }
-        return minValue != null && minValueMessage != null && value.lt(minValue)
+
+        return minValueMessage != null && minValue != null && value != null && value.lt(minValue)
             ? uiLocalized.formatString(minValueMessage, minValue)
             : undefined;
     }

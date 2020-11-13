@@ -97,21 +97,10 @@ export type StickerMessage = ChatMessageMeta & {
     source: ImageSourcePropType;
 };
 
-export enum TypeOfAction {
-    Default = "default",
-    Link = "link",
-}
-
-export enum TypeOfActionDirection {
-    None = "none",
-    Up = "up",
-    Down = "down",
-}
-
 export type ActionButtonMessage = ChatMessageMeta & {
     type: ChatMessageType.ActionButton;
-    actionType: TypeOfAction;
-    direction: TypeOfActionDirection;
+    text: string;
+    onPress?: () => void | Promise<void>;
 };
 
 export type ChatMessage =
