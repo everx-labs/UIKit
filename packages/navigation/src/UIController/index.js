@@ -21,13 +21,13 @@ import {
     UIEventHelper,
     UIFunction,
     UIStyle,
-} from '@uikit/core';
-import type { SafeAreaInsets } from '@uikit/core/UIDevice';
+} from '@tonlabs/uikit.core';
+import type { SafeAreaInsets } from '@tonlabs/uikit.core/UIDevice';
 import {
     UIAlertView,
     UIComponent,
     UISpinnerOverlay,
-} from '@uikit/components';
+} from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

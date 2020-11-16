@@ -3,13 +3,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIConstant,
-    UIColor,
-    UIStyle,
-    UITextStyle,
-} from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIConstant, UIColor, UIStyle, UITextStyle } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 const avatarSize = UIConstant.mediumAvatarSize();
 

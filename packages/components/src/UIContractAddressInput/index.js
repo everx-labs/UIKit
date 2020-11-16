@@ -2,11 +2,7 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
 
-import {
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

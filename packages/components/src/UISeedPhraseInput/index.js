@@ -11,7 +11,7 @@ import {
     UIFunction,
     UIStyle,
     UIDevice,
-} from '@uikit/core';
+} from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

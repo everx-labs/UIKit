@@ -10,7 +10,7 @@ import isEmail from 'validator/lib/isEmail';
 import BigNumber from 'bignumber.js';
 import currencies from 'currency-formatter/currencies.json';
 
-import countries from '@uikit/assets/countries/countries.json';
+import countries from '@tonlabs/uikit.assets/countries/countries.json';
 
 import UIConstant from '../UIConstant';
 import type { BigNum } from '../../types/BigNum';

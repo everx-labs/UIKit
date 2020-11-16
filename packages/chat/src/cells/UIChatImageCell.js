@@ -4,9 +4,9 @@ import React from 'react';
 import { View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIConstant, UIStyle } from '@uikit/core';
-import { UIPureComponent } from '@uikit/components';
-import { UIImageView } from '@uikit/navigation';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIPureComponent } from '@tonlabs/uikit.components';
+import { UIImageView } from '@tonlabs/uikit.navigation';
 
 import type { ChatAdditionalInfo, UIChatImageSize } from '../extras';
 

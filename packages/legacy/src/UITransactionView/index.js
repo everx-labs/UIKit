@@ -9,14 +9,9 @@ import {
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIConstant,
-    UIColor,
-    UIStyle,
-    UIFont,
-} from '@uikit/core';
-import { UIComponent, UILabel } from '@uikit/components';
-import UIAssets from '@uikit/assets';
+import { UIConstant, UIColor, UIStyle, UIFont } from '@tonlabs/uikit.core';
+import { UIComponent, UILabel } from '@tonlabs/uikit.components';
+import UIAssets from '@tonlabs/uikit.assets';
 import UIProfileInitials from '../UIProfileInitials';
 
 type Props = {

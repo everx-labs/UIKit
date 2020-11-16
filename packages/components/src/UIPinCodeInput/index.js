@@ -11,13 +11,8 @@ import {
 import { BorderlessButton as RNGHBorderlessButton } from 'react-native-gesture-handler';
 import debounce from 'lodash/debounce';
 
-import {
-    UIStyle,
-    UIColor,
-    UIConstant,
-    UITextStyle,
-} from '@uikit/core';
-import UIAssets from '@uikit/assets';
+import { UIStyle, UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
+import UIAssets from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';

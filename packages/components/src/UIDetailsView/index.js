@@ -3,11 +3,7 @@ import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
-import {
-    UIConstant,
-    UIStyle,
-    UIFunction,
-} from '@uikit/core';
+import { UIConstant, UIStyle, UIFunction } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UILabel from '../UILabel';

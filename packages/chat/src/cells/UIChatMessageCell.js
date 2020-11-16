@@ -16,18 +16,10 @@ import isEqual from 'lodash/isEqual';
 
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIColor,
-    UIConstant,
-    UIStyle,
-    UIFont,
-} from '@uikit/core';
-import {
-    UIComponent,
-    UILabel,
-} from '@uikit/components';
-import UIAssets from '@uikit/assets';
-import { UIShareManager } from '@uikit/navigation';
+import { UIColor, UIConstant, UIStyle, UIFont } from '@tonlabs/uikit.core';
+import { UIComponent, UILabel } from '@tonlabs/uikit.components';
+import UIAssets from '@tonlabs/uikit.assets';
+import { UIShareManager } from '@tonlabs/uikit.navigation';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

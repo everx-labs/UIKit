@@ -4,24 +4,19 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIConstant,
-    UIColor,
-    UIFont,
-    UIStyle,
-} from '@uikit/core';
+import { UIConstant, UIColor, UIFont, UIStyle } from '@tonlabs/uikit.core';
 import {
     UIPureComponent,
     UIToastMessage,
     UISpinnerOverlay,
-} from '@uikit/components';
+} from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import fileBlue from '@uikit/assets/ico-file-income-blue/fileBlue.png';
-import fileWhite from '@uikit/assets/ico-file-income-white/fileWhite.png';
-import cloudBlack from '@uikit/assets/ico-cloud-black/cloudBlack.png';
-import cloudWhite from '@uikit/assets/ico-cloud-white/cloudWhite.png';
+import fileBlue from '@tonlabs/uikit.assets/ico-file-income-blue/fileBlue.png';
+import fileWhite from '@tonlabs/uikit.assets/ico-file-income-white/fileWhite.png';
+import cloudBlack from '@tonlabs/uikit.assets/ico-cloud-black/cloudBlack.png';
+import cloudWhite from '@tonlabs/uikit.assets/ico-cloud-white/cloudWhite.png';
 
 import type { ChatAdditionalInfo } from '../extras';
 

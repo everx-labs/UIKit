@@ -11,11 +11,11 @@ import {
     UIStyle,
     UIFunction,
     UIColorPalette,
-} from '@uikit/core';
-import icoProgress from '@uikit/assets/ico-progress/progress.png';
-import { UIShareManager } from '@uikit/navigation';
-import { UIActionComponent, UITextButton } from '@uikit/components';
-import type { ActionProps, ActionState } from '@uikit/components';
+} from '@tonlabs/uikit.core';
+import icoProgress from '@tonlabs/uikit.assets/ico-progress/progress.png';
+import { UIShareManager } from '@tonlabs/uikit.navigation';
+import { UIActionComponent, UITextButton } from '@tonlabs/uikit.components';
+import type { ActionProps, ActionState } from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

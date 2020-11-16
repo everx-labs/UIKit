@@ -3,7 +3,7 @@ import React from 'react';
 import { Animated, View } from 'react-native';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
-import { UIStyle } from '@uikit/core';
+import { UIStyle } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

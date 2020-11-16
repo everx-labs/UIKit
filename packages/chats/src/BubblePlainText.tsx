@@ -8,9 +8,9 @@ import {
     Animated,
 } from "react-native";
 import ParsedText from "react-native-parsed-text";
-import { UIColor, UIFont, UIConstant, UIStyle } from "@uikit/core";
+import { UIColor, UIFont, UIConstant, UIStyle } from "@tonlabs/uikit.core";
 import { uiLocalized } from "@tonlabs/uikit.localization";
-import { UIShareManager } from "@uikit/navigation";
+import { UIShareManager } from "@tonlabs/uikit.navigation";
 
 import { ChatMessageStatus } from "./types";
 import type { PlainTextMessage } from "./types";

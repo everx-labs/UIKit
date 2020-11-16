@@ -17,9 +17,9 @@ import {
     UIDevice,
     UIFunction,
     UIStyle,
-} from '@uikit/core';
-import type { SafeAreaInsets } from '@uikit/core/UIDevice';
-import UIAssets from '@uikit/assets';
+} from '@tonlabs/uikit.core';
+import type { SafeAreaInsets } from '@tonlabs/uikit.core/UIDevice';
+import UIAssets from '@tonlabs/uikit.assets';
 
 import type {
     AnimationParameters,

@@ -22,10 +22,10 @@ import {
     UIDevice,
     UIStyle,
     UITextStyle,
-} from '@uikit/core';
-import type { PositionObject } from '@uikit/core/types';
-import icoCloseBlue from '@uikit/assets/ico-close/close-blue.png';
-import icoCloseGrey from '@uikit/assets/ico-close/close-grey.png';
+} from '@tonlabs/uikit.core';
+import type { PositionObject } from '@tonlabs/uikit.core/types';
+import icoCloseBlue from '@tonlabs/uikit.assets/ico-close/close-blue.png';
+import icoCloseGrey from '@tonlabs/uikit.assets/ico-close/close-grey.png';
 
 import UIComponent from '../UIComponent';
 import UIAlertView from '../UIAlertView';

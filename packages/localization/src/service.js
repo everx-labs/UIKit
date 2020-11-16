@@ -2,8 +2,8 @@
 import dayjs from 'dayjs';
 import LocalizedStrings from 'react-native-localization';
 import BigNumber from 'bignumber.js';
-import { UIConstant, UIFunction } from '@uikit/core';
-import type { NumberParts, NumberPartsOptions } from '@uikit/core';
+import { UIConstant, UIFunction } from '@tonlabs/uikit.core';
+import type { NumberParts, NumberPartsOptions } from '@tonlabs/uikit.core';
 
 import availableLanguages from './languages';
 import type { Language, Languages, LocalizedStringsMethods, StringLocaleInfo } from '../types';

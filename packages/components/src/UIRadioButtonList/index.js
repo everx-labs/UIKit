@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { View } from 'react-native';
 
-import { UIStyle } from '@uikit/core';
+import { UIStyle } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UIRadioButtonItem from './UIRadioButtonItem';

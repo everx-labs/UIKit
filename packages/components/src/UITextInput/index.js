@@ -1,16 +1,21 @@
 // @flow
 import * as React from 'react';
 import StylePropType from 'react-style-proptype';
-import { TextInput, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import type { ReturnKeyType, AutoCapitalize, KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
-
-
 import {
-    UIColor,
-    UIStyle,
-    UIConstant,
-} from '@uikit/core';
-import type { PointerEvents } from '@uikit/core/types';
+    TextInput,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    Text,
+} from 'react-native';
+import type {
+    ReturnKeyType,
+    AutoCapitalize,
+    KeyboardType,
+} from 'react-native/Libraries/Components/TextInput/TextInput';
+
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import type { PointerEvents } from '@tonlabs/uikit.core/types';
 
 import UIComponent from '../UIComponent';
 

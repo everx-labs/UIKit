@@ -2,8 +2,8 @@ import * as React from "react";
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 // import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: web
 
-import { UIStyle, UIFont, UIConstant, UIColor } from "@uikit/core";
-import UIAssets from "@uikit/assets";
+import { UIStyle, UIFont, UIConstant, UIColor } from "@tonlabs/uikit.core";
+import UIAssets from "@tonlabs/uikit.assets";
 
 import { ChatMessageStatus, TransactionType } from "./types";
 import type { TransactionComment } from "./types";

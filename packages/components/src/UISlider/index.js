@@ -11,11 +11,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 
-import {
-    UIConstant,
-    UIStyle,
-    UIDevice,
-} from '@uikit/core';
+import { UIConstant, UIStyle, UIDevice } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UIDot from '../UIDot';

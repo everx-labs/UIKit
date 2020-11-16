@@ -1,11 +1,7 @@
 import React from 'react';
 import { Animated } from 'react-native';
 
-import {
-    UIDevice,
-    UIColor,
-    UIConstant,
-} from '@uikit/core';
+import { UIDevice, UIColor, UIConstant } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

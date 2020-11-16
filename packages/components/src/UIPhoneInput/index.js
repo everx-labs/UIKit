@@ -2,10 +2,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 
-import {
-    UIFunction,
-    UIColor,
-} from '@uikit/core';
+import { UIFunction, UIColor } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

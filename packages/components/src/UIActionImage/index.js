@@ -2,7 +2,7 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import { UIColor, UIStyle } from '@uikit/core';
+import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 
 import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';

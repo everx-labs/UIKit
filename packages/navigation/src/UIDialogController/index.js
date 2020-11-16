@@ -9,15 +9,8 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import {
-    UIColor,
-    UIConstant,
-    UIFont,
-    UIStyle,
-} from '@uikit/core';
-import {
-    UIProfilePhoto,
-} from '@uikit/components';
+import { UIColor, UIConstant, UIFont, UIStyle } from '@tonlabs/uikit.core';
+import { UIProfilePhoto } from '@tonlabs/uikit.components';
 
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';

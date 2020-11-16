@@ -10,7 +10,7 @@ import {
     UICustomSheet,
     UICompatibilityView,
     UILayoutManager,
-} from '@uikit/components';
+} from '@tonlabs/uikit.components';
 
 export default class UISharedComponents extends UIComponent {
     render() {

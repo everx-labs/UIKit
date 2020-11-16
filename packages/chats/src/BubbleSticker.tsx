@@ -1,9 +1,9 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 
-import { UIConstant, UIColor, UIFont, UIStyle } from "@uikit/core";
+import { UIConstant, UIColor, UIFont, UIStyle } from "@tonlabs/uikit.core";
 import { uiLocalized } from "@tonlabs/uikit.localization";
-import { UIImage } from "@uikit/components";
+import { UIImage } from "@tonlabs/uikit.components";
 
 import { ChatMessageStatus } from "./types";
 import type { StickerMessage } from "./types";

@@ -6,7 +6,7 @@ import { Image, TouchableOpacity } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from '@uikit/core';
+import { UIStyle } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 
@@ -16,14 +16,21 @@ type ButtonImage = 'back' | 'close-primary' | 'close-secondary'
                     | 'menu-contained';
 
 const assets = {
-    back: () => require('@uikit/assets/ico-arrow-left/ico-arrow-left.png'),
-    'close-primary': () => require('@uikit/assets/ico-close/close-blue.png'),
-    'close-secondary': () => require('@uikit/assets/ico-close/close-grey.png'),
-    'close-dark-theme-secondary': () => require('@uikit/assets/ico-close/close-dark-theme-secondary.png'),
-    'close-light': () => require('@uikit/assets/ico-close/close-light.png'),
-    'close-black': () => require('@uikit/assets/ico-close/close-black.png'),
-    menu: () => require('@uikit/assets/ico-open-menu/open-menu.png'),
-    'menu-contained': () => require('@uikit/assets/ico-menu-contained/menu.png'),
+    back: () =>
+        require('@tonlabs/uikit.assets/ico-arrow-left/ico-arrow-left.png'),
+    'close-primary': () =>
+        require('@tonlabs/uikit.assets/ico-close/close-blue.png'),
+    'close-secondary': () =>
+        require('@tonlabs/uikit.assets/ico-close/close-grey.png'),
+    'close-dark-theme-secondary': () =>
+        require('@tonlabs/uikit.assets/ico-close/close-dark-theme-secondary.png'),
+    'close-light': () =>
+        require('@tonlabs/uikit.assets/ico-close/close-light.png'),
+    'close-black': () =>
+        require('@tonlabs/uikit.assets/ico-close/close-black.png'),
+    menu: () => require('@tonlabs/uikit.assets/ico-open-menu/open-menu.png'),
+    'menu-contained': () =>
+        require('@tonlabs/uikit.assets/ico-menu-contained/menu.png'),
     custom: () => null,
 };
 

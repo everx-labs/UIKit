@@ -4,7 +4,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { Platform, StyleSheet, View, Text, Modal } from 'react-native';
 import { WaveIndicator } from 'react-native-indicators';
 
-import { UIStyle, UIColor } from '@uikit/core';
+import { UIStyle, UIColor } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

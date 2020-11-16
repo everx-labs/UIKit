@@ -3,15 +3,11 @@ import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIColor,
-    UIStyle,
-    UIConstant,
-} from '@uikit/core';
-import { UIComponent } from '@uikit/components';
-import { UIImageView } from '@uikit/navigation';
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UIImageView } from '@tonlabs/uikit.navigation';
 
-const cameraImage = require('@uikit/assets/ico-camera/ico-camera.png');
+const cameraImage = require('@tonlabs/uikit.assets/ico-camera/ico-camera.png');
 
 type Props = {
     style: ViewStyleProp,

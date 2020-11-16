@@ -3,17 +3,13 @@ import React from 'react';
 import { Platform, StyleSheet, View, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIColor,
-    UIStyle,
-    UIConstant,
-} from '@uikit/core';
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import {
     UISpinnerOverlay,
     UIAlertView,
     UIComponent,
     UIImage,
-} from '@uikit/components';
+} from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

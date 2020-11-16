@@ -3,7 +3,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIColor } from '@uikit/core';
+import { UIColor } from '@tonlabs/uikit.core';
 
 type Props = {
     vertical?: boolean,

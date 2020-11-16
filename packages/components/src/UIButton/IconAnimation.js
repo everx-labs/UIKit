@@ -6,7 +6,7 @@ import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/Ani
 
 import UIComponent from '../UIComponent';
 
-const iconDefault = require('@uikit/assets/ico-triangle/ico-triangle.png');
+const iconDefault = require('@tonlabs/uikit.assets/ico-triangle/ico-triangle.png');
 
 const spinInterpolateValues = {
     inputRange: [0, 1],

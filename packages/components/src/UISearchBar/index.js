@@ -15,15 +15,15 @@ import {
     UIFont,
     UIColor,
     UIStyle,
-} from '@uikit/core';
+} from '@tonlabs/uikit.core';
 
 import UITextInput from '../UITextInput';
 import UIComponent from '../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
-import icoGlass from '@uikit/assets/ico-glass/search-thin.png';
-import icoClear from '@uikit/assets/ico-clear/ico-clear.png';
+import icoGlass from '@tonlabs/uikit.assets/ico-glass/search-thin.png';
+import icoClear from '@tonlabs/uikit.assets/ico-clear/ico-clear.png';
 
 const styles = StyleSheet.create({
     searchInput: {

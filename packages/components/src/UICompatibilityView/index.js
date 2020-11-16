@@ -3,10 +3,7 @@ import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Bowser from 'bowser';
 
-import {
-    UIStyle,
-    UITextStyle,
-} from '@uikit/core';
+import { UIStyle, UITextStyle } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

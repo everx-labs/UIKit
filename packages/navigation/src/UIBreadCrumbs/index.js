@@ -2,15 +2,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-
-import {
-    UIStyle,
-    UIColor,
-    UIFunction,
-} from '@uikit/core';
-import { UIComponent, UITextButton } from '@uikit/components';
+import { UIStyle, UIColor, UIFunction } from '@tonlabs/uikit.core';
+import { UIComponent, UITextButton } from '@tonlabs/uikit.components';
 // TODO: remove from here to get rid of cycled dependency between the packages!
-import type { ReactNavigation } from '@uikit/legacy/UINavigationBar';
+import type { ReactNavigation } from '@tonlabs/uikit.legacy/UINavigationBar';
 
 // export type BreadCrumbScreen = {
 //     screen: string,

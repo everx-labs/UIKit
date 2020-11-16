@@ -2,11 +2,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import {
-    UIColor,
-    UIStyle,
-    UIConstant,
-} from '@uikit/core';
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import UIComponent from '../UIComponent';
 
 type Props = {

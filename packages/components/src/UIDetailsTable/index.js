@@ -4,12 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
-import {
-    UIColor,
-    UIStyle,
-    UIConstant,
-    UIFunction,
-} from '@uikit/core';
+import { UIColor, UIStyle, UIConstant, UIFunction } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';

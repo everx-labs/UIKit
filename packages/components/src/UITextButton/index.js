@@ -13,7 +13,7 @@ import {
     UIFont,
     UIColor,
     UIFunction,
-} from '@uikit/core';
+} from '@tonlabs/uikit.core';
 
 import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';

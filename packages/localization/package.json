@@ -2,8 +2,8 @@
   "name": "@tonlabs/uikit.localization",
   "version": "2.0.0",
   "description": "Localization utilities for Tonlabs's UIKit",
-  "main": "src/index.js",
   "scripts": {
+    "prepare": "bob build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,14 +22,43 @@
     "url": "https://github.com/tonlabs/UIKit/issues"
   },
   "homepage": "https://github.com/tonlabs/UIKit/packages/localization#readme",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "react-native": "src/index.js",
+  "files": [
+    "lib/",
+    "src/",
+    "types/"
+  ],
   "dependencies": {
     "bignumber.js": "9.0.0",
     "dayjs": "1.9.1"
   },
   "devDependencies": {
+    "@react-native-community/bob": "^0.16.2",
     "react-native-localization": "2.1.6"
   },
   "peerDependencies": {
     "react-native-localization": "^2.1.6"
+  },
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+        [
+            "commonjs",
+            {
+                "configFile": "../../babel.config.js",
+                "copyFlow": true
+            }
+        ],
+        [
+            "module",
+            {
+                "configFile": "../../babel.config.js",
+                "copyFlow": true
+            }
+        ]
+    ]
   }
 }

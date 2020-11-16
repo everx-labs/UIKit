@@ -2,8 +2,8 @@ import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import dayjs from "dayjs";
 
-import { UIStyle, UIColor, UIConstant } from "@uikit/core";
-import { UILabel } from "@uikit/components";
+import { UIStyle, UIColor, UIConstant } from "@tonlabs/uikit.core";
+import { UILabel } from "@tonlabs/uikit.components";
 
 const getLabel = (time: number) => {
     const today = new Date();

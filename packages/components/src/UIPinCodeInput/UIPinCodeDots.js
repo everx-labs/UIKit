@@ -2,7 +2,7 @@
 import React from 'react';
 import { StyleSheet, Animated, Vibration } from 'react-native';
 
-import { UIConstant, UIColor } from '@uikit/core';
+import { UIConstant, UIColor } from '@tonlabs/uikit.core';
 
 import UIPinCodeDot from './UIPinCodeDot';
 

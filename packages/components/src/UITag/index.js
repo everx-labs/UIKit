@@ -3,12 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIFont,
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
+import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
 import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';

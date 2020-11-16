@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIConstant, UIStyle } from '@uikit/core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

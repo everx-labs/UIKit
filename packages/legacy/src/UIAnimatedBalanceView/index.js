@@ -4,7 +4,7 @@ import React from 'react';
 import { View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from '@uikit/core';
+import { UIStyle } from '@tonlabs/uikit.core';
 
 import UIAnimatedBalanceOpacity from './UIAnimatedBalanceOpacity';
 import type { Props as InnerProps } from './UIAnimatedBalanceInner';

@@ -2,21 +2,17 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 
-import {
-    UIConstant,
-    UIStyle,
-    UIColor,
-} from '@uikit/core';
+import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
 import {
     UIComponent,
     UIEmailInput,
     UIToastMessage,
     UIBackgroundView,
-} from '@uikit/components';
+} from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import icoTonLabs from '@uikit/assets/logo/tonlabs/tonlabs-primary-minus.png';
+import icoTonLabs from '@tonlabs/uikit.assets/logo/tonlabs/tonlabs-primary-minus.png';
 
 import UIBottomBar from '../UIBottomBar';
 

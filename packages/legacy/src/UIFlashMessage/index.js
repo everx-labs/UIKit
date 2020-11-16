@@ -2,7 +2,7 @@
 import React from 'react';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
-import { UIComponent } from '@uikit/components';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 let masterRef = null;
 

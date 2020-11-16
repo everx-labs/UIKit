@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { TouchableWithoutFeedback, View, Image, Text, StyleSheet } from 'react-native';
-
 import {
-    UIConstant,
-    UIStyle,
-    UITextStyle,
-} from '@uikit/core';
-import icoRadiobuttonActive from '@uikit/assets/ico-radiobutton-active/ico-radiobutton-active.png';
-import icoRadiobuttonInactive from '@uikit/assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
+    TouchableWithoutFeedback,
+    View,
+    Image,
+    Text,
+    StyleSheet,
+} from 'react-native';
+
+import { UIConstant, UIStyle, UITextStyle } from '@tonlabs/uikit.core';
+import icoRadiobuttonActive from '@tonlabs/uikit.assets/ico-radiobutton-active/ico-radiobutton-active.png';
+import icoRadiobuttonInactive from '@tonlabs/uikit.assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
 
 import UIComponent from '../UIComponent';
 

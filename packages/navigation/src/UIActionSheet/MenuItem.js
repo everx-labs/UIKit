@@ -3,9 +3,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle, UIColor } from '@uikit/core';
-import { UIActionComponent } from '@uikit/components';
-import type { ActionProps, ActionState } from '@uikit/components';
+import { UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { UIActionComponent } from '@tonlabs/uikit.components';
+import type { ActionProps, ActionState } from '@tonlabs/uikit.components';
 
 export type MenuItemType = ActionProps & {
     style?: ViewStyleProp,

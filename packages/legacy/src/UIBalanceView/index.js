@@ -5,8 +5,8 @@ import { Animated, StyleSheet, Text, View } from 'react-native';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIConstant, UIStyle } from '@uikit/core';
-import { UIComponent, UILabel } from '@uikit/components';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIComponent, UILabel } from '@tonlabs/uikit.components';
 
 type BalanceWithSign = {
     balance: string,

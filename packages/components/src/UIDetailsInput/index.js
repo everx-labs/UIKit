@@ -12,12 +12,12 @@ import {
     UIStyle,
     UIStyleColor,
     UIFont,
-} from '@uikit/core';
+} from '@tonlabs/uikit.core';
 import type {
     UIColorData,
     UIColorThemeNameType,
-} from '@uikit/core/UIColor/UIColorTypes';
-import type { EventProps } from '@uikit/core/types';
+} from '@tonlabs/uikit.core/UIColor/UIColorTypes';
+import type { EventProps } from '@tonlabs/uikit.core/types';
 
 import UILabel from '../UILabel';
 import UITextButton from '../UITextButton';
@@ -25,10 +25,10 @@ import UIActionImage from '../UIActionImage';
 import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';
 
-import iconDisabled from '@uikit/assets/ico-arrow-right/arrow-right-primary-minus.png';
-import iconEnabled from '@uikit/assets/ico-arrow-right/arrow-right-primary-1.png';
-import iconHovered from '@uikit/assets/ico-arrow-right/arrow-right-white.png';
-import iconArrowDefault from '@uikit/assets/ico-arrow-right/ico-arrow-right.png';
+import iconDisabled from '@tonlabs/uikit.assets/ico-arrow-right/arrow-right-primary-minus.png';
+import iconEnabled from '@tonlabs/uikit.assets/ico-arrow-right/arrow-right-primary-1.png';
+import iconHovered from '@tonlabs/uikit.assets/ico-arrow-right/arrow-right-white.png';
+import iconArrowDefault from '@tonlabs/uikit.assets/ico-arrow-right/ico-arrow-right.png';
 
 const styles = StyleSheet.create({
     container: {

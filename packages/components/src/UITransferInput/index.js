@@ -4,14 +4,13 @@ import { View } from 'react-native';
 import BigNumber from 'bignumber.js';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIConstant,
-    UIFunction,
-    UIStyle,
-} from '@uikit/core';
-import type { NumberParts, StringLocaleInfo } from '@uikit/core/UIFunction';
-import type { UIColorData } from '@uikit/core/UIColor/UIColorTypes';
-import type { BigNum } from '@uikit/core/types/BigNum';
+import { UIConstant, UIFunction, UIStyle } from '@tonlabs/uikit.core';
+import type {
+    NumberParts,
+    StringLocaleInfo,
+} from '@tonlabs/uikit.core/UIFunction';
+import type { UIColorData } from '@tonlabs/uikit.core/UIColor/UIColorTypes';
+import type { BigNum } from '@tonlabs/uikit.core/types/BigNum';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

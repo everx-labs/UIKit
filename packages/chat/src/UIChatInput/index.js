@@ -4,26 +4,23 @@ import React from 'react';
 import { Platform, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
     UITextButton,
     UIButtonGroup,
     UIDetailsInput,
-} from '@uikit/components';
-import { UIPopoverMenu } from '@uikit/navigation';
-import type { DetailsProps } from '@uikit/components/UIDetailsInput';
-import type { ActionState } from '@uikit/components/UIActionComponent';
-import type { MenuItemType } from '@uikit/navigation/UIActionSheet/MenuItem';
-import btnPlus from '@uikit/assets/icon-plus/add.png';
-import btnPlusDisabled from '@uikit/assets/icon-plus-disabled/add.png';
-import btnDots from '@uikit/assets/btn_dots/btn_dots.png';
-import btnSend from '@uikit/assets/btn_msg_send/btn_msg_send.png';
-import stickerEnabled from '@uikit/assets/btn_sticker_enabled/stickerEnabled.png';
-import stickerDisabled from '@uikit/assets/btn_sticker_disabled/stickerDisabled.png';
+} from '@tonlabs/uikit.components';
+import { UIPopoverMenu } from '@tonlabs/uikit.navigation';
+import type { DetailsProps } from '@tonlabs/uikit.components/UIDetailsInput';
+import type { ActionState } from '@tonlabs/uikit.components/UIActionComponent';
+import type { MenuItemType } from '@tonlabs/uikit.navigation/UIActionSheet/MenuItem';
+import btnPlus from '@tonlabs/uikit.assets/icon-plus/add.png';
+import btnPlusDisabled from '@tonlabs/uikit.assets/icon-plus-disabled/add.png';
+import btnDots from '@tonlabs/uikit.assets/btn_dots/btn_dots.png';
+import btnSend from '@tonlabs/uikit.assets/btn_msg_send/btn_msg_send.png';
+import stickerEnabled from '@tonlabs/uikit.assets/btn_sticker_enabled/stickerEnabled.png';
+import stickerDisabled from '@tonlabs/uikit.assets/btn_sticker_disabled/stickerDisabled.png';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,

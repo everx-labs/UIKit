@@ -2,20 +2,17 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import {
-    UIFunction,
-    UIStyle,
-} from '@uikit/core';
+import { UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import {
     UIButton,
     UIComponent,
     UIDetailsInput,
     UIToastMessage,
     UIEmailInput,
-} from '@uikit/components';
-import type { DetailsProps } from '@uikit/components/UIDetailsInput';
-import type { ActionState } from '@uikit/components/UIActionComponent';
-import { UICustomSheet } from '@uikit/navigation';
+} from '@tonlabs/uikit.components';
+import type { DetailsProps } from '@tonlabs/uikit.components/UIDetailsInput';
+import type { ActionState } from '@tonlabs/uikit.components/UIActionComponent';
+import { UICustomSheet } from '@tonlabs/uikit.navigation';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

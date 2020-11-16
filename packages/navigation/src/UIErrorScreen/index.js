@@ -3,21 +3,18 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIStyle,
-    UIConstant,
-} from '@uikit/core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import {
     UIActionImage,
     UILabel,
     UITextButton,
-} from '@uikit/components';
+} from '@tonlabs/uikit.components';
 // TODO: remove from here to get rid of cycled dependency between the packages!
-import { UIBottomBar } from '@uikit/legacy';
-import image404 from '@uikit/assets/404/404.png';
-import icoTonLabsBlack from '@uikit/assets/logo/tonlabs/tonlabs-black.png';
+import { UIBottomBar } from '@tonlabs/uikit.legacy';
+import image404 from '@tonlabs/uikit.assets/404/404.png';
+import icoTonLabsBlack from '@tonlabs/uikit.assets/logo/tonlabs/tonlabs-black.png';
 // TODO: remove from here to get rid of cycled dependency between the packages!
-import type { CreateNavigationOptions } from '@uikit/legacy/UINavigationBar';
+import type { CreateNavigationOptions } from '@tonlabs/uikit.legacy/UINavigationBar';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

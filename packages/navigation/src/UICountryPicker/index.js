@@ -4,13 +4,8 @@ import { StyleSheet } from 'react-native';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 
 
-import {
-    UIConstant,
-    UITextStyle,
-    UIFont,
-    UIColor,
-} from '@uikit/core';
-import { UISearchBar } from '@uikit/components';
+import { UIConstant, UITextStyle, UIFont, UIColor } from '@tonlabs/uikit.core';
+import { UISearchBar } from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

@@ -7,11 +7,11 @@ import type {
 } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-import { UIStyle, UIConstant } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
-import iconShowDefault from '@uikit/assets/ico-unfold/ico-show.png';
-import iconHideDefault from '@uikit/assets/ico-unfold/ico-hide.png';
+import iconShowDefault from '@tonlabs/uikit.assets/ico-unfold/ico-show.png';
+import iconHideDefault from '@tonlabs/uikit.assets/ico-unfold/ico-hide.png';
 
 type Props = {
     /**

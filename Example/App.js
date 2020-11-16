@@ -24,7 +24,7 @@ import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
 
-import { UIColor, UIStyle } from '@uikit/core';
+import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 import {
     UIButton,
     UILayoutManager,
@@ -75,7 +75,7 @@ import {
     UILabel,
     UIListHeader,
     UISectionHeader,
-} from '@uikit/components';
+} from '@tonlabs/uikit.components';
 import {
     UICountryPicker,
     UIImageView,
@@ -84,7 +84,7 @@ import {
     UIPopover,
     UIPopoverBackground,
     UIPopoverMenu,
-} from '@uikit/navigation';
+} from '@tonlabs/uikit.navigation';
 import {
     UIBottomBar,
     UIDetailsButton,
@@ -95,8 +95,8 @@ import {
     UIProfileInitials,
     UIProfilePhoto,
     UIProfileView,
-} from '@uikit/legacy';
-import UIAssets from '@uikit/assets';
+} from '@tonlabs/uikit.legacy';
+import UIAssets from '@tonlabs/uikit.assets';
 import { UIChatList } from '@tonlabs/uikit.chats';
 
 if (Platform.OS === 'web') {

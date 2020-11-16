@@ -3,11 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import dayjs from 'dayjs';
 
-import {
-    UIConstant,
-    UIColor,
-    UIFunction,
-} from '@uikit/core';
+import { UIConstant, UIColor, UIFunction } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

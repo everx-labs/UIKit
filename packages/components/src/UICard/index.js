@@ -3,11 +3,7 @@ import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet, Image, Text } from 'react-native';
 
-import {
-    UIConstant,
-    UIStyle,
-    UIColor,
-} from '@uikit/core';
+import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
 
 import UIGrid from '../UIGrid';
 import UIGridColumn from '../UIGridColumn';

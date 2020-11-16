@@ -11,12 +11,8 @@ import {
     State as RNGHState,
 } from 'react-native-gesture-handler';
 
-import {
-    UIConstant,
-    UIColor,
-    UIFont,
-} from '@uikit/core';
-import icoClose from '@uikit/assets/ico-close/close-light.png';
+import { UIConstant, UIColor, UIFont } from '@tonlabs/uikit.core';
+import icoClose from '@tonlabs/uikit.assets/ico-close/close-light.png';
 
 import UINotice from '../UINotice';
 import type { MessageObject, NoticeAction } from '../UINotice';

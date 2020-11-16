@@ -5,13 +5,8 @@ import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import {
-    UIFont,
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
-import iconDefault from '@uikit/assets/ico-triangle/ico-triangle.png';
+import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import iconDefault from '@tonlabs/uikit.assets/ico-triangle/ico-triangle.png';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';

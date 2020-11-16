@@ -2,11 +2,7 @@
 import React from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 
-import {
-    UIConstant,
-    UIColor,
-    UIStyle,
-} from '@uikit/core';
+import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 
 const dotSize = UIConstant.tinyCellHeight();
 

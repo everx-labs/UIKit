@@ -2,7 +2,7 @@
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 
-import { UIColor, UIStyle } from '@uikit/core';
+import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

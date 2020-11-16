@@ -4,17 +4,12 @@ import React from 'react';
 import { Platform, Text, View, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIColor,
-    UIConstant,
-    UITextStyle,
-} from '@uikit/core';
-import type { UIColorThemeNameType } from '@uikit/core/UIColor/UIColorTypes';
-import iconClose from '@uikit/assets/ico-close/remove.png';
+import { UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
+import type { UIColorThemeNameType } from '@tonlabs/uikit.core/UIColor/UIColorTypes';
+import iconClose from '@tonlabs/uikit.assets/ico-close/remove.png';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';
-
 
 const styles = StyleSheet.create({
     container: {

@@ -5,17 +5,13 @@ import { View, StyleSheet, Text, Linking } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-import {
-    UIConstant,
-    UIStyle,
-    UIColor,
-} from '@uikit/core';
+import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
 import {
     UIComponent,
     UITextButton,
     UITooltip,
-} from '@uikit/components';
-import type { UIColorThemeNameType } from '@uikit/core/UIColor/UIColorTypes';
+} from '@tonlabs/uikit.components';
+import type { UIColorThemeNameType } from '@tonlabs/uikit.core/UIColor/UIColorTypes';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

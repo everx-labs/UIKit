@@ -160,9 +160,9 @@ export {
     TypeOfActionDirection,
 } from './packages/chat/src';
 
-export { default as UIAssets } from './packages/assets';
+export { default as UIAssets } from './packages/assets/src';
 
-export { uiLocalized as UILocalized } from './packages/localization';
+export { uiLocalized as UILocalized } from './packages/localization/src';
 
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';

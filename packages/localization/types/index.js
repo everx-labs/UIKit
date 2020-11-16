@@ -1,7 +1,7 @@
 // @flow
 import BigNumber from 'bignumber.js';
 
-import type { NumberPartsOptions } from '@uikit/core';
+import type { NumberPartsOptions } from '@tonlabs/uikit.core';
 
 import { languagesInfo } from '../src/constants';
 

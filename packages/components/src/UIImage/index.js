@@ -4,7 +4,7 @@ import { Image, Platform } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIColor } from '@uikit/core';
+import { UIColor } from '@tonlabs/uikit.core';
 
 const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
 

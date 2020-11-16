@@ -4,9 +4,9 @@ import { Image, TouchableOpacity, View } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from '@uikit/core';
-import UIAssets from '@uikit/assets';
-import { UIComponent } from '@uikit/components';
+import { UIStyle } from '@tonlabs/uikit.core';
+import UIAssets from '@tonlabs/uikit.assets';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 type Props = {
     testID: string,

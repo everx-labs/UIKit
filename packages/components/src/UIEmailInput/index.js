@@ -1,10 +1,7 @@
 // @flow
 import React from 'react';
 
-import {
-    UIFunction,
-    UIColor,
-} from '@uikit/core';
+import { UIFunction, UIColor } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

@@ -4,12 +4,8 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIColor,
-    UIFont,
-    UIConstant,
-} from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIColor, UIFont, UIConstant } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 const styles = StyleSheet.create({
     navButton: {

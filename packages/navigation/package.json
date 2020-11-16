@@ -1,9 +1,9 @@
 {
-  "name": "@uikit/navigation",
+  "name": "@tonlabs/uikit.navigation",
   "version": "2.0.0",
   "description": "Navigation components for Tonlabs's UIKit",
-  "main": "src/index.js",
   "scripts": {
+    "prepare": "bob build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,10 +22,18 @@
     "url": "https://github.com/tonlabs/UIKit/issues"
   },
   "homepage": "https://github.com/tonlabs/UIKit/packages/navigation#readme",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "react-native": "src/index.js",
+  "files": [
+    "lib/",
+    "src/",
+    "types/"
+  ],
   "dependencies": {
-    "@uikit/assets": "~2.0.0",
-    "@uikit/components": "~2.0.0",
-    "@uikit/core": "~2.0.0",
+    "@tonlabs/uikit.assets": "~2.0.0",
+    "@tonlabs/uikit.components": "~2.0.0",
+    "@tonlabs/uikit.core": "~2.0.0",
     "prop-types": "15.6.2",
     "react-images": "0.5.19",
     "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
@@ -34,6 +42,7 @@
     "react-style-proptype": "3.2.2"
   },
   "devDependencies": {
+    "@react-native-community/bob": "^0.16.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
@@ -52,5 +61,25 @@
     "react-native-image-picker": "*",
     "react-native-share": "^3.8.3",
     "react-native-svg": "^12.1.0"
+  },
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+        [
+            "commonjs",
+            {
+                "configFile": "../../babel.config.js",
+                "copyFlow": true
+            }
+        ],
+        [
+            "module",
+            {
+                "configFile": "../../babel.config.js",
+                "copyFlow": true
+            }
+        ]
+    ]
   }
 }
