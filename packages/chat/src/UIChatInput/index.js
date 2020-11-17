@@ -15,12 +15,7 @@ import { UIPopoverMenu } from '@tonlabs/uikit.navigation';
 import type { DetailsProps } from '@tonlabs/uikit.components/UIDetailsInput';
 import type { ActionState } from '@tonlabs/uikit.components/UIActionComponent';
 import type { MenuItemType } from '@tonlabs/uikit.navigation/UIActionSheet/MenuItem';
-import btnPlus from '@tonlabs/uikit.assets/icon-plus/add.png';
-import btnPlusDisabled from '@tonlabs/uikit.assets/icon-plus-disabled/add.png';
-import btnDots from '@tonlabs/uikit.assets/btn_dots/btn_dots.png';
-import btnSend from '@tonlabs/uikit.assets/btn_msg_send/btn_msg_send.png';
-import stickerEnabled from '@tonlabs/uikit.assets/btn_sticker_enabled/stickerEnabled.png';
-import stickerDisabled from '@tonlabs/uikit.assets/btn_sticker_disabled/stickerDisabled.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 type Props = DetailsProps & {
     containerStyle?: ViewStyleProp,
@@ -203,7 +198,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                         testID="send_btn"
                         onPress={() => this.onSendText(val)}
                     >
-                        <Image source={btnSend} style={styles.icon} />
+                        <Image
+                            source={UIAssets.icons.ui.buttonMsgSend}
+                            style={styles.icon}
+                        />
                     </TouchableOpacity>
                 </View>
             );
@@ -247,7 +245,10 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                         onPress={menuPlus[0].onPress}
                         style={styles.buttonContainer}
                     >
-                        <Image source={btnPlus} style={styles.icon} />
+                        <Image
+                            source={UIAssets.icons.ui.buttonPlus}
+                            style={styles.icon}
+                        />
                     </TouchableOpacity>
                 );
             }
@@ -258,14 +259,20 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                     menuItemsList={menuPlus}
                     placement="top"
                 >
-                    <Image source={btnPlus} style={styles.icon} />
+                    <Image
+                        source={UIAssets.icons.ui.buttonPlus}
+                        style={styles.icon}
+                    />
                 </UIPopoverMenu>
             );
         }
 
         return (
             <View style={styles.buttonContainer}>
-                <Image source={btnPlusDisabled} style={styles.icon} />
+                <Image
+                    source={UIAssets.icons.ui.buttonPlusDisabled}
+                    style={styles.icon}
+                />
             </View>
         );
     }
@@ -281,7 +288,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             if (menuMore.length === 1) {
                 return (
                     <TouchableOpacity onPress={menuMore[0].onPress}>
-                        <Image source={btnDots} />
+                        <Image source={UIAssets.icons.ui.buttonDots} />
                     </TouchableOpacity>
                 );
             }
@@ -291,7 +298,7 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
                     menuItemsList={menuMore}
                     placement="top"
                 >
-                    <Image source={btnDots} />
+                    <Image source={UIAssets.icons.ui.buttonDots} />
                 </UIPopoverMenu>
             );
         };
@@ -299,11 +306,12 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
         return (
             <View style={styles.buttonContainer}>
                 <View style={styles.iconView}>
-                    {!menuMoreDisabled
-                        ? activeButton()
+                    {!menuMoreDisabled ? (
+                        activeButton()
+                    ) : (
                         // TODO: support btnDotsDisabled
-                        : (<Image source={btnDots} />)
-                    }
+                        <Image source={UIAssets.icons.ui.buttonDots} />
+                    )}
                 </View>
             </View>
         );
@@ -330,7 +338,11 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
             >
                 <Image
                     style={styles.icon}
-                    source={!stickersActive ? stickerEnabled : stickerDisabled}
+                    source={
+                        !stickersActive
+                            ? UIAssets.icons.ui.buttonStickerEnabled
+                            : UIAssets.icons.ui.buttonStickerDisabled
+                    }
                 />
             </TouchableOpacity>
         );

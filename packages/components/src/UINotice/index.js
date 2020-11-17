@@ -24,8 +24,7 @@ import {
     UITextStyle,
 } from '@tonlabs/uikit.core';
 import type { PositionObject } from '@tonlabs/uikit.core/types';
-import icoCloseBlue from '@tonlabs/uikit.assets/ico-close/close-blue.png';
-import icoCloseGrey from '@tonlabs/uikit.assets/ico-close/close-grey.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 import UIAlertView from '../UIAlertView';
@@ -356,7 +355,10 @@ export default class UINotice
 
     // Render
     renderCloseButton() {
-        const icoClose = this.action && this.action.title ? icoCloseGrey : icoCloseBlue;
+        const icoClose =
+            this.action && this.action.title
+                ? UIAssets.icons.ui.closeGrey
+                : UIAssets.icons.ui.closeBlue;
         return (
             <TouchableOpacity onPress={() => this.closeWithCancel()}>
                 <Image source={icoClose} />

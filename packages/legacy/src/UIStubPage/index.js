@@ -11,8 +11,7 @@ import {
 } from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import icoTonLabs from '@tonlabs/uikit.assets/logo/tonlabs/tonlabs-primary-minus.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIBottomBar from '../UIBottomBar';
 
@@ -205,9 +204,12 @@ export default class UIStubPage extends UIComponent<Props, State> {
             title, label, needBottomIcon, caption, titleClassName,
         } = this.props;
         const widthStyle = this.getWidthStyle();
-        const bottomIcon = needBottomIcon
-            ? <Image source={icoTonLabs} style={styles.bottomIcon} />
-            : null;
+        const bottomIcon = needBottomIcon ? (
+            <Image
+                source={UIAssets.icons.logo.tonlabsPrimary}
+                style={styles.bottomIcon}
+            />
+        ) : null;
         const labelText = label || uiLocalized.TONLabel;
         return (
             <View

@@ -9,7 +9,7 @@ import {
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import { UIColor, UIFont, UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import UIAssets from '@tonlabs/uikit.assets';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIToastMessage, UIButton, UILabel } from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -128,7 +128,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     }
 
     getCancelImage(): ?ImageSource {
-        return UIAssets.btnClose();
+        return UIAssets.icons.ui.buttonClose;
     }
 
     // Render

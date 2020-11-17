@@ -22,8 +22,8 @@
     "url": "https://github.com/tonlabs/UIKit/issues"
   },
   "homepage": "https://github.com/tonlabs/UIKit/packages/assets#readme",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
+  "main": "commonjs/index.js",
+  "module": "module/index.js",
   "react-native": "src/index.js",
   "files": [
     "commonjs/",
@@ -64,7 +64,7 @@
     "icon-plus-disabled/",
     "key-thin/",
     "logo/",
-    "touch-id/"
+    "ico-touch-id/"
   ],
   "devDependencies": {
     "@react-native-community/bob": "^0.16.2"

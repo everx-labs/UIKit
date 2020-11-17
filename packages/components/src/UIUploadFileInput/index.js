@@ -6,7 +6,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
 import type { UIColorThemeNameType } from '@tonlabs/uikit.core/UIColor/UIColorTypes';
-import iconClose from '@tonlabs/uikit.assets/ico-close/remove.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';
@@ -114,7 +114,7 @@ export default class UIUploadFileInput<Props, State> extends UIComponent<Props &
             <UITextButton
                 buttonStyle={styles.iconCloseButton}
                 iconColor={UIColor.black()}
-                icon={iconClose}
+                icon={UIAssets.icons.ui.closeRemove}
                 onPress={this.deleteFile}
             />
         );

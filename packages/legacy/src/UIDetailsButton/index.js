@@ -12,7 +12,7 @@ import {
     UIFunction,
     UIColorPalette,
 } from '@tonlabs/uikit.core';
-import icoProgress from '@tonlabs/uikit.assets/ico-progress/progress.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 import { UIActionComponent, UITextButton } from '@tonlabs/uikit.components';
 import type { ActionProps, ActionState } from '@tonlabs/uikit.components';
@@ -182,7 +182,7 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         return (
             <View style={UIStyle.common.alignCenter()}>
                 <Animated.Image
-                    source={icoProgress}
+                    source={UIAssets.icons.ui.progress}
                     style={{
                         transform: [{ rotate: spin }],
                     }}

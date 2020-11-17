@@ -4,7 +4,7 @@ import { Image, View, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIColor, UIStyle, UIFunction } from '@tonlabs/uikit.core';
-import UIAssets from '@tonlabs/uikit.assets';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -149,17 +149,21 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
             return null;
         }
         const { visa, masterCard, maestro } = UIFunction.bankCardTypes;
-        const visaImage = presumedCards[visa]
-            ? <Image source={UIAssets.icoVisa()} />
-            : null;
+        const visaImage = presumedCards[visa] ? (
+            <Image source={UIAssets.icons.card.visa} />
+        ) : null;
         const masterCardStyle = visaImage ? UIStyle.margin.leftSmall() : null;
-        const masterCardImage = presumedCards[masterCard]
-            ? <Image source={UIAssets.icoMastercard()} style={masterCardStyle} />
-            : null;
-        const maestroStyle = visaImage || masterCardImage ? UIStyle.margin.leftSmall() : null;
-        const maestroImage = presumedCards[maestro]
-            ? <Image source={UIAssets.icoMaestro()} style={maestroStyle} />
-            : null;
+        const masterCardImage = presumedCards[masterCard] ? (
+            <Image
+                source={UIAssets.icons.card.mastercard}
+                style={masterCardStyle}
+            />
+        ) : null;
+        const maestroStyle =
+            visaImage || masterCardImage ? UIStyle.margin.leftSmall() : null;
+        const maestroImage = presumedCards[maestro] ? (
+            <Image source={UIAssets.icons.card.maestro} style={maestroStyle} />
+        ) : null;
         if (visaImage || masterCardImage || maestroImage) {
             return (
                 <View style={UIStyle.container.centerLeft()}>

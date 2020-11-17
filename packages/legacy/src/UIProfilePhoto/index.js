@@ -6,8 +6,9 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
 import { UIImageView } from '@tonlabs/uikit.navigation';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
-const cameraImage = require('@tonlabs/uikit.assets/ico-camera/ico-camera.png');
+const cameraImage = UIAssets.icons.ui.camera;
 
 type Props = {
     style: ViewStyleProp,

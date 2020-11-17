@@ -6,7 +6,7 @@ import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import iconDefault from '@tonlabs/uikit.assets/ico-triangle/ico-triangle.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';
@@ -14,6 +14,8 @@ import UIActionComponent from '../UIActionComponent';
 import type { ActionProps, ActionState } from '../UIActionComponent';
 import UITooltip from '../UITooltip';
 import IconAnimation from './IconAnimation';
+
+const iconDefault = UIAssets.icons.ui.triangle;
 
 const styles = StyleSheet.create({
     container: {

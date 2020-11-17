@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 
 import { UIConstant, UIStyle, UITextStyle } from '@tonlabs/uikit.core';
-import icoRadiobuttonActive from '@tonlabs/uikit.assets/ico-radiobutton-active/ico-radiobutton-active.png';
-import icoRadiobuttonInactive from '@tonlabs/uikit.assets/ico-radiobutton-inactive/ico-radiobutton-inactive.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 
@@ -28,7 +27,10 @@ class UIRadioButtonItem extends UIComponent {
             <TouchableWithoutFeedback onPress={() => this.props.onPress()}>
                 <View style={[styles.radiobuttonItem, centerLeftContainer]}>
                     <Image
-                        source={this.props.iconActive || icoRadiobuttonActive}
+                        source={
+                            this.props.iconActive ||
+                            UIAssets.icons.ui.radioButtonActive
+                        }
                         style={this.props.radioStyle || marginRightDefault}
                     />
                     <Text style={UITextStyle.primaryBodyRegular}>
@@ -45,7 +47,10 @@ class UIRadioButtonItem extends UIComponent {
             <TouchableWithoutFeedback onPress={() => this.props.onPress()}>
                 <View style={[styles.radiobuttonItem, centerLeftContainer]}>
                     <Image
-                        source={this.props.iconInactive || icoRadiobuttonInactive}
+                        source={
+                            this.props.iconInactive ||
+                            UIAssets.icons.ui.radioButtonInactive
+                        }
                         style={this.props.radioStyle || marginRightDefault}
                     />
                     <Text style={UITextStyle.primaryBodyRegular}>

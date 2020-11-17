@@ -18,7 +18,7 @@ import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleS
 
 import { UIColor, UIConstant, UIStyle, UIFont } from '@tonlabs/uikit.core';
 import { UIComponent, UILabel } from '@tonlabs/uikit.components';
-import UIAssets from '@tonlabs/uikit.assets';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -475,7 +475,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                 </Text>
                 {additionalInfo?.message.info.encrypted && (
                     <View style={styles.keyThin}>
-                        <Image source={UIAssets.keyThin} />
+                        <Image source={UIAssets.icons.ui.keyThin} />
                     </View>
                 )}
             </TouchableOpacity>

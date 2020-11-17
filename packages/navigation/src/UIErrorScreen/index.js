@@ -11,8 +11,7 @@ import {
 } from '@tonlabs/uikit.components';
 // TODO: remove from here to get rid of cycled dependency between the packages!
 import { UIBottomBar } from '@tonlabs/uikit.legacy';
-import image404 from '@tonlabs/uikit.assets/404/404.png';
-import icoTonLabsBlack from '@tonlabs/uikit.assets/logo/tonlabs/tonlabs-black.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 // TODO: remove from here to get rid of cycled dependency between the packages!
 import type { CreateNavigationOptions } from '@tonlabs/uikit.legacy/UINavigationBar';
 
@@ -157,7 +156,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                 <View style={this.getContentStyle()}>
                     <Image
                         style={UIStyle.margin.topSmall()}
-                        source={image404}
+                        source={UIAssets.images[404]}
                     />
                 </View>
             </View>
@@ -194,7 +193,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                 <UIBottomBar
                     isNarrow={this.isNarrow()}
                     copyRight={`2018–${(new Date()).getFullYear()} © TON Labs`}
-                    copyRightIcon={icoTonLabsBlack}
+                    copyRightIcon={UIAssets.icons.logo.tonlabsBlack}
                 />
             </React.Fragment>
         );

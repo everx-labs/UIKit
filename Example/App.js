@@ -3,6 +3,7 @@
  * https://github.com/facebook/react-native
  *
  * @format
+ * @flow
  */
 
 import 'react-native-gesture-handler';
@@ -96,7 +97,7 @@ import {
     UIProfilePhoto,
     UIProfileView,
 } from '@tonlabs/uikit.legacy';
-import UIAssets from '@tonlabs/uikit.assets';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList } from '@tonlabs/uikit.chats';
 
 if (Platform.OS === 'web') {
@@ -104,28 +105,36 @@ if (Platform.OS === 'web') {
     const headElement = document.getElementsByTagName('head')[0];
 
     // Import PTRootUIWeb
-    const ptRootFontBold = headElement.appendChild(document.createElement('link'));
+    const ptRootFontBold = headElement.appendChild(
+        document.createElement('link')
+    );
     ptRootFontBold.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css'
     );
     ptRootFontBold.setAttribute('rel', 'stylesheet');
-    const ptRootFontLight = headElement.appendChild(document.createElement('link'));
+    const ptRootFontLight = headElement.appendChild(
+        document.createElement('link')
+    );
     ptRootFontLight.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css'
     );
     ptRootFontLight.setAttribute('rel', 'stylesheet');
-    const ptRootFontMedium = headElement.appendChild(document.createElement('link'));
+    const ptRootFontMedium = headElement.appendChild(
+        document.createElement('link')
+    );
     ptRootFontMedium.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css'
     );
     ptRootFontMedium.setAttribute('rel', 'stylesheet');
-    const ptRootFontRegular = headElement.appendChild(document.createElement('link'));
+    const ptRootFontRegular = headElement.appendChild(
+        document.createElement('link')
+    );
     ptRootFontRegular.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css'
     );
     ptRootFontRegular.setAttribute('rel', 'stylesheet');
 }
@@ -213,10 +222,10 @@ const Buttons = ({ navigation }) => (
             <UIButton title="Example" data="data" />
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-            <UIButton title="Icon left" icon={UIAssets.icoArrowLeft()} />
+            <UIButton title="Icon left" icon={UIAssets.icons.ui.arrowLeft} />
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-            <UIButton title="Icon right" iconR={UIAssets.icoArrowLeft()} />
+            <UIButton title="Icon right" iconR={UIAssets.icons.ui.arrowLeft} />
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIButton title="With tooltip" tooltip="Hi there!" />
@@ -501,7 +510,7 @@ const Checkbox = () => {
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIRadioButtonList
-                    onSelect={index => setSelectedRadio(index)}
+                    onSelect={(index) => setSelectedRadio(index)}
                     state={{
                         selected: selectedRadio,
                         radiobuttonList: [
@@ -587,7 +596,7 @@ function getDateFormatInfo() {
 
     const shortDateNumbers = [];
     const splitDate = localeDate.split(separator);
-    splitDate.forEach(component => shortDateNumbers.push(Number(component)));
+    splitDate.forEach((component) => shortDateNumbers.push(Number(component)));
 
     if (shortDateNumbers?.length === 3) {
         components[shortDateNumbers.indexOf(d)] = 'day';
@@ -648,7 +657,7 @@ const Inputs = () => {
                     placeholder="Amount"
                     comment="Some comment here"
                     value={amount}
-                    onChangeText={newText => setAmount(newText)}
+                    onChangeText={(newText) => setAmount(newText)}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -657,7 +666,7 @@ const Inputs = () => {
                     comment="Some comment here"
                     value={amount}
                     trailingValue="$"
-                    onChangeText={newText => setAmount(newText)}
+                    onChangeText={(newText) => setAmount(newText)}
                 />
             </View>
             <View
@@ -677,7 +686,7 @@ const Inputs = () => {
                 {/* $FlowFixMe */}
                 <UIBankCardNumberInput
                     value={bankCardNumber}
-                    onChangeText={newText => setBankCardNumber(newText)}
+                    onChangeText={(newText) => setBankCardNumber(newText)}
                 />
             </View>
             <View
@@ -696,7 +705,7 @@ const Inputs = () => {
             <View style={{ paddingVertical: 20 }}>
                 <UIContractAddressInput
                     value={contractAddress}
-                    onChangeText={newText => setContractAddress(newText)}
+                    onChangeText={(newText) => setContractAddress(newText)}
                 />
             </View>
             <View
@@ -715,7 +724,7 @@ const Inputs = () => {
             <View style={{ paddingVertical: 20 }}>
                 <UIDateInput
                     value={date}
-                    onChangeText={newText => setDate(newText)}
+                    onChangeText={(newText) => setDate(newText)}
                 />
             </View>
             <View
@@ -736,7 +745,7 @@ const Inputs = () => {
                     placeholder="Details"
                     comment="Some comment here"
                     value={details}
-                    onChangeText={newText => setDetails(newText)}
+                    onChangeText={(newText) => setDetails(newText)}
                 />
             </View>
             <View style={{ paddingVertical: 20 }}>
@@ -744,7 +753,7 @@ const Inputs = () => {
                     placeholder="Multiline details"
                     comment="Some comment here"
                     value={details}
-                    onChangeText={newText => setDetails(newText)}
+                    onChangeText={(newText) => setDetails(newText)}
                     maxLines={3}
                     containerStyle={{ marginTop: 16 }}
                 />
@@ -767,7 +776,7 @@ const Inputs = () => {
                     placeholder="Email"
                     comment="Some comment here"
                     value={email}
-                    onChangeText={newText => setEmail(newText)}
+                    onChangeText={(newText) => setEmail(newText)}
                 />
             </View>
             <View
@@ -788,7 +797,7 @@ const Inputs = () => {
                     placeholder="Link"
                     comment="Some comment here"
                     value={link}
-                    onChangeText={newText => setLink(newText)}
+                    onChangeText={(newText) => setLink(newText)}
                 />
             </View>
             <View
@@ -809,7 +818,7 @@ const Inputs = () => {
                     placeholder="Number"
                     comment="Some comment here"
                     value={number}
-                    onChangeText={newText => setNumber(newText)}
+                    onChangeText={(newText) => setNumber(newText)}
                 />
             </View>
             <View
@@ -830,7 +839,7 @@ const Inputs = () => {
                     placeholder="Phone"
                     comment="Some comment here"
                     value={phone}
-                    onChangeText={newText => setPhone(newText)}
+                    onChangeText={(newText) => setPhone(newText)}
                 />
             </View>
             <View
@@ -871,7 +880,7 @@ const Inputs = () => {
                 <UISearchBar
                     value={search}
                     placeholder="Your search expression"
-                    onChangeExpression={newExpression =>
+                    onChangeExpression={(newExpression) =>
                         setSearch(newExpression)
                     }
                 />
@@ -880,7 +889,7 @@ const Inputs = () => {
                 <UISearchBar
                     value={search}
                     placeholder="Your search expression"
-                    onChangeExpression={newExpression =>
+                    onChangeExpression={(newExpression) =>
                         setSearch(newExpression)
                     }
                     renderGlass
@@ -903,7 +912,7 @@ const Inputs = () => {
                 <UISeedPhraseInput
                     value={search}
                     value={seedPhrase}
-                    onChangeText={newText => setSeedPhrase(newText)}
+                    onChangeText={(newText) => setSeedPhrase(newText)}
                     phraseToCheck={mnemonicWords.join(' - ')}
                     totalWords={12}
                     words={mnemonicWords}
@@ -928,7 +937,7 @@ const Inputs = () => {
                     placeholder="Your text"
                     beginningTag="@"
                     value={text}
-                    onChangeText={newText => setText(newText)}
+                    onChangeText={(newText) => setText(newText)}
                 />
             </View>
             <View
@@ -950,7 +959,7 @@ const Inputs = () => {
                     placeholder="Your transfer"
                     maxDecimals={3}
                     value={transfer}
-                    onValueChange={num => setTransfer(num)}
+                    onValueChange={(num) => setTransfer(num)}
                     localeInfo={localeInfo}
                 />
             </View>
@@ -1060,16 +1069,16 @@ const Images = () => (
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIActionImage
-                iconEnabled={UIAssets.keyThinDark}
-                iconDisabled={UIAssets.keyThinGrey}
-                iconHovered={UIAssets.keyThinWhite}
+                iconEnabled={UIAssets.icons.ui.keyThinDark}
+                iconDisabled={UIAssets.icons.ui.keyThinGrey}
+                iconHovered={UIAssets.icons.ui.keyThinWhite}
             />
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIActionImage
-                iconEnabled={UIAssets.keyThinDark}
-                iconDisabled={UIAssets.keyThinGrey}
-                iconHovered={UIAssets.keyThinWhite}
+                iconEnabled={UIAssets.icons.ui.keyThinDark}
+                iconDisabled={UIAssets.icons.ui.keyThinGrey}
+                iconHovered={UIAssets.icons.ui.keyThinWhite}
                 disabled
             />
         </View>
@@ -1088,7 +1097,7 @@ const Images = () => (
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             {/* $FlowFixMe */}
-            <UIImage source={UIAssets.keyThinDark} />
+            <UIImage source={UIAssets.icons.ui.keyThinDark} />
         </View>
         <View
             style={{
@@ -1106,7 +1115,7 @@ const Images = () => (
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIImageView
                 photoStyle={{ width: 100, height: 100 }}
-                source={UIAssets.keyThinDark}
+                source={UIAssets.icons.ui.keyThinDark}
                 editable
             />
         </View>
@@ -1463,7 +1472,7 @@ const Menus = () => {
                                             alert('Action 2 was called'),
                                     },
                                 ],
-                                true,
+                                true
                             );
                         }
                     }}
@@ -1628,7 +1637,7 @@ const Menus = () => {
                 <UIStepBar
                     itemsList={['Item 1', 'Item 2', 'Item 3', 'Item 4']}
                     activeIndex={activeIndex}
-                    onPress={i => setActiveIndex(i)}
+                    onPress={(i) => setActiveIndex(i)}
                 />
             </View>
             <View
@@ -1686,7 +1695,9 @@ const Notifications = () => (
             <UITextButton
                 title="Show default notice with message only"
                 onPress={() =>
-                    UINotice.showMessage('System is going down at midnight tonight. We’ll notify you when it’s back up.')
+                    UINotice.showMessage(
+                        'System is going down at midnight tonight. We’ll notify you when it’s back up.'
+                    )
                 }
             />
         </View>
@@ -1723,7 +1734,9 @@ const Notifications = () => (
             <UITextButton
                 title="Show default notice with message only"
                 onPress={() =>
-                    UIToastMessage.showMessage('System is going down at midnight tonight.')
+                    UIToastMessage.showMessage(
+                        'System is going down at midnight tonight.'
+                    )
                 }
             />
         </View>
@@ -1838,7 +1851,9 @@ const Popups = () => (
             <UITextButton
                 title="Show UIDropdownAlert"
                 onPress={() =>
-                    UIDropdownAlert.showNotification('This is a UIDropdownAlert')
+                    UIDropdownAlert.showNotification(
+                        'This is a UIDropdownAlert'
+                    )
                 }
             />
         </View>
@@ -2018,7 +2033,7 @@ const Profile = () => (
                 paddingVertical: 20,
             }}
         >
-            <UIProfilePhoto source={UIAssets.faceId} />
+            <UIProfilePhoto source={UIAssets.icons.security.faceId} />
         </View>
         <View
             style={{
@@ -2042,7 +2057,7 @@ const Profile = () => (
             <UIProfileView
                 editable
                 containerStyle={{ marginRight: 16 }}
-                photo={UIAssets.faceId}
+                photo={UIAssets.icons.security.faceId}
                 hasSecondName
                 name="John"
                 secondName="Doe"
@@ -2149,18 +2164,18 @@ const Chat = () => (
         isLoadingMore={false}
         messages={[
             {
-                type: "act",
-                status: "sent",
+                type: 'act',
+                status: 'sent',
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: "0:000",
-                text: "This is action",
+                sender: '0:000',
+                text: 'This is action',
             },
             {
-                type: "act",
-                status: "received",
+                type: 'act',
+                status: 'received',
                 time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: "0:000",
-                text: "This is action",
+                sender: '0:000',
+                text: 'This is action',
             },
             {
                 type: 'stk',

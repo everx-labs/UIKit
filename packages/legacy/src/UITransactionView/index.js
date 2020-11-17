@@ -11,7 +11,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIConstant, UIColor, UIStyle, UIFont } from '@tonlabs/uikit.core';
 import { UIComponent, UILabel } from '@tonlabs/uikit.components';
-import UIAssets from '@tonlabs/uikit.assets';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import UIProfileInitials from '../UIProfileInitials';
 
 type Props = {
@@ -206,7 +206,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
                     />
                     {encrypted && (
                         <View style={this.styles.keyThin}>
-                            <Image source={UIAssets.keyThinDark} />
+                            <Image source={UIAssets.icons.ui.keyThinDark} />
                         </View>
                     )}
                 </View>

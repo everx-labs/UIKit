@@ -13,7 +13,7 @@ import {
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import icoClose from '@tonlabs/uikit.assets/ico-close/close-blue.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 type Props = {
     style?: ViewStyleProp,
@@ -109,7 +109,7 @@ export default class UIPushFeedback extends UIComponent<Props, State> {
                 {this.props.closable &&
                     <UILink
                         textAlign={UILink.TextAlign.Right}
-                        icon={icoClose}
+                        icon={UIAssets.icons.ui.closeBlue}
                         onPress={this.onClose}
                         buttonSize={UILink.Size.Small}
                         style={styles.closeButton}

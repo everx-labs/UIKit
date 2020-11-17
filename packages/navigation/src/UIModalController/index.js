@@ -19,7 +19,7 @@ import {
     UIStyle,
 } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core/UIDevice';
-import UIAssets from '@tonlabs/uikit.assets';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import type {
     AnimationParameters,
@@ -351,7 +351,7 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     getCancelImage(): ?ImageSource {
-        return UIAssets.btnClose();
+        return UIAssets.icons.ui.buttonClose;
     }
 
     // Override if needed!

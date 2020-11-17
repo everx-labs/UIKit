@@ -5,10 +5,7 @@ import { View, Image, TouchableWithoutFeedback } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-import icoInactive from '@tonlabs/uikit.assets/ico-toggle-inactive/ico-toggle-inactive.png';
-import icoActive from '@tonlabs/uikit.assets/ico-toggle-active/ico-toggle-active.png';
-import icoOn from '@tonlabs/uikit.assets/ico-toggle-on/ico-toggle-on.png';
-import icoOff from '@tonlabs/uikit.assets/ico-toggle-off/ico-toggle-off.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 type Props = {
     iconActive: ?ImageSource,
@@ -35,9 +32,13 @@ const UIToggle = ({
 
     let source;
     if (colored) {
-        source = active ? (iconActive || icoOn) : (iconInactive || icoOff);
+        source = active
+            ? iconActive || UIAssets.icons.ui.toggleOn
+            : iconInactive || UIAssets.icons.ui.toggleOff;
     } else {
-        source = active ? (iconActive || icoActive) : (iconInactive || icoInactive);
+        source = active
+            ? iconActive || UIAssets.icons.ui.toggleActive
+            : iconInactive || UIAssets.icons.ui.toggleInactive;
     }
 
     const testIDProp = testID ? { testID } : null;

@@ -5,12 +5,7 @@ import StylePropType from 'react-style-proptype';
 import { Image, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
 import { UIColor } from '@tonlabs/uikit.core';
-import icoSquareCheckboxActive from '@tonlabs/uikit.assets/ico-checkbox-square-active/ico-checkbox-square-active.png';
-import icoSquareCheckboxInactive from '@tonlabs/uikit.assets/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
-import icoSquareCheckboxActiveAction from '@tonlabs/uikit.assets/ico-checkbox-square-active/active-action.png';
-import icoSquareCheckboxInactiveAction from '@tonlabs/uikit.assets/ico-checkbox-square-inactive/inactive-action.png';
-import icoCircleCheckboxActive from '@tonlabs/uikit.assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
-import icoCircleCheckboxInactive from '@tonlabs/uikit.assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 
@@ -41,11 +36,17 @@ class UICheckboxItem extends UIComponent {
 
         if (type === UICheckboxItem.Type.Square) {
             if (this.props.theme === UIColor.Theme.Action) {
-                return selected ? icoSquareCheckboxActiveAction : icoSquareCheckboxInactiveAction;
+                return selected
+                    ? UIAssets.icons.ui.checkboxSquareActiveAction
+                    : UIAssets.icons.ui.checkboxSquareInactiveAction;
             }
-            return selected ? icoSquareCheckboxActive : icoSquareCheckboxInactive;
+            return selected
+                ? UIAssets.icons.ui.checkboxSquareActive
+                : UIAssets.icons.ui.checkboxSquareInactive;
         }
-        return selected ? icoCircleCheckboxActive : icoCircleCheckboxInactive;
+        return selected
+            ? UIAssets.icons.ui.checkboxCircleActiveInverted
+            : UIAssets.icons.ui.checkboxCircleInactiveEmpty;
     }
 
     renderCheckbox() {

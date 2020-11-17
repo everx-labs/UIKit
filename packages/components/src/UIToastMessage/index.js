@@ -12,7 +12,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import { UIConstant, UIColor, UIFont } from '@tonlabs/uikit.core';
-import icoClose from '@tonlabs/uikit.assets/ico-close/close-light.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UINotice from '../UINotice';
 import type { MessageObject, NoticeAction } from '../UINotice';
@@ -163,7 +163,7 @@ export default class UIToastMessage {
                     testID="toast-action-button"
                     onPress={() => this.closeToast()}
                 >
-                    <Image source={icoClose} />
+                    <Image source={UIAssets.icons.ui.closeLight} />
                 </TouchableOpacity>
             );
         }
