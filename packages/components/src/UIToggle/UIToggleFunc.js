@@ -1,4 +1,3 @@
-// this component can't be used now, because of some error in react inside UIKit
 // @flow
 import React, { useCallback } from 'react';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
@@ -13,22 +12,22 @@ import icoOff from '@uikit/assets/ico-toggle-off/ico-toggle-off.png';
 type Props = {
     iconActive: ?ImageSource,
     iconInactive: ?ImageSource,
-    containerStyle: ViewStyleProp,
+    containerStyle?: ViewStyleProp,
     active: boolean,
-    colored: boolean,
+    colored?: boolean,
     onPress: boolean => void,
     testID: ?string,
 };
 
 const UIToggle = ({
-    active = false,
-    onPress = () => {},
-    colored = false,
-    iconActive = null,
-    iconInactive = null,
-    containerStyle = {},
-    testID = null,
-}: Props) => {
+                      active = false,
+                      onPress = () => {},
+                      colored = false,
+                      iconActive = null,
+                      iconInactive = null,
+                      containerStyle = {},
+                      testID = null,
+                  }: Props) => {
     const onPresHandler = useCallback(() => {
         onPress(!active);
     }, [active]);
@@ -47,17 +46,14 @@ const UIToggle = ({
             {...testIDProp}
             onPress={onPresHandler}
         >
-            <View style={containerStyle}>
-                <Image
-                    source={source}
-                    style={{
-                        cursor: 'pointer',
-                        touchAction: 'manipulation',
-                    }}
-                />
+            <View style={[containerStyle, {
+                cursor: 'pointer',
+                touchAction: 'manipulation',
+            }]}
+            >
+                <Image source={source} />
             </View>
         </TouchableWithoutFeedback>
     );
 };
-
 export default UIToggle;
