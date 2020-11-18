@@ -61,4 +61,9 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         country: 'JP',
         dayJS: 'ja',
     },
+    ko: {
+        name: '한국어',
+        country: 'KO',
+        dayJS: 'ko',
+    },
 };
