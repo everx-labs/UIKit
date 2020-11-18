@@ -1,18 +1,10 @@
 // @flow
-import {
-    UIPopoverMenu,
-    UIPopoverBackground,
-} from './packages/navigation/src';
+import { UIPopoverMenu, UIPopoverBackground } from './packages/navigation/src';
 
 // Fix deprecated exports
 const UIMenuView = UIPopoverMenu;
 const UIMenuBackground = UIPopoverBackground;
-export {
-    UIPopoverMenu,
-    UIPopoverBackground,
-    UIMenuBackground,
-    UIMenuView,
-};
+export { UIPopoverMenu, UIPopoverBackground, UIMenuBackground, UIMenuView };
 
 export {
     UIActionComponent,
@@ -98,6 +90,7 @@ export {
 
 export {
     UIActionSheet,
+    UIBottomBar,
     UIController,
     UICountryPicker,
     UICustomSheet,
@@ -114,7 +107,6 @@ export {
 } from './packages/navigation/src';
 
 export {
-    UIBottomBar,
     UIDetailsButton,
     UISplitViewController,
     UINavigationBackButton,

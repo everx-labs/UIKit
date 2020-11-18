@@ -78,6 +78,7 @@ import {
     UISectionHeader,
 } from '@tonlabs/uikit.components';
 import {
+    UIBottomBar,
     UICountryPicker,
     UIImageView,
     UIActionSheet,
@@ -87,7 +88,6 @@ import {
     UIPopoverMenu,
 } from '@tonlabs/uikit.navigation';
 import {
-    UIBottomBar,
     UIDetailsButton,
     UIFeedback,
     UIPushFeedback,

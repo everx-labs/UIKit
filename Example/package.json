@@ -84,6 +84,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-react-native-web": "0.13.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "circular-dependency-plugin": "5.2.0",
     "css-loader": "^3.6.0",
     "eslint": "^6.5.1",
     "jest": "^24.9.0",

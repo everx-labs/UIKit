@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
 import { View, StyleSheet, Text, Linking } from 'react-native';
-
-import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {
+    ViewStyleProp,
+    TextStyleProp,
+} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
@@ -12,7 +14,6 @@ import {
     UITooltip,
 } from '@tonlabs/uikit.components';
 import type { UIColorThemeNameType } from '@tonlabs/uikit.core';
-
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const styles = StyleSheet.create({
@@ -35,7 +36,7 @@ type MenuItem = {
     title: string,
     onPress?: () => void,
     componentClass?: any,
-}
+};
 
 type Props = {
     theme?: UIColorThemeNameType,
@@ -93,9 +94,15 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 
     hasNoContacts() {
         const {
-            companyName, address, phoneNumber, postalCode, location,
+            companyName,
+            address,
+            phoneNumber,
+            postalCode,
+            location,
         } = this.props;
-        return !companyName && !address && !phoneNumber && !postalCode && !location;
+        return (
+            !companyName && !address && !phoneNumber && !postalCode && !location
+        );
     }
 
     hasNoPhoneNumber() {
@@ -117,17 +124,16 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         return (
             <View style={[styles.container, UIStyle.flex.justifyCenter()]}>
                 <Text>
-                    <Text style={accentStyle}>
-                        {accentText}
-                    </Text>
-                    {' '}
+                    <Text style={accentStyle}>{accentText}</Text>{' '}
                     <UITextButton
                         title={accentEmail}
                         buttonStyle={UIStyle.height.tinyCell()}
                         textStyle={accentStyle}
                         textHoverStyle={accentStyle}
                         textTappedStyle={accentStyle}
-                        onPress={() => { Linking.openURL(`mailto:${accentEmail}`); }}
+                        onPress={() => {
+                            Linking.openURL(`mailto:${accentEmail}`);
+                        }}
                     />
                 </Text>
             </View>
@@ -196,19 +202,17 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                         {location}
                     </Text>
                 </Text>
-                <Text style={textStyle}>
-                    {info}
-                </Text>
+                <Text style={textStyle}>{info}</Text>
                 <Text style={textStyle}>
                     {this.renderEmail()}
-                    {
-                        this.hasNoPhoneNumber() ? null : (
-                            <React.Fragment>
-                                {'   ·  '}
-                                <Text {...UIBottomBar.getItemProp('telephone')}>{phoneNumber}</Text>
-                            </React.Fragment>
-                        )
-                    }
+                    {this.hasNoPhoneNumber() ? null : (
+                        <React.Fragment>
+                            {'   ·  '}
+                            <Text {...UIBottomBar.getItemProp('telephone')}>
+                                {phoneNumber}
+                            </Text>
+                        </React.Fragment>
+                    )}
                 </Text>
             </View>
         );
@@ -236,36 +240,28 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         if (!menuItems.length) {
             return null;
         }
-        const dot = (
-            <Text style={textStyle}>
-                {'  ·  '}
-            </Text>
+        const dot = <Text style={textStyle}>{'  ·  '}</Text>;
+        const menu = menuItems.map(
+            ({ title, href, componentClass, onPress }, index) => {
+                const Component = componentClass || UITextButton;
+                return (
+                    <React.Fragment key={`bottom-bar-menu-item-${title}`}>
+                        <Component
+                            href={href}
+                            title={title}
+                            buttonStyle={UIStyle.height.bigCell()}
+                            textStyle={textStyle}
+                            textHoverStyle={UIColor.textPrimaryStyle()}
+                            textTappedStyle={UIColor.textPrimaryStyle()}
+                            onPress={onPress}
+                        />
+                        {index === menuItems.length - 1 ? null : dot}
+                    </React.Fragment>
+                );
+            }
         );
-        const menu = menuItems.map(({
-            title, href, componentClass, onPress,
-        }, index) => {
-            const Component = componentClass || UITextButton;
-            return (
-                <React.Fragment key={`bottom-bar-menu-item-${title}`}>
-                    <Component
-                        href={href}
-                        title={title}
-                        buttonStyle={UIStyle.height.bigCell()}
-                        textStyle={textStyle}
-                        textHoverStyle={UIColor.textPrimaryStyle()}
-                        textTappedStyle={UIColor.textPrimaryStyle()}
-                        onPress={onPress}
-                    />
-                    {index === menuItems.length - 1 ? null : dot}
-                </React.Fragment>
-            );
-        });
 
-        return (
-            <View style={UIStyle.container.centerLeft()}>
-                {menu}
-            </View>
-        );
+        return <View style={UIStyle.container.centerLeft()}>{menu}</View>;
     }
 
     renderDesktopContacts() {
@@ -301,15 +297,21 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const isNarrowAndNotShort = this.isNarrow() && !isShort;
         const copyRightText = isNarrowAndNotShort ? '' : copyRight;
-        const align = isShort ? UIStyle.flex.alignCenter() : UIStyle.flex.alignEnd();
+        const align = isShort
+            ? UIStyle.flex.alignCenter()
+            : UIStyle.flex.alignEnd();
         const flex = isNarrowAndNotShort ? null : UIStyle.flex.x1();
         return (
             <View style={[flex, align]}>
                 <Text style={textStyle}>
                     <UITextButton
                         icon={isNarrowAndNotShort && copyRightIcon}
-                        iconColor={isNarrowAndNotShort && UIColor.textTertiary()}
-                        iconHoverColor={isNarrowAndNotShort && UIColor.textPrimary()}
+                        iconColor={
+                            isNarrowAndNotShort && UIColor.textTertiary()
+                        }
+                        iconHoverColor={
+                            isNarrowAndNotShort && UIColor.textPrimary()
+                        }
                         title={copyRightText}
                         textStyle={textStyle}
                         textHoverStyle={UIColor.textPrimaryStyle()}
@@ -367,5 +369,7 @@ UIBottomBar.defaultProps = {
     isNarrow: true,
     screenWidth: 0,
 
-    onPressCopyRight: () => { Linking.openURL('https://tonlabs.io'); },
+    onPressCopyRight: () => {
+        Linking.openURL('https://tonlabs.io');
+    },
 };

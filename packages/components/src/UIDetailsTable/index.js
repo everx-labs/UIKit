@@ -52,7 +52,7 @@ type State = {
 const styles = StyleSheet.create({
     borderTop: {
         borderTopWidth: 1,
-        borderTopColor: UIColor.current.background.whiteLight,
+        borderTopColor: UIColor.backgroundWhiteLight(),
     },
 });
 

@@ -9,11 +9,9 @@ import {
     UIToastMessage,
     UIBackgroundView,
 } from '@tonlabs/uikit.components';
-
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
-
-import UIBottomBar from '../UIBottomBar';
+import { UIBottomBar } from '@tonlabs/uikit.navigation';
 
 const styles = StyleSheet.create({
     container: {

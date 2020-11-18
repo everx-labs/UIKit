@@ -9,13 +9,11 @@ import {
     UILabel,
     UITextButton,
 } from '@tonlabs/uikit.components';
-// TODO: remove from here to get rid of cycled dependency between the packages!
-import { UIBottomBar } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
-
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIScreen from '../UIScreen';
+import UIBottomBar from '../UIBottomBar';
 
 const { height } = Dimensions.get('window');
 const bottomOffset = UIConstant.contentOffset() + UIConstant.bigCellHeight();
@@ -104,8 +102,9 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     }
 
     getCaption() {
-        // $FlowExpectedError
-        const caption = this.props.errorCaption || this.getNavigationParams().caption;
+        const caption =
+            // $FlowExpectedError
+            this.props.errorCaption || this.getNavigationParams().caption;
         if (caption) {
             return caption;
         }
