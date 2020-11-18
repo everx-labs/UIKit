@@ -9,10 +9,11 @@ import {
     UIColor,
     UIConstant,
     UIFunction,
-    UILocalized,
     UIStyle,
     UIDevice,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIDetailsInput from '../UIDetailsInput';
 import type { DetailsProps } from '../UIDetailsInput';
@@ -46,7 +47,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         autoCapitalize: 'none',
         returnKeyType: 'done',
         blurOnSubmit: true,
-        placeholder: UILocalized.MasterPassword,
+        placeholder: uiLocalized.MasterPassword,
         autoFocus: false,
         containerStyle: {},
         forceMultiLine: true,
@@ -192,11 +193,11 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     getCommentTestID(): string {
         const { commentTestID } = this.props;
         const comment = this.getComment();
-        if (comment === UILocalized.seedPhraseTypo) {
+        if (comment === uiLocalized.seedPhraseTypo) {
             return `${commentTestID}_error`;
         } else if (comment.includes('more')) {
             return `${commentTestID}_counter_${comment.split(' ')[0]}`;
-        } else if (comment === UILocalized.greatMemory) {
+        } else if (comment === uiLocalized.greatMemory) {
             return `${commentTestID}_success`;
         }
         return commentTestID;
@@ -243,12 +244,12 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const count = this.getRemainingCount();
 
         if (!valid && count === 0) {
-            return UILocalized.seedPhraseTypo;
+            return uiLocalized.seedPhraseTypo;
         } else if (valid && count === 0) {
-            return UILocalized.greatMemory;
+            return uiLocalized.greatMemory;
         }
 
-        return UILocalized.localizedStringForValue(count, 'moreWords');
+        return uiLocalized.localizedStringForValue(count, 'moreWords');
     }
 
     getRemainingCount(): number {
@@ -342,6 +343,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     onChangeText = (newValue: string, callback: ?((finalValue: string) => void)): void => {
         const { onChangeText, onChangeIsValidPhrase } = this.props;
         const split = UISeedPhraseInput.splitPhrase(newValue);
+        this.hideHints();
         if (split.length > this.totalWords) {
             return;
         }

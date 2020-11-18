@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow
  */
 
 import 'react-native-gesture-handler';
@@ -25,10 +24,7 @@ import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
 
-import {
-    UIColor,
-    UIStyle,
-} from '@uikit/core';
+import { UIColor, UIStyle } from '@uikit/core';
 import {
     UIButton,
     UILayoutManager,
@@ -37,7 +33,6 @@ import {
     UIDetailsRadio,
     UIDetailsToggle,
     UIDetailsTable,
-    UILoadMoreButton,
     UIRadioButtonList,
     UIScaleButton,
     UITextButton,
@@ -102,6 +97,38 @@ import {
     UIProfileView,
 } from '@uikit/legacy';
 import UIAssets from '@uikit/assets';
+import { UIChatList } from '@tonlabs/uikit.chats';
+
+if (Platform.OS === 'web') {
+    // Head Element
+    const headElement = document.getElementsByTagName('head')[0];
+
+    // Import PTRootUIWeb
+    const ptRootFontBold = headElement.appendChild(document.createElement('link'));
+    ptRootFontBold.setAttribute(
+        'href',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css',
+    );
+    ptRootFontBold.setAttribute('rel', 'stylesheet');
+    const ptRootFontLight = headElement.appendChild(document.createElement('link'));
+    ptRootFontLight.setAttribute(
+        'href',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css',
+    );
+    ptRootFontLight.setAttribute('rel', 'stylesheet');
+    const ptRootFontMedium = headElement.appendChild(document.createElement('link'));
+    ptRootFontMedium.setAttribute(
+        'href',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css',
+    );
+    ptRootFontMedium.setAttribute('rel', 'stylesheet');
+    const ptRootFontRegular = headElement.appendChild(document.createElement('link'));
+    ptRootFontRegular.setAttribute(
+        'href',
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css',
+    );
+    ptRootFontRegular.setAttribute('rel', 'stylesheet');
+}
 
 const SurfSplit = createSurfSplitNavigator();
 
@@ -279,25 +306,6 @@ const Buttons = ({ navigation }) => (
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIImageButton image={UIImageButton.Images.menuContained} />
-        </View>
-        <View
-            style={{
-                width: '96%',
-                paddingLeft: 40,
-                paddingBottom: 10,
-                marginHorizontal: '2%',
-                marginTop: 50,
-                borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
-            }}
-        >
-            <Text>UILoadMoreButton</Text>
-        </View>
-        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-            <UILoadMoreButton label="Load more" />
-        </View>
-        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-            <UILoadMoreButton label="Load more" isLoadingMore />
         </View>
         <View
             style={{
@@ -1446,11 +1454,13 @@ const Menus = () => {
                                 [
                                     {
                                         title: 'Item 1',
-                                        onPress: () => alert('Action 1 was called'),
+                                        onPress: () =>
+                                            alert('Action 1 was called'),
                                     },
                                     {
                                         title: 'Item 2',
-                                        onPress: () => alert('Action 2 was called'),
+                                        onPress: () =>
+                                            alert('Action 2 was called'),
                                     },
                                 ],
                                 true,
@@ -2131,6 +2141,189 @@ const TextScreen = () => (
     </ScrollView>
 );
 
+const Chat = () => (
+    <UIChatList
+        areStickersVisible={false}
+        onLoadEarlierMessages={() => {}}
+        canLoadMore
+        isLoadingMore={false}
+        messages={[
+            {
+                type: "act",
+                status: "sent",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                text: "This is action",
+            },
+            {
+                type: "act",
+                status: "received",
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: "0:000",
+                text: "This is action",
+            },
+            {
+                type: 'stk',
+                status: 'pending',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                source: {
+                    uri:
+                        'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                },
+            },
+            {
+                type: 'stk',
+                status: 'sent',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                source: {
+                    uri:
+                        'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                },
+            },
+            {
+                type: 'stk',
+                status: 'received',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:123',
+                source: {
+                    uri:
+                        'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                },
+            },
+            {
+                type: 'sys',
+                status: 'sent',
+                time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
+                sender: '0:000', // TODO: is this mandatory field for system message?
+                text: 'This is a system message',
+            },
+            {
+                type: 'trx',
+                status: 'sent',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                info: {
+                    type: 'aborted',
+                    amount: new BigNumber(1),
+                },
+                comment: {
+                    text: 'Pocket money',
+                },
+                onPress() {
+                    console.log('hey');
+                },
+            },
+            {
+                type: 'trx',
+                status: 'received',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                info: {
+                    type: 'aborted',
+                    amount: new BigNumber(1),
+                },
+            },
+            {
+                type: 'trx',
+                status: 'sent',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                info: {
+                    type: 'expense',
+                    amount: new BigNumber(1),
+                    text: 'Sent',
+                },
+                comment: {
+                    text: 'Some money',
+                    encrypted: true,
+                },
+            },
+            {
+                type: 'trx',
+                status: 'received',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                info: {
+                    type: 'expense',
+                    amount: new BigNumber(1),
+                    text: 'Sent',
+                },
+            },
+            {
+                type: 'trx',
+                status: 'sent',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                info: {
+                    type: 'income',
+                    amount: new BigNumber(9999.123456789),
+                    text: 'Received',
+                },
+            },
+            {
+                type: 'trx',
+                status: 'received',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                info: {
+                    type: 'income',
+                    amount: new BigNumber(1),
+                    text: 'Received',
+                },
+                comment: {
+                    text: 'Take it',
+                    encrypted: true,
+                },
+            },
+            {
+                type: 'stm',
+                status: 'sending',
+                time: Math.floor(Date.now() - 1 * 60 * 1000),
+                sender: '0:000',
+                text: 'This one is in process of sending...',
+            },
+            {
+                type: 'stm',
+                status: 'received',
+                time: Math.floor(Date.now() - 2 * 60 * 1000),
+                sender: '0:123',
+                text: 'How r u?',
+            },
+            {
+                type: 'stm',
+                status: 'sent',
+                time: Math.floor(Date.now() - 4 * 60 * 1000),
+                sender: '0:000',
+                text: 'This one is from me',
+            },
+            {
+                type: 'stm',
+                status: 'received',
+                time: Math.floor(Date.now() - 5 * 60 * 1000),
+                sender: '0:123',
+                text:
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            },
+            {
+                type: 'stm',
+                status: 'received',
+                time: Math.floor(Date.now() - 5 * 60 * 1000),
+                sender: '0:123',
+                text: 'Hi there!',
+            },
+            {
+                type: 'stm',
+                status: 'received',
+                time: new Date('10 06 2020 10:00').getTime(),
+                sender: '0:123',
+                text: 'Hi from past!',
+            },
+        ].map((m: any, i: number) => ((m.key = i), m))}
+    />
+);
+
 const Main = ({ navigation }) => (
     <SafeAreaView>
         <Text style={styles.title}>Main</Text>
@@ -2194,6 +2387,11 @@ const Main = ({ navigation }) => (
             buttonStyle={UIButton.ButtonStyle.Link}
             title="Text"
         />
+        <UIButton
+            onPress={() => navigation.navigate('chat')}
+            buttonStyle={UIButton.ButtonStyle.Link}
+            title="Chat"
+        />
     </SafeAreaView>
 );
 
@@ -2231,6 +2429,7 @@ const App: () => React$Node = () => {
                     <SurfSplit.Screen name="products" component={Products} />
                     <SurfSplit.Screen name="profile" component={Profile} />
                     <SurfSplit.Screen name="text" component={TextScreen} />
+                    <SurfSplit.Screen name="chat" component={Chat} />
                 </SurfSplit.Navigator>
             </NavigationContainer>
             <UILayoutManager />

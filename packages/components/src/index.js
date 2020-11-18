@@ -45,6 +45,7 @@ export { default as UINumberInput } from './UINumberInput';
 export { default as UIPhoneInput } from './UIPhoneInput';
 export { default as UIPinCodeInput } from './UIPinCodeInput';
 export { default as UIPureComponent } from './UIPureComponent';
+export { default as UIPushNotification } from './UIPushNotification';
 export { default as UIQRCode } from './UIQRCode';
 export { default as UIRadioButtonList } from './UIRadioButtonList';
 export { default as UIScaleButton } from './UIScaleButton';

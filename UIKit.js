@@ -1,4 +1,19 @@
 // @flow
+import {
+    UIPopoverMenu,
+    UIPopoverBackground,
+} from './packages/navigation/src';
+
+// Fix deprecated exports
+const UIMenuView = UIPopoverMenu;
+const UIMenuBackground = UIPopoverBackground;
+export {
+    UIPopoverMenu,
+    UIPopoverBackground,
+    UIMenuBackground,
+    UIMenuView,
+};
+
 export {
     UIActionComponent,
     UIActionIcon,
@@ -52,6 +67,7 @@ export {
     UISectionHeader,
     UISeedPhraseInput,
     UIContractAddressInput,
+    UIPushNotification,
     UISeparator,
     UISlider,
     UISpinnerOverlay,
@@ -67,6 +83,7 @@ export {
     UIUploadFileInput,
     UIUserAgent,
 } from './packages/components/src';
+
 export {
     UIColor,
     UIColorPalette,
@@ -76,16 +93,9 @@ export {
     UIFont,
     UITextStyle,
     UIFunction,
-    UILocalized,
-    UILocalizedService,
-    languagesInfo,
-    prepareLocales,
-    prepareImages,
-    prepare,
-    formatTime,
-    formatDate,
     UIStyle,
 } from './packages/core/src';
+
 export {
     UIActionSheet,
     UIController,
@@ -102,6 +112,7 @@ export {
     UIShareScreen,
     UIUnfold,
 } from './packages/navigation/src';
+
 export {
     UIBottomBar,
     UIDetailsButton,
@@ -132,6 +143,7 @@ export {
     UITransactionView,
     UITransitionView,
 } from './packages/legacy/src';
+
 export {
     UIChatInput,
     UIChatMessageCell,
@@ -147,21 +159,10 @@ export {
     TypeOfAction,
     TypeOfActionDirection,
 } from './packages/chat/src';
+
 export { default as UIAssets } from './packages/assets';
 
-import {
-    UIPopoverMenu,
-    UIPopoverBackground,
-} from './packages/navigation/src';
-// deprecated
-const UIMenuView = UIPopoverMenu;
-const UIMenuBackground = UIPopoverBackground;
-export {
-    UIPopoverMenu,
-    UIPopoverBackground,
-    UIMenuBackground,
-    UIMenuView,
-};
+export { uiLocalized as UILocalized } from './packages/localization';
 
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';

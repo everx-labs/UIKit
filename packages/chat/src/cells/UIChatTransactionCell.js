@@ -10,14 +10,15 @@ import {
     UIColor,
     UIConstant,
     UIStyle,
-    UILocalized,
-    formatTime,
 } from '@uikit/core';
 import {
     UIPureComponent,
     UIScaleButton,
     UILabel,
 } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import type { BigNum } from '@uikit/core/types/BigNum';
 
 import type {
@@ -131,7 +132,7 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
 
     getDate(): string {
         const { created } = this.getMessage().info;
-        return created ? formatTime(created) : '';
+        return created ? uiLocalized.formatTime(created) : '';
     }
 
     getExtra(): TransactionInfo {
@@ -209,17 +210,17 @@ export default class UIChatTransactionCell extends UIPureComponent<Props, State>
     getStatusString(status: ChatMessageStatusType): string {
         const time = this.getDate();
         if (status === ChatMessageStatus.Rejected) {
-            return UILocalized.formatString(
-                UILocalized.TransactionStatus.rejected,
+            return uiLocalized.formatString(
+                uiLocalized.TransactionStatus.rejected,
                 time,
             );
         } else if (status === ChatMessageStatus.Aborted) {
-            return UILocalized.formatString(
-                UILocalized.TransactionStatus.aborted,
+            return uiLocalized.formatString(
+                uiLocalized.TransactionStatus.aborted,
                 time,
             );
         } else if (status === ChatMessageStatus.Sending) {
-            return UILocalized.TransactionStatus.sending;
+            return uiLocalized.TransactionStatus.sending;
         }
         return '';
     }

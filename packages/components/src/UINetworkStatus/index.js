@@ -4,11 +4,12 @@ import { Platform, StyleSheet, View, Text, StatusBar } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
 import {
-    UILocalized,
     UIColor,
     UIStyle,
     UIDevice,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
 
@@ -108,7 +109,7 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
         return (
             <View style={styles.connectionSnack}>
                 <Text style={UIStyle.text.secondaryDarkTinyRegular()}>
-                    {UILocalized.PleaseGoOnline}
+                    {uiLocalized.PleaseGoOnline}
                 </Text>
             </View>
         );

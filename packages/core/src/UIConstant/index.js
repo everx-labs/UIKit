@@ -7,6 +7,7 @@ const UI_ANIMATION_DURATION = 250;
 const UI_ANIMATION_SMALL_DURATION = 100;
 const UI_TOAST_DURATION_SHORT = 1500;
 const UI_TOAST_DURATION_LONG = 3000;
+const UI_NOTIFICATION_DURATION = 5000;
 const UI_ANIMATION_ACCENT_INTERACTION_DURATION_FAST = 500;
 const UI_ANIMATION_ACCENT_INTERACTION_DURATION_NORMAL = 1000;
 const UI_ANIMATION_ACCENT_INTERACTION_DURATION_SLOW = 1500;
@@ -205,6 +206,10 @@ export default class UIConstant {
 
     static toastDurationLong() {
         return UI_TOAST_DURATION_LONG;
+    }
+
+    static notificationDuration() {
+        return UI_NOTIFICATION_DURATION;
     }
 
     static animationAccentInteractionDurationFast() {

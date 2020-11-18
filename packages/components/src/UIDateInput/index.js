@@ -6,9 +6,10 @@ import dayjs from 'dayjs';
 import {
     UIConstant,
     UIColor,
-    UILocalized,
     UIFunction,
 } from '@uikit/core';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIDetailsInput from '../UIDetailsInput';
 import type { DetailsProps } from '../UIDetailsInput';
@@ -215,7 +216,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         const ageInfo = this.props.age && this.isDateValid() ? this.isAgeValid() : null;
         if (this.isInputInvalid() && this.state.highlightError) {
-            return ageInfo ? ageInfo.ageErrorMessage : UILocalized.InvalidDate;
+            return ageInfo ? ageInfo.ageErrorMessage : uiLocalized.InvalidDate;
         }
         return '';
     }
@@ -232,7 +233,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
             separator,
         } = this.props;
         const dateSymbols = (localizedPattern && !useDateFormats) ?
-            UILocalized.DateSymbols
+            uiLocalized.DateSymbols
             : dateFormats;
         const defaultPattern = 'YYYY.MM.DD';
 
@@ -308,16 +309,16 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const ageDifMs = Date.now() - dateObj.getTime();
         if (ageDifMs < 0) {
             isAgeValid = false;
-            ageErrorMessage = UILocalized.InvalidDate;
+            ageErrorMessage = uiLocalized.InvalidDate;
         } else {
             const ageDate = new Date(ageDifMs);
             const age = ageDate.getUTCFullYear() - 1970;
             if (age < this.props.ageMin) {
                 isAgeValid = false;
-                ageErrorMessage = `${UILocalized.DoBMin} ${this.props.ageMin}`;
+                ageErrorMessage = `${uiLocalized.DoBMin} ${this.props.ageMin}`;
             } else if (age > this.props.ageMax) {
                 isAgeValid = false;
-                ageErrorMessage = `${UILocalized.DoBMax} ${this.props.ageMax}`;
+                ageErrorMessage = `${uiLocalized.DoBMax} ${this.props.ageMax}`;
             }
         }
         return { isAgeValid, ageErrorMessage };

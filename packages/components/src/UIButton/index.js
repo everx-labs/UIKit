@@ -61,6 +61,14 @@ export type ButtonProps = ActionProps & {
     @default false
     */
     bottomExtend?: boolean,
+    /** Custom button color
+    @default null
+    */
+    buttonColor?: string,
+    /** Custom button hover color
+    @default null
+    */
+    buttonColorHover?: string,
     /** One of:
     UIButton.ButtonSize.Large,
     UIButton.ButtonSize.Medium,
@@ -326,13 +334,19 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     getButtonColor() {
         let color;
-        const { theme, disabled } = this.props;
+        const { theme, disabled, buttonColor, buttonColorHover } = this.props;
         if (disabled) {
             color = UIColor.backgroundQuarter(theme);
         } else {
             const tapped = this.isTapped();
             const hover = this.isHover();
-            color = UIColor.buttonBackground(theme, tapped, hover);
+            if ((tapped || hover) && buttonColorHover) {
+                color = buttonColorHover;
+            } else if ((!tapped && !hover) && buttonColor) {
+                color = buttonColor;
+            } else {
+                color = UIColor.buttonBackground(theme, tapped, hover);
+            }
         }
         return color;
     }
@@ -702,6 +716,8 @@ UIButton.defaultProps = {
     ...UIActionComponent.defaultProps,
     badge: 0,
     bottomExtend: false, // useful for iPhone X (SafeArea)
+    buttonColor: null,
+    buttonColorHover: null,
     buttonSize: UIButton.buttonSize.default,
     buttonShape: UIButton.buttonShape.radius,
     buttonStyle: UIButton.buttonStyle.full,

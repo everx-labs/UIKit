@@ -69,7 +69,7 @@ const UIColorPalette = {
         darkNegative: '#CE0014', // TODO: ask Eugene about the real value
     },
     background: {
-        lightPrimary: '#FFFFFF',
+        lightPrimary: '#FDFDFD',
         lightPrimaryInverted: '#15191C',
         darkPrimary: '#263238',
         darkPrimaryInverted: '#EBEDEE',

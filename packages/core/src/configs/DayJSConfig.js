@@ -16,6 +16,8 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/ja';
 import 'dayjs/locale/ko';
 import 'dayjs/locale/es';
+import 'dayjs/locale/tr';
+import 'dayjs/locale/it';
 
 // Plugins
 dayjs.extend(customParseFormat);

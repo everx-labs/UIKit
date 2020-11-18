@@ -6,9 +6,9 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import {
     UIConstant,
-    UILocalized,
     UIStyle,
 } from '@uikit/core';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
     UITextButton,
     UIButtonGroup,
@@ -99,8 +99,8 @@ export default class UIChatInput extends UIDetailsInput<Props, State> {
     static defaultProps: Props = {
         ...UIDetailsInput.defaultProps,
         autoCapitalize: 'sentences',
-        placeholder: UILocalized.TypeMessage,
-        secondaryPlaceholder: UILocalized.TypeMessage,
+        placeholder: uiLocalized.TypeMessage,
+        secondaryPlaceholder: uiLocalized.TypeMessage,
         hideBottomLine: true,
         inputHidden: false,
         autoFocus: false,

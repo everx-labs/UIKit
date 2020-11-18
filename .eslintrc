@@ -15,13 +15,15 @@
     "arrow-body-style": "off",
     "no-console": "off",
     "no-continue": "off",
+    "object-curly-newline": "off",
     "class-methods-use-this": "off",
     "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+    "import/prefer-default-export": "off",
     "import/no-unresolved": [
       "error",
       {
-        "ignore": [ "@uikit/" ]
+        "ignore": [ "@uikit/", "@tonlabs" ]
       }
     ]
   },

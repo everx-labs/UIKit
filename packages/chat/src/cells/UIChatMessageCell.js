@@ -21,8 +21,6 @@ import {
     UIConstant,
     UIStyle,
     UIFont,
-    UILocalized,
-    formatTime,
 } from '@uikit/core';
 import {
     UIComponent,
@@ -30,6 +28,8 @@ import {
 } from '@uikit/components';
 import UIAssets from '@uikit/assets';
 import { UIShareManager } from '@uikit/navigation';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIChatImageCell from './UIChatImageCell';
 import UIChatStickerCell from './UIChatStickerCell';
@@ -170,10 +170,10 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
         const msg = this.props.additionalInfo?.message;
 
         if (date) {
-            return formatTime(date.valueOf());
+            return uiLocalized.formatTime(date.valueOf());
         }
 
-        return formatTime(msg?.info.created || Date.now());
+        return uiLocalized.formatTime(msg?.info.created || Date.now());
     }
 
     wrapInMessageContainer(
@@ -424,7 +424,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                             UIStyle.Color.getColorStyle(UIColor.textPrimary()),
                         ]}
                     >
-                        {UILocalized.SayHello}
+                        {uiLocalized.SayHello}
                     </Text>
                 </View>
             </View>
@@ -548,7 +548,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
                 onLongPress={() => {
                     if (data && (data instanceof String || typeof data === 'string')) {
                         this.bubbleScaleAnimation(true);
-                        UIShareManager.copyToClipboard(data, UILocalized.MessageCopiedToClipboard);
+                        UIShareManager.copyToClipboard(data, uiLocalized.MessageCopiedToClipboard);
                     }
                 }}
             >
@@ -627,7 +627,7 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
 
             // Move comment closer to the parent transaction bubble
             padding.paddingTop = UIConstant.tinyContentOffset();
-        } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) {
+        } else if (type === ChatMessageContent.System || type === ChatMessageContent.Invite) { // drop invite
             align = 'center';
             cell = this.renderSystemCell();
 
@@ -643,24 +643,24 @@ export default class UIChatMessageCell extends UIComponent<Props, State> {
         } else if (type === ChatMessageContent.AttachmentImage) {
             cell = this.renderImageCell();
             testID = 'chat_message_image';
-        } else if (type === ChatMessageContent.AttachmentDocument) {
+        } else if (type === ChatMessageContent.AttachmentDocument) { // drop for now
             cell = this.renderDocumentCell();
             testID = 'chat_message_document';
         } else if (type === ChatMessageContent.Sticker) {
             cell = this.renderStickerCell();
             testID = 'chat_message_sticker';
-        } else if (type === ChatMessageContent.ActionButton) {
+        } else if (type === ChatMessageContent.ActionButton) { // Check chain rider
             const direction = this.getActionDirection();
             cell = this.renderActionCell(direction);
-        } else if (type === ChatMessageContent.ActionLabel) {
+        } else if (type === ChatMessageContent.ActionLabel) { // drop
             cell = this.renderActionLabel();
-        } else if (type === ChatMessageContent.LinkActionMessage) {
+        } else if (type === ChatMessageContent.LinkActionMessage) { // drop for now
             cell = this.renderLinkActionMessageCell();
             testID = 'chat_message_link';
-        } else if (type === ChatMessageContent.SystemInfo) {
+        } else if (type === ChatMessageContent.SystemInfo) { // drop
             align = 'center';
             cell = this.renderSystemInfo();
-        } else if (type === ChatMessageContent.EmptyChat) {
+        } else if (type === ChatMessageContent.EmptyChat) { // drop
             align = 'flex-start';
             cell = this.renderEmptyChatCell();
         } else {

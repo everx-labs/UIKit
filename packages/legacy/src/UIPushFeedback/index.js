@@ -7,7 +7,6 @@ import {
     UIConstant,
     UIStyle,
     UIColor,
-    UILocalized,
 } from '@uikit/core';
 import {
     UIComponent,
@@ -15,6 +14,8 @@ import {
     UIGridColumn,
     UILink,
 } from '@uikit/components';
+
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import icoClose from '@uikit/assets/ico-close/close-blue.png';
 
@@ -102,8 +103,8 @@ export default class UIPushFeedback extends UIComponent<Props, State> {
                             >
                                 <Text style={UIStyle.text.actionSmallBold()}>
                                     {this.isLarge()
-                                        ? UILocalized.PushFeedbackLong
-                                        : UILocalized.PushFeedbackShort}
+                                        ? uiLocalized.PushFeedbackLong
+                                        : uiLocalized.PushFeedbackShort}
                                 </Text>
                             </View>
                         </TouchableWithoutFeedback>
