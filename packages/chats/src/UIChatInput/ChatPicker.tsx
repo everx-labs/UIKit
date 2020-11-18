@@ -1,22 +1,22 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Linking } from "react-native";
-import RNFetchBlob from "rn-fetch-blob";
-import DocumentPicker from "react-native-document-picker";
+import * as React from 'react';
+import { View, StyleSheet, Image, Linking } from 'react-native';
+// import RNFetchBlob from "rn-fetch-blob";
+import DocumentPicker from 'react-native-document-picker';
 
-import { UIConstant } from "@tonlabs/uikit.core";
-import { UIImageView } from "@tonlabs/uikit.components";
-import { UIAlertView } from "@tonlabs/uikit.navigation";
-import { uiLocalized } from "@tonlabs/uikit.localization";
+import { UIConstant } from '@tonlabs/uikit.core';
+import { UIImageView } from '@tonlabs/uikit.components';
+import { UIAlertView } from '@tonlabs/uikit.navigation';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import type { OnSendMedia, OnSendDocument } from "./types";
+import type { OnSendMedia, OnSendDocument } from './types';
 
 const extractDocumentName = (e: any) => {
-    const source = Platform.OS === "web" ? e.target.files[0] : e;
-    let fileName = "";
-    if (Platform.OS === "web") {
+    const source = Platform.OS === 'web' ? e.target.files[0] : e;
+    let fileName = '';
+    if (Platform.OS === 'web') {
         fileName = source.name;
     } else {
-        const tmp = source.split("/");
+        const tmp = source.split('/');
         fileName = tmp[tmp.length - 1];
     }
 
@@ -26,9 +26,9 @@ const extractDocumentName = (e: any) => {
 const wasAccessToCameraOrGalleryDenied = (message: string): boolean => {
     const msg = message.toLowerCase();
     return (
-        msg.includes("permissions not granted") ||
+        msg.includes('permissions not granted') ||
         msg.includes("permissions weren't granted") ||
-        msg.includes("permissions were not granted")
+        msg.includes('permissions were not granted')
     );
 };
 
@@ -40,7 +40,7 @@ const pickDocument = async (
             type: [DocumentPicker.types.pdf],
         });
         const source =
-            Platform.OS === "ios" ? file.uri.replace("file://", "") : file.uri;
+            Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri;
         callback(source, file.name);
     } catch (error) {
         // TODO: deal with logs
@@ -55,26 +55,26 @@ const onPickDocument = async (
     name: string,
     onSendDocument: OnSendDocument
 ) => {
-    if (Platform.OS === "web") {
-        onSendDocument(doc.split("base64,")[1], name);
+    if (Platform.OS === 'web') {
+        onSendDocument(doc.split('base64,')[1], name);
         return;
     }
     const processData = (data) => {
-        if (data instanceof String || typeof data === "string") {
-            const dataSplit = data.split("base64,");
+        if (data instanceof String || typeof data === 'string') {
+            const dataSplit = data.split('base64,');
             onSendDocument(dataSplit[dataSplit.length - 1], name);
         } else {
-            log.error("The picked data is not in base64 format");
+            log.error('The picked data is not in base64 format');
         }
     };
     try {
-        const data = await RNFetchBlob.fs.readFile(decodeURI(doc), "base64");
-        processData(data);
+        // const data = await RNFetchBlob.fs.readFile(decodeURI(doc), "base64");
+        // processData(data);
     } catch (decError) {
         // Failed to load the data from the decoded URI, try the plain one
         try {
-            const data = await RNFetchBlob.fs.readFile(doc, "base64");
-            processData(data);
+            // const data = await RNFetchBlob.fs.readFile(doc, "base64");
+            // processData(data);
         } catch (error) {
             // TODO: deal with logs
             // log.error(
@@ -93,7 +93,7 @@ const onPickDocumentWeb = (e: any, onSendDocument: OnSendDocument) => {
     const file = e.target.files[0];
     const name = extractDocumentName(e);
     if (!file) {
-        log.debug("Document picker was cancelled");
+        log.debug('Document picker was cancelled');
         return;
     }
     if (file.size >= UIConstant.maxFileSize()) {
@@ -124,17 +124,17 @@ const uploadPhoto = (
     imageSize: ImageSize,
     onSendMedia: OnSendMedia
 ) => {
-    if (Platform.OS === "web") {
-        onSendMedia(photo.split("base64,")[1], imageSize);
+    if (Platform.OS === 'web') {
+        onSendMedia(photo.split('base64,')[1], imageSize);
         return;
     }
 
-    RNFetchBlob.fs.readFile(photo, "base64").then((data) => {
-        if (data instanceof String || typeof data === "string") {
-            const dataSplit = data.split("base64,");
-            onSendMedia(dataSplit[dataSplit.length - 1], imageSize);
-        }
-    });
+    // RNFetchBlob.fs.readFile(photo, "base64").then((data) => {
+    //     if (data instanceof String || typeof data === "string") {
+    //         const dataSplit = data.split("base64,");
+    //         onSendMedia(dataSplit[dataSplit.length - 1], imageSize);
+    //     }
+    // });
 };
 
 const onUploadPhoto = (photo: any, onSendMedia: OnSendMedia) => {
@@ -175,7 +175,7 @@ export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
             // TODO: do we need it here?
             UICustomKeyboardUtils.dismiss();
 
-            if (Platform.OS === "web") {
+            if (Platform.OS === 'web') {
                 inputRef.current?.click();
                 return;
             }
@@ -194,7 +194,7 @@ export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
             style={{ height: 0 }}
             pointerEvents="none"
         >
-            {Platform.OS === "web" && (
+            {Platform.OS === 'web' && (
                 <input
                     ref={inputRef}
                     type="file"
@@ -244,13 +244,13 @@ export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
 const styles = StyleSheet.create({
     webInput: {
         opacity: 0,
-        position: "absolute",
+        position: 'absolute',
         left: 0,
         top: 0,
         right: 0,
         bottom: 0,
-        width: "100%",
-        height: "100%",
+        width: '100%',
+        height: '100%',
         zIndex: 10,
     },
 });
