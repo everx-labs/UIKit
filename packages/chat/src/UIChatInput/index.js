@@ -12,12 +12,14 @@ import {
     UIDetailsInput,
 } from '@tonlabs/uikit.components';
 import { UIPopoverMenu } from '@tonlabs/uikit.navigation';
-import type { DetailsProps } from '@tonlabs/uikit.components/UIDetailsInput';
-import type { ActionState } from '@tonlabs/uikit.components/UIActionComponent';
-import type { MenuItemType } from '@tonlabs/uikit.navigation/UIActionSheet/MenuItem';
+import type { MenuItemType } from '@tonlabs/uikit.navigation';
+import type {
+    UIDetailsInputProps,
+    UIActionComponentState,
+} from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     containerStyle?: ViewStyleProp,
     menuPlus?: ?MenuItemType[],
     menuMore?: ?MenuItemType[],
@@ -35,7 +37,7 @@ type Props = DetailsProps & {
     onStickersPress?: (visible: boolean) => void,
 };
 
-type State = ActionState & {
+type State = UIActionComponentState & {
     inputHeight: number,
     inputWidth: number,
     heightChanging: boolean,

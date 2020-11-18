@@ -11,10 +11,8 @@ import {
     UIScaleButton,
     UILabel,
 } from '@tonlabs/uikit.components';
-
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import type { BigNum } from '@tonlabs/uikit.core/types/BigNum';
+import type { BigNum } from '@tonlabs/uikit.core';
 
 import type {
     ChatAdditionalInfo,
@@ -23,7 +21,6 @@ import type {
     UIChatMessage,
 } from '../extras';
 import { ChatMessageStatus, TypeOfTransaction } from '../extras';
-
 
 type Props = {
     message: any,

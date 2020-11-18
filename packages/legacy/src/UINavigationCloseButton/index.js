@@ -33,7 +33,7 @@ export default class UINavigationCloseButton extends UIComponent<Props, State> {
                 {...testIDProp}
                 containerStyle={containerStyle}
                 onPress={() => onPress()}
-                icon={UIAssets.icons.ui.close}
+                icon={UIAssets.icons.ui.buttonClose}
             />
         );
     }

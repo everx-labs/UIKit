@@ -8,10 +8,9 @@ import { UIConstant, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type {
     NumberParts,
     StringLocaleInfo,
-} from '@tonlabs/uikit.core/UIFunction';
-import type { UIColorData } from '@tonlabs/uikit.core/UIColor/UIColorTypes';
-import type { BigNum } from '@tonlabs/uikit.core/types/BigNum';
-
+    BigNum,
+    UIColorData,
+} from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';

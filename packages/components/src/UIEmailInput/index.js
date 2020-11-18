@@ -6,19 +6,22 @@ import { UIFunction, UIColor } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
-import type { ActionState } from '../UIActionComponent';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
+import type { UIActionComponentState } from '../UIActionComponent';
 
 export type EmailState = {
     highlightError: boolean,
 };
 
-export default class UIEmailInput extends UIComponent<DetailsProps, ActionState & EmailState> {
-    static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
-    emailInput: ?UIDetailsInput<DetailsProps, ActionState>;
+export default class UIEmailInput extends UIComponent<
+    UIDetailsInputProps,
+    UIActionComponentState & EmailState
+> {
+    static defaultProps: UIDetailsInputProps = UIDetailsInput.defaultProps;
+    emailInput: ?UIDetailsInput<UIDetailsInputProps, UIActionComponentState>;
 
-    consructor(props: DetailsProps) {
+    consructor(props: UIDetailsInputProps) {
         super.constructor(props);
         this.state = {
             highlightError: false,

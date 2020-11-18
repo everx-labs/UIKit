@@ -15,8 +15,11 @@ import {
     UIFunction,
 } from '@tonlabs/uikit.core';
 
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
+import { UIActionComponent } from '../UIActionComponent';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '../UIActionComponent';
 import UITooltip from '../UITooltip';
 
 const TOOLTIP_WIDTH = 'auto';
@@ -35,7 +38,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = ActionProps & {
+type Props = UIActionComponentProps & {
     align: ViewStyleProp,
     style?: ViewStyleProp,
     containerStyle?: ViewStyleProp,
@@ -56,7 +59,7 @@ type Props = ActionProps & {
     multiLine: boolean,
 };
 
-type State = ActionState;
+type State = UIActionComponentState;
 
 export default class UITextButton extends UIActionComponent<Props, State> {
     static align = {

@@ -22,7 +22,7 @@ import {
     UIFunction,
     UIStyle,
 } from '@tonlabs/uikit.core';
-import type { SafeAreaInsets } from '@tonlabs/uikit.core/UIDevice';
+import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import {
     UIAlertView,
     UIComponent,

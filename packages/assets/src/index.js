@@ -209,6 +209,7 @@ export const UIAssets = {
     images: {
         [404]: image404,
     },
+
     icons: {
         card: {
             maestro: iconCardMaestro,
@@ -217,6 +218,7 @@ export const UIAssets = {
             visa: iconCardVisa,
             visaVerifiedBy: iconCardVisaVerifiedBy,
         },
+
         brand: {
             figma: iconBrandFigma,
             nodejs: iconBrandNodejs,
@@ -234,10 +236,12 @@ export const UIAssets = {
             tonwalletOld: iconBrandTonwalletOld,
             tonwallet: iconBrandTonwallet,
         },
+
         payment: {
             applepay: iconBrandApplepay,
             googlepay: iconBrandGooglepay,
         },
+
         platform: {
             android: iconBrandAndroid,
             apple: iconBrandApple,
@@ -248,6 +252,7 @@ export const UIAssets = {
             opera: iconBrandOpera,
             safari: iconBrandSafari,
         },
+
         social: {
             docker: iconBrandSocialDocker,
             facebook: iconBrandSocialFacebook,
@@ -266,6 +271,7 @@ export const UIAssets = {
             twitterPrimary: iconBrandSocialTwitterPrimary,
             youtube: iconBrandSocialYoutube,
         },
+
         ui: {
             buttonClose: iconButtonClose,
             buttonDots: iconButtonDots,
@@ -328,9 +334,9 @@ export const UIAssets = {
 
         logo: {
             gramLabel: iconLogoGramLabel,
-            tonLabel: iconLogoTonLabel,
+            tonLabel: iconLogoTonLabelWhite,
             tonlabsBlack: iconLogoTonlabsBlack,
-            tonlabsPrimary: iconLogoTonlabsPrimary,
+            tonlabsPrimary: iconLogoTonlabsPrimaryMinus,
         },
 
         security: {

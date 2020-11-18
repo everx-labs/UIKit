@@ -12,7 +12,7 @@ import { BorderlessButton as RNGHBorderlessButton } from 'react-native-gesture-h
 import debounce from 'lodash/debounce';
 
 import { UIStyle, UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
-import UIAssets from '@tonlabs/uikit.assets';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';
@@ -278,7 +278,10 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
             return null;
         }
 
-        const icon = biometryType === BiometryType.Face ? UIAssets.faceId : UIAssets.touchId;
+        const icon =
+            biometryType === BiometryType.Face
+                ? UIAssets.icons.security.faceId
+                : UIAssets.icons.security.touchId;
 
         return (
             <Image source={icon} />
@@ -396,7 +399,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={this.onDeletePress}
                         disabled={this.state.values.length === 0}
                     >
-                        <Image source={UIAssets.icoDelete} />
+                        <Image source={UIAssets.icons.ui.delete} />
                     </BorderlessButton>
                 </View>
             </View>

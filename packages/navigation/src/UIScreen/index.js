@@ -4,8 +4,6 @@ import { Platform, View, StyleSheet, ScrollView } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-// TODO: remove from here to get rid of cycled dependency between the packages!
-import type { NavigationProps } from '@tonlabs/uikit.legacy/UINavigator';
 
 import UIController from '../UIController';
 
@@ -33,7 +31,11 @@ export type ContentOffset = {
 export type ContentSize = {
     width: number,
     height: number,
-}
+};
+
+type NavigationProps = {
+    navigation: any,
+};
 
 let staticNarrow;
 

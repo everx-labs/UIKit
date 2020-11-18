@@ -6,8 +6,13 @@ import { UIConstant, UIFunction } from '@tonlabs/uikit.core';
 import type { NumberParts, NumberPartsOptions } from '@tonlabs/uikit.core';
 
 import availableLanguages from './languages';
-import type { Language, Languages, LocalizedStringsMethods, StringLocaleInfo } from '../types';
 import { getDateFormatInfo, getNumberFormatInfo, prepareLocales } from './utils';
+import type {
+    Language,
+    Languages,
+    LocalizedStringsMethods,
+    StringLocaleInfo,
+} from './types';
 import type { UILocalizedData } from './languages/types';
 import { languagesInfo, predefinedConstants } from './constants';
 

@@ -160,7 +160,7 @@ export {
     TypeOfActionDirection,
 } from './packages/chat/src';
 
-export { default as UIAssets } from './packages/assets/src';
+export { UIAssets } from './packages/assets/src';
 
 export { uiLocalized as UILocalized } from './packages/localization/src';
 
@@ -176,10 +176,7 @@ export type {
     UINavigationRouting,
 } from './packages/legacy/src/UINavigator';
 export type { UIFeedbackSubmitFunc } from './packages/legacy/src/UIFeedback';
-export type {
-    PointerEvents,
-    PositionObject,
-} from './packages/core/types';
+export type { PointerEvents, PositionObject } from './packages/core';
 export type {
     UIColorData,
     UIColorThemeNameType,
@@ -189,7 +186,7 @@ export type {
     StringLocaleInfo,
     NumberPartsOptions,
 } from './packages/core/src/UIFunction';
-export type { ActionProps } from './packages/components/src/UIActionComponent';
+export type { UIActionComponentProps as ActionProps } from './packages/components/src/UIActionComponent';
 export type { DetailsList } from './packages/components/src/UIDetailsTable';
 export type { LabelRoleValue } from './packages/components/src/UILabel';
 export type { MenuItemType } from './packages/navigation/src/UIActionSheet/MenuItem';

@@ -5,9 +5,9 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
-import type { ActionState } from '../UIActionComponent';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
+import type { UIActionComponentState } from '../UIActionComponent';
 
 const styles = StyleSheet.create({
     inputPlaceholder: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     containerStyle?: ViewStyleProp | ViewStyleProp[],
     inputPlaceholder?: string,
     trailingValue?: string,
@@ -39,7 +39,7 @@ type Props = DetailsProps & {
     rightButtonDisabled: boolean,
     onRightButtonPress?: () => void,
 };
-type State = ActionState & {};
+type State = UIActionComponentState & {};
 
 export default class UIAmountInput extends UIDetailsInput<Props, State> {
     static defaultProps = {

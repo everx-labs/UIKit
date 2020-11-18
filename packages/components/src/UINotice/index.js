@@ -23,7 +23,7 @@ import {
     UIStyle,
     UITextStyle,
 } from '@tonlabs/uikit.core';
-import type { PositionObject } from '@tonlabs/uikit.core/types';
+import type { PositionObject } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';

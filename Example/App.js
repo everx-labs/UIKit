@@ -1097,7 +1097,7 @@ const Images = () => (
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             {/* $FlowFixMe */}
-            <UIImage source={UIAssets.icons.ui.keyThinDark} />
+            <UIImage source={(UIAssets.icons.ui.keyThinDark: any)} />
         </View>
         <View
             style={{
@@ -1115,7 +1115,7 @@ const Images = () => (
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIImageView
                 photoStyle={{ width: 100, height: 100 }}
-                source={UIAssets.icons.ui.keyThinDark}
+                source={(UIAssets.icons.ui.keyThinDark: any)}
                 editable
             />
         </View>
@@ -2033,7 +2033,7 @@ const Profile = () => (
                 paddingVertical: 20,
             }}
         >
-            <UIProfilePhoto source={UIAssets.icons.security.faceId} />
+            <UIProfilePhoto source={(UIAssets.icons.security.faceId: any)} />
         </View>
         <View
             style={{
@@ -2505,6 +2505,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
     },
+    grid: {},
 });
 
 export default App;

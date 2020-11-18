@@ -12,8 +12,6 @@ import {
 // TODO: remove from here to get rid of cycled dependency between the packages!
 import { UIBottomBar } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
-// TODO: remove from here to get rid of cycled dependency between the packages!
-import type { CreateNavigationOptions } from '@tonlabs/uikit.legacy/UINavigationBar';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -62,7 +60,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
         },
     };
 
-    static navigationOptions: CreateNavigationOptions = ({ navigation }) => {
+    static navigationOptions = () => {
         return {
             header: null,
         };

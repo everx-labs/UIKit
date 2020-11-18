@@ -15,14 +15,13 @@ import {
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
-import type { ActionState } from '../UIActionComponent';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
+import type { UIActionComponentState } from '../UIActionComponent';
 
 import UISeedPhraseHintsView from './UISeedPhraseHintsView';
 
-
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     containerStyle?: ViewStyleProp,
     phraseToCheck: string,
     isSeedPhraseValid?: ?boolean,
@@ -31,7 +30,7 @@ type Props = DetailsProps & {
     words: string[],
 };
 
-type State = ActionState & {
+type State = UIActionComponentState & {
     wordThatChangedIndex: number,
     inputHeight: number,
     inputWidth: number,

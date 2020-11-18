@@ -15,7 +15,7 @@ import type {
 } from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import type { PointerEvents } from '@tonlabs/uikit.core/types';
+import type { PointerEvents } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

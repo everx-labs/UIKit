@@ -10,10 +10,11 @@ import {
     UIToastMessage,
     UIEmailInput,
 } from '@tonlabs/uikit.components';
-import type { DetailsProps } from '@tonlabs/uikit.components/UIDetailsInput';
-import type { ActionState } from '@tonlabs/uikit.components/UIActionComponent';
+import type {
+    UIDetailsInputProps,
+    UIActionComponentState,
+} from '@tonlabs/uikit.components';
 import { UICustomSheet } from '@tonlabs/uikit.navigation';
-
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void;
@@ -30,7 +31,7 @@ type State = {
 
 class UIFeedback extends UIComponent<Props, State> {
     emailInput: ?UIEmailInput;
-    feedbackInput: ?UIDetailsInput<DetailsProps, ActionState>;
+    feedbackInput: ?UIDetailsInput<UIDetailsInputProps, UIActionComponentState>;
 
     static defaultProps: Props = {
         onSubmitFeedBack: () => {},

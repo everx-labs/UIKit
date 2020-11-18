@@ -5,16 +5,19 @@ import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/T
 
 import { UIStyle } from '@tonlabs/uikit.core';
 
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
-import type { ActionState } from '../UIActionComponent';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
+import type { UIActionComponentState } from '../UIActionComponent';
 
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     containerStyle?: ViewStyleProp,
     rightButton?: string,
 };
 
-export default class UINumberInput extends UIDetailsInput<Props, ActionState> {
+export default class UINumberInput extends UIDetailsInput<
+    Props,
+    UIActionComponentState
+> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
         rightButton: '',

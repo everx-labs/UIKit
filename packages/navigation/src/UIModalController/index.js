@@ -18,7 +18,7 @@ import {
     UIFunction,
     UIStyle,
 } from '@tonlabs/uikit.core';
-import type { SafeAreaInsets } from '@tonlabs/uikit.core/UIDevice';
+import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import type {
@@ -30,7 +30,6 @@ import type {
 
 import UIController from '../UIController';
 import UIModalNavigationBar from './UIModalNavigationBar';
-
 
 const { fullScreenDialogWidth, fullScreenDialogHeight } = UIConstant;
 const HARDWARE_BACK_PRESS_EVENT = 'hardwareBackPress';

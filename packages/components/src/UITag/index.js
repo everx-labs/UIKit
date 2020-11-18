@@ -5,8 +5,11 @@ import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleS
 
 import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
+import { UIActionComponent } from '../UIActionComponent';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '../UIActionComponent';
 import UITooltip from '../UITooltip';
 
 const tagHeight = 24;
@@ -28,7 +31,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export type Props = ActionProps & {
+export type Props = UIActionComponentProps & {
     /** tag container style
      @default null
      */
@@ -60,7 +63,7 @@ export type Props = ActionProps & {
     tooltip?: string,
 };
 
-type State = ActionState;
+type State = UIActionComponentState;
 
 export default class UITag extends UIActionComponent<Props, State> {
     static tagColor = {

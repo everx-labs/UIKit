@@ -9,10 +9,10 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
 
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     style?: ViewStyleProp,
     customWithLength?: number,
 };

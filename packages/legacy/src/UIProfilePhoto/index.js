@@ -2,6 +2,7 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ImageURISource } from 'react-native/Libraries/Image/ImageSource';
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
@@ -13,8 +14,8 @@ const cameraImage = UIAssets.icons.ui.camera;
 type Props = {
     style: ViewStyleProp,
     editable: boolean,
-    source: ?string,
     onUploadPhoto: (source: string, showHUD: () => void, hideHUD: () => void, name: string) => void,
+    source: ?ImageURISource,
     onDeletePhoto?: (showHUD: () => void, hideHUD: () => void) => void,
 };
 
@@ -78,13 +79,15 @@ export default class UIProfilePhoto extends UIComponent<Props, {}> {
             : UIStyle.common.profilePhoto();
         return (
             <View style={[styles.container, style]}>
-                <UIImageView
-                    source={source || ''}
-                    photoStyle={photoStyle}
-                    editable={editable}
-                    onUploadPhoto={onUploadPhoto}
-                    onDeletePhoto={onDeletePhoto}
-                />
+                {source != null && (
+                    <UIImageView
+                        source={source}
+                        photoStyle={photoStyle}
+                        editable={editable}
+                        onUploadPhoto={onUploadPhoto}
+                        onDeletePhoto={onDeletePhoto}
+                    />
+                )}
                 {this.renderOverlay()}
                 {this.renderCameraIcon()}
             </View>

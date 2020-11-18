@@ -6,15 +6,15 @@ import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
-import type { ActionState } from '../UIActionComponent';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
+import type { UIActionComponentState } from '../UIActionComponent';
 
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     verify: boolean,
 };
 
-type State = ActionState & {
+type State = UIActionComponentState & {
     inputHeight: number,
     inputWidth: number,
     heightChanging: boolean,

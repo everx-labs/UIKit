@@ -7,9 +7,9 @@ import { UIConstant, UIColor, UIFunction } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
-import type { ActionState } from '../UIActionComponent';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
+import type { UIActionComponentState } from '../UIActionComponent';
 
 const AGE_MAX = 100;
 const AGE_MIN = 18;
@@ -39,7 +39,7 @@ type DateFormats = {
     day?: string,
 };
 
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     /**
     Together with separator, specifies date patern, for ex:
     for 'YYYY.MM.DD' dateComponents are ['YYYY', 'MM', 'DD']
@@ -95,7 +95,7 @@ type Props = DetailsProps & {
     validateRange?: Date[],
 };
 
-type State = ActionState & {
+type State = UIActionComponentState & {
     date: string,
     highlightError: boolean,
     selection: { start: number, end: number },

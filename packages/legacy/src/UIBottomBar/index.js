@@ -11,7 +11,7 @@ import {
     UITextButton,
     UITooltip,
 } from '@tonlabs/uikit.components';
-import type { UIColorThemeNameType } from '@tonlabs/uikit.core/UIColor/UIColorTypes';
+import type { UIColorThemeNameType } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

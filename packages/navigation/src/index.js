@@ -1,6 +1,6 @@
 // @flow
 export { default as UIActionSheet } from './UIActionSheet';
-export { default as UIBreadCrumbs } from './UIBreadCrumbs'
+export { default as UIBreadCrumbs } from './UIBreadCrumbs';
 export { default as UIController } from './UIController';
 export { default as UICountryPicker } from './UICountryPicker';
 export { default as UICustomSheet } from './UICustomSheet';
@@ -16,3 +16,6 @@ export { default as UIScreen } from './UIScreen';
 export { default as UIShareManager } from './UIShareManager';
 export { default as UIShareScreen } from './UIShareManager/UIShareScreen';
 export { default as UIUnfold } from './UIUnfold';
+
+export type * from './UIActionSheet/MenuItem';
+export type * from './UIModalController';

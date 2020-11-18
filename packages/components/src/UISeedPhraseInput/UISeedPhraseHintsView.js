@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { UIColor, UIConstant, UIDevice } from '@tonlabs/uikit.core';
-import type { EventProps } from '@tonlabs/uikit.core/types';
+import type { EventProps } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UILabel from '../UILabel';

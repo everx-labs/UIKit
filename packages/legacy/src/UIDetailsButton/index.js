@@ -15,11 +15,14 @@ import {
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 import { UIActionComponent, UITextButton } from '@tonlabs/uikit.components';
-import type { ActionProps, ActionState } from '@tonlabs/uikit.components';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-type Props = ActionProps & {
+type Props = UIActionComponentProps & {
     style: ViewStyleProp,
     containerStyle: ViewStyleProp,
     progress: boolean,
@@ -40,7 +43,7 @@ type Props = ActionProps & {
     copyTarget: ?string,
 };
 
-type State = ActionState & {
+type State = UIActionComponentState & {
     spinValue: AnimatedValue,
 };
 

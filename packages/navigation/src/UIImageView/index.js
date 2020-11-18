@@ -2,6 +2,10 @@
 import React from 'react';
 import { Platform, StyleSheet, View, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {
+    ImageURISource,
+    ImageSource,
+} from 'react-native/Libraries/Image/ImageSource';
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -44,14 +48,10 @@ const photoOptions = {
     noData: true,
 };
 
-type PhotoURI = {
-    uri: string,
-};
-
 type Props = {
     testID?: ?string,
-    source: string | PhotoURI,
-    sourceBig?: string | PhotoURI,
+    source: string | ImageURISource,
+    sourceBig?: ImageURISource,
     editable?: boolean,
     expandable?: boolean,
     disabled?: boolean,
@@ -78,7 +78,7 @@ type PickerResponse = {
 
 export default class UIImageView extends UIComponent<Props, State> {
     static defaultProps = {
-        source: '',
+        source: { uri: '' },
         sourceBig: undefined,
         editable: false,
         expandable: true,
@@ -235,17 +235,17 @@ export default class UIImageView extends UIComponent<Props, State> {
     }
 
     // Getters
-    getPhoto(): PhotoURI {
+    getPhoto(): ImageURISource {
         const photoURI = this.props.source;
-        if (photoURI instanceof String || typeof photoURI === 'string') {
+        if (typeof photoURI === 'string') {
             return { uri: photoURI };
         }
         return photoURI;
     }
 
-    getPhotoBig(): ?PhotoURI {
+    getPhotoBig(): ?ImageURISource {
         const photoURI = this.props.sourceBig;
-        if (photoURI instanceof String || typeof photoURI === 'string') {
+        if (typeof photoURI === 'string') {
             return { uri: photoURI };
         }
         return photoURI;
@@ -382,11 +382,11 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS !== 'web' || !Lightbox) {
             return null;
         }
-        const photo = this.getPhoto();
+        const photo: ?ImageURISource = this.getPhoto();
         if (!photo || this.isShowSpinnerOnPhotoView()) {
             return null;
         }
-        let photoBig = this.getPhotoBig();
+        let photoBig: ?ImageURISource = this.getPhotoBig();
         if (!photoBig) {
             photoBig = photo;
         }

@@ -7,8 +7,8 @@ import { UIFunction, UIColor } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
 
 export type PhoneState = {
     highlightError: boolean,
@@ -20,12 +20,15 @@ export type PhoneState = {
 
 type State = {};
 
-export default class UIPhoneInput extends UIComponent<DetailsProps, State & PhoneState> {
-    static defaultProps: DetailsProps = UIDetailsInput.defaultProps;
-    phoneInput: ?UIDetailsInput<DetailsProps, State>;
+export default class UIPhoneInput extends UIComponent<
+    UIDetailsInputProps,
+    State & PhoneState
+> {
+    static defaultProps: UIDetailsInputProps = UIDetailsInput.defaultProps;
+    phoneInput: ?UIDetailsInput<UIDetailsInputProps, State>;
     textChanged: boolean;
 
-    constructor(props: DetailsProps) {
+    constructor(props: UIDetailsInputProps) {
         super(props);
         this.state = {
             highlightError: false,

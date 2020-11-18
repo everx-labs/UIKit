@@ -1,5 +1,5 @@
 // @flow
-import type { LanguageConstants, LanguageInfo } from '../types';
+import type { LanguageConstants, LanguageInfo } from './types';
 
 export const predefinedConstants: LanguageConstants = {
     CURRENT_YEAR: (new Date()).getFullYear(),

@@ -13,8 +13,7 @@ import currencies from 'currency-formatter/currencies.json';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIConstant from '../UIConstant';
-import type { BigNum } from '../../types/BigNum';
-
+import type { BigNum } from '../types/BigNum';
 
 export const CurrencyPosition = Object.freeze({
     Before: 'before',
