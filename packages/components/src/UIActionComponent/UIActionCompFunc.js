@@ -1,6 +1,6 @@
 // @flow
 import React, { useRef, useState } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, View } from 'react-native';
 
 export type ActionProps = {
     testID?: string,
@@ -15,14 +15,14 @@ export type ActionProps = {
 type Props = any & ActionProps
 
 const UIActionComponent = ({
-   testID = '',
-   disabled = false,
-   showIndicator = false,
-   onPress = null,
-   children,
-   onMouseEnter,
-   onMouseLeave,
-}: Props) => {
+                               testID = '',
+                               disabled = false,
+                               showIndicator = false,
+                               onPress = null,
+                               children,
+                               onMouseEnter,
+                               onMouseLeave,
+                           }: Props) => {
     const [isTapped, setTapped] = useState<boolean>(false);
     const [isHover, setHover] = useState<boolean>(false);
     const childrenRef = useRef(null);
@@ -71,17 +71,20 @@ const UIActionComponent = ({
             onPressIn={onPressIn}
             onPressOut={onPressOut}
         >
-            {React.cloneElement(children, {
-                ref: childrenRef,
-                onMouseEnter: onMouseEnterHandler,
-                onMouseLeave: onMouseLeaveHandler,
-                isTapped,
-                isHover,
-                style: [{
-                    cursor: 'pointer',
-                    touchAction: 'manipulation',
-                }, children.props.style],
-            })}
+            <View
+                onMouseEnter={onMouseEnterHandler}
+                onMouseLeave={onMouseLeaveHandler}
+            >
+                {React.cloneElement(children, {
+                    ref: childrenRef,
+                    isTapped,
+                    isHover,
+                    style: [{
+                        cursor: 'pointer',
+                        touchAction: 'manipulation',
+                    }, children.props.style],
+                })}
+            </View>
         </TouchableWithoutFeedback>
     );
 };

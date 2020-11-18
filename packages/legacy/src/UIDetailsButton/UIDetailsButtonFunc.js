@@ -95,8 +95,6 @@ const UIDetailsButton = forwardRef(({
                                         copyTarget = null,
                                         isTapped,
                                         isHover,
-                                        onMouseEnter,
-                                        onMouseLeave,
                                         onPress,
                                     }: Props, ref) => {
     const [spinValue, setSpinValue] = useState<AnimatedValue>(new Animated.Value(0));
@@ -262,8 +260,6 @@ const UIDetailsButton = forwardRef(({
 
     const contentComponent = (
         <View
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
             style={[
                 UIStyle.common.justifyCenter(),
                 UIStyle.height.majorCell(),
