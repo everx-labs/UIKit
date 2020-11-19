@@ -6,7 +6,7 @@ import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
 
 import { ChatPicker } from './ChatPicker';
 import type { OnSendMedia, OnSendDocument } from './types';
-import { TODOUIChatInput } from './UIChatInput';
+import { ChatInput } from './ChatInput';
 
 import { UIKeyboardAccessory } from '../UIKeyboardAccessory';
 
@@ -14,8 +14,6 @@ const AndroidKeyboardAdjust =
     Platform.OS === 'android'
         ? require('react-native-android-keyboard-adjust')
         : null;
-
-const MAX_INPUT_LENGTH = 320;
 
 type InputWrapperProps = {
     stickersVisible: boolean;
@@ -78,7 +76,6 @@ const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
         },
     }));
 
-    const [inputText, setInputText] = React.useState<string>('');
     const pickerRef = React.useRef();
 
     return (
@@ -96,24 +93,17 @@ const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
                 <Animated.View
                     style={[styles.border, { opacity: borderOpacity }]}
                 />
-                <TODOUIChatInput
+                <ChatInput
                     ref={ref}
-                    testID="chat_input"
                     containerStyle={
                         menuPlusHidden ? UIStyle.margin.leftDefault() : null
                     }
-                    autoCorrect={false}
-                    value={inputText}
-                    editable={editable}
                     stickersActive={stickersVisible}
                     hasStickers={editable}
                     menuPlus={null /*TODO*/}
                     menuPlusDisabled={menuPlusDisabled}
                     menuMore={null /*TODO*/}
                     menuMoreDisabled={menuMoreDisabled}
-                    placeholder={placeholder}
-                    maxHeight={UIConstant.chatInputMaxHeight()}
-                    maxLength={MAX_INPUT_LENGTH}
                     inputHidden={inputHidden}
                     onChangeText={() => {}}
                     onSendText={() => {}}

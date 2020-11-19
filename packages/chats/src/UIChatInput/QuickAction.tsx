@@ -68,6 +68,8 @@ export function QuickAction(props: Props) {
             </UIButtonGroup>
         );
     }
+
+    return null;
 }
 
 const styles = StyleSheet.create({
