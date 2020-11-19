@@ -9,5 +9,6 @@ import es from './es.json';
 import it from './it.json';
 import ja from './ja.json';
 import de from './de.json';
+import ko from './ko.json';
 
-export default { en, ru, fr, zh_CN, pt_BR, es, it, ja, de };
+export default { en, ru, fr, zh_CN, pt_BR, es, it, ja, de, ko };

@@ -31,7 +31,7 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         country: 'TR',
         dayJS: 'tr',
     },
-    kr: {
+    ko: {
         name: '한국어',
         country: 'KR',
         dayJS: 'ko',
