@@ -23,7 +23,7 @@
     "import/no-unresolved": [
       "error",
       {
-        "ignore": [ "@uikit/", "@tonlabs" ]
+        "ignore": [ "@tonlabs" ]
       }
     ]
   },

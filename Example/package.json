@@ -1,5 +1,5 @@
 {
-  "name": "@uikit/example",
+  "name": "@tonlabs/uikit.example",
   "version": "0.0.1",
   "private": true,
   "scripts": {
