@@ -14,13 +14,9 @@ import {
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
-import {
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
-import UIController from '../UIController'
+import UIController from '../UIController';
 import type { ContentInset, AnimationParameters } from '../UIController';
 import UIModalNavigationBar from '../UIModalController/UIModalNavigationBar';
 

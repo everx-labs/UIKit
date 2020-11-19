@@ -1,8 +1,11 @@
 // @flow
 import { StyleSheet } from 'react-native';
 
-import UIColor from '../UIColor';
-import type { UIColorData, UIColorThemeNameType } from '../UIColor/UIColorTypes';
+import type {
+    UIColorData,
+    UIColorThemeNameType,
+} from '../UIColor/UIColorTypes';
+import { UITheme } from '../UITheme';
 
 type ColorStyle = string;
 
@@ -69,46 +72,46 @@ export default class UIStyleColor {
     }
 
     static textPrimary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UIColor.textPrimary(theme));
+        return this.getColorStyle(UITheme.textPrimary(theme));
     }
 
     static stateTextPrimary(
         theme: ?UIColorThemeNameType,
         disabled: boolean,
         tapped: boolean,
-        hover: boolean,
+        hover: boolean
     ) {
-        const color = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
+        const color = UITheme.stateTextPrimary(theme, disabled, tapped, hover);
         return this.getColorStyle(color);
     }
 
     static actionTextPrimary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UIColor.actionTextPrimary(theme));
+        return this.getColorStyle(UITheme.actionTextPrimary(theme));
     }
 
     static textSecondary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UIColor.textSecondary(theme));
+        return this.getColorStyle(UITheme.textSecondary(theme));
     }
 
     static textTertiary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UIColor.textTertiary(theme));
+        return this.getColorStyle(UITheme.textTertiary(theme));
     }
 
     static textQuaternary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UIColor.textQuaternary(theme));
+        return this.getColorStyle(UITheme.textQuaternary(theme));
     }
 
     static borderBottomLight(theme: ?UIColorThemeNameType) {
-        const borderColor = UIColor.borderBottomLightColor(theme);
+        const borderColor = UITheme.borderBottomLightColor(theme);
         return this.getBorderBottomColorStyle(borderColor);
     }
 
     static borderBottom(
         theme: ?UIColorThemeNameType,
         focused: boolean,
-        hover: boolean,
+        hover: boolean
     ) {
-        const borderColor = UIColor.borderBottomColor(theme, focused, hover);
+        const borderColor = UITheme.borderBottomColor(theme, focused, hover);
         return this.getBorderBottomColorStyle(borderColor);
     }
 }

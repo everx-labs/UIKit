@@ -3,25 +3,17 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIStyle,
-    UIConstant,
-} from '@uikit/core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import {
     UIActionImage,
     UILabel,
     UITextButton,
-} from '@uikit/components';
-// TODO: remove from here to get rid of cycled dependency between the packages!
-import { UIBottomBar } from '@uikit/legacy';
-import image404 from '@uikit/assets/404/404.png';
-import icoTonLabsBlack from '@uikit/assets/logo/tonlabs/tonlabs-black.png';
-// TODO: remove from here to get rid of cycled dependency between the packages!
-import type { CreateNavigationOptions } from '@uikit/legacy/UINavigationBar';
-
+} from '@tonlabs/uikit.components';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIScreen from '../UIScreen';
+import UIBottomBar from '../UIBottomBar';
 
 const { height } = Dimensions.get('window');
 const bottomOffset = UIConstant.contentOffset() + UIConstant.bigCellHeight();
@@ -66,7 +58,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
         },
     };
 
-    static navigationOptions: CreateNavigationOptions = ({ navigation }) => {
+    static navigationOptions = () => {
         return {
             header: null,
         };
@@ -110,8 +102,9 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
     }
 
     getCaption() {
-        // $FlowExpectedError
-        const caption = this.props.errorCaption || this.getNavigationParams().caption;
+        const caption =
+            // $FlowExpectedError
+            this.props.errorCaption || this.getNavigationParams().caption;
         if (caption) {
             return caption;
         }
@@ -160,7 +153,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                 <View style={this.getContentStyle()}>
                     <Image
                         style={UIStyle.margin.topSmall()}
-                        source={image404}
+                        source={UIAssets.images[404]}
                     />
                 </View>
             </View>
@@ -197,7 +190,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                 <UIBottomBar
                     isNarrow={this.isNarrow()}
                     copyRight={`2018–${(new Date()).getFullYear()} © TON Labs`}
-                    copyRightIcon={icoTonLabsBlack}
+                    copyRightIcon={UIAssets.icons.logo.tonlabsBlack}
                 />
             </React.Fragment>
         );

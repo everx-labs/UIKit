@@ -2,21 +2,19 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import {
-    UIFunction,
-    UIStyle,
-} from '@uikit/core';
+import { UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import {
     UIButton,
     UIComponent,
     UIDetailsInput,
     UIToastMessage,
     UIEmailInput,
-} from '@uikit/components';
-import type { DetailsProps } from '@uikit/components/UIDetailsInput';
-import type { ActionState } from '@uikit/components/UIActionComponent';
-import { UICustomSheet } from '@uikit/navigation';
-
+} from '@tonlabs/uikit.components';
+import type {
+    UIDetailsInputProps,
+    UIActionComponentState,
+} from '@tonlabs/uikit.components';
+import { UICustomSheet } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void;
@@ -33,7 +31,7 @@ type State = {
 
 class UIFeedback extends UIComponent<Props, State> {
     emailInput: ?UIEmailInput;
-    feedbackInput: ?UIDetailsInput<DetailsProps, ActionState>;
+    feedbackInput: ?UIDetailsInput<UIDetailsInputProps, UIActionComponentState>;
 
     static defaultProps: Props = {
         onSubmitFeedBack: () => {},

@@ -1,7 +1,7 @@
 // @flow
 import { Platform, Share, Clipboard } from 'react-native';
 
-import { UIToastMessage } from '@uikit/components';
+import { UIToastMessage } from '@tonlabs/uikit.components';
 
 import UIShareScreen from './UIShareScreen';
 

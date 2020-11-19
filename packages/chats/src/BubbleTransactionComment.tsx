@@ -1,13 +1,13 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import * as React from 'react';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 // import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: web
 
-import { UIStyle, UIFont, UIConstant, UIColor } from "@uikit/core";
-import UIAssets from "@uikit/assets";
+import { UIStyle, UIFont, UIConstant, UIColor } from '@tonlabs/uikit.core';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { ChatMessageStatus, TransactionType } from "./types";
-import type { TransactionComment } from "./types";
-import { useBubblePosition, BubblePosition } from "./useBubblePosition";
+import { ChatMessageStatus, TransactionType } from './types';
+import type { TransactionComment } from './types';
+import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 type Props = TransactionComment & {
     status: ChatMessageStatus;
@@ -60,7 +60,7 @@ export function BubbleTransactionComment(props: Props) {
             </Text>
             {props.encrypted && (
                 <View style={styles.keyThin}>
-                    <Image source={UIAssets.keyThin} />
+                    <Image source={UIAssets.icons.ui.keyThin} />
                 </View>
             )}
         </TouchableOpacity>
@@ -70,8 +70,8 @@ export function BubbleTransactionComment(props: Props) {
 const styles = StyleSheet.create({
     msgContainer: {
         flexShrink: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         borderRadius: UIConstant.borderRadius(),
         marginTop: UIConstant.tinyContentOffset(),
     },
@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
         color: UIColor.fa(),
     },
     textCell: {
-        textAlign: "left", // TODO: LTR support?
-        maxWidth: "100%",
+        textAlign: 'left', // TODO: LTR support?
+        maxWidth: '100%',
     },
     keyThin: {
         paddingLeft: UIConstant.smallContentOffset(),
-        marginLeft: "auto",
+        marginLeft: 'auto',
     },
     leftCorner: {
         borderBottomLeftRadius: 0,

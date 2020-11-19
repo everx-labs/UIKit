@@ -12,13 +12,7 @@ import type {
     UIColorThemeNameType,
 } from './UIColorTypes';
 
-const themes: { [UIColorThemeNameType]: UIColorThemeData } = {
-    light: UIColorThemeLight,
-    dark: UIColorThemeDark,
-    action: UIColorThemeAction,
-};
-
-const current = UIColorThemeName.light;
+import { UITheme } from '../UITheme';
 
 export default class UIColor {
     static Theme = {
@@ -28,7 +22,6 @@ export default class UIColor {
     };
 
     static palette = UIColorPalette;
-    static current: UIColorThemeData = themes.light;
 
     // Base palette
     static primaryMinus() {
@@ -229,7 +222,7 @@ export default class UIColor {
 
     // Text colors
     static textPrimary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.primary.normal;
+        return UITheme.textPrimary(theme).normal;
     }
 
     // deprecated, moved to UIStyleColor
@@ -241,19 +234,9 @@ export default class UIColor {
         theme: ?UIColorThemeNameType,
         disabled: boolean,
         tapped: boolean,
-        hover: boolean,
+        hover: boolean
     ): UIColorData {
-        const { primary } = themes[theme || current].text;
-        if (disabled) {
-            return primary.disabled;
-        }
-        if (tapped) {
-            return primary.tapped;
-        }
-        if (hover) {
-            return primary.hover;
-        }
-        return primary.normal;
+        return UITheme.stateTextPrimary(theme, disabled, tapped, hover);
     }
 
     // deprecated, moved to UIStyleColor
@@ -261,14 +244,14 @@ export default class UIColor {
         theme: ?UIColorThemeNameType,
         disabled: boolean,
         tapped: boolean,
-        hover: boolean,
+        hover: boolean
     ) {
         const color = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
         return UIStyleColor.getColorStyle(color);
     }
 
     static actionTextPrimary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.action;
+        return UITheme.actionTextPrimary(theme);
     }
 
     static actionTextPrimaryStyle(theme?: ?UIColorThemeNameType) {
@@ -276,11 +259,11 @@ export default class UIColor {
     }
 
     static textParagraph(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.paragraph;
+        return UITheme.textParagraph(theme);
     }
 
     static textSecondary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.secondary;
+        return UITheme.textSecondary(theme);
     }
 
     static textSecondaryStyle(theme?: ?UIColorThemeNameType) {
@@ -288,7 +271,7 @@ export default class UIColor {
     }
 
     static textTertiary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.tertiary;
+        return UITheme.textTertiary(theme);
     }
 
     static textTertiaryStyle(theme?: ?UIColorThemeNameType) {
@@ -296,98 +279,94 @@ export default class UIColor {
     }
 
     static textQuaternary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.quaternary;
+        return UITheme.textQuaternary(theme);
     }
 
     static textCaution(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.caution;
+        return UITheme.textCaution(theme);
     }
 
     static textPlaceholder(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.placeholder;
+        return UITheme.textPlaceholder(theme);
     }
 
     static textAccent(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.accent;
+        return UITheme.textAccent(theme);
     }
 
     static textDisabled(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].detailsInput.amount.placeholder;
+        return UITheme.textDisabled(theme);
     }
 
     static textPositive(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.positive;
+        return UITheme.textPositive(theme);
     }
 
     static textNegative(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.negative;
+        return UITheme.textNegative(theme);
     }
 
     // Background colors
     static backgroundPrimary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.primary;
+        return UITheme.backgroundPrimary(theme);
     }
-    static backgroundPrimaryInverted(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.primaryInverted;
+
+    static backgroundPrimaryInverted(
+        theme?: ?UIColorThemeNameType
+    ): UIColorData {
+        return UITheme.backgroundPrimaryInverted(theme);
     }
 
     static backgroundSecondary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.secondary;
+        return UITheme.backgroundSecondary(theme);
     }
 
     static backgroundTertiary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.tertiary;
+        return UITheme.backgroundTertiary(theme);
     }
 
     static backgroundQuarter(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.quarter;
+        return UITheme.backgroundQuarter(theme);
     }
 
     static backgroundQuinary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.quinary;
+        return UITheme.backgroundQuinary(theme);
     }
 
     static backgroundWhiteLight(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.whiteLight;
+        return UITheme.backgroundWhiteLight(theme);
     }
 
     static backgroundPositive(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.positive;
+        return UITheme.backgroundPositive(theme);
     }
 
     static backgroundNegative(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.negative;
+        return UITheme.backgroundNegative(theme);
     }
 
     static backgroundBrake(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].background.brake;
+        return UITheme.backgroundBrake(theme);
     }
 
     // border
     static borderBottomLightColor(theme: ?UIColorThemeNameType) {
-        const { borderBottom } = themes[theme || current];
+        const borderBottom = UITheme.borderBottom(theme);
         return borderBottom.light;
     }
 
     static borderBottomColor(
         theme: ?UIColorThemeNameType,
         focused: boolean,
-        hover: boolean,
+        hover: boolean
     ): UIColorData {
-        const { borderBottom } = themes[theme || current];
-        if (focused) {
-            return borderBottom.focused;
-        }
-        if (hover) {
-            return borderBottom.hover;
-        }
-        return borderBottom.normal;
+        return UITheme.borderBottomColor(theme, focused, hover);
     }
 
     static borderBottomColorStyle(
         theme: ?UIColorThemeNameType,
         focused: boolean,
-        hover: boolean,
+        hover: boolean
     ) {
         const borderColor = UIColor.borderBottomColor(theme, focused, hover);
         return UIStyleColor.getBorderBottomColorStyle(borderColor);
@@ -397,9 +376,9 @@ export default class UIColor {
     static buttonBackground(
         theme: ?UIColorThemeNameType,
         tapped: boolean,
-        hover: boolean,
+        hover: boolean
     ): UIColorData {
-        const { background } = themes[theme || current].button;
+        const { background } = UITheme.button(theme);
         if (tapped) {
             return background.tapped;
         }
@@ -409,15 +388,17 @@ export default class UIColor {
         return background.normal;
     }
 
-    static buttonTitle(theme: ?UIColorThemeNameType, disabled: boolean): UIColorData {
-        const { title } = themes[theme || current].button;
+    static buttonTitle(
+        theme: ?UIColorThemeNameType,
+        disabled: boolean
+    ): UIColorData {
+        const { title } = UITheme.button(theme);
         return disabled ? title.disabled : title.normal;
     }
 
     static detailsInputComment(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].detailsInput.comment;
+        return UITheme.detailsInputComment(theme);
     }
-
 
     static overlayWithAlpha(alpha: number = 0.5) {
         return `rgba(16, 32, 39, ${alpha})`;
@@ -428,7 +409,7 @@ export default class UIColor {
         return UIColorPalette.avatar[index % count];
     }
 
-    static getAvatarBackgroundColor(id: (number | string) = 0) {
+    static getAvatarBackgroundColor(id: number | string = 0) {
         if (!id) {
             return UIColor.grey();
         }
@@ -443,12 +424,18 @@ export default class UIColor {
 
     // deprecated, moved to UIStyleColor
     static getBackgroundColorStyle(color: UIColorData) {
-        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BackgroundColor);
+        return UIStyleColor.getStyle(
+            color,
+            UIStyleColor.Styles.BackgroundColor
+        );
     }
 
     // deprecated, moved to UIStyleColor
     static getBorderBottomColorStyle(color: UIColorData) {
-        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BorderBottomColor);
+        return UIStyleColor.getStyle(
+            color,
+            UIStyleColor.Styles.BorderBottomColor
+        );
     }
 
     // deprecated, moved to UIStyleColor

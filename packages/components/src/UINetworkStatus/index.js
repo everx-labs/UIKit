@@ -3,11 +3,7 @@ import React from 'react';
 import { Platform, StyleSheet, View, Text, StatusBar } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
-import {
-    UIColor,
-    UIStyle,
-    UIDevice,
-} from '@uikit/core';
+import { UIColor, UIStyle, UIDevice } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

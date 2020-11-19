@@ -10,11 +10,7 @@ import {
     State as RNGHState,
 } from 'react-native-gesture-handler';
 
-import {
-    UIConstant,
-    UIColor,
-    UIFont,
-} from '@uikit/core';
+import { UIConstant, UIColor, UIFont } from '@tonlabs/uikit.core';
 
 import UINotice from '../UINotice';
 import type { MessageObject } from '../UINotice';

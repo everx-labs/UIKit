@@ -5,11 +5,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
-import {
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 
-import { UIConstant, UIColor, UITextStyle } from "@uikit/core";
+import { UIConstant, UIColor, UITextStyle } from "@tonlabs/uikit.core";
 
 import type { ActionButtonMessage } from "./types";
 import { useBubblePosition, BubblePosition } from "./useBubblePosition";

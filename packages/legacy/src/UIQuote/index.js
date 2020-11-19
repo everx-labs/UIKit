@@ -3,8 +3,8 @@ import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet } from 'react-native';
 
-import { UIConstant, UIColor } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIConstant, UIColor } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 const styles = StyleSheet.create({
     quote: {

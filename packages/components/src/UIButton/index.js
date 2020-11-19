@@ -5,20 +5,20 @@ import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import {
-    UIFont,
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
-import iconDefault from '@uikit/assets/ico-triangle/ico-triangle.png';
+import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
+import { UIActionComponent } from '../UIActionComponent';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '../UIActionComponent';
 import UITooltip from '../UITooltip';
 import IconAnimation from './IconAnimation';
+
+const iconDefault = UIAssets.icons.ui.triangle;
 
 const styles = StyleSheet.create({
     container: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export type ButtonProps = ActionProps & {
+export type ButtonProps = UIActionComponentProps & {
     /** Number for badged button
     @default 0
     */
@@ -198,7 +198,7 @@ export type ButtonProps = ActionProps & {
     testID?: string,
 };
 
-type State = ActionState;
+type State = UIActionComponentState;
 
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static buttonSize = {

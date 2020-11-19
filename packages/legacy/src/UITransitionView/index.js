@@ -4,8 +4,8 @@ import { Animated, View } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIStyle } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 type Props = {
     currentItem: ?React$Node,

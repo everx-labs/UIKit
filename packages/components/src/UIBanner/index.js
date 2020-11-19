@@ -4,11 +4,7 @@ import {
     StyleSheet, View,
 } from 'react-native';
 
-import {
-    UIConstant,
-    UIColor,
-    UIStyle,
-} from '@uikit/core';
+import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import UIComponent from '../UIComponent';
 import UILabel from '../UILabel';
 

@@ -5,21 +5,14 @@ import { StyleSheet, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import BigNumber from 'bignumber.js';
 
-
-import {
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import {
     UIPureComponent,
     UIScaleButton,
     UILabel,
-} from '@uikit/components';
-
+} from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import type { BigNum } from '@uikit/core/types/BigNum';
+import type { BigNum } from '@tonlabs/uikit.core';
 
 import type {
     ChatAdditionalInfo,
@@ -28,7 +21,6 @@ import type {
     UIChatMessage,
 } from '../extras';
 import { ChatMessageStatus, TypeOfTransaction } from '../extras';
-
 
 type Props = {
     message: any,

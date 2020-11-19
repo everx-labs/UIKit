@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, StyleSheet, Keyboard, Animated } from 'react-native';
 
-import { UIConstant, UIStyle, UIColor } from '@uikit/core';
+import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UILabel from '../UILabel';

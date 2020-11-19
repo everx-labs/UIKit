@@ -3,18 +3,21 @@ import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 
-import { UIStyle } from '@uikit/core';
+import { UIStyle } from '@tonlabs/uikit.core';
 
-import UIDetailsInput from '../UIDetailsInput';
-import type { DetailsProps } from '../UIDetailsInput';
-import type { ActionState } from '../UIActionComponent';
+import { UIDetailsInput } from '../UIDetailsInput';
+import type { UIDetailsInputProps } from '../UIDetailsInput';
+import type { UIActionComponentState } from '../UIActionComponent';
 
-type Props = DetailsProps & {
+type Props = UIDetailsInputProps & {
     containerStyle?: ViewStyleProp,
     rightButton?: string,
 };
 
-export default class UINumberInput extends UIDetailsInput<Props, ActionState> {
+export default class UINumberInput extends UIDetailsInput<
+    Props,
+    UIActionComponentState
+> {
     static defaultProps = {
         ...UIDetailsInput.defaultProps,
         rightButton: '',

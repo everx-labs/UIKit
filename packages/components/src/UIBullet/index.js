@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle, UIConstant } from '@uikit/core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 
 type Props = {
     children: string,

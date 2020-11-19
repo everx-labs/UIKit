@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text } from 'react-native';
 
-import {
-    UIFont,
-    UIColor,
-    UIConstant,
-} from '@uikit/core';
+import { UIFont, UIColor, UIConstant } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

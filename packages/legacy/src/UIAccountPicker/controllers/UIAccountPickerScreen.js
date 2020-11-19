@@ -2,11 +2,10 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 
-import { UIStyle } from '@uikit/core';
-import { UIModalController } from '@uikit/navigation';
-import type { ModalControllerProps } from '@uikit/navigation/UIModalController';
-import { UISearchBar } from '@uikit/components';
-
+import { UIStyle } from '@tonlabs/uikit.core';
+import { UIModalController } from '@tonlabs/uikit.navigation';
+import type { ModalControllerProps } from '@tonlabs/uikit.navigation';
+import { UISearchBar } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIAccountPickerCell from '../components/UIAccountPickerCell';

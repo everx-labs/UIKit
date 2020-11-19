@@ -7,7 +7,6 @@ export { default as UINavigationIconButton } from './UINavigationIconButton';
 export { default as UINavigationPlusButton } from './UINavigationPlusButton';
 export { default as UINavigationTextButton } from './UINavigationTextButton';
 export { default as UINavigator } from './UINavigator';
-export { default as UIBottomBar } from './UIBottomBar';
 export { default as UIDetailsButton } from './UIDetailsButton';
 export { default as UIAccountPicker } from './UIAccountPicker';
 export { default as UIAccountPickerScreen } from './UIAccountPicker/controllers/UIAccountPickerScreen';

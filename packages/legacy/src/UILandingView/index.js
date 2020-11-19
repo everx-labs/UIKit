@@ -6,10 +6,11 @@ import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ImageStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { FastImageSource } from 'react-native-fast-image';
 
-import { UIStyle } from '@uikit/core';
-import { UIComponent, UILabel } from '@uikit/components';
+import { UIStyle } from '@tonlabs/uikit.core';
+import { UIComponent, UILabel } from '@tonlabs/uikit.components';
 
-const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
+const FastImage =
+    Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
 
 const ImageComponent: any = Platform.OS === 'web' ? Image : FastImage;
 

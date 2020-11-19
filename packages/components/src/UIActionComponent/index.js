@@ -4,12 +4,12 @@ import { TouchableWithoutFeedback } from 'react-native';
 
 import UIPureComponent from '../UIPureComponent';
 
-export type ActionState = {
+export type UIActionComponentState = {
     tapped: boolean,
     hover: boolean,
-}
+};
 
-export type ActionProps = {
+export type UIActionComponentProps = {
     testID?: string,
     disabled?: boolean,
     showIndicator?: boolean,
@@ -18,9 +18,11 @@ export type ActionProps = {
     onMouseLeave?: () => void,
 };
 
-export default class UIActionComponent<Props, State>
-    extends UIPureComponent<any & ActionProps, any & ActionState> {
-    constructor(props: any & ActionProps) {
+export class UIActionComponent<Props, State> extends UIPureComponent<
+    any & UIActionComponentProps,
+    any & UIActionComponentState
+> {
+    constructor(props: any & UIActionComponentProps) {
         super(props);
 
         this.state = {

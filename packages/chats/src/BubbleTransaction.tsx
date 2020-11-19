@@ -1,9 +1,9 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 
-import { UIColor, UIStyle, UIConstant } from "@uikit/core";
+import { UIColor, UIStyle, UIConstant } from "@tonlabs/uikit.core";
 import { uiLocalized } from "@tonlabs/uikit.localization";
-import { UILabel, UIScaleButton } from "@uikit/components";
+import { UILabel, UIScaleButton } from "@tonlabs/uikit.components";
 
 import { ChatMessageStatus, TransactionType } from "./types";
 import type { TransactionMessage } from "./types";

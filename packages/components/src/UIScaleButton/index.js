@@ -3,17 +3,20 @@ import React from 'react';
 import { Animated } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIConstant } from '@uikit/core';
+import { UIConstant } from '@tonlabs/uikit.core';
 
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
+import { UIActionComponent } from '../UIActionComponent';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '../UIActionComponent';
 
-type Props = ActionProps & {
+type Props = UIActionComponentProps & {
     content: React$Node,
     style: ViewStyleProp,
-}
+};
 
-type State = ActionState;
+type State = UIActionComponentState;
 
 export default class UIScaleButton extends UIActionComponent<Props, State> {
     static defaultProps = {

@@ -12,4 +12,8 @@ export { default as UIStyle } from './UIStyle';
 export { default as UIStyleColor } from './UIStyle/UIStyleColor';
 export { default as UITextStyle } from './UITextStyle';
 
-export type * from '../types';
+export type * from './UIColor/UIColorTypes';
+export type * from './UIDevice';
+export type * from './UIFunction';
+export type * from './types';
+export type * from './types/BigNum';

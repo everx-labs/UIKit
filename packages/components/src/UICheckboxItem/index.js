@@ -4,19 +4,8 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { Image, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
-import { UIColor } from '@uikit/core';
-import icoSquareCheckboxActive
-    from '@uikit/assets/ico-checkbox-square-active/ico-checkbox-square-active.png';
-import icoSquareCheckboxInactive
-    from '@uikit/assets/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
-import icoSquareCheckboxActiveAction
-    from '@uikit/assets/ico-checkbox-square-active/active-action.png';
-import icoSquareCheckboxInactiveAction
-    from '@uikit/assets/ico-checkbox-square-inactive/inactive-action.png';
-import icoCircleCheckboxActive
-    from '@uikit/assets/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
-import icoCircleCheckboxInactive
-    from '@uikit/assets/ico-checkbox-circle-inactive/ico-checkbox-circle-inactive-empty.png';
+import { UIColor } from '@tonlabs/uikit.core';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 
@@ -47,11 +36,17 @@ class UICheckboxItem extends UIComponent {
 
         if (type === UICheckboxItem.Type.Square) {
             if (this.props.theme === UIColor.Theme.Action) {
-                return selected ? icoSquareCheckboxActiveAction : icoSquareCheckboxInactiveAction;
+                return selected
+                    ? UIAssets.icons.ui.checkboxSquareActiveAction
+                    : UIAssets.icons.ui.checkboxSquareInactiveAction;
             }
-            return selected ? icoSquareCheckboxActive : icoSquareCheckboxInactive;
+            return selected
+                ? UIAssets.icons.ui.checkboxSquareActive
+                : UIAssets.icons.ui.checkboxSquareInactive;
         }
-        return selected ? icoCircleCheckboxActive : icoCircleCheckboxInactive;
+        return selected
+            ? UIAssets.icons.ui.checkboxCircleActiveInverted
+            : UIAssets.icons.ui.checkboxCircleInactiveEmpty;
     }
 
     renderCheckbox() {

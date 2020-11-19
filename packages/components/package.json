@@ -1,10 +1,13 @@
 {
-  "name": "@uikit/components",
+  "name": "@tonlabs/uikit.components",
   "version": "2.0.0",
   "description": "Base components for Tonlabs's UIKit",
-  "main": "src/index.js",
   "scripts": {
+    "prepare": "bob build",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "repository": {
     "type": "git",
@@ -22,9 +25,16 @@
     "url": "https://github.com/tonlabs/UIKit/issues"
   },
   "homepage": "https://github.com/tonlabs/UIKit/packages/components#readme",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "react-native": "src/index.js",
+  "files": [
+    "lib/",
+    "src/"
+  ],
   "dependencies": {
-    "@uikit/assets": "~2.0.0",
-    "@uikit/core": "~2.0.0",
+    "@tonlabs/uikit.assets": "~2.0.0",
+    "@tonlabs/uikit.core": "~2.0.0",
     "bignumber.js": "9.0.0",
     "bowser": "1.9.4",
     "dayjs": "1.9.1",
@@ -38,6 +48,7 @@
     "react-style-proptype": "3.2.2"
   },
   "devDependencies": {
+    "@react-native-community/bob": "^0.16.2",
     "@react-native-community/netinfo": "^5.9.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -58,5 +69,25 @@
     "react-native-image-picker": "*",
     "react-native-qrcode-svg": "^6.0.6",
     "react-native-svg": "^12.1.0"
+  },
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+        [
+            "commonjs",
+            {
+                "configFile": "../../babel.config.js",
+                "copyFlow": true
+            }
+        ],
+        [
+            "module",
+            {
+                "configFile": "../../babel.config.js",
+                "copyFlow": true
+            }
+        ]
+    ]
   }
 }

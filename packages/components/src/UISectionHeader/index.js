@@ -5,11 +5,7 @@ import StylePropType from 'react-style-proptype';
 
 import { View, StyleSheet, Text } from 'react-native';
 
-import {
-    UIStyle,
-    UIColor,
-    UIConstant,
-} from '@uikit/core';
+import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 

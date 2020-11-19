@@ -2,14 +2,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import {
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
-import {
-    UIPureComponent,
-    UIImage,
-} from '@uikit/components';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIPureComponent, UIImage } from '@tonlabs/uikit.components';
 
 import type { ChatAdditionalInfo } from '../extras';
 

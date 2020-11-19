@@ -11,8 +11,8 @@ import {
     UIEventHelper,
     UIStyle,
     UIConstant,
-} from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+} from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 import UIPopoverBackground from '../UIPopoverBackground';
 import UICustomSheet from '../UICustomSheet';

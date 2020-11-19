@@ -4,8 +4,8 @@ import { View, Text } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle, UITextStyle } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIStyle, UITextStyle } from "@tonlabs/uikit.core";
+import { UIComponent } from "@tonlabs/uikit.components";
 
 import UIAccountPickerCell from './components/UIAccountPickerCell';
 import type { UIAccountData } from './types/UIAccountData';

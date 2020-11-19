@@ -6,7 +6,8 @@ import { Image, TouchableOpacity } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from '@uikit/core';
+import { UIStyle } from '@tonlabs/uikit.core';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIComponent from '../UIComponent';
 
@@ -16,14 +17,15 @@ type ButtonImage = 'back' | 'close-primary' | 'close-secondary'
                     | 'menu-contained';
 
 const assets = {
-    back: () => require('@uikit/assets/ico-arrow-left/ico-arrow-left.png'),
-    'close-primary': () => require('@uikit/assets/ico-close/close-blue.png'),
-    'close-secondary': () => require('@uikit/assets/ico-close/close-grey.png'),
-    'close-dark-theme-secondary': () => require('@uikit/assets/ico-close/close-dark-theme-secondary.png'),
-    'close-light': () => require('@uikit/assets/ico-close/close-light.png'),
-    'close-black': () => require('@uikit/assets/ico-close/close-black.png'),
-    menu: () => require('@uikit/assets/ico-open-menu/open-menu.png'),
-    'menu-contained': () => require('@uikit/assets/ico-menu-contained/menu.png'),
+    back: () => UIAssets.icons.ui.arrowLeft,
+    'close-primary': () => UIAssets.icons.ui.closeBlue,
+    'close-secondary': () => UIAssets.icons.ui.closeGrey,
+    'close-dark-theme-secondary': () =>
+        UIAssets.icons.ui.closeDarkThemeSecondary,
+    'close-light': () => UIAssets.icons.ui.closeLight,
+    'close-black': () => UIAssets.icons.ui.closeBlack,
+    menu: () => UIAssets.icons.ui.openMenu,
+    'menu-contained': () => UIAssets.icons.ui.menuContained,
     custom: () => null,
 };
 

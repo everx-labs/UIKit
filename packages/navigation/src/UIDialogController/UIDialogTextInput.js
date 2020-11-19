@@ -3,13 +3,9 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, TextInput, Text, View, Platform } from 'react-native';
 
-import {
-    UIStyle,
-    UITextStyle,
-    UIColor,
-} from '@uikit/core';
+import { UIStyle, UITextStyle, UIColor } from '@tonlabs/uikit.core';
 
-import { UIComponent } from '@uikit/components';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 const styles = StyleSheet.create({
     inputView: {

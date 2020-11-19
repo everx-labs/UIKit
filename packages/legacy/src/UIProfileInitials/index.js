@@ -3,14 +3,8 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIStyle,
-    UIColor,
-    UIFont,
-    UIConstant,
-} from '@uikit/core';
-import { UIComponent } from '@uikit/components';
-
+import { UIStyle, UIColor, UIFont, UIConstant } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 type Props = {
     id?: any,
