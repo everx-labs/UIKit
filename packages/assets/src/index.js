@@ -31,8 +31,8 @@ import iconBrandSocialFacebookPrimary from '../brand/social/primary/facebook.png
 import iconBrandSocialGithub from '../brand/social/github.png';
 import iconBrandSocialInstagram from '../brand/social/instagram.png';
 import iconBrandSocialInstagramPrimary from '../brand/social/primary/instagram.png';
-import iconBrandSocialLinkedIn from '../brand/social/linkedin.png';
-import iconBrandSocialLinkedInPrimary from '../brand/social/primary/linkedin.png';
+import iconBrandSocialLinkedIn from '../brand/social/linkedIn.png';
+import iconBrandSocialLinkedInPrimary from '../brand/social/primary/linkedIn.png';
 import iconBrandSocialMedium from '../brand/social/medium.png';
 import iconBrandSocialMediumPrimary from '../brand/social/primary/medium.png';
 import iconBrandSocialReddit from '../brand/social/reddit.png';
