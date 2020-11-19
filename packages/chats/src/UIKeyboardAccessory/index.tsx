@@ -6,11 +6,11 @@ import Animated, { Easing } from 'react-native-reanimated';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { KeyboardTrackingView } from 'react-native-ui-lib/keyboard';
 
-import { UIColor, UIConstant, UIDevice, UIStyle } from '@ttonlabs/uikit.core';
+import { UIColor, UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
 
 let trackingViewIsReady: boolean = false; // global flag to learn if KeyboardTrackingView usable
 
-const UIKeyboardAccessory = ({
+export const UIKeyboardAccessory = ({
     children,
     onContentBottomInsetUpdate,
     disableTrackingView = false,
@@ -188,5 +188,3 @@ const UIKeyboardAccessory = ({
         </SafeAreaInsetsContext.Consumer>
     );
 };
-
-export default UIKeyboardAccessory;

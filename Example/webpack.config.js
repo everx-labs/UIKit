@@ -117,6 +117,10 @@ module.exports = {
                         '../node_modules/react-native-document-picker/'
                     ),
                     path.resolve(__dirname, '../node_modules/rn-fetch-blob/'),
+                    path.resolve(
+                        __dirname,
+                        '../node_modules/react-native-ui-lib/'
+                    ),
                 ],
                 loader: 'babel-loader',
                 query: {
@@ -173,6 +177,8 @@ module.exports = {
             'react-native-safe-area': 'react', // Hack in order not to load
             'react-native-lightbox': 'react', // Hack in order not to load
             'react-native-localization': 'react-localization',
+            'react-native-ui-lib/keyboard': 'react', // Hack in order not to load
+            'react-native-document-picker': 'react', // Hack in order not to load
         },
     },
 };

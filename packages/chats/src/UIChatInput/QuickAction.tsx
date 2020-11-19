@@ -1,17 +1,17 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
     Image, // TODO: use fast-image?
     View,
-} from "react-native";
-import type { ImageSourcePropType } from "react-native";
+} from 'react-native';
+import type { ImageSourcePropType } from 'react-native';
 
-import { UIStyle } from "@tonlabs/uikit.core";
-import { UIButtonGroup, UITextButton } from "@tonlabs/uikit.components";
-import buttonSend from "@tonlabs/uikit.assets/btn_msg_send/btn_msg_send.png";
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIButtonGroup, UITextButton } from '@tonlabs/uikit.components';
+import buttonSend from '@tonlabs/uikit.assets/btn_msg_send/btn_msg_send.png';
 
-import { commonStyles } from "./styles";
+import { commonStyles } from './styles';
 
 type QuickAction = {
     key: string;
@@ -73,7 +73,7 @@ export function QuickAction(props: Props) {
 const styles = StyleSheet.create({
     buttonSend: {
         height: UIConstant.contentOffset(),
-        justifyContent: "center",
-        alignSelf: "flex-end",
+        justifyContent: 'center',
+        alignSelf: 'flex-end',
     },
 });

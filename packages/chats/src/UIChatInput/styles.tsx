@@ -1,11 +1,13 @@
-import { StykeSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+
+import { UIConstant } from '@tonlabs/uikit.core';
 
 const commonStyles = StyleSheet.create({
     buttonContainer: {
         padding: UIConstant.contentOffset(),
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "flex-end",
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'flex-end',
         height: UIConstant.largeButtonHeight(),
     },
     icon: {

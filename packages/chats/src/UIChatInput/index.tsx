@@ -1,15 +1,18 @@
-import React from "react";
-import { Platform, Animated, StyleSheet } from "react-native";
-import type { StyleProp, ViewStyle } from "react-native";
+import * as React from 'react';
+import { Platform, Animated, StyleSheet, View } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
-import { UIStyle, UIColor, UIConstant } from "@tonlabs/uikit.core";
+import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
 
-import { ChatPicker } from "./ChatPicker";
-import type { OnSendMedia, OnSendDocument } from "./types";
+import { ChatPicker } from './ChatPicker';
+import type { OnSendMedia, OnSendDocument } from './types';
+import { TODOUIChatInput } from './UIChatInput';
+
+import { UIKeyboardAccessory } from '../UIKeyboardAccessory';
 
 const AndroidKeyboardAdjust =
-    Platform.OS === "android"
-        ? require("react-native-android-keyboard-adjust")
+    Platform.OS === 'android'
+        ? require('react-native-android-keyboard-adjust')
         : null;
 
 const MAX_INPUT_LENGTH = 320;
@@ -33,24 +36,24 @@ const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
     const {
         placeholder,
         editable,
-        hideInput,
-        hideMenuPlus,
-        disableMenuPlus,
-        disabledMenuMore,
+        inputHidden,
+        menuPlusHidden,
+        menuPlusDisabled,
+        menuMoreDisabled,
         // quickAction,
         stickersVisible,
         onContentBottomInsetUpdate,
-    } = this.props;
+    } = props;
     const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0))
         .current;
 
     React.useEffect(() => {
-        if (Platform.OS !== "android") {
+        if (Platform.OS !== 'android') {
             return;
         }
 
         const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
+            'hardwareBackPress',
             () => {
                 if (ref.current && ref.current.isFocused()) {
                     UICustomKeyboardUtils.dismiss();
@@ -75,7 +78,7 @@ const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
         },
     }));
 
-    const [inputText, setInputText] = React.useState<string>("");
+    const [inputText, setInputText] = React.useState<string>('');
     const pickerRef = React.useRef();
 
     return (
@@ -91,7 +94,7 @@ const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
             >
                 {/* actionsView TODO: Make actions */}
                 <Animated.View
-                    style={[styles.border, { opacity: this.borderOpacity }]}
+                    style={[styles.border, { opacity: borderOpacity }]}
                 />
                 <TODOUIChatInput
                     ref={ref}
@@ -121,13 +124,13 @@ const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
                     onHeightChange={() => {}}
                 />
             </View>
-            {!hideMenuPlus && (
+            {/* {!hideMenuPlus && (
                 <ChatPicker
                     ref={pickerRef}
                     onSendDocument={props.onSendDocument}
                     onSendMedia={props.onSendMedia}
                 />
-            )}
+            )} */}
         </UIKeyboardAccessory>
     );
 });
@@ -159,7 +162,7 @@ const onStickersPress = (options: StickersPressOptions) => {
         // N.B. It will change back to resize automatically once UICustomKeyboard is dismissed!
     }
 
-    if (Platform.OS === "web") {
+    if (Platform.OS === 'web') {
         // nothing
     } else if (options.show) {
         Keyboard.dismiss();
@@ -167,7 +170,7 @@ const onStickersPress = (options: StickersPressOptions) => {
         UICustomKeyboardUtils.dismiss();
     }
 
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
         // nothing
     } else {
         setStickersVisible(options.show);
@@ -204,7 +207,7 @@ export const UIChatInput = React.forwardRef(function UIChatInputInternal(
     );
     const [stickers, setStickers] = React.useState<UIStickerPackage[]>([]);
 
-    if (Platform.OS === "web") {
+    if (Platform.OS === 'web') {
         return (
             <>
                 <InputWrapper
@@ -212,10 +215,10 @@ export const UIChatInput = React.forwardRef(function UIChatInputInternal(
                     stickersVisible={stickersVisible}
                     {...props}
                 />
-                <UIStickerPicker
-                    stickers={null /*TODO*/}
+                {/* <UIStickerPicker
+                    stickers={null /*TODO}
                     onPickSticker={onSendSticker}
-                />
+                /> */}
             </>
         );
     }

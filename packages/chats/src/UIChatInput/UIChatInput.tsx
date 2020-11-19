@@ -1,14 +1,15 @@
-import * as React from "react";
-import { Platform } from "react-native";
+import * as React from 'react';
+import { Platform } from 'react-native';
 
-import { UIDetailsInput } from "@tonlabs/uikit.components";
+import { UIConstant } from '@tonlabs/uikit.core';
+import { UIDetailsInput } from '@tonlabs/uikit.components';
 
-import { MenuPlus } from "./MenuPlus";
-import { MenuMore } from "./MenuMore";
-import { QuickAction } from "./QuickAction";
-import { StickerButton } from "./StickerButton";
+import { MenuPlus } from './MenuPlus';
+import { MenuMore } from './MenuMore';
+import { QuickAction } from './QuickAction';
+import { StickerButton } from './StickerButton';
 
-import type { MenuItem } from "./types";
+import type { MenuItem } from './types';
 
 type Props = {
     containerStyle?: StyleProp<ViewStyle>;
@@ -60,7 +61,7 @@ export class TODOUIChatInput extends UIDetailsInput {
         const { nativeEvent } = e;
         // If the browser window is resized, this forces the input
         // to adjust its size so that the full phrase is displayed.
-        if (Platform.OS === "web") {
+        if (Platform.OS === 'web') {
             this.onChange(e);
         }
         if (nativeEvent) {
@@ -92,7 +93,7 @@ export class TODOUIChatInput extends UIDetailsInput {
             return null;
         }
         const minHeight =
-            Platform.OS === "android"
+            Platform.OS === 'android'
                 ? { height: this.state.inputHeight }
                 : null;
         return (
