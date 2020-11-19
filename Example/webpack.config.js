@@ -108,9 +108,6 @@ module.exports = {
                         __dirname,
                         '../node_modules/react-native-safe-area/'
                     ),
-                    // path.resolve(__dirname, './node_modules/react/'),
-                    // path.resolve(__dirname, './node_modules/react-dom/'),
-                    // path.resolve(__dirname, './node_modules/@react-navigation/'),
                     path.resolve(
                         __dirname,
                         '../node_modules/react-navigation-surf/'
@@ -143,13 +140,10 @@ module.exports = {
                             'babel-plugin-transform-react-remove-prop-types',
                             { mode: 'wrap' },
                         ],
-                        // ['@babel/plugin-proposal-decorators', {legacy: true}],
                         [
                             '@babel/plugin-proposal-class-properties',
                             { loose: true },
                         ],
-                        // ['@babel/plugin-proposal-object-rest-spread', {useBuiltIns: true}],
-                        // '@babel/plugin-proposal-nullish-coalescing-operator',
                     ],
                 },
             },
