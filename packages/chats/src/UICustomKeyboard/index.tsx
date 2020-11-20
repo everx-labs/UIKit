@@ -1,14 +1,18 @@
 // @flow
 import * as React from 'react';
 import { Keyboard, Platform, View } from 'react-native';
-import type {EmitterSubscription} from 'react-native';
+import type { EmitterSubscription } from 'react-native';
 import {
     KeyboardAccessoryView,
     KeyboardRegistry,
     KeyboardUtils,
 } from 'react-native-ui-lib/keyboard';
 
-const registerCustomKeyboard = (kbID: string, component: React.ReactNode, props: Object) => {
+const registerCustomKeyboard = (
+    kbID: string,
+    component: React.ReactNode,
+    props: Object
+) => {
     if (Platform.OS === 'web') {
         // Do nothing
         return;
@@ -33,7 +37,7 @@ const dismiss = () => {
     KeyboardUtils.dismiss();
 };
 
-const UICustomKeyboardUtils = {
+export const UICustomKeyboardUtils = {
     registerCustomKeyboard,
     onItemSelected,
     dismiss,
@@ -42,13 +46,13 @@ const UICustomKeyboardUtils = {
 let trackingViewIsReady: boolean = false; // global flag to learn if KeyboardTrackingView usable
 
 type Props = {
-    onKeyboardResigned: () => void | Promise<void>
-}
+    onKeyboardResigned: () => void | Promise<void>;
+};
 
-const UICustomKeyboard = (props: Props) => {
+export const UICustomKeyboard = (props: Props) => {
     if (Platform.OS === 'web') {
         // Do nothing
-        return (<View />);
+        return <View />;
     }
 
     // Keyboard
@@ -59,7 +63,8 @@ const UICustomKeyboard = (props: Props) => {
 
     const onKeyboardShow = async (e: any) => {
         const { height } = e.endCoordinates;
-        if (keyboardHeight.current < height) { // N.B. `<` sign is important! (do not set `!==`)
+        if (keyboardHeight.current < height) {
+            // N.B. `<` sign is important! (do not set `!==`)
             keyboardHeight.current = height;
         }
     };
@@ -77,12 +82,12 @@ const UICustomKeyboard = (props: Props) => {
 
         keyboardWillShowListener.current = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-            onKeyboardShow,
+            onKeyboardShow
         );
 
         keyboardWillHideListener.current = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-            onKeyboardHide,
+            onKeyboardHide
         );
     };
 
@@ -101,7 +106,9 @@ const UICustomKeyboard = (props: Props) => {
     };
 
     // Tracking View Ready Hack
-    const [trackingViewReady, setTrackingViewReady] = React.useState<boolean>(trackingViewIsReady);
+    const [trackingViewReady, setTrackingViewReady] = React.useState<boolean>(
+        trackingViewIsReady
+    );
 
     const makeKeyboardTrackingReady = () => {
         if (Platform.OS !== 'ios' || trackingViewIsReady) {
@@ -145,10 +152,4 @@ const UICustomKeyboard = (props: Props) => {
             }}
         />
     );
-};
-
-export default UICustomKeyboard;
-
-export {
-    UICustomKeyboardUtils,
 };

@@ -22,5 +22,8 @@ export type QuickActionItem = {
 
 export type ImageSize = { width: number; height: number };
 
-export type OnSendMedia = (data: any, imageSize: ImageSize) => void;
+export type OnSendText = (text: string) => void;
+export type OnSendMedia = (data: any, imageSize: ImageSize | null) => void;
 export type OnSendDocument = (data: any, name: string) => void;
+export type OnContentBottomInsetUpdate = (bottom: number) => void;
+export type OnHeightChange = (height: number) => void;

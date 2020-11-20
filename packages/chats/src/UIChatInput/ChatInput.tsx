@@ -24,14 +24,14 @@ import type { OnStickersPress } from './StickerButton';
 import type {
     MenuItem,
     QuickActionItem,
+    OnSendText,
     OnSendMedia,
     OnSendDocument,
+    OnContentBottomInsetUpdate,
+    OnHeightChange,
 } from './types';
 
 const MAX_INPUT_LENGTH = 320;
-
-type OnSendText = (text: string) => void;
-type OnHeightChange = (height: number) => void;
 
 function useInputValue({
     onSendText: onSendTextProp,
@@ -239,7 +239,7 @@ type Props = {
     onStickersPress: OnStickersPress;
     // TODO: can we not expose it?
     onHeightChange: OnHeightChange;
-    onContentBottomInsetUpdate: (bottom: number) => void;
+    onContentBottomInsetUpdate: OnContentBottomInsetUpdate;
     onSendMedia?: OnSendMedia;
     onSendDocument?: OnSendDocument;
 };

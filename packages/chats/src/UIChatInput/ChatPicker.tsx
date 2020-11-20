@@ -8,7 +8,9 @@ import { UIImageView } from '@tonlabs/uikit.components';
 import { UIAlertView } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import type { OnSendMedia, OnSendDocument } from './types';
+import { UICustomKeyboardUtils } from '../UICustomKeyboard';
+
+import type { OnSendMedia, OnSendDocument, ImageSize } from './types';
 
 const extractDocumentName = (e: any) => {
     const source = Platform.OS === 'web' ? e.target.files[0] : e;
@@ -53,26 +55,33 @@ const pickDocument = async (
 const onPickDocument = async (
     doc: any,
     name: string,
-    onSendDocument: OnSendDocument
+    onSendDocument?: OnSendDocument
 ) => {
     if (Platform.OS === 'web') {
-        onSendDocument(doc.split('base64,')[1], name);
+        if (onSendDocument) {
+            onSendDocument(doc.split('base64,')[1], name);
+        }
         return;
     }
-    const processData = (data) => {
-        if (data instanceof String || typeof data === 'string') {
+    const processData = (data: string | any) => {
+        if (typeof data === 'string') {
             const dataSplit = data.split('base64,');
-            onSendDocument(dataSplit[dataSplit.length - 1], name);
+            if (onSendDocument) {
+                onSendDocument(dataSplit[dataSplit.length - 1], name);
+            }
         } else {
-            log.error('The picked data is not in base64 format');
+            // TODO: deal with logs
+            // log.error('The picked data is not in base64 format');
         }
     };
     try {
+        // TODO: I don't like it, can we do it without base64?
         // const data = await RNFetchBlob.fs.readFile(decodeURI(doc), "base64");
         // processData(data);
     } catch (decError) {
         // Failed to load the data from the decoded URI, try the plain one
         try {
+            // TODO: I don't like it, can we do it without base64?
             // const data = await RNFetchBlob.fs.readFile(doc, "base64");
             // processData(data);
         } catch (error) {
@@ -86,14 +95,15 @@ const onPickDocument = async (
     }
 };
 
-const onPickDocumentWeb = (e: any, onSendDocument: OnSendDocument) => {
+const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
     e.preventDefault();
 
     const reader = new FileReader();
     const file = e.target.files[0];
     const name = extractDocumentName(e);
     if (!file) {
-        log.debug('Document picker was cancelled');
+        // TODO: I don't like it, can we do it without base64?
+        // log.debug('Document picker was cancelled');
         return;
     }
     if (file.size >= UIConstant.maxFileSize()) {
@@ -121,7 +131,7 @@ const onPickDocumentWeb = (e: any, onSendDocument: OnSendDocument) => {
 
 const uploadPhoto = (
     photo: any,
-    imageSize: ImageSize,
+    imageSize: ImageSize | null,
     onSendMedia: OnSendMedia
 ) => {
     if (Platform.OS === 'web') {
@@ -161,8 +171,8 @@ export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
     props: Props,
     ref
 ) {
-    const inputRef = React.useRef();
-    const uiImageViewRef = React.useRef<UIImageView>();
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const uiImageViewRef = React.useRef<typeof UIImageView>();
 
     React.useImperativeHandle(ref, () => ({
         openImageDialog: () => {
@@ -182,7 +192,7 @@ export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
 
             setTimeout(() => {
                 pickDocument((data: any, name: string) =>
-                    onPickDocument(doc, name, props.onSendDocument)
+                    onPickDocument(data, name, props.onSendDocument)
                 );
             }, UIConstant.animationDuration() * 2);
         },
@@ -214,7 +224,8 @@ export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
                 ref={uiImageViewRef}
                 editable
                 disabled={false}
-                onUploadPhoto={(photo) => {
+                // TODO: what is a real type of photo?
+                onUploadPhoto={(photo: any) => {
                     if (props.onSendMedia) {
                         onUploadPhoto(photo, props.onSendMedia);
                     }
@@ -223,8 +234,11 @@ export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
                     const msg = error.toString();
                     if (wasAccessToCameraOrGalleryDenied(msg)) {
                         UIAlertView.showAlert(
-                            TONLocalized.chats.message.enableFromSettingsTitle,
-                            TONLocalized.chats.message.enableFromSettings,
+                            // TODO: move localizations
+                            // TONLocalized.chats.message.enableFromSettingsTitle,
+                            'enable access to camera',
+                            // TONLocalized.chats.message.enableFromSettings,
+                            'enable access to camera',
                             [
                                 {
                                     title: uiLocalized.OK,
