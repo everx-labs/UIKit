@@ -2,12 +2,24 @@ import * as React from 'react';
 import { Keyboard, Platform } from 'react-native';
 
 import { UICustomKeyboard, UICustomKeyboardUtils } from '../UICustomKeyboard';
-import { UIStickerPicker } from '../UIStickerPicker';
-import type { PickedSticker } from '../UIStickerPicker';
+import {
+    OnPickSticker,
+    UIStickerPackage,
+    UIStickerPicker,
+    UIStickerPickerRef,
+    PickedSticker,
+    UIStickerPickerKeyboardName,
+} from '../UIStickerPicker';
 
 // import { ChatPicker } from './ChatPicker';
 import { ChatInput } from './ChatInput';
-import type { OnHeightChange, OnContentBottomInsetUpdate } from './types';
+import type {
+    OnHeightChange,
+    OnContentBottomInsetUpdate,
+    OnSendText,
+    OnSendMedia,
+    OnSendDocument,
+} from './types';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
@@ -44,11 +56,11 @@ const onStickersPress = (options: StickersPressOptions) => {
     if (Platform.OS === 'android') {
         // nothing
     } else {
-        setStickersVisible(options.show);
+        options.setStickersVisible(options.show);
     }
 
-    if (onStickersVisible) {
-        onStickersVisible(options.show);
+    if (options.onStickersVisible) {
+        options.onStickersVisible(options.show);
     }
 
     (async () => {
@@ -61,6 +73,11 @@ const onStickersPress = (options: StickersPressOptions) => {
 };
 
 type Props = {
+    stickers: UIStickerPackage[];
+    onSendText: OnSendText;
+    onSendMedia: OnSendMedia;
+    onSendDocument: OnSendDocument;
+    onSendSticker: OnPickSticker;
     onStickersVisible?: (visible: boolean) => void | Promise<void>;
     onHeightChange?: OnHeightChange;
     onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
@@ -68,15 +85,10 @@ type Props = {
 
 export const UIChatInput = React.forwardRef<null, Props>(
     function UIChatInputInternal(props, ref) {
-        const onSendSticker = React.useCallback((sticker: PickedSticker) => {
-            if (props.onSendSticker) {
-                props.onSendSticker(sticker);
-            }
-        }, []);
+        const stickersPickerRef = React.useRef<UIStickerPickerRef>(null);
         const [stickersVisible, setStickersVisible] = React.useState<boolean>(
             false
         );
-        const [stickers, setStickers] = React.useState<UIStickerPackage[]>([]);
 
         if (Platform.OS === 'web') {
             return (
@@ -85,9 +97,9 @@ export const UIChatInput = React.forwardRef<null, Props>(
                         ref={ref}
                         editable={true /*TODO*/}
                         stickersVisible={stickersVisible}
-                        onSendText={(t) => {
-                            console.log(t);
-                        }}
+                        onSendText={props.onSendText}
+                        onSendMedia={props.onSendMedia}
+                        onSendDocument={props.onSendDocument}
                         onStickersPress={() => {
                             // onStickersPress({
                             //     show: !stickersVisible,
@@ -96,15 +108,29 @@ export const UIChatInput = React.forwardRef<null, Props>(
                             //     setStickersVisible,
                             //     onStickersVisible: props.onStickersVisible,
                             // });
+                            if (stickersVisible) {
+                                stickersPickerRef.current?.hide();
+                            } else {
+                                stickersPickerRef.current?.show();
+                            }
+                            setStickersVisible(!stickersVisible);
                         }}
-                        {...props}
+                        onHeightChange={props.onHeightChange}
+                        onContentBottomInsetUpdate={
+                            props.onContentBottomInsetUpdate
+                        }
                     />
-                    {/* <UIStickerPicker
-                    stickers={null /*TODO}
-                    onPickSticker={onSendSticker}
-                /> */}
+                    <UIStickerPicker
+                        ref={stickersPickerRef}
+                        stickers={props.stickers}
+                        onPick={props.onSendSticker}
+                    />
                 </>
             );
+        }
+
+        if (!props.onSendSticker) {
+            return renderInput;
         }
 
         return (
@@ -112,15 +138,16 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 renderContent={renderInput}
                 kbInputRef={textInputRef}
                 kbComponent={
-                    stickersVisible ? UIStickerPicker.keyboardName : undefined
+                    stickersVisible ? UIStickerPickerKeyboardName : undefined
                 }
                 kbInitialProps={{
-                    onPickSticker: onSendSticker,
+                    ref: stickersPickerRef,
+                    onPick: props.onSendSticker,
                     isCustomKeyboard: true,
-                    stickers,
+                    stickers: props.stickers,
                 }}
                 onItemSelected={(_kbID, sticker: PickedSticker) => {
-                    onSendSticker(sticker);
+                    props.onSendSticker(sticker);
                 }}
                 onKeyboardResigned={() => {
                     onStickersPress({

@@ -236,12 +236,12 @@ type Props = {
 
     // TODO: do we need separate handlers for different content type?
     onSendText: OnSendText;
+    onSendMedia: OnSendMedia;
+    onSendDocument: OnSendDocument;
     onStickersPress: OnStickersPress;
     // TODO: can we not expose it?
-    onHeightChange: OnHeightChange;
-    onContentBottomInsetUpdate: OnContentBottomInsetUpdate;
-    onSendMedia?: OnSendMedia;
-    onSendDocument?: OnSendDocument;
+    onHeightChange?: OnHeightChange;
+    onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
 };
 
 export const ChatInput = React.forwardRef<Ref, Props>(

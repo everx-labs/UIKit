@@ -2338,7 +2338,24 @@ const Chat = () => (
                 },
             ].map((m: any, i: number) => ((m.key = i), m))}
         />
-        <UIChatInput editable />
+        <UIChatInput
+            editable
+            stickers={[
+                {
+                    id: 'test',
+                    date: Date.now(),
+                    description: '',
+                    name: 'test',
+                    stickers: [
+                        {
+                            name: 'crown',
+                            url:
+                                'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                        },
+                    ],
+                },
+            ]}
+        />
     </>
 );
 

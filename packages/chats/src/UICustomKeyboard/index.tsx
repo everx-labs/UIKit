@@ -12,7 +12,7 @@ import type { KeyboardAccessoryViewProps } from 'react-native-ui-lib/keyboard';
 const registerCustomKeyboard = (
     kbID: string,
     component: React.ReactNode,
-    props: Object
+    props?: { [key: string]: any }
 ) => {
     if (Platform.OS === 'web') {
         // Do nothing

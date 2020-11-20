@@ -16,7 +16,7 @@ export function UIKeyboardAccessory({
     customKeyboardVisible = false,
 }: {
     children: React.ReactNode;
-    onContentBottomInsetUpdate: (bottom: number) => void;
+    onContentBottomInsetUpdate?: (bottom: number) => void;
     disableTrackingView?: boolean;
     customKeyboardVisible?: boolean;
 }) {
