@@ -1,131 +1,13 @@
 import * as React from 'react';
-import { Platform, Animated, StyleSheet, View } from 'react-native';
-import type { StyleProp, ViewStyle } from 'react-native';
+import { Platform } from 'react-native';
 
-import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
-
-import { ChatPicker } from './ChatPicker';
-import type { OnSendMedia, OnSendDocument } from './types';
+// import { ChatPicker } from './ChatPicker';
 import { ChatInput } from './ChatInput';
-
-import { UIKeyboardAccessory } from '../UIKeyboardAccessory';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
         ? require('react-native-android-keyboard-adjust')
         : null;
-
-type InputWrapperProps = {
-    stickersVisible: boolean;
-
-    placeholder: string;
-    editable: boolean;
-    inputHidden?: boolean;
-    menuPlusHidden?: boolean;
-    menuPlusDisabled?: boolean;
-    menuMoreDisabled?: boolean;
-    onContentBottomInsetUpdate: (bottom: number) => void;
-
-    onSendMedia?: OnSendMedia;
-    onSendDocument?: OnSendDocument;
-};
-
-const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
-    const {
-        placeholder,
-        editable,
-        inputHidden,
-        menuPlusHidden,
-        menuPlusDisabled,
-        menuMoreDisabled,
-        // quickAction,
-        stickersVisible,
-        onContentBottomInsetUpdate,
-    } = props;
-    const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0))
-        .current;
-
-    React.useEffect(() => {
-        if (Platform.OS !== 'android') {
-            return;
-        }
-
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            () => {
-                if (ref.current && ref.current.isFocused()) {
-                    UICustomKeyboardUtils.dismiss();
-                    return true;
-                }
-                return false;
-            }
-        );
-
-        return () => {
-            backHandler.remove();
-        };
-    }, []);
-
-    React.useImperativeHandle(ref, () => ({
-        showBorder: (show: boolean) => {
-            Animated.spring(borderOpacity, {
-                toValue: show ? 1 : 0,
-                useNativeDriver: true,
-                speed: 20,
-            }).start();
-        },
-    }));
-
-    const pickerRef = React.useRef();
-
-    return (
-        <UIKeyboardAccessory
-            onContentBottomInsetUpdate={onContentBottomInsetUpdate}
-            customKeyboardVisible={stickersVisible}
-            disableTrackingView // since the UICustomKeyboard is used!
-        >
-            <View
-                style={UIStyle.color.getBackgroundColorStyle(
-                    UIColor.backgroundPrimary()
-                )}
-            >
-                {/* actionsView TODO: Make actions */}
-                <Animated.View
-                    style={[styles.border, { opacity: borderOpacity }]}
-                />
-                <ChatInput
-                    ref={ref}
-                    containerStyle={
-                        menuPlusHidden ? UIStyle.margin.leftDefault() : null
-                    }
-                    stickersActive={stickersVisible}
-                    hasStickers={editable}
-                    menuPlus={null /*TODO*/}
-                    menuPlusDisabled={menuPlusDisabled}
-                    menuMore={null /*TODO*/}
-                    menuMoreDisabled={menuMoreDisabled}
-                    inputHidden={inputHidden}
-                    onChangeText={() => {}}
-                    onSendText={(t) => {
-                        console.log(t); // TODO
-                    }}
-                    onStickersPress={() => {}}
-                    onBlur={() => {}}
-                    onFocus={() => {}}
-                    onKeyPress={() => {}}
-                    onHeightChange={() => {}}
-                />
-            </View>
-            {/* {!hideMenuPlus && (
-                <ChatPicker
-                    ref={pickerRef}
-                    onSendDocument={props.onSendDocument}
-                    onSendMedia={props.onSendMedia}
-                />
-            )} */}
-        </UIKeyboardAccessory>
-    );
-});
 
 type PickedSticker = {
     // TODO
@@ -202,9 +84,23 @@ export const UIChatInput = React.forwardRef(function UIChatInputInternal(
     if (Platform.OS === 'web') {
         return (
             <>
-                <InputWrapper
+                <ChatInput
                     ref={ref}
+                    editable={true /*TODO*/}
                     stickersVisible={stickersVisible}
+                    onSendText={(t) => {
+                        console.log(t)
+                    }}
+                    onStickersPress={() => {
+                        // onStickersPress({
+                        //     show: !stickersVisible,
+                        //     dismiss: stickersVisible,
+                        //     stickersVisible,
+                        //     setStickersVisible,
+                        //     onStickersVisible: props.onStickersVisible,
+                        // });
+                    }}
+                    
                     {...props}
                 />
                 {/* <UIStickerPicker
@@ -236,16 +132,9 @@ export const UIChatInput = React.forwardRef(function UIChatInputInternal(
                     dismiss: true,
                     stickersVisible,
                     setStickersVisible,
-                    onStickersVisible: props.onStickerVisible,
+                    onStickersVisible: props.onStickersVisible,
                 });
             }}
         />
     );
-});
-
-const styles = StyleSheet.create({
-    border: {
-        height: 1,
-        backgroundColor: UIColor.grey1(),
-    },
 });

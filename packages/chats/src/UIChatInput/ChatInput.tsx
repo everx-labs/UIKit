@@ -1,52 +1,36 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View, TextInput } from 'react-native';
+import { Platform, StyleSheet, View, TextInput, BackHandler, Animated } from 'react-native';
 
 import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
+import { UIKeyboardAccessory } from '../UIKeyboardAccessory';
+import { useTheme } from '../useTheme';
+
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickAction';
-import { StickerButton } from './StickerButton';
+import { StickersButton } from './StickerButton';
+import type { OnStickersPress } from './StickerButton';
+import type { MenuItem, QuickActionItem, OnSendMedia, OnSendDocument } from './types';
 
-import type { MenuItem } from './types';
-
-import { useTheme } from '../useTheme';
 
 const MAX_INPUT_LENGTH = 320;
 
 type OnSendText = (text: string) => void;
 type OnHeightChange = (height: number) => void;
 
-type Props = {
-    containerStyle?: StyleProp<ViewStyle>;
-
-    menuPlus?: MenuItem[];
-    menuPlusDisabled?: boolean;
-    menuMore?: MenuItem[];
-    menuMoreDisabled?: boolean;
-    quickAction?: MenuItem[];
-
-    inputHidden?: boolean;
-    showBorder?: boolean;
-    hasStickers?: boolean;
-    stickersActive?: boolean;
-
-    onSendText?: OnSendText;
-    onStickersPress?: (visible: boolean) => void;
-    // TODO: can we not expose it?
-    onHeightChange: OnHeightChange;
-};
-
 function useInputValue({
     onSendText: onSendTextProp,
     showMaxLengthAlert,
+    setDefaultInputHeight
 }: {
     onSendText: OnSendText;
     showMaxLengthAlert: () => void;
+    setDefaultInputHeight: () => void;
 }) {
-    const inputRef = React.useRef();
+    const inputRef = React.useRef<TextInput | null>(null);
     // Little optimisation to not re-render children on every value change
     const [inputHasValue, setInputHasValue] = React.useState(false);
     const inputValue = React.useRef('');
@@ -60,6 +44,7 @@ function useInputValue({
         inputRef.current?.clear();
         inputValue.current = '';
         setInputHasValue(false);
+        setDefaultInputHeight();
     }, []);
 
     const onChangeText = React.useCallback((text: string) => {
@@ -74,7 +59,7 @@ function useInputValue({
 
         inputValue.current = text;
 
-        const hasValue = text && text.length;
+        const hasValue = text != null ? text.length > 0 : false;
 
         if (hasValue !== inputHasValue) {
             setInputHasValue(hasValue);
@@ -83,7 +68,7 @@ function useInputValue({
         if (text.length >= MAX_INPUT_LENGTH) {
             showMaxLengthAlert();
         }
-    }, []);
+    }, [inputHasValue]);
 
     const onKeyPress = React.useCallback((e: any) => {
         // Enable only for web (in native e.key is undefined)
@@ -101,7 +86,7 @@ function useInputValue({
         ) {
             showMaxLengthAlert();
         }
-    });
+    }, []);
 
     return {
         inputRef,
@@ -135,14 +120,18 @@ function useMaxLengthAlert() {
 }
 
 function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
-    const [inputHeight, setInputHeight] = React.useState(
+    const [inputHeight, setInputHeight] = React.useState<number>(
         UIConstant.smallCellHeight()
     );
 
     const onContentSizeChange = React.useCallback((event: any) => {
-        if (Platform.OS !== 'web' && event && event.nativeEvent) {
+        if (event && event.nativeEvent) {
             const { contentSize } = event.nativeEvent;
             const height = contentSize?.height || 0;
+
+            if (height === inputHeight) {
+                return;
+            }
             if (height > 0) {
                 if (onHeightChange) {
                     onHeightChange(height);
@@ -162,91 +151,206 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
         }
     }, []);
 
+    const setDefaultInputHeight = React.useCallback(() => {
+        setInputHeight(UIConstant.smallCellHeight());
+    }, [])
+
     return {
         inputHeight,
         onContentSizeChange,
+        setDefaultInputHeight,
     };
 }
 
-export function ChatInput(props: Props) {
-    const theme = useTheme();
+function useBackHandler(ref: React.RefObject<TextInput | undefined>) {
+    React.useEffect(() => {
+        if (Platform.OS !== 'android') {
+            return;
+        }
 
-    const { inputHeight, onContentSizeChange } = useInputAdjustHeight(
-        props.onHeightChange
-    );
-    const showMaxLengthAlert = useMaxLengthAlert();
-    const {
-        inputRef,
-        inputHasValue,
-        onChangeText,
-        onKeyPress,
-        onSendText,
-    } = useInputValue({
-        onSendText: props.onSendText,
-        showMaxLengthAlert,
-    });
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            () => {
+                if (ref.current && ref.current.isFocused()) {
+                    UICustomKeyboardUtils.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        );
 
-    return (
-        <View style={styles.container}>
-            <MenuPlus
-                menuPlus={props.menuPlus}
-                menuPlusDisabled={props.menuPlusDisabled}
-            />
-            <View style={styles.inputMsg}>
-                <TextInput
-                    ref={inputRef}
-                    testID="chat_input"
-                    autoCapitalize="sentences"
-                    autoCorrect={false}
-                    keyboardType="default"
-                    maxLength={MAX_INPUT_LENGTH}
-                    multiline={true}
-                    numberOfLines={Math.round(
-                        inputHeight / UIConstant.smallCellHeight()
-                    )}
-                    noPersonalizedLearning={false}
-                    clearButtonMode="never"
-                    placeholder={uiLocalized.TypeMessage}
-                    placeholderTextColor={UIColor.textPlaceholder(theme)}
-                    underlineColorAndroid="transparent"
-                    onContentSizeChange={onContentSizeChange}
-                    onChangeText={onChangeText}
-                    onKeyPress={onKeyPress}
-                    style={[
-                        UIColor.textPrimaryStyle(theme),
-                        UIStyle.text.bodyRegular(),
-                        UIStyle.common.flex(),
-                        styles.input,
-                        Platform.OS === 'android'
-                            ? { minHeight: inputHeight }
-                            : null,
-                    ]}
-                />
-            </View>
-            <StickerButton
-                hasStickers={props.hasStickers}
-                stickersActive={props.stickersActive}
-                inputHasValue={inputHasValue}
-                onPress={props.onStickersPress}
-            />
-            <QuickAction
-                quickAction={props.quickAction}
-                inputHasValue={inputHasValue}
-                onSendText={onSendText}
-            />
-            <MenuMore
-                menuMore={props.menuMore}
-                menuMoreDisabled={props.menuMoreDisabled}
-            />
-        </View>
-    );
+        return () => {
+            backHandler.remove();
+        };
+    }, []);
 }
+
+type Ref = {
+    showBorder: (show: boolean) => void;
+};
+
+function useAnimatedBorder(ref: React.Ref<Ref> | null) {
+    const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0))
+        .current;
+
+    React.useImperativeHandle(ref, () => ({
+        showBorder: (show: boolean) => {
+            Animated.spring(borderOpacity, {
+                toValue: show ? 1 : 0,
+                useNativeDriver: true,
+                speed: 20,
+            }).start();
+        },
+    }));
+
+    return borderOpacity;
+}
+
+type Props = {
+    menuPlus?: MenuItem[];
+    menuPlusDisabled?: boolean;
+    menuMore?: MenuItem[];
+    menuMoreDisabled?: boolean;
+    quickAction?: QuickActionItem[];
+
+    editable: boolean;
+    inputHidden?: boolean; // TODO: what is it?
+    stickersVisible: boolean;
+
+    // TODO: do we need separate handlers for different content type?
+    onSendText: OnSendText;
+    onStickersPress: OnStickersPress;
+    // TODO: can we not expose it?
+    onHeightChange: OnHeightChange;
+    onContentBottomInsetUpdate: (bottom: number) => void;
+    onSendMedia?: OnSendMedia;
+    onSendDocument?: OnSendDocument;
+};
+
+export const ChatInput = React.forwardRef<Ref, Props>(
+    function ChatInputForwarded(props, ref) {
+        const theme = useTheme();
+
+        const { inputHeight, onContentSizeChange, setDefaultInputHeight } = useInputAdjustHeight(
+            props.onHeightChange
+        );
+        const showMaxLengthAlert = useMaxLengthAlert();
+        const {
+            inputRef,
+            inputHasValue,
+            onChangeText,
+            onKeyPress,
+            onSendText,
+        } = useInputValue({
+            onSendText: props.onSendText,
+            showMaxLengthAlert,
+            setDefaultInputHeight,
+        });
+        const borderOpacity = useAnimatedBorder(ref);
+        useBackHandler(inputRef);
+
+        const pickerRef = React.useRef();
+
+        return (
+            <UIKeyboardAccessory
+                onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
+                customKeyboardVisible={props.stickersVisible}
+                disableTrackingView // since the UICustomKeyboard is used!
+            >
+                <View
+                    style={UIStyle.color.getBackgroundColorStyle(
+                        UIColor.backgroundPrimary(theme)
+                    )}
+                >
+                    {/* actionsView TODO: Make actions */}
+                    <Animated.View
+                        style={[styles.border, { opacity: borderOpacity }]}
+                    />
+                    <View
+                        style={[
+                            styles.container,
+                            props.menuPlus?.length && props.menuPlus?.length > 0
+                                ? null
+                                : UIStyle.margin.leftDefault(),
+                        ]}
+                    >
+                        <MenuPlus
+                            menuPlus={props.menuPlus}
+                            menuPlusDisabled={props.menuPlusDisabled}
+                        />
+                        <View style={styles.inputMsg}>
+                            <TextInput
+                                ref={inputRef}
+                                testID="chat_input"
+                                autoCapitalize="sentences"
+                                autoCorrect={false}
+                                keyboardType="default"
+                                editable={props.editable}
+                                maxLength={MAX_INPUT_LENGTH}
+                                multiline={true}
+                                numberOfLines={Math.round(
+                                    inputHeight / UIConstant.smallCellHeight()
+                                )}
+                                // @ts-ignore
+                                noPersonalizedLearning={false}
+                                clearButtonMode="never"
+                                placeholder={uiLocalized.TypeMessage}
+                                placeholderTextColor={UIColor.textPlaceholder(
+                                    theme
+                                )}
+                                underlineColorAndroid="transparent"
+                                onContentSizeChange={onContentSizeChange}
+                                onChangeText={onChangeText}
+                                onKeyPress={onKeyPress}
+                                style={[
+                                    UIColor.textPrimaryStyle(theme),
+                                    UIStyle.text.bodyRegular(),
+                                    UIStyle.common.flex(),
+                                    styles.input,
+                                    Platform.OS === 'android'
+                                        ? { minHeight: inputHeight }
+                                        : null,
+                                ]}
+                            />
+                        </View>
+                        <StickersButton
+                            hasStickers={props.editable}
+                            stickersVisible={props.stickersVisible}
+                            inputHasValue={inputHasValue}
+                            onPress={props.onStickersPress}
+                        />
+                        <QuickAction
+                            quickAction={props.quickAction}
+                            inputHasValue={inputHasValue}
+                            onSendText={onSendText}
+                        />
+                        <MenuMore
+                            menuMore={props.menuMore}
+                            menuMoreDisabled={props.menuMoreDisabled}
+                        />
+                    </View>
+                </View>
+                {/* {!hideMenuPlus && (
+                <ChatPicker
+                    ref={pickerRef}
+                    onSendDocument={props.onSendDocument}
+                    onSendMedia={props.onSendMedia}
+                />
+            )} */}
+            </UIKeyboardAccessory>
+        );
+    }
+);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
+    },
+    border: {
+        height: 1,
+        backgroundColor: UIColor.grey1(),
     },
     inputMsg: {
         flex: 1,

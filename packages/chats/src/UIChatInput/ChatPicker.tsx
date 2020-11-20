@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, Linking } from 'react-native';
+import { View, StyleSheet, Image, Linking, Platform } from 'react-native';
 // import RNFetchBlob from "rn-fetch-blob";
 import DocumentPicker from 'react-native-document-picker';
 

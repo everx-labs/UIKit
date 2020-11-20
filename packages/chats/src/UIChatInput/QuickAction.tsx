@@ -1,28 +1,20 @@
 import * as React from 'react';
 import {
-    StyleSheet,
     TouchableOpacity,
     Image, // TODO: use fast-image?
     View,
 } from 'react-native';
-import type { ImageSourcePropType } from 'react-native';
 
-import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+
+import { UIStyle } from '@tonlabs/uikit.core';
 import { UIButtonGroup, UITextButton } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
+import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';
 
-type QuickAction = {
-    key: string;
-    testID: string;
-    onPress: () => void | Promise<void>;
-    icon?: ImageSourcePropType;
-    title?: string;
-};
-
 type Props = {
-    quickAction?: QuickAction[];
+    quickAction?: QuickActionItem[];
     inputHasValue: boolean;
     onSendText: () => void | Promise<void>;
 };
@@ -53,8 +45,8 @@ export function QuickAction(props: Props) {
 
     return (
         <UIButtonGroup>
-            {quickAction.map((action, index) => (
-                <UITextButtton
+            {quickAction.map((action) => (
+                <UITextButton
                     key={`quickAction~${action.key}`}
                     testID={action.testID}
                     buttonStyle={commonStyles.buttonContainer}

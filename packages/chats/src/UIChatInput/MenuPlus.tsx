@@ -1,15 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     TouchableOpacity,
     Image, // TODO: use fast-image?
     View,
-} from "react-native";
+} from 'react-native';
 
-import buttonPlus from "@tonlabs/uikit.assets/icon-plus/add.png";
-import buttonPlusDisabled from "@tonlabs/uikit.assets/icon-plus-disabled/add.png";
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIPopoverMenu } from '@tonlabs/uikit.navigation';
 
-import { commonStyles } from "./styles";
-import type { MenuItem } from "./types";
+import { commonStyles } from './styles';
+import type { MenuItem } from './types';
 
 type Props = {
     menuPlus?: MenuItem[];
@@ -24,7 +24,10 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
     if (menuPlusDisabled) {
         return (
             <View style={commonStyles.buttonContainer}>
-                <Image source={buttonPlusDisabled} style={styles.icon} />
+                <Image
+                    source={UIAssets.icons.ui.buttonPlusDisabled}
+                    style={commonStyles.icon}
+                />
             </View>
         );
     }
@@ -36,7 +39,10 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
                 onPress={menuPlus[0].onPress}
                 style={commonStyles.buttonContainer}
             >
-                <Image source={buttonPlus} style={commonStyles.icon} />
+                <Image
+                    source={UIAssets.icons.ui.buttonPlus}
+                    style={commonStyles.icon}
+                />
             </TouchableOpacity>
         );
     }
@@ -47,7 +53,10 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
             menuItemsList={menuPlus}
             placement="top"
         >
-            <Image source={buttonPlus} style={commonStyles.icon} />
+            <Image
+                source={UIAssets.icons.ui.buttonPlus}
+                style={commonStyles.icon}
+            />
         </UIPopoverMenu>
     );
 }

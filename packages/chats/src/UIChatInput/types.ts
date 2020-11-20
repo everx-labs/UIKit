@@ -1,4 +1,4 @@
-import type { StyleProp, ViewStyle, TextStyle } from "react-native";
+import type { StyleProp, ViewStyle, TextStyle, ImageSourcePropType } from "react-native";
 
 // TODO: should be in UIActionSheet
 export type MenuItem = {
@@ -9,6 +9,15 @@ export type MenuItem = {
     detailsStyle?: StyleProp<TextStyle>;
     chosen?: boolean;
     reversedColors?: boolean;
+    onPress: () => void | Promise<void>;
+};
+
+export type QuickActionItem = {
+    key: string;
+    testID: string;
+    onPress: () => void | Promise<void>;
+    icon?: ImageSourcePropType;
+    title?: string;
 };
 
 export type ImageSize = { width: number; height: number };
