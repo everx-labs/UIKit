@@ -1,11 +1,19 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View, TextInput, BackHandler, Animated } from 'react-native';
+import {
+    Platform,
+    StyleSheet,
+    View,
+    TextInput,
+    BackHandler,
+    Animated,
+} from 'react-native';
 
 import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIKeyboardAccessory } from '../UIKeyboardAccessory';
+import { UICustomKeyboardUtils } from '../UICustomKeyboard';
 import { useTheme } from '../useTheme';
 
 import { MenuPlus } from './MenuPlus';
@@ -13,8 +21,12 @@ import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickAction';
 import { StickersButton } from './StickerButton';
 import type { OnStickersPress } from './StickerButton';
-import type { MenuItem, QuickActionItem, OnSendMedia, OnSendDocument } from './types';
-
+import type {
+    MenuItem,
+    QuickActionItem,
+    OnSendMedia,
+    OnSendDocument,
+} from './types';
 
 const MAX_INPUT_LENGTH = 320;
 
@@ -24,7 +36,7 @@ type OnHeightChange = (height: number) => void;
 function useInputValue({
     onSendText: onSendTextProp,
     showMaxLengthAlert,
-    setDefaultInputHeight
+    setDefaultInputHeight,
 }: {
     onSendText: OnSendText;
     showMaxLengthAlert: () => void;
@@ -47,28 +59,31 @@ function useInputValue({
         setDefaultInputHeight();
     }, []);
 
-    const onChangeText = React.useCallback((text: string) => {
-        // It could be that we sent a message with "Enter" from keyboard
-        // But the event with newline is fired after this
-        // So, to prevent setting it, need to check a flag
-        // And also check that input string is a newline
-        if (wasClearedWithEnter.current && text === '\n') {
-            wasClearedWithEnter.current = false;
-            return;
-        }
+    const onChangeText = React.useCallback(
+        (text: string) => {
+            // It could be that we sent a message with "Enter" from keyboard
+            // But the event with newline is fired after this
+            // So, to prevent setting it, need to check a flag
+            // And also check that input string is a newline
+            if (wasClearedWithEnter.current && text === '\n') {
+                wasClearedWithEnter.current = false;
+                return;
+            }
 
-        inputValue.current = text;
+            inputValue.current = text;
 
-        const hasValue = text != null ? text.length > 0 : false;
+            const hasValue = text != null ? text.length > 0 : false;
 
-        if (hasValue !== inputHasValue) {
-            setInputHasValue(hasValue);
-        }
+            if (hasValue !== inputHasValue) {
+                setInputHasValue(hasValue);
+            }
 
-        if (text.length >= MAX_INPUT_LENGTH) {
-            showMaxLengthAlert();
-        }
-    }, [inputHasValue]);
+            if (text.length >= MAX_INPUT_LENGTH) {
+                showMaxLengthAlert();
+            }
+        },
+        [inputHasValue]
+    );
 
     const onKeyPress = React.useCallback((e: any) => {
         // Enable only for web (in native e.key is undefined)
@@ -153,7 +168,7 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
 
     const setDefaultInputHeight = React.useCallback(() => {
         setInputHeight(UIConstant.smallCellHeight());
-    }, [])
+    }, []);
 
     return {
         inputHeight,
@@ -180,7 +195,9 @@ function useBackHandler(ref: React.RefObject<TextInput | undefined>) {
         );
 
         return () => {
-            backHandler.remove();
+            if (backHandler) {
+                backHandler.remove();
+            }
         };
     }, []);
 }
@@ -231,9 +248,11 @@ export const ChatInput = React.forwardRef<Ref, Props>(
     function ChatInputForwarded(props, ref) {
         const theme = useTheme();
 
-        const { inputHeight, onContentSizeChange, setDefaultInputHeight } = useInputAdjustHeight(
-            props.onHeightChange
-        );
+        const {
+            inputHeight,
+            onContentSizeChange,
+            setDefaultInputHeight,
+        } = useInputAdjustHeight(props.onHeightChange);
         const showMaxLengthAlert = useMaxLengthAlert();
         const {
             inputRef,
