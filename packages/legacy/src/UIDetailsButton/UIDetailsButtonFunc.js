@@ -257,7 +257,17 @@ const UIDetailsButton = forwardRef(({
         </View>
     );
 
-    const contentComponent = (
+    useEffect(() => {
+        mounted = true;
+        if (progress) {
+            animateRotation();
+        }
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    return (
         <View
             style={[
                 UIStyle.common.justifyCenter(),
@@ -270,18 +280,6 @@ const UIDetailsButton = forwardRef(({
             {renderCard}
         </View>
     );
-
-    useEffect(() => {
-        mounted = true;
-        if (progress) {
-            animateRotation();
-        }
-        return () => {
-            mounted = false;
-        };
-    }, []);
-
-    return contentComponent;
 });
 
 const UIComponentDetailsButton = (props: any) => {
