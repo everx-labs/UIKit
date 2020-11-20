@@ -106,7 +106,9 @@ const InputWrapper = React.forwardRef((props: InputWrapperProps, ref) => {
                     menuMoreDisabled={menuMoreDisabled}
                     inputHidden={inputHidden}
                     onChangeText={() => {}}
-                    onSendText={() => {}}
+                    onSendText={(t) => {
+                        console.log(t); // TODO
+                    }}
                     onStickersPress={() => {}}
                     onBlur={() => {}}
                     onFocus={() => {}}

@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 
-const commonStyles = StyleSheet.create({
+export const commonStyles = StyleSheet.create({
     buttonContainer: {
         padding: UIConstant.contentOffset(),
         justifyContent: 'center',

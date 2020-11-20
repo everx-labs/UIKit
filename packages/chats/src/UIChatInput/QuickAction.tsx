@@ -9,7 +9,7 @@ import type { ImageSourcePropType } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIButtonGroup, UITextButton } from '@tonlabs/uikit.components';
-import buttonSend from '@tonlabs/uikit.assets/btn_msg_send/btn_msg_send.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { commonStyles } from './styles';
 
@@ -23,59 +23,48 @@ type QuickAction = {
 
 type Props = {
     quickAction?: QuickAction[];
-    value?: string;
-    onSendText?: (value: string) => void | Promise<void>;
+    inputHasValue: boolean;
+    onSendText: () => void | Promise<void>;
 };
 
 export function QuickAction(props: Props) {
-    const { quickAction, value, onSendText } = props;
+    const { quickAction, inputHasValue, onSendText } = props;
 
-    if (value && value.length) {
+    if (inputHasValue) {
         return (
             <View>
                 <TouchableOpacity
                     testID="send_btn"
                     style={commonStyles.buttonContainer}
-                    onPress={() => {
-                        if (onSendText) {
-                            onSendText(value);
-                        }
-                    }}
+                    onPress={onSendText}
                 >
-                    <Image source={buttonSend} style={styles.buttonSend} />
+                    <Image
+                        source={UIAssets.icons.ui.buttonMsgSend}
+                        style={commonStyles.icon}
+                    />
                 </TouchableOpacity>
             </View>
         );
-
-        if (!quickAction) {
-            return null;
-        }
-
-        return (
-            <UIButtonGroup>
-                {quickAction.map((action, index) => (
-                    <UITextButtton
-                        key={`quickAction~${action.key}`}
-                        testID={action.testID}
-                        buttonStyle={commonStyles.buttonContainer}
-                        textStyle={UIStyle.text.bodyMedium()}
-                        onPress={action.onPress}
-                        icon={action.icon}
-                        title={action.title}
-                        disableIconColor
-                    />
-                ))}
-            </UIButtonGroup>
-        );
     }
 
-    return null;
-}
+    if (!quickAction) {
+        return null;
+    }
 
-const styles = StyleSheet.create({
-    buttonSend: {
-        height: UIConstant.contentOffset(),
-        justifyContent: 'center',
-        alignSelf: 'flex-end',
-    },
-});
+    return (
+        <UIButtonGroup>
+            {quickAction.map((action, index) => (
+                <UITextButtton
+                    key={`quickAction~${action.key}`}
+                    testID={action.testID}
+                    buttonStyle={commonStyles.buttonContainer}
+                    textStyle={UIStyle.text.bodyMedium()}
+                    onPress={action.onPress}
+                    icon={action.icon}
+                    title={action.title}
+                    disableIconColor
+                />
+            ))}
+        </UIButtonGroup>
+    );
+}

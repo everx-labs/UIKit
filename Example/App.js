@@ -2338,7 +2338,7 @@ const Chat = () => (
                 },
             ].map((m: any, i: number) => ((m.key = i), m))}
         />
-        <UIChatInput />
+        <UIChatInput editable />
     </>
 );
 

@@ -1,19 +1,19 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     TouchableOpacity,
     Image, // TODO: use fast-image?
-} from "react-native";
+} from 'react-native';
 
-import stickerEnabled from "@tonlabs/uikit.assets/btn_sticker_enabled/stickerEnabled.png";
-import stickerDisabled from "@tonlabs/uikit.assets/btn_sticker_disabled/stickerDisabled.png";
+import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { commonStyles } from "./styles";
+import { commonStyles } from './styles';
 
+type OnPress = (show: boolean) => void | Promise<void>;
 type Props = {
     hasStickers: boolean;
     stickersActive: boolean;
-    value?: string;
-    onPress: (show: boolean) => void | Promise<void>;
+    inputHasValue: boolean;
+    onPress: OnPress;
 };
 
 export function StickerButton(props: Props) {
@@ -21,23 +21,28 @@ export function StickerButton(props: Props) {
         return null;
     }
 
-    if (props.value && props.value.length > 0) {
-        // TODO: this should be removed out of render!
-        // To hide keyboard
-        this.onPress(false);
-        return null;
-    }
+    React.useEffect(
+        (inputHasValue: boolean, onPress: OnPress) => {
+            if (inputHasValue) {
+                // To hide keyboard
+                onPress(false);
+            }
+        },
+        [props.inputHasValue, props.onPress]
+    );
 
     return (
         <TouchableOpacity
-            style={commonStyles.buttonContainer}
             testID="stickers_btn"
-            onPress={() => this.onPress(!props.stickersActive)}
+            style={commonStyles.buttonContainer}
+            onPress={() => props.onPress(!props.stickersActive)}
         >
             <Image
                 style={commonStyles.icon}
                 source={
-                    !props.stickersActive ? stickerEnabled : stickerDisabled
+                    !props.stickersActive
+                        ? UIAssets.icons.ui.buttonStickerEnabled
+                        : UIAssets.icons.ui.buttonStickerDisabled
                 }
             />
         </TouchableOpacity>
