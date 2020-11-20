@@ -3,12 +3,8 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { View, Text, StyleSheet } from 'react-native';
 
-import {
-    UIConstant,
-    UIStyle,
-    UITextStyle,
-} from '@uikit/core';
-import { UIComponent, UITextInput } from '@uikit/components';
+import { UIConstant, UIStyle, UITextStyle } from '@tonlabs/uikit.core';
+import { UIComponent, UITextInput } from '@tonlabs/uikit.components';
 
 import UIProfilePhoto from '../UIProfilePhoto';
 import UIProfileInitials from '../UIProfileInitials';

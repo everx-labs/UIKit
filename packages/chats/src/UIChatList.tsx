@@ -12,7 +12,7 @@ import {
     State as RNGHState,
 } from "react-native-gesture-handler";
 
-import { UIConstant } from "@uikit/core";
+import { UIConstant } from "@tonlabs/uikit.core";
 
 import { sectionListGetItemLayout } from "./UIChatListLayout";
 import { UIChatListFormatter } from "./UIChatListFormatter";

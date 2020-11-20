@@ -2,15 +2,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-
-import {
-    UIStyle,
-    UIColor,
-    UIFunction,
-} from '@uikit/core';
-import { UIComponent, UITextButton } from '@uikit/components';
-// TODO: remove from here to get rid of cycled dependency between the packages!
-import type { ReactNavigation } from '@uikit/legacy/UINavigationBar';
+import { UIStyle, UIColor, UIFunction } from '@tonlabs/uikit.core';
+import { UIComponent, UITextButton } from '@tonlabs/uikit.components';
 
 // export type BreadCrumbScreen = {
 //     screen: string,
@@ -20,7 +13,7 @@ import type { ReactNavigation } from '@uikit/legacy/UINavigationBar';
 type Props = {
     // screens: BreadCrumbScreen[],
     narrow: boolean,
-    navigation: ReactNavigation,
+    navigation: any,
     numberOfLastRoutesShown: number,
     screenTitleMapper: (routeName: string) => string,
     pathMap: {

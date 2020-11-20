@@ -15,15 +15,14 @@ import {
     UIFont,
     UIColor,
     UIStyle,
-} from '@uikit/core';
+} from '@tonlabs/uikit.core';
 
 import UITextInput from '../UITextInput';
 import UIComponent from '../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
-import icoGlass from '@uikit/assets/ico-glass/search-thin.png';
-import icoClear from '@uikit/assets/ico-clear/ico-clear.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 const styles = StyleSheet.create({
     searchInput: {
@@ -204,11 +203,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
         return (
             <Image
-                source={icoGlass}
-                style={[
-                    UIStyle.alignSelfCenter,
-                    UIStyle.marginRightSmall,
-                ]}
+                source={UIAssets.icons.ui.glass}
+                style={[UIStyle.alignSelfCenter, UIStyle.marginRightSmall]}
             />
         );
     }
@@ -224,7 +220,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
             <TouchableOpacity style={styles.cancelButton} onPress={() => this.onCancel()}>
                 <Image
                     testID="search_bar_cancel"
-                    source={icoClear}
+                    source={UIAssets.icons.ui.clear}
                 />
             </TouchableOpacity>
         );

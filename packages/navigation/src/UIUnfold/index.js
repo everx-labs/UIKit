@@ -7,11 +7,9 @@ import type {
 } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-import { UIStyle, UIConstant } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
-
-import iconShowDefault from '@uikit/assets/ico-unfold/ico-show.png';
-import iconHideDefault from '@uikit/assets/ico-unfold/ico-hide.png';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 type Props = {
     /**
@@ -119,9 +117,9 @@ export default class UIUnfold extends UIComponent<Props, State> {
         titleHide: null,
         showButton: true,
         // $FlowFixMeProps
-        iconShow: iconShowDefault,
+        iconShow: UIAssets.icons.ui.unfoldShow,
         // $FlowFixMeProps
-        iconHide: iconHideDefault,
+        iconHide: UIAssets.icons.ui.unfoldHide,
         iconPosition: UIUnfold.position.right,
         buttonPosition: UIUnfold.position.top,
         content: null,

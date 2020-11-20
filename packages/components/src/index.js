@@ -1,5 +1,5 @@
 // @flow
-export { default as UIActionComponent } from './UIActionComponent';
+export * from './UIActionComponent';
 export { default as UIActionIcon } from './UIActionIcon';
 export { default as UIActionImage } from './UIActionImage';
 export { default as UIAlert } from './UIAlert';
@@ -19,7 +19,7 @@ export { default as UIComponent } from './UIComponent';
 export { default as UIContractAddressInput } from './UIContractAddressInput';
 export { default as UIDateInput } from './UIDateInput';
 export { default as UIDetailsCheckbox } from './UIDetailsCheckbox';
-export { default as UIDetailsInput } from './UIDetailsInput';
+export * from './UIDetailsInput';
 export { default as UIDetailsRadio } from './UIDetailsRadio';
 export { default as UIDetailsSwitcher } from './UIDetailsSwitcher';
 export { default as UIDetailsTable } from './UIDetailsTable';
@@ -66,5 +66,3 @@ export { default as UITooltip } from './UITooltip';
 export { default as UITransferInput } from './UITransferInput';
 export { default as UIUploadFileInput } from './UIUploadFileInput';
 export { default as UIUserAgent } from './UIUserAgent';
-
-export type { ActionProps, ActionState } from './UIActionComponent';

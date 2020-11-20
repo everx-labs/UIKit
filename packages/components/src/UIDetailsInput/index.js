@@ -12,23 +12,22 @@ import {
     UIStyle,
     UIStyleColor,
     UIFont,
-} from '@uikit/core';
+} from '@tonlabs/uikit.core';
 import type {
     UIColorData,
     UIColorThemeNameType,
-} from '@uikit/core/UIColor/UIColorTypes';
-import type { EventProps } from '@uikit/core/types';
+    EventProps,
+} from '@tonlabs/uikit.core';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UILabel from '../UILabel';
 import UITextButton from '../UITextButton';
 import UIActionImage from '../UIActionImage';
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
-
-import iconDisabled from '@uikit/assets/ico-arrow-right/arrow-right-primary-minus.png';
-import iconEnabled from '@uikit/assets/ico-arrow-right/arrow-right-primary-1.png';
-import iconHovered from '@uikit/assets/ico-arrow-right/arrow-right-white.png';
-import iconArrowDefault from '@uikit/assets/ico-arrow-right/ico-arrow-right.png';
+import { UIActionComponent } from '../UIActionComponent';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '../UIActionComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export type DetailsProps = ActionProps & {
+export type UIDetailsInputProps = UIActionComponentProps & {
     /**
     @ignore
     */
@@ -375,21 +374,21 @@ type Selection = {
     end: number,
 };
 
-type DetailsState = ActionState & {
+type UIDetailsInputState = UIActionComponentState & {
     focused: boolean,
     selection: ?Selection,
 };
 
-export default class UIDetailsInput<Props, State> extends UIActionComponent<
-    $Shape<Props & DetailsProps>,
-    $Shape<State & DetailsState>,
+export class UIDetailsInput<Props, State> extends UIActionComponent<
+    $Shape<Props & UIDetailsInputProps>,
+    $Shape<State & UIDetailsInputState>
 > {
     textInput: ?React.ElementRef<typeof TextInput>;
     auxTextInput: ?any;
 
-    static defaultProps: Props & DetailsProps;
+    static defaultProps: Props & UIDetailsInputProps;
 
-    constructor(props: Props & DetailsProps) {
+    constructor(props: Props & UIDetailsInputProps) {
         super(props);
         this.state = {
             focused: false,
@@ -904,16 +903,19 @@ export default class UIDetailsInput<Props, State> extends UIActionComponent<
         let icons = {};
         if (theme === UIColor.Theme.Action) {
             icons = {
-                iconEnabled,
-                iconHovered,
-                iconDisabled,
+                iconEnabled: UIAssets.icons.ui.arrowRightPrimary,
+                iconHovered: UIAssets.icons.ui.arrowRightWhite,
+                iconDisabled: UIAssets.icons.ui.arrowRightPrimaryMinus,
             };
         }
 
         return (
             <UIActionImage
                 {...icons}
-                source={theme === UIColor.Theme.Light && iconArrowDefault}
+                source={
+                    theme === UIColor.Theme.Light &&
+                    UIAssets.icons.ui.arrowRight
+                }
                 disabled={this.isSubmitDisabled()}
                 onPress={this.onSubmitEditing}
             />

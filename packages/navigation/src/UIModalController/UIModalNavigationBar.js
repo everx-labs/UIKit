@@ -6,12 +6,8 @@ import type { GestureState, PanResponderInstance } from 'react-native/Libraries/
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIStyle,
-    UIColor,
-    UIConstant,
-} from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

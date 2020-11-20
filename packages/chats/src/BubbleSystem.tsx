@@ -1,8 +1,8 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 
-import { UIStyle } from "@uikit/core";
-import { UILabel } from "@uikit/components";
+import { UIStyle } from "@tonlabs/uikit.core";
+import { UILabel } from "@tonlabs/uikit.components";
 
 import type { SystemMessage } from "./types";
 

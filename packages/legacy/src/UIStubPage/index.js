@@ -2,23 +2,16 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 
-import {
-    UIConstant,
-    UIStyle,
-    UIColor,
-} from '@uikit/core';
+import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
 import {
     UIComponent,
     UIEmailInput,
     UIToastMessage,
     UIBackgroundView,
-} from '@uikit/components';
-
+} from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import icoTonLabs from '@uikit/assets/logo/tonlabs/tonlabs-primary-minus.png';
-
-import UIBottomBar from '../UIBottomBar';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIBottomBar } from '@tonlabs/uikit.navigation';
 
 const styles = StyleSheet.create({
     container: {
@@ -209,9 +202,12 @@ export default class UIStubPage extends UIComponent<Props, State> {
             title, label, needBottomIcon, caption, titleClassName,
         } = this.props;
         const widthStyle = this.getWidthStyle();
-        const bottomIcon = needBottomIcon
-            ? <Image source={icoTonLabs} style={styles.bottomIcon} />
-            : null;
+        const bottomIcon = needBottomIcon ? (
+            <Image
+                source={UIAssets.icons.logo.tonlabsPrimary}
+                style={styles.bottomIcon}
+            />
+        ) : null;
         const labelText = label || uiLocalized.TONLabel;
         return (
             <View

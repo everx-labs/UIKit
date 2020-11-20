@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIComponent } from '@uikit/components';
-import UIAssets from '@uikit/assets';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UINavigationIconButton from '../UINavigationIconButton';
 
@@ -33,7 +33,7 @@ export default class UINavigationPlusButton extends UIComponent<Props, State> {
                 {...testIDProp}
                 containerStyle={containerStyle}
                 onPress={onPress}
-                icon={UIAssets.icoPlus()}
+                icon={UIAssets.icons.ui.plus}
             />
         );
     }

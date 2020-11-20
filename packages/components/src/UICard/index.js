@@ -3,18 +3,17 @@ import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet, Image, Text } from 'react-native';
 
-import {
-    UIConstant,
-    UIStyle,
-    UIColor,
-} from '@uikit/core';
+import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
 
 import UIGrid from '../UIGrid';
 import UIGridColumn from '../UIGridColumn';
 import UIBadge from '../UIBadge';
 import UILink from '../UILink';
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
+import { UIActionComponent } from '../UIActionComponent';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '../UIActionComponent';
 
 const styles = StyleSheet.create({
     lableIcon: {
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = ActionProps & {
+type Props = UIActionComponentProps & {
     /**
     Text label
     @default 'Label'
@@ -107,7 +106,7 @@ type Props = ActionProps & {
     labelIconPositionH?: string,
 };
 
-type State = ActionState & {
+type State = UIActionComponentState & {
     columns: number,
 };
 

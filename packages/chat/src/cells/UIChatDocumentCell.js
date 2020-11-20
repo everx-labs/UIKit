@@ -4,24 +4,14 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import type { TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIConstant,
-    UIColor,
-    UIFont,
-    UIStyle,
-} from '@uikit/core';
+import { UIConstant, UIColor, UIFont, UIStyle } from '@tonlabs/uikit.core';
 import {
     UIPureComponent,
     UIToastMessage,
     UISpinnerOverlay,
-} from '@uikit/components';
-
+} from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import fileBlue from '@uikit/assets/ico-file-income-blue/fileBlue.png';
-import fileWhite from '@uikit/assets/ico-file-income-white/fileWhite.png';
-import cloudBlack from '@uikit/assets/ico-cloud-black/cloudBlack.png';
-import cloudWhite from '@uikit/assets/ico-cloud-white/cloudWhite.png';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import type { ChatAdditionalInfo } from '../extras';
 
@@ -158,7 +148,9 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
 
     renderDocumentMetadata() {
         const { isReceived } = this.props;
-        const imgCloud = isReceived ? cloudBlack : cloudWhite;
+        const imgCloud = isReceived
+            ? UIAssets.icons.ui.cloudBlack
+            : UIAssets.icons.ui.cloudWhite;
 
         return (
             <View style={UIStyle.flexRow}>
@@ -179,7 +171,9 @@ export default class UIChatDocumentCell extends UIPureComponent<Props, State> {
 
     renderDocument() {
         const { isReceived } = this.props;
-        const image = isReceived ? fileBlue : fileWhite;
+        const image = isReceived
+            ? UIAssets.icons.ui.fileIncomeBlue
+            : UIAssets.icons.ui.fileIncomeWhite;
 
         return (
             <View style={[styles.infoSection]}>

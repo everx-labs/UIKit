@@ -2,12 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import {
-    UIStyle,
-    UITextStyle,
-    UIConstant,
-    UIColor,
-} from '@uikit/core';
+import { UIStyle, UITextStyle, UIConstant, UIColor } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UINotice from '../UINotice';

@@ -3,12 +3,8 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-import {
-    UIConstant,
-    UIColor,
-    UITextStyle,
-} from '@uikit/core';
-import { UIPureComponent } from '@uikit/components';
+import { UIConstant, UIColor, UITextStyle } from '@tonlabs/uikit.core';
+import { UIPureComponent } from '@tonlabs/uikit.components';
 
 import { TypeOfActionDirection } from '../extras';
 import type { TypeOfActionType, TypeOfActionDirectionType } from '../extras';

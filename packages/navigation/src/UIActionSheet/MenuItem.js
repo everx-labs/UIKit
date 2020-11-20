@@ -3,11 +3,14 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle, UIColor } from '@uikit/core';
-import { UIActionComponent } from '@uikit/components';
-import type { ActionProps, ActionState } from '@uikit/components';
+import { UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { UIActionComponent } from '@tonlabs/uikit.components';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '@tonlabs/uikit.components';
 
-export type MenuItemType = ActionProps & {
+export type MenuItemType = UIActionComponentProps & {
     style?: ViewStyleProp,
     title: string,
     titleStyle?: TextStyleProp,
@@ -17,7 +20,10 @@ export type MenuItemType = ActionProps & {
     reversedColors?: boolean,
 };
 
-export default class MenuItem extends UIActionComponent<MenuItemType, ActionState> {
+export default class MenuItem extends UIActionComponent<
+    MenuItemType,
+    UIActionComponentState
+> {
     static defaultProps: MenuItemType = {
         ...UIActionComponent.defaultProps,
         reversedColors: false,

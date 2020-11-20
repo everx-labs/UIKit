@@ -17,9 +17,9 @@ import {
     UIDevice,
     UIFunction,
     UIStyle,
-} from '@uikit/core';
-import type { SafeAreaInsets } from '@uikit/core/UIDevice';
-import UIAssets from '@uikit/assets';
+} from '@tonlabs/uikit.core';
+import type { SafeAreaInsets } from '@tonlabs/uikit.core';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import type {
     AnimationParameters,
@@ -30,7 +30,6 @@ import type {
 
 import UIController from '../UIController';
 import UIModalNavigationBar from './UIModalNavigationBar';
-
 
 const { fullScreenDialogWidth, fullScreenDialogHeight } = UIConstant;
 const HARDWARE_BACK_PRESS_EVENT = 'hardwareBackPress';
@@ -351,7 +350,7 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     getCancelImage(): ?ImageSource {
-        return UIAssets.btnClose();
+        return UIAssets.icons.ui.buttonClose;
     }
 
     // Override if needed!

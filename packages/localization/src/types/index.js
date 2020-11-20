@@ -1,9 +1,9 @@
 // @flow
 import BigNumber from 'bignumber.js';
 
-import type { NumberPartsOptions } from '@uikit/core';
+import type { NumberPartsOptions } from '@tonlabs/uikit.core';
 
-import { languagesInfo } from '../src/constants';
+import { languagesInfo } from '../constants';
 
 export type Language = $Keys<typeof languagesInfo>;
 export type Languages<T> = { [Language]: T }

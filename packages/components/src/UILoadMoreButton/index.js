@@ -4,11 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import {
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@uikit/core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

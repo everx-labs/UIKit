@@ -10,11 +10,10 @@ import isEmail from 'validator/lib/isEmail';
 import BigNumber from 'bignumber.js';
 import currencies from 'currency-formatter/currencies.json';
 
-import countries from '@uikit/assets/countries/countries.json';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIConstant from '../UIConstant';
-import type { BigNum } from '../../types/BigNum';
-
+import type { BigNum } from '../types/BigNum';
 
 export const CurrencyPosition = Object.freeze({
     Before: 'before',
@@ -380,11 +379,14 @@ export default class UIFunction {
             if (parsedResult.country) {
                 countryCode = parsedResult.country;
             } else if (parsedResult.countryCallingCode) {
-                const countryList = Object.keys(countries);
+                const countryList = Object.keys(UIAssets.countries);
                 for (let i = 0; i < countryList.length; i += 1) {
                     const countryISO = countryList[i];
-                    const country = countries[countryISO];
-                    if (country.phone.split(',')[0] === parsedResult.countryCallingCode) {
+                    const country = UIAssets.countries[countryISO];
+                    if (
+                        country.phone.split(',')[0] ===
+                        parsedResult.countryCallingCode
+                    ) {
                         countryCode = countryISO;
                         break;
                     }

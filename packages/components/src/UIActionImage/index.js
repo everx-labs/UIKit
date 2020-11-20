@@ -2,18 +2,21 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import { UIColor, UIStyle } from '@uikit/core';
+import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 
-import UIActionComponent from '../UIActionComponent';
-import type { ActionProps, ActionState } from '../UIActionComponent';
+import { UIActionComponent } from '../UIActionComponent';
+import type {
+    UIActionComponentProps,
+    UIActionComponentState,
+} from '../UIActionComponent';
 
-type Props = ActionProps & {
+type Props = UIActionComponentProps & {
     iconDisabled: string,
     iconEnabled: string,
     iconHovered: string,
 };
 
-type State = ActionState;
+type State = UIActionComponentState;
 
 export default class UIActionImage extends UIActionComponent<Props, State> {
     static colorSchemes = {

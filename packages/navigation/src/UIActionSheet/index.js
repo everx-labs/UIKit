@@ -2,7 +2,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { UIComponent } from '@uikit/components';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

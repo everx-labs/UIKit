@@ -3,7 +3,7 @@ import React from 'react';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, TouchableOpacity, Text } from 'react-native';
 
-import { UIStyle } from '@uikit/core';
+import { UIStyle } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UIDetailsView from '../UIDetailsView';

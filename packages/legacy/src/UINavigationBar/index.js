@@ -9,8 +9,8 @@ import {
     UIDevice,
     UIFont,
     UIStyle,
-} from '@uikit/core';
-import { UISearchBar, UIComponent } from '@uikit/components';
+} from '@tonlabs/uikit.core';
+import { UISearchBar, UIComponent } from '@tonlabs/uikit.components';
 
 import UINavigationBackButton from '../UINavigationBackButton';
 

@@ -1,18 +1,10 @@
 // @flow
-import {
-    UIPopoverMenu,
-    UIPopoverBackground,
-} from './packages/navigation/src';
+import { UIPopoverMenu, UIPopoverBackground } from './packages/navigation/src';
 
 // Fix deprecated exports
 const UIMenuView = UIPopoverMenu;
 const UIMenuBackground = UIPopoverBackground;
-export {
-    UIPopoverMenu,
-    UIPopoverBackground,
-    UIMenuBackground,
-    UIMenuView,
-};
+export { UIPopoverMenu, UIPopoverBackground, UIMenuBackground, UIMenuView };
 
 export {
     UIActionComponent,
@@ -98,6 +90,7 @@ export {
 
 export {
     UIActionSheet,
+    UIBottomBar,
     UIController,
     UICountryPicker,
     UICustomSheet,
@@ -114,7 +107,6 @@ export {
 } from './packages/navigation/src';
 
 export {
-    UIBottomBar,
     UIDetailsButton,
     UISplitViewController,
     UINavigationBackButton,
@@ -160,9 +152,9 @@ export {
     TypeOfActionDirection,
 } from './packages/chat/src';
 
-export { default as UIAssets } from './packages/assets';
+export { UIAssets } from './packages/assets/src';
 
-export { uiLocalized as UILocalized } from './packages/localization';
+export { uiLocalized as UILocalized } from './packages/localization/src';
 
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';
@@ -176,10 +168,7 @@ export type {
     UINavigationRouting,
 } from './packages/legacy/src/UINavigator';
 export type { UIFeedbackSubmitFunc } from './packages/legacy/src/UIFeedback';
-export type {
-    PointerEvents,
-    PositionObject,
-} from './packages/core/types';
+export type { PointerEvents, PositionObject } from './packages/core';
 export type {
     UIColorData,
     UIColorThemeNameType,
@@ -189,7 +178,7 @@ export type {
     StringLocaleInfo,
     NumberPartsOptions,
 } from './packages/core/src/UIFunction';
-export type { ActionProps } from './packages/components/src/UIActionComponent';
+export type { UIActionComponentProps as ActionProps } from './packages/components/src/UIActionComponent';
 export type { DetailsList } from './packages/components/src/UIDetailsTable';
 export type { LabelRoleValue } from './packages/components/src/UILabel';
 export type { MenuItemType } from './packages/navigation/src/UIActionSheet/MenuItem';

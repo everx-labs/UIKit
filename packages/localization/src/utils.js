@@ -7,8 +7,7 @@ import type {
     LanguageConstants,
     NumberFormatInfo,
     DateFormatInfo,
-} from '../types';
-
+} from './types';
 
 function prepareObject(object: { [string]: any }, options: LanguageOptions) {
     const result = {};

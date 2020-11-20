@@ -8,8 +8,8 @@ import {
     UIFunction,
     UIStyle,
     UITextStyle,
-} from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+} from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 import type { UIAccountData } from '../types/UIAccountData';
 

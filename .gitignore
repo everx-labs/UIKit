@@ -15,3 +15,5 @@ yarn.lock
 
 #Test results
 coverage/
+
+lib/

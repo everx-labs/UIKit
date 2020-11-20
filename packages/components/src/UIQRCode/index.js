@@ -3,7 +3,7 @@ import React from 'react';
 import { Platform, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
-import { UIConstant } from '@uikit/core';
+import { UIConstant } from '@tonlabs/uikit.core';
 
 import UIPureComponent from '../UIPureComponent';
 

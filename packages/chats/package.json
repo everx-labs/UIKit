@@ -34,10 +34,10 @@
       "src/"
   ],
   "dependencies": {
-    "@uikit/assets": "~2.0.0",
-    "@uikit/components": "~2.0.0",
-    "@uikit/core": "~2.0.0",
-    "@uikit/navigation": "~2.0.0",
+    "@tonlabs/uikit.assets": "~2.0.0",
+    "@tonlabs/uikit.components": "~2.0.0",
+    "@tonlabs/uikit.core": "~2.0.0",
+    "@tonlabs/uikit.navigation": "~2.0.0",
     "bignumber.js": "9.0.0",
     "dayjs": "1.9.1",
     "lodash": "4.17.14",

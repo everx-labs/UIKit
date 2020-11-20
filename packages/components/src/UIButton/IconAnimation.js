@@ -4,9 +4,11 @@ import StylePropType from 'react-style-proptype';
 import { Animated, Easing } from 'react-native';
 import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
+
 import UIComponent from '../UIComponent';
 
-const iconDefault = require('@uikit/assets/ico-triangle/ico-triangle.png');
+const iconDefault = UIAssets.icons.ui.triangle;
 
 const spinInterpolateValues = {
     inputRange: [0, 1],

@@ -10,8 +10,8 @@ import {
     UITextStyle,
     UIDevice,
     UIStyle,
-} from '@uikit/core';
-import type { EventProps } from '@uikit/core/types';
+} from '@tonlabs/uikit.core';
+import type { EventProps } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
 import UILayoutManager from '../UILayoutManager';

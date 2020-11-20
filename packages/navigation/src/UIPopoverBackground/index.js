@@ -4,8 +4,8 @@ import { View } from 'react-native';
 import { PopoverContainer } from 'react-native-simple-popover';
 import { TapGestureHandler, State as RNGHState } from 'react-native-gesture-handler';
 
-import { UIStyle, UIDevice } from '@uikit/core';
-import { UIComponent } from '@uikit/components';
+import { UIStyle, UIDevice } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
 
 let masterRef = null;
 
