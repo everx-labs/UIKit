@@ -1,12 +1,13 @@
 // @flow
 import * as React from 'react';
-import { Keyboard, Platform, View } from 'react-native';
+import { Keyboard, Platform, View, TextInput } from 'react-native';
 import type { EmitterSubscription } from 'react-native';
 import {
     KeyboardAccessoryView,
     KeyboardRegistry,
     KeyboardUtils,
 } from 'react-native-ui-lib/keyboard';
+import type { KeyboardAccessoryViewProps } from 'react-native-ui-lib/keyboard';
 
 const registerCustomKeyboard = (
     kbID: string,
@@ -45,11 +46,7 @@ export const UICustomKeyboardUtils = {
 
 let trackingViewIsReady: boolean = false; // global flag to learn if KeyboardTrackingView usable
 
-type Props = {
-    onKeyboardResigned: () => void | Promise<void>;
-};
-
-export const UICustomKeyboard = (props: Props) => {
+export function UICustomKeyboard(props: KeyboardAccessoryViewProps) {
     if (Platform.OS === 'web') {
         // Do nothing
         return <View />;
@@ -138,12 +135,12 @@ export const UICustomKeyboard = (props: Props) => {
     return (
         <KeyboardAccessoryView
             key={`UICustomKeyboard:${trackingViewReady.toString()}`}
-            {...props}
             useSafeArea={false}
             addBottomView={false}
             manageScrollView={false}
             allowHitsOutsideBounds
             revealKeyboardInteractive
+            {...props}
             onKeyboardResigned={() => {
                 if (keyboardHeight.current === 0 && props.onKeyboardResigned) {
                     // Call the event only if the hardware keyboard is hidden
@@ -152,4 +149,4 @@ export const UICustomKeyboard = (props: Props) => {
             }}
         />
     );
-};
+}

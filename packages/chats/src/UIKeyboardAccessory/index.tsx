@@ -1,7 +1,6 @@
-// @flow
-/* eslint-disable react/require-default-props */
-import React, { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import { Keyboard, Platform, View } from 'react-native';
+import type { EmitterSubscription } from 'react-native';
 import Animated, { Easing } from 'react-native-reanimated';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { KeyboardTrackingView } from 'react-native-ui-lib/keyboard';
@@ -10,25 +9,27 @@ import { UIColor, UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
 
 let trackingViewIsReady: boolean = false; // global flag to learn if KeyboardTrackingView usable
 
-export const UIKeyboardAccessory = ({
+export function UIKeyboardAccessory({
     children,
     onContentBottomInsetUpdate,
     disableTrackingView = false,
     customKeyboardVisible = false,
 }: {
-    children: React$Element<any>;
+    children: React.ReactNode;
     onContentBottomInsetUpdate: (bottom: number) => void;
     disableTrackingView?: boolean;
     customKeyboardVisible?: boolean;
-}) => {
+}) {
     if (Platform.OS !== 'ios') {
         // In spite of a condition rendering, it's not a dynamic condition.
         // Thus it can be safely used with the next coming hooks.
-        return children;
+        return <>{children}</>;
     }
 
     // Safe Area
-    const translateY = useRef<Animated.Value>(new Animated.Value(0));
+    const translateY = React.useRef<Animated.Value<number>>(
+        new Animated.Value(0)
+    );
 
     const translateSafeArea = async (translate: boolean) => {
         Animated.timing(translateY.current, {
@@ -39,14 +40,14 @@ export const UIKeyboardAccessory = ({
     };
 
     // Keyboard
-    const customKeyboardVisibleRef = useRef<boolean>(false);
+    const customKeyboardVisibleRef = React.useRef<boolean>(false);
     customKeyboardVisibleRef.current = customKeyboardVisible;
 
-    const inputHeight = useRef<number>(0);
-    const keyboardHeight = useRef<number>(0);
+    const inputHeight = React.useRef<number>(0);
+    const keyboardHeight = React.useRef<number>(0);
 
-    const keyboardWillShowListener = useRef();
-    const keyboardWillHideListener = useRef();
+    const keyboardWillShowListener = React.useRef<EmitterSubscription>();
+    const keyboardWillHideListener = React.useRef<EmitterSubscription>();
 
     const updateContentBottomInset = async () => {
         const bottomInset = keyboardHeight.current
@@ -106,7 +107,7 @@ export const UIKeyboardAccessory = ({
     };
 
     // Tracking View Ready Hack
-    const [trackingViewReady, setTrackingViewReady] = useState<boolean>(
+    const [trackingViewReady, setTrackingViewReady] = React.useState<boolean>(
         trackingViewIsReady
     );
 
@@ -126,7 +127,7 @@ export const UIKeyboardAccessory = ({
     };
 
     // Life-cycle
-    useEffect(() => {
+    React.useEffect(() => {
         // Did mount
         initKeyboardListeners();
         // KeyboardTrackingView might be not ready. Need to re-render if so.
@@ -174,7 +175,7 @@ export const UIKeyboardAccessory = ({
                         <View>
                             <View // A dummy view to make SafeArea translates look nicer
                                 style={[
-                                    { height: insets.bottom },
+                                    { height: insets?.bottom ?? 0 },
                                     UIStyle.container.absoluteFillWidth(),
                                     UIStyle.color.getBackgroundColorStyle(
                                         UIColor.backgroundPrimary()
@@ -187,4 +188,4 @@ export const UIKeyboardAccessory = ({
             )}
         </SafeAreaInsetsContext.Consumer>
     );
-};
+}

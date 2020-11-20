@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Keyboard, Platform } from 'react-native';
 
 import { UICustomKeyboard, UICustomKeyboardUtils } from '../UICustomKeyboard';
+import { UIStickerPicker } from '../UIStickerPicker';
+import type { PickedSticker } from '../UIStickerPicker';
 
 // import { ChatPicker } from './ChatPicker';
 import { ChatInput } from './ChatInput';
@@ -11,14 +13,6 @@ const AndroidKeyboardAdjust =
     Platform.OS === 'android'
         ? require('react-native-android-keyboard-adjust')
         : null;
-
-type PickedSticker = {
-    // TODO
-};
-
-type UIStickerPackage = {
-    // TODO
-};
 
 type StickersPressOptions = {
     show: boolean;
@@ -125,7 +119,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                     isCustomKeyboard: true,
                     stickers,
                 }}
-                onItemSelected={(_kbID, sticker) => {
+                onItemSelected={(_kbID, sticker: PickedSticker) => {
                     onSendSticker(sticker);
                 }}
                 onKeyboardResigned={() => {
