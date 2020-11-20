@@ -1,7 +1,7 @@
 // @flow
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import { Animated, StyleSheet, Text, View, Image } from 'react-native';
-
+import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -15,28 +15,32 @@ import {
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 import { UITextButton, UIActionComponent } from '@tonlabs/uikit.components';
-import type { ActionProps } from '@tonlabs/uikit';
+import type { UIActionComponentProps } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-type Props = ActionProps & {
+type Props = UIActionComponentProps & {
     style: ViewStyleProp,
     containerStyle: ViewStyleProp,
     progress: boolean,
     transparent: boolean,
     index: ?number,
-    image: string,
-    title: number | string,
+    image?: ImageSource,
+    title: string,
     truncTitle: boolean,
     caption: string,
     truncCaption: boolean,
     details: string,
-    truncDetails: string,
+    secondDetails?: string,
+    narrow?: boolean,
+    truncDetails?: boolean,
     titleComponent?: React$Node,
     captionComponent?: React$Node,
     customComponent?: React$Node,
     disableHighlight?: boolean,
     titleIsText?: boolean,
     copyTarget: ?string,
+    isTapped: boolean,
+    isHover: boolean,
 };
 
 const styles = StyleSheet.create({
@@ -84,7 +88,7 @@ const UIDetailsButton = forwardRef(({
                                         containerStyle = {},
                                         progress = false,
                                         index = null,
-                                        image = '',
+                                        image = null,
                                         title = '',
                                         truncTitle = false,
                                         caption = '',
@@ -138,7 +142,7 @@ const UIDetailsButton = forwardRef(({
     // Render
     const spin = spinValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0deg', '360deg'],
+        outputRange: (['0deg', '360deg']: $ReadOnlyArray<string>),
     });
 
     const progressCardComponent = (
