@@ -11,12 +11,11 @@ import {
     UIStyle,
     UIFunction,
     UIColorPalette,
-} from '@uikit/core';
-import icoProgress from '@uikit/assets/ico-progress/progress.png';
-import { UIShareManager } from '@uikit/navigation';
-import { UITextButton } from '@uikit/components';
-import type { ActionProps } from '@uikit/components/UIActionComponent';
-import UIActionComponent from '#components/UIActionConponent';
+} from '@tonlabs/uikit.core';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIShareManager } from '@tonlabs/uikit.navigation';
+import { UITextButton, UIActionComponent } from '@tonlabs/uikit.components';
+import type { ActionProps } from '@tonlabs/uikit';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 type Props = ActionProps & {
@@ -145,7 +144,7 @@ const UIDetailsButton = forwardRef(({
     const progressCardComponent = (
         <View style={UIStyle.common.alignCenter()}>
             <Animated.Image
-                source={icoProgress}
+                source={UIAssets.icons.ui.progress}
                 style={{
                     transform: [{ rotate: spin }],
                 }}

@@ -42,7 +42,6 @@ import iconBrandSocialTwitter from '../brand/social/twitter.png';
 import iconBrandSocialTwitterPrimary from '../brand/social/primary/twitter.png';
 import iconBrandSocialYoutube from '../brand/social/youtube.png';
 
-import iconBrandGramscan from '../brand/tonlines/gramscan.png';
 import iconBrandTondevOld from '../brand/tonlines/tondev-old.png';
 import iconBrandTondev from '../brand/tonlines/tondev.png';
 import iconBrandTonlabsOld from '../brand/tonlines/tonlabs-old.png';
@@ -226,7 +225,6 @@ export const UIAssets = {
             rust: iconBrandRust,
             webassembly: iconBrandWebassembly,
             //
-            gramscan: iconBrandGramscan,
             tondevOld: iconBrandTondevOld,
             tondev: iconBrandTondev,
             tonlabsOld: iconBrandTonlabsOld,
