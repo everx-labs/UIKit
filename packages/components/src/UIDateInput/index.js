@@ -380,7 +380,6 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         const bottomOffset = Platform.OS === 'android'
             ? UIConstant.normalContentOffset()
             : UIConstant.smallContentOffset();
-
         return (
             <View style={[styles.missingValueView, { bottom: bottomOffset }]}>
                 <Text
