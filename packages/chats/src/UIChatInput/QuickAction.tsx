@@ -5,7 +5,6 @@ import {
     View,
 } from 'react-native';
 
-
 import { UIStyle } from '@tonlabs/uikit.core';
 import { UIButtonGroup, UITextButton } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -24,18 +23,16 @@ export function QuickAction(props: Props) {
 
     if (inputHasValue) {
         return (
-            <View>
-                <TouchableOpacity
-                    testID="send_btn"
-                    style={commonStyles.buttonContainer}
-                    onPress={onSendText}
-                >
-                    <Image
-                        source={UIAssets.icons.ui.buttonMsgSend}
-                        style={commonStyles.icon}
-                    />
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+                testID="send_btn"
+                style={commonStyles.buttonContainer}
+                onPress={onSendText}
+            >
+                <Image
+                    source={UIAssets.icons.ui.buttonMsgSend}
+                    style={commonStyles.icon}
+                />
+            </TouchableOpacity>
         );
     }
 

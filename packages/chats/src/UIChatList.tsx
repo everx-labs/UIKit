@@ -1,33 +1,33 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     Platform,
     SectionList,
     View,
     StyleSheet,
     Animated,
-} from "react-native";
+} from 'react-native';
 import {
     TapGestureHandler,
     ScrollView,
     State as RNGHState,
-} from "react-native-gesture-handler";
+} from 'react-native-gesture-handler';
 
-import { UIConstant } from "@tonlabs/uikit.core";
+import { UIConstant } from '@tonlabs/uikit.core';
 
-import { sectionListGetItemLayout } from "./UIChatListLayout";
-import { UIChatListFormatter } from "./UIChatListFormatter";
-import type { Section } from "./UIChatListFormatter";
-import { ChatMessageType } from "./types";
-import type { ChatMessage } from "./types";
-import { BubblePlainText } from "./BubblePlainText";
-import { BubbleSystem } from "./BubbleSystem";
-import { BubbleTransaction } from "./BubbleTransaction";
-import { BubbleImage } from "./BubbleImage";
-import { BubbleDocument } from "./BubbleDocument";
-import { BubbleSticker } from "./BubbleSticker";
-import { BubbleActionButton } from "./BubbleActionButton";
-import { DateSeparator } from "./DateSeparator";
-import { UILoadMoreButton } from "./UILoadMoreButton";
+import { sectionListGetItemLayout } from './UIChatListLayout';
+import { UIChatListFormatter } from './UIChatListFormatter';
+import type { Section } from './UIChatListFormatter';
+import { ChatMessageType } from './types';
+import type { ChatMessage } from './types';
+import { BubblePlainText } from './BubblePlainText';
+import { BubbleSystem } from './BubbleSystem';
+import { BubbleTransaction } from './BubbleTransaction';
+import { BubbleImage } from './BubbleImage';
+import { BubbleDocument } from './BubbleDocument';
+import { BubbleSticker } from './BubbleSticker';
+import { BubbleActionButton } from './BubbleActionButton';
+import { DateSeparator } from './DateSeparator';
+import { UILoadMoreButton } from './UILoadMoreButton';
 
 type RNGHEvent<T> = { nativeEvent: T };
 
@@ -49,7 +49,7 @@ const onHandlerStateChange = ({
 
 // Apply overflowY style for web to make the scrollbar appear as an overlay
 // thus not affecting the content width of SectionList to prevent layout issues
-const style = Platform.select({ web: { overflowY: "overlay" } });
+const style = Platform.select({ web: { overflowY: 'overlay' } });
 
 const keyExtractor = (item: ChatMessage) => {
     return item.key;
@@ -105,10 +105,10 @@ const renderSectionTitle = ({ section }: { section: Section }) => (
 
 export const UIChatList = React.forwardRef((props: Props, ref) => {
     const keyboardDismissProp = React.useMemo(() => {
-        if (Platform.OS !== "ios") {
+        if (Platform.OS !== 'ios') {
             // The following is not working on Android >>>
             // See https://github.com/facebook/react-native/issues/23364
-            return "on-drag";
+            return 'on-drag';
 
             // This can be used as a workaround >>>>
             // onScrollBeginDrag: () => {
@@ -117,9 +117,9 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
             // },
         }
         if (props.areStickersVisible) {
-            return "none"; // `interactive` doesn't work well with UICustomKeyboard :(
+            return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
         }
-        return "interactive";
+        return 'interactive';
     }, [props.areStickersVisible]);
 
     const cellsHeight = React.useRef(new Map());
@@ -200,7 +200,7 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
         const animation = shouldLinesBeShown
             ? showLinesAnimation
             : hideLinesAnimation;
-        animation.start(() => {
+        animation.current?.start(() => {
             linesAnimationInProgress.current = false;
             linesIsShown.current = shouldLinesBeShown;
 
@@ -249,7 +249,7 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
 
     // TODO: proper contentInset
     const contentInset = {
-        top: 0,
+        top: 50,
         left: 0,
         right: 0,
         bottom: 0,

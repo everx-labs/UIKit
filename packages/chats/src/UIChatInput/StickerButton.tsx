@@ -8,7 +8,8 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { commonStyles } from './styles';
 
-export type OnStickersPress = (show?: boolean) => void | Promise<void>;
+export type OnStickersPress = () => void | Promise<void>;
+
 type Props = {
     hasStickers: boolean;
     stickersVisible: boolean;
@@ -20,16 +21,6 @@ export function StickersButton(props: Props) {
     if (!props.hasStickers) {
         return null;
     }
-
-    React.useEffect(
-        () => {
-            if (props.inputHasValue) {
-                // To hide keyboard
-                props.onPress(false);
-            }
-        },
-        [props.inputHasValue, props.onPress]
-    );
 
     return (
         <TouchableOpacity

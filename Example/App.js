@@ -2340,6 +2340,7 @@ const Chat = () => (
         />
         <UIChatInput
             editable
+            onSendSticker={() => {}}
             stickers={[
                 {
                     id: 'test',

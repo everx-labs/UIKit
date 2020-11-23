@@ -62,7 +62,7 @@ declare module 'react-native-ui-lib/keyboard' {
         /**
          * Callback that will be called when an item on the keyboard has been pressed.
          */
-        onItemSelected?: <T>(kbId: string | undefined, args: T) => void;
+        onItemSelected?: (kbId: string | undefined, args: any) => void;
         /**
          * Callback that will be called if KeyboardRegistry.requestShowKeyboard is called.
          */
