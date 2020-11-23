@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 import { UIConstant, UITextStyle, UIFont, UIColor } from '@tonlabs/uikit.core';
@@ -218,26 +219,40 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     renderContentView() {
+        // Added KeyboardAvoidingView, otherwhise the component remains behind the
+        // keyboard and we are not able to select any of the elementes that are rendered
+        // in that area.
+        const extraOffset = Platform.OS === 'ios' ? 110 : -1000;
         return (
-            <React.Fragment>
+            <KeyboardAvoidingView
+                style={countryPickerStyle.container}
+                keyboardVerticalOffset={extraOffset}
+                behavior={'padding'}
+            >
                 {this.renderSearchBar()}
-                <CountryPicker
-                    ref={(component) => { this.countryPicker = component; }}
-                    cca2={this.cca2}
-                    translation={this.language}
-                    hideAlphabetFilter
-                    filterable
-                    renderFilter={() => null}
-                    disabledCountries={this.disabledCountries}
-                    disabledCountryText={uiLocalized.serviceUnavailable}
-                    excludedCountries={this.excludedCountries}
-                    styles={countryPickerStyle}
-                    onChange={this.onPickCountry}
-                    dataType={this.isLanguages ?
-                        CountryPicker.dataTypes.languages :
-                        CountryPicker.dataTypes.countries}
-                />
-            </React.Fragment>
+                {/*
+                    Had to wrap the component with a ScrollView from the gesture-handler package
+                    otherwise (on Android) we are not able to scroll the list of countries.
+                */}
+                <ScrollView style={countryPickerStyle.container}>
+                    <CountryPicker
+                        ref={(component) => { this.countryPicker = component; }}
+                        cca2={this.cca2}
+                        translation={this.language}
+                        hideAlphabetFilter
+                        filterable
+                        renderFilter={() => null}
+                        disabledCountries={this.disabledCountries}
+                        disabledCountryText={uiLocalized.serviceUnavailable}
+                        excludedCountries={this.excludedCountries}
+                        styles={countryPickerStyle}
+                        onChange={this.onPickCountry}
+                        dataType={this.isLanguages ?
+                            CountryPicker.dataTypes.languages :
+                            CountryPicker.dataTypes.countries}
+                    />
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
