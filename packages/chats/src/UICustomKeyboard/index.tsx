@@ -136,17 +136,12 @@ export function UICustomKeyboard(props: KeyboardAccessoryViewProps) {
         <KeyboardAccessoryView
             key={`UICustomKeyboard:${trackingViewReady.toString()}`}
             useSafeArea={false}
-            addBottomView={false}
+            addBottomView={true} // TODO: is it only way?
             manageScrollView={false}
             allowHitsOutsideBounds
             revealKeyboardInteractive
             {...props}
-            onKeyboardResigned={() => {
-                if (keyboardHeight.current === 0 && props.onKeyboardResigned) {
-                    // Call the event only if the hardware keyboard is hidden
-                    props.onKeyboardResigned();
-                }
-            }}
+            onKeyboardResigned={props.onKeyboardResigned}
         />
     );
 }

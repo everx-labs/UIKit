@@ -16,6 +16,7 @@ import {
     ScrollView,
     Platform,
 } from 'react-native';
+import { enableScreens } from 'react-native-screens';
 import BigNumber from 'bignumber.js';
 // $FlowFixMe
 import { NavigationContainer } from '@react-navigation/native';
@@ -99,6 +100,8 @@ import {
 } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
+
+enableScreens();
 
 if (Platform.OS === 'web') {
     // Head Element

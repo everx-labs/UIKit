@@ -60,10 +60,15 @@ function useStickers(onStickersVisible?: OnStickersVisible) {
         }
     };
 
+    const onKeyboardResigned = () => {
+        setStickersVisible(false);
+    };
+
     return {
         stickersPickerRef,
         stickersVisible,
         onStickersPress,
+        onKeyboardResigned,
     };
 }
 
@@ -86,6 +91,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
             stickersPickerRef,
             stickersVisible,
             onStickersPress,
+            onKeyboardResigned,
         } = useStickers(props.onStickersVisible);
 
         const input = (
@@ -137,7 +143,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                     onStickersPress();
                     props.onSendSticker(sticker);
                 }}
-                // onKeyboardResigned={() => {}}
+                onKeyboardResigned={onKeyboardResigned}
             />
         );
     }
