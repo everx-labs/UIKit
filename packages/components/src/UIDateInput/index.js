@@ -384,7 +384,7 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
         }
 
         const missing = this.getPattern(true).substring(date.length);
-        let bottomOffset = Platform.OS === 'android'
+        const bottomOffset = Platform.OS === 'android'
             ? UIConstant.normalContentOffset() - 2 // Magic constant to align vertically text on Android
             : UIConstant.smallContentOffset();
 
