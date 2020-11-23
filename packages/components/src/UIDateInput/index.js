@@ -145,6 +145,13 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
     // Events
     onChangeText = (date: string): void => {
+        // To prevent typing more digits
+        // than the formated date requires
+        const pattern = this.getPattern(true);
+        if (date.length > pattern.length) {
+            return;
+        }
+
         const { onChangeDate } = this.props;
         this.setStateSafely({ highlightError: false });
 
@@ -378,8 +385,9 @@ export default class UIDateInput extends UIDetailsInput<Props, State> {
 
         const missing = this.getPattern(true).substring(date.length);
         const bottomOffset = Platform.OS === 'android'
-            ? UIConstant.normalContentOffset()
+            ? UIConstant.normalContentOffset() - 2 // Magic constant to align vertically text on Android
             : UIConstant.smallContentOffset();
+
         return (
             <View style={[styles.missingValueView, { bottom: bottomOffset }]}>
                 <Text
