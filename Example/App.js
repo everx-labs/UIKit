@@ -8,14 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import {
-    StyleSheet,
-    View,
-    Text,
-    SafeAreaView,
-    ScrollView,
-    Platform,
-} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Platform } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import BigNumber from 'bignumber.js';
 // $FlowFixMe
@@ -25,6 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 import {
@@ -2160,7 +2154,7 @@ const TextScreen = () => (
 );
 
 const Chat = () => (
-    <>
+    <SafeAreaView>
         <UIChatList
             areStickersVisible={false}
             onLoadEarlierMessages={() => {}}
@@ -2181,43 +2175,43 @@ const Chat = () => (
                     sender: '0:000',
                     text: 'This is action',
                 },
-                {
-                    type: 'stk',
-                    status: 'pending',
-                    time: Math.floor(Date.now() - 1 * 60 * 1000),
-                    sender: '0:000',
-                    source: {
-                        uri:
-                            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                    },
-                },
-                {
-                    type: 'stk',
-                    status: 'sent',
-                    time: Math.floor(Date.now() - 1 * 60 * 1000),
-                    sender: '0:000',
-                    source: {
-                        uri:
-                            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                    },
-                },
-                {
-                    type: 'stk',
-                    status: 'received',
-                    time: Math.floor(Date.now() - 1 * 60 * 1000),
-                    sender: '0:123',
-                    source: {
-                        uri:
-                            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                    },
-                },
-                {
-                    type: 'sys',
-                    status: 'sent',
-                    time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
-                    sender: '0:000', // TODO: is this mandatory field for system message?
-                    text: 'This is a system message',
-                },
+                // {
+                //     type: 'stk',
+                //     status: 'pending',
+                //     time: Math.floor(Date.now() - 1 * 60 * 1000),
+                //     sender: '0:000',
+                //     source: {
+                //         uri:
+                //             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                //     },
+                // },
+                // {
+                //     type: 'stk',
+                //     status: 'sent',
+                //     time: Math.floor(Date.now() - 1 * 60 * 1000),
+                //     sender: '0:000',
+                //     source: {
+                //         uri:
+                //             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                //     },
+                // },
+                // {
+                //     type: 'stk',
+                //     status: 'received',
+                //     time: Math.floor(Date.now() - 1 * 60 * 1000),
+                //     sender: '0:123',
+                //     source: {
+                //         uri:
+                //             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                //     },
+                // },
+                // {
+                //     type: 'sys',
+                //     status: 'sent',
+                //     time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
+                //     sender: '0:000', // TODO: is this mandatory field for system message?
+                //     text: 'This is a system message',
+                // },
                 {
                     type: 'trx',
                     status: 'sent',
@@ -2356,77 +2350,79 @@ const Chat = () => (
                 })),
             }))}
         />
-    </>
+    </SafeAreaView>
 );
 
 const Main = ({ navigation }) => (
     <SafeAreaView>
         <Text style={styles.title}>Main</Text>
-        <UIButton
-            onPress={() => navigation.navigate('buttons')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Buttons"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('checkbox')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Checkbox"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('inputs')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Inputs"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('design')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Design"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('images')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Images"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('layouts')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Layouts"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('menus')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Menus"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('notifications')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Notifications"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('popups')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Popups"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('products')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Products"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('profile')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Profile"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('text')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Text"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('chat')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Chat"
-        />
+        <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+            <UIButton
+                onPress={() => navigation.navigate('buttons')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Buttons"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('checkbox')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Checkbox"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('inputs')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Inputs"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('design')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Design"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('images')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Images"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('layouts')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Layouts"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('menus')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Menus"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('notifications')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Notifications"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('popups')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Popups"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('products')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Products"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('profile')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Profile"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('text')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Text"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('chat')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Chat"
+            />
+        </ScrollView>
     </SafeAreaView>
 );
 

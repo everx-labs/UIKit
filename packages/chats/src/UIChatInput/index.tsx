@@ -54,10 +54,59 @@ function useStickers(onStickersVisible?: OnStickersVisible) {
             }
         }
 
-        setStickersVisible(!stickersVisible);
+        if (Platform.OS === 'android') {
+            setTimeout(() => {
+                setStickersVisible(!stickersVisible);
+            }, 0); // required to fix an issue with the keyboard animation
+        } else {
+            setStickersVisible(!stickersVisible);
+        }
 
         if (onStickersVisible) {
             onStickersVisible(!stickersVisible);
+        }
+    };
+
+    const onFocus = () => {
+        // stickersPickerRef.current?.hide();
+        // if (Platform.OS !== 'web') {
+        //     UICustomKeyboardUtils.dismiss();
+        // }
+
+        if (Platform.OS === 'android') {
+            setTimeout(() => {
+                setStickersVisible(false);
+            }, 0); // required to fix an issue with the keyboard animation
+        } else {
+            setStickersVisible(false);
+        }
+
+        if (onStickersVisible) {
+            onStickersVisible(false);
+        }
+
+        if (Platform.OS !== 'android') {
+            return;
+        }
+
+        if (!stickersVisible && AndroidKeyboardAdjust) {
+            AndroidKeyboardAdjust.setAdjustResize();
+        }
+    };
+
+    const onBlur = () => {
+        if (Platform.OS !== 'android') {
+            return;
+        }
+
+        if (!stickersVisible) {
+            UICustomKeyboardUtils.dismiss();
+        } else {
+            // This is not a likely case that stickers are visible on blur, but we need to ensure!
+            // eslint-disable-next-line no-lonely-if
+            if (AndroidKeyboardAdjust) {
+                AndroidKeyboardAdjust.setAdjustResize();
+            }
         }
     };
 
@@ -70,6 +119,8 @@ function useStickers(onStickersVisible?: OnStickersVisible) {
         stickersVisible,
         onStickersPress,
         onKeyboardResigned,
+        onFocus,
+        onBlur,
     };
 }
 
@@ -119,6 +170,8 @@ export const UIChatInput = React.forwardRef<null, Props>(
             stickersVisible,
             onStickersPress,
             onKeyboardResigned,
+            onFocus,
+            onBlur,
         } = useStickers(props.onStickersVisible);
         const { menuPlus, chatPickerRef } = useMenuPlus();
 
@@ -136,6 +189,8 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 onHeightChange={props.onHeightChange}
                 onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
                 menuPlus={menuPlus}
+                onFocus={onFocus}
+                onBlur={onBlur}
             />
         );
 
@@ -161,6 +216,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 }
                 kbInitialProps={{
                     ref: stickersPickerRef,
+                    // The following doesn't work for iOS, thus we use `onItemSelected` prop
                     onPick: props.onSendSticker,
                     isCustomKeyboard: true,
                     stickers: props.stickers,
@@ -169,7 +225,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                     onStickersPress();
                     props.onSendSticker(sticker);
                 }}
-                onKeyboardResigned={onKeyboardResigned}
+                // onKeyboardResigned={onKeyboardResigned}
             />
         );
     }

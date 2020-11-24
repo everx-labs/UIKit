@@ -249,6 +249,8 @@ type Props = {
     // TODO: can we not expose it?
     onHeightChange?: OnHeightChange;
     onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
+    onFocus: () => void;
+    onBlur: () => void;
 };
 
 export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
@@ -287,6 +289,9 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                         UIStyle.color.getBackgroundColorStyle(
                             UIColor.backgroundPrimary(theme)
                         ),
+                        Platform.OS === 'android'
+                            ? { minHeight: UIConstant.largeButtonHeight() }
+                            : null,
                     ]}
                 >
                     {/* actionsView TODO: Make actions */}
@@ -329,6 +334,8 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                                 onContentSizeChange={onContentSizeChange}
                                 onChangeText={onChangeText}
                                 onKeyPress={onKeyPress}
+                                onFocus={props.onFocus}
+                                onBlur={props.onBlur}
                                 // onFocus={() => {
                                 //     // TODO: is that a correct behaviour?
                                 //     // TODO: on a web, it could fire when input focused,
