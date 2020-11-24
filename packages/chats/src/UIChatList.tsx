@@ -52,7 +52,7 @@ const onHandlerStateChange = ({
 const style = Platform.select({ web: { overflowY: 'overlay' } });
 
 // Note: `DOMMouseScroll` is commonly used by Firefox!
-const wheelEvent = document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
+const wheelEvent = global.document?.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
 
 const CHAT_SECTION_LIST = 'chatSectionList';
 
@@ -66,7 +66,7 @@ function useWheelHandler(handler: () => void) {
 
         return () => {
             window.removeEventListener(wheelEvent, handler);
-        }
+        };
     }, []);
 }
 
@@ -76,22 +76,22 @@ const keyExtractor = (item: ChatMessage) => {
 
 const renderBubble = (message: ChatMessage) => {
     switch (message.type) {
-        case ChatMessageType.PlainText:
-            return <BubblePlainText {...message} />;
-        case ChatMessageType.System:
-            return <BubbleSystem {...message} />;
-        case ChatMessageType.Transaction:
-            return <BubbleTransaction {...message} />;
-        case ChatMessageType.Image:
-            return <BubbleImage {...message} />;
-        case ChatMessageType.Document:
-            return <BubbleDocument {...message} />;
-        case ChatMessageType.Sticker:
-            return <BubbleSticker {...message} />;
-        case ChatMessageType.ActionButton:
-            return <BubbleActionButton {...message} />;
-        default:
-            return null;
+    case ChatMessageType.PlainText:
+        return <BubblePlainText {...message} />;
+    case ChatMessageType.System:
+        return <BubbleSystem {...message} />;
+    case ChatMessageType.Transaction:
+        return <BubbleTransaction {...message} />;
+    case ChatMessageType.Image:
+        return <BubbleImage {...message} />;
+    case ChatMessageType.Document:
+        return <BubbleDocument {...message} />;
+    case ChatMessageType.Sticker:
+        return <BubbleSticker {...message} />;
+    case ChatMessageType.ActionButton:
+        return <BubbleActionButton {...message} />;
+    default:
+        return null;
     }
 };
 
@@ -102,7 +102,7 @@ const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
 }) => {
     return (
         <View
-            onLayout={(e) => onLayoutCell(item.key, e)}
+            onLayout={e => onLayoutCell(item.key, e)}
             style={{
                 // TODO: this one is incorrect, there are different paddings for bubbles
                 paddingTop: item.firstFromChain
@@ -143,28 +143,26 @@ export const UIChatList = React.forwardRef((props: Props) => {
 
     const cellsHeight = React.useRef(new Map());
 
-    const getItemLayout = React.useCallback(
-        sectionListGetItemLayout({
-            getItemHeight: (rowData: ChatMessage) => {
-                return cellsHeight.current.get(rowData.key) || 0;
-            },
-            getSectionFooterHeight: () => {
-                return (
-                    UIConstant.smallCellHeight() +
+    const getItemLayout = React.useCallback(sectionListGetItemLayout({
+        getItemHeight: (rowData: ChatMessage) => {
+            return cellsHeight.current.get(rowData.key) || 0;
+        },
+        getSectionFooterHeight: () => {
+            return (
+                UIConstant.smallCellHeight() +
                     UIConstant.contentOffset() * 2
-                );
-            },
-            listFooterHeight: () => {
-                if (!props.canLoadMore) {
-                    return 0;
-                }
-                return (
-                    UIConstant.smallCellHeight() +
+            );
+        },
+        listFooterHeight: () => {
+            if (!props.canLoadMore) {
+                return 0;
+            }
+            return (
+                UIConstant.smallCellHeight() +
                     UIConstant.contentOffset() * 2
-                );
-            },
-        })
-    );
+            );
+        },
+    }));
     const ref = React.useRef(null);
     const listSize = React.useRef({ height: 0 });
     const contentHeight = React.useRef(0);
@@ -175,20 +173,16 @@ export const UIChatList = React.forwardRef((props: Props) => {
     const linesAnimationInProgress = React.useRef(false);
     const linesIsShown = React.useRef(false);
 
-    const showLinesAnimation = React.useRef(
-        Animated.spring(topOpacity.current, {
-            toValue: 1,
-            useNativeDriver: true,
-            speed: 20,
-        })
-    );
-    const hideLinesAnimation = React.useRef(
-        Animated.spring(topOpacity.current, {
-            toValue: 1,
-            useNativeDriver: true,
-            speed: 20,
-        })
-    );
+    const showLinesAnimation = React.useRef(Animated.spring(topOpacity.current, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 20,
+    }));
+    const hideLinesAnimation = React.useRef(Animated.spring(topOpacity.current, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 20,
+    }));
 
     const checkVisualStyle = React.useCallback(() => {
         if (
@@ -239,7 +233,7 @@ export const UIChatList = React.forwardRef((props: Props) => {
 
             checkVisualStyle();
         },
-        []
+        [],
     );
     const onScrollMessages = React.useCallback((e: any) => {
         listContentOffset.current = e.nativeEvent.contentOffset;
@@ -332,7 +326,7 @@ export const UIChatList = React.forwardRef((props: Props) => {
                 onEndReached={props.onLoadEarlierMessages}
                 onEndReachedThreshold={0.6}
                 ListFooterComponent={renderLoadMore}
-                renderScrollComponent={(scrollProps) => (
+                renderScrollComponent={scrollProps => (
                     <ScrollView {...scrollProps} />
                 )}
             />

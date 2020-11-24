@@ -6,7 +6,7 @@
     "module-resolver/use-alias": 0, /*["error", {
       "ignoreDepth": 1
     }],*/
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
     "react/jsx-indent-props": [1, 4],
     "react/jsx-indent": ["error", 4],
     "react/prefer-stateless-function": "off",
