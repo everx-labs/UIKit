@@ -122,7 +122,7 @@ const renderSectionTitle = ({ section }: { section: Section }) => (
     <DateSeparator time={section.time} />
 );
 
-export const UIChatList = React.forwardRef((props: Props) => {
+export const UIChatList = React.forwardRef((props: Props, ref) => {
     const keyboardDismissProp = React.useMemo(() => {
         if (Platform.OS !== 'ios') {
             // The following is not working on Android >>>
@@ -163,7 +163,10 @@ export const UIChatList = React.forwardRef((props: Props) => {
             );
         },
     }));
-    const ref = React.useRef(null);
+
+    const localRef = React.useRef(null);
+    React.useImperativeHandle(ref, () => localRef.current);
+
     const listSize = React.useRef({ height: 0 });
     const contentHeight = React.useRef(0);
     const listContentOffset = React.useRef({ y: 0 });
@@ -302,7 +305,7 @@ export const UIChatList = React.forwardRef((props: Props) => {
                 {...keyboardDismissProp}
                 contentInset={contentInset}
                 scrollIndicatorInsets={contentInset}
-                ref={ref}
+                ref={localRef}
                 inverted
                 getItemLayout={getItemLayout}
                 onLayout={onLayout}
