@@ -30,6 +30,7 @@ import type {
     OnContentBottomInsetUpdate,
     OnHeightChange,
 } from './types';
+import { ChatPicker, ChatPickerRef } from './ChatPicker';
 
 const MAX_INPUT_LENGTH = 320;
 
@@ -228,6 +229,7 @@ function useAnimatedBorder(ref: React.Ref<UIChatInputRef> | null) {
 
 type Props = {
     textInputRef: React.RefObject<TextInput>;
+    pickerRef: React.RefObject<ChatPickerRef>;
 
     menuPlus?: MenuItem[];
     menuPlusDisabled?: boolean;
@@ -273,105 +275,106 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
         const borderOpacity = useAnimatedBorder(ref);
         useBackHandler(props.textInputRef);
 
-        const pickerRef = React.useRef();
-
         return (
             // <UIKeyboardAccessory
             //     onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
             //     customKeyboardVisible={props.stickersVisible}
             //     disableTrackingView // since the UICustomKeyboard is used!
             // >
-            <View
-                style={[
-                    UIStyle.color.getBackgroundColorStyle(
-                        UIColor.backgroundPrimary(theme)
-                    ),
-                ]}
-            >
-                {/* actionsView TODO: Make actions */}
-                <Animated.View
-                    style={[styles.border, { opacity: borderOpacity }]}
-                />
+            <>
                 <View
                     style={[
-                        styles.container,
-                        props.menuPlus?.length && props.menuPlus?.length > 0
-                            ? null
-                            : UIStyle.margin.leftDefault(),
+                        UIStyle.color.getBackgroundColorStyle(
+                            UIColor.backgroundPrimary(theme)
+                        ),
                     ]}
                 >
-                    <MenuPlus
-                        menuPlus={props.menuPlus}
-                        menuPlusDisabled={props.menuPlusDisabled}
+                    {/* actionsView TODO: Make actions */}
+                    <Animated.View
+                        style={[styles.border, { opacity: borderOpacity }]}
                     />
-                    <View style={styles.inputMsg}>
-                        <TextInput
-                            ref={props.textInputRef}
-                            testID="chat_input"
-                            autoCapitalize="sentences"
-                            autoCorrect={false}
-                            clearButtonMode="never"
-                            keyboardType="default"
-                            editable={props.editable}
-                            maxLength={MAX_INPUT_LENGTH}
-                            multiline={true}
-                            numberOfLines={Math.round(
-                                inputHeight / UIConstant.smallCellHeight()
-                            )}
-                            // @ts-ignore
-                            noPersonalizedLearning={false}
-                            placeholder={uiLocalized.TypeMessage}
-                            placeholderTextColor={UIColor.textPlaceholder(
-                                theme
-                            )}
-                            underlineColorAndroid="transparent"
-                            onContentSizeChange={onContentSizeChange}
-                            onChangeText={onChangeText}
-                            onKeyPress={onKeyPress}
-                            // onFocus={() => {
-                            //     // TODO: is that a correct behaviour?
-                            //     // TODO: on a web, it could fire when input focused,
-                            //     //       and then user move to another window,
-                            //     //       thus focus gonna be fired again when he returns
-                            //     if (!props.stickersVisible) {
-                            //         props.onStickersPress();
-                            //         return true;
-                            //     }
-                            // }}
-                            style={[
-                                UIColor.textPrimaryStyle(theme),
-                                UIStyle.text.bodyRegular(),
-                                UIStyle.common.flex(),
-                                styles.input,
-                                Platform.OS === 'android'
-                                    ? { minHeight: inputHeight }
-                                    : null,
-                            ]}
+                    <View
+                        style={[
+                            styles.container,
+                            props.menuPlus?.length && props.menuPlus?.length > 0
+                                ? null
+                                : UIStyle.margin.leftDefault(),
+                        ]}
+                    >
+                        <MenuPlus
+                            menuPlus={props.menuPlus}
+                            menuPlusDisabled={props.menuPlusDisabled}
+                        />
+                        <View style={styles.inputMsg}>
+                            <TextInput
+                                ref={props.textInputRef}
+                                testID="chat_input"
+                                autoCapitalize="sentences"
+                                autoCorrect={false}
+                                clearButtonMode="never"
+                                keyboardType="default"
+                                editable={props.editable}
+                                maxLength={MAX_INPUT_LENGTH}
+                                multiline={true}
+                                numberOfLines={Math.round(
+                                    inputHeight / UIConstant.smallCellHeight()
+                                )}
+                                // @ts-ignore
+                                noPersonalizedLearning={false}
+                                placeholder={uiLocalized.TypeMessage}
+                                placeholderTextColor={UIColor.textPlaceholder(
+                                    theme
+                                )}
+                                underlineColorAndroid="transparent"
+                                onContentSizeChange={onContentSizeChange}
+                                onChangeText={onChangeText}
+                                onKeyPress={onKeyPress}
+                                // onFocus={() => {
+                                //     // TODO: is that a correct behaviour?
+                                //     // TODO: on a web, it could fire when input focused,
+                                //     //       and then user move to another window,
+                                //     //       thus focus gonna be fired again when he returns
+                                //     if (!props.stickersVisible) {
+                                //         props.onStickersPress();
+                                //         return true;
+                                //     }
+                                // }}
+                                style={[
+                                    UIColor.textPrimaryStyle(theme),
+                                    UIStyle.text.bodyRegular(),
+                                    UIStyle.common.flex(),
+                                    styles.input,
+                                    Platform.OS === 'android'
+                                        ? { minHeight: inputHeight }
+                                        : null,
+                                ]}
+                            />
+                        </View>
+                        <StickersButton
+                            hasStickers={props.editable}
+                            stickersVisible={props.stickersVisible}
+                            inputHasValue={inputHasValue}
+                            onPress={props.onStickersPress}
+                        />
+                        <QuickAction
+                            quickAction={props.quickAction}
+                            inputHasValue={inputHasValue}
+                            onSendText={onSendText}
+                        />
+                        <MenuMore
+                            menuMore={props.menuMore}
+                            menuMoreDisabled={props.menuMoreDisabled}
                         />
                     </View>
-                    <StickersButton
-                        hasStickers={props.editable}
-                        stickersVisible={props.stickersVisible}
-                        inputHasValue={inputHasValue}
-                        onPress={props.onStickersPress}
-                    />
-                    <QuickAction
-                        quickAction={props.quickAction}
-                        inputHasValue={inputHasValue}
-                        onSendText={onSendText}
-                    />
-                    <MenuMore
-                        menuMore={props.menuMore}
-                        menuMoreDisabled={props.menuMoreDisabled}
-                    />
                 </View>
-            </View>
-            /* {!hideMenuPlus && (
                 <ChatPicker
-                    ref={pickerRef}
+                    ref={props.pickerRef}
                     onSendDocument={props.onSendDocument}
                     onSendMedia={props.onSendMedia}
                 />
+            </>
+            /* {!hideMenuPlus && (
+                
             )} */
             // </UIKeyboardAccessory>
         );

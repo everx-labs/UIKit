@@ -20,6 +20,7 @@ import type {
     OnSendMedia,
     OnSendDocument,
 } from './types';
+import type { ChatPickerRef } from './ChatPicker';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
@@ -84,6 +85,32 @@ type Props = {
     onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
 };
 
+function useMenuPlus() {
+    const chatPickerRef = React.useRef<ChatPickerRef>(null);
+    const onPressImage = () => {
+        chatPickerRef.current?.openImageDialog();
+    };
+    const onPressDocument = () => {
+        chatPickerRef.current?.openDocumentDialog();
+    };
+
+    const menu = [
+        {
+            title: 'Attach image',
+            onPress: onPressImage,
+        },
+        {
+            title: 'Attach document',
+            onPress: onPressDocument,
+        },
+    ];
+
+    return {
+        menuPlus: menu,
+        chatPickerRef,
+    };
+}
+
 export const UIChatInput = React.forwardRef<null, Props>(
     function UIChatInputInternal(props, ref) {
         const textInputRef = React.useRef<TextInput>(null);
@@ -93,11 +120,13 @@ export const UIChatInput = React.forwardRef<null, Props>(
             onStickersPress,
             onKeyboardResigned,
         } = useStickers(props.onStickersVisible);
+        const { menuPlus, chatPickerRef } = useMenuPlus();
 
         const input = (
             <ChatInput
                 ref={ref}
                 textInputRef={textInputRef}
+                pickerRef={chatPickerRef}
                 editable={props.editable}
                 stickersVisible={stickersVisible}
                 onSendText={props.onSendText}
@@ -106,6 +135,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 onStickersPress={onStickersPress}
                 onHeightChange={props.onHeightChange}
                 onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
+                menuPlus={menuPlus}
             />
         );
 
@@ -120,10 +150,6 @@ export const UIChatInput = React.forwardRef<null, Props>(
                     />
                 </>
             );
-        }
-
-        if (!props.onSendSticker) {
-            return input;
         }
 
         return (

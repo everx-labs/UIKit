@@ -1,14 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     TouchableOpacity,
     Image, // TODO: use fast-image?
     View,
-} from "react-native";
+} from 'react-native';
 
-import buttonDots from "@tonlabs/uikit.assets/btn_dots/btn_dots.png";
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIPopoverMenu } from '@tonlabs/uikit.navigation';
 
-import { commonStyles } from "./styles";
-import type { MenuItem } from "./types";
+import { commonStyles } from './styles';
+import type { MenuItem } from './types';
 
 type Props = {
     menuMore?: MenuItem[];
@@ -23,11 +24,11 @@ export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
     let content = null;
 
     if (menuMoreDisabled) {
-        content = <Image source={buttonDots} />;
+        content = <Image source={UIAssets.icons.ui.buttonDots} />;
     } else if (menuMore.length === 1) {
         content = (
             <TouchableOpacity onPress={menuMore[0].onPress}>
-                <Image source={buttonDots} />
+                <Image source={UIAssets.icons.ui.buttonDots} />
             </TouchableOpacity>
         );
     } else {
@@ -37,7 +38,7 @@ export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
                 menuItemsList={menuMore}
                 placement="top"
             >
-                <Image source={buttonDots} />
+                <Image source={UIAssets.icons.ui.buttonDots} />
             </UIPopoverMenu>
         );
     }

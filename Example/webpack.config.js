@@ -179,6 +179,7 @@ module.exports = {
             'react-native-localization': 'react-localization',
             'react-native-ui-lib/keyboard': 'react', // Hack in order not to load
             'react-native-document-picker': 'react', // Hack in order not to load
+            'rn-fetch-blob': 'react', // Hack in order not to load
         },
     },
 };

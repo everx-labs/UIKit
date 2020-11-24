@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Linking, Platform } from 'react-native';
-// import RNFetchBlob from "rn-fetch-blob";
+import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIImageView } from '@tonlabs/uikit.components';
-import { UIAlertView } from '@tonlabs/uikit.navigation';
+// import {  } from '@tonlabs/uikit.components';
+import { UIAlertView, UIImageView } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UICustomKeyboardUtils } from '../UICustomKeyboard';
@@ -76,14 +76,14 @@ const onPickDocument = async (
     };
     try {
         // TODO: I don't like it, can we do it without base64?
-        // const data = await RNFetchBlob.fs.readFile(decodeURI(doc), "base64");
-        // processData(data);
+        const data = await RNFetchBlob.fs.readFile(decodeURI(doc), 'base64');
+        processData(data);
     } catch (decError) {
         // Failed to load the data from the decoded URI, try the plain one
         try {
             // TODO: I don't like it, can we do it without base64?
-            // const data = await RNFetchBlob.fs.readFile(doc, "base64");
-            // processData(data);
+            const data = await RNFetchBlob.fs.readFile(doc, 'base64');
+            processData(data);
         } catch (error) {
             // TODO: deal with logs
             // log.error(
@@ -139,12 +139,12 @@ const uploadPhoto = (
         return;
     }
 
-    // RNFetchBlob.fs.readFile(photo, "base64").then((data) => {
-    //     if (data instanceof String || typeof data === "string") {
-    //         const dataSplit = data.split("base64,");
-    //         onSendMedia(dataSplit[dataSplit.length - 1], imageSize);
-    //     }
-    // });
+    RNFetchBlob.fs.readFile(photo, 'base64').then((data) => {
+        if (data instanceof String || typeof data === 'string') {
+            const dataSplit = data.split('base64,');
+            onSendMedia(dataSplit[dataSplit.length - 1], imageSize);
+        }
+    });
 };
 
 const onUploadPhoto = (photo: any, onSendMedia: OnSendMedia) => {
@@ -154,7 +154,7 @@ const onUploadPhoto = (photo: any, onSendMedia: OnSendMedia) => {
             const imageSize = { width, height };
             uploadPhoto(photo, imageSize, onSendMedia);
         },
-        (error) => {
+        (_error) => {
             // TODO: deal with logs
             // log.error(`Failed to get image size with: ${error}`);
             uploadPhoto(photo, null, onSendMedia);
@@ -162,98 +162,102 @@ const onUploadPhoto = (photo: any, onSendMedia: OnSendMedia) => {
     );
 };
 
+export type ChatPickerRef = {
+    openImageDialog: () => void;
+    openDocumentDialog: () => void;
+};
+
 type Props = {
     onSendDocument?: OnSendDocument;
     onSendMedia?: OnSendMedia;
 };
 
-export const ChatPicker = React.forwardRef(function ChatImagePickerImpl(
-    props: Props,
-    ref
-) {
-    const inputRef = React.useRef<HTMLInputElement>(null);
-    const uiImageViewRef = React.useRef<typeof UIImageView>();
+export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
+    function ChatImagePickerImpl(props, ref) {
+        const inputRef = React.useRef<HTMLInputElement>(null);
+        const uiImageViewRef = React.useRef<typeof UIImageView>();
 
-    React.useImperativeHandle(ref, () => ({
-        openImageDialog: () => {
-            // TODO: do we need it here?
-            UICustomKeyboardUtils.dismiss();
+        React.useImperativeHandle(ref, () => ({
+            openImageDialog: () => {
+                // TODO: do we need it here?
+                UICustomKeyboardUtils.dismiss();
 
-            uiImageViewRef.current?.openDialog();
-        },
-        openDocumentDialog: () => {
-            // TODO: do we need it here?
-            UICustomKeyboardUtils.dismiss();
+                uiImageViewRef.current?.openDialog();
+            },
+            openDocumentDialog: () => {
+                // TODO: do we need it here?
+                UICustomKeyboardUtils.dismiss();
 
-            if (Platform.OS === 'web') {
-                inputRef.current?.click();
-                return;
-            }
+                if (Platform.OS === 'web') {
+                    inputRef.current?.click();
+                    return;
+                }
 
-            setTimeout(() => {
-                pickDocument((data: any, name: string) =>
-                    onPickDocument(data, name, props.onSendDocument)
-                );
-            }, UIConstant.animationDuration() * 2);
-        },
-    }));
+                setTimeout(() => {
+                    pickDocument((data: any, name: string) =>
+                        onPickDocument(data, name, props.onSendDocument)
+                    );
+                }, UIConstant.animationDuration() * 2);
+            },
+        }));
 
-    return (
-        <View
-            testID="chat_image_picker"
-            style={{ height: 0 }}
-            pointerEvents="none"
-        >
-            {Platform.OS === 'web' && (
-                <input
-                    ref={inputRef}
-                    type="file"
-                    name="document"
-                    className="inputClass"
-                    onChange={(e: any) => {
-                        if (props.onSendDocument) {
-                            onPickDocumentWeb(e, props.onSendDocument);
+        return (
+            <View
+                testID="chat_image_picker"
+                style={{ height: 0 }}
+                pointerEvents="none"
+            >
+                {Platform.OS === 'web' && (
+                    <input
+                        ref={inputRef}
+                        type="file"
+                        name="document"
+                        className="inputClass"
+                        onChange={(e: any) => {
+                            if (props.onSendDocument) {
+                                onPickDocumentWeb(e, props.onSendDocument);
+                            }
+                        }}
+                        disabled={false}
+                        accept=".pdf"
+                        style={StyleSheet.flatten(styles.webInput)}
+                    />
+                )}
+                <UIImageView
+                    ref={uiImageViewRef}
+                    editable
+                    disabled={false}
+                    // TODO: what is a real type of photo?
+                    onUploadPhoto={(photo: any) => {
+                        if (props.onSendMedia) {
+                            onUploadPhoto(photo, props.onSendMedia);
                         }
                     }}
-                    disabled={false}
-                    accept=".pdf"
-                    style={styles.webInput}
-                />
-            )}
-            <UIImageView
-                ref={uiImageViewRef}
-                editable
-                disabled={false}
-                // TODO: what is a real type of photo?
-                onUploadPhoto={(photo: any) => {
-                    if (props.onSendMedia) {
-                        onUploadPhoto(photo, props.onSendMedia);
-                    }
-                }}
-                onError={(error: Error) => {
-                    const msg = error.toString();
-                    if (wasAccessToCameraOrGalleryDenied(msg)) {
-                        UIAlertView.showAlert(
-                            // TODO: move localizations
-                            // TONLocalized.chats.message.enableFromSettingsTitle,
-                            'enable access to camera',
-                            // TONLocalized.chats.message.enableFromSettings,
-                            'enable access to camera',
-                            [
-                                {
-                                    title: uiLocalized.OK,
-                                    onPress: () => {
-                                        Linking.openSettings();
+                    onError={(error: Error) => {
+                        const msg = error.toString();
+                        if (wasAccessToCameraOrGalleryDenied(msg)) {
+                            UIAlertView.showAlert(
+                                // TODO: move localizations
+                                // TONLocalized.chats.message.enableFromSettingsTitle,
+                                'enable access to camera',
+                                // TONLocalized.chats.message.enableFromSettings,
+                                'enable access to camera',
+                                [
+                                    {
+                                        title: uiLocalized.OK,
+                                        onPress: () => {
+                                            Linking.openSettings();
+                                        },
                                     },
-                                },
-                            ]
-                        );
-                    }
-                }}
-            />
-        </View>
-    );
-});
+                                ]
+                            );
+                        }
+                    }}
+                />
+            </View>
+        );
+    }
+);
 
 const styles = StyleSheet.create({
     webInput: {

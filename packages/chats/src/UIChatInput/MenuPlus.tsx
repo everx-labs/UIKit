@@ -52,6 +52,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
             testID="menu_view"
             menuItemsList={menuPlus}
             placement="top"
+            containerStyle={commonStyles.buttonContainer}
         >
             <Image
                 source={UIAssets.icons.ui.buttonPlus}
