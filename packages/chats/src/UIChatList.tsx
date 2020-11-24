@@ -165,7 +165,7 @@ export const UIChatList = React.forwardRef((props: Props) => {
             },
         })
     );
-    const ref = React.useRef(undefined);
+    const ref = React.useRef(null);
     const listSize = React.useRef({ height: 0 });
     const contentHeight = React.useRef(0);
     const listContentOffset = React.useRef({ y: 0 });
