@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Keyboard, Platform, View, TextInput } from 'react-native';
+import { Keyboard, Platform, View } from 'react-native';
 import type { EmitterSubscription } from 'react-native';
 import {
     KeyboardAccessoryView,

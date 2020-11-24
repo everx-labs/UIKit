@@ -225,7 +225,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                     onStickersPress();
                     props.onSendSticker(sticker);
                 }}
-                // onKeyboardResigned={onKeyboardResigned}
+                onKeyboardResigned={onKeyboardResigned}
             />
         );
     }

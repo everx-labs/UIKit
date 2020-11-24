@@ -2154,7 +2154,7 @@ const TextScreen = () => (
 );
 
 const Chat = () => (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
         <UIChatList
             areStickersVisible={false}
             onLoadEarlierMessages={() => {}}

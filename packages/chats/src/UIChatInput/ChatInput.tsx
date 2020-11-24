@@ -12,7 +12,6 @@ import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { UIKeyboardAccessory } from '../UIKeyboardAccessory';
 import { UICustomKeyboardUtils } from '../UICustomKeyboard';
 import { useTheme } from '../useTheme';
 
@@ -139,49 +138,67 @@ function useMaxLengthAlert() {
     }, []);
 }
 
+const CHAT_INPUT_NUM_OF_LINES = 5;
+
 function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
     const [inputHeight, setInputHeight] = React.useState<number>(
         UIConstant.smallCellHeight()
     );
 
-    const onContentSizeChange = React.useCallback((event: any) => {
-        if (event && event.nativeEvent) {
-            const { contentSize } = event.nativeEvent;
-            const height = contentSize?.height || 0;
+    const onContentSizeChange = React.useCallback(
+        (event: any) => {
+            if (event && event.nativeEvent) {
+                const { contentSize } = event.nativeEvent;
+                const height = contentSize?.height || 0;
 
-            if (height === inputHeight) {
-                return;
-            }
+                if (height <= 0) {
+                    return;
+                }
 
-            if (height <= 0) {
-                return;
-            }
+                if (height === inputHeight) {
+                    return;
+                }
 
-            if (onHeightChange) {
-                onHeightChange(height);
-            }
+                if (onHeightChange) {
+                    onHeightChange(height);
+                }
 
-            if (Platform.OS === 'ios') {
-                // iOS input have the own multiline native auto-grow behaviour
-                // No need to adjust the height
-                return;
+                if (Platform.OS === 'ios') {
+                    // iOS input have the own multiline native auto-grow behaviour
+                    // No need to adjust the height
+                    return;
+                }
+                const constrainedHeight = Math.min(
+                    height,
+                    UIConstant.smallCellHeight() * CHAT_INPUT_NUM_OF_LINES
+                );
+                setInputHeight(constrainedHeight);
             }
-            const constrainedHeight = Math.min(
-                height,
-                UIConstant.smallCellHeight() * 5
-            );
-            setInputHeight(constrainedHeight);
-        }
-    }, []);
+        },
+        [inputHeight]
+    );
 
     const setDefaultInputHeight = React.useCallback(() => {
         setInputHeight(UIConstant.smallCellHeight());
     }, []);
 
+    const containerStyle =
+        Platform.OS === 'android'
+            ? {
+                  height: Math.max(UIConstant.largeButtonHeight(), inputHeight),
+              }
+            : null;
+
+    const numberOfLines =
+        Platform.OS === 'android'
+            ? CHAT_INPUT_NUM_OF_LINES
+            : Math.round(inputHeight / UIConstant.smallCellHeight());
+
     return {
-        inputHeight,
         onContentSizeChange,
         setDefaultInputHeight,
+        containerStyle,
+        numberOfLines,
     };
 }
 
@@ -258,7 +275,8 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
         const theme = useTheme();
 
         const {
-            inputHeight,
+            containerStyle,
+            numberOfLines,
             onContentSizeChange,
             setDefaultInputHeight,
         } = useInputAdjustHeight(props.onHeightChange);
@@ -278,20 +296,13 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
         useBackHandler(props.textInputRef);
 
         return (
-            // <UIKeyboardAccessory
-            //     onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
-            //     customKeyboardVisible={props.stickersVisible}
-            //     disableTrackingView // since the UICustomKeyboard is used!
-            // >
             <>
                 <View
                     style={[
                         UIStyle.color.getBackgroundColorStyle(
                             UIColor.backgroundPrimary(theme)
                         ),
-                        Platform.OS === 'android'
-                            ? { minHeight: UIConstant.largeButtonHeight() }
-                            : null,
+                        containerStyle,
                     ]}
                 >
                     {/* actionsView TODO: Make actions */}
@@ -311,51 +322,43 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                             menuPlusDisabled={props.menuPlusDisabled}
                         />
                         <View style={styles.inputMsg}>
-                            <TextInput
-                                ref={props.textInputRef}
-                                testID="chat_input"
-                                autoCapitalize="sentences"
-                                autoCorrect={false}
-                                clearButtonMode="never"
-                                keyboardType="default"
-                                editable={props.editable}
-                                maxLength={MAX_INPUT_LENGTH}
-                                multiline={true}
-                                numberOfLines={Math.round(
-                                    inputHeight / UIConstant.smallCellHeight()
-                                )}
-                                // @ts-ignore
-                                noPersonalizedLearning={false}
-                                placeholder={uiLocalized.TypeMessage}
-                                placeholderTextColor={UIColor.textPlaceholder(
-                                    theme
-                                )}
-                                underlineColorAndroid="transparent"
-                                onContentSizeChange={onContentSizeChange}
-                                onChangeText={onChangeText}
-                                onKeyPress={onKeyPress}
-                                onFocus={props.onFocus}
-                                onBlur={props.onBlur}
-                                // onFocus={() => {
-                                //     // TODO: is that a correct behaviour?
-                                //     // TODO: on a web, it could fire when input focused,
-                                //     //       and then user move to another window,
-                                //     //       thus focus gonna be fired again when he returns
-                                //     if (!props.stickersVisible) {
-                                //         props.onStickersPress();
-                                //         return true;
-                                //     }
-                                // }}
-                                style={[
-                                    UIColor.textPrimaryStyle(theme),
-                                    UIStyle.text.bodyRegular(),
-                                    UIStyle.common.flex(),
-                                    styles.input,
-                                    Platform.OS === 'android'
-                                        ? { minHeight: inputHeight }
-                                        : null,
-                                ]}
-                            />
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <TextInput
+                                    ref={props.textInputRef}
+                                    testID="chat_input"
+                                    autoCapitalize="sentences"
+                                    autoCorrect={false}
+                                    clearButtonMode="never"
+                                    keyboardType="default"
+                                    editable={props.editable}
+                                    maxLength={MAX_INPUT_LENGTH}
+                                    multiline={true}
+                                    numberOfLines={numberOfLines}
+                                    // @ts-ignore
+                                    noPersonalizedLearning={false}
+                                    placeholder={uiLocalized.TypeMessage}
+                                    placeholderTextColor={UIColor.textPlaceholder(
+                                        theme
+                                    )}
+                                    underlineColorAndroid="transparent"
+                                    onContentSizeChange={onContentSizeChange}
+                                    onChangeText={onChangeText}
+                                    onKeyPress={onKeyPress}
+                                    onFocus={props.onFocus}
+                                    onBlur={props.onBlur}
+                                    style={[
+                                        UIColor.textPrimaryStyle(theme),
+                                        UIStyle.text.bodyRegular(),
+                                        UIStyle.common.flex(),
+                                        styles.input,
+                                    ]}
+                                />
+                            </View>
                         </View>
                         <StickersButton
                             hasStickers={props.editable}
@@ -380,10 +383,6 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                     onSendMedia={props.onSendMedia}
                 />
             </>
-            /* {!hideMenuPlus && (
-                
-            )} */
-            // </UIKeyboardAccessory>
         );
     }
 );
@@ -411,6 +410,7 @@ const styles = StyleSheet.create({
     },
     input: {
         padding: 0,
+        maxHeight: UIConstant.chatInputMaxHeight(),
         // We remove the fontFamily for Android in order to eliminate jumping input behaviour
         ...(Platform.OS === 'android' ? { fontFamily: undefined } : null),
         ...{
@@ -418,7 +418,6 @@ const styles = StyleSheet.create({
                 Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
                     ? 5 // seems to be smth connected to iOS's textContainerInset
                     : 0,
-            maxHeight: UIConstant.chatInputMaxHeight(),
         },
     },
 });

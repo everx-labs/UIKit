@@ -10,7 +10,6 @@ import {
     ViewStyle,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
 import { UIColor, UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.components';
@@ -73,54 +72,51 @@ function StickerList(
         style: StyleProp<ViewStyle>;
     }
 ) {
+    const [safeAreaBottomInset, setSafeAreaBottomInset] = React.useState(0);
+    React.useEffect(() => {
+        UIDevice.safeAreaInsets().then((insets: { bottom: number }) => {
+            setSafeAreaBottomInset(insets.bottom);
+        });
+    });
     return (
-        <SafeAreaInsetsContext.Consumer>
-            {(insets) => (
-                <FlatList
-                    testID="list_sticker_packages"
-                    data={props.stickers}
-                    renderItem={({ item }) => {
-                        return (
-                            <ScrollView
-                                contentContainerStyle={styles.packageContainer}
-                            >
-                                {item.stickers.map((sticker) => (
-                                    <Sticker
-                                        sticker={sticker}
-                                        pkgID={item.id}
-                                        onPress={(sticker) => {
-                                            const {
-                                                isCustomKeyboard,
-                                                onPick,
-                                            } = props;
-                                            if (onPick) {
-                                                onPick(sticker);
-                                            } else if (isCustomKeyboard) {
-                                                UICustomKeyboardUtils.onItemSelected(
-                                                    UIStickerPickerKeyboardName,
-                                                    sticker
-                                                );
-                                            }
-                                        }}
-                                    />
-                                ))}
-                            </ScrollView>
-                        );
-                    }}
-                    keyExtractor={(sticker) => sticker.id}
-                    // Apply overflowY style for web to make the scrollbar appear as an overlay
-                    // thus not affecting the content width of ScrollView to prevent layout issues
-                    style={[
-                        // @ts-ignore
-                        Platform.select({ web: { overflowY: 'overlay' } }),
-                        props.style,
-                    ]}
-                    contentContainerStyle={{
-                        paddingBottom: insets?.bottom ?? 0,
-                    }}
-                />
-            )}
-        </SafeAreaInsetsContext.Consumer>
+        <FlatList
+            testID="list_sticker_packages"
+            data={props.stickers}
+            renderItem={({ item }) => {
+                return (
+                    <ScrollView contentContainerStyle={styles.packageContainer}>
+                        {item.stickers.map((sticker) => (
+                            <Sticker
+                                sticker={sticker}
+                                pkgID={item.id}
+                                onPress={(sticker) => {
+                                    const { isCustomKeyboard, onPick } = props;
+                                    if (onPick) {
+                                        onPick(sticker);
+                                    } else if (isCustomKeyboard) {
+                                        UICustomKeyboardUtils.onItemSelected(
+                                            UIStickerPickerKeyboardName,
+                                            sticker
+                                        );
+                                    }
+                                }}
+                            />
+                        ))}
+                    </ScrollView>
+                );
+            }}
+            keyExtractor={(sticker) => sticker.id}
+            // Apply overflowY style for web to make the scrollbar appear as an overlay
+            // thus not affecting the content width of ScrollView to prevent layout issues
+            style={[
+                // @ts-ignore
+                Platform.select({ web: { overflowY: 'overlay' } }),
+                props.style,
+            ]}
+            contentContainerStyle={{
+                paddingBottom: safeAreaBottomInset,
+            }}
+        />
     );
 }
 
