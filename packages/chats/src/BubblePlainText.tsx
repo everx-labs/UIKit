@@ -107,7 +107,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                     bubbleScaleAnimation(true);
                     UIShareManager.copyToClipboard(
                         props.text,
-                        UILocalized.MessageCopiedToClipboard
+                        uiLocalized.MessageCopiedToClipboard
                     );
                 }}
             >
