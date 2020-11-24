@@ -5,7 +5,7 @@ import {
     View,
 } from "react-native";
 
-import buttonDots from "@tonlabs/uikit.assets/btn_dots/btn_dots.png";
+import { UIAssets } from "@tonlabs/uikit.assets";
 
 import { commonStyles } from "./styles";
 import type { MenuItem } from "./types";
@@ -14,6 +14,8 @@ type Props = {
     menuMore?: MenuItem[];
     menuMoreDisabled?: boolean;
 };
+
+const { buttonDots } = UIAssets.icons.ui;
 
 export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
     if (!menuMore || menuMore.length === 0) {
