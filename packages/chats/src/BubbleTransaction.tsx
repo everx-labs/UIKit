@@ -78,7 +78,7 @@ const getCommentColor = (message: TransactionMessage) => {
 };
 
 const getCommentText = (message: TransactionMessage) => {
-    return `${message.info.text || ""}, `; // TODO: move translations to UILocalized
+    return `${message.info.text || ""}, `; // TODO: move translations to uiLocalized
 };
 
 const getActionString = (type: TransactionType) => {
@@ -122,7 +122,7 @@ function TransactionSublabel(props: TransactionMessage) {
                         props
                     )}_time`}
                     role={UILabel.Role.TinyRegular}
-                    text={UILocalized.TransactionStatus.sending}
+                    text={uiLocalized.TransactionStatus.sending}
                     style={styles.textWhite}
                 />
             </>

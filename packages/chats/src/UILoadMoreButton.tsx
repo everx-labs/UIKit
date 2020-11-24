@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
 import { MaterialIndicator } from "react-native-indicators";
 
-import { UIColor, UIConstant, UILocalized, UIStyle } from "@tonlabs/uikit.core";
+import { UIColor, UIConstant, UIStyle } from "@tonlabs/uikit.core";
 import { UILabel, UIComponent } from "@tonlabs/uikit.components";
 
 type Props = {

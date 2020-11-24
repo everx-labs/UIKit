@@ -63,7 +63,7 @@ export class LocalizationService<T> extends LocalizedStrings {
             }
             const isNormalized = !Number.isNaN(Number(numberString));
             if (!isNormalized) { // Check if not normalized
-                throw Error('[UILocalized] Passed number is not normalized');
+                throw Error('[LocalizationService] Passed number is not normalized');
             }
             parts = UIFunction.getNumberParts(numberString, this.localeInfo, options, isNormalized);
         } catch (error) {
