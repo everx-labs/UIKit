@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { Platform, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -219,22 +219,13 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     renderContentView() {
-        // Added KeyboardAvoidingView, otherwhise the component remains behind the
-        // keyboard and we are not able to select any of the elementes that are rendered
-        // in that area.
-        const extraOffset = Platform.OS === 'ios' ? 110 : -1000;
-        return (
-            <KeyboardAvoidingView
-                style={countryPickerStyle.container}
-                keyboardVerticalOffset={extraOffset}
-                behavior={'padding'}
-            >
+        // Wraping the component with a ScrollView fixes on Android the
+        // problem of the list not avoiding the keyboard... on iOS this
+        // doesn't seem to work. KeyboardAvoidingView fixes it for iOS.
+        const picker = (
+            <>
                 {this.renderSearchBar()}
-                {/*
-                    Had to wrap the component with a ScrollView from the gesture-handler package
-                    otherwise (on Android) we are not able to scroll the list of countries.
-                */}
-                <ScrollView style={countryPickerStyle.container}>
+                <ScrollView>
                     <CountryPicker
                         ref={(component) => { this.countryPicker = component; }}
                         cca2={this.cca2}
@@ -252,7 +243,19 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                             CountryPicker.dataTypes.countries}
                     />
                 </ScrollView>
-            </KeyboardAvoidingView>
+            </>
         );
+        const toRender = Platform.OS === 'ios'
+            ? (
+                <KeyboardAvoidingView
+                    style={countryPickerStyle.container}
+                    keyboardVerticalOffset={120}
+                    behavior="padding"
+                >
+                    {picker}
+                </KeyboardAvoidingView>
+            )
+            : picker;
+        return toRender;
     }
 }
