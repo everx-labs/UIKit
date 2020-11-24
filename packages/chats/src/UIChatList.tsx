@@ -51,6 +51,25 @@ const onHandlerStateChange = ({
 // thus not affecting the content width of SectionList to prevent layout issues
 const style = Platform.select({ web: { overflowY: 'overlay' } });
 
+// Note: `DOMMouseScroll` is commonly used by Firefox!
+const wheelEvent = document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
+
+const CHAT_SECTION_LIST = 'chatSectionList';
+
+function useWheelHandler(handler: () => void) {
+    React.useEffect(() => {
+        if (Platform.OS !== 'web') {
+            return () => {};
+        }
+
+        window.addEventListener(wheelEvent, handler, { passive: false });
+
+        return () => {
+            window.removeEventListener(wheelEvent, handler);
+        }
+    }, []);
+}
+
 const keyExtractor = (item: ChatMessage) => {
     return item.key;
 };
@@ -103,7 +122,7 @@ const renderSectionTitle = ({ section }: { section: Section }) => (
     <DateSeparator time={section.time} />
 );
 
-export const UIChatList = React.forwardRef((props: Props, ref) => {
+export const UIChatList = React.forwardRef((props: Props) => {
     const keyboardDismissProp = React.useMemo(() => {
         if (Platform.OS !== 'ios') {
             // The following is not working on Android >>>
@@ -146,6 +165,7 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
             },
         })
     );
+    const ref = React.useRef(undefined);
     const listSize = React.useRef({ height: 0 });
     const contentHeight = React.useRef(0);
     const listContentOffset = React.useRef({ y: 0 });
@@ -255,13 +275,35 @@ export const UIChatList = React.forwardRef((props: Props, ref) => {
         bottom: 0,
     };
 
+    useWheelHandler((e: any) => {
+        const scroll = document.getElementById(CHAT_SECTION_LIST);
+        if (scroll && scroll.contains(e.target) && ref.current) {
+            e.preventDefault();
+            // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
+            const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
+            const delta = e.deltaY || e.detail; // Note. e.detail is used for `DOMMouseScroll`
+            const y = listContentOffset.current.y - (delta * factor);
+            if (ref.current) {
+                const scrollResponder = ref.current.getScrollResponder();
+                if (scrollResponder) {
+                    // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
+                    // TODO: what exactly this for, and why it tries to set property on a number???
+                    const scrollableNode: any = scrollResponder.getScrollableNode();
+                    if (scrollableNode) {
+                        scrollableNode.scrollTop = y;
+                    }
+                }
+            }
+        }
+    });
+
     return (
         <TapGestureHandler
             onHandlerStateChange={onHandlerStateChange}
             enabled={props.areStickersVisible}
         >
             <SectionList
-                nativeID="chatSectionList"
+                nativeID={CHAT_SECTION_LIST}
                 testID="chat_container"
                 {...keyboardDismissProp}
                 contentInset={contentInset}

@@ -13,7 +13,7 @@ export type UIActionComponentProps = {
     testID?: string,
     disabled?: boolean,
     showIndicator?: boolean,
-    onPress?: ?() => void,
+    onPress?: ?Function,
     onMouseEnter?: () => void,
     onMouseLeave?: () => void,
 };
