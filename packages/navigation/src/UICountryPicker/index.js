@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 import { UIConstant, UITextStyle, UIFont, UIColor } from '@tonlabs/uikit.core';
@@ -218,26 +219,43 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     renderContentView() {
-        return (
-            <React.Fragment>
+        // Wraping the component with a ScrollView fixes on Android the
+        // problem of the list not avoiding the keyboard... on iOS this
+        // doesn't seem to work. KeyboardAvoidingView fixes it for iOS.
+        const picker = (
+            <>
                 {this.renderSearchBar()}
-                <CountryPicker
-                    ref={(component) => { this.countryPicker = component; }}
-                    cca2={this.cca2}
-                    translation={this.language}
-                    hideAlphabetFilter
-                    filterable
-                    renderFilter={() => null}
-                    disabledCountries={this.disabledCountries}
-                    disabledCountryText={uiLocalized.serviceUnavailable}
-                    excludedCountries={this.excludedCountries}
-                    styles={countryPickerStyle}
-                    onChange={this.onPickCountry}
-                    dataType={this.isLanguages ?
-                        CountryPicker.dataTypes.languages :
-                        CountryPicker.dataTypes.countries}
-                />
-            </React.Fragment>
+                <ScrollView>
+                    <CountryPicker
+                        ref={(component) => { this.countryPicker = component; }}
+                        cca2={this.cca2}
+                        translation={this.language}
+                        hideAlphabetFilter
+                        filterable
+                        renderFilter={() => null}
+                        disabledCountries={this.disabledCountries}
+                        disabledCountryText={uiLocalized.serviceUnavailable}
+                        excludedCountries={this.excludedCountries}
+                        styles={countryPickerStyle}
+                        onChange={this.onPickCountry}
+                        dataType={this.isLanguages ?
+                            CountryPicker.dataTypes.languages :
+                            CountryPicker.dataTypes.countries}
+                    />
+                </ScrollView>
+            </>
         );
+        const toRender = Platform.OS === 'ios'
+            ? (
+                <KeyboardAvoidingView
+                    style={countryPickerStyle.container}
+                    keyboardVerticalOffset={120}
+                    behavior="padding"
+                >
+                    {picker}
+                </KeyboardAvoidingView>
+            )
+            : picker;
+        return toRender;
     }
 }
