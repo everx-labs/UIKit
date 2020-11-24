@@ -59,7 +59,7 @@ const CHAT_SECTION_LIST = 'chatSectionList';
 function useWheelHandler(handler: () => void) {
     React.useEffect(() => {
         if (Platform.OS !== 'web') {
-            return () => {};
+            return;
         }
 
         window.addEventListener(wheelEvent, handler, { passive: false });
