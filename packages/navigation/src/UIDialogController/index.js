@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         alignItems: 'stretch',
-        backgroundColor: UIColor.white(),
     },
     bottomContainer: {
         position: 'absolute',

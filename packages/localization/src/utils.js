@@ -40,7 +40,10 @@ function prepareValue(value: Object | Array<any> | string | boolean, options: La
             if (foundConstants) {
                 foundConstants.forEach((constant) => {
                     const key = constant.replace(/[{}]/g, '');
-                    value.replace(new RegExp(constant, 'g'), constants[key]);
+                    // Filtering numerals
+                    if (/[A-Z]/.test(constant)) {
+                        value.replace(new RegExp(constant, 'g'), constants[key]);
+                    }
                 });
             }
         }
