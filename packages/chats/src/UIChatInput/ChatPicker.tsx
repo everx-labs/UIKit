@@ -179,13 +179,11 @@ export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
 
         React.useImperativeHandle(ref, () => ({
             openImageDialog: () => {
-                // TODO: do we need it here?
                 UICustomKeyboardUtils.dismiss();
 
                 uiImageViewRef.current?.openDialog();
             },
             openDocumentDialog: () => {
-                // TODO: do we need it here?
                 UICustomKeyboardUtils.dismiss();
 
                 if (Platform.OS === 'web') {

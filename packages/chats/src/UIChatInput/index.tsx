@@ -11,7 +11,6 @@ import {
     UIStickerPickerKeyboardName,
 } from '../UIStickerPicker';
 
-// import { ChatPicker } from './ChatPicker';
 import { ChatInput } from './ChatInput';
 import type {
     OnHeightChange,
@@ -29,13 +28,16 @@ const AndroidKeyboardAdjust =
 
 export type OnStickersVisible = (visible: boolean) => void | Promise<void>;
 
-function useStickers(onStickersVisible?: OnStickersVisible) {
+function useStickers(
+    onStickersVisible?: OnStickersVisible,
+    onSendSticker?: OnPickSticker
+) {
     const stickersPickerRef = React.useRef<UIStickerPickerRef>(null);
     const [stickersVisible, setStickersVisible] = React.useState<boolean>(
         false
     );
 
-    const onStickersPress = () => {
+    const onStickersPress = React.useCallback(async () => {
         if (AndroidKeyboardAdjust) {
             // Apply a hack for Android animation
             AndroidKeyboardAdjust.setAdjustNothing();
@@ -54,24 +56,15 @@ function useStickers(onStickersVisible?: OnStickersVisible) {
             }
         }
 
-        if (Platform.OS === 'android') {
-            setTimeout(() => {
-                setStickersVisible(!stickersVisible);
-            }, 0); // required to fix an issue with the keyboard animation
-        } else {
-            setStickersVisible(!stickersVisible);
-        }
+        setStickersVisible(!stickersVisible);
 
         if (onStickersVisible) {
             onStickersVisible(!stickersVisible);
         }
-    };
+    }, [stickersVisible]);
 
-    const onFocus = () => {
-        // stickersPickerRef.current?.hide();
-        // if (Platform.OS !== 'web') {
-        //     UICustomKeyboardUtils.dismiss();
-        // }
+    const onFocus = React.useCallback(() => {
+        stickersPickerRef.current?.hide();
 
         if (Platform.OS === 'android') {
             setTimeout(() => {
@@ -92,9 +85,9 @@ function useStickers(onStickersVisible?: OnStickersVisible) {
         if (!stickersVisible && AndroidKeyboardAdjust) {
             AndroidKeyboardAdjust.setAdjustResize();
         }
-    };
+    }, [stickersVisible]);
 
-    const onBlur = () => {
+    const onBlur = React.useCallback(() => {
         if (Platform.OS !== 'android') {
             return;
         }
@@ -108,11 +101,22 @@ function useStickers(onStickersVisible?: OnStickersVisible) {
                 AndroidKeyboardAdjust.setAdjustResize();
             }
         }
-    };
+    }, [stickersVisible]);
 
-    const onKeyboardResigned = () => {
+    const onKeyboardResigned = React.useCallback(() => {
         setStickersVisible(false);
-    };
+    }, []);
+
+    const onPickSticker = React.useCallback(
+        (sticker: PickedSticker) => {
+            onStickersPress();
+
+            if (onSendSticker) {
+                onSendSticker(sticker);
+            }
+        },
+        [onStickersPress]
+    );
 
     return {
         stickersPickerRef,
@@ -121,6 +125,7 @@ function useStickers(onStickersVisible?: OnStickersVisible) {
         onKeyboardResigned,
         onFocus,
         onBlur,
+        onPickSticker,
     };
 }
 
@@ -172,6 +177,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
             onKeyboardResigned,
             onFocus,
             onBlur,
+            onPickSticker,
         } = useStickers(props.onStickersVisible);
         const { menuPlus, chatPickerRef } = useMenuPlus();
 
@@ -201,7 +207,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                     <UIStickerPicker
                         ref={stickersPickerRef}
                         stickers={props.stickers}
-                        onPick={props.onSendSticker}
+                        onPick={onPickSticker}
                     />
                 </>
             );
@@ -213,18 +219,16 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 kbInputRef={textInputRef}
                 kbComponent={
                     stickersVisible ? UIStickerPickerKeyboardName : undefined
+                    // UIStickerPickerKeyboardName
                 }
                 kbInitialProps={{
                     ref: stickersPickerRef,
                     // The following doesn't work for iOS, thus we use `onItemSelected` prop
-                    onPick: props.onSendSticker,
+                    onPick: onPickSticker,
                     isCustomKeyboard: true,
                     stickers: props.stickers,
                 }}
-                onItemSelected={(_kbID, sticker: PickedSticker) => {
-                    onStickersPress();
-                    props.onSendSticker(sticker);
-                }}
+                onItemSelected={(_id, stk) => onPickSticker(stk)}
                 onKeyboardResigned={onKeyboardResigned}
             />
         );

@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     TouchableOpacity,
     Image, // TODO: use fast-image?
-    View,
 } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     TouchableWithoutFeedback,
     StyleSheet,
@@ -6,15 +6,15 @@ import {
     View,
     Text,
     Animated,
-} from "react-native";
-import ParsedText from "react-native-parsed-text";
-import { UIColor, UIFont, UIConstant, UIStyle } from "@tonlabs/uikit.core";
-import { uiLocalized } from "@tonlabs/uikit.localization";
-import { UIShareManager } from "@tonlabs/uikit.navigation";
+} from 'react-native';
+import ParsedText from 'react-native-parsed-text';
+import { UIColor, UIFont, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIShareManager } from '@tonlabs/uikit.navigation';
 
-import { ChatMessageStatus } from "./types";
-import type { PlainTextMessage } from "./types";
-import { useBubblePosition, BubblePosition } from "./useBubblePosition";
+import { ChatMessageMeta, ChatMessageStatus } from './types';
+import type { PlainTextMessage } from './types';
+import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 const getUrlStyle = (status: ChatMessageStatus) =>
     status === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
@@ -65,12 +65,12 @@ const getBubbleStyle = (message: PlainTextMessage) => {
 // For e2e tests, to create unique id as in those tests
 // we don't know much about messages
 const createUniqTestId = (pattern: string, variable: string) =>
-    pattern.replace("%", variable);
+    pattern.replace('%', variable);
 
 const createTestId = (pattern: string, text: string) => {
     return createUniqTestId(
         pattern,
-        "_" + text.split(" ").slice(0, 2).join(" ")
+        '_' + text.split(' ').slice(0, 2).join(' ')
     );
 };
 
@@ -78,7 +78,7 @@ function BubbleTime(props: PlainTextMessage) {
     return (
         <View style={styles.timeTextContainer}>
             <Text
-                testID={createTestId("chat_text_message%_time", props.text)}
+                testID={createTestId('chat_text_message%_time', props.text)}
                 style={[UIFont.tinyRegular(), styles.timeText]}
             >
                 {uiLocalized.formatTime(props.time || Date.now())}
@@ -128,7 +128,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                     >
                         <ParsedText
                             testID={createTestId(
-                                "chat_text_message%",
+                                'chat_text_message%',
                                 props.text
                             )}
                             key={`chat_text_key_${props.key}`}
@@ -139,7 +139,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                             ]}
                             parse={[
                                 {
-                                    type: "url",
+                                    type: 'url',
                                     style: getUrlStyle(props.status),
                                     onPress: (url: string, index: number) =>
                                         props.onPressUrl &&
@@ -159,48 +159,48 @@ export function BubblePlainText(props: PlainTextMessage) {
 
 const styles = StyleSheet.create({
     containerRight: {
-        paddingLeft: "20%",
-        alignSelf: "flex-end",
-        justifyContent: "flex-end",
+        paddingLeft: '20%',
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
     },
     containerLeft: {
-        paddingRight: "20%",
-        alignSelf: "flex-start",
-        justifyContent: "flex-start",
+        paddingRight: '20%',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
     },
     textCell: {
-        textAlign: "left",
-        maxWidth: "100%",
+        textAlign: 'left',
+        maxWidth: '100%',
     },
     urlReceived: {
         color: UIColor.primary(),
         // Some android devices seem to render the underline wrongly
-        textDecorationLine: Platform.OS === "android" ? "none" : "underline",
+        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
     urlSent: {
         color: UIColor.fa(),
         // Some android devices seem to render the underline wrongly
-        textDecorationLine: Platform.OS === "android" ? "none" : "underline",
+        textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
     timeTextContainer: {
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
-        marginLeft: "auto", // Need for correct positioning to right side in message cell
+        marginLeft: 'auto', // Need for correct positioning to right side in message cell
     },
     timeText: {
-        textAlign: "right",
-        alignSelf: "flex-end",
+        textAlign: 'right',
+        alignSelf: 'flex-end',
         color: UIColor.textQuaternary(),
     },
     wrapMsgContainer: {
         flexShrink: 1,
-        flexDirection: "row",
-        alignItems: "flex-end",
+        flexDirection: 'row',
+        alignItems: 'flex-end',
     },
     msgContainer: {
         flexShrink: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         borderRadius: UIConstant.borderRadius(),
     },
     rightBottomCorner: {
@@ -210,19 +210,19 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 0,
     },
     msgSending: {
-        alignItems: "flex-end",
+        alignItems: 'flex-end',
         backgroundColor: UIColor.backgroundQuinary(),
     },
     msgReceived: {
-        alignItems: "flex-start",
+        alignItems: 'flex-start',
         backgroundColor: UIColor.backgroundTertiary(),
     },
     msgAborted: {
-        alignItems: "flex-start",
+        alignItems: 'flex-start',
         backgroundColor: UIColor.error(),
     },
     msgSent: {
-        alignItems: "flex-end",
+        alignItems: 'flex-end',
         backgroundColor: UIColor.primary(),
     },
 });

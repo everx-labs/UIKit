@@ -2175,43 +2175,43 @@ const Chat = () => (
                     sender: '0:000',
                     text: 'This is action',
                 },
-                // {
-                //     type: 'stk',
-                //     status: 'pending',
-                //     time: Math.floor(Date.now() - 1 * 60 * 1000),
-                //     sender: '0:000',
-                //     source: {
-                //         uri:
-                //             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                //     },
-                // },
-                // {
-                //     type: 'stk',
-                //     status: 'sent',
-                //     time: Math.floor(Date.now() - 1 * 60 * 1000),
-                //     sender: '0:000',
-                //     source: {
-                //         uri:
-                //             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                //     },
-                // },
-                // {
-                //     type: 'stk',
-                //     status: 'received',
-                //     time: Math.floor(Date.now() - 1 * 60 * 1000),
-                //     sender: '0:123',
-                //     source: {
-                //         uri:
-                //             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                //     },
-                // },
-                // {
-                //     type: 'sys',
-                //     status: 'sent',
-                //     time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
-                //     sender: '0:000', // TODO: is this mandatory field for system message?
-                //     text: 'This is a system message',
-                // },
+                {
+                    type: 'stk',
+                    status: 'pending',
+                    time: Math.floor(Date.now() - 1 * 60 * 1000),
+                    sender: '0:000',
+                    source: {
+                        uri:
+                            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                    },
+                },
+                {
+                    type: 'stk',
+                    status: 'sent',
+                    time: Math.floor(Date.now() - 1 * 60 * 1000),
+                    sender: '0:000',
+                    source: {
+                        uri:
+                            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                    },
+                },
+                {
+                    type: 'stk',
+                    status: 'received',
+                    time: Math.floor(Date.now() - 1 * 60 * 1000),
+                    sender: '0:123',
+                    source: {
+                        uri:
+                            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+                    },
+                },
+                {
+                    type: 'sys',
+                    status: 'sent',
+                    time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
+                    sender: '0:000', // TODO: is this mandatory field for system message?
+                    text: 'This is a system message',
+                },
                 {
                     type: 'trx',
                     status: 'sent',
