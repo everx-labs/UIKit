@@ -11,12 +11,14 @@
     "scripts": {
         "test": "jest",
         "flow": "flow check",
+        "tsc": "tsc",
         "test:coverage": "jest --coverage",
         "language:createTypes": "node ./scripts/convertLocaleFileToFlowTypes.js",
         "web": "webpack-dev-server -d --config example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached"
     },
     "pre-commit": [
-        "flow"
+        "flow",
+        "tsc"
     ],
     "peerDependencies": {
         "@react-native-community/netinfo": "^5.9.6",
