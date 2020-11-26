@@ -1,10 +1,10 @@
-import * as React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import type { StyleProp, ViewStyle } from "react-native";
-import { MaterialIndicator } from "react-native-indicators";
+import * as React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
+import { MaterialIndicator } from 'react-native-indicators';
 
-import { UIColor, UIConstant, UIStyle } from "@tonlabs/uikit.core";
-import { UILabel, UIComponent } from "@tonlabs/uikit.components";
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UILabel } from '@tonlabs/uikit.components';
 
 type Props = {
     label?: string;
@@ -57,14 +57,14 @@ export const UILoadMoreButton = (props: Props) => (
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
-        alignItems: "center",
+        width: '100%',
+        alignItems: 'center',
         paddingVertical: UIConstant.contentOffset(),
     },
     wrapper: {
         flexShrink: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: UIColor.backgroundTertiary(),
         height: UIConstant.smallCellHeight(),
         borderRadius: UIConstant.smallCellHeight() / 2,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.smallContentOffset(),
     },
     indicator: {
-        position: "absolute",
-        alignSelf: "center",
+        position: 'absolute',
+        alignSelf: 'center',
     },
 });

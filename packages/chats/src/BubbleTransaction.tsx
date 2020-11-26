@@ -1,14 +1,14 @@
-import * as React from "react";
-import { View, StyleSheet } from "react-native";
+import * as React from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import { UIColor, UIStyle, UIConstant } from "@tonlabs/uikit.core";
-import { uiLocalized } from "@tonlabs/uikit.localization";
-import { UILabel, UIScaleButton } from "@tonlabs/uikit.components";
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UILabel, UIScaleButton } from '@tonlabs/uikit.components';
 
-import { ChatMessageStatus, TransactionType } from "./types";
-import type { TransactionMessage } from "./types";
-import { useBubblePosition, BubblePosition } from "./useBubblePosition";
-import { BubbleTransactionComment } from "./BubbleTransactionComment";
+import { ChatMessageStatus, TransactionType } from './types';
+import type { TransactionMessage } from './types';
+import { useBubblePosition, BubblePosition } from './useBubblePosition';
+import { BubbleTransactionComment } from './BubbleTransactionComment';
 
 const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
@@ -59,8 +59,9 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
     return null;
 };
 
-const getAmountColor = (message: TransactionMessage) => {
-    // const { type } = message.info;
+const getAmountColor = (_message: TransactionMessage) => {
+    // TODO: what do with that types?
+    // const { type } = _message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return styles.textGrey;
@@ -68,7 +69,8 @@ const getAmountColor = (message: TransactionMessage) => {
     return styles.textWhite;
 };
 
-const getCommentColor = (message: TransactionMessage) => {
+const getCommentColor = (_message: TransactionMessage) => {
+    // TODO: what do with that types?
     // const { type } = message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
@@ -78,12 +80,12 @@ const getCommentColor = (message: TransactionMessage) => {
 };
 
 const getCommentText = (message: TransactionMessage) => {
-    return `${message.info.text || ""}, `; // TODO: move translations to uiLocalized
+    return `${message.info.text || ''}, `; // TODO: move translations to uiLocalized
 };
 
 const getActionString = (type: TransactionType) => {
     if (type === TransactionType.Aborted) {
-        return "Tap to resend"; // TODO: TONLocalized.chats.message.tapToResend
+        return 'Tap to resend'; // TODO: TONLocalized.chats.message.tapToResend
     }
 
     return null;
@@ -224,22 +226,22 @@ export function BubbleTransaction(props: TransactionMessage) {
 
 const styles = StyleSheet.create({
     containerRight: {
-        paddingLeft: "20%",
-        alignSelf: "flex-end",
-        justifyContent: "flex-end",
+        paddingLeft: '20%',
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
     },
     containerLeft: {
-        paddingRight: "20%",
-        alignSelf: "flex-start",
-        justifyContent: "flex-start",
+        paddingRight: '20%',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
     },
     innerLeft: {
-        flexDirection: "column",
-        alignItems: "flex-start",
+        flexDirection: 'column',
+        alignItems: 'flex-start',
     },
     innerRight: {
-        flexDirection: "column",
-        alignItems: "flex-end",
+        flexDirection: 'column',
+        alignItems: 'flex-end',
     },
     trxCard: {
         borderRadius: UIConstant.borderRadius(),
@@ -277,7 +279,7 @@ const styles = StyleSheet.create({
     actionString: {
         paddingTop: UIConstant.tinyContentOffset(),
         letterSpacing: 0.5,
-        textAlign: "right",
+        textAlign: 'right',
         color: UIColor.grey(),
     },
 });

@@ -1,10 +1,14 @@
-import { ChatMessageType } from "./types";
-import type { ChatMessage } from "./types";
+import type { SectionListData } from 'react-native';
 
-export type Section = { time: number; data: ChatMessage[]; key?: number };
+import { ChatMessageType } from './types';
+import type { ChatMessage } from './types';
+
+export type SectionExtra = { time?: number };
 
 export class UIChatListFormatter {
-    static getSections(messages: ChatMessage[]): Section[] {
+    static getSections(
+        messages: ChatMessage[]
+    ): ReadonlyArray<SectionListData<ChatMessage, SectionExtra>> {
         const sections: { [key: number]: ChatMessage[] } = {};
 
         messages.forEach((message, index) => {
@@ -66,7 +70,7 @@ export class UIChatListFormatter {
             return {
                 time,
                 data: sections[time],
-                key: time,
+                key: t,
             };
         });
     }

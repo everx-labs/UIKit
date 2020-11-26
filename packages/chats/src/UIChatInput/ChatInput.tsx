@@ -339,7 +339,7 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                                     maxLength={MAX_INPUT_LENGTH}
                                     multiline={true}
                                     numberOfLines={numberOfLines}
-                                    // @ts-ignore
+                                    // @ts-ignore (this is our custom prop)
                                     noPersonalizedLearning={false}
                                     placeholder={uiLocalized.TypeMessage}
                                     placeholderTextColor={UIColor.textPlaceholder(
