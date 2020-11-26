@@ -10,54 +10,49 @@ import { UIComponent, UITextButton } from '@tonlabs/uikit.components';
 //     title: string,
 // }
 
+type PathParams = {
+    path: string,
+    params: { [string]: string }
+};
+
 type Props = {
     // screens: BreadCrumbScreen[],
     narrow: boolean,
     navigation: any,
     numberOfLastRoutesShown: number,
     screenTitleMapper: (routeName: string) => string,
-    pathMap: {
-        [string]: {
-            name: string,
-            staticParameters: { section: string },
-            dynamicParameters: { [string]: boolean },
-        }
-    }
+    pageHistory: PathParams[],
+    onPress: (number) => void,
 };
 
 export default class UIBreadCrumbs extends UIComponent<Props, {}> {
     static defaultProps = {
         narrow: false,
         numberOfLastRoutesShown: 3,
-        pathMap: {},
         screenTitleMapper: () => '',
     };
 
-    getLastRoutes() {
+    getLastRoutes(): PathParams[] {
         const {
-            numberOfLastRoutesShown, pathMap, narrow, navigation,
+            numberOfLastRoutesShown, pageHistory, narrow, navigation,
         } = this.props;
-        const state = navigation.dangerouslyGetState();
-        // console.log('[DEBUG] Here you have the list of routes that have been pushed to the stack', state);
-        const { routes } = state || {};
         const num = narrow ? 1 : numberOfLastRoutesShown;
 
-        if (routes) {
-            const min = Math.max(routes.length - num - 1, 0);
-            return routes.slice(min, routes.length - 1)
-                .map(({ routeName, params }) => {
-                    const { dynamicParameters } = pathMap[routeName] || {};
-                    const keysArr = Object.keys(dynamicParameters || {}).map(key => key);
-                    const paramValues = {};
-                    keysArr.forEach((key) => {
-                        paramValues[key] = params[key];
-                    });
-                    return { routeName, paramValues };
-                });
+        if (pageHistory) {
+            const min = Math.max(pageHistory.length - num, 0);
+            return pageHistory.slice(min, pageHistory.length)
         }
         return [];
     }
 
+    getOnPress(index: number) {
+        return () => {
+            const steps = this.getLastRoutes().length - index;
+            this.props.onPress(steps);
+        }
+    }
+
+    // Render
     render() {
         const lastRoutes = this.getLastRoutes();
         if (!lastRoutes.length) return null;
@@ -70,10 +65,10 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
 
         return (
             <View style={[UIStyle.container.centerLeft()]}>
-                {lastRoutes.map(({ routeName, paramValues }, index) => {
-                    const key = Object.keys(paramValues)[0];
-                    const id = paramValues[key] ? UIFunction.truncText(paramValues[key], true) : '';
-                    const title = `${this.props.screenTitleMapper(routeName)} ${id ? '- ' : ''}${id}`;
+                {lastRoutes.map(({ path, params = {} }, index) => {
+                    const key = Object.keys(params)[0];
+                    const id = params[key] ? UIFunction.truncText(params[key], true) : '';
+                    const title = `${this.props.screenTitleMapper(path)} ${id ? '- ' : ''}${id}`;
 
                     return (
                         <React.Fragment key={`bread-crumbs-${title}-${index}`}>
@@ -84,7 +79,7 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
                                     UIStyle.color.getColorStyle(UIColor.tagBlack()),
                                 ]}
                                 style={UIStyle.margin.rightNormal()}
-                                onPress={() => this.props.navigation.pop(lastRoutes.length - index)}
+                                onPress={this.getOnPress(index)}
                             />
                             {index < lastRoutes.length - 1 && slash}
                         </React.Fragment>
