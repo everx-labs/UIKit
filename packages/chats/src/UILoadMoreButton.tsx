@@ -5,6 +5,7 @@ import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UILabel } from '@tonlabs/uikit.components';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 type Props = {
     label?: string;
@@ -28,29 +29,36 @@ const Indicator = ({ isLoadingMore }: { isLoadingMore: boolean }) => {
     );
 };
 
-export const UILoadMoreButton = (props: Props) => (
+export const UILoadMoreButton: React.FunctionComponent<Props> = ({
+    label = uiLocalized.LoadMore,
+    isLoadingMore = false,
+    onLoadMore = () => {},
+    containerStyle = {},
+    wrapperStyle = {},
+    textStyle = {},
+}: Props) => (
     <TouchableOpacity
-        style={[styles.container, props.containerStyle]}
+        style={[styles.container, containerStyle]}
         onPress={() => {
-            if (props.onLoadMore) {
-                props.onLoadMore();
+            if (onLoadMore) {
+                onLoadMore();
             }
         }}
-        disabled={props.isLoadingMore}
+        disabled={isLoadingMore}
     >
-        <View style={[styles.wrapper, props.wrapperStyle]}>
-            {props.label && (
+        <View style={[styles.wrapper, wrapperStyle]}>
+            {label && (
                 <UILabel
                     role={UILabel.Role.TinyRegular}
                     style={[
                         UIStyle.color.getColorStyle(UIColor.textTertiary()),
-                        props.textStyle,
-                        { opacity: props.isLoadingMore ? 0 : 1 },
+                        textStyle,
+                        { opacity: isLoadingMore ? 0 : 1 },
                     ]}
-                    text={props.label}
+                    text={label}
                 />
             )}
-            <Indicator isLoadingMore={props.isLoadingMore} />
+            <Indicator isLoadingMore={isLoadingMore} />
         </View>
     </TouchableOpacity>
 );

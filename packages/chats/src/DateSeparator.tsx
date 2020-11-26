@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     },
     dateSeparator: {
         flexShrink: 1,
+        justifyContent: 'center',
         backgroundColor: UIColor.backgroundTertiary(),
         height: UIConstant.smallCellHeight(),
         paddingVertical: UIConstant.tinyContentOffset() / 2, // TODO: use specified value instead of calculation
