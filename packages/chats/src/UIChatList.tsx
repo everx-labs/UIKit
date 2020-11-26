@@ -87,22 +87,22 @@ const keyExtractor = (item: ChatMessage) => {
 
 const renderBubble = (message: ChatMessage) => {
     switch (message.type) {
-        case ChatMessageType.PlainText:
-            return <BubblePlainText {...message} />;
-        case ChatMessageType.System:
-            return <BubbleSystem {...message} />;
-        case ChatMessageType.Transaction:
-            return <BubbleTransaction {...message} />;
-        case ChatMessageType.Image:
-            return <BubbleImage {...message} />;
-        case ChatMessageType.Document:
-            return <BubbleDocument {...message} />;
-        case ChatMessageType.Sticker:
-            return <BubbleSticker {...message} />;
-        case ChatMessageType.ActionButton:
-            return <BubbleActionButton {...message} />;
-        default:
-            return null;
+    case ChatMessageType.PlainText:
+        return <BubblePlainText {...message} />;
+    case ChatMessageType.System:
+        return <BubbleSystem {...message} />;
+    case ChatMessageType.Transaction:
+        return <BubbleTransaction {...message} />;
+    case ChatMessageType.Image:
+        return <BubbleImage {...message} />;
+    case ChatMessageType.Document:
+        return <BubbleDocument {...message} />;
+    case ChatMessageType.Sticker:
+        return <BubbleSticker {...message} />;
+    case ChatMessageType.ActionButton:
+        return <BubbleActionButton {...message} />;
+    default:
+        return null;
     }
 };
 
@@ -113,7 +113,7 @@ const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
 }) => {
     return (
         <View
-            onLayout={(e) => onLayoutCell(item.key, e)}
+            onLayout={e => onLayoutCell(item.key, e)}
             style={{
                 // TODO: this one is incorrect, there are different paddings for bubbles
                 paddingTop: item.firstFromChain
@@ -141,247 +141,241 @@ const renderSectionTitle = ({
     return <DateSeparator time={section.time} />;
 };
 
-export const UIChatList = React.forwardRef<SectionList, Props>(
-    function UIChatListForwarded(props, ref) {
-        const keyboardDismissProp = React.useMemo(() => {
-            if (Platform.OS !== 'ios') {
-                // The following is not working on Android >>>
-                // See https://github.com/facebook/react-native/issues/23364
-                return 'on-drag';
+export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
+    const keyboardDismissProp = React.useMemo(() => {
+        if (Platform.OS !== 'ios') {
+            // The following is not working on Android >>>
+            // See https://github.com/facebook/react-native/issues/23364
+            return 'on-drag';
 
-                // This can be used as a workaround >>>>
-                // onScrollBeginDrag: () => {
-                //     Keyboard.dismiss();
-                //     UICustomKeyboardUtils.dismiss();
-                // },
-            }
-            if (props.areStickersVisible) {
-                return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
-            }
-            return 'interactive';
-        }, [props.areStickersVisible]);
+            // This can be used as a workaround >>>>
+            // onScrollBeginDrag: () => {
+            //     Keyboard.dismiss();
+            //     UICustomKeyboardUtils.dismiss();
+            // },
+        }
+        if (props.areStickersVisible) {
+            return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
+        }
+        return 'interactive';
+    }, [props.areStickersVisible]);
 
-        const cellsHeight = React.useRef(new Map());
+    const cellsHeight = React.useRef(new Map());
 
-        const getItemLayout = React.useCallback(
-            sectionListGetItemLayout({
-                getItemHeight: (rowData: ChatMessage) => {
-                    return cellsHeight.current.get(rowData.key) || 0;
-                },
-                getSectionFooterHeight: () => {
-                    return (
-                        UIConstant.smallCellHeight() +
+    const getItemLayout = React.useCallback(
+        sectionListGetItemLayout({
+            getItemHeight: (rowData: ChatMessage) => {
+                return cellsHeight.current.get(rowData.key) || 0;
+            },
+            getSectionFooterHeight: () => {
+                return (
+                    UIConstant.smallCellHeight() +
                         UIConstant.contentOffset() * 2
-                    );
-                },
-                listFooterHeight: () => {
-                    if (!props.canLoadMore) {
-                        return 0;
-                    }
-                    return (
-                        UIConstant.smallCellHeight() +
+                );
+            },
+            listFooterHeight: () => {
+                if (!props.canLoadMore) {
+                    return 0;
+                }
+                return (
+                    UIConstant.smallCellHeight() +
                         UIConstant.contentOffset() * 2
-                    );
-                },
-            }),
-            [props.canLoadMore, cellsHeight]
-        );
+                );
+            },
+        }),
+        [props.canLoadMore, cellsHeight],
+    );
 
-        const localRef = React.useRef<SectionList>(null);
+    const localRef = React.useRef<SectionList>(null);
 
-        // @ts-ignore localRef.current can be null by types, hence it contradict with
-        // useImperativeHandle type, but this is actually works
-        React.useImperativeHandle(ref, () => {
-            return localRef.current;
-        });
+    // @ts-ignore localRef.current can be null by types, hence it contradict with
+    // useImperativeHandle type, but this is actually works
+    React.useImperativeHandle(ref, () => {
+        return localRef.current;
+    });
 
-        const listSize = React.useRef({ height: 0 });
-        const contentHeight = React.useRef(0);
-        const listContentOffset = React.useRef({ y: 0 });
+    const listSize = React.useRef({ height: 0 });
+    const contentHeight = React.useRef(0);
+    const listContentOffset = React.useRef({ y: 0 });
 
-        const topOpacity = React.useRef(new Animated.Value(0));
+    const topOpacity = React.useRef(new Animated.Value(0));
 
-        const linesAnimationInProgress = React.useRef(false);
-        const linesIsShown = React.useRef(false);
+    const linesAnimationInProgress = React.useRef(false);
+    const linesIsShown = React.useRef(false);
 
-        const showLinesAnimation = React.useRef(
-            Animated.spring(topOpacity.current, {
-                toValue: 1,
-                useNativeDriver: true,
-                speed: 20,
-            })
-        );
-        const hideLinesAnimation = React.useRef(
-            Animated.spring(topOpacity.current, {
-                toValue: 1,
-                useNativeDriver: true,
-                speed: 20,
-            })
-        );
+    const showLinesAnimation = React.useRef(Animated.spring(topOpacity.current, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 20,
+    }));
+    const hideLinesAnimation = React.useRef(Animated.spring(topOpacity.current, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 20,
+    }));
 
-        const checkVisualStyle = React.useCallback(() => {
-            if (
-                !listSize.current ||
+    const checkVisualStyle = React.useCallback(() => {
+        if (
+            !listSize.current ||
                 !contentHeight.current ||
                 !listContentOffset.current
-            ) {
-                // Not ready to animate as there are some missing variables to make calculations
-                return;
-            }
+        ) {
+            // Not ready to animate as there are some missing variables to make calculations
+            return;
+        }
 
-            if (linesAnimationInProgress.current) {
-                // Do not calculate (& animate) as the animation is already in process
-                return;
-            }
+        if (linesAnimationInProgress.current) {
+            // Do not calculate (& animate) as the animation is already in process
+            return;
+        }
 
-            const hasScroll =
+        const hasScroll =
                 listContentOffset.current && listContentOffset.current.y > 1;
-            const hasHeight = listSize.current && listSize.current.height > 0;
-            const hasOverflow =
+        const hasHeight = listSize.current && listSize.current.height > 0;
+        const hasOverflow =
                 contentHeight.current > listSize.current?.height;
 
-            const shouldLinesBeShown = hasScroll || (hasHeight && hasOverflow);
+        const shouldLinesBeShown = hasScroll || (hasHeight && hasOverflow);
 
-            if (shouldLinesBeShown === linesIsShown.current) {
-                return;
-            }
+        if (shouldLinesBeShown === linesIsShown.current) {
+            return;
+        }
 
-            linesAnimationInProgress.current = true;
-            const animation = shouldLinesBeShown
-                ? showLinesAnimation
-                : hideLinesAnimation;
+        linesAnimationInProgress.current = true;
+        const animation = shouldLinesBeShown
+            ? showLinesAnimation
+            : hideLinesAnimation;
             animation.current?.start(() => {
                 linesAnimationInProgress.current = false;
                 linesIsShown.current = shouldLinesBeShown;
 
                 checkVisualStyle();
             });
-        }, []);
-        const onLayout = React.useCallback((e: any) => {
-            listSize.current = e.nativeEvent.layout;
+    }, []);
+    const onLayout = React.useCallback((e: any) => {
+        listSize.current = e.nativeEvent.layout;
+
+        checkVisualStyle();
+    }, []);
+    const onContentSizeChange = React.useCallback(
+        (_width: number, height: number) => {
+            // Save the content height in state
+            contentHeight.current = height;
 
             checkVisualStyle();
-        }, []);
-        const onContentSizeChange = React.useCallback(
-            (_width: number, height: number) => {
-                // Save the content height in state
-                contentHeight.current = height;
+        },
+        [],
+    );
+    const onScrollMessages = React.useCallback((e: any) => {
+        listContentOffset.current = e.nativeEvent.contentOffset;
 
-                checkVisualStyle();
-            },
-            []
+        checkVisualStyle();
+    }, []);
+    const onLayoutCell = React.useCallback((key: string, e: any) => {
+        const { nativeEvent } = e;
+        if (nativeEvent) {
+            const { layout } = nativeEvent;
+            cellsHeight.current.set(key, layout.height);
+        }
+    }, []);
+    const renderItemInternal = React.useCallback(
+        renderItem(onLayoutCell),
+        [],
+    );
+    const renderLoadMore = React.useCallback(() => {
+        if (!props.canLoadMore) {
+            return null;
+        }
+
+        return (
+            <UILoadMoreButton
+                onLoadMore={props.onLoadEarlierMessages}
+                isLoadingMore={props.isLoadingMore}
+            />
         );
-        const onScrollMessages = React.useCallback((e: any) => {
-            listContentOffset.current = e.nativeEvent.contentOffset;
+    }, [props.isLoadingMore, props.canLoadMore]);
 
-            checkVisualStyle();
-        }, []);
-        const onLayoutCell = React.useCallback((key: string, e: any) => {
-            const { nativeEvent } = e;
-            if (nativeEvent) {
-                const { layout } = nativeEvent;
-                cellsHeight.current.set(key, layout.height);
-            }
-        }, []);
-        const renderItemInternal = React.useCallback(
-            renderItem(onLayoutCell),
-            []
-        );
-        const renderLoadMore = React.useCallback(() => {
-            if (!props.canLoadMore) {
-                return null;
-            }
+    // TODO: proper contentInset
+    const contentInset = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    };
 
-            return (
-                <UILoadMoreButton
-                    onLoadMore={props.onLoadEarlierMessages}
-                    isLoadingMore={props.isLoadingMore}
-                />
-            );
-        }, []);
-
-        // TODO: proper contentInset
-        const contentInset = {
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-        };
-
-        useWheelHandler((e: WheelEvent) => {
-            const scroll = document.getElementById(CHAT_SECTION_LIST);
-            if (
-                scroll == null ||
+    useWheelHandler((e: WheelEvent) => {
+        const scroll = document.getElementById(CHAT_SECTION_LIST);
+        if (
+            scroll == null ||
                 e.target == null ||
                 ref == null ||
                 !('current' in ref)
-            ) {
-                return;
-            }
-            // @ts-ignore (contains type doesn't match e.target one)
-            const doesContain = scroll.contains(e.target);
-            if (doesContain && ref.current) {
-                e.preventDefault();
-                // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
-                const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
-                const delta = e.deltaY || e.detail || 0; // Note. e.detail is used for `DOMMouseScroll`
-                const y = listContentOffset.current.y - delta * factor;
-                if (ref.current) {
-                    const scrollResponder = ref.current.getScrollResponder();
-                    if (scrollResponder) {
-                        // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
-                        // TODO: what exactly this for, and why it tries to set property on a number???
-                        const scrollableNode: any = scrollResponder.getScrollableNode();
-                        if (scrollableNode) {
-                            scrollableNode.scrollTop = y;
-                        }
+        ) {
+            return;
+        }
+        // @ts-ignore (contains type doesn't match e.target one)
+        const doesContain = scroll.contains(e.target);
+        if (doesContain && ref.current) {
+            e.preventDefault();
+            // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
+            const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
+            const delta = e.deltaY || e.detail || 0; // Note. e.detail is used for `DOMMouseScroll`
+            const y = listContentOffset.current.y - delta * factor;
+            if (ref.current) {
+                const scrollResponder = ref.current.getScrollResponder();
+                if (scrollResponder) {
+                    // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
+                    // TODO: what exactly this for, and why it tries to set property on a number???
+                    const scrollableNode: any = scrollResponder.getScrollableNode();
+                    if (scrollableNode) {
+                        scrollableNode.scrollTop = y;
                     }
                 }
             }
-        });
+        }
+    });
 
-        return (
-            <TapGestureHandler
-                onHandlerStateChange={onHandlerStateChange}
-                enabled={props.areStickersVisible}
-            >
-                <SectionList
-                    nativeID={CHAT_SECTION_LIST}
-                    testID="chat_container"
-                    keyboardDismissMode={keyboardDismissProp}
-                    contentInset={contentInset}
-                    scrollIndicatorInsets={contentInset}
-                    ref={localRef}
-                    inverted
-                    getItemLayout={getItemLayout}
-                    onLayout={onLayout}
-                    onContentSizeChange={onContentSizeChange}
-                    onScroll={onScrollMessages}
-                    onScrollToIndexFailed={(info) =>
-                        console.error('Failed to scroll to index:', info)
-                    }
-                    scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
-                    style={style}
-                    contentContainerStyle={styles.messagesList}
-                    sections={UIChatListFormatter.getSections(props.messages)}
-                    onViewableItemsChanged={checkVisualStyle}
-                    keyExtractor={keyExtractor}
-                    renderItem={renderItemInternal}
-                    // Because the List is inverted in order to render from the bottom,
-                    // the title (date) for each section becomes the footer instead of header.
-                    renderSectionFooter={renderSectionTitle}
-                    // renderSectionHeader={section => this.renderSectionStatus(section)}
-                    onEndReached={props.onLoadEarlierMessages}
-                    onEndReachedThreshold={0.6}
-                    ListFooterComponent={renderLoadMore}
-                    renderScrollComponent={(scrollProps) => (
-                        <ScrollView {...scrollProps} />
-                    )}
-                />
-            </TapGestureHandler>
-        );
-    }
-);
+    return (
+        <TapGestureHandler
+            onHandlerStateChange={onHandlerStateChange}
+            enabled={props.areStickersVisible}
+        >
+            <SectionList
+                nativeID={CHAT_SECTION_LIST}
+                testID="chat_container"
+                keyboardDismissMode={keyboardDismissProp}
+                contentInset={contentInset}
+                scrollIndicatorInsets={contentInset}
+                ref={localRef}
+                inverted
+                getItemLayout={getItemLayout}
+                onLayout={onLayout}
+                onContentSizeChange={onContentSizeChange}
+                onScroll={onScrollMessages}
+                onScrollToIndexFailed={info =>
+                    console.error('Failed to scroll to index:', info)
+                }
+                scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
+                style={style}
+                contentContainerStyle={styles.messagesList}
+                sections={UIChatListFormatter.getSections(props.messages)}
+                onViewableItemsChanged={checkVisualStyle}
+                keyExtractor={keyExtractor}
+                renderItem={renderItemInternal}
+                // Because the List is inverted in order to render from the bottom,
+                // the title (date) for each section becomes the footer instead of header.
+                renderSectionFooter={renderSectionTitle}
+                // renderSectionHeader={section => this.renderSectionStatus(section)}
+                onEndReached={props.onLoadEarlierMessages}
+                onEndReachedThreshold={0.6}
+                ListFooterComponent={renderLoadMore}
+                renderScrollComponent={scrollProps => (
+                    <ScrollView {...scrollProps} />
+                )}
+            />
+        </TapGestureHandler>
+    );
+});
 
 const styles = StyleSheet.create({
     messagesList: {
