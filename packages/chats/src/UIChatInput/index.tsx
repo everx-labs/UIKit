@@ -193,7 +193,6 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 onSendDocument={props.onSendDocument}
                 onStickersPress={onStickersPress}
                 onHeightChange={props.onHeightChange}
-                onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
                 menuPlus={menuPlus}
                 onFocus={onFocus}
                 onBlur={onBlur}
@@ -230,6 +229,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 }}
                 onItemSelected={(_id, stk) => onPickSticker(stk)}
                 onKeyboardResigned={onKeyboardResigned}
+                onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
             />
         );
     }

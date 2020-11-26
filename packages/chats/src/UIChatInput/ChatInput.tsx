@@ -26,7 +26,6 @@ import type {
     OnSendText,
     OnSendMedia,
     OnSendDocument,
-    OnContentBottomInsetUpdate,
     OnHeightChange,
 } from './types';
 import { ChatPicker, ChatPickerRef } from './ChatPicker';
@@ -265,7 +264,6 @@ type Props = {
     onStickersPress: OnStickersPress;
     // TODO: can we not expose it?
     onHeightChange?: OnHeightChange;
-    onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
     onFocus: () => void;
     onBlur: () => void;
 };

@@ -12,6 +12,7 @@ import {
     ScrollView,
     State as RNGHState,
 } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 
@@ -32,14 +33,6 @@ import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICustomKeyboardUtils } from './UICustomKeyboard';
 
 type RNGHEvent<T> = { nativeEvent: T };
-
-type Props = {
-    areStickersVisible: boolean;
-    onLoadEarlierMessages(): void;
-    canLoadMore: boolean;
-    isLoadingMore: boolean;
-    messages: ChatMessage[];
-};
 
 const onHandlerStateChange = ({
     nativeEvent: { state },
@@ -67,6 +60,8 @@ type WheelEvent = Event & {
     detail?: number;
 };
 
+type ListContentOffset = { y: number };
+
 function useWheelHandler(handler: (e: WheelEvent) => void) {
     React.useEffect(() => {
         if (Platform.OS !== 'web') {
@@ -81,32 +76,46 @@ function useWheelHandler(handler: (e: WheelEvent) => void) {
     }, []);
 }
 
-const keyExtractor = (item: ChatMessage) => {
-    return item.key;
-};
+function useChatListWheelHandler(
+    ref: React.Ref<SectionList>,
+    listContentOffsetRef: React.RefObject<ListContentOffset>
+) {
+    const handler = React.useCallback((e: WheelEvent) => {
+        const scroll = document.getElementById(CHAT_SECTION_LIST);
+        if (
+            scroll == null ||
+            e.target == null ||
+            ref == null ||
+            !('current' in ref)
+        ) {
+            return;
+        }
+        // @ts-ignore (contains type doesn't match e.target one)
+        const doesContain = scroll.contains(e.target);
+        if (doesContain && ref.current) {
+            e.preventDefault();
+            // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
+            const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
+            const delta = e.deltaY || e.detail || 0; // Note. e.detail is used for `DOMMouseScroll`
+            const y = (listContentOffsetRef.current?.y ?? 0) - delta * factor;
+            if (ref.current) {
+                const scrollResponder = ref.current.getScrollResponder();
+                if (scrollResponder) {
+                    // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
+                    // TODO: what exactly this for, and why it tries to set property on a number???
+                    const scrollableNode: any = scrollResponder.getScrollableNode();
+                    if (scrollableNode) {
+                        scrollableNode.scrollTop = y;
+                    }
+                }
+            }
+        }
+    }, []);
 
-const renderBubble = (message: ChatMessage) => {
-    switch (message.type) {
-        case ChatMessageType.PlainText:
-            return <BubblePlainText {...message} />;
-        case ChatMessageType.System:
-            return <BubbleSystem {...message} />;
-        case ChatMessageType.Transaction:
-            return <BubbleTransaction {...message} />;
-        case ChatMessageType.Image:
-            return <BubbleImage {...message} />;
-        case ChatMessageType.Document:
-            return <BubbleDocument {...message} />;
-        case ChatMessageType.Sticker:
-            return <BubbleSticker {...message} />;
-        case ChatMessageType.ActionButton:
-            return <BubbleActionButton {...message} />;
-        default:
-            return null;
-    }
-};
+    useWheelHandler(handler);
+}
 
-const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
+const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
     item,
 }: {
     item: ChatMessage;
@@ -129,6 +138,74 @@ const renderItem = (onLayoutCell: (key: string, e: any) => void) => ({
     );
 };
 
+function useLayoutHelpers(canLoadMore: boolean) {
+    const cellsHeight = React.useRef(new Map());
+
+    const getItemLayout = React.useCallback(
+        sectionListGetItemLayout({
+            getItemHeight: (rowData: ChatMessage) => {
+                return cellsHeight.current.get(rowData.key) || 0;
+            },
+            getSectionFooterHeight: () => {
+                return (
+                    UIConstant.smallCellHeight() +
+                    UIConstant.contentOffset() * 2
+                );
+            },
+            listFooterHeight: () => {
+                if (!canLoadMore) {
+                    return 0;
+                }
+                return (
+                    UIConstant.smallCellHeight() +
+                    UIConstant.contentOffset() * 2
+                );
+            },
+        }),
+        [canLoadMore, cellsHeight]
+    );
+
+    const onLayoutCell = React.useCallback((key: string, e: any) => {
+        const { nativeEvent } = e;
+        if (nativeEvent) {
+            const { layout } = nativeEvent;
+            cellsHeight.current.set(key, layout.height);
+        }
+    }, []);
+
+    const renderItem = React.useCallback(renderItemInternal(onLayoutCell), []);
+
+    return {
+        getItemLayout,
+        renderItem,
+    };
+}
+
+const keyExtractor = (item: ChatMessage) => {
+    return item.key;
+};
+
+const renderBubble = (message: ChatMessage) => {
+    switch (message.type) {
+        case ChatMessageType.PlainText:
+            return <BubblePlainText {...message} key={message.key} />;
+        case ChatMessageType.System:
+            return <BubbleSystem {...message} key={message.key} />;
+        case ChatMessageType.Transaction:
+            return <BubbleTransaction {...message} key={message.key} />;
+        case ChatMessageType.Image:
+            return <BubbleImage {...message} key={message.key} />;
+        case ChatMessageType.Document:
+            return <BubbleDocument {...message} key={message.key} />;
+        case ChatMessageType.Sticker:
+            return <BubbleSticker {...message} key={message.key} />;
+        case ChatMessageType.ActionButton:
+            return <BubbleActionButton {...message} key={message.key} />;
+        default:
+            return null;
+    }
+};
+
 const renderSectionTitle = ({
     section,
 }: {
@@ -139,6 +216,15 @@ const renderSectionTitle = ({
     }
 
     return <DateSeparator time={section.time} />;
+};
+
+type Props = {
+    areStickersVisible: boolean;
+    onLoadEarlierMessages(): void;
+    canLoadMore: boolean;
+    isLoadingMore: boolean;
+    messages: ChatMessage[];
+    bottomInset?: number;
 };
 
 export const UIChatList = React.forwardRef<SectionList, Props>(
@@ -160,32 +246,6 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
             }
             return 'interactive';
         }, [props.areStickersVisible]);
-
-        const cellsHeight = React.useRef(new Map());
-
-        const getItemLayout = React.useCallback(
-            sectionListGetItemLayout({
-                getItemHeight: (rowData: ChatMessage) => {
-                    return cellsHeight.current.get(rowData.key) || 0;
-                },
-                getSectionFooterHeight: () => {
-                    return (
-                        UIConstant.smallCellHeight() +
-                        UIConstant.contentOffset() * 2
-                    );
-                },
-                listFooterHeight: () => {
-                    if (!props.canLoadMore) {
-                        return 0;
-                    }
-                    return (
-                        UIConstant.smallCellHeight() +
-                        UIConstant.contentOffset() * 2
-                    );
-                },
-            }),
-            [props.canLoadMore, cellsHeight]
-        );
 
         const localRef = React.useRef<SectionList>(null);
 
@@ -276,17 +336,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
 
             checkVisualStyle();
         }, []);
-        const onLayoutCell = React.useCallback((key: string, e: any) => {
-            const { nativeEvent } = e;
-            if (nativeEvent) {
-                const { layout } = nativeEvent;
-                cellsHeight.current.set(key, layout.height);
-            }
-        }, []);
-        const renderItemInternal = React.useCallback(
-            renderItem(onLayoutCell),
-            []
-        );
+
         const renderLoadMore = React.useCallback(() => {
             if (!props.canLoadMore) {
                 return null;
@@ -300,90 +350,84 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
             );
         }, []);
 
-        // TODO: proper contentInset
+        const { getItemLayout, renderItem } = useLayoutHelpers(
+            props.canLoadMore
+        );
+        useChatListWheelHandler(localRef, listContentOffset);
+        const insets = useSafeAreaInsets();
+        const bottomInset = props.bottomInset ?? 0;
         const contentInset = {
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            top: bottomInset - insets.top,
+            bottom: -(insets.bottom ?? 0),
         };
 
-        useWheelHandler((e: WheelEvent) => {
-            const scroll = document.getElementById(CHAT_SECTION_LIST);
-            if (
-                scroll == null ||
-                e.target == null ||
-                ref == null ||
-                !('current' in ref)
-            ) {
-                return;
-            }
-            // @ts-ignore (contains type doesn't match e.target one)
-            const doesContain = scroll.contains(e.target);
-            if (doesContain && ref.current) {
-                e.preventDefault();
-                // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
-                const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
-                const delta = e.deltaY || e.detail || 0; // Note. e.detail is used for `DOMMouseScroll`
-                const y = listContentOffset.current.y - delta * factor;
-                if (ref.current) {
-                    const scrollResponder = ref.current.getScrollResponder();
-                    if (scrollResponder) {
-                        // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
-                        // TODO: what exactly this for, and why it tries to set property on a number???
-                        const scrollableNode: any = scrollResponder.getScrollableNode();
-                        if (scrollableNode) {
-                            scrollableNode.scrollTop = y;
-                        }
-                    }
+        React.useEffect(() => {
+            if (listContentOffset.current.y < bottomInset) {
+                const scrollResponder = localRef.current?.getScrollResponder();
+                if (scrollResponder) {
+                    scrollResponder.scrollTo({
+                        y: -bottomInset,
+                        animated: true,
+                    });
                 }
             }
-        });
+        }, [bottomInset]);
+
+        const sections = React.useMemo(
+            () => UIChatListFormatter.getSections(props.messages),
+            [props.messages]
+        );
 
         return (
-            <TapGestureHandler
-                onHandlerStateChange={onHandlerStateChange}
-                enabled={props.areStickersVisible}
-            >
-                <SectionList
-                    nativeID={CHAT_SECTION_LIST}
-                    testID="chat_container"
-                    keyboardDismissMode={keyboardDismissProp}
-                    contentInset={contentInset}
-                    scrollIndicatorInsets={contentInset}
-                    ref={localRef}
-                    inverted
-                    getItemLayout={getItemLayout}
-                    onLayout={onLayout}
-                    onContentSizeChange={onContentSizeChange}
-                    onScroll={onScrollMessages}
-                    onScrollToIndexFailed={(info) =>
-                        console.error('Failed to scroll to index:', info)
-                    }
-                    scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
-                    style={style}
-                    contentContainerStyle={styles.messagesList}
-                    sections={UIChatListFormatter.getSections(props.messages)}
-                    onViewableItemsChanged={checkVisualStyle}
-                    keyExtractor={keyExtractor}
-                    renderItem={renderItemInternal}
-                    // Because the List is inverted in order to render from the bottom,
-                    // the title (date) for each section becomes the footer instead of header.
-                    renderSectionFooter={renderSectionTitle}
-                    // renderSectionHeader={section => this.renderSectionStatus(section)}
-                    onEndReached={props.onLoadEarlierMessages}
-                    onEndReachedThreshold={0.6}
-                    ListFooterComponent={renderLoadMore}
-                    renderScrollComponent={(scrollProps) => (
-                        <ScrollView {...scrollProps} />
-                    )}
-                />
-            </TapGestureHandler>
+            <View style={styles.container}>
+                <TapGestureHandler
+                    onHandlerStateChange={onHandlerStateChange}
+                    enabled={props.areStickersVisible}
+                >
+                    <SectionList
+                        nativeID={CHAT_SECTION_LIST}
+                        testID="chat_container"
+                        keyboardDismissMode={keyboardDismissProp}
+                        contentInset={contentInset}
+                        scrollIndicatorInsets={contentInset}
+                        ref={localRef}
+                        inverted
+                        getItemLayout={getItemLayout}
+                        onLayout={onLayout}
+                        onContentSizeChange={onContentSizeChange}
+                        onScroll={onScrollMessages}
+                        onScrollToIndexFailed={(info) =>
+                            console.error('Failed to scroll to index:', info)
+                        }
+                        scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
+                        style={style}
+                        contentContainerStyle={styles.messagesList}
+                        sections={sections}
+                        onViewableItemsChanged={checkVisualStyle}
+                        keyExtractor={keyExtractor}
+                        renderItem={renderItem}
+                        // Because the List is inverted in order to render from the bottom,
+                        // the title (date) for each section becomes the footer instead of header.
+                        renderSectionFooter={renderSectionTitle}
+                        // renderSectionHeader={section => this.renderSectionStatus(section)}
+                        onEndReached={props.onLoadEarlierMessages}
+                        onEndReachedThreshold={0.6}
+                        ListFooterComponent={renderLoadMore}
+                        renderScrollComponent={(scrollProps) => (
+                            <ScrollView {...scrollProps} />
+                        )}
+                    />
+                </TapGestureHandler>
+            </View>
         );
     }
 );
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 0,
+    },
     messagesList: {
         paddingHorizontal: UIConstant.contentOffset(),
         paddingVertical: UIConstant.contentOffset(),

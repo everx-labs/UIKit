@@ -8,6 +8,11 @@ import {
     KeyboardUtils,
 } from 'react-native-ui-lib/keyboard';
 import type { KeyboardAccessoryViewProps } from 'react-native-ui-lib/keyboard';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { useTheme } from '../useTheme';
+import type { OnContentBottomInsetUpdate } from '../UIChatInput/types';
 
 const registerCustomKeyboard = (
     kbID: string,
@@ -46,29 +51,51 @@ export const UICustomKeyboardUtils = {
 
 let trackingViewIsReady: boolean = false; // global flag to learn if KeyboardTrackingView usable
 
-export function UICustomKeyboard(props: KeyboardAccessoryViewProps) {
+type Props = KeyboardAccessoryViewProps & {
+    onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
+};
+
+export function UICustomKeyboard(props: Props) {
     if (Platform.OS === 'web') {
         // Do nothing
         return <View />;
     }
 
+    const theme = useTheme();
+    const insets = useSafeAreaInsets();
+
     // Keyboard
+    const inputHeight = React.useRef<number>(0);
     const keyboardHeight = React.useRef<number>(0);
 
     const keyboardWillShowListener = React.useRef<EmitterSubscription>();
     const keyboardWillHideListener = React.useRef<EmitterSubscription>();
 
+    const updateContentBottomInset = async () => {
+        const bottomInset = keyboardHeight.current
+            ? keyboardHeight.current - insets.bottom
+            : inputHeight.current;
+
+        if (props.onContentBottomInsetUpdate) {
+            props.onContentBottomInsetUpdate(bottomInset);
+        }
+    };
+
     const onKeyboardShow = async (e: any) => {
         const { height } = e.endCoordinates;
+        // N.B. `<` sign is important! (do not set `!==`)
         if (keyboardHeight.current < height) {
-            // N.B. `<` sign is important! (do not set `!==`)
             keyboardHeight.current = height;
+
+            updateContentBottomInset();
         }
     };
 
     const onKeyboardHide = async () => {
         if (keyboardHeight.current !== 0) {
             keyboardHeight.current = 0;
+
+            updateContentBottomInset();
         }
     };
 
@@ -132,15 +159,54 @@ export function UICustomKeyboard(props: KeyboardAccessoryViewProps) {
         return deinitKeyboardListeners;
     }, []);
 
+    // Events
+    const onLayout = (e: any) => {
+        const { nativeEvent } = e;
+        if (nativeEvent) {
+            const { layout } = nativeEvent;
+            if (inputHeight.current !== layout.height) {
+                inputHeight.current = layout.height;
+
+                updateContentBottomInset();
+            }
+        }
+    };
+
     return (
         <KeyboardAccessoryView
             key={`UICustomKeyboard:${trackingViewReady.toString()}`}
             useSafeArea={false}
-            addBottomView={true} // TODO: is it only way?
+            addBottomView={false}
             manageScrollView={false}
             allowHitsOutsideBounds
             revealKeyboardInteractive
             {...props}
+            renderContent={() =>
+                Platform.OS !== 'ios' ? (
+                    props.renderContent()
+                ) : (
+                    <View
+                        style={{
+                            position: 'relative',
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                        }}
+                        onLayout={onLayout}
+                    >
+                        {props.renderContent()}
+                        <View // A dummy view to make SafeArea translates look nicer
+                            style={[
+                                { height: insets?.bottom ?? 0, top: '100%' },
+                                UIStyle.container.absoluteFillWidth(),
+                                UIStyle.color.getBackgroundColorStyle(
+                                    UIColor.backgroundPrimary(theme)
+                                ),
+                            ]}
+                        />
+                    </View>
+                )
+            }
             onKeyboardResigned={props.onKeyboardResigned}
         />
     );
