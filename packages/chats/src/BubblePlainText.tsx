@@ -152,6 +152,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                         <BubbleTime {...props} />
                     </View>
                 </Animated.View>
+                {/* TODO: action string */}
             </TouchableWithoutFeedback>
         </View>
     );

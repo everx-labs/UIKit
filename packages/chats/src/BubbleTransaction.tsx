@@ -80,7 +80,11 @@ const getCommentColor = (_message: TransactionMessage) => {
 };
 
 const getCommentText = (message: TransactionMessage) => {
-    return `${message.info.text || ''}, `; // TODO: move translations to uiLocalized
+    if (message.info.text == null) {
+        return '';
+    }
+
+    return `${message.info.text}, `;
 };
 
 const getActionString = (type: TransactionType) => {

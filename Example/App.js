@@ -2290,49 +2290,52 @@ const Chat = () => (
                         encrypted: true,
                     },
                 },
-                {
-                    type: 'stm',
-                    status: 'sending',
-                    time: Math.floor(Date.now() - 1 * 60 * 1000),
-                    sender: '0:000',
-                    text: 'This one is in process of sending...',
-                },
-                {
-                    type: 'stm',
-                    status: 'received',
-                    time: Math.floor(Date.now() - 2 * 60 * 1000),
-                    sender: '0:123',
-                    text: 'How r u?',
-                },
-                {
-                    type: 'stm',
-                    status: 'sent',
-                    time: Math.floor(Date.now() - 4 * 60 * 1000),
-                    sender: '0:000',
-                    text: 'This one is from me',
-                },
-                {
-                    type: 'stm',
-                    status: 'received',
-                    time: Math.floor(Date.now() - 5 * 60 * 1000),
-                    sender: '0:123',
-                    text:
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                },
-                {
-                    type: 'stm',
-                    status: 'received',
-                    time: Math.floor(Date.now() - 5 * 60 * 1000),
-                    sender: '0:123',
-                    text: 'Hi there!',
-                },
-                {
-                    type: 'stm',
-                    status: 'received',
-                    time: new Date('10 06 2020 10:00').getTime(),
-                    sender: '0:123',
-                    text: 'Hi from past!',
-                },
+                ...new Array(100).fill(null).reduce((acc, n, i) => {
+                    acc.push({
+                        type: 'stm',
+                        status: 'sending',
+                        time: Math.floor(Date.now() - 1 * 60 * 1000),
+                        sender: '0:000',
+                        text: 'This one is in process of sending...',
+                    });
+                    acc.push({
+                        type: 'stm',
+                        status: 'received',
+                        time: Math.floor(Date.now() - 2 * 60 * 1000),
+                        sender: '0:123',
+                        text: 'How r u?',
+                    });
+                    acc.push({
+                        type: 'stm',
+                        status: 'sent',
+                        time: Math.floor(Date.now() - 4 * 60 * 1000),
+                        sender: '0:000',
+                        text: 'This one is from me',
+                    });
+                    acc.push({
+                        type: 'stm',
+                        status: 'received',
+                        time: Math.floor(Date.now() - 5 * 60 * 1000),
+                        sender: '0:123',
+                        text:
+                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    });
+                    acc.push({
+                        type: 'stm',
+                        status: 'received',
+                        time: Math.floor(Date.now() - 5 * 60 * 1000),
+                        sender: '0:123',
+                        text: 'Hi there!',
+                    });
+                    acc.push({
+                        type: 'stm',
+                        status: 'received',
+                        time: new Date('10 06 2020 10:00').getTime(),
+                        sender: '0:123',
+                        text: 'Hi from past!',
+                    });
+                    return acc;
+                }, []),
             ].map((m: any, i: number) => ((m.key = i), m))}
         />
         <UIChatInput

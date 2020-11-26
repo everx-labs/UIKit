@@ -302,7 +302,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
 
         // TODO: proper contentInset
         const contentInset = {
-            top: 50,
+            top: 0,
             left: 0,
             right: 0,
             bottom: 0,
