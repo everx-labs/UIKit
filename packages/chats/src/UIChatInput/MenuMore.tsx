@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     TouchableOpacity,
-    Image, // TODO: use fast-image?
+    Image, // TODO: use UIImage?
     View,
 } from 'react-native';
 

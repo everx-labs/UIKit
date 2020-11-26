@@ -348,7 +348,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                 <SectionList
                     nativeID={CHAT_SECTION_LIST}
                     testID="chat_container"
-                    {...keyboardDismissProp}
+                    keyboardDismissMode={keyboardDismissProp}
                     contentInset={contentInset}
                     scrollIndicatorInsets={contentInset}
                     ref={localRef}
