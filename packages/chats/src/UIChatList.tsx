@@ -87,22 +87,22 @@ const keyExtractor = (item: ChatMessage) => {
 
 const renderBubble = (message: ChatMessage) => {
     switch (message.type) {
-    case ChatMessageType.PlainText:
-        return <BubblePlainText {...message} />;
-    case ChatMessageType.System:
-        return <BubbleSystem {...message} />;
-    case ChatMessageType.Transaction:
-        return <BubbleTransaction {...message} />;
-    case ChatMessageType.Image:
-        return <BubbleImage {...message} />;
-    case ChatMessageType.Document:
-        return <BubbleDocument {...message} />;
-    case ChatMessageType.Sticker:
-        return <BubbleSticker {...message} />;
-    case ChatMessageType.ActionButton:
-        return <BubbleActionButton {...message} />;
-    default:
-        return null;
+        case ChatMessageType.PlainText:
+            return <BubblePlainText {...message} />;
+        case ChatMessageType.System:
+            return <BubbleSystem {...message} />;
+        case ChatMessageType.Transaction:
+            return <BubbleTransaction {...message} />;
+        case ChatMessageType.Image:
+            return <BubbleImage {...message} />;
+        case ChatMessageType.Document:
+            return <BubbleDocument {...message} />;
+        case ChatMessageType.Sticker:
+            return <BubbleSticker {...message} />;
+        case ChatMessageType.ActionButton:
+            return <BubbleActionButton {...message} />;
+        default:
+            return null;
     }
 };
 
