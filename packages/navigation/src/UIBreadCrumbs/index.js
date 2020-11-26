@@ -39,15 +39,15 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
         const num = narrow ? 1 : numberOfLastRoutesShown;
 
         if (pageHistory) {
-            const min = Math.max(pageHistory.length - num, 0);
-            return pageHistory.slice(min, pageHistory.length)
+            const min = Math.max(pageHistory.length - num - 1, 0);
+            return pageHistory.slice(min, pageHistory.length - 1)
         }
         return [];
     }
 
     getOnPress(index: number) {
         return () => {
-            const steps = this.getLastRoutes().length - index;
+            const steps = this.getLastRoutes().length - index + 1;
             this.props.onPress(steps);
         }
     }
