@@ -38,7 +38,7 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
             numberOfLastRoutesShown, pathMap, narrow, navigation,
         } = this.props;
         const state = navigation.dangerouslyGetState();
-        console.log('[DEBUG] Here you have the list of routes that have been pushed to the stack', state);
+        // console.log('[DEBUG] Here you have the list of routes that have been pushed to the stack', state);
         const { routes } = state || {};
         const num = narrow ? 1 : numberOfLastRoutesShown;
 
