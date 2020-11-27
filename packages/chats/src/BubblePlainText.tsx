@@ -18,24 +18,24 @@ import type { PlainTextMessage } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 const getUrlStyle = (status: ChatMessageStatus) =>
-    status === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
+    (status === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent);
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
         return UIStyle.Color.getColorStyle(UIColor.fa());
     } else if (message.status === ChatMessageStatus.Received) {
         return UIStyle.Color.getColorStyle(
-            UIColor.textSecondary(UIColor.Theme.Light)
+            UIColor.textSecondary(UIColor.Theme.Light),
         );
     }
     return UIStyle.Color.getColorStyle(
-        UIColor.textSecondary(UIColor.Theme.Dark)
+        UIColor.textSecondary(UIColor.Theme.Dark),
     );
 };
 
 const getRoundedCornerStyle = (
     options: ChatMessageMeta,
-    position: BubblePosition
+    position: BubblePosition,
 ) => {
     if (position === BubblePosition.left && options.firstFromChain) {
         return styles.leftTopCorner;
@@ -92,7 +92,7 @@ const createUniqTestId = (pattern: string, variable: string) =>
 const createTestId = (pattern: string, text: string) => {
     return createUniqTestId(
         pattern,
-        '_' + text.split(' ').slice(0, 2).join(' ')
+        `_${text.split(' ').slice(0, 2).join(' ')}`,
     );
 };
 
@@ -130,11 +130,11 @@ export function BubblePlainText(props: PlainTextMessage) {
                     bubbleScaleAnimation(true);
                     UIShareManager.copyToClipboard(
                         props.text,
-                        uiLocalized.MessageCopiedToClipboard
+                        uiLocalized.MessageCopiedToClipboard,
                     );
                 }}
             >
-                <>
+                <View>
                     <Animated.View
                         style={[
                             styles.wrapMsgContainer,
@@ -153,9 +153,8 @@ export function BubblePlainText(props: PlainTextMessage) {
                             <ParsedText
                                 testID={createTestId(
                                     'chat_text_message%',
-                                    props.text
+                                    props.text,
                                 )}
-                                key={`chat_text_key_${props.key}`}
                                 style={[
                                     getFontColor(props),
                                     UIFont.smallRegular(),
@@ -186,7 +185,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                             text={actionString}
                         />
                     )}
-                </>
+                </View>
             </TouchableWithoutFeedback>
         </View>
     );
