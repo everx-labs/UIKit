@@ -252,6 +252,7 @@ type Props = {
     menuMore?: MenuItem[];
     menuMoreDisabled?: boolean;
     quickAction?: QuickActionItem[];
+    placeholder?: string;
 
     editable: boolean;
     inputHidden?: boolean; // TODO: what is it?
@@ -338,7 +339,10 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                                     numberOfLines={numberOfLines}
                                     // @ts-ignore (this is our custom prop)
                                     noPersonalizedLearning={false}
-                                    placeholder={uiLocalized.TypeMessage}
+                                    placeholder={
+                                        props.placeholder ??
+                                        uiLocalized.TypeMessage
+                                    }
                                     placeholderTextColor={UIColor.textPlaceholder(
                                         theme
                                     )}

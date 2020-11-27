@@ -128,17 +128,6 @@ function useStickers(
     };
 }
 
-type Props = {
-    editable: boolean; // TODO
-    stickers: UIStickerPackage[];
-    onSendText: OnSendText;
-    onSendMedia: OnSendMedia;
-    onSendDocument: OnSendDocument;
-    onSendSticker: OnPickSticker;
-    onStickersVisible?: (visible: boolean) => void | Promise<void>;
-    onHeightChange?: OnHeightChange;
-};
-
 function useMenuPlus() {
     const chatPickerRef = React.useRef<ChatPickerRef>(null);
     const onPressImage = () => {
@@ -165,6 +154,18 @@ function useMenuPlus() {
     };
 }
 
+type Props = {
+    editable: boolean; // TODO
+    placeholder?: string;
+    stickers: UIStickerPackage[];
+    onSendText: OnSendText;
+    onSendMedia: OnSendMedia;
+    onSendDocument: OnSendDocument;
+    onSendSticker: OnPickSticker;
+    onStickersVisible?: (visible: boolean) => void | Promise<void>;
+    onHeightChange?: OnHeightChange;
+};
+
 export const UIChatInput = React.forwardRef<null, Props>(
     function UIChatInputInternal(props, ref) {
         const textInputRef = React.useRef<TextInput>(null);
@@ -182,9 +183,10 @@ export const UIChatInput = React.forwardRef<null, Props>(
         const input = (
             <ChatInput
                 ref={ref}
+                editable={props.editable}
+                placeholder={props.placeholder}
                 textInputRef={textInputRef}
                 pickerRef={chatPickerRef}
-                editable={props.editable}
                 stickersVisible={stickersVisible}
                 onSendText={props.onSendText}
                 onSendMedia={props.onSendMedia}
