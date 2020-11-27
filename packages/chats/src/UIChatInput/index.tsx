@@ -14,7 +14,6 @@ import {
 import { ChatInput } from './ChatInput';
 import type {
     OnHeightChange,
-    OnContentBottomInsetUpdate,
     OnSendText,
     OnSendMedia,
     OnSendDocument,
@@ -138,7 +137,6 @@ type Props = {
     onSendSticker: OnPickSticker;
     onStickersVisible?: (visible: boolean) => void | Promise<void>;
     onHeightChange?: OnHeightChange;
-    onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
 };
 
 function useMenuPlus() {
@@ -192,7 +190,9 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 onSendMedia={props.onSendMedia}
                 onSendDocument={props.onSendDocument}
                 onStickersPress={onStickersPress}
-                onHeightChange={props.onHeightChange}
+                onHeightChange={
+                    Platform.OS === 'web' ? props.onHeightChange : undefined
+                }
                 menuPlus={menuPlus}
                 onFocus={onFocus}
                 onBlur={onBlur}
@@ -229,7 +229,7 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 }}
                 onItemSelected={(_id, stk) => onPickSticker(stk)}
                 onKeyboardResigned={onKeyboardResigned}
-                onContentBottomInsetUpdate={props.onContentBottomInsetUpdate}
+                onHeightChange={props.onHeightChange}
             />
         );
     }

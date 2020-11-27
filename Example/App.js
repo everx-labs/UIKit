@@ -2357,7 +2357,7 @@ const Chat = () => {
                             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
                     })),
                 }))}
-                onContentBottomInsetUpdate={setBottomInset}
+                onHeightChange={setBottomInset}
             />
         </SafeAreaView>
     );

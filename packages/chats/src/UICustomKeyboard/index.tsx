@@ -12,7 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIStyle, UIColor } from '@tonlabs/uikit.core';
 import { useTheme } from '../useTheme';
-import type { OnContentBottomInsetUpdate } from '../UIChatInput/types';
+import type { OnHeightChange } from '../UIChatInput/types';
 
 const registerCustomKeyboard = (
     kbID: string,
@@ -52,7 +52,7 @@ export const UICustomKeyboardUtils = {
 let trackingViewIsReady: boolean = false; // global flag to learn if KeyboardTrackingView usable
 
 type Props = KeyboardAccessoryViewProps & {
-    onContentBottomInsetUpdate?: OnContentBottomInsetUpdate;
+    onHeightChange?: OnHeightChange;
 };
 
 export function UICustomKeyboard(props: Props) {
@@ -76,8 +76,8 @@ export function UICustomKeyboard(props: Props) {
             ? keyboardHeight.current - insets.bottom
             : inputHeight.current;
 
-        if (props.onContentBottomInsetUpdate) {
-            props.onContentBottomInsetUpdate(bottomInset);
+        if (props.onHeightChange) {
+            props.onHeightChange(bottomInset);
         }
     };
 

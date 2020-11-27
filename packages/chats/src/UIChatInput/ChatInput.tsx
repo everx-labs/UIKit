@@ -262,7 +262,6 @@ type Props = {
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
     onStickersPress: OnStickersPress;
-    // TODO: can we not expose it?
     onHeightChange?: OnHeightChange;
     onFocus: () => void;
     onBlur: () => void;

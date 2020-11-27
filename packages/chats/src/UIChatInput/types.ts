@@ -1,4 +1,9 @@
-import type { StyleProp, ViewStyle, TextStyle, ImageSourcePropType } from "react-native";
+import type {
+    StyleProp,
+    ViewStyle,
+    TextStyle,
+    ImageSourcePropType,
+} from 'react-native';
 
 // TODO: should be in UIActionSheet
 export type MenuItem = {
@@ -25,5 +30,4 @@ export type ImageSize = { width: number; height: number };
 export type OnSendText = (text: string) => void;
 export type OnSendMedia = (data: any, imageSize: ImageSize | null) => void;
 export type OnSendDocument = (data: any, name: string) => void;
-export type OnContentBottomInsetUpdate = (bottom: number) => void;
 export type OnHeightChange = (height: number) => void;
