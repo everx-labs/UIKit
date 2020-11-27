@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { UIColor, UIFont, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UILabel } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 
@@ -19,14 +20,18 @@ import { useBubblePosition, BubblePosition } from './useBubblePosition';
 const getUrlStyle = (status: ChatMessageStatus) =>
     status === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
 
-const getFontColor = (status: ChatMessageStatus) =>
-    status === ChatMessageStatus.Received
-        ? UIStyle.Color.getColorStyle(
-              UIColor.textSecondary(UIColor.Theme.Light)
-          )
-        : UIStyle.Color.getColorStyle(
-              UIColor.textSecondary(UIColor.Theme.Dark)
-          );
+const getFontColor = (message: PlainTextMessage) => {
+    if (message.isAborted) {
+        return UIStyle.Color.getColorStyle(UIColor.fa());
+    } else if (message.status === ChatMessageStatus.Received) {
+        return UIStyle.Color.getColorStyle(
+            UIColor.textSecondary(UIColor.Theme.Light)
+        );
+    }
+    return UIStyle.Color.getColorStyle(
+        UIColor.textSecondary(UIColor.Theme.Dark)
+    );
+};
 
 const getRoundedCornerStyle = (
     options: ChatMessageMeta,
@@ -50,16 +55,33 @@ const getBubbleContainer = (position: BubblePosition) => {
 };
 
 const getBubbleStyle = (message: PlainTextMessage) => {
-    if (message.status === ChatMessageStatus.Received) {
+    if (message.isAborted) {
+        return styles.msgAborted;
+    } else if (message.status === ChatMessageStatus.Received) {
         return styles.msgReceived;
     } else if (message.status === ChatMessageStatus.Sent) {
         return styles.msgSent;
     } else if (message.status === ChatMessageStatus.Pending) {
         return styles.msgSending;
-    } else if (message.isAborted) {
-        return styles.msgAborted;
     }
+
     return styles.msgSending;
+};
+
+const getActionString = (message: PlainTextMessage) => {
+    if (message.isAborted) {
+        return message.abortedActionText || 'Tap to send again'; // TODO: TONLocalized.chats.message.tapToResend
+    }
+
+    return null;
+};
+
+const getActionStringStyle = (message: PlainTextMessage) => {
+    if (message.isAborted) {
+        return UIStyle.color.getColorStyle(UIColor.error());
+    }
+
+    return null;
 };
 
 // For e2e tests, to create unique id as in those tests
@@ -97,6 +119,7 @@ export function BubblePlainText(props: PlainTextMessage) {
         }).start();
     };
     const position = useBubblePosition(props.status);
+    const actionString = getActionString(props);
 
     return (
         <View style={[getBubbleContainer(position)]}>
@@ -111,48 +134,59 @@ export function BubblePlainText(props: PlainTextMessage) {
                     );
                 }}
             >
-                <Animated.View
-                    style={[
-                        styles.wrapMsgContainer,
-                        { transform: [{ scale }] },
-                    ]}
-                >
-                    <View
+                <>
+                    <Animated.View
                         style={[
-                            UIStyle.padding.verticalSmall(),
-                            UIStyle.padding.horizontalNormal(),
-                            styles.msgContainer,
-                            getBubbleStyle(props),
-                            getRoundedCornerStyle(props, position),
+                            styles.wrapMsgContainer,
+                            { transform: [{ scale }] },
                         ]}
                     >
-                        <ParsedText
-                            testID={createTestId(
-                                'chat_text_message%',
-                                props.text
-                            )}
-                            key={`chat_text_key_${props.key}`}
+                        <View
                             style={[
-                                getFontColor(props.status),
-                                UIFont.smallRegular(),
-                                styles.textCell,
-                            ]}
-                            parse={[
-                                {
-                                    type: 'url',
-                                    style: getUrlStyle(props.status),
-                                    onPress: (url: string, index: number) =>
-                                        props.onPressUrl &&
-                                        props.onPressUrl(url, index),
-                                },
+                                UIStyle.padding.verticalSmall(),
+                                UIStyle.padding.horizontalNormal(),
+                                styles.msgContainer,
+                                getBubbleStyle(props),
+                                getRoundedCornerStyle(props, position),
                             ]}
                         >
-                            {props.text}
-                        </ParsedText>
-                        <BubbleTime {...props} />
-                    </View>
-                </Animated.View>
-                {/* TODO: action string */}
+                            <ParsedText
+                                testID={createTestId(
+                                    'chat_text_message%',
+                                    props.text
+                                )}
+                                key={`chat_text_key_${props.key}`}
+                                style={[
+                                    getFontColor(props),
+                                    UIFont.smallRegular(),
+                                    styles.textCell,
+                                ]}
+                                parse={[
+                                    {
+                                        type: 'url',
+                                        style: getUrlStyle(props.status),
+                                        onPress: (url: string, index: number) =>
+                                            props.onPressUrl &&
+                                            props.onPressUrl(url, index),
+                                    },
+                                ]}
+                            >
+                                {props.text}
+                            </ParsedText>
+                            <BubbleTime {...props} />
+                        </View>
+                    </Animated.View>
+                    {actionString && (
+                        <UILabel
+                            style={[
+                                styles.actionString,
+                                getActionStringStyle(props),
+                            ]}
+                            role={UILabel.Role.TinyRegular}
+                            text={actionString}
+                        />
+                    )}
+                </>
             </TouchableWithoutFeedback>
         </View>
     );
@@ -225,5 +259,11 @@ const styles = StyleSheet.create({
     msgSent: {
         alignItems: 'flex-end',
         backgroundColor: UIColor.primary(),
+    },
+    actionString: {
+        paddingTop: UIConstant.tinyContentOffset(),
+        letterSpacing: 0.5,
+        textAlign: 'right',
+        color: UIColor.grey(),
     },
 });
