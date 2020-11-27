@@ -12,13 +12,13 @@ import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';
 
 type Props = {
-    quickAction?: QuickActionItem[];
+    quickActions?: QuickActionItem[];
     inputHasValue: boolean;
     onSendText: () => void | Promise<void>;
 };
 
 export function QuickAction(props: Props) {
-    const { quickAction, inputHasValue, onSendText } = props;
+    const { quickActions, inputHasValue, onSendText } = props;
 
     if (inputHasValue) {
         return (
@@ -35,13 +35,13 @@ export function QuickAction(props: Props) {
         );
     }
 
-    if (!quickAction) {
+    if (!quickActions) {
         return null;
     }
 
     return (
         <UIButtonGroup>
-            {quickAction.map((action) => (
+            {quickActions.map((action) => (
                 <UITextButton
                     key={`quickAction~${action.key}`}
                     testID={action.testID}

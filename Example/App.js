@@ -2365,6 +2365,17 @@ const Chat = () => {
                     })),
                 }))}
                 onHeightChange={setBottomInset}
+                shortcuts={[
+                    {
+                        title: "I'm a danger shortcut!",
+                        onPress: () => console.log('shortcut pressed!'),
+                        isDanger: true,
+                    },
+                    {
+                        title: "I'm a shortcut!",
+                        onPress: () => console.log('shortcut pressed!'),
+                    },
+                ]}
             />
         </SafeAreaView>
     );

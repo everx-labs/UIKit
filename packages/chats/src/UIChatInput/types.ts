@@ -31,3 +31,11 @@ export type OnSendText = (text: string) => void;
 export type OnSendMedia = (data: any, imageSize: ImageSize | null) => void;
 export type OnSendDocument = (data: any, name: string) => void;
 export type OnHeightChange = (height: number) => void;
+
+export type Shortcut = {
+    title: string;
+    onPress: () => void | Promise<void>;
+    isDanger?: boolean;
+    testID?: string;
+    key?: string;
+};

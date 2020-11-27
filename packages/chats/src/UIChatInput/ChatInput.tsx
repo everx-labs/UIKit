@@ -17,7 +17,7 @@ import { useTheme } from '../useTheme';
 
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
-import { QuickAction } from './QuickAction';
+import { QuickAction } from './QuickActions';
 import { StickersButton } from './StickerButton';
 import type { OnStickersPress } from './StickerButton';
 import type {
@@ -27,8 +27,10 @@ import type {
     OnSendMedia,
     OnSendDocument,
     OnHeightChange,
+    Shortcut,
 } from './types';
 import { ChatPicker, ChatPickerRef } from './ChatPicker';
+import { Shortcuts } from './Shortcuts';
 
 const MAX_INPUT_LENGTH = 320;
 
@@ -247,14 +249,15 @@ type Props = {
     textInputRef: React.RefObject<TextInput>;
     pickerRef: React.RefObject<ChatPickerRef>;
 
+    editable: boolean;
+    placeholder?: string;
+    shortcuts?: Shortcut[];
     menuPlus?: MenuItem[];
     menuPlusDisabled?: boolean;
     menuMore?: MenuItem[];
     menuMoreDisabled?: boolean;
-    quickAction?: QuickActionItem[];
-    placeholder?: string;
+    quickActions?: QuickActionItem[];
 
-    editable: boolean;
     inputHidden?: boolean; // TODO: what is it?
     stickersVisible: boolean;
 
@@ -303,7 +306,7 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                         containerStyle,
                     ]}
                 >
-                    {/* actionsView TODO: Make actions */}
+                    <Shortcuts shortcuts={props.shortcuts} />
                     <Animated.View
                         style={[styles.border, { opacity: borderOpacity }]}
                     />
@@ -368,7 +371,7 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                             onPress={props.onStickersPress}
                         />
                         <QuickAction
-                            quickAction={props.quickAction}
+                            quickActions={props.quickActions}
                             inputHasValue={inputHasValue}
                             onSendText={onSendText}
                         />

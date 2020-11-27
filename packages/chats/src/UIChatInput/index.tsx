@@ -17,6 +17,9 @@ import type {
     OnSendText,
     OnSendMedia,
     OnSendDocument,
+    Shortcut,
+    MenuItem,
+    QuickActionItem,
 } from './types';
 import type { ChatPickerRef } from './ChatPicker';
 
@@ -128,7 +131,7 @@ function useStickers(
     };
 }
 
-function useMenuPlus() {
+function useMenuPlus(menuPlusHidden: boolean = false) {
     const chatPickerRef = React.useRef<ChatPickerRef>(null);
     const onPressImage = () => {
         chatPickerRef.current?.openImageDialog();
@@ -137,16 +140,18 @@ function useMenuPlus() {
         chatPickerRef.current?.openDocumentDialog();
     };
 
-    const menu = [
-        {
-            title: 'Attach image',
-            onPress: onPressImage,
-        },
-        {
-            title: 'Attach document',
-            onPress: onPressDocument,
-        },
-    ];
+    const menu: MenuItem[] = menuPlusHidden
+        ? []
+        : [
+              {
+                  title: 'Attach image', // TODO: localize!
+                  onPress: onPressImage,
+              },
+              {
+                  title: 'Attach document', // TODO: localize!
+                  onPress: onPressDocument,
+              },
+          ];
 
     return {
         menuPlus: menu,
@@ -155,9 +160,15 @@ function useMenuPlus() {
 }
 
 type Props = {
-    editable: boolean; // TODO
+    editable: boolean;
     placeholder?: string;
-    stickers: UIStickerPackage[];
+    stickers?: UIStickerPackage[];
+    shortcuts?: Shortcut[];
+    menuPlusHidden?: boolean;
+    menuPlusDisabled?: boolean;
+    menuMoreDisabled?: boolean;
+    quickActions?: QuickActionItem[];
+
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
@@ -178,13 +189,21 @@ export const UIChatInput = React.forwardRef<null, Props>(
             onBlur,
             onPickSticker,
         } = useStickers(props.onStickersVisible);
-        const { menuPlus, chatPickerRef } = useMenuPlus();
+        const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
         const input = (
             <ChatInput
                 ref={ref}
                 editable={props.editable}
                 placeholder={props.placeholder}
+                shortcuts={props.shortcuts}
+                menuPlus={menuPlus}
+                menuPlusDisabled={props.menuPlusDisabled}
+                menuMore={
+                    undefined /* TODO: we not render it right now, but could at some point */
+                }
+                menuMoreDisabled={props.menuPlusDisabled}
+                quickActions={props.quickActions}
                 textInputRef={textInputRef}
                 pickerRef={chatPickerRef}
                 stickersVisible={stickersVisible}
@@ -195,7 +214,6 @@ export const UIChatInput = React.forwardRef<null, Props>(
                 onHeightChange={
                     Platform.OS === 'web' ? props.onHeightChange : undefined
                 }
-                menuPlus={menuPlus}
                 onFocus={onFocus}
                 onBlur={onBlur}
             />
@@ -205,11 +223,13 @@ export const UIChatInput = React.forwardRef<null, Props>(
             return (
                 <>
                     {input}
-                    <UIStickerPicker
-                        ref={stickersPickerRef}
-                        stickers={props.stickers}
-                        onPick={onPickSticker}
-                    />
+                    {props.stickers && (
+                        <UIStickerPicker
+                            ref={stickersPickerRef}
+                            stickers={props.stickers}
+                            onPick={onPickSticker}
+                        />
+                    )}
                 </>
             );
         }
