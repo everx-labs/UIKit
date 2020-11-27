@@ -257,8 +257,8 @@ type Props = {
     menuMore?: MenuItem[];
     menuMoreDisabled?: boolean;
     quickActions?: QuickActionItem[];
+    inputHidden?: boolean;
 
-    inputHidden?: boolean; // TODO: what is it?
     stickersVisible: boolean;
 
     // TODO: do we need separate handlers for different content type?
@@ -323,46 +323,50 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
                             menuPlusDisabled={props.menuPlusDisabled}
                         />
                         <View style={styles.inputMsg}>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <TextInput
-                                    ref={props.textInputRef}
-                                    testID="chat_input"
-                                    autoCapitalize="sentences"
-                                    autoCorrect={false}
-                                    clearButtonMode="never"
-                                    keyboardType="default"
-                                    editable={props.editable}
-                                    maxLength={MAX_INPUT_LENGTH}
-                                    multiline={true}
-                                    numberOfLines={numberOfLines}
-                                    // @ts-ignore (this is our custom prop)
-                                    noPersonalizedLearning={false}
-                                    placeholder={
-                                        props.placeholder ??
-                                        uiLocalized.TypeMessage
-                                    }
-                                    placeholderTextColor={UIColor.textPlaceholder(
-                                        theme
-                                    )}
-                                    underlineColorAndroid="transparent"
-                                    onContentSizeChange={onContentSizeChange}
-                                    onChangeText={onChangeText}
-                                    onKeyPress={onKeyPress}
-                                    onFocus={props.onFocus}
-                                    onBlur={props.onBlur}
-                                    style={[
-                                        UIColor.textPrimaryStyle(theme),
-                                        UIStyle.text.bodyRegular(),
-                                        UIStyle.common.flex(),
-                                        styles.input,
-                                    ]}
-                                />
-                            </View>
+                            {props.inputHidden ? null : (
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <TextInput
+                                        ref={props.textInputRef}
+                                        testID="chat_input"
+                                        autoCapitalize="sentences"
+                                        autoCorrect={false}
+                                        clearButtonMode="never"
+                                        keyboardType="default"
+                                        editable={props.editable}
+                                        maxLength={MAX_INPUT_LENGTH}
+                                        multiline={true}
+                                        numberOfLines={numberOfLines}
+                                        // @ts-ignore (this is our custom prop)
+                                        noPersonalizedLearning={false}
+                                        placeholder={
+                                            props.placeholder ??
+                                            uiLocalized.TypeMessage
+                                        }
+                                        placeholderTextColor={UIColor.textPlaceholder(
+                                            theme
+                                        )}
+                                        underlineColorAndroid="transparent"
+                                        onContentSizeChange={
+                                            onContentSizeChange
+                                        }
+                                        onChangeText={onChangeText}
+                                        onKeyPress={onKeyPress}
+                                        onFocus={props.onFocus}
+                                        onBlur={props.onBlur}
+                                        style={[
+                                            UIColor.textPrimaryStyle(theme),
+                                            UIStyle.text.bodyRegular(),
+                                            UIStyle.common.flex(),
+                                            styles.input,
+                                        ]}
+                                    />
+                                </View>
+                            )}
                         </View>
                         <StickersButton
                             hasStickers={props.editable}

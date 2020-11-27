@@ -168,6 +168,8 @@ type Props = {
     menuPlusDisabled?: boolean;
     menuMoreDisabled?: boolean;
     quickActions?: QuickActionItem[];
+    // TODO: revisit how it should work after it'll be integrated to Surf
+    inputHidden?: boolean;
 
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
