@@ -105,8 +105,7 @@ function useChatListWheelHandler(
                 const scrollResponder = ref.current.getScrollResponder();
                 if (scrollResponder) {
                     // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
-                    // TODO: what exactly this for, and why it tries to set property on a number???
-                    const scrollableNode: any = scrollResponder.getScrollableNode();
+                    const scrollableNode = scrollResponder.getScrollableNode();
                     if (scrollableNode) {
                         scrollableNode.scrollTop = y;
                     }
