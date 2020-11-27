@@ -21,7 +21,7 @@ const getUrlStyle = (status: ChatMessageStatus) =>
     status === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent;
 
 const getFontColor = (message: PlainTextMessage) => {
-    if (message.isAborted) {
+    if (message.status === ChatMessageStatus.Aborted) {
         return UIStyle.Color.getColorStyle(UIColor.fa());
     } else if (message.status === ChatMessageStatus.Received) {
         return UIStyle.Color.getColorStyle(
@@ -55,7 +55,7 @@ const getBubbleContainer = (position: BubblePosition) => {
 };
 
 const getBubbleStyle = (message: PlainTextMessage) => {
-    if (message.isAborted) {
+    if (message.status === ChatMessageStatus.Aborted) {
         return styles.msgAborted;
     } else if (message.status === ChatMessageStatus.Received) {
         return styles.msgReceived;
@@ -69,15 +69,15 @@ const getBubbleStyle = (message: PlainTextMessage) => {
 };
 
 const getActionString = (message: PlainTextMessage) => {
-    if (message.isAborted) {
-        return message.abortedActionText || 'Tap to send again'; // TODO: TONLocalized.chats.message.tapToResend
+    if (message.status === ChatMessageStatus.Aborted) {
+        return message.actionText || 'Tap to send again'; // TODO: TONLocalized.chats.message.tapToResend
     }
 
-    return null;
+    return message.actionText;
 };
 
 const getActionStringStyle = (message: PlainTextMessage) => {
-    if (message.isAborted) {
+    if (message.status === ChatMessageStatus.Aborted) {
         return UIStyle.color.getColorStyle(UIColor.error());
     }
 

@@ -12,6 +12,7 @@ export enum ChatMessageStatus {
     Sent = 'sent',
     Pending = 'pending',
     Received = 'received',
+    Aborted = 'aborted',
 }
 
 // Aborted = "aborted", // TODO: make property on text bubbles to handle aborted state!
@@ -38,8 +39,7 @@ export enum ChatMessageType {
 export type PlainTextMessage = ChatMessageMeta & {
     type: ChatMessageType.PlainText;
     text: string;
-    isAborted: boolean; // TODO: support it
-    abortedActionText?: string;
+    actionText?: string;
     onTouchText?: () => void | Promise<void>;
     onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
@@ -52,13 +52,6 @@ export type SystemMessage = ChatMessageMeta & {
 export enum TransactionType {
     Income = 'income',
     Expense = 'expense',
-    Aborted = 'aborted',
-    // Spending = "spending",
-    // Deposit = "deposit",
-    // Bill = "bill",
-    // Invoice = "invoice",
-    // Invite = "invite",
-    // Compliment = "compliment",
 }
 
 export type TransactionComment = {
@@ -75,6 +68,7 @@ export type TransactionMessage = ChatMessageMeta & {
         text?: string;
     };
     comment?: TransactionComment;
+    actionText?: string;
     onPress?: () => void | Promise<void>;
 };
 

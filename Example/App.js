@@ -2207,11 +2207,11 @@ const messages = [
     },
     {
         type: 'trx',
-        status: 'sent',
+        status: 'aborted',
         time: Math.floor(Date.now() - 1 * 60 * 1000),
         sender: '0:000',
         info: {
-            type: 'aborted',
+            type: 'expense',
             amount: new BigNumber(1),
         },
         comment: {
@@ -2223,11 +2223,11 @@ const messages = [
     },
     {
         type: 'trx',
-        status: 'received',
+        status: 'aborted',
         time: Math.floor(Date.now() - 1 * 60 * 1000),
         sender: '0:000',
         info: {
-            type: 'aborted',
+            type: 'income',
             amount: new BigNumber(1),
         },
     },
@@ -2282,6 +2282,13 @@ const messages = [
             text: 'Take it',
             encrypted: true,
         },
+    },
+    {
+        type: 'stm',
+        status: 'aborted',
+        time: Math.floor(Date.now() - 5 * 60 * 1000),
+        sender: '0:123',
+        text: "I'm aborted one!",
     },
     // ...new Array(100).fill(null).reduce((acc, n, i) => {
     //     acc.push({

@@ -22,12 +22,12 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
     return null;
 };
 
-const getBubbleColor = (type: TransactionType) => {
-    if (type === TransactionType.Aborted) {
+const getBubbleColor = (props: Props) => {
+    if (props.status === ChatMessageStatus.Aborted) {
         return styles.cardAborted;
-    } else if (type === TransactionType.Expense) {
+    } else if (props.type === TransactionType.Expense) {
         return styles.cardWithdraw;
-    } else if (type === TransactionType.Income) {
+    } else if (props.type === TransactionType.Income) {
         return styles.cardIncome;
     }
 
@@ -44,7 +44,7 @@ export function BubbleTransactionComment(props: Props) {
                 UIStyle.padding.verticalSmall(),
                 UIStyle.padding.horizontalNormal(),
                 getBubbleCornerStyle(position),
-                getBubbleColor(props.type),
+                getBubbleColor(props),
             ]}
             onPress={props.onPress}
         >

@@ -14,9 +14,9 @@ const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
 
 const getContainerTestID = (message: TransactionMessage) =>
-    (message.status === ChatMessageStatus.Pending
+    message.status === ChatMessageStatus.Pending
         ? `transaction_message_${getValueForTestID(message)}_pending`
-        : `transaction_message_${getValueForTestID(message)}`);
+        : `transaction_message_${getValueForTestID(message)}`;
 
 const getBubbleContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
@@ -39,7 +39,7 @@ const getBubbleInner = (position: BubblePosition) => {
 const getBubbleColor = (message: TransactionMessage) => {
     const { type } = message.info;
 
-    if (type === TransactionType.Aborted) {
+    if (message.status === ChatMessageStatus.Aborted) {
         return styles.cardAborted;
     } else if (type === TransactionType.Expense) {
         return styles.cardWithdraw;
@@ -87,31 +87,33 @@ const getCommentText = (message: TransactionMessage) => {
     return `${message.info.text}, `;
 };
 
-const getActionString = (type: TransactionType) => {
-    if (type === TransactionType.Aborted) {
-        return 'Tap to resend'; // TODO: TONLocalized.chats.message.tapToResend
+const getActionString = (message: TransactionMessage) => {
+    if (message.status === ChatMessageStatus.Aborted) {
+        return message.actionText ?? 'Tap to resend'; // TODO: TONLocalized.chats.message.tapToResend
     }
 
-    return null;
+    return message.actionText;
 };
 
-const getActionStringStyle = (type: TransactionType) => {
-    if (type === TransactionType.Aborted) {
+const getActionStringStyle = (message: TransactionMessage) => {
+    if (message.status === ChatMessageStatus.Aborted) {
         return UIStyle.color.getColorStyle(UIColor.error());
     }
     return null;
 };
 
 function TransactionSublabel(props: TransactionMessage) {
-    if (props.info.type === TransactionType.Aborted) {
+    if (props.status === ChatMessageStatus.Aborted) {
         return (
             <>
                 <UILabel
-                    testID={`transaction_message_${getValueForTestID(props)}_aborted`}
+                    testID={`transaction_message_${getValueForTestID(
+                        props
+                    )}_aborted`}
                     role={UILabel.Role.TinyRegular}
                     text={uiLocalized.formatString(
                         uiLocalized.TransactionStatus.aborted,
-                        uiLocalized.formatDate(props.time),
+                        uiLocalized.formatDate(props.time)
                     )}
                     style={styles.textWhite}
                 />
@@ -122,7 +124,9 @@ function TransactionSublabel(props: TransactionMessage) {
         return (
             <>
                 <UILabel
-                    testID={`transaction_message_${getValueForTestID(props)}_time`}
+                    testID={`transaction_message_${getValueForTestID(
+                        props
+                    )}_time`}
                     role={UILabel.Role.TinyRegular}
                     text={uiLocalized.TransactionStatus.sending}
                     style={styles.textWhite}
@@ -190,7 +194,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
 
 export function BubbleTransaction(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
-    const actionString = getActionString(props.info.type);
+    const actionString = getActionString(props);
 
     return (
         <View style={getBubbleContainer(position)}>
@@ -203,7 +207,7 @@ export function BubbleTransaction(props: TransactionMessage) {
                             <UILabel
                                 style={[
                                     styles.actionString,
-                                    getActionStringStyle(props.info.type),
+                                    getActionStringStyle(props),
                                 ]}
                                 role={UILabel.Role.TinyRegular}
                                 text={actionString}
