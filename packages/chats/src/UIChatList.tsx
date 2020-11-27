@@ -17,7 +17,7 @@ import {
 } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UIConstant, UIColor } from '@tonlabs/uikit.core';
 
 import { sectionListGetItemLayout } from './UIChatListLayout';
 import { UIChatListFormatter } from './UIChatListFormatter';
@@ -81,7 +81,7 @@ function useWheelHandler(handler: (e: WheelEvent) => void) {
 
 function useChatListWheelHandler(
     ref: React.Ref<SectionList>,
-    listContentOffsetRef: React.RefObject<ListContentOffset>
+    listContentOffsetRef: React.RefObject<ListContentOffset>,
 ) {
     const handler = React.useCallback((e: WheelEvent) => {
         const scroll = document.getElementById(CHAT_SECTION_LIST);
@@ -124,7 +124,7 @@ const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
 }) => {
     return (
         <View
-            onLayout={(e) => onLayoutCell(item.key, e)}
+            onLayout={e => onLayoutCell(item.key, e)}
             style={{
                 // TODO: this one is incorrect, there are different paddings for bubbles
                 paddingTop: item.firstFromChain
@@ -164,7 +164,7 @@ function useLayoutHelpers(canLoadMore: boolean) {
                 );
             },
         }),
-        [canLoadMore, cellsHeight]
+        [canLoadMore, cellsHeight],
     );
 
     const onLayoutCell = React.useCallback((key: string, e: any) => {
@@ -186,7 +186,7 @@ function useLayoutHelpers(canLoadMore: boolean) {
 function useContentInset(
     ref: React.RefObject<SectionList>,
     listContentOffsetRef: React.RefObject<ListContentOffset>,
-    bottomInsetProp?: number
+    bottomInsetProp?: number,
 ) {
     const insets = useSafeAreaInsets();
     const bottomInset = bottomInsetProp ?? 0;
@@ -261,7 +261,7 @@ type Props = {
 };
 
 export const UIChatList = React.forwardRef<SectionList, Props>(
-    function UIChatListForwarded(props, ref) {
+    (props, ref) => {
         const keyboardDismissProp = React.useMemo(() => {
             if (Platform.OS !== 'ios') {
                 // The following is not working on Android >>>
@@ -302,14 +302,14 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                 toValue: 1,
                 useNativeDriver: true,
                 speed: 20,
-            })
+            }),
         );
         const hideLinesAnimation = React.useRef(
             Animated.spring(topOpacity.current, {
                 toValue: 1,
                 useNativeDriver: true,
                 speed: 20,
-            })
+            }),
         );
 
         const checkVisualStyle = React.useCallback(() => {
@@ -362,7 +362,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
 
                 checkVisualStyle();
             },
-            []
+            [],
         );
         const onScrollMessages = React.useCallback(
             (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -370,7 +370,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
 
                 checkVisualStyle();
             },
-            []
+            [],
         );
 
         const renderLoadMore = React.useCallback(() => {
@@ -387,23 +387,29 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
         }, []);
 
         const { getItemLayout, renderItem } = useLayoutHelpers(
-            props.canLoadMore
+            props.canLoadMore,
         );
         useChatListWheelHandler(localRef, listContentOffset);
 
         const contentInset = useContentInset(
             localRef,
             listContentOffset,
-            props.bottomInset
+            props.bottomInset,
         );
 
         const sections = React.useMemo(
             () => UIChatListFormatter.getSections(props.messages),
-            [props.messages]
+            [props.messages],
         );
 
         return (
             <View style={styles.container}>
+                <Animated.View
+                    style={[
+                        styles.border,
+                        { opacity: topOpacity.current },
+                    ]}
+                />
                 <TapGestureHandler
                     onHandlerStateChange={onHandlerStateChange}
                     enabled={props.areStickersVisible}
@@ -420,7 +426,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                         onLayout={onLayout}
                         onContentSizeChange={onContentSizeChange}
                         onScroll={onScrollMessages}
-                        onScrollToIndexFailed={(info) =>
+                        onScrollToIndexFailed={info =>
                             console.error('Failed to scroll to index:', info)
                         }
                         scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
@@ -437,14 +443,14 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                         onEndReached={props.onLoadEarlierMessages}
                         onEndReachedThreshold={0.6}
                         ListFooterComponent={renderLoadMore}
-                        renderScrollComponent={(scrollProps) => (
+                        renderScrollComponent={scrollProps => (
                             <ScrollView {...scrollProps} />
                         )}
                     />
                 </TapGestureHandler>
             </View>
         );
-    }
+    },
 );
 
 const styles = StyleSheet.create({
@@ -455,5 +461,9 @@ const styles = StyleSheet.create({
     messagesList: {
         paddingHorizontal: UIConstant.contentOffset(),
         paddingVertical: UIConstant.contentOffset(),
+    },
+    border: {
+        height: 1,
+        backgroundColor: UIColor.grey1(),
     },
 });
