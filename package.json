@@ -51,7 +51,7 @@
         "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
         "react-native-dropdownalert": "4.3.0",
         "react-native-flash-message": "0.1.13",
-        "react-native-indicators": "0.17.0",
+        "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
         "react-native-lightbox": "0.7.0",
         "react-native-localization": "2.1.6",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",

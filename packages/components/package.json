@@ -43,7 +43,7 @@
     "react-native-awesome-alerts": "1.3.2",
     "react-native-dropdownalert": "4.3.0",
     "react-native-flash-message": "0.1.13",
-    "react-native-indicators": "0.17.0",
+    "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
     "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
     "react-style-proptype": "3.2.2"
   },
