@@ -14,9 +14,9 @@ const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
 
 const getContainerTestID = (message: TransactionMessage) =>
-    message.status === ChatMessageStatus.Pending
+    (message.status === ChatMessageStatus.Pending
         ? `transaction_message_${getValueForTestID(message)}_pending`
-        : `transaction_message_${getValueForTestID(message)}`;
+        : `transaction_message_${getValueForTestID(message)}`);
 
 const getBubbleContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
@@ -107,13 +107,11 @@ function TransactionSublabel(props: TransactionMessage) {
         return (
             <>
                 <UILabel
-                    testID={`transaction_message_${getValueForTestID(
-                        props
-                    )}_aborted`}
+                    testID={`transaction_message_${getValueForTestID(props)}_aborted`}
                     role={UILabel.Role.TinyRegular}
                     text={uiLocalized.formatString(
                         uiLocalized.TransactionStatus.aborted,
-                        uiLocalized.formatDate(props.time)
+                        uiLocalized.formatDate(props.time),
                     )}
                     style={styles.textWhite}
                 />
@@ -124,9 +122,7 @@ function TransactionSublabel(props: TransactionMessage) {
         return (
             <>
                 <UILabel
-                    testID={`transaction_message_${getValueForTestID(
-                        props
-                    )}_time`}
+                    testID={`transaction_message_${getValueForTestID(props)}_time`}
                     role={UILabel.Role.TinyRegular}
                     text={uiLocalized.TransactionStatus.sending}
                     style={styles.textWhite}
@@ -154,7 +150,7 @@ function TransactionSublabel(props: TransactionMessage) {
 
 function BubbleTransactionMain(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
-    const { amount } = props.info;
+    const { balanceChange } = props.info;
     return (
         <View
             testID={getContainerTestID(props)}
@@ -177,7 +173,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
                 <UILabel
                     style={[getAmountColor(props)]}
                     role={UILabel.Role.PromoMedium}
-                    text={amount.toFixed()}
+                    text={balanceChange}
                 />
             </View>
             <View

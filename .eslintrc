@@ -1,25 +1,72 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
-  "plugins": ["module-resolver"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
+  },
+  "extends": [
+    "airbnb", 
+    "plugin:flowtype/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "flowtype", 
+    "module-resolver"
+  ],
   "rules": {
-    "module-resolver/use-alias": 0, /*["error", {
-      "ignoreDepth": 1
-    }],*/
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
+    "module-resolver/use-alias": 0, /*[
+      "error", {
+        "ignoreDepth": 1
+      }
+    ],*/
+    "import/extensions": [
+        "error", 
+        "ignorePackages", 
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".tsx"]
+      }
+    ],
     "react/jsx-indent-props": [1, 4],
     "react/jsx-indent": ["error", 4],
-    "react/prefer-stateless-function": "off",
+    "react/require-default-props": [
+        "error", 
+        { 
+          "forbidDefaultForRequired": false, 
+          "ignoreFunctionalComponents": true
+      }
+    ],
+    "indent": ["error", 4, { "SwitchCase": 1 }],
     "no-use-before-define": ["error", { "variables": false }],
-    "indent": ["error", 4],
     "arrow-body-style": "off",
+    "arrow-parens": ["error", "as-needed"],
     "no-console": "off",
     "no-continue": "off",
-    "object-curly-newline": "off",
-    "class-methods-use-this": "off",
     "jsx-a11y/href-no-hash": "off",
-    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+    "object-curly-newline": "off",
     "import/prefer-default-export": "off",
+    "import/no-cycle": [2, { "maxDepth": 1 }],
+    "function-paren-newline": ["error", "consistent"],
+    "jsx-a11y/anchor-is-valid": [
+      "warn",
+      {
+        "aspects": ["invalidHref"]
+      }
+    ],
+    "flowtype/space-after-type-colon": "off",
+    "flowtype/no-types-missing-file-annotation": "off",
+    "quote-props": "off",
     "import/no-unresolved": [
       "error",
       {
@@ -34,6 +81,7 @@
   },
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "jest": true
   }
 }

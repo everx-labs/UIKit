@@ -6,6 +6,9 @@ import {
     StyleSheet,
     Animated,
     SectionListData,
+    NativeScrollEvent,
+    NativeSyntheticEvent,
+    LayoutChangeEvent,
 } from 'react-native';
 import {
     TapGestureHandler,
@@ -181,6 +184,37 @@ function useLayoutHelpers(canLoadMore: boolean) {
     };
 }
 
+function useContentInset(
+    ref: React.RefObject<SectionList>,
+    listContentOffsetRef: React.RefObject<ListContentOffset>,
+    bottomInsetProp?: number
+) {
+    const insets = useSafeAreaInsets();
+    const bottomInset = bottomInsetProp ?? 0;
+    const contentInset = {
+        // For some reason inverted list adds top safe area inset
+        top: bottomInset - insets.top,
+        bottom: -(insets.bottom ?? 0),
+    };
+
+    React.useEffect(() => {
+        if (
+            listContentOffsetRef.current?.y &&
+            listContentOffsetRef.current?.y < bottomInset
+        ) {
+            const scrollResponder = ref?.current?.getScrollResponder();
+            if (scrollResponder) {
+                scrollResponder.scrollTo({
+                    y: -bottomInset,
+                    animated: true,
+                });
+            }
+        }
+    }, [bottomInset]);
+
+    return contentInset;
+}
+
 const keyExtractor = (item: ChatMessage) => {
     return item.key;
 };
@@ -317,7 +351,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                 checkVisualStyle();
             });
         }, []);
-        const onLayout = React.useCallback((e: any) => {
+        const onLayout = React.useCallback((e: LayoutChangeEvent) => {
             listSize.current = e.nativeEvent.layout;
 
             checkVisualStyle();
@@ -331,11 +365,14 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
             },
             []
         );
-        const onScrollMessages = React.useCallback((e: any) => {
-            listContentOffset.current = e.nativeEvent.contentOffset;
+        const onScrollMessages = React.useCallback(
+            (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+                listContentOffset.current = e.nativeEvent.contentOffset;
 
-            checkVisualStyle();
-        }, []);
+                checkVisualStyle();
+            },
+            []
+        );
 
         const renderLoadMore = React.useCallback(() => {
             if (!props.canLoadMore) {
@@ -354,24 +391,12 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
             props.canLoadMore
         );
         useChatListWheelHandler(localRef, listContentOffset);
-        const insets = useSafeAreaInsets();
-        const bottomInset = props.bottomInset ?? 0;
-        const contentInset = {
-            top: bottomInset - insets.top,
-            bottom: -(insets.bottom ?? 0),
-        };
 
-        React.useEffect(() => {
-            if (listContentOffset.current.y < bottomInset) {
-                const scrollResponder = localRef.current?.getScrollResponder();
-                if (scrollResponder) {
-                    scrollResponder.scrollTo({
-                        y: -bottomInset,
-                        animated: true,
-                    });
-                }
-            }
-        }, [bottomInset]);
+        const contentInset = useContentInset(
+            localRef,
+            listContentOffset,
+            props.bottomInset
+        );
 
         const sections = React.useMemo(
             () => UIChatListFormatter.getSections(props.messages),

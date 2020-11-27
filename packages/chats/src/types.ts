@@ -69,7 +69,8 @@ export type TransactionMessage = ChatMessageMeta & {
     type: ChatMessageType.Transaction;
     info: {
         type: TransactionType;
-        amount: BigNumber;
+        amount: BigNumber; // mostly used for testID purposes
+        balanceChange: string | React.ComponentType;
         text?: string;
     };
     comment?: TransactionComment;
