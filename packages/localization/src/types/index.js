@@ -5,24 +5,15 @@ import type { NumberPartsOptions } from '@tonlabs/uikit.core';
 
 import { languagesInfo } from '../constants';
 
+export type { LanguageConstants, LanguageInfo } from '../constants';
+
 export type Language = $Keys<typeof languagesInfo>;
 export type Languages<T> = { [Language]: T }
-
-export type LanguageInfo = {
-    name: string,
-    country: string, // Works with UICountryPicker
-    dayJS: string, // Works with DayJS
-}
 
 export interface LanguageOptions {
     constants?: { [string]: string },
     images?: { [string]: any },
 }
-
-export type LanguageConstants = {
-    [string]: any,
-}
-
 export type NumberFormatInfo = {
     grouping: string,
     thousands: string,
