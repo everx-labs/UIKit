@@ -7,6 +7,7 @@ import {
     BackHandler,
     Animated,
 } from 'react-native';
+import type { NativeScrollPoint } from 'react-native';
 
 import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
@@ -35,7 +36,7 @@ import { Shortcuts } from './Shortcuts';
 const MAX_INPUT_LENGTH = 320;
 
 export type UIChatInputRef = {
-    showBorder: (show: boolean) => void;
+    onScroll: (point: NativeScrollPoint) => void;
 };
 
 function useInputValue({
@@ -228,21 +229,39 @@ function useBackHandler(ref: React.RefObject<TextInput>) {
     }, []);
 }
 
-function useAnimatedBorder(ref: React.Ref<UIChatInputRef> | null) {
-    const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0))
-        .current;
+function useAnimatedBorder(
+    ref: React.Ref<UIChatInputRef> | null,
+    numberOfLines: number
+) {
+    const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0));
+
+    const scrollOffset = React.useRef<number>(0);
+
+    const showBorderIfNeeded = React.useCallback(() => {
+        const hasScroll = scrollOffset.current > 1;
+
+        const needToShow = hasScroll || numberOfLines > 1;
+
+        Animated.spring(borderOpacity.current, {
+            toValue: needToShow ? 1 : 0,
+            useNativeDriver: true,
+            speed: 20,
+        }).start();
+    }, [numberOfLines]);
 
     React.useImperativeHandle(ref, () => ({
-        showBorder: (show: boolean) => {
-            Animated.spring(borderOpacity, {
-                toValue: show ? 1 : 0,
-                useNativeDriver: true,
-                speed: 20,
-            }).start();
+        onScroll: ({ y }: NativeScrollPoint) => {
+            scrollOffset.current = y;
+
+            showBorderIfNeeded();
         },
     }));
 
-    return borderOpacity;
+    React.useEffect(() => {
+        showBorderIfNeeded();
+    }, [numberOfLines]);
+
+    return borderOpacity.current;
 }
 
 type Props = {
@@ -293,7 +312,7 @@ export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
             showMaxLengthAlert,
             setDefaultInputHeight,
         });
-        const borderOpacity = useAnimatedBorder(ref);
+        const borderOpacity = useAnimatedBorder(ref, numberOfLines);
         useBackHandler(props.textInputRef);
 
         return (

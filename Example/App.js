@@ -2338,11 +2338,26 @@ const messages = [
     // }, []),
 ].map((m: any, i: number) => ((m.key = i), m));
 
+const stickers = new Array(10).fill(null).map((a, i) => ({
+    id: `test${i}`,
+    date: Date.now(),
+    description: '',
+    name: 'test',
+    stickers: new Array(4).fill(null).map((b, i) => ({
+        name: 'crown',
+        url:
+            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+    })),
+}));
+
 const Chat = () => {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
+    const chatInputRef = React.useRef(null);
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ width: '100%', height: 50 }} />
             <UIChatList
+                inputRef={chatInputRef}
                 areStickersVisible={false}
                 onLoadEarlierMessages={() => {}}
                 canLoadMore
@@ -2351,19 +2366,10 @@ const Chat = () => {
                 bottomInset={bottomInset}
             />
             <UIChatInput
+                ref={chatInputRef}
                 editable
                 onSendSticker={() => {}}
-                stickers={new Array(10).fill(null).map((a, i) => ({
-                    id: `test${i}`,
-                    date: Date.now(),
-                    description: '',
-                    name: 'test',
-                    stickers: new Array(4).fill(null).map((b, i) => ({
-                        name: 'crown',
-                        url:
-                            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                    })),
-                }))}
+                stickers={stickers}
                 onHeightChange={setBottomInset}
                 shortcuts={[
                     {
