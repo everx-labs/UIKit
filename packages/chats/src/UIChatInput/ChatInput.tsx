@@ -7,7 +7,6 @@ import {
     BackHandler,
     Animated,
 } from 'react-native';
-import type { NativeScrollPoint } from 'react-native';
 
 import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
@@ -32,12 +31,9 @@ import type {
 } from './types';
 import { ChatPicker, ChatPickerRef } from './ChatPicker';
 import { Shortcuts } from './Shortcuts';
+import { useChatOnScrollListener } from '../useChatOnScrollListener';
 
 const MAX_INPUT_LENGTH = 320;
-
-export type UIChatInputRef = {
-    onScroll: (point: NativeScrollPoint) => void;
-};
 
 function useInputValue({
     ref,
@@ -229,10 +225,7 @@ function useBackHandler(ref: React.RefObject<TextInput>) {
     }, []);
 }
 
-function useAnimatedBorder(
-    ref: React.Ref<UIChatInputRef> | null,
-    numberOfLines: number
-) {
+function useAnimatedBorder(numberOfLines: number) {
     const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0));
 
     const scrollOffset = React.useRef<number>(0);
@@ -249,13 +242,11 @@ function useAnimatedBorder(
         }).start();
     }, [numberOfLines]);
 
-    React.useImperativeHandle(ref, () => ({
-        onScroll: ({ y }: NativeScrollPoint) => {
-            scrollOffset.current = y;
+    useChatOnScrollListener((y: number) => {
+        scrollOffset.current = y;
 
-            showBorderIfNeeded();
-        },
-    }));
+        showBorderIfNeeded();
+    });
 
     React.useEffect(() => {
         showBorderIfNeeded();
@@ -290,130 +281,125 @@ type Props = {
     onBlur: () => void;
 };
 
-export const ChatInput = React.forwardRef<UIChatInputRef, Props>(
-    function ChatInputForwarded(props, ref) {
-        const theme = useTheme();
+export function ChatInput(props: Props) {
+    const theme = useTheme();
 
-        const {
-            containerStyle,
-            numberOfLines,
-            onContentSizeChange,
-            setDefaultInputHeight,
-        } = useInputAdjustHeight(props.onHeightChange);
-        const showMaxLengthAlert = useMaxLengthAlert();
-        const {
-            inputHasValue,
-            onChangeText,
-            onKeyPress,
-            onSendText,
-        } = useInputValue({
-            ref: props.textInputRef,
-            onSendText: props.onSendText,
-            showMaxLengthAlert,
-            setDefaultInputHeight,
-        });
-        const borderOpacity = useAnimatedBorder(ref, numberOfLines);
-        useBackHandler(props.textInputRef);
+    const {
+        containerStyle,
+        numberOfLines,
+        onContentSizeChange,
+        setDefaultInputHeight,
+    } = useInputAdjustHeight(props.onHeightChange);
+    const showMaxLengthAlert = useMaxLengthAlert();
+    const {
+        inputHasValue,
+        onChangeText,
+        onKeyPress,
+        onSendText,
+    } = useInputValue({
+        ref: props.textInputRef,
+        onSendText: props.onSendText,
+        showMaxLengthAlert,
+        setDefaultInputHeight,
+    });
+    const borderOpacity = useAnimatedBorder(numberOfLines);
+    useBackHandler(props.textInputRef);
 
-        return (
-            <>
+    return (
+        <>
+            <View
+                style={[
+                    UIStyle.color.getBackgroundColorStyle(
+                        UIColor.backgroundPrimary(theme)
+                    ),
+                    containerStyle,
+                ]}
+            >
+                <Shortcuts shortcuts={props.shortcuts} />
+                <Animated.View
+                    style={[styles.border, { opacity: borderOpacity }]}
+                />
                 <View
                     style={[
-                        UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundPrimary(theme)
-                        ),
-                        containerStyle,
+                        styles.container,
+                        props.menuPlus?.length && props.menuPlus?.length > 0
+                            ? null
+                            : UIStyle.margin.leftDefault(),
                     ]}
                 >
-                    <Shortcuts shortcuts={props.shortcuts} />
-                    <Animated.View
-                        style={[styles.border, { opacity: borderOpacity }]}
+                    <MenuPlus
+                        menuPlus={props.menuPlus}
+                        menuPlusDisabled={props.menuPlusDisabled}
                     />
-                    <View
-                        style={[
-                            styles.container,
-                            props.menuPlus?.length && props.menuPlus?.length > 0
-                                ? null
-                                : UIStyle.margin.leftDefault(),
-                        ]}
-                    >
-                        <MenuPlus
-                            menuPlus={props.menuPlus}
-                            menuPlusDisabled={props.menuPlusDisabled}
-                        />
-                        <View style={styles.inputMsg}>
-                            {props.inputHidden ? null : (
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <TextInput
-                                        ref={props.textInputRef}
-                                        testID="chat_input"
-                                        autoCapitalize="sentences"
-                                        autoCorrect={false}
-                                        clearButtonMode="never"
-                                        keyboardType="default"
-                                        editable={props.editable}
-                                        maxLength={MAX_INPUT_LENGTH}
-                                        multiline={true}
-                                        numberOfLines={numberOfLines}
-                                        // @ts-ignore (this is our custom prop)
-                                        noPersonalizedLearning={false}
-                                        placeholder={
-                                            props.placeholder ??
-                                            uiLocalized.TypeMessage
-                                        }
-                                        placeholderTextColor={UIColor.textPlaceholder(
-                                            theme
-                                        )}
-                                        underlineColorAndroid="transparent"
-                                        onContentSizeChange={
-                                            onContentSizeChange
-                                        }
-                                        onChangeText={onChangeText}
-                                        onKeyPress={onKeyPress}
-                                        onFocus={props.onFocus}
-                                        onBlur={props.onBlur}
-                                        style={[
-                                            UIColor.textPrimaryStyle(theme),
-                                            UIStyle.text.bodyRegular(),
-                                            UIStyle.common.flex(),
-                                            styles.input,
-                                        ]}
-                                    />
-                                </View>
-                            )}
-                        </View>
-                        <StickersButton
-                            hasStickers={props.editable}
-                            stickersVisible={props.stickersVisible}
-                            inputHasValue={inputHasValue}
-                            onPress={props.onStickersPress}
-                        />
-                        <QuickAction
-                            quickActions={props.quickActions}
-                            inputHasValue={inputHasValue}
-                            onSendText={onSendText}
-                        />
-                        <MenuMore
-                            menuMore={props.menuMore}
-                            menuMoreDisabled={props.menuMoreDisabled}
-                        />
+                    <View style={styles.inputMsg}>
+                        {props.inputHidden ? null : (
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <TextInput
+                                    ref={props.textInputRef}
+                                    testID="chat_input"
+                                    autoCapitalize="sentences"
+                                    autoCorrect={false}
+                                    clearButtonMode="never"
+                                    keyboardType="default"
+                                    editable={props.editable}
+                                    maxLength={MAX_INPUT_LENGTH}
+                                    multiline={true}
+                                    numberOfLines={numberOfLines}
+                                    // @ts-ignore (this is our custom prop)
+                                    noPersonalizedLearning={false}
+                                    placeholder={
+                                        props.placeholder ??
+                                        uiLocalized.TypeMessage
+                                    }
+                                    placeholderTextColor={UIColor.textPlaceholder(
+                                        theme
+                                    )}
+                                    underlineColorAndroid="transparent"
+                                    onContentSizeChange={onContentSizeChange}
+                                    onChangeText={onChangeText}
+                                    onKeyPress={onKeyPress}
+                                    onFocus={props.onFocus}
+                                    onBlur={props.onBlur}
+                                    style={[
+                                        UIColor.textPrimaryStyle(theme),
+                                        UIStyle.text.bodyRegular(),
+                                        UIStyle.common.flex(),
+                                        styles.input,
+                                    ]}
+                                />
+                            </View>
+                        )}
                     </View>
+                    <StickersButton
+                        hasStickers={props.editable}
+                        stickersVisible={props.stickersVisible}
+                        inputHasValue={inputHasValue}
+                        onPress={props.onStickersPress}
+                    />
+                    <QuickAction
+                        quickActions={props.quickActions}
+                        inputHasValue={inputHasValue}
+                        onSendText={onSendText}
+                    />
+                    <MenuMore
+                        menuMore={props.menuMore}
+                        menuMoreDisabled={props.menuMoreDisabled}
+                    />
                 </View>
-                <ChatPicker
-                    ref={props.pickerRef}
-                    onSendDocument={props.onSendDocument}
-                    onSendMedia={props.onSendMedia}
-                />
-            </>
-        );
-    }
-);
-
+            </View>
+            <ChatPicker
+                ref={props.pickerRef}
+                onSendDocument={props.onSendDocument}
+                onSendMedia={props.onSendMedia}
+            />
+        </>
+    );
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,

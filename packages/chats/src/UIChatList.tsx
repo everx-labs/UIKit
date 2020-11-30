@@ -34,7 +34,8 @@ import { BubbleActionButton } from './BubbleActionButton';
 import { DateSeparator } from './DateSeparator';
 import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICustomKeyboardUtils } from './UICustomKeyboard';
-import type { UIChatInputRef } from './UIChatInput/ChatInput';
+
+import { callChatOnScrollListener } from './useChatOnScrollListener';
 
 type RNGHEvent<T> = { nativeEvent: T };
 
@@ -215,7 +216,7 @@ function useContentInset(
     return contentInset;
 }
 
-function useLinesAnimation(inputRef?: React.RefObject<UIChatInputRef>) {
+function useLinesAnimation() {
     const listSize = React.useRef({ height: 0 });
     const contentHeight = React.useRef(0);
     const listContentOffset = React.useRef({ y: 0 });
@@ -289,7 +290,7 @@ function useLinesAnimation(inputRef?: React.RefObject<UIChatInputRef>) {
 
             checkVisualStyle();
 
-            inputRef?.current?.onScroll(e.nativeEvent.contentOffset);
+            callChatOnScrollListener(e.nativeEvent.contentOffset.y);
         },
         []
     );
@@ -342,8 +343,6 @@ const renderSectionTitle = ({
 };
 
 type Props = {
-    inputRef?: React.RefObject<UIChatInputRef>;
-
     areStickersVisible: boolean;
     onLoadEarlierMessages(): void;
     canLoadMore: boolean;
@@ -400,7 +399,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
         onContentSizeChange,
         onScrollMessages,
         onViewableItemsChanged,
-    } = useLinesAnimation(props.inputRef);
+    } = useLinesAnimation();
     useChatListWheelHandler(localRef, listContentOffset);
     const contentInset = useContentInset(
         localRef,

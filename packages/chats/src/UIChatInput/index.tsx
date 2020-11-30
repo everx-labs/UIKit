@@ -179,82 +179,79 @@ type Props = {
     onHeightChange?: OnHeightChange;
 };
 
-export const UIChatInput = React.forwardRef<null, Props>(
-    function UIChatInputInternal(props, ref) {
-        const textInputRef = React.useRef<TextInput>(null);
-        const {
-            stickersPickerRef,
-            stickersVisible,
-            onStickersPress,
-            onKeyboardResigned,
-            onFocus,
-            onBlur,
-            onPickSticker,
-        } = useStickers(props.onStickersVisible);
-        const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
+export function UIChatInput(props: Props) {
+    const textInputRef = React.useRef<TextInput>(null);
+    const {
+        stickersPickerRef,
+        stickersVisible,
+        onStickersPress,
+        onKeyboardResigned,
+        onFocus,
+        onBlur,
+        onPickSticker,
+    } = useStickers(props.onStickersVisible);
+    const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
-        const input = (
-            <ChatInput
-                ref={ref}
-                editable={props.editable}
-                placeholder={props.placeholder}
-                shortcuts={props.shortcuts}
-                menuPlus={menuPlus}
-                menuPlusDisabled={props.menuPlusDisabled}
-                menuMore={
-                    undefined /* TODO: we not render it right now, but could at some point */
-                }
-                menuMoreDisabled={props.menuPlusDisabled}
-                quickActions={props.quickActions}
-                textInputRef={textInputRef}
-                pickerRef={chatPickerRef}
-                stickersVisible={stickersVisible}
-                onSendText={props.onSendText}
-                onSendMedia={props.onSendMedia}
-                onSendDocument={props.onSendDocument}
-                onStickersPress={onStickersPress}
-                onHeightChange={
-                    Platform.OS === 'web' ? props.onHeightChange : undefined
-                }
-                onFocus={onFocus}
-                onBlur={onBlur}
-            />
-        );
+    const input = (
+        <ChatInput
+            editable={props.editable}
+            placeholder={props.placeholder}
+            shortcuts={props.shortcuts}
+            menuPlus={menuPlus}
+            menuPlusDisabled={props.menuPlusDisabled}
+            menuMore={
+                undefined /* TODO: we not render it right now, but could at some point */
+            }
+            menuMoreDisabled={props.menuPlusDisabled}
+            quickActions={props.quickActions}
+            textInputRef={textInputRef}
+            pickerRef={chatPickerRef}
+            stickersVisible={stickersVisible}
+            onSendText={props.onSendText}
+            onSendMedia={props.onSendMedia}
+            onSendDocument={props.onSendDocument}
+            onStickersPress={onStickersPress}
+            onHeightChange={
+                Platform.OS === 'web' ? props.onHeightChange : undefined
+            }
+            onFocus={onFocus}
+            onBlur={onBlur}
+        />
+    );
 
-        if (Platform.OS === 'web') {
-            return (
-                <>
-                    {input}
-                    {props.stickers && (
-                        <UIStickerPicker
-                            ref={stickersPickerRef}
-                            stickers={props.stickers}
-                            onPick={onPickSticker}
-                        />
-                    )}
-                </>
-            );
-        }
-
+    if (Platform.OS === 'web') {
         return (
-            <UICustomKeyboard
-                renderContent={() => input}
-                kbInputRef={textInputRef}
-                kbComponent={
-                    stickersVisible ? UIStickerPickerKeyboardName : undefined
-                    // UIStickerPickerKeyboardName
-                }
-                kbInitialProps={{
-                    ref: stickersPickerRef,
-                    // The following doesn't work for iOS, thus we use `onItemSelected` prop
-                    onPick: onPickSticker,
-                    isCustomKeyboard: true,
-                    stickers: props.stickers,
-                }}
-                onItemSelected={(_id, stk) => onPickSticker(stk)}
-                onKeyboardResigned={onKeyboardResigned}
-                onHeightChange={props.onHeightChange}
-            />
+            <>
+                {input}
+                {props.stickers && (
+                    <UIStickerPicker
+                        ref={stickersPickerRef}
+                        stickers={props.stickers}
+                        onPick={onPickSticker}
+                    />
+                )}
+            </>
         );
     }
-);
+
+    return (
+        <UICustomKeyboard
+            renderContent={() => input}
+            kbInputRef={textInputRef}
+            kbComponent={
+                stickersVisible ? UIStickerPickerKeyboardName : undefined
+                // UIStickerPickerKeyboardName
+            }
+            kbInitialProps={{
+                ref: stickersPickerRef,
+                // The following doesn't work for iOS, thus we use `onItemSelected` prop
+                onPick: onPickSticker,
+                isCustomKeyboard: true,
+                stickers: props.stickers,
+            }}
+            onItemSelected={(_id, stk) => onPickSticker(stk)}
+            onKeyboardResigned={onKeyboardResigned}
+            onHeightChange={props.onHeightChange}
+        />
+    );
+}
