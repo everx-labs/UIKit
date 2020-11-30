@@ -159,11 +159,6 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
                     onHeightChange(height);
                 }
 
-                if (Platform.OS === 'ios') {
-                    // iOS input have the own multiline native auto-grow behaviour
-                    // No need to adjust the height
-                    return;
-                }
                 const constrainedHeight = Math.min(
                     height,
                     UIConstant.smallCellHeight() * CHAT_INPUT_NUM_OF_LINES
@@ -178,6 +173,8 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
         setInputHeight(UIConstant.smallCellHeight());
     }, []);
 
+    // iOS and web input have the own multiline native auto-grow behaviour
+    // No need to adjust the height
     const containerStyle =
         Platform.OS === 'android'
             ? {
@@ -230,7 +227,6 @@ function useAnimatedBorder(numberOfLines: number) {
 
     const showBorderIfNeeded = React.useCallback(() => {
         const hasScroll = scrollOffset.current > 1;
-
         const needToShow = hasScroll || numberOfLines > 1;
 
         Animated.spring(borderOpacity.current, {
