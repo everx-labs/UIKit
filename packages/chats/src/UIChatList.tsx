@@ -15,7 +15,8 @@ import {
     ScrollView,
     State as RNGHState,
 } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
+
 
 import { UIConstant, UIColor } from '@tonlabs/uikit.core';
 
@@ -83,7 +84,7 @@ function useWheelHandler(handler: (e: WheelEvent) => void) {
 
 function useChatListWheelHandler(
     ref: React.Ref<SectionList>,
-    listContentOffsetRef: React.RefObject<ListContentOffset>
+    listContentOffsetRef: React.RefObject<ListContentOffset>,
 ) {
     const handler = React.useCallback((e: WheelEvent) => {
         const scroll = document.getElementById(CHAT_SECTION_LIST);
@@ -126,7 +127,7 @@ const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
 }) => {
     return (
         <View
-            onLayout={(e) => onLayoutCell(item.key, e)}
+            onLayout={e => onLayoutCell(item.key, e)}
             style={{
                 // TODO: this one is incorrect, there are different paddings for bubbles
                 paddingTop: item.firstFromChain
@@ -166,7 +167,7 @@ function useLayoutHelpers(canLoadMore: boolean) {
                 );
             },
         }),
-        [canLoadMore, cellsHeight]
+        [canLoadMore, cellsHeight],
     );
 
     const onLayoutCell = React.useCallback((key: string, e: any) => {
@@ -188,13 +189,12 @@ function useLayoutHelpers(canLoadMore: boolean) {
 function useContentInset(
     ref: React.RefObject<SectionList>,
     listContentOffsetRef: React.RefObject<ListContentOffset>,
-    bottomInsetProp?: number
+    bottomInsetProp?: number,
 ) {
     const insets = useSafeAreaInsets();
     const bottomInset = bottomInsetProp ?? 0;
     const contentInset = {
-        // For some reason inverted list adds top safe area inset
-        top: bottomInset - insets.top,
+        top: bottomInset,
         bottom: -(insets.bottom ?? 0),
     };
 
@@ -281,7 +281,7 @@ function useLinesAnimation() {
 
             checkVisualStyle();
         },
-        []
+        [],
     );
 
     const onScrollMessages = React.useCallback(
@@ -292,7 +292,7 @@ function useLinesAnimation() {
 
             callChatOnScrollListener(e.nativeEvent.contentOffset.y);
         },
-        []
+        [],
     );
 
     return {
@@ -404,15 +404,15 @@ export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
     const contentInset = useContentInset(
         localRef,
         listContentOffset,
-        props.bottomInset
+        props.bottomInset,
     );
     const sections = React.useMemo(
         () => UIChatListFormatter.getSections(props.messages),
-        [props.messages]
+        [props.messages],
     );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container} edges={['bottom']}>
             <Animated.View
                 style={[styles.border, { opacity: topBorderOpacity }]}
             />
@@ -432,7 +432,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
                     onLayout={onLayout}
                     onContentSizeChange={onContentSizeChange}
                     onScroll={onScrollMessages}
-                    onScrollToIndexFailed={(info) =>
+                    onScrollToIndexFailed={info =>
                         console.error('Failed to scroll to index:', info)
                     }
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
@@ -449,12 +449,12 @@ export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
                     onEndReached={props.onLoadEarlierMessages}
                     onEndReachedThreshold={0.6}
                     ListFooterComponent={renderLoadMore}
-                    renderScrollComponent={(scrollProps) => (
+                    renderScrollComponent={scrollProps => (
                         <ScrollView {...scrollProps} />
                     )}
                 />
             </TapGestureHandler>
-        </View>
+        </SafeAreaView>
     );
 });
 
