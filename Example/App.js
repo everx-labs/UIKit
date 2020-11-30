@@ -2352,12 +2352,10 @@ const stickers = new Array(10).fill(null).map((a, i) => ({
 
 const Chat = () => {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
-    const chatInputRef = React.useRef(null);
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ width: '100%', height: 50 }} />
             <UIChatList
-                inputRef={chatInputRef}
                 areStickersVisible={false}
                 onLoadEarlierMessages={() => {}}
                 canLoadMore
@@ -2366,7 +2364,6 @@ const Chat = () => {
                 bottomInset={bottomInset}
             />
             <UIChatInput
-                ref={chatInputRef}
                 editable
                 onSendSticker={() => {}}
                 stickers={stickers}
