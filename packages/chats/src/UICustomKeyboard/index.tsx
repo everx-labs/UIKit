@@ -17,7 +17,7 @@ import type { OnHeightChange } from '../UIChatInput/types';
 const registerCustomKeyboard = (
     kbID: string,
     component: React.ReactNode,
-    props?: { [key: string]: any }
+    props?: { [key: string]: any },
 ) => {
     if (Platform.OS === 'web') {
         // Do nothing
@@ -106,12 +106,12 @@ export function UICustomKeyboard(props: Props) {
 
         keyboardWillShowListener.current = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-            onKeyboardShow
+            onKeyboardShow,
         );
 
         keyboardWillHideListener.current = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-            onKeyboardHide
+            onKeyboardHide,
         );
     };
 
@@ -131,7 +131,7 @@ export function UICustomKeyboard(props: Props) {
 
     // Tracking View Ready Hack
     const [trackingViewReady, setTrackingViewReady] = React.useState<boolean>(
-        trackingViewIsReady
+        trackingViewIsReady,
     );
 
     const makeKeyboardTrackingReady = () => {
@@ -182,7 +182,7 @@ export function UICustomKeyboard(props: Props) {
             revealKeyboardInteractive
             {...props}
             renderContent={() =>
-                Platform.OS !== 'ios' ? (
+                (Platform.OS !== 'ios' ? (
                     props.renderContent()
                 ) : (
                     <View
@@ -200,12 +200,12 @@ export function UICustomKeyboard(props: Props) {
                                 { height: insets?.bottom ?? 0, top: '100%' },
                                 UIStyle.container.absoluteFillWidth(),
                                 UIStyle.color.getBackgroundColorStyle(
-                                    UIColor.backgroundPrimary(theme)
+                                    UIColor.backgroundPrimary(theme),
                                 ),
                             ]}
                         />
                     </View>
-                )
+                ))
             }
             onKeyboardResigned={props.onKeyboardResigned}
         />

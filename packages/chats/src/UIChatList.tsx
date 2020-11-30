@@ -199,10 +199,7 @@ function useContentInset(
     };
 
     React.useEffect(() => {
-        if (
-            listContentOffsetRef.current?.y &&
-            listContentOffsetRef.current?.y < bottomInset
-        ) {
+        if (listContentOffsetRef.current && listContentOffsetRef.current.y < bottomInset) {
             const scrollResponder = ref?.current?.getScrollResponder();
             if (scrollResponder) {
                 scrollResponder.scrollTo({
