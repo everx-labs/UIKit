@@ -30,11 +30,11 @@ export type OnStickersVisible = (visible: boolean) => void | Promise<void>;
 
 function useStickers(
     onStickersVisible?: OnStickersVisible,
-    onSendSticker?: OnPickSticker
+    onSendSticker?: OnPickSticker,
 ) {
     const stickersPickerRef = React.useRef<UIStickerPickerRef>(null);
     const [stickersVisible, setStickersVisible] = React.useState<boolean>(
-        false
+        false,
     );
 
     const onStickersPress = React.useCallback(async () => {
@@ -115,7 +115,7 @@ function useStickers(
                 onSendSticker(sticker);
             }
         },
-        [onStickersPress]
+        [onStickersPress],
     );
 
     return {
@@ -141,15 +141,15 @@ function useMenuPlus(menuPlusHidden: boolean = false) {
     const menu: MenuItem[] = menuPlusHidden
         ? []
         : [
-              {
-                  title: 'Attach image', // TODO: localize!
-                  onPress: onPressImage,
-              },
-              {
-                  title: 'Attach document', // TODO: localize!
-                  onPress: onPressDocument,
-              },
-          ];
+            {
+                title: 'Attach image', // TODO: localize!
+                onPress: onPressImage,
+            },
+            {
+                title: 'Attach document', // TODO: localize!
+                onPress: onPressDocument,
+            },
+        ];
 
     return {
         menuPlus: menu,
@@ -187,7 +187,7 @@ export function UIChatInput(props: Props) {
         onFocus,
         onBlur,
         onPickSticker,
-    } = useStickers(props.onStickersVisible);
+    } = useStickers(props.onStickersVisible, props.onSendSticker);
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     const input = (

@@ -58,7 +58,7 @@ function Sticker({
 function StickerList(
     props: Props & {
         style: StyleProp<ViewStyle>;
-    }
+    },
 ) {
     const [safeAreaBottomInset, setSafeAreaBottomInset] = React.useState(0);
     React.useEffect(() => {
@@ -73,18 +73,18 @@ function StickerList(
             renderItem={({ item }) => {
                 return (
                     <ScrollView contentContainerStyle={styles.packageContainer}>
-                        {item.stickers.map((sticker) => (
+                        {item.stickers.map(sticker => (
                             <Sticker
                                 sticker={sticker}
                                 pkgID={item.id}
-                                onPress={(sticker) => {
+                                onPress={sticker => {
                                     const { isCustomKeyboard, onPick } = props;
                                     if (onPick) {
                                         onPick(sticker);
                                     } else if (isCustomKeyboard) {
                                         UICustomKeyboardUtils.onItemSelected(
                                             UIStickerPickerKeyboardName,
-                                            sticker
+                                            sticker,
                                         );
                                     }
                                 }}
@@ -93,7 +93,7 @@ function StickerList(
                     </ScrollView>
                 );
             }}
-            keyExtractor={(sticker) => sticker.id}
+            keyExtractor={sticker => sticker.id}
             // Apply overflowY style for web to make the scrollbar appear as an overlay
             // thus not affecting the content width of ScrollView to prevent layout issues
             style={[
@@ -115,7 +115,7 @@ export type UIStickerPickerRef = {
 
 function usePickerAnimations(
     ref: React.Ref<UIStickerPickerRef>,
-    isCustomKeyboard?: boolean
+    isCustomKeyboard?: boolean,
 ) {
     const height = React.useRef(new Animated.Value(0)).current;
     const opacity = React.useRef(new Animated.Value(0)).current;
@@ -126,7 +126,7 @@ function usePickerAnimations(
                 toValue: show ? 1.0 : 0.0,
                 duration: UIConstant.animationDuration(),
                 easing: UIController.getEasingFunction(
-                    LayoutAnimation.Types.keyboard
+                    LayoutAnimation.Types.keyboard,
                 ),
                 useNativeDriver: true,
             }),
@@ -134,7 +134,7 @@ function usePickerAnimations(
                 toValue: show ? UIStickerPickerKeyboardHeight : 0.0,
                 duration: UIConstant.animationDuration(),
                 easing: UIController.getEasingFunction(
-                    LayoutAnimation.Types.keyboard
+                    LayoutAnimation.Types.keyboard,
                 ),
                 useNativeDriver: false,
             }),
@@ -169,11 +169,11 @@ type Props = {
 };
 
 export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
-    function UIStickerPickerForwarded(props, ref) {
+    (props, ref) => {
         const theme = useTheme();
         const { height, opacity } = usePickerAnimations(
             ref,
-            props.isCustomKeyboard
+            props.isCustomKeyboard,
         );
 
         if (props.isCustomKeyboard) {
@@ -186,7 +186,7 @@ export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
                     <StickerList
                         {...props}
                         style={UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundSecondary(theme)
+                            UIColor.backgroundSecondary(theme),
                         )}
                     />
                 </Animated.View>
@@ -206,18 +206,18 @@ export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
                     <StickerList
                         {...props}
                         style={UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundWhiteLight(theme)
+                            UIColor.backgroundWhiteLight(theme),
                         )}
                     />
                 </Animated.View>
             </Animated.View>
         );
-    }
+    },
 );
 
 UICustomKeyboardUtils.registerCustomKeyboard(
     UIStickerPickerKeyboardName,
-    UIStickerPicker
+    UIStickerPicker,
 );
 
 const styles = StyleSheet.create({
