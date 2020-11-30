@@ -361,9 +361,12 @@ export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
             //     UICustomKeyboardUtils.dismiss();
             // },
         }
-        if (props.areStickersVisible) {
-            return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
-        }
+
+        // if (props.areStickersVisible) {
+        //    return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
+        // }
+        // UPD: `interactive` keyboard started working well with UICustomKeyboard :)
+
         return 'interactive';
     }, [props.areStickersVisible]);
 
