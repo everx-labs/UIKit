@@ -15,8 +15,6 @@ export enum ChatMessageStatus {
     Aborted = 'aborted',
 }
 
-// Aborted = "aborted", // TODO: make property on text bubbles to handle aborted state!
-
 export type ChatMessageMeta = {
     key: string;
     status: ChatMessageStatus;
@@ -33,7 +31,7 @@ export enum ChatMessageType {
     Image = 'aim',
     Document = 'doc',
     Sticker = 'stk',
-    ActionButton = 'act', // TODO: check chain rider
+    ActionButton = 'act',
 }
 
 export type PlainTextMessage = ChatMessageMeta & {

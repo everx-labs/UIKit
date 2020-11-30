@@ -45,10 +45,7 @@ const pickDocument = async (
             Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri;
         callback(source, file.name);
     } catch (error) {
-        // TODO: deal with logs
-        // log.error(
-        //     `Failed to pick document with: ${TONString.errorMessage(error)}`
-        // );
+        console.error(`Failed to pick document with: ${error}`);
     }
 };
 
@@ -70,8 +67,7 @@ const onPickDocument = async (
                 onSendDocument(dataSplit[dataSplit.length - 1], name);
             }
         } else {
-            // TODO: deal with logs
-            // log.error('The picked data is not in base64 format');
+            console.error('The picked data is not in base64 format');
         }
     };
     try {
@@ -85,12 +81,11 @@ const onPickDocument = async (
             const data = await RNFetchBlob.fs.readFile(doc, 'base64');
             processData(data);
         } catch (error) {
-            // TODO: deal with logs
-            // log.error(
-            //     "Failed to pick the document with error:",
-            //     error,
-            //     decError
-            // );
+            console.error(
+                'Failed to pick the document with error:',
+                error,
+                decError
+            );
         }
     }
 };
@@ -154,9 +149,8 @@ const onUploadPhoto = (photo: any, onSendMedia: OnSendMedia) => {
             const imageSize = { width, height };
             uploadPhoto(photo, imageSize, onSendMedia);
         },
-        (_error) => {
-            // TODO: deal with logs
-            // log.error(`Failed to get image size with: ${error}`);
+        (error) => {
+            console.error(`Failed to get image size with: ${error}`);
             uploadPhoto(photo, null, onSendMedia);
         }
     );
@@ -235,11 +229,9 @@ export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
                         const msg = error.toString();
                         if (wasAccessToCameraOrGalleryDenied(msg)) {
                             UIAlertView.showAlert(
-                                // TODO: move localizations
-                                // TONLocalized.chats.message.enableFromSettingsTitle,
-                                'enable access to camera',
-                                // TONLocalized.chats.message.enableFromSettings,
-                                'enable access to camera',
+                                uiLocalized.Chats.Alerts
+                                    .enableFromSettingsTitle,
+                                uiLocalized.Chats.Alerts.enableFromSettings,
                                 [
                                     {
                                         title: uiLocalized.OK,

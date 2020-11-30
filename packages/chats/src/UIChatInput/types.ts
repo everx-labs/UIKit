@@ -6,6 +6,7 @@ import type {
 } from 'react-native';
 
 // TODO: should be in UIActionSheet
+// But since it not in TS yet leave it here
 export type MenuItem = {
     style?: StyleProp<ViewStyle>;
     title: string;

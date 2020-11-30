@@ -89,7 +89,7 @@ const getCommentText = (message: TransactionMessage) => {
 
 const getActionString = (message: TransactionMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
-        return message.actionText ?? 'Tap to resend'; // TODO: TONLocalized.chats.message.tapToResend
+        return message.actionText ?? uiLocalized.Chats.Bubbles.TapToResend;
     }
 
     return message.actionText;

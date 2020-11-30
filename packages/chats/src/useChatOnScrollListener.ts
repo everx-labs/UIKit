@@ -24,7 +24,7 @@ export function useChatOnScrollListener(handler: ChatOnScrollListener) {
         return () => {
             listener = null;
         };
-    }, []);
+    }, [handler]);
 }
 
 export function callChatOnScrollListener(y: number) {

@@ -121,12 +121,10 @@ function useMaxLengthAlert() {
         if (!isAlertShown.current) {
             isAlertShown.current = true;
             UIDropdownAlert.showNotification(
-                // TODO: move localization!
-                // TONLocalized.formatString(
-                //     TONLocalized.chats.message.messageTooLong,
-                //     MAX_INPUT_LENGTH
-                // ),
-                'message is too long',
+                uiLocalized.formatString(
+                    uiLocalized.Chats.Alerts.MessageTooLong,
+                    MAX_INPUT_LENGTH
+                ),
                 undefined,
                 () => {
                     isAlertShown.current = false;
@@ -161,11 +159,6 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
                     onHeightChange(height);
                 }
 
-                if (Platform.OS === 'ios') {
-                    // iOS input have the own multiline native auto-grow behaviour
-                    // No need to adjust the height
-                    return;
-                }
                 const constrainedHeight = Math.min(
                     height,
                     UIConstant.smallCellHeight() * CHAT_INPUT_NUM_OF_LINES
@@ -180,6 +173,8 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
         setInputHeight(UIConstant.smallCellHeight());
     }, []);
 
+    // iOS and web input have the own multiline native auto-grow behaviour
+    // No need to adjust the height
     const containerStyle =
         Platform.OS === 'android'
             ? {
@@ -232,7 +227,6 @@ function useAnimatedBorder(numberOfLines: number) {
 
     const showBorderIfNeeded = React.useCallback(() => {
         const hasScroll = scrollOffset.current > 1;
-
         const needToShow = hasScroll || numberOfLines > 1;
 
         Animated.spring(borderOpacity.current, {
@@ -271,7 +265,6 @@ type Props = {
 
     stickersVisible: boolean;
 
-    // TODO: do we need separate handlers for different content type?
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;

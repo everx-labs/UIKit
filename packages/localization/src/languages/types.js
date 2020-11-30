@@ -520,4 +520,23 @@ export type UILocalizedData = {|
     +YourTransactionCompleted: string,
     +YourTransactionCouldNotBeCompleted: string,
     +YourUsername: string,
+    +Chats: {|
+        +Bubbles: {|
+            +TapToResend: string,
+            +TapToSendAgain: string,
+        |},
+        +DateSeparators: {|
+            +Today: string,
+            +Yesterday: string,
+        |},
+        +Alerts: {|
+            +MessageTooLong: string,
+            +EnableFromSettingsTitle: string,
+            +EnableFromSettings: string,
+        |},
+        +Actions: {|
+            +AttachDocument: string,
+            +AttachImage: string,
+        |},
+    |},
 |};

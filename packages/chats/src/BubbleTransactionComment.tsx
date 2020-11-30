@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-// import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: web
+// import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: think how to use it
 
 import { UIStyle, UIFont, UIConstant, UIColor } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     rightCorner: {
         borderTopRightRadius: 0,
     },
-    // TODO: duplicate ones from BubbleTransaction
+    // TODO: duplicates ones from BubbleTransaction
     cardIncome: {
         backgroundColor: UIColor.green(),
     },

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
 import { UILabel } from '@tonlabs/uikit.components';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const getLabel = (time: number) => {
     const today = new Date();
@@ -14,10 +15,10 @@ const getLabel = (time: number) => {
     const providedTimeMs = providedTime.getTime();
 
     if (todayTimeMs === providedTimeMs) {
-        return 'today'; // TODO: use localized
+        return uiLocalized.Chats.DateSeparators.Today;
     }
     if (todayTimeMs - providedTimeMs === 24 * 3600 * 1000) {
-        return 'yesterday'; // TODO: use localized
+        return uiLocalized.Chats.DateSeparators.Yesterday;
     }
 
     // @ts-ignore seems some plugin is used
