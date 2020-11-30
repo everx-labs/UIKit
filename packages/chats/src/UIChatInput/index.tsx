@@ -203,6 +203,7 @@ export function UIChatInput(props: Props) {
                 undefined /* TODO: we not render it right now, but could at some point */
             }
             menuMoreDisabled={props.menuPlusDisabled}
+            inputHidden={props.inputHidden}
             quickActions={props.quickActions}
             textInputRef={textInputRef}
             pickerRef={chatPickerRef}

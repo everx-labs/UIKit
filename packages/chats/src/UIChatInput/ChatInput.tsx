@@ -85,7 +85,7 @@ function useInputValue({
                 showMaxLengthAlert();
             }
         },
-        [inputHasValue]
+        [inputHasValue],
     );
 
     const onKeyPress = React.useCallback((e: any) => {
@@ -123,12 +123,12 @@ function useMaxLengthAlert() {
             UIDropdownAlert.showNotification(
                 uiLocalized.formatString(
                     uiLocalized.Chats.Alerts.MessageTooLong,
-                    MAX_INPUT_LENGTH
+                    MAX_INPUT_LENGTH,
                 ),
                 undefined,
                 () => {
                     isAlertShown.current = false;
-                }
+                },
             );
         }
     }, []);
@@ -138,7 +138,7 @@ const CHAT_INPUT_NUM_OF_LINES = 5;
 
 function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
     const [inputHeight, setInputHeight] = React.useState<number>(
-        UIConstant.smallCellHeight()
+        UIConstant.smallCellHeight(),
     );
 
     const onContentSizeChange = React.useCallback(
@@ -161,12 +161,12 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
 
                 const constrainedHeight = Math.min(
                     height,
-                    UIConstant.smallCellHeight() * CHAT_INPUT_NUM_OF_LINES
+                    UIConstant.smallCellHeight() * CHAT_INPUT_NUM_OF_LINES,
                 );
                 setInputHeight(constrainedHeight);
             }
         },
-        [inputHeight]
+        [inputHeight],
     );
 
     const setDefaultInputHeight = React.useCallback(() => {
@@ -178,8 +178,8 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
     const containerStyle =
         Platform.OS === 'android'
             ? {
-                  height: Math.max(UIConstant.largeButtonHeight(), inputHeight),
-              }
+                height: Math.max(UIConstant.largeButtonHeight(), inputHeight),
+            }
             : null;
 
     const numberOfLines =
@@ -209,7 +209,7 @@ function useBackHandler(ref: React.RefObject<TextInput>) {
                     return true;
                 }
                 return false;
-            }
+            },
         );
 
         return () => {
@@ -303,7 +303,7 @@ export function ChatInput(props: Props) {
             <View
                 style={[
                     UIStyle.color.getBackgroundColorStyle(
-                        UIColor.backgroundPrimary(theme)
+                        UIColor.backgroundPrimary(theme),
                     ),
                     containerStyle,
                 ]}
@@ -341,7 +341,7 @@ export function ChatInput(props: Props) {
                                     keyboardType="default"
                                     editable={props.editable}
                                     maxLength={MAX_INPUT_LENGTH}
-                                    multiline={true}
+                                    multiline
                                     numberOfLines={numberOfLines}
                                     // @ts-ignore (this is our custom prop)
                                     noPersonalizedLearning={false}
@@ -350,7 +350,7 @@ export function ChatInput(props: Props) {
                                         uiLocalized.TypeMessage
                                     }
                                     placeholderTextColor={UIColor.textPlaceholder(
-                                        theme
+                                        theme,
                                     )}
                                     underlineColorAndroid="transparent"
                                     onContentSizeChange={onContentSizeChange}
