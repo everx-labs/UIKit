@@ -62,10 +62,10 @@ const getBubbleStyle = (message: PlainTextMessage) => {
     } else if (message.status === ChatMessageStatus.Sent) {
         return styles.msgSent;
     } else if (message.status === ChatMessageStatus.Pending) {
-        return styles.msgSending;
+        return styles.msgPending;
     }
 
-    return styles.msgSending;
+    return null;
 };
 
 const getActionString = (message: PlainTextMessage) => {
@@ -148,6 +148,8 @@ export function BubblePlainText(props: PlainTextMessage) {
                                 styles.msgContainer,
                                 getBubbleStyle(props),
                                 getRoundedCornerStyle(props, position),
+                                props.status === ChatMessageStatus.Pending &&
+                                    UIStyle.common.opacity70(),
                             ]}
                         >
                             <ParsedText
@@ -243,10 +245,6 @@ const styles = StyleSheet.create({
     leftTopCorner: {
         borderTopLeftRadius: 0,
     },
-    msgSending: {
-        alignItems: 'flex-end',
-        backgroundColor: UIColor.backgroundQuinary(),
-    },
     msgReceived: {
         alignItems: 'flex-start',
         backgroundColor: UIColor.backgroundTertiary(),
@@ -256,6 +254,10 @@ const styles = StyleSheet.create({
         backgroundColor: UIColor.error(),
     },
     msgSent: {
+        alignItems: 'flex-end',
+        backgroundColor: UIColor.primary(),
+    },
+    msgPending: {
         alignItems: 'flex-end',
         backgroundColor: UIColor.primary(),
     },
