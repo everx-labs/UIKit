@@ -18,24 +18,12 @@ import { UIController } from '@tonlabs/uikit.navigation';
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
 import { UICustomKeyboardUtils } from '../UICustomKeyboard';
 import { useTheme } from '../useTheme';
-
-export type UISticker = {
-    name: string;
-    keywords?: string[];
-    url: string;
-};
-
-export type UIStickerPackage = {
-    id: string;
-    date: number;
-    description: string;
-    name: string;
-    stickers: UISticker[];
-};
-
-export type OnPickSticker = (sticker: PickedSticker) => void;
-
-export type PickedSticker = { url: string; name: string; package: string };
+import type {
+    UISticker,
+    UIStickerPackage,
+    PickedSticker,
+    OnPickSticker,
+} from '../types';
 
 export const UIStickerPickerKeyboardName = 'UIStickerPickerKeyboard';
 const UIStickerPickerKeyboardHeight = UIDevice.isDesktop() ? 180 : 270;

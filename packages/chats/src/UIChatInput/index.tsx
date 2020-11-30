@@ -3,11 +3,8 @@ import { Keyboard, Platform, TextInput } from 'react-native';
 
 import { UICustomKeyboard, UICustomKeyboardUtils } from '../UICustomKeyboard';
 import {
-    OnPickSticker,
-    UIStickerPackage,
     UIStickerPicker,
     UIStickerPickerRef,
-    PickedSticker,
     UIStickerPickerKeyboardName,
 } from '../UIStickerPicker';
 
@@ -22,6 +19,7 @@ import type {
     QuickActionItem,
 } from './types';
 import type { ChatPickerRef } from './ChatPicker';
+import type { OnPickSticker, PickedSticker, UIStickerPackage } from '../types';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
