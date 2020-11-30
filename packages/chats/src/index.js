@@ -1,8 +1,5 @@
 export * from './UIChatList';
 export * from './UIChatInput';
-export {
-    UICustomKeyboardUtils,
-    UICustomKeyboard,
-} from './UIChatInput/UICustomKeyboard';
+export { UICustomKeyboardUtils, UICustomKeyboard } from './UICustomKeyboard';
 
 export * from './types';
