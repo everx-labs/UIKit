@@ -72,9 +72,7 @@ export function UICustomKeyboard(props: Props) {
     const keyboardWillHideListener = React.useRef<EmitterSubscription>();
 
     const updateContentBottomInset = async () => {
-        const bottomInset = keyboardHeight.current
-            ? keyboardHeight.current - insets.bottom
-            : inputHeight.current;
+        const bottomInset = keyboardHeight.current + inputHeight.current;
 
         if (props.onHeightChange) {
             props.onHeightChange(bottomInset);
@@ -83,9 +81,10 @@ export function UICustomKeyboard(props: Props) {
 
     const onKeyboardShow = async (e: any) => {
         const { height } = e.endCoordinates;
+        const kHeight = height - insets.bottom - inputHeight.current;
         // N.B. `<` sign is important! (do not set `!==`)
-        if (keyboardHeight.current < height) {
-            keyboardHeight.current = height;
+        if (keyboardHeight.current < kHeight) {
+            keyboardHeight.current = kHeight;
 
             updateContentBottomInset();
         }
