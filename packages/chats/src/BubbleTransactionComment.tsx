@@ -45,6 +45,8 @@ export function BubbleTransactionComment(props: Props) {
                 UIStyle.padding.horizontalNormal(),
                 getBubbleCornerStyle(position),
                 getBubbleColor(props),
+                props.status === ChatMessageStatus.Pending &&
+                    UIStyle.common.opacity70(),
             ]}
             onPress={props.onPress}
         >
