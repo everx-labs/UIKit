@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Keyboard, Platform, TextInput } from 'react-native';
 
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import { UICustomKeyboard, UICustomKeyboardUtils } from '../UICustomKeyboard';
 import {
     UIStickerPicker,
@@ -142,11 +144,11 @@ function useMenuPlus(menuPlusHidden: boolean = false) {
         ? []
         : [
               {
-                  title: 'Attach image', // TODO: localize!
+                  title: uiLocalized.Chats.Actions.AttachImage,
                   onPress: onPressImage,
               },
               {
-                  title: 'Attach document', // TODO: localize!
+                  title: uiLocalized.Chats.Actions.AttachDocument,
                   onPress: onPressDocument,
               },
           ];

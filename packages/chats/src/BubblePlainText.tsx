@@ -70,7 +70,7 @@ const getBubbleStyle = (message: PlainTextMessage) => {
 
 const getActionString = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
-        return message.actionText || 'Tap to send again'; // TODO: TONLocalized.chats.message.tapToResend
+        return message.actionText || uiLocalized.Chats.Bubbles.TapToSendAgain;
     }
 
     return message.actionText;

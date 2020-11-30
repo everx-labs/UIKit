@@ -533,5 +533,24 @@
     "YourEmail": "이용자의 이메일",
     "YourTransactionCompleted": "트랜잭션이 완료되었습니다",
     "YourTransactionCouldNotBeCompleted": "트랜잭션을 완료 할 수 없습니다.",
-    "YourUsername": "사용자 이름"
+    "YourUsername": "사용자 이름",
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "다시 보내려면 탭하세요.",
+            "TapToSendAgain": "다시 보내려면 탭하세요."
+        },
+        "DateSeparators": {
+            "Today": "오늘",
+            "Yesterday": "어제"
+        },
+        "Alerts": {
+            "MessageTooLong": "메시지가 {0} 자보다 깁니다.",
+            "EnableFromSettingsTitle": "이미지 보내기",
+            "EnableFromSettings": "장치 설정에서 직접 액세스를 활성화하십시오"
+        },
+        "Actions": {
+            "AttachDocument": "문서",
+            "AttachImage": "이미지"
+        }
+    }
 }

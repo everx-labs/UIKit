@@ -121,12 +121,10 @@ function useMaxLengthAlert() {
         if (!isAlertShown.current) {
             isAlertShown.current = true;
             UIDropdownAlert.showNotification(
-                // TODO: move localization!
-                // TONLocalized.formatString(
-                //     TONLocalized.chats.message.messageTooLong,
-                //     MAX_INPUT_LENGTH
-                // ),
-                'message is too long',
+                uiLocalized.formatString(
+                    uiLocalized.Chats.Alerts.MessageTooLong,
+                    MAX_INPUT_LENGTH
+                ),
                 undefined,
                 () => {
                     isAlertShown.current = false;
@@ -271,7 +269,6 @@ type Props = {
 
     stickersVisible: boolean;
 
-    // TODO: do we need separate handlers for different content type?
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
