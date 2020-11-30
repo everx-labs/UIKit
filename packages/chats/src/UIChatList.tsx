@@ -9,6 +9,7 @@ import {
     NativeScrollEvent,
     NativeSyntheticEvent,
     LayoutChangeEvent,
+    SectionListProps,
 } from 'react-native';
 import {
     TapGestureHandler,
@@ -339,6 +340,11 @@ const renderSectionTitle = ({
     return <DateSeparator time={section.time} />;
 };
 
+const onScrollToIndexFailed: SectionListProps<
+    ChatMessage
+>['onScrollToIndexFailed'] = (info) =>
+    console.error('Failed to scroll to index:', info);
+
 type Props = {
     areStickersVisible: boolean;
     onLoadEarlierMessages(): void;
@@ -424,6 +430,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
                     nativeID={CHAT_SECTION_LIST}
                     testID="chat_container"
                     keyboardDismissMode={keyboardDismissProp}
+                    automaticallyAdjustContentInsets={false}
                     contentInset={contentInset}
                     scrollIndicatorInsets={contentInset}
                     ref={localRef}
@@ -432,9 +439,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
                     onLayout={onLayout}
                     onContentSizeChange={onContentSizeChange}
                     onScroll={onScrollMessages}
-                    onScrollToIndexFailed={info =>
-                        console.error('Failed to scroll to index:', info)
-                    }
+                    onScrollToIndexFailed={onScrollToIndexFailed}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
                     style={style}
                     contentContainerStyle={styles.messagesList}

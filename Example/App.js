@@ -13,12 +13,16 @@ import { enableScreens } from 'react-native-screens';
 import BigNumber from 'bignumber.js';
 // $FlowFixMe
 import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 // $FlowFixMe
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+    SafeAreaView,
+    SafeAreaProvider,
+    useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 import {
@@ -2350,37 +2354,47 @@ const stickers = new Array(10).fill(null).map((a, i) => ({
     })),
 }));
 
+const ChatStack = createStackNavigator();
+
 const Chat = () => {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
+    const insets = useSafeAreaInsets();
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ width: '100%', height: 50 }} />
-            <UIChatList
-                areStickersVisible={false}
-                onLoadEarlierMessages={() => {}}
-                canLoadMore
-                isLoadingMore={false}
-                messages={messages}
-                bottomInset={bottomInset}
-            />
-            <UIChatInput
-                editable
-                onSendSticker={() => {}}
-                stickers={stickers}
-                onHeightChange={setBottomInset}
-                shortcuts={[
-                    {
-                        title: "I'm a danger shortcut!",
-                        onPress: () => console.log('shortcut pressed!'),
-                        isDanger: true,
-                    },
-                    {
-                        title: "I'm a shortcut!",
-                        onPress: () => console.log('shortcut pressed!'),
-                    },
-                ]}
-            />
-        </SafeAreaView>
+        <ChatStack.Navigator>
+            <ChatStack.Screen name="ChatWindow" options={{ title: 'Chat' }}>
+                {() => (
+                    <>
+                        <UIChatList
+                            areStickersVisible={false}
+                            onLoadEarlierMessages={() => {}}
+                            canLoadMore
+                            isLoadingMore={false}
+                            messages={messages}
+                            bottomInset={bottomInset}
+                        />
+                        <UIChatInput
+                            editable
+                            onSendSticker={() => {}}
+                            stickers={stickers}
+                            onHeightChange={setBottomInset}
+                            shortcuts={[
+                                {
+                                    title: "I'm a danger shortcut!",
+                                    onPress: () =>
+                                        console.log('shortcut pressed!'),
+                                    isDanger: true,
+                                },
+                                {
+                                    title: "I'm a shortcut!",
+                                    onPress: () =>
+                                        console.log('shortcut pressed!'),
+                                },
+                            ]}
+                        />
+                    </>
+                )}
+            </ChatStack.Screen>
+        </ChatStack.Navigator>
     );
 };
 
