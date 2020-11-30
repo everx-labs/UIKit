@@ -16,8 +16,7 @@ import {
     ScrollView,
     State as RNGHState,
 } from 'react-native-gesture-handler';
-import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { UIConstant, UIColor } from '@tonlabs/uikit.core';
 
@@ -128,7 +127,8 @@ const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
 }) => {
     return (
         <View
-            onLayout={e => onLayoutCell(item.key, e)}
+            key={item.key}
+            onLayout={(e) => onLayoutCell(item.key, e)}
             style={{
                 // TODO: this one is incorrect, there are different paddings for bubbles
                 paddingTop: item.firstFromChain
@@ -192,11 +192,9 @@ function useContentInset(
     listContentOffsetRef: React.RefObject<ListContentOffset>,
     bottomInsetProp?: number,
 ) {
-    const insets = useSafeAreaInsets();
     const bottomInset = bottomInsetProp ?? 0;
     const contentInset = {
         top: bottomInset,
-        bottom: -(insets.bottom ?? 0),
     };
 
     React.useEffect(() => {
@@ -220,6 +218,13 @@ function useLinesAnimation() {
     const listContentOffset = React.useRef({ y: 0 });
 
     const topOpacity = React.useRef(new Animated.Value(0));
+
+    const borderOpacityStyle = React.useMemo(
+        () => ({
+            opacity: topOpacity.current,
+        }),
+        [topOpacity]
+    );
 
     const linesAnimationInProgress = React.useRef(false);
     const linesIsShown = React.useRef(false);
@@ -295,7 +300,7 @@ function useLinesAnimation() {
 
     return {
         listContentOffset,
-        topBorderOpacity: topOpacity.current,
+        borderOpacityStyle,
         onLayout,
         onContentSizeChange,
         onScrollMessages,
@@ -354,114 +359,116 @@ type Props = {
     bottomInset?: number;
 };
 
-export const UIChatList = React.forwardRef<SectionList, Props>((props, ref) => {
-    const keyboardDismissProp = React.useMemo(() => {
-        if (Platform.OS !== 'ios') {
-            // The following is not working on Android >>>
-            // See https://github.com/facebook/react-native/issues/23364
-            return 'on-drag';
+export const UIChatList = React.forwardRef<SectionList, Props>(
+    function UIChatListContainer(props, ref) {
+        const keyboardDismissProp = React.useMemo(() => {
+            if (Platform.OS !== 'ios') {
+                // The following is not working on Android >>>
+                // See https://github.com/facebook/react-native/issues/23364
+                return 'on-drag';
 
-            // This can be used as a workaround >>>>
-            // onScrollBeginDrag: () => {
-            //     Keyboard.dismiss();
-            //     UICustomKeyboardUtils.dismiss();
-            // },
-        }
+                // This can be used as a workaround >>>>
+                // onScrollBeginDrag: () => {
+                //     Keyboard.dismiss();
+                //     UICustomKeyboardUtils.dismiss();
+                // },
+            }
 
-        // if (props.areStickersVisible) {
-        //    return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
-        // }
-        // UPD: `interactive` keyboard started working well with UICustomKeyboard :)
+            // if (props.areStickersVisible) {
+            //    return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
+            // }
+            // UPD: `interactive` keyboard started working well with UICustomKeyboard :)
 
-        return 'interactive';
-    }, [props.areStickersVisible]);
+            return 'interactive';
+        }, [props.areStickersVisible]);
 
-    const localRef = React.useRef<SectionList>(null);
+        const localRef = React.useRef<SectionList>(null);
 
-    // @ts-ignore localRef.current can be null by types, hence it contradict with
-    // useImperativeHandle type, but this is actually works
-    React.useImperativeHandle(ref, () => {
-        return localRef.current;
-    });
+        // @ts-ignore localRef.current can be null by types, hence it contradict with
+        // useImperativeHandle type, but this is actually works
+        React.useImperativeHandle(ref, () => {
+            return localRef.current;
+        });
 
-    const renderLoadMore = React.useCallback(() => {
-        if (!props.canLoadMore) {
-            return null;
-        }
+        const renderLoadMore = React.useCallback(() => {
+            if (!props.canLoadMore) {
+                return null;
+            }
+
+            return (
+                <UILoadMoreButton
+                    onLoadMore={props.onLoadEarlierMessages}
+                    isLoadingMore={props.isLoadingMore}
+                />
+            );
+        }, [props.canLoadMore, props.isLoadingMore]);
+
+        const { getItemLayout, renderItem } = useLayoutHelpers(
+            props.canLoadMore
+        );
+        const {
+            listContentOffset,
+            borderOpacityStyle,
+            onLayout,
+            onContentSizeChange,
+            onScrollMessages,
+            onViewableItemsChanged,
+        } = useLinesAnimation();
+        useChatListWheelHandler(localRef, listContentOffset);
+        const contentInset = useContentInset(
+            localRef,
+            listContentOffset,
+            props.bottomInset
+        );
+        const sections = React.useMemo(
+            () => UIChatListFormatter.getSections(props.messages),
+            [props.messages]
+        );
 
         return (
-            <UILoadMoreButton
-                onLoadMore={props.onLoadEarlierMessages}
-                isLoadingMore={props.isLoadingMore}
-            />
+            <SafeAreaView style={styles.container} edges={['bottom']}>
+                <Animated.View style={[styles.border, borderOpacityStyle]} />
+                <TapGestureHandler
+                    onHandlerStateChange={onHandlerStateChange}
+                    enabled={props.areStickersVisible}
+                >
+                    <SectionList
+                        nativeID={CHAT_SECTION_LIST}
+                        testID="chat_container"
+                        keyboardDismissMode={keyboardDismissProp}
+                        automaticallyAdjustContentInsets={false}
+                        contentInset={contentInset}
+                        scrollIndicatorInsets={contentInset}
+                        ref={localRef}
+                        inverted
+                        getItemLayout={getItemLayout}
+                        onLayout={onLayout}
+                        onContentSizeChange={onContentSizeChange}
+                        onScroll={onScrollMessages}
+                        onScrollToIndexFailed={onScrollToIndexFailed}
+                        scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
+                        style={style}
+                        contentContainerStyle={styles.messagesList}
+                        sections={sections}
+                        onViewableItemsChanged={onViewableItemsChanged}
+                        keyExtractor={keyExtractor}
+                        renderItem={renderItem}
+                        // Because the List is inverted in order to render from the bottom,
+                        // the title (date) for each section becomes the footer instead of header.
+                        renderSectionFooter={renderSectionTitle}
+                        // renderSectionHeader={section => this.renderSectionStatus(section)}
+                        onEndReached={props.onLoadEarlierMessages}
+                        onEndReachedThreshold={0.6}
+                        ListFooterComponent={renderLoadMore}
+                        renderScrollComponent={(scrollProps) => (
+                            <ScrollView {...scrollProps} />
+                        )}
+                    />
+                </TapGestureHandler>
+            </SafeAreaView>
         );
-    }, [props.canLoadMore, props.isLoadingMore]);
-
-    const { getItemLayout, renderItem } = useLayoutHelpers(props.canLoadMore);
-    const {
-        listContentOffset,
-        topBorderOpacity,
-        onLayout,
-        onContentSizeChange,
-        onScrollMessages,
-        onViewableItemsChanged,
-    } = useLinesAnimation();
-    useChatListWheelHandler(localRef, listContentOffset);
-    const contentInset = useContentInset(
-        localRef,
-        listContentOffset,
-        props.bottomInset,
-    );
-    const sections = React.useMemo(
-        () => UIChatListFormatter.getSections(props.messages),
-        [props.messages],
-    );
-
-    return (
-        <SafeAreaView style={styles.container} edges={['bottom']}>
-            <Animated.View
-                style={[styles.border, { opacity: topBorderOpacity }]}
-            />
-            <TapGestureHandler
-                onHandlerStateChange={onHandlerStateChange}
-                enabled={props.areStickersVisible}
-            >
-                <SectionList
-                    nativeID={CHAT_SECTION_LIST}
-                    testID="chat_container"
-                    keyboardDismissMode={keyboardDismissProp}
-                    automaticallyAdjustContentInsets={false}
-                    contentInset={contentInset}
-                    scrollIndicatorInsets={contentInset}
-                    ref={localRef}
-                    inverted
-                    getItemLayout={getItemLayout}
-                    onLayout={onLayout}
-                    onContentSizeChange={onContentSizeChange}
-                    onScroll={onScrollMessages}
-                    onScrollToIndexFailed={onScrollToIndexFailed}
-                    scrollEventThrottle={UIConstant.maxScrollEventThrottle()}
-                    style={style}
-                    contentContainerStyle={styles.messagesList}
-                    sections={sections}
-                    onViewableItemsChanged={onViewableItemsChanged}
-                    keyExtractor={keyExtractor}
-                    renderItem={renderItem}
-                    // Because the List is inverted in order to render from the bottom,
-                    // the title (date) for each section becomes the footer instead of header.
-                    renderSectionFooter={renderSectionTitle}
-                    // renderSectionHeader={section => this.renderSectionStatus(section)}
-                    onEndReached={props.onLoadEarlierMessages}
-                    onEndReachedThreshold={0.6}
-                    ListFooterComponent={renderLoadMore}
-                    renderScrollComponent={scrollProps => (
-                        <ScrollView {...scrollProps} />
-                    )}
-                />
-            </TapGestureHandler>
-        </SafeAreaView>
-    );
-});
+    }
+);
 
 const styles = StyleSheet.create({
     container: {
