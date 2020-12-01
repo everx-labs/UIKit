@@ -4,7 +4,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-// import {  } from '@tonlabs/uikit.components';
 import { UIAlertView, UIImageView } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -96,11 +95,13 @@ const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
     const reader = new FileReader();
     const file = e.target.files[0];
     const name = extractDocumentName(e);
+
     if (!file) {
         // TODO: I don't like it, can we do it without base64?
         // log.debug('Document picker was cancelled');
         return;
     }
+
     if (file.size >= UIConstant.maxFileSize()) {
         // in decimal
         const msg = uiLocalized.formatString(

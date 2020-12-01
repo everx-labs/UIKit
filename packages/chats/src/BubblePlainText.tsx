@@ -28,11 +28,14 @@ const getUrlStyle = (status: ChatMessageStatus) => {
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
         return UIStyle.Color.getColorStyle(UIColor.fa());
-    } else if (message.status === ChatMessageStatus.Received) {
+    }
+
+    if (message.status === ChatMessageStatus.Received) {
         return UIStyle.Color.getColorStyle(
             UIColor.textSecondary(UIColor.Theme.Light),
         );
     }
+
     return UIStyle.Color.getColorStyle(
         UIColor.textSecondary(UIColor.Theme.Dark),
     );
@@ -44,29 +47,41 @@ const getRoundedCornerStyle = (
 ) => {
     if (position === BubblePosition.left && options.firstFromChain) {
         return styles.leftTopCorner;
-    } else if (position === BubblePosition.right && options.lastFromChain) {
+    }
+
+    if (position === BubblePosition.right && options.lastFromChain) {
         return styles.rightBottomCorner;
     }
+
     return null;
 };
 
 const getBubbleContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
         return styles.containerLeft;
-    } else if (position === BubblePosition.right) {
+    }
+
+    if (position === BubblePosition.right) {
         return styles.containerRight;
     }
+
     return null;
 };
 
 const getBubbleStyle = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
         return styles.msgAborted;
-    } else if (message.status === ChatMessageStatus.Received) {
+    }
+
+    if (message.status === ChatMessageStatus.Received) {
         return styles.msgReceived;
-    } else if (message.status === ChatMessageStatus.Sent) {
+    }
+
+    if (message.status === ChatMessageStatus.Sent) {
         return styles.msgSent;
-    } else if (message.status === ChatMessageStatus.Pending) {
+    }
+
+    if (message.status === ChatMessageStatus.Pending) {
         return styles.msgPending;
     }
 

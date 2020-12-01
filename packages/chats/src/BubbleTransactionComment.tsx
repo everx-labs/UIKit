@@ -27,9 +27,13 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
 const getBubbleColor = (props: Props) => {
     if (props.status === ChatMessageStatus.Aborted) {
         return styles.cardAborted;
-    } else if (props.type === TransactionType.Expense) {
+    }
+
+    if (props.type === TransactionType.Expense) {
         return styles.cardWithdraw;
-    } else if (props.type === TransactionType.Income) {
+    }
+
+    if (props.type === TransactionType.Income) {
         return styles.cardIncome;
     }
 

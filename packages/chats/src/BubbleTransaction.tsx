@@ -24,16 +24,21 @@ const getContainerTestID = (message: TransactionMessage) => {
 const getBubbleContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
         return styles.containerLeft;
-    } else if (position === BubblePosition.right) {
+    }
+
+    if (position === BubblePosition.right) {
         return styles.containerRight;
     }
+
     return null;
 };
 
 const getBubbleInner = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
         return styles.innerLeft;
-    } else if (position === BubblePosition.right) {
+    }
+
+    if (position === BubblePosition.right) {
         return styles.innerRight;
     }
     return null;
@@ -44,9 +49,13 @@ const getBubbleColor = (message: TransactionMessage) => {
 
     if (message.status === ChatMessageStatus.Aborted) {
         return styles.cardAborted;
-    } else if (type === TransactionType.Expense) {
+    }
+
+    if (type === TransactionType.Expense) {
         return styles.cardWithdraw;
-    } else if (type === TransactionType.Income) {
+    }
+
+    if (type === TransactionType.Income) {
         return styles.cardIncome;
     }
 
@@ -56,9 +65,12 @@ const getBubbleColor = (message: TransactionMessage) => {
 const getBubbleCornerStyle = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
         return styles.leftCorner;
-    } else if (position === BubblePosition.right) {
+    }
+
+    if (position === BubblePosition.right) {
         return styles.rightCorner;
     }
+
     return null;
 };
 

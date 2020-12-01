@@ -143,7 +143,6 @@ const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
         </View>
     );
 };
-
 function useLayoutHelpers(canLoadMore: boolean) {
     const cellsHeight = React.useRef(new Map());
 
