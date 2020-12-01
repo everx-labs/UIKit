@@ -49,6 +49,10 @@ export default class UIScreen<Props, State>
         return width && width < UIConstant.elasticWidthBroad();
     }
 
+    static testIDs = {
+        activeScreen: 'activeScreen',
+    }
+
     constructor(props: Props & NavigationProps) {
         super(props);
         this.presetName = '';
@@ -199,8 +203,11 @@ export default class UIScreen<Props, State>
 
     render() {
         const scrollStyle = this.isScrollDisabled() ? styles.scrollDisabled : null;
+        const testIDProp = this.props.navigation.isFocused() ? { testID: UIScreen.testIDs.activeScreen } : {};
+
         return (
             <View
+                {...testIDProp}
                 style={UIStyle.flex.x1()}
                 onLayout={this.onScreenLayoutDefault}
             >
