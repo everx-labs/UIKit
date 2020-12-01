@@ -107,35 +107,35 @@ if (Platform.OS === 'web') {
 
     // Import PTRootUIWeb
     const ptRootFontBold = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontBold.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css',
     );
     ptRootFontBold.setAttribute('rel', 'stylesheet');
     const ptRootFontLight = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontLight.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css',
     );
     ptRootFontLight.setAttribute('rel', 'stylesheet');
     const ptRootFontMedium = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontMedium.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css',
     );
     ptRootFontMedium.setAttribute('rel', 'stylesheet');
     const ptRootFontRegular = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontRegular.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css',
     );
     ptRootFontRegular.setAttribute('rel', 'stylesheet');
 }
@@ -1473,7 +1473,7 @@ const Menus = () => {
                                             alert('Action 2 was called'),
                                     },
                                 ],
-                                true
+                                true,
                             );
                         }
                     }}
@@ -1697,7 +1697,7 @@ const Notifications = () => (
                 title="Show default notice with message only"
                 onPress={() =>
                     UINotice.showMessage(
-                        'System is going down at midnight tonight. We’ll notify you when it’s back up.'
+                        'System is going down at midnight tonight. We’ll notify you when it’s back up.',
                     )
                 }
             />
@@ -1736,7 +1736,7 @@ const Notifications = () => (
                 title="Show default notice with message only"
                 onPress={() =>
                     UIToastMessage.showMessage(
-                        'System is going down at midnight tonight.'
+                        'System is going down at midnight tonight.',
                     )
                 }
             />
@@ -1853,7 +1853,7 @@ const Popups = () => (
                 title="Show UIDropdownAlert"
                 onPress={() =>
                     UIDropdownAlert.showNotification(
-                        'This is a UIDropdownAlert'
+                        'This is a UIDropdownAlert',
                     )
                 }
             />
@@ -2294,52 +2294,52 @@ const messages = [
         sender: '0:123',
         text: "I'm aborted one!",
     },
-    // ...new Array(100).fill(null).reduce((acc, n, i) => {
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'sending',
-    //         time: Math.floor(Date.now() - 1 * 60 * 1000),
-    //         sender: '0:000',
-    //         text: 'This one is in process of sending...',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: Math.floor(Date.now() - 2 * 60 * 1000),
-    //         sender: '0:123',
-    //         text: 'How r u?',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'sent',
-    //         time: Math.floor(Date.now() - 4 * 60 * 1000),
-    //         sender: '0:000',
-    //         text: 'This one is from me',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: Math.floor(Date.now() - 5 * 60 * 1000),
-    //         sender: '0:123',
-    //         text:
-    //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: Math.floor(Date.now() - 5 * 60 * 1000),
-    //         sender: '0:123',
-    //         text: 'Hi there!',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: new Date('10 06 2020 10:00').getTime(),
-    //         sender: '0:123',
-    //         text: 'Hi from past!',
-    //     });
-    //     return acc;
-    // }, []),
+    ...new Array(100).fill(null).reduce((acc, n, i) => {
+        acc.push({
+            type: 'stm',
+            status: 'sending',
+            time: Math.floor(Date.now() - 1 * 60 * 1000),
+            sender: '0:000',
+            text: 'This one is in process of sending...',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 2 * 60 * 1000),
+            sender: '0:123',
+            text: 'How r u?',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'sent',
+            time: Math.floor(Date.now() - 4 * 60 * 1000),
+            sender: '0:000',
+            text: 'This one is from me',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 5 * 60 * 1000),
+            sender: '0:123',
+            text:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 5 * 60 * 1000),
+            sender: '0:123',
+            text: 'Hi there!',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: new Date('10 06 2020 10:00').getTime(),
+            sender: '0:123',
+            text: 'Hi from past!',
+        });
+        return acc;
+    }, []),
 ].map((m: any, i: number) => ((m.key = i), m));
 
 const stickers = new Array(10).fill(null).map((a, i) => ({
@@ -2354,11 +2354,25 @@ const stickers = new Array(10).fill(null).map((a, i) => ({
     })),
 }));
 
+const shortcuts = [
+    {
+        title: "I'm a danger shortcut!",
+        onPress: () => console.log('shortcut pressed!'),
+        isDanger: true,
+    },
+    {
+        title: "I'm a shortcut!",
+        onPress: () => console.log('shortcut pressed!'),
+    },
+];
+
 const ChatStack = createStackNavigator();
 
 const Chat = () => {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
     const insets = useSafeAreaInsets();
+    const onLoadEarlierMessages = React.useCallback(() => undefined, []);
+    const onSendSticker = React.useCallback(() => undefined, []);
     return (
         <ChatStack.Navigator>
             <ChatStack.Screen name="ChatWindow" options={{ title: 'Chat' }}>
@@ -2366,7 +2380,7 @@ const Chat = () => {
                     <>
                         <UIChatList
                             areStickersVisible={false}
-                            onLoadEarlierMessages={() => {}}
+                            onLoadEarlierMessages={onLoadEarlierMessages}
                             canLoadMore
                             isLoadingMore={false}
                             messages={messages}
@@ -2374,22 +2388,10 @@ const Chat = () => {
                         />
                         <UIChatInput
                             editable
-                            onSendSticker={() => {}}
+                            onSendSticker={onSendSticker}
                             stickers={stickers}
                             onHeightChange={setBottomInset}
-                            shortcuts={[
-                                {
-                                    title: "I'm a danger shortcut!",
-                                    onPress: () =>
-                                        console.log('shortcut pressed!'),
-                                    isDanger: true,
-                                },
-                                {
-                                    title: "I'm a shortcut!",
-                                    onPress: () =>
-                                        console.log('shortcut pressed!'),
-                                },
-                            ]}
+                            shortcuts={shortcuts}
                         />
                     </>
                 )}

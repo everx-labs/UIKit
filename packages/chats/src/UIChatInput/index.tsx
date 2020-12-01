@@ -133,25 +133,29 @@ function useStickers(
 
 function useMenuPlus(menuPlusHidden = false) {
     const chatPickerRef = React.useRef<ChatPickerRef>(null);
-    const onPressImage = () => {
+    const onPressImage = React.useCallback(() => {
         chatPickerRef.current?.openImageDialog();
-    };
-    const onPressDocument = () => {
+    }, []);
+    const onPressDocument = React.useCallback(() => {
         chatPickerRef.current?.openDocumentDialog();
-    };
+    }, []);
 
-    const menu: MenuItem[] = menuPlusHidden
-        ? []
-        : [
-              {
-                  title: uiLocalized.Chats.Actions.AttachImage,
-                  onPress: onPressImage,
-              },
-              {
-                  title: uiLocalized.Chats.Actions.AttachDocument,
-                  onPress: onPressDocument,
-              },
-          ];
+    const menu: MenuItem[] = React.useMemo(() => {
+        if (menuPlusHidden) {
+            return [];
+        }
+
+        return [
+            {
+                title: uiLocalized.Chats.Actions.AttachImage,
+                onPress: onPressImage,
+            },
+            {
+                title: uiLocalized.Chats.Actions.AttachDocument,
+                onPress: onPressDocument,
+            },
+        ];
+    }, [menuPlusHidden, onPressImage, onPressDocument]);
 
     return {
         menuPlus: menu,

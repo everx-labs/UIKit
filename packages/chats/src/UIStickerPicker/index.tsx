@@ -60,12 +60,16 @@ function StickerList(
         style: StyleProp<ViewStyle>;
     },
 ) {
+    // Unfortunately we can't use react-native-safe-area-context
+    // coz we show the picker in UICustomKeyboard and it can't find
+    // SafeAreaContextProvider during a render
     const [safeAreaBottomInset, setSafeAreaBottomInset] = React.useState(0);
     React.useEffect(() => {
         UIDevice.safeAreaInsets().then((insets: { bottom: number }) => {
             setSafeAreaBottomInset(insets.bottom);
         });
     });
+
     return (
         <FlatList
             testID="list_sticker_packages"

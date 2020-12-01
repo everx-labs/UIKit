@@ -143,6 +143,7 @@ const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
         </View>
     );
 };
+
 function useLayoutHelpers(canLoadMore: boolean) {
     const cellsHeight = React.useRef(new Map());
 
@@ -352,6 +353,10 @@ const onScrollToIndexFailed: SectionListProps<
 >['onScrollToIndexFailed'] = (info) =>
     console.error('Failed to scroll to index:', info);
 
+const renderScrollComponent: SectionListProps<
+    ChatMessage
+>['renderScrollComponent'] = (scrollProps) => <ScrollView {...scrollProps} />;
+
 type Props = {
     areStickersVisible: boolean;
     onLoadEarlierMessages(): void;
@@ -462,9 +467,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                         onEndReached={props.onLoadEarlierMessages}
                         onEndReachedThreshold={0.6}
                         ListFooterComponent={renderLoadMore}
-                        renderScrollComponent={(scrollProps) => (
-                            <ScrollView {...scrollProps} />
-                        )}
+                        renderScrollComponent={renderScrollComponent}
                     />
                 </TapGestureHandler>
             </SafeAreaView>
