@@ -27,7 +27,7 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         dayJS: 'it',
     },
     tr: {
-        name: 'Türk',
+        name: 'Türkçe',
         country: 'TR',
         dayJS: 'tr',
     },

@@ -6,3 +6,9 @@ We use `@react-navigation` as dependency and use typings for it from `flow-typed
 ```sh
 npx flow-typed install @react-navigation/core@5.x.x @react-navigation/native@5.x.x @react-navigation/bottom-tabs@5.x.x @react-navigation/stack@5.x.x
 ```
+
+# Run example
+
+First run command `npx lerna bootstrap && npx lerna run prepare`
+
+Second run `npm run web` or `yarn web`
