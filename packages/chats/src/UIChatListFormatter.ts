@@ -8,7 +8,7 @@ export type SectionExtra = { time?: number };
 
 export class UIChatListFormatter {
     static getSections(
-        messages: ChatMessage[]
+        messages: ChatMessage[],
     ): ReadonlyArray<SectionListData<ChatMessage, SectionExtra>> {
         const sections: { [key: number]: ChatMessage[] } = {};
 

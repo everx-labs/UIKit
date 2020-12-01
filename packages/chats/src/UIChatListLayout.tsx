@@ -30,7 +30,7 @@ export interface Parameters {
     getItemHeight: (
         rowData?: any,
         sectionIndex?: number,
-        rowIndex?: number
+        rowIndex?: number,
     ) => number;
     getSeparatorHeight?: (sectionIndex?: number, rowIndex?: number) => number;
     getSectionHeaderHeight?: (sectionIndex: number) => number;
@@ -91,7 +91,7 @@ export const sectionListGetItemLayout: SectionListGetItemLayout = ({
                 offset += getItemHeight(
                     sectionData[rowIndex],
                     sectionIndex,
-                    rowIndex
+                    rowIndex,
                 );
                 elementPointer.index += 1;
 
@@ -130,7 +130,7 @@ export const sectionListGetItemLayout: SectionListGetItemLayout = ({
             length = getItemHeight(
                 data[sectionIndex].data[rowIndex],
                 sectionIndex,
-                rowIndex
+                rowIndex,
             );
             break;
 
