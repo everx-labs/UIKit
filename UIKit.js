@@ -136,23 +136,6 @@ export {
     UITransitionView,
 } from './packages/legacy/src';
 
-// TODO: remove out of Surf
-export {
-    UIChatInput,
-    UIChatMessageCell, // removed
-    UIChatActionCell, // removed
-    UIChatDocumentCell, // removed
-    UIChatImageCell, // removed
-    UIChatStickerCell, // removed
-    UIChatTransactionCell, // removed
-    ChatMessageContent, // removed
-    ChatMessageMetaContent, // removed
-    ChatMessageStatus, // removed
-    TypeOfTransaction, // removed
-    TypeOfAction, // removed
-    TypeOfActionDirection, // removed
-} from './packages/chat/src';
-
 export { UIAssets } from './packages/assets/src';
 
 export { uiLocalized as UILocalized } from './packages/localization/src';
@@ -194,12 +177,3 @@ export type {
     ModalControllerState,
 } from './packages/navigation/src/UIModalController';
 export type { ContentOffset } from './packages/navigation/src/UIScreen';
-
-// TODO: remove out of UIKit
-export type {
-    UISticker,
-    UIStickerPackage,
-    UIChatCellInfo, // removed
-    ChatMessageStatusType, // removed
-    UIChatMessage, // removed
-} from './packages/chat/src/extras';

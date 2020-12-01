@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/tonlabs/UIKit/issues"
   },
-  "homepage": "https://github.com/tonlabs/UIKit/packages/chat#readme",
+  "homepage": "https://github.com/tonlabs/UIKit/packages/chats#readme",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
   "react-native": "src/index.js",
