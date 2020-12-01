@@ -18,9 +18,12 @@ const styles = StyleSheet.create({
     }),
 });
 
-type ControllerState = {
+export type UIScreenState = {
+    narrow: boolean,
     screenWidth: number,
     scrollDisabled: boolean,
+    scrollOffset: { x: number, y: number },
+    isFocused: boolean,
 };
 
 export type ContentOffset = {
@@ -40,7 +43,7 @@ type NavigationProps = {
 let staticNarrow;
 
 export default class UIScreen<Props, State>
-    extends UIController<Props & NavigationProps, any & ControllerState> {
+    extends UIController<Props & NavigationProps, any & UIScreenState> {
     presetName: string;
     scrollView: ?React$ElementRef<*>;
     listenScrollOffset: boolean;
@@ -65,6 +68,7 @@ export default class UIScreen<Props, State>
             screenWidth: 0,
             scrollDisabled: false,
             scrollOffset: { x: 0, y: 0 },
+            isFocused: false,
         };
     }
 
@@ -76,6 +80,12 @@ export default class UIScreen<Props, State>
     componentWillFocus() {
         super.componentWillFocus();
         this.setBackgroundPreset();
+        this.setStateSafely({ isFocused: true });
+    }
+
+    componentWillBlur() {
+        super.componentWillBlur();
+        this.setStateSafely({ isFocused: false });
     }
 
     // Events
@@ -203,7 +213,7 @@ export default class UIScreen<Props, State>
 
     render() {
         const scrollStyle = this.isScrollDisabled() ? styles.scrollDisabled : null;
-        const testIDProp = this.props.navigation.isFocused() ? { testID: UIScreen.testIDs.activeScreen } : {};
+        const testIDProp = this.state.isFocused ? { testID: UIScreen.testIDs.activeScreen } : {};
 
         return (
             <View
