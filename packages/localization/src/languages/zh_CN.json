@@ -533,5 +533,24 @@
     "YourEmail": "你的邮箱",
     "YourTransactionCompleted": "您的交易已完成",
     "YourTransactionCouldNotBeCompleted": "您的交易无法完成",
-    "YourUsername": "你的用户名"
+    "YourUsername": "你的用户名",
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "为了重新发送，点按这里",
+            "TapToSendAgain": "为了再一次发送，点按这里"
+        },
+        "DateSeparators": {
+            "Today": "今天",
+            "Yesterday": "昨天"
+        },
+        "Alerts": {
+            "MessageTooLong": "您的消息超过{0}个字符。",
+            "EnableFromSettingsTitle": "发送图片",
+            "EnableFromSettings": "请直接从您的设备设置启用访问权限"
+        },
+        "Actions": {
+            "AttachDocument": "文件",
+            "AttachImage": "图像"
+        }
+    }
 }

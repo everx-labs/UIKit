@@ -24,7 +24,7 @@ target 'UIKitExample' do
 end
 
 target 'UIKitExample-tvOS' do
-  # Pods for ReactNavigationSurf-tvOS
+  # Pods for UIKitExample-tvOS
 
   target 'UIKitExample-tvOSTests' do
     inherit! :search_paths

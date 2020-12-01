@@ -533,5 +533,24 @@
     "YourEmail": "Ваш адрес электронной почты",
     "YourTransactionCompleted": "Транзакция выполнена",
     "YourTransactionCouldNotBeCompleted": "Не удалось выполнить транзакцию",
-    "YourUsername": "Ваше имя пользователя"
+    "YourUsername": "Ваше имя пользователя",
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "Отправить повторно",
+            "TapToSendAgain": "Отправить еще раз"
+        },
+        "DateSeparators": {
+            "Today": "Сегодня",
+            "Yesterday": "Вчера"
+        },
+        "Alerts": {
+            "MessageTooLong": "Сообщение содержит более {0} символов.",
+            "EnableFromSettingsTitle": "Отправить изображение",
+            "EnableFromSettings": "Разрешите доступ в параметрах вашего устройства"
+        },
+        "Actions": {
+            "AttachDocument": "Документ",
+            "AttachImage": "Изображение"
+        }
+    }
 }

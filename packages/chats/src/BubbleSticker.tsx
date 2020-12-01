@@ -1,13 +1,13 @@
-import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import * as React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 
-import { UIConstant, UIColor, UIFont, UIStyle } from "@tonlabs/uikit.core";
-import { uiLocalized } from "@tonlabs/uikit.localization";
-import { UIImage } from "@tonlabs/uikit.components";
+import { UIConstant, UIColor, UIFont, UIStyle } from '@tonlabs/uikit.core';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIImage } from '@tonlabs/uikit.components';
 
-import { ChatMessageStatus } from "./types";
-import type { StickerMessage } from "./types";
-import { useBubblePosition, BubblePosition } from "./useBubblePosition";
+import { ChatMessageStatus } from './types';
+import type { StickerMessage } from './types';
+import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 const getBubbleContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
@@ -25,11 +25,10 @@ export const BubbleSticker = (props: StickerMessage) => {
         <View style={getBubbleContainer(position)}>
             <View style={styles.inner}>
                 <View
-                    style={[
-                        UIStyle.Common.flex(),
+                    style={
                         props.status === ChatMessageStatus.Pending &&
-                            UIStyle.common.opacity70(),
-                    ]}
+                        UIStyle.common.opacity70()
+                    }
                 >
                     <UIImage style={styles.sticker} source={props.source} />
                 </View>
@@ -54,18 +53,18 @@ export const BubbleSticker = (props: StickerMessage) => {
 
 const styles = StyleSheet.create({
     containerRight: {
-        paddingLeft: "20%",
-        alignSelf: "flex-end",
-        justifyContent: "flex-end",
+        paddingLeft: '20%',
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
     },
     containerLeft: {
-        paddingRight: "20%",
-        alignSelf: "flex-start",
-        justifyContent: "flex-start",
+        paddingRight: '20%',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
     },
     inner: {
-        flexDirection: "column",
-        alignItems: "flex-end",
+        flexDirection: 'column',
+        alignItems: 'flex-end',
     },
     sticker: {
         width: UIConstant.giantCellHeight(),
@@ -80,8 +79,8 @@ const styles = StyleSheet.create({
         backgroundColor: UIColor.backgroundWhiteLight(),
     },
     timeText: {
-        textAlign: "right",
-        alignSelf: "flex-end",
+        textAlign: 'right',
+        alignSelf: 'flex-end',
         color: UIColor.black(),
     },
 });

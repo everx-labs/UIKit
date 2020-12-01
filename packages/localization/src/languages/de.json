@@ -533,5 +533,24 @@
     "YourEmail": "Ihre E-Mail",
     "YourTransactionCompleted": "Ihre Transaktion wurde abgeschlossen",
     "YourTransactionCouldNotBeCompleted": "Ihre Transaktion konnte nicht abgeschlossen werden",
-    "YourUsername": "Ihr Benutzername"
+    "YourUsername": "Ihr Benutzername",
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "Tippen Sie noch einmal zu senden",
+            "TapToSendAgain": "Tippen Sie erneut zu senden"
+        },
+        "DateSeparators": {
+            "Today": "Heute",
+            "Yesterday": "Gestern"
+        },
+        "Alerts": {
+            "MessageTooLong": "Ihre Nachricht ist länger als {0} Zeichen.",
+            "EnableFromSettingsTitle": "Bild senden",
+            "EnableFromSettings": "Bitte aktivieren Sie den Zugriff direkt über Ihre Geräteeinstellungen"
+        },
+        "Actions": {
+            "AttachDocument": "Dokumentnummer",
+            "AttachImage": "Bild"
+        }
+    }
 }

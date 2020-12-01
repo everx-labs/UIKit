@@ -1,31 +1,72 @@
 {
-  "parser": "babel-eslint",
-  "extends": "airbnb",
-  "plugins": ["module-resolver"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
+  },
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/react",
+    "prettier/flowtype",
+    "prettier/@typescript-eslint"
+  ],
+  "plugins": [
+    "@babel",
+    "@typescript-eslint",
+    "flowtype", 
+    "module-resolver"
+  ],
   "rules": {
-    "module-resolver/use-alias": 0, /*["error", {
-      "ignoreDepth": 1
-    }],*/
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/jsx-indent-props": [1, 4],
-    "react/jsx-indent": ["error", 4],
-    "react/prefer-stateless-function": "off",
+    "module-resolver/use-alias": 0,
+    "import/extensions": [
+        "error", 
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".tsx"]
+      }
+    ],
+    "react/require-default-props": "off",
     "no-use-before-define": ["error", { "variables": false }],
-    "indent": ["error", 4],
     "arrow-body-style": "off",
     "no-console": "off",
     "no-continue": "off",
-    "object-curly-newline": "off",
-    "class-methods-use-this": "off",
+    "no-confusing-arrow": ["error", { "allowParens": false }],
+    "no-unused-expressions": "off",
+    "no-unused-vars": "off",
     "jsx-a11y/href-no-hash": "off",
-    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+    "object-curly-newline": "off",
     "import/prefer-default-export": "off",
-    "import/no-unresolved": [
-      "error",
+    "import/no-cycle": [2, { "maxDepth": 1 }],
+    "import/no-unresolved": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "warn",
       {
-        "ignore": [ "@tonlabs" ]
+        "aspects": ["invalidHref"]
       }
-    ]
+    ],
+    "flowtype/space-after-type-colon": "off",
+    "flowtype/no-types-missing-file-annotation": "off",
+    "quote-props": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    // It just don't work properly with `import type {}`
+    // And TS anyway checks for unused variables, so this is redundant
+    "@typescript-eslint/no-unused-vars": "off",
+    // Works oddly with TS
+    "no-restricted-globals": "off"
   },
   "settings": {
     "import/resolver": {
@@ -34,6 +75,7 @@
   },
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "jest": true
   }
 }
