@@ -30,7 +30,7 @@ export type ImageSize = { width: number; height: number };
 
 export type OnSendText = (text: string) => void;
 export type OnSendMedia = (data: any, imageSize: ImageSize | null) => void;
-export type OnSendDocument = (data: any, name: string) => void;
+export type OnSendDocument = (data: any, title: string) => void;
 export type OnHeightChange = (height: number) => void;
 
 export type Shortcut = {

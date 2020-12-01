@@ -13,10 +13,13 @@ import { BubbleTransactionComment } from './BubbleTransactionComment';
 const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
 
-const getContainerTestID = (message: TransactionMessage) =>
-    (message.status === ChatMessageStatus.Pending
-        ? `transaction_message_${getValueForTestID(message)}_pending`
-        : `transaction_message_${getValueForTestID(message)}`);
+const getContainerTestID = (message: TransactionMessage) => {
+    if (message.status === ChatMessageStatus.Pending) {
+        return `transaction_message_${getValueForTestID(message)}_pending`;
+    }
+
+    return `transaction_message_${getValueForTestID(message)}`;
+};
 
 const getBubbleContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
@@ -59,6 +62,7 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
     return null;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getAmountColor = (_message: TransactionMessage) => {
     // TODO: what do with that types?
     // const { type } = _message.info;
@@ -69,6 +73,7 @@ const getAmountColor = (_message: TransactionMessage) => {
     return styles.textWhite;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getCommentColor = (_message: TransactionMessage) => {
     // TODO: what do with that types?
     // const { type } = message.info;

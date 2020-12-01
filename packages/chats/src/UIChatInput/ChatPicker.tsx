@@ -35,7 +35,7 @@ const wasAccessToCameraOrGalleryDenied = (message: string): boolean => {
 };
 
 const pickDocument = async (
-    callback: (doc: any, name: string) => Promise<void>
+    callback: (doc: any, name: string) => Promise<void>,
 ) => {
     try {
         const file = await DocumentPicker.pick({
@@ -52,7 +52,7 @@ const pickDocument = async (
 const onPickDocument = async (
     doc: any,
     name: string,
-    onSendDocument?: OnSendDocument
+    onSendDocument?: OnSendDocument,
 ) => {
     if (Platform.OS === 'web') {
         if (onSendDocument) {
@@ -84,7 +84,7 @@ const onPickDocument = async (
             console.error(
                 'Failed to pick the document with error:',
                 error,
-                decError
+                decError,
             );
         }
     }
@@ -105,7 +105,7 @@ const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
         // in decimal
         const msg = uiLocalized.formatString(
             uiLocalized.FileIsTooBig,
-            UIConstant.maxFileSize() / 1000000
+            UIConstant.maxFileSize() / 1000000,
         );
         UIAlertView.showAlert(uiLocalized.Error, msg, [
             {
@@ -127,7 +127,7 @@ const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
 const uploadPhoto = (
     photo: any,
     imageSize: ImageSize | null,
-    onSendMedia: OnSendMedia
+    onSendMedia: OnSendMedia,
 ) => {
     if (Platform.OS === 'web') {
         onSendMedia(photo.split('base64,')[1], imageSize);
@@ -152,7 +152,7 @@ const onUploadPhoto = (photo: any, onSendMedia: OnSendMedia) => {
         (error) => {
             console.error(`Failed to get image size with: ${error}`);
             uploadPhoto(photo, null, onSendMedia);
-        }
+        },
     );
 };
 
@@ -167,7 +167,7 @@ type Props = {
 };
 
 export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
-    function ChatImagePickerImpl(props, ref) {
+    function ChatImagePickerImpl(props: Props, ref) {
         const inputRef = React.useRef<HTMLInputElement>(null);
         const uiImageViewRef = React.useRef<typeof UIImageView>();
 
@@ -187,7 +187,7 @@ export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
 
                 setTimeout(() => {
                     pickDocument((data: any, name: string) =>
-                        onPickDocument(data, name, props.onSendDocument)
+                        onPickDocument(data, name, props.onSendDocument),
                     );
                 }, UIConstant.animationDuration() * 2);
             },
@@ -239,14 +239,14 @@ export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
                                             Linking.openSettings();
                                         },
                                     },
-                                ]
+                                ],
                             );
                         }
                     }}
                 />
             </View>
         );
-    }
+    },
 );
 
 const styles = StyleSheet.create({

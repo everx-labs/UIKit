@@ -71,7 +71,7 @@ type ListContentOffset = { y: number };
 function useWheelHandler(handler: (e: WheelEvent) => void) {
     React.useEffect(() => {
         if (Platform.OS !== 'web') {
-            return;
+            return undefined;
         }
 
         window.addEventListener(wheelEvent, handler, { passive: false });
@@ -198,7 +198,10 @@ function useContentInset(
     };
 
     React.useEffect(() => {
-        if (listContentOffsetRef.current && listContentOffsetRef.current.y < bottomInset) {
+        if (
+            listContentOffsetRef.current &&
+            listContentOffsetRef.current.y < bottomInset
+        ) {
             const scrollResponder = ref?.current?.getScrollResponder();
             if (scrollResponder) {
                 scrollResponder.scrollTo({
@@ -223,7 +226,7 @@ function useLinesAnimation() {
         () => ({
             opacity: topOpacity.current,
         }),
-        [topOpacity]
+        [topOpacity],
     );
 
     const linesAnimationInProgress = React.useRef(false);
@@ -360,7 +363,7 @@ type Props = {
 };
 
 export const UIChatList = React.forwardRef<SectionList, Props>(
-    function UIChatListContainer(props, ref) {
+    function UIChatListContainer(props: Props, ref) {
         const keyboardDismissProp = React.useMemo(() => {
             if (Platform.OS !== 'ios') {
                 // The following is not working on Android >>>
@@ -404,7 +407,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
         }, [props.canLoadMore, props.isLoadingMore]);
 
         const { getItemLayout, renderItem } = useLayoutHelpers(
-            props.canLoadMore
+            props.canLoadMore,
         );
         const {
             listContentOffset,
@@ -418,11 +421,11 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
         const contentInset = useContentInset(
             localRef,
             listContentOffset,
-            props.bottomInset
+            props.bottomInset,
         );
         const sections = React.useMemo(
             () => UIChatListFormatter.getSections(props.messages),
-            [props.messages]
+            [props.messages],
         );
 
         return (
@@ -467,7 +470,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                 </TapGestureHandler>
             </SafeAreaView>
         );
-    }
+    },
 );
 
 const styles = StyleSheet.create({

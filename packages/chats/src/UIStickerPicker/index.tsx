@@ -73,18 +73,18 @@ function StickerList(
             renderItem={({ item }) => {
                 return (
                     <ScrollView contentContainerStyle={styles.packageContainer}>
-                        {item.stickers.map(sticker => (
+                        {item.stickers.map((sticker) => (
                             <Sticker
                                 sticker={sticker}
                                 pkgID={item.id}
-                                onPress={sticker => {
+                                onPress={(stk) => {
                                     const { isCustomKeyboard, onPick } = props;
                                     if (onPick) {
-                                        onPick(sticker);
+                                        onPick(stk);
                                     } else if (isCustomKeyboard) {
                                         UICustomKeyboardUtils.onItemSelected(
                                             UIStickerPickerKeyboardName,
-                                            sticker,
+                                            stk,
                                         );
                                     }
                                 }}
@@ -93,7 +93,7 @@ function StickerList(
                     </ScrollView>
                 );
             }}
-            keyExtractor={sticker => sticker.id}
+            keyExtractor={(sticker) => sticker.id}
             // Apply overflowY style for web to make the scrollbar appear as an overlay
             // thus not affecting the content width of ScrollView to prevent layout issues
             style={[
@@ -169,7 +169,7 @@ type Props = {
 };
 
 export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
-    (props, ref) => {
+    (props: Props, ref) => {
         const theme = useTheme();
         const { height, opacity } = usePickerAnimations(
             ref,

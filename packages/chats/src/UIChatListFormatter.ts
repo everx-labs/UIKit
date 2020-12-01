@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import type { SectionListData } from 'react-native';
 
 import { ChatMessageType } from './types';

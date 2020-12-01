@@ -131,7 +131,7 @@ function useStickers(
     };
 }
 
-function useMenuPlus(menuPlusHidden: boolean = false) {
+function useMenuPlus(menuPlusHidden = false) {
     const chatPickerRef = React.useRef<ChatPickerRef>(null);
     const onPressImage = () => {
         chatPickerRef.current?.openImageDialog();
@@ -143,15 +143,15 @@ function useMenuPlus(menuPlusHidden: boolean = false) {
     const menu: MenuItem[] = menuPlusHidden
         ? []
         : [
-            {
-                title: uiLocalized.Chats.Actions.AttachImage,
-                onPress: onPressImage,
-            },
-            {
-                title: uiLocalized.Chats.Actions.AttachDocument,
-                onPress: onPressDocument,
-            },
-        ];
+              {
+                  title: uiLocalized.Chats.Actions.AttachImage,
+                  onPress: onPressImage,
+              },
+              {
+                  title: uiLocalized.Chats.Actions.AttachDocument,
+                  onPress: onPressDocument,
+              },
+          ];
 
     return {
         menuPlus: menu,
@@ -202,7 +202,7 @@ export function UIChatInput(props: Props) {
             menuMore={
                 undefined /* TODO: we not render it right now, but could at some point */
             }
-            menuMoreDisabled={props.menuPlusDisabled}
+            menuMoreDisabled={props.menuMoreDisabled}
             inputHidden={props.inputHidden}
             quickActions={props.quickActions}
             textInputRef={textInputRef}

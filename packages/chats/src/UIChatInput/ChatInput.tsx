@@ -178,8 +178,8 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
     const containerStyle =
         Platform.OS === 'android'
             ? {
-                height: Math.max(UIConstant.largeButtonHeight(), inputHeight),
-            }
+                  height: Math.max(UIConstant.largeButtonHeight(), inputHeight),
+              }
             : null;
 
     const numberOfLines =
@@ -198,7 +198,7 @@ function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
 function useBackHandler(ref: React.RefObject<TextInput>) {
     React.useEffect(() => {
         if (Platform.OS !== 'android') {
-            return;
+            return undefined;
         }
 
         const backHandler = BackHandler.addEventListener(

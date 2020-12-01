@@ -18,7 +18,7 @@ type Props = {
 };
 
 export function StickersButton(props: Props) {
-    if (!props.hasStickers) {
+    if (!props.hasStickers || props.inputHasValue) {
         return null;
     }
 

@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import { Keyboard, Platform, View } from 'react-native';
 import type { EmitterSubscription } from 'react-native';
@@ -17,7 +16,7 @@ import type { OnHeightChange } from '../UIChatInput/types';
 const registerCustomKeyboard = (
     kbID: string,
     component: React.ReactNode,
-    props?: { [key: string]: any },
+    props?: { [key: string]: any }
 ) => {
     if (Platform.OS === 'web') {
         // Do nothing
@@ -49,7 +48,7 @@ export const UICustomKeyboardUtils = {
     dismiss,
 };
 
-let trackingViewIsReady: boolean = false; // global flag to learn if KeyboardTrackingView usable
+let trackingViewIsReady = false; // global flag to learn if KeyboardTrackingView usable
 
 type Props = KeyboardAccessoryViewProps & {
     onHeightChange?: OnHeightChange;
@@ -105,12 +104,12 @@ export function UICustomKeyboard(props: Props) {
 
         keyboardWillShowListener.current = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-            onKeyboardShow,
+            onKeyboardShow
         );
 
         keyboardWillHideListener.current = Keyboard.addListener(
             Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-            onKeyboardHide,
+            onKeyboardHide
         );
     };
 
@@ -130,7 +129,7 @@ export function UICustomKeyboard(props: Props) {
 
     // Tracking View Ready Hack
     const [trackingViewReady, setTrackingViewReady] = React.useState<boolean>(
-        trackingViewIsReady,
+        trackingViewIsReady
     );
 
     const makeKeyboardTrackingReady = () => {
@@ -180,10 +179,11 @@ export function UICustomKeyboard(props: Props) {
             allowHitsOutsideBounds
             revealKeyboardInteractive
             {...props}
-            renderContent={() =>
-                (Platform.OS !== 'ios' ? (
-                    props.renderContent()
-                ) : (
+            renderContent={() => {
+                if (Platform.OS !== 'ios') {
+                    return props.renderContent();
+                }
+                return (
                     <View
                         style={{
                             position: 'relative',
@@ -199,13 +199,13 @@ export function UICustomKeyboard(props: Props) {
                                 { height: insets?.bottom ?? 0, top: '100%' },
                                 UIStyle.container.absoluteFillWidth(),
                                 UIStyle.color.getBackgroundColorStyle(
-                                    UIColor.backgroundPrimary(theme),
+                                    UIColor.backgroundPrimary(theme)
                                 ),
                             ]}
                         />
                     </View>
-                ))
-            }
+                );
+            }}
             onKeyboardResigned={props.onKeyboardResigned}
         />
     );

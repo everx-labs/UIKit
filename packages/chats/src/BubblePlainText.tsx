@@ -17,8 +17,13 @@ import { ChatMessageMeta, ChatMessageStatus } from './types';
 import type { PlainTextMessage } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
-const getUrlStyle = (status: ChatMessageStatus) =>
-    (status === ChatMessageStatus.Received ? styles.urlReceived : styles.urlSent);
+const getUrlStyle = (status: ChatMessageStatus) => {
+    if (status === ChatMessageStatus.Received) {
+        return styles.urlReceived;
+    }
+
+    return styles.urlSent;
+};
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
@@ -111,7 +116,7 @@ function BubbleTime(props: PlainTextMessage) {
 
 export function BubblePlainText(props: PlainTextMessage) {
     const scale = React.useRef(new Animated.Value(1)).current;
-    const bubbleScaleAnimation = (scaleIn: boolean = false) => {
+    const bubbleScaleAnimation = (scaleIn = false) => {
         Animated.spring(scale, {
             toValue: scaleIn ? UIConstant.animationScaleInFactor() : 1.0,
             friction: 3,

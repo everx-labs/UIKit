@@ -11,6 +11,8 @@ import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 type Props = TransactionComment & {
     status: ChatMessageStatus;
+    // This is strange coz it's actually used in getBubbleColor
+    // eslint-disable-next-line react/no-unused-prop-types
     type: TransactionType;
     onPress?: () => void | Promise<void>;
 };

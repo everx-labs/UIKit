@@ -10,7 +10,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 type Props = {
     label?: string;
     isLoadingMore: boolean;
-    onLoadMore: () => void;
+    onLoadMore?: () => void;
     containerStyle?: StyleProp<ViewStyle>;
     wrapperStyle?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<ViewStyle>;
@@ -32,10 +32,10 @@ const Indicator = ({ isLoadingMore }: { isLoadingMore: boolean }) => {
 export const UILoadMoreButton: React.FunctionComponent<Props> = ({
     label = uiLocalized.LoadMore,
     isLoadingMore = false,
-    onLoadMore = () => {},
-    containerStyle = {},
-    wrapperStyle = {},
-    textStyle = {},
+    onLoadMore,
+    containerStyle,
+    wrapperStyle,
+    textStyle,
 }: Props) => (
     <TouchableOpacity
         style={[styles.container, containerStyle]}

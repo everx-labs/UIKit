@@ -27,7 +27,7 @@ export const BubbleSticker = (props: StickerMessage) => {
                 <View
                     style={
                         props.status === ChatMessageStatus.Pending &&
-                            UIStyle.common.opacity70()
+                        UIStyle.common.opacity70()
                     }
                 >
                     <UIImage style={styles.sticker} source={props.source} />
