@@ -18,7 +18,8 @@
     "@babel",
     "@typescript-eslint",
     "flowtype", 
-    "module-resolver"
+    "module-resolver",
+    "import"
   ],
   "rules": {
     "module-resolver/use-alias": 0,
@@ -49,7 +50,6 @@
     "object-curly-newline": "off",
     "import/prefer-default-export": "off",
     "import/no-cycle": [2, { "maxDepth": 1 }],
-    "import/no-unresolved": "off",
     "jsx-a11y/anchor-is-valid": [
       "warn",
       {
@@ -70,7 +70,8 @@
   },
   "settings": {
     "import/resolver": {
-      "babel-module": {}
+      "babel-module": {},
+      "typescript": {}
     }
   },
   "env": {

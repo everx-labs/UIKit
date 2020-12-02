@@ -78,6 +78,7 @@
         "eslint-config-airbnb": "16.1.0",
         "eslint-config-prettier": "^6.15.0",
         "eslint-import-resolver-babel-module": "5.1.2",
+        "eslint-import-resolver-typescript": "2.3.0",
         "eslint-plugin-detox": "1.0.0",
         "eslint-plugin-flowtype": "4.3.0",
         "eslint-plugin-import": "2.22.1",
