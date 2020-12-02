@@ -533,5 +533,24 @@
     "YourEmail": "あなたのメールアドレス",
     "YourTransactionCompleted": "トランザクションは完了です。",
     "YourTransactionCouldNotBeCompleted": "申し訳ありませんが、トランザクションは完了できませんでした。",
-    "YourUsername": "あなたのユーザー名"
+    "YourUsername": "あなたのユーザー名",
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "タップして再送信する",
+            "TapToSendAgain": "タップして、もう一度送信する"
+        },
+        "DateSeparators": {
+            "Today": "今日",
+            "Yesterday": "昨日"
+        },
+        "Alerts": {
+            "MessageTooLong": "メッセージが{0}文字より長くなっています。",
+            "EnableFromSettingsTitle": "画像を送信する",
+            "EnableFromSettings": "お使いのデバイスの設定でアクセスを有効にしてください"
+        },
+        "Actions": {
+            "AttachDocument": "ドキュメント",
+            "AttachImage": "画像"
+        }
+    }
 }

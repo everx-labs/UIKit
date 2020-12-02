@@ -1,10 +1,10 @@
-import * as React from "react";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import * as React from 'react';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
-import { UIConstant, UIColor, UITextStyle } from "@tonlabs/uikit.core";
+import { UIConstant, UIColor, UITextStyle } from '@tonlabs/uikit.core';
 
-import type { ActionButtonMessage } from "./types";
-import { useBubblePosition, BubblePosition } from "./useBubblePosition";
+import type { ActionButtonMessage } from './types';
+import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 const getButtonContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
@@ -30,7 +30,7 @@ export function BubbleActionButton(props: ActionButtonMessage) {
     return (
         <View style={getButtonContainer(position)}>
             <TouchableOpacity
-                testID={"chat_action_cell_default"}
+                testID="chat_action_cell_default"
                 style={[
                     styles.common,
                     styles.button,
@@ -48,19 +48,19 @@ export function BubbleActionButton(props: ActionButtonMessage) {
 
 const styles = StyleSheet.create({
     containerRight: {
-        paddingLeft: "20%",
-        alignSelf: "flex-end",
-        justifyContent: "flex-end",
+        paddingLeft: '20%',
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
     },
     containerLeft: {
-        paddingRight: "20%",
-        alignSelf: "flex-start",
-        justifyContent: "flex-start",
+        paddingRight: '20%',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
     },
     common: {
         borderWidth: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         borderColor: UIColor.primary(),
         marginVertical: UIConstant.tinyContentOffset(),
     },

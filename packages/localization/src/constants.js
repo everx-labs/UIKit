@@ -1,9 +1,17 @@
 // @flow
-import type { LanguageConstants, LanguageInfo } from './types';
+export type LanguageConstants = {
+    [string]: any,
+}
 
 export const predefinedConstants: LanguageConstants = {
     CURRENT_YEAR: (new Date()).getFullYear(),
 };
+
+export type LanguageInfo = {
+    name: string,
+    country: string, // Works with UICountryPicker
+    dayJS: string, // Works with DayJS
+}
 
 export const languagesInfo: { [string]: LanguageInfo } = {
     en: {
@@ -27,7 +35,7 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         dayJS: 'it',
     },
     tr: {
-        name: 'Türk',
+        name: 'Türkçe',
         country: 'TR',
         dayJS: 'tr',
     },

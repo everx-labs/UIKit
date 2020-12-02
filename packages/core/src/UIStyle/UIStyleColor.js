@@ -79,7 +79,7 @@ export default class UIStyleColor {
         theme: ?UIColorThemeNameType,
         disabled: boolean,
         tapped: boolean,
-        hover: boolean
+        hover: boolean,
     ) {
         const color = UITheme.stateTextPrimary(theme, disabled, tapped, hover);
         return this.getColorStyle(color);
@@ -109,7 +109,7 @@ export default class UIStyleColor {
     static borderBottom(
         theme: ?UIColorThemeNameType,
         focused: boolean,
-        hover: boolean
+        hover: boolean,
     ) {
         const borderColor = UITheme.borderBottomColor(theme, focused, hover);
         return this.getBorderBottomColorStyle(borderColor);

@@ -21,14 +21,14 @@ export class UITheme {
 
     // Text colors
     static textPrimary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.primary;
+        return themes[theme || current].text.primary.normal;
     }
 
     static stateTextPrimary(
         theme: ?UIColorThemeNameType,
         disabled: boolean,
         tapped: boolean,
-        hover: boolean
+        hover: boolean,
     ): UIColorData {
         const primary = UITheme.textPrimary(theme);
         if (disabled) {
@@ -92,9 +92,7 @@ export class UITheme {
         return themes[theme || current].background.primary;
     }
 
-    static backgroundPrimaryInverted(
-        theme?: ?UIColorThemeNameType
-    ): UIColorData {
+    static backgroundPrimaryInverted(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].background.primaryInverted;
     }
 
@@ -137,7 +135,7 @@ export class UITheme {
     static borderBottomColor(
         theme: ?UIColorThemeNameType,
         focused: boolean,
-        hover: boolean
+        hover: boolean,
     ): UIColorData {
         const borderBottom = UITheme.borderBottom(theme);
         if (focused) {

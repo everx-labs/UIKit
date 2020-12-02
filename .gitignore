@@ -17,3 +17,5 @@ yarn.lock
 coverage/
 
 lib/
+
+.vscode/

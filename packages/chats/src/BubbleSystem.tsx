@@ -1,14 +1,19 @@
-import * as React from "react";
-import { View, StyleSheet } from "react-native";
+import * as React from 'react';
+import { View } from 'react-native';
 
-import { UIStyle } from "@tonlabs/uikit.core";
-import { UILabel } from "@tonlabs/uikit.components";
+import { UIStyle } from '@tonlabs/uikit.core';
+import { UILabel } from '@tonlabs/uikit.components';
 
-import type { SystemMessage } from "./types";
+import type { SystemMessage } from './types';
 
 export function BubbleSystem(props: SystemMessage) {
     return (
-        <View style={styles.container}>
+        <View
+            style={[
+                UIStyle.common.alignJustifyCenter(),
+                UIStyle.padding.verticalTiny(),
+            ]}
+        >
             <UILabel
                 role={UILabel.Role.TinyRegular}
                 text={props.text}
@@ -19,10 +24,3 @@ export function BubbleSystem(props: SystemMessage) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        alignSelf: "center",
-        justifyContent: "center",
-    },
-});

@@ -8,22 +8,21 @@
 
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import {
-    StyleSheet,
-    View,
-    Text,
-    SafeAreaView,
-    ScrollView,
-    Platform,
-} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Platform } from 'react-native';
+import { enableScreens } from 'react-native-screens';
 import BigNumber from 'bignumber.js';
 // $FlowFixMe
 import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 // $FlowFixMe
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
+import {
+    SafeAreaView,
+    SafeAreaProvider,
+    useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 import {
@@ -98,7 +97,9 @@ import {
     UIProfileView,
 } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIChatList } from '@tonlabs/uikit.chats';
+import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
+
+enableScreens();
 
 if (Platform.OS === 'web') {
     // Head Element
@@ -106,35 +107,35 @@ if (Platform.OS === 'web') {
 
     // Import PTRootUIWeb
     const ptRootFontBold = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontBold.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css',
     );
     ptRootFontBold.setAttribute('rel', 'stylesheet');
     const ptRootFontLight = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontLight.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css',
     );
     ptRootFontLight.setAttribute('rel', 'stylesheet');
     const ptRootFontMedium = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontMedium.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css',
     );
     ptRootFontMedium.setAttribute('rel', 'stylesheet');
     const ptRootFontRegular = headElement.appendChild(
-        document.createElement('link')
+        document.createElement('link'),
     );
     ptRootFontRegular.setAttribute(
         'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css'
+        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css',
     );
     ptRootFontRegular.setAttribute('rel', 'stylesheet');
 }
@@ -1472,7 +1473,7 @@ const Menus = () => {
                                             alert('Action 2 was called'),
                                     },
                                 ],
-                                true
+                                true,
                             );
                         }
                     }}
@@ -1696,7 +1697,7 @@ const Notifications = () => (
                 title="Show default notice with message only"
                 onPress={() =>
                     UINotice.showMessage(
-                        'System is going down at midnight tonight. We’ll notify you when it’s back up.'
+                        'System is going down at midnight tonight. We’ll notify you when it’s back up.',
                     )
                 }
             />
@@ -1735,7 +1736,7 @@ const Notifications = () => (
                 title="Show default notice with message only"
                 onPress={() =>
                     UIToastMessage.showMessage(
-                        'System is going down at midnight tonight.'
+                        'System is going down at midnight tonight.',
                     )
                 }
             />
@@ -1852,7 +1853,7 @@ const Popups = () => (
                 title="Show UIDropdownAlert"
                 onPress={() =>
                     UIDropdownAlert.showNotification(
-                        'This is a UIDropdownAlert'
+                        'This is a UIDropdownAlert',
                     )
                 }
             />
@@ -2156,257 +2157,319 @@ const TextScreen = () => (
     </ScrollView>
 );
 
-const Chat = () => (
-    <UIChatList
-        areStickersVisible={false}
-        onLoadEarlierMessages={() => {}}
-        canLoadMore
-        isLoadingMore={false}
-        messages={[
-            {
-                type: 'act',
-                status: 'sent',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                text: 'This is action',
-            },
-            {
-                type: 'act',
-                status: 'received',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                text: 'This is action',
-            },
-            {
-                type: 'stk',
-                status: 'pending',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                source: {
-                    uri:
-                        'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                },
-            },
-            {
-                type: 'stk',
-                status: 'sent',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                source: {
-                    uri:
-                        'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                },
-            },
-            {
-                type: 'stk',
-                status: 'received',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:123',
-                source: {
-                    uri:
-                        'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
-                },
-            },
-            {
-                type: 'sys',
-                status: 'sent',
-                time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
-                sender: '0:000', // TODO: is this mandatory field for system message?
-                text: 'This is a system message',
-            },
-            {
-                type: 'trx',
-                status: 'sent',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                info: {
-                    type: 'aborted',
-                    amount: new BigNumber(1),
-                },
-                comment: {
-                    text: 'Pocket money',
-                },
-                onPress() {
-                    console.log('hey');
-                },
-            },
-            {
-                type: 'trx',
-                status: 'received',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                info: {
-                    type: 'aborted',
-                    amount: new BigNumber(1),
-                },
-            },
-            {
-                type: 'trx',
-                status: 'sent',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                info: {
-                    type: 'expense',
-                    amount: new BigNumber(1),
-                    text: 'Sent',
-                },
-                comment: {
-                    text: 'Some money',
-                    encrypted: true,
-                },
-            },
-            {
-                type: 'trx',
-                status: 'received',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                info: {
-                    type: 'expense',
-                    amount: new BigNumber(1),
-                    text: 'Sent',
-                },
-            },
-            {
-                type: 'trx',
-                status: 'sent',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                info: {
-                    type: 'income',
-                    amount: new BigNumber(9999.123456789),
-                    text: 'Received',
-                },
-            },
-            {
-                type: 'trx',
-                status: 'received',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                info: {
-                    type: 'income',
-                    amount: new BigNumber(1),
-                    text: 'Received',
-                },
-                comment: {
-                    text: 'Take it',
-                    encrypted: true,
-                },
-            },
-            {
-                type: 'stm',
-                status: 'sending',
-                time: Math.floor(Date.now() - 1 * 60 * 1000),
-                sender: '0:000',
-                text: 'This one is in process of sending...',
-            },
-            {
-                type: 'stm',
-                status: 'received',
-                time: Math.floor(Date.now() - 2 * 60 * 1000),
-                sender: '0:123',
-                text: 'How r u?',
-            },
-            {
-                type: 'stm',
-                status: 'sent',
-                time: Math.floor(Date.now() - 4 * 60 * 1000),
-                sender: '0:000',
-                text: 'This one is from me',
-            },
-            {
-                type: 'stm',
-                status: 'received',
-                time: Math.floor(Date.now() - 5 * 60 * 1000),
-                sender: '0:123',
-                text:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            },
-            {
-                type: 'stm',
-                status: 'received',
-                time: Math.floor(Date.now() - 5 * 60 * 1000),
-                sender: '0:123',
-                text: 'Hi there!',
-            },
-            {
-                type: 'stm',
-                status: 'received',
-                time: new Date('10 06 2020 10:00').getTime(),
-                sender: '0:123',
-                text: 'Hi from past!',
-            },
-        ].map((m: any, i: number) => ((m.key = i), m))}
-    />
-);
+const messages = [
+    {
+        type: 'act',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text: 'This is action',
+    },
+    {
+        type: 'act',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text: 'This is action',
+    },
+    {
+        type: 'stk',
+        status: 'pending',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        source: {
+            uri:
+                'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+        },
+    },
+    {
+        type: 'stk',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        source: {
+            uri:
+                'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+        },
+    },
+    {
+        type: 'stk',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:123',
+        source: {
+            uri:
+                'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+        },
+    },
+    {
+        type: 'sys',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
+        sender: '0:000', // TODO: is this mandatory field for system message?
+        text: 'This is a system message',
+    },
+    {
+        type: 'trx',
+        status: 'aborted',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        info: {
+            type: 'expense',
+            amount: new BigNumber(1),
+        },
+        comment: {
+            text: 'Pocket money',
+        },
+        onPress() {
+            console.log('hey');
+        },
+    },
+    {
+        type: 'trx',
+        status: 'aborted',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        info: {
+            type: 'income',
+            amount: new BigNumber(1),
+        },
+    },
+    {
+        type: 'trx',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        info: {
+            type: 'expense',
+            amount: new BigNumber(1),
+            text: 'Sent',
+        },
+        comment: {
+            text: 'Some money',
+            encrypted: true,
+        },
+    },
+    {
+        type: 'trx',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        info: {
+            type: 'expense',
+            amount: new BigNumber(1),
+            text: 'Sent',
+        },
+    },
+    {
+        type: 'trx',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        info: {
+            type: 'income',
+            amount: new BigNumber(9999.123456789),
+            text: 'Received',
+        },
+    },
+    {
+        type: 'trx',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        info: {
+            type: 'income',
+            amount: new BigNumber(1),
+            text: 'Received',
+        },
+        comment: {
+            text: 'Take it',
+            encrypted: true,
+        },
+    },
+    {
+        type: 'stm',
+        status: 'aborted',
+        time: Math.floor(Date.now() - 5 * 60 * 1000),
+        sender: '0:123',
+        text: "I'm aborted one!",
+    },
+    ...new Array(100).fill(null).reduce((acc, n, i) => {
+        acc.push({
+            type: 'stm',
+            status: 'sending',
+            time: Math.floor(Date.now() - 1 * 60 * 1000),
+            sender: '0:000',
+            text: 'This one is in process of sending...',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 2 * 60 * 1000),
+            sender: '0:123',
+            text: 'How r u?',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'sent',
+            time: Math.floor(Date.now() - 4 * 60 * 1000),
+            sender: '0:000',
+            text: 'This one is from me',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 5 * 60 * 1000),
+            sender: '0:123',
+            text:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 5 * 60 * 1000),
+            sender: '0:123',
+            text: 'Hi there!',
+        });
+        acc.push({
+            type: 'stm',
+            status: 'received',
+            time: new Date('10 06 2020 10:00').getTime(),
+            sender: '0:123',
+            text: 'Hi from past!',
+        });
+        return acc;
+    }, []),
+].map((m: any, i: number) => ((m.key = i), m));
+
+const stickers = new Array(10).fill(null).map((a, i) => ({
+    id: `test${i}`,
+    date: Date.now(),
+    description: '',
+    name: 'test',
+    stickers: new Array(4).fill(null).map((b, i) => ({
+        name: 'crown',
+        url:
+            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+    })),
+}));
+
+const shortcuts = [
+    {
+        title: "I'm a danger shortcut!",
+        onPress: () => console.log('shortcut pressed!'),
+        isDanger: true,
+    },
+    {
+        title: "I'm a shortcut!",
+        onPress: () => console.log('shortcut pressed!'),
+    },
+];
+
+const ChatStack = createStackNavigator();
+
+const Chat = () => {
+    const [bottomInset, setBottomInset] = React.useState<number>(0);
+    const insets = useSafeAreaInsets();
+    const onLoadEarlierMessages = React.useCallback(() => undefined, []);
+    const onSendSticker = React.useCallback(() => undefined, []);
+    return (
+        <ChatStack.Navigator>
+            <ChatStack.Screen name="ChatWindow" options={{ title: 'Chat' }}>
+                {() => (
+                    <>
+                        <UIChatList
+                            areStickersVisible={false}
+                            onLoadEarlierMessages={onLoadEarlierMessages}
+                            canLoadMore
+                            isLoadingMore={false}
+                            messages={messages}
+                            bottomInset={bottomInset}
+                        />
+                        <UIChatInput
+                            editable
+                            onSendSticker={onSendSticker}
+                            stickers={stickers}
+                            onHeightChange={setBottomInset}
+                            shortcuts={shortcuts}
+                        />
+                    </>
+                )}
+            </ChatStack.Screen>
+        </ChatStack.Navigator>
+    );
+};
 
 const Main = ({ navigation }) => (
     <SafeAreaView>
         <Text style={styles.title}>Main</Text>
-        <UIButton
-            onPress={() => navigation.navigate('buttons')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Buttons"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('checkbox')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Checkbox"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('inputs')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Inputs"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('design')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Design"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('images')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Images"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('layouts')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Layouts"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('menus')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Menus"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('notifications')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Notifications"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('popups')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Popups"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('products')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Products"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('profile')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Profile"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('text')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Text"
-        />
-        <UIButton
-            onPress={() => navigation.navigate('chat')}
-            buttonStyle={UIButton.ButtonStyle.Link}
-            title="Chat"
-        />
+        <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+            <UIButton
+                onPress={() => navigation.navigate('buttons')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Buttons"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('checkbox')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Checkbox"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('inputs')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Inputs"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('design')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Design"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('images')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Images"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('layouts')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Layouts"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('menus')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Menus"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('notifications')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Notifications"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('popups')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Popups"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('products')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Products"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('profile')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Profile"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('text')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Text"
+            />
+            <UIButton
+                onPress={() => navigation.navigate('chat')}
+                buttonStyle={UIButton.ButtonStyle.Link}
+                title="Chat"
+            />
+        </ScrollView>
     </SafeAreaView>
 );
 
@@ -2415,7 +2478,7 @@ const App: () => React$Node = () => {
     useReduxDevToolsExtension(navRef);
 
     const main = (
-        <>
+        <SafeAreaProvider>
             <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
                 <SurfSplit.Navigator
                     initialRouteName="buttons"
@@ -2474,7 +2537,7 @@ const App: () => React$Node = () => {
             <UIAlert />
             <UIAlertView />
             <UIDropdownAlert />
-        </>
+        </SafeAreaProvider>
     );
 
     if (Platform.OS !== 'web') {

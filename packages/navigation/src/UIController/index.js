@@ -274,7 +274,7 @@ export default class UIController<Props, State> extends UIComponent<
         return null;
     }
 
-    renderSafely() {
+    renderSafely(): React$Node {
         return null;
     }
 

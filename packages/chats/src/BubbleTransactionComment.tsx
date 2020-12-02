@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-// import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: web
+// import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: think how to use it
 
 import { UIStyle, UIFont, UIConstant, UIColor } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -11,6 +11,8 @@ import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 type Props = TransactionComment & {
     status: ChatMessageStatus;
+    // This is strange coz it's actually used in getBubbleColor
+    // eslint-disable-next-line react/no-unused-prop-types
     type: TransactionType;
     onPress?: () => void | Promise<void>;
 };
@@ -22,12 +24,16 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
     return null;
 };
 
-const getBubbleColor = (type: TransactionType) => {
-    if (type === TransactionType.Aborted) {
+const getBubbleColor = (props: Props) => {
+    if (props.status === ChatMessageStatus.Aborted) {
         return styles.cardAborted;
-    } else if (type === TransactionType.Expense) {
+    }
+
+    if (props.type === TransactionType.Expense) {
         return styles.cardWithdraw;
-    } else if (type === TransactionType.Income) {
+    }
+
+    if (props.type === TransactionType.Income) {
         return styles.cardIncome;
     }
 
@@ -44,7 +50,9 @@ export function BubbleTransactionComment(props: Props) {
                 UIStyle.padding.verticalSmall(),
                 UIStyle.padding.horizontalNormal(),
                 getBubbleCornerStyle(position),
-                getBubbleColor(props.type),
+                getBubbleColor(props),
+                props.status === ChatMessageStatus.Pending &&
+                    UIStyle.common.opacity70(),
             ]}
             onPress={props.onPress}
         >
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
     rightCorner: {
         borderTopRightRadius: 0,
     },
-    // TODO: duplicate ones from BubbleTransaction
+    // TODO: duplicates ones from BubbleTransaction
     cardIncome: {
         backgroundColor: UIColor.green(),
     },

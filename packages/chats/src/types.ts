@@ -1,5 +1,5 @@
-import type { ImageSourcePropType } from "react-native";
-import type BigNumber from "bignumber.js";
+import type { ImageSourcePropType } from 'react-native';
+import type BigNumber from 'bignumber.js';
 
 // Semantically describe a bubble position
 // By default:
@@ -9,12 +9,11 @@ import type BigNumber from "bignumber.js";
 //
 // This could be changed in some global config (not there yet).
 export enum ChatMessageStatus {
-    Sent = "sent",
-    Pending = "pending",
-    Received = "received",
+    Sent = 'sent',
+    Pending = 'pending',
+    Received = 'received',
+    Aborted = 'aborted',
 }
-
-// Aborted = "aborted", // TODO: make property on text bubbles to handle aborted state!
 
 export type ChatMessageMeta = {
     key: string;
@@ -26,19 +25,19 @@ export type ChatMessageMeta = {
 };
 
 export enum ChatMessageType {
-    PlainText = "stm",
-    System = "sys",
-    Transaction = "trx",
-    Image = "aim",
-    Document = "doc",
-    Sticker = "stk",
-    ActionButton = "act", // TODO: check chain rider
+    PlainText = 'stm',
+    System = 'sys',
+    Transaction = 'trx',
+    Image = 'aim',
+    Document = 'doc',
+    Sticker = 'stk',
+    ActionButton = 'act',
 }
 
 export type PlainTextMessage = ChatMessageMeta & {
     type: ChatMessageType.PlainText;
     text: string;
-    isAborted: boolean; // TODO: support it
+    actionText?: string;
     onTouchText?: () => void | Promise<void>;
     onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
@@ -49,15 +48,8 @@ export type SystemMessage = ChatMessageMeta & {
 };
 
 export enum TransactionType {
-    Income = "income",
-    Expense = "expense",
-    Aborted = "aborted",
-    // Spending = "spending",
-    // Deposit = "deposit",
-    // Bill = "bill",
-    // Invoice = "invoice",
-    // Invite = "invite",
-    // Compliment = "compliment",
+    Income = 'income',
+    Expense = 'expense',
 }
 
 export type TransactionComment = {
@@ -69,10 +61,12 @@ export type TransactionMessage = ChatMessageMeta & {
     type: ChatMessageType.Transaction;
     info: {
         type: TransactionType;
-        amount: BigNumber;
+        amount: BigNumber; // mostly used for testID purposes
+        balanceChange: string | React.ComponentType;
         text?: string;
     };
     comment?: TransactionComment;
+    actionText?: string;
     onPress?: () => void | Promise<void>;
 };
 
@@ -111,3 +105,21 @@ export type ChatMessage =
     | DocumentMessage
     | StickerMessage
     | ActionButtonMessage;
+
+export type UISticker = {
+    name: string;
+    keywords?: string[];
+    url: string;
+};
+
+export type UIStickerPackage = {
+    id: string;
+    date: number;
+    description: string;
+    name: string;
+    stickers: UISticker[];
+};
+
+export type PickedSticker = { url: string; name: string; package: string };
+
+export type OnPickSticker = (sticker: PickedSticker) => void;

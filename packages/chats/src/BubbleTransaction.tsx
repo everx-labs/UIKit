@@ -1,36 +1,44 @@
-import * as React from "react";
-import { View, StyleSheet } from "react-native";
+import * as React from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import { UIColor, UIStyle, UIConstant } from "@tonlabs/uikit.core";
-import { uiLocalized } from "@tonlabs/uikit.localization";
-import { UILabel, UIScaleButton } from "@tonlabs/uikit.components";
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UILabel, UIScaleButton } from '@tonlabs/uikit.components';
 
-import { ChatMessageStatus, TransactionType } from "./types";
-import type { TransactionMessage } from "./types";
-import { useBubblePosition, BubblePosition } from "./useBubblePosition";
-import { BubbleTransactionComment } from "./BubbleTransactionComment";
+import { ChatMessageStatus, TransactionType } from './types';
+import type { TransactionMessage } from './types';
+import { useBubblePosition, BubblePosition } from './useBubblePosition';
+import { BubbleTransactionComment } from './BubbleTransactionComment';
 
 const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
 
-const getContainerTestID = (message: TransactionMessage) =>
-    message.status === ChatMessageStatus.Pending
-        ? `transaction_message_${getValueForTestID(message)}_pending`
-        : `transaction_message_${getValueForTestID(message)}`;
+const getContainerTestID = (message: TransactionMessage) => {
+    if (message.status === ChatMessageStatus.Pending) {
+        return `transaction_message_${getValueForTestID(message)}_pending`;
+    }
+
+    return `transaction_message_${getValueForTestID(message)}`;
+};
 
 const getBubbleContainer = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
         return styles.containerLeft;
-    } else if (position === BubblePosition.right) {
+    }
+
+    if (position === BubblePosition.right) {
         return styles.containerRight;
     }
+
     return null;
 };
 
 const getBubbleInner = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
         return styles.innerLeft;
-    } else if (position === BubblePosition.right) {
+    }
+
+    if (position === BubblePosition.right) {
         return styles.innerRight;
     }
     return null;
@@ -39,11 +47,15 @@ const getBubbleInner = (position: BubblePosition) => {
 const getBubbleColor = (message: TransactionMessage) => {
     const { type } = message.info;
 
-    if (type === TransactionType.Aborted) {
+    if (message.status === ChatMessageStatus.Aborted) {
         return styles.cardAborted;
-    } else if (type === TransactionType.Expense) {
+    }
+
+    if (type === TransactionType.Expense) {
         return styles.cardWithdraw;
-    } else if (type === TransactionType.Income) {
+    }
+
+    if (type === TransactionType.Income) {
         return styles.cardIncome;
     }
 
@@ -53,14 +65,19 @@ const getBubbleColor = (message: TransactionMessage) => {
 const getBubbleCornerStyle = (position: BubblePosition) => {
     if (position === BubblePosition.left) {
         return styles.leftCorner;
-    } else if (position === BubblePosition.right) {
+    }
+
+    if (position === BubblePosition.right) {
         return styles.rightCorner;
     }
+
     return null;
 };
 
-const getAmountColor = (message: TransactionMessage) => {
-    // const { type } = message.info;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getAmountColor = (_message: TransactionMessage) => {
+    // TODO: what do with that types?
+    // const { type } = _message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return styles.textGrey;
@@ -68,7 +85,9 @@ const getAmountColor = (message: TransactionMessage) => {
     return styles.textWhite;
 };
 
-const getCommentColor = (message: TransactionMessage) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getCommentColor = (_message: TransactionMessage) => {
+    // TODO: what do with that types?
     // const { type } = message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
@@ -78,36 +97,40 @@ const getCommentColor = (message: TransactionMessage) => {
 };
 
 const getCommentText = (message: TransactionMessage) => {
-    return `${message.info.text || ""}, `; // TODO: move translations to UILocalized
-};
-
-const getActionString = (type: TransactionType) => {
-    if (type === TransactionType.Aborted) {
-        return "Tap to resend"; // TODO: TONLocalized.chats.message.tapToResend
+    if (message.info.text == null) {
+        return '';
     }
 
-    return null;
+    return `${message.info.text}, `;
 };
 
-const getActionStringStyle = (type: TransactionType) => {
-    if (type === TransactionType.Aborted) {
+const getActionString = (message: TransactionMessage) => {
+    if (message.status === ChatMessageStatus.Aborted) {
+        return message.actionText ?? uiLocalized.Chats.Bubbles.TapToResend;
+    }
+
+    return message.actionText;
+};
+
+const getActionStringStyle = (message: TransactionMessage) => {
+    if (message.status === ChatMessageStatus.Aborted) {
         return UIStyle.color.getColorStyle(UIColor.error());
     }
     return null;
 };
 
 function TransactionSublabel(props: TransactionMessage) {
-    if (props.info.type === TransactionType.Aborted) {
+    if (props.status === ChatMessageStatus.Aborted) {
         return (
             <>
                 <UILabel
                     testID={`transaction_message_${getValueForTestID(
-                        props
+                        props,
                     )}_aborted`}
                     role={UILabel.Role.TinyRegular}
                     text={uiLocalized.formatString(
                         uiLocalized.TransactionStatus.aborted,
-                        uiLocalized.formatDate(props.time)
+                        uiLocalized.formatDate(props.time),
                     )}
                     style={styles.textWhite}
                 />
@@ -119,10 +142,10 @@ function TransactionSublabel(props: TransactionMessage) {
             <>
                 <UILabel
                     testID={`transaction_message_${getValueForTestID(
-                        props
+                        props,
                     )}_time`}
                     role={UILabel.Role.TinyRegular}
-                    text={UILocalized.TransactionStatus.sending}
+                    text={uiLocalized.TransactionStatus.sending}
                     style={styles.textWhite}
                 />
             </>
@@ -148,7 +171,7 @@ function TransactionSublabel(props: TransactionMessage) {
 
 function BubbleTransactionMain(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
-    const { amount } = props.info;
+    const { balanceChange } = props.info;
     return (
         <View
             testID={getContainerTestID(props)}
@@ -171,7 +194,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
                 <UILabel
                     style={[getAmountColor(props)]}
                     role={UILabel.Role.PromoMedium}
-                    text={amount.toFixed()}
+                    text={balanceChange}
                 />
             </View>
             <View
@@ -188,7 +211,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
 
 export function BubbleTransaction(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
-    const actionString = getActionString(props.info.type);
+    const actionString = getActionString(props);
 
     return (
         <View style={getBubbleContainer(position)}>
@@ -201,7 +224,7 @@ export function BubbleTransaction(props: TransactionMessage) {
                             <UILabel
                                 style={[
                                     styles.actionString,
-                                    getActionStringStyle(props.info.type),
+                                    getActionStringStyle(props),
                                 ]}
                                 role={UILabel.Role.TinyRegular}
                                 text={actionString}
@@ -224,22 +247,22 @@ export function BubbleTransaction(props: TransactionMessage) {
 
 const styles = StyleSheet.create({
     containerRight: {
-        paddingLeft: "20%",
-        alignSelf: "flex-end",
-        justifyContent: "flex-end",
+        paddingLeft: '20%',
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
     },
     containerLeft: {
-        paddingRight: "20%",
-        alignSelf: "flex-start",
-        justifyContent: "flex-start",
+        paddingRight: '20%',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
     },
     innerLeft: {
-        flexDirection: "column",
-        alignItems: "flex-start",
+        flexDirection: 'column',
+        alignItems: 'flex-start',
     },
     innerRight: {
-        flexDirection: "column",
-        alignItems: "flex-end",
+        flexDirection: 'column',
+        alignItems: 'flex-end',
     },
     trxCard: {
         borderRadius: UIConstant.borderRadius(),
@@ -277,7 +300,7 @@ const styles = StyleSheet.create({
     actionString: {
         paddingTop: UIConstant.tinyContentOffset(),
         letterSpacing: 0.5,
-        textAlign: "right",
+        textAlign: 'right',
         color: UIColor.grey(),
     },
 });

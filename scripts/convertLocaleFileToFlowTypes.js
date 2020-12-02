@@ -3,7 +3,7 @@ const fs = require('fs');
 const prettier = require('prettier');
 const jsonToFlow = require('json-to-flowtype-generator');
 
-const dictionary = require('../helpers/UILocalized/en.json');
+const dictionary = require('../packages/localization/src/languages/en.json');
 
 const exportPath = 'helpers/UILocalized/types.js';
 

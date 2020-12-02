@@ -337,8 +337,8 @@
     "PublicAddress": "公开地址",
     "PublicAddressCopiedToClipboard": "公共地址已复制到剪贴板。",
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "公共频道可以在搜索中找到。任何人都可以加入他们。",
-    "PushFeedbackLong": "为了帮助我们的故事变得更好，请提供您的反馈意见。点击这里分享。",
-    "PushFeedbackShort": "为做故事的贡献，请提供您的反馈意见",
+    "PushFeedbackLong": "为了帮助我们的应用变得更好，请提供您的反馈意见。点击这里分享。",
+    "PushFeedbackShort": "为做Surf的贡献，请提供您的反馈意见",
     "Receive": "接收",
     "Recent": "最近",
     "Recently": "是最近",
@@ -379,7 +379,7 @@
     "serviceUnavailable": "服务不可用",
     "Share": "复制并共享此链接",
     "ShareLink": "共享链接",
-    "ShareToTalk": "您的冲浪地址链接将让你的朋友与您联系，也向您发送代币",
+    "ShareToTalk": "您的Surf地址链接将让你的朋友与您联系，也向您发送代币",
     "SingleOperationLimit": "单次操作最多",
     "Skip": "跳跃",
     "SmartContractAddress": "智能合约地址",
@@ -533,5 +533,24 @@
     "YourEmail": "你的邮箱",
     "YourTransactionCompleted": "您的交易已完成",
     "YourTransactionCouldNotBeCompleted": "您的交易无法完成",
-    "YourUsername": "你的用户名"
+    "YourUsername": "你的用户名",
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "为了重新发送，点按这里",
+            "TapToSendAgain": "为了再一次发送，点按这里"
+        },
+        "DateSeparators": {
+            "Today": "今天",
+            "Yesterday": "昨天"
+        },
+        "Alerts": {
+            "MessageTooLong": "您的消息超过{0}个字符。",
+            "EnableFromSettingsTitle": "发送图片",
+            "EnableFromSettings": "请直接从您的设备设置启用访问权限"
+        },
+        "Actions": {
+            "AttachDocument": "文件",
+            "AttachImage": "图像"
+        }
+    }
 }

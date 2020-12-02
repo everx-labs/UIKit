@@ -136,22 +136,6 @@ export {
     UITransitionView,
 } from './packages/legacy/src';
 
-export {
-    UIChatInput,
-    UIChatMessageCell,
-    UIChatActionCell,
-    UIChatDocumentCell,
-    UIChatImageCell,
-    UIChatStickerCell,
-    UIChatTransactionCell,
-    ChatMessageContent,
-    ChatMessageMetaContent,
-    ChatMessageStatus,
-    TypeOfTransaction,
-    TypeOfAction,
-    TypeOfActionDirection,
-} from './packages/chat/src';
-
 export { UIAssets } from './packages/assets/src';
 
 export { uiLocalized as UILocalized } from './packages/localization/src';
@@ -193,10 +177,3 @@ export type {
     ModalControllerState,
 } from './packages/navigation/src/UIModalController';
 export type { ContentOffset } from './packages/navigation/src/UIScreen';
-export type {
-    UISticker,
-    UIStickerPackage,
-    UIChatCellInfo,
-    ChatMessageStatusType,
-    UIChatMessage,
-} from './packages/chat/src/extras';
