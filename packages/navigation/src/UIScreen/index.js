@@ -213,6 +213,7 @@ export default class UIScreen<Props, State>
 
     render() {
         const scrollStyle = this.isScrollDisabled() ? styles.scrollDisabled : null;
+        // TODO remove this when unique testIDs will be ready for TON Live
         const testIDProp = this.state.isFocused ? { testID: UIScreen.testIDs.activeScreen } : {};
 
         return (
