@@ -30,7 +30,7 @@ export function BubbleActionButton(props: ActionButtonMessage) {
     return (
         <View style={getButtonContainer(position)}>
             <TouchableOpacity
-                testID="chat_action_cell_default"
+                testID={`chat_action_cell_${props.text}`}
                 style={[
                     styles.common,
                     styles.button,
