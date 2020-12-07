@@ -118,7 +118,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
     // events
     onWebKeyPressed = (pressedKey: any) => {
-        if (pressedKey.keyCode > 47 && pressedKey.keyCode < 58) {
+        if (Number.isInteger(+pressedKey.key)) {
             this.onKeyPress(Number(pressedKey.key));
         } else if (pressedKey.keyCode === 8) {
             this.onDeletePress();
