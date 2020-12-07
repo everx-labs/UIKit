@@ -164,6 +164,15 @@ module.exports = {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
             },
+            {
+                test: /\.woff2?$/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[hash:8].[ext]',
+                    esModule: false,
+                    publicPath: '/assets',
+                },
+            },
         ],
     },
     resolve: {

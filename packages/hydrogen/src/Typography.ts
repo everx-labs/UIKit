@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import type { TextStyle } from 'react-native';
 
+import { InterFont } from './useWebFontsCommon';
+
 export enum TypographyVariants {
     TitleHuge = 'TitleHuge',
     TitleLarge = 'TitleLarge',
@@ -30,10 +32,8 @@ export type TypographyT = {
     [variant in TypographyVariants]: TextStyle;
 };
 
-const InterFontFamily = 'Inter';
-
-const InterFontNormalBold: TextStyle = {
-    fontFamily: InterFontFamily,
+const InterFontNormalSemiBold: TextStyle = {
+    fontFamily: InterFont.semiBold.fontFamily,
     fontWeight: '600',
     // TODO: think if fontStyle is proper place to put it here
     // coz I could easily imagine some label with italic fontStyle
@@ -41,149 +41,149 @@ const InterFontNormalBold: TextStyle = {
     fontStyle: 'normal',
 };
 
-const InterFontNormalRegular: TextStyle = {
-    fontFamily: InterFontFamily,
+const InterFontNormalMedium: TextStyle = {
+    fontFamily: InterFont.medium.fontFamily,
     fontWeight: '500',
     fontStyle: 'normal',
 };
 
-const InterFontNormalThin: TextStyle = {
-    fontFamily: InterFontFamily,
+const InterFontNormalRegular: TextStyle = {
+    fontFamily: InterFont.regular.fontFamily,
     fontWeight: '400',
     fontStyle: 'normal',
 };
 
 export const Typography: TypographyT = StyleSheet.create({
     [TypographyVariants.TitleHuge]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 38,
         lineHeight: 48,
         letterSpacing: -0.84,
     },
     [TypographyVariants.TitleLarge]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 30,
         lineHeight: 40,
         letterSpacing: -0.64,
     },
     [TypographyVariants.TitleMedium]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 22,
         lineHeight: 32,
         letterSpacing: -0.4,
     },
     [TypographyVariants.TitleSmall]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 19,
         lineHeight: 24,
         letterSpacing: -0.3,
     },
     [TypographyVariants.PromoHuge]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 38,
         lineHeight: 48,
         letterSpacing: -0.84,
     },
     [TypographyVariants.PromoLarge]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 30,
         lineHeight: 40,
         letterSpacing: -0.64,
     },
     [TypographyVariants.PromoMedium]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 22,
         lineHeight: 32,
         letterSpacing: -0.4,
     },
     [TypographyVariants.PromoSmall]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 19,
         lineHeight: 24,
         letterSpacing: -0.3,
     },
     [TypographyVariants.HeadlineHead]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
     },
     [TypographyVariants.HeadlineSubhead]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
     },
     [TypographyVariants.HeadlineFootnote]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 13,
         lineHeight: 16,
         letterSpacing: -0.04,
     },
     [TypographyVariants.HeadlineLabel]: {
-        ...InterFontNormalBold,
+        ...InterFontNormalSemiBold,
         fontSize: 11,
         lineHeight: 12,
         letterSpacing: 0.05,
     },
     [TypographyVariants.Action]: {
-        ...InterFontNormalRegular,
+        ...InterFontNormalMedium,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
     },
     [TypographyVariants.ActionCallout]: {
-        ...InterFontNormalRegular,
+        ...InterFontNormalMedium,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
     },
     [TypographyVariants.ActionFootnote]: {
-        ...InterFontNormalRegular,
+        ...InterFontNormalMedium,
         fontSize: 13,
         lineHeight: 16,
         letterSpacing: -0.04,
     },
     [TypographyVariants.ActionLabel]: {
-        ...InterFontNormalRegular,
+        ...InterFontNormalMedium,
         fontSize: 11,
         lineHeight: 12,
         letterSpacing: 0.05,
     },
 
     [TypographyVariants.ParagraphText]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
     },
     [TypographyVariants.ParagraphNote]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
     },
     [TypographyVariants.ParagraphFootnote]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 13,
         lineHeight: 16,
         letterSpacing: -0.04,
     },
     [TypographyVariants.ParagraphLabel]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 11,
         lineHeight: 12,
         letterSpacing: 0.05,
     },
 
     [TypographyVariants.MonoText]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
     },
     [TypographyVariants.MonoNote]: {
-        ...InterFontNormalThin,
+        ...InterFontNormalRegular,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
