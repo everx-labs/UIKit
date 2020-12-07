@@ -34,7 +34,8 @@
       "commonjs/",
       "module/",
       "typescript/",
-      "src/"
+      "src/",
+      "fonts.gradle"
   ],
   "dependencies": {
     "fontfaceobserver-es": "3.3.3",
