@@ -228,7 +228,7 @@ export function UIChatInput(props: Props) {
         return (
             <>
                 {input}
-                {props.stickers && (
+                {props.editable && props.stickers && (
                     <UIStickerPicker
                         ref={stickersPickerRef}
                         stickers={props.stickers}
@@ -244,8 +244,9 @@ export function UIChatInput(props: Props) {
             renderContent={() => input}
             kbInputRef={textInputRef}
             kbComponent={
-                props.editable && stickersVisible ? UIStickerPickerKeyboardName : undefined
-                // UIStickerPickerKeyboardName
+                props.editable && props.stickers && stickersVisible 
+                    ? UIStickerPickerKeyboardName 
+                    : undefined
             }
             kbInitialProps={{
                 ref: stickersPickerRef,
