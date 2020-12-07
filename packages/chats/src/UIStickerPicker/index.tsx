@@ -27,6 +27,7 @@ import type {
 
 type Props = {
     isCustomKeyboard?: boolean;
+    stickersVisible: boolean;
     stickers: UIStickerPackage[];
     onPick: OnPickSticker;
 };
@@ -118,14 +119,8 @@ function StickerList(
     );
 }
 
-export type UIStickerPickerRef = {
-    show: () => void;
-    hide: () => void;
-};
-
 function usePickerAnimations(
-    ref: React.Ref<UIStickerPickerRef>,
-    isCustomKeyboard?: boolean,
+    stickersVisible: boolean,
 ) {
     const height = React.useRef(new Animated.Value(0)).current;
     const opacity = React.useRef(new Animated.Value(0)).current;
@@ -151,20 +146,13 @@ function usePickerAnimations(
         ]).start();
     }, []);
 
-    React.useImperativeHandle(ref, () => ({
-        show: () => {
-            animate(true);
-        },
-        hide: () => {
-            animate(false);
-        },
-    }));
-
     React.useEffect(() => {
-        if (isCustomKeyboard) {
+        if (stickersVisible) {
             animate(true);
+        } else {
+            animate(false);
         }
-    }, []);
+    }, [stickersVisible]);
 
     return {
         height,
@@ -172,52 +160,48 @@ function usePickerAnimations(
     };
 }
 
-export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
-    (props: Props, ref) => {
-        const theme = useTheme();
-        const { height, opacity } = usePickerAnimations(
-            ref,
-            props.isCustomKeyboard,
-        );
+export function UIStickerPicker(props: Props) {
+    const theme = useTheme();
+    const { stickersVisible } = props;
+    const { height, opacity } = usePickerAnimations(stickersVisible);
 
-        if (props.isCustomKeyboard) {
-            return (
-                <Animated.View
-                    style={{
+    if (props.isCustomKeyboard) {
+        return (
+            <Animated.View
+                style={{
                         opacity,
                     }}
                 >
-                    <StickerList
-                        {...props}
-                        style={UIStyle.color.getBackgroundColorStyle(
+                <StickerList
+                    {...props}
+                    style={UIStyle.color.getBackgroundColorStyle(
                             UIColor.backgroundSecondary(theme),
                         )}
                     />
-                </Animated.View>
-            );
-        }
+            </Animated.View>
+        );
+    }
 
-        return (
-            <Animated.View>
-                <Animated.View
-                    style={[
+    return (
+        <Animated.View>
+            <Animated.View
+                style={[
                         {
                             height,
                             opacity,
                         },
                     ]}
                 >
-                    <StickerList
-                        {...props}
-                        style={UIStyle.color.getBackgroundColorStyle(
+                <StickerList
+                    {...props}
+                    style={UIStyle.color.getBackgroundColorStyle(
                             UIColor.backgroundWhiteLight(theme),
                         )}
                     />
-                </Animated.View>
             </Animated.View>
-        );
-    },
-);
+        </Animated.View>
+    );
+};
 
 UICustomKeyboardUtils.registerCustomKeyboard(
     UIStickerPickerKeyboardName,
