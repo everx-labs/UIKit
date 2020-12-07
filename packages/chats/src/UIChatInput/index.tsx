@@ -244,7 +244,7 @@ export function UIChatInput(props: Props) {
             renderContent={() => input}
             kbInputRef={textInputRef}
             kbComponent={
-                stickersVisible ? UIStickerPickerKeyboardName : undefined
+                props.editable && stickersVisible ? UIStickerPickerKeyboardName : undefined
                 // UIStickerPickerKeyboardName
             }
             kbInitialProps={{
