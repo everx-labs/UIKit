@@ -55,11 +55,12 @@ function useStickers(
         }
 
         // Change the state
-        setStickersVisible(!!editable && !stickersVisible);
+        const nextState = !!editable && !stickersVisible;
+        setStickersVisible(nextState);
 
         // Trigger an event about the state change
         if (onStickersVisible) {
-            onStickersVisible(!stickersVisible);
+            onStickersVisible(nextState);
         }
     }, [editable, stickersVisible]);
 
