@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import type { TextStyle } from 'react-native';
-import { InterFont } from './useWebFonts';
+
+import { InterFont } from './useWebFontsCommon';
 
 export enum TypographyVariants {
     TitleHuge = 'TitleHuge',

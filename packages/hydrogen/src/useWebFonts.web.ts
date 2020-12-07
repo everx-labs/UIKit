@@ -1,41 +1,12 @@
-import { Platform } from 'react-native';
+/* eslint-disable global-require */
 import FontFaceObserver from 'fontfaceobserver-es';
 
-import InterRegularPath from '../assets/css/Inter-Regular.css';
-import InterMediumPath from '../assets/css/Inter-Medium.css';
-import InterSemiBoldPath from '../assets/css/Inter-SemiBold.css';
-import InterLightPath from '../assets/css/Inter-Light.css';
+import '../assets/css/Inter-Regular.css';
+import '../assets/css/Inter-Medium.css';
+import '../assets/css/Inter-SemiBold.css';
+import '../assets/css/Inter-Light.css';
 
-type FontVariant = {
-    fontFamily: string;
-    cssUrl: string;
-};
-
-type Font = {
-    regular: FontVariant;
-    medium: FontVariant;
-    semiBold: FontVariant;
-    light: FontVariant;
-};
-
-export const InterFont: Font = {
-    semiBold: {
-        fontFamily: 'Inter-SemiBold',
-        cssUrl: InterSemiBoldPath,
-    },
-    light: {
-        fontFamily: 'Inter-Light',
-        cssUrl: InterLightPath,
-    },
-    medium: {
-        fontFamily: 'Inter-Medium',
-        cssUrl: InterMediumPath,
-    },
-    regular: {
-        fontFamily: 'Inter-Regular',
-        cssUrl: InterRegularPath,
-    },
-};
+import { Font, InterFont } from './useWebFontsCommon';
 
 const SYSTEM_FONTS =
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
@@ -88,10 +59,6 @@ async function loadFonts(font: Font) {
 const isSettedUp = false;
 
 export function useWebFonts(): void {
-    if (Platform.OS !== 'web') {
-        return;
-    }
-
     // React.useEffect is not suitable here, as it should be done strictly once
     if (isSettedUp) {
         return;
