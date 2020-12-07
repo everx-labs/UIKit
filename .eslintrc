@@ -22,7 +22,17 @@
     "import"
   ],
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+
+    "flowtype/space-after-type-colon": "off",
+    "flowtype/no-types-missing-file-annotation": "off",
+
     "module-resolver/use-alias": 0,
+
     "import/extensions": [
         "error", 
         {
@@ -32,6 +42,12 @@
           "tsx": "never"
       }
     ],
+    "import/prefer-default-export": "off",
+    "import/no-cycle": [2, { "maxDepth": 1 }],
+
+    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+    "jsx-a11y/href-no-hash": "off",
+
     "react/jsx-filename-extension": [
       1,
       {
@@ -39,30 +55,16 @@
       }
     ],
     "react/require-default-props": "off",
-    "no-use-before-define": ["error", { "variables": false }],
+
     "arrow-body-style": "off",
     "no-console": "off",
     "no-continue": "off",
     "no-confusing-arrow": ["error", { "allowParens": false }],
     "no-unused-expressions": "off",
     "no-unused-vars": "off",
-    "jsx-a11y/href-no-hash": "off",
+    "no-use-before-define": ["error", { "variables": false }],
     "object-curly-newline": "off",
-    "import/prefer-default-export": "off",
-    "import/no-cycle": [2, { "maxDepth": 1 }],
-    "jsx-a11y/anchor-is-valid": [
-      "warn",
-      {
-        "aspects": ["invalidHref"]
-      }
-    ],
-    "flowtype/space-after-type-colon": "off",
-    "flowtype/no-types-missing-file-annotation": "off",
     "quote-props": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "error",
     // Works oddly with TS
     "no-restricted-globals": "off"
   },
