@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Inter-Medium';
+    src: url('../fonts/Inter-Medium.woff2') format('woff2'),
+        url('../fonts/Inter-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}

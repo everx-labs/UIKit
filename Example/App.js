@@ -98,47 +98,10 @@ import {
 } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
+import { useWebFonts } from '@tonlabs/uikit.hydroden';
 
 enableScreens();
-
-if (Platform.OS === 'web') {
-    // Head Element
-    const headElement = document.getElementsByTagName('head')[0];
-
-    // Import PTRootUIWeb
-    const ptRootFontBold = headElement.appendChild(
-        document.createElement('link'),
-    );
-    ptRootFontBold.setAttribute(
-        'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Bold.css',
-    );
-    ptRootFontBold.setAttribute('rel', 'stylesheet');
-    const ptRootFontLight = headElement.appendChild(
-        document.createElement('link'),
-    );
-    ptRootFontLight.setAttribute(
-        'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Light.css',
-    );
-    ptRootFontLight.setAttribute('rel', 'stylesheet');
-    const ptRootFontMedium = headElement.appendChild(
-        document.createElement('link'),
-    );
-    ptRootFontMedium.setAttribute(
-        'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Medium.css',
-    );
-    ptRootFontMedium.setAttribute('rel', 'stylesheet');
-    const ptRootFontRegular = headElement.appendChild(
-        document.createElement('link'),
-    );
-    ptRootFontRegular.setAttribute(
-        'href',
-        'https://tonlabs.io/fonts/PT%20Root%20UI_Regular.css',
-    );
-    ptRootFontRegular.setAttribute('rel', 'stylesheet');
-}
+useWebFonts();
 
 const SurfSplit = createSurfSplitNavigator();
 
