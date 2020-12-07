@@ -25,6 +25,12 @@ import type {
     OnPickSticker,
 } from '../types';
 
+type Props = {
+    isCustomKeyboard?: boolean;
+    stickers: UIStickerPackage[];
+    onPick: OnPickSticker;
+};
+
 export const UIStickerPickerKeyboardName = 'UIStickerPickerKeyboard';
 const UIStickerPickerKeyboardHeight = UIDevice.isDesktop() ? 180 : 270;
 
@@ -35,7 +41,7 @@ function Sticker({
 }: {
     sticker: UISticker;
     pkgID: string;
-    onPress: (sticker: PickedSticker) => void;
+    onPress: (stk: PickedSticker) => void;
 }) {
     const stk: PickedSticker = {
         url: sticker.url,
@@ -48,7 +54,6 @@ function Sticker({
         <TouchableOpacity
             testID={`stickers_btn_${sticker.url}`}
             onPress={() => onPress(stk)}
-            key={`pkg_${pkgID}_sticker_${stk.name}`}
         >
             <UIImage style={styles.sticker} source={src} />
         </TouchableOpacity>
@@ -79,6 +84,7 @@ function StickerList(
                     <ScrollView contentContainerStyle={styles.packageContainer}>
                         {item.stickers.map((sticker) => (
                             <Sticker
+                                key={`pkg_${item.id}_sticker_${sticker.name}`}
                                 sticker={sticker}
                                 pkgID={item.id}
                                 onPress={(stk) => {
@@ -165,12 +171,6 @@ function usePickerAnimations(
         opacity,
     };
 }
-
-type Props = {
-    isCustomKeyboard?: boolean;
-    stickers: UIStickerPackage[];
-    onPick: OnPickSticker;
-};
 
 export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
     (props: Props, ref) => {
