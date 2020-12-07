@@ -6,7 +6,6 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UICustomKeyboard, UICustomKeyboardUtils } from '../UICustomKeyboard';
 import {
     UIStickerPicker,
-    UIStickerPickerRef,
     UIStickerPickerKeyboardName,
 } from '../UIStickerPicker';
 
@@ -33,8 +32,8 @@ export type OnStickersVisible = (visible: boolean) => void | Promise<void>;
 function useStickers(
     onStickersVisible?: OnStickersVisible,
     onSendSticker?: OnPickSticker,
+    editable?: boolean,
 ) {
-    const stickersPickerRef = React.useRef<UIStickerPickerRef>(null);
     const [stickersVisible, setStickersVisible] = React.useState<boolean>(
         false,
     );
@@ -46,28 +45,25 @@ function useStickers(
             // N.B. It will change back to resize automatically once UICustomKeyboard is dismissed!
         }
 
-        if (stickersVisible) {
-            stickersPickerRef.current?.hide();
-            if (Platform.OS !== 'web') {
+        if (Platform.OS !== 'web') {
+            // Manage the keyboard as per the latest state
+            if (stickersVisible) {
                 UICustomKeyboardUtils.dismiss();
-            }
-        } else {
-            stickersPickerRef.current?.show();
-            if (Platform.OS !== 'web') {
+            } else {
                 Keyboard.dismiss();
             }
         }
 
-        setStickersVisible(!stickersVisible);
+        // Change the state
+        setStickersVisible(!!editable && !stickersVisible);
 
+        // Trigger an event about the state change
         if (onStickersVisible) {
             onStickersVisible(!stickersVisible);
         }
-    }, [stickersVisible]);
+    }, [editable, stickersVisible]);
 
     const onFocus = React.useCallback(() => {
-        stickersPickerRef.current?.hide();
-
         if (Platform.OS === 'android') {
             setTimeout(() => {
                 setStickersVisible(false);
@@ -121,8 +117,7 @@ function useStickers(
     );
 
     return {
-        stickersPickerRef,
-        stickersVisible,
+        stickersVisible: stickersVisible && editable,
         onStickersPress,
         onKeyboardResigned,
         onFocus,
@@ -186,14 +181,13 @@ type Props = {
 export function UIChatInput(props: Props) {
     const textInputRef = React.useRef<TextInput>(null);
     const {
-        stickersPickerRef,
         stickersVisible,
         onStickersPress,
         onKeyboardResigned,
         onFocus,
         onBlur,
         onPickSticker,
-    } = useStickers(props.onStickersVisible, props.onSendSticker);
+    } = useStickers(props.onStickersVisible, props.onSendSticker, props.editable);
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     const input = (
@@ -228,9 +222,9 @@ export function UIChatInput(props: Props) {
         return (
             <>
                 {input}
-                {props.editable && props.stickers && (
+                {props.stickers && (
                     <UIStickerPicker
-                        ref={stickersPickerRef}
+                        stickersVisible={stickersVisible}
                         stickers={props.stickers}
                         onPick={onPickSticker}
                     />
@@ -243,16 +237,12 @@ export function UIChatInput(props: Props) {
         <UICustomKeyboard
             renderContent={() => input}
             kbInputRef={textInputRef}
-            kbComponent={
-                props.editable && props.stickers && stickersVisible 
-                    ? UIStickerPickerKeyboardName 
-                    : undefined
-            }
+            kbComponent={stickersVisible ? UIStickerPickerKeyboardName : undefined}
             kbInitialProps={{
-                ref: stickersPickerRef,
                 // The following doesn't work for iOS, thus we use `onItemSelected` prop
                 onPick: onPickSticker,
                 isCustomKeyboard: true,
+                stickersVisible,
                 stickers: props.stickers,
             }}
             onItemSelected={(_id, stk) => onPickSticker(stk)}
