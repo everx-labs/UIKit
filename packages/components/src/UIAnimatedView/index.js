@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, Platform } from 'react-native';
 import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -75,7 +75,7 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
                 this.props.animation === UIAnimatedView.Animation.Forward
                     ? Easing.ease
                     : Easing.linear,
-            useNativeDriver: true,
+            useNativeDriver: Platform.OS !== 'web'
         });
     }
 
@@ -83,13 +83,17 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
         super.componentDidMount();
 
         if (this.props.animated) {
-            this.animate();
+            Animated.loop(this.animation).start();
         }
     }
 
-    componentDidUpdate() {
-        if (this.props.animated) {
-            this.animate();
+    componentDidUpdate(prevProps: Props) {
+        if (prevProps.animated !== this.props.animated) {
+            if (this.props.animated) {
+                Animated.loop(this.animation).start();
+            } else {
+                this.animation.stop();
+            }
         }
     }
 
@@ -107,21 +111,6 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
         }
         return 3000;
     }
-
-    animate = ({ finished }: { finished: boolean } = { finished: true }) => {
-        this.animatedValue.setValue(0);
-
-        if (!finished) {
-            return;
-        }
-
-        const callback =
-            this.props.animation === UIAnimatedView.Animation.Forward
-                ? null
-                : this.animate;
-
-        this.animation.start(callback);
-    };
 
     getTransform = () => {
         if (!this.props.animated) {
