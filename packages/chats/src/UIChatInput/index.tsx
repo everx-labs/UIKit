@@ -118,7 +118,7 @@ function useStickers(
     );
 
     return {
-        stickersVisible: stickersVisible && editable,
+        stickersVisible: stickersVisible && !!editable,
         onStickersPress,
         onKeyboardResigned,
         onFocus,
