@@ -47,7 +47,7 @@ type Props = {
 
 type State = {}
 
-export default class UIAnimatedView extends UIComponent<Props, State> {
+export default class UILoopEffect extends UIComponent<Props, State> {
     static Animation = {
         Spin: 'spin',
         Round: 'round',
@@ -57,7 +57,7 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
     };
 
     static defaultProps: Props = {
-        animation: UIAnimatedView.Animation.Spin,
+        animation: UILoopEffect.Animation.Spin,
         animated: true,
     };
 
@@ -114,8 +114,8 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
             toValue: 1,
             duration: this.getDuration() * (1 - this.value),
             easing:
-                this.props.animation === UIAnimatedView.Animation.Pulse ||
-                this.props.animation === UIAnimatedView.Animation.Forward
+                this.props.animation === UILoopEffect.Animation.Pulse ||
+                this.props.animation === UILoopEffect.Animation.Forward
                     ? Easing.ease
                     : Easing.linear,
             useNativeDriver: Platform.OS !== 'web'
@@ -123,35 +123,35 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
     }
 
     getDuration = () => {
-        if (this.props.animation === UIAnimatedView.Animation.Pulse) {
+        if (this.props.animation === UILoopEffect.Animation.Pulse) {
             return 600;
         }
-        if (this.props.animation === UIAnimatedView.Animation.Forward) {
+        if (this.props.animation === UILoopEffect.Animation.Forward) {
             return 600;
         }
         return 3000;
     }
 
     getTransform = () => {
-        if (this.props.animation === UIAnimatedView.Animation.Spin) {
+        if (this.props.animation === UILoopEffect.Animation.Spin) {
             const rotateY = this.animatedValue.interpolate(spinInterpolateValues);
             return [{ rotateY }];
         }
-        if (this.props.animation === UIAnimatedView.Animation.Round) {
+        if (this.props.animation === UILoopEffect.Animation.Round) {
             const rotate = this.animatedValue.interpolate(roundInterpolateValues);
             return [{ rotate }];
         }
-        if (this.props.animation === UIAnimatedView.Animation.Sandglass) {
+        if (this.props.animation === UILoopEffect.Animation.Sandglass) {
             const scaleX = this.animatedValue.interpolate(sandglassInterpolateValues.x);
             const scaleY = this.animatedValue.interpolate(sandglassInterpolateValues.y);
             return [{ scaleX }, { scaleY }];
         }
-        if (this.props.animation === UIAnimatedView.Animation.Pulse) {
+        if (this.props.animation === UILoopEffect.Animation.Pulse) {
             const scale = this.animatedValue.interpolate(scaleInterpolateValues);
             return [{ scale }];
         }
 
-        if (this.props.animation === UIAnimatedView.Animation.Forward) {
+        if (this.props.animation === UILoopEffect.Animation.Forward) {
             const translateX = this.animatedValue.interpolate(forwardInterpolateValues);
             return [{ translateX }];
         }
