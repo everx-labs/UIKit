@@ -25,7 +25,7 @@ export enum ColorVariants {
     BackgroundNegative = 'BackgroundNegative',
     BackgroundPositive = 'BackgroundPositive',
     BackgroundWarning = 'BackgroundWarning',
-    // BackgroundPrimaryInverted = 'BackgroundPrimaryInverted',
+    BackgroundPrimaryInverted = 'BackgroundPrimaryInverted',
     // BackgroundSecondaryInverted = 'BackgroundSecondaryInverted',
     // BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
     // BackgroundNulled = 'BackgroundNulled',
@@ -37,7 +37,7 @@ export enum ColorVariants {
     // LineTertiary = 'LineTertiary',
     LineNeutral = 'LineNeutral',
     LineAccent = 'LineAccent',
-    // LineNegative = 'LineNegative',
+    LineNegative = 'LineNegative',
     // IconAccent = 'IconAccent',
     // IconPrimary = 'IconPrimary',
     // IconSecondary = 'IconSecondary',
@@ -70,13 +70,14 @@ export const LightTheme: Theme = {
     [ColorVariants.BackgroundNegative]: '#E71717',
     [ColorVariants.BackgroundPositive]: '#36C05C',
     [ColorVariants.BackgroundWarning]: '#FFC043',
+    [ColorVariants.BackgroundPrimaryInverted]: '#20262A',
 
     [ColorVariants.LinePrimary]: '#F4F4F5',
     [ColorVariants.LineSecondary]: '#EBECEC',
     // [ColorVariants.LineTertiary]: '#E2E3E4',
     [ColorVariants.LineNeutral]: '#20262A',
     [ColorVariants.LineAccent]: '#0083E0',
-    // [ColorVariants.LineNegative]: '#CA1414',
+    [ColorVariants.LineNegative]: '#CA1414',
 
     // [ColorVariants.IconAccent]: '#0073C4',
     // [ColorVariants.IconPrimary]: '#20262A',
@@ -106,11 +107,13 @@ export const DarkTheme: Theme = {
     [ColorVariants.BackgroundNegative]: '#CA1414',
     [ColorVariants.BackgroundPositive]: '#2FA851',
     [ColorVariants.BackgroundWarning]: '#B08229',
+    [ColorVariants.BackgroundPrimaryInverted]: '#FDFDFD',
 
     [ColorVariants.LinePrimary]: '#292F32',
     [ColorVariants.LineSecondary]: '#32373B',
     [ColorVariants.LineNeutral]: '#FDFDFD',
     [ColorVariants.LineAccent]: '#0073C4',
+    [ColorVariants.LineNegative]: '#CA1414',
 };
 
 export const ThemeContext = React.createContext(LightTheme);

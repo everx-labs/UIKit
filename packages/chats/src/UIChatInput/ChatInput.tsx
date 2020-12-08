@@ -8,13 +8,17 @@ import {
     Animated,
 } from 'react-native';
 
-import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UITextView, useUITextViewValue } from '@tonlabs/uikit.hydrogen';
+import {
+    UITextView,
+    useUITextViewValue,
+    useTheme,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
 
 import { UICustomKeyboardUtils } from '../UICustomKeyboard';
-import { useTheme } from '../useTheme';
 
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
@@ -291,14 +295,20 @@ export function ChatInput(props: Props) {
             <View
                 style={[
                     UIStyle.color.getBackgroundColorStyle(
-                        UIColor.backgroundPrimary(theme),
+                        theme[ColorVariants.BackgroundPrimary],
                     ),
                     containerStyle,
                 ]}
             >
                 <Shortcuts shortcuts={props.shortcuts} />
                 <Animated.View
-                    style={[styles.border, { opacity: borderOpacity }]}
+                    style={[
+                        styles.border,
+                        {
+                            backgroundColor: theme[ColorVariants.LineSecondary],
+                            opacity: borderOpacity,
+                        },
+                    ]}
                 />
                 <View
                     style={[
@@ -378,7 +388,6 @@ const styles = StyleSheet.create({
     },
     border: {
         height: 1,
-        backgroundColor: UIColor.grey1(),
     },
     inputMsg: {
         flex: 1,

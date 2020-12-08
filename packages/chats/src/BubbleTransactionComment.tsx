@@ -2,9 +2,15 @@ import * as React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 // import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: think how to use it
 
-import { UIStyle, UIConstant, UIColor } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
+import {
+    UILabel,
+    UILabelRoles,
+    UILabelColors,
+    useTheme,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageStatus, TransactionType } from './types';
 import type { TransactionComment } from './types';
@@ -25,17 +31,31 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
     return null;
 };
 
-const getBubbleColor = (props: Props) => {
+const useBubbleColor = (props: Props) => {
+    const theme = useTheme();
+
     if (props.status === ChatMessageStatus.Aborted) {
-        return styles.cardAborted;
+        return [
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundNegative],
+            ),
+        ];
     }
 
     if (props.type === TransactionType.Expense) {
-        return styles.cardWithdraw;
+        return [
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundPrimaryInverted],
+            ),
+        ];
     }
 
     if (props.type === TransactionType.Income) {
-        return styles.cardIncome;
+        return [
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundPositive],
+            ),
+        ];
     }
 
     return null;
@@ -43,6 +63,7 @@ const getBubbleColor = (props: Props) => {
 
 export function BubbleTransactionComment(props: Props) {
     const position = useBubblePosition(props.status);
+    const bubbleColor = useBubbleColor(props);
 
     return (
         <TouchableOpacity
@@ -51,7 +72,7 @@ export function BubbleTransactionComment(props: Props) {
                 UIStyle.padding.verticalSmall(),
                 UIStyle.padding.horizontalNormal(),
                 getBubbleCornerStyle(position),
-                getBubbleColor(props),
+                bubbleColor,
                 props.status === ChatMessageStatus.Pending &&
                     UIStyle.common.opacity70(),
             ]}
@@ -82,9 +103,6 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.borderRadius(),
         marginTop: UIConstant.tinyContentOffset(),
     },
-    actionLabelText: {
-        color: UIColor.fa(),
-    },
     textCell: {
         textAlign: 'left', // TODO: LTR support?
         maxWidth: '100%',
@@ -98,15 +116,5 @@ const styles = StyleSheet.create({
     },
     rightCorner: {
         borderTopRightRadius: 0,
-    },
-    // TODO: duplicates ones from BubbleTransaction
-    cardIncome: {
-        backgroundColor: UIColor.green(),
-    },
-    cardWithdraw: {
-        backgroundColor: UIColor.black(),
-    },
-    cardAborted: {
-        backgroundColor: UIColor.error(),
     },
 });

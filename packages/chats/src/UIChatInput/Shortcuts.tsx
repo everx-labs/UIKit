@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIButton } from '@tonlabs/uikit.components';
+import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+
 import type { Shortcut } from './types';
 
 type Props = {
@@ -10,6 +12,8 @@ type Props = {
 };
 
 export function Shortcuts(props: Props) {
+    const theme = useTheme();
+
     if (props.shortcuts == null) {
         return null;
     }
@@ -31,11 +35,20 @@ export function Shortcuts(props: Props) {
                     key={shortcut.key ?? shortcut.title}
                     style={[
                         styles.shortcut,
-                        shortcut.isDanger ? styles.dangerAction : null,
-                        UIStyle.color.getBackgroundColorStyle(UIColor.white()),
+                        shortcut.isDanger
+                            ? {
+                                  borderColor:
+                                      theme[ColorVariants.LineNegative],
+                              }
+                            : null,
+                        UIStyle.color.getBackgroundColorStyle(
+                            theme[ColorVariants.BackgroundPrimary],
+                        ),
                     ]}
                     textStyle={
-                        shortcut.isDanger ? styles.dangerActionText : null
+                        shortcut.isDanger
+                            ? { color: theme[ColorVariants.TextNegative] }
+                            : null
                     }
                 />
             ))}
@@ -50,12 +63,6 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         flexDirection: 'row',
         zIndex: 1,
-    },
-    dangerAction: {
-        borderColor: UIColor.error(),
-    },
-    dangerActionText: {
-        color: UIColor.error(),
     },
     shortcut: {
         margin: UIConstant.smallContentOffset(),

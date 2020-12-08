@@ -2,9 +2,15 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
-import { UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 
 const getLabel = (time: number) => {
     const today = new Date();
@@ -27,18 +33,28 @@ const getLabel = (time: number) => {
     return dayjs(time).fromNow();
 };
 
-export const DateSeparator = React.memo(({ time }: { time: number }) => (
-    <View style={styles.container}>
-        <View style={styles.dateSeparator}>
-            <UILabel
-                role={UILabelRoles.ActionFootnote}
-                color={UILabelColors.TextTertiary}
+export const DateSeparator = React.memo(({ time }: { time: number }) => {
+    const theme = useTheme();
+    return (
+        <View style={styles.container}>
+            <View
+                style={[
+                    styles.dateSeparator,
+                    UIStyle.color.getBackgroundColorStyle(
+                        theme[ColorVariants.BackgroundTertiary],
+                    ),
+                ]}
             >
-                {getLabel(time)}
-            </UILabel>
+                <UILabel
+                    role={UILabelRoles.ActionFootnote}
+                    color={UILabelColors.TextTertiary}
+                >
+                    {getLabel(time)}
+                </UILabel>
+            </View>
         </View>
-    </View>
-));
+    );
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -51,7 +67,6 @@ const styles = StyleSheet.create({
     dateSeparator: {
         flexShrink: 1,
         justifyContent: 'center',
-        backgroundColor: UIColor.backgroundTertiary(),
         height: UIConstant.smallCellHeight(),
         paddingVertical: UIConstant.tinyContentOffset() / 2, // TODO: use specified value instead of calculation
         paddingHorizontal: UIConstant.smallContentOffset(),

@@ -7,7 +7,7 @@ import {
     Animated,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 import {
@@ -15,6 +15,7 @@ import {
     UILabelColors,
     UILabelRoles,
     ColorVariants,
+    useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageMeta, ChatMessageStatus } from './types';
@@ -68,21 +69,44 @@ const getBubbleContainer = (position: BubblePosition) => {
     return null;
 };
 
-const getBubbleStyle = (message: PlainTextMessage) => {
+const useBubbleStyle = (message: PlainTextMessage) => {
+    const theme = useTheme();
+
     if (message.status === ChatMessageStatus.Aborted) {
-        return styles.msgAborted;
+        return [
+            styles.msgRight,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundNegative],
+            ),
+        ];
     }
 
     if (message.status === ChatMessageStatus.Received) {
-        return styles.msgReceived;
+        return [
+            styles.msgLeft,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundTertiary],
+            ),
+        ];
     }
 
     if (message.status === ChatMessageStatus.Sent) {
-        return styles.msgSent;
+        return [
+            styles.msgRight,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundAccent],
+            ),
+        ];
     }
 
     if (message.status === ChatMessageStatus.Pending) {
-        return styles.msgPending;
+        return [
+            styles.msgRight,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundAccent],
+            ),
+            UIStyle.common.opacity70(),
+        ];
     }
 
     return null;
@@ -121,7 +145,7 @@ function BubbleTime(props: PlainTextMessage) {
         <View style={styles.timeTextContainer}>
             <UILabel
                 testID={createTestId('chat_text_message%_time', props.text)}
-                role={UILabelRoles.ParagraphLabel}
+                role={UILabelRoles.ParagraphFootnote}
                 color={getFontColor(props)}
                 style={styles.timeText}
             >
@@ -141,6 +165,7 @@ export function BubblePlainText(props: PlainTextMessage) {
         }).start();
     };
     const position = useBubblePosition(props.status);
+    const bubbleStyle = useBubbleStyle(props);
     const actionString = getActionString(props);
 
     return (
@@ -168,10 +193,8 @@ export function BubblePlainText(props: PlainTextMessage) {
                                 UIStyle.padding.verticalSmall(),
                                 UIStyle.padding.horizontalNormal(),
                                 styles.msgContainer,
-                                getBubbleStyle(props),
+                                bubbleStyle,
                                 getRoundedCornerStyle(props, position),
-                                props.status === ChatMessageStatus.Pending &&
-                                    UIStyle.common.opacity70(),
                             ]}
                         >
                             <UILabel
@@ -269,21 +292,11 @@ const styles = StyleSheet.create({
     leftTopCorner: {
         borderTopLeftRadius: 0,
     },
-    msgReceived: {
+    msgLeft: {
         alignItems: 'flex-start',
-        backgroundColor: UIColor.backgroundTertiary(),
     },
-    msgAborted: {
-        alignItems: 'flex-start',
-        backgroundColor: UIColor.error(),
-    },
-    msgSent: {
+    msgRight: {
         alignItems: 'flex-end',
-        backgroundColor: UIColor.primary(),
-    },
-    msgPending: {
-        alignItems: 'flex-end',
-        backgroundColor: UIColor.primary(),
     },
     actionString: {
         textAlign: 'right',

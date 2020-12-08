@@ -1,10 +1,16 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIScaleButton } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageStatus, TransactionType } from './types';
 import type { TransactionMessage } from './types';
@@ -45,19 +51,32 @@ const getBubbleInner = (position: BubblePosition) => {
     return null;
 };
 
-const getBubbleColor = (message: TransactionMessage) => {
+const useBubbleStyle = (message: TransactionMessage) => {
+    const theme = useTheme();
     const { type } = message.info;
 
     if (message.status === ChatMessageStatus.Aborted) {
-        return styles.cardAborted;
+        return [
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundNegative],
+            ),
+        ];
     }
 
     if (type === TransactionType.Expense) {
-        return styles.cardWithdraw;
+        return [
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundPrimaryInverted],
+            ),
+        ];
     }
 
     if (type === TransactionType.Income) {
-        return styles.cardIncome;
+        return [
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundPositive],
+            ),
+        ];
     }
 
     return null;
@@ -81,7 +100,7 @@ const getAmountColor = (_message: TransactionMessage) => {
     // const { type } = _message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
-    //     return styles.textGrey;
+    //     return { color: UIColor.grey() };
     // }
     return UILabelColors.TextPrimaryInverted;
 };
@@ -92,7 +111,7 @@ const getCommentColor = (_message: TransactionMessage) => {
     // const { type } = message.info;
 
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
-    //     return styles.textBlack;
+    //     return { color: UIColor.black(), };
     // }
     return UILabelColors.TextPrimaryInverted;
 };
@@ -176,6 +195,7 @@ function TransactionSublabel(props: TransactionMessage) {
 
 function BubbleTransactionMain(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
+    const bubbleStyle = useBubbleStyle(props);
     const { balanceChange } = props.info;
     return (
         <View
@@ -183,7 +203,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
             style={[
                 UIStyle.Common.justifyCenter(),
                 styles.trxCard,
-                getBubbleColor(props),
+                bubbleStyle,
                 getBubbleCornerStyle(position),
                 props.status === ChatMessageStatus.Pending &&
                     UIStyle.common.opacity70(),
@@ -273,28 +293,6 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.normalContentOffset(),
         paddingVertical: UIConstant.normalContentOffset(),
-        backgroundColor: UIColor.green(),
-    },
-    cardIncome: {
-        backgroundColor: UIColor.green(),
-    },
-    cardWithdraw: {
-        backgroundColor: UIColor.black(),
-    },
-    cardAborted: {
-        backgroundColor: UIColor.error(),
-    },
-    textWhite: {
-        // TODO: rename it
-        color: UIColor.white(),
-    },
-    textGrey: {
-        // TODO: rename it
-        color: UIColor.grey(),
-    },
-    textBlack: {
-        // TODO: rename it
-        color: UIColor.black(),
     },
     leftCorner: {
         borderTopLeftRadius: 0,
