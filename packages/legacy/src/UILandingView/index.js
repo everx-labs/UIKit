@@ -19,11 +19,12 @@ type Props = {
     title: string,
     description: string,
     content?: string,
-    testID?: string,
     iconStyle?: ImageStyleProp,
 };
 
-type State = {};
+type State = {
+    //
+};
 
 const iconSize = 128;
 const descriptionMaxHeight = 152;
@@ -43,12 +44,11 @@ export default class UILandingView extends UIComponent<Props, State> {
     // Render
     render() {
         const {
-            icon, title, description, testID, content,
+            icon, title, description, content,
         } = this.props;
-        const testIDProp = testID ? { testID } : null;
 
         return (
-            <React.Fragment {...testIDProp} >
+            <React.Fragment>
                 <ImageComponent
                     style={this.props.iconStyle || styles.icon}
                     source={icon}
