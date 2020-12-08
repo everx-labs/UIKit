@@ -83,12 +83,17 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
+        if (prevProps.animation !== this.props.animation) {
+            this.animation = Animated.loop(this.getAnimation());
+        }
+
         if (prevProps.animated !== this.props.animated) {
             if (this.props.animated) {
+                this.reset();
                 this.animation.start();
             } else {
                 this.animation.stop();
-                this.getAnimation().start(this.resetValue);
+                this.getAnimation().start(this.reset);
             }
         }
     }
@@ -98,8 +103,10 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
         this.animation.stop();
     }
 
-    resetValue = () => {
+    reset = () => {
+        this.animation.reset();
         this.animatedValue.setValue(0);
+        this.value = 0;
     }
 
     getAnimation = () => {
