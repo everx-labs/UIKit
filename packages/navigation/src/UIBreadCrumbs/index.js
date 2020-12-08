@@ -67,7 +67,7 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
             <View style={[UIStyle.container.centerLeft()]}>
                 {lastRoutes.map(({ path, params = {} }, index) => {
                     const key = Object.keys(params)[0];
-                    const id = params[key] ? UIFunction.truncText(params[key], true) : '';
+                    const id = params[key] ? UIFunction.truncText(`${params[key]}`, true) : '';
                     const title = `${this.props.screenTitleMapper(path)} ${id ? '- ' : ''}${id}`;
 
                     return (
