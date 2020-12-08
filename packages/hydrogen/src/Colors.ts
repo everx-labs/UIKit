@@ -8,7 +8,7 @@ export enum ColorVariants {
     TextPrimary = 'TextPrimary',
     TextSecondary = 'TextSecondary',
     TextTertiary = 'TextTertiary',
-    TextPrimaryInverted = 'TextPrimaryInverte',
+    TextPrimaryInverted = 'TextPrimaryInverted',
     TextNeutral = 'TextNeutral',
     TextAccent = 'TextAccent',
     TextNegative = 'TextNegative',
