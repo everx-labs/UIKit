@@ -6,7 +6,7 @@ import '../assets/css/Inter-Medium.css';
 import '../assets/css/Inter-SemiBold.css';
 import '../assets/css/Inter-Light.css';
 
-import { Font, InterFont } from './useWebFontsCommon';
+import { Font, InterFont } from './Typography';
 
 const SYSTEM_FONTS =
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
