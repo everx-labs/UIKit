@@ -3,7 +3,8 @@ import { View, StyleSheet } from 'react-native';
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UILabel, UIScaleButton } from '@tonlabs/uikit.components';
+import { UIScaleButton } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageStatus, TransactionType } from './types';
 import type { TransactionMessage } from './types';
@@ -82,7 +83,7 @@ const getAmountColor = (_message: TransactionMessage) => {
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return styles.textGrey;
     // }
-    return styles.textWhite;
+    return UILabelColors.TextPrimaryInverted;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -93,7 +94,7 @@ const getCommentColor = (_message: TransactionMessage) => {
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return styles.textBlack;
     // }
-    return styles.textWhite;
+    return UILabelColors.TextPrimaryInverted;
 };
 
 const getCommentText = (message: TransactionMessage) => {
@@ -112,11 +113,11 @@ const getActionString = (message: TransactionMessage) => {
     return message.actionText;
 };
 
-const getActionStringStyle = (message: TransactionMessage) => {
+const getActionStringColor = (message: TransactionMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
-        return UIStyle.color.getColorStyle(UIColor.error());
+        return UILabelColors.TextNegative;
     }
-    return null;
+    return UILabelColors.TextTertiary;
 };
 
 function TransactionSublabel(props: TransactionMessage) {
@@ -127,13 +128,14 @@ function TransactionSublabel(props: TransactionMessage) {
                     testID={`transaction_message_${getValueForTestID(
                         props,
                     )}_aborted`}
-                    role={UILabel.Role.TinyRegular}
-                    text={uiLocalized.formatString(
+                    role={UILabelRoles.ActionFootnote}
+                    color={UILabelColors.TextPrimaryInverted}
+                >
+                    {uiLocalized.formatString(
                         uiLocalized.TransactionStatus.aborted,
                         uiLocalized.formatDate(props.time),
                     )}
-                    style={styles.textWhite}
-                />
+                </UILabel>
             </>
         );
     }
@@ -144,10 +146,11 @@ function TransactionSublabel(props: TransactionMessage) {
                     testID={`transaction_message_${getValueForTestID(
                         props,
                     )}_time`}
-                    role={UILabel.Role.TinyRegular}
-                    text={uiLocalized.TransactionStatus.sending}
-                    style={styles.textWhite}
-                />
+                    role={UILabelRoles.ActionFootnote}
+                    color={UILabelColors.TextPrimaryInverted}
+                >
+                    {uiLocalized.TransactionStatus.sending}
+                </UILabel>
             </>
         );
     }
@@ -155,16 +158,18 @@ function TransactionSublabel(props: TransactionMessage) {
     return (
         <>
             <UILabel
-                role={UILabel.Role.TinyRegular}
-                style={getCommentColor(props)}
-                text={getCommentText(props)}
-            />
+                role={UILabelRoles.ActionFootnote}
+                color={getCommentColor(props)}
+            >
+                {getCommentText(props)}
+            </UILabel>
             <UILabel
                 testID={`transaction_message_${getValueForTestID(props)}_time`}
-                role={UILabel.Role.TinyRegular}
-                style={getCommentColor(props)}
-                text={uiLocalized.formatDate(props.time)}
-            />
+                role={UILabelRoles.ActionFootnote}
+                color={getCommentColor(props)}
+            >
+                {uiLocalized.formatDate(props.time)}
+            </UILabel>
         </>
     );
 }
@@ -192,10 +197,11 @@ function BubbleTransactionMain(props: TransactionMessage) {
                 ]}
             >
                 <UILabel
-                    style={[getAmountColor(props)]}
-                    role={UILabel.Role.PromoMedium}
-                    text={balanceChange}
-                />
+                    role={UILabelRoles.PromoMedium}
+                    color={getAmountColor(props)}
+                >
+                    {balanceChange}
+                </UILabel>
             </View>
             <View
                 style={[
@@ -222,13 +228,12 @@ export function BubbleTransaction(props: TransactionMessage) {
                         <BubbleTransactionMain {...props} />
                         {actionString && (
                             <UILabel
-                                style={[
-                                    styles.actionString,
-                                    getActionStringStyle(props),
-                                ]}
-                                role={UILabel.Role.TinyRegular}
-                                text={actionString}
-                            />
+                                style={styles.actionString}
+                                role={UILabelRoles.ActionFootnote}
+                                color={getActionStringColor(props)}
+                            >
+                                {actionString}
+                            </UILabel>
                         )}
                         {props.comment && (
                             <BubbleTransactionComment
@@ -299,8 +304,6 @@ const styles = StyleSheet.create({
     },
     actionString: {
         paddingTop: UIConstant.tinyContentOffset(),
-        letterSpacing: 0.5,
         textAlign: 'right',
-        color: UIColor.grey(),
     },
 });

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
-import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
-import { UILabel } from '@tonlabs/uikit.components';
+import { UIColor, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 const getLabel = (time: number) => {
     const today = new Date();
@@ -31,10 +31,11 @@ export const DateSeparator = React.memo(({ time }: { time: number }) => (
     <View style={styles.container}>
         <View style={styles.dateSeparator}>
             <UILabel
-                role={UILabel.Role.TinyRegular}
-                style={UIStyle.color.getColorStyle(UIColor.textTertiary())}
-                text={getLabel(time)}
-            />
+                role={UILabelRoles.ActionFootnote}
+                color={UILabelColors.TextTertiary}
+            >
+                {getLabel(time)}
+            </UILabel>
         </View>
     </View>
 ));
