@@ -6,7 +6,6 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import UIComponent from '../UIComponent';
 
-
 const spinInterpolateValues = {
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
@@ -63,36 +62,33 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
     };
 
     animation: CompositeAnimation;
+    value: number = 0;
 
     constructor(props: Props) {
         super(props);
         this.animatedValue = new Animated.Value(0);
-        this.animation = Animated.timing(this.animatedValue, {
-            toValue: 1,
-            duration: this.getDuration(),
-            easing:
-                this.props.animation === UIAnimatedView.Animation.Pulse ||
-                this.props.animation === UIAnimatedView.Animation.Forward
-                    ? Easing.ease
-                    : Easing.linear,
-            useNativeDriver: Platform.OS !== 'web'
+        this.animatedValue.addListener(({ value }) => {
+            this.value = value;
         });
+
+        this.animation = Animated.loop(this.getAnimation());
     }
 
     componentDidMount() {
         super.componentDidMount();
 
         if (this.props.animated) {
-            Animated.loop(this.animation).start();
+            this.animation.start();
         }
     }
 
     componentDidUpdate(prevProps: Props) {
         if (prevProps.animated !== this.props.animated) {
             if (this.props.animated) {
-                Animated.loop(this.animation).start();
+                this.animation.start();
             } else {
                 this.animation.stop();
+                this.getAnimation().start(this.resetValue);
             }
         }
     }
@@ -102,7 +98,24 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
         this.animation.stop();
     }
 
-    getDuration() {
+    resetValue = () => {
+        this.animatedValue.setValue(0);
+    }
+
+    getAnimation = () => {
+        return Animated.timing(this.animatedValue, {
+            toValue: 1,
+            duration: this.getDuration() * (1 - this.value),
+            easing:
+                this.props.animation === UIAnimatedView.Animation.Pulse ||
+                this.props.animation === UIAnimatedView.Animation.Forward
+                    ? Easing.ease
+                    : Easing.linear,
+            useNativeDriver: Platform.OS !== 'web'
+        });
+    }
+
+    getDuration = () => {
         if (this.props.animation === UIAnimatedView.Animation.Pulse) {
             return 600;
         }
@@ -113,10 +126,6 @@ export default class UIAnimatedView extends UIComponent<Props, State> {
     }
 
     getTransform = () => {
-        if (!this.props.animated) {
-            return []
-        }
-
         if (this.props.animation === UIAnimatedView.Animation.Spin) {
             const rotateY = this.animatedValue.interpolate(spinInterpolateValues);
             return [{ rotateY }];
