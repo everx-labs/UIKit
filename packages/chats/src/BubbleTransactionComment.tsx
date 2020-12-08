@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 // import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: think how to use it
 
-import { UIStyle, UIFont, UIConstant, UIColor } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant, UIColor } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageStatus, TransactionType } from './types';
 import type { TransactionComment } from './types';
@@ -56,16 +57,14 @@ export function BubbleTransactionComment(props: Props) {
             ]}
             onPress={props.onPress}
         >
-            <Text
+            <UILabel
                 testID={`transaction_comment_${props.text}`}
-                style={[
-                    styles.actionLabelText,
-                    UIFont.smallRegularHigh(),
-                    styles.textCell,
-                ]}
+                role={UILabelRoles.ParagraphText}
+                color={UILabelColors.TextPrimaryInverted}
+                style={styles.textCell}
             >
                 {props.text}
-            </Text>
+            </UILabel>
             {props.encrypted && (
                 <View style={styles.keyThin}>
                     <Image source={UIAssets.icons.ui.keyThin} />

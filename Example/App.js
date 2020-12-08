@@ -98,7 +98,7 @@ import {
 } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
-import { useWebFonts } from '@tonlabs/uikit.hydroden';
+import { useWebFonts } from '@tonlabs/uikit.hydrogen';
 
 enableScreens();
 useWebFonts();
@@ -2260,7 +2260,7 @@ const messages = [
     ...new Array(100).fill(null).reduce((acc, n, i) => {
         acc.push({
             type: 'stm',
-            status: 'sending',
+            status: 'pending',
             time: Math.floor(Date.now() - 1 * 60 * 1000),
             sender: '0:000',
             text: 'This one is in process of sending...',
@@ -2338,7 +2338,17 @@ const Chat = () => {
     const onSendSticker = React.useCallback(() => undefined, []);
     return (
         <ChatStack.Navigator>
-            <ChatStack.Screen name="ChatWindow" options={{ title: 'Chat' }}>
+            <ChatStack.Screen
+                name="ChatWindow"
+                options={{
+                    title: 'Chat',
+                    cardStyle: {
+                        backgroundColor: UIStyle.color.getBackgroundColorStyle(
+                            UIColor.backgroundPrimary(),
+                        ),
+                    },
+                }}
+            >
                 {() => (
                     <>
                         <UIChatList

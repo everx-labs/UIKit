@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { UIConstant, UIColor, UIFont, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIImage } from '@tonlabs/uikit.components';
+import { UILabel, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageStatus } from './types';
 import type { StickerMessage } from './types';
@@ -39,12 +40,13 @@ export const BubbleSticker = (props: StickerMessage) => {
                             UIStyle.common.opacity70(),
                     ]}
                 >
-                    <Text
+                    <UILabel
                         // testID={testID} TODO: do we need it here?
-                        style={[UIFont.tinyRegular(), styles.timeText]}
+                        role={UILabelRoles.ParagraphLabel}
+                        style={styles.timeText}
                     >
                         {uiLocalized.formatTime(props.time || Date.now())}
-                    </Text>
+                    </UILabel>
                 </View>
             </View>
         </View>
@@ -81,6 +83,5 @@ const styles = StyleSheet.create({
     timeText: {
         textAlign: 'right',
         alignSelf: 'flex-end',
-        color: UIColor.black(),
     },
 });

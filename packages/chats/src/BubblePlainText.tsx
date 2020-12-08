@@ -4,11 +4,10 @@ import {
     StyleSheet,
     Platform,
     View,
-    Text,
     Animated,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
-import { UIColor, UIFont, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 import {
@@ -32,7 +31,7 @@ const getUrlStyle = (status: ChatMessageStatus) => {
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
-        return UILabelColors.TextPrimary; // TODO: is it right color?
+        return UILabelColors.TextPrimaryInverted; // TODO: is it right color?
     }
 
     if (message.status === ChatMessageStatus.Received) {
@@ -120,12 +119,14 @@ const createTestId = (pattern: string, text: string) => {
 function BubbleTime(props: PlainTextMessage) {
     return (
         <View style={styles.timeTextContainer}>
-            <Text
+            <UILabel
                 testID={createTestId('chat_text_message%_time', props.text)}
-                style={[UIFont.tinyRegular(), styles.timeText]}
+                role={UILabelRoles.ParagraphLabel}
+                color={getFontColor(props)}
+                style={styles.timeText}
             >
                 {uiLocalized.formatTime(props.time || Date.now())}
-            </Text>
+            </UILabel>
         </View>
     );
 }
@@ -173,7 +174,6 @@ export function BubblePlainText(props: PlainTextMessage) {
                                     UIStyle.common.opacity70(),
                             ]}
                         >
-                            {/* TODO: use hydrogen if it's possible */}
                             <UILabel
                                 testID={createTestId(
                                     'chat_text_message%',
@@ -251,7 +251,6 @@ const styles = StyleSheet.create({
     timeText: {
         textAlign: 'right',
         alignSelf: 'flex-end',
-        color: UIColor.textQuaternary(),
     },
     wrapMsgContainer: {
         flexShrink: 1,
