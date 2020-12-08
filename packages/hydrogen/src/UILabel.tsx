@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import type { TextProps, TextStyle, StyleProp } from 'react-native';
+import { ColorValue, Text, TransformsStyle, ViewStyle } from 'react-native';
+import type { TextProps, TextStyle, StyleProp, FlexStyle } from 'react-native';
 
 import { Typography, TypographyVariants } from './Typography';
 import { useTheme, ColorVariants } from './Colors';
 
 /**
- * Only those `behavioral` styles are accepted!
+ * Only those `behavioral` styles from Text are accepted!
  */
 type UILabelStyle = Pick<
     TextStyle,
@@ -22,12 +22,16 @@ type UILabelStyle = Pick<
     | 'fontVariant'
     | 'writingDirection'
     | 'includeFontPadding'
->;
+> &
+    Pick<ViewStyle, 'backfaceVisibility' | 'opacity' | 'elevation'> &
+    FlexStyle &
+    TransformsStyle;
 
 type Props = Omit<TextProps, 'style'> & {
     role?: TypographyVariants;
     color?: ColorVariants;
     style?: StyleProp<UILabelStyle>;
+    children?: React.ReactNode;
 };
 
 /**
@@ -36,7 +40,8 @@ type Props = Omit<TextProps, 'style'> & {
  * Text component with defined styles from our design system
  *
  * IMPORTANT: You must use only `role` and `color` props
- *            to choose from pre-defined appearances
+ *            to choose from pre-defined appearances.
+ *            Color and font styles would be overrided anyway.
  *
  * <UILabel role={UILabelRoles.ParagraphText} color={UILabelColors.TextPrimary}>
  *     Hello world!
@@ -52,36 +57,24 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
     ref,
 ) {
     const theme = useTheme();
-    const color = theme[colorProp];
-
-    if (style && __DEV__) {
-        // This one is just to prevent style overrides
-        // putting ts-ignore or with casting to any.
-        // In prod environment it won't affect performance
-        // eslint-disable-next-line no-param-reassign
-        style = StyleSheet.flatten(style);
-        // eslint-disable-next-line no-param-reassign
-        style = {
-            textAlign: style.textAlign,
-            textAlignVertical: style.textAlignVertical,
-            textDecorationLine: style.textDecorationLine,
-            textDecorationStyle: style.textDecorationStyle,
-            textDecorationColor: style.textDecorationColor,
-            textShadowColor: style.textShadowColor,
-            textShadowOffset: style.textShadowOffset,
-            textShadowRadius: style.textShadowRadius,
-            textTransform: style.textTransform,
-            fontVariant: style.fontVariant,
-            writingDirection: style.writingDirection,
-            includeFontPadding: style.includeFontPadding,
-        };
-    }
+    const colorStyle: { color: ColorValue } = React.useMemo(
+        () => ({
+            color: theme[colorProp],
+        }),
+        [colorProp],
+    );
 
     return (
         <Text
             ref={ref}
             {...rest}
-            style={[Typography[role], { color }, style]}
+            style={[
+                style,
+                // Override font and color styles
+                // If there were any
+                Typography[role],
+                colorStyle,
+            ]}
         />
     );
 });

@@ -1,23 +1,44 @@
 import * as React from 'react';
-import { TextInput, TextInputProps } from 'react-native';
+import {
+    FlexStyle,
+    TextInput,
+    TextInputProps,
+    TextStyle,
+    ViewStyle,
+} from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
 import { Typography, TypographyVariants } from './Typography';
+
+/**
+ * Only those `behavioral` styles from Text are accepted!
+ */
+type UITextViewStyle = Pick<
+    TextStyle,
+    | 'textAlign'
+    | 'textAlignVertical'
+    | 'textDecorationLine'
+    | 'textDecorationStyle' // TODO: think if should expose it
+    | 'textDecorationColor' // TODO: think if should expose it
+    | 'textShadowColor' // TODO: think if should expose it
+    | 'textShadowOffset'
+    | 'textShadowRadius'
+    | 'textTransform'
+    | 'fontVariant'
+    | 'writingDirection'
+    | 'includeFontPadding'
+> &
+    Pick<ViewStyle, 'backfaceVisibility' | 'opacity' | 'elevation'> &
+    FlexStyle;
 
 type Props = Omit<
     TextInputProps,
     'style' | 'placeholderTextColor' | 'underlineColorAndroid'
->;
+> & {
+    style?: UITextViewStyle;
+};
 
 export const UITextView = React.forwardRef<TextInput, Props>(
-    function UITextViewForwarded(
-        {
-            // @ts-ignore
-            // eslint-disable-next-line
-            style,
-            ...rest
-        },
-        ref,
-    ) {
+    function UITextViewForwarded({ style, ...rest }: Props, ref) {
         const theme = useTheme();
         return (
             <TextInput
@@ -34,6 +55,7 @@ export const UITextView = React.forwardRef<TextInput, Props>(
                         color: theme[ColorVariants.TextPrimary],
                     },
                     Typography[TypographyVariants.ParagraphText],
+                    style,
                 ]}
             />
         );
@@ -46,7 +68,10 @@ export const UITextView = React.forwardRef<TextInput, Props>(
  *
  * @param useClearWithEnter boolean
  */
-export function useInputValue(useClearWithEnter = false) {
+export function useUITextViewValue(
+    ref: React.RefObject<TextInput>,
+    useClearWithEnter = false,
+) {
     // Little optimisation to not re-render children on every value change
     const [inputHasValue, setInputHasValue] = React.useState(false);
     const inputValue = React.useRef('');
@@ -94,9 +119,17 @@ export function useInputValue(useClearWithEnter = false) {
         [useClearWithEnter],
     );
 
+    const clear = React.useCallback(() => {
+        ref.current?.clear();
+        inputValue.current = '';
+        setInputHasValue(false);
+    }, [setInputHasValue]);
+
     return {
         inputHasValue,
         inputValue,
+        wasClearedWithEnter,
+        clear,
         onChangeText,
         onKeyPress,
     };
