@@ -108,9 +108,6 @@ pipeline {
                     steps {
                         script {
                             sh """
-                                npm config set prefix $G_global_npm_path
-                                alias firebase="`npm config get prefix`/bin/firebase"
-                                cd web
                                 firebase deploy --token "$token"
                             """
                         }
