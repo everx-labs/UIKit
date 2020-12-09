@@ -19,13 +19,14 @@ module.exports = {
     devtool: 'source-map',
     plugins: [
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development'),
-            __DEV__: true,
+            'process.env.NODE_ENV': JSON.stringify('production'),
+            __DEV__: false,
         }),
         new webpack.LoaderOptionsPlugin({
-            minimize: false,
-            debug: true,
+            minimize: true,
+            debug: false,
         }),
+        new webpack.NoEmitOnErrorsPlugin(),
         new CircularDependencyPlugin({
             // exclude detection of files based on a RegExp
             // exclude: /node_modules/,
@@ -163,15 +164,6 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /\.woff2?$/,
-                loader: 'file-loader',
-                options: {
-                    name: '[name].[hash:8].[ext]',
-                    esModule: false,
-                    publicPath: '/assets',
-                },
             },
         ],
     },

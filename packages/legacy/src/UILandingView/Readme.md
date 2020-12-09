@@ -16,7 +16,6 @@ Example:
          return (
              <View>
                  <UILandingView
-                     testID="landingView"
                      icon={logo}
                      title={this.state.title}
                      description={this.state.description}
