@@ -34,6 +34,7 @@
     "types/"
   ],
   "dependencies": {
+    "@tonlabs/uikit.hydrogen": "~2.0.0",
     "@quentin-sommer/react-useragent": "2.0.0",
     "bignumber.js": "9.0.0",
     "currency-formatter": "1.5.4",

@@ -8,6 +8,10 @@
 		<string>SFProText-Medium.ttf</string>
 		<string>SFProText-Regular.ttf</string>
 		<string>SFProText-Bold.ttf</string>
+		<string>Inter-Light.ttf</string>
+		<string>Inter-Medium.ttf</string>
+		<string>Inter-Regular.ttf</string>
+		<string>Inter-SemiBold.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

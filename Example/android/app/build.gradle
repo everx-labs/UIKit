@@ -81,7 +81,12 @@ project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
 
+project.ext.hydrogen = [
+    iconFontsDir: "../../../packages/hydrogen/assets/fonts",
+]
+
 apply from: "../../../node_modules/react-native/react.gradle"
+apply from: "../../../packages/hydrogen/fonts.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:

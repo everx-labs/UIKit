@@ -8,12 +8,17 @@ import {
     Animated,
 } from 'react-native';
 
-import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import {
+    UITextView,
+    useUITextViewValue,
+    useTheme,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
 
 import { UICustomKeyboardUtils } from '../UICustomKeyboard';
-import { useTheme } from '../useTheme';
 
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
@@ -46,40 +51,27 @@ function useInputValue({
     showMaxLengthAlert: () => void;
     setDefaultInputHeight: () => void;
 }) {
-    // Little optimisation to not re-render children on every value change
-    const [inputHasValue, setInputHasValue] = React.useState(false);
-    const inputValue = React.useRef('');
-    const wasClearedWithEnter = React.useRef(false);
+    const {
+        inputHasValue,
+        inputValue,
+        wasClearedWithEnter,
+        clear,
+        onChangeText: onBaseChangeText,
+        onKeyPress: onBaseKeyPress,
+    } = useUITextViewValue(ref, true);
 
     const onSendText = React.useCallback(() => {
         if (onSendTextProp) {
             onSendTextProp(inputValue.current);
         }
 
-        ref.current?.clear();
-        inputValue.current = '';
-        setInputHasValue(false);
+        clear();
         setDefaultInputHeight();
     }, []);
 
     const onChangeText = React.useCallback(
         (text: string) => {
-            // It could be that we sent a message with "Enter" from keyboard
-            // But the event with newline is fired after this
-            // So, to prevent setting it, need to check a flag
-            // And also check that input string is a newline
-            if (wasClearedWithEnter.current && text === '\n') {
-                wasClearedWithEnter.current = false;
-                return;
-            }
-
-            inputValue.current = text;
-
-            const hasValue = text != null ? text.length > 0 : false;
-
-            if (hasValue !== inputHasValue) {
-                setInputHasValue(hasValue);
-            }
+            onBaseChangeText(text);
 
             if (text.length >= MAX_INPUT_LENGTH) {
                 showMaxLengthAlert();
@@ -90,10 +82,10 @@ function useInputValue({
 
     const onKeyPress = React.useCallback((e: any) => {
         // Enable only for web (in native e.key is undefined)
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
+        onBaseKeyPress(e);
+
+        if (wasClearedWithEnter.current) {
             onSendText();
-            wasClearedWithEnter.current = true;
             return;
         }
 
@@ -303,14 +295,20 @@ export function ChatInput(props: Props) {
             <View
                 style={[
                     UIStyle.color.getBackgroundColorStyle(
-                        UIColor.backgroundPrimary(theme),
+                        theme[ColorVariants.BackgroundPrimary],
                     ),
                     containerStyle,
                 ]}
             >
                 <Shortcuts shortcuts={props.shortcuts} />
                 <Animated.View
-                    style={[styles.border, { opacity: borderOpacity }]}
+                    style={[
+                        styles.border,
+                        {
+                            backgroundColor: theme[ColorVariants.LineSecondary],
+                            opacity: borderOpacity,
+                        },
+                    ]}
                 />
                 <View
                     style={[
@@ -332,7 +330,7 @@ export function ChatInput(props: Props) {
                                     alignItems: 'center',
                                 }}
                             >
-                                <TextInput
+                                <UITextView
                                     ref={props.textInputRef}
                                     testID="chat_input"
                                     autoCapitalize="sentences"
@@ -343,27 +341,16 @@ export function ChatInput(props: Props) {
                                     maxLength={MAX_INPUT_LENGTH}
                                     multiline
                                     numberOfLines={numberOfLines}
-                                    // @ts-ignore (this is our custom prop)
-                                    noPersonalizedLearning={false}
                                     placeholder={
                                         props.placeholder ??
                                         uiLocalized.TypeMessage
                                     }
-                                    placeholderTextColor={UIColor.textPlaceholder(
-                                        theme,
-                                    )}
-                                    underlineColorAndroid="transparent"
                                     onContentSizeChange={onContentSizeChange}
                                     onChangeText={onChangeText}
                                     onKeyPress={onKeyPress}
                                     onFocus={props.onFocus}
                                     onBlur={props.onBlur}
-                                    style={[
-                                        UIColor.textPrimaryStyle(theme),
-                                        UIStyle.text.bodyRegular(),
-                                        UIStyle.common.flex(),
-                                        styles.input,
-                                    ]}
+                                    style={styles.input}
                                 />
                             </View>
                         )}
@@ -401,7 +388,6 @@ const styles = StyleSheet.create({
     },
     border: {
         height: 1,
-        backgroundColor: UIColor.grey1(),
     },
     inputMsg: {
         flex: 1,

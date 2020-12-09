@@ -1,29 +1,34 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import type { StyleProp, ViewStyle } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UILabel } from '@tonlabs/uikit.components';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import {
+    ColorVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 
 type Props = {
     label?: string;
     isLoadingMore: boolean;
     onLoadMore?: () => void;
-    containerStyle?: StyleProp<ViewStyle>;
-    wrapperStyle?: StyleProp<ViewStyle>;
-    textStyle?: StyleProp<ViewStyle>;
 };
 
 const Indicator = ({ isLoadingMore }: { isLoadingMore: boolean }) => {
+    const theme = useTheme();
+
     if (!isLoadingMore) {
         return null;
     }
+
     return (
         <MaterialIndicator
             style={styles.indicator}
-            color={UIColor.white()}
+            color={theme[ColorVariants.LinePrimary]}
             size={20}
         />
     );
@@ -33,35 +38,41 @@ export const UILoadMoreButton: React.FunctionComponent<Props> = ({
     label = uiLocalized.LoadMore,
     isLoadingMore = false,
     onLoadMore,
-    containerStyle,
-    wrapperStyle,
-    textStyle,
-}: Props) => (
-    <TouchableOpacity
-        style={[styles.container, containerStyle]}
-        onPress={() => {
-            if (onLoadMore) {
-                onLoadMore();
-            }
-        }}
-        disabled={isLoadingMore}
-    >
-        <View style={[styles.wrapper, wrapperStyle]}>
-            {label && (
-                <UILabel
-                    role={UILabel.Role.TinyRegular}
-                    style={[
-                        UIStyle.color.getColorStyle(UIColor.textTertiary()),
-                        textStyle,
-                        { opacity: isLoadingMore ? 0 : 1 },
-                    ]}
-                    text={label}
-                />
-            )}
-            <Indicator isLoadingMore={isLoadingMore} />
-        </View>
-    </TouchableOpacity>
-);
+}: Props) => {
+    const theme = useTheme();
+
+    return (
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() => {
+                if (onLoadMore) {
+                    onLoadMore();
+                }
+            }}
+            disabled={isLoadingMore}
+        >
+            <View
+                style={[
+                    styles.wrapper,
+                    UIStyle.color.getBackgroundColorStyle(
+                        theme[ColorVariants.BackgroundTertiary],
+                    ),
+                ]}
+            >
+                {label && (
+                    <UILabel
+                        role={UILabelRoles.ActionFootnote}
+                        color={UILabelColors.TextTertiary}
+                        style={{ opacity: isLoadingMore ? 0 : 1 }}
+                    >
+                        {label}
+                    </UILabel>
+                )}
+                <Indicator isLoadingMore={isLoadingMore} />
+            </View>
+        </TouchableOpacity>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -73,7 +84,6 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: UIColor.backgroundTertiary(),
         height: UIConstant.smallCellHeight(),
         borderRadius: UIConstant.smallCellHeight() / 2,
         paddingVertical: UIConstant.tinyContentOffset() / 2,

@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { UIColor, UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.components';
 import { UIController } from '@tonlabs/uikit.navigation';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
 import { UICustomKeyboardUtils } from '../UICustomKeyboard';
-import { useTheme } from '../useTheme';
 import type {
     UISticker,
     UIStickerPackage,
@@ -119,9 +119,7 @@ function StickerList(
     );
 }
 
-function usePickerAnimations(
-    stickersVisible: boolean,
-) {
+function usePickerAnimations(stickersVisible: boolean) {
     const height = React.useRef(new Animated.Value(0)).current;
     const opacity = React.useRef(new Animated.Value(0)).current;
 
@@ -162,22 +160,21 @@ function usePickerAnimations(
 
 export function UIStickerPicker(props: Props) {
     const theme = useTheme();
-    const { stickersVisible } = props;
-    const { height, opacity } = usePickerAnimations(stickersVisible);
+    const { height, opacity } = usePickerAnimations(props.stickersVisible);
 
     if (props.isCustomKeyboard) {
         return (
             <Animated.View
                 style={{
-                        opacity,
-                    }}
-                >
+                    opacity,
+                }}
+            >
                 <StickerList
                     {...props}
                     style={UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundSecondary(theme),
-                        )}
-                    />
+                        theme[ColorVariants.BackgroundSecondary],
+                    )}
+                />
             </Animated.View>
         );
     }
@@ -186,22 +183,22 @@ export function UIStickerPicker(props: Props) {
         <Animated.View>
             <Animated.View
                 style={[
-                        {
-                            height,
-                            opacity,
-                        },
-                    ]}
-                >
+                    {
+                        height,
+                        opacity,
+                    },
+                ]}
+            >
                 <StickerList
                     {...props}
                     style={UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundWhiteLight(theme),
-                        )}
-                    />
+                        theme[ColorVariants.BackgroundSecondary],
+                    )}
+                />
             </Animated.View>
         </Animated.View>
     );
-};
+}
 
 UICustomKeyboardUtils.registerCustomKeyboard(
     UIStickerPickerKeyboardName,

@@ -9,8 +9,9 @@ import {
 import type { KeyboardAccessoryViewProps } from 'react-native-ui-lib/keyboard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIStyle, UIColor } from '@tonlabs/uikit.core';
-import { useTheme } from '../useTheme';
+import { UIStyle } from '@tonlabs/uikit.core';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+
 import type { OnHeightChange } from '../UIChatInput/types';
 
 const registerCustomKeyboard = (
@@ -199,7 +200,7 @@ export function UICustomKeyboard(props: Props) {
                                 { height: insets?.bottom ?? 0, top: '100%' },
                                 UIStyle.container.absoluteFillWidth(),
                                 UIStyle.color.getBackgroundColorStyle(
-                                    UIColor.backgroundPrimary(theme),
+                                    theme[ColorVariants.BackgroundPrimary],
                                 ),
                             ]}
                         />

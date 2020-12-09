@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { UIConstant, UIColor, UIFont, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIImage } from '@tonlabs/uikit.components';
+import {
+    ColorVariants,
+    UILabel,
+    UILabelRoles,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageStatus } from './types';
 import type { StickerMessage } from './types';
@@ -20,6 +26,7 @@ const getBubbleContainer = (position: BubblePosition) => {
 
 export const BubbleSticker = (props: StickerMessage) => {
     const position = useBubblePosition(props.status);
+    const theme = useTheme();
 
     return (
         <View style={getBubbleContainer(position)}>
@@ -35,16 +42,20 @@ export const BubbleSticker = (props: StickerMessage) => {
                 <View
                     style={[
                         styles.time,
+                        UIStyle.color.getBackgroundColorStyle(
+                            theme[ColorVariants.BackgroundSecondary],
+                        ),
                         props.status === ChatMessageStatus.Pending &&
                             UIStyle.common.opacity70(),
                     ]}
                 >
-                    <Text
+                    <UILabel
                         // testID={testID} TODO: do we need it here?
-                        style={[UIFont.tinyRegular(), styles.timeText]}
+                        role={UILabelRoles.ParagraphLabel}
+                        style={styles.timeText}
                     >
                         {uiLocalized.formatTime(props.time || Date.now())}
-                    </Text>
+                    </UILabel>
                 </View>
             </View>
         </View>
@@ -76,11 +87,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingVertical: UIConstant.tinyContentOffset() / 2,
         paddingHorizontal: UIConstant.smallContentOffset(),
-        backgroundColor: UIColor.backgroundWhiteLight(),
     },
     timeText: {
         textAlign: 'right',
         alignSelf: 'flex-end',
-        color: UIColor.black(),
     },
 });

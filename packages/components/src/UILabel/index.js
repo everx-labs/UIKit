@@ -61,6 +61,11 @@ type State = {
     //
 };
 
+/**
+ * @deprecated
+ *
+ * Please do not use it in new code
+ */
 export default class UILabel extends UIComponent<Props, State> {
     static Role = LabelRole;
 
@@ -77,6 +82,16 @@ export default class UILabel extends UIComponent<Props, State> {
         this.state = {
             //
         };
+    }
+
+    componentDidMount() {
+        // When `hydrogen` will mature we gonna add a warning!
+        // eslint-disable-next-line no-constant-condition
+        if (false) {
+            console.warn(
+                'Please use UILabel from "@tonlabs/uikit.hydrogen" instead. Current implementation might be droped in future releases',
+            );
+        }
     }
 
     // Getters

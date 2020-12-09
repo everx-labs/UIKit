@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
-import { UILabel } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import type { SystemMessage } from './types';
 
@@ -15,12 +15,13 @@ export function BubbleSystem(props: SystemMessage) {
             ]}
         >
             <UILabel
-                role={UILabel.Role.TinyRegular}
-                text={props.text}
-                style={UIStyle.color.textTertiary()}
+                role={UILabelRoles.ActionFootnote}
+                color={UILabelColors.TextTertiary}
                 numberOfLines={1}
                 ellipsizeMode="middle"
-            />
+            >
+                {props.text}
+            </UILabel>
         </View>
     );
 }

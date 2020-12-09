@@ -18,7 +18,8 @@ import {
 } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { UIConstant, UIColor } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { sectionListGetItemLayout } from './UIChatListLayout';
 import { UIChatListFormatter } from './UIChatListFormatter';
@@ -427,6 +428,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
             listContentOffset,
             props.bottomInset,
         );
+        const theme = useTheme();
         const sections = React.useMemo(
             () => UIChatListFormatter.getSections(props.messages),
             [props.messages],
@@ -434,7 +436,15 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
 
         return (
             <SafeAreaView style={styles.container} edges={['bottom']}>
-                <Animated.View style={[styles.border, borderOpacityStyle]} />
+                <Animated.View
+                    style={[
+                        styles.border,
+                        UIStyle.color.getBackgroundColorStyle(
+                            theme[ColorVariants.LineSecondary],
+                        ),
+                        borderOpacityStyle,
+                    ]}
+                />
                 <TapGestureHandler
                     onHandlerStateChange={onHandlerStateChange}
                     enabled={props.areStickersVisible}
@@ -486,6 +496,5 @@ const styles = StyleSheet.create({
     },
     border: {
         height: 1,
-        backgroundColor: UIColor.grey1(),
     },
 });
