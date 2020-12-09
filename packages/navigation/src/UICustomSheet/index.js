@@ -367,7 +367,7 @@ export default class UICustomSheet extends UIController<Props, State> {
                         swipeToDismiss
                         dismissStripeStyle={styles.smallDismissStripe}
                         // TODO: think how to use `useNativeDriver` here!
-                        onMove={Animated.event([null, { dy: this.dy }], {
+                        onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], { 
                             useNativeDriver: false,
                         })}
                         onRelease={this.onReleaseSwipe}

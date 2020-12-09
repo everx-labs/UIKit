@@ -3,7 +3,6 @@
 import React from 'react';
 import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
-import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import {
     PanGestureHandler,
@@ -142,7 +141,6 @@ export default class UIModalController<Props, State> extends UIController<
         slide: () => 'slide',
     };
 
-    panResponder: PanResponderInstance;
     constructor(props: ModalControllerProps & Props) {
         super(props);
         this.testID = '[UIModalController]';
@@ -543,7 +541,9 @@ export default class UIModalController<Props, State> extends UIController<
                 centralComponent={this.renderCentralHeader()}
                 rightComponent={this.renderRightHeader()}
                 bottomLine={this.isHeaderLineVisible()}
-                // onMove={Animated.event([null, { dy: this.dy }])}
+                // onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], { 
+                //     useNativeDriver: true,
+                // })}
                 // onRelease={this.onReleaseSwipe}
                 onCancel={this.onCancelPress}
                 cancelImage={this.getCancelImage()}
