@@ -22,12 +22,17 @@ import { ChatMessageMeta, ChatMessageStatus } from './types';
 import type { PlainTextMessage } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
-const getUrlStyle = (status: ChatMessageStatus) => {
+const useUrlStyle = (status: ChatMessageStatus) => {
+    const theme = useTheme();
+
     if (status === ChatMessageStatus.Received) {
-        return styles.urlReceived;
+        return [
+            { color: theme[ColorVariants.TextPrimary] },
+            styles.urlReceived,
+        ];
     }
 
-    return styles.urlSent;
+    return [{ color: theme[ColorVariants.TextSecondary] }, styles.urlSent];
 };
 
 const getFontColor = (message: PlainTextMessage) => {
@@ -166,6 +171,7 @@ export function BubblePlainText(props: PlainTextMessage) {
     };
     const position = useBubblePosition(props.status);
     const bubbleStyle = useBubbleStyle(props);
+    const urlStyle = useUrlStyle(props.status);
     const actionString = getActionString(props);
 
     return (
@@ -210,7 +216,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                                     parse={[
                                         {
                                             type: 'url',
-                                            style: getUrlStyle(props.status),
+                                            style: urlStyle,
                                             onPress: (
                                                 url: string,
                                                 index: number,
@@ -257,12 +263,10 @@ const styles = StyleSheet.create({
         maxWidth: '100%',
     },
     urlReceived: {
-        color: ColorVariants.TextPrimary,
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
     urlSent: {
-        color: ColorVariants.TextSecondary,
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
