@@ -70,7 +70,7 @@
     "react-native": "^0.63.0",
     "react-native-android-keyboard-adjust": "^1.2.0",
     "react-native-document-picker": "^3.2.4",
-    "react-native-gesture-handler": "^1.7.0",
+    "react-native-gesture-handler": "^1.9.0",
     "react-native-image-picker": "*",
     "react-native-reanimated": "^1.13.0",
     "react-native-safe-area-context": "^3.1.3",
