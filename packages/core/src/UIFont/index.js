@@ -18,20 +18,26 @@ const emojiFonts = [
 ];
 const fontFamilies = ['"IBM Plex Sans"', ...emojiFonts];
 const FONT_WEB_LIGHT = Platform.select({
-    web: { fontFamily: ['PTRootUIWebLight', ...fontFamilies].join(', ') },
-    default: { fontFamily: ['SFProText-Light'].join(', ') },
+    web: { fontFamily: ['Inter-Light', ...fontFamilies].join(', ') },
+    default: { fontFamily: ['Inter-Light'].join(', ') },
 });
 const FONT_WEB_REGULAR = Platform.select({
-    web: { fontFamily: ['PTRootUIWebRegular', ...fontFamilies].join(', ') },
-    default: { fontFamily: ['SFProText-Regular'].join(', ') },
+    web: { fontFamily: ['Inter-Regular', ...fontFamilies].join(', ') },
+    default: { fontFamily: ['Inter-Regular'].join(', ') },
 });
 const FONT_WEB_MEDIUM = Platform.select({
-    web: { fontFamily: ['PTRootUIWebMedium', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
-    default: { fontFamily: ['SFProText-Medium'].join(', ') },
+    web: {
+        fontFamily: ['Inter-Medium', ...fontFamilies].join(', '),
+        WebkitFontSmoothing: 'antialiased',
+    },
+    default: { fontFamily: ['Inter-Medium'].join(', ') },
 });
 const FONT_WEB_BOLD = Platform.select({
-    web: { fontFamily: ['PTRootUIWebBold', ...fontFamilies].join(', '), WebkitFontSmoothing: 'antialiased' },
-    default: { fontFamily: ['SFProText-Bold'].join(', ') },
+    web: {
+        fontFamily: ['Inter-SemiBold', ...fontFamilies].join(', '),
+        WebkitFontSmoothing: 'antialiased',
+    },
+    default: { fontFamily: ['Inter-SemiBold'].join(', ') },
 });
 
 // const UI_FONT_THIN = { fontWeight: '100' };
@@ -40,7 +46,10 @@ const UI_FONT_LIGHT = { ...FONT_WEB_LIGHT, fontWeight: '300' };
 const UI_FONT_REGULAR = { ...FONT_WEB_REGULAR, fontWeight: '400' };
 const UI_FONT_MEDIUM = { ...FONT_WEB_MEDIUM, fontWeight: '500' };
 // const UI_FONT_SEMIBOLD = { fontWeight: '600' };
-const UI_FONT_BOLD = { ...FONT_WEB_BOLD, fontWeight: Platform.OS === 'android' ? 'bold' : '700' };
+const UI_FONT_BOLD = {
+    ...FONT_WEB_BOLD,
+    fontWeight: Platform.OS === 'android' ? 'bold' : '700',
+};
 // const UI_FONT_HEAVY = { fontWeight: '800' };
 // const UI_FONT_BLACK = { fontWeight: '900' };
 
@@ -76,7 +85,7 @@ const UI_FONT_TITLE = {
     lineHeight: 56,
     letterSpacing: Platform.select({
         web: 0.0,
-        default: 0.40,
+        default: 0.4,
     }),
     ...UI_FONT_FAMILY,
 };
@@ -196,7 +205,10 @@ const UI_FONT_BODY_REGULAR = { ...UI_FONT_BODY, ...UI_FONT_REGULAR };
 const UI_FONT_BODY_MEDIUM = { ...UI_FONT_BODY, ...UI_FONT_MEDIUM };
 const UI_FONT_SMALL_BOLD = { ...UI_FONT_SMALL, ...UI_FONT_BOLD };
 const UI_FONT_SMALL_REGULAR = { ...UI_FONT_SMALL, ...UI_FONT_REGULAR };
-const UI_FONT_SMALL_REGULAR_HIGH = { ...UI_FONT_SMALL_HIGH, ...UI_FONT_REGULAR };
+const UI_FONT_SMALL_REGULAR_HIGH = {
+    ...UI_FONT_SMALL_HIGH,
+    ...UI_FONT_REGULAR,
+};
 const UI_FONT_SMALL_MEDIUM = { ...UI_FONT_SMALL, ...UI_FONT_MEDIUM };
 const UI_FONT_CAPTION_BOLD = { ...UI_FONT_CAPTION, ...UI_FONT_BOLD };
 const UI_FONT_CAPTION_REGULAR = { ...UI_FONT_CAPTION, ...UI_FONT_REGULAR };
