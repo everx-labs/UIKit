@@ -27,6 +27,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
 
     "flowtype/space-after-type-colon": "off",
     "flowtype/no-types-missing-file-annotation": "off",
@@ -64,7 +65,7 @@
     "no-confusing-arrow": ["error", { "allowParens": false }],
     "no-unused-expressions": "off",
     "no-unused-vars": "off",
-    "no-use-before-define": ["error", { "variables": false }],
+    "no-use-before-define": "off",
     "object-curly-newline": "off",
     "quote-props": "off",
     // Works oddly with TS

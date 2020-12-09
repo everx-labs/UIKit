@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, PanResponder } from 'react-native';
-import type { PressEvent } from 'react-native/Libraries/Types/CoreEventTypes';
-import type { GestureState, PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { PanGestureHandler, State as RNGHState } from 'react-native-gesture-handler';
+
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     },
 });
 
+type RNGHEvent<T> = { nativeEvent: T };
+
 type Props = {
     rightComponent?: React$Node,
     leftComponent?: React$Node,
@@ -52,11 +54,13 @@ type Props = {
     swipeToDismiss: boolean,
     dismissStripeStyle: ViewStyleProp,
     onCancel: ?() => void,
-    onMove: ?((event: PressEvent, gestureState: GestureState) => mixed);
-    onRelease: ?((number) => void),
+    onMove: ?(event: RNGHEvent<{ translationY: number }>) => void;
+    onRelease: ?((translateY: number) => void),
 };
 
-type State = {};
+type State = {
+    //
+};
 
 export default class UIModalNavigationBar extends UIComponent<Props, State> {
     static defaultProps = {
@@ -71,32 +75,30 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
         onRelease: null,
     };
 
-    panResponder: ?PanResponderInstance;
-    constructor(props: Props) {
-        super(props);
-
-        if (this.props.swipeToDismiss && this.props.onMove && this.props.onRelease) {
-            this.panResponder = PanResponder.create({
-                // Ask to be the responder:
-                onStartShouldSetPanResponder: (evt, gestureState) => true,
-                onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-                onMoveShouldSetPanResponder: (evt, gestureState) => true,
-                onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
-                // Handling responder events
-                onPanResponderMove: (evt, gestureState) => {
-                    if (gestureState.dy > 0 && this.props.onMove) {
-                        this.props.onMove(evt, gestureState);
-                    }
-                },
-                onPanResponderRelease: (evt, gestureState) => {
-                    if (this.props.onRelease) {
-                        this.props.onRelease(gestureState.dy);
-                    }
-                },
-            });
-        }
+    // Getters
+    get isPanHandlerEnabled() {
+        return !!this.props.swipeToDismiss && !!this.props.onMove && !!this.props.onRelease;
     }
+
+    // Events
+    onPanGestureEvent = (event: RNGHEvent<{translationY: number }>) => {
+        // To make it jump smoothly we allow some negative offset
+        if (event.nativeEvent.translationY > -UIConstant.contentOffset()) {
+            if (this.props.onMove) {
+                this.props.onMove(event);
+            }
+        }
+    };
+
+    onPanHandlerStateChange = ({
+        nativeEvent: { state, translationY },
+    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
+        if (state === RNGHState.END) {
+            if (this.props.onRelease) {
+                this.props.onRelease(translationY);
+            }
+        }
+    };
 
     // Render
     renderContent() {
@@ -172,18 +174,19 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
     // }
 
     render() {
-        const panHandlers = this.panResponder
-            ? { ...this.panResponder.panHandlers }
-            : {};
         return (
-            // $FlowExpectedError
-            <View
-                testID="NavigationBar container"
-                style={[styles.navigationView, { height: this.props.height }]}
-                {...panHandlers}
+            <PanGestureHandler
+                enabled={this.isPanHandlerEnabled}
+                onGestureEvent={this.onPanGestureEvent}
+                onHandlerStateChange={this.onPanHandlerStateChange}
             >
-                {this.renderContent()}
-            </View>
+                <View
+                    testID="NavigationBar container"
+                    style={[styles.navigationView, { height: this.props.height }]}
+                >
+                    {this.renderContent()}
+                </View>
+            </PanGestureHandler>
         );
     }
 }
