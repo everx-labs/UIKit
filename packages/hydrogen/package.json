@@ -38,8 +38,7 @@
       "fonts.gradle"
   ],
   "dependencies": {
-    "fontfaceobserver-es": "3.3.3",
-    "inter-ui": "3.15.0"
+    "fontfaceobserver-es": "3.3.3"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
