@@ -14,11 +14,13 @@
         "tsc": "tsc --noEmit",
         "test:coverage": "jest --coverage",
         "language:createTypes": "node ./scripts/convertLocaleFileToFlowTypes.js",
-        "web": "webpack-dev-server -d --config example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached"
+        "web": "webpack-dev-server -d --config example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
+        "cycles:check": "node scripts/checkCircularDependencies.js"
     },
     "pre-commit": [
         "flow",
-        "tsc"
+        "tsc",
+        "cycles:check"
     ],
     "peerDependencies": {
         "@react-native-community/netinfo": "^5.9.6",
@@ -89,6 +91,7 @@
         "jest": "26.0.1",
         "json-to-flowtype-generator": "0.9.3",
         "lerna": "3.22.1",
+        "madge": "3.12.0",
         "metro-react-native-babel-preset": "0.63.0",
         "pre-commit": "1.2.2",
         "prettier": "2.1.1",
