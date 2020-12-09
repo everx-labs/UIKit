@@ -68,15 +68,12 @@ pipeline {
                 stage('npm Install') {
                     steps{
                         script {
-                            sshagent (credentials: [G_gitcred]) {
-                                sh """
-                                    echo //npm.pkg.github.com/:_authToken=$GITHUB_ACCESS_TOKEN >> ~/.npmrc
-                                    npm install
-                                    npm config set prefix $G_global_npm_path
-                                    npm install -g firebase-tools
-                                    npm install -g lerna;
-                                """
-                            }
+                            sh """
+                                npm install
+                                npm config set prefix $G_global_npm_path
+                                npm install -g firebase-tools
+                                npm install -g lerna;
+                            """
                         }
                     }
                     post {
