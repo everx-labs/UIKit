@@ -8,7 +8,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "web": "webpack-dev-server -d --config webpack.config.js --progress --colors --host 0.0.0.0 --display-cached"
+    "web": "webpack-dev-server -d --config webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
+    "web:bundle": "webpack -p --config webpack.config.prod.js --progress --colors --display-error-details",
+    "web:bundle:dev": "webpack -d --config webpack.config.js --progress --colors --display-error-details"
   },
   "dependencies": {
     "@quentin-sommer/react-useragent": "2.0.0",
