@@ -1,0 +1,151 @@
+G_giturl = "git@github.com:tonlabs/TON-Surf.git"
+G_gitcred = 'TonJenSSH'
+G_setup = "Not set"
+G_install = "Not set"
+G_webbuild = "Not set"
+G_webdeploy = "Not set"
+G_global_npm_path = "/var/jenkins_home/workspace/Front"
+G_hosting_url = "Not set"
+DiscordURL = "https://discordapp.com/api/webhooks/744877394648891442/xdc6_1iT-kd_DiGAwoIeCRfN6gA7n9uLDUMiaHUBdQcG9E2lM6Z9hMPCSmGt58q3lTs1"
+C_TEXT = ""
+
+pipeline {
+    agent {
+        dockerfile {
+            dir 'deploy/dockerfiles'
+            filename 'Dockerfile_Web'
+            label 'master'
+        }
+    }
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for build')
+        booleanParam(name: 'FORCE', defaultValue: false, description: 'ignore a verify last success commit')
+    }
+    environment {
+       PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+       LC_ALL = "en_US.UTF-8"
+       LANG = "en_US.UTF-8"
+       userpass = credentials("TonJen-mac01pass")
+       token = credentials("FIREBASE_UIKIT_TOKEN")
+       NODE_OPTIONS = "--max-old-space-size=4096"
+       commitHash = sh (script: 'git show -s --format=%H ${GIT_COMMIT}',returnStdout: true).trim()
+       GITHUB_ACCESS_TOKEN = credentials("JenkinsPackagesRW")
+    }
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+        disableConcurrentBuilds()
+    }
+    stages {
+        stage('Check the last commit') {
+            when { anyOf { environment name: 'FORCE', value: 'true'; not {environment name: 'GIT_PREVIOUS_SUCCESSFUL_COMMIT', value: commitHash }}}
+            stages {
+                stage('Pre-setup') {
+                    steps {
+                        script {
+                            def buildCause = currentBuild.getBuildCauses()
+                            echo "buildCause: ${buildCause}";
+
+                            C_TEXT = """
+                                ${buildCause.shortDescription[0]}
+                                Build number: ${BUILD_NUMBER}
+                                Build parameters:
+                                - Branch: **${params.BRANCH}**
+                                - isForce: **${params.FORCE}**
+                            """
+                            echo C_TEXT;
+                            currentBuild.description = C_TEXT;
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_setup = "success"}
+                        }
+                        failure {
+                            script{G_setup = "failure"}
+                        }
+                    }
+                }
+                stage('npm Install') {
+                    steps{
+                        script {
+                            sshagent (credentials: [G_gitcred]) {
+                                sh """
+                                    echo //npm.pkg.github.com/:_authToken=$GITHUB_ACCESS_TOKEN >> ~/.npmrc
+                                    npm install
+                                    npm config set prefix $G_global_npm_path
+                                    npm install -g firebase-tools
+                                    npm install -g lerna;
+                                """
+                            }
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_install = "success"}
+                        }
+                        failure {
+                            script{G_install = "failure"}
+                        }
+                    }
+                }
+                stage('Webapp build'){
+                    steps {
+                        script {
+                            sh '''
+                                lerna bootstrap && lerna run prepare
+                                cd Example
+                                npm run web:bundle
+                            '''
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_webbuild = "success"}
+                        }
+                        failure {
+                            script{G_webbuild = "failure"}
+                        }
+                    }
+                }
+                stage('Webapp deploy'){
+                    steps {
+                        script {
+                            sh """
+                                npm config set prefix $G_global_npm_path
+                                alias firebase="`npm config get prefix`/bin/firebase"
+                                cd web
+                                firebase deploy --token "$token"
+                            """
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_webdeploy = "success"}
+                        }
+                        failure {
+                            script{G_webdeploy = "failure"}
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                if (C_TEXT) {
+                    string DiscordFooter = "Build duration is " + currentBuild.durationString
+                    DiscordTitle = "UI Kit WEB"
+                    DiscordDescription = "`${JOB_BASE_NAME}` build report:" + C_TEXT + "\n" \
+                     + "NPM install: ${G_install}" + "\n" \
+                     + "Build: ${G_webbuild}" + "\n" \
+                     + "Deployment: ${G_webdeploy}" + "\n"
+                    discordSend description: DiscordDescription, footer: DiscordFooter, link: RUN_DISPLAY_URL, successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), title: DiscordTitle, webhookURL: DiscordURL
+                }
+            }
+            script {
+                cleanWs notFailBuild: true
+            }
+        }
+    }
+}
