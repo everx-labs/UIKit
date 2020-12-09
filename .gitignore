@@ -5,6 +5,7 @@
 # Build
 /node_modules
 **/node_modules
+tsconfig.tsbuildinfo
 
 # Locks
 package-lock.json
