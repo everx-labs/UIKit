@@ -1,8 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
-import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
-import { UIButton } from '@tonlabs/uikit.components';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import {
+    useTheme,
+    ColorVariants,
+    UILabel,
+    UILabelRoles,
+    UILabelColors,
+} from '@tonlabs/uikit.hydrogen';
+
 import type { Shortcut } from './types';
 
 type Props = {
@@ -10,6 +17,8 @@ type Props = {
 };
 
 export function Shortcuts(props: Props) {
+    const theme = useTheme();
+
     if (props.shortcuts == null) {
         return null;
     }
@@ -17,27 +26,36 @@ export function Shortcuts(props: Props) {
     return (
         <View style={styles.container}>
             {props.shortcuts.map((shortcut) => (
-                // TODO: revisit use of UIButton someday
-                <UIButton
-                    title={shortcut.title}
+                <TouchableOpacity
                     testID={
                         shortcut.testID ??
                         `shortcut_cell_${shortcut.title ?? ''}`
                     }
-                    buttonShape={UIButton.ButtonShape.MediumRadius}
-                    buttonSize={UIButton.ButtonSize.Medium}
-                    buttonStyle={UIButton.ButtonStyle.Border}
-                    onPress={shortcut.onPress}
                     key={shortcut.key ?? shortcut.title}
                     style={[
                         styles.shortcut,
-                        shortcut.isDanger ? styles.dangerAction : null,
-                        UIStyle.color.getBackgroundColorStyle(UIColor.white()),
+                        {
+                            borderColor: shortcut.isDanger
+                                ? theme[ColorVariants.LineNegative]
+                                : theme[ColorVariants.LineAccent],
+                        },
+                        UIStyle.color.getBackgroundColorStyle(
+                            theme[ColorVariants.BackgroundPrimary],
+                        ),
                     ]}
-                    textStyle={
-                        shortcut.isDanger ? styles.dangerActionText : null
-                    }
-                />
+                    onPress={shortcut.onPress}
+                >
+                    <UILabel
+                        role={UILabelRoles.Action}
+                        color={
+                            shortcut.isDanger
+                                ? UILabelColors.TextNegative
+                                : UILabelColors.TextAccent
+                        }
+                    >
+                        {shortcut.title}
+                    </UILabel>
+                </TouchableOpacity>
             ))}
         </View>
     );
@@ -51,15 +69,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         zIndex: 1,
     },
-    dangerAction: {
-        borderColor: UIColor.error(),
-    },
-    dangerActionText: {
-        color: UIColor.error(),
-    },
     shortcut: {
-        margin: UIConstant.smallContentOffset(),
-        alignSelf: 'flex-end',
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: UIConstant.contentOffset(),
+        height: UIConstant.mediumButtonHeight(),
+        borderRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: 0,
+        alignSelf: 'flex-end',
+        margin: UIConstant.smallContentOffset(),
     },
 });

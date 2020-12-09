@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { UIColor, UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.components';
 import { UIController } from '@tonlabs/uikit.navigation';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
 import { UICustomKeyboardUtils } from '../UICustomKeyboard';
-import { useTheme } from '../useTheme';
 import type {
     UISticker,
     UIStickerPackage,
@@ -190,7 +190,7 @@ export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
                     <StickerList
                         {...props}
                         style={UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundSecondary(theme),
+                            theme[ColorVariants.BackgroundSecondary],
                         )}
                     />
                 </Animated.View>
@@ -210,7 +210,7 @@ export const UIStickerPicker = React.forwardRef<UIStickerPickerRef, Props>(
                     <StickerList
                         {...props}
                         style={UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundWhiteLight(theme),
+                            theme[ColorVariants.BackgroundSecondary],
                         )}
                     />
                 </Animated.View>

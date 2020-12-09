@@ -4,14 +4,19 @@ import {
     StyleSheet,
     Platform,
     View,
-    Text,
     Animated,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
-import { UIColor, UIFont, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UILabel } from '@tonlabs/uikit.components';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 
 import { ChatMessageMeta, ChatMessageStatus } from './types';
 import type { PlainTextMessage } from './types';
@@ -27,18 +32,14 @@ const getUrlStyle = (status: ChatMessageStatus) => {
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
-        return UIStyle.Color.getColorStyle(UIColor.fa());
+        return UILabelColors.TextPrimaryInverted; // TODO: is it right color?
     }
 
     if (message.status === ChatMessageStatus.Received) {
-        return UIStyle.Color.getColorStyle(
-            UIColor.textSecondary(UIColor.Theme.Light),
-        );
+        return UILabelColors.TextPrimary;
     }
 
-    return UIStyle.Color.getColorStyle(
-        UIColor.textSecondary(UIColor.Theme.Dark),
-    );
+    return UILabelColors.TextPrimaryInverted; // TODO: is it right color?
 };
 
 const getRoundedCornerStyle = (
@@ -68,21 +69,44 @@ const getBubbleContainer = (position: BubblePosition) => {
     return null;
 };
 
-const getBubbleStyle = (message: PlainTextMessage) => {
+const useBubbleStyle = (message: PlainTextMessage) => {
+    const theme = useTheme();
+
     if (message.status === ChatMessageStatus.Aborted) {
-        return styles.msgAborted;
+        return [
+            styles.msgRight,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundNegative],
+            ),
+        ];
     }
 
     if (message.status === ChatMessageStatus.Received) {
-        return styles.msgReceived;
+        return [
+            styles.msgLeft,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundTertiary],
+            ),
+        ];
     }
 
     if (message.status === ChatMessageStatus.Sent) {
-        return styles.msgSent;
+        return [
+            styles.msgRight,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundAccent],
+            ),
+        ];
     }
 
     if (message.status === ChatMessageStatus.Pending) {
-        return styles.msgPending;
+        return [
+            styles.msgRight,
+            UIStyle.color.getBackgroundColorStyle(
+                theme[ColorVariants.BackgroundAccent],
+            ),
+            UIStyle.common.opacity70(),
+        ];
     }
 
     return null;
@@ -96,12 +120,12 @@ const getActionString = (message: PlainTextMessage) => {
     return message.actionText;
 };
 
-const getActionStringStyle = (message: PlainTextMessage) => {
+const getActionStringColor = (message: PlainTextMessage) => {
     if (message.status === ChatMessageStatus.Aborted) {
-        return UIStyle.color.getColorStyle(UIColor.error());
+        return UILabelColors.TextNegative;
     }
 
-    return null;
+    return UILabelColors.TextTertiary;
 };
 
 // For e2e tests, to create unique id as in those tests
@@ -119,12 +143,14 @@ const createTestId = (pattern: string, text: string) => {
 function BubbleTime(props: PlainTextMessage) {
     return (
         <View style={styles.timeTextContainer}>
-            <Text
+            <UILabel
                 testID={createTestId('chat_text_message%_time', props.text)}
-                style={[UIFont.tinyRegular(), styles.timeText]}
+                role={UILabelRoles.ParagraphFootnote}
+                color={getFontColor(props)}
+                style={styles.timeText}
             >
                 {uiLocalized.formatTime(props.time || Date.now())}
-            </Text>
+            </UILabel>
         </View>
     );
 }
@@ -139,6 +165,7 @@ export function BubblePlainText(props: PlainTextMessage) {
         }).start();
     };
     const position = useBubblePosition(props.status);
+    const bubbleStyle = useBubbleStyle(props);
     const actionString = getActionString(props);
 
     return (
@@ -166,46 +193,47 @@ export function BubblePlainText(props: PlainTextMessage) {
                                 UIStyle.padding.verticalSmall(),
                                 UIStyle.padding.horizontalNormal(),
                                 styles.msgContainer,
-                                getBubbleStyle(props),
+                                bubbleStyle,
                                 getRoundedCornerStyle(props, position),
-                                props.status === ChatMessageStatus.Pending &&
-                                    UIStyle.common.opacity70(),
                             ]}
                         >
-                            <ParsedText
+                            <UILabel
                                 testID={createTestId(
                                     'chat_text_message%',
                                     props.text,
                                 )}
-                                style={[
-                                    getFontColor(props),
-                                    UIFont.smallRegular(),
-                                    styles.textCell,
-                                ]}
-                                parse={[
-                                    {
-                                        type: 'url',
-                                        style: getUrlStyle(props.status),
-                                        onPress: (url: string, index: number) =>
-                                            props.onPressUrl &&
-                                            props.onPressUrl(url, index),
-                                    },
-                                ]}
+                                role={UILabelRoles.ParagraphText}
+                                color={getFontColor(props)}
+                                style={styles.textCell}
                             >
-                                {props.text}
-                            </ParsedText>
+                                <ParsedText
+                                    parse={[
+                                        {
+                                            type: 'url',
+                                            style: getUrlStyle(props.status),
+                                            onPress: (
+                                                url: string,
+                                                index: number,
+                                            ) =>
+                                                props.onPressUrl &&
+                                                props.onPressUrl(url, index),
+                                        },
+                                    ]}
+                                >
+                                    {props.text}
+                                </ParsedText>
+                            </UILabel>
                             <BubbleTime {...props} />
                         </View>
                     </Animated.View>
                     {actionString && (
                         <UILabel
-                            style={[
-                                styles.actionString,
-                                getActionStringStyle(props),
-                            ]}
-                            role={UILabel.Role.TinyRegular}
-                            text={actionString}
-                        />
+                            style={styles.actionString}
+                            role={UILabelRoles.ActionFootnote}
+                            color={getActionStringColor(props)}
+                        >
+                            {actionString}
+                        </UILabel>
                     )}
                 </View>
             </TouchableWithoutFeedback>
@@ -229,12 +257,12 @@ const styles = StyleSheet.create({
         maxWidth: '100%',
     },
     urlReceived: {
-        color: UIColor.primary(),
+        color: ColorVariants.TextPrimary,
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
     urlSent: {
-        color: UIColor.fa(),
+        color: ColorVariants.TextSecondary,
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
@@ -246,7 +274,6 @@ const styles = StyleSheet.create({
     timeText: {
         textAlign: 'right',
         alignSelf: 'flex-end',
-        color: UIColor.textQuaternary(),
     },
     wrapMsgContainer: {
         flexShrink: 1,
@@ -265,26 +292,14 @@ const styles = StyleSheet.create({
     leftTopCorner: {
         borderTopLeftRadius: 0,
     },
-    msgReceived: {
+    msgLeft: {
         alignItems: 'flex-start',
-        backgroundColor: UIColor.backgroundTertiary(),
     },
-    msgAborted: {
-        alignItems: 'flex-start',
-        backgroundColor: UIColor.error(),
-    },
-    msgSent: {
+    msgRight: {
         alignItems: 'flex-end',
-        backgroundColor: UIColor.primary(),
-    },
-    msgPending: {
-        alignItems: 'flex-end',
-        backgroundColor: UIColor.primary(),
     },
     actionString: {
-        paddingTop: UIConstant.tinyContentOffset(),
-        letterSpacing: 0.5,
         textAlign: 'right',
-        color: UIColor.grey(),
+        paddingTop: UIConstant.tinyContentOffset(),
     },
 });

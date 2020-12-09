@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { UIConstant, UIColor, UITextStyle } from '@tonlabs/uikit.core';
+import { UIConstant } from '@tonlabs/uikit.core';
+import {
+    UILabel,
+    UILabelRoles,
+    UILabelColors,
+    useTheme,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
 
 import type { ActionButtonMessage } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
@@ -26,6 +33,7 @@ const getButtonRadius = (position: BubblePosition) => {
 
 export function BubbleActionButton(props: ActionButtonMessage) {
     const position = useBubblePosition(props.status);
+    const theme = useTheme();
 
     return (
         <View style={getButtonContainer(position)}>
@@ -33,14 +41,20 @@ export function BubbleActionButton(props: ActionButtonMessage) {
                 testID="chat_action_cell_default"
                 style={[
                     styles.common,
+                    {
+                        borderColor: theme[ColorVariants.LineAccent],
+                    },
                     styles.button,
                     getButtonRadius(position),
                 ]}
                 onPress={props.onPress}
             >
-                <Text style={[UITextStyle.primaryCaptionMedium, styles.text]}>
+                <UILabel
+                    role={UILabelRoles.ActionCallout}
+                    color={UILabelColors.TextAccent}
+                >
                     {props.text}
-                </Text>
+                </UILabel>
             </TouchableOpacity>
         </View>
     );
@@ -61,11 +75,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: UIColor.primary(),
         marginVertical: UIConstant.tinyContentOffset(),
     },
     button: {
-        // width: "100%",
         paddingHorizontal: UIConstant.spaciousContentOffset(),
         height: UIConstant.smallButtonHeight(),
         borderRadius: UIConstant.borderRadius(),
@@ -75,8 +87,5 @@ const styles = StyleSheet.create({
     },
     buttonRight: {
         borderBottomRightRadius: 0,
-    },
-    text: {
-        color: UIColor.primary(),
     },
 });
