@@ -68,12 +68,13 @@ pipeline {
                 stage('npm Install') {
                     steps{
                         script {
-                            sh """
-                                npm install
-                                npm config set prefix $G_global_npm_path
-                                npm install -g firebase-tools
-                                npm install -g lerna;
-                            """
+                            sshagent (credentials: [G_gitcred]) {
+                                sh """
+                                    npm install
+                                    npx firebase-tools
+                                    npx lerna bootstrap && npx lerna run prepare
+                                """
+                            }
                         }
                     }
                     post {
@@ -89,7 +90,6 @@ pipeline {
                     steps {
                         script {
                             sh '''
-                                lerna bootstrap && lerna run prepare
                                 cd Example
                                 npm run web:bundle
                             '''
