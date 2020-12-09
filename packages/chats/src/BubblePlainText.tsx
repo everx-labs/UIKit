@@ -36,7 +36,7 @@ const getFontColor = (message: PlainTextMessage) => {
     }
 
     if (message.status === ChatMessageStatus.Received) {
-        return UILabelColors.TextSecondary;
+        return UILabelColors.TextPrimary;
     }
 
     return UILabelColors.TextPrimaryInverted; // TODO: is it right color?
