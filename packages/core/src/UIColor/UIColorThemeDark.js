@@ -1,60 +1,61 @@
 // @flow
+import { DarkTheme } from '@tonlabs/uikit.hydrogen';
 
 import UIColorPalette from './UIColorPalette';
 import type { UIColorThemeData } from './UIColorTypes';
 
 const UIColorThemeDark: UIColorThemeData = {
     borderBottom: {
-        normal: UIColorPalette.light,
-        focused: UIColorPalette.primary,
-        light: UIColorPalette.whiteLight,
-        hover: UIColorPalette.white,
+        normal: DarkTheme.LinePrimary, // UIColorPalette.light,
+        focused: DarkTheme.LineAccent, // UIColorPalette.primary,
+        light: DarkTheme.LineSecondary, // UIColorPalette.whiteLight,
+        hover: DarkTheme.LineNeutral, // UIColorPalette.white,
     },
     text: {
         primary: {
-            normal: UIColorPalette.text.darkPrimary,
-            disabled: UIColorPalette.text.darkNeutral,
+            normal: DarkTheme.TextPrimary, // UIColorPalette.text.darkPrimary,
+            disabled: DarkTheme.TextNeutral, // UIColorPalette.text.darkNeutral,
             tapped: UIColorPalette.primary2,
             hover: UIColorPalette.primary1,
         },
-        secondary: UIColorPalette.text.darkSecondary,
-        tertiary: UIColorPalette.text.darkTertiary,
-        quaternary: UIColorPalette.text.darkQuarternary,
-        action: UIColorPalette.white,
-        paragraph: UIColorPalette.text.darkParagraph,
-        caution: UIColorPalette.text.darkCaution,
-        placeholder: UIColorPalette.primary3,
-        accent: UIColorPalette.text.darkAccent,
-        positive: UIColorPalette.text.darkPositive,
-        negative: UIColorPalette.text.darkNegative,
+        secondary: DarkTheme.TextSecondary, // UIColorPalette.text.darkSecondary,
+        tertiary: DarkTheme.TextTertiary, // UIColorPalette.text.darkTertiary,
+        quaternary: DarkTheme.TextTertiary, // UIColorPalette.text.darkQuarternary,
+        action: DarkTheme.TextAccent, // UIColorPalette.white,
+        paragraph: DarkTheme.TextPrimary, // UIColorPalette.text.darkParagraph,
+        caution: DarkTheme.TextWarning, // UIColorPalette.text.darkCaution,
+        placeholder: DarkTheme.TextTertiary, // UIColorPalette.primary3,
+        accent: DarkTheme.TextAccent, // UIColorPalette.text.darkAccent,
+        positive: DarkTheme.TextPositive, // UIColorPalette.text.darkPositive,
+        negative: DarkTheme.TextNegative, // UIColorPalette.text.darkNegative,
     },
     background: {
-        primary: UIColorPalette.background.darkPrimary,
-        primaryInverted: UIColorPalette.background.darkPrimaryInverted,
-        secondary: UIColorPalette.background.darkSecondary,
-        tertiary: UIColorPalette.background.darkTertiary,
-        quarter: UIColorPalette.background.darkQuarter,
-        quinary: UIColorPalette.background.darkQuinary,
-        whiteLight: UIColorPalette.background.darkWhiteLight,
-        positive: UIColorPalette.background.darkPositive,
-        negative: UIColorPalette.background.darkNegative,
+        primary: DarkTheme.BackgroundPrimary, // UIColorPalette.background.darkPrimary,
+        primaryInverted: DarkTheme.BackgroundPrimaryInverted, // UIColorPalette.background.darkPrimaryInverted,
+        secondary: DarkTheme.BackgroundSecondary, // UIColorPalette.background.darkSecondary,
+        tertiary: DarkTheme.BackgroundTertiary, // UIColorPalette.background.darkTertiary,
+        quarter: DarkTheme.BackgroundTertiary, // UIColorPalette.background.darkQuarter,
+        quinary: DarkTheme.BackgroundTertiary, // UIColorPalette.background.darkQuinary,
+        whiteLight: DarkTheme.BackgroundNeutral, // UIColorPalette.background.darkWhiteLight,
+        positive: DarkTheme.BackgroundPositive, // UIColorPalette.background.darkPositive,
+        negative: DarkTheme.BackgroundNegative, // UIColorPalette.background.darkNegative,
         brake: UIColorPalette.background.darkBrake,
     },
     button: {
         background: {
-            normal: UIColorPalette.primary,
+            normal: DarkTheme.LineAccent, // UIColorPalette.primary,
             tapped: UIColorPalette.primary5,
             hover: UIColorPalette.primary4,
         },
         title: {
-            normal: UIColorPalette.white,
-            disabled: UIColorPalette.light,
+            normal: DarkTheme.TextPrimaryInverted, // UIColorPalette.white,
+            disabled: DarkTheme.TextNeutral, // UIColorPalette.light,
         },
     },
     detailsInput: {
-        comment: UIColorPalette.white,
+        comment: DarkTheme.TextNegative, // UIColorPalette.white,
         amount: {
-            placeholder: UIColorPalette.text.darkQuarternary,
+            placeholder: DarkTheme.TextTertiary, // UIColorPalette.text.darkQuarternary,
         },
     },
 };
