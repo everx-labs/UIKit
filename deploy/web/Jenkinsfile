@@ -71,7 +71,6 @@ pipeline {
                             sshagent (credentials: [G_gitcred]) {
                                 sh """
                                     npm install
-                                    npx firebase-tools
                                     npx lerna bootstrap && npx lerna run prepare
                                 """
                             }
@@ -89,10 +88,10 @@ pipeline {
                 stage('Webapp build'){
                     steps {
                         script {
-                            sh '''
+                            sh """
                                 cd Example
                                 npm run web:bundle
-                            '''
+                            """
                         }
                     }
                     post {
