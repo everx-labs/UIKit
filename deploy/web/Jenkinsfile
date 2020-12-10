@@ -4,10 +4,12 @@ G_setup = "Not set"
 G_install = "Not set"
 G_webbuild = "Not set"
 G_webdeploy = "Not set"
+G_statusMergedPR = 'closed'
+G_developmentBranch = 'development'
 G_global_npm_path = "/var/jenkins_home/workspace/Front"
-G_hosting_url = "Not set"
 DiscordURL = "https://discordapp.com/api/webhooks/744877394648891442/xdc6_1iT-kd_DiGAwoIeCRfN6gA7n9uLDUMiaHUBdQcG9E2lM6Z9hMPCSmGt58q3lTs1"
 C_TEXT = ""
+
 
 pipeline {
     agent {
@@ -18,8 +20,22 @@ pipeline {
         }
     }
     parameters {
-        string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for build')
-        booleanParam(name: 'FORCE', defaultValue: false, description: 'ignore a verify last success commit')
+        string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for the build')
+        booleanParam(name: 'FORCE', defaultValue: false, description: 'mark as true if want to build a custom branch')
+    }
+    triggers {
+        GenericTrigger(
+         genericVariables: [
+            [key: 'destination_branch', value: '$.pull_request.base.ref'],
+            [key: 'PR_number', value: '$.number'],
+            [key: 'action', value: '$.action']
+         ],
+         token: 'ybvclxv3ldjasb13ibv5',
+         causeString: 'Merge to development branch',
+         printContributedVariables: true,
+         printPostContent: true,
+         silentResponse: false,
+        )
     }
     environment {
        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
@@ -28,7 +44,6 @@ pipeline {
        userpass = credentials("TonJen-mac01pass")
        token = credentials("FIREBASE_UIKIT_TOKEN")
        NODE_OPTIONS = "--max-old-space-size=4096"
-       commitHash = sh (script: 'git show -s --format=%H ${GIT_COMMIT}',returnStdout: true).trim()
        GITHUB_ACCESS_TOKEN = credentials("JenkinsPackagesRW")
     }
     options {
@@ -36,8 +51,8 @@ pipeline {
         disableConcurrentBuilds()
     }
     stages {
-        stage('Check the last commit') {
-            when { anyOf { environment name: 'FORCE', value: 'true'; not {environment name: 'GIT_PREVIOUS_SUCCESSFUL_COMMIT', value: commitHash }}}
+        stage('Check the merge to development') {
+            when { allOf {expression { "${action}" == G_statusMergedPR}; expression { "${destination_branch}" == G_developmentBranch}}} or when { environment name: 'FORCE', value: 'true' }
             stages {
                 stage('Pre-setup') {
                     steps {
