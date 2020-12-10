@@ -1,14 +1,10 @@
 // @flow
 import UIColorPalette from './UIColorPalette';
 import { UIColorThemeName } from './UIColorTypes';
-import UIColorThemeAction from './UIColorThemeAction';
-import UIColorThemeDark from './UIColorThemeDark';
-import UIColorThemeLight from './UIColorThemeLight';
 import UIStyleColor from '../UIStyle/UIStyleColor';
 
 import type {
     UIColorData,
-    UIColorThemeData,
     UIColorThemeNameType,
 } from './UIColorTypes';
 
@@ -222,7 +218,7 @@ export default class UIColor {
 
     // Text colors
     static textPrimary(theme?: ?UIColorThemeNameType): UIColorData {
-        return UITheme.textPrimary(theme).normal;
+        return UITheme.textPrimary(theme);
     }
 
     // deprecated, moved to UIStyleColor
