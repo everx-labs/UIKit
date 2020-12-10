@@ -180,7 +180,9 @@ function useLayoutHelpers(canLoadMore: boolean) {
         }
     }, []);
 
-    const renderItem = React.useCallback(renderItemInternal(onLayoutCell), []);
+    const renderItem = React.useCallback(renderItemInternal(onLayoutCell), [
+        onLayoutCell,
+    ]);
 
     return {
         getItemLayout,

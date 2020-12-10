@@ -111,10 +111,10 @@ export function useUITextViewValue(
             if (useClearWithEnter && e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 wasClearedWithEnter.current = true;
-                return e;
+                return true;
             }
 
-            return e;
+            return false;
         },
         [useClearWithEnter],
     );
@@ -128,7 +128,6 @@ export function useUITextViewValue(
     return {
         inputHasValue,
         inputValue,
-        wasClearedWithEnter,
         clear,
         onChangeText,
         onKeyPress,

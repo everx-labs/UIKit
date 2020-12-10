@@ -280,12 +280,10 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
     },
     wrapMsgContainer: {
-        flexShrink: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
     },
     msgContainer: {
-        flexShrink: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         borderRadius: UIConstant.borderRadius(),

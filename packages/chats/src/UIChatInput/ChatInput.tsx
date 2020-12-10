@@ -54,7 +54,6 @@ function useInputValue({
     const {
         inputHasValue,
         inputValue,
-        wasClearedWithEnter,
         clear,
         onChangeText: onBaseChangeText,
         onKeyPress: onBaseKeyPress,
@@ -67,7 +66,7 @@ function useInputValue({
 
         clear();
         setDefaultInputHeight();
-    }, []);
+    }, [onSendTextProp]);
 
     const onChangeText = React.useCallback(
         (text: string) => {
@@ -77,26 +76,29 @@ function useInputValue({
                 showMaxLengthAlert();
             }
         },
-        [inputHasValue],
+        [onBaseChangeText],
     );
 
-    const onKeyPress = React.useCallback((e: any) => {
-        // Enable only for web (in native e.key is undefined)
-        onBaseKeyPress(e);
+    const onKeyPress = React.useCallback(
+        (e: any) => {
+            // Enable only for web (in native e.key is undefined)
+            const wasClearedWithEnter = onBaseKeyPress(e);
 
-        if (wasClearedWithEnter.current) {
-            onSendText();
-            return;
-        }
+            if (wasClearedWithEnter) {
+                onSendText();
+                return;
+            }
 
-        const eventKey = e.key || e.nativeEvent?.key;
-        if (
-            eventKey !== 'Backspace' &&
-            inputValue.current.length === MAX_INPUT_LENGTH
-        ) {
-            showMaxLengthAlert();
-        }
-    }, []);
+            const eventKey = e.key || e.nativeEvent?.key;
+            if (
+                eventKey !== 'Backspace' &&
+                inputValue.current.length === MAX_INPUT_LENGTH
+            ) {
+                showMaxLengthAlert();
+            }
+        },
+        [onSendText, onBaseKeyPress],
+    );
 
     return {
         inputHasValue,
@@ -378,6 +380,7 @@ const styles = StyleSheet.create({
         // On Android it could break layout, as with `flex: 1` height is collapsed
         // flex: 1,
         flexDirection: 'row',
+        alignItems: 'flex-end',
     },
     border: {
         height: 1,
