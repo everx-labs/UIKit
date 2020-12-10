@@ -10,7 +10,6 @@ G_global_npm_path = "/var/jenkins_home/workspace/Front"
 DiscordURL = "https://discordapp.com/api/webhooks/744877394648891442/xdc6_1iT-kd_DiGAwoIeCRfN6gA7n9uLDUMiaHUBdQcG9E2lM6Z9hMPCSmGt58q3lTs1"
 C_TEXT = ""
 
-
 pipeline {
     agent {
         dockerfile {
