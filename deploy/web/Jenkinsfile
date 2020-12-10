@@ -21,7 +21,7 @@ pipeline {
     }
     parameters {
         string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for the build')
-        booleanParam(name: 'FORCE', defaultValue: false, description: 'mark as true if want to build a custom branch')
+        booleanParam(name: 'FORCE', defaultValue: false, description: 'MARK AS TRUE IF YOU WANT TO BUILD MANUALLY')
     }
     triggers {
         GenericTrigger(
