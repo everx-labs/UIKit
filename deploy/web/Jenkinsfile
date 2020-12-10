@@ -84,7 +84,6 @@ pipeline {
                         script {
                             sshagent (credentials: [G_gitcred]) {
                                 sh """
-                                    npm install
                                     npx lerna bootstrap && npx lerna run prepare
                                 """
                             }
