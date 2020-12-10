@@ -2360,22 +2360,22 @@ const ChatWindowScreen = () => {
                             sender: '0:000',
                             text,
                         },
-                        {
-                            key: `${Date.now()}2`,
-                            type: 'stm',
-                            status: 'sent',
-                            time: Date.now(),
-                            sender: '0:000',
-                            text,
-                        },
-                        {
-                            key: `${Date.now()}3`,
-                            type: 'stm',
-                            status: 'sent',
-                            time: Date.now(),
-                            sender: '0:000',
-                            text,
-                        },
+                        // {
+                        //     key: `${Date.now()}2`,
+                        //     type: 'stm',
+                        //     status: 'sent',
+                        //     time: Date.now(),
+                        //     sender: '0:000',
+                        //     text,
+                        // },
+                        // {
+                        //     key: `${Date.now()}3`,
+                        //     type: 'stm',
+                        //     status: 'sent',
+                        //     time: Date.now(),
+                        //     sender: '0:000',
+                        //     text,
+                        // },
                         ...messages,
                     ]);
                 }}
