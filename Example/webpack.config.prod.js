@@ -26,6 +26,7 @@ module.exports = {
             minimize: true,
             debug: false,
         }),
+        new webpack.NoEmitOnErrorsPlugin(),
         new CircularDependencyPlugin({
             // exclude detection of files based on a RegExp
             // exclude: /node_modules/,
