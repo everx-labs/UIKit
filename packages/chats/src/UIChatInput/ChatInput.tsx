@@ -293,12 +293,9 @@ export function ChatInput(props: Props) {
     return (
         <>
             <View
-                style={[
-                    UIStyle.color.getBackgroundColorStyle(
-                        theme[ColorVariants.BackgroundPrimary],
-                    ),
-                    containerStyle,
-                ]}
+                style={UIStyle.color.getBackgroundColorStyle(
+                    theme[ColorVariants.BackgroundPrimary],
+                )}
             >
                 <Shortcuts shortcuts={props.shortcuts} />
                 <Animated.View
@@ -313,6 +310,7 @@ export function ChatInput(props: Props) {
                 <View
                     style={[
                         styles.container,
+                        containerStyle,
                         props.menuPlus?.length && props.menuPlus?.length > 0
                             ? null
                             : UIStyle.margin.leftDefault(),
@@ -324,35 +322,27 @@ export function ChatInput(props: Props) {
                     />
                     <View style={styles.inputMsg}>
                         {props.inputHidden ? null : (
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <UITextView
-                                    ref={props.textInputRef}
-                                    testID="chat_input"
-                                    autoCapitalize="sentences"
-                                    autoCorrect={false}
-                                    clearButtonMode="never"
-                                    keyboardType="default"
-                                    editable={props.editable}
-                                    maxLength={MAX_INPUT_LENGTH}
-                                    multiline
-                                    numberOfLines={numberOfLines}
-                                    placeholder={
-                                        props.placeholder ??
-                                        uiLocalized.TypeMessage
-                                    }
-                                    onContentSizeChange={onContentSizeChange}
-                                    onChangeText={onChangeText}
-                                    onKeyPress={onKeyPress}
-                                    onFocus={props.onFocus}
-                                    onBlur={props.onBlur}
-                                    style={styles.input}
-                                />
-                            </View>
+                            <UITextView
+                                ref={props.textInputRef}
+                                testID="chat_input"
+                                autoCapitalize="sentences"
+                                autoCorrect={false}
+                                clearButtonMode="never"
+                                keyboardType="default"
+                                editable={props.editable}
+                                maxLength={MAX_INPUT_LENGTH}
+                                multiline
+                                numberOfLines={numberOfLines}
+                                placeholder={
+                                    props.placeholder ?? uiLocalized.TypeMessage
+                                }
+                                onContentSizeChange={onContentSizeChange}
+                                onChangeText={onChangeText}
+                                onKeyPress={onKeyPress}
+                                onFocus={props.onFocus}
+                                onBlur={props.onBlur}
+                                style={styles.input}
+                            />
                         )}
                     </View>
                     <StickersButton
@@ -381,10 +371,13 @@ export function ChatInput(props: Props) {
     );
 }
 const styles = StyleSheet.create({
+    // If you want to use flex: 1 see container!
     container: {
-        flex: 1,
+        // Do not use `flex: 1` on any View wrappers that should be
+        // of size of their children, ie intrinsic.
+        // On Android it could break layout, as with `flex: 1` height is collapsed
+        // flex: 1,
         flexDirection: 'row',
-        alignItems: 'flex-end',
     },
     border: {
         height: 1,
@@ -403,8 +396,6 @@ const styles = StyleSheet.create({
     input: {
         padding: 0,
         maxHeight: UIConstant.chatInputMaxHeight(),
-        // We remove the fontFamily for Android in order to eliminate jumping input behaviour
-        ...(Platform.OS === 'android' ? { fontFamily: undefined } : null),
         ...{
             marginTop:
                 Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
