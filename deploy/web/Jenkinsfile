@@ -52,7 +52,7 @@ pipeline {
     }
     stages {
         stage('Check the merge to development') {
-            when { anyOf { allOf {expression { "${action}" == G_statusMergedPR}; expression { "${destination_branch}" == G_developmentBranch}; environment name: 'FORCE', value: 'true' }}}
+            when { anyOf { environment name: 'FORCE', value: 'true'; allOf {expression { "${action}" == G_statusMergedPR}; expression { "${destination_branch}" == G_developmentBranch}}}}
             stages {
                 stage('Pre-setup') {
                     steps {
