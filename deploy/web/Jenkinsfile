@@ -7,8 +7,6 @@ G_webdeploy = "Not set"
 G_statusMergedPR = 'closed'
 G_developmentBranch = 'development'
 G_global_npm_path = "/var/jenkins_home/workspace/Front"
-DiscordURL = "https://discordapp.com/api/webhooks/744877394648891442/xdc6_1iT-kd_DiGAwoIeCRfN6gA7n9uLDUMiaHUBdQcG9E2lM6Z9hMPCSmGt58q3lTs1"
-C_TEXT = ""
 
 pipeline {
     agent {
@@ -58,16 +56,6 @@ pipeline {
                         script {
                             def buildCause = currentBuild.getBuildCauses()
                             echo "buildCause: ${buildCause}";
-
-                            C_TEXT = """
-                                ${buildCause.shortDescription[0]}
-                                Build number: ${BUILD_NUMBER}
-                                Build parameters:
-                                - Branch: **${params.BRANCH}**
-                                - isForce: **${params.FORCE}**
-                            """
-                            echo C_TEXT;
-                            currentBuild.description = C_TEXT;
                         }
                     }
                     post {
@@ -141,17 +129,6 @@ pipeline {
     }
     post {
         always {
-            script {
-                if (C_TEXT) {
-                    string DiscordFooter = "Build duration is " + currentBuild.durationString
-                    DiscordTitle = "UI Kit WEB"
-                    DiscordDescription = "`${JOB_BASE_NAME}` build report:" + C_TEXT + "\n" \
-                     + "NPM install: ${G_install}" + "\n" \
-                     + "Build: ${G_webbuild}" + "\n" \
-                     + "Deployment: ${G_webdeploy}" + "\n"
-                    discordSend description: DiscordDescription, footer: DiscordFooter, link: RUN_DISPLAY_URL, successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), title: DiscordTitle, webhookURL: DiscordURL
-                }
-            }
             script {
                 cleanWs notFailBuild: true
             }
