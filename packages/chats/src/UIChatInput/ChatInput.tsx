@@ -405,5 +405,10 @@ const styles = StyleSheet.create({
                     ? 5 // seems to be smth connected to iOS's textContainerInset
                     : 0,
         },
+        ...Platform.select({
+            web: {
+                outline: 'none',
+            },
+        }),
     },
 });
