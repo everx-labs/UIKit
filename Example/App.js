@@ -2120,7 +2120,7 @@ const TextScreen = () => (
     </ScrollView>
 );
 
-const messages = [
+const initialMessages = [
     {
         type: 'act',
         status: 'sent',
@@ -2257,52 +2257,52 @@ const messages = [
         sender: '0:123',
         text: "I'm aborted one!",
     },
-    ...new Array(100).fill(null).reduce((acc, n, i) => {
-        acc.push({
-            type: 'stm',
-            status: 'pending',
-            time: Math.floor(Date.now() - 1 * 60 * 1000),
-            sender: '0:000',
-            text: 'This one is in process of sending...',
-        });
-        acc.push({
-            type: 'stm',
-            status: 'received',
-            time: Math.floor(Date.now() - 2 * 60 * 1000),
-            sender: '0:123',
-            text: 'How r u?',
-        });
-        acc.push({
-            type: 'stm',
-            status: 'sent',
-            time: Math.floor(Date.now() - 4 * 60 * 1000),
-            sender: '0:000',
-            text: 'This one is from me',
-        });
-        acc.push({
-            type: 'stm',
-            status: 'received',
-            time: Math.floor(Date.now() - 5 * 60 * 1000),
-            sender: '0:123',
-            text:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        });
-        acc.push({
-            type: 'stm',
-            status: 'received',
-            time: Math.floor(Date.now() - 5 * 60 * 1000),
-            sender: '0:123',
-            text: 'Hi there!',
-        });
-        acc.push({
-            type: 'stm',
-            status: 'received',
-            time: new Date('10 06 2020 10:00').getTime(),
-            sender: '0:123',
-            text: 'Hi from past!',
-        });
-        return acc;
-    }, []),
+    // ...new Array(100).fill(null).reduce((acc, n, i) => {
+    //     acc.push({
+    //         type: 'stm',
+    //         status: 'pending',
+    //         time: Math.floor(Date.now() - 1 * 60 * 1000),
+    //         sender: '0:000',
+    //         text: 'This one is in process of sending...',
+    //     });
+    //     acc.push({
+    //         type: 'stm',
+    //         status: 'received',
+    //         time: Math.floor(Date.now() - 2 * 60 * 1000),
+    //         sender: '0:123',
+    //         text: 'How r u?',
+    //     });
+    //     acc.push({
+    //         type: 'stm',
+    //         status: 'sent',
+    //         time: Math.floor(Date.now() - 4 * 60 * 1000),
+    //         sender: '0:000',
+    //         text: 'This one is from me',
+    //     });
+    //     acc.push({
+    //         type: 'stm',
+    //         status: 'received',
+    //         time: Math.floor(Date.now() - 5 * 60 * 1000),
+    //         sender: '0:123',
+    //         text:
+    //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    //     });
+    //     acc.push({
+    //         type: 'stm',
+    //         status: 'received',
+    //         time: Math.floor(Date.now() - 5 * 60 * 1000),
+    //         sender: '0:123',
+    //         text: 'Hi there!',
+    //     });
+    //     acc.push({
+    //         type: 'stm',
+    //         status: 'received',
+    //         time: new Date('10 06 2020 10:00').getTime(),
+    //         sender: '0:123',
+    //         text: 'Hi from past!',
+    //     });
+    //     return acc;
+    // }, []),
 ].map((m: any, i: number) => ((m.key = i), m));
 
 const stickers = new Array(10).fill(null).map((a, i) => ({
@@ -2311,7 +2311,7 @@ const stickers = new Array(10).fill(null).map((a, i) => ({
     description: '',
     name: 'test',
     stickers: new Array(4).fill(null).map((b, i) => ({
-        name: 'crown',
+        name: `crown${i}`,
         url:
             'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
     })),
@@ -2331,11 +2331,64 @@ const shortcuts = [
 
 const ChatStack = createStackNavigator();
 
-const Chat = () => {
+const ChatWindowScreen = () => {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
+    const [messages, setMessages] = React.useState(initialMessages);
     const insets = useSafeAreaInsets();
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onSendSticker = React.useCallback(() => undefined, []);
+
+    return (
+        <>
+            <UIChatList
+                areStickersVisible={false}
+                onLoadEarlierMessages={onLoadEarlierMessages}
+                canLoadMore
+                isLoadingMore={false}
+                messages={messages}
+                bottomInset={bottomInset}
+            />
+            <UIChatInput
+                editable
+                onSendText={(text) => {
+                    setMessages([
+                        {
+                            key: `${Date.now()}1`,
+                            type: 'stm',
+                            status: 'sent',
+                            time: Date.now(),
+                            sender: '0:000',
+                            text,
+                        },
+                        // {
+                        //     key: `${Date.now()}2`,
+                        //     type: 'stm',
+                        //     status: 'sent',
+                        //     time: Date.now(),
+                        //     sender: '0:000',
+                        //     text,
+                        // },
+                        // {
+                        //     key: `${Date.now()}3`,
+                        //     type: 'stm',
+                        //     status: 'sent',
+                        //     time: Date.now(),
+                        //     sender: '0:000',
+                        //     text,
+                        // },
+                        ...messages,
+                    ]);
+                }}
+                onSendSticker={onSendSticker}
+                stickers={stickers}
+                onHeightChange={setBottomInset}
+                shortcuts={shortcuts}
+            />
+        </>
+    );
+};
+
+const Chat = () => {
     return (
         <ChatStack.Navigator>
             <ChatStack.Screen
@@ -2348,27 +2401,8 @@ const Chat = () => {
                         ),
                     },
                 }}
-            >
-                {() => (
-                    <>
-                        <UIChatList
-                            areStickersVisible={false}
-                            onLoadEarlierMessages={onLoadEarlierMessages}
-                            canLoadMore
-                            isLoadingMore={false}
-                            messages={messages}
-                            bottomInset={bottomInset}
-                        />
-                        <UIChatInput
-                            editable
-                            onSendSticker={onSendSticker}
-                            stickers={stickers}
-                            onHeightChange={setBottomInset}
-                            shortcuts={shortcuts}
-                        />
-                    </>
-                )}
-            </ChatStack.Screen>
+                component={ChatWindowScreen}
+            />
         </ChatStack.Navigator>
     );
 };

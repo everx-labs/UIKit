@@ -147,12 +147,11 @@ const createTestId = (pattern: string, text: string) => {
 
 function BubbleTime(props: PlainTextMessage) {
     return (
-        <View style={styles.timeTextContainer}>
+        <View style={styles.timeText}>
             <UILabel
                 testID={createTestId('chat_text_message%_time', props.text)}
                 role={UILabelRoles.ParagraphFootnote}
                 color={getFontColor(props)}
-                style={styles.timeText}
             >
                 {uiLocalized.formatTime(props.time || Date.now())}
             </UILabel>
@@ -252,15 +251,29 @@ const styles = StyleSheet.create({
         paddingLeft: '20%',
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
+        ...Platform.select({
+            web: {
+                maxWidth: '100%',
+            },
+        }),
     },
     containerLeft: {
         paddingRight: '20%',
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
+        ...Platform.select({
+            web: {
+                maxWidth: '100%',
+            },
+        }),
     },
     textCell: {
-        textAlign: 'left',
-        maxWidth: '100%',
+        flexShrink: 1,
+        ...Platform.select({
+            web: {
+                maxWidth: '100%',
+            },
+        }),
     },
     urlReceived: {
         // Some android devices seem to render the underline wrongly
@@ -270,14 +283,14 @@ const styles = StyleSheet.create({
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
-    timeTextContainer: {
+    timeText: {
         paddingLeft: UIConstant.smallContentOffset(),
         paddingTop: UIConstant.verticalContentOffset() / 2,
-        marginLeft: 'auto', // Need for correct positioning to right side in message cell
-    },
-    timeText: {
-        textAlign: 'right',
-        alignSelf: 'flex-end',
+        ...Platform.select({
+            web: {
+                marginLeft: 'auto', // Need for correct positioning to right side in message cell
+            },
+        }),
     },
     wrapMsgContainer: {
         flexShrink: 1,
@@ -285,10 +298,14 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     msgContainer: {
-        flexShrink: 1,
         flexDirection: 'row',
-        flexWrap: 'wrap',
         borderRadius: UIConstant.borderRadius(),
+        ...Platform.select({
+            web: {
+                flexShrink: 1,
+                flexWrap: 'wrap',
+            },
+        }),
     },
     rightBottomCorner: {
         borderBottomRightRadius: 0,
