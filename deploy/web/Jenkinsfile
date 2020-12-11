@@ -67,7 +67,7 @@ pipeline {
                         }
                     }
                 }
-                stage('npm Install') {
+                stage('Lerna boostrap') {
                     steps{
                         script {
                             sshagent (credentials: [G_gitcred]) {
@@ -91,7 +91,7 @@ pipeline {
                         script {
                             sh """
                                 cd Example
-                                npm run web:bundle
+                                yarn run web:bundle
                             """
                         }
                     }
