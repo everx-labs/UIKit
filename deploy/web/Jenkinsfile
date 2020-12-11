@@ -1,0 +1,137 @@
+G_giturl = "git@github.com:tonlabs/TON-Surf.git"
+G_gitcred = 'TonJenSSH'
+G_setup = "Not set"
+G_install = "Not set"
+G_webbuild = "Not set"
+G_webdeploy = "Not set"
+G_statusMergedPR = 'closed'
+G_developmentBranch = 'development'
+G_global_npm_path = "/var/jenkins_home/workspace/Front"
+
+pipeline {
+    agent {
+        dockerfile {
+            dir 'deploy/dockerfiles'
+            filename 'Dockerfile_Web'
+            label 'master'
+        }
+    }
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for the build')
+        booleanParam(name: 'FORCE', defaultValue: false, description: 'MARK AS TRUE IF YOU WANT TO BUILD MANUALLY')
+    }
+    triggers {
+        GenericTrigger(
+         genericVariables: [
+            [key: 'destination_branch', value: '$.pull_request.base.ref'],
+            [key: 'PR_number', value: '$.number'],
+            [key: 'action', value: '$.action']
+         ],
+         token: 'ybvclxv3ldjasb13ibv5',
+         causeString: 'Merge to development branch',
+         printContributedVariables: true,
+         printPostContent: true,
+         silentResponse: false,
+        )
+    }
+    environment {
+       PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+       LC_ALL = "en_US.UTF-8"
+       LANG = "en_US.UTF-8"
+       userpass = credentials("TonJen-mac01pass")
+       token = credentials("FIREBASE_UIKIT_TOKEN")
+       NODE_OPTIONS = "--max-old-space-size=4096"
+       GITHUB_ACCESS_TOKEN = credentials("JenkinsPackagesRW")
+    }
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+        disableConcurrentBuilds()
+    }
+    stages {
+        stage('Check the merge to development') {
+            when { anyOf { environment name: 'FORCE', value: 'true'; allOf {expression { "${action}" == G_statusMergedPR}; expression { "${destination_branch}" == G_developmentBranch}}}}
+            stages {
+                stage('Pre-setup') {
+                    steps {
+                        script {
+                            def buildCause = currentBuild.getBuildCauses()
+                            echo "buildCause: ${buildCause}";
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_setup = "success"}
+                        }
+                        failure {
+                            script{G_setup = "failure"}
+                        }
+                    }
+                }
+                stage('Lerna boostrap') {
+                    steps{
+                        script {
+                            sshagent (credentials: [G_gitcred]) {
+                                sh """
+                                    npx lerna bootstrap && npx lerna run prepare
+                                """
+                            }
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_install = "success"}
+                        }
+                        failure {
+                            script{G_install = "failure"}
+                        }
+                    }
+                }
+                stage('Webapp build'){
+                    steps {
+                        script {
+                            sh """
+                                cd Example
+                                yarn run web:bundle
+                            """
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_webbuild = "success"}
+                        }
+                        failure {
+                            script{G_webbuild = "failure"}
+                        }
+                    }
+                }
+                stage('Webapp deploy'){
+                    steps {
+                        script {
+                            sh """
+                                npm config set prefix $G_global_npm_path
+                                alias firebase="`npm config get prefix`/bin/firebase"
+                                cd Example
+                                firebase deploy --token "$token"
+                            """
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_webdeploy = "success"}
+                        }
+                        failure {
+                            script{G_webdeploy = "failure"}
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                cleanWs notFailBuild: true
+            }
+        }
+    }
+}
