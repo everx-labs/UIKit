@@ -75,6 +75,10 @@ export default class UIStyleColor {
         return this.getColorStyle(UITheme.textPrimary(theme));
     }
 
+    static backgroundPrimary(theme?: ?UIColorThemeNameType) {
+        return this.getBackgroundColorStyle(UITheme.backgroundPrimary(theme));
+    }
+
     static stateTextPrimary(
         theme: ?UIColorThemeNameType,
         disabled: boolean,
