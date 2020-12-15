@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
         },
         ...Platform.select({
             web: {
-                outline: 'none',
+                outlineStyle: 'none',
             },
         }),
     },
