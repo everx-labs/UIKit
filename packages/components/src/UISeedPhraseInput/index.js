@@ -57,7 +57,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
-        totalWords: 12, // default value
+        totalWords: 24, // max words count value
         words: [],
         // Set an InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS flag to a keyboard on Android.
         // Needed by security reasons.
@@ -227,7 +227,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         if (!valid && count === 0) {
             return UIColor.error();
         } else if (valid && count === 0) {
-            return UIColor.success();
+            // return UIColor.success();
         }
 
         return null;
@@ -241,21 +241,28 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         const valid = this.areWordsValid();
         const count = this.getRemainingCount();
+        const entered = this.getWordsCount();
 
-        if (!valid && count === 0) {
+        if (entered === 0) {
+            return uiLocalized.wordsCount;
+        } else if (!valid && count === 0) {
             return uiLocalized.seedPhraseTypo;
-        } else if (valid && count === 0) {
-            return uiLocalized.greatMemory;
-        }
+        } // else if (valid && count === 0) {
+        //     return uiLocalized.greatMemory;
+        // }
 
-        return uiLocalized.localizedStringForValue(count, 'moreWords');
+        return uiLocalized.localizedStringForValue(entered, 'words');
     }
 
     getRemainingCount(): number {
+        const count = this.getWordsCount();
+        return this.totalWords - count;
+    }
+
+    getWordsCount(): number {
         const phrase = this.getValue().trim();
         const words = UISeedPhraseInput.splitPhrase(phrase);
-        const count = phrase.length === 0 ? 0 : words.length;
-        return this.totalWords - count;
+        return phrase.length === 0 ? 0 : words.length;
     }
 
     getWordThatChangedIndex(): number {
