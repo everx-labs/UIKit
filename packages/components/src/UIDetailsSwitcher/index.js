@@ -3,7 +3,8 @@ import React from 'react';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, TouchableOpacity, Text } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
+import { UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIDetailsView from '../UIDetailsView';
@@ -120,7 +121,14 @@ export default class UIDetailsSwitcher<Props, State>
 
         if (!comments) {
             return (
-                <Text style={[UIStyle.text.primaryBodyMedium(), UIStyle.common.flex(), textStyle]}>
+                <Text
+                    style={[
+                        Typography[TypographyVariants.Action],
+                        UIStyle.color.getColorStyle(UIColor.textPrimary()),
+                        UIStyle.common.flex(),
+                        textStyle,
+                    ]}
+                >
                     {details}
                 </Text>
             );

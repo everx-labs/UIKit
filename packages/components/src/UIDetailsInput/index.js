@@ -6,19 +6,19 @@ import { Platform, TextInput, Text, View, StyleSheet, Image } from 'react-native
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     UIColor,
     UIConstant,
     UIStyle,
     UIStyleColor,
-    UIFont,
 } from '@tonlabs/uikit.core';
 import type {
     UIColorData,
     UIColorThemeNameType,
     EventProps,
 } from '@tonlabs/uikit.core';
-import { UIAssets } from '@tonlabs/uikit.assets';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UILabel from '../UILabel';
 import UITextButton from '../UITextButton';
@@ -707,7 +707,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const colorStyle = UIColor.textTertiaryStyle(theme);
 
         return (
-            <Text style={[UIFont.tinyRegular(), colorStyle]}>
+            <Text style={[Typography[TypographyVariants.ParagraphLabel], colorStyle]}>
                 {text}
             </Text>
         );

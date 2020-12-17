@@ -9,27 +9,26 @@ import {
 } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     UIConstant,
     UIDevice,
-    UIFont,
     UIColor,
     UIStyle,
 } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UITextInput from '../UITextInput';
 import UIComponent from '../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
-
 const styles = StyleSheet.create({
     searchInput: {
         flex: 1,
     },
     textStyle: {
-        ...UIFont.bodyRegular(),
+        ...Typography[TypographyVariants.ParagraphText],
         width: '100%',
     },
     searchContainer: {

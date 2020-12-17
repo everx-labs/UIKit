@@ -4,6 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -44,9 +45,12 @@ class UIListHeader extends UIComponent<Props, State> {
                     this.props.containerStyle,
                 ]}
             >
-                <Text style={UIStyle.text.primaryAccentBold()}>
+                <UILabel
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.HeadlineHead} // TODO: upd acc to the UIStyle.text.primaryAccentBold()
+                >
                     {this.getTitle()}
-                </Text>
+                </UILabel>
             </View>
         );
     }

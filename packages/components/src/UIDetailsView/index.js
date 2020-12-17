@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { UIConstant, UIStyle, UIFunction } from '@tonlabs/uikit.core';
+import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UILabel from '../UILabel';
-import type { LabelRoleValue } from '../UILabel';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,7 +25,8 @@ type Props = {
     onPress: ?() => void,
     style: ViewStyleProp,
     containerStyle: ViewStyleProp,
-    textRole: ?LabelRoleValue,
+    textColor: ? TextStyleProp,
+    textRole: ?TextStyleProp,
     textStyle: ViewStyleProp,
     commentsStyle: ViewStyleProp,
     disabled?: boolean,
@@ -43,6 +43,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         onPress: null,
         style: {},
         containerStyle: {},
+        textColor: undefined,
         textRole: undefined,
         textStyle: {},
         commentsStyle: {},
@@ -52,20 +53,24 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     // Render
     renderValue() {
         const {
-            value, textStyle, textRole, onPress, disabled, testID, selectable,
+            value, textStyle, textColor, textRole, onPress, disabled, testID, selectable,
         } = this.props;
-        let role = onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular;
+        let color = UILabelColors.TextPrimary;
+        let role = onPress ? UILabelRoles.ActionCallout : UILabelRoles.ParagraphNote;
         if (disabled) {
-            role = UILabel.Role.CaptionTertiary;
+            color = UILabelColors.TextTertiary;
+            role = UILabelRoles.ParagraphFootnote;
         }
         return (
             <UILabel
-                testID={testID || null}
-                style={textStyle}
+                color={textColor || color}
                 role={textRole || role}
-                text={value}
                 selectable={selectable}
-            />
+                style={textStyle}
+                testID={testID || null}
+            >
+                {value}
+            </UILabel>
         );
     }
 
@@ -73,11 +78,13 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         const { comments, commentsStyle, commentTestID } = this.props;
         return (
             <UILabel
-                testID={commentTestID || null}
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphFootnote}
                 style={[UIStyle.margin.topTiny(), commentsStyle]}
-                role={UILabel.Role.CaptionTertiary}
-                text={comments}
-            />
+                testID={commentTestID || null}
+            >
+                {comments}
+            </UILabel>
         );
     }
 

@@ -3,7 +3,8 @@ import React from 'react';
 import { StyleSheet, BackHandler, Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import { UIColor, UITextStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIColor, UIConstant, UIStyle} from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -151,7 +152,6 @@ export default class UIAlertView extends UIComponent<Props, State> {
     render() {
         const cancelButton = this.state.alertButtons[0];
         const confirmButton = this.state.alertButtons[1];
-        const { primaryBodyBold, secondarySmallRegular, actionSmallMedium } = UITextStyle;
         const {
             overlayStyle, containerStyle, titleStyle, messageStyle, buttonStyle, buttonTextStyle,
         } = styles;
@@ -166,8 +166,16 @@ export default class UIAlertView extends UIComponent<Props, State> {
             message={this.state.alertMessage}
             closeOnTouchOutside={false}
             closeOnHardwareBackPress={false}
-            titleStyle={[primaryBodyBold, titleStyle]}
-            messageStyle={[secondarySmallRegular, messageStyle]}
+            titleStyle={[
+                UIStyle.color.getColorStyle(UIColor.textPrimary()),
+                Typography[TypographyVariants.HeadlineHead],
+                titleStyle,
+            ]}
+            messageStyle={[
+                UIStyle.color.getColorStyle(UIColor.textSecondary()),
+                Typography[TypographyVariants.ParagraphNote],
+                messageStyle,
+            ]}
             // closeOnTouchOutside={false}
             // closeOnHardwareBackPress={false}
             showCancelButton={!!cancelButton}
@@ -177,12 +185,14 @@ export default class UIAlertView extends UIComponent<Props, State> {
             cancelButtonStyle={buttonStyle}
             confirmButtonStyle={buttonStyle}
             cancelButtonTextStyle={[
-                actionSmallMedium,
+                UIStyle.color.getColorStyle(UIColor.textAccent()),
+                Typography[TypographyVariants.ActionCallout],
                 buttonTextStyle,
                 (cancelButton && cancelButton.color ? { color: cancelButton.color } : {}),
             ]}
             confirmButtonTextStyle={[
-                actionSmallMedium,
+                UIStyle.color.getColorStyle(UIColor.textAccent()),
+                Typography[TypographyVariants.ActionCallout],
                 buttonTextStyle,
                 (confirmButton && confirmButton.color ? { color: confirmButton.color } : {}),
             ]}

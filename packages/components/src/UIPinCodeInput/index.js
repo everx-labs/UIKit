@@ -11,12 +11,12 @@ import {
 import { BorderlessButton as RNGHBorderlessButton } from 'react-native-gesture-handler';
 import debounce from 'lodash/debounce';
 
-import { UIStyle, UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIStyle, UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants, UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';
-import UILabel from '../UILabel';
 
 const BorderlessButton = Platform.select({
     web: TouchableOpacity,
@@ -235,11 +235,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderLabel() {
         return (
             <UILabel
-                role={UILabel.Role.Description}
-                text={this.props.pinTitle}
+                color={UILabelColors.TextPrimary}
                 numberOfLines={1}
+                role={UILabelRoles.ParagraphText}
                 selectable={false}
-            />
+            >
+                {this.props.pinTitle}
+            </UILabel>
         );
     }
 
@@ -261,13 +263,15 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
         return (
             <UILabel
-                testID={this.props.commentTestID}
-                style={descStyle.descColor}
-                role={UILabel.Role.Caption}
-                text={description}
+                color={UILabelColors.TextSecondary}
                 numberOfLines={1}
+                role={UILabelRoles.ParagraphFootnote}
+                style={descStyle.descColor}
                 selectable={false}
-            />
+                testID={this.props.commentTestID}
+            >
+                {description}
+            </UILabel>
         );
     }
 
@@ -380,7 +384,12 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         }
                     >
                         {this.props.usePredefined && (
-                            <Text style={UITextStyle.primaryCaptionMedium}>DEV</Text>
+                            <Text
+                                style={[
+                                    UIStyle.color.getColorStyle(UIColor.textPrimary()),
+                                    Typography[TypographyVariants.ActionFootnote],
+                                ]}
+                            >DEV</Text>
                         )}
                         {!this.props.usePredefined && this.renderBiometryLogin()}
                     </BorderlessButton>

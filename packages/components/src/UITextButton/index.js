@@ -10,10 +10,10 @@ import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import {
     UIConstant,
     UIStyle,
-    UIFont,
     UIColor,
     UIFunction,
 } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -162,7 +162,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         if (!title) {
             return null;
         }
-        const defaultFontStyle = UIFont.smallMedium();
+        const defaultFontStyle = Typography[TypographyVariants.ActionCallout];
         const tapped = this.isTapped();
         const hover = this.isHover();
         const defaultColorStyle = UIColor.actionTextPrimaryStyle(theme);

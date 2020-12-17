@@ -3,7 +3,8 @@ import React from 'react';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.smallContentOffset(),
     },
     titleFont: {
-        ...UIFont.tinyBold(),
+        ...Typography[TypographyVariants.HeadlineLabel],
     },
     // web-only style
     tooltipContainerStyle: {

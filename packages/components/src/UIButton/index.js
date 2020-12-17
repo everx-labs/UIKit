@@ -5,8 +5,9 @@ import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';
@@ -27,15 +28,6 @@ const styles = StyleSheet.create({
     },
     badgeContainer: {
         marginRight: UIConstant.smallContentOffset(),
-    },
-    titleL: {
-        ...UIFont.bodyMedium(),
-    },
-    titleM: {
-        ...UIFont.smallMedium(),
-    },
-    titleS: {
-        ...UIFont.captionMedium(),
     },
     extension: {
         flex: 1,
@@ -307,13 +299,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     getTitleFontStyle() {
         switch (this.props.buttonSize) {
         case UIButton.buttonSize.large:
-            return styles.titleL;
+            return Typography[TypographyVariants.Action];
         case UIButton.buttonSize.medium:
-            return styles.titleM;
+            return Typography[TypographyVariants.ActionCallout];
         case UIButton.buttonSize.small:
-            return styles.titleS;
+            return Typography[TypographyVariants.ActionFootnote];
         default:
-            return styles.titleL;
+            return Typography[TypographyVariants.Action];
         }
     }
 
@@ -518,7 +510,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         const data = (
             <Text
                 style={[
-                    UIStyle.text.tertiaryBodyRegular(),
+                    Typography[TypographyVariants.Action],
+                    UIStyle.color.getColorStyle(UIColor.textTertiary()),
                     UIStyle.margin.leftSmall(),
                     this.props.countStyle,
                 ]}

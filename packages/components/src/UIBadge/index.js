@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 import { StyleSheet, View, Text } from 'react-native';
 
-import { UIFont, UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     badgeText: {
-        ...UIFont.tinyMedium(),
+        ...Typography[TypographyVariants.ActionLabel],
         textAlign: 'center',
         letterSpacing: 0,
     },

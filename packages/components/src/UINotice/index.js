@@ -7,7 +7,6 @@ import {
     Platform,
     SafeAreaView,
     StyleSheet,
-    Text,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -15,16 +14,15 @@ import FlashMessage, { hideMessage, showMessage } from 'react-native-flash-messa
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     UIConstant,
     UIColor,
-    UIFont,
     UIDevice,
     UIStyle,
-    UITextStyle,
 } from '@tonlabs/uikit.core';
 import type { PositionObject } from '@tonlabs/uikit.core';
-import { UIAssets } from '@tonlabs/uikit.assets';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIAlertView from '../UIAlertView';
@@ -52,14 +50,6 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         marginRight: contentOffset,
-    },
-    messageStyle: {
-        color: UIColor.grey(),
-        ...UIFont.captionRegular(),
-    },
-    actionTitleStyle: {
-        color: UIColor.primary(),
-        ...UIFont.smallMedium(),
     },
     fixTitleOverflow: {
         overflow: 'hidden',
@@ -368,9 +358,13 @@ export default class UINotice
 
     renderHeader() {
         const title = (
-            <Text style={[UITextStyle.primaryBodyBold, styles.fixTitleOverflow]}>
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.HeadlineHead}
+                style={styles.fixTitleOverflow}
+            >
                 {this.title}
-            </Text>
+            </UILabel>
         );
         const titleComponent = this.title ? title : null;
         const subView = (
@@ -397,7 +391,12 @@ export default class UINotice
                     style={{ marginTop: UIConstant.mediumContentOffset() }}
                     onPress={() => this.closeWithAction()}
                 >
-                    <Text style={styles.actionTitleStyle}>{this.action.title}</Text>
+                    <UILabel
+                        color={UILabelColors.TextPrimary}
+                        role={UILabelRoles.ActionCallout}
+                    >
+                        {this.action.title}
+                    </UILabel>
                 </TouchableOpacity>
             );
         }
@@ -423,9 +422,14 @@ export default class UINotice
                     >
                         <View style={styles.contentContainer}>
                             {this.renderHeader()}
-                            <Text style={styles.messageStyle}>
+
+                            <UILabel
+                                color={UILabelColors.TextTertiary}
+                                role={UILabelRoles.ParagraphFootnote}
+                                style={UIStyle.color.getColorStyle(UIColor.grey())}
+                            >
                                 {this.message}
-                            </Text>
+                            </UILabel>
                             {this.renderActionButton()}
                         </View>
                         {this.renderCloseButton()}
