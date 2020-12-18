@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 // @flow
 import * as React from 'react';
-import { Platform, TextInput, Text, View, StyleSheet, Image } from 'react-native';
+import { Platform, TextInput, View, StyleSheet, Image } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
@@ -18,9 +18,8 @@ import type {
     UIColorThemeNameType,
     EventProps,
 } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
-import UILabel from '../UILabel';
 import UITextButton from '../UITextButton';
 import UIActionImage from '../UIActionImage';
 import { UIActionComponent } from '../UIActionComponent';
@@ -62,9 +61,6 @@ const styles = StyleSheet.create({
     button: {
         marginLeft: UIConstant.tinyContentOffset(),
         height: undefined,
-    },
-    requiredAsterisk: {
-        color: UIColor.primary(),
     },
     prefixIcon: {
         marginRight: UIConstant.smallContentOffset(),
@@ -693,7 +689,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     // Render
     renderFloatingTitle() {
         const {
-            floatingTitle, floatingTitleText, theme, hideFloatingTitle,
+            floatingTitle, floatingTitleText, hideFloatingTitle,
         } = this.props;
         if (hideFloatingTitle) {
             return null;
@@ -704,12 +700,13 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             ? ' '
             : floatingTitleText || this.getPlaceholder();
 
-        const colorStyle = UIColor.textTertiaryStyle(theme);
-
         return (
-            <Text style={[Typography[TypographyVariants.ParagraphLabel], colorStyle]}>
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphLabel}
+            >
                 {text}
-            </Text>
+            </UILabel>
         );
     }
 
@@ -732,14 +729,13 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             return null;
         }
         return (
-            <Text
-                style={[
-                    UIStyle.text.quaternaryBodyRegular(),
-                    styles.beginningTag,
-                ]}
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphText}
+                style={styles.beginningTag}
             >
                 {beginningTag}
-            </Text>
+            </UILabel>
         );
     }
 
@@ -861,9 +857,13 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             return null;
         }
         return (
-            <Text style={[UIStyle.text.secondaryBodyRegular(), UIStyle.margin.rightSmall()]}>
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphText}
+                style={UIStyle.margin.rightSmall()}
+            >
                 {maxLength - value.length}
-            </Text>
+            </UILabel>
         );
     }
 
@@ -941,16 +941,18 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             ? this.getSecondaryPlaceholder()
             : this.getPlaceholder();
         return (
-            <Text style={[UIStyle.text.tertiaryBodyRegular(), UIStyle.common.positionAbsolute()]}>
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphText}
+                style={UIStyle.common.positionAbsolute()}
+            >
                 {placeholder}
-                <Text
-                    style={[
-                        UIStyle.text.tertiaryBodyRegular(),
-                        styles.requiredAsterisk,
-                    ]}
+                <UILabel
+                    color={UILabelColors.TextAccent}
+                    role={UILabelRoles.ParagraphText}
                 > *
-                </Text>
-            </Text>
+                </UILabel>
+            </UILabel>
         );
     }
 
@@ -1005,7 +1007,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         if (!comment && !commentRight) {
             return null;
         }
-        const defaultColorStyle = UIColor.textTertiaryStyle(theme);
         const commentColor = this.commentColor();
         const colorStyle = commentColor
             ? UIColor.getColorStyle(commentColor)
@@ -1032,13 +1033,15 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             ] : null;
         const commentRightLabel = (
             <UILabel
-                role={UILabel.Role.CaptionTertiary}
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphFootnote}
                 style={[
                     ...textStyle,
                     ...containerStyle,
                 ]}
-                text={commentRight}
-            />
+            >
+                {commentRight}
+            </UILabel>
         );
         const component = onPressComment ? (
             <UITextButton
@@ -1049,16 +1052,17 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 onPress={onPressComment}
             />
         ) : (
-            <Text
+            <UILabel
                 {...testIDProp}
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphFootnote}
                 style={[
-                    defaultColorStyle,
                     ...textStyle,
                     ...containerStyle,
                 ]}
             >
                 {comment}
-            </Text>
+            </UILabel>
         );
 
         return (
