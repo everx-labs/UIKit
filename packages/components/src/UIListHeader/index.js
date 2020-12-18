@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
@@ -28,7 +28,7 @@ class UIListHeader extends UIComponent<Props, State> {
     static defaultProps = {
         title: '',
         containerStyle: null,
-    }
+    };
 
     // Getters
     getTitle() {
@@ -47,7 +47,7 @@ class UIListHeader extends UIComponent<Props, State> {
             >
                 <UILabel
                     color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.HeadlineHead} // TODO: upd acc to the UIStyle.text.primaryAccentBold()
+                    role={UILabelRoles.TitleMedium}
                 >
                     {this.getTitle()}
                 </UILabel>

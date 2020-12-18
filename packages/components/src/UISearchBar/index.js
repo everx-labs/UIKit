@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     textStyle: {
-        ...Typography[TypographyVariants.ParagraphText],
         width: '100%',
     },
     searchContainer: {
@@ -263,7 +262,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
                         value={value}
                         placeholder={placeholder}
                         returnKeyType="search"
-                        textStyle={styles.textStyle}
+                        textStyle={[Typography[TypographyVariants.ParagraphText], styles.textStyle]}
                         containerStyle={styles.searchInput}
                         onFocus={this.onFocusHandler}
                         onBlur={this.onBlurHandler}

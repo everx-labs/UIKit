@@ -68,7 +68,6 @@ export default class UILandingView extends UIComponent<Props, State> {
                         UIStyle.Margin.topSmall(),
                         !content && styles.descriptionLabel,
                     ]}
-                    useDefaultSpace
                 >
                     {description}
                 </UILabel>

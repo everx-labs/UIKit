@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
-import { UIStyle, UIColor } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { UIStyle } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIDetailsView from '../UIDetailsView';
@@ -31,6 +31,10 @@ type DetailsSwitcherProps = {
      @default false
      */
     disabled?: boolean,
+    /** Details text color
+     @default null
+     */
+    textColor?: TextStyleProp,
     /** Details text style
      @default null
      */
@@ -82,6 +86,7 @@ export default class UIDetailsSwitcher<Props, State>
         switcherPosition: UIDetailsSwitcher.Position.Right,
         disabled: false,
         type: UIDetailsSwitcher.Type.Square,
+        textColor: null,
         textStyle: null,
         style: null,
         details: '',
@@ -112,7 +117,7 @@ export default class UIDetailsSwitcher<Props, State>
     // Render
     renderDetailsView() {
         const {
-            details, comments, textStyle,
+            details, comments, textColor, textStyle,
         } = this.props;
 
         if (!comments && !details) {
@@ -121,16 +126,13 @@ export default class UIDetailsSwitcher<Props, State>
 
         if (!comments) {
             return (
-                <Text
-                    style={[
-                        Typography[TypographyVariants.Action],
-                        UIStyle.color.getColorStyle(UIColor.textPrimary()),
-                        UIStyle.common.flex(),
-                        textStyle,
-                    ]}
+                <UILabel
+                    color={textColor || UILabelColors.TextPrimary}
+                    role={textStyle || UILabelRoles.Action}
+                    style={UIStyle.common.flex()}
                 >
                     {details}
-                </Text>
+                </UILabel>
             );
         }
 

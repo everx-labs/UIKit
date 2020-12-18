@@ -5,9 +5,8 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-import { UIConstant, UITextStyle, UIColor } from '@tonlabs/uikit.core';
+import { UIConstant, UITextStyle, UIColor, UIFont } from '@tonlabs/uikit.core';
 import { UISearchBar } from '@tonlabs/uikit.components';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIModalController from '../UIModalController';
@@ -48,11 +47,11 @@ const countryPickerStyle = StyleSheet.create({
     },
     countryName: {
         ...UITextStyle.primary,
-        ...Typography[TypographyVariants.Action],
+        ...UIFont.bodyMedium(), // TODO: switch to TypographyVariants.Action
     },
     disabledCountryName: {
         ...UITextStyle.quaternary,
-        ...Typography[TypographyVariants.ParagraphText],
+        ...UIFont.bodyRegular(), // TODO: switch to TypographyVariants.ParagraphText
     },
     separator: {
         marginVertical: 1,

@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, BackHandler, Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import { UIColor, UIConstant, UIStyle} from '@tonlabs/uikit.core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';

@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 const styles = StyleSheet.create({
     navButton: {
@@ -49,9 +49,12 @@ export default class UINavigationTextButton extends UIComponent<Props, State> {
                 style={[styles.navButton, containerStyle]}
                 onPress={onPress}
             >
-                <Text style={[Typography[TypographyVariants.ActionCallout], UIStyle.color.getColorStyle(UIColor.textAccent())]}>
+                <UILabel
+                    color={UILabelColors.TextAccent}
+                    role={UILabelRoles.ActionCallout}
+                >
                     {title}
-                </Text>
+                </UILabel>
             </TouchableOpacity>
         );
     }

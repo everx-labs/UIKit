@@ -426,7 +426,6 @@ export default class UINotice
                             <UILabel
                                 color={UILabelColors.TextTertiary}
                                 role={UILabelRoles.ParagraphFootnote}
-                                style={UIStyle.color.getColorStyle(UIColor.grey())}
                             >
                                 {this.message}
                             </UILabel>

@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -21,9 +21,6 @@ const styles = StyleSheet.create({
         borderRadius: tagHeight / 2.0,
         overflow: 'hidden',
         paddingHorizontal: UIConstant.smallContentOffset(),
-    },
-    titleFont: {
-        ...Typography[TypographyVariants.HeadlineLabel],
     },
     // web-only style
     tooltipContainerStyle: {
@@ -131,37 +128,31 @@ export default class UITag extends UIActionComponent<Props, State> {
         return color;
     }
 
-    getTitleFont() {
-        return styles.titleFont;
-    }
-
     getTitleColor() {
         const { tagColor } = this.props;
 
         if (tagColor === UITag.tagColor.default) {
-            return UIColor.tagBlack();
+            return UILabelColors.TextPrimary;
         }
 
-        return UIColor.white();
+        return UILabelColors.TextPrimaryInverted;
     }
 
     // Actions
 
-    // render
+    // Render
     renderTitle() {
         const { title, titleStyle } = this.props;
 
         return (
-            <Text
+            <UILabel
+                color={this.getTitleColor()}
                 key={`tagTitle:${title}`}
-                style={[
-                    this.getTitleFont(),
-                    UIStyle.color.getColorStyle(this.getTitleColor()),
-                    titleStyle,
-                ]}
+                role={UILabelRoles.HeadlineLabel}
+                style={titleStyle}
             >
                 {title}
-            </Text>
+            </UILabel>
         );
     }
 
