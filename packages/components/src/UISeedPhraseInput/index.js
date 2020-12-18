@@ -27,6 +27,7 @@ type Props = UIDetailsInputProps & {
     isSeedPhraseValid?: ?boolean,
     onChangeIsValidPhrase?: (isValid: boolean) => void,
     totalWords: number,
+    hint: string,
     words: string[],
 };
 
@@ -57,7 +58,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         commentTestID: 'comment',
         onChangeIsValidPhrase: () => {},
         onBlur: () => {},
-        totalWords: 24, // max words count value
+        totalWords: 12, // default value
+        hint: '',
         words: [],
         // Set an InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS flag to a keyboard on Android.
         // Needed by security reasons.
@@ -221,35 +223,35 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
             return commentColor;
         }
 
+        const entered = this.getWordsCount();
         const valid = this.areWordsValid();
-        const count = this.getRemainingCount();
 
-        if (!valid && count === 0) {
+        if (!valid && !this.isFocused() && !this.areHintsVisible() && entered !== 0) {
             return UIColor.error();
-        } else if (valid && count === 0) {
-            // return UIColor.success();
+        } else if (valid && !this.isFocused()) {
+            return UIColor.success();
         }
 
         return null;
     }
 
     getComment(): string {
-        const { comment } = this.props;
+        const { comment, hint } = this.props;
         if (comment) {
             return comment;
         }
 
         const valid = this.areWordsValid();
-        const count = this.getRemainingCount();
         const entered = this.getWordsCount();
+        const count = this.getRemainingCount();
 
         if (entered === 0) {
-            return uiLocalized.wordsCount;
-        } else if (!valid && count === 0) {
+            return hint || uiLocalized.localizedStringForValue(count, 'moreWords');
+        } else if (!valid && !this.isFocused()) {
             return uiLocalized.seedPhraseTypo;
-        } // else if (valid && count === 0) {
-        //     return uiLocalized.greatMemory;
-        // }
+        } else if (valid && !this.isFocused()) {
+            return uiLocalized.greatMemory;
+        }
 
         return uiLocalized.localizedStringForValue(entered, 'words');
     }

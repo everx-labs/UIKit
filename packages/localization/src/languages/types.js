@@ -272,7 +272,6 @@ export type UILocalizedData = {|
     +words11: string,
     +words24: string,
     +words50: string,
-    +wordsCount: string,
     +MyAccount: string,
     +MyMainAccount: string,
     +Name: string,
