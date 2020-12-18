@@ -11,6 +11,7 @@ import type {
     BigNum,
     UIColorData,
 } from '@tonlabs/uikit.core';
+import { UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -280,15 +281,13 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIDetailsView
                 testID="fees"
                 reversed
-                disabled
                 value={uiLocalized.formatString(
                     uiLocalized.feeAmount,
                     uiLocalized.amountToLocale(this.getFees(), options),
                 )}
                 comments={uiLocalized.fee}
-                commentsStyle={UIStyle.text.tertiaryTinyRegular()}
+                commentsRole={UILabelRoles.ParagraphLabel}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
-                textStyle={UIStyle.text.secondaryBodyRegular()}
             />
         );
     }
@@ -298,12 +297,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIDetailsView
                 testID="operation_time"
                 reversed
-                disabled
                 value={uiLocalized.immediately}
                 comments={uiLocalized.operationTime}
-                commentsStyle={UIStyle.text.tertiaryTinyRegular()}
+                commentsRole={UILabelRoles.ParagraphLabel}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
-                textStyle={UIStyle.text.secondaryBodyRegular()}
             />
         );
     }

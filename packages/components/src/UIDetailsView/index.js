@@ -21,16 +21,16 @@ type Props = {
     commentTestID?: string,
     value: string | React$Element<any>,
     comments: string,
-    reversed: boolean,
-    onPress: ?() => void,
-    style: ViewStyleProp,
-    containerStyle: ViewStyleProp,
-    textColor: ? TextStyleProp,
-    textRole: ?TextStyleProp,
-    textStyle: ViewStyleProp,
-    commentsStyle: ViewStyleProp,
     disabled?: boolean,
+    reversed: boolean,
     selectable?: boolean,
+    onPress: ?() => void,
+    textColor: ?TextStyleProp,
+    textRole: ?TextStyleProp,
+    commentsColor: ?TextStyleProp,
+    commentsRole: ?TextStyleProp,
+    containerStyle: ViewStyleProp,
+    style: ViewStyleProp,
 };
 
 type State = {};
@@ -40,33 +40,33 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         value: '',
         comments: '',
         reversed: false,
+        selectable: true,
         onPress: null,
-        style: {},
-        containerStyle: {},
         textColor: undefined,
         textRole: undefined,
-        textStyle: {},
-        commentsStyle: {},
-        selectable: true,
+        commentsColor: undefined,
+        commentsRole: undefined,
+        containerStyle: {},
+        style: {},
     };
 
     // Render
     renderValue() {
         const {
-            value, textStyle, textColor, textRole, onPress, disabled, testID, selectable,
+            value, textColor, textRole, onPress, disabled, testID, selectable, reversed,
         } = this.props;
         let color = UILabelColors.TextPrimary;
-        let role = onPress ? UILabelRoles.ActionCallout : UILabelRoles.ParagraphNote;
+        let role = onPress ? UILabelRoles.Action : UILabelRoles.ParagraphText;
         if (disabled) {
             color = UILabelColors.TextTertiary;
-            role = UILabelRoles.ParagraphFootnote;
+            role = UILabelRoles.ParagraphText;
         }
         return (
             <UILabel
                 color={textColor || color}
                 role={textRole || role}
                 selectable={selectable}
-                style={textStyle}
+                style={reversed ? UIStyle.margin.topTiny() : null}
                 testID={testID || null}
             >
                 {value}
@@ -75,12 +75,12 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     }
 
     renderComment() {
-        const { comments, commentsStyle, commentTestID } = this.props;
+        const { comments, commentsColor, commentsRole, commentTestID, reversed } = this.props;
         return (
             <UILabel
-                color={UILabelColors.TextTertiary}
-                role={UILabelRoles.ParagraphFootnote}
-                style={[UIStyle.margin.topTiny(), commentsStyle]}
+                color={commentsColor || UILabelColors.TextTertiary}
+                role={commentsRole || UILabelRoles.ParagraphFootnote}
+                style={reversed ? null : UIStyle.margin.topTiny()}
                 testID={commentTestID || null}
             >
                 {comments}

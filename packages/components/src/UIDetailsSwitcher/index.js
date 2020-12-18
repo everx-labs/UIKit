@@ -136,12 +136,14 @@ export default class UIDetailsSwitcher<Props, State>
             );
         }
 
-        return (<UIDetailsView
-            containerStyle={UIStyle.common.flex()}
-            value={details}
-            comments={comments}
-            onPress={() => {}}
-        />);
+        return (
+            <UIDetailsView
+                value={details}
+                comments={comments}
+                onPress={() => {}}
+                containerStyle={UIStyle.common.flex()}
+            />
+        );
     }
 
     renderSwitcher(): React$Node {
