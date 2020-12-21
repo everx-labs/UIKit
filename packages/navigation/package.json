@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.navigation",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Navigation components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -34,9 +34,9 @@
     "types/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "~2.0.0",
-    "@tonlabs/uikit.components": "~2.0.0",
-    "@tonlabs/uikit.core": "~2.0.0",
+    "@tonlabs/uikit.assets": "^2.0.2",
+    "@tonlabs/uikit.components": "^2.0.2",
+    "@tonlabs/uikit.core": "^2.0.2",
     "prop-types": "15.6.2",
     "react-images": "0.5.19",
     "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
@@ -69,20 +69,20 @@
     "source": "src",
     "output": "lib",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ]
     ]
   }
 }

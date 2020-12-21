@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.legacy",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Legacy components of Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -33,10 +33,10 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "~2.0.0",
-    "@tonlabs/uikit.components": "~2.0.0",
-    "@tonlabs/uikit.core": "~2.0.0",
-    "@tonlabs/uikit.navigation": "~2.0.0",
+    "@tonlabs/uikit.assets": "^2.0.2",
+    "@tonlabs/uikit.components": "^2.0.2",
+    "@tonlabs/uikit.core": "^2.0.2",
+    "@tonlabs/uikit.navigation": "^2.0.2",
     "bignumber.js": "9.0.0",
     "lodash": "4.17.14",
     "prop-types": "15.6.2",
@@ -62,20 +62,20 @@
     "source": "src",
     "output": "lib",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ]
     ]
   }
 }

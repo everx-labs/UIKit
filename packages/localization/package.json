@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.localization",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Localization utilities for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -48,20 +48,20 @@
     "source": "src",
     "output": "lib",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ]
     ]
   }
 }
