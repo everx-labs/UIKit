@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.chats",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Chat components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -30,16 +30,16 @@
   "react-native": "src/index.ts",
   "types": "lib/typescript/src/index.d.ts",
   "files": [
-      "lib/",
-      "src/"
+    "lib/",
+    "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "~2.0.0",
-    "@tonlabs/uikit.components": "~2.0.0",
-    "@tonlabs/uikit.core": "~2.0.0",
-    "@tonlabs/uikit.navigation": "~2.0.0",
-    "@tonlabs/uikit.localization": "~2.0.0",
-    "@tonlabs/uikit.hydrogen": "~2.0.0",
+    "@tonlabs/uikit.assets": "^2.0.2",
+    "@tonlabs/uikit.components": "^2.0.2",
+    "@tonlabs/uikit.core": "^2.0.2",
+    "@tonlabs/uikit.hydrogen": "^2.0.2",
+    "@tonlabs/uikit.localization": "^2.0.2",
+    "@tonlabs/uikit.navigation": "^2.0.2",
     "bignumber.js": "9.0.0",
     "dayjs": "1.9.1",
     "lodash": "4.17.14",
@@ -58,7 +58,7 @@
     "react-native-android-keyboard-adjust": "1.2.0",
     "react-native-document-picker": "3.2.4",
     "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
-    "react-native-reanimated": "1.13.0",
+    "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "3.1.3",
     "react-native-svg": "12.1.0",
     "react-native-ui-lib": "5.14.0",
@@ -73,7 +73,7 @@
     "react-native-document-picker": "^3.2.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-image-picker": "*",
-    "react-native-reanimated": "^1.13.0",
+    "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "^3.1.3",
     "react-native-svg": "^12.1.0",
     "react-native-ui-lib": "^5.14.0",
@@ -83,24 +83,24 @@
     "source": "src",
     "output": "lib",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "./babel.config.js"
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "./babel.config.js"
-            }
-        ],
-        [
-            "typescript",
-            {
-                "project": "tsconfig.build.json"
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "./babel.config.js"
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "./babel.config.js"
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
     ]
   }
 }

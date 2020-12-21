@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.core",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Core utilities for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -34,8 +34,8 @@
     "types/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.hydrogen": "~2.0.0",
     "@quentin-sommer/react-useragent": "2.0.0",
+    "@tonlabs/uikit.hydrogen": "^2.0.2",
     "bignumber.js": "9.0.0",
     "currency-formatter": "1.5.4",
     "dayjs": "1.9.1",
@@ -65,20 +65,20 @@
     "source": "src",
     "output": "lib",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ]
     ]
   }
 }
