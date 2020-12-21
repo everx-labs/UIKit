@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { UIStyle } from '@tonlabs/uikit.core';
 import { UIActionComponent } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import type {
     UIActionComponentProps,
     UIActionComponentState,
@@ -49,11 +50,12 @@ export default class MenuItem extends UIActionComponent<
 
         const chosenStraight = reversedColors ? !chosen : chosen;
         const defaultTitleStyle = chosenStraight
-            ? UIStyle.color.stateTextPrimary(UIColor.Theme.Light, disabled, this.isTapped(), this.isHover())
-            : UIStyle.text.action();
+            // TODO: ex UIStyle.color.stateTextPrimary(UIColor.Theme.Light, disabled, this.isTapped(), this.isHover())
+            ? UILabelColors.TextPrimary
+            : UILabelColors.TextAccent;
         const defaultDetailsStyle = chosenStraight
-            ? UIStyle.text.primary()
-            : UIStyle.text.tertiary();
+            ? UILabelColors.TextPrimary
+            : UILabelColors.TextTertiary;
 
         const containerStyle = [
             UIStyle.common.centerLeftContainer(),
@@ -64,28 +66,22 @@ export default class MenuItem extends UIActionComponent<
 
         const content = (
             <React.Fragment>
-                <Text
+                <UILabel
+                    color={disabled ? UILabelColors.TextTertiary : (titleStyle || defaultTitleStyle)}
                     numberOfLines={1}
-                    style={[
-                        UIStyle.text.smallMedium(),
-                        marginRight,
-                        defaultTitleStyle,
-                        titleStyle,
-                    ]}
+                    role={UILabelRoles.ActionCallout}
+                    style={marginRight}
                     testID={MenuItem.testIDs.menuItem(title)}
                 >
                     {title}
-                </Text>
-                <Text
+                </UILabel>
+                <UILabel
+                    color={detailsStyle || defaultDetailsStyle}
                     numberOfLines={1}
-                    style={[
-                        UIStyle.text.smallRegular(),
-                        defaultDetailsStyle,
-                        detailsStyle,
-                    ]}
+                    role={UILabelRoles.ParagraphNote}
                 >
                     {details}
-                </Text>
+                </UILabel>
             </React.Fragment>
         );
 

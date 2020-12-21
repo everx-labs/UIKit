@@ -1971,8 +1971,8 @@ const Profile = () => (
         >
             <UIProfileInitials
                 containerStyle={[
-                    UIStyle.Margin.bottomDefault(),
-                    UIStyle.Margin.rightDefault(),
+                    UIStyle.margin.bottomDefault(),
+                    UIStyle.margin.rightDefault(),
                 ]}
                 id={1}
                 initials="AM"

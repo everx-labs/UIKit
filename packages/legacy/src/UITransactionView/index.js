@@ -6,12 +6,13 @@ import {
     View,
     Image,
 } from 'react-native';
-
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant, UIColor, UIStyle, UIFont } from '@tonlabs/uikit.core';
 import { UIComponent, UILabel } from '@tonlabs/uikit.components';
-import { UIAssets } from '@tonlabs/uikit.assets';
+import { UILabelRoles } from '@tonlabs/uikit.hydrogen';
+
 import UIProfileInitials from '../UIProfileInitials';
 
 type Props = {
@@ -160,7 +161,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
                     id={this.title}
                     initials={initials}
                     containerStyle={this.styles.avatarContainer}
-                    textStyle={{ ...UIFont.accentRegular() }}
+                    textStyle={UILabelRoles.TitleSmall} // TODO: ex UIFont.accentRegular()
                     avatarSize={this.isDetailsMode()
                         ? UIConstant.detailsAvatarSize()
                         : UIConstant.mediumAvatarSize()}
