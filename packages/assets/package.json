@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.assets",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Assets for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -76,20 +76,20 @@
     "source": "src",
     "output": ".",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ]
     ]
   }
 }

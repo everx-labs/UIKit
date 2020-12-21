@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.components",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Base components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -33,8 +33,8 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "~2.0.0",
-    "@tonlabs/uikit.core": "~2.0.0",
+    "@tonlabs/uikit.assets": "^2.0.1",
+    "@tonlabs/uikit.core": "^2.0.1",
     "bignumber.js": "9.0.0",
     "bowser": "1.9.4",
     "dayjs": "1.9.1",
@@ -74,20 +74,20 @@
     "source": "src",
     "output": "lib",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "../../babel.config.js",
-                "copyFlow": true
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "../../babel.config.js",
+          "copyFlow": true
+        }
+      ]
     ]
   }
 }

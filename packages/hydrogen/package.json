@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.hydrogen",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Design system for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -30,12 +30,12 @@
   "react-native": "src/index.ts",
   "types": "typescript/src/index.d.ts",
   "files": [
-      "assets/",
-      "commonjs/",
-      "module/",
-      "typescript/",
-      "src/",
-      "fonts.gradle"
+    "assets/",
+    "commonjs/",
+    "module/",
+    "typescript/",
+    "src/",
+    "fonts.gradle"
   ],
   "dependencies": {
     "fontfaceobserver-es": "3.3.3"
@@ -58,24 +58,24 @@
     "source": "src",
     "output": ".",
     "targets": [
-        [
-            "commonjs",
-            {
-                "configFile": "./babel.config.js"
-            }
-        ],
-        [
-            "module",
-            {
-                "configFile": "./babel.config.js"
-            }
-        ],
-        [
-            "typescript",
-            {
-                "project": "tsconfig.build.json"
-            }
-        ]
+      [
+        "commonjs",
+        {
+          "configFile": "./babel.config.js"
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": "./babel.config.js"
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
     ]
   }
 }
