@@ -161,7 +161,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
                     id={this.title}
                     initials={initials}
                     containerStyle={this.styles.avatarContainer}
-                    textStyle={UILabelRoles.TitleSmall} // TODO: ex UIFont.accentRegular()
+                    textStyle={UILabelRoles.PromoMedium}
                     avatarSize={this.isDetailsMode()
                         ? UIConstant.detailsAvatarSize()
                         : UIConstant.mediumAvatarSize()}
