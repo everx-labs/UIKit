@@ -12,3 +12,9 @@ npx flow-typed install @react-navigation/core@5.x.x @react-navigation/native@5.x
 First run command `npx lerna bootstrap && npx lerna run prepare`
 
 Second run `npm run web` or `yarn web`
+
+# Publish packages
+
+```sh
+npx lerna publish --no-private
+```
