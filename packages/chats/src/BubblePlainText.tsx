@@ -5,6 +5,7 @@ import {
     Platform,
     View,
     Animated,
+    Text,
     TextStyle,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
@@ -147,7 +148,6 @@ function BubbleTime(
         style?: TextStyle;
         formattedTime: string;
         isHidden?: boolean;
-        spacerSymbol: string;
     },
 ) {
     return (
@@ -159,9 +159,11 @@ function BubbleTime(
             }
             style={props.style}
         >
-            {/* Use spacerSymbols instead of margins
-            since they're not working for nested text */}
-            {`${props.spacerSymbol}${props.spacerSymbol}${props.formattedTime}`}
+            {/* Use spaces instead of margins
+             *  since they're not working for nested text
+             *  \u00A0 is https://en.wikipedia.org/wiki/Non-breaking_space
+             */}
+            {`\u00A0\u00A0${props.formattedTime}`}
         </UILabel>
     );
 }
@@ -233,9 +235,6 @@ export function BubblePlainText(props: PlainTextMessage) {
                             <BubbleTime
                                 {...props}
                                 isHidden
-                                // i symbol is almost equal to space symbol
-                                // we use it instead of space character to prevent line breaks
-                                spacerSymbol="i"
                                 style={styles.timeHidden}
                                 formattedTime={formattedTime}
                             />
@@ -249,12 +248,12 @@ export function BubblePlainText(props: PlainTextMessage) {
                          * That padding is needed for a time that we draw second time,
                          * except this time we place it with `position: absolute` in a corner.
                          */}
-                        <BubbleTime
-                            {...props}
-                            spacerSymbol={' '}
-                            style={styles.timeFloating}
-                            formattedTime={formattedTime}
-                        />
+                        <Text style={styles.timeFloating}>
+                            <BubbleTime
+                                {...props}
+                                formattedTime={formattedTime}
+                            />
+                        </Text>
                     </Animated.View>
                     {actionString && (
                         <UILabel
@@ -308,14 +307,12 @@ const styles = StyleSheet.create({
     },
     timeFloating: {
         position: 'absolute',
-        bottom:
-            UIConstant.smallContentOffset() +
-            // a magical number to kinda align time with a main text baseline
-            Platform.select({
-                android: 2,
-                web: 4,
-                ios: 2.5,
-            }),
+        lineHeight: Platform.select({
+            web: 24,
+            // Less then ParagraphText by 2, for some reason it works better
+            default: 22,
+        }),
+        bottom: UIConstant.smallContentOffset(),
         right: UIConstant.normalContentOffset(),
     },
     msgContainer: {
