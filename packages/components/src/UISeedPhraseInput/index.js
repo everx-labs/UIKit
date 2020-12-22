@@ -196,7 +196,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const comment = this.getComment();
         if (comment === uiLocalized.seedPhraseTypo) {
             return `${commentTestID}_error`;
-        } else if (comment.includes('more')) {
+        } else if (comment.includes('word')) {
             return `${commentTestID}_counter_${comment.split(' ')[0]}`;
         } else if (comment === uiLocalized.greatMemory) {
             return `${commentTestID}_success`;
