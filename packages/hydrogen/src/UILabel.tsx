@@ -63,14 +63,18 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
     const isNested = React.useContext(TextAncestorContext);
 
     const font = Typography[role];
-    const fontStyle = {
-        ...font,
-        // If <Text> is nested in another one
-        // different lineHeight value, could break
-        // layout on Android, hence we set it to null
-        // to just use lineHeight from a parent
-        lineHeight: isNested ? null : font.lineHeight,
-    };
+    const fontStyle = isNested
+        ? [
+              font,
+              {
+                  // If <Text> is nested in another one
+                  // different lineHeight value, could break
+                  // layout on Android, hence we set it to null
+                  // to just use lineHeight from a parent
+                  lineHeight: undefined,
+              },
+          ]
+        : font;
 
     const colorStyle: { color: ColorValue } = React.useMemo(
         () => ({

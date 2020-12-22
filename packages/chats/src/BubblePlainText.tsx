@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
             // a magical number to kinda align time with a main text baseline
             Platform.select({
                 android: 2,
-                web: 3,
+                web: 4,
                 ios: 2.5,
             }),
         right: UIConstant.normalContentOffset(),
