@@ -5,7 +5,6 @@ import {
     Platform,
     View,
     Animated,
-    Text,
     TextStyle,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
@@ -144,17 +143,25 @@ const createTestId = (pattern: string, text: string) => {
 };
 
 function BubbleTime(
-    props: PlainTextMessage & { style?: TextStyle; formattedTime: string },
+    props: PlainTextMessage & {
+        style?: TextStyle;
+        formattedTime: string;
+        isHidden?: boolean;
+        spacerSymbol: string;
+    },
 ) {
     return (
         <UILabel
             testID={createTestId('chat_text_message%_time', props.text)}
             role={UILabelRoles.ParagraphFootnote}
-            color={getFontColor(props)}
+            color={
+                props.isHidden ? UILabelColors.Transparent : getFontColor(props)
+            }
             style={props.style}
         >
-            {/* Use spaces instead of margins */}
-            {`  ${props.formattedTime}`}
+            {/* Use spacerSymbols instead of margins
+            since they're not working for nested text */}
+            {`${props.spacerSymbol}${props.spacerSymbol}${props.formattedTime}`}
         </UILabel>
     );
 }
@@ -201,42 +208,50 @@ export function BubblePlainText(props: PlainTextMessage) {
                             { transform: [{ scale }] },
                         ]}
                     >
-                        {/* <Text> here is to use BubbleTime with a message text as a single string */}
-                        <Text>
-                            <UILabel
-                                testID={createTestId(
-                                    'chat_text_message%',
-                                    props.text,
-                                )}
-                                role={UILabelRoles.ParagraphText}
-                                color={getFontColor(props)}
-                                style={styles.textCell}
+                        <UILabel
+                            testID={createTestId(
+                                'chat_text_message%',
+                                props.text,
+                            )}
+                            role={UILabelRoles.ParagraphText}
+                            color={getFontColor(props)}
+                            style={styles.textCell}
+                        >
+                            <ParsedText
+                                parse={[
+                                    {
+                                        type: 'url',
+                                        style: urlStyle,
+                                        onPress: (url: string, index: number) =>
+                                            props.onPressUrl &&
+                                            props.onPressUrl(url, index),
+                                    },
+                                ]}
                             >
-                                <ParsedText
-                                    parse={[
-                                        {
-                                            type: 'url',
-                                            style: urlStyle,
-                                            onPress: (
-                                                url: string,
-                                                index: number,
-                                            ) =>
-                                                props.onPressUrl &&
-                                                props.onPressUrl(url, index),
-                                        },
-                                    ]}
-                                >
-                                    {props.text}
-                                </ParsedText>
-                            </UILabel>
+                                {props.text}
+                            </ParsedText>
                             <BubbleTime
                                 {...props}
+                                isHidden
+                                // i symbol is almost equal to space symbol
+                                // we use it instead of space character to prevent line breaks
+                                spacerSymbol="i"
                                 style={styles.timeHidden}
                                 formattedTime={formattedTime}
                             />
-                        </Text>
+                        </UILabel>
+                        {/* The idea is to always draw time in a corner
+                         * but it should be kinda wrapped by a main text.
+                         * In order to achive it we draw it two times.
+                         * First time we draw it with a main text of a message
+                         * but at the same time make it invisible, this allow us
+                         * to have a proper padding for the last line.
+                         * That padding is needed for a time that we draw second time,
+                         * except this time we place it with `position: absolute` in a corner.
+                         */}
                         <BubbleTime
                             {...props}
+                            spacerSymbol={' '}
                             style={styles.timeFloating}
                             formattedTime={formattedTime}
                         />
@@ -281,6 +296,9 @@ const styles = StyleSheet.create({
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
     timeHidden: {
+        // Beside we set transparent color
+        // (that needed mostly for Android)
+        // we need opacity for web
         opacity: 0,
         ...Platform.select({
             web: {
@@ -290,8 +308,14 @@ const styles = StyleSheet.create({
     },
     timeFloating: {
         position: 'absolute',
-        // 2.5 is a magical number to kinda align time with a main text baseline
-        bottom: UIConstant.smallContentOffset() + 2.5,
+        bottom:
+            UIConstant.smallContentOffset() +
+            // a magical number to kinda align time with a main text baseline
+            Platform.select({
+                android: 2,
+                web: 3,
+                ios: 2.5,
+            }),
         right: UIConstant.normalContentOffset(),
     },
     msgContainer: {

@@ -2,6 +2,9 @@ import * as React from 'react';
 import { ColorValue, Text, TransformsStyle, ViewStyle } from 'react-native';
 import type { TextProps, TextStyle, StyleProp, FlexStyle } from 'react-native';
 
+// @ts-expect-error
+import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
+
 import { Typography, TypographyVariants } from './Typography';
 import { useTheme, ColorVariants } from './Colors';
 
@@ -57,6 +60,18 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
     ref,
 ) {
     const theme = useTheme();
+    const isNested = React.useContext(TextAncestorContext);
+
+    const font = Typography[role];
+    const fontStyle = {
+        ...font,
+        // If <Text> is nested in another one
+        // different lineHeight value, could break
+        // layout on Android, hence we set it to null
+        // to just use lineHeight from a parent
+        lineHeight: isNested ? null : font.lineHeight,
+    };
+
     const colorStyle: { color: ColorValue } = React.useMemo(
         () => ({
             color: theme[colorProp],
@@ -72,7 +87,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
                 style,
                 // Override font and color styles
                 // If there were any
-                Typography[role],
+                fontStyle,
                 colorStyle,
             ]}
         />
