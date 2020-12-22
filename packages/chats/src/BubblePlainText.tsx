@@ -5,6 +5,8 @@ import {
     Platform,
     View,
     Animated,
+    Text,
+    TextStyle,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
@@ -79,7 +81,6 @@ const useBubbleStyle = (message: PlainTextMessage) => {
 
     if (message.status === ChatMessageStatus.Aborted) {
         return [
-            styles.msgRight,
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundNegative],
             ),
@@ -88,7 +89,6 @@ const useBubbleStyle = (message: PlainTextMessage) => {
 
     if (message.status === ChatMessageStatus.Received) {
         return [
-            styles.msgLeft,
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundTertiary],
             ),
@@ -97,7 +97,6 @@ const useBubbleStyle = (message: PlainTextMessage) => {
 
     if (message.status === ChatMessageStatus.Sent) {
         return [
-            styles.msgRight,
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundAccent],
             ),
@@ -106,7 +105,6 @@ const useBubbleStyle = (message: PlainTextMessage) => {
 
     if (message.status === ChatMessageStatus.Pending) {
         return [
-            styles.msgRight,
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundAccent],
             ),
@@ -145,17 +143,19 @@ const createTestId = (pattern: string, text: string) => {
     );
 };
 
-function BubbleTime(props: PlainTextMessage) {
+function BubbleTime(
+    props: PlainTextMessage & { style?: TextStyle; formattedTime: string },
+) {
     return (
-        <View style={styles.timeText}>
-            <UILabel
-                testID={createTestId('chat_text_message%_time', props.text)}
-                role={UILabelRoles.ParagraphFootnote}
-                color={getFontColor(props)}
-            >
-                {uiLocalized.formatTime(props.time || Date.now())}
-            </UILabel>
-        </View>
+        <UILabel
+            testID={createTestId('chat_text_message%_time', props.text)}
+            role={UILabelRoles.ParagraphFootnote}
+            color={getFontColor(props)}
+            style={props.style}
+        >
+            {/* Use spaces instead of margins */}
+            {`  ${props.formattedTime}`}
+        </UILabel>
     );
 }
 
@@ -172,6 +172,10 @@ export function BubblePlainText(props: PlainTextMessage) {
     const bubbleStyle = useBubbleStyle(props);
     const urlStyle = useUrlStyle(props.status);
     const actionString = getActionString(props);
+    const formattedTime = React.useMemo(
+        () => uiLocalized.formatTime(props.time || Date.now()),
+        [props.time],
+    );
 
     return (
         <View style={[getBubbleContainer(position)]}>
@@ -189,19 +193,16 @@ export function BubblePlainText(props: PlainTextMessage) {
                 <View>
                     <Animated.View
                         style={[
-                            styles.wrapMsgContainer,
+                            UIStyle.padding.verticalSmall(),
+                            UIStyle.padding.horizontalNormal(),
+                            styles.msgContainer,
+                            bubbleStyle,
+                            getRoundedCornerStyle(props, position),
                             { transform: [{ scale }] },
                         ]}
                     >
-                        <View
-                            style={[
-                                UIStyle.padding.verticalSmall(),
-                                UIStyle.padding.horizontalNormal(),
-                                styles.msgContainer,
-                                bubbleStyle,
-                                getRoundedCornerStyle(props, position),
-                            ]}
-                        >
+                        {/* <Text> here is to use BubbleTime with a message text as a single string */}
+                        <Text>
                             <UILabel
                                 testID={createTestId(
                                     'chat_text_message%',
@@ -228,8 +229,17 @@ export function BubblePlainText(props: PlainTextMessage) {
                                     {props.text}
                                 </ParsedText>
                             </UILabel>
-                            <BubbleTime {...props} />
-                        </View>
+                            <BubbleTime
+                                {...props}
+                                style={styles.timeHidden}
+                                formattedTime={formattedTime}
+                            />
+                        </Text>
+                        <BubbleTime
+                            {...props}
+                            style={styles.timeFloating}
+                            formattedTime={formattedTime}
+                        />
                     </Animated.View>
                     {actionString && (
                         <UILabel
@@ -251,29 +261,16 @@ const styles = StyleSheet.create({
         paddingLeft: '20%',
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
-        ...Platform.select({
-            web: {
-                maxWidth: '100%',
-            },
-        }),
+        maxWidth: '100%',
     },
     containerLeft: {
         paddingRight: '20%',
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
-        ...Platform.select({
-            web: {
-                maxWidth: '100%',
-            },
-        }),
+        maxWidth: '100%',
     },
     textCell: {
-        flexShrink: 1,
-        ...Platform.select({
-            web: {
-                maxWidth: '100%',
-            },
-        }),
+        textAlign: 'left',
     },
     urlReceived: {
         // Some android devices seem to render the underline wrongly
@@ -283,41 +280,29 @@ const styles = StyleSheet.create({
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
-    timeText: {
-        paddingLeft: UIConstant.smallContentOffset(),
-        paddingTop: UIConstant.verticalContentOffset() / 2,
+    timeHidden: {
+        opacity: 0,
         ...Platform.select({
             web: {
-                marginLeft: 'auto', // Need for correct positioning to right side in message cell
+                userSelect: 'none',
             },
         }),
     },
-    wrapMsgContainer: {
-        flexShrink: 1,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
+    timeFloating: {
+        position: 'absolute',
+        // 2.5 is a magical number to kinda align time with a main text baseline
+        bottom: UIConstant.smallContentOffset() + 2.5,
+        right: UIConstant.normalContentOffset(),
     },
     msgContainer: {
-        flexDirection: 'row',
+        position: 'relative',
         borderRadius: UIConstant.borderRadius(),
-        ...Platform.select({
-            web: {
-                flexShrink: 1,
-                flexWrap: 'wrap',
-            },
-        }),
     },
     rightBottomCorner: {
         borderBottomRightRadius: 0,
     },
     leftTopCorner: {
         borderTopLeftRadius: 0,
-    },
-    msgLeft: {
-        alignItems: 'flex-start',
-    },
-    msgRight: {
-        alignItems: 'flex-end',
     },
     actionString: {
         textAlign: 'right',
