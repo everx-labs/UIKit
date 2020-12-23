@@ -228,7 +228,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         if (!valid && !this.isFocused() && !this.areHintsVisible() && entered !== 0) {
             return UIColor.error();
-        } else if (valid && !this.isFocused()) {
+        } else if (valid && !this.isFocused() && entered !== 0) {
             return UIColor.success();
         }
 
@@ -329,7 +329,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     onBlur = () => {
         this.setFocused(false);
         this.props.onBlur();
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== 'web') { // because you can't choose hint in web
             this.hideHints();
         }
     };
