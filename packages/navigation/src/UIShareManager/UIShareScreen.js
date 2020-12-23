@@ -10,7 +10,8 @@ import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import { UIColor, UIFont, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIToastMessage, UIButton, UILabel } from '@tonlabs/uikit.components';
+import { UIToastMessage, UIButton } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -38,9 +39,6 @@ const styles = StyleSheet.create({
     titleText: {
         ...UIFont.subtitleBold(),
         color: UIColor.black(),
-    },
-    note: {
-        marginTop: UIConstant.contentOffset(),
     },
     messageContainer: {
         marginTop: UIConstant.hugeContentOffset(),
@@ -137,19 +135,25 @@ export default class UIShareScreen extends UIModalController<Props, State> {
         return (
             <View style={styles.container}>
                 <UILabel
-                    role={UILabel.Role.Subtitle}
-                    text={uiLocalized.Share}
-                />
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.HeadlineSubhead} // TODO: ex UIFont.subtitleBold()
+                >
+                    {uiLocalized.Share}
+                </UILabel>
                 <UILabel
-                    role={UILabel.Role.Note}
-                    text={this.getSubtitle() || uiLocalized.ShareToTalk}
-                    style={styles.note}
-                />
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.ParagraphNote}
+                    style={UIStyle.margin.topDefault()}
+                >
+                    {this.getSubtitle() || uiLocalized.ShareToTalk}
+                </UILabel>
                 <ScrollView contentContainerStyle={styles.messageContainer}>
                     <UILabel
-                        role={UILabel.Role.AccentRegular}
-                        text={this.getMessage()}
-                    />
+                        color={UILabelColors.TextPrimary}
+                        role={UILabelRoles.PromoMedium}
+                    >
+                        {this.getMessage()}
+                    </UILabel>
                 </ScrollView>
                 <UIButton
                     testID="copy_button"

@@ -6,7 +6,8 @@ import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/Animat
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UIComponent, UILabel } from '@tonlabs/uikit.components';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 type BalanceWithSign = {
     balance: string,
@@ -589,21 +590,23 @@ export default class UIBalanceView extends UIComponent<Props, State> {
         return (
             <View style={UIStyle.common.flexRow()}>
                 <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.ParagraphFootnote}
                     style={UIStyle.margin.topSmall()}
-                    text={description}
-                    role={UILabel.Role.CaptionTertiary}
-                />
+                >
+                    {description}
+                </UILabel>
                 {
                     additionalDescription ? (
                         <UILabel
+                            color={additionalEnabled
+                                ? UILabelColors.TextPositive
+                                : UILabelColors.TextNegative}
+                            role={UILabelRoles.ParagraphFootnote}
                             style={[UIStyle.margin.topSmall(), UIStyle.margin.leftNormal()]}
-                            text={additionalDescription}
-                            role={
-                                additionalEnabled
-                                    ? UILabel.Role.CaptionSuccess
-                                    : UILabel.Role.CaptionError
-                            }
-                        />
+                        >
+                            {additionalDescription}
+                        </UILabel>
                     ) : null
                 }
             </View>

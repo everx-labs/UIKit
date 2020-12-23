@@ -3,13 +3,10 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import {
-    UIActionImage,
-    UILabel,
-    UITextButton,
-} from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIActionImage, UITextButton } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIScreen from '../UIScreen';
@@ -170,15 +167,19 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                     testID={UIErrorScreen.testID}
                 >
                     <UILabel
+                        color={UILabelColors.TextPrimary}
+                        role={UILabelRoles.HeadlineHead} // TODO: ex UIFont.titleBold()
                         style={UIStyle.margin.topSpacious()}
-                        role={UILabel.Role.Title}
-                        text={this.getTitle()}
-                    />
+                    >
+                        {this.getTitle()}
+                    </UILabel>
                     <UILabel
+                        color={UILabelColors.TextPrimary}
+                        role={UILabelRoles.ParagraphText}
                         style={UIStyle.margin.topMedium()}
-                        role={UILabel.Role.Description}
-                        text={this.getCaption()}
-                    />
+                    >
+                        {this.getCaption()}
+                    </UILabel>
                 </View>
                 <UITextButton
                     testID={UIErrorScreen.testIDs.BACK_TO_HOME_BUTTON}
