@@ -17,14 +17,14 @@ import {
     useTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
-
-import { UICustomKeyboardUtils } from '../UICustomKeyboard';
+import {
+    UICustomKeyboardUtils,
+    OnCustomKeyboardVisible,
+} from '@tonlabs/uikit.keyboard';
 
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
-import { StickersButton } from './StickerButton';
-import type { OnStickersPress } from './StickerButton';
 import type {
     MenuItem,
     QuickActionItem,
@@ -257,12 +257,13 @@ type Props = {
     quickActions?: QuickActionItem[];
     inputHidden?: boolean;
 
-    stickersVisible: boolean;
+    customKeyboardVisible: boolean;
+    onCustomKeyboardPress: OnCustomKeyboardVisible;
+    customKeyboardButton: React.ComponentType<any>;
 
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
-    onStickersPress: OnStickersPress;
     onHeightChange?: OnHeightChange;
     onFocus: () => void;
     onBlur: () => void;
@@ -291,6 +292,8 @@ export function ChatInput(props: Props) {
     });
     const borderOpacity = useAnimatedBorder(numberOfLines);
     useBackHandler(props.textInputRef);
+
+    const CustomKeyboardButton = props.customKeyboardButton;
 
     return (
         <>
@@ -347,11 +350,11 @@ export function ChatInput(props: Props) {
                             />
                         )}
                     </View>
-                    <StickersButton
-                        hasStickers={props.editable}
-                        stickersVisible={props.stickersVisible}
+                    <CustomKeyboardButton
+                        editable={props.editable}
+                        customKeyboardVisible={props.customKeyboardVisible}
                         inputHasValue={inputHasValue}
-                        onPress={props.onStickersPress}
+                        onPress={props.onCustomKeyboardPress}
                     />
                     <QuickAction
                         quickActions={props.quickActions}

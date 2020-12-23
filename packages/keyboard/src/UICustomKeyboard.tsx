@@ -12,19 +12,30 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
-import type { OnHeightChange } from '../UIChatInput/types';
+import { CustomKeyboardWrapper } from './CustomKeyboardWrapper';
+import type { OnHeightChange } from './types';
 
 const registerCustomKeyboard = (
     kbID: string,
-    component: React.ReactNode,
+    component: React.ComponentType<any>,
     props?: { [key: string]: any },
 ) => {
     if (Platform.OS === 'web') {
         // Do nothing
         return;
     }
+    if (KeyboardRegistry.registeredKeyboards[kbID] != null) {
+        return;
+    }
+
     const params = { ...props, kbComponent: kbID };
-    KeyboardRegistry.registerKeyboard(kbID, () => component, params);
+    const Component = component;
+    const KeyboardComponent = (keyboardProps: any) => (
+        <CustomKeyboardWrapper isCustomKeyboard customKeyboardVisible>
+            <Component {...keyboardProps} />
+        </CustomKeyboardWrapper>
+    );
+    KeyboardRegistry.registerKeyboard(kbID, () => KeyboardComponent, params);
 };
 
 const onItemSelected = (kbID: string, selectedItem: any) => {
@@ -53,12 +64,25 @@ let trackingViewIsReady = false; // global flag to learn if KeyboardTrackingView
 
 type Props = KeyboardAccessoryViewProps & {
     onHeightChange?: OnHeightChange;
+    customKeyboardComponent: React.ComponentType;
+    customKeyboardVisible: boolean;
+    kbID: string;
 };
 
 export function UICustomKeyboard(props: Props) {
+    const CustomKeyboardComponent = props.customKeyboardComponent;
     if (Platform.OS === 'web') {
-        // Do nothing
-        return <View />;
+        return (
+            <>
+                {props.renderContent()}
+                <CustomKeyboardWrapper
+                    isCustomKeyboard={false}
+                    customKeyboardVisible={props.customKeyboardVisible}
+                >
+                    <CustomKeyboardComponent />
+                </CustomKeyboardWrapper>
+            </>
+        );
     }
 
     const theme = useTheme();
@@ -180,6 +204,7 @@ export function UICustomKeyboard(props: Props) {
             allowHitsOutsideBounds
             revealKeyboardInteractive
             {...props}
+            kbComponent={props.customKeyboardVisible ? props.kbID : undefined}
             renderContent={() => {
                 if (Platform.OS !== 'ios') {
                     return props.renderContent();

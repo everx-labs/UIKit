@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 declare module 'react-native-ui-lib/keyboard' {
     import * as React from 'react';
     import { TextInput } from 'react-native';
@@ -14,22 +15,26 @@ declare module 'react-native-ui-lib/keyboard' {
     > {}
 
     export class KeyboardRegistry {
+        static registeredKeyboards: {
+            [key: string]: () => React.ComponentType;
+        };
         static registerKeyboard: (
             id: string,
             generator: () => React.ReactNode,
-            params: { [key: string]: any }
+            params: { [key: string]: any },
         ) => void;
         static getKeyboard: (id: string) => React.ReactNode;
         static getKeyboards: (ids: string[]) => React.ReactNode[];
         static getAllKeyboards: () => React.ReactNode[];
         static addListener: <T>(id: string, cb: T) => void;
         static notifyListeners: <T>(id: string, args: T) => void;
-        static removeListeners: <T>(id: string) => void;
+        static removeListeners: (id: string) => void;
         static onItemSelected: <T>(id: string, args: T) => void;
         static requestShowKeyboard: (id: string) => void;
         static toggleExpandedKeyboard: (id: string) => void;
     }
 
+    // eslint-disable-next-line no-shadow
     enum iosScrollBehaviors {
         NONE,
         SCROLL_TO_BOTTOM_INVERTED_ONLY,
