@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable class-methods-use-this */
 import React from 'react';
 import { View } from 'react-native';
 import BigNumber from 'bignumber.js';
@@ -281,6 +282,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIDetailsView
                 testID="fees"
                 reversed
+                // N.B. The is a bug in react-naive where you cannot dismiss the keyboard on Android
+                // when its focus is switched to a selected non-input component.
+                // Thus disable such an ability.
+                selectable={false}
                 value={uiLocalized.formatString(
                     uiLocalized.feeAmount,
                     uiLocalized.amountToLocale(this.getFees(), options),
@@ -297,6 +302,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIDetailsView
                 testID="operation_time"
                 reversed
+                // N.B. The is a bug in react-naive where you cannot dismiss the keyboard on Android
+                // when its focus is switched to a selected non-input component.
+                // Thus disable such an ability.
+                selectable={false}
                 value={uiLocalized.immediately}
                 comments={uiLocalized.operationTime}
                 commentsRole={UILabelRoles.ParagraphLabel}
