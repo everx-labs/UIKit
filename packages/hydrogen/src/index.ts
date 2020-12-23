@@ -1,3 +1,4 @@
+export * from './UIBackgroundView';
 export * from './UILabel';
 export * from './UITextView';
 
