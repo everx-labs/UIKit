@@ -202,7 +202,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
         return (
             <Image
                 source={UIAssets.icons.ui.glass}
-                style={[UIStyle.alignSelfCenter, UIStyle.marginRightSmall]}
+                style={[UIStyle.flex.alignSelfCenter(), UIStyle.margin.rightSmall()]}
             />
         );
     }

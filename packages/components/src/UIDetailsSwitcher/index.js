@@ -117,7 +117,7 @@ export default class UIDetailsSwitcher<Props, State>
     // Render
     renderDetailsView() {
         const {
-            details, comments, textColor, textStyle,
+            details, disabled, comments, textColor, textStyle,
         } = this.props;
 
         if (!comments && !details) {
@@ -127,7 +127,8 @@ export default class UIDetailsSwitcher<Props, State>
         if (!comments) {
             return (
                 <UILabel
-                    color={textColor || UILabelColors.TextPrimary}
+                    color={textColor ||
+                    (disabled ? UILabelColors.TextNeutral : UILabelColors.TextPrimary)}
                     role={textStyle || UILabelRoles.Action}
                     style={UIStyle.common.flex()}
                 >
