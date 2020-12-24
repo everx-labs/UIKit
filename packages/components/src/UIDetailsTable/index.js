@@ -208,7 +208,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return (
                 <UITextButton
                     multiLine
-                    textStyle={UIStyle.text.actionSmallMedium()}
                     title={value}
                     onPress={onPress || (() => this.onActionPressed(details))}
                     testID={`table_cell_clickable_${caption || 'default'}_value`}

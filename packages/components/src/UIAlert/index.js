@@ -3,9 +3,9 @@ import React from 'react';
 import { View, StyleSheet, Keyboard, Animated } from 'react-native';
 
 import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UILabel from '../UILabel';
 import UITextButton from '../UITextButton';
 
 export type UIAlertButton = {
@@ -179,10 +179,12 @@ export default class UIAlert extends UIComponent<Props, State> {
 
         return (
             <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.HeadlineHead}
                 style={UIStyle.margin.bottomSmall()}
-                role={UILabel.Role.AlertTitle}
-                text={content?.title}
-            />
+            >
+                {content?.title}
+            </UILabel>
         );
     }
 
@@ -194,10 +196,12 @@ export default class UIAlert extends UIComponent<Props, State> {
 
         return (
             <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphNote}
                 style={UIStyle.margin.bottomSmall()}
-                role={UILabel.Role.DescriptionSmall}
-                text={content?.description}
-            />
+            >
+                {content?.description}
+            </UILabel>
         );
     }
 

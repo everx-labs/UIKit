@@ -18,6 +18,8 @@ function setupFontsCss(font: Font) {
     const styleHTML = `
 body {
     font-family: ${SYSTEM_FONTS};
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 .fonts-loaded body {
     font-family: '${font.regular.fontFamily}', ${SYSTEM_FONTS};

@@ -6,7 +6,6 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Text,
 } from 'react-native';
 import type {
     ReturnKeyType,
@@ -16,6 +15,7 @@ import type {
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import type { PointerEvents } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -117,15 +117,16 @@ class UITextInput extends UIComponent<Props, State> {
             return null;
         }
         return (
-            <Text
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphText}
                 style={[
-                    UIStyle.text.secondaryBodyRegular(),
                     styles.beginningTag,
                     textStyle,
                 ]}
             >
                 {beginningTag}
-            </Text>
+            </UILabel>
         );
     }
 

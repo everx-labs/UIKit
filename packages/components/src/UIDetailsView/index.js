@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { UIConstant, UIStyle, UIFunction } from '@tonlabs/uikit.core';
+import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UILabel from '../UILabel';
-import type { LabelRoleValue } from '../UILabel';
 
 const styles = StyleSheet.create({
     container: {
@@ -22,15 +21,16 @@ type Props = {
     commentTestID?: string,
     value: string | React$Element<any>,
     comments: string,
-    reversed: boolean,
-    onPress: ?() => void,
-    style: ViewStyleProp,
-    containerStyle: ViewStyleProp,
-    textRole: ?LabelRoleValue,
-    textStyle: ViewStyleProp,
-    commentsStyle: ViewStyleProp,
     disabled?: boolean,
+    reversed: boolean,
     selectable?: boolean,
+    onPress: ?() => void,
+    textColor: ?TextStyleProp,
+    textRole: ?TextStyleProp,
+    commentsColor: ?TextStyleProp,
+    commentsRole: ?TextStyleProp,
+    containerStyle: ViewStyleProp,
+    style: ViewStyleProp,
 };
 
 type State = {};
@@ -40,44 +40,51 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         value: '',
         comments: '',
         reversed: false,
-        onPress: null,
-        style: {},
-        containerStyle: {},
-        textRole: undefined,
-        textStyle: {},
-        commentsStyle: {},
         selectable: true,
+        onPress: null,
+        textColor: undefined,
+        textRole: undefined,
+        commentsColor: undefined,
+        commentsRole: undefined,
+        containerStyle: {},
+        style: {},
     };
 
     // Render
     renderValue() {
         const {
-            value, textStyle, textRole, onPress, disabled, testID, selectable,
+            value, textColor, textRole, onPress, disabled, testID, selectable, reversed,
         } = this.props;
-        let role = onPress ? UILabel.Role.SmallMedium : UILabel.Role.SmallRegular;
+        let color = UILabelColors.TextPrimary;
+        let role = onPress ? UILabelRoles.Action : UILabelRoles.ParagraphText;
         if (disabled) {
-            role = UILabel.Role.CaptionTertiary;
+            color = UILabelColors.TextTertiary;
+            role = UILabelRoles.ParagraphText;
         }
         return (
             <UILabel
-                testID={testID || null}
-                style={textStyle}
+                color={textColor || color}
                 role={textRole || role}
-                text={value}
                 selectable={selectable}
-            />
+                style={reversed ? UIStyle.margin.topTiny() : null}
+                testID={testID || null}
+            >
+                {value}
+            </UILabel>
         );
     }
 
     renderComment() {
-        const { comments, commentsStyle, commentTestID } = this.props;
+        const { comments, commentsColor, commentsRole, commentTestID, reversed } = this.props;
         return (
             <UILabel
+                color={commentsColor || UILabelColors.TextTertiary}
+                role={commentsRole || UILabelRoles.ParagraphFootnote}
+                style={reversed ? null : UIStyle.margin.topTiny()}
                 testID={commentTestID || null}
-                style={[UIStyle.margin.topTiny(), commentsStyle]}
-                role={UILabel.Role.CaptionTertiary}
-                text={comments}
-            />
+            >
+                {comments}
+            </UILabel>
         );
     }
 

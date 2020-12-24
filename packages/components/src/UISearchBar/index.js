@@ -9,27 +9,25 @@ import {
 } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     UIConstant,
     UIDevice,
-    UIFont,
     UIColor,
     UIStyle,
 } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import UITextInput from '../UITextInput';
 import UIComponent from '../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
-
 const styles = StyleSheet.create({
     searchInput: {
         flex: 1,
     },
     textStyle: {
-        ...UIFont.bodyRegular(),
         width: '100%',
     },
     searchContainer: {
@@ -69,6 +67,7 @@ type State = {
     focused: boolean,
 }
 
+// TODO: rewrite this component to UITextView from hydrogen
 export default class UISearchBar extends UIComponent<Props, State> {
     static defaultProps = {
         value: '',
@@ -204,7 +203,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
         return (
             <Image
                 source={UIAssets.icons.ui.glass}
-                style={[UIStyle.alignSelfCenter, UIStyle.marginRightSmall]}
+                style={[UIStyle.flex.alignSelfCenter(), UIStyle.margin.rightSmall()]}
             />
         );
     }
@@ -264,7 +263,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
                         value={value}
                         placeholder={placeholder}
                         returnKeyType="search"
-                        textStyle={styles.textStyle}
+                        textStyle={[Typography[TypographyVariants.ParagraphText], styles.textStyle]}
                         containerStyle={styles.searchInput}
                         onFocus={this.onFocusHandler}
                         onBlur={this.onBlurHandler}

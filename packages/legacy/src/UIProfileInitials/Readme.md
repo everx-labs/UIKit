@@ -11,8 +11,8 @@ const rowStyle = {
 renderProfile = (id, initials) => (
     <UIProfileInitials
 		containerStyle={[
-		    UIStyle.Margin.bottomDefault(), 
-		    UIStyle.Margin.rightDefault(),
+		    UIStyle.margin.bottomDefault(), 
+		    UIStyle.margin.rightDefault(),
 		]}
 		id={id}
 		initials={initials}

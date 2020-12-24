@@ -87,24 +87,11 @@ export function useCustomKeyboard(
     const onKeyboardResigned = React.useCallback(() => {
         setCustomKeyboardVisible(false);
     }, []);
-
-    // const onPickSticker = React.useCallback(
-    //     (sticker: PickedSticker) => {
-    //         dismissKeyboard();
-
-    //         if (onSendSticker) {
-    //             onSendSticker(sticker);
-    //         }
-    //     },
-    //     [dismissKeyboard],
-    // );
-
     return {
         customKeyboardVisible: customKeyboardVisible && !!editable,
         toggleKeyboard,
         onKeyboardResigned,
         onFocus,
         onBlur,
-        // onPickSticker,
     };
 }

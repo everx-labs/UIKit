@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle, UITextStyle } from "@tonlabs/uikit.core";
+import { UIStyle } from "@tonlabs/uikit.core";
 import { UIComponent } from "@tonlabs/uikit.components";
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIAccountPickerCell from './components/UIAccountPickerCell';
 import type { UIAccountData } from './types/UIAccountData';
@@ -37,9 +38,13 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
 
     renderTitle() {
         return (
-            <Text style={[UITextStyle.tertiaryTinyRegular, UIStyle.marginBottomTiny]}>
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphLabel}
+                style={UIStyle.margin.bottomTiny()}
+            >
                 {this.props.title}
-            </Text>
+            </UILabel>
         );
     }
 

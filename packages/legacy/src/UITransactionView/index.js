@@ -6,12 +6,13 @@ import {
     View,
     Image,
 } from 'react-native';
-
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIConstant, UIColor, UIStyle, UIFont } from '@tonlabs/uikit.core';
-import { UIComponent, UILabel } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIConstant, UIColor, UIStyle, UIFont } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+
 import UIProfileInitials from '../UIProfileInitials';
 
 type Props = {
@@ -160,7 +161,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
                     id={this.title}
                     initials={initials}
                     containerStyle={this.styles.avatarContainer}
-                    textStyle={{ ...UIFont.accentRegular() }}
+                    textStyle={UILabelRoles.PromoMedium}
                     avatarSize={this.isDetailsMode()
                         ? UIConstant.detailsAvatarSize()
                         : UIConstant.mediumAvatarSize()}
@@ -172,10 +173,14 @@ export default class UITransactionView extends UIComponent<Props, State> {
     }
 
     renderTitle() {
-        return (<UILabel
-            role={UILabel.Role.DescriptionMedium}
-            text={this.title}
-        />);
+        return (
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.Action}
+            >
+                {this.title}
+            </UILabel>
+        );
     }
 
     renderDescription() {
@@ -183,11 +188,15 @@ export default class UITransactionView extends UIComponent<Props, State> {
         if (!description) {
             return null;
         }
-        return (<UILabel
-            role={UILabel.Role.Caption}
-            style={UIStyle.margin.topTiny()}
-            text={description}
-        />);
+        return (
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphFootnote}
+                style={UIStyle.margin.topTiny()}
+            >
+                {description}
+            </UILabel>
+        );
     }
 
     renderComment() {
@@ -199,11 +208,13 @@ export default class UITransactionView extends UIComponent<Props, State> {
             <View style={[UIStyle.flex.row(), UIStyle.margin.topTiny()]}>
                 <View style={this.styles.commentWrapper}>
                     <UILabel
-                        role={UILabel.Role.TinySecondary}
-                        text={this.comment}
+                        color={UILabelColors.TextSecondary}
                         numberOfLines={1}
+                        role={UILabelRoles.ParagraphLabel}
                         style={encrypted ? UIStyle.margin.rightNormal() : null}
-                    />
+                    >
+                        {this.comment}
+                    </UILabel>
                     {encrypted && (
                         <View style={this.styles.keyThin}>
                             <Image source={UIAssets.icons.ui.keyThinDark} />
@@ -215,10 +226,14 @@ export default class UITransactionView extends UIComponent<Props, State> {
     }
 
     renderAmount() {
-        return (<UILabel
-            role={UILabel.Role.Description}
-            text={this.amount}
-        />);
+        return (
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.ParagraphText}
+            >
+                {this.amount}
+            </UILabel>
+        );
     }
 
     renderContent() {

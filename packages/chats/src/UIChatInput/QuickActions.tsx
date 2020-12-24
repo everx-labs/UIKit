@@ -4,9 +4,9 @@ import {
     Image, // TODO: use UIImage?
 } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
-import { UIButtonGroup, UITextButton } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIButtonGroup, UITextButton } from '@tonlabs/uikit.components';
+import { UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';
@@ -46,10 +46,10 @@ export function QuickAction(props: Props) {
                     key={`quickAction~${action.key}`}
                     testID={action.testID}
                     buttonStyle={commonStyles.buttonContainer}
-                    textStyle={UIStyle.text.bodyMedium()}
                     onPress={action.onPress}
                     icon={action.icon}
                     title={action.title}
+                    titleRole={UILabelRoles.Action}
                     disableIconColor
                 />
             ))}

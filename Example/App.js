@@ -72,7 +72,6 @@ import {
     UIAlertView,
     UIDropdownAlert,
     UIBackgroundView,
-    UILabel,
     UIListHeader,
     UISectionHeader,
 } from '@tonlabs/uikit.components';
@@ -98,7 +97,12 @@ import {
 } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
-import { useWebFonts } from '@tonlabs/uikit.hydrogen';
+import {
+    useWebFonts,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 import { useStickers } from '@tonlabs/uikit.stickers';
 
 enableScreens();
@@ -1972,8 +1976,8 @@ const Profile = () => (
         >
             <UIProfileInitials
                 containerStyle={[
-                    UIStyle.Margin.bottomDefault(),
-                    UIStyle.Margin.rightDefault(),
+                    UIStyle.margin.bottomDefault(),
+                    UIStyle.margin.rightDefault(),
                 ]}
                 id={1}
                 initials="AM"
@@ -2057,9 +2061,12 @@ const TextScreen = () => (
             }}
         >
             <UILabel
-                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                role={UILabel.Role.Description}
-            />
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.ParagraphText}
+            >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </UILabel>
         </View>
         <View
             style={{

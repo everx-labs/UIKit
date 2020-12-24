@@ -5,8 +5,9 @@ import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import { UIFont, UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { Typography, TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';
@@ -27,15 +28,6 @@ const styles = StyleSheet.create({
     },
     badgeContainer: {
         marginRight: UIConstant.smallContentOffset(),
-    },
-    titleL: {
-        ...UIFont.bodyMedium(),
-    },
-    titleM: {
-        ...UIFont.smallMedium(),
-    },
-    titleS: {
-        ...UIFont.captionMedium(),
     },
     extension: {
         flex: 1,
@@ -307,13 +299,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     getTitleFontStyle() {
         switch (this.props.buttonSize) {
         case UIButton.buttonSize.large:
-            return styles.titleL;
+            return Typography[TypographyVariants.Action];
         case UIButton.buttonSize.medium:
-            return styles.titleM;
+            return Typography[TypographyVariants.ActionCallout];
         case UIButton.buttonSize.small:
-            return styles.titleS;
+            return Typography[TypographyVariants.ActionFootnote];
         default:
-            return styles.titleL;
+            return Typography[TypographyVariants.Action];
         }
     }
 
@@ -454,14 +446,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (this.shouldShowIndicator()) {
             return null;
         }
-        const titleStyle = this.getTitleColorStyle();
         const hovered = this.isHover() || this.isTapped();
         return (
             <Text
                 key="buttonTitle"
                 style={[
                     this.getTitleFontStyle(),
-                    titleStyle,
+                    this.getTitleColorStyle(),
                     hovered ? this.props.textHoverStyle : this.props.textStyle,
                 ]}
             >
@@ -487,16 +478,16 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     renderData() {
         if (!this.props.data) return null;
-
+    
         const data = (
-            <Text
-                style={[
-                    UIStyle.text.tertiaryTinyBold(),
-                    UIStyle.margin.leftSmall(),
-                ]}
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.HeadlineLabel}
+                style={UIStyle.margin.leftSmall()}
             >
                 {this.props.data}
-            </Text>);
+            </UILabel>
+        );
 
         if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
 
@@ -514,17 +505,19 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     renderCount() {
         if (!this.props.count) return null;
-
+    
         const data = (
-            <Text
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphText}
                 style={[
-                    UIStyle.text.tertiaryBodyRegular(),
                     UIStyle.margin.leftSmall(),
                     this.props.countStyle,
                 ]}
             >
                 {this.props.count}
-            </Text>);
+            </UILabel>
+        );
 
         if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
 

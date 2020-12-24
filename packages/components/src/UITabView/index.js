@@ -6,6 +6,7 @@ import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/Animat
 import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';
@@ -72,9 +73,6 @@ export default class UITabView extends UIComponent<TabViewProps, State> {
         return (
             <Animated.View style={UIStyle.common.flexRow()}>
                 {this.props.pages.map(({ title }: TabViewPage, index: number) => {
-                    const textStyle = index === this.state.integerIndex
-                        ? UIStyle.text.actionBodyBold()
-                        : UIStyle.text.secondaryBodyBold();
                     return (
                         // eslint-disable-next-line react/no-array-index-key
                         <TouchableWithoutFeedback
@@ -84,7 +82,9 @@ export default class UITabView extends UIComponent<TabViewProps, State> {
                             <View style={[UIStyle.common.flex(), UIStyle.common.alignCenter()]}>
                                 <UITextButton
                                     title={title}
-                                    textStyle={textStyle}
+                                    titleColor={index === this.state.integerIndex
+                                        ? UILabelColors.TextAccent : UILabelColors.TextSecondary}
+                                    titleRole={UILabelRoles.HeadlineHead}
                                     onPress={() => this.onPressTab(index)}
                                     testID={UITabView.testIDs.tabTitle(title)}
                                 />

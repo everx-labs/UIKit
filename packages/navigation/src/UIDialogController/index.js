@@ -2,15 +2,15 @@
 import React from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     Animated,
     LayoutAnimation,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { UIColor, UIConstant, UIFont, UIStyle } from '@tonlabs/uikit.core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIProfilePhoto } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';
@@ -27,8 +27,6 @@ const styles = StyleSheet.create({
     },
     titleText: {
         textAlign: 'center',
-        ...UIFont.bodyRegular(),
-        color: UIColor.textPrimary(),
         // width: '100%', // Fix for Firefox (UPD: breaks layout on the phone)
     },
     subtitleContainer: {
@@ -36,12 +34,6 @@ const styles = StyleSheet.create({
         minHeight: 72,
         alignItems: 'center',
         justifyContent: 'flex-start',
-    },
-    subtitleText: {
-        textAlign: 'center',
-        ...UIFont.captionMedium(),
-        color: UIColor.primary(),
-        // width: '100%', // Fix for Firefox (UPD: breaks layout on the phone)
     },
     contentContainer: {
         flex: 1,
@@ -195,7 +187,14 @@ class UIDialogController extends UIController {
         }
         return (
             <View style={styles.titleView}>
-                <Text style={styles.titleText} numberOfLines={3}>{this.title}</Text>
+                <UILabel
+                    color={UILabelColors.TextPrimary}
+                    numberOfLines={3}
+                    role={UILabelRoles.ParagraphText}
+                    style={styles.titleText}
+                >
+                    {this.title}
+                </UILabel>
             </View>
         );
     }

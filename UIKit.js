@@ -39,7 +39,6 @@ export {
     UIGridColumn,
     UIImage,
     UIImageButton,
-    UILabel,
     UILayoutManager,
     UILink,
     UILinkInput,
@@ -164,7 +163,6 @@ export type {
 } from './packages/core/src/UIFunction';
 export type { UIActionComponentProps as ActionProps } from './packages/components/src/UIActionComponent';
 export type { DetailsList } from './packages/components/src/UIDetailsTable';
-export type { LabelRoleValue } from './packages/components/src/UILabel';
 export type { MenuItemType } from './packages/navigation/src/UIActionSheet/MenuItem';
 export type { ShareOptions } from './packages/navigation/src/UIShareManager';
 export type { Country } from './packages/navigation/src/UICountryPicker';

@@ -10,9 +10,9 @@ import {
 
 import { UIColor, UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import type { EventProps } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UILabel from '../UILabel';
 
 type Props = {
     words: string[],
@@ -233,9 +233,11 @@ export default class UISeedPhraseHintsView extends UIComponent<Props, State> {
                 {...eventProps}
             >
                 <UILabel
-                    text={hint}
-                    role={UILabel.Role.Note}
-                />
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.ParagraphNote}
+                >
+                    {hint}
+                </UILabel>
             </TouchableOpacity>
         );
     }
