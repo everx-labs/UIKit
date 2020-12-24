@@ -7,7 +7,8 @@ import type { ImageStyleProp } from 'react-native/Libraries/StyleSheet/StyleShee
 import type { FastImageSource } from 'react-native-fast-image';
 
 import { UIStyle } from '@tonlabs/uikit.core';
-import { UIComponent, UILabel } from '@tonlabs/uikit.components';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 const FastImage =
     Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
@@ -54,19 +55,22 @@ export default class UILandingView extends UIComponent<Props, State> {
                     source={icon}
                 />
                 <UILabel
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.TitleMedium}
                     style={UIStyle.Margin.topDefault()}
-                    role={UILabel.Role.Subtitle}
-                    text={title}
-                />
+                >
+                    {title}
+                </UILabel>
                 <UILabel
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.ParagraphNote}
                     style={[
                         UIStyle.Margin.topSmall(),
                         !content && styles.descriptionLabel,
                     ]}
-                    useDefaultSpace
-                    role={UILabel.Role.DescriptionSmall}
-                    text={description}
-                />
+                >
+                    {description}
+                </UILabel>
                 {content}
             </React.Fragment>
         );

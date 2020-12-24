@@ -5,8 +5,9 @@ import {
 } from 'react-native';
 
 import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+
 import UIComponent from '../UIComponent';
-import UILabel from '../UILabel';
 
 type Props = {
     text: ?string,
@@ -23,9 +24,6 @@ const styles = StyleSheet.create({
         padding: UIConstant.normalContentOffset(),
         borderRadius: UIConstant.borderRadius(),
     },
-    textStyle: {
-        color: UIColor.white(),
-    },
 });
 
 export default class UIBanner extends UIComponent<Props, State> {
@@ -39,10 +37,11 @@ export default class UIBanner extends UIComponent<Props, State> {
                 ]}
             >
                 <UILabel
-                    role={UILabel.Role.SmallMedium}
-                    text={this.props.text || ''}
-                    style={styles.textStyle}
-                />
+                    role={UILabelRoles.ActionCallout}
+                    color={UILabelColors.TextPrimaryInverted}
+                >
+                    {this.props.text || ''}
+                </UILabel>
             </View>
         );
     }

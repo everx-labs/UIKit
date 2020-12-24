@@ -1,15 +1,15 @@
 // @flow
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {
     UIConstant,
     UIFunction,
     UIStyle,
-    UITextStyle,
 } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import type { UIAccountData } from '../types/UIAccountData';
 
@@ -83,8 +83,6 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
             return null;
         }
 
-        const { primaryBodyRegular, greyBodyRegular } = UITextStyle;
-
         const [integer, fractional] = stringNumber.split('.');
 
         const decimals = (fractional && fractional.length > 0)
@@ -94,17 +92,21 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         const tokenSymbol = this.getTokenSymbol();
 
         return (
-            <Text
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.MonoText}
                 testID={`balance_value_${this.getAccountName()}`}
-                style={primaryBodyRegular}
             >
                 {integer}
-                <Text style={greyBodyRegular}>
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.MonoText}
+                >
                     {`${this.getDecimalSeparator()}${decimals}`}
                     {tokenSymbol ? ' ' : '' /* space between */}
                     {tokenSymbol}
-                </Text>
-            </Text>
+                </UILabel>
+            </UILabel>
         );
     }
 
@@ -120,19 +122,22 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
 
         return (
             <View style={UIStyle.common.flexRow()}>
-                <Text
+                <UILabel
+                    color={notActive
+                        ? UILabelColors.TextPrimary
+                        : UILabelColors.TextAccent}
+                    ellipsizeMode="middle"
+                    numberOfLines={1}
+                    role={notActive
+                        ? UILabelRoles.ParagraphText
+                        : UILabelRoles.Action}
                     style={[
                         UIStyle.common.flex(),
                         UIStyle.margin.rightDefault(),
-                        notActive
-                            ? UIStyle.text.secondaryBodyRegular()
-                            : UIStyle.text.actionBodyMedium(),
                     ]}
-                    numberOfLines={1}
-                    ellipsizeMode="middle"
                 >
                     {name}
-                </Text>
+                </UILabel>
                 {this.renderFractional(UIFunction.getNumberString(account.balance))}
             </View>
         );
@@ -146,9 +151,13 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         }
 
         return (
-            <Text style={[UIStyle.margin.topTiny(), UIStyle.text.tertiaryCaptionRegular()]}>
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphFootnote}
+                style={UIStyle.margin.topTiny()}
+            >
                 {account.name}
-            </Text>
+            </UILabel>
         );
     }
 

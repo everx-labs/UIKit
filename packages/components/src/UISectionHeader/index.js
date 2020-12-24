@@ -3,9 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
 
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -44,19 +45,25 @@ class UISectionHeader extends UIComponent {
                 {this.renderSeparator()}
                 <View
                     style={[
-                        UIStyle.flexRow,
-                        UIStyle.justifySpaceBetween,
-                        UIStyle.centerLeftContainer,
+                        UIStyle.flex.row(),
+                        UIStyle.flex.justifySpaceBetween(),
+                        UIStyle.container.centerLeft(),
                         styles.sectionHeader,
                         this.props.containerStyle,
                     ]}
                 >
-                    <Text style={UIStyle.text.tertiaryTinyBold()}>
+                    <UILabel
+                        color={UILabelColors.TextTertiary}
+                        role={UILabelRoles.HeadlineLabel}
+                    >
                         {this.getTitle()}
-                    </Text>
-                    <Text style={UIStyle.text.tertiaryTinyRegular()}>
+                    </UILabel>
+                    <UILabel
+                        color={UILabelColors.TextTertiary}
+                        role={UILabelRoles.ParagraphLabel}
+                    >
                         {this.getTitleRight()}
-                    </Text>
+                    </UILabel>
                 </View>
             </View>
         );

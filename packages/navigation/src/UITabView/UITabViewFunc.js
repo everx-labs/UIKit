@@ -8,6 +8,7 @@ import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nod
 
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UITextButton } from '@tonlabs/uikit.components';
+import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 export type TabViewPage = {
     title: string,
@@ -66,9 +67,6 @@ const UITabView = ({
     const tapBar = (
         <Animated.View style={UIStyle.flex.row()}>
             {pages.map(({ title }: TabViewPage, index: number) => {
-                const titleStyleDefault = index === integerIndex
-                    ? UIStyle.text.actionBodyBold()
-                    : UIStyle.text.secondaryBodyBold();
                 return (
                     // eslint-disable-next-line react/no-array-index-key
                     <TouchableWithoutFeedback
@@ -78,7 +76,10 @@ const UITabView = ({
                         <View style={[UIStyle.flex.x1(), UIStyle.flex.alignCenter()]}>
                             <UITextButton
                                 title={title}
-                                textStyle={[titleStyleDefault, titleStyle]}
+                                titleColor={index === integerIndex
+                                    ? UILabelColors.TextAccent : UILabelColors.TextSecondary}
+                                titleRole={UILabelRoles.HeadlineHead}
+                                textStyle={titleStyle}
                                 // onPress={() => onPressTab(index)}
                                 testID={tabViewTestIDs.tabTitle(title)}
                             />

@@ -4,11 +4,7 @@ import { View, Text } from 'react-native';
 
 import { UIStyle, UIColor, UIFunction } from '@tonlabs/uikit.core';
 import { UIComponent, UITextButton } from '@tonlabs/uikit.components';
-
-// export type BreadCrumbScreen = {
-//     screen: string,
-//     title: string,
-// }
+import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 type Props = {
     // screens: BreadCrumbScreen[],
@@ -78,10 +74,8 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
                         <React.Fragment key={`bread-crumbs-${title}-${index}`}>
                             <UITextButton
                                 title={title}
-                                textStyle={[
-                                    UIStyle.text.smallRegular(),
-                                    UIStyle.color.getColorStyle(UIColor.tagBlack()),
-                                ]}
+                                titleColor={UILabelColors.TextPrimary}
+                                titleRole={UILabelRoles.ParagraphNote}
                                 style={UIStyle.margin.rightNormal()}
                                 onPress={() => this.props.navigation.pop(lastRoutes.length - index)}
                             />

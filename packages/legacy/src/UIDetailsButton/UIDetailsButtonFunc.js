@@ -16,6 +16,7 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIShareManager } from '@tonlabs/uikit.navigation';
 import { UITextButton, UIActionComponent } from '@tonlabs/uikit.components';
 import type { UIActionComponentProps } from '@tonlabs/uikit.components';
+import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 type Props = UIActionComponentProps & {
@@ -159,11 +160,10 @@ const UIDetailsButton = forwardRef(({
     const copyButton = narrow || !isHover ? null : (
         <UITextButton
             title={uiLocalized.Copy}
+            titleColor={UILabelColors.TextPrimary}
+            titleRole={copyTarget === UIDetailsButtonCopyTargets.title
+                ? UILabelRoles.Action : UILabelRoles.ActionCallout}
             style={[UIStyle.height.tinyCell(), UIStyle.margin.leftDefault()]}
-            textStyle={
-                copyTarget === UIDetailsButtonCopyTargets.title
-                    ? UIStyle.text.primaryBodyMedium()
-                    : UIStyle.text.primarySmallMedium()}
             onPress={onPressCopy}
         />
     );

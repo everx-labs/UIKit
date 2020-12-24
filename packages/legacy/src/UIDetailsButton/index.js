@@ -21,6 +21,7 @@ import type {
 } from '@tonlabs/uikit.components';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 type Props = UIActionComponentProps & {
     style: ViewStyleProp,
@@ -201,11 +202,10 @@ export default class UIDetailsButton extends UIActionComponent<Props, State> {
         return (
             <UITextButton
                 title={uiLocalized.Copy}
+                titleColor={UILabelColors.TextPrimary}
+                titleRole={copyTarget === UIDetailsButton.copyTargets.title
+                    ? UILabelRoles.Action : UILabelRoles.ActionCallout}
                 style={[UIStyle.height.tinyCell(), UIStyle.margin.leftDefault()]}
-                textStyle={
-                    copyTarget === UIDetailsButton.copyTargets.title
-                        ? UIStyle.text.primaryBodyMedium()
-                        : UIStyle.text.primarySmallMedium()}
                 onPress={this.onPressCopy}
             />
         );

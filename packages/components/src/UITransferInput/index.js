@@ -12,6 +12,7 @@ import type {
     BigNum,
     UIColorData,
 } from '@tonlabs/uikit.core';
+import { UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -281,7 +282,6 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIDetailsView
                 testID="fees"
                 reversed
-                disabled
                 // N.B. The is a bug in react-naive where you cannot dismiss the keyboard on Android
                 // when its focus is switched to a selected non-input component.
                 // Thus disable such an ability.
@@ -291,9 +291,8 @@ export default class UITransferInput extends UIComponent<Props, State> {
                     uiLocalized.amountToLocale(this.getFees(), options),
                 )}
                 comments={uiLocalized.fee}
-                commentsStyle={UIStyle.text.tertiaryTinyRegular()}
+                commentsRole={UILabelRoles.ParagraphLabel}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
-                textStyle={UIStyle.text.secondaryBodyRegular()}
             />
         );
     }
@@ -303,16 +302,14 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIDetailsView
                 testID="operation_time"
                 reversed
-                disabled
                 // N.B. The is a bug in react-naive where you cannot dismiss the keyboard on Android
                 // when its focus is switched to a selected non-input component.
                 // Thus disable such an ability.
                 selectable={false}
                 value={uiLocalized.immediately}
                 comments={uiLocalized.operationTime}
-                commentsStyle={UIStyle.text.tertiaryTinyRegular()}
+                commentsRole={UILabelRoles.ParagraphLabel}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}
-                textStyle={UIStyle.text.secondaryBodyRegular()}
             />
         );
     }

@@ -2,7 +2,6 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     TouchableOpacity,
     Platform,
@@ -11,12 +10,12 @@ import {
 import { BorderlessButton as RNGHBorderlessButton } from 'react-native-gesture-handler';
 import debounce from 'lodash/debounce';
 
-import { UIStyle, UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';
-import UILabel from '../UILabel';
 
 const BorderlessButton = Platform.select({
     web: TouchableOpacity,
@@ -235,11 +234,13 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderLabel() {
         return (
             <UILabel
-                role={UILabel.Role.Description}
-                text={this.props.pinTitle}
+                color={UILabelColors.TextPrimary}
                 numberOfLines={1}
+                role={UILabelRoles.ParagraphText}
                 selectable={false}
-            />
+            >
+                {this.props.pinTitle}
+            </UILabel>
         );
     }
 
@@ -261,13 +262,15 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
 
         return (
             <UILabel
-                testID={this.props.commentTestID}
-                style={descStyle.descColor}
-                role={UILabel.Role.Caption}
-                text={description}
+                color={UILabelColors.TextSecondary}
                 numberOfLines={1}
+                role={UILabelRoles.ParagraphFootnote}
+                style={descStyle.descColor}
                 selectable={false}
-            />
+                testID={this.props.commentTestID}
+            >
+                {description}
+            </UILabel>
         );
     }
 
@@ -300,7 +303,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(1)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>1</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >1</UILabel>
                     </BorderlessButton>
                     <BorderlessButton
                         testID="pincode_digit_2"
@@ -308,7 +315,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(2)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>2</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >2</UILabel>
                     </BorderlessButton>
                     <BorderlessButton
                         testID="pincode_digit_3"
@@ -316,7 +327,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(3)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>3</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >3</UILabel>
                     </BorderlessButton>
                 </View>
                 <View style={[UIStyle.flexRow]}>
@@ -326,7 +341,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(4)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>4</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >4</UILabel>
                     </BorderlessButton>
                     <BorderlessButton
                         testID="pincode_digit_5"
@@ -334,7 +353,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(5)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>5</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >5</UILabel>
                     </BorderlessButton>
                     <BorderlessButton
                         testID="pincode_digit_6"
@@ -342,7 +365,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(6)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>6</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >6</UILabel>
                     </BorderlessButton>
                 </View>
                 <View style={[UIStyle.flexRow]}>
@@ -352,7 +379,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(7)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>7</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >7</UILabel>
                     </BorderlessButton>
                     <BorderlessButton
                         testID="pincode_digit_8"
@@ -360,7 +391,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(8)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>8</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >8</UILabel>
                     </BorderlessButton>
                     <BorderlessButton
                         testID="pincode_digit_9"
@@ -368,7 +403,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(9)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>9</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >9</UILabel>
                     </BorderlessButton>
                 </View>
                 <View style={[UIStyle.flexRow, UIStyle.Margin.bottomMedium()]}>
@@ -380,7 +419,10 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         }
                     >
                         {this.props.usePredefined && (
-                            <Text style={UITextStyle.primaryCaptionMedium}>DEV</Text>
+                            <UILabel
+                                color={UILabelColors.TextPrimary}
+                                role={UILabelRoles.ActionFootnote}
+                            >DEV</UILabel>
                         )}
                         {!this.props.usePredefined && this.renderBiometryLogin()}
                     </BorderlessButton>
@@ -391,7 +433,11 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={() => this.onKeyPress(0)}
                         disabled={disabled}
                     >
-                        <Text style={[UITextStyle.primaryTitleLight, opacityStyle]}>0</Text>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.PromoHuge}
+                            style={opacityStyle}
+                        >0</UILabel>
                     </BorderlessButton>
                     <BorderlessButton
                         testID="pincode_digit_delete"

@@ -5,10 +5,9 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import UILabel from '../UILabel';
 import UIComponent from '../UIComponent';
 
 const styles = StyleSheet.create({
@@ -76,14 +75,15 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
             >
                 <View style={[styles.wrapper, this.props.wrapperStyle]}>
                     <UILabel
-                        role={UILabel.Role.TinyRegular}
+                        color={UILabelColors.TextTertiary}
+                        role={UILabelRoles.ParagraphLabel}
                         style={[
-                            UIStyle.color.getColorStyle(UIColor.textTertiary()),
                             this.props.textStyle,
                             { opacity: this.props.isLoadingMore ? 0 : 1 },
                         ]}
-                        text={this.props.label}
-                    />
+                    >
+                        {this.props.label}
+                    </UILabel>
                     {this.renderIndicator()}
                 </View>
             </TouchableOpacity>

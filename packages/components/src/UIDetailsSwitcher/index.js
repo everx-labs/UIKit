@@ -1,9 +1,10 @@
 // @flow
 import React from 'react';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIDetailsView from '../UIDetailsView';
@@ -30,6 +31,10 @@ type DetailsSwitcherProps = {
      @default false
      */
     disabled?: boolean,
+    /** Details text color
+     @default null
+     */
+    textColor?: TextStyleProp,
     /** Details text style
      @default null
      */
@@ -81,6 +86,7 @@ export default class UIDetailsSwitcher<Props, State>
         switcherPosition: UIDetailsSwitcher.Position.Right,
         disabled: false,
         type: UIDetailsSwitcher.Type.Square,
+        textColor: null,
         textStyle: null,
         style: null,
         details: '',
@@ -111,7 +117,7 @@ export default class UIDetailsSwitcher<Props, State>
     // Render
     renderDetailsView() {
         const {
-            details, comments, textStyle,
+            details, disabled, comments, textColor, textStyle,
         } = this.props;
 
         if (!comments && !details) {
@@ -120,18 +126,25 @@ export default class UIDetailsSwitcher<Props, State>
 
         if (!comments) {
             return (
-                <Text style={[UIStyle.text.primaryBodyMedium(), UIStyle.common.flex(), textStyle]}>
+                <UILabel
+                    color={textColor ||
+                    (disabled ? UILabelColors.TextNeutral : UILabelColors.TextPrimary)}
+                    role={textStyle || UILabelRoles.Action}
+                    style={UIStyle.common.flex()}
+                >
                     {details}
-                </Text>
+                </UILabel>
             );
         }
 
-        return (<UIDetailsView
-            containerStyle={UIStyle.common.flex()}
-            value={details}
-            comments={comments}
-            onPress={() => {}}
-        />);
+        return (
+            <UIDetailsView
+                value={details}
+                comments={comments}
+                onPress={() => {}}
+                containerStyle={UIStyle.common.flex()}
+            />
+        );
     }
 
     renderSwitcher(): React$Node {
