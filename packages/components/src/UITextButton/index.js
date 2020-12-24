@@ -61,6 +61,7 @@ type Props = UIActionComponentProps & {
 
 type State = UIActionComponentState;
 
+// TODO: rework UITextButton ASAP with correct styles!
 export default class UITextButton extends UIActionComponent<Props, State> {
     static align = {
         left: UIStyle.common.justifyStart(),
