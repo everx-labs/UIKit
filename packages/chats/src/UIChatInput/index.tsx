@@ -80,12 +80,7 @@ export function UIChatInput(props: Props) {
         onKeyboardResigned,
         onFocus,
         onBlur,
-        // onPickSticker,
-    } = useCustomKeyboard(
-        props.onStickersVisible,
-        // props.onSendSticker,
-        props.editable,
-    );
+    } = useCustomKeyboard(props.onStickersVisible, props.editable);
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     const input = (

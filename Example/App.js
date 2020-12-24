@@ -99,12 +99,7 @@ import {
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
 import { useWebFonts } from '@tonlabs/uikit.hydrogen';
-import {
-    UIStickerPickerKeyboardName,
-    StickersList,
-    StickersButton,
-    useStickers,
-} from '@tonlabs/uikit.stickers';
+import { useStickers } from '@tonlabs/uikit.stickers';
 
 enableScreens();
 useWebFonts();
