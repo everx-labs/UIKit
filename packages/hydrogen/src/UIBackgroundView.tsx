@@ -28,8 +28,8 @@ export const UIBackgroundView = React.forwardRef<View, Props>(
                 ref={ref}
                 {...rest}
                 style={[
-                    colorStyle,
                     style,
+                    colorStyle,
                 ]}
             />
         );
