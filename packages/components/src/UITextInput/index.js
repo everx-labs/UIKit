@@ -122,7 +122,7 @@ class UITextInput extends UIComponent<Props, State> {
                 role={UILabelRoles.ParagraphText}
                 style={[
                     styles.beginningTag,
-                    textStyle, // TODO: support passing styles of hydrogen UILabel
+                    textStyle,
                 ]}
             >
                 {beginningTag}

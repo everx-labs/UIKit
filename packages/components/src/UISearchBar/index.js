@@ -67,6 +67,7 @@ type State = {
     focused: boolean,
 }
 
+// TODO: rewrite this component to UITextView from hydrogen
 export default class UISearchBar extends UIComponent<Props, State> {
     static defaultProps = {
         value: '',
