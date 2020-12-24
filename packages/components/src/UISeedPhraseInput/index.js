@@ -196,7 +196,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const comment = this.getComment();
         if (comment === uiLocalized.seedPhraseTypo) {
             return `${commentTestID}_error`;
-        } else if (comment.includes('more')) {
+        } else if (comment.includes('word')) {
             return `${commentTestID}_counter_${comment.split(' ')[0]}`;
         } else if (comment === uiLocalized.greatMemory) {
             return `${commentTestID}_success`;
@@ -228,7 +228,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         if (!valid && !this.isFocused() && !this.areHintsVisible() && entered !== 0) {
             return UIColor.error();
-        } else if (valid && !this.isFocused()) {
+        } else if (valid && !this.isFocused() && entered !== 0) {
             return UIColor.success();
         }
 
@@ -329,7 +329,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
     onBlur = () => {
         this.setFocused(false);
         this.props.onBlur();
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== 'web') { // because you can't choose hint in web
             this.hideHints();
         }
     };

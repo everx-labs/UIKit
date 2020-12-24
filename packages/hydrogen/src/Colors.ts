@@ -45,6 +45,8 @@ export enum ColorVariants {
     // IconPrimaryInverted = 'IconPrimaryInverted',
     // IconNeutral = 'IconNeutral',
     // IconNegative = 'IconNegative',
+    // That ones are for technical reasons
+    Transparent = 'Transparent',
 }
 
 type Theme = {
@@ -86,6 +88,7 @@ export const LightTheme: Theme = {
     // [ColorVariants.IconPrimary]Inverted: '#FDFDFD',
     // [ColorVariants.IconNeutral]: '#E2E3E4',
     // [ColorVariants.IconNegative]: '#CA1414',
+    [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
 };
 
 export const DarkTheme: Theme = {
@@ -114,6 +117,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.LineNeutral]: '#FDFDFD',
     [ColorVariants.LineAccent]: '#0073C4',
     [ColorVariants.LineNegative]: '#CA1414',
+    [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
 };
 
 export const ThemeContext = React.createContext(LightTheme);
