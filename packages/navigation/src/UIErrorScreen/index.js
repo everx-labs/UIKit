@@ -168,7 +168,7 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                 >
                     <UILabel
                         color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.HeadlineHead} // TODO: ex UIFont.titleBold()
+                        role={UILabelRoles.TitleHuge}
                         style={UIStyle.margin.topSpacious()}
                     >
                         {this.getTitle()}

@@ -64,7 +64,7 @@ class UIProfileInitials extends UIComponent<Props, Style> {
             >
                 <UILabel
                     color={UILabelColors.TextPrimaryInverted}
-                    role={textStyle || UILabelRoles.TitleLarge} // TODO: ex UIFont.titleLight()
+                    role={textStyle || UILabelRoles.PromoHuge}
                     style={styles.textStyle}
                 >
                     {initials}

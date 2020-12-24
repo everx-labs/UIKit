@@ -7,7 +7,7 @@ import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { Typography, TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';
@@ -446,14 +446,13 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (this.shouldShowIndicator()) {
             return null;
         }
-        const titleStyle = this.getTitleColorStyle();
         const hovered = this.isHover() || this.isTapped();
         return (
             <Text
                 key="buttonTitle"
                 style={[
                     this.getTitleFontStyle(),
-                    titleStyle,
+                    this.getTitleColorStyle(),
                     hovered ? this.props.textHoverStyle : this.props.textStyle,
                 ]}
             >
@@ -479,16 +478,16 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     renderData() {
         if (!this.props.data) return null;
-
+    
         const data = (
-            <Text
-                style={[
-                    UIStyle.text.tertiaryTinyBold(),
-                    UIStyle.margin.leftSmall(),
-                ]}
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.HeadlineLabel}
+                style={UIStyle.margin.leftSmall()}
             >
                 {this.props.data}
-            </Text>);
+            </UILabel>
+        );
 
         if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
 
@@ -506,18 +505,19 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     renderCount() {
         if (!this.props.count) return null;
-
+    
         const data = (
-            <Text
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphText}
                 style={[
-                    Typography[TypographyVariants.Action],
-                    UIStyle.color.getColorStyle(UIColor.textTertiary()),
                     UIStyle.margin.leftSmall(),
                     this.props.countStyle,
                 ]}
             >
                 {this.props.count}
-            </Text>);
+            </UILabel>
+        );
 
         if (this.props.textAlign !== UIButton.TextAlign.Left) { return data; }
 

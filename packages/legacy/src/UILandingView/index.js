@@ -56,7 +56,7 @@ export default class UILandingView extends UIComponent<Props, State> {
                 />
                 <UILabel
                     color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.TitleLarge} // TODO: upd acc to the UILabel.Role.Subtitle
+                    role={UILabelRoles.TitleMedium}
                     style={UIStyle.Margin.topDefault()}
                 >
                     {title}

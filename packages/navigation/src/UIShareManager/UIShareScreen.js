@@ -136,7 +136,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
             <View style={styles.container}>
                 <UILabel
                     color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.HeadlineSubhead} // TODO: ex UIFont.subtitleBold()
+                    role={UILabelRoles.TitleMedium}
                 >
                     {uiLocalized.Share}
                 </UILabel>
