@@ -15,13 +15,7 @@ import type {
     OnPickSticker,
 } from './types';
 
-type Props = {
-    isCustomKeyboard?: boolean;
-    stickers: UIStickerPackage[];
-    onPick: OnPickSticker;
-};
-
-export const UIStickerPickerKeyboardName = 'UIStickerPickerKeyboard';
+export const StickerPickerKeyboardName = 'UIStickerPickerKeyboard';
 
 function Sticker({
     sticker,
@@ -49,6 +43,12 @@ function Sticker({
     );
 }
 
+type Props = {
+    isCustomKeyboard?: boolean;
+    stickers: UIStickerPackage[];
+    onItemSelected: OnPickSticker;
+};
+
 export function StickersList(props: Props) {
     // Unfortunately we can't use react-native-safe-area-context
     // coz we show the picker in UICustomKeyboard and it can't find
@@ -74,12 +74,15 @@ export function StickersList(props: Props) {
                                 sticker={sticker}
                                 pkgID={item.id}
                                 onPress={(stk) => {
-                                    const { isCustomKeyboard, onPick } = props;
-                                    if (onPick) {
-                                        onPick(stk);
+                                    const {
+                                        isCustomKeyboard,
+                                        onItemSelected,
+                                    } = props;
+                                    if (onItemSelected) {
+                                        onItemSelected(undefined, stk);
                                     } else if (isCustomKeyboard) {
                                         UICustomKeyboardUtils.onItemSelected(
-                                            UIStickerPickerKeyboardName,
+                                            StickerPickerKeyboardName,
                                             stk,
                                         );
                                     }
@@ -107,7 +110,7 @@ export function StickersList(props: Props) {
 }
 
 UICustomKeyboardUtils.registerCustomKeyboard(
-    UIStickerPickerKeyboardName,
+    StickerPickerKeyboardName,
     StickersList,
 );
 

@@ -103,6 +103,7 @@ import {
     UIStickerPickerKeyboardName,
     StickersList,
     StickersButton,
+    useStickers,
 } from '@tonlabs/uikit.stickers';
 
 enableScreens();
@@ -2372,15 +2373,25 @@ const ChatWindowScreen = () => {
     const insets = useSafeAreaInsets();
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onSendSticker = React.useCallback(() => undefined, []);
-
-    const stickersKeyboard = {
-        button: StickersButton,
-        kbID: UIStickerPickerKeyboardName,
-        component: StickersList,
-        props: {
-            stickers,
+    const onItemSelected = React.useCallback(
+        (_id, stk) => {
+            setMessages([
+                {
+                    key: `${Date.now()}stk`,
+                    type: 'stk',
+                    status: 'sent',
+                    time: Date.now(),
+                    sender: '0:000',
+                    source: {
+                        uri: stk.url,
+                    },
+                },
+                ...messages,
+            ]);
         },
-    };
+        [messages, setMessages],
+    );
+    const stickersKeyboard = useStickers(stickers, onItemSelected);
 
     return (
         <>

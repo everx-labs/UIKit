@@ -32,7 +32,7 @@ const registerCustomKeyboard = (
     const Component = component;
     const KeyboardComponent = (keyboardProps: any) => (
         <CustomKeyboardWrapper isCustomKeyboard customKeyboardVisible>
-            <Component {...keyboardProps} />
+            <Component {...keyboardProps} isCustomKeyboard />
         </CustomKeyboardWrapper>
     );
     KeyboardRegistry.registerKeyboard(kbID, () => KeyboardComponent, params);
@@ -64,7 +64,7 @@ let trackingViewIsReady = false; // global flag to learn if KeyboardTrackingView
 
 type Props = KeyboardAccessoryViewProps & {
     onHeightChange?: OnHeightChange;
-    customKeyboardComponent: React.ComponentType;
+    customKeyboardComponent: React.ComponentType<any>;
     customKeyboardVisible: boolean;
     kbID: string;
 };
@@ -79,7 +79,11 @@ export function UICustomKeyboard(props: Props) {
                     isCustomKeyboard={false}
                     customKeyboardVisible={props.customKeyboardVisible}
                 >
-                    <CustomKeyboardComponent />
+                    <CustomKeyboardComponent
+                        {...props.kbInitialProps}
+                        isCustomKeyboard={false}
+                        onItemSelected={props.onItemSelected}
+                    />
                 </CustomKeyboardWrapper>
             </>
         );

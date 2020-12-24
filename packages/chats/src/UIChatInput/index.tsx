@@ -2,7 +2,11 @@ import * as React from 'react';
 import { Platform, TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UICustomKeyboard, useCustomKeyboard } from '@tonlabs/uikit.keyboard';
+import {
+    UICustomKeyboard,
+    useCustomKeyboard,
+    UICustomKeyboardItem,
+} from '@tonlabs/uikit.keyboard';
 
 import { ChatInput } from './ChatInput';
 import type {
@@ -48,14 +52,6 @@ function useMenuPlus(menuPlusHidden = false) {
     };
 }
 
-type CustomKeyboardProp = {
-    button: React.ComponentType;
-    kbID: string;
-    component: React.ComponentType;
-    props: any;
-    onItemSelected: () => void;
-};
-
 type Props = {
     editable: boolean;
     placeholder?: string;
@@ -73,7 +69,7 @@ type Props = {
     onStickersVisible?: (visible: boolean) => void | Promise<void>;
     onHeightChange?: OnHeightChange;
 
-    customKeyboard: CustomKeyboardProp;
+    customKeyboard: UICustomKeyboardItem;
 };
 
 export function UIChatInput(props: Props) {
@@ -127,9 +123,13 @@ export function UIChatInput(props: Props) {
             kbInputRef={textInputRef}
             kbID={props.customKeyboard.kbID}
             customKeyboardVisible={customKeyboardVisible}
-            kbComponent={props.customKeyboard.component}
+            customKeyboardComponent={props.customKeyboard.component}
             kbInitialProps={props.customKeyboard.props}
-            onItemSelected={props.customKeyboard.onItemSelected}
+            onItemSelected={(_id: string | undefined, stk: any) => {
+                toggleKeyboard();
+
+                props.customKeyboard.onItemSelected(_id, stk);
+            }}
             onKeyboardResigned={onKeyboardResigned}
             onHeightChange={props.onHeightChange}
         />
