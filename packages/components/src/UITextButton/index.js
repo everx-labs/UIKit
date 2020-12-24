@@ -1,10 +1,7 @@
 // @flow
 import React from 'react';
 import { StyleSheet, Text, Image, View, Platform } from 'react-native';
-import type {
-    ViewStyleProp,
-    TextStyleProp,
-} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import {
@@ -13,7 +10,7 @@ import {
     UIColor,
     UIFunction,
 } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { Typography, TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -55,13 +52,14 @@ type Props = UIActionComponentProps & {
     textTappedStyle?: TextStyleProp,
     theme: string,
     title: string,
+    titleColor?: TextStyleProp,
+    titleRole?: TextStyleProp,
     tooltip?: string,
     multiLine: boolean,
 };
 
 type State = UIActionComponentState;
 
-// TODO: rework UITextButton ASAP with correct styles!
 export default class UITextButton extends UIActionComponent<Props, State> {
     static align = {
         left: UIStyle.common.justifyStart(),
@@ -158,15 +156,13 @@ export default class UITextButton extends UIActionComponent<Props, State> {
 
     renderTitle() {
         const {
-            title, textStyle, details, theme, disabled, multiLine,
+            title, titleColor, titleRole, textStyle, details, theme, disabled, multiLine,
         } = this.props;
         if (!title) {
             return null;
         }
-        const defaultFontStyle = Typography[TypographyVariants.ActionCallout];
         const tapped = this.isTapped();
         const hover = this.isHover();
-        const defaultColorStyle = UIColor.actionTextPrimaryStyle(theme);
         const stateColorStyle = disabled || tapped || hover
             ? UIColor.stateTextPrimaryStyle(theme, disabled, tapped, hover)
             : null;
@@ -175,20 +171,21 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         const numberOfLines = multiLine ? null : { numberOfLines: 1 };
 
         return (
-            <Text
+            <UILabel
+                color={titleColor || UILabelColors.TextAccent}
+                ellipsizeMode="middle"
+                role={titleRole ||  UILabelRoles.ActionCallout}
+                {...numberOfLines}
                 style={[
-                    defaultFontStyle,
-                    defaultColorStyle,
-                    textStyle,
                     stateColorStyle,
                     stateCustomColorStyle,
+                    stateColorStyle,
+                    textStyle,
                     flexGrow,
                 ]}
-                {...numberOfLines}
-                ellipsizeMode="middle"
             >
                 {title}
-            </Text>
+            </UILabel>
         );
     }
 
@@ -198,9 +195,13 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             return null;
         }
         return (
-            <Text style={[UIStyle.text.secondarySmallRegular(), detailsStyle]}>
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphNote}
+                style={detailsStyle}
+            >
                 {details}
-            </Text>
+            </UILabel>
         );
     }
 
