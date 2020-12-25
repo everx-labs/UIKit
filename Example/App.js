@@ -97,7 +97,18 @@ import {
 } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
-import { useWebFonts, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    useWebFonts,
+    useTheme,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ThemeContext,
+    DarkTheme,
+    LightTheme,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
+import { UITheme } from '@tonlabs/uikit.core/src/UITheme';
 
 enableScreens();
 useWebFonts();
@@ -2058,7 +2069,8 @@ const TextScreen = () => (
                 color={UILabelColors.TextPrimary}
                 role={UILabelRoles.ParagraphText}
             >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </UILabel>
         </View>
         <View
@@ -2390,16 +2402,16 @@ const ChatWindowScreen = () => {
 };
 
 const Chat = () => {
+    const theme = useTheme();
     return (
-        <ChatStack.Navigator>
+        <ChatStack.Navigator headerShown={false}>
             <ChatStack.Screen
                 name="ChatWindow"
                 options={{
+                    headerShown: false,
                     title: 'Chat',
                     cardStyle: {
-                        backgroundColor: UIStyle.color.getBackgroundColorStyle(
-                            UIColor.backgroundPrimary(),
-                        ),
+                        backgroundColor: theme[ColorVariants.backgroundPrimary],
                     },
                 }}
                 component={ChatWindowScreen}
@@ -2408,82 +2420,107 @@ const Chat = () => {
     );
 };
 
-const Main = ({ navigation }) => (
-    <SafeAreaView>
-        <Text style={styles.title}>Main</Text>
-        <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
-            <UIButton
-                onPress={() => navigation.navigate('buttons')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Buttons"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('checkbox')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Checkbox"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('inputs')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Inputs"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('design')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Design"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('images')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Images"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('layouts')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Layouts"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('menus')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Menus"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('notifications')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Notifications"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('popups')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Popups"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('products')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Products"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('profile')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Profile"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('text')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Text"
-            />
-            <UIButton
-                onPress={() => navigation.navigate('chat')}
-                buttonStyle={UIButton.ButtonStyle.Link}
-                title="Chat"
-            />
-        </ScrollView>
-    </SafeAreaView>
-);
+const ThemeSwitcher = React.createContext(null);
+
+const Main = ({ navigation }) => {
+    const themeSwitcher = React.useContext(ThemeSwitcher);
+    return (
+        <SafeAreaView>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: 10,
+                }}
+            >
+                <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
+                <UIDetailsToggle
+                    details={`Mode: ${
+                        themeSwitcher?.isDarkTheme ? 'Dark' : 'Light'
+                    }`}
+                    active={themeSwitcher?.isDarkTheme}
+                    onPress={() => {
+                        themeSwitcher?.toggleTheme();
+                    }}
+                />
+            </View>
+            <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+                <UIButton
+                    onPress={() => navigation.navigate('buttons')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Buttons"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('checkbox')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Checkbox"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('inputs')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Inputs"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('design')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Design"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('images')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Images"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('layouts')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Layouts"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('menus')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Menus"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('notifications')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Notifications"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('popups')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Popups"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('products')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Products"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('profile')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Profile"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('text')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Text"
+                />
+                <UIButton
+                    onPress={() => navigation.navigate('chat')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Chat"
+                />
+            </ScrollView>
+        </SafeAreaView>
+    );
+};
 
 const App: () => React$Node = () => {
     const navRef = React.useRef();
     useReduxDevToolsExtension(navRef);
+
+    const theme = useTheme();
 
     const main = (
         <SafeAreaProvider>
@@ -2492,9 +2529,28 @@ const App: () => React$Node = () => {
                     initialRouteName="buttons"
                     screenOptions={{
                         splitStyles: {
-                            body: styles.body,
-                            main: styles.main,
-                            detail: styles.detail,
+                            body: [
+                                styles.body,
+                                {
+                                    backgroundColor:
+                                        theme[ColorVariants.BackgroundTertiary],
+                                },
+                            ],
+
+                            main: [
+                                styles.main,
+                                {
+                                    backgroundColor:
+                                        theme[ColorVariants.BackgroundPrimary],
+                                },
+                            ],
+                            detail: [
+                                styles.detail,
+                                {
+                                    backgroundColor:
+                                        theme[ColorVariants.BackgroundPrimary],
+                                },
+                            ],
                         },
                     }}
                     mainWidth={900}
@@ -2555,6 +2611,37 @@ const App: () => React$Node = () => {
     return <UIPopoverBackground>{main}</UIPopoverBackground>;
 };
 
+const AppWrapper = () => {
+    const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+    const [isHidden, setIsHidden] = React.useState(false);
+
+    if (isHidden) {
+        return null;
+    }
+
+    return (
+        <ThemeContext.Provider value={isDarkTheme ? DarkTheme : LightTheme}>
+            <ThemeSwitcher.Provider
+                value={{
+                    isDarkTheme,
+                    toggleTheme: () => {
+                        if (isDarkTheme) {
+                            UIColor.switchCurrentTheme('light');
+                        } else {
+                            UIColor.switchCurrentTheme('dark');
+                        }
+                        setIsDarkTheme(!isDarkTheme);
+                        setIsHidden(true);
+                        setImmediate(() => setIsHidden(false));
+                    },
+                }}
+            >
+                <App />
+            </ThemeSwitcher.Provider>
+        </ThemeContext.Provider>
+    );
+};
+
 const styles = StyleSheet.create({
     body: {
         flex: 1,
@@ -2562,13 +2649,11 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     main: {
-        backgroundColor: 'white',
         minWidth: 300,
         marginRight: 10,
         borderRadius: 5,
     },
     detail: {
-        backgroundColor: 'white',
         flex: 1,
         borderRadius: 5,
     },
@@ -2579,4 +2664,4 @@ const styles = StyleSheet.create({
     grid: {},
 });
 
-export default App;
+export default AppWrapper;
