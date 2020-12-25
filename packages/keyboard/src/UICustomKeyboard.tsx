@@ -31,8 +31,8 @@ const registerCustomKeyboard = (
     const params = { ...props, kbComponent: kbID };
     const Component = component;
     const KeyboardComponent = (keyboardProps: any) => (
-        <CustomKeyboardWrapper isCustomKeyboard customKeyboardVisible>
-            <Component {...keyboardProps} isCustomKeyboard />
+        <CustomKeyboardWrapper isNativeKeyboard customKeyboardVisible>
+            <Component {...keyboardProps} isNativeKeyboard />
         </CustomKeyboardWrapper>
     );
     KeyboardRegistry.registerKeyboard(kbID, () => KeyboardComponent, params);
@@ -76,12 +76,12 @@ export function UICustomKeyboard(props: Props) {
             <>
                 {props.renderContent()}
                 <CustomKeyboardWrapper
-                    isCustomKeyboard={false}
+                    isNativeKeyboard={false}
                     customKeyboardVisible={props.customKeyboardVisible}
                 >
                     <CustomKeyboardComponent
                         {...props.kbInitialProps}
-                        isCustomKeyboard={false}
+                        isNativeKeyboard={false}
                         onItemSelected={props.onItemSelected}
                     />
                 </CustomKeyboardWrapper>

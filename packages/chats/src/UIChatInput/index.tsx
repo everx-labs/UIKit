@@ -66,7 +66,7 @@ type Props = {
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
-    onStickersVisible?: (visible: boolean) => void | Promise<void>;
+    onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
     onHeightChange?: OnHeightChange;
 
     customKeyboard: UICustomKeyboardItem;
@@ -80,7 +80,7 @@ export function UIChatInput(props: Props) {
         onKeyboardResigned,
         onFocus,
         onBlur,
-    } = useCustomKeyboard(props.onStickersVisible, props.editable);
+    } = useCustomKeyboard(props.onCustomKeyboardVisible, props.editable);
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     const input = (

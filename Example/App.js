@@ -2439,7 +2439,6 @@ const ChatWindowScreen = () => {
                 onSendSticker={onSendSticker}
                 stickers={stickers}
                 onHeightChange={setBottomInset}
-                // shortcuts={shortcuts}
                 customKeyboard={stickersKeyboard}
             />
         </>

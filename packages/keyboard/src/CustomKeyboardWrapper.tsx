@@ -46,7 +46,7 @@ function useCustomKeyboardWrapperAnimations(customKeyboardVisible: boolean) {
 }
 
 type Props = {
-    isCustomKeyboard?: boolean;
+    isNativeKeyboard?: boolean;
     customKeyboardVisible: boolean;
     children: React.ReactNode;
 };
@@ -56,7 +56,7 @@ export function CustomKeyboardWrapper(props: Props) {
         props.customKeyboardVisible,
     );
 
-    if (props.isCustomKeyboard) {
+    if (props.isNativeKeyboard) {
         return (
             <Animated.View
                 style={{

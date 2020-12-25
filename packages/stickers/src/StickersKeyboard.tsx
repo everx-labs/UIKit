@@ -44,7 +44,7 @@ function Sticker({
 }
 
 type Props = {
-    isCustomKeyboard?: boolean;
+    isNativeKeyboard?: boolean;
     stickers: UIStickerPackage[];
     onItemSelected: OnPickSticker;
 };
@@ -75,12 +75,12 @@ export function StickersList(props: Props) {
                                 pkgID={item.id}
                                 onPress={(stk) => {
                                     const {
-                                        isCustomKeyboard,
+                                        isNativeKeyboard,
                                         onItemSelected,
                                     } = props;
                                     if (onItemSelected) {
                                         onItemSelected(undefined, stk);
-                                    } else if (isCustomKeyboard) {
+                                    } else if (isNativeKeyboard) {
                                         UICustomKeyboardUtils.onItemSelected(
                                             StickerPickerKeyboardName,
                                             stk,
