@@ -6,8 +6,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAlertView, UIImageView } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import { UICustomKeyboardUtils } from '../UICustomKeyboard';
+import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
 
 import type { OnSendMedia, OnSendDocument, ImageSize } from './types';
 

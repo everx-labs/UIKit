@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { Keyboard, Platform, TextInput } from 'react-native';
+import { Platform, TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import { UICustomKeyboard, UICustomKeyboardUtils } from '../UICustomKeyboard';
 import {
-    UIStickerPicker,
-    UIStickerPickerKeyboardName,
-} from '../UIStickerPicker';
+    UICustomKeyboard,
+    useCustomKeyboard,
+    UICustomKeyboardItem,
+} from '@tonlabs/uikit.keyboard';
 
 import { ChatInput } from './ChatInput';
 import type {
@@ -20,112 +19,6 @@ import type {
     QuickActionItem,
 } from './types';
 import type { ChatPickerRef } from './ChatPicker';
-import type { OnPickSticker, PickedSticker, UIStickerPackage } from '../types';
-
-const AndroidKeyboardAdjust =
-    Platform.OS === 'android'
-        ? require('react-native-android-keyboard-adjust')
-        : null;
-
-export type OnStickersVisible = (visible: boolean) => void | Promise<void>;
-
-function useStickers(
-    onStickersVisible?: OnStickersVisible,
-    onSendSticker?: OnPickSticker,
-    editable?: boolean,
-) {
-    const [stickersVisible, setStickersVisible] = React.useState<boolean>(
-        false,
-    );
-
-    const onStickersPress = React.useCallback(async () => {
-        if (AndroidKeyboardAdjust) {
-            // Apply a hack for Android animation
-            AndroidKeyboardAdjust.setAdjustNothing();
-            // N.B. It will change back to resize automatically once UICustomKeyboard is dismissed!
-        }
-
-        if (Platform.OS !== 'web') {
-            // Manage the keyboard as per the latest state
-            if (stickersVisible) {
-                UICustomKeyboardUtils.dismiss();
-            } else {
-                Keyboard.dismiss();
-            }
-        }
-
-        // Change the state
-        const nextState = !!editable && !stickersVisible;
-        setStickersVisible(nextState);
-
-        // Trigger an event about the state change
-        if (onStickersVisible) {
-            onStickersVisible(nextState);
-        }
-    }, [editable, stickersVisible]);
-
-    const onFocus = React.useCallback(() => {
-        if (Platform.OS === 'android') {
-            setTimeout(() => {
-                setStickersVisible(false);
-            }, 0); // required to fix an issue with the keyboard animation
-        } else {
-            setStickersVisible(false);
-        }
-
-        if (onStickersVisible) {
-            onStickersVisible(false);
-        }
-
-        if (Platform.OS !== 'android') {
-            return;
-        }
-
-        if (!stickersVisible && AndroidKeyboardAdjust) {
-            AndroidKeyboardAdjust.setAdjustResize();
-        }
-    }, [stickersVisible]);
-
-    const onBlur = React.useCallback(() => {
-        if (Platform.OS !== 'android') {
-            return;
-        }
-
-        if (!stickersVisible) {
-            UICustomKeyboardUtils.dismiss();
-        } else {
-            // This is not a likely case that stickers are visible on blur, but we need to ensure!
-            // eslint-disable-next-line no-lonely-if
-            if (AndroidKeyboardAdjust) {
-                AndroidKeyboardAdjust.setAdjustResize();
-            }
-        }
-    }, [stickersVisible]);
-
-    const onKeyboardResigned = React.useCallback(() => {
-        setStickersVisible(false);
-    }, []);
-
-    const onPickSticker = React.useCallback(
-        (sticker: PickedSticker) => {
-            onStickersPress();
-
-            if (onSendSticker) {
-                onSendSticker(sticker);
-            }
-        },
-        [onStickersPress],
-    );
-
-    return {
-        stickersVisible: stickersVisible && !!editable,
-        onStickersPress,
-        onKeyboardResigned,
-        onFocus,
-        onBlur,
-        onPickSticker,
-    };
-}
 
 function useMenuPlus(menuPlusHidden = false) {
     const chatPickerRef = React.useRef<ChatPickerRef>(null);
@@ -162,7 +55,6 @@ function useMenuPlus(menuPlusHidden = false) {
 type Props = {
     editable: boolean;
     placeholder?: string;
-    stickers?: UIStickerPackage[];
     shortcuts?: Shortcut[];
     menuPlusHidden?: boolean;
     menuPlusDisabled?: boolean;
@@ -174,21 +66,21 @@ type Props = {
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
-    onSendSticker: OnPickSticker;
-    onStickersVisible?: (visible: boolean) => void | Promise<void>;
+    onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
     onHeightChange?: OnHeightChange;
+
+    customKeyboard: UICustomKeyboardItem;
 };
 
 export function UIChatInput(props: Props) {
     const textInputRef = React.useRef<TextInput>(null);
     const {
-        stickersVisible,
-        onStickersPress,
+        customKeyboardVisible,
+        toggleKeyboard,
         onKeyboardResigned,
         onFocus,
         onBlur,
-        onPickSticker,
-    } = useStickers(props.onStickersVisible, props.onSendSticker, props.editable);
+    } = useCustomKeyboard(props.onCustomKeyboardVisible, props.editable);
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     const input = (
@@ -206,11 +98,12 @@ export function UIChatInput(props: Props) {
             quickActions={props.quickActions}
             textInputRef={textInputRef}
             pickerRef={chatPickerRef}
-            stickersVisible={stickersVisible}
+            customKeyboardVisible={customKeyboardVisible}
+            onCustomKeyboardPress={toggleKeyboard}
+            customKeyboardButton={props.customKeyboard.button}
             onSendText={props.onSendText}
             onSendMedia={props.onSendMedia}
             onSendDocument={props.onSendDocument}
-            onStickersPress={onStickersPress}
             onHeightChange={
                 Platform.OS === 'web' ? props.onHeightChange : undefined
             }
@@ -219,34 +112,19 @@ export function UIChatInput(props: Props) {
         />
     );
 
-    if (Platform.OS === 'web') {
-        return (
-            <>
-                {input}
-                {props.stickers && (
-                    <UIStickerPicker
-                        stickersVisible={stickersVisible}
-                        stickers={props.stickers}
-                        onPick={onPickSticker}
-                    />
-                )}
-            </>
-        );
-    }
-
     return (
         <UICustomKeyboard
             renderContent={() => input}
             kbInputRef={textInputRef}
-            kbComponent={stickersVisible ? UIStickerPickerKeyboardName : undefined}
-            kbInitialProps={{
-                // The following doesn't work for iOS, thus we use `onItemSelected` prop
-                onPick: onPickSticker,
-                isCustomKeyboard: true,
-                stickersVisible,
-                stickers: props.stickers,
+            kbID={props.customKeyboard.kbID}
+            customKeyboardVisible={customKeyboardVisible}
+            customKeyboardComponent={props.customKeyboard.component}
+            kbInitialProps={props.customKeyboard.props}
+            onItemSelected={(_id: string | undefined, stk: any) => {
+                toggleKeyboard();
+
+                props.customKeyboard.onItemSelected(_id, stk);
             }}
-            onItemSelected={(_id, stk) => onPickSticker(stk)}
             onKeyboardResigned={onKeyboardResigned}
             onHeightChange={props.onHeightChange}
         />

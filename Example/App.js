@@ -97,6 +97,7 @@ import {
 } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIChatList, UIChatInput } from '@tonlabs/uikit.chats';
+import { useStickers } from '@tonlabs/uikit.stickers';
 import {
     useWebFonts,
     useTheme,
@@ -108,7 +109,6 @@ import {
     LightTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
-import { UITheme } from '@tonlabs/uikit.core/src/UITheme';
 
 enableScreens();
 useWebFonts();
@@ -2135,6 +2135,36 @@ const TextScreen = () => (
 
 const initialMessages = [
     {
+        type: 'stm',
+        status: 'received',
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: '0:000',
+        text: 'This one is from me',
+    },
+    {
+        type: 'stm',
+        status: 'received',
+        time: Math.floor(Date.now() - 5 * 60 * 1000),
+        sender: '0:123',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    },
+    {
+        type: 'stm',
+        status: 'sent',
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: '0:000',
+        text: 'This one is from me',
+    },
+    {
+        type: 'stm',
+        status: 'sent',
+        time: Math.floor(Date.now() - 5 * 60 * 1000),
+        sender: '0:123',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    },
+    {
         type: 'act',
         status: 'sent',
         time: Math.floor(Date.now() - 1 * 60 * 1000),
@@ -2350,6 +2380,25 @@ const ChatWindowScreen = () => {
     const insets = useSafeAreaInsets();
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onSendSticker = React.useCallback(() => undefined, []);
+    const onItemSelected = React.useCallback(
+        (_id, stk) => {
+            setMessages([
+                {
+                    key: `${Date.now()}stk`,
+                    type: 'stk',
+                    status: 'sent',
+                    time: Date.now(),
+                    sender: '0:000',
+                    source: {
+                        uri: stk.url,
+                    },
+                },
+                ...messages,
+            ]);
+        },
+        [messages, setMessages],
+    );
+    const stickersKeyboard = useStickers(stickers, onItemSelected);
 
     return (
         <>
@@ -2395,7 +2444,7 @@ const ChatWindowScreen = () => {
                 onSendSticker={onSendSticker}
                 stickers={stickers}
                 onHeightChange={setBottomInset}
-                shortcuts={shortcuts}
+                customKeyboard={stickersKeyboard}
             />
         </>
     );
@@ -2476,6 +2525,7 @@ const Main = ({ navigation }) => {
                     buttonStyle={UIButton.ButtonStyle.Link}
                     title="Layouts"
                 />
+                \
                 <UIButton
                     onPress={() => navigation.navigate('menus')}
                     buttonStyle={UIButton.ButtonStyle.Link}

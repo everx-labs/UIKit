@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
 
 import { sectionListGetItemLayout } from './UIChatListLayout';
 import { UIChatListFormatter } from './UIChatListFormatter';
@@ -35,7 +36,6 @@ import { BubbleSticker } from './BubbleSticker';
 import { BubbleActionButton } from './BubbleActionButton';
 import { DateSeparator } from './DateSeparator';
 import { UILoadMoreButton } from './UILoadMoreButton';
-import { UICustomKeyboardUtils } from './UICustomKeyboard';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
 
