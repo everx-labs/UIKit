@@ -14,10 +14,15 @@ const themes: { [UIColorThemeNameType]: UIColorThemeData } = {
     action: UIColorThemeAction,
 };
 
-const current = UIColorThemeName.light;
+let current = UIColorThemeName.light;
 
 export class UITheme {
     static current: UIColorThemeData = themes.light;
+
+    static switchCurrentTheme(themeName: UIColorThemeNameType) {
+        current = themeName;
+        this.current = themes[themeName];
+    }
 
     // Text colors
     static textPrimary(theme?: ?UIColorThemeNameType): UIColorData {

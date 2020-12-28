@@ -438,4 +438,8 @@ export default class UIColor {
     static getTintColorStyle(color: UIColorData) {
         return UIStyleColor.getStyle(color, UIStyleColor.Styles.TintColor);
     }
+
+    static switchCurrentTheme(themeName: UIColorThemeNameType) {
+        UITheme.switchCurrentTheme(themeName);
+    }
 }
