@@ -109,6 +109,7 @@ import {
     LightTheme,
     ColorVariants,
     UIMaterialTextView,
+    UISeedPhraseTextView,
 } from '@tonlabs/uikit.hydrogen';
 
 enableScreens();
@@ -636,6 +637,29 @@ const Inputs = () => {
                     />
                 </View>
             </View>
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UISeedPhraseInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20 }}>
+                <UISeedPhraseInput
+                    value={seedPhrase}
+                    onChangeText={(newText) => setSeedPhrase(newText)}
+                    phraseToCheck={mnemonicWords.join(' - ')}
+                    totalWords={4}
+                    words={mnemonicWords}
+                />
+                <UISeedPhraseTextView />
+            </View>
 
             <View
                 style={{
@@ -891,29 +915,6 @@ const Inputs = () => {
                         setSearch(newExpression)
                     }
                     renderGlass
-                />
-            </View>
-            <View
-                style={{
-                    width: '96%',
-                    paddingLeft: 40,
-                    paddingBottom: 10,
-                    marginHorizontal: '2%',
-                    marginTop: 50,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                }}
-            >
-                <Text>UISeedPhraseInput</Text>
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISeedPhraseInput
-                    value={search}
-                    value={seedPhrase}
-                    onChangeText={(newText) => setSeedPhrase(newText)}
-                    phraseToCheck={mnemonicWords.join(' - ')}
-                    totalWords={12}
-                    words={mnemonicWords}
                 />
             </View>
             <View

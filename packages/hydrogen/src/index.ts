@@ -2,6 +2,7 @@ export * from './UIBackgroundView';
 export * from './UILabel';
 export * from './UITextView';
 export * from './UIMaterialTextView';
+export * from './UISeedPhraseTextView';
 
 export * from './Colors';
 export * from './Typography';

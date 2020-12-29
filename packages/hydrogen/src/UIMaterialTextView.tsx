@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Animated, StyleSheet, TextInput, View } from 'react-native';
+import {
+    Animated,
+    LayoutChangeEvent,
+    StyleSheet,
+    TextInput,
+    View,
+} from 'react-native';
 
 import { ColorVariants, useTheme } from './Colors';
 import { TypographyVariants } from './Typography';
@@ -8,8 +14,8 @@ import { UITextView, UITextViewProps, useUITextViewValue } from './UITextView';
 
 export type UIMaterialTextViewProps = UITextViewProps & {
     label: string;
-    helperText: string;
-    error: boolean;
+    helperText?: string;
+    error?: boolean;
 };
 
 const getBorderColor = (
@@ -42,7 +48,7 @@ const FLOATING_LABEL_SPRING_CONFIG = {
     useNativeDriver: true,
 };
 const FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG = {
-    toValue: -7,
+    toValue: 0,
     ...FLOATING_LABEL_SPRING_CONFIG,
 };
 const OPEN_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG = {
@@ -57,6 +63,8 @@ const OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG = {
     toValue: 0,
     ...FLOATING_LABEL_SPRING_CONFIG,
 };
+// For some reason it works better than 0.75
+const FOLDED_FLOATING_LABEL_SCALE_TO_CALC = 0.65;
 const FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG = {
     toValue: 0.75,
     ...FLOATING_LABEL_SPRING_CONFIG,
@@ -131,13 +139,29 @@ function useFloatLabelTransform(
             inputHasValue,
         ],
     );
+    const [width, setWidth] = React.useState(0);
+    const onLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { width: lWidth },
+            },
+        }: LayoutChangeEvent) => {
+            setWidth(lWidth);
+        },
+        [setWidth],
+    );
     React.useEffect(() => {
         const isFoldedNow = isFocused || inputHasValue || value;
+        const foldedWidth = width * FOLDED_FLOATING_LABEL_SCALE_TO_CALC;
+        const translateXValue = (foldedWidth - width) / 2;
         Animated.parallel([
             Animated.spring(
                 translateX.current,
                 isFoldedNow
-                    ? FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG
+                    ? {
+                          ...FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG,
+                          toValue: translateXValue,
+                      }
                     : OPEN_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG,
             ),
             Animated.spring(
@@ -153,7 +177,7 @@ function useFloatLabelTransform(
                     : OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG,
             ),
         ]).start();
-    }, [isFocused]);
+    }, [isFocused, width]);
     const transform = React.useMemo(
         () => [
             {
@@ -173,6 +197,7 @@ function useFloatLabelTransform(
         transform,
         onFocus,
         onBlur,
+        onLayout,
     };
 }
 
@@ -195,17 +220,20 @@ function useHover() {
 export const UIMaterialTextView = React.forwardRef<
     TextInput,
     UIMaterialTextViewProps
->(function UIDecoratedTextViewForwarded(props: UIMaterialTextViewProps, ref) {
+>(function UIMaterialTextViewForwarded(props: UIMaterialTextViewProps, ref) {
     const { label, helperText, onChangeText, ...rest } = props;
     const theme = useTheme();
     const {
         inputHasValue,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, onChangeText);
-    const { isFocused, transform, onFocus, onBlur } = useFloatLabelTransform(
-        props,
-        inputHasValue,
-    );
+    const {
+        isFocused,
+        transform,
+        onFocus,
+        onBlur,
+        onLayout,
+    } = useFloatLabelTransform(props, inputHasValue);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const main = (
@@ -239,6 +267,7 @@ export const UIMaterialTextView = React.forwardRef<
                 ]}
             >
                 <UILabel
+                    onLayout={onLayout}
                     role={TypographyVariants.ParagraphText}
                     color={UILabelColors.TextTertiary}
                 >
