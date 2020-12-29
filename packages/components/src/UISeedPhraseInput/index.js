@@ -6,13 +6,12 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { Popover } from 'react-native-simple-popover';
 
 import {
-    UIColor,
     UIConstant,
     UIFunction,
     UIStyle,
     UIDevice,
 } from '@tonlabs/uikit.core';
-
+import { UILabelColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIDetailsInput } from '../UIDetailsInput';
@@ -227,9 +226,9 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
         const valid = this.areWordsValid();
 
         if (!valid && !this.isFocused() && !this.areHintsVisible() && entered !== 0) {
-            return UIColor.error();
+            return UILabelColors.TextNegative;
         } else if (valid && !this.isFocused() && entered !== 0) {
-            return UIColor.success();
+            return UILabelColors.TextPositive;
         }
 
         return null;
