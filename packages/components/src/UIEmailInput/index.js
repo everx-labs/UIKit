@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 
-import { UIFunction, UIColor } from '@tonlabs/uikit.core';
-
+import { UIFunction } from '@tonlabs/uikit.core';
+import { UILabelColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -51,9 +51,9 @@ export default class UIEmailInput extends UIComponent<
     }
 
     getCommentColor() {
-        const { value, theme, commentColor } = this.props;
+        const { value, commentColor } = this.props;
         if (value && this.isSubmitDisabled()) {
-            return UIColor.detailsInputComment(theme);
+            return UILabelColors.TextNegative;
         }
         return commentColor;
     }
@@ -93,11 +93,10 @@ export default class UIEmailInput extends UIComponent<
     // Render
     render() {
         const commentColor = this.getCommentColor();
-        const commentColorProp = commentColor ? { commentColor } : null;
         return (
             <UIDetailsInput
                 {...this.props}
-                {...commentColorProp}
+                commentColor={commentColor}
                 commentTestID="email_input_comment"
                 ref={(component) => { this.emailInput = component; }}
                 onBlur={this.onBlur}

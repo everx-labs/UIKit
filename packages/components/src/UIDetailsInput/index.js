@@ -32,12 +32,6 @@ const styles = StyleSheet.create({
     container: {
         //
     },
-    textView: {
-        paddingTop: UIConstant.tinyContentOffset(),
-        paddingBottom: UIConstant.smallContentOffset(),
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     textInput: {
         padding: 0,
         zIndex: 1,
@@ -594,10 +588,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         ];
     }
 
-    textViewStyle() {
-        return styles.textView;
-    }
-
     beginningTag() {
         return this.props.beginningTag;
     }
@@ -980,6 +970,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             hideBottomLine, theme, mandatory, mandatoryColor,
         } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.border.bottom();
+
         let bottomLineColor: UIColorData;
         if (this.props.bottomLineColor) {
             ({ bottomLineColor } = this.props);
@@ -990,87 +981,103 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         } else {
             bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
         }
+
         const bottomLineColorStyle = UIStyleColor.getBorderBottomColorStyle(bottomLineColor);
         return (
-            <View style={[this.textViewStyle(), bottomLine, bottomLineColorStyle]}>
+            <View
+                style={[
+                    UIStyle.padding.topTiny(),
+                    UIStyle.padding.bottomSmall(),
+                    UIStyle.flex.row(),
+                    UIStyle.flex.alignCenter(),
+                    bottomLine,
+                    bottomLineColorStyle,
+                ]}
+            >
                 {this.renderTextFragment()}
             </View>
         );
     }
 
     renderComment() {
-        const { theme, onPressComment } = this.props;
+        const { onPressComment } = this.props;
         const comment = this.getComment();
+        const commentColor = this.commentColor();
+        const commentRight = this.getCommentRight();
         const testID = this.getCommentTestID();
         const testIDProp = testID ? { testID } : null;
-        const commentRight = this.getCommentRight();
+
         if (!comment && !commentRight) {
             return null;
         }
-        const commentColor = this.commentColor();
-        const colorStyle = commentColor
-            ? UIColor.getColorStyle(commentColor)
-            : null;
-        const containerStyle = [
-            styles.commentStyle,
-            UIStyle.margin.topSmall(),
-            UIStyle.margin.bottomSmall(),
-        ];
-        const textStyle = [colorStyle, UIStyle.text.captionRegular()];
-        const containerViewStyle = [
-            UIStyle.common.flex(),
-            UIStyle.common.flexRow(),
-            UIStyle.common.justifySpaceBetween(),
-            UIStyle.common.alignCenter(),
-        ];
-        const leftViewContainer = commentRight
-            ? UIStyle.common.flex2() : UIStyle.common.flex();
-        const rightViewContainer = commentRight
-            ? [
-                UIStyle.common.flex2(),
-                UIStyle.common.alignEnd(),
-                UIStyle.margin.leftDefault(),
-            ] : null;
-        const commentRightLabel = (
-            <UILabel
-                color={UILabelColors.TextTertiary}
-                role={UILabelRoles.ParagraphFootnote}
-                style={[
-                    ...textStyle,
-                    ...containerStyle,
-                ]}
-            >
-                {commentRight}
-            </UILabel>
-        );
+
         const component = onPressComment ? (
             <UITextButton
                 {...testIDProp}
-                style={[...containerStyle, UIStyle.height.littleCell()]}
-                textStyle={[UIColor.actionTextPrimaryStyle(theme), ...textStyle]}
+                style={[
+                    styles.commentStyle,
+                    UIStyle.margin.topSmall(),
+                    UIStyle.margin.bottomSmall(),
+                    UIStyle.height.littleCell(),
+                ]}
                 title={comment}
+                titleColor={commentColor || UILabelColors.TextAccent}
+                titleRole={UILabelRoles.ParagraphFootnote}
                 onPress={onPressComment}
             />
         ) : (
             <UILabel
                 {...testIDProp}
-                color={UILabelColors.TextTertiary}
+                color={commentColor || UILabelColors.TextTertiary}
                 role={UILabelRoles.ParagraphFootnote}
                 style={[
-                    ...textStyle,
-                    ...containerStyle,
+                    styles.commentStyle,
+                    UIStyle.margin.topSmall(),
+                    UIStyle.margin.bottomSmall(),
                 ]}
             >
                 {comment}
             </UILabel>
         );
 
+        const commentRightLabel = (
+            <UILabel
+                color={commentColor || UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphFootnote}
+                style={[
+                    styles.commentStyle,
+                    UIStyle.margin.topSmall(),
+                    UIStyle.margin.bottomSmall(),
+                ]}
+            >
+                {commentRight}
+            </UILabel>
+        );
+
         return (
-            <View style={containerViewStyle}>
-                <View style={leftViewContainer}>
+            <View
+                style={[
+                    UIStyle.common.flex(),
+                    UIStyle.common.flexRow(),
+                    UIStyle.common.justifySpaceBetween(),
+                    UIStyle.common.alignCenter(),
+                ]}
+            >
+                <View
+                    style={commentRight
+                        ? UIStyle.common.flex2()
+                        : UIStyle.common.flex()}
+                >
                     {component}
                 </View>
-                <View style={rightViewContainer}>
+                <View
+                    style={commentRight
+                        ? [
+                            UIStyle.common.flex2(),
+                            UIStyle.common.alignEnd(),
+                            UIStyle.margin.leftDefault(),
+                        ] : null}
+                >
                     {commentRightLabel}
                 </View>
             </View>
