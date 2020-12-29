@@ -92,17 +92,16 @@ export default class UIEmailInput extends UIComponent<
 
     // Render
     render() {
-        const commentColor = this.getCommentColor();
         return (
             <UIDetailsInput
                 {...this.props}
-                commentColor={commentColor}
                 commentTestID="email_input_comment"
                 ref={(component) => { this.emailInput = component; }}
                 onBlur={this.onBlur}
                 onChangeText={this.onChangeText}
                 keyboardType="email-address"
                 comment={this.getComment()}
+                commentColor={this.getCommentColor()}
                 placeholder={this.getPlaceholder()}
                 submitDisabled={this.isSubmitDisabled()}
                 mandatory={this.props.mandatory}

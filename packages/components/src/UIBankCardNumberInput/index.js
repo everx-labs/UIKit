@@ -3,9 +3,9 @@ import React from 'react';
 import { Image, View, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIColor, UIStyle, UIFunction } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-
+import { UIStyle, UIFunction } from '@tonlabs/uikit.core';
+import { UILabelColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -117,9 +117,9 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
     }
 
     getCommentColor() {
-        const { value, theme, commentColor } = this.props;
+        const { value, commentColor } = this.props;
         if (value && !this.isValidCardNumber()) {
-            return UIColor.detailsInputComment(theme);
+            return UILabelColors.TextNegative;
         }
         return commentColor;
     }
@@ -177,16 +177,14 @@ export default class UIBankCardNumberInput extends UIComponent<Props, State> {
     }
 
     render() {
-        const commentColor = this.getCommentColor();
-        const commentColorProp = commentColor ? { commentColor } : null;
         return (
             <UIDetailsInput
                 {...this.props}
-                {...commentColorProp}
                 keyboardType={this.props.keyboardType || UIFunction.phoneNumberInputKeyboardType()}
                 placeholder={this.getPlaceholder()}
                 rightComponent={this.renderCardLogos()}
                 comment={this.getComment()}
+                commentColor={this.getCommentColor()}
                 submitDisabled={!this.isValidCardNumber()}
                 onBlur={this.onBlur}
                 onChangeText={this.onChangeCardNumber}
