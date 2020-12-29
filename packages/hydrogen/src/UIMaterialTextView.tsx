@@ -80,7 +80,7 @@ function useFloatLabelTransform(
     props: UIMaterialTextViewProps,
     inputHasValue: boolean,
 ) {
-    const { onFocus: onFocusProp, onBlur: onBlurProp } = props;
+    const { onFocus: onFocusProp, onBlur: onBlurProp, value } = props;
     const isFolded = isLabelFolded(props);
     const translateX = React.useRef(
         new Animated.Value(
@@ -106,53 +106,21 @@ function useFloatLabelTransform(
     const [isFocused, setIsFocused] = React.useState(false);
     const onFocus = React.useCallback(
         (e) => {
-            Animated.parallel([
-                Animated.spring(
-                    translateX.current,
-                    FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG,
-                ),
-                Animated.spring(
-                    translateY.current,
-                    FOLDED_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG,
-                ),
-                Animated.spring(
-                    scale.current,
-                    FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG,
-                ),
-            ]).start();
+            setIsFocused(true);
 
             if (onFocusProp) {
                 onFocusProp(e);
             }
-
-            setIsFocused(true);
         },
         [translateX, translateY, scale, onFocusProp, setIsFocused],
     );
     const onBlur = React.useCallback(
         (e) => {
-            if (!inputHasValue) {
-                Animated.parallel([
-                    Animated.spring(
-                        translateX.current,
-                        OPEN_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG,
-                    ),
-                    Animated.spring(
-                        translateY.current,
-                        OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG,
-                    ),
-                    Animated.spring(
-                        scale.current,
-                        OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG,
-                    ),
-                ]).start();
-            }
+            setIsFocused(false);
 
             if (onBlurProp) {
                 onBlurProp(e);
             }
-
-            setIsFocused(false);
         },
         [
             translateX,
@@ -163,6 +131,29 @@ function useFloatLabelTransform(
             inputHasValue,
         ],
     );
+    React.useEffect(() => {
+        const isFoldedNow = isFocused || inputHasValue || value;
+        Animated.parallel([
+            Animated.spring(
+                translateX.current,
+                isFoldedNow
+                    ? FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG
+                    : OPEN_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG,
+            ),
+            Animated.spring(
+                translateY.current,
+                isFoldedNow
+                    ? FOLDED_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG
+                    : OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG,
+            ),
+            Animated.spring(
+                scale.current,
+                isFoldedNow
+                    ? FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG
+                    : OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG,
+            ),
+        ]).start();
+    }, [isFocused]);
     const transform = React.useMemo(
         () => [
             {

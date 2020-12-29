@@ -610,7 +610,7 @@ const Inputs = () => {
     const [search, setSearch] = useState('');
     const [seedPhrase, setSeedPhrase] = useState('');
     const mnemonicWords = ['report', 'meadow', 'village', 'slight'];
-    const [text, setText] = useState('');
+    const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -630,6 +630,8 @@ const Inputs = () => {
                     <UIMaterialTextView label="Label" />
                     <UIMaterialTextView
                         label="Label2"
+                        value={text}
+                        onChangeText={setText}
                         helperText="This is comment"
                     />
                 </View>
