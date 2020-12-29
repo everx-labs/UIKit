@@ -108,6 +108,7 @@ import {
     DarkTheme,
     LightTheme,
     ColorVariants,
+    UIMaterialTextView,
 } from '@tonlabs/uikit.hydrogen';
 
 enableScreens();
@@ -620,6 +621,27 @@ const Inputs = () => {
                     paddingBottom: 10,
                     marginHorizontal: '2%',
                     marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UIMaterialTextView</Text>
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIMaterialTextView label="Label" />
+                    <UIMaterialTextView
+                        label="Label2"
+                        helperText="This is comment"
+                    />
+                </View>
+            </View>
+
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 50,
                     borderBottomWidth: 1,
                     borderBottomColor: 'rgba(0,0,0,.1)',
                 }}
@@ -2525,7 +2547,6 @@ const Main = ({ navigation }) => {
                     buttonStyle={UIButton.ButtonStyle.Link}
                     title="Layouts"
                 />
-                \
                 <UIButton
                     onPress={() => navigation.navigate('menus')}
                     buttonStyle={UIButton.ButtonStyle.Link}

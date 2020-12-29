@@ -5,6 +5,8 @@ import {
     TextInputProps,
     TextStyle,
     ViewStyle,
+    Platform,
+    StyleSheet,
 } from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
 import { Typography, TypographyVariants } from './Typography';
@@ -30,15 +32,15 @@ type UITextViewStyle = Pick<
     Pick<ViewStyle, 'backfaceVisibility' | 'opacity' | 'elevation'> &
     FlexStyle;
 
-type Props = Omit<
+export type UITextViewProps = Omit<
     TextInputProps,
     'style' | 'placeholderTextColor' | 'underlineColorAndroid'
 > & {
     style?: UITextViewStyle;
 };
 
-export const UITextView = React.forwardRef<TextInput, Props>(
-    function UITextViewForwarded({ style, ...rest }: Props, ref) {
+export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
+    function UITextViewForwarded({ style, ...rest }: UITextViewProps, ref) {
         const theme = useTheme();
         return (
             <TextInput
@@ -50,8 +52,8 @@ export const UITextView = React.forwardRef<TextInput, Props>(
                 placeholderTextColor={theme[ColorVariants.TextTertiary]}
                 underlineColorAndroid="transparent"
                 style={[
+                    styles.input,
                     {
-                        flex: 1,
                         color: theme[ColorVariants.TextPrimary],
                     },
                     Typography[TypographyVariants.ParagraphText],
@@ -62,6 +64,17 @@ export const UITextView = React.forwardRef<TextInput, Props>(
     },
 );
 
+const styles = StyleSheet.create({
+    input: {
+        flex: 1,
+        ...Platform.select({
+            web: {
+                outlineStyle: 'none',
+            },
+        }),
+    },
+});
+
 /**
  * This is useful hook if you want to listen for inputValue changes
  * But don't want to make TextInput controlled (eg. use `value` prop)
@@ -69,8 +82,9 @@ export const UITextView = React.forwardRef<TextInput, Props>(
  * @param useClearWithEnter boolean
  */
 export function useUITextViewValue(
-    ref: React.RefObject<TextInput>,
+    ref: React.Ref<TextInput> | null,
     useClearWithEnter = false,
+    onChangeTextProp?: (text: string) => void | Promise<void>,
 ) {
     // Little optimisation to not re-render children on every value change
     const [inputHasValue, setInputHasValue] = React.useState(false);
@@ -100,6 +114,10 @@ export function useUITextViewValue(
                 setInputHasValue(hasValue);
             }
 
+            if (onChangeTextProp) {
+                onChangeTextProp(text);
+            }
+
             return text;
         },
         [inputHasValue, useClearWithEnter],
@@ -120,7 +138,9 @@ export function useUITextViewValue(
     );
 
     const clear = React.useCallback(() => {
-        ref.current?.clear();
+        if (ref && 'current' in ref) {
+            ref.current?.clear();
+        }
         inputValue.current = '';
         setInputHasValue(false);
     }, [setInputHasValue]);
