@@ -977,12 +977,18 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         } else if (mandatory && !this.getValue()) {
             bottomLineColor = mandatoryColor;
         } else if (this.commentColor()) {
-            bottomLineColor = this.commentColor() || UIColor.detailsInputComment(theme);
+            if (this.commentColor() === UILabelColors.TextPositive) {
+                bottomLineColor = UIColor.success();
+            } else if (this.commentColor() === UILabelColors.TextNegative) {
+                bottomLineColor = UIColor.error();
+            } else {
+                bottomLineColor = UIColor.detailsInputComment(theme);
+            }
         } else {
             bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
         }
-
         const bottomLineColorStyle = UIStyleColor.getBorderBottomColorStyle(bottomLineColor);
+
         return (
             <View
                 style={[
