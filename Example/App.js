@@ -2453,7 +2453,7 @@ const ChatWindowScreen = () => {
 const Chat = () => {
     const theme = useTheme();
     return (
-        <ChatStack.Navigator headerShown={false}>
+        <ChatStack.Navigator>
             <ChatStack.Screen
                 name="ChatWindow"
                 options={{
