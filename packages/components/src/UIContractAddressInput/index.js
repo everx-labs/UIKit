@@ -2,8 +2,8 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UILabelColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIDetailsInput } from '../UIDetailsInput';
@@ -111,10 +111,10 @@ export default class UIContractAddressInput extends UIDetailsInput<Props, State>
 
     commentColor() {
         const {
-            value, theme, commentColor, verify,
+            value, commentColor, verify,
         } = this.props;
         if (verify && value && !this.isAddressValid(value) && this.state.highlightError) {
-            return UIColor.detailsInputComment(theme);
+            return UILabelColors.TextNegative;
         }
         return commentColor;
     }

@@ -2,8 +2,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { UIFunction, UIColor } from '@tonlabs/uikit.core';
-
+import { UIFunction } from '@tonlabs/uikit.core';
+import { UILabelColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -47,9 +47,9 @@ export default class UIPhoneInput extends UIComponent<
     }
 
     getCommentColor() {
-        const { value, theme, commentColor } = this.props;
+        const { value, commentColor } = this.props;
         if (value && this.isSubmitDisabled()) {
-            return UIColor.detailsInputComment(theme);
+            return UILabelColors.TextNegative;
         }
         return commentColor;
     }
@@ -133,24 +133,21 @@ export default class UIPhoneInput extends UIComponent<
 
     // Render
     render() {
-        const selection = this.getSelection();
-        const commentColor = this.getCommentColor();
-        const commentColorProp = commentColor ? { commentColor } : null;
         return (
             <UIDetailsInput
                 {...this.props}
-                {...commentColorProp}
                 commentTestID="phone_input_comment"
                 ref={(component) => { this.phoneInput = component; }}
                 onBlur={this.onBlur}
                 keyboardType="phone-pad"
                 placeholder={this.getPlaceholder()}
                 comment={this.getComment()}
+                commentColor={this.getCommentColor()}
                 submitDisabled={this.isSubmitDisabled()}
                 onChangeText={this.onChangeText}
                 mandatory={this.props.mandatory}
                 onSelectionChange={this.onSelectionChange}
-                selection={selection}
+                selection={this.getSelection()}
             />
         );
     }
