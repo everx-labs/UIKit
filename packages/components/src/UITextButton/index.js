@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, Image, View, Platform } from 'react-native';
+import { StyleSheet, Image, View, Platform } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
@@ -10,7 +10,7 @@ import {
     UIColor,
     UIFunction,
 } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -174,7 +174,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             <UILabel
                 color={titleColor || UILabelColors.TextAccent}
                 ellipsizeMode="middle"
-                role={titleRole ||  UILabelRoles.ActionCallout}
+                role={titleRole ||  UILabelRoles.Action}
                 {...numberOfLines}
                 style={[
                     stateColorStyle,

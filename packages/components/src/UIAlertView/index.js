@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
     },
     titleStyle: {
         paddingVertical: UIConstant.smallContentOffset(),
-        textAlign: 'center',
+        textAlign: 'left',
     },
     messageStyle: {
         paddingVertical: UIConstant.smallContentOffset(),
-        textAlign: 'center',
+        textAlign: 'left',
     },
     buttonStyle: {
         width: 110,
@@ -168,11 +168,11 @@ export default class UIAlertView extends UIComponent<Props, State> {
             closeOnHardwareBackPress={false}
             titleStyle={[
                 UIStyle.color.getColorStyle(UIColor.textPrimary()),
-                Typography[TypographyVariants.HeadlineHead],
+                Typography[TypographyVariants.TitleSmall],
                 titleStyle,
             ]}
             messageStyle={[
-                UIStyle.color.getColorStyle(UIColor.textSecondary()),
+                UIStyle.color.getColorStyle(UIColor.textPrimary()),
                 Typography[TypographyVariants.ParagraphNote],
                 messageStyle,
             ]}
@@ -186,13 +186,13 @@ export default class UIAlertView extends UIComponent<Props, State> {
             confirmButtonStyle={buttonStyle}
             cancelButtonTextStyle={[
                 UIStyle.color.getColorStyle(UIColor.textAccent()),
-                Typography[TypographyVariants.ActionCallout],
+                Typography[TypographyVariants.Action],
                 buttonTextStyle,
                 (cancelButton && cancelButton.color ? { color: cancelButton.color } : {}),
             ]}
             confirmButtonTextStyle={[
                 UIStyle.color.getColorStyle(UIColor.textAccent()),
-                Typography[TypographyVariants.ActionCallout],
+                Typography[TypographyVariants.Action],
                 buttonTextStyle,
                 (confirmButton && confirmButton.color ? { color: confirmButton.color } : {}),
             ]}
