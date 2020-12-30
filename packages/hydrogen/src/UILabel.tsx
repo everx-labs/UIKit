@@ -35,6 +35,7 @@ type Props = Omit<TextProps, 'style'> & {
     color?: ColorVariants;
     style?: StyleProp<UILabelStyle>;
     children?: React.ReactNode;
+    textComponent?: React.ComponentType<any>;
 };
 
 /**
@@ -55,6 +56,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         role = TypographyVariants.ParagraphText,
         color: colorProp = ColorVariants.TextPrimary,
         style,
+        textComponent,
         ...rest
     }: Props,
     ref,
@@ -83,8 +85,11 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         [colorProp],
     );
 
+    const TextComponent = textComponent || Text;
+
     return (
-        <Text
+        <TextComponent
+            // @ts-expect-error
             ref={ref}
             {...rest}
             style={[

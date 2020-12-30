@@ -5,10 +5,11 @@ import {
     StyleSheet,
     TextInput,
     View,
+    Text,
 } from 'react-native';
 
 import { ColorVariants, useTheme } from './Colors';
-import { TypographyVariants } from './Typography';
+import { Typography, TypographyVariants } from './Typography';
 import { UILabel, UILabelColors } from './UILabel';
 import { UITextView, UITextViewProps, useUITextViewValue } from './UITextView';
 
@@ -63,16 +64,24 @@ const OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG = {
     toValue: 0,
     ...FLOATING_LABEL_SPRING_CONFIG,
 };
-// For some reason it works better than 0.75
-const FOLDED_FLOATING_LABEL_SCALE_TO_CALC = 0.65;
+const paragraphTextStyle = StyleSheet.flatten(
+    Typography[TypographyVariants.ParagraphText],
+);
+const footnoteTextStyle = StyleSheet.flatten(
+    Typography[TypographyVariants.ParagraphFootnote],
+);
+const FOLDED_FLOATING_LABEL_SCALE =
+    // @ts-expect-error
+    footnoteTextStyle.fontSize / paragraphTextStyle.fontSize;
 const FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG = {
-    toValue: 0.75,
+    toValue: FOLDED_FLOATING_LABEL_SCALE,
     ...FLOATING_LABEL_SPRING_CONFIG,
 };
 const OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG = {
     toValue: 1,
     ...FLOATING_LABEL_SPRING_CONFIG,
 };
+const PSEUDO_LABEL_BOTTOM_MARGIN = 5;
 
 const isLabelFolded = (props: UIMaterialTextViewProps) => {
     if (props.defaultValue) {
@@ -82,6 +91,14 @@ const isLabelFolded = (props: UIMaterialTextViewProps) => {
         return true;
     }
     return false;
+};
+
+const getIsFolded = (
+    isFocused: boolean,
+    inputHasValue: boolean,
+    value: string | undefined,
+) => {
+    return Boolean(isFocused || inputHasValue || value);
 };
 
 function useFloatLabelTransform(
@@ -139,21 +156,73 @@ function useFloatLabelTransform(
             inputHasValue,
         ],
     );
-    const [width, setWidth] = React.useState(0);
-    const onLayout = React.useCallback(
-        ({
-            nativeEvent: {
-                layout: { width: lWidth },
-            },
-        }: LayoutChangeEvent) => {
-            setWidth(lWidth);
+    const layout = React.useRef<{
+        foldedHeight?: number;
+        foldedWidth?: number;
+        fullHeight?: number;
+        fullWidth?: number;
+    }>({});
+    const [isLabelReady, setIsLabelReady] = React.useState(false);
+    const onPseudoLabelLayout = React.useCallback(
+        ({ nativeEvent: { layout: measuredLayout } }: LayoutChangeEvent) => {
+            layout.current = {
+                ...layout.current,
+                foldedHeight: measuredLayout.height,
+                foldedWidth: measuredLayout.width,
+            };
+            if (
+                isLabelReady ||
+                layout.current.fullHeight == null ||
+                layout.current.fullWidth == null ||
+                layout.current.foldedWidth == null ||
+                layout.current.foldedHeight == null
+            ) {
+                return;
+            }
+            setIsLabelReady(true);
         },
-        [setWidth],
+        [layout, isLabelReady, setIsLabelReady],
+    );
+    const onActualLabelLayout = React.useCallback(
+        ({ nativeEvent: { layout: measuredLayout } }: LayoutChangeEvent) => {
+            layout.current = {
+                ...layout.current,
+                fullHeight: measuredLayout.height,
+                fullWidth: measuredLayout.width,
+            };
+            if (
+                isLabelReady ||
+                layout.current.fullHeight == null ||
+                layout.current.fullWidth == null ||
+                layout.current.foldedWidth == null ||
+                layout.current.foldedHeight == null
+            ) {
+                return;
+            }
+            setIsLabelReady(true);
+        },
+        [layout, isLabelReady, setIsLabelReady],
     );
     React.useEffect(() => {
-        const isFoldedNow = isFocused || inputHasValue || value;
-        const foldedWidth = width * FOLDED_FLOATING_LABEL_SCALE_TO_CALC;
-        const translateXValue = (foldedWidth - width) / 2;
+        if (
+            layout.current.fullHeight == null ||
+            layout.current.fullWidth == null ||
+            layout.current.foldedWidth == null ||
+            layout.current.foldedHeight == null
+        ) {
+            return;
+        }
+
+        const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
+        const translateXValue =
+            (layout.current.foldedWidth - layout.current.fullWidth) / 2;
+        const foldedHeightDiff =
+            (layout.current.fullHeight - layout.current.foldedHeight) / 2;
+        const translateYValue =
+            0 -
+            foldedHeightDiff -
+            PSEUDO_LABEL_BOTTOM_MARGIN -
+            layout.current.foldedHeight;
         Animated.parallel([
             Animated.spring(
                 translateX.current,
@@ -167,7 +236,10 @@ function useFloatLabelTransform(
             Animated.spring(
                 translateY.current,
                 isFoldedNow
-                    ? FOLDED_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG
+                    ? {
+                          ...FOLDED_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG,
+                          toValue: translateYValue,
+                      }
                     : OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG,
             ),
             Animated.spring(
@@ -177,27 +249,55 @@ function useFloatLabelTransform(
                     : OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG,
             ),
         ]).start();
-    }, [isFocused, width]);
-    const transform = React.useMemo(
-        () => [
-            {
-                scale: scale.current,
-            },
-            {
-                translateX: translateX.current,
-            },
-            {
-                translateY: translateY.current,
-            },
-        ],
-        [scale, translateX, translateY],
-    );
+    }, [isFocused, inputHasValue, value, isLabelReady]);
+
+    const pseudoLabelStyle = React.useMemo(() => {
+        const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
+        return {
+            opacity: isLabelReady ? 0 : isFoldedNow ? 1 : 0,
+        };
+    }, [isLabelReady, isFocused, inputHasValue, value]);
+    const labelContainerStyle = React.useMemo(() => {
+        const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
+        return {
+            transform: [
+                {
+                    translateX: translateX.current,
+                },
+                {
+                    translateY: translateY.current,
+                },
+            ],
+            opacity: isLabelReady ? 1 : isFoldedNow ? 0 : 1,
+        };
+    }, [
+        scale,
+        translateX,
+        translateY,
+        isLabelReady,
+        isFocused,
+        inputHasValue,
+        value,
+    ]);
+    const labelStyle = React.useMemo(() => {
+        return {
+            transform: [
+                {
+                    scale: scale.current,
+                },
+            ],
+        };
+    }, [scale, translateX, translateY, isLabelReady]);
+
     return {
         isFocused,
-        transform,
+        pseudoLabelStyle,
+        labelContainerStyle,
+        labelStyle,
         onFocus,
         onBlur,
-        onLayout,
+        onPseudoLabelLayout,
+        onActualLabelLayout,
     };
 }
 
@@ -229,51 +329,70 @@ export const UIMaterialTextView = React.forwardRef<
     } = useUITextViewValue(ref, false, onChangeText);
     const {
         isFocused,
-        transform,
+        pseudoLabelStyle,
+        labelContainerStyle,
+        labelStyle,
         onFocus,
         onBlur,
-        onLayout,
+        onPseudoLabelLayout,
+        onActualLabelLayout,
     } = useFloatLabelTransform(props, inputHasValue);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const main = (
-        <View
-            // @ts-expect-error
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            style={[
-                styles.inputWrapper,
-                {
-                    borderBottomColor:
-                        theme[getBorderColor(props, isFocused, isHovered)],
-                },
-            ]}
-        >
-            <UITextView
-                ref={ref}
-                {...rest}
-                placeholder={undefined}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                onChangeText={onChangeTextProp}
-            />
-            <Animated.View
-                pointerEvents="none"
+        <View style={styles.container}>
+            <View style={styles.pseudoLabel}>
+                <Text
+                    onLayout={onPseudoLabelLayout}
+                    style={[
+                        Typography[TypographyVariants.ParagraphFootnote],
+                        {
+                            letterSpacing: paragraphTextStyle.letterSpacing,
+                            lineHeight: undefined,
+                            color: theme[UILabelColors.TextTertiary],
+                        },
+                        pseudoLabelStyle,
+                    ]}
+                >
+                    {label}
+                </Text>
+            </View>
+            <View
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
                 style={[
-                    styles.floatingLabel,
+                    styles.inputWrapper,
                     {
-                        transform,
+                        borderBottomColor:
+                            theme[getBorderColor(props, isFocused, isHovered)],
                     },
                 ]}
             >
-                <UILabel
-                    onLayout={onLayout}
-                    role={TypographyVariants.ParagraphText}
-                    color={UILabelColors.TextTertiary}
+                <UITextView
+                    ref={ref}
+                    {...rest}
+                    placeholder={undefined}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onChangeText={onChangeTextProp}
+                />
+                <Animated.View
+                    pointerEvents="none"
+                    style={[styles.floatingLabel, labelContainerStyle]}
                 >
-                    {label}
-                </UILabel>
-            </Animated.View>
+                    <UILabel
+                        onLayout={onActualLabelLayout}
+                        role={TypographyVariants.ParagraphText}
+                        color={UILabelColors.TextTertiary}
+                        textComponent={Animated.Text}
+                        // @ts-ignore
+                        style={labelStyle}
+                    >
+                        {label}
+                    </UILabel>
+                </Animated.View>
+            </View>
         </View>
     );
 
@@ -296,11 +415,19 @@ export const UIMaterialTextView = React.forwardRef<
 });
 
 const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'column',
+    },
     inputWrapper: {
         position: 'relative',
-        marginTop: 20,
         paddingBottom: 5,
         borderBottomWidth: 1,
+        flexDirection: 'row',
+    },
+    pseudoLabel: {
+        // To inner text be in intrinsic size
+        alignItems: 'flex-start',
+        paddingBottom: PSEUDO_LABEL_BOTTOM_MARGIN,
     },
     floatingLabel: {
         position: 'absolute',
