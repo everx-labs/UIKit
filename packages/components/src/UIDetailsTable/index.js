@@ -1,10 +1,17 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
-import { UIColor, UIStyle, UIConstant, UIFunction } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant, UIFunction } from '@tonlabs/uikit.core';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UITextButton from '../UITextButton';
@@ -51,8 +58,8 @@ type State = {
 
 const styles = StyleSheet.create({
     borderTop: {
-        borderTopWidth: 1,
-        borderTopColor: UIColor.backgroundWhiteLight(),
+        height: 1,
+        width: '100%',
     },
 });
 
@@ -76,6 +83,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         action: 'action',
         accent: 'accent',
         error: 'error',
+        number: 'number',
         numberPercent: 'numberPercent',
         disabled: 'disabled',
         bool: 'bool',
@@ -124,7 +132,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     state = {
         captionMinWidth: 0,
         widthComponent: 0,
-    }
+    };
 
     // Events
     onActionPressed(details: DetailsRow) {
@@ -138,17 +146,40 @@ class UIDetailsTable extends UIComponent<Props, State> {
     // Getters
     getTextStyle(type: ?string, value: Value) {
         if (type === UIDetailsTable.cellType.success) {
-            return UIStyle.text.successBodyRegular();
+            return {
+                color: UILabelColors.TextPositive,
+                role: UILabelRoles.ParagraphText,
+            };
         } else if (type === UIDetailsTable.cellType.error) {
-            return UIStyle.text.errorBodyRegular();
+            return {
+                color: UILabelColors.TextNegative,
+                role: UILabelRoles.ParagraphText
+            };
         } else if (type === UIDetailsTable.cellType.accent) {
-            return UIStyle.text.primaryBodyMedium();
+            return {
+                color: UILabelColors.TextPrimary,
+                role: UILabelRoles.Action,
+            };
         } else if (type === UIDetailsTable.cellType.disabled) {
-            return UIStyle.text.tertiaryBodyRegular();
+            return {
+                color: UILabelColors.TextTertiary,
+                role: UILabelRoles.ParagraphText,
+            };
+        } else if (type === UIDetailsTable.cellType.number) {
+            return {
+                color: UILabelColors.TextPrimary,
+                role: UILabelRoles.MonoText,
+            };
         } else if ((type === UIDetailsTable.cellType.bool && !value) || value === false) {
-            return UIStyle.text.tertiaryBodyRegular();
+            return {
+                color: UILabelColors.TextTertiary,
+                role: UILabelRoles.ParagraphText,
+            };
         }
-        return UIStyle.text.secondaryBodyRegular();
+        return {
+            color: UILabelColors.TextSecondary,
+            role: UILabelRoles.ParagraphText
+        };
     }
 
     // Actions
@@ -171,24 +202,30 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 ),
             });
         }
-    }
+    };
 
     setWidthComponent = (e: ViewLayoutEvent) => {
         const { layout } = e.nativeEvent;
         this.setStateSafely({ widthComponent: layout.width });
-    }
+    };
 
     // Render
     renderTextCell(value: number | string, details: string) {
         return (
-            <Text>
-                <Text style={UIStyle.text.primarySmallRegular()}>
+            <UILabel>
+                <UILabel
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.ParagraphNote}
+                >
                     {value}
-                </Text>
-                <Text style={UIStyle.text.secondarySmallRegular()}>
+                </UILabel>
+                <UILabel
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.ParagraphNote}
+                >
                     {details}
-                </Text>
-            </Text>
+                </UILabel>
+            </UILabel>
         );
     }
 
@@ -196,7 +233,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         const {
             type, value, limit, component, onPress, caption,
         } = details;
-        const textStyle = this.getTextStyle(type, value);
+        const { color, role } = this.getTextStyle(type, value);
 
         if (type === UIDetailsTable.cellType.numberPercent && limit && limit !== 0 && typeof value === 'number') {
             const primary = UIFunction.getNumberString(value);
@@ -218,11 +255,15 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
 
         return (
-            <Text style={[textStyle, UIStyle.common.flex()]}>
+            <UILabel
+                color={color}
+                role={role}
+                style={UIStyle.common.flex()}
+            >
                 {type === UIDetailsTable.cellType.bool || value === true || value === false
                     ? JSON.stringify(value)
                     : value}
-            </Text>
+            </UILabel>
         );
     }
 
@@ -242,13 +283,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     UIStyle.margin.rightDefault(),
                 ]}
             >
-                <Text
-                    style={[header, bold, boldTopOffset].includes(captionType)
-                        ? UIStyle.text.primaryBodyBold()
-                        : UIStyle.text.primarySmallRegular()}
+                <UILabel
+                    color={UILabelColors.TextPrimary}
+                    role={[header, bold, boldTopOffset].includes(captionType)
+                        ? UILabelRoles.HeadlineHead
+                        : UILabelRoles.ParagraphText}
                 >
                     {caption}
-                </Text>
+                </UILabel>
             </View>
         );
     }
@@ -275,26 +317,33 @@ class UIDetailsTable extends UIComponent<Props, State> {
                 && UIStyle.padding.topHuge();
 
             return (
-                <View
-                    style={[
-                        UIStyle.padding.vertical(),
-                        UIStyle.common.flexRow(),
-                        rowContainerStyle,
-                        marginTopStyle,
-                        index > 0 && rowSeparator && styles.borderTop,
-                    ]}
-                    key={`details-table-row-${caption || ''}-${JSON.stringify(value) || ''}-${key || ''}-${captionType || ''}`}
-                >
-                    {this.renderCaption(caption, captionType)}
-
-                    {![header].includes(captionType) && (
-                        <View
-                            testID={`table_cell_${caption || 'default'}_value`}
-                            style={rightCellStyle || UIStyle.common.flex3()}
-                        >
-                            {this.renderCell(item)}
-                        </View>
+                <View>
+                    {index > 0 && rowSeparator && (
+                        <UIBackgroundView
+                            color={UIBackgroundViewColors.LinePrimary}
+                            style={styles.borderTop}
+                        />
                     )}
+                    <View
+                        style={[
+                            UIStyle.padding.vertical(),
+                            UIStyle.common.flexRow(),
+                            rowContainerStyle,
+                            marginTopStyle,
+                        ]}
+                        key={`details-table-row-${caption || ''}-${JSON.stringify(value) || ''}-${key || ''}-${captionType || ''}`}
+                    >
+                        {this.renderCaption(caption, captionType)}
+
+                        {![header].includes(captionType) && (
+                            <View
+                                testID={`table_cell_${caption || 'default'}_value`}
+                                style={rightCellStyle || UIStyle.common.flex3()}
+                            >
+                                {this.renderCell(item)}
+                            </View>
+                        )}
+                    </View>
                 </View>
             );
         });

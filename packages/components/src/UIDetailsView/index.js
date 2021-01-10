@@ -79,7 +79,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         return (
             <UILabel
                 color={commentsColor || UILabelColors.TextTertiary}
-                role={commentsRole || UILabelRoles.ParagraphFootnote}
+                role={commentsRole || UILabelRoles.ParagraphLabel}
                 style={reversed ? null : UIStyle.margin.topTiny()}
                 testID={commentTestID || null}
             >
