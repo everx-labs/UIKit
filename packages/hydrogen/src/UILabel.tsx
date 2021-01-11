@@ -83,14 +83,11 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         }),
         [colorProp],
     );
-
-    // if it's like [Object object] you should pass testID explicitly
-    const testIDProp = testID ? testID : rest.children;
     
     return (
         <Text
             ref={ref}
-            testID={testIDProp}
+            testID={testID}
             {...rest}
             style={[
                 style,
