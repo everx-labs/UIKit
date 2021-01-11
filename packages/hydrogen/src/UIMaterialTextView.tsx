@@ -253,12 +253,14 @@ function useFloatLabelTransform(
 
     const pseudoLabelStyle = React.useMemo(() => {
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
+        const isHidden = isLabelReady || !isFoldedNow;
         return {
-            opacity: isLabelReady ? 0 : isFoldedNow ? 1 : 0,
+            opacity: isHidden ? 0 : 1,
         };
     }, [isLabelReady, isFocused, inputHasValue, value]);
     const labelContainerStyle = React.useMemo(() => {
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
+        const isVisible = isLabelReady || !isFoldedNow;
         return {
             transform: [
                 {
@@ -268,7 +270,7 @@ function useFloatLabelTransform(
                     translateY: translateY.current,
                 },
             ],
-            opacity: isLabelReady ? 1 : isFoldedNow ? 0 : 1,
+            opacity: isVisible ? 1 : 0,
         };
     }, [
         scale,
