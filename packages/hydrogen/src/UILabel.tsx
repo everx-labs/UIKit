@@ -83,7 +83,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         }),
         [colorProp],
     );
-    
+
     return (
         <Text
             ref={ref}
