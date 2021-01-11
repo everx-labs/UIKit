@@ -55,6 +55,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         role = TypographyVariants.ParagraphText,
         color: colorProp = ColorVariants.TextPrimary,
         style,
+        testID,
         ...rest
     }: Props,
     ref,
@@ -83,9 +84,13 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         [colorProp],
     );
 
+    // if it's like [Object object] you should pass testID explicitly
+    const testIDProp = testID ? testID : rest.children?.toString();
+    
     return (
         <Text
             ref={ref}
+            testID={testIDProp}
             {...rest}
             style={[
                 style,
