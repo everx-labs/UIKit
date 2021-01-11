@@ -85,7 +85,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
     );
 
     // if it's like [Object object] you should pass testID explicitly
-    const testIDProp = testID ? testID : rest.children?.toString();
+    const testIDProp = testID ? testID : rest.children;
     
     return (
         <Text
