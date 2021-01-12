@@ -7,16 +7,23 @@ import {
     View,
     Text,
 } from 'react-native';
-
-import { ColorVariants, useTheme } from './Colors';
-import { Typography, TypographyVariants } from './Typography';
-import { UILabel, UILabelColors } from './UILabel';
-import { UITextView, UITextViewProps, useUITextViewValue } from './UITextView';
+import {
+    ColorVariants,
+    useTheme,
+    Typography,
+    TypographyVariants,
+    UILabel,
+    UILabelColors,
+    UITextView,
+    UITextViewProps,
+    useUITextViewValue,
+} from '@tonlabs/uikit.hydrogen';
 
 export type UIMaterialTextViewProps = UITextViewProps & {
     label: string;
     helperText?: string;
     error?: boolean;
+    onLayout?: Pick<UITextViewProps, 'onLayout'>;
 };
 
 const getBorderColor = (
@@ -323,7 +330,7 @@ export const UIMaterialTextView = React.forwardRef<
     TextInput,
     UIMaterialTextViewProps
 >(function UIMaterialTextViewForwarded(props: UIMaterialTextViewProps, ref) {
-    const { label, helperText, onChangeText, ...rest } = props;
+    const { label, helperText, onChangeText, onLayout, ...rest } = props;
     const theme = useTheme();
     const {
         inputHasValue,
@@ -342,7 +349,7 @@ export const UIMaterialTextView = React.forwardRef<
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const main = (
-        <View style={styles.container}>
+        <View style={styles.container} onLayout={onLayout}>
             <View style={styles.pseudoLabel}>
                 <Text
                     onLayout={onPseudoLabelLayout}

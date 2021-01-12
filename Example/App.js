@@ -108,9 +108,11 @@ import {
     DarkTheme,
     LightTheme,
     ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
+import {
     UIMaterialTextView,
     UISeedPhraseTextView,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.hydrogen.components';
 
 enableScreens();
 useWebFonts();
@@ -610,7 +612,13 @@ const Inputs = () => {
     const [phone, setPhone] = useState('');
     const [search, setSearch] = useState('');
     const [seedPhrase, setSeedPhrase] = useState('');
-    const mnemonicWords = ['report', 'meadow', 'village', 'slight'];
+    const mnemonicWords = [
+        'report',
+        'replenish',
+        'meadow',
+        'village',
+        'slight',
+    ];
     const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
     return (
@@ -658,7 +666,7 @@ const Inputs = () => {
                     totalWords={4}
                     words={mnemonicWords}
                 />
-                <UISeedPhraseTextView />
+                <UISeedPhraseTextView words={mnemonicWords} totalWords={4} />
             </View>
 
             <View
