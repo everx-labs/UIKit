@@ -99,13 +99,11 @@ export const UISeedPhraseTextView = React.forwardRef<
     TextInput,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(
-    props: UISeedPhraseTextViewProps,
+    { words }: UISeedPhraseTextViewProps,
     ref,
 ) {
     const textInputRef = React.useRef(null);
     const refToUse = ref || textInputRef;
-
-    const { words } = props;
 
     const [currentTypingWord, setCurrentTypingWord] = React.useState('');
 
@@ -131,7 +129,6 @@ export const UISeedPhraseTextView = React.forwardRef<
 
             const newText = `${parts.join(SPLITTER)}${SPLITTER}`;
 
-            console.log(refToUse);
             if (refToUse && 'current' in refToUse) {
                 refToUse.current?.setNativeProps({
                     text: newText,
@@ -198,6 +195,7 @@ export const UISeedPhraseTextView = React.forwardRef<
 
                 savedText.current = newText;
                 setCurrentHighlightedItemIndex(-1);
+                setCurrentTypingWord('');
                 return;
             }
 
@@ -233,14 +231,19 @@ export const UISeedPhraseTextView = React.forwardRef<
         ],
     );
 
+    const onBlur = React.useCallback(() => {
+        setCurrentHighlightedItemIndex(-1);
+        setCurrentTypingWord('');
+    }, [setCurrentHighlightedItemIndex, setCurrentTypingWord]);
+
     return (
         <View style={styles.container}>
             <UIMaterialTextView
                 ref={refToUse}
-                {...props}
                 label={uiLocalized.MasterPassword}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
+                onBlur={onBlur}
             />
             <View style={styles.popover}>
                 <UISeedPhrasePopover
