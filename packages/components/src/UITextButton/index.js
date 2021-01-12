@@ -23,7 +23,9 @@ import type {
 import UITooltip from '../UITooltip';
 
 const TOOLTIP_WIDTH = 'auto';
-
+const testIDs = {
+    textButton: arg => `textButton_${arg || ''}`
+};
 const styles = StyleSheet.create({
     flexGrow1: {
         flexGrow: 1,
@@ -205,7 +207,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
 
     renderContent(): React$Element<any> {
         const {
-            align, icon, backIcon, multiLine, containerStyle, buttonStyle,
+            title, align, icon, backIcon, multiLine, containerStyle, buttonStyle,
         } = this.props;
         const commonStyle = UIFunction.combineStyles([
             this.props.style, containerStyle, buttonStyle,
@@ -215,7 +217,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             : [UIStyle.container.centerLeft(), UIStyle.height.buttonHeight()];
         const style = [UIStyle.common.backgroundTransparent(), ...contStyle, align];
         return (
-            <View style={[UIStyle.common.flexColumn(), style, ...commonStyle]}>
+            <View style={[UIStyle.common.flexColumn(), style, ...commonStyle]} testID={testIDs.textButton(title)}>
                 {this.renderIcon(icon, false)}
                 {this.renderTitle()}
                 {this.renderIcon(backIcon, true)}
