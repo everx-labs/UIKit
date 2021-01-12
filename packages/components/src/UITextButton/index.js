@@ -23,7 +23,7 @@ import type {
 import UITooltip from '../UITooltip';
 
 const TOOLTIP_WIDTH = 'auto';
-const testIDs = {
+const UITextButtonTestIDs = {
     textButton: arg => `textButton_${arg || ''}`
 };
 const styles = StyleSheet.create({
@@ -217,7 +217,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             : [UIStyle.container.centerLeft(), UIStyle.height.buttonHeight()];
         const style = [UIStyle.common.backgroundTransparent(), ...contStyle, align];
         return (
-            <View style={[UIStyle.common.flexColumn(), style, ...commonStyle]} testID={testIDs.textButton(title)}>
+            <View style={[UIStyle.common.flexColumn(), style, ...commonStyle]} testID={UITextButtonTestIDs.textButton(title)}>
                 {this.renderIcon(icon, false)}
                 {this.renderTitle()}
                 {this.renderIcon(backIcon, true)}

@@ -10,7 +10,7 @@ import { UIComponent, UITextButton } from '@tonlabs/uikit.components';
 //     title: string,
 // }
 
-const testIDs = {
+const UIBreadCrumbsTestIDs = {
     breadcrumbs: 'breadcrumbs'
 }
 
@@ -68,7 +68,7 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
         );
 
         return (
-            <View style={[UIStyle.container.centerLeft()]} testID={testIDs.breadcrumbs}>
+            <View style={[UIStyle.container.centerLeft()]} testID={UIBreadCrumbsTestIDs.breadcrumbs}>
                 {lastRoutes.map(({ path, params = {} }, index) => {
                     const key = Object.keys(params)[0];
                     const id = params[key] ? UIFunction.truncText(`${params[key]}`, true) : '';
