@@ -234,7 +234,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     );
 
     return (
-        <View style={{ position: 'relative', flexDirection: 'column' }}>
+        <View style={styles.container}>
             <UIMaterialTextView
                 ref={refToUse}
                 {...props}
@@ -242,9 +242,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
             />
-            <View
-                style={{ position: 'absolute', top: '100%', left: 0, right: 0 }}
-            >
+            <View style={styles.popover}>
                 <UISeedPhrasePopover
                     currentHighlightedItemIndex={currentHighlightedItemIndex}
                     hints={hints}
@@ -256,6 +254,16 @@ export const UISeedPhraseTextView = React.forwardRef<
 });
 
 const styles = StyleSheet.create({
+    container: {
+        position: 'relative',
+        flexDirection: 'column',
+    },
+    popover: {
+        position: 'absolute',
+        top: '100%',
+        left: 0,
+        right: 0,
+    },
     hintsContainer: {
         flex: 1,
         ...UIConstant.cardShadow(),
