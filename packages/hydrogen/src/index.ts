@@ -1,4 +1,5 @@
 export * from './UIBackgroundView';
+export * from './UISafeAreaView';
 export * from './UILabel';
 export * from './UITextView';
 
