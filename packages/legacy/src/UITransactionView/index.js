@@ -17,6 +17,7 @@ import UIProfileInitials from '../UIProfileInitials';
 
 type Props = {
     amount: string | React$Element<any>,
+    amountTestID?: string,
     comment: string,
     encrypted: boolean,
     description: string,
@@ -226,18 +227,11 @@ export default class UITransactionView extends UIComponent<Props, State> {
     }
 
     renderAmount() {
-      let testID = '';
-      if (this.amount.props.children[0].props.children[0]) {
-        const integerPartOfValue = this.amount.props.children[0].props.children[0].props.children;
-        const fractionalPartOfValue = this.amount.props.children[0].props.children[1].props.children;
-        testID = `${integerPartOfValue}${fractionalPartOfValue}`;
-      }
-
         return (
             <UILabel
                 color={UILabelColors.TextPrimary}
                 role={UILabelRoles.ParagraphText}
-                testID={testID}
+                testID={this.props.amountTestID}
             >
                 {this.amount}
             </UILabel>
