@@ -117,13 +117,14 @@ const identifyWordThatChanged = (
 
 export type UISeedPhraseTextViewProps = {
     words: string[];
+    totalWords: number;
 };
 
 export const UISeedPhraseTextView = React.forwardRef<
     TextInput,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(
-    { words }: UISeedPhraseTextViewProps,
+    { words, totalWords }: UISeedPhraseTextViewProps,
     ref,
 ) {
     const textInputRef = React.useRef(null);
@@ -156,7 +157,10 @@ export const UISeedPhraseTextView = React.forwardRef<
 
             let newText = parts.join(SPLITTER);
 
-            if (currentlyTyped.index === parts.length - 1) {
+            if (
+                currentlyTyped.index === parts.length - 1 &&
+                parts.length < totalWords
+            ) {
                 newText = `${newText}${SPLITTER}`;
             }
 
@@ -172,6 +176,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             setCurrentlyTyped({ word: '', index: -1 });
         },
         [
+            totalWords,
             refToUse,
             savedText,
             currentlyTyped,
@@ -217,7 +222,12 @@ export const UISeedPhraseTextView = React.forwardRef<
             const lastSymbol = text[text.length - 1];
 
             if (text.length > savedText.current.length && lastSymbol === ' ') {
-                const newText = `${text}${UIConstant.dashSymbol()} `;
+                const parts = text.split(SPLITTER);
+                const newText =
+                    parts.length < totalWords
+                        ? `${text}${UIConstant.dashSymbol()} `
+                        : // Remove the space
+                          text.slice(0, text.length - 1);
 
                 if (refToUse && 'current' in refToUse) {
                     refToUse.current?.setNativeProps({
@@ -246,6 +256,7 @@ export const UISeedPhraseTextView = React.forwardRef<
 
                 savedText.current = newText;
                 setCurrentHighlightedItemIndex(-1);
+
                 return;
             }
 
@@ -262,6 +273,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             savedText.current = text;
         },
         [
+            totalWords,
             savedText,
             refToUse,
             setCurrentHighlightedItemIndex,
@@ -269,10 +281,44 @@ export const UISeedPhraseTextView = React.forwardRef<
         ],
     );
 
+    const [isFocused, setIsFocused] = React.useState(false);
+
+    const valid = false; // TODO
+
+    const onFocus = React.useCallback(() => {
+        setIsFocused(true);
+    }, [setIsFocused]);
+
     const onBlur = React.useCallback(() => {
         setCurrentHighlightedItemIndex(-1);
         setCurrentlyTyped({ word: '', index: -1 });
+        setIsFocused(false);
     }, [setCurrentHighlightedItemIndex, setCurrentlyTyped]);
+
+    const [helperText, error] = React.useMemo(() => {
+        // const valid = this.areWordsValid();
+        // const entered = this.getWordsCount();
+        // const count = this.getRemainingCount();
+
+        if (!isFocused) {
+            if (valid) {
+                return [uiLocalized.greatMemory, false];
+            }
+            return [uiLocalized.seedPhraseTypo, true];
+        }
+
+        if (entered === 0) {
+            return (
+                hint || uiLocalized.localizedStringForValue(count, 'moreWords')
+            );
+        } else if (!valid && !this.isFocused()) {
+            return uiLocalized.seedPhraseTypo;
+        } else if (valid && !this.isFocused()) {
+            return uiLocalized.greatMemory;
+        }
+
+        return uiLocalized.localizedStringForValue(entered, 'words');
+    }, [isFocused, valid]);
 
     return (
         <View style={styles.container}>
@@ -281,6 +327,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 label={uiLocalized.MasterPassword}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
+                onFocus={onFocus}
                 onBlur={onBlur}
             />
             <View style={styles.popover}>
@@ -297,7 +344,6 @@ export const UISeedPhraseTextView = React.forwardRef<
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        flexDirection: 'column',
     },
     popover: {
         position: 'absolute',

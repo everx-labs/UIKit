@@ -658,7 +658,7 @@ const Inputs = () => {
             >
                 <Text>UISeedPhraseInput</Text>
             </View>
-            <View style={{ paddingVertical: 20 }}>
+            <View style={{ paddingVertical: 20, width: '70%' }}>
                 <UISeedPhraseInput
                     value={seedPhrase}
                     onChangeText={(newText) => setSeedPhrase(newText)}
