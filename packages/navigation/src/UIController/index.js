@@ -7,7 +7,6 @@ import {
     View,
     Platform,
     Keyboard,
-    SafeAreaView,
     LayoutAnimation,
     Easing,
     PixelRatio,
@@ -28,7 +27,7 @@ import {
     UIComponent,
     UISpinnerOverlay,
 } from '@tonlabs/uikit.components';
-
+import { UISafeAreaView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const AndroidKeyboardAdjust =
@@ -706,13 +705,14 @@ export default class UIController<Props, State> extends UIComponent<
         // We must set the 'collapsible' to 'false'
         // for the containers 'measure' works well on Android.
         const main = (
-            <SafeAreaView
-                style={[UIStyle.container.screen(), UIStyle.common.backgroundPrimaryColor()]}
+            <UISafeAreaView
+                color={UIBackgroundViewColors.BackgroundPrimary}
+                style={UIStyle.container.screen()}
             >
                 <View style={UIStyle.common.flex()} collapsable={false} ref={this.containerRef}>
                     {this.renderSafely()}
                 </View>
-            </SafeAreaView>
+            </UISafeAreaView>
         );
         const overlays = [].concat(
             this.renderOverlay() || [],

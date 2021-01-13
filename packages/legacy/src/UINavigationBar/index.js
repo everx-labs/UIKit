@@ -11,6 +11,7 @@ import {
     UIStyle,
 } from '@tonlabs/uikit.core';
 import { UISearchBar, UIComponent } from '@tonlabs/uikit.components';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
 import UINavigationBackButton from '../UINavigationBackButton';
 
@@ -108,7 +109,7 @@ type UINavigationBarProps = {
 export default class UINavigationBar extends UIComponent<
     UINavigationBarProps,
     *,
-> {
+    > {
     static defaultProps = {
         title: '',
         headerLeft: null,
@@ -206,19 +207,22 @@ export default class UINavigationBar extends UIComponent<
         const hasButtons = (this.getHeaderLeft() || this.getHeaderRight());
 
         return (
-            <View style={containerStyle || styles.container}>
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
+                style={containerStyle || styles.container}
+            >
                 {hasButtons &&
-                    <View
-                        {...testIDProp}
-                        style={[styles.buttonsContainer, buttonsContainerStyle]}
-                    >
-                        {this.getHeaderCenter() /* `absolute` container, rendered bellow buttons */}
-                        {this.getHeaderLeft()}
-                        {this.getHeaderRight()}
-                    </View>
+                <View
+                    {...testIDProp}
+                    style={[styles.buttonsContainer, buttonsContainerStyle]}
+                >
+                    {this.getHeaderCenter() /* `absolute` container, rendered bellow buttons */}
+                    {this.getHeaderLeft()}
+                    {this.getHeaderRight()}
+                </View>
                 }
                 {this.renderTitleView()}
-            </View>
+            </UIBackgroundView>
         );
     }
 }
