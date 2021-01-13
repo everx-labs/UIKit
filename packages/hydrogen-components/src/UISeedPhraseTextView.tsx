@@ -91,6 +91,30 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
 const MAX_CELLS = 3; // TODO: why it's 3?
 const SPLITTER = ` ${UIConstant.dashSymbol()} `;
 
+const identifyWordThatChanged = (
+    phrase: string,
+    lastPhrase: string,
+): [string, number] => {
+    const currentWords = phrase.split(SPLITTER);
+    const lastWords = lastPhrase.split(SPLITTER);
+
+    for (
+        let i = Math.max(currentWords.length, lastWords.length) - 1;
+        i >= 0;
+        i -= 1
+    ) {
+        if (
+            lastWords[i] != null &&
+            currentWords[i] != null &&
+            lastWords[i] !== currentWords[i]
+        ) {
+            return [currentWords[i], i];
+        }
+    }
+
+    return ['', -1];
+};
+
 export type UISeedPhraseTextViewProps = {
     words: string[];
 };
@@ -105,14 +129,17 @@ export const UISeedPhraseTextView = React.forwardRef<
     const textInputRef = React.useRef(null);
     const refToUse = ref || textInputRef;
 
-    const [currentTypingWord, setCurrentTypingWord] = React.useState('');
+    const [currentlyTyped, setCurrentlyTyped] = React.useState({
+        word: '',
+        index: -1,
+    });
 
     const hints = React.useMemo(() => {
-        if (currentTypingWord.length === 0) {
+        if (currentlyTyped.word.length === 0) {
             return [];
         }
-        return words.filter((word) => word.indexOf(currentTypingWord) === 0);
-    }, [words, currentTypingWord]);
+        return words.filter((word) => word.indexOf(currentlyTyped.word) === 0);
+    }, [words, currentlyTyped]);
 
     const savedText = React.useRef('');
 
@@ -125,9 +152,13 @@ export const UISeedPhraseTextView = React.forwardRef<
         (item: string) => {
             const parts = savedText.current.split(SPLITTER);
 
-            parts[parts.length - 1] = item;
+            parts[currentlyTyped.index] = item;
 
-            const newText = `${parts.join(SPLITTER)}${SPLITTER}`;
+            let newText = parts.join(SPLITTER);
+
+            if (currentlyTyped.index === parts.length - 1) {
+                newText = `${newText}${SPLITTER}`;
+            }
 
             if (refToUse && 'current' in refToUse) {
                 refToUse.current?.setNativeProps({
@@ -138,12 +169,13 @@ export const UISeedPhraseTextView = React.forwardRef<
 
             savedText.current = newText;
             setCurrentHighlightedItemIndex(-1);
-            setCurrentTypingWord('');
+            setCurrentlyTyped({ word: '', index: -1 });
         },
         [
             refToUse,
             savedText,
-            setCurrentTypingWord,
+            currentlyTyped,
+            setCurrentlyTyped,
             setCurrentHighlightedItemIndex,
         ],
     );
@@ -195,7 +227,8 @@ export const UISeedPhraseTextView = React.forwardRef<
 
                 savedText.current = newText;
                 setCurrentHighlightedItemIndex(-1);
-                setCurrentTypingWord('');
+                setCurrentlyTyped({ word: '', index: -1 });
+
                 return;
             }
 
@@ -216,10 +249,15 @@ export const UISeedPhraseTextView = React.forwardRef<
                 return;
             }
 
-            const parts = text.split(SPLITTER);
-            const lastWord = parts[parts.length - 1];
+            const [currentWord, currentWordIndex] = identifyWordThatChanged(
+                text,
+                savedText.current,
+            );
 
-            setCurrentTypingWord(lastWord);
+            setCurrentlyTyped({
+                word: currentWord,
+                index: currentWordIndex,
+            });
 
             savedText.current = text;
         },
@@ -227,14 +265,14 @@ export const UISeedPhraseTextView = React.forwardRef<
             savedText,
             refToUse,
             setCurrentHighlightedItemIndex,
-            setCurrentTypingWord,
+            setCurrentlyTyped,
         ],
     );
 
     const onBlur = React.useCallback(() => {
         setCurrentHighlightedItemIndex(-1);
-        setCurrentTypingWord('');
-    }, [setCurrentHighlightedItemIndex, setCurrentTypingWord]);
+        setCurrentlyTyped({ word: '', index: -1 });
+    }, [setCurrentHighlightedItemIndex, setCurrentlyTyped]);
 
     return (
         <View style={styles.container}>
