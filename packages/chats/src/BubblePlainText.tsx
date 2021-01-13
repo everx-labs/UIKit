@@ -152,7 +152,6 @@ function BubbleTime(
 ) {
     return (
         <UILabel
-            testID={createTestId('chat_text_message%_time', props.text)}
             role={UILabelRoles.ParagraphFootnote}
             color={
                 props.isHidden ? UILabelColors.Transparent : getFontColor(props)
@@ -248,7 +247,9 @@ export function BubblePlainText(props: PlainTextMessage) {
                          * That padding is needed for a time that we draw second time,
                          * except this time we place it with `position: absolute` in a corner.
                          */}
-                        <Text style={styles.timeFloating}>
+                        <Text
+                            testID={createTestId('chat_text_message%_time', props.text)}
+                            style={styles.timeFloating}>
                             <BubbleTime
                                 {...props}
                                 formattedTime={formattedTime}
