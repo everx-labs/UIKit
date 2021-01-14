@@ -2701,10 +2701,6 @@ const App: () => React$Node = () => {
         </SafeAreaProvider>
     );
 
-    if (Platform.OS !== 'web') {
-        return main;
-    }
-
     return <UIPopoverBackground>{main}</UIPopoverBackground>;
 };
 

@@ -19,15 +19,17 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 
 import { UIMaterialTextView } from './UIMaterialTextView';
+import { PropsAwarePopover } from './PropsAwarePopover';
 
 type UISeedPhrasePopoverProps = {
     currentHighlightedItemIndex: number;
     hints: string[];
     onHintSelected: (item: string) => void;
+    width: number;
 };
 
 function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
-    const { currentHighlightedItemIndex, hints, onHintSelected } = props;
+    const { currentHighlightedItemIndex, hints, onHintSelected, width } = props;
     const theme = useTheme();
     const maxHintsToShow = Math.min(hints.length, MAX_CELLS);
     const height =
@@ -43,6 +45,7 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
                 styles.hintsContainer,
                 {
                     height,
+                    width,
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
                 },
             ]}
@@ -448,8 +451,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     const hasValue = state.phrase.length > 0;
 
     const [helperText, error] = React.useMemo(() => {
-        const entered = state.parts.length;
-        const count = totalWords - entered;
+        const entered = state.parts.filter((w) => w.length > 0).length;
 
         if (!isFocused && hasValue) {
             if (isValid) {
@@ -460,19 +462,44 @@ export const UISeedPhraseTextView = React.forwardRef<
 
         if (entered === 0) {
             return [
-                uiLocalized.localizedStringForValue(count, 'moreWords'),
+                uiLocalized.localizedStringForValue(totalWords, 'moreWords'),
                 false,
             ];
         }
 
         return [uiLocalized.localizedStringForValue(entered, 'words'), false];
-    }, [isFocused, isValid, hasValue, state.parts.length, totalWords]);
+    }, [isFocused, isValid, hasValue, state.parts, totalWords]);
+
+    const [inputWidth, setInputWidth] = React.useState(0);
+
+    const onInputLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { width },
+            },
+        }) => {
+            setInputWidth(width);
+        },
+        [setInputWidth],
+    );
+
+    const popoverProps = React.useMemo(
+        () => ({
+            currentHighlightedItemIndex: state.highlight.index,
+            hints,
+            onHintSelected,
+            width: inputWidth,
+        }),
+        [state.highlight.index, hints, onHintSelected, inputWidth],
+    );
 
     return (
-        <View style={styles.container}>
+        <>
             <UIMaterialTextView
                 ref={refToUse}
+                autoCapitalize="none"
                 label={uiLocalized.MasterPassword}
+                onLayout={onInputLayout}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
@@ -481,27 +508,21 @@ export const UISeedPhraseTextView = React.forwardRef<
                 error={error}
                 success={isValid && !isFocused}
             />
-            <View style={styles.popover}>
-                <UISeedPhrasePopover
-                    currentHighlightedItemIndex={state.highlight.index}
-                    hints={hints}
-                    onHintSelected={onHintSelected}
-                />
-            </View>
-        </View>
+            <PropsAwarePopover
+                placement="bottom"
+                arrowWidth={0}
+                arrowHeight={0}
+                isVisible={hints.length > 0}
+                component={UISeedPhrasePopover}
+                componentProps={popoverProps}
+            >
+                <View />
+            </PropsAwarePopover>
+        </>
     );
 });
 
 const styles = StyleSheet.create({
-    container: {
-        position: 'relative',
-    },
-    popover: {
-        position: 'absolute',
-        top: '100%',
-        left: 0,
-        right: 0,
-    },
     hintsContainer: {
         flex: 1,
         ...UIConstant.cardShadow(),
