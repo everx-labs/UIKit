@@ -23,6 +23,7 @@ export type UIMaterialTextViewProps = UITextViewProps & {
     label: string;
     helperText?: string;
     error?: boolean;
+    success?: boolean;
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
 };
 
@@ -31,6 +32,9 @@ const getBorderColor = (
     isFocused: boolean,
     isHovered: boolean,
 ): ColorVariants => {
+    if (props.success) {
+        return ColorVariants.Transparent;
+    }
     if (props.error) {
         return ColorVariants.LineNegative;
     }
@@ -44,6 +48,9 @@ const getBorderColor = (
 };
 
 const getCommentColor = (props: UIMaterialTextViewProps): ColorVariants => {
+    if (props.success) {
+        return ColorVariants.TextPositive;
+    }
     if (props.error) {
         return ColorVariants.TextNegative;
     }

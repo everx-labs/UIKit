@@ -70,7 +70,7 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
                         <TouchableOpacity
                             testID={`profile_backup_key_phrase_${item}`}
                             style={[styles.cellHint, cellBgStyle]}
-                            onPress={() => {
+                            onPressIn={() => {
                                 onHintSelected(item);
                             }}
                         >
@@ -115,50 +115,218 @@ const identifyWordThatChanged = (
     return ['', -1];
 };
 
+const splitPhrase = (phrase: string) => {
+    return phrase.split(SPLITTER);
+};
+
+type CurrentInnerState = {
+    phrase: string;
+    parts: string[];
+    typed: {
+        word: string;
+        index: number;
+    };
+    highlight: {
+        index: number;
+    };
+};
+
+type SEPARATE_ACTION = {
+    type: 'separate';
+    payload: {
+        phrase: string;
+        parts?: string[];
+    };
+};
+type REMOVE_SEPARATOR_ACTION = {
+    type: 'remove_separator';
+    payload: {
+        phrase: string;
+        parts?: string[];
+    };
+};
+type SET_CURRENT_TYPED_ACTION = {
+    type: 'set_currently_typed';
+    payload: {
+        phrase: string;
+        parts?: string[];
+    };
+};
+type CHANGE_HIGHLIGHTED_ACTION = {
+    type: 'change_highlighted';
+    payload: {
+        index: number;
+    };
+};
+type BLUR_ACTION = {
+    type: 'blur';
+};
+
+type ACTION =
+    | SEPARATE_ACTION
+    | REMOVE_SEPARATOR_ACTION
+    | SET_CURRENT_TYPED_ACTION
+    | CHANGE_HIGHLIGHTED_ACTION
+    | BLUR_ACTION;
+
+const reducer = (
+    state: CurrentInnerState,
+    action: ACTION,
+): CurrentInnerState => {
+    if (action.type === 'separate') {
+        return {
+            ...state,
+            phrase: action.payload.phrase,
+            parts: action.payload.parts || splitPhrase(action.payload.phrase),
+            typed: {
+                word: '',
+                index: -1,
+            },
+            highlight: {
+                index: -1,
+            },
+        };
+    }
+    if (action.type === 'remove_separator') {
+        return {
+            ...state,
+            phrase: action.payload.phrase,
+            parts: action.payload.parts || splitPhrase(action.payload.phrase),
+            highlight: {
+                index: -1,
+            },
+        };
+    }
+    if (action.type === 'set_currently_typed') {
+        const [currentWord, currentWordIndex] = identifyWordThatChanged(
+            action.payload.phrase,
+            state.phrase,
+        );
+        return {
+            ...state,
+            phrase: action.payload.phrase,
+            parts: action.payload.parts || splitPhrase(action.payload.phrase),
+            typed: {
+                word: currentWord,
+                index: currentWordIndex,
+            },
+        };
+    }
+    if (action.type === 'change_highlighted') {
+        return {
+            ...state,
+            highlight: {
+                index: action.payload.index,
+            },
+        };
+    }
+    if (action.type === 'blur') {
+        return {
+            ...state,
+            highlight: {
+                index: -1,
+            },
+        };
+    }
+
+    return state;
+};
+
 export type UISeedPhraseTextViewProps = {
     words: string[];
     totalWords: number;
+    validatePhrase: (phrase: string, parts: string[]) => Promise<boolean>;
 };
 
 export const UISeedPhraseTextView = React.forwardRef<
     TextInput,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(
-    { words, totalWords }: UISeedPhraseTextViewProps,
+    { words, totalWords, validatePhrase }: UISeedPhraseTextViewProps,
     ref,
 ) {
     const textInputRef = React.useRef(null);
     const refToUse = ref || textInputRef;
 
-    const [currentlyTyped, setCurrentlyTyped] = React.useState({
-        word: '',
-        index: -1,
+    const [state, dispatch] = React.useReducer(reducer, {
+        phrase: '',
+        parts: [],
+        typed: {
+            word: '',
+            index: -1,
+        },
+        highlight: {
+            index: -1,
+        },
     });
+    // https://reactjs.org/docs/hooks-faq.html#how-to-read-an-often-changing-value-from-usecallback
+    const phraseRef = React.useRef('');
+    const phrasePartsRef = React.useRef<string[] | null>(null);
+
+    const dispatchAndSavePhrase = React.useCallback((action: ACTION) => {
+        if (
+            'payload' in action &&
+            action.payload != null &&
+            'phrase' in action.payload
+        ) {
+            phraseRef.current = action.payload.phrase;
+            phrasePartsRef.current = splitPhrase(action.payload.phrase);
+            // eslint-disable-next-line no-param-reassign
+            action.payload.parts = phrasePartsRef.current;
+        }
+
+        dispatch(action);
+    }, []);
+
+    const [isFocused, setIsFocused] = React.useState(false);
+
+    const onFocus = React.useCallback(() => {
+        setIsFocused(true);
+    }, [setIsFocused]);
+
+    const onBlur = React.useCallback(() => {
+        // To handle taps on hints we need to delay handling a bit
+        // to get a room for event to fire
+        // or with isFocused == true hints will be re-rendered before click occur
+        setTimeout(() => {
+            // in onHintSelected method we call .focus() to continue typing
+            // so it means we don't need to handle blur event anymore
+            if (
+                refToUse &&
+                'current' in refToUse &&
+                refToUse.current?.isFocused()
+            ) {
+                return;
+            }
+            dispatch({
+                type: 'blur',
+            });
+            setIsFocused(false);
+        }, 50);
+    }, []);
 
     const hints = React.useMemo(() => {
-        if (currentlyTyped.word.length === 0) {
+        if (!isFocused) {
             return [];
         }
-        return words.filter((word) => word.indexOf(currentlyTyped.word) === 0);
-    }, [words, currentlyTyped]);
-
-    const savedText = React.useRef('');
-
-    const [
-        currentHighlightedItemIndex,
-        setCurrentHighlightedItemIndex,
-    ] = React.useState(-1); // Do not highlight anything at start
+        if (state.typed.word.length === 0) {
+            return [];
+        }
+        return words.filter((word) => word.indexOf(state.typed.word) === 0);
+    }, [words, state.typed.word, isFocused]);
 
     const onHintSelected = React.useCallback(
         (item: string) => {
-            const parts = savedText.current.split(SPLITTER);
+            const parts = phrasePartsRef.current
+                ? [...phrasePartsRef.current]
+                : [];
 
-            parts[currentlyTyped.index] = item;
+            parts[state.typed.index] = item;
 
             let newText = parts.join(SPLITTER);
 
             if (
-                currentlyTyped.index === parts.length - 1 &&
+                state.typed.index === parts.length - 1 &&
                 parts.length < totalWords
             ) {
                 newText = `${newText}${SPLITTER}`;
@@ -171,18 +339,14 @@ export const UISeedPhraseTextView = React.forwardRef<
                 refToUse.current?.focus();
             }
 
-            savedText.current = newText;
-            setCurrentHighlightedItemIndex(-1);
-            setCurrentlyTyped({ word: '', index: -1 });
+            dispatchAndSavePhrase({
+                type: 'separate',
+                payload: {
+                    phrase: newText,
+                },
+            });
         },
-        [
-            totalWords,
-            refToUse,
-            savedText,
-            currentlyTyped,
-            setCurrentlyTyped,
-            setCurrentHighlightedItemIndex,
-        ],
+        [totalWords, state.typed.index],
     );
 
     const onKeyPress = React.useCallback(
@@ -191,37 +355,42 @@ export const UISeedPhraseTextView = React.forwardRef<
 
             if (event.key === 'ArrowUp') {
                 e.preventDefault();
-                setCurrentHighlightedItemIndex(
-                    Math.max(currentHighlightedItemIndex - 1, 0),
-                );
+                dispatch({
+                    type: 'change_highlighted',
+                    payload: {
+                        index: Math.max(state.highlight.index - 1, 0),
+                    },
+                });
+
                 return;
             }
             if (event.key === 'ArrowDown') {
                 e.preventDefault();
-                setCurrentHighlightedItemIndex(
-                    Math.min(currentHighlightedItemIndex + 1, hints.length - 1),
-                );
+                dispatch({
+                    type: 'change_highlighted',
+                    payload: {
+                        index: Math.min(
+                            state.highlight.index + 1,
+                            hints.length - 1,
+                        ),
+                    },
+                });
+
                 return;
             }
-            if (event.key === 'Enter' && currentHighlightedItemIndex >= 0) {
+            if (event.key === 'Enter' && state.highlight.index >= 0) {
                 e.preventDefault();
-                onHintSelected(hints[currentHighlightedItemIndex]);
+                onHintSelected(hints[state.highlight.index]);
             }
         },
-        [
-            hints,
-            currentHighlightedItemIndex,
-            setCurrentHighlightedItemIndex,
-            savedText,
-            onHintSelected,
-        ],
+        [hints, state.highlight.index, onHintSelected],
     );
 
     const onChangeText = React.useCallback(
         (text: string) => {
             const lastSymbol = text[text.length - 1];
 
-            if (text.length > savedText.current.length && lastSymbol === ' ') {
+            if (text.length > phraseRef.current.length && lastSymbol === ' ') {
                 const parts = text.split(SPLITTER);
                 const newText =
                     parts.length < totalWords
@@ -235,15 +404,16 @@ export const UISeedPhraseTextView = React.forwardRef<
                     });
                 }
 
-                savedText.current = newText;
-                setCurrentHighlightedItemIndex(-1);
-                setCurrentlyTyped({ word: '', index: -1 });
+                dispatchAndSavePhrase({
+                    type: 'separate',
+                    payload: { phrase: newText },
+                });
 
                 return;
             }
 
             if (
-                text.length < savedText.current.length &&
+                text.length < phraseRef.current.length &&
                 lastSymbol === UIConstant.dashSymbol()
             ) {
                 const newText = text.slice(0, text.length - 2);
@@ -254,71 +424,49 @@ export const UISeedPhraseTextView = React.forwardRef<
                     });
                 }
 
-                savedText.current = newText;
-                setCurrentHighlightedItemIndex(-1);
+                dispatchAndSavePhrase({
+                    type: 'remove_separator',
+                    payload: { phrase: newText },
+                });
 
                 return;
             }
 
-            const [currentWord, currentWordIndex] = identifyWordThatChanged(
-                text,
-                savedText.current,
-            );
-
-            setCurrentlyTyped({
-                word: currentWord,
-                index: currentWordIndex,
+            dispatchAndSavePhrase({
+                type: 'set_currently_typed',
+                payload: { phrase: text },
             });
-
-            savedText.current = text;
         },
-        [
-            totalWords,
-            savedText,
-            refToUse,
-            setCurrentHighlightedItemIndex,
-            setCurrentlyTyped,
-        ],
+        [totalWords],
     );
 
-    const [isFocused, setIsFocused] = React.useState(false);
+    const [isValid, setIsValid] = React.useState(false);
+    React.useEffect(() => {
+        validatePhrase(state.phrase, state.parts).then(setIsValid);
+    }, [validatePhrase, setIsValid, state.phrase]);
 
-    const valid = false; // TODO
-
-    const onFocus = React.useCallback(() => {
-        setIsFocused(true);
-    }, [setIsFocused]);
-
-    const onBlur = React.useCallback(() => {
-        setCurrentHighlightedItemIndex(-1);
-        setCurrentlyTyped({ word: '', index: -1 });
-        setIsFocused(false);
-    }, [setCurrentHighlightedItemIndex, setCurrentlyTyped]);
+    const hasValue = state.phrase.length > 0;
 
     const [helperText, error] = React.useMemo(() => {
-        // const valid = this.areWordsValid();
-        // const entered = this.getWordsCount();
-        // const count = this.getRemainingCount();
+        const entered = state.parts.length;
+        const count = totalWords - entered;
 
-        if (!isFocused) {
-            if (valid) {
+        if (!isFocused && hasValue) {
+            if (isValid) {
                 return [uiLocalized.greatMemory, false];
             }
             return [uiLocalized.seedPhraseTypo, true];
         }
 
         if (entered === 0) {
-            return (
-                hint || uiLocalized.localizedStringForValue(count, 'moreWords')
-            );
-        } else if (!valid && !this.isFocused()) {
-            return uiLocalized.seedPhraseTypo;
-        } else if (valid && !this.isFocused()) {
-            return uiLocalized.greatMemory;
+            return [
+                uiLocalized.localizedStringForValue(count, 'moreWords'),
+                false,
+            ];
         }
 
-        return uiLocalized.localizedStringForValue(entered, 'words');
-    }, [isFocused, valid]);
+        return [uiLocalized.localizedStringForValue(entered, 'words'), false];
+    }, [isFocused, isValid, hasValue, state.parts.length, totalWords]);
 
     return (
         <View style={styles.container}>
@@ -329,10 +477,13 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                helperText={helperText}
+                error={error}
+                success={isValid && !isFocused}
             />
             <View style={styles.popover}>
                 <UISeedPhrasePopover
-                    currentHighlightedItemIndex={currentHighlightedItemIndex}
+                    currentHighlightedItemIndex={state.highlight.index}
                     hints={hints}
                     onHintSelected={onHintSelected}
                 />

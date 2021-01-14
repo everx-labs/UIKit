@@ -666,7 +666,22 @@ const Inputs = () => {
                     totalWords={4}
                     words={mnemonicWords}
                 />
-                <UISeedPhraseTextView words={mnemonicWords} totalWords={4} />
+                <UISeedPhraseTextView
+                    words={mnemonicWords}
+                    totalWords={3}
+                    validatePhrase={async (_phrase, parts) => {
+                        if (parts[0] !== mnemonicWords[0]) {
+                            return false;
+                        }
+                        if (parts[1] !== mnemonicWords[2]) {
+                            return false;
+                        }
+                        if (parts[2] !== mnemonicWords[4]) {
+                            return false;
+                        }
+                        return true;
+                    }}
+                />
             </View>
 
             <View
