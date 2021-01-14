@@ -53,11 +53,12 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
                 underlineColorAndroid="transparent"
                 style={[
                     styles.input,
+                    style,
                     {
                         color: theme[ColorVariants.TextPrimary],
                     },
                     Typography[TypographyVariants.ParagraphText],
-                    style,
+                    styles.resetStyles,
                 ]}
             />
         );
@@ -72,6 +73,9 @@ const styles = StyleSheet.create({
                 outlineStyle: 'none',
             },
         }),
+    },
+    resetStyles: {
+        lineHeight: undefined,
     },
 });
 

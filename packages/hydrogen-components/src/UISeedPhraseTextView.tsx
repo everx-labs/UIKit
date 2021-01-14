@@ -35,7 +35,6 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
     const height =
         hints.length > 0 ? UIConstant.defaultCellHeight() * maxHintsToShow : 0;
     // Calculate the padding bottom to view cells even if clipped
-    // TODO: why decrease by 1?
     const paddingBottom = UIConstant.defaultCellHeight() * (maxHintsToShow - 1);
 
     return (
@@ -91,7 +90,7 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
     );
 }
 
-const MAX_CELLS = 3; // TODO: why it's 3?
+const MAX_CELLS = 3;
 const SPLITTER = ` ${UIConstant.dashSymbol()} `;
 
 const identifyWordThatChanged = (
@@ -289,7 +288,7 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const onBlur = React.useCallback(() => {
         // To handle taps on hints we need to delay handling a bit
-        // to get a room for event to fire
+        // to get a room for event to fire (at least on web)
         // or with isFocused == true hints will be re-rendered before click occur
         setTimeout(() => {
             // in onHintSelected method we call .focus() to continue typing
@@ -525,6 +524,7 @@ export const UISeedPhraseTextView = React.forwardRef<
 const styles = StyleSheet.create({
     hintsContainer: {
         flex: 1,
+        marginTop: -16, // Don't want to calculate it dinamically, seems to work fine
         ...UIConstant.cardShadow(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: UIConstant.borderRadius(),
