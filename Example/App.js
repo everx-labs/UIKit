@@ -2444,7 +2444,7 @@ const ChatWindowScreen = () => {
                 onSendSticker={onSendSticker}
                 stickers={stickers}
                 onHeightChange={setBottomInset}
-                customKeyboard={stickersKeyboard}
+                // customKeyboard={stickersKeyboard}
             />
         </>
     );
@@ -2525,7 +2525,6 @@ const Main = ({ navigation }) => {
                     buttonStyle={UIButton.ButtonStyle.Link}
                     title="Layouts"
                 />
-                \
                 <UIButton
                     onPress={() => navigation.navigate('menus')}
                     buttonStyle={UIButton.ButtonStyle.Link}
