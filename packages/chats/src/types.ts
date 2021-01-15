@@ -95,6 +95,7 @@ export type StickerMessage = ChatMessageMeta & {
 export type ActionButtonMessage = ChatMessageMeta & {
     type: ChatMessageType.ActionButton;
     text: string;
+    textMode?: 'ellipsize' | 'fit';
     onPress?: () => void | Promise<void>;
 };
 

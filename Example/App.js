@@ -2169,6 +2169,42 @@ const initialMessages = [
         status: 'sent',
         time: Math.floor(Date.now() - 1 * 60 * 1000),
         sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'fit',
+    },
+    {
+        type: 'act',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'fit',
+    },
+    {
+        type: 'act',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'ellipsize',
+    },
+    {
+        type: 'act',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'ellipsize',
+    },
+    {
+        type: 'act',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
         text: 'This is action',
     },
     {
@@ -2444,7 +2480,7 @@ const ChatWindowScreen = () => {
                 onSendSticker={onSendSticker}
                 stickers={stickers}
                 onHeightChange={setBottomInset}
-                customKeyboard={stickersKeyboard}
+                // customKeyboard={stickersKeyboard}
             />
         </>
     );
@@ -2525,7 +2561,6 @@ const Main = ({ navigation }) => {
                     buttonStyle={UIButton.ButtonStyle.Link}
                     title="Layouts"
                 />
-                \
                 <UIButton
                     onPress={() => navigation.navigate('menus')}
                     buttonStyle={UIButton.ButtonStyle.Link}

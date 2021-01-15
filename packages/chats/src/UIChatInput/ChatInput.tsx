@@ -259,7 +259,7 @@ type Props = {
 
     customKeyboardVisible: boolean;
     onCustomKeyboardPress: OnCustomKeyboardVisible;
-    customKeyboardButton: React.ComponentType<any>;
+    customKeyboardButton?: React.ComponentType<any>;
 
     onSendText: OnSendText;
     onSendMedia: OnSendMedia;
@@ -350,12 +350,14 @@ export function ChatInput(props: Props) {
                             />
                         )}
                     </View>
-                    <CustomKeyboardButton
-                        editable={props.editable}
-                        customKeyboardVisible={props.customKeyboardVisible}
-                        inputHasValue={inputHasValue}
-                        onPress={props.onCustomKeyboardPress}
-                    />
+                    {CustomKeyboardButton && (
+                        <CustomKeyboardButton
+                            editable={props.editable}
+                            customKeyboardVisible={props.customKeyboardVisible}
+                            inputHasValue={inputHasValue}
+                            onPress={props.onCustomKeyboardPress}
+                        />
+                    )}
                     <QuickAction
                         quickActions={props.quickActions}
                         inputHasValue={inputHasValue}

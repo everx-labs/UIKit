@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import type { TextStyle } from 'react-native';
 
+// eslint-disable-next-line no-shadow
 export enum TypographyVariants {
     TitleHuge = 'TitleHuge',
     TitleLarge = 'TitleLarge',
@@ -24,6 +25,10 @@ export enum TypographyVariants {
     ParagraphLabel = 'ParagraphLabel',
     MonoText = 'MonoText',
     MonoNote = 'MonoNote',
+    LightHuge = 'LightHuge',
+    LightLarge = 'LightLarge',
+    LightMedium = 'LightMedium',
+    LightSmall = 'LightSmall',
 }
 
 export type TypographyT = {
@@ -74,6 +79,12 @@ const InterFontNormalMedium: TextStyle = {
 const InterFontNormalRegular: TextStyle = {
     fontFamily: InterFont.regular.fontFamily,
     fontWeight: '400',
+    fontStyle: 'normal',
+};
+
+const InterFontNormalLight: TextStyle = {
+    fontFamily: InterFont.light.fontFamily,
+    fontWeight: '300',
     fontStyle: 'normal',
 };
 
@@ -211,5 +222,30 @@ export const Typography: TypographyT = StyleSheet.create({
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
+    },
+
+    [TypographyVariants.LightHuge]: {
+        ...InterFontNormalLight,
+        fontSize: 38,
+        lineHeight: 48,
+        letterSpacing: -0.84,
+    },
+    [TypographyVariants.LightLarge]: {
+        ...InterFontNormalLight,
+        fontSize: 30,
+        lineHeight: 40,
+        letterSpacing: -0.64,
+    },
+    [TypographyVariants.LightMedium]: {
+        ...InterFontNormalLight,
+        fontSize: 22,
+        lineHeight: 32,
+        letterSpacing: -0.4,
+    },
+    [TypographyVariants.LightSmall]: {
+        ...InterFontNormalLight,
+        fontSize: 19,
+        lineHeight: 24,
+        letterSpacing: -0.3,
     },
 });
