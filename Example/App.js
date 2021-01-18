@@ -1084,13 +1084,32 @@ const Images = () => (
                 borderBottomColor: 'rgba(0,0,0,.1)',
             }}
         >
-            <Text>UIImageView (press it)</Text>
+            <Text>UIImageView Editable (press it)</Text>
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIImageView
                 photoStyle={{ width: 100, height: 100 }}
                 source={(UIAssets.icons.ui.keyThinDark: any)}
-                editable
+            />
+        </View>
+        <View
+            style={{
+                width: '96%',
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: '2%',
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: 'rgba(0,0,0,.1)',
+            }}
+        >
+            <Text>UIImageView Fullscreen (press it)</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIImageView
+                photoStyle={{ width: 100, height: 100 }}
+                sourceBig={(UIAssets.icons.logo.tonlabsPrimary: any)}
+                source={(UIAssets.icons.logo.tonlabsPrimary: any)}
             />
         </View>
     </ScrollView>
