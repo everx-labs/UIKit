@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 // @flow
 import React from 'react';
 import { Platform, StyleSheet, View, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
@@ -17,11 +18,17 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import UIActionSheet from '../UIActionSheet';
 import type { MenuItemType } from '../UIActionSheet/MenuItem';
 
-const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
+let ImagePicker;
+let Lightbox;
+let LightboxMobile;
 
-const LightboxMobile = Platform.OS !== 'web' ? require('react-native-lightbox').default : undefined;
-const Lightbox = Platform.OS === 'web' ? require('react-image-lightbox').default : undefined;
-Platform.OS === 'web' ? require('react-image-lightbox/style.css') : undefined;
+if (Platform.OS === 'web') {
+    require('react-image-lightbox/style.css')
+    Lightbox = require('react-image-lightbox').default;
+} else {
+    ImagePicker = require('react-native-image-picker');
+    LightboxMobile = require('react-native-lightbox').default;
+}
 
 const styles = StyleSheet.create({
     photoContainer: {
