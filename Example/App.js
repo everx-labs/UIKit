@@ -1090,6 +1090,7 @@ const Images = () => (
             <UIImageView
                 photoStyle={{ width: 100, height: 100 }}
                 source={(UIAssets.icons.ui.keyThinDark: any)}
+                editable
             />
         </View>
         <View
