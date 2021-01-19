@@ -5,18 +5,22 @@ import StylePropType from 'react-style-proptype';
 
 import { View, StyleSheet } from 'react-native';
 
-import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
 const styles = StyleSheet.create({
     sectionHeader: {
-        backgroundColor: UIColor.backgroundPrimary(),
         height: UIConstant.floatingLabelHeight(),
     },
     sectionDivider: {
-        backgroundColor: UIColor.backgroundPrimary(),
         height: 16, // TODO: why so?
     },
 });
@@ -34,7 +38,10 @@ class UISectionHeader extends UIComponent {
     // Render
     renderSeparator() {
         const separator = (
-            <View style={[styles.sectionDivider, UIStyle.borderBottom]} />
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
+                style={[styles.sectionDivider, UIStyle.border.bottom()]}
+            />
         );
         return this.props.needBorder ? separator : null;
     }
@@ -43,7 +50,8 @@ class UISectionHeader extends UIComponent {
         return (
             <View>
                 {this.renderSeparator()}
-                <View
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundPrimary}
                     style={[
                         UIStyle.flex.row(),
                         UIStyle.flex.justifySpaceBetween(),
@@ -64,7 +72,7 @@ class UISectionHeader extends UIComponent {
                     >
                         {this.getTitleRight()}
                     </UILabel>
-                </View>
+                </UIBackgroundView>
             </View>
         );
     }

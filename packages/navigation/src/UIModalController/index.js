@@ -541,7 +541,7 @@ export default class UIModalController<Props, State> extends UIController<
                 centralComponent={this.renderCentralHeader()}
                 rightComponent={this.renderRightHeader()}
                 bottomLine={this.isHeaderLineVisible()}
-                // onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], { 
+                // onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], {
                 //     useNativeDriver: true,
                 // })}
                 // onRelease={this.onReleaseSwipe}

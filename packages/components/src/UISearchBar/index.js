@@ -13,10 +13,14 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     UIConstant,
     UIDevice,
-    UIColor,
     UIStyle,
 } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    Typography,
+    TypographyVariants,
+} from '@tonlabs/uikit.hydrogen';
 
 import UITextInput from '../UITextInput';
 import UIComponent from '../UIComponent';
@@ -40,7 +44,6 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         height: 1,
-        backgroundColor: UIColor.light(),
     },
     cancelButton: {
         justifyContent: 'center',
@@ -247,11 +250,17 @@ export default class UISearchBar extends UIComponent<Props, State> {
         } = this.props;
         const testIDProp = testID ? { testID } : null;
         const separator = bottomSeparator
-            ? <View style={[styles.bottomSeparator, bottomSeparatorStyle]} />
+            ? <UIBackgroundView
+                color={UIBackgroundViewColors.LinePrimary}
+                style={[styles.bottomSeparator, bottomSeparatorStyle]}
+            />
             : null;
 
         return (
-            <View style={containerStyle}>
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
+                style={containerStyle}
+            >
                 <View style={styles.searchContainer}>
                     {this.renderGlass()}
                     <UITextInput
@@ -272,7 +281,7 @@ export default class UISearchBar extends UIComponent<Props, State> {
                     {this.renderCancelButton()}
                 </View>
                 {separator}
-            </View>
+            </UIBackgroundView>
         );
     }
 }

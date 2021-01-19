@@ -8,7 +8,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const styles = StyleSheet.create({
@@ -180,12 +180,13 @@ export default class UIModalNavigationBar extends UIComponent<Props, State> {
                 onGestureEvent={this.onPanGestureEvent}
                 onHandlerStateChange={this.onPanHandlerStateChange}
             >
-                <View
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundPrimary}
                     testID="NavigationBar container"
                     style={[styles.navigationView, { height: this.props.height }]}
                 >
                     {this.renderContent()}
-                </View>
+                </UIBackgroundView>
             </PanGestureHandler>
         );
     }

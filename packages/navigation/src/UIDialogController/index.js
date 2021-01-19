@@ -8,9 +8,15 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIProfilePhoto } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';
@@ -45,7 +51,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: UIColor.backgroundPrimary(),
         maxWidth: UIConstant.elasticWidthMax(),
     },
 });
@@ -285,12 +290,13 @@ class UIDialogController extends UIController {
             bottom = <React.Fragment>{bottom}</React.Fragment>;
         }
         return (
-            <View
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
                 style={styles.bottomContainer}
                 onLayout={this.onLayoutBottomContainer}
             >
                 {bottom}
-            </View>
+            </UIBackgroundView>
         );
     }
 
@@ -319,7 +325,16 @@ class UIDialogController extends UIController {
         if (Array.isArray(content)) {
             content = <React.Fragment>{content}</React.Fragment>;
         }
-        return content ? <View style={styles.contentContainer}>{content}</View> : null;
+        return content
+            ? (
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundPrimary}
+                    style={styles.contentContainer}
+                >
+                    {content}
+                </UIBackgroundView>
+            )
+            : null;
     }
 
     renderOverlay() {
