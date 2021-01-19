@@ -243,6 +243,21 @@ export function ChatInput(props: Props) {
 
     const CustomKeyboardButton = props.customKeyboardButton;
 
+    const containerHeight = React.useMemo(() => {
+        if (Platform.OS === 'android') {
+            return null;
+        }
+        const { paddingTop, paddingBottom } = StyleSheet.flatten(
+            styles.inputMsg,
+        );
+        return {
+            height: Math.max(
+                UIConstant.largeButtonHeight(),
+                inputHeight + paddingTop + paddingBottom,
+            ),
+        };
+    }, [inputHeight]);
+
     return (
         <>
             <View
@@ -263,12 +278,7 @@ export function ChatInput(props: Props) {
                 <View
                     style={[
                         styles.container,
-                        Platform.OS === 'android' && {
-                            height: Math.max(
-                                UIConstant.largeButtonHeight(),
-                                inputHeight,
-                            ),
-                        },
+                        containerHeight,
                         props.menuPlus?.length && props.menuPlus?.length > 0
                             ? null
                             : UIStyle.margin.leftDefault(),

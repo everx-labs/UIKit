@@ -311,6 +311,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     const {
         onContentSizeChange,
         onChange,
+        inputHeight,
         numberOfLines,
         numberOfLinesProp,
     } = useAutogrowTextView(refToUse);
@@ -520,7 +521,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
                 numberOfLines={numberOfLinesProp}
-                // style={growingHeightStyle}
+                style={{ height: inputHeight }}
                 helperText={helperText}
                 error={error}
                 success={isValid && !isFocused}

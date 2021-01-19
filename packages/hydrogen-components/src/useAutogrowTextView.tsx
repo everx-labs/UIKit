@@ -80,9 +80,8 @@ export function useAutogrowTextView(
         inputHeight / UIConstant.smallCellHeight(),
     );
     const numberOfLinesProp = Platform.select({
-        web: undefined,
-        // android: constrainedNumberOfLines,
-        default: numberOfLines,
+        ios: numberOfLines,
+        default: undefined,
     });
 
     return {
