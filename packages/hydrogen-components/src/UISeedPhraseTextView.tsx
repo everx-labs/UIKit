@@ -20,6 +20,7 @@ import {
 
 import { UIMaterialTextView } from './UIMaterialTextView';
 import { PropsAwarePopover } from './PropsAwarePopover';
+import { useAutogrowTextView } from './useAutogrowTextView';
 
 type UISeedPhrasePopoverProps = {
     currentHighlightedItemIndex: number;
@@ -307,6 +308,13 @@ export const UISeedPhraseTextView = React.forwardRef<
         }, 50);
     }, []);
 
+    const {
+        onContentSizeChange,
+        onChange,
+        numberOfLines,
+        numberOfLinesProp,
+    } = useAutogrowTextView(refToUse);
+
     const hints = React.useMemo(() => {
         if (!isFocused) {
             return [];
@@ -339,6 +347,9 @@ export const UISeedPhraseTextView = React.forwardRef<
                     text: newText,
                 });
                 refToUse.current?.focus();
+
+                // On web onChange isn't fired, so we need to force it
+                onChange && onChange();
             }
 
             dispatchAndSavePhrase({
@@ -348,7 +359,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 },
             });
         },
-        [totalWords, state.typed.index],
+        [totalWords, state.typed.index, onChange],
     );
 
     const onKeyPress = React.useCallback(
@@ -404,6 +415,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                     refToUse.current?.setNativeProps({
                         text: newText,
                     });
+                    onChange && onChange();
                 }
 
                 dispatchAndSavePhrase({
@@ -424,6 +436,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                     refToUse.current?.setNativeProps({
                         text: newText,
                     });
+                    onChange && onChange();
                 }
 
                 dispatchAndSavePhrase({
@@ -439,7 +452,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 payload: { phrase: text },
             });
         },
-        [totalWords],
+        [totalWords, onChange],
     );
 
     const [isValid, setIsValid] = React.useState(false);
@@ -497,17 +510,24 @@ export const UISeedPhraseTextView = React.forwardRef<
             <UIMaterialTextView
                 ref={refToUse}
                 autoCapitalize="none"
+                multiline
                 label={uiLocalized.MasterPassword}
                 onLayout={onInputLayout}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                onContentSizeChange={onContentSizeChange}
+                onChange={onChange}
+                numberOfLines={numberOfLinesProp}
+                // style={growingHeightStyle}
                 helperText={helperText}
                 error={error}
                 success={isValid && !isFocused}
             />
             <PropsAwarePopover
+                // if number of lines changed, redraw it
+                key={numberOfLines}
                 placement="bottom"
                 arrowWidth={0}
                 arrowHeight={0}

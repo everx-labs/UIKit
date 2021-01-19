@@ -28,6 +28,10 @@ export function PropsAwarePopover<T>(props: {
 
             React.useEffect(() => {
                 setPassedPropsRef.current = setPassedProps;
+
+                return () => {
+                    setPassedPropsRef.current = null;
+                };
             }, [setPassedProps]);
 
             return React.createElement(props.component, passedProps);

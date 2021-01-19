@@ -7,6 +7,7 @@ import {
     ViewStyle,
     Platform,
     StyleSheet,
+    StyleProp,
 } from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
 import { Typography, TypographyVariants } from './Typography';
@@ -36,7 +37,7 @@ export type UITextViewProps = Omit<
     TextInputProps,
     'style' | 'placeholderTextColor' | 'underlineColorAndroid'
 > & {
-    style?: UITextViewStyle;
+    style?: StyleProp<UITextViewStyle>;
 };
 
 export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
@@ -71,6 +72,9 @@ const styles = StyleSheet.create({
         ...Platform.select({
             web: {
                 outlineStyle: 'none',
+            },
+            android: {
+                padding: 0,
             },
         }),
     },

@@ -658,7 +658,7 @@ const Inputs = () => {
             >
                 <Text>UISeedPhraseInput</Text>
             </View>
-            <View style={{ paddingVertical: 20, width: '70%' }}>
+            <View style={{ paddingVertical: 20, width: '50%' }}>
                 <UISeedPhraseInput
                     value={seedPhrase}
                     onChangeText={(newText) => setSeedPhrase(newText)}
@@ -668,7 +668,7 @@ const Inputs = () => {
                 />
                 <UISeedPhraseTextView
                     words={mnemonicWords}
-                    totalWords={3}
+                    totalWords={5}
                     validatePhrase={async (_phrase, parts) => {
                         if (parts[0] !== mnemonicWords[0]) {
                             return false;
@@ -677,6 +677,12 @@ const Inputs = () => {
                             return false;
                         }
                         if (parts[2] !== mnemonicWords[4]) {
+                            return false;
+                        }
+                        if (parts[3] !== mnemonicWords[1]) {
+                            return false;
+                        }
+                        if (parts[4] !== mnemonicWords[3]) {
                             return false;
                         }
                         return true;
@@ -2522,7 +2528,7 @@ const ThemeSwitcher = React.createContext(null);
 const Main = ({ navigation }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
             <View
                 style={{
                     flexDirection: 'row',
@@ -2532,17 +2538,15 @@ const Main = ({ navigation }) => {
                 }}
             >
                 <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
-                <UIDetailsToggle
-                    details={`Mode: ${
-                        themeSwitcher?.isDarkTheme ? 'Dark' : 'Light'
-                    }`}
+                <UIToggle
                     active={themeSwitcher?.isDarkTheme}
-                    onPress={() => {
-                        themeSwitcher?.toggleTheme();
-                    }}
+                    onPress={() => themeSwitcher?.toggleTheme()}
                 />
             </View>
-            <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+            <ScrollView
+                style={{ flex: 1 }}
+                contentContainerStyle={{ paddingBottom: 50 }}
+            >
                 <UIButton
                     onPress={() => navigation.navigate('buttons')}
                     buttonStyle={UIButton.ButtonStyle.Link}
