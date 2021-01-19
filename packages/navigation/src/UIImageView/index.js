@@ -23,7 +23,7 @@ let Lightbox;
 let LightboxMobile;
 
 if (Platform.OS === 'web') {
-    require('react-image-lightbox/style.css')
+    require('./LightboxStyle');
     Lightbox = require('react-image-lightbox').default;
 } else {
     ImagePicker = require('react-native-image-picker');
