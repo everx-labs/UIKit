@@ -1,11 +1,9 @@
+/* eslint-disable global-require */
 // @flow
 import React from 'react';
 import { Platform, StyleSheet, View, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type {
-    ImageURISource,
-    ImageSource,
-} from 'react-native/Libraries/Image/ImageSource';
+import type { ImageURISource } from 'react-native/Libraries/Image/ImageSource';
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -20,9 +18,17 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import UIActionSheet from '../UIActionSheet';
 import type { MenuItemType } from '../UIActionSheet/MenuItem';
 
-const ImagePicker = Platform.OS !== 'web' ? require('react-native-image-picker') : null;
-const Lightbox = Platform.OS === 'web' ? require('react-images').default : null;
-const LightboxMobile = Platform.OS !== 'web' ? require('react-native-lightbox').default : null;
+let ImagePicker;
+let Lightbox;
+let LightboxMobile;
+
+if (Platform.OS === 'web') {
+    require('./LightboxStyle');
+    Lightbox = require('react-image-lightbox').default;
+} else {
+    ImagePicker = require('react-native-image-picker');
+    LightboxMobile = require('react-native-lightbox').default;
+}
 
 const styles = StyleSheet.create({
     photoContainer: {
@@ -382,22 +388,25 @@ export default class UIImageView extends UIComponent<Props, State> {
         if (Platform.OS !== 'web' || !Lightbox) {
             return null;
         }
+
+        if (!this.state.lightboxVisible) {
+            return null;
+        }
+
         const photo: ?ImageURISource = this.getPhoto();
         if (!photo || this.isShowSpinnerOnPhotoView()) {
             return null;
         }
+
         let photoBig: ?ImageURISource = this.getPhotoBig();
         if (!photoBig) {
             photoBig = photo;
         }
+
         return (
             <Lightbox
-                images={[{ src: photoBig.uri }]}
-                isOpen={this.state.lightboxVisible}
-                onClose={() => this.setLightboxVisible(false)}
-                showImageCount={false}
-                backdropClosesModal
-                enableKeyboardInput
+                mainSrc={photoBig.uri}
+                onCloseRequest={() => this.setLightboxVisible(false)}
             />
         );
     }
