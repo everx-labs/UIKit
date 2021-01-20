@@ -151,7 +151,7 @@ function useFloatLabelTransform(
                 onFocusProp(e);
             }
         },
-        [translateX, translateY, scale, onFocusProp, setIsFocused],
+        [onFocusProp, setIsFocused],
     );
     const onBlur = React.useCallback(
         (e) => {
@@ -161,14 +161,7 @@ function useFloatLabelTransform(
                 onBlurProp(e);
             }
         },
-        [
-            translateX,
-            translateY,
-            scale,
-            onBlurProp,
-            setIsFocused,
-            inputHasValue,
-        ],
+        [onBlurProp, setIsFocused, inputHasValue],
     );
     const layout = React.useRef<{
         foldedHeight?: number;
@@ -195,7 +188,7 @@ function useFloatLabelTransform(
             }
             setIsLabelReady(true);
         },
-        [layout, isLabelReady, setIsLabelReady],
+        [isLabelReady, setIsLabelReady],
     );
     const onActualLabelLayout = React.useCallback(
         ({ nativeEvent: { layout: measuredLayout } }: LayoutChangeEvent) => {
@@ -215,7 +208,7 @@ function useFloatLabelTransform(
             }
             setIsLabelReady(true);
         },
-        [layout, isLabelReady, setIsLabelReady],
+        [isLabelReady, setIsLabelReady],
     );
     React.useEffect(() => {
         if (
@@ -286,15 +279,7 @@ function useFloatLabelTransform(
             ],
             opacity: isVisible ? 1 : 0,
         };
-    }, [
-        scale,
-        translateX,
-        translateY,
-        isLabelReady,
-        isFocused,
-        inputHasValue,
-        value,
-    ]);
+    }, [isLabelReady, isFocused, inputHasValue, value]);
     const labelStyle = React.useMemo(() => {
         return {
             transform: [
@@ -303,7 +288,7 @@ function useFloatLabelTransform(
                 },
             ],
         };
-    }, [scale, translateX, translateY, isLabelReady]);
+    }, []);
 
     return {
         isFocused,

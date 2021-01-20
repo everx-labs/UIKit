@@ -3,7 +3,8 @@ import type { TextInput } from 'react-native';
 
 import { UITextView, UITextViewProps } from '@tonlabs/uikit.hydrogen';
 
-import { useAutogrowTextView, OnHeightChange } from './useAutogrowTextView';
+import { useAutogrowTextView } from './useAutogrowTextView';
+import type { OnHeightChange } from './useAutogrowTextView';
 
 export type UIAutogrowTextViewProps = UITextViewProps & {
     onHeightChange?: OnHeightChange;

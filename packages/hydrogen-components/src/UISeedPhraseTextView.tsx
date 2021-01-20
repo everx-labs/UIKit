@@ -405,12 +405,21 @@ export const UISeedPhraseTextView = React.forwardRef<
             const lastSymbol = text[text.length - 1];
 
             if (text.length > phraseRef.current.length && lastSymbol === ' ') {
+                // Prevent adding dash when there wasn't typed a word
+                // i.e `word - - `
+                if (text[text.length - 2] === ' ') {
+                    if (refToUse && 'current' in refToUse) {
+                        refToUse.current?.setNativeProps({
+                            text: phraseRef.current,
+                        });
+                    }
+                    return;
+                }
                 const parts = text.split(SPLITTER);
                 const newText =
                     parts.length < totalWords
                         ? `${text}${UIConstant.dashSymbol()} `
-                        : // Remove the space
-                          text.slice(0, text.length - 1);
+                        : text.trim();
 
                 if (refToUse && 'current' in refToUse) {
                     refToUse.current?.setNativeProps({
@@ -521,7 +530,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
                 numberOfLines={numberOfLinesProp}
-                style={{ height: inputHeight }}
+                style={[{ height: inputHeight }, styles.input]}
                 helperText={helperText}
                 error={error}
                 success={isValid && !isFocused}
@@ -543,6 +552,9 @@ export const UISeedPhraseTextView = React.forwardRef<
 });
 
 const styles = StyleSheet.create({
+    input: {
+        minHeight: UIConstant.smallCellHeight(),
+    },
     hintsContainer: {
         flex: 1,
         marginTop: -16, // Don't want to calculate it dinamically, seems to work fine
