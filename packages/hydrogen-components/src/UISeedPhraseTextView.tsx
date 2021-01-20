@@ -413,7 +413,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             if (text.length > phraseRef.current.length && lastSymbol === ' ') {
                 // Prevent adding dash when there wasn't typed a word
                 // i.e `word - - `
-                if (text[text.length - 2] === ' ') {
+                if (text.endsWith(' ')) {
                     if (refToUse && 'current' in refToUse) {
                         refToUse.current?.setNativeProps({
                             text: phraseRef.current,
@@ -521,6 +521,11 @@ export const UISeedPhraseTextView = React.forwardRef<
         [state.highlight.index, hints, onHintSelected, inputWidth],
     );
 
+    const inputStyle = React.useMemo(
+        () => [styles.input, { height: inputHeight }],
+        [inputHeight],
+    );
+
     return (
         <>
             <UIMaterialTextView
@@ -536,7 +541,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
                 numberOfLines={numberOfLinesProp}
-                style={[{ height: inputHeight }, styles.input]}
+                style={inputStyle}
                 helperText={helperText}
                 error={error}
                 success={isValid && !isFocused}
