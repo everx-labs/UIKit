@@ -371,6 +371,7 @@
     "Sec": "san",
     "SeedPhrase": "12 kelimelik anahtar cümle",
     "seedPhraseTypo": "Burada yazım hatası gibi görünüyor. Lütfen tekrar deneyin",
+    "SeedPhraseHint": "12 or 24 words",
     "Select": "Seç",
     "SelectAll": "Tümünü Seç",
     "SelectCountry": "Ülke seçin…",

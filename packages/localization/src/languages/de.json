@@ -371,6 +371,7 @@
     "Sec": "sec",
     "SeedPhrase": "12 Wort Schlüssel Satz",
     "seedPhraseTypo": "Scheint, wir haben hier einen Tippfehler. Versuchen Sie es erneut",
+    "SeedPhraseHint": "12 or 24 words",
     "Select": "Auswählen",
     "SelectAll": "Alle Auswählen",
     "SelectCountry": "Land auswählen…",

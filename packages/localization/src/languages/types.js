@@ -362,6 +362,7 @@ export type UILocalizedData = {|
     +Sec: string,
     +SeedPhrase: string,
     +seedPhraseTypo: string,
+    +SeedPhraseHint: string,
     +Select: string,
     +SelectAll: string,
     +SelectCountry: string,

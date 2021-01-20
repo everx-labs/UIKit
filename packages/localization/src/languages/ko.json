@@ -371,6 +371,7 @@
     "Sec": "초",
     "SeedPhrase": "12개 단어의 단어결합",
     "seedPhraseTypo": "여기에서 오타가있는 것 같습니다. 다시 시도하십시오",
+    "SeedPhraseHint": "12 or 24 words",
     "Select": "선택",
     "SelectAll": "전체 선택",
     "SelectCountry": "국가 선택…",

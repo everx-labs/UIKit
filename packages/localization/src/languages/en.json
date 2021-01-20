@@ -371,6 +371,7 @@
     "Sec": "sec",
     "SeedPhrase": "12 word key phrase",
     "seedPhraseTypo": "Looks like a typo here. Please try again",
+    "SeedPhraseHint": "12 or 24 words",
     "Select": "Select",
     "SelectAll": "Select All",
     "SelectCountry": "Select country…",

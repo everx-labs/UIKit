@@ -516,14 +516,11 @@ export const UISeedPhraseTextView = React.forwardRef<
         }
 
         if (entered === 0) {
-            return [
-                uiLocalized.localizedStringForValue(totalWords, 'moreWords'),
-                false,
-            ];
+            return [uiLocalized.SeedPhraseHint, false];
         }
 
         return [uiLocalized.localizedStringForValue(entered, 'words'), false];
-    }, [isFocused, isValid, hasValue, state.parts, totalWords]);
+    }, [isFocused, isValid, hasValue, state.parts]);
 
     const [inputWidth, setInputWidth] = React.useState(0);
 

@@ -371,6 +371,7 @@
     "Sec": "秒",
     "SeedPhrase": "12字关键词",
     "seedPhraseTypo": "看起来在这里有印错的字。再试一次",
+    "SeedPhraseHint": "12 or 24 words",
     "Select": "选择",
     "SelectAll": "选择全部",
     "SelectCountry": "选择国家…",

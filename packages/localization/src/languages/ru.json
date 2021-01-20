@@ -371,6 +371,7 @@
     "Sec": "сек",
     "SeedPhrase": "Фраза из 12 слов",
     "seedPhraseTypo": "Кажется, здесь опечатка. Попробуйте еще раз",
+    "SeedPhraseHint": "12 или 24 слова",
     "Select": "Выбрать",
     "SelectAll": "Выбрать все",
     "SelectCountry": "Выберите страну…",

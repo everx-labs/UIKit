@@ -371,6 +371,7 @@
     "Sec": "秒",
     "SeedPhrase": "12語のキーフレーズ",
     "seedPhraseTypo": "タイプミスがあるようです。もう一度やり直してください",
+    "SeedPhraseHint": "12 or 24 words",
     "Select": "選択する",
     "SelectAll": "すべてを選択する",
     "SelectCountry": "国を選択する…",

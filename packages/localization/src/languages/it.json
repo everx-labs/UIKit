@@ -371,6 +371,7 @@
     "Sec": "sec",
     "SeedPhrase": "12 parole frase chiave",
     "seedPhraseTypo": "Sembra che abbiamo un errore di battitura qui. Riprova",
+    "SeedPhraseHint": "12 or 24 words",
     "Select": "Selezionare",
     "SelectAll": "Seleziona tutto",
     "SelectCountry": "Seleziona il paese…",
