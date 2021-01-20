@@ -238,8 +238,8 @@ const reducer = (
 export type UISeedPhraseTextViewProps = {
     words: string[];
     totalWords: number;
-    validatePhrase: (phrase: string, parts: string[]) => Promise<boolean>;
-    onSuccess: () => void | Promise<void>;
+    validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
+    onSuccess: (phrase?: string, parts?: string[]) => void | Promise<void>;
 };
 
 export const UISeedPhraseTextView = React.forwardRef<
@@ -490,7 +490,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             if (valid && refToUse && 'current' in refToUse) {
                 setIsValid(valid);
                 refToUse.current?.blur();
-                onSuccess();
+                onSuccess(state.phrase, state.parts);
             }
         });
     }, [
