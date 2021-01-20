@@ -413,7 +413,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             if (text.length > phraseRef.current.length && lastSymbol === ' ') {
                 // Prevent adding dash when there wasn't typed a word
                 // i.e `word - - `
-                if (text.endsWith(' ')) {
+                if (text.endsWith('  ')) {
                     if (refToUse && 'current' in refToUse) {
                         refToUse.current?.setNativeProps({
                             text: phraseRef.current,
