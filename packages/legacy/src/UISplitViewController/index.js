@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 
 import { UIDevice, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import { UIController } from '@tonlabs/uikit.navigation';
 
 export default class UISplitViewController extends UIController {
@@ -67,12 +68,13 @@ export default class UISplitViewController extends UIController {
 
     render() {
         return (
-            <View
-                style={[UIStyle.screenBackground, UIStyle.backgroundLightColor]}
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
+                style={UIStyle.absoluteFillObject}
                 onLayout={e => this.onLayout(e)}
             >
                 {this.renderSplitViewController()}
-            </View>
+            </UIBackgroundView>
         );
     }
 }

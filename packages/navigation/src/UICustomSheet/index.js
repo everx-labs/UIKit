@@ -15,6 +15,7 @@ import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTyp
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
 import UIController from '../UIController';
 import type { ContentInset, AnimationParameters } from '../UIController';
@@ -25,10 +26,13 @@ const headerHeight = UIConstant.bigCellHeight();
 const styles = StyleSheet.create({
     downMenu: {
         position: 'absolute',
-        backgroundColor: 'white',
         bottom: UIConstant.contentOffset(),
         borderRadius: UIConstant.borderRadius(),
+    },
+    contentContainer: {
+        borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.contentOffset(),
+        paddingBottom: UIConstant.contentOffset(),
     },
     fullScreenContainer: {
         left: UIConstant.contentOffset(),
@@ -367,7 +371,7 @@ export default class UICustomSheet extends UIController<Props, State> {
                         swipeToDismiss
                         dismissStripeStyle={styles.smallDismissStripe}
                         // TODO: think how to use `useNativeDriver` here!
-                        onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], { 
+                        onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], {
                             useNativeDriver: false,
                         })}
                         onRelease={this.onReleaseSwipe}
@@ -400,8 +404,13 @@ export default class UICustomSheet extends UIController<Props, State> {
                     ]}
                     onLayout={this.onLayout}
                 >
-                    {this.renderHeader()}
-                    {this.component}
+                    <UIBackgroundView
+                        color={UIBackgroundViewColors.BackgroundPrimary}
+                        style={styles.contentContainer}
+                    >
+                        {this.renderHeader()}
+                        {this.component}
+                    </UIBackgroundView>
                 </Animated.View>
             </View>
         );
