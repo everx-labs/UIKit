@@ -31,29 +31,36 @@ const getButtonRadius = (position: BubblePosition) => {
     return null;
 };
 
-export function BubbleActionButton(props: ActionButtonMessage) {
-    const position = useBubblePosition(props.status);
+export function BubbleActionButton({
+    status,
+    text,
+    textMode = 'ellipsize',
+    onPress,
+}: ActionButtonMessage) {
+    const position = useBubblePosition(status);
     const theme = useTheme();
 
     return (
         <View style={getButtonContainer(position)}>
             <TouchableOpacity
-                testID={`chat_action_cell_${props.text}`}
+                testID={`chat_action_cell_${text}`}
                 style={[
                     styles.common,
                     {
                         borderColor: theme[ColorVariants.LineAccent],
                     },
                     styles.button,
+                    textMode !== 'fit' && styles.buttonFixedHeight,
                     getButtonRadius(position),
                 ]}
-                onPress={props.onPress}
+                onPress={onPress}
             >
                 <UILabel
                     role={UILabelRoles.ActionCallout}
                     color={UILabelColors.TextAccent}
+                    numberOfLines={textMode === 'ellipsize' ? 1 : undefined}
                 >
-                    {props.text}
+                    {text}
                 </UILabel>
             </TouchableOpacity>
         </View>
@@ -62,11 +69,13 @@ export function BubbleActionButton(props: ActionButtonMessage) {
 
 const styles = StyleSheet.create({
     containerRight: {
+        maxWidth: '100%',
         paddingLeft: '20%',
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
     },
     containerLeft: {
+        maxWidth: '100%',
         paddingRight: '20%',
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
@@ -78,9 +87,12 @@ const styles = StyleSheet.create({
         marginVertical: UIConstant.tinyContentOffset(),
     },
     button: {
+        paddingVertical: UIConstant.tinyContentOffset(),
         paddingHorizontal: UIConstant.spaciousContentOffset(),
-        height: UIConstant.smallButtonHeight(),
         borderRadius: UIConstant.borderRadius(),
+    },
+    buttonFixedHeight: {
+        height: UIConstant.smallButtonHeight(),
     },
     buttonLeft: {
         borderTopLeftRadius: 0,

@@ -56,16 +56,16 @@ export default class UILandingView extends UIComponent<Props, State> {
                 />
                 <UILabel
                     color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.TitleMedium}
-                    style={UIStyle.Margin.topDefault()}
+                    role={UILabelRoles.TitleSmall}
+                    style={UIStyle.margin.topMedium()}
                 >
                     {title}
                 </UILabel>
                 <UILabel
-                    color={UILabelColors.TextSecondary}
+                    color={UILabelColors.TextPrimary}
                     role={UILabelRoles.ParagraphNote}
                     style={[
-                        UIStyle.Margin.topSmall(),
+                        UIStyle.margin.topSmall(),
                         !content && styles.descriptionLabel,
                     ]}
                 >

@@ -38,7 +38,7 @@
     "@tonlabs/uikit.components": "^2.1.0",
     "@tonlabs/uikit.core": "^2.1.0",
     "prop-types": "15.6.2",
-    "react-images": "0.5.19",
+    "react-image-lightbox": "5.1.1",
     "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
     "react-native-lightbox": "0.7.0",
     "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",

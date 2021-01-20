@@ -13,6 +13,7 @@ import {
     UIConstant,
 } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
 import UIPopoverBackground from '../UIPopoverBackground';
 import UICustomSheet from '../UICustomSheet';
@@ -262,20 +263,20 @@ export default class UIPopover<Props, State>
             ? [UIStyle.padding.horizontal()]
             : [styles.slimContainer, UIStyle.padding.default()];
         return (
-            <View
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
                 nativeID={POPOVER_MENU}
+                onLayout={this.onLayout}
                 style={[
                     UIStyle.border.radiusDefault(),
                     UIStyle.common.cardShadow(),
-                    UIColor.getBackgroundColorStyle(UIColor.backgroundPrimary()),
                     ...menuStyle,
                     this.props.componentStyle,
                     { marginLeft: this.getMarginLeft() },
                 ]}
-                onLayout={this.onLayout}
             >
                 {this.props.component || this.renderMenu()}
-            </View>
+            </UIBackgroundView>
         );
     };
 

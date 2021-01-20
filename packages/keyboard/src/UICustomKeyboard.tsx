@@ -64,9 +64,9 @@ let trackingViewIsReady = false; // global flag to learn if KeyboardTrackingView
 
 type Props = KeyboardAccessoryViewProps & {
     onHeightChange?: OnHeightChange;
-    customKeyboardComponent: React.ComponentType<any>;
+    customKeyboardComponent?: React.ComponentType<any>;
     customKeyboardVisible: boolean;
-    kbID: string;
+    kbID?: string;
 };
 
 export function UICustomKeyboard(props: Props) {
@@ -79,11 +79,13 @@ export function UICustomKeyboard(props: Props) {
                     isNativeKeyboard={false}
                     customKeyboardVisible={props.customKeyboardVisible}
                 >
-                    <CustomKeyboardComponent
-                        {...props.kbInitialProps}
-                        isNativeKeyboard={false}
-                        onItemSelected={props.onItemSelected}
-                    />
+                    {CustomKeyboardComponent && (
+                        <CustomKeyboardComponent
+                            {...props.kbInitialProps}
+                            isNativeKeyboard={false}
+                            onItemSelected={props.onItemSelected}
+                        />
+                    )}
                 </CustomKeyboardWrapper>
             </>
         );

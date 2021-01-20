@@ -1138,13 +1138,33 @@ const Images = () => (
                 borderBottomColor: 'rgba(0,0,0,.1)',
             }}
         >
-            <Text>UIImageView (press it)</Text>
+            <Text>UIImageView Editable (press it)</Text>
         </View>
         <View style={{ maxWidth: 300, paddingVertical: 20 }}>
             <UIImageView
                 photoStyle={{ width: 100, height: 100 }}
                 source={(UIAssets.icons.ui.keyThinDark: any)}
                 editable
+            />
+        </View>
+        <View
+            style={{
+                width: '96%',
+                paddingLeft: 40,
+                paddingBottom: 10,
+                marginHorizontal: '2%',
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderBottomColor: 'rgba(0,0,0,.1)',
+            }}
+        >
+            <Text>UIImageView Fullscreen (press it)</Text>
+        </View>
+        <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+            <UIImageView
+                photoStyle={{ width: 100, height: 100 }}
+                sourceBig={(UIAssets.icons.logo.tonlabsPrimary: any)}
+                source={(UIAssets.icons.logo.tonlabsPrimary: any)}
             />
         </View>
     </ScrollView>
@@ -2223,6 +2243,42 @@ const initialMessages = [
         status: 'sent',
         time: Math.floor(Date.now() - 1 * 60 * 1000),
         sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'fit',
+    },
+    {
+        type: 'act',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'fit',
+    },
+    {
+        type: 'act',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'ellipsize',
+    },
+    {
+        type: 'act',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        text:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        textMode: 'ellipsize',
+    },
+    {
+        type: 'act',
+        status: 'sent',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
         text: 'This is action',
     },
     {
@@ -2498,7 +2554,7 @@ const ChatWindowScreen = () => {
                 onSendSticker={onSendSticker}
                 stickers={stickers}
                 onHeightChange={setBottomInset}
-                customKeyboard={stickersKeyboard}
+                // customKeyboard={stickersKeyboard}
             />
         </>
     );
@@ -2507,7 +2563,7 @@ const ChatWindowScreen = () => {
 const Chat = () => {
     const theme = useTheme();
     return (
-        <ChatStack.Navigator headerShown={false}>
+        <ChatStack.Navigator>
             <ChatStack.Screen
                 name="ChatWindow"
                 options={{

@@ -17,6 +17,7 @@ import UIProfileInitials from '../UIProfileInitials';
 
 type Props = {
     amount: string | React$Element<any>,
+    amountTestID?: string,
     comment: string,
     encrypted: boolean,
     description: string,
@@ -230,6 +231,7 @@ export default class UITransactionView extends UIComponent<Props, State> {
             <UILabel
                 color={UILabelColors.TextPrimary}
                 role={UILabelRoles.ParagraphText}
+                testID={this.props.amountTestID}
             >
                 {this.amount}
             </UILabel>

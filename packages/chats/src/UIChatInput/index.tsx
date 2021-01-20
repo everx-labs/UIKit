@@ -69,7 +69,7 @@ type Props = {
     onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
     onHeightChange?: OnHeightChange;
 
-    customKeyboard: UICustomKeyboardItem;
+    customKeyboard?: UICustomKeyboardItem;
 };
 
 export function UIChatInput(props: Props) {
@@ -100,7 +100,7 @@ export function UIChatInput(props: Props) {
             pickerRef={chatPickerRef}
             customKeyboardVisible={customKeyboardVisible}
             onCustomKeyboardPress={toggleKeyboard}
-            customKeyboardButton={props.customKeyboard.button}
+            customKeyboardButton={props.customKeyboard?.button}
             onSendText={props.onSendText}
             onSendMedia={props.onSendMedia}
             onSendDocument={props.onSendDocument}
@@ -116,14 +116,14 @@ export function UIChatInput(props: Props) {
         <UICustomKeyboard
             renderContent={() => input}
             kbInputRef={textInputRef}
-            kbID={props.customKeyboard.kbID}
+            kbID={props.customKeyboard?.kbID}
             customKeyboardVisible={customKeyboardVisible}
-            customKeyboardComponent={props.customKeyboard.component}
-            kbInitialProps={props.customKeyboard.props}
+            customKeyboardComponent={props.customKeyboard?.component}
+            kbInitialProps={props.customKeyboard?.props}
             onItemSelected={(_id: string | undefined, stk: any) => {
                 toggleKeyboard();
 
-                props.customKeyboard.onItemSelected(_id, stk);
+                props.customKeyboard?.onItemSelected(_id, stk);
             }}
             onKeyboardResigned={onKeyboardResigned}
             onHeightChange={props.onHeightChange}
