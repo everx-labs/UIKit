@@ -239,13 +239,14 @@ export type UISeedPhraseTextViewProps = {
     words: string[];
     totalWords: number;
     validatePhrase: (phrase: string, parts: string[]) => Promise<boolean>;
+    onSuccess: () => void | Promise<void>;
 };
 
 export const UISeedPhraseTextView = React.forwardRef<
     TextInput,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(
-    { words, totalWords, validatePhrase }: UISeedPhraseTextViewProps,
+    { words, totalWords, validatePhrase, onSuccess }: UISeedPhraseTextViewProps,
     ref,
 ) {
     const textInputRef = React.useRef(null);
@@ -323,7 +324,16 @@ export const UISeedPhraseTextView = React.forwardRef<
         if (state.typed.word.length === 0) {
             return [];
         }
-        return words.filter((word) => word.indexOf(state.typed.word) === 0);
+        const filtered = words.filter(
+            (word) => word.indexOf(state.typed.word) === 0,
+        );
+
+        // Do not show hint if it consist of the typed word itself
+        if (filtered.length === 1 && filtered[0] === state.typed.word) {
+            return [];
+        }
+
+        return filtered;
     }, [words, state.typed.word, isFocused]);
 
     const onHintSelected = React.useCallback(
@@ -473,8 +483,25 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const [isValid, setIsValid] = React.useState(false);
     React.useEffect(() => {
-        validatePhrase(state.phrase, state.parts).then(setIsValid);
-    }, [validatePhrase, setIsValid, state.phrase, state.parts]);
+        if (isValid) {
+            return;
+        }
+        validatePhrase(state.phrase, state.parts).then((valid) => {
+            if (valid && refToUse && 'current' in refToUse) {
+                setIsValid(valid);
+                refToUse.current?.blur();
+                onSuccess();
+            }
+        });
+    }, [
+        validatePhrase,
+        onSuccess,
+        isValid,
+        setIsValid,
+        state.phrase,
+        state.parts,
+        refToUse,
+    ]);
 
     const hasValue = state.phrase.length > 0;
 
@@ -545,6 +572,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 helperText={helperText}
                 error={error}
                 success={isValid && !isFocused}
+                editable={!isValid}
             />
             <PropsAwarePopover
                 // if number of lines changed, redraw it
