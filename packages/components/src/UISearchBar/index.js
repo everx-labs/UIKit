@@ -250,10 +250,12 @@ export default class UISearchBar extends UIComponent<Props, State> {
         } = this.props;
         const testIDProp = testID ? { testID } : null;
         const separator = bottomSeparator
-            ? <UIBackgroundView
-                color={UIBackgroundViewColors.LinePrimary}
-                style={[styles.bottomSeparator, bottomSeparatorStyle]}
-            />
+            ? (
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.LinePrimary}
+                    style={[styles.bottomSeparator, bottomSeparatorStyle]}
+                />
+            )
             : null;
 
         return (
