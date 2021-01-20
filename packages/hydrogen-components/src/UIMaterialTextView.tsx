@@ -161,7 +161,7 @@ function useFloatLabelTransform(
                 onBlurProp(e);
             }
         },
-        [onBlurProp, setIsFocused, inputHasValue],
+        [onBlurProp, setIsFocused],
     );
     const layout = React.useRef<{
         foldedHeight?: number;

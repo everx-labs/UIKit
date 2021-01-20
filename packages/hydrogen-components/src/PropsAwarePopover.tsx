@@ -22,10 +22,12 @@ export function PropsAwarePopover<T>(props: {
 
     const component = React.useMemo(
         () => () => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const [passedProps, setPassedProps] = React.useState<T>(
                 passedPropsRef.current,
             );
 
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             React.useEffect(() => {
                 setPassedPropsRef.current = setPassedProps;
 

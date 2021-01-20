@@ -43,7 +43,7 @@ export function useAutogrowTextView(
                 }
             }
         },
-        [inputHeight],
+        [inputHeight, constrainedNumberOfLines, onHeightChange],
     );
 
     const onChangeOnWeb = React.useCallback(() => {
@@ -64,7 +64,7 @@ export function useAutogrowTextView(
             // @ts-ignore
             elem.style.height = `${elem.scrollHeight}px`;
         }
-    }, [onContentSizeChange]);
+    }, [ref, onContentSizeChange]);
 
     const resetInputHeight = React.useCallback(() => {
         setInputHeight(UIConstant.smallCellHeight());
@@ -74,7 +74,7 @@ export function useAutogrowTextView(
             const elem = (ref.current as unknown) as HTMLTextAreaElement;
             elem.style.height = `${UIConstant.smallCellHeight()}px`;
         }
-    }, []);
+    }, [ref]);
 
     const numberOfLines = Math.round(
         inputHeight / UIConstant.smallCellHeight(),

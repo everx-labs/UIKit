@@ -306,7 +306,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             });
             setIsFocused(false);
         }, 50);
-    }, []);
+    }, [refToUse]);
 
     const {
         onContentSizeChange,
@@ -360,7 +360,13 @@ export const UISeedPhraseTextView = React.forwardRef<
                 },
             });
         },
-        [totalWords, state.typed.index, onChange],
+        [
+            totalWords,
+            state.typed.index,
+            onChange,
+            dispatchAndSavePhrase,
+            refToUse,
+        ],
     );
 
     const onKeyPress = React.useCallback(
@@ -462,13 +468,13 @@ export const UISeedPhraseTextView = React.forwardRef<
                 payload: { phrase: text },
             });
         },
-        [totalWords, onChange],
+        [totalWords, onChange, dispatchAndSavePhrase, refToUse],
     );
 
     const [isValid, setIsValid] = React.useState(false);
     React.useEffect(() => {
         validatePhrase(state.phrase, state.parts).then(setIsValid);
-    }, [validatePhrase, setIsValid, state.phrase]);
+    }, [validatePhrase, setIsValid, state.phrase, state.parts]);
 
     const hasValue = state.phrase.length > 0;
 
