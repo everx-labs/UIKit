@@ -11,22 +11,19 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1411AB629B56AE2635288F72 /* libPods-ReactNavigationSurf-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8EA9B17B8E835A33F0E5DA3 /* libPods-ReactNavigationSurf-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
-		3859348FE07244B0607B925C /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF68B5907CECB93FEE6BD62 /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a */; };
 		83B4B93FB91DCDF93E35FF91 /* libPods-UIKitExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */; };
-		A36A7FF409E30BD254F04641 /* libPods-ReactNavigationSurf-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4483DD005711A94A23B8B839 /* libPods-ReactNavigationSurf-tvOSTests.a */; };
 		A60D4178253DCC370046B610 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A60D4177253DCC370046B610 /* Images.xcassets */; };
-		A63C5DF1252EF7F10024AA83 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */; };
-		A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */; };
-		A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */; };
-		A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */; };
 		A622D2B3257E818B00AAB081 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2AF257E818B00AAB081 /* Inter-Light.ttf */; };
 		A622D2B4257E818B00AAB081 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2B0257E818B00AAB081 /* Inter-Regular.ttf */; };
 		A622D2B5257E818B00AAB081 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2B1257E818B00AAB081 /* Inter-SemiBold.ttf */; };
 		A622D2B6257E818B00AAB081 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2B2257E818B00AAB081 /* Inter-Medium.ttf */; };
+		A63C5DF1252EF7F10024AA83 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */; };
+		A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */; };
+		A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */; };
+		A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */; };
 		A9FFE61E4C14237EF4E5251B /* libPods-UIKitExample-UIKitExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */; };
 		C6B086BB07A3517EAC4310E8 /* libPods-UIKitExample-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */; };
 		D2D9D630BBD44660184620B6 /* libPods-UIKitExample-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */; };
@@ -66,7 +63,6 @@
 		2D02E4901E0B4A5D006451C7 /* UIKitExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UIKitExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B20525732C8538644827907 /* Pods-UIKitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample/Pods-UIKitExample.debug.xcconfig"; sourceTree = "<group>"; };
 		3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4483DD005711A94A23B8B839 /* libPods-ReactNavigationSurf-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4722F4DF2801567DBF7D754C /* Pods-UIKitExample-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOS/Pods-UIKitExample-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		497E81DB1805FCE954E1ECE4 /* Pods-UIKitExample-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOS.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOS/Pods-UIKitExample-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,18 +75,16 @@
 		9555C60EBB07695A97BCD7EB /* Pods-ReactNavigationSurf-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOS/Pods-ReactNavigationSurf-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A60D4177253DCC370046B610 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.ttf"; path = "../../assets/fonts/SFProText-Regular.ttf"; sourceTree = "<group>"; };
-		A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "../../assets/fonts/SFProText-Bold.ttf"; sourceTree = "<group>"; };
-		A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Medium.ttf"; path = "../../assets/fonts/SFProText-Medium.ttf"; sourceTree = "<group>"; };
-		A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Light.ttf"; path = "../../assets/fonts/SFProText-Light.ttf"; sourceTree = "<group>"; };
 		A622D2AF257E818B00AAB081 /* Inter-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Light.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		A622D2B0257E818B00AAB081 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Regular.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
 		A622D2B1257E818B00AAB081 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-SemiBold.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		A622D2B2257E818B00AAB081 /* Inter-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Medium.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
+		A63C5DED252EF7F10024AA83 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.ttf"; path = "../../assets/fonts/SFProText-Regular.ttf"; sourceTree = "<group>"; };
+		A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "../../assets/fonts/SFProText-Bold.ttf"; sourceTree = "<group>"; };
+		A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Medium.ttf"; path = "../../assets/fonts/SFProText-Medium.ttf"; sourceTree = "<group>"; };
+		A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Light.ttf"; path = "../../assets/fonts/SFProText-Light.ttf"; sourceTree = "<group>"; };
 		AE025ECA7E246D7BBD62B1EE /* Pods-ReactNavigationSurf-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOSTests/Pods-ReactNavigationSurf-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		B8EA9B17B8E835A33F0E5DA3 /* libPods-ReactNavigationSurf-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E21460888583133CC543BC /* Pods-ReactNavigationSurf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf/Pods-ReactNavigationSurf.release.xcconfig"; sourceTree = "<group>"; };
-		EAF68B5907CECB93FEE6BD62 /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf-ReactNavigationSurfTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,7 +97,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3859348FE07244B0607B925C /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a in Frameworks */,
 				A9FFE61E4C14237EF4E5251B /* libPods-UIKitExample-UIKitExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,7 +113,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1411AB629B56AE2635288F72 /* libPods-ReactNavigationSurf-tvOS.a in Frameworks */,
 				C6B086BB07A3517EAC4310E8 /* libPods-UIKitExample-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -129,7 +121,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A36A7FF409E30BD254F04641 /* libPods-ReactNavigationSurf-tvOSTests.a in Frameworks */,
 				D2D9D630BBD44660184620B6 /* libPods-UIKitExample-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -173,9 +164,6 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */,
-				EAF68B5907CECB93FEE6BD62 /* libPods-ReactNavigationSurf-ReactNavigationSurfTests.a */,
-				B8EA9B17B8E835A33F0E5DA3 /* libPods-ReactNavigationSurf-tvOS.a */,
-				4483DD005711A94A23B8B839 /* libPods-ReactNavigationSurf-tvOSTests.a */,
 				5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */,
 				903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */,
 				29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */,
@@ -352,6 +340,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = G4M86J75U4;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -447,15 +436,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
@@ -505,15 +490,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-UIKitExample/Pods-UIKitExample-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
@@ -740,6 +721,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G4M86J75U4;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -767,6 +749,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G4M86J75U4;
 				INFOPLIST_FILE = UIKitExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
