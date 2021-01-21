@@ -2095,6 +2095,19 @@ const TextScreen = () => (
         </View>
         <View
             style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphLabel}
+            >
+                Comment: 12345678910aAqQlLyYzZ!@#$%^&*()👊🏻👻✊🏻
+            </UILabel>
+        </View>
+        <View
+            style={{
                 width: '96%',
                 paddingLeft: 40,
                 paddingBottom: 10,
