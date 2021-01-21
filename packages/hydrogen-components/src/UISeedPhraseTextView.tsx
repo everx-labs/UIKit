@@ -597,6 +597,8 @@ export const UISeedPhraseTextView = React.forwardRef<
             <UIMaterialTextView
                 ref={refToUse}
                 autoCapitalize="none"
+                autoCompleteType="off"
+                autoCorrect={false}
                 multiline
                 label={uiLocalized.MasterPassword}
                 onLayout={onInputLayout}
