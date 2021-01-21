@@ -17,6 +17,7 @@ import {
     useTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { useAutogrowTextView } from '@tonlabs/uikit.hydrogen.components';
 import {
     UICustomKeyboardUtils,
     OnCustomKeyboardVisible,
@@ -44,12 +45,12 @@ function useInputValue({
     ref,
     onSendText: onSendTextProp,
     showMaxLengthAlert,
-    setDefaultInputHeight,
+    resetInputHeight,
 }: {
     ref: React.RefObject<TextInput>;
     onSendText: OnSendText;
     showMaxLengthAlert: () => void;
-    setDefaultInputHeight: () => void;
+    resetInputHeight: () => void;
 }) {
     const {
         inputHasValue,
@@ -65,7 +66,7 @@ function useInputValue({
         }
 
         clear();
-        setDefaultInputHeight();
+        resetInputHeight();
     }, [onSendTextProp]);
 
     const onChangeText = React.useCallback(
@@ -129,65 +130,6 @@ function useMaxLengthAlert() {
 }
 
 const CHAT_INPUT_NUM_OF_LINES = 5;
-
-function useInputAdjustHeight(onHeightChange?: OnHeightChange) {
-    const [inputHeight, setInputHeight] = React.useState<number>(
-        UIConstant.smallCellHeight(),
-    );
-
-    const onContentSizeChange = React.useCallback(
-        (event: any) => {
-            if (event && event.nativeEvent) {
-                const { contentSize } = event.nativeEvent;
-                const height = contentSize?.height || 0;
-
-                if (height <= 0) {
-                    return;
-                }
-
-                if (height === inputHeight) {
-                    return;
-                }
-
-                if (onHeightChange) {
-                    onHeightChange(height);
-                }
-
-                const constrainedHeight = Math.min(
-                    height,
-                    UIConstant.smallCellHeight() * CHAT_INPUT_NUM_OF_LINES,
-                );
-                setInputHeight(constrainedHeight);
-            }
-        },
-        [inputHeight],
-    );
-
-    const setDefaultInputHeight = React.useCallback(() => {
-        setInputHeight(UIConstant.smallCellHeight());
-    }, []);
-
-    // iOS and web input have the own multiline native auto-grow behaviour
-    // No need to adjust the height
-    const containerStyle =
-        Platform.OS === 'android'
-            ? {
-                  height: Math.max(UIConstant.largeButtonHeight(), inputHeight),
-              }
-            : null;
-
-    const numberOfLines =
-        Platform.OS === 'android'
-            ? CHAT_INPUT_NUM_OF_LINES
-            : Math.round(inputHeight / UIConstant.smallCellHeight());
-
-    return {
-        onContentSizeChange,
-        setDefaultInputHeight,
-        containerStyle,
-        numberOfLines,
-    };
-}
 
 function useBackHandler(ref: React.RefObject<TextInput>) {
     React.useEffect(() => {
@@ -273,11 +215,17 @@ export function ChatInput(props: Props) {
     const theme = useTheme();
 
     const {
-        containerStyle,
-        numberOfLines,
         onContentSizeChange,
-        setDefaultInputHeight,
-    } = useInputAdjustHeight(props.onHeightChange);
+        onChange,
+        inputHeight,
+        numberOfLines,
+        numberOfLinesProp,
+        resetInputHeight,
+    } = useAutogrowTextView(
+        props.textInputRef,
+        props.onHeightChange,
+        CHAT_INPUT_NUM_OF_LINES,
+    );
     const showMaxLengthAlert = useMaxLengthAlert();
     const {
         inputHasValue,
@@ -288,12 +236,27 @@ export function ChatInput(props: Props) {
         ref: props.textInputRef,
         onSendText: props.onSendText,
         showMaxLengthAlert,
-        setDefaultInputHeight,
+        resetInputHeight,
     });
     const borderOpacity = useAnimatedBorder(numberOfLines);
     useBackHandler(props.textInputRef);
 
     const CustomKeyboardButton = props.customKeyboardButton;
+
+    const containerHeight = React.useMemo(() => {
+        if (Platform.OS === 'android') {
+            return null;
+        }
+        const { paddingTop, paddingBottom } = StyleSheet.flatten(
+            styles.inputMsg,
+        );
+        return {
+            height: Math.max(
+                UIConstant.largeButtonHeight(),
+                inputHeight + (paddingTop ?? 0) + (paddingBottom ?? 0),
+            ),
+        };
+    }, [inputHeight]);
 
     return (
         <>
@@ -315,7 +278,7 @@ export function ChatInput(props: Props) {
                 <View
                     style={[
                         styles.container,
-                        containerStyle,
+                        containerHeight,
                         props.menuPlus?.length && props.menuPlus?.length > 0
                             ? null
                             : UIStyle.margin.leftDefault(),
@@ -337,11 +300,12 @@ export function ChatInput(props: Props) {
                                 editable={props.editable}
                                 maxLength={MAX_INPUT_LENGTH}
                                 multiline
-                                numberOfLines={numberOfLines}
+                                numberOfLines={numberOfLinesProp}
                                 placeholder={
                                     props.placeholder ?? uiLocalized.TypeMessage
                                 }
                                 onContentSizeChange={onContentSizeChange}
+                                onChange={onChange}
                                 onChangeText={onChangeText}
                                 onKeyPress={onKeyPress}
                                 onFocus={props.onFocus}
@@ -403,7 +367,7 @@ const styles = StyleSheet.create({
     },
     input: {
         padding: 0,
-        maxHeight: UIConstant.chatInputMaxHeight(),
+        minHeight: UIConstant.smallCellHeight(),
         ...{
             marginTop:
                 Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
@@ -412,7 +376,11 @@ const styles = StyleSheet.create({
         },
         ...Platform.select({
             web: {
+                flex: undefined,
                 outlineStyle: 'none',
+            },
+            ios: {
+                flex: undefined,
             },
         }),
     },

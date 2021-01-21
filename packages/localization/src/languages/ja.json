@@ -295,6 +295,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "管理者のみがメンバーの追加や削除、グループ名と写真を編集できます。",
     "OpenSettings": "設定を開く",
     "operationTime": "操作時間",
+    "orDelimeter": "または",
     "OutOf": "から",
     "Passport": "パスポート",
     "PassportFetchingStatus": "ステータスの取得中...",

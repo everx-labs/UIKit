@@ -88,6 +88,7 @@
         "eslint-plugin-jsx-a11y": "6.2.3",
         "eslint-plugin-module-resolver": "1.0.0",
         "eslint-plugin-react": "7.21.5",
+        "eslint-plugin-react-hooks": "^4.2.0",
         "flow-bin": "0.122.0",
         "jest": "26.0.1",
         "json-to-flowtype-generator": "0.9.3",

@@ -12,7 +12,8 @@
     "prettier",
     "prettier/react",
     "prettier/flowtype",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
+    "plugin:react-hooks/recommended"
   ],
   "plugins": [
     "@babel",

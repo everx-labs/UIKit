@@ -297,6 +297,7 @@ export type UILocalizedData = {|
     +OnlyAdminsCanAddAndRemoveMembers: string,
     +OpenSettings: string,
     +operationTime: string,
+    +orDelimeter: string,
     +OutOf: string,
     +Passport: string,
     +PassportFetchingStatus: string,

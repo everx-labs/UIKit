@@ -295,6 +295,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "只有管理员可以添加和删除成员，以及编辑组名和照片。",
     "OpenSettings": "打开设置",
     "operationTime": "作业时间",
+    "orDelimeter": "或",
     "OutOf": "以外",
     "Passport": "护照",
     "PassportFetchingStatus": "正在获取状态",

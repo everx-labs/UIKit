@@ -109,6 +109,10 @@ import {
     LightTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import {
+    UIMaterialTextView,
+    UISeedPhraseTextView,
+} from '@tonlabs/uikit.hydrogen.components';
 
 enableScreens();
 useWebFonts();
@@ -608,8 +612,14 @@ const Inputs = () => {
     const [phone, setPhone] = useState('');
     const [search, setSearch] = useState('');
     const [seedPhrase, setSeedPhrase] = useState('');
-    const mnemonicWords = ['report', 'meadow', 'village', 'slight'];
-    const [text, setText] = useState('');
+    const mnemonicWords = [
+        'report',
+        'replenish',
+        'meadow',
+        'village',
+        'slight',
+    ];
+    const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -620,6 +630,73 @@ const Inputs = () => {
                     paddingBottom: 10,
                     marginHorizontal: '2%',
                     marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UIMaterialTextView</Text>
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIMaterialTextView label="Label" />
+                    <UIMaterialTextView
+                        label="Label2"
+                        value={text}
+                        onChangeText={setText}
+                        helperText="This is comment"
+                    />
+                </View>
+            </View>
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 50,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UISeedPhraseInput</Text>
+            </View>
+            <View style={{ paddingVertical: 20, width: '50%' }}>
+                <UISeedPhraseInput
+                    value={seedPhrase}
+                    onChangeText={(newText) => setSeedPhrase(newText)}
+                    phraseToCheck={mnemonicWords.join(' - ')}
+                    totalWords={4}
+                    words={mnemonicWords}
+                />
+                <UISeedPhraseTextView
+                    words={mnemonicWords}
+                    totalWords={[5, 10]}
+                    validatePhrase={async (_phrase, parts) => {
+                        for (let i = 0; i < parts.length; i += 1) {
+                            if (
+                                parts[i] !== mnemonicWords[i >= 5 ? i - 5 : i]
+                            ) {
+                                return false;
+                            }
+                        }
+                        if (parts.length === 5 || parts.length === 10) {
+                            return true;
+                        }
+                    }}
+                    onSuccess={() => {
+                        console.log('valid!');
+                    }}
+                    onSubmit={() => {
+                        console.log('submit');
+                    }}
+                />
+            </View>
+
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 50,
                     borderBottomWidth: 1,
                     borderBottomColor: 'rgba(0,0,0,.1)',
                 }}
@@ -867,29 +944,6 @@ const Inputs = () => {
                         setSearch(newExpression)
                     }
                     renderGlass
-                />
-            </View>
-            <View
-                style={{
-                    width: '96%',
-                    paddingLeft: 40,
-                    paddingBottom: 10,
-                    marginHorizontal: '2%',
-                    marginTop: 50,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                }}
-            >
-                <Text>UISeedPhraseInput</Text>
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISeedPhraseInput
-                    value={search}
-                    value={seedPhrase}
-                    onChangeText={(newText) => setSeedPhrase(newText)}
-                    phraseToCheck={mnemonicWords.join(' - ')}
-                    totalWords={12}
-                    words={mnemonicWords}
                 />
             </View>
             <View
@@ -2095,6 +2149,19 @@ const TextScreen = () => (
         </View>
         <View
             style={{
+                minWidth: 300,
+                paddingVertical: 20,
+            }}
+        >
+            <UILabel
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphLabel}
+            >
+                Comment: 12345678910aAqQlLyYzZ!@#$%^&*()👊🏻👻✊🏻
+            </UILabel>
+        </View>
+        <View
+            style={{
                 width: '96%',
                 paddingLeft: 40,
                 paddingBottom: 10,
@@ -2530,7 +2597,7 @@ const ThemeSwitcher = React.createContext(null);
 const Main = ({ navigation }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
             <View
                 style={{
                     flexDirection: 'row',
@@ -2540,17 +2607,15 @@ const Main = ({ navigation }) => {
                 }}
             >
                 <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
-                <UIDetailsToggle
-                    details={`Mode: ${
-                        themeSwitcher?.isDarkTheme ? 'Dark' : 'Light'
-                    }`}
+                <UIToggle
                     active={themeSwitcher?.isDarkTheme}
-                    onPress={() => {
-                        themeSwitcher?.toggleTheme();
-                    }}
+                    onPress={() => themeSwitcher?.toggleTheme()}
                 />
             </View>
-            <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+            <ScrollView
+                style={{ flex: 1 }}
+                contentContainerStyle={{ paddingBottom: 50 }}
+            >
                 <UIButton
                     onPress={() => navigation.navigate('buttons')}
                     buttonStyle={UIButton.ButtonStyle.Link}
@@ -2708,10 +2773,6 @@ const App: () => React$Node = () => {
             <UIDropdownAlert />
         </SafeAreaProvider>
     );
-
-    if (Platform.OS !== 'web') {
-        return main;
-    }
 
     return <UIPopoverBackground>{main}</UIPopoverBackground>;
 };
