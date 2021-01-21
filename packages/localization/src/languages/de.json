@@ -295,6 +295,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Nur Administratoren können Mitglieder hinzufügen und entfernen und den Gruppennamen und das Foto Bearbeiten.",
     "OpenSettings": "Einstellungen Öffnen",
     "operationTime": "Betriebszeit",
+    "orDelimeter": " oder ",
     "OutOf": "aus",
     "Passport": "Pass",
     "PassportFetchingStatus": "Abrufen von status...",
