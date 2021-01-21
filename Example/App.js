@@ -668,24 +668,24 @@ const Inputs = () => {
                 />
                 <UISeedPhraseTextView
                     words={mnemonicWords}
-                    totalWords={5}
+                    totalWords={[5, 10]}
                     validatePhrase={async (_phrase, parts) => {
-                        if (parts[0] !== mnemonicWords[0]) {
-                            return false;
+                        for (let i = 0; i < parts.length; i += 1) {
+                            if (
+                                parts[i] !== mnemonicWords[i >= 5 ? i - 5 : i]
+                            ) {
+                                return false;
+                            }
                         }
-                        if (parts[1] !== mnemonicWords[2]) {
-                            return false;
+                        if (parts.length === 5 || parts.length === 10) {
+                            return true;
                         }
-                        if (parts[2] !== mnemonicWords[4]) {
-                            return false;
-                        }
-                        if (parts[3] !== mnemonicWords[1]) {
-                            return false;
-                        }
-                        if (parts[4] !== mnemonicWords[3]) {
-                            return false;
-                        }
-                        return true;
+                    }}
+                    onSuccess={() => {
+                        console.log('valid!');
+                    }}
+                    onSubmit={() => {
+                        console.log('submit');
                     }}
                 />
             </View>

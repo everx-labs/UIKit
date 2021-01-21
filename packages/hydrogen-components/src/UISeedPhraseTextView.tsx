@@ -237,18 +237,28 @@ const reducer = (
 
 export type UISeedPhraseTextViewProps = {
     words: string[];
-    totalWords: number;
+    totalWords: number | number[];
     validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
     onSuccess: (phrase?: string, parts?: string[]) => void | Promise<void>;
+    onSubmit: () => void | Promise<void>;
 };
 
 export const UISeedPhraseTextView = React.forwardRef<
     TextInput,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(
-    { words, totalWords, validatePhrase, onSuccess }: UISeedPhraseTextViewProps,
+    props: UISeedPhraseTextViewProps,
     ref,
 ) {
+    const { words, validatePhrase, onSuccess, onSubmit } = props;
+    const totalWords = React.useMemo(() => {
+        if (typeof props.totalWords === 'number') {
+            return [props.totalWords];
+        }
+
+        return props.totalWords;
+    }, [props.totalWords]);
+
     const textInputRef = React.useRef(null);
     const refToUse = ref || textInputRef;
 
@@ -348,7 +358,7 @@ export const UISeedPhraseTextView = React.forwardRef<
 
             if (
                 state.typed.index === parts.length - 1 &&
-                parts.length < totalWords
+                totalWords.indexOf(parts.length) === -1
             ) {
                 newText = `${newText}${SPLITTER}`;
             }
@@ -433,7 +443,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 }
                 const parts = text.split(SPLITTER);
                 const newText =
-                    parts.length < totalWords
+                    parts.length < Math.max.apply(null, totalWords)
                         ? `${text}${UIConstant.dashSymbol()} `
                         : text.trim();
 
@@ -482,26 +492,56 @@ export const UISeedPhraseTextView = React.forwardRef<
     );
 
     const [isValid, setIsValid] = React.useState(false);
+
+    // To not call validation at every prop change
+    // (and prevent infinite cycles)
+    const validatePhraseRef = React.useRef(validatePhrase);
+    const onSuccessRef = React.useRef(onSuccess);
     React.useEffect(() => {
-        if (isValid) {
-            return;
-        }
-        validatePhrase(state.phrase, state.parts).then((valid) => {
-            if (valid && refToUse && 'current' in refToUse) {
-                setIsValid(valid);
-                refToUse.current?.blur();
-                onSuccess(state.phrase, state.parts);
+        validatePhraseRef.current = validatePhrase;
+        onSuccessRef.current = onSuccess;
+    }, [validatePhrase, onSuccess]);
+
+    React.useEffect(() => {
+        validatePhraseRef.current(state.phrase, state.parts).then((valid) => {
+            setIsValid(valid);
+            if (valid) {
+                onSuccessRef.current(state.phrase, state.parts);
             }
         });
-    }, [
-        validatePhrase,
-        onSuccess,
-        isValid,
-        setIsValid,
-        state.phrase,
-        state.parts,
-        refToUse,
-    ]);
+    }, [isValid, setIsValid, state.phrase, state.parts, refToUse]);
+
+    const onSubmitEditing = React.useCallback(() => {
+        if (refToUse && 'current' in refToUse) {
+            refToUse.current?.setNativeProps({
+                text: phraseRef.current,
+            });
+        }
+        if (isValid) {
+            onSubmit && onSubmit();
+        }
+    }, [isValid, onSubmit, refToUse]);
+
+    const totalWordsString = React.useMemo(() => {
+        if (typeof props.totalWords === 'number') {
+            return uiLocalized.localizedStringForValue(
+                props.totalWords,
+                'words',
+            );
+        }
+
+        const lastIndex = props.totalWords.length - 1;
+        return props.totalWords.reduce((acc, num, index) => {
+            if (index === lastIndex) {
+                return `${acc}${uiLocalized.localizedStringForValue(
+                    num,
+                    'words',
+                )}`;
+            }
+
+            return `${acc}${num}${uiLocalized.orDelimeter}`;
+        }, '');
+    }, [props.totalWords]);
 
     const hasValue = state.phrase.length > 0;
 
@@ -516,11 +556,11 @@ export const UISeedPhraseTextView = React.forwardRef<
         }
 
         if (entered === 0) {
-            return [uiLocalized.SeedPhraseHint, false];
+            return [totalWordsString, false];
         }
 
         return [uiLocalized.localizedStringForValue(entered, 'words'), false];
-    }, [isFocused, isValid, hasValue, state.parts]);
+    }, [isFocused, isValid, hasValue, state.parts, totalWordsString]);
 
     const [inputWidth, setInputWidth] = React.useState(0);
 
@@ -569,7 +609,9 @@ export const UISeedPhraseTextView = React.forwardRef<
                 helperText={helperText}
                 error={error}
                 success={isValid && !isFocused}
-                editable={!isValid}
+                returnKeyType="done"
+                onSubmitEditing={onSubmitEditing}
+                blurOnSubmit
             />
             <PropsAwarePopover
                 // if number of lines changed, redraw it
