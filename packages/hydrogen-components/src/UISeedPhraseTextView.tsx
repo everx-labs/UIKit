@@ -50,43 +50,45 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
                 },
             ]}
         >
-            <FlatList
-                contentContainerStyle={{ paddingBottom }}
-                scrollEnabled
-                showsVerticalScrollIndicator
-                keyExtractor={(item) => item}
-                keyboardShouldPersistTaps="handled"
-                data={hints}
-                extraData={currentHighlightedItemIndex}
-                renderItem={({ item, index }) => {
-                    const cellBgStyle: {
-                        backgroundColor: ColorValue;
-                    } = {
-                        backgroundColor:
-                            theme[
-                                currentHighlightedItemIndex === index
-                                    ? ColorVariants.BackgroundSecondary
-                                    : ColorVariants.BackgroundPrimary
-                            ],
-                    };
-                    return (
-                        <TouchableOpacity
-                            testID={`profile_backup_key_phrase_${item}`}
-                            style={[styles.cellHint, cellBgStyle]}
-                            onPressIn={() => {
-                                onHintSelected(item);
-                            }}
-                        >
-                            <UILabel
-                                color={UILabelColors.TextSecondary}
-                                role={UILabelRoles.ParagraphNote}
+            <View style={styles.hintsInner}>
+                <FlatList
+                    contentContainerStyle={{ paddingBottom }}
+                    scrollEnabled
+                    showsVerticalScrollIndicator
+                    keyExtractor={(item) => item}
+                    keyboardShouldPersistTaps="handled"
+                    data={hints}
+                    extraData={currentHighlightedItemIndex}
+                    renderItem={({ item, index }) => {
+                        const cellBgStyle: {
+                            backgroundColor: ColorValue;
+                        } = {
+                            backgroundColor:
+                                theme[
+                                    currentHighlightedItemIndex === index
+                                        ? ColorVariants.BackgroundSecondary
+                                        : ColorVariants.BackgroundPrimary
+                                ],
+                        };
+                        return (
+                            <TouchableOpacity
+                                testID={`profile_backup_key_phrase_${item}`}
+                                style={[styles.cellHint, cellBgStyle]}
+                                onPressIn={() => {
+                                    onHintSelected(item);
+                                }}
                             >
-                                {item}
-                            </UILabel>
-                        </TouchableOpacity>
-                    );
-                }}
-            />
+                                <UILabel
+                                    color={UILabelColors.TextSecondary}
+                                    role={UILabelRoles.ParagraphNote}
+                                >
+                                    {item}
+                                </UILabel>
+                            </TouchableOpacity>
+                        );
+                    }}
+                />
+            </View>
         </View>
     );
 }
@@ -639,7 +641,12 @@ const styles = StyleSheet.create({
         ...UIConstant.cardShadow(),
         borderBottomLeftRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: UIConstant.borderRadius(),
+    },
+    hintsInner: {
+        flex: 1,
         overflow: 'hidden',
+        borderBottomLeftRadius: UIConstant.borderRadius(),
+        borderBottomRightRadius: UIConstant.borderRadius(),
     },
     cellHint: {
         zIndex: 1,
