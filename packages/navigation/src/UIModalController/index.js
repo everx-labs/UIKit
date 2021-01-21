@@ -19,6 +19,7 @@ import {
 } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
 import type {
     AnimationParameters,
@@ -543,7 +544,7 @@ export default class UIModalController<Props, State> extends UIController<
                 centralComponent={this.renderCentralHeader()}
                 rightComponent={this.renderRightHeader()}
                 bottomLine={this.isHeaderLineVisible()}
-                // onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], { 
+                // onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], {
                 //     useNativeDriver: true,
                 // })}
                 // onRelease={this.onReleaseSwipe}
@@ -633,7 +634,12 @@ export default class UIModalController<Props, State> extends UIController<
                                     : null,
                             ]}
                         >
-                            {this.renderContentView(contentHeight)}
+                            <UIBackgroundView
+                                color={UIBackgroundViewColors.BackgroundPrimary}
+                                style={UIStyle.common.flex()}
+                            >
+                                {this.renderContentView(contentHeight)}
+                            </UIBackgroundView>
                         </Animated.View>
                         {this.renderSpinnerOverlay()}
                     </Animated.View>

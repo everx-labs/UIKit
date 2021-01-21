@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { UIColor, UIConstant } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { UIConstant } from '@tonlabs/uikit.core';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -20,7 +26,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     badgeText: {
-        ...Typography[TypographyVariants.ActionLabel],
         textAlign: 'center',
         letterSpacing: 0,
     },
@@ -42,33 +47,37 @@ export default class UIBadge extends UIComponent {
 
     // Getters
     getBackgroundColor() {
-        return {
-            backgroundColor: this.props.inverted ? UIColor.backgroundPrimary() : UIColor.primary(),
-        };
+        return this.props.inverted
+            ? UIBackgroundViewColors.BackgroundPrimary
+            : UIBackgroundViewColors.BackgroundAccent;
     }
 
     getColor() {
-        return {
-            color: this.props.inverted ? UIColor.primary() : UIColor.backgroundPrimary(),
-        };
+        return this.props.inverted
+            ? UILabelColors.TextAccent
+            : UILabelColors.TextPrimaryInverted;
     }
 
     // Actions
 
     // render
     render() {
-        const {
-            badge, style, textStyle, allowZero,
-        } = this.props;
+        const { badge, style, textStyle, allowZero } = this.props;
         if (!allowZero && badge === 0) return null;
 
-        const { container, badgeText } = styles;
         return (
-            <View style={[container, this.getBackgroundColor(), style]}>
-                <Text style={[badgeText, this.getColor(), textStyle]}>
+            <UIBackgroundView
+                color={this.getBackgroundColor()}
+                style={[styles.container, style]}
+            >
+                <UILabel
+                    color={this.getColor()}
+                    role={UILabelRoles.ActionLabel}
+                    style={[styles.badgeText, textStyle]}
+                >
                     {badge}
-                </Text>
-            </View>
+                </UILabel>
+            </UIBackgroundView>
         );
     }
 }

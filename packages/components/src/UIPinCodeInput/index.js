@@ -305,7 +305,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >1</UILabel>
                     </BorderlessButton>
@@ -317,7 +317,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >2</UILabel>
                     </BorderlessButton>
@@ -329,7 +329,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >3</UILabel>
                     </BorderlessButton>
@@ -343,7 +343,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >4</UILabel>
                     </BorderlessButton>
@@ -355,7 +355,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >5</UILabel>
                     </BorderlessButton>
@@ -367,7 +367,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >6</UILabel>
                     </BorderlessButton>
@@ -381,7 +381,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >7</UILabel>
                     </BorderlessButton>
@@ -393,7 +393,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >8</UILabel>
                     </BorderlessButton>
@@ -405,7 +405,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >9</UILabel>
                     </BorderlessButton>
@@ -435,7 +435,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                     >
                         <UILabel
                             color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.PromoHuge}
+                            role={UILabelRoles.LightHuge}
                             style={opacityStyle}
                         >0</UILabel>
                     </BorderlessButton>

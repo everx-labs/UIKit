@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import {
-    StyleSheet, View, Text, Animated,
+    StyleSheet, Animated,
     TouchableWithoutFeedback, Dimensions,
 } from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
@@ -10,7 +10,14 @@ import {
     State as RNGHState,
 } from 'react-native-gesture-handler';
 
-import { UIConstant, UIColor, UIFont } from '@tonlabs/uikit.core';
+import { UIConstant } from '@tonlabs/uikit.core';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UINotice from '../UINotice';
 import type { MessageObject } from '../UINotice';
@@ -32,16 +39,7 @@ const styles = StyleSheet.create({
         padding: UIConstant.contentOffset(),
         top: UIConstant.contentOffset(),
         borderRadius: UIConstant.alertBorderRadius(),
-        backgroundColor: UIColor.backgroundPrimary(),
         ...UIConstant.commonShadow(),
-    },
-    titleStyle: {
-        color: UIColor.textPrimary(),
-        ...UIFont.captionBold(),
-    },
-    msgStyle: {
-        color: UIColor.textPrimary(),
-        ...UIFont.captionRegular(),
     },
 });
 
@@ -159,26 +157,31 @@ export default class UIPushNotification {
                             this.swiping = false;
                         }}
                     >
-                        <View style={styles.pnStyle}>
+                        <UIBackgroundView
+                            color={UIBackgroundViewColors.BackgroundPrimary}
+                            style={styles.pnStyle}
+                        >
                             {
                                 this.title.length > 0
                                     ? (
-                                        <Text
+                                        <UILabel
+                                            color={UILabelColors.TextPrimary}
+                                            role={UILabelRoles.HeadlineFootnote}
                                             testID="title_notification"
-                                            style={styles.titleStyle}
                                         >
                                             {this.title}
-                                        </Text>
+                                        </UILabel>
                                     )
                                     : undefined
                             }
-                            <Text
+                            <UILabel
+                                color={UILabelColors.TextPrimary}
+                                role={UILabelRoles.ParagraphFootnote}
                                 testID="message_notification"
-                                style={styles.msgStyle}
                             >
                                 {this.message}
-                            </Text>
-                        </View>
+                            </UILabel>
+                        </UIBackgroundView>
                     </TouchableWithoutFeedback>
                 </Animated.View>
             </PanGestureHandler>
