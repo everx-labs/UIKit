@@ -43,6 +43,7 @@ const commentWrapper = {
     backgroundColor: UIColor.backgroundTertiary(),
     paddingHorizontal: UIConstant.normalContentOffset(),
     paddingVertical: UIConstant.smallContentOffset(),
+    alignItems: 'center',
 };
 
 const keyThin = {
