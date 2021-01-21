@@ -253,7 +253,7 @@ export function ChatInput(props: Props) {
         return {
             height: Math.max(
                 UIConstant.largeButtonHeight(),
-                inputHeight + paddingTop + paddingBottom,
+                inputHeight + (paddingTop ?? 0) + (paddingBottom ?? 0),
             ),
         };
     }, [inputHeight]);
