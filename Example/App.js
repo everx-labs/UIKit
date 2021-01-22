@@ -2340,6 +2340,25 @@ const initialMessages = [
     },
     {
         type: 'trx',
+        status: 'received',
+        time: Math.floor(Date.now() - 1 * 60 * 1000),
+        sender: '0:000',
+        info: {
+            type: 'income',
+            amount: new BigNumber(1),
+            balanceChange: '1.000',
+        },
+        comment: {
+            text: 'Pocket money 😅🎉🤔😂🙏😔',
+            // text: 'Pocket money 😅🎉🤔😂🙏😔😮👆👍❤️😍☺️😊😘😭😩',
+            encrypted: true,
+        },
+        onPress() {
+            console.log('hey');
+        },
+    },
+    {
+        type: 'trx',
         status: 'aborted',
         time: Math.floor(Date.now() - 1 * 60 * 1000),
         sender: '0:000',

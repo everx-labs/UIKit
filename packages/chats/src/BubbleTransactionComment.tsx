@@ -75,6 +75,7 @@ export function BubbleTransactionComment(props: Props) {
                 bubbleColor,
                 props.status === ChatMessageStatus.Pending &&
                     UIStyle.common.opacity70(),
+                props.encrypted && styles.msgContainerEncrypted,
             ]}
             onPress={props.onPress}
         >
@@ -82,7 +83,7 @@ export function BubbleTransactionComment(props: Props) {
                 testID={`transaction_comment_${props.text}`}
                 role={UILabelRoles.ParagraphText}
                 color={UILabelColors.TextPrimaryInverted}
-                style={styles.textCell}
+                style={styles.text}
             >
                 {props.text}
             </UILabel>
@@ -95,21 +96,25 @@ export function BubbleTransactionComment(props: Props) {
     );
 }
 
+const KEY_THIN_WIDTH = 16;
+
 const styles = StyleSheet.create({
     msgContainer: {
-        flexShrink: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        position: 'relative',
         borderRadius: UIConstant.borderRadius(),
         marginTop: UIConstant.tinyContentOffset(),
     },
-    textCell: {
+    msgContainerEncrypted: {
+        paddingRight: KEY_THIN_WIDTH + UIConstant.smallContentOffset(), // take the place for the key icon
+    },
+    text: {
         textAlign: 'left', // TODO: LTR support?
-        maxWidth: '100%',
     },
     keyThin: {
-        paddingLeft: UIConstant.smallContentOffset(),
-        marginLeft: 'auto',
+        position: 'absolute',
+        width: KEY_THIN_WIDTH,
+        bottom: UIConstant.smallContentOffset(),
+        right: UIConstant.smallContentOffset(),
     },
     leftCorner: {
         borderBottomLeftRadius: 0,
