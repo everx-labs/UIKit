@@ -485,9 +485,18 @@ export const UISeedPhraseTextView = React.forwardRef<
                 return;
             }
 
+            const newText = text.match(/(\w+)/g)?.join(SPLITTER) ?? '';
+
+            if (newText !== text && refToUse && 'current' in refToUse) {
+                refToUse.current?.setNativeProps({
+                    text: newText,
+                });
+                onChange && onChange();
+            }
+
             dispatchAndSavePhrase({
                 type: 'set_currently_typed',
-                payload: { phrase: text },
+                payload: { phrase: newText },
             });
         },
         [totalWords, onChange, dispatchAndSavePhrase, refToUse],
