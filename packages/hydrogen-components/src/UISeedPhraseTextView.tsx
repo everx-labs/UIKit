@@ -8,7 +8,6 @@ import {
     ColorValue,
 } from 'react-native';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
     useTheme,
@@ -21,6 +20,7 @@ import {
 import { UIMaterialTextView } from './UIMaterialTextView';
 import { PropsAwarePopover } from './PropsAwarePopover';
 import { useAutogrowTextView } from './useAutogrowTextView';
+import { UIConstant } from './constants';
 
 type UISeedPhrasePopoverProps = {
     currentHighlightedItemIndex: number;
@@ -34,9 +34,9 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
     const theme = useTheme();
     const maxHintsToShow = Math.min(hints.length, MAX_CELLS);
     const height =
-        hints.length > 0 ? UIConstant.defaultCellHeight() * maxHintsToShow : 0;
+        hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
     // Calculate the padding bottom to view cells even if clipped
-    const paddingBottom = UIConstant.defaultCellHeight() * (maxHintsToShow - 1);
+    const paddingBottom = UIConstant.defaultCellHeight * (maxHintsToShow - 1);
 
     return (
         <View
@@ -94,7 +94,7 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
 }
 
 const MAX_CELLS = 3;
-const SPLITTER = ` ${UIConstant.dashSymbol()} `;
+const SPLITTER = ` ${UIConstant.dashSymbol} `;
 
 const identifyWordThatChanged = (
     phrase: string,
@@ -446,7 +446,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 const parts = text.split(SPLITTER);
                 const newText =
                     parts.length < Math.max.apply(null, totalWords)
-                        ? `${text}${UIConstant.dashSymbol()} `
+                        ? `${text}${UIConstant.dashSymbol} `
                         : text.trim();
 
                 if (refToUse && 'current' in refToUse) {
@@ -466,7 +466,7 @@ export const UISeedPhraseTextView = React.forwardRef<
 
             if (
                 text.length < phraseRef.current.length &&
-                lastSymbol === UIConstant.dashSymbol()
+                lastSymbol === UIConstant.dashSymbol
             ) {
                 const newText = text.slice(0, text.length - 2);
 
@@ -644,25 +644,25 @@ export const UISeedPhraseTextView = React.forwardRef<
 
 const styles = StyleSheet.create({
     input: {
-        minHeight: UIConstant.smallCellHeight(),
+        minHeight: UIConstant.smallCellHeight,
     },
     hintsContainer: {
         flex: 1,
         marginTop: -16, // Don't want to calculate it dinamically, seems to work fine
-        ...UIConstant.cardShadow(),
-        borderBottomLeftRadius: UIConstant.borderRadius(),
-        borderBottomRightRadius: UIConstant.borderRadius(),
+        ...UIConstant.cardShadow,
+        borderBottomLeftRadius: UIConstant.borderRadius,
+        borderBottomRightRadius: UIConstant.borderRadius,
     },
     hintsInner: {
         flex: 1,
         overflow: 'hidden',
-        borderBottomLeftRadius: UIConstant.borderRadius(),
-        borderBottomRightRadius: UIConstant.borderRadius(),
+        borderBottomLeftRadius: UIConstant.borderRadius,
+        borderBottomRightRadius: UIConstant.borderRadius,
     },
     cellHint: {
         zIndex: 1,
         justifyContent: 'center',
-        paddingHorizontal: UIConstant.contentOffset(),
-        minHeight: UIConstant.defaultCellHeight(),
+        paddingHorizontal: UIConstant.contentOffset,
+        minHeight: UIConstant.defaultCellHeight,
     },
 });
