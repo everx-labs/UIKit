@@ -108,11 +108,9 @@ import {
     DarkTheme,
     LightTheme,
     ColorVariants,
-} from '@tonlabs/uikit.hydrogen';
-import {
     UIMaterialTextView,
     UISeedPhraseTextView,
-} from '@tonlabs/uikit.hydrogen.components';
+} from '@tonlabs/uikit.hydrogen';
 
 enableScreens();
 useWebFonts();

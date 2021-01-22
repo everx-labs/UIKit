@@ -9,18 +9,13 @@ import {
 } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import {
-    useTheme,
-    ColorVariants,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
 
 import { UIMaterialTextView } from './UIMaterialTextView';
 import { PropsAwarePopover } from './PropsAwarePopover';
 import { useAutogrowTextView } from './useAutogrowTextView';
 import { UIConstant } from './constants';
+import { ColorVariants, useTheme } from './Colors';
+import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
 
 type UISeedPhrasePopoverProps = {
     currentHighlightedItemIndex: number;
