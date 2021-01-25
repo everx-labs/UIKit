@@ -2,8 +2,6 @@
 import dayjs from 'dayjs';
 import LocalizedStrings from 'react-native-localization';
 import BigNumber from 'bignumber.js';
-import { UIConstant, UIFunction } from '@tonlabs/uikit.core';
-import type { NumberParts, NumberPartsOptions } from '@tonlabs/uikit.core';
 
 import availableLanguages from './languages';
 import { getDateFormatInfo, getNumberFormatInfo, prepareLocales } from './utils';
@@ -14,10 +12,18 @@ import type {
     StringLocaleInfo,
 } from './types';
 import type { UILocalizedData } from './languages/types';
-import { languagesInfo, predefinedConstants } from './constants';
+import {
+    languagesInfo,
+    predefinedConstants,
+    UIConstant,
+    UIFunction,
+} from './constants';
+import type { NumberParts, NumberPartsOptions } from './constants';
 
-
-const preparedLanguages = prepareLocales<UILocalizedData>(availableLanguages, predefinedConstants);
+const preparedLanguages = prepareLocales<UILocalizedData>(
+    availableLanguages,
+    predefinedConstants,
+);
 
 const defaultLocaleInfo: StringLocaleInfo = {
     name: '',
@@ -48,7 +54,7 @@ export class LocalizationService<T> extends LocalizedStrings {
         number: BigNumber | string | number,
         options?: NumberPartsOptions = {
             minimumFractionDigits: 0,
-            maximumFractionDigits: UIConstant.maxDecimalDigits(),
+            maximumFractionDigits: UIConstant.maxDecimalDigits,
         },
     ): string {
         let parts: ?NumberParts;

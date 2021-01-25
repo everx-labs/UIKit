@@ -16,8 +16,9 @@ import {
     useUITextViewValue,
     useTheme,
     ColorVariants,
+    useAutogrowTextView,
 } from '@tonlabs/uikit.hydrogen';
-import { useAutogrowTextView } from '@tonlabs/uikit.hydrogen.components';
+
 import {
     UICustomKeyboardUtils,
     OnCustomKeyboardVisible,

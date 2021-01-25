@@ -1,8 +1,7 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
 
-import { UITextView, UITextViewProps } from '@tonlabs/uikit.hydrogen';
-
+import { UITextView, UITextViewProps } from './UITextView';
 import { useAutogrowTextView } from './useAutogrowTextView';
 import type { OnHeightChange } from './useAutogrowTextView';
 

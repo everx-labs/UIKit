@@ -7,17 +7,11 @@ import {
     View,
     Text,
 } from 'react-native';
-import {
-    ColorVariants,
-    useTheme,
-    Typography,
-    TypographyVariants,
-    UILabel,
-    UILabelColors,
-    UITextView,
-    UITextViewProps,
-    useUITextViewValue,
-} from '@tonlabs/uikit.hydrogen';
+
+import { ColorVariants, useTheme } from './Colors';
+import { Typography, TypographyVariants } from './Typography';
+import { UILabel, UILabelColors } from './UILabel';
+import { UITextView, UITextViewProps, useUITextViewValue } from './UITextView';
 
 export type UIMaterialTextViewProps = UITextViewProps & {
     label: string;
