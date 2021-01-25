@@ -74,7 +74,7 @@ export const languagesInfo: { [string]: LanguageInfo } = {
 };
 
 export const UIConstant = {
-    maxDecimalDigits: 0, // TODO
+    maxDecimalDigits: 9,
 };
 
 interface BigNum {
