@@ -233,6 +233,7 @@ const reducer = (
 };
 
 export type UISeedPhraseTextViewProps = {
+    testID?: string;
     words: string[];
     totalWords: number | number[];
     validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
@@ -247,7 +248,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     props: UISeedPhraseTextViewProps,
     ref,
 ) {
-    const { words, validatePhrase, onSuccess, onSubmit } = props;
+    const { words, validatePhrase, onSuccess, onSubmit, testID } = props;
     const totalWords = React.useMemo(() => {
         if (typeof props.totalWords === 'number') {
             return [props.totalWords];
@@ -600,6 +601,7 @@ export const UISeedPhraseTextView = React.forwardRef<
         <>
             <UIMaterialTextView
                 ref={refToUse}
+                testID={testID}
                 autoCapitalize="none"
                 autoCompleteType="off"
                 autoCorrect={false}
