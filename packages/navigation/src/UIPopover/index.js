@@ -35,8 +35,6 @@ export type PopoverProps = {
     narrow?: boolean,
     component?: React$Node,
     needCloseOnClick?: boolean,
-    // if clicked element contains this className, then not to close popover
-    exceptionClassName?: string,
     narrowContainerStyle?: ViewStyleProp,
     onShow: () => void,
     onHide?: () => void,
@@ -224,16 +222,6 @@ export default class UIPopover<Props, State>
             // Check the click on the button which calls the popover
             const trigger = document.getElementById(POPOVER_TRIGGER);
             if (trigger && trigger.contains(e.target)) {
-                return;
-            }
-
-            // Legacy code with an exception `className`. TODO: remove
-            const eventResult = UIEventHelper.checkEventTarget(
-                e,
-                '',
-                this.props.exceptionClassName,
-            );
-            if (eventResult) {
                 return;
             }
 
