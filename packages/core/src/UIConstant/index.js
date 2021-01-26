@@ -19,12 +19,6 @@ const UI_SMALL_SWIPE_THRESHOLD = 30;
 const UI_COVER_BOUNCE_OFFSET = 20;
 const UI_MAX_SCROLL_EVENT_THROTTLE = 16;
 
-const UI_TINY_BORDER_RADIUS = 2;
-const UI_SMALL_BORDER_RADIUS = 4;
-const UI_DEFAULT_BORDER_RADIUS = 8;
-const UI_MEDIUM_BORDER_RADIUS = 16;
-const UI_ALERT_BORDER_RADIUS = 12;
-
 const UI_TINY_CONTENT_OFFSET = 4;
 const UI_SMALL_CONTENT_OFFSET = 8;
 const UI_NORMAL_CONTENT_OFFSET = 12;
@@ -41,6 +35,12 @@ const UI_TREMENDOUS_CONTENT_OFFSET = 96;
 const UI_ENORMOUS_CONTENT_OFFSET = 104;
 const UI_GIANT_CONTENT_OFFSET = 136;
 const UI_PINCODE_KEYBOARD_OFFSET = 174;
+
+const UI_TINY_BORDER_RADIUS = 2;
+const UI_SMALL_BORDER_RADIUS = 4;
+const UI_NORMAL_BORDER_RADIUS = 6;
+const UI_DEFAULT_BORDER_RADIUS = 8;
+const UI_MEDIUM_BORDER_RADIUS = 12;
 
 const UI_CHAT_INPUT_MAX_HEIGHT = 172;
 
@@ -334,16 +334,16 @@ export default class UIConstant {
         return UI_SMALL_BORDER_RADIUS;
     }
 
+    static normalBorderRadius() {
+        return UI_NORMAL_BORDER_RADIUS;
+    }
+
     static borderRadius() {
         return UI_DEFAULT_BORDER_RADIUS;
     }
 
     static mediumBorderRadius() {
         return UI_MEDIUM_BORDER_RADIUS;
-    }
-
-    static alertBorderRadius() {
-        return UI_ALERT_BORDER_RADIUS;
     }
 
     // Button heights
