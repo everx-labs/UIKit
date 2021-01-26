@@ -58,6 +58,25 @@
     "Channel": "频道",
     "ChannelInfo": "通道信息",
     "ChannelName": "频道名称",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "",
+            "AttachImage": ""
+        },
+        "Alerts": {
+            "EnableFromSettings": "",
+            "EnableFromSettingsTitle": "",
+            "MessageTooLong": ""
+        },
+        "Bubbles": {
+            "TapToResend": "",
+            "TapToSendAgain": ""
+        },
+        "DateSeparators": {
+            "Today": "",
+            "Yesterday": ""
+        }
+    },
     "ChatWith": "聊天",
     "CheckingTheCode": "正在检查代...",
     "ChooseDepositToken": "选择存款代币",
@@ -266,10 +285,6 @@
     "moreWords11": "更多的词",
     "moreWords24": "更多的词",
     "moreWords50": "更多的词",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "我的账户",
     "MyMainAccount": "我的账户",
     "Name": "名字",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "只有管理员可以添加和删除成员，以及编辑组名和照片。",
     "OpenSettings": "打开设置",
     "operationTime": "作业时间",
-    "orDelimeter": "或",
+    "orDelimeter": "",
     "OutOf": "以外",
     "Passport": "护照",
     "PassportFetchingStatus": "正在获取状态",
@@ -465,7 +480,7 @@
         "ConfirmLocalPassword": "确认登录方式",
         "ConfirmLocalPasswordContinue": "好的，咱走吧",
         "ConfirmLocalPasswordDetails": "为了进入钱包并确认您的交易，要设置密码。这只能在此设备上使用。",
-        "ConfirmLocalPasswordHint": "空的",
+        "ConfirmLocalPasswordHint": "普通话",
         "ConfirmLocalPasswordPlaceholder": "重复密码",
         "ConfirmLocalPasswordSuccess": "成功。",
         "ConfirmLocalPasswordWarning": "注意！要在其他设备上访问电子钱包，您需要您的关键字。",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "你想给谁发短信？",
     "WillGetInTouchWithYouSoon": "我们尽快与您联系。",
     "Word": "字",
+    "words01": "",
+    "words11": "",
+    "words24": "",
+    "words50": "",
     "WriteOffAccount": "注销账户",
     "WrongPassword": "密码错误",
     "Yes": "对",
@@ -538,24 +557,5 @@
     "YourEmail": "你的邮箱",
     "YourTransactionCompleted": "您的交易已完成",
     "YourTransactionCouldNotBeCompleted": "您的交易无法完成",
-    "YourUsername": "你的用户名",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "为了重新发送，点按这里",
-            "TapToSendAgain": "为了再一次发送，点按这里"
-        },
-        "DateSeparators": {
-            "Today": "今天",
-            "Yesterday": "昨天"
-        },
-        "Alerts": {
-            "MessageTooLong": "您的消息超过{0}个字符。",
-            "EnableFromSettingsTitle": "发送图片",
-            "EnableFromSettings": "请直接从您的设备设置启用访问权限"
-        },
-        "Actions": {
-            "AttachDocument": "文件",
-            "AttachImage": "图像"
-        }
-    }
+    "YourUsername": "你的用户名"
 }
