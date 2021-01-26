@@ -6,6 +6,7 @@ export const UIConstant = {
 
     contentOffset: 16,
     borderRadius: 8,
+    elasticWidthHalfNormal: 376,
 
     cardShadow:
         Platform.OS === 'android'

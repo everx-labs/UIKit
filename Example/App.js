@@ -110,6 +110,8 @@ import {
     ColorVariants,
     UIMaterialTextView,
     UISeedPhraseTextView,
+    UICustomSheet as UICustomSheetNew,
+    PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 
 enableScreens();
@@ -1482,6 +1484,7 @@ const Layouts = () => (
 
 const actionSheet = React.createRef<UIActionSheet>();
 const customSheet = React.createRef<UICustomSheet>();
+const customSheetNew = React.createRef<UICustomSheetNew>(null);
 
 const Menus = () => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -1565,6 +1568,33 @@ const Menus = () => {
                         }
                     }}
                 />
+                <UITextButton
+                    title="Show UICustomSheet new"
+                    onPress={() => {
+                        if (customSheetNew.current) {
+                            customSheetNew.current.show();
+                        }
+                    }}
+                />
+                <UICustomSheetNew ref={customSheetNew}>
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            padding: 20,
+                            borderRadius: 10,
+                        }}
+                    >
+                        <Text>Hi there!</Text>
+                        <UIButton
+                            title="close"
+                            onPress={() => {
+                                if (customSheetNew.current) {
+                                    customSheetNew.current.hide();
+                                }
+                            }}
+                        />
+                    </View>
+                </UICustomSheetNew>
             </View>
             <View
                 style={{
@@ -2711,83 +2741,105 @@ const App: () => React$Node = () => {
 
     const main = (
         <SafeAreaProvider>
-            <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
-                <SurfSplit.Navigator
-                    initialRouteName="buttons"
-                    screenOptions={{
-                        splitStyles: {
-                            body: [
-                                styles.body,
-                                {
-                                    backgroundColor:
-                                        theme[ColorVariants.BackgroundTertiary],
-                                },
-                            ],
+            <PortalManager>
+                <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
+                    <SurfSplit.Navigator
+                        initialRouteName="buttons"
+                        screenOptions={{
+                            splitStyles: {
+                                body: [
+                                    styles.body,
+                                    {
+                                        backgroundColor:
+                                            theme[
+                                                ColorVariants.BackgroundTertiary
+                                            ],
+                                    },
+                                ],
 
-                            main: [
-                                styles.main,
-                                {
-                                    backgroundColor:
-                                        theme[ColorVariants.BackgroundPrimary],
-                                },
-                            ],
-                            detail: [
-                                styles.detail,
-                                {
-                                    backgroundColor:
-                                        theme[ColorVariants.BackgroundPrimary],
-                                },
-                            ],
-                        },
-                    }}
-                    mainWidth={900}
-                >
-                    <SurfSplit.Screen name="main" component={Main} />
-                    <SurfSplit.Screen name="buttons" component={Buttons} />
-                    <SurfSplit.Screen name="checkbox" component={Checkbox} />
-                    <SurfSplit.Screen name="inputs" component={Inputs} />
-                    <SurfSplit.Screen name="design" component={Design} />
-                    <SurfSplit.Screen name="images" component={Images} />
-                    <SurfSplit.Screen name="layouts" component={Layouts} />
-                    <SurfSplit.Screen name="menus" component={Menus} />
-                    <SurfSplit.Screen
-                        name="notifications"
-                        component={Notifications}
-                    />
-                    <SurfSplit.Screen name="popups" component={Popups} />
-                    <SurfSplit.Screen name="products" component={Products} />
-                    <SurfSplit.Screen name="profile" component={Profile} />
-                    <SurfSplit.Screen name="text" component={TextScreen} />
-                    <SurfSplit.Screen name="chat" component={Chat} />
-                </SurfSplit.Navigator>
-            </NavigationContainer>
-            <UILayoutManager />
-            <UIActionSheet ref={actionSheet} masterSheet={false} />
-            <UIActionSheet />
-            <UICountryPicker navigation={navRef.current} isShared />
-            <UICustomSheet
-                ref={customSheet}
-                masterSheet={false}
-                component={
-                    <>
-                        <Text>This is custom sheet!</Text>
-                        <UIButton
-                            title="close"
-                            onPress={() => {
-                                if (customSheet.current) {
-                                    customSheet.current.hide();
-                                }
+                                main: [
+                                    styles.main,
+                                    {
+                                        backgroundColor:
+                                            theme[
+                                                ColorVariants.BackgroundPrimary
+                                            ],
+                                    },
+                                ],
+                                detail: [
+                                    styles.detail,
+                                    {
+                                        backgroundColor:
+                                            theme[
+                                                ColorVariants.BackgroundPrimary
+                                            ],
+                                    },
+                                ],
+                            },
+                        }}
+                        mainWidth={900}
+                    >
+                        <SurfSplit.Screen name="main" component={Main} />
+                        <SurfSplit.Screen name="buttons" component={Buttons} />
+                        <SurfSplit.Screen
+                            name="checkbox"
+                            component={Checkbox}
+                        />
+                        <SurfSplit.Screen name="inputs" component={Inputs} />
+                        <SurfSplit.Screen name="design" component={Design} />
+                        <SurfSplit.Screen name="images" component={Images} />
+                        <SurfSplit.Screen name="layouts" component={Layouts} />
+                        <SurfSplit.Screen name="menus" component={Menus} />
+                        <SurfSplit.Screen
+                            name="notifications"
+                            component={Notifications}
+                        />
+                        <SurfSplit.Screen name="popups" component={Popups} />
+                        <SurfSplit.Screen
+                            name="products"
+                            component={Products}
+                        />
+                        <SurfSplit.Screen name="profile" component={Profile} />
+                        <SurfSplit.Screen name="text" component={TextScreen} />
+                        <SurfSplit.Screen name="chat" component={Chat} />
+                        <SurfSplit.Screen
+                            name="testModal"
+                            component={TestModal}
+                            options={{
+                                stackPresentation: 'formSheet',
+                                // stackAnimation: 'none',
                             }}
                         />
-                    </>
-                }
-            />
-            <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-                <UINotice />
-            </View>
-            <UIAlert />
-            <UIAlertView />
-            <UIDropdownAlert />
+                    </SurfSplit.Navigator>
+                </NavigationContainer>
+                <UILayoutManager />
+                <UIActionSheet ref={actionSheet} masterSheet={false} />
+                <UIActionSheet />
+                <UICountryPicker navigation={navRef.current} isShared />
+                <UICustomSheet
+                    ref={customSheet}
+                    masterSheet={false}
+                    component={
+                        <>
+                            <Text>This is custom sheet!</Text>
+                            <UIButton
+                                title="close"
+                                onPress={() => {
+                                    if (customSheet.current) {
+                                        customSheet.current.hide();
+                                    }
+                                }}
+                            />
+                        </>
+                    }
+                />
+                <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+                    <UINotice />
+                </View>
+                <UIAlert />
+                <UIAlertView />
+                <UIDropdownAlert />
+            </PortalManager>
         </SafeAreaProvider>
     );
 
