@@ -314,7 +314,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         case UIButton.buttonShape.radius:
             return UIConstant.smallBorderRadius();
         case UIButton.buttonShape.mediumRadius:
-            return UIConstant.borderRadius();
+            return UIConstant.mediumBorderRadius();
         case UIButton.buttonShape.rounded:
             return this.getButtonHeight() / 2.0;
         case UIButton.buttonShape.full:
