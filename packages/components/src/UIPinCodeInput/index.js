@@ -12,7 +12,7 @@ import debounce from 'lodash/debounce';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
-import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UILabel, UILabelRoles, UILabelColors, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';
@@ -64,6 +64,16 @@ const styles = StyleSheet.create({
         maxHeight: UIConstant.pincodeKeyboardOffset(),
     },
 });
+
+function DeleteIcn() {
+    const theme = useTheme();
+    return (
+        <Image
+            source={UIAssets.icons.ui.delete}
+            style={{ tintColor: theme[ColorVariants.TextPrimary] }}
+        />
+    );
+}
 
 export default class UIPinCodeInput extends UIComponent<Props, State> {
     static defaultProps = {
@@ -445,7 +455,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={this.onDeletePress}
                         disabled={this.state.values.length === 0}
                     >
-                        <Image source={UIAssets.icons.ui.delete} />
+                        <DeleteIcn />
                     </BorderlessButton>
                 </View>
             </View>
