@@ -58,6 +58,25 @@
     "Channel": "チャンネル情報",
     "ChannelInfo": "チャンネル情報",
     "ChannelName": "チャンネル名",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Please enable access directly from your device Settings",
+            "EnableFromSettingsTitle": "Send image",
+            "MessageTooLong": "Your message is longer than {0} characters."
+        },
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        }
+    },
     "ChatWith": "…とチャット",
     "CheckingTheCode": "こどは確認中です。",
     "ChooseDepositToken": "預金トークンを選択",
@@ -266,10 +285,6 @@
     "moreWords11": "言葉を追加する",
     "moreWords24": "言葉を追加する",
     "moreWords50": "言葉を追加する",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "マイ・アカウント",
     "MyMainAccount": "マイ・メイン・アカウント",
     "Name": "名前",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "管理者のみがメンバーの追加や削除、グループ名と写真を編集できます。",
     "OpenSettings": "設定を開く",
     "operationTime": "操作時間",
-    "orDelimeter": "または",
+    "orDelimeter": " or ",
     "OutOf": "から",
     "Passport": "パスポート",
     "PassportFetchingStatus": "ステータスの取得中...",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "何のメッセージを送信しますか？",
     "WillGetInTouchWithYouSoon": "すぐにご連絡いたします。",
     "Word": "言葉",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "償却勘定",
     "WrongPassword": "パスワードが正しくありません",
     "Yes": "はい",
@@ -538,24 +557,5 @@
     "YourEmail": "あなたのメールアドレス",
     "YourTransactionCompleted": "トランザクションは完了です。",
     "YourTransactionCouldNotBeCompleted": "申し訳ありませんが、トランザクションは完了できませんでした。",
-    "YourUsername": "あなたのユーザー名",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "タップして再送信する",
-            "TapToSendAgain": "タップして、もう一度送信する"
-        },
-        "DateSeparators": {
-            "Today": "今日",
-            "Yesterday": "昨日"
-        },
-        "Alerts": {
-            "MessageTooLong": "メッセージが{0}文字より長くなっています。",
-            "EnableFromSettingsTitle": "画像を送信する",
-            "EnableFromSettings": "お使いのデバイスの設定でアクセスを有効にしてください"
-        },
-        "Actions": {
-            "AttachDocument": "ドキュメント",
-            "AttachImage": "画像"
-        }
-    }
+    "YourUsername": "あなたのユーザー名"
 }

@@ -58,6 +58,25 @@
     "Channel": "Kanal",
     "ChannelInfo": "Kanal Bilgisi",
     "ChannelName": "Kanal Adı",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Please enable access directly from your device Settings",
+            "EnableFromSettingsTitle": "Send image",
+            "MessageTooLong": "Your message is longer than {0} characters."
+        },
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        }
+    },
     "ChatWith": "ile sohbet",
     "CheckingTheCode": "Kod kontrol ediliyor...",
     "ChooseDepositToken": "Mevduat Belirtecini Seç",
@@ -266,10 +285,6 @@
     "moreWords11": "kelime kaldı",
     "moreWords24": "kelime kaldı",
     "moreWords50": "kelime kaldı",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Hesabım",
     "MyMainAccount": "Ana Hesabım",
     "Name": "Ad",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Yalnızca yöneticiler üye ekleyip kaldırması ve grup adını ve fotoğrafını düzenlemesi iznine sahiptir.",
     "OpenSettings": "Ayarları aç",
     "operationTime": "İşlem zamanı",
-    "orDelimeter": " veya ",
+    "orDelimeter": " or ",
     "OutOf": "/",
     "Passport": "Pasaport",
     "PassportFetchingStatus": "Durum getiriliyor...",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "Kime mesaj göndermek istiyorsunuz?",
     "WillGetInTouchWithYouSoon": "Yakında sizinle iletişime geçeceğiz",
     "Word": "Kelime",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Silme Hesabı",
     "WrongPassword": "Yanlış şifre",
     "Yes": "Evet",

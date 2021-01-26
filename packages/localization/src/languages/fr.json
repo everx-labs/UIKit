@@ -58,6 +58,25 @@
     "Channel": "Chaîne",
     "ChannelInfo": "Informations sur la chaîne",
     "ChannelName": "Nom de la chaîne",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Please enable access directly from your device Settings",
+            "EnableFromSettingsTitle": "Send image",
+            "MessageTooLong": "Your message is longer than {0} characters."
+        },
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        }
+    },
     "ChatWith": "Chatter avec",
     "CheckingTheCode": "Vérification du code ...",
     "ChooseDepositToken": "Choisissez un token de dépôt",
@@ -82,7 +101,7 @@
     "ContinueWithPassword": "Continuer avec le mot de passe",
     "ConvertToSupergroup": "Convertir en supergroupe",
     "ConvertToSupergroupDetails": "Dans les supergroupes:\n • Les nouveaux membres peuvent voir l'historique complet des messages\n • Les messages supprimés disparaîtront pour tous les membres\n • Les administrateurs peuvent épingler des messages importants\n • Le créateur peut définir un lien public pour le groupe",
-    "CopiedToClipboard": "",
+    "CopiedToClipboard": "Copied to clipboard",
     "Copy": "Copier",
     "CopyNumber": "Copier le numéro",
     "CopyRight": "2018– {CURRENT_YEAR} © TON Labs",
@@ -266,10 +285,6 @@
     "moreWords11": "plus de mots",
     "moreWords24": "plus de mots",
     "moreWords50": "plus de mots",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Mon compte",
     "MyMainAccount": "Mon compte principal",
     "Name": "Nom",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Seuls les administrateurs peuvent ajouter et supprimer des membres et modifier le nom du groupe et la photo.",
     "OpenSettings": "Ouvrir les paramètres",
     "operationTime": "Durée de l'opération",
-    "orDelimeter": " ou ",
+    "orDelimeter": " or ",
     "OutOf": "de",
     "Passport": "Passeport",
     "PassportFetchingStatus": "Récupération du statut...",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "À qui voulez-vous envoyer un message?",
     "WillGetInTouchWithYouSoon": "Nous prendrons contact avec vous prochainement",
     "Word": "Mot",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Annuler le Compte",
     "WrongPassword": "Mot de passe incorrect",
     "Yes": "Oui",
@@ -538,24 +557,5 @@
     "YourEmail": "Votre e-mail",
     "YourTransactionCompleted": "Votre transaction a été effectuée",
     "YourTransactionCouldNotBeCompleted": "Votre transaction n'a pas été effectuée",
-    "YourUsername": "Votre nom d'utilisateur",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Appuyez pour renvoyer",
-            "TapToSendAgain": "Appuyez pour envoyer à nouveau"
-        },
-        "DateSeparators": {
-            "Today": "Aujourd'hui",
-            "Yesterday": "Hier"
-        },
-        "Alerts": {
-            "MessageTooLong": "Votre message comporte plus de {0} caractères.",
-            "EnableFromSettingsTitle": "Envoyer l'image",
-            "EnableFromSettings": "Veuillez activer l'accès directement à partir des paramètres de votre appareil"
-        },
-        "Actions": {
-            "AttachDocument": "Document",
-            "AttachImage": "Image"
-        }
-    }
+    "YourUsername": "Votre nom d'utilisateur"
 }
