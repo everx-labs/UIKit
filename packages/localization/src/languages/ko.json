@@ -39,7 +39,7 @@
     "AllMembersCanAddAndRemoveMembers": "모든 멤버들이 멤버를 추가하고 제거하고 그룹 이름과 사진을 변경할 수 있습니다.",
     "Amount": "액수",
     "AnyDetailsSuchAsAge": "연령, 직업 또는 도시와 같은 세부 정보 입력.\n예를 들면: 샌프란시스코 출신 23세 디자이너.",
-    "Apartment": "아파트/국가/ 유니트",
+    "Apartment": "아파트\/국가\/ 유니트",
     "AtTime": "...에서",
     "BackToHome": "홈화면으로 돌아가기",
     "BackupAccount": "백업 계정",
@@ -58,7 +58,26 @@
     "Channel": "채널",
     "ChannelInfo": "채널 정보",
     "ChannelName": "채널 이름",
-    "ChatWith": "와/과 채팅하기",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "",
+            "AttachImage": ""
+        },
+        "Alerts": {
+            "EnableFromSettings": "",
+            "EnableFromSettingsTitle": "",
+            "MessageTooLong": ""
+        },
+        "Bubbles": {
+            "TapToResend": "",
+            "TapToSendAgain": ""
+        },
+        "DateSeparators": {
+            "Today": "",
+            "Yesterday": ""
+        }
+    },
+    "ChatWith": "와\/과 채팅하기",
     "CheckingTheCode": "코드확인중...",
     "ChooseDepositToken": "입금 토큰 선택",
     "ChooseFromLibrary": "라이브러리에서 고르기",
@@ -266,10 +285,6 @@
     "moreWords11": "더 많은 단어",
     "moreWords24": "더 많은 단어",
     "moreWords50": "더 많은 단어",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "저의 계정",
     "MyMainAccount": "메인 계정",
     "Name": "이름",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "관리자만 멤버를 추가하고 제거하고 그룹 이름과 사진을 변경할 수 있습니다.",
     "OpenSettings": "설정 열기",
     "operationTime": "작동 시간",
-    "orDelimeter": " 개 또는 ",
+    "orDelimeter": "",
     "OutOf": "밖에",
     "Passport": "여권",
     "PassportFetchingStatus": "상태를 가져 오는 중 ...",
@@ -499,7 +514,7 @@
         "SetLocalPasswordWarning": "주목! 다른 장치에서 지갑에 액세스하기 위해서 사용자의 단어결합이 필요합니다."
     },
     "Warning": "경고",
-    "Was": "였습니다/었습니다",
+    "Was": "였습니다\/었습니다",
     "WeAreSorryButYourBrowserVersionIsNotCompatible": "죄송합니다만 브라우저 버전은 응용 프로그램과 호환되지 않습니다.\n대신 지금 쓰고 있는 브라우저를 사용하십시오 (크롬, 사파리, 파이어 폭스 등).",
     "WeCanTFindThePageYouReLookingFor": "찾고있는 페이지를 찾을 수 없습니다.",
     "WeHaveSentYouACode": "전화번호를 확인하려고 코드를 보냈습니다.",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "누구에게 메시지를 보내고 싶습니까 ?",
     "WillGetInTouchWithYouSoon": "곧 연락 드리겠습니다.",
     "Word": "단어",
+    "words01": "",
+    "words11": "",
+    "words24": "",
+    "words50": "",
     "WriteOffAccount": "상각 계정",
     "WrongPassword": "잘못된 비밀번호",
     "Yes": "예",
@@ -538,24 +557,5 @@
     "YourEmail": "이용자의 이메일",
     "YourTransactionCompleted": "트랜잭션이 완료되었습니다",
     "YourTransactionCouldNotBeCompleted": "트랜잭션을 완료 할 수 없습니다.",
-    "YourUsername": "사용자 이름",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "다시 보내려면 탭하세요.",
-            "TapToSendAgain": "다시 보내려면 탭하세요."
-        },
-        "DateSeparators": {
-            "Today": "오늘",
-            "Yesterday": "어제"
-        },
-        "Alerts": {
-            "MessageTooLong": "메시지가 {0} 자보다 깁니다.",
-            "EnableFromSettingsTitle": "이미지 보내기",
-            "EnableFromSettings": "장치 설정에서 직접 액세스를 활성화하십시오"
-        },
-        "Actions": {
-            "AttachDocument": "문서",
-            "AttachImage": "이미지"
-        }
-    }
+    "YourUsername": "사용자 이름"
 }

@@ -39,7 +39,7 @@
     "AllMembersCanAddAndRemoveMembers": "Tüm üyeler üye ekleyip kaldırmasına ve grup adını ve fotoğrafını düzenlemesi iznine sahiptir.",
     "Amount": "Miktar",
     "AnyDetailsSuchAsAge": "Yaş, meslek veya şehir gibi herhangi bir ayrıntı.\nÖrnek: 23 yaşında Malatya'dan bir tasarımcı.",
-    "Apartment": "daire / ev",
+    "Apartment": "daire \/ ev",
     "AtTime": "saat",
     "BackToHome": "Ana Sayfaya Dön",
     "BackupAccount": "Hesap yedeklemesi",
@@ -58,6 +58,25 @@
     "Channel": "Kanal",
     "ChannelInfo": "Kanal Bilgisi",
     "ChannelName": "Kanal Adı",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "",
+            "AttachImage": ""
+        },
+        "Alerts": {
+            "EnableFromSettings": "",
+            "EnableFromSettingsTitle": "",
+            "MessageTooLong": ""
+        },
+        "Bubbles": {
+            "TapToResend": "",
+            "TapToSendAgain": ""
+        },
+        "DateSeparators": {
+            "Today": "",
+            "Yesterday": ""
+        }
+    },
     "ChatWith": "ile sohbet",
     "CheckingTheCode": "Kod kontrol ediliyor...",
     "ChooseDepositToken": "Mevduat Belirtecini Seç",
@@ -266,10 +285,6 @@
     "moreWords11": "kelime kaldı",
     "moreWords24": "kelime kaldı",
     "moreWords50": "kelime kaldı",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Hesabım",
     "MyMainAccount": "Ana Hesabım",
     "Name": "Ad",
@@ -295,8 +310,8 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Yalnızca yöneticiler üye ekleyip kaldırması ve grup adını ve fotoğrafını düzenlemesi iznine sahiptir.",
     "OpenSettings": "Ayarları aç",
     "operationTime": "İşlem zamanı",
-    "orDelimeter": " veya ",
-    "OutOf": "/",
+    "orDelimeter": "",
+    "OutOf": "\/",
     "Passport": "Pasaport",
     "PassportFetchingStatus": "Durum getiriliyor...",
     "PassportNeedsAttention": [
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "Kime mesaj göndermek istiyorsunuz?",
     "WillGetInTouchWithYouSoon": "Yakında sizinle iletişime geçeceğiz",
     "Word": "Kelime",
+    "words01": "",
+    "words11": "",
+    "words24": "",
+    "words50": "",
     "WriteOffAccount": "Silme Hesabı",
     "WrongPassword": "Yanlış şifre",
     "Yes": "Evet",

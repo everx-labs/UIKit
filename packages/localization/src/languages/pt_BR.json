@@ -12,7 +12,7 @@
         "twoFactorAuthentication": "Autenticação de 2 Fatores"
     },
     "Accounts": "Contas",
-    "AccountTypeHint": "Definir o endereço da sua conta para público irá torná-lo visível no seu perfil.",
+    "AccountTypeHint": "Definir o endereço de sua conta para público irá torná-lo visível no seu perfil.",
     "Add": "Adicionar",
     "AddAdministrator": "Adicionar Administrador",
     "AddAProfilePicture": "Adicionar uma foto de perfil",
@@ -39,7 +39,7 @@
     "AllMembersCanAddAndRemoveMembers": "Todos os membros podem adicionar e remover membros e editar o nome e a foto do grupo.",
     "Amount": "Quantia",
     "AnyDetailsSuchAsAge": "Quaisquer detalhes como idade, ocupação ou cidade.\nExemplo: Arquiteto de 23 anos de São Paulo.",
-    "Apartment": "Apt / Suíte / Unidade",
+    "Apartment": "Apt \/ Suíte \/ Unidade",
     "AtTime": "às",
     "BackToHome": "Voltar para o início",
     "BackupAccount": "Conta de backup",
@@ -58,6 +58,25 @@
     "Channel": "Canal",
     "ChannelInfo": "Informações do Canal",
     "ChannelName": "Nome do Canal",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "",
+            "AttachImage": ""
+        },
+        "Alerts": {
+            "EnableFromSettings": "",
+            "EnableFromSettingsTitle": "",
+            "MessageTooLong": ""
+        },
+        "Bubbles": {
+            "TapToResend": "",
+            "TapToSendAgain": ""
+        },
+        "DateSeparators": {
+            "Today": "",
+            "Yesterday": ""
+        }
+    },
     "ChatWith": "Conversar com",
     "CheckingTheCode": "Verificando o código…",
     "ChooseDepositToken": "Escolha o token de depósito",
@@ -266,10 +285,6 @@
     "moreWords11": "mais palavras",
     "moreWords24": "mais palavras",
     "moreWords50": "mais palavras",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Minha Conta",
     "MyMainAccount": "Minha Conta Principal",
     "Name": "Nome",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Apenas os administradores podem adicionar e remover membros e editar o nome e a foto do grupo.",
     "OpenSettings": "Abrir as configurações",
     "operationTime": "Horário da operação",
-    "orDelimeter": " ou ",
+    "orDelimeter": "",
     "OutOf": "fora de",
     "Passport": "Passaporte",
     "PassportFetchingStatus": "Buscando status…",
@@ -343,7 +358,7 @@
     "PublicAddressCopiedToClipboard": "Endereço público copiado para a área de transferência",
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Canais públicos podem ser encontrados na pesquisa. Qualquer um pode se juntar a eles.",
     "PushFeedbackLong": "Dê sua opinião para ajudar-nos a melhorar o serviço. Clique aqui para compartilhá-la conosco",
-    "PushFeedbackShort": "Dê seu feedback para ajudar a melhor o serviço",
+    "PushFeedbackShort": "Dê seu feedback para contribuir com o Surf",
     "Receive": "Receber",
     "Recent": "Recente",
     "Recently": "foi recentemente",
@@ -437,7 +452,7 @@
     "TwoStepAuth_RecoveryEmailUnavailable": "Está tendo problemas para acessar seu e-mail {0} ?",
     "TwoStepAuth_RecoveryFailed": "Suas opções restantes são lembrar sua senha ou redefinir sua conta.",
     "TwoStepAuth_RecoveryUnavailable": "Como você não forneceu um e-mail de recuperação ao configurar sua senha, as opções restantes são lembrar sua senha ou redefinir sua conta.",
-    "TypeMessage": "Escreve uma mensagem…",
+    "TypeMessage": "Escreva uma mensagem…",
     "Unconfirmed": "Não confirmado",
     "UnreadMessages": "Mensagens não lidas",
     "Update": "Atualizar",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "Para quem você quer enviar mensagens?",
     "WillGetInTouchWithYouSoon": "Entraremos em contato com você em breve",
     "Word": "Palavra",
+    "words01": "",
+    "words11": "",
+    "words24": "",
+    "words50": "",
     "WriteOffAccount": "Conta Baixada",
     "WrongPassword": "Senha incorreta",
     "Yes": "Sim",
@@ -538,24 +557,5 @@
     "YourEmail": "Seu e-mail",
     "YourTransactionCompleted": "Sua transação foi concluída",
     "YourTransactionCouldNotBeCompleted": "Sua transação não pôde ser concluída",
-    "YourUsername": "Seu nome de usuário",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Toque para reenviar",
-            "TapToSendAgain": "Toque para enviar novamente"
-        },
-        "DateSeparators": {
-            "Today": "Hoje",
-            "Yesterday": "Ontem"
-        },
-        "Alerts": {
-            "MessageTooLong": "Sua mensagem tem mais de {0} caracteres.",
-            "EnableFromSettingsTitle": "Enviar imagem",
-            "EnableFromSettings": "Por favor, habilite o acesso nas Configurações do seu dispositivo"
-        },
-        "Actions": {
-            "AttachDocument": "Documento",
-            "AttachImage": "Imagem"
-        }
-    }
+    "YourUsername": "Seu nome de usuário"
 }

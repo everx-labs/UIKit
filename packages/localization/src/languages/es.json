@@ -39,7 +39,7 @@
     "AllMembersCanAddAndRemoveMembers": "Todos los miembros pueden añadir y eliminar miembros y editar el nombre y la foto del grupo.",
     "Amount": "Cantidad",
     "AnyDetailsSuchAsAge": "Cualquier detalle como edad, ocupación o ciudad.\nEjemplo: diseñador de 23 años de San Francisco.",
-    "Apartment": "Apt / Ste / Unidad",
+    "Apartment": "Apt \/ Ste \/ Unidad",
     "AtTime": "En",
     "BackToHome": "Volver a Inicio",
     "BackupAccount": "Cuenta de copia de seguridad",
@@ -58,6 +58,25 @@
     "Channel": "Canal",
     "ChannelInfo": "Información del canal",
     "ChannelName": "Nombre del Canal",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "",
+            "AttachImage": ""
+        },
+        "Alerts": {
+            "EnableFromSettings": "",
+            "EnableFromSettingsTitle": "",
+            "MessageTooLong": ""
+        },
+        "Bubbles": {
+            "TapToResend": "",
+            "TapToSendAgain": ""
+        },
+        "DateSeparators": {
+            "Today": "",
+            "Yesterday": ""
+        }
+    },
     "ChatWith": "Chatea con...",
     "CheckingTheCode": "Comprobando el código...",
     "ChooseDepositToken": "Elija el token de depósito",
@@ -266,10 +285,6 @@
     "moreWords11": "más palabras",
     "moreWords24": "más palabras",
     "moreWords50": "más palabras",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Mi cuenta",
     "MyMainAccount": "Mi cuenta principal",
     "Name": "Nombre",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Solo los administradores pueden agregar y eliminar miembros y editar el nombre y la foto del grupo.",
     "OpenSettings": "Abrir Configuración",
     "operationTime": "Tiempo de la operación",
-    "orDelimeter": " o ",
+    "orDelimeter": "",
     "OutOf": "de",
     "Passport": "Pasaporte",
     "PassportFetchingStatus": "Obteniendo estado ...",
@@ -410,7 +425,7 @@
     "ThisActionCannotBeUndone": "Esta acción no se puede deshacer",
     "ThisLinkOpensChat": "Este enlace abre un chat con usted",
     "Today": "Hoy",
-    "TodayAt": "",
+    "TodayAt": "Hoy a las {0}",
     "Tokens": "Tokens",
     "TONLabel": "TON",
     "TotalBalance": "Balance total",
@@ -514,11 +529,15 @@
     "WhomWouldYouLikeToMessage": "¿A quién quieres enviar un mensaje?",
     "WillGetInTouchWithYouSoon": "Pronto nos pondremos en contacto contigo",
     "Word": "Palabra",
+    "words01": "",
+    "words11": "",
+    "words24": "",
+    "words50": "",
     "WriteOffAccount": "Cuenta de amortización",
     "WrongPassword": "Contraseña incorrecta",
     "Yes": "Sí",
     "Yesterday": "Ayer",
-    "YesterdayAt": "",
+    "YesterdayAt": "Ayer a las {0}",
     "You": "Tú",
     "YouCanAddAdministratorsToHelpYouManageYourChannel": "Puedes agregar administradores para que te ayuden a administrar tu canal. Mantenga presionado para eliminar administradores.",
     "YouCanProvideAnOptionalDescriptionForYourChannel": "Puedes proporcionar una descripción opcional para tu canal.",

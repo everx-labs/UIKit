@@ -39,7 +39,7 @@
     "AllMembersCanAddAndRemoveMembers": "Tous les membres peuvent ajouter et supprimer des membres et modifier le nom et la photo du groupe.",
     "Amount": "Montant",
     "AnyDetailsSuchAsAge": "Tous les détails tel que l'âge, la profession ou la ville.\nExemple : designer de 23 ans de San Francisco.",
-    "Apartment": "Apt / Ste / Unité",
+    "Apartment": "Apt \/ Ste \/ Unité",
     "AtTime": "à",
     "BackToHome": "Retour à la page d'accueil",
     "BackupAccount": "Compte de sauvegarde",
@@ -58,6 +58,25 @@
     "Channel": "Chaîne",
     "ChannelInfo": "Informations sur la chaîne",
     "ChannelName": "Nom de la chaîne",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "",
+            "AttachImage": ""
+        },
+        "Alerts": {
+            "EnableFromSettings": "",
+            "EnableFromSettingsTitle": "",
+            "MessageTooLong": ""
+        },
+        "Bubbles": {
+            "TapToResend": "",
+            "TapToSendAgain": ""
+        },
+        "DateSeparators": {
+            "Today": "",
+            "Yesterday": ""
+        }
+    },
     "ChatWith": "Chatter avec",
     "CheckingTheCode": "Vérification du code ...",
     "ChooseDepositToken": "Choisissez un token de dépôt",
@@ -266,10 +285,6 @@
     "moreWords11": "plus de mots",
     "moreWords24": "plus de mots",
     "moreWords50": "plus de mots",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Mon compte",
     "MyMainAccount": "Mon compte principal",
     "Name": "Nom",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Seuls les administrateurs peuvent ajouter et supprimer des membres et modifier le nom du groupe et la photo.",
     "OpenSettings": "Ouvrir les paramètres",
     "operationTime": "Durée de l'opération",
-    "orDelimeter": " ou ",
+    "orDelimeter": "",
     "OutOf": "de",
     "Passport": "Passeport",
     "PassportFetchingStatus": "Récupération du statut...",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "À qui voulez-vous envoyer un message?",
     "WillGetInTouchWithYouSoon": "Nous prendrons contact avec vous prochainement",
     "Word": "Mot",
+    "words01": "",
+    "words11": "",
+    "words24": "",
+    "words50": "",
     "WriteOffAccount": "Annuler le Compte",
     "WrongPassword": "Mot de passe incorrect",
     "Yes": "Oui",
@@ -538,24 +557,5 @@
     "YourEmail": "Votre e-mail",
     "YourTransactionCompleted": "Votre transaction a été effectuée",
     "YourTransactionCouldNotBeCompleted": "Votre transaction n'a pas été effectuée",
-    "YourUsername": "Votre nom d'utilisateur",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Appuyez pour renvoyer",
-            "TapToSendAgain": "Appuyez pour envoyer à nouveau"
-        },
-        "DateSeparators": {
-            "Today": "Aujourd'hui",
-            "Yesterday": "Hier"
-        },
-        "Alerts": {
-            "MessageTooLong": "Votre message comporte plus de {0} caractères.",
-            "EnableFromSettingsTitle": "Envoyer l'image",
-            "EnableFromSettings": "Veuillez activer l'accès directement à partir des paramètres de votre appareil"
-        },
-        "Actions": {
-            "AttachDocument": "Document",
-            "AttachImage": "Image"
-        }
-    }
+    "YourUsername": "Votre nom d'utilisateur"
 }

@@ -39,7 +39,7 @@
     "AllMembersCanAddAndRemoveMembers": "Все участники могут добавлять и удалять участников, редактировать название и фото группы.",
     "Amount": "Сумма",
     "AnyDetailsSuchAsAge": "Любые подробности, например: возраст, род занятий или город.\nПример: 23 года, дизайнер из Санкт-Петербурга.",
-    "Apartment": "Apt / Ste / Unit",
+    "Apartment": "Apt \/ Ste \/ Unit",
     "AtTime": "в",
     "BackToHome": "На главную",
     "BackupAccount": "Резервная копия аккаунта",
@@ -58,6 +58,25 @@
     "Channel": "Канал",
     "ChannelInfo": "Описание канала",
     "ChannelName": "Название канала",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "",
+            "AttachImage": ""
+        },
+        "Alerts": {
+            "EnableFromSettings": "",
+            "EnableFromSettingsTitle": "",
+            "MessageTooLong": ""
+        },
+        "Bubbles": {
+            "TapToResend": "",
+            "TapToSendAgain": ""
+        },
+        "DateSeparators": {
+            "Today": "",
+            "Yesterday": ""
+        }
+    },
     "ChatWith": "Чат с",
     "CheckingTheCode": "Код проверяется...",
     "ChooseDepositToken": "Выбрать токены для обмена",
@@ -164,7 +183,7 @@
     "FailedToLeaveChannel": "Не удалось покинуть канал",
     "FailedToLeaveGroup": "Не удалось покинуть группу",
     "FailedToLoadDocument": "Не удалось загрузить документ",
-    "FailedToSendTransaction": "Не удалось отправить транзакцию",
+    "FailedToSendTransaction": "Не удалось отправить перевод",
     "FailedToSetLimit": "Не удалось установить лимит",
     "fee": "Комиссия",
     "feeAmount": "≈ {0}",
@@ -266,10 +285,6 @@
     "moreWords11": "слово осталось",
     "moreWords24": "слова осталось",
     "moreWords50": "слов осталось",
-    "words01": "слово",
-    "words11": "слов",
-    "words24": "слова",
-    "words50": "слов",
     "MyAccount": "Мой Аккаунт",
     "MyMainAccount": "Мой Главный Аккаунт",
     "Name": "Имя",
@@ -295,7 +310,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Только администраторы могут добавлять и удалять участников, редактировать название и фото группы.",
     "OpenSettings": "Открыть настройки",
     "operationTime": "Время операции",
-    "orDelimeter": " или ",
+    "orDelimeter": "",
     "OutOf": "из",
     "Passport": "Паспорт",
     "PassportFetchingStatus": "Получение статуса...",
@@ -514,6 +529,10 @@
     "WhomWouldYouLikeToMessage": "Кому бы Вы хотели написать?",
     "WillGetInTouchWithYouSoon": "Мы свяжемся с вами в ближайшее время",
     "Word": "Cлово",
+    "words01": "",
+    "words11": "",
+    "words24": "",
+    "words50": "",
     "WriteOffAccount": "Счет списания",
     "WrongPassword": "Неверный пароль",
     "Yes": "Да",
@@ -538,24 +557,5 @@
     "YourEmail": "Ваш адрес электронной почты",
     "YourTransactionCompleted": "Транзакция выполнена",
     "YourTransactionCouldNotBeCompleted": "Не удалось выполнить транзакцию",
-    "YourUsername": "Ваше имя пользователя",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Отправить повторно",
-            "TapToSendAgain": "Отправить еще раз"
-        },
-        "DateSeparators": {
-            "Today": "Сегодня",
-            "Yesterday": "Вчера"
-        },
-        "Alerts": {
-            "MessageTooLong": "Сообщение содержит более {0} символов.",
-            "EnableFromSettingsTitle": "Отправить изображение",
-            "EnableFromSettings": "Разрешите доступ в параметрах вашего устройства"
-        },
-        "Actions": {
-            "AttachDocument": "Документ",
-            "AttachImage": "Изображение"
-        }
-    }
+    "YourUsername": "Ваше имя пользователя"
 }
