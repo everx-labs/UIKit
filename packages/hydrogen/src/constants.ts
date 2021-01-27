@@ -8,6 +8,8 @@ export const UIConstant = {
     borderRadius: 8,
     elasticWidthHalfNormal: 376,
 
+    swipeThreshold: 50,
+
     cardShadow:
         Platform.OS === 'android'
             ? {

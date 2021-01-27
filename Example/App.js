@@ -21,6 +21,7 @@ import { createSurfSplitNavigator } from 'react-navigation-surf';
 import {
     SafeAreaView,
     SafeAreaProvider,
+    SafeAreaInsetsContext,
     useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
@@ -110,7 +111,8 @@ import {
     ColorVariants,
     UIMaterialTextView,
     UISeedPhraseTextView,
-    UICustomSheet as UICustomSheetNew,
+    UICardSheet,
+    UIBottomSheet,
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 
@@ -1484,10 +1486,11 @@ const Layouts = () => (
 
 const actionSheet = React.createRef<UIActionSheet>();
 const customSheet = React.createRef<UICustomSheet>();
-const customSheetNew = React.createRef<UICustomSheetNew>(null);
 
 const Menus = () => {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
+    const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
             <View
@@ -1569,32 +1572,60 @@ const Menus = () => {
                     }}
                 />
                 <UITextButton
-                    title="Show UICustomSheet new"
+                    title="Show UICardSheet"
                     onPress={() => {
-                        if (customSheetNew.current) {
-                            customSheetNew.current.show();
-                        }
+                        setCardSheetVisible(true);
                     }}
                 />
-                <UICustomSheetNew ref={customSheetNew}>
-                    <View
-                        style={{
-                            backgroundColor: 'white',
-                            padding: 20,
-                            borderRadius: 10,
+                <UITextButton
+                    title="Show UIBottomSheet"
+                    onPress={() => {
+                        setBottomSheetVisible(true);
+                    }}
+                />
+                <UICardSheet
+                    visible={cardSheetVisible}
+                    onClose={() => {
+                        setCardSheetVisible(false);
+                    }}
+                    style={{
+                        backgroundColor: 'white',
+                        padding: 20,
+                        borderRadius: 10,
+                    }}
+                >
+                    <Text>Hi there!</Text>
+                    <UIButton
+                        title="close"
+                        onPress={() => {
+                            setCardSheetVisible(false);
                         }}
-                    >
-                        <Text>Hi there!</Text>
-                        <UIButton
-                            title="close"
-                            onPress={() => {
-                                if (customSheetNew.current) {
-                                    customSheetNew.current.hide();
-                                }
+                    />
+                </UICardSheet>
+                <SafeAreaInsetsContext.Consumer>
+                    {(insets) => (
+                        <UIBottomSheet
+                            visible={bottomSheetVisible}
+                            onClose={() => {
+                                setBottomSheetVisible(false);
                             }}
-                        />
-                    </View>
-                </UICustomSheetNew>
+                            style={{
+                                backgroundColor: 'white',
+                                padding: 20,
+                                paddingBottom: insets.bottom,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <Text>Hi there!</Text>
+                            <UIButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible(false);
+                                }}
+                            />
+                        </UIBottomSheet>
+                    )}
+                </SafeAreaInsetsContext.Consumer>
             </View>
             <View
                 style={{

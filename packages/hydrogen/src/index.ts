@@ -5,7 +5,7 @@ export * from './UITextView';
 export * from './UIMaterialTextView';
 export * from './UISeedPhraseTextView';
 export * from './UIAutogrowTextView';
-export * from './UICustomSheet';
+export * from './UISheet';
 export * from './Portal';
 
 export * from './Colors';
