@@ -17,7 +17,7 @@ import { useTheme, ColorVariants } from './Colors';
 import { UIConstant } from './constants';
 import { Portal } from './Portal';
 
-type UISheetProps = {
+export type UISheetProps = {
     visible: boolean;
     onClose?: () => void | Promise<void>;
     countRubberBandDistance?: boolean;
@@ -265,11 +265,9 @@ export function UISheet({
     return <Portal>{content}</Portal>;
 }
 
-export function UICardSheet({
-    children,
-    style,
-    ...rest
-}: UISheetProps & { style?: ViewStyle }) {
+export type UICardSheetProps = UISheetProps & { style?: ViewStyle };
+
+export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
     const { bottom } = useSafeAreaInsets();
     return (
         <UISheet {...rest}>
@@ -290,17 +288,18 @@ export function UICardSheet({
     );
 }
 
+export type UIBottomSheetProps = UISheetProps & { style?: ViewStyle };
+
 export function UIBottomSheet({
     children,
     style,
     ...rest
-}: UISheetProps & { style?: ViewStyle }) {
+}: UIBottomSheetProps) {
     return (
         <UISheet {...rest} countRubberBandDistance>
             <View
                 style={[
                     styles.bottom,
-
                     style,
                     {
                         paddingBottom:
@@ -320,7 +319,8 @@ const styles = StyleSheet.create({
     sheet: {
         position: 'absolute',
         top: '100%',
-        width: '100%',
+        left: 0,
+        right: 0,
     },
     card: {
         width: '100%',
@@ -331,6 +331,7 @@ const styles = StyleSheet.create({
     },
     bottom: {
         width: '100%',
+        // TODO: don't know how to do it properly on web and tablets
         // maxWidth: UIConstant.elasticWidthHalfNormal,
         alignSelf: 'center',
         left: 'auto',

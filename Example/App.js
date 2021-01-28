@@ -113,6 +113,7 @@ import {
     UISeedPhraseTextView,
     UICardSheet,
     UIBottomSheet,
+    UIQRCodeScannerSheet,
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 
@@ -1491,6 +1492,7 @@ const Menus = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
+    const [qrVisible, setQrVisible] = React.useState(false);
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
             <View
@@ -1577,12 +1579,6 @@ const Menus = () => {
                         setCardSheetVisible(true);
                     }}
                 />
-                <UITextButton
-                    title="Show UIBottomSheet"
-                    onPress={() => {
-                        setBottomSheetVisible(true);
-                    }}
-                />
                 <UICardSheet
                     visible={cardSheetVisible}
                     onClose={() => {
@@ -1602,6 +1598,12 @@ const Menus = () => {
                         }}
                     />
                 </UICardSheet>
+                <UITextButton
+                    title="Show UIBottomSheet"
+                    onPress={() => {
+                        setBottomSheetVisible(true);
+                    }}
+                />
                 <SafeAreaInsetsContext.Consumer>
                     {(insets) => (
                         <UIBottomSheet
@@ -1626,6 +1628,21 @@ const Menus = () => {
                         </UIBottomSheet>
                     )}
                 </SafeAreaInsetsContext.Consumer>
+                <UITextButton
+                    title="Show UIQRcodeScannerSheet"
+                    onPress={() => {
+                        setQrVisible(true);
+                    }}
+                />
+                <UIQRCodeScannerSheet
+                    visible={qrVisible}
+                    onClose={() => {
+                        setQrVisible(false);
+                    }}
+                    onRead={() => {
+                        setQrVisible(false);
+                    }}
+                />
             </View>
             <View
                 style={{
@@ -2833,14 +2850,6 @@ const App: () => React$Node = () => {
                         <SurfSplit.Screen name="profile" component={Profile} />
                         <SurfSplit.Screen name="text" component={TextScreen} />
                         <SurfSplit.Screen name="chat" component={Chat} />
-                        <SurfSplit.Screen
-                            name="testModal"
-                            component={TestModal}
-                            options={{
-                                stackPresentation: 'formSheet',
-                                // stackAnimation: 'none',
-                            }}
-                        />
                     </SurfSplit.Navigator>
                 </NavigationContainer>
                 <UILayoutManager />

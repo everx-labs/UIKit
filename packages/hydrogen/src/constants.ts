@@ -6,6 +6,7 @@ export const UIConstant = {
 
     contentOffset: 16,
     borderRadius: 8,
+    alertBorderRadius: 12,
     elasticWidthHalfNormal: 376,
 
     swipeThreshold: 50,
