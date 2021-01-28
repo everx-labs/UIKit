@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 
 import {
     PanGestureHandler,
@@ -7,19 +7,21 @@ import {
     State as RNGHState,
 } from 'react-native-gesture-handler';
 import type {
-    PanGestureHandlerGestureEvent,
     TapGestureHandlerStateChangeEvent,
     PanGestureHandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated from 'react-native-reanimated';
 
 import { useTheme, ColorVariants } from './Colors';
 import { UIConstant } from './constants';
 import { Portal } from './Portal';
 
+type OnClose = () => void | Promise<void>;
+
 export type UISheetProps = {
     visible: boolean;
-    onClose?: () => void | Promise<void>;
+    onClose?: OnClose;
     countRubberBandDistance?: boolean;
     children: React.ReactNode;
 };
@@ -51,14 +53,165 @@ function useOverlay() {
 const RUBBER_BAND_EFFECT_DISTANCE = 50;
 
 function getYWithRubberBandEffect(
-    currentPosition: number,
-    translationY: number,
+    currentPosition: Animated.Value<number>,
+    translationY: Animated.Value<number>,
 ) {
+    const { abs, sub, divide, add, multiply } = Animated;
     // Rubber band effect
     // https://medium.com/@esskeetit/как-работает-uiscrollview-2e7052032d97
-    const d = RUBBER_BAND_EFFECT_DISTANCE;
-    const y = (1 - 1 / (Math.abs(translationY) / d + 1)) * d;
-    return currentPosition - y;
+    // (1 - 1 / (Math.abs(translationY) / d + 1)) * d;
+    const y = multiply(
+        sub(
+            1,
+            divide(
+                1,
+                add(divide(abs(translationY), RUBBER_BAND_EFFECT_DISTANCE), 1),
+            ),
+        ),
+        RUBBER_BAND_EFFECT_DISTANCE,
+    );
+
+    return sub(currentPosition, y);
+}
+
+// eslint-disable-next-line no-shadow
+enum SHOW_STATES {
+    CLOSE = 0,
+    CLOSING = 1,
+    OPEN = 2,
+    OPENING = 3,
+    DRAG = 4,
+}
+
+function getPosition(
+    clock: Animated.Clock,
+    height: Animated.Value<number>,
+    show: Animated.Value<number>,
+    onCloseModal: () => void,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onCloseProp: OnClose = () => {},
+) {
+    const {
+        SpringUtils,
+        block,
+        cond,
+        eq,
+        set,
+        spring,
+        startClock,
+        stopClock,
+        clockRunning,
+        // debug,
+        sub,
+        call,
+        and,
+        add,
+        greaterThan,
+    } = Animated;
+
+    const state = {
+        finished: new Animated.Value(0),
+        velocity: new Animated.Value(0),
+        position: new Animated.Value(0),
+        time: new Animated.Value(0),
+    };
+
+    const config = {
+        ...SpringUtils.makeDefaultConfig(),
+        // ...(show
+        //     ? null
+        //     : {
+        //           // Spring animation finishing could take some time
+        //           // so tuning it up a little, more details here:
+        //           // https://github.com/facebook/react-native/issues/20783
+        // restSpeedThreshold: 100,
+        // restDisplacementThreshold: 40,
+        //       }),
+        toValue: new Animated.Value(0),
+    };
+
+    const gestureState = new Animated.Value(-1);
+    const dragY = new Animated.Value(0);
+
+    const beforeDragPosition = new Animated.Value(0);
+
+    return {
+        value: block([
+            cond(eq(height, 0), 0, [
+                cond(
+                    eq(gestureState, RNGHState.ACTIVE),
+                    [
+                        stopClock(clock),
+                        set(show, SHOW_STATES.DRAG),
+                        cond(
+                            greaterThan(dragY, 0),
+                            set(state.position, add(beforeDragPosition, dragY)),
+                            set(
+                                state.position,
+                                getYWithRubberBandEffect(
+                                    beforeDragPosition,
+                                    dragY,
+                                ),
+                            ),
+                        ),
+                    ],
+                    [
+                        cond(
+                            eq(show, SHOW_STATES.DRAG),
+                            [
+                                cond(
+                                    greaterThan(
+                                        dragY,
+                                        UIConstant.swipeThreshold,
+                                    ),
+                                    [
+                                        set(show, SHOW_STATES.CLOSE),
+                                        call([], onCloseProp),
+                                    ],
+                                    set(show, SHOW_STATES.OPEN),
+                                ),
+                            ],
+                            [
+                                [
+                                    set(beforeDragPosition, state.position),
+                                    spring(clock, state, config),
+                                ],
+                            ],
+                        ),
+                    ],
+                ),
+                // Opening/Closing spring animation
+                // All this blocks should be after gesture handling
+                // because it changes `show` variable, that could affect this part
+                cond(eq(show, SHOW_STATES.OPEN), [
+                    set(state.finished, 0),
+                    set(config.toValue, sub(0, height)),
+                    set(show, SHOW_STATES.OPENING),
+                    startClock(clock),
+                ]),
+                cond(eq(show, SHOW_STATES.CLOSE), [
+                    set(state.finished, 0),
+                    set(config.toValue, 0),
+                    set(show, SHOW_STATES.CLOSING),
+                    startClock(clock),
+                ]),
+                cond(and(state.finished, clockRunning(clock)), [
+                    stopClock(clock),
+                    // debug('stopped', show),
+                    cond(eq(show, SHOW_STATES.CLOSING), call([], onCloseModal)),
+                ]),
+                state.position,
+            ]),
+        ]),
+        onPan: Animated.event([
+            {
+                nativeEvent: {
+                    state: gestureState,
+                    translationY: dragY,
+                },
+            },
+        ]),
+    };
 }
 
 export function UISheet({
@@ -70,57 +223,34 @@ export function UISheet({
     const { overlayColor, overlayOpacity } = useOverlay();
 
     const [isVisible, setIsVisible] = React.useState(false);
-    const [height, setHeight] = React.useState(0);
 
-    const positionRef = React.useRef(0);
-    const positionAnimationRef = React.useRef(new Animated.Value(0));
+    const heightValue = Animated.useValue(0);
+    const clock = React.useRef(new Animated.Clock()).current;
+    const show = Animated.useValue<SHOW_STATES>(SHOW_STATES.CLOSING);
 
-    const springAnimationInProgressRef = React.useRef(false);
-
-    const animate = React.useCallback(
-        (show: boolean) => {
-            // This protection is needed, because during spring animation
-            // we don't know exact value of position
-            // and if user will try to swipe at the moment we can't
-            // set correct value
-            springAnimationInProgressRef.current = true;
-            positionRef.current = show ? -height : 0;
-
-            Animated.spring(positionAnimationRef.current, {
-                toValue: positionRef.current,
-                ...(show
-                    ? null
-                    : {
-                          // Spring animation finishing could take some time
-                          // so tuning it up a little, more details here:
-                          // https://github.com/facebook/react-native/issues/20783
-                          restSpeedThreshold: 100,
-                          restDisplacementThreshold: 40,
-                      }),
-                useNativeDriver: true,
-            }).start(({ finished }) => {
-                if (!finished) {
-                    return;
-                }
-                springAnimationInProgressRef.current = false;
-                positionAnimationRef.current.setValue(positionRef.current);
-                // Need to get a time for animation, before unmount it
-                if (!show) {
-                    setIsVisible(false);
-                }
-            });
+    const { value, onPan } = getPosition(
+        clock,
+        heightValue,
+        show,
+        () => {
+            setIsVisible(false);
         },
-        [height],
+        onClose,
     );
 
-    const shouldAnimate = React.useRef(false);
+    const positionRef = React.useRef(value);
+    const onPanRef = React.useRef(onPan);
 
-    React.useEffect(() => {
-        if (shouldAnimate.current) {
-            animate(true);
-            shouldAnimate.current = false;
-        }
-    }, [height, animate]);
+    const animate = React.useCallback(
+        (isShow: boolean) => {
+            if (isShow) {
+                show.setValue(SHOW_STATES.OPEN);
+                return;
+            }
+            show.setValue(SHOW_STATES.CLOSE);
+        },
+        [show],
+    );
 
     React.useEffect(() => {
         if (!visible) {
@@ -129,10 +259,8 @@ export function UISheet({
         }
 
         setIsVisible(true);
-        if (height > 0) {
-            animate(true);
-        }
-    }, [visible, animate, height]);
+        requestAnimationFrame(() => animate(true));
+    }, [visible, animate]);
 
     const onSheetLayout = React.useCallback(
         ({
@@ -140,60 +268,12 @@ export function UISheet({
                 layout: { height: lHeight },
             },
         }) => {
-            if (height === 0) {
-                setHeight(
-                    countRubberBandDistance
-                        ? lHeight - RUBBER_BAND_EFFECT_DISTANCE
-                        : lHeight,
-                );
-            }
+            const newHeight = countRubberBandDistance
+                ? lHeight - RUBBER_BAND_EFFECT_DISTANCE
+                : lHeight;
+            heightValue.setValue(newHeight);
         },
-        [height, countRubberBandDistance],
-    );
-
-    const onReleasePan = React.useCallback(
-        (dy: number) => {
-            if (dy > UIConstant.swipeThreshold) {
-                onClose && onClose();
-            } else {
-                animate(true);
-            }
-        },
-        [onClose, animate],
-    );
-
-    const onPan = React.useCallback(
-        ({ nativeEvent: { translationY } }: PanGestureHandlerGestureEvent) => {
-            if (springAnimationInProgressRef.current) {
-                return;
-            }
-            if (translationY > 0) {
-                positionAnimationRef.current.setValue(
-                    positionRef.current + translationY,
-                );
-                return;
-            }
-
-            positionAnimationRef.current.setValue(
-                getYWithRubberBandEffect(positionRef.current, translationY),
-            );
-        },
-        [],
-    );
-
-    const onPanStateChange = React.useCallback(
-        ({
-            nativeEvent: { state, translationY },
-        }: PanGestureHandlerStateChangeEvent) => {
-            if (
-                (!springAnimationInProgressRef.current &&
-                    state === RNGHState.END) ||
-                state === RNGHState.CANCELLED
-            ) {
-                onReleasePan(translationY);
-            }
-        },
-        [onReleasePan],
+        [heightValue, countRubberBandDistance],
     );
 
     const onTapStateChange = React.useCallback(
@@ -209,13 +289,13 @@ export function UISheet({
         () => ({
             flex: 1,
             backgroundColor: overlayColor,
-            opacity: positionAnimationRef.current.interpolate({
-                inputRange: [-height, 0],
+            opacity: Animated.interpolate(positionRef.current, {
+                inputRange: [Animated.sub(0, heightValue), 0],
                 outputRange: [overlayOpacity, 0],
-                extrapolate: 'clamp',
+                extrapolate: Animated.Extrapolate.CLAMP,
             }),
         }),
-        [overlayColor, overlayOpacity, height],
+        [overlayColor, overlayOpacity, heightValue],
     );
 
     const cardStyle = React.useMemo(
@@ -224,7 +304,7 @@ export function UISheet({
             {
                 transform: [
                     {
-                        translateY: positionAnimationRef.current,
+                        translateY: positionRef.current,
                     },
                 ],
             },
@@ -241,19 +321,24 @@ export function UISheet({
                 waitFor={panHandlerRef}
                 onHandlerStateChange={onTapStateChange}
             >
-                <PanGestureHandler
-                    enabled={onClose != null}
-                    ref={panHandlerRef}
-                    onGestureEvent={onPan}
-                    onHandlerStateChange={onPanStateChange}
-                >
-                    <Animated.View style={overlayStyle} />
-                </PanGestureHandler>
+                {/* https://github.com/software-mansion/react-native-gesture-handler/issues/71 */}
+                <Animated.View style={styles.interlayer}>
+                    <PanGestureHandler
+                        ref={panHandlerRef}
+                        maxPointers={1}
+                        enabled={onClose != null}
+                        onGestureEvent={onPanRef.current}
+                        onHandlerStateChange={onPanRef.current}
+                    >
+                        <Animated.View style={overlayStyle} />
+                    </PanGestureHandler>
+                </Animated.View>
             </TapGestureHandler>
             <PanGestureHandler
+                maxPointers={1}
                 enabled={onClose != null}
-                onGestureEvent={onPan}
-                onHandlerStateChange={onPanStateChange}
+                onGestureEvent={onPanRef.current}
+                onHandlerStateChange={onPanRef.current}
             >
                 <Animated.View style={cardStyle} onLayout={onSheetLayout}>
                     {children}
@@ -316,6 +401,9 @@ export function UIBottomSheet({
 }
 
 const styles = StyleSheet.create({
+    interlayer: {
+        flex: 1,
+    },
     sheet: {
         position: 'absolute',
         top: '100%',
