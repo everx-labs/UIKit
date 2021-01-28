@@ -5,7 +5,7 @@ const jsonToFlow = require('json-to-flowtype-generator');
 
 const dictionary = require('../packages/localization/src/languages/en.json');
 
-const exportPath = 'helpers/UILocalized/types.js';
+const exportPath = 'packages/localization/src/languages/types.js';
 
 const types = jsonToFlow(dictionary, { name: 'UILocalizedData' });
 
