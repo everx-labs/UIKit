@@ -116,18 +116,17 @@ function getPosition(
         time: new Animated.Value(0),
     };
 
-    const config = {
-        ...SpringUtils.makeDefaultConfig(),
-        // ...(show
-        //     ? null
-        //     : {
-        //           // Spring animation finishing could take some time
-        //           // so tuning it up a little, more details here:
-        //           // https://github.com/facebook/react-native/issues/20783
-        // restSpeedThreshold: 100,
-        // restDisplacementThreshold: 40,
-        //       }),
-        toValue: new Animated.Value(0),
+    const config: Animated.SpringConfig = {
+        // Default ones from https://reactnative.dev/docs/animated#spring
+        ...SpringUtils.makeConfigFromBouncinessAndSpeed({
+            overshootClamping: false,
+            bounciness: 8,
+            speed: 12,
+            mass: new Animated.Value(1),
+            restSpeedThreshold: new Animated.Value(0.001),
+            restDisplacementThreshold: new Animated.Value(0.001),
+            toValue: new Animated.Value(0),
+        }),
     };
 
     const gestureState = new Animated.Value(-1);
@@ -185,12 +184,22 @@ function getPosition(
                 // because it changes `show` variable, that could affect this part
                 cond(eq(show, SHOW_STATES.OPEN), [
                     set(state.finished, 0),
+                    // @ts-ignore
+                    set(config.restSpeedThreshold, 0.001),
+                    // @ts-ignore
+                    set(config.restDisplacementThreshold, 0.001),
+                    // @ts-ignore
                     set(config.toValue, sub(0, height)),
                     set(show, SHOW_STATES.OPENING),
                     startClock(clock),
                 ]),
                 cond(eq(show, SHOW_STATES.CLOSE), [
                     set(state.finished, 0),
+                    // @ts-ignore
+                    set(config.restSpeedThreshold, 100),
+                    // @ts-ignore
+                    set(config.restDisplacementThreshold, 40),
+                    // @ts-ignore
                     set(config.toValue, 0),
                     set(show, SHOW_STATES.CLOSING),
                     startClock(clock),
