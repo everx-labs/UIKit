@@ -290,8 +290,6 @@
     ],
     "Password": "Şifre",
     "Pay": "Öde",
-    "PeopleCanJoinYourChannelByFollowingThisLink": "Kişiler, bu bağlantıyı takip ederek kanalınıza katılabilir. Bağlantıyı istediğiniz zaman iptal edebilirsiniz.",
-    "PeopleCanShareThisLinkWithOtherAndFindYourChannel": "İnsanlar bu bağlantıyı başkalarıyla paylaşabilir ve aramayı kullanarak kanalınızı bulabilir.",
     "Period": "Periyot",
     "PersonalDetails": "Kişisel Bilgiler",
     "Phone": "Telefon numarası",
@@ -455,12 +453,7 @@
     "WeAreSorryButYourBrowserVersionIsNotCompatible": "Üzgünüz, tarayıcı sürümünüz uygulamamızla uyumlu değil. Lütfen bunun yerine herhangi bir güncel tarayıcı kullanın (Chrome, Safari, Edge, Firefox, vb.).",
     "WeCanTFindThePageYouReLookingFor": "Aradığınız sayfayı bulamıyoruz",
     "WelcomeTo000": "000'ya hoş geldiniz",
-    "WeNeedYourPassword": "Bu cihazda işlem yapmak için yerel şifrenize ihtiyacımız var",
-    "WeNeedYourPasswordToUpgradeWallet": "Cüzdanınızı güncellemek için yerel şifrenize ihtiyacımız var",
-    "WeNeedYourPhoneNumber": "Sizi tanımlamak için telefon numaranız gerekiyor",
     "WeUseContactsToAllowYouToInviteFriends": "Arkadaşlarınızı davet edebilmeniz için Kişilerinize erişim izni kullanıyoruz",
-    "WhomWouldYouLikeToAdd": "Kimi eklemek istersiniz?",
-    "WhomWouldYouLikeToMessage": "Kime mesaj göndermek istiyorsunuz?",
     "WillGetInTouchWithYouSoon": "Yakında sizinle iletişime geçeceğiz",
     "Word": "Kelime",
     "WriteOffAccount": "Silme Hesabı",
@@ -469,12 +462,24 @@
     "Yesterday": "Dün",
     "YesterdayAt": "Dün {0}",
     "You": "Siz",
-    "YouCanAddAdministratorsToHelpYouManageYourChannel": "Kanalınızı yönetmenize yardımcı olacak yöneticiler ekleyebilirsiniz. Yöneticileri kaldırmak için dokunun ve basılı tutun.",
-    "YouCanProvideAnOptionalDescriptionForYourChannel": "Kanalınız için isteğe bağlı bir açıklama sağlayabilirsiniz.",
-    "YouHaveNoConversationsYet": "Henüz mesajınız yok",
-    "YouHaveNoTransactionsYet": "Henüz işlemleriniz yok",
-    "YouMustUseThePhoneNumberSpecifiedInTheOffer": "Teklifte belirtilen telefon numarasını kullanmalısınız",
     "YourEmail": "E-posta adresiniz",
-    "YourTransactionCompleted": "İşleminiz tamamlandı",
-    "YourTransactionCouldNotBeCompleted": "İşleminiz tamamlanamadı"
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        },
+        "Alerts": {
+            "MessageTooLong": "Your message is longer than {0} characters.",
+            "EnableFromSettingsTitle": "Send image",
+            "EnableFromSettings": "Please enable access directly from your device Settings"
+        },
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        }
+    }
 }

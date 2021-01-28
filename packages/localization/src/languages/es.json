@@ -290,8 +290,6 @@
     ],
     "Password": "Contraseña",
     "Pay": "Pagar",
-    "PeopleCanJoinYourChannelByFollowingThisLink": "La gente puede unirse a tu canal siguiendo este enlace. Puedes revocar el enlace en cualquier momento.",
-    "PeopleCanShareThisLinkWithOtherAndFindYourChannel": "La gente puede compartir este enlace con otros y encontrar su canal usando la búsqueda.",
     "Period": "Período",
     "PersonalDetails": "Datos personales",
     "Phone": "Teléfono",
@@ -455,12 +453,7 @@
     "WeAreSorryButYourBrowserVersionIsNotCompatible": "Lo sentimos, pero la versión de su navegador no es compatible con nuestra aplicación.\nUtilice cualquier navegador moderno en su lugar (Chrome, Safari, Edge, Firefox, etc).",
     "WeCanTFindThePageYouReLookingFor": "No podemos encontrar la página que estás buscando",
     "WelcomeTo000": "Bienvenido a 000",
-    "WeNeedYourPassword": "Necesitamos su contraseña local para realizar operaciones en este dispositivo",
-    "WeNeedYourPasswordToUpgradeWallet": "Necesitamos su contraseña local para actualizar su cartera",
-    "WeNeedYourPhoneNumber": "Para identificarlo necesitamos su\nnúmero de teléfono",
     "WeUseContactsToAllowYouToInviteFriends": "Usamos los contactos para que puedas invitar a tus amigos",
-    "WhomWouldYouLikeToAdd": "¿A quién le gustaría agregar?",
-    "WhomWouldYouLikeToMessage": "¿A quién quieres enviar un mensaje?",
     "WillGetInTouchWithYouSoon": "Pronto nos pondremos en contacto contigo",
     "Word": "Palabra",
     "WriteOffAccount": "Cuenta de amortización",
@@ -469,12 +462,24 @@
     "Yesterday": "Ayer",
     "YesterdayAt": "",
     "You": "Tú",
-    "YouCanAddAdministratorsToHelpYouManageYourChannel": "Puedes agregar administradores para que te ayuden a administrar tu canal. Mantenga presionado para eliminar administradores.",
-    "YouCanProvideAnOptionalDescriptionForYourChannel": "Puedes proporcionar una descripción opcional para tu canal.",
-    "YouHaveNoConversationsYet": "Aún no tienes conversaciones.",
-    "YouHaveNoTransactionsYet": "Aún no tienes transacciones",
-    "YouMustUseThePhoneNumberSpecifiedInTheOffer": "Debes usar el número de teléfono especificado en la oferta",
     "YourEmail": "Tu correo electrónico",
-    "YourTransactionCompleted": "Su transacción ha sido completada",
-    "YourTransactionCouldNotBeCompleted": "Su transacción no pudo ser completada"
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        },
+        "Alerts": {
+            "MessageTooLong": "Your message is longer than {0} characters.",
+            "EnableFromSettingsTitle": "Send image",
+            "EnableFromSettings": "Please enable access directly from your device Settings"
+        },
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        }
+    }
 }
