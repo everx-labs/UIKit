@@ -26,56 +26,59 @@ enum QR_CODE_ERROR {
 export function QRCodeScanner(props: QRCodeScannerProps) {
     const [qrCodeError, setQrCodeError] = React.useState(QR_CODE_ERROR.NONE);
 
-    let content = null;
-
     if (qrCodeError === QR_CODE_ERROR.NONE) {
-        content = (
-            <QRCodeScannerWeb
-                onScan={(data: any) => {
-                    if (data == null) {
-                        return;
-                    }
-                    props.onRead({ data });
-                }}
-                onError={(err: DOMException) => {
-                    if (/Permission denied/.test(err.message)) {
-                        setQrCodeError(QR_CODE_ERROR.PERMISSION);
-                        return;
-                    }
-                    setQrCodeError(QR_CODE_ERROR.UNRECOGNIZED);
-                }}
-                showViewFinder={false}
-            />
+        return (
+            <View style={props.containerStyle}>
+                <QRCodeScannerWeb
+                    onScan={(data: any) => {
+                        if (data == null) {
+                            return;
+                        }
+                        props.onRead({ data });
+                    }}
+                    onError={(err: DOMException) => {
+                        if (/Permission denied/.test(err.message)) {
+                            setQrCodeError(QR_CODE_ERROR.PERMISSION);
+                            return;
+                        }
+                        setQrCodeError(QR_CODE_ERROR.UNRECOGNIZED);
+                    }}
+                    showViewFinder={false}
+                    resolution={UIConstant.elasticWidthCardSheet}
+                />
+            </View>
         );
     } else if (qrCodeError === QR_CODE_ERROR.PERMISSION) {
-        content = (
-            <UILabel
-                role={UILabelRoles.TitleMedium}
-                color={UILabelColors.TextPrimaryInverted}
-                style={styles.errorText}
-            >
-                {uiLocalized.QRCodeScanner.ErrorPermissions}
-            </UILabel>
+        return (
+            <View style={[styles.errorContainer, props.containerStyle]}>
+                <UILabel
+                    role={UILabelRoles.TitleMedium}
+                    color={UILabelColors.TextPrimaryInverted}
+                    style={styles.errorText}
+                >
+                    {uiLocalized.QRCodeScanner.ErrorPermissions}
+                </UILabel>
+            </View>
         );
     } else if (qrCodeError === QR_CODE_ERROR.UNRECOGNIZED) {
-        content = (
-            <UILabel
-                role={UILabelRoles.TitleMedium}
-                color={UILabelColors.TextPrimaryInverted}
-                style={styles.errorText}
-            >
-                {uiLocalized.QRCodeScanner.ErrorUnexpected}
-            </UILabel>
+        return (
+            <View style={[styles.errorContainer, props.containerStyle]}>
+                <UILabel
+                    role={UILabelRoles.TitleMedium}
+                    color={UILabelColors.TextPrimaryInverted}
+                    style={styles.errorText}
+                >
+                    {uiLocalized.QRCodeScanner.ErrorUnexpected}
+                </UILabel>
+            </View>
         );
     }
 
-    return (
-        <View style={[styles.container, props.containerStyle]}>{content}</View>
-    );
+    return null;
 }
 
 const styles = StyleSheet.create({
-    container: {
+    errorContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

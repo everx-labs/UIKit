@@ -27,7 +27,6 @@ export function UIQRCodeScannerSheet({
             <QRCodeScanner
                 onRead={onRead}
                 containerStyle={[
-                    styles.scannerContainer,
                     {
                         backgroundColor:
                             theme[ColorVariants.BackgroundPrimaryInverted],
@@ -65,8 +64,6 @@ const styles = StyleSheet.create({
     cardContainer: {
         height: SCANNER_HEIGHT,
         position: 'relative',
-    },
-    scannerContainer: {
         borderRadius: UIConstant.alertBorderRadius,
         overflow: 'hidden',
     },
