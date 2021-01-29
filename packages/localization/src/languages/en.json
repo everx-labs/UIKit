@@ -560,6 +560,6 @@
     },
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something happen unexpected during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     }
 }
