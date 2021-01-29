@@ -81,7 +81,6 @@ enum SHOW_STATES {
 }
 
 function getPosition(
-    clock: Animated.Clock,
     height: Animated.Value<number>,
     show: Animated.Value<number>,
     onCloseModal: () => void,
@@ -105,6 +104,8 @@ function getPosition(
         add,
         greaterThan,
     } = Animated;
+
+    const clock = new Animated.Clock();
 
     const state = {
         finished: new Animated.Value(0),
@@ -231,11 +232,9 @@ export function UISheet({
     const [isVisible, setIsVisible] = React.useState(false);
 
     const heightValue = Animated.useValue(0);
-    const clock = React.useRef(new Animated.Clock()).current;
     const show = Animated.useValue<SHOW_STATES>(SHOW_STATES.CLOSING);
 
     const { value, onPan } = getPosition(
-        clock,
         heightValue,
         show,
         () => {
