@@ -172,7 +172,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
 
         return (
             <UILabel
-                color={titleColor || UILabelColors.TextAccent}
+                color={disabled ? UILabelColors.TextTertiary : titleColor || UILabelColors.TextAccent}
                 ellipsizeMode="middle"
                 role={titleRole ||  UILabelRoles.Action}
                 {...numberOfLines}
