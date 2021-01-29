@@ -6,10 +6,7 @@ import {
     TapGestureHandler,
     State as RNGHState,
 } from 'react-native-gesture-handler';
-import type {
-    TapGestureHandlerStateChangeEvent,
-    PanGestureHandlerStateChangeEvent,
-} from 'react-native-gesture-handler';
+import type { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 

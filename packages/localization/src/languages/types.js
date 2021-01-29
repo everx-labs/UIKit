@@ -544,4 +544,8 @@ export type UILocalizedData = {|
             +AttachImage: string,
         |},
     |},
+    +QRCodeScanner: {
+        +ErrorPermissions: string,
+        +ErrorUnexpected: string,
+    },
 |};

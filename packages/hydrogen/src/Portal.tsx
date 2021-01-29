@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 type PortalMethods = {
     mount: (children: React.ReactNode) => number;
@@ -25,6 +25,7 @@ function PortalConsumer({ manager, children }: PortalConsumerProps) {
         }
 
         return () => {
+            // @ts-ignore
             manager.unmount(key.current);
         };
     }, [manager, children]);

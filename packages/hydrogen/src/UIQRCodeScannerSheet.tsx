@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import QRCodeScanner, { Event } from 'react-native-qrcode-scanner';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
+import { QRCodeScanner } from './QRCodeScanner';
 import { useTheme, ColorVariants } from './Colors';
 import { UICardSheet, UICardSheetProps } from './UISheet';
 import { UIImage } from './UIImage';
