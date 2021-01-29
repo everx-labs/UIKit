@@ -1491,6 +1491,7 @@ const customSheet = React.createRef<UICustomSheet>();
 const Menus = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
+    const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
     const [qrVisible, setQrVisible] = React.useState(false);
     return (
@@ -1595,6 +1596,31 @@ const Menus = () => {
                         title="close"
                         onPress={() => {
                             setCardSheetVisible(false);
+                        }}
+                    />
+                </UICardSheet>
+                <UITextButton
+                    title="Show UICardSheet with input"
+                    onPress={() => {
+                        setCardSheet2Visible(true);
+                    }}
+                />
+                <UICardSheet
+                    visible={cardSheet2Visible}
+                    onClose={() => {
+                        setCardSheet2Visible(false);
+                    }}
+                    style={{
+                        backgroundColor: 'white',
+                        padding: 20,
+                        borderRadius: 10,
+                    }}
+                >
+                    <UIMaterialTextView label="Write smth" />
+                    <UIButton
+                        title="close"
+                        onPress={() => {
+                            setCardSheet2Visible(false);
                         }}
                     />
                 </UICardSheet>

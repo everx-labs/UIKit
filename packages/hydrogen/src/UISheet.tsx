@@ -9,7 +9,7 @@ import {
 import type { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
-import { useBackHandler } from '@react-native-community/hooks';
+import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
 
 import { useTheme, ColorVariants } from './Colors';
 import { UIConstant } from './constants';
@@ -42,7 +42,7 @@ function useOverlay() {
         const [, red, green, blue, opacity] = currentColor.match(rgbaRegex);
 
         return {
-            overlayColor: `rgb(${red}, ${green}, ${blue})`,
+            overlayColorParts: `${red}, ${green}, ${blue}`,
             overlayOpacity: Number(opacity),
         };
     }, [theme]);
@@ -83,6 +83,7 @@ enum SHOW_STATES {
 
 function getPosition(
     height: Animated.Value<number>,
+    keyboardHeight: Animated.Value<number>,
     show: Animated.Value<number>,
     onCloseModal: () => void,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -93,12 +94,12 @@ function getPosition(
         block,
         cond,
         eq,
+        neq,
         set,
         spring,
         startClock,
         stopClock,
         clockRunning,
-        // debug,
         sub,
         call,
         and,
@@ -130,11 +131,16 @@ function getPosition(
 
     const gestureState = new Animated.Value(-1);
     const dragY = new Animated.Value(0);
-
     const beforeDragPosition = new Animated.Value(0);
+    const beforeKeyboardHeight = new Animated.Value(0);
 
     return {
         value: block([
+            cond(neq(beforeKeyboardHeight, keyboardHeight), [
+                // OPEN gonna start spring animation
+                set(show, SHOW_STATES.OPEN),
+                set(beforeKeyboardHeight, keyboardHeight),
+            ]),
             cond(eq(height, 0), 0, [
                 cond(
                     eq(gestureState, RNGHState.ACTIVE),
@@ -187,8 +193,11 @@ function getPosition(
                     set(config.restSpeedThreshold, 0.001),
                     // @ts-ignore
                     set(config.restDisplacementThreshold, 0.001),
-                    // @ts-ignore
-                    set(config.toValue, sub(0, height)),
+                    set(
+                        // @ts-ignore
+                        config.toValue,
+                        sub(0, add(height, beforeKeyboardHeight)),
+                    ),
                     set(show, SHOW_STATES.OPENING),
                     startClock(clock),
                 ]),
@@ -199,13 +208,13 @@ function getPosition(
                     // @ts-ignore
                     set(config.restDisplacementThreshold, 40),
                     // @ts-ignore
-                    set(config.toValue, 0),
+                    set(config.toValue, sub(0, beforeKeyboardHeight)),
                     set(show, SHOW_STATES.CLOSING),
                     startClock(clock),
                 ]),
                 cond(and(state.finished, clockRunning(clock)), [
                     stopClock(clock),
-                    // debug('stopped', show),
+                    // Animated.debug('stopped', show),
                     cond(eq(show, SHOW_STATES.CLOSING), call([], onCloseModal)),
                 ]),
                 state.position,
@@ -224,6 +233,7 @@ function getPosition(
 
 function usePosition(
     height: Animated.Value<number>,
+    keyboardHeight: Animated.Value<number>,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
 ) {
@@ -231,6 +241,7 @@ function usePosition(
 
     const { value, onPan } = getPosition(
         height,
+        keyboardHeight,
         show,
         onCloseModal,
         onCloseProp,
@@ -257,22 +268,40 @@ function usePosition(
     };
 }
 
-export function UISheet({
+function useAnimatedKeyboard() {
+    const keyboard = useKeyboard();
+    const keyboardHeightValue = Animated.useValue(keyboard.keyboardHeight);
+
+    React.useEffect(() => {
+        keyboardHeightValue.setValue(
+            keyboard.keyboardShown ? keyboard.keyboardHeight : 0,
+        );
+    }, [keyboard.keyboardHeight, keyboardHeightValue, keyboard.keyboardShown]);
+
+    return keyboardHeightValue;
+}
+
+type UISheetPortalContentProps = UISheetProps & {
+    onClosePortalRequest: () => void;
+};
+
+function UISheetPortalContent({
     visible,
     onClose,
     countRubberBandDistance,
     children,
-}: UISheetProps) {
-    const [isVisible, setIsVisible] = React.useState(false);
+    onClosePortalRequest,
+}: UISheetPortalContentProps) {
     const heightValue = Animated.useValue(0);
+    const { overlayColorParts, overlayOpacity } = useOverlay();
+    const keyboardHeightValue = useAnimatedKeyboard();
+
     const { animate, position, onPan } = usePosition(
         heightValue,
+        keyboardHeightValue,
         onClose,
-        () => {
-            setIsVisible(false);
-        },
+        onClosePortalRequest,
     );
-    const { overlayColor, overlayOpacity } = useOverlay();
 
     React.useEffect(() => {
         if (!visible) {
@@ -280,7 +309,6 @@ export function UISheet({
             return;
         }
 
-        setIsVisible(true);
         requestAnimationFrame(() => animate(true));
     }, [visible, animate]);
 
@@ -317,17 +345,28 @@ export function UISheet({
         [onClose],
     );
 
-    const overlayStyle = React.useMemo(
+    // @ts-ignore TS doesn't understand when backgroundColor is animated node
+    const overlayStyle: ViewStyle = React.useMemo(
         () => ({
             flex: 1,
-            backgroundColor: overlayColor,
-            opacity: Animated.interpolate(position, {
-                inputRange: [Animated.sub(0, heightValue), 0],
-                outputRange: [overlayOpacity, 0],
-                extrapolate: Animated.Extrapolate.CLAMP,
-            }),
+            // There was theretically better for perf solution
+            // with opacity, but on web it worked really bad
+            // as it seems animated value need some time
+            // to initialize before it's applied
+            // and before it happen it shown provided background color
+            // with default opacity (that is 1)
+            backgroundColor: Animated.interpolateColors(
+                Animated.abs(position),
+                {
+                    inputRange: [0, heightValue],
+                    outputColorRange: [
+                        `rgba(${overlayColorParts}, 0)`,
+                        `rgba(${overlayColorParts}, ${overlayOpacity})`,
+                    ],
+                },
+            ),
         }),
-        [overlayColor, overlayOpacity, heightValue, position],
+        [overlayColorParts, overlayOpacity, heightValue, position],
     );
 
     const cardStyle = React.useMemo(
@@ -346,8 +385,8 @@ export function UISheet({
 
     const panHandlerRef = React.useRef<PanGestureHandler>(null);
 
-    const content = !isVisible ? null : (
-        <View style={{ flex: 1, position: 'relative' }}>
+    return (
+        <View style={styles.container}>
             <TapGestureHandler
                 enabled={onClose != null}
                 waitFor={panHandlerRef}
@@ -378,8 +417,32 @@ export function UISheet({
             </PanGestureHandler>
         </View>
     );
+}
 
-    return <Portal>{content}</Portal>;
+export function UISheet(props: UISheetProps) {
+    const { visible } = props;
+    const [isVisible, setIsVisible] = React.useState(false);
+
+    React.useEffect(() => {
+        if (!visible) {
+            return;
+        }
+
+        setIsVisible(true);
+    }, [visible, setIsVisible]);
+
+    return (
+        <Portal>
+            {isVisible && (
+                <UISheetPortalContent
+                    {...props}
+                    onClosePortalRequest={() => {
+                        setIsVisible(false);
+                    }}
+                />
+            )}
+        </Portal>
+    );
 }
 
 export type UICardSheetProps = UISheetProps & { style?: ViewStyle };
@@ -433,6 +496,11 @@ export function UIBottomSheet({
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        position: 'relative',
+        overflow: 'hidden',
+    },
     interlayer: {
         flex: 1,
     },
