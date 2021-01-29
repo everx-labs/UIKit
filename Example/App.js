@@ -25,7 +25,7 @@ import {
     useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-import { UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import {
     UIButton,
     UILayoutManager,
@@ -1614,7 +1614,10 @@ const Menus = () => {
                             style={{
                                 backgroundColor: 'white',
                                 padding: 20,
-                                paddingBottom: insets.bottom,
+                                paddingBottom: Math.max(
+                                    insets.bottom,
+                                    UIConstant.contentOffset(),
+                                ),
                                 borderRadius: 10,
                             }}
                         >

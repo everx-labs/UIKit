@@ -376,7 +376,7 @@ export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
                     },
                 ]}
             >
-                <View style={style}>{children}</View>
+                <View style={[style, styles.cardInner]}>{children}</View>
             </View>
         </UISheet>
     );
@@ -421,15 +421,16 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        maxWidth: UIConstant.elasticWidthHalfNormal,
+        paddingHorizontal: UIConstant.contentOffset,
+    },
+    cardInner: {
+        width: '100%',
+        maxWidth: UIConstant.elasticWidthCardSheet,
         alignSelf: 'center',
-        left: 'auto',
-        right: 'auto',
     },
     bottom: {
         width: '100%',
-        // TODO: don't know how to do it properly on web and tablets
-        // maxWidth: UIConstant.elasticWidthHalfNormal,
+        maxWidth: UIConstant.elasticWidthBottomSheet,
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',
