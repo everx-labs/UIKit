@@ -34,7 +34,7 @@ export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
     } else {
         content = (
             <UIPopoverMenu
-                testID="menu_view"
+                testID="menu_view_dots"
                 menuItemsList={menuMore}
                 placement="top"
             >
