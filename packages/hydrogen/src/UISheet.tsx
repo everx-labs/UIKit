@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
 
 import {
     PanGestureHandler,
@@ -273,6 +273,9 @@ function useAnimatedKeyboard() {
     const keyboardHeightValue = Animated.useValue(keyboard.keyboardHeight);
 
     React.useEffect(() => {
+        if (Platform.OS !== 'ios') {
+            return;
+        }
         keyboardHeightValue.setValue(
             keyboard.keyboardShown ? keyboard.keyboardHeight : 0,
         );
