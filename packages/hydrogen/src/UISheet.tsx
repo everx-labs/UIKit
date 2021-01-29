@@ -9,6 +9,7 @@ import {
 import type { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
+import { useBackHandler } from '@react-native-community/hooks';
 
 import { useTheme, ColorVariants } from './Colors';
 import { UIConstant } from './constants';
@@ -221,26 +222,18 @@ function getPosition(
     };
 }
 
-export function UISheet({
-    visible,
-    onClose,
-    countRubberBandDistance,
-    children,
-}: UISheetProps) {
-    const { overlayColor, overlayOpacity } = useOverlay();
-
-    const [isVisible, setIsVisible] = React.useState(false);
-
-    const heightValue = Animated.useValue(0);
+function usePosition(
+    height: Animated.Value<number>,
+    onCloseProp: OnClose | undefined,
+    onCloseModal: OnClose,
+) {
     const show = Animated.useValue<SHOW_STATES>(SHOW_STATES.CLOSING);
 
     const { value, onPan } = getPosition(
-        heightValue,
+        height,
         show,
-        () => {
-            setIsVisible(false);
-        },
-        onClose,
+        onCloseModal,
+        onCloseProp,
     );
 
     const positionRef = React.useRef(value);
@@ -257,6 +250,30 @@ export function UISheet({
         [show],
     );
 
+    return {
+        animate,
+        position: positionRef.current,
+        onPan: onPanRef.current,
+    };
+}
+
+export function UISheet({
+    visible,
+    onClose,
+    countRubberBandDistance,
+    children,
+}: UISheetProps) {
+    const [isVisible, setIsVisible] = React.useState(false);
+    const heightValue = Animated.useValue(0);
+    const { animate, position, onPan } = usePosition(
+        heightValue,
+        onClose,
+        () => {
+            setIsVisible(false);
+        },
+    );
+    const { overlayColor, overlayOpacity } = useOverlay();
+
     React.useEffect(() => {
         if (!visible) {
             animate(false);
@@ -266,6 +283,16 @@ export function UISheet({
         setIsVisible(true);
         requestAnimationFrame(() => animate(true));
     }, [visible, animate]);
+
+    useBackHandler(() => {
+        if (onClose) {
+            onClose();
+        } else {
+            animate(false);
+        }
+
+        return true;
+    });
 
     const onSheetLayout = React.useCallback(
         ({
@@ -294,13 +321,13 @@ export function UISheet({
         () => ({
             flex: 1,
             backgroundColor: overlayColor,
-            opacity: Animated.interpolate(positionRef.current, {
+            opacity: Animated.interpolate(position, {
                 inputRange: [Animated.sub(0, heightValue), 0],
                 outputRange: [overlayOpacity, 0],
                 extrapolate: Animated.Extrapolate.CLAMP,
             }),
         }),
-        [overlayColor, overlayOpacity, heightValue],
+        [overlayColor, overlayOpacity, heightValue, position],
     );
 
     const cardStyle = React.useMemo(
@@ -309,12 +336,12 @@ export function UISheet({
             {
                 transform: [
                     {
-                        translateY: positionRef.current,
+                        translateY: position,
                     },
                 ],
             },
         ],
-        [],
+        [position],
     );
 
     const panHandlerRef = React.useRef<PanGestureHandler>(null);
@@ -332,8 +359,8 @@ export function UISheet({
                         ref={panHandlerRef}
                         maxPointers={1}
                         enabled={onClose != null}
-                        onGestureEvent={onPanRef.current}
-                        onHandlerStateChange={onPanRef.current}
+                        onGestureEvent={onPan}
+                        onHandlerStateChange={onPan}
                     >
                         <Animated.View style={overlayStyle} />
                     </PanGestureHandler>
@@ -342,8 +369,8 @@ export function UISheet({
             <PanGestureHandler
                 maxPointers={1}
                 enabled={onClose != null}
-                onGestureEvent={onPanRef.current}
-                onHandlerStateChange={onPanRef.current}
+                onGestureEvent={onPan}
+                onHandlerStateChange={onPan}
             >
                 <Animated.View style={cardStyle} onLayout={onSheetLayout}>
                     {children}
