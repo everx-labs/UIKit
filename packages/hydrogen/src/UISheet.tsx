@@ -386,19 +386,15 @@ function UISheetPortalContent({
         [position],
     );
 
-    const panHandlerRef = React.useRef<PanGestureHandler>(null);
-
     return (
         <View style={styles.container}>
             <TapGestureHandler
                 enabled={onClose != null}
-                waitFor={panHandlerRef}
                 onHandlerStateChange={onTapStateChange}
             >
                 {/* https://github.com/software-mansion/react-native-gesture-handler/issues/71 */}
                 <Animated.View style={styles.interlayer}>
                     <PanGestureHandler
-                        ref={panHandlerRef}
                         maxPointers={1}
                         enabled={onClose != null}
                         onGestureEvent={onPan}
