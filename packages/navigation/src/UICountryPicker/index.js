@@ -5,7 +5,7 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-import { UIConstant, UITextStyle, UIColor, UIFont } from '@tonlabs/uikit.core';
+import { UIConstant, UIColor } from '@tonlabs/uikit.core';
 import { UISearchBar } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -15,16 +15,13 @@ import type {
     ModalControllerState,
     ModalControllerShowArgs,
 } from '../UIModalController';
+import { ColorVariants, Typography, TypographyVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 let shared;
 
 const countryPickerStyle = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    contentContainer: {
-        flex: 1,
-        margin: 1,
     },
     scrollView: {
         borderWidth: 0,
@@ -44,14 +41,6 @@ const countryPickerStyle = StyleSheet.create({
     modalContainer: {
         flex: 1,
         margin: -1,
-    },
-    countryName: {
-        ...UITextStyle.primary,
-        ...UIFont.bodyMedium(), // TODO: switch to TypographyVariants.Action
-    },
-    disabledCountryName: {
-        ...UITextStyle.quaternary,
-        ...UIFont.bodyRegular(), // TODO: switch to TypographyVariants.ParagraphText
     },
     separator: {
         marginVertical: 1,
@@ -73,7 +62,56 @@ export type Country = {
     name: string,
 }
 
+function Picker({ pickerRef, cca2, language, disabledCountries, excludedCountries, onPickCountry, isLanguages }: *) {
+    const theme = useTheme();
+
+    return (
+        <CountryPicker
+            ref={pickerRef}
+            cca2={cca2}
+            translation={language}
+            hideAlphabetFilter
+            filterable
+            renderFilter={() => null}
+            disabledCountries={disabledCountries}
+            disabledCountryText={uiLocalized.serviceUnavailable}
+            excludedCountries={excludedCountries}
+            styles={{
+                ...countryPickerStyle,
+                container: {
+                    ...countryPickerStyle.container,
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                },
+                contentContainer: {
+                    flex: 1,
+                    marginHorizontal: 1,
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                },
+                countryName: [
+                    Typography[TypographyVariants.ParagraphText],
+                    { color: theme[ColorVariants.TextPrimary] },
+                ],
+                disabledCountryName: [
+                    Typography[TypographyVariants.ParagraphText],
+                    { color: theme[ColorVariants.TextNeutral] },
+                ],
+                separator: {
+                    ...countryPickerStyle.separator,
+                    backgroundColor: theme[ColorVariants.LinePrimary],
+                },
+            }}
+            onChange={onPickCountry}
+            dataType={isLanguages ?
+                CountryPicker.dataTypes.languages :
+                CountryPicker.dataTypes.countries}
+        />
+    );
+}
+
 export default class UICountryPicker extends UIModalController<Props, State> {
+    countryPickerRef = React.createRef();
+    countryPickerInputRef = React.createRef();
+
     static defaultProps = {
         isShared: false,
     };
@@ -96,8 +134,8 @@ export default class UICountryPicker extends UIModalController<Props, State> {
 
     cca2: ?string;
     language: ?string;
-    countryPicker: ?CountryPicker;
-    countryPickerInput: ?UISearchBar;
+    countryPickerRef: ?CountryPicker;
+    countryPickerInputRef: ?UISearchBar;
     disabledCountries: ?string[];
     excludedCountries: ?string[];
     isLanguages: ?boolean;
@@ -147,8 +185,8 @@ export default class UICountryPicker extends UIModalController<Props, State> {
 
     onChangeExpression = (newValue: string) => {
         this.setExpression(newValue);
-        if (this.countryPicker) {
-            this.countryPicker.handleFilterChange(newValue);
+        if (this.countryPickerRef.current != null) {
+            this.countryPickerRef.current.handleFilterChange(newValue);
         }
     };
 
@@ -192,14 +230,15 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     async focus() {
-        if (this.countryPickerInput) {
-            this.countryPickerInput.focus();
+        if (this.countryPickerInputRef.current != null) {
+            this.countryPickerInputRef.current.focus();
         }
     }
 
     // Render
+
     renderSearchBar() {
-        if (!this.countryPicker) {
+        if (!this.countryPickerRef) {
             return null;
         }
 
@@ -208,7 +247,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 <UISearchBar
                     value={this.getExpression()}
                     placeholder={`${uiLocalized.Search}...`}
-                    ref={(component) => { this.countryPickerInput = component; }}
+                    ref={this.countryPickerInputRef}
                     onChangeExpression={this.onChangeExpression}
                     bottomSeparatorStyle={countryPickerStyle.separator}
                     renderGlass
@@ -225,21 +264,14 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             <>
                 {this.renderSearchBar()}
                 <ScrollView>
-                    <CountryPicker
-                        ref={(component) => { this.countryPicker = component; }}
+                    <Picker
+                        pickerRef={this.countryPickerRef}
                         cca2={this.cca2}
-                        translation={this.language}
-                        hideAlphabetFilter
-                        filterable
-                        renderFilter={() => null}
+                        language={this.language}
                         disabledCountries={this.disabledCountries}
-                        disabledCountryText={uiLocalized.serviceUnavailable}
                         excludedCountries={this.excludedCountries}
-                        styles={countryPickerStyle}
-                        onChange={this.onPickCountry}
-                        dataType={this.isLanguages ?
-                            CountryPicker.dataTypes.languages :
-                            CountryPicker.dataTypes.countries}
+                        onPickCountry={this.onPickCountry}
+                        isLanguages={this.isLanguages}
                     />
                 </ScrollView>
             </>
