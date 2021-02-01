@@ -35,7 +35,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
     if (menuPlus.length === 1) {
         return (
             <TouchableOpacity
-                testID="menu_view"
+                testID="menu_view_plus"
                 onPress={menuPlus[0].onPress}
                 style={commonStyles.buttonContainer}
             >
@@ -49,7 +49,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
 
     return (
         <UIPopoverMenu
-            testID="menu_view"
+            testID="menu_view_plus"
             menuItemsList={menuPlus}
             placement="top"
             containerStyle={commonStyles.buttonContainer}
