@@ -5,6 +5,9 @@ export * from './UITextView';
 export * from './UIMaterialTextView';
 export * from './UISeedPhraseTextView';
 export * from './UIAutogrowTextView';
+export * from './UISheet';
+export * from './UIQRCodeScannerSheet';
+export * from './Portal';
 
 export * from './Colors';
 export * from './Typography';

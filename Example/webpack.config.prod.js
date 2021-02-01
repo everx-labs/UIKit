@@ -192,6 +192,9 @@ module.exports = {
             'react-native-ui-lib/keyboard': 'react', // Hack in order not to load
             'react-native-document-picker': 'react', // Hack in order not to load
             'rn-fetch-blob': 'react', // Hack in order not to load
+            'react-native-camera': 'react', // Hack in order not to load
+            'react-native-permissions': 'react', // Hack in order not to load
+            'react-native-qrcode-scanner': 'react', // Hack in order not to load
         },
     },
 };
