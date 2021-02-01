@@ -538,5 +538,28 @@
     "YourEmail": "Tu correo electrónico",
     "YourTransactionCompleted": "Su transacción ha sido completada",
     "YourTransactionCouldNotBeCompleted": "Su transacción no pudo ser completada",
-    "YourUsername": "Tu nombre de usuario"
+    "YourUsername": "Tu nombre de usuario",
+    "Chats": {
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        },
+        "Alerts": {
+            "MessageTooLong": "Your message is longer than {0} characters.",
+            "EnableFromSettingsTitle": "Send image",
+            "EnableFromSettings": "Please enable access directly from your device Settings"
+        },
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        }
+    },
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    }
 }

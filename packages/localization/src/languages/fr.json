@@ -557,5 +557,9 @@
             "AttachDocument": "Document",
             "AttachImage": "Image"
         }
+    },
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     }
 }
