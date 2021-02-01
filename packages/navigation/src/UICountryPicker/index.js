@@ -109,8 +109,8 @@ function Picker({ pickerRef, cca2, language, disabledCountries, excludedCountrie
 }
 
 export default class UICountryPicker extends UIModalController<Props, State> {
-    countryPickerRef = React.createRef();
-    countryPickerInputRef = React.createRef();
+    countryPickerRef = React.createRef<CountryPicker>();
+    countryPickerInputRef = React.createRef<UISearchBar>();
 
     static defaultProps = {
         isShared: false,
@@ -134,8 +134,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
 
     cca2: ?string;
     language: ?string;
-    countryPickerRef: ?CountryPicker;
-    countryPickerInputRef: ?UISearchBar;
     disabledCountries: ?string[];
     excludedCountries: ?string[];
     isLanguages: ?boolean;
