@@ -5,8 +5,17 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-import { UIConstant, UIColor } from '@tonlabs/uikit.core';
+import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UISearchBar } from '@tonlabs/uikit.components';
+import {
+    ColorVariants,
+    Typography,
+    TypographyVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    useTheme
+} from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIModalController from '../UIModalController';
@@ -15,7 +24,6 @@ import type {
     ModalControllerState,
     ModalControllerShowArgs,
 } from '../UIModalController';
-import { ColorVariants, Typography, TypographyVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 let shared;
 
@@ -88,11 +96,11 @@ function Picker({ pickerRef, cca2, language, disabledCountries, excludedCountrie
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
                 },
                 countryName: [
-                    Typography[TypographyVariants.ParagraphText],
+                    Typography[TypographyVariants.Action],
                     { color: theme[ColorVariants.TextPrimary] },
                 ],
                 disabledCountryName: [
-                    Typography[TypographyVariants.ParagraphText],
+                    Typography[TypographyVariants.Action],
                     { color: theme[ColorVariants.TextNeutral] },
                 ],
                 separator: {
@@ -134,9 +142,12 @@ export default class UICountryPicker extends UIModalController<Props, State> {
 
     cca2: ?string;
     language: ?string;
+    screenTitle: ?string;
     disabledCountries: ?string[];
     excludedCountries: ?string[];
     isLanguages: ?boolean;
+    searchBarHidden: ?boolean;
+    bottomView: ?React$Node;
 
     constructor(props: Props) {
         super(props);
@@ -144,10 +155,13 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.testID = '[UICountryPicker]';
         this.cca2 = null;
         this.language = null;
+        this.screenTitle = null;
         this.disabledCountries = [];
         this.excludedCountries = [];
         this.modalOnWeb = false;
         this.isLanguages = false;
+        this.searchBarHidden = false;
+        this.bottomView = null;
 
         this.state = {
             expression: '',
@@ -209,18 +223,24 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 fullscreen = false,
                 language = 'eng',
                 cca2 = 'US',
+                screenTitle = '',
                 disabledCountries = [],
                 excludedCountries = [],
                 modalOnWeb = false,
                 isLanguages = false,
+                searchBarHidden = false,
+                bottomView = null,
             } = args;
             this.fullscreen = fullscreen;
             this.cca2 = cca2;
             this.language = language;
+            this.screenTitle = screenTitle;
             this.disabledCountries = disabledCountries;
             this.excludedCountries = excludedCountries;
             this.modalOnWeb = modalOnWeb;
             this.isLanguages = isLanguages;
+            this.searchBarHidden = searchBarHidden;
+            this.bottomView = bottomView;
         }
         await super.show(args);
 
@@ -235,8 +255,24 @@ export default class UICountryPicker extends UIModalController<Props, State> {
 
     // Render
 
+    renderScreenTitle() {
+        if (!this.screenTitle) {
+            return null;
+        }
+
+        return (
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.TitleMedium}
+                style={UIStyle.padding.default()}
+            >
+                {this.screenTitle}
+            </UILabel>
+        )
+    }
+
     renderSearchBar() {
-        if (!this.countryPickerRef) {
+        if (this.searchBarHidden || !this.countryPickerRef) {
             return null;
         }
 
@@ -254,6 +290,14 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         );
     }
 
+    renderBottomView() {
+        if (!this.bottomView) {
+            return null;
+        }
+
+        return this.bottomView;
+    }
+
     renderContentView() {
         // Wraping the component with a ScrollView fixes on Android the
         // problem of the list not avoiding the keyboard... on iOS this
@@ -262,6 +306,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             <>
                 {this.renderSearchBar()}
                 <ScrollView>
+                    {this.renderScreenTitle()}
                     <Picker
                         pickerRef={this.countryPickerRef}
                         cca2={this.cca2}
@@ -271,6 +316,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                         onPickCountry={this.onPickCountry}
                         isLanguages={this.isLanguages}
                     />
+                    {this.renderBottomView()}
                 </ScrollView>
             </>
         );
