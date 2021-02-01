@@ -430,7 +430,6 @@ export default class UIFunction {
 
     static formatMessageDate(date: Date, shortFormat: boolean = true) {
         const format = shortFormat ? 'l' : 'll';
-        // Same as Telegram formatting
         return dayjs(date).calendar(null, {
             sameDay: 'LT',
             nextDay: 'ddd',

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alert: {
         flexShrink: 1,
         width: UIConstant.alertWidth(),
-        borderRadius: UIConstant.alertBorderRadius(),
+        borderRadius: UIConstant.mediumBorderRadius(),
         backgroundColor: UIColor.backgroundPrimary(),
         padding: UIConstant.mediumContentOffset(),
     },

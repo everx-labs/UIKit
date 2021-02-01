@@ -1,11 +1,7 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
-        "paths": {
-            "@react-native-tdlib/*": [
-                "./packages/*/src"
-            ]
-        },
+        "paths": {},
         "composite": true,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,

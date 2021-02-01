@@ -327,12 +327,7 @@ export default class UIImageView extends UIComponent<Props, State> {
         }
         if (file.size >= UIConstant.maxFileSize()) { // in decimal
             const msg = uiLocalized.formatString(uiLocalized.FileIsTooBig, UIConstant.maxFileSize() / 1000000);
-            UIAlertView.showAlert(uiLocalized.Error, msg, [{
-                title: uiLocalized.OK,
-                onPress: () => {
-                    // nothing
-                },
-            }]);
+            UIAlertView.showAlert(uiLocalized.Error, msg, [{ title: uiLocalized.OK }]);
             return;
         }
 

@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
     downMenu: {
         position: 'absolute',
         bottom: UIConstant.contentOffset(),
-        borderRadius: UIConstant.borderRadius(),
+        borderRadius: UIConstant.mediumBorderRadius(),
     },
     contentContainer: {
-        borderRadius: UIConstant.borderRadius(),
+        borderRadius: UIConstant.mediumBorderRadius(),
         paddingHorizontal: UIConstant.contentOffset(),
         paddingBottom: UIConstant.contentOffset(),
     },

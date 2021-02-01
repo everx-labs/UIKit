@@ -3,8 +3,8 @@ import React from 'react';
 import { StyleSheet, BackHandler, Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { ColorVariants, Typography, TypographyVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
     },
     titleStyle: {
         paddingVertical: UIConstant.smallContentOffset(),
-        textAlign: 'left',
+        textAlign: 'center',
     },
     messageStyle: {
         paddingVertical: UIConstant.smallContentOffset(),
-        textAlign: 'left',
+        textAlign: 'center',
     },
     buttonStyle: {
         width: 110,
@@ -52,13 +52,77 @@ type Props = {
     masterAlert: boolean,
 };
 
-type AlertButtons = { title: string, color?: string, onPress?: () => void }[];
+type AlertButtons = { title: string, color?: ColorVariants, onPress?: () => void }[];
 
 type State = {
     alertVisible: boolean,
     alertTitle: string,
     alertMessage: string,
     alertButtons: AlertButtons,
+}
+
+function Alert({
+    cancelButton,
+    confirmButton,
+    onCancel,
+    onConfirm,
+    zIndex,
+    visible,
+    title,
+    message,
+}: *) {
+    const theme = useTheme();
+    return (
+        <AwesomeAlert
+            useNativeDriver
+            alertContainerStyle={{ overflow: 'hidden', zIndex }}
+            overlayStyle={styles.overlayStyle}
+            contentContainerStyle={[
+                styles.containerStyle,
+                { backgroundColor: theme[ColorVariants.BackgroundPrimary] },
+            ]}
+            show={visible}
+            showProgress={false}
+            title={title}
+            message={message}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            titleStyle={[
+                styles.titleStyle,
+                Typography[TypographyVariants.TitleSmall],
+                { color: theme[ColorVariants.TextPrimary]}
+            ]}
+            messageStyle={[
+                styles.messageStyle,
+                Typography[TypographyVariants.ParagraphNote],
+                { color: theme[ColorVariants.TextPrimary] }
+            ]}
+            showCancelButton={!!cancelButton}
+            showConfirmButton={!!confirmButton}
+            cancelText={cancelButton && cancelButton.title}
+            confirmText={confirmButton && confirmButton.title}
+            cancelButtonStyle={styles.buttonStyle}
+            confirmButtonStyle={styles.buttonStyle}
+            cancelButtonTextStyle={[
+                styles.buttonTextStyle,
+                Typography[TypographyVariants.Action],
+                cancelButton && cancelButton.color
+                    ? { color: theme[cancelButton.color] }
+                    : { color: theme[ColorVariants.TextAccent] },
+            ]}
+            confirmButtonTextStyle={[
+                styles.buttonTextStyle,
+                Typography[TypographyVariants.Action],
+                confirmButton && confirmButton.color
+                    ? { color: theme[confirmButton.color] }
+                    : { color: theme[ColorVariants.TextAccent] },
+            ]}
+            cancelButtonColor="transparent"
+            confirmButtonColor="transparent"
+            onCancelPressed={onCancel}
+            onConfirmPressed={onConfirm}
+        />
+    );
 }
 
 export default class UIAlertView extends UIComponent<Props, State> {
@@ -135,6 +199,15 @@ export default class UIAlertView extends UIComponent<Props, State> {
         }
     };
 
+    onConfirmPressed = () => {
+        this.hideAlert();
+
+        const confirmButton = this.state.alertButtons[1];
+        if (confirmButton && confirmButton.onPress) {
+            confirmButton.onPress();
+        }
+    };
+
     // actions
     showAlert(alertTitle: string, alertMessage: string, alertButtons: AlertButtons) {
         this.startListeningToBackButton();
@@ -150,62 +223,23 @@ export default class UIAlertView extends UIComponent<Props, State> {
 
     // render
     render() {
-        const cancelButton = this.state.alertButtons[0];
-        const confirmButton = this.state.alertButtons[1];
         const {
-            overlayStyle, containerStyle, titleStyle, messageStyle, buttonStyle, buttonTextStyle,
-        } = styles;
-        return (<AwesomeAlert
-            useNativeDriver
-            alertContainerStyle={{ overflow: 'hidden', zIndex: UIAlertView.zIndex }}
-            overlayStyle={overlayStyle}
-            contentContainerStyle={containerStyle}
-            show={this.state.alertVisible}
-            showProgress={false}
-            title={this.state.alertTitle}
-            message={this.state.alertMessage}
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            titleStyle={[
-                UIStyle.color.getColorStyle(UIColor.textPrimary()),
-                Typography[TypographyVariants.TitleSmall],
-                titleStyle,
-            ]}
-            messageStyle={[
-                UIStyle.color.getColorStyle(UIColor.textPrimary()),
-                Typography[TypographyVariants.ParagraphNote],
-                messageStyle,
-            ]}
-            // closeOnTouchOutside={false}
-            // closeOnHardwareBackPress={false}
-            showCancelButton={!!cancelButton}
-            showConfirmButton={!!confirmButton}
-            cancelText={cancelButton && cancelButton.title}
-            confirmText={confirmButton && confirmButton.title}
-            cancelButtonStyle={buttonStyle}
-            confirmButtonStyle={buttonStyle}
-            cancelButtonTextStyle={[
-                UIStyle.color.getColorStyle(UIColor.textAccent()),
-                Typography[TypographyVariants.Action],
-                buttonTextStyle,
-                (cancelButton && cancelButton.color ? { color: cancelButton.color } : {}),
-            ]}
-            confirmButtonTextStyle={[
-                UIStyle.color.getColorStyle(UIColor.textAccent()),
-                Typography[TypographyVariants.Action],
-                buttonTextStyle,
-                (confirmButton && confirmButton.color ? { color: confirmButton.color } : {}),
-            ]}
-            cancelButtonColor="transparent"
-            confirmButtonColor="transparent"
-            onCancelPressed={this.onCancelPressed}
-            onConfirmPressed={() => {
-                this.hideAlert();
-
-                if (confirmButton && confirmButton.onPress) {
-                    confirmButton.onPress();
-                }
-            }}
-        />);
+            alertVisible,
+            alertTitle,
+            alertMessage,
+            alertButtons: [ cancelButton, confirmButton ],
+        } = this.state;
+        return (
+            <Alert
+                visible={alertVisible}
+                title={alertTitle}
+                message={alertMessage}
+                zIndex={UIAlertView.zIndex}
+                cancelButton={cancelButton}
+                confirmButton={confirmButton}
+                onCancel={this.onCancelPressed}
+                onConfirm={this.onConfirmPressed}
+            />
+        );
     }
 }

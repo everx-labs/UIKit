@@ -7,6 +7,7 @@ import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/node
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 export type Props = {
     balance: string,
@@ -48,22 +49,26 @@ const UIAnimatedBalanceSymbol = React.memo(
         textStyle: TextStyleProp,
         fractionalTextStyle: TextStyleProp,
         children: BalanceSymbol,
-    }) => (
-        <Animated.Text
-            style={[
-                UIStyle.text.primary(),
-                UIStyle.text.titleLight(),
-                children.kind === BalanceSymbolKind.integer
-                    ? textStyle
-                    : fractionalTextStyle,
-                {
-                    opacity: animation,
-                },
-            ]}
-        >
-            {children.value}
-        </Animated.Text>
-    ),
+    }) => {
+        const theme = useTheme();
+        return (
+            <Animated.Text
+                style={[
+                    UIStyle.text.primary(),
+                    UIStyle.text.titleLight(),
+                    children.kind === BalanceSymbolKind.integer
+                        ? textStyle
+                        : fractionalTextStyle,
+                    {
+                        opacity: animation,
+                        color: theme[ColorVariants.TextPrimary],
+                    },
+                ]}
+            >
+                {children.value}
+            </Animated.Text>
+        );
+    },
     (prev, next) => prev.children === next.children,
 );
 
