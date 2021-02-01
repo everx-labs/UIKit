@@ -536,9 +536,6 @@
     "YouHaveNoTransactionsYet": "У вас пока нет транзакций",
     "YouMustUseThePhoneNumberSpecifiedInTheOffer": "Вы должны использовать номер телефона, указанный в предложении",
     "YourEmail": "Ваш адрес электронной почты",
-    "YourTransactionCompleted": "Транзакция выполнена",
-    "YourTransactionCouldNotBeCompleted": "Не удалось выполнить транзакцию",
-    "YourUsername": "Ваше имя пользователя",
     "Chats": {
         "Bubbles": {
             "TapToResend": "Отправить повторно",

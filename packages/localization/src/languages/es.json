@@ -536,9 +536,6 @@
     "YouHaveNoTransactionsYet": "Aún no tienes transacciones",
     "YouMustUseThePhoneNumberSpecifiedInTheOffer": "Debes usar el número de teléfono especificado en la oferta",
     "YourEmail": "Tu correo electrónico",
-    "YourTransactionCompleted": "Su transacción ha sido completada",
-    "YourTransactionCouldNotBeCompleted": "Su transacción no pudo ser completada",
-    "YourUsername": "Tu nombre de usuario",
     "Chats": {
         "Bubbles": {
             "TapToResend": "Tap to resend",

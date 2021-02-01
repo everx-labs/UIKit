@@ -536,9 +536,6 @@
     "YouHaveNoTransactionsYet": "您还没做过任何交易",
     "YouMustUseThePhoneNumberSpecifiedInTheOffer": "您必须使用优惠中指定的电话号码",
     "YourEmail": "你的邮箱",
-    "YourTransactionCompleted": "您的交易已完成",
-    "YourTransactionCouldNotBeCompleted": "您的交易无法完成",
-    "YourUsername": "你的用户名",
     "Chats": {
         "Bubbles": {
             "TapToResend": "为了重新发送，点按这里",

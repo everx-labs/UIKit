@@ -536,9 +536,6 @@
     "YouHaveNoTransactionsYet": "Henüz işlemleriniz yok",
     "YouMustUseThePhoneNumberSpecifiedInTheOffer": "Teklifte belirtilen telefon numarasını kullanmalısınız",
     "YourEmail": "E-posta adresiniz",
-    "YourTransactionCompleted": "İşleminiz tamamlandı",
-    "YourTransactionCouldNotBeCompleted": "İşleminiz tamamlanamadı",
-    "YourUsername": "Kullanıcı adınız",
     "Chats": {
         "Bubbles": {
             "TapToResend": "Tap to resend",

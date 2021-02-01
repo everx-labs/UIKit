@@ -522,9 +522,6 @@ export type UILocalizedData = {|
     +YouHaveNoTransactionsYet: string,
     +YouMustUseThePhoneNumberSpecifiedInTheOffer: string,
     +YourEmail: string,
-    +YourTransactionCompleted: string,
-    +YourTransactionCouldNotBeCompleted: string,
-    +YourUsername: string,
     +Chats: {|
         +Bubbles: {|
             +TapToResend: string,

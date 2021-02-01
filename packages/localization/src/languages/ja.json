@@ -536,9 +536,6 @@
     "YouHaveNoTransactionsYet": "トランザクションはまだありません。",
     "YouMustUseThePhoneNumberSpecifiedInTheOffer": "オファーで指定された電話番号を使用してください。",
     "YourEmail": "あなたのメールアドレス",
-    "YourTransactionCompleted": "トランザクションは完了です。",
-    "YourTransactionCouldNotBeCompleted": "申し訳ありませんが、トランザクションは完了できませんでした。",
-    "YourUsername": "あなたのユーザー名",
     "Chats": {
         "Bubbles": {
             "TapToResend": "タップして再送信する",

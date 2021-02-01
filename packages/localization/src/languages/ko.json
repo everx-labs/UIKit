@@ -536,9 +536,6 @@
     "YouHaveNoTransactionsYet": "아직은 트랜잭션이 없습니다.",
     "YouMustUseThePhoneNumberSpecifiedInTheOffer": "주문하면서 지정된 전화번호를 사용해야 합니다",
     "YourEmail": "이용자의 이메일",
-    "YourTransactionCompleted": "트랜잭션이 완료되었습니다",
-    "YourTransactionCouldNotBeCompleted": "트랜잭션을 완료 할 수 없습니다.",
-    "YourUsername": "사용자 이름",
     "Chats": {
         "Bubbles": {
             "TapToResend": "다시 보내려면 탭하세요.",
