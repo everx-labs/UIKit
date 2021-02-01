@@ -21,10 +21,11 @@ import { createSurfSplitNavigator } from 'react-navigation-surf';
 import {
     SafeAreaView,
     SafeAreaProvider,
+    SafeAreaInsetsContext,
     useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-import { UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import {
     UIButton,
     UILayoutManager,
@@ -110,6 +111,10 @@ import {
     ColorVariants,
     UIMaterialTextView,
     UISeedPhraseTextView,
+    UICardSheet,
+    UIBottomSheet,
+    UIQRCodeScannerSheet,
+    PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 
 enableScreens();
@@ -1485,6 +1490,10 @@ const customSheet = React.createRef<UICustomSheet>();
 
 const Menus = () => {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
+    const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
+    const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
+    const [qrVisible, setQrVisible] = React.useState(false);
     return (
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
             <View
@@ -1563,6 +1572,104 @@ const Menus = () => {
                         if (customSheet.current) {
                             customSheet.current.show();
                         }
+                    }}
+                />
+                <UITextButton
+                    title="Show UICardSheet"
+                    onPress={() => {
+                        setCardSheetVisible(true);
+                    }}
+                />
+                <UICardSheet
+                    visible={cardSheetVisible}
+                    onClose={() => {
+                        setCardSheetVisible(false);
+                    }}
+                    style={{
+                        backgroundColor: 'white',
+                        padding: 20,
+                        borderRadius: 10,
+                    }}
+                >
+                    <Text>Hi there!</Text>
+                    <UIButton
+                        title="close"
+                        onPress={() => {
+                            setCardSheetVisible(false);
+                        }}
+                    />
+                </UICardSheet>
+                <UITextButton
+                    title="Show UICardSheet with input"
+                    onPress={() => {
+                        setCardSheet2Visible(true);
+                    }}
+                />
+                <UICardSheet
+                    visible={cardSheet2Visible}
+                    onClose={() => {
+                        setCardSheet2Visible(false);
+                    }}
+                    style={{
+                        backgroundColor: 'white',
+                        padding: 20,
+                        borderRadius: 10,
+                    }}
+                >
+                    <UIMaterialTextView label="Write smth" />
+                    <UIButton
+                        title="close"
+                        onPress={() => {
+                            setCardSheet2Visible(false);
+                        }}
+                    />
+                </UICardSheet>
+                <UITextButton
+                    title="Show UIBottomSheet"
+                    onPress={() => {
+                        setBottomSheetVisible(true);
+                    }}
+                />
+                <SafeAreaInsetsContext.Consumer>
+                    {(insets) => (
+                        <UIBottomSheet
+                            visible={bottomSheetVisible}
+                            onClose={() => {
+                                setBottomSheetVisible(false);
+                            }}
+                            style={{
+                                backgroundColor: 'white',
+                                padding: 20,
+                                paddingBottom: Math.max(
+                                    insets.bottom,
+                                    UIConstant.contentOffset(),
+                                ),
+                                borderRadius: 10,
+                            }}
+                        >
+                            <Text>Hi there!</Text>
+                            <UIButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible(false);
+                                }}
+                            />
+                        </UIBottomSheet>
+                    )}
+                </SafeAreaInsetsContext.Consumer>
+                <UITextButton
+                    title="Show UIQRcodeScannerSheet"
+                    onPress={() => {
+                        setQrVisible(true);
+                    }}
+                />
+                <UIQRCodeScannerSheet
+                    visible={qrVisible}
+                    onClose={() => {
+                        setQrVisible(false);
+                    }}
+                    onRead={() => {
+                        setQrVisible(false);
                     }}
                 />
             </View>
@@ -2711,83 +2818,97 @@ const App: () => React$Node = () => {
 
     const main = (
         <SafeAreaProvider>
-            <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
-                <SurfSplit.Navigator
-                    initialRouteName="buttons"
-                    screenOptions={{
-                        splitStyles: {
-                            body: [
-                                styles.body,
-                                {
-                                    backgroundColor:
-                                        theme[ColorVariants.BackgroundTertiary],
-                                },
-                            ],
+            <PortalManager>
+                <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
+                    <SurfSplit.Navigator
+                        initialRouteName="buttons"
+                        screenOptions={{
+                            splitStyles: {
+                                body: [
+                                    styles.body,
+                                    {
+                                        backgroundColor:
+                                            theme[
+                                                ColorVariants.BackgroundTertiary
+                                            ],
+                                    },
+                                ],
 
-                            main: [
-                                styles.main,
-                                {
-                                    backgroundColor:
-                                        theme[ColorVariants.BackgroundPrimary],
-                                },
-                            ],
-                            detail: [
-                                styles.detail,
-                                {
-                                    backgroundColor:
-                                        theme[ColorVariants.BackgroundPrimary],
-                                },
-                            ],
-                        },
-                    }}
-                    mainWidth={900}
-                >
-                    <SurfSplit.Screen name="main" component={Main} />
-                    <SurfSplit.Screen name="buttons" component={Buttons} />
-                    <SurfSplit.Screen name="checkbox" component={Checkbox} />
-                    <SurfSplit.Screen name="inputs" component={Inputs} />
-                    <SurfSplit.Screen name="design" component={Design} />
-                    <SurfSplit.Screen name="images" component={Images} />
-                    <SurfSplit.Screen name="layouts" component={Layouts} />
-                    <SurfSplit.Screen name="menus" component={Menus} />
-                    <SurfSplit.Screen
-                        name="notifications"
-                        component={Notifications}
-                    />
-                    <SurfSplit.Screen name="popups" component={Popups} />
-                    <SurfSplit.Screen name="products" component={Products} />
-                    <SurfSplit.Screen name="profile" component={Profile} />
-                    <SurfSplit.Screen name="text" component={TextScreen} />
-                    <SurfSplit.Screen name="chat" component={Chat} />
-                </SurfSplit.Navigator>
-            </NavigationContainer>
-            <UILayoutManager />
-            <UIActionSheet ref={actionSheet} masterSheet={false} />
-            <UIActionSheet />
-            <UICountryPicker navigation={navRef.current} isShared />
-            <UICustomSheet
-                ref={customSheet}
-                masterSheet={false}
-                component={
-                    <>
-                        <Text>This is custom sheet!</Text>
-                        <UIButton
-                            title="close"
-                            onPress={() => {
-                                if (customSheet.current) {
-                                    customSheet.current.hide();
-                                }
-                            }}
+                                main: [
+                                    styles.main,
+                                    {
+                                        backgroundColor:
+                                            theme[
+                                                ColorVariants.BackgroundPrimary
+                                            ],
+                                    },
+                                ],
+                                detail: [
+                                    styles.detail,
+                                    {
+                                        backgroundColor:
+                                            theme[
+                                                ColorVariants.BackgroundPrimary
+                                            ],
+                                    },
+                                ],
+                            },
+                        }}
+                        mainWidth={900}
+                    >
+                        <SurfSplit.Screen name="main" component={Main} />
+                        <SurfSplit.Screen name="buttons" component={Buttons} />
+                        <SurfSplit.Screen
+                            name="checkbox"
+                            component={Checkbox}
                         />
-                    </>
-                }
-            />
-            <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-                <UINotice />
-            </View>
-            <UIAlert />
-            <UIAlertView />
-            <UIDropdownAlert />
+                        <SurfSplit.Screen name="inputs" component={Inputs} />
+                        <SurfSplit.Screen name="design" component={Design} />
+                        <SurfSplit.Screen name="images" component={Images} />
+                        <SurfSplit.Screen name="layouts" component={Layouts} />
+                        <SurfSplit.Screen name="menus" component={Menus} />
+                        <SurfSplit.Screen
+                            name="notifications"
+                            component={Notifications}
+                        />
+                        <SurfSplit.Screen name="popups" component={Popups} />
+                        <SurfSplit.Screen
+                            name="products"
+                            component={Products}
+                        />
+                        <SurfSplit.Screen name="profile" component={Profile} />
+                        <SurfSplit.Screen name="text" component={TextScreen} />
+                        <SurfSplit.Screen name="chat" component={Chat} />
+                    </SurfSplit.Navigator>
+                </NavigationContainer>
+                <UILayoutManager />
+                <UIActionSheet ref={actionSheet} masterSheet={false} />
+                <UIActionSheet />
+                <UICountryPicker navigation={navRef.current} isShared />
+                <UICustomSheet
+                    ref={customSheet}
+                    masterSheet={false}
+                    component={
+                        <>
+                            <Text>This is custom sheet!</Text>
+                            <UIButton
+                                title="close"
+                                onPress={() => {
+                                    if (customSheet.current) {
+                                        customSheet.current.hide();
+                                    }
+                                }}
+                            />
+                        </>
+                    }
+                />
+                <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+                    <UINotice />
+                </View>
+                <UIAlert />
+                <UIAlertView />
+                <UIDropdownAlert />
+            </PortalManager>
         </SafeAreaProvider>
     );
 

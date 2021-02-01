@@ -12,6 +12,10 @@ npm install @tonlabs/uikit.hydrogen
 yarn add @tonlabs/uikit.hydrogen
 ```
 
+## react-native-gesture-handler
+
+Please be aware that one of the dependencies is `react-native-gesture-handler` library, that has [few important installation steps](https://docs.swmansion.com/react-native-gesture-handler/docs/#installation) you need not to forget.
+
 # Fonts setup
 
 Basic font for `hydrogen` is [Inter](https://rsms.me/inter/).
