@@ -17,6 +17,7 @@ import {
     useTheme
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIModalController from '../UIModalController';
 import type {
@@ -24,6 +25,8 @@ import type {
     ModalControllerState,
     ModalControllerShowArgs,
 } from '../UIModalController';
+
+const checkboxIco = UIAssets.icons.ui.checkboxCircleActiveInverted;
 
 let shared;
 
@@ -41,10 +44,14 @@ const countryPickerStyle = StyleSheet.create({
     },
     itemCountry: {
         height: UIConstant.buttonHeight(),
+        marginHorizontal: UIConstant.contentOffset(),
     },
     itemCountryName: {
+        flex: 1,
+        flexDirection: 'row',
         borderBottomWidth: 0,
         height: UIConstant.smallCellHeight(),
+        justifyContent: 'space-between',
     },
     modalContainer: {
         flex: 1,
@@ -70,14 +77,25 @@ export type Country = {
     name: string,
 }
 
-function Picker({ pickerRef, cca2, language, disabledCountries, excludedCountries, onPickCountry, isLanguages }: *) {
+function Picker({
+    pickerRef,
+    cca2,
+    selected,
+    translation,
+    disabledCountries,
+    excludedCountries,
+    onPickCountry,
+    isLanguages,
+    hideFlags,
+}: *) {
     const theme = useTheme();
 
     return (
         <CountryPicker
             ref={pickerRef}
             cca2={cca2}
-            translation={language}
+            selected={selected}
+            translation={translation}
             hideAlphabetFilter
             filterable
             renderFilter={() => null}
@@ -112,6 +130,8 @@ function Picker({ pickerRef, cca2, language, disabledCountries, excludedCountrie
             dataType={isLanguages ?
                 CountryPicker.dataTypes.languages :
                 CountryPicker.dataTypes.countries}
+            hideFlags={hideFlags}
+            selectedItemImage={checkboxIco}
         />
     );
 }
@@ -141,26 +161,31 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     cca2: ?string;
-    language: ?string;
+    selected: ?string;
+    translation: ?string;
     screenTitle: ?string;
     disabledCountries: ?string[];
     excludedCountries: ?string[];
     isLanguages: ?boolean;
     searchBarHidden: ?boolean;
+    flagsHidden: ?boolean;
     bottomView: ?React$Node;
+
 
     constructor(props: Props) {
         super(props);
         this.fullscreen = false;
         this.testID = '[UICountryPicker]';
         this.cca2 = null;
-        this.language = null;
+        this.selected = '';
+        this.translation = null;
         this.screenTitle = null;
         this.disabledCountries = [];
         this.excludedCountries = [];
         this.modalOnWeb = false;
         this.isLanguages = false;
         this.searchBarHidden = false;
+        this.flagsHidden = false;
         this.bottomView = null;
 
         this.state = {
@@ -221,25 +246,29 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         if (typeof args === 'object') {
             const {
                 fullscreen = false,
-                language = 'eng',
+                translation = 'eng',
                 cca2 = 'US',
+                selected = '',
                 screenTitle = '',
                 disabledCountries = [],
                 excludedCountries = [],
                 modalOnWeb = false,
                 isLanguages = false,
                 searchBarHidden = false,
+                flagsHidden = false,
                 bottomView = null,
             } = args;
             this.fullscreen = fullscreen;
             this.cca2 = cca2;
-            this.language = language;
+            this.selected = selected;
+            this.translation = translation;
             this.screenTitle = screenTitle;
             this.disabledCountries = disabledCountries;
             this.excludedCountries = excludedCountries;
             this.modalOnWeb = modalOnWeb;
             this.isLanguages = isLanguages;
             this.searchBarHidden = searchBarHidden;
+            this.flagsHidden = flagsHidden;
             this.bottomView = bottomView;
         }
         await super.show(args);
@@ -310,11 +339,13 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                     <Picker
                         pickerRef={this.countryPickerRef}
                         cca2={this.cca2}
-                        language={this.language}
+                        selected={this.selected}
+                        translation={this.translation}
                         disabledCountries={this.disabledCountries}
                         excludedCountries={this.excludedCountries}
                         onPickCountry={this.onPickCountry}
                         isLanguages={this.isLanguages}
+                        hideFlags={this.flagsHidden}
                     />
                     {this.renderBottomView()}
                 </ScrollView>
