@@ -430,16 +430,20 @@ export function UISheet(props: UISheetProps) {
         setIsVisible(true);
     }, [visible, setIsVisible]);
 
+    const onClosePortalRequest = React.useCallback(() => {
+        setIsVisible(false);
+    }, []);
+
+    if (!isVisible) {
+        return null;
+    }
+
     return (
         <Portal>
-            {isVisible && (
-                <UISheetPortalContent
-                    {...props}
-                    onClosePortalRequest={() => {
-                        setIsVisible(false);
-                    }}
-                />
-            )}
+            <UISheetPortalContent
+                {...props}
+                onClosePortalRequest={onClosePortalRequest}
+            />
         </Portal>
     );
 }

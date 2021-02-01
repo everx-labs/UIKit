@@ -53,7 +53,7 @@ export const Portal = (props: PortalProps) => (
 );
 
 type PortalManagerState = {
-    [key: string]: React.ReactNode;
+    [key: number]: React.ReactNode;
 };
 
 export class PortalManager extends React.PureComponent<
@@ -61,11 +61,31 @@ export class PortalManager extends React.PureComponent<
     PortalManagerState
 > {
     state: PortalManagerState = {};
+
+    getKey(): number {
+        const emptyKey = Object.keys(this.state).reduce<string | null>(
+            (acc, key) => {
+                // @ts-expect-error
+                if (this.state[key] == null) {
+                    return key;
+                }
+                return acc;
+            },
+            null,
+        );
+
+        if (emptyKey != null) {
+            return Number(emptyKey);
+        }
+
+        this.counter = this.counter + 1;
+        return this.counter;
+    }
+
     counter: number = 0;
 
     mount = (children: React.ReactNode) => {
-        this.counter = this.counter + 1;
-        const key = this.counter;
+        const key = this.getKey();
         this.setState((state) => ({
             ...state,
             [key]: children,
@@ -74,30 +94,33 @@ export class PortalManager extends React.PureComponent<
     };
 
     update = (key: number, children: React.ReactNode) => {
-        this.setState((state) => ({
-            ...state,
-            [key]: children,
-        }));
+        this.setState((state) => {
+            return {
+                ...state,
+                [key]: children,
+            };
+        });
     };
 
     unmount = (key: number) => {
-        const newState = Object.assign({}, this.state);
-        delete newState[key];
-        this.setState(newState);
+        this.setState((state) => ({
+            ...state,
+            [key]: null,
+        }));
+    };
+
+    manager = {
+        mount: this.mount,
+        update: this.update,
+        unmount: this.unmount,
     };
 
     render() {
         return (
-            <PortalContext.Provider
-                value={{
-                    mount: this.mount,
-                    update: this.update,
-                    unmount: this.unmount,
-                }}
-            >
+            <PortalContext.Provider value={this.manager}>
                 {this.props.children}
-                {Object.keys(this.state).map((key) => {
-                    const children = this.state[key];
+                {Object.keys(this.state).map((key: string) => {
+                    const children = this.state[Number(key)];
                     if (children != null) {
                         return (
                             <View
