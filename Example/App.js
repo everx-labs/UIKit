@@ -641,10 +641,10 @@ const Inputs = () => {
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMaterialTextView label="Label" />
                     <UIMaterialTextView
-                        label="Label2"
+                        label="Label with initial value"
                         value={text}
                         onChangeText={setText}
-                        helperText="This is comment"
+                        helperText="Hint"
                     />
                 </View>
             </View>

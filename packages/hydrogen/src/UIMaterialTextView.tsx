@@ -75,12 +75,12 @@ const OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG = {
 const paragraphTextStyle = StyleSheet.flatten(
     Typography[TypographyVariants.ParagraphText],
 );
-const footnoteTextStyle = StyleSheet.flatten(
-    Typography[TypographyVariants.ParagraphFootnote],
+const labelTextStyle = StyleSheet.flatten(
+    Typography[TypographyVariants.ParagraphLabel],
 );
 const FOLDED_FLOATING_LABEL_SCALE =
     // @ts-expect-error
-    footnoteTextStyle.fontSize / paragraphTextStyle.fontSize;
+    labelTextStyle.fontSize / paragraphTextStyle.fontSize;
 const FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG = {
     toValue: FOLDED_FLOATING_LABEL_SCALE,
     ...FLOATING_LABEL_SPRING_CONFIG,
@@ -89,7 +89,7 @@ const OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG = {
     toValue: 1,
     ...FLOATING_LABEL_SPRING_CONFIG,
 };
-const PSEUDO_LABEL_BOTTOM_MARGIN = 5;
+const PSEUDO_LABEL_BOTTOM_MARGIN = 4;
 
 const isLabelFolded = (props: UIMaterialTextViewProps) => {
     if (props.defaultValue) {
@@ -340,7 +340,7 @@ export const UIMaterialTextView = React.forwardRef<
                 <Text
                     onLayout={onPseudoLabelLayout}
                     style={[
-                        Typography[TypographyVariants.ParagraphFootnote],
+                        Typography[TypographyVariants.ParagraphLabel],
                         {
                             letterSpacing: paragraphTextStyle.letterSpacing,
                             lineHeight: undefined,
@@ -392,14 +392,14 @@ export const UIMaterialTextView = React.forwardRef<
     );
 
     if (!helperText) {
-        return main;
+        return <View style={styles.withoutCommentContainer}>{main}</View>;
     }
 
     return (
         <View style={styles.withCommentContainer}>
             {main}
             <UILabel
-                role={TypographyVariants.ParagraphLabel}
+                role={TypographyVariants.ParagraphNote}
                 color={getCommentColor(props)}
                 style={styles.comment}
             >
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     },
     inputWrapper: {
         position: 'relative',
-        paddingBottom: 5,
+        paddingBottom: 9,
         borderBottomWidth: 1,
         flexDirection: 'row',
     },
@@ -429,10 +429,16 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
     },
+    withoutCommentContainer: {
+        paddingTop: 12,
+        paddingBottom: 18,
+    },
     withCommentContainer: {
         flexDirection: 'column',
+        paddingTop: 12,
+        paddingBottom: 12,
     },
     comment: {
-        marginTop: 5,
+        marginTop: 10,
     },
 });
