@@ -645,7 +645,7 @@ const styles = StyleSheet.create({
     },
     hintsContainer: {
         flex: 1,
-        marginTop: -16, // Don't want to calculate it dinamically, seems to work fine
+        marginTop: -42, // Don't want to calculate it dinamically, seems to work fine
         ...UIConstant.cardShadow,
         borderBottomLeftRadius: UIConstant.borderRadius,
         borderBottomRightRadius: UIConstant.borderRadius,
