@@ -91,9 +91,9 @@ const InterFontNormalLight: TextStyle = {
 export const Typography: TypographyT = StyleSheet.create({
     [TypographyVariants.TitleHuge]: {
         ...InterFontNormalSemiBold,
-        fontSize: 38,
+        fontSize: 36,
         lineHeight: 48,
-        letterSpacing: -0.84,
+        letterSpacing: -0.79,
     },
     [TypographyVariants.TitleLarge]: {
         ...InterFontNormalSemiBold,
@@ -109,15 +109,15 @@ export const Typography: TypographyT = StyleSheet.create({
     },
     [TypographyVariants.TitleSmall]: {
         ...InterFontNormalSemiBold,
-        fontSize: 19,
+        fontSize: 18,
         lineHeight: 24,
-        letterSpacing: -0.3,
+        letterSpacing: -0.26,
     },
     [TypographyVariants.PromoHuge]: {
         ...InterFontNormalRegular,
-        fontSize: 38,
+        fontSize: 36,
         lineHeight: 48,
-        letterSpacing: -0.84,
+        letterSpacing: -0.79,
     },
     [TypographyVariants.PromoLarge]: {
         ...InterFontNormalRegular,
@@ -133,9 +133,9 @@ export const Typography: TypographyT = StyleSheet.create({
     },
     [TypographyVariants.PromoSmall]: {
         ...InterFontNormalRegular,
-        fontSize: 19,
+        fontSize: 18,
         lineHeight: 24,
-        letterSpacing: -0.3,
+        letterSpacing: -0.26,
     },
     [TypographyVariants.HeadlineHead]: {
         ...InterFontNormalSemiBold,
@@ -152,13 +152,13 @@ export const Typography: TypographyT = StyleSheet.create({
     [TypographyVariants.HeadlineFootnote]: {
         ...InterFontNormalSemiBold,
         fontSize: 13,
-        lineHeight: 16,
+        lineHeight: 20,
         letterSpacing: -0.04,
     },
     [TypographyVariants.HeadlineLabel]: {
         ...InterFontNormalSemiBold,
         fontSize: 11,
-        lineHeight: 12,
+        lineHeight: 16,
         letterSpacing: 0.05,
     },
     [TypographyVariants.Action]: {
@@ -176,13 +176,13 @@ export const Typography: TypographyT = StyleSheet.create({
     [TypographyVariants.ActionFootnote]: {
         ...InterFontNormalMedium,
         fontSize: 13,
-        lineHeight: 16,
+        lineHeight: 20,
         letterSpacing: -0.04,
     },
     [TypographyVariants.ActionLabel]: {
         ...InterFontNormalMedium,
         fontSize: 11,
-        lineHeight: 12,
+        lineHeight: 16,
         letterSpacing: 0.05,
     },
 
@@ -201,13 +201,13 @@ export const Typography: TypographyT = StyleSheet.create({
     [TypographyVariants.ParagraphFootnote]: {
         ...InterFontNormalRegular,
         fontSize: 13,
-        lineHeight: 16,
+        lineHeight: 20,
         letterSpacing: -0.04,
     },
     [TypographyVariants.ParagraphLabel]: {
         ...InterFontNormalRegular,
         fontSize: 11,
-        lineHeight: 12,
+        lineHeight: 16,
         letterSpacing: 0.05,
     },
 
@@ -226,9 +226,9 @@ export const Typography: TypographyT = StyleSheet.create({
 
     [TypographyVariants.LightHuge]: {
         ...InterFontNormalLight,
-        fontSize: 38,
+        fontSize: 36,
         lineHeight: 48,
-        letterSpacing: -0.84,
+        letterSpacing: -0.79,
     },
     [TypographyVariants.LightLarge]: {
         ...InterFontNormalLight,
@@ -244,8 +244,8 @@ export const Typography: TypographyT = StyleSheet.create({
     },
     [TypographyVariants.LightSmall]: {
         ...InterFontNormalLight,
-        fontSize: 19,
+        fontSize: 18,
         lineHeight: 24,
-        letterSpacing: -0.3,
+        letterSpacing: -0.26,
     },
 });
