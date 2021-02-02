@@ -5,9 +5,19 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-import { UIConstant, UITextStyle, UIColor, UIFont } from '@tonlabs/uikit.core';
+import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UISearchBar } from '@tonlabs/uikit.components';
+import {
+    ColorVariants,
+    Typography,
+    TypographyVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    useTheme
+} from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIModalController from '../UIModalController';
 import type {
@@ -16,15 +26,13 @@ import type {
     ModalControllerShowArgs,
 } from '../UIModalController';
 
+const checkboxIco = UIAssets.icons.ui.checkboxCircleActiveInverted;
+
 let shared;
 
 const countryPickerStyle = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    contentContainer: {
-        flex: 1,
-        margin: 1,
     },
     scrollView: {
         borderWidth: 0,
@@ -36,22 +44,18 @@ const countryPickerStyle = StyleSheet.create({
     },
     itemCountry: {
         height: UIConstant.buttonHeight(),
+        marginHorizontal: UIConstant.contentOffset(),
     },
     itemCountryName: {
+        flex: 1,
+        flexDirection: 'row',
         borderBottomWidth: 0,
         height: UIConstant.smallCellHeight(),
+        justifyContent: 'space-between',
     },
     modalContainer: {
         flex: 1,
         margin: -1,
-    },
-    countryName: {
-        ...UITextStyle.primary,
-        ...UIFont.bodyMedium(), // TODO: switch to TypographyVariants.Action
-    },
-    disabledCountryName: {
-        ...UITextStyle.quaternary,
-        ...UIFont.bodyRegular(), // TODO: switch to TypographyVariants.ParagraphText
     },
     separator: {
         marginVertical: 1,
@@ -73,7 +77,69 @@ export type Country = {
     name: string,
 }
 
+function Picker({
+    pickerRef,
+    cca2,
+    selected,
+    translation,
+    disabledCountries,
+    excludedCountries,
+    onPickCountry,
+    isLanguages,
+    hideFlags,
+}: *) {
+    const theme = useTheme();
+
+    return (
+        <CountryPicker
+            ref={pickerRef}
+            cca2={cca2}
+            selected={selected}
+            translation={translation}
+            hideAlphabetFilter
+            filterable
+            renderFilter={() => null}
+            disabledCountries={disabledCountries}
+            disabledCountryText={uiLocalized.serviceUnavailable}
+            excludedCountries={excludedCountries}
+            styles={{
+                ...countryPickerStyle,
+                container: {
+                    ...countryPickerStyle.container,
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                },
+                contentContainer: {
+                    flex: 1,
+                    marginHorizontal: 1,
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                },
+                countryName: [
+                    Typography[TypographyVariants.Action],
+                    { color: theme[ColorVariants.TextPrimary] },
+                ],
+                disabledCountryName: [
+                    Typography[TypographyVariants.Action],
+                    { color: theme[ColorVariants.TextNeutral] },
+                ],
+                separator: {
+                    ...countryPickerStyle.separator,
+                    backgroundColor: theme[ColorVariants.LinePrimary],
+                },
+            }}
+            onChange={onPickCountry}
+            dataType={isLanguages ?
+                CountryPicker.dataTypes.languages :
+                CountryPicker.dataTypes.countries}
+            hideFlags={hideFlags}
+            selectedItemImage={checkboxIco}
+        />
+    );
+}
+
 export default class UICountryPicker extends UIModalController<Props, State> {
+    countryPickerRef = React.createRef<CountryPicker>();
+    countryPickerInputRef = React.createRef<UISearchBar>();
+
     static defaultProps = {
         isShared: false,
     };
@@ -95,23 +161,32 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     cca2: ?string;
-    language: ?string;
-    countryPicker: ?CountryPicker;
-    countryPickerInput: ?UISearchBar;
+    selected: ?string;
+    translation: ?string;
+    screenTitle: ?string;
     disabledCountries: ?string[];
     excludedCountries: ?string[];
     isLanguages: ?boolean;
+    searchBarHidden: ?boolean;
+    flagsHidden: ?boolean;
+    bottomView: ?React$Node;
+
 
     constructor(props: Props) {
         super(props);
         this.fullscreen = false;
         this.testID = '[UICountryPicker]';
         this.cca2 = null;
-        this.language = null;
+        this.selected = '';
+        this.translation = null;
+        this.screenTitle = null;
         this.disabledCountries = [];
         this.excludedCountries = [];
         this.modalOnWeb = false;
         this.isLanguages = false;
+        this.searchBarHidden = false;
+        this.flagsHidden = false;
+        this.bottomView = null;
 
         this.state = {
             expression: '',
@@ -147,8 +222,8 @@ export default class UICountryPicker extends UIModalController<Props, State> {
 
     onChangeExpression = (newValue: string) => {
         this.setExpression(newValue);
-        if (this.countryPicker) {
-            this.countryPicker.handleFilterChange(newValue);
+        if (this.countryPickerRef.current != null) {
+            this.countryPickerRef.current.handleFilterChange(newValue);
         }
     };
 
@@ -171,20 +246,30 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         if (typeof args === 'object') {
             const {
                 fullscreen = false,
-                language = 'eng',
+                translation = 'eng',
                 cca2 = 'US',
+                selected = '',
+                screenTitle = '',
                 disabledCountries = [],
                 excludedCountries = [],
                 modalOnWeb = false,
                 isLanguages = false,
+                searchBarHidden = false,
+                flagsHidden = false,
+                bottomView = null,
             } = args;
             this.fullscreen = fullscreen;
             this.cca2 = cca2;
-            this.language = language;
+            this.selected = selected;
+            this.translation = translation;
+            this.screenTitle = screenTitle;
             this.disabledCountries = disabledCountries;
             this.excludedCountries = excludedCountries;
             this.modalOnWeb = modalOnWeb;
             this.isLanguages = isLanguages;
+            this.searchBarHidden = searchBarHidden;
+            this.flagsHidden = flagsHidden;
+            this.bottomView = bottomView;
         }
         await super.show(args);
 
@@ -192,14 +277,31 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     }
 
     async focus() {
-        if (this.countryPickerInput) {
-            this.countryPickerInput.focus();
+        if (this.countryPickerInputRef.current != null) {
+            this.countryPickerInputRef.current.focus();
         }
     }
 
     // Render
+
+    renderScreenTitle() {
+        if (!this.screenTitle) {
+            return null;
+        }
+
+        return (
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.TitleMedium}
+                style={UIStyle.padding.default()}
+            >
+                {this.screenTitle}
+            </UILabel>
+        )
+    }
+
     renderSearchBar() {
-        if (!this.countryPicker) {
+        if (this.searchBarHidden || !this.countryPickerRef) {
             return null;
         }
 
@@ -208,13 +310,21 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 <UISearchBar
                     value={this.getExpression()}
                     placeholder={`${uiLocalized.Search}...`}
-                    ref={(component) => { this.countryPickerInput = component; }}
+                    ref={this.countryPickerInputRef}
                     onChangeExpression={this.onChangeExpression}
                     bottomSeparatorStyle={countryPickerStyle.separator}
                     renderGlass
                 />
             </React.Fragment>
         );
+    }
+
+    renderBottomView() {
+        if (!this.bottomView) {
+            return null;
+        }
+
+        return this.bottomView;
     }
 
     renderContentView() {
@@ -225,22 +335,19 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             <>
                 {this.renderSearchBar()}
                 <ScrollView>
-                    <CountryPicker
-                        ref={(component) => { this.countryPicker = component; }}
+                    {this.renderScreenTitle()}
+                    <Picker
+                        pickerRef={this.countryPickerRef}
                         cca2={this.cca2}
-                        translation={this.language}
-                        hideAlphabetFilter
-                        filterable
-                        renderFilter={() => null}
+                        selected={this.selected}
+                        translation={this.translation}
                         disabledCountries={this.disabledCountries}
-                        disabledCountryText={uiLocalized.serviceUnavailable}
                         excludedCountries={this.excludedCountries}
-                        styles={countryPickerStyle}
-                        onChange={this.onPickCountry}
-                        dataType={this.isLanguages ?
-                            CountryPicker.dataTypes.languages :
-                            CountryPicker.dataTypes.countries}
+                        onPickCountry={this.onPickCountry}
+                        isLanguages={this.isLanguages}
+                        hideFlags={this.flagsHidden}
                     />
+                    {this.renderBottomView()}
                 </ScrollView>
             </>
         );
