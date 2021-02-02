@@ -53,6 +53,25 @@
     "Channel": "채널",
     "ChannelInfo": "채널 정보",
     "ChannelName": "채널 이름",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "문서",
+            "AttachImage": "이미지"
+        },
+        "Alerts": {
+            "EnableFromSettings": "장치 설정에서 직접 액세스를 활성화하십시오",
+            "EnableFromSettingsTitle": "이미지 보내기",
+            "MessageTooLong": "메시지가 {0} 자보다 깁니다."
+        },
+        "Bubbles": {
+            "TapToResend": "다시 보내려면 탭하세요.",
+            "TapToSendAgain": "다시 보내려면 탭하세요."
+        },
+        "DateSeparators": {
+            "Today": "오늘",
+            "Yesterday": "어제"
+        }
+    },
     "ChatWith": "와/과 채팅하기",
     "ChooseDepositToken": "입금 토큰 선택",
     "ChooseFromLibrary": "라이브러리에서 고르기",
@@ -241,10 +260,6 @@
     "moreWords11": "더 많은 단어",
     "moreWords24": "더 많은 단어",
     "moreWords50": "더 많은 단어",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "저의 계정",
     "MyMainAccount": "메인 계정",
     "Name": "이름",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "공식채널을 이름으로 검색할 수 있습니다.누구나 가입할 수 있습니다.",
     "PushFeedbackLong": "저희가 더 나은 응용 프로그램을 만들 수 있도록 피드백을 제공해주세요. 진행하려면 여기를 클릭하십시오.",
     "PushFeedbackShort": "서핑에 기여할 수 있도록 피드백을 제공해주세요",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "받기",
     "Recent": "최근의",
     "Recently": "최근에",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "연락처를 사용하여 친구를 초대 할 수 있습니다.",
     "WillGetInTouchWithYouSoon": "곧 연락 드리겠습니다.",
     "Word": "단어",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "상각 계정",
     "WrongPassword": "잘못된 비밀번호",
     "Yes": "예",
     "Yesterday": "어제",
     "YesterdayAt": "어제 {0}",
     "You": "당신은",
-    "YourEmail": "이용자의 이메일",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "다시 보내려면 탭하세요.",
-            "TapToSendAgain": "다시 보내려면 탭하세요."
-        },
-        "DateSeparators": {
-            "Today": "오늘",
-            "Yesterday": "어제"
-        },
-        "Alerts": {
-            "MessageTooLong": "메시지가 {0} 자보다 깁니다.",
-            "EnableFromSettingsTitle": "이미지 보내기",
-            "EnableFromSettings": "장치 설정에서 직접 액세스를 활성화하십시오"
-        },
-        "Actions": {
-            "AttachDocument": "문서",
-            "AttachImage": "이미지"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "이용자의 이메일"
 }

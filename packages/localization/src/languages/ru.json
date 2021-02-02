@@ -53,6 +53,25 @@
     "Channel": "Канал",
     "ChannelInfo": "Описание канала",
     "ChannelName": "Название канала",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Документ",
+            "AttachImage": "Изображение"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Разрешите доступ в параметрах вашего устройства",
+            "EnableFromSettingsTitle": "Отправить изображение",
+            "MessageTooLong": "Сообщение содержит более {0} символов."
+        },
+        "Bubbles": {
+            "TapToResend": "Отправить повторно",
+            "TapToSendAgain": "Отправить еще раз"
+        },
+        "DateSeparators": {
+            "Today": "Сегодня",
+            "Yesterday": "Вчера"
+        }
+    },
     "ChatWith": "Чат с",
     "ChooseDepositToken": "Выбрать токены для обмена",
     "ChooseFromLibrary": "Выбрать из библиотеки",
@@ -152,7 +171,7 @@
     "FailedToLeaveChannel": "Не удалось покинуть канал",
     "FailedToLeaveGroup": "Не удалось покинуть группу",
     "FailedToLoadDocument": "Не удалось загрузить документ",
-    "FailedToSendTransaction": "Не удалось отправить транзакцию",
+    "FailedToSendTransaction": "Не удалось отправить перевод",
     "FailedToSetLimit": "Не удалось установить лимит",
     "fee": "Комиссия",
     "feeAmount": "≈ {0}",
@@ -241,10 +260,6 @@
     "moreWords11": "слово осталось",
     "moreWords24": "слова осталось",
     "moreWords50": "слов осталось",
-    "words01": "слово",
-    "words11": "слов",
-    "words24": "слова",
-    "words50": "слов",
     "MyAccount": "Мой Аккаунт",
     "MyMainAccount": "Мой Главный Аккаунт",
     "Name": "Имя",
@@ -268,7 +283,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Только администраторы могут добавлять и удалять участников, редактировать название и фото группы.",
     "OpenSettings": "Открыть настройки",
     "operationTime": "Время операции",
-    "orDelimeter": " или ",
+    "orDelimeter": " or ",
     "OutOf": "из",
     "Passport": "Паспорт",
     "PassportFetchingStatus": "Получение статуса...",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Публичные каналы можно найти через поиск, подписаться на них может любой пользователь.",
     "PushFeedbackLong": "Оставьте отзыв, помогите нам сделать приложение лучше. Нажмите, чтобы продолжить",
     "PushFeedbackShort": "Оставьте отзыв, если хотите поучаствовать в разработке приложения",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Получить",
     "Recent": "Последние",
     "Recently": "был(а) недавно",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Мы используем контакты для приглашения друзей",
     "WillGetInTouchWithYouSoon": "Мы свяжемся с вами в ближайшее время",
     "Word": "Cлово",
+    "words01": "слово",
+    "words11": "слов",
+    "words24": "слова",
+    "words50": "слов",
     "WriteOffAccount": "Счет списания",
     "WrongPassword": "Неверный пароль",
     "Yes": "Да",
     "Yesterday": "Вчера",
     "YesterdayAt": "Вчера в {0}",
     "You": "Вы",
-    "YourEmail": "Ваш адрес электронной почты",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Отправить повторно",
-            "TapToSendAgain": "Отправить еще раз"
-        },
-        "DateSeparators": {
-            "Today": "Сегодня",
-            "Yesterday": "Вчера"
-        },
-        "Alerts": {
-            "MessageTooLong": "Сообщение содержит более {0} символов.",
-            "EnableFromSettingsTitle": "Отправить изображение",
-            "EnableFromSettings": "Разрешите доступ в параметрах вашего устройства"
-        },
-        "Actions": {
-            "AttachDocument": "Документ",
-            "AttachImage": "Изображение"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "Ваш адрес электронной почты"
 }

@@ -53,6 +53,25 @@
     "Channel": "Kanal",
     "ChannelInfo": "Kanal Bilgisi",
     "ChannelName": "Kanal Adı",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Please enable access directly from your device Settings",
+            "EnableFromSettingsTitle": "Send image",
+            "MessageTooLong": "Your message is longer than {0} characters."
+        },
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        }
+    },
     "ChatWith": "ile sohbet",
     "ChooseDepositToken": "Mevduat Belirtecini Seç",
     "ChooseFromLibrary": "Kütüphaneden seç",
@@ -241,10 +260,6 @@
     "moreWords11": "kelime kaldı",
     "moreWords24": "kelime kaldı",
     "moreWords50": "kelime kaldı",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Hesabım",
     "MyMainAccount": "Ana Hesabım",
     "Name": "Ad",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Genel kanallar, arama ile bulunabilir ve kanala herkes katılabilir.",
     "PushFeedbackLong": "Uygulamayı daha iyi hale getirmemize yardımcı olmak için geribeslemenizi verin. Devam etmek için buraya tıklayın",
     "PushFeedbackShort": "Surf'e katkıda bulunmak için geribeslemede bulunun",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Teslim al",
     "Recent": "Son",
     "Recently": "son görülme yakınlarda",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Arkadaşlarınızı davet edebilmeniz için Kişilerinize erişim izni kullanıyoruz",
     "WillGetInTouchWithYouSoon": "Yakında sizinle iletişime geçeceğiz",
     "Word": "Kelime",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Silme Hesabı",
     "WrongPassword": "Yanlış şifre",
     "Yes": "Evet",
     "Yesterday": "Dün",
     "YesterdayAt": "Dün {0}",
     "You": "Siz",
-    "YourEmail": "E-posta adresiniz",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Tap to resend",
-            "TapToSendAgain": "Tap to send again"
-        },
-        "DateSeparators": {
-            "Today": "Today",
-            "Yesterday": "Yesterday"
-        },
-        "Alerts": {
-            "MessageTooLong": "Your message is longer than {0} characters.",
-            "EnableFromSettingsTitle": "Send image",
-            "EnableFromSettings": "Please enable access directly from your device Settings"
-        },
-        "Actions": {
-            "AttachDocument": "Document",
-            "AttachImage": "Image"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "E-posta adresiniz"
 }

@@ -53,6 +53,25 @@
     "Channel": "Canal",
     "ChannelInfo": "Información del canal",
     "ChannelName": "Nombre del Canal",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Please enable access directly from your device Settings",
+            "EnableFromSettingsTitle": "Send image",
+            "MessageTooLong": "Your message is longer than {0} characters."
+        },
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        }
+    },
     "ChatWith": "Chatea con...",
     "ChooseDepositToken": "Elija el token de depósito",
     "ChooseFromLibrary": "Elija desde la Biblioteca",
@@ -241,10 +260,6 @@
     "moreWords11": "más palabras",
     "moreWords24": "más palabras",
     "moreWords50": "más palabras",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Mi cuenta",
     "MyMainAccount": "Mi cuenta principal",
     "Name": "Nombre",
@@ -268,7 +283,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Solo los administradores pueden agregar y eliminar miembros y editar el nombre y la foto del grupo.",
     "OpenSettings": "Abrir Configuración",
     "operationTime": "Tiempo de la operación",
-    "orDelimeter": " o ",
+    "orDelimeter": " or ",
     "OutOf": "de",
     "Passport": "Pasaporte",
     "PassportFetchingStatus": "Obteniendo estado ...",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Los canales públicos se pueden encontrar en la búsqueda. Cualquiera puede unirse a ellos.",
     "PushFeedbackLong": "Da tu opinión para ayudarnos a mejorar la historia. Haga clic aquí para compartir",
     "PushFeedbackShort": "Da tu opinión para ayudarnos a mejorar la historia. Haga clic aquí para compartir",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Recibir",
     "Recent": "Reciente",
     "Recently": "fue recientemente",
@@ -377,7 +396,7 @@
     "TheRequestedServiceIsDownToGetUpAsapTryAgainLater": "El servicio solicitado no funciona. Subirá lo antes posible. Por favor, inténtelo de nuevo más tarde",
     "ThisActionCannotBeUndone": "Esta acción no se puede deshacer",
     "Today": "Hoy",
-    "TodayAt": "",
+    "TodayAt": "Hoy a las {0}",
     "Tokens": "Tokens",
     "TONLabel": "TON",
     "TotalBalance": "Balance total",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Usamos los contactos para que puedas invitar a tus amigos",
     "WillGetInTouchWithYouSoon": "Pronto nos pondremos en contacto contigo",
     "Word": "Palabra",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Cuenta de amortización",
     "WrongPassword": "Contraseña incorrecta",
     "Yes": "Sí",
     "Yesterday": "Ayer",
-    "YesterdayAt": "",
+    "YesterdayAt": "Ayer a las {0}",
     "You": "Tú",
-    "YourEmail": "Tu correo electrónico",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Tap to resend",
-            "TapToSendAgain": "Tap to send again"
-        },
-        "DateSeparators": {
-            "Today": "Today",
-            "Yesterday": "Yesterday"
-        },
-        "Alerts": {
-            "MessageTooLong": "Your message is longer than {0} characters.",
-            "EnableFromSettingsTitle": "Send image",
-            "EnableFromSettings": "Please enable access directly from your device Settings"
-        },
-        "Actions": {
-            "AttachDocument": "Document",
-            "AttachImage": "Image"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "Tu correo electrónico"
 }

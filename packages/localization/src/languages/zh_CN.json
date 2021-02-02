@@ -53,6 +53,25 @@
     "Channel": "频道",
     "ChannelInfo": "通道信息",
     "ChannelName": "频道名称",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "文件",
+            "AttachImage": "图像"
+        },
+        "Alerts": {
+            "EnableFromSettings": "请直接从您的设备设置启用访问权限",
+            "EnableFromSettingsTitle": "发送图片",
+            "MessageTooLong": "您的消息超过{0}个字符。"
+        },
+        "Bubbles": {
+            "TapToResend": "为了重新发送，点按这里",
+            "TapToSendAgain": "为了再一次发送，点按这里"
+        },
+        "DateSeparators": {
+            "Today": "今天",
+            "Yesterday": "昨天"
+        }
+    },
     "ChatWith": "聊天",
     "ChooseDepositToken": "选择存款代币",
     "ChooseFromLibrary": "从库中选择",
@@ -241,10 +260,6 @@
     "moreWords11": "更多的词",
     "moreWords24": "更多的词",
     "moreWords50": "更多的词",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "我的账户",
     "MyMainAccount": "我的账户",
     "Name": "名字",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "公共频道可以在搜索中找到。任何人都可以加入他们。",
     "PushFeedbackLong": "为了帮助我们的应用变得更好，请提供您的反馈意见。点击这里分享。",
     "PushFeedbackShort": "为做Surf的贡献，请提供您的反馈意见",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "接收",
     "Recent": "最近",
     "Recently": "是最近",
@@ -415,7 +434,7 @@
         "ConfirmLocalPassword": "确认登录方式",
         "ConfirmLocalPasswordContinue": "好的，咱走吧",
         "ConfirmLocalPasswordDetails": "为了进入钱包并确认您的交易，要设置密码。这只能在此设备上使用。",
-        "ConfirmLocalPasswordHint": "空的",
+        "ConfirmLocalPasswordHint": "普通话",
         "ConfirmLocalPasswordPlaceholder": "重复密码",
         "ConfirmLocalPasswordSuccess": "成功。",
         "ConfirmLocalPasswordWarning": "注意！要在其他设备上访问电子钱包，您需要您的关键字。",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "我们使用联系人来邀请朋友",
     "WillGetInTouchWithYouSoon": "我们尽快与您联系。",
     "Word": "字",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "注销账户",
     "WrongPassword": "密码错误",
     "Yes": "对",
     "Yesterday": "昨天",
     "YesterdayAt": "昨天在{0}",
     "You": "您",
-    "YourEmail": "你的邮箱",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "为了重新发送，点按这里",
-            "TapToSendAgain": "为了再一次发送，点按这里"
-        },
-        "DateSeparators": {
-            "Today": "今天",
-            "Yesterday": "昨天"
-        },
-        "Alerts": {
-            "MessageTooLong": "您的消息超过{0}个字符。",
-            "EnableFromSettingsTitle": "发送图片",
-            "EnableFromSettings": "请直接从您的设备设置启用访问权限"
-        },
-        "Actions": {
-            "AttachDocument": "文件",
-            "AttachImage": "图像"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "你的邮箱"
 }

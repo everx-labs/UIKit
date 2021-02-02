@@ -53,6 +53,25 @@
     "Channel": "Chaîne",
     "ChannelInfo": "Informations sur la chaîne",
     "ChannelName": "Nom de la chaîne",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Veuillez activer l'accès directement à partir des paramètres de votre appareil",
+            "EnableFromSettingsTitle": "Envoyer l'image",
+            "MessageTooLong": "Votre message comporte plus de {0} caractères."
+        },
+        "Bubbles": {
+            "TapToResend": "Appuyez pour renvoyer",
+            "TapToSendAgain": "Appuyez pour envoyer à nouveau"
+        },
+        "DateSeparators": {
+            "Today": "Aujourd'hui",
+            "Yesterday": "Hier"
+        }
+    },
     "ChatWith": "Chatter avec",
     "ChooseDepositToken": "Choisissez un token de dépôt",
     "ChooseFromLibrary": "Choisissez dans la bibliothèque",
@@ -76,7 +95,7 @@
     "ContinueWithPassword": "Continuer avec le mot de passe",
     "ConvertToSupergroup": "Convertir en supergroupe",
     "ConvertToSupergroupDetails": "Dans les supergroupes:\n • Les nouveaux membres peuvent voir l'historique complet des messages\n • Les messages supprimés disparaîtront pour tous les membres\n • Les administrateurs peuvent épingler des messages importants\n • Le créateur peut définir un lien public pour le groupe",
-    "CopiedToClipboard": "",
+    "CopiedToClipboard": "Copied to clipboard",
     "Copy": "Copier",
     "CopyRight": "2018– {CURRENT_YEAR} © TON Labs",
     "CopyToClipboard": "Copier dans le presse-papiers",
@@ -241,10 +260,6 @@
     "moreWords11": "plus de mots",
     "moreWords24": "plus de mots",
     "moreWords50": "plus de mots",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Mon compte",
     "MyMainAccount": "Mon compte principal",
     "Name": "Nom",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Les chaînes publiques peuvent être trouvées avec le moteur de recherche. Tout le monde peut les rejoindre.",
     "PushFeedbackLong": "Donnez votre avis pour nous aider à améliorer l'histoire. Cliquez ici pour partager",
     "PushFeedbackShort": "Donnez des commentaires pour contribuer à l'histoire",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Recevoir",
     "Recent": "Récent",
     "Recently": "a été récemment",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Nous utilisons des contacts pour vous permettre d'inviter des amis",
     "WillGetInTouchWithYouSoon": "Nous prendrons contact avec vous prochainement",
     "Word": "Mot",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Annuler le Compte",
     "WrongPassword": "Mot de passe incorrect",
     "Yes": "Oui",
     "Yesterday": "Hier",
     "YesterdayAt": "Hier à {0}",
     "You": "Vous",
-    "YourEmail": "Votre e-mail",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Appuyez pour renvoyer",
-            "TapToSendAgain": "Appuyez pour envoyer à nouveau"
-        },
-        "DateSeparators": {
-            "Today": "Aujourd'hui",
-            "Yesterday": "Hier"
-        },
-        "Alerts": {
-            "MessageTooLong": "Votre message comporte plus de {0} caractères.",
-            "EnableFromSettingsTitle": "Envoyer l'image",
-            "EnableFromSettings": "Veuillez activer l'accès directement à partir des paramètres de votre appareil"
-        },
-        "Actions": {
-            "AttachDocument": "Document",
-            "AttachImage": "Image"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "Votre e-mail"
 }

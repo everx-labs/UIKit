@@ -53,6 +53,25 @@
     "Channel": "チャンネル情報",
     "ChannelInfo": "チャンネル情報",
     "ChannelName": "チャンネル名",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "ドキュメント",
+            "AttachImage": "画像"
+        },
+        "Alerts": {
+            "EnableFromSettings": "お使いのデバイスの設定でアクセスを有効にしてください",
+            "EnableFromSettingsTitle": "画像を送信する",
+            "MessageTooLong": "メッセージが{0}文字より長くなっています。"
+        },
+        "Bubbles": {
+            "TapToResend": "タップして再送信する",
+            "TapToSendAgain": "タップして、もう一度送信する"
+        },
+        "DateSeparators": {
+            "Today": "今日",
+            "Yesterday": "昨日"
+        }
+    },
     "ChatWith": "…とチャット",
     "ChooseDepositToken": "預金トークンを選択",
     "ChooseFromLibrary": "ライブラリから選択する",
@@ -241,10 +260,6 @@
     "moreWords11": "言葉を追加する",
     "moreWords24": "言葉を追加する",
     "moreWords50": "言葉を追加する",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "マイ・アカウント",
     "MyMainAccount": "マイ・メイン・アカウント",
     "Name": "名前",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "公開チャンネルは検索で見つけることができます。誰でも参加できます。",
     "PushFeedbackLong": "ストーリーをより良くするためにフィードバックをお寄せください。ここにクリックすると、共有します。",
     "PushFeedbackShort": "ストーリーに貢献するため、フィードバックを共有する",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "受信",
     "Recent": "最近",
     "Recently": "最近",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "連絡先を使用して、友達を招待できます。",
     "WillGetInTouchWithYouSoon": "すぐにご連絡いたします。",
     "Word": "言葉",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "償却勘定",
     "WrongPassword": "パスワードが正しくありません",
     "Yes": "はい",
     "Yesterday": "昨日",
     "YesterdayAt": "昨日{0}に",
     "You": "あなた",
-    "YourEmail": "あなたのメールアドレス",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "タップして再送信する",
-            "TapToSendAgain": "タップして、もう一度送信する"
-        },
-        "DateSeparators": {
-            "Today": "今日",
-            "Yesterday": "昨日"
-        },
-        "Alerts": {
-            "MessageTooLong": "メッセージが{0}文字より長くなっています。",
-            "EnableFromSettingsTitle": "画像を送信する",
-            "EnableFromSettings": "お使いのデバイスの設定でアクセスを有効にしてください"
-        },
-        "Actions": {
-            "AttachDocument": "ドキュメント",
-            "AttachImage": "画像"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "あなたのメールアドレス"
 }

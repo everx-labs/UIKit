@@ -53,6 +53,25 @@
     "Channel": "Kanal",
     "ChannelInfo": "Kanalinfo",
     "ChannelName": "Kanalnamen",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Dokumentnummer",
+            "AttachImage": "Bild"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Bitte aktivieren Sie den Zugriff direkt über Ihre Geräteeinstellungen",
+            "EnableFromSettingsTitle": "Bild senden",
+            "MessageTooLong": "Ihre Nachricht ist länger als {0} Zeichen."
+        },
+        "Bubbles": {
+            "TapToResend": "Tippen Sie noch einmal zu senden",
+            "TapToSendAgain": "Tippen Sie erneut zu senden"
+        },
+        "DateSeparators": {
+            "Today": "Heute",
+            "Yesterday": "Gestern"
+        }
+    },
     "ChatWith": "Chat mit",
     "ChooseDepositToken": "Wählen Sie Pfandmarke",
     "ChooseFromLibrary": "Wählen Sie aus Bibliothek",
@@ -241,10 +260,6 @@
     "moreWords11": "mehr Wörter",
     "moreWords24": "mehr Wörter",
     "moreWords50": "mehr Wörter",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Mein Konto",
     "MyMainAccount": "Mein Hauptkonto",
     "Name": "Name",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Öffentliche Kanäle können in der Suche gefunden werden. Jeder kann sich Ihnen anschließen.",
     "PushFeedbackLong": "Geben Sie Ihr feedback, um uns zu helfen, die Geschichte besser zu machen. Klicken Sie hier zu teilen",
     "PushFeedbackShort": "Geben Sie feedback, um zur Geschichte beizutragen",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Empfangen",
     "Recent": "Letzten",
     "Recently": "war vor kurzem",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Wir verwenden Kontakte, damit Sie Freunde einladen können",
     "WillGetInTouchWithYouSoon": "Erhalten Sie in Kürze Kontaktieren",
     "Word": "Wort",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Abschreibungskonto",
     "WrongPassword": "Falsches Passwort",
     "Yes": "Ja",
     "Yesterday": "Gestern",
     "YesterdayAt": "Gestern um {0}",
     "You": "Sie",
-    "YourEmail": "Ihre E-Mail",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Tippen Sie noch einmal zu senden",
-            "TapToSendAgain": "Tippen Sie erneut zu senden"
-        },
-        "DateSeparators": {
-            "Today": "Heute",
-            "Yesterday": "Gestern"
-        },
-        "Alerts": {
-            "MessageTooLong": "Ihre Nachricht ist länger als {0} Zeichen.",
-            "EnableFromSettingsTitle": "Bild senden",
-            "EnableFromSettings": "Bitte aktivieren Sie den Zugriff direkt über Ihre Geräteeinstellungen"
-        },
-        "Actions": {
-            "AttachDocument": "Dokumentnummer",
-            "AttachImage": "Bild"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "Ihre E-Mail"
 }
