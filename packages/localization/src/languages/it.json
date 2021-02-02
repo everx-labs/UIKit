@@ -53,6 +53,25 @@
     "Channel": "Canale",
     "ChannelInfo": "Informazioni sul canale",
     "ChannelName": "Nome del canale",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Documento",
+            "AttachImage": "Immagine"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Si prega di abilitare l'accesso direttamente dalle impostazioni del dispositivo",
+            "EnableFromSettingsTitle": "Invia immagine",
+            "MessageTooLong": "Il tuo messaggio è più lungo di {0} caratteri."
+        },
+        "Bubbles": {
+            "TapToResend": "Tocca per inviare di nuovo",
+            "TapToSendAgain": "Toccare per inviare di nuovo"
+        },
+        "DateSeparators": {
+            "Today": "Oggi",
+            "Yesterday": "Ieri"
+        }
+    },
     "ChatWith": "Chatta con",
     "ChooseDepositToken": "Scegli il gettone di deposito",
     "ChooseFromLibrary": "Scegliere da Biblioteca",
@@ -241,10 +260,6 @@
     "moreWords11": "altre parole",
     "moreWords24": "altre parole",
     "moreWords50": "altre parole",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Il mio account",
     "MyMainAccount": "Il mio account principale",
     "Name": "Nome",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "I canali pubblici possono essere trovati nella ricerca. Chiunque può unirsi a loro.",
     "PushFeedbackLong": "Lascia il tuo feedback per aiutarci a rendere la storia migliore. Clicca qui per condividere",
     "PushFeedbackShort": "Dai un feedback per contribuire alla storia",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Ricevere",
     "Recent": "Recente",
     "Recently": "è stato recentemente",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Utilizziamo i contatti per permettervi di invitare amici",
     "WillGetInTouchWithYouSoon": "Ti contatterò presto",
     "Word": "Parola",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Conto di svalutazione",
     "WrongPassword": "Password errata",
     "Yes": "Sì",
     "Yesterday": "Ieri",
     "YesterdayAt": "Ieri alle {0}",
     "You": "tu",
-    "YourEmail": "La tua email",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Tocca per inviare di nuovo",
-            "TapToSendAgain": "Toccare per inviare di nuovo"
-        },
-        "DateSeparators": {
-            "Today": "Oggi",
-            "Yesterday": "Ieri"
-        },
-        "Alerts": {
-            "MessageTooLong": "Il tuo messaggio è più lungo di {0} caratteri.",
-            "EnableFromSettingsTitle": "Invia immagine",
-            "EnableFromSettings": "Si prega di abilitare l'accesso direttamente dalle impostazioni del dispositivo"
-        },
-        "Actions": {
-            "AttachDocument": "Documento",
-            "AttachImage": "Immagine"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "La tua email"
 }

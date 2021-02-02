@@ -12,7 +12,7 @@
         "twoFactorAuthentication": "Autenticação de 2 Fatores"
     },
     "Accounts": "Contas",
-    "AccountTypeHint": "Definir o endereço da sua conta para público irá torná-lo visível no seu perfil.",
+    "AccountTypeHint": "Definir o endereço de sua conta para público irá torná-lo visível no seu perfil.",
     "Add": "Adicionar",
     "AddAdministrator": "Adicionar Administrador",
     "AddContact": "Adicionar Contato",
@@ -53,6 +53,25 @@
     "Channel": "Canal",
     "ChannelInfo": "Informações do Canal",
     "ChannelName": "Nome do Canal",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Documento",
+            "AttachImage": "Imagem"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Por favor, habilite o acesso nas Configurações do seu dispositivo",
+            "EnableFromSettingsTitle": "Enviar imagem",
+            "MessageTooLong": "Sua mensagem tem mais de {0} caracteres."
+        },
+        "Bubbles": {
+            "TapToResend": "Toque para reenviar",
+            "TapToSendAgain": "Toque para enviar novamente"
+        },
+        "DateSeparators": {
+            "Today": "Hoje",
+            "Yesterday": "Ontem"
+        }
+    },
     "ChatWith": "Conversar com",
     "ChooseDepositToken": "Escolha o token de depósito",
     "ChooseFromLibrary": "Escolha da Biblioteca",
@@ -241,10 +260,6 @@
     "moreWords11": "mais palavras",
     "moreWords24": "mais palavras",
     "moreWords50": "mais palavras",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "Minha Conta",
     "MyMainAccount": "Minha Conta Principal",
     "Name": "Nome",
@@ -313,7 +328,11 @@
     "PublicAddressCopiedToClipboard": "Endereço público copiado para a área de transferência",
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Canais públicos podem ser encontrados na pesquisa. Qualquer um pode se juntar a eles.",
     "PushFeedbackLong": "Dê sua opinião para ajudar-nos a melhorar o serviço. Clique aqui para compartilhá-la conosco",
-    "PushFeedbackShort": "Dê seu feedback para ajudar a melhor o serviço",
+    "PushFeedbackShort": "Dê seu feedback para contribuir com o Surf",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Receber",
     "Recent": "Recente",
     "Recently": "foi recentemente",
@@ -395,7 +414,7 @@
         "rejected": "Rejeitada em {0}",
         "sending": "Pendente…"
     },
-    "TypeMessage": "Escreve uma mensagem…",
+    "TypeMessage": "Escreva uma mensagem…",
     "Unconfirmed": "Não confirmado",
     "UnreadMessages": "Mensagens não lidas",
     "Update": "Atualizar",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Usamos seus contatos para permitir que você convide amigos",
     "WillGetInTouchWithYouSoon": "Entraremos em contato com você em breve",
     "Word": "Palavra",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Conta Baixada",
     "WrongPassword": "Senha incorreta",
     "Yes": "Sim",
     "Yesterday": "Ontem",
     "YesterdayAt": "Ontem às {0}",
     "You": "Você",
-    "YourEmail": "Seu e-mail",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Toque para reenviar",
-            "TapToSendAgain": "Toque para enviar novamente"
-        },
-        "DateSeparators": {
-            "Today": "Hoje",
-            "Yesterday": "Ontem"
-        },
-        "Alerts": {
-            "MessageTooLong": "Sua mensagem tem mais de {0} caracteres.",
-            "EnableFromSettingsTitle": "Enviar imagem",
-            "EnableFromSettings": "Por favor, habilite o acesso nas Configurações do seu dispositivo"
-        },
-        "Actions": {
-            "AttachDocument": "Documento",
-            "AttachImage": "Imagem"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "Seu e-mail"
 }

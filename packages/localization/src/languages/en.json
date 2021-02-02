@@ -53,6 +53,25 @@
     "Channel": "Channel",
     "ChannelInfo": "Channel Info",
     "ChannelName": "Channel Name",
+    "Chats": {
+        "Actions": {
+            "AttachDocument": "Document",
+            "AttachImage": "Image"
+        },
+        "Alerts": {
+            "EnableFromSettings": "Please enable access directly from your device Settings",
+            "EnableFromSettingsTitle": "Send image",
+            "MessageTooLong": "Your message is longer than {0} characters."
+        },
+        "Bubbles": {
+            "TapToResend": "Tap to resend",
+            "TapToSendAgain": "Tap to send again"
+        },
+        "DateSeparators": {
+            "Today": "Today",
+            "Yesterday": "Yesterday"
+        }
+    },
     "ChatWith": "Chat with",
     "ChooseDepositToken": "Choose Deposit Token",
     "ChooseFromLibrary": "Choose from Library",
@@ -241,10 +260,6 @@
     "moreWords11": "more words",
     "moreWords24": "more words",
     "moreWords50": "more words",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
     "MyAccount": "My Account",
     "MyMainAccount": "My Main Account",
     "Name": "Name",
@@ -314,6 +329,10 @@
     "PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem": "Public channels can be found in search. Anyone can join them.",
     "PushFeedbackLong": "Give your feedback to help us make the app better. Click here to proceed",
     "PushFeedbackShort": "Give feedback to contribute to Surf",
+    "QRCodeScanner": {
+        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
+        "ErrorUnexpected": "Something unexpected happened during scanning"
+    },
     "Receive": "Receive",
     "Recent": "Recent",
     "Recently": "was recently",
@@ -456,34 +475,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "We use contacts to allow you to invite friends",
     "WillGetInTouchWithYouSoon": "We'll get in touch with you soon",
     "Word": "Word",
+    "words01": "word",
+    "words11": "words",
+    "words24": "words",
+    "words50": "words",
     "WriteOffAccount": "Write-off Account",
     "WrongPassword": "Wrong password",
     "Yes": "Yes",
     "Yesterday": "Yesterday",
     "YesterdayAt": "Yesterday at {0}",
     "You": "You",
-    "YourEmail": "Your email",
-    "Chats": {
-        "Bubbles": {
-            "TapToResend": "Tap to resend",
-            "TapToSendAgain": "Tap to send again"
-        },
-        "DateSeparators": {
-            "Today": "Today",
-            "Yesterday": "Yesterday"
-        },
-        "Alerts": {
-            "MessageTooLong": "Your message is longer than {0} characters.",
-            "EnableFromSettingsTitle": "Send image",
-            "EnableFromSettings": "Please enable access directly from your device Settings"
-        },
-        "Actions": {
-            "AttachDocument": "Document",
-            "AttachImage": "Image"
-        }
-    },
-    "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
-    }
+    "YourEmail": "Your email"
 }
