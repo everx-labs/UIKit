@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { Platform, TextInput } from 'react-native';
+import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { UIConstant } from './constants';
+import { Typography, TypographyVariants } from './Typography';
 
 export type OnHeightChange = (height: number) => void;
+
+const textViewHeight =
+    StyleSheet.flatten(Typography[TypographyVariants.ParagraphText])
+        .lineHeight ?? UIConstant.smallCellHeight;
 
 export function useAutogrowTextView(
     ref: React.Ref<TextInput> | null,
     onHeightChange?: OnHeightChange,
-    constrainedNumberOfLines?: number,
+    constrainedNumberOfLines: number = 0,
 ) {
     const [inputHeight, setInputHeight] = React.useState<number>(
         UIConstant.smallCellHeight,
@@ -35,7 +40,7 @@ export function useAutogrowTextView(
                 if (constrainedNumberOfLines) {
                     const constrainedHeight = Math.min(
                         height,
-                        UIConstant.smallCellHeight * constrainedNumberOfLines,
+                        textViewHeight * constrainedNumberOfLines,
                     );
                     setInputHeight(constrainedHeight);
                 } else {
@@ -82,6 +87,23 @@ export function useAutogrowTextView(
         default: undefined,
     });
 
+    const inputStyle = React.useMemo(
+        () => ({
+            padding: 0,
+            flex: undefined,
+            maxHeight:
+                (StyleSheet.flatten(
+                    Typography[TypographyVariants.ParagraphText],
+                ).lineHeight ?? 0) * constrainedNumberOfLines,
+            ...Platform.select({
+                web: {
+                    outlineStyle: 'none',
+                },
+            }),
+        }),
+        [constrainedNumberOfLines],
+    );
+
     return {
         onContentSizeChange: Platform.select({
             web: undefined, // All the work is done in onChangeOnWeb
@@ -95,5 +117,6 @@ export function useAutogrowTextView(
         inputHeight,
         numberOfLines,
         numberOfLinesProp,
+        inputStyle,
     };
 }

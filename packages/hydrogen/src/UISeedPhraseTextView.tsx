@@ -592,10 +592,9 @@ export const UISeedPhraseTextView = React.forwardRef<
         [state.highlight.index, hints, onHintSelected, inputWidth],
     );
 
-    const inputStyle = React.useMemo(
-        () => [styles.input, { height: inputHeight }],
-        [inputHeight],
-    );
+    const inputStyle = React.useMemo(() => ({ height: inputHeight }), [
+        inputHeight,
+    ]);
 
     return (
         <>
@@ -640,9 +639,6 @@ export const UISeedPhraseTextView = React.forwardRef<
 });
 
 const styles = StyleSheet.create({
-    input: {
-        minHeight: UIConstant.smallCellHeight,
-    },
     hintsContainer: {
         flex: 1,
         marginTop: -42, // Don't want to calculate it dinamically, seems to work fine

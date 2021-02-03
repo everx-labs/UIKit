@@ -8,7 +8,7 @@ import {
     Animated,
 } from 'react-native';
 
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
@@ -181,7 +181,7 @@ function useAnimatedBorder(numberOfLines: number) {
 
     React.useEffect(() => {
         showBorderIfNeeded();
-    }, [numberOfLines]);
+    }, [numberOfLines, showBorderIfNeeded]);
 
     return borderOpacity.current;
 }
@@ -218,7 +218,7 @@ export function ChatInput(props: Props) {
     const {
         onContentSizeChange,
         onChange,
-        inputHeight,
+        inputStyle,
         numberOfLines,
         numberOfLinesProp,
         resetInputHeight,
@@ -244,21 +244,6 @@ export function ChatInput(props: Props) {
 
     const CustomKeyboardButton = props.customKeyboardButton;
 
-    const containerHeight = React.useMemo(() => {
-        if (Platform.OS === 'android') {
-            return null;
-        }
-        const { paddingTop, paddingBottom } = StyleSheet.flatten(
-            styles.inputMsg,
-        );
-        return {
-            height: Math.max(
-                UIConstant.largeButtonHeight(),
-                inputHeight + (paddingTop ?? 0) + (paddingBottom ?? 0),
-            ),
-        };
-    }, [inputHeight]);
-
     return (
         <>
             <View
@@ -279,7 +264,6 @@ export function ChatInput(props: Props) {
                 <View
                     style={[
                         styles.container,
-                        containerHeight,
                         props.menuPlus?.length && props.menuPlus?.length > 0
                             ? null
                             : UIStyle.margin.leftDefault(),
@@ -311,7 +295,7 @@ export function ChatInput(props: Props) {
                                 onKeyPress={onKeyPress}
                                 onFocus={props.onFocus}
                                 onBlur={props.onBlur}
-                                style={styles.input}
+                                style={inputStyle}
                             />
                         )}
                     </View>
@@ -360,29 +344,9 @@ const styles = StyleSheet.create({
         marginVertical: 0,
         paddingBottom: Platform.select({
             // compensate mobile textContainer's default padding
-            android: 10,
-            ios: 17,
-            web: 15,
+            android: 14,
+            default: 17,
         }),
         paddingTop: 10,
-    },
-    input: {
-        padding: 0,
-        minHeight: UIConstant.smallCellHeight(),
-        ...{
-            marginTop:
-                Platform.OS === 'ios' && process.env.NODE_ENV === 'production'
-                    ? 5 // seems to be smth connected to iOS's textContainerInset
-                    : 0,
-        },
-        ...Platform.select({
-            web: {
-                flex: undefined,
-                outlineStyle: 'none',
-            },
-            ios: {
-                flex: undefined,
-            },
-        }),
     },
 });
