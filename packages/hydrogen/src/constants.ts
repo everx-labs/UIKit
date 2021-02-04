@@ -1,6 +1,8 @@
 import { Platform } from 'react-native';
 
 export const UIConstant = {
+    iconSize: 24,
+
     smallCellHeight: 24,
     defaultCellHeight: 48,
 
