@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import { StyleSheet, Platform, Dimensions, Animated, BackHandler } from 'react-native';
+import { StyleSheet, Platform, Dimensions, Animated, BackHandler, View } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import {
@@ -19,7 +19,7 @@ import {
 } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { ColorVariants, UIBackgroundView, UIBackgroundViewColors, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
 import type {
     AnimationParameters,
@@ -111,20 +111,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const AnimatedViewWithColor = React.forwardRef(({ style, testIDProp, ...rest }: *, ref) => {
-    const theme = useTheme();
-    return (
-        <Animated.View
-            ref={ref}
-            {...testIDProp}
-            {...rest}
-            style={[
-                style,
-                { backgroundColor: theme[ColorVariants.BackgroundPrimary] },
-            ]}
-        />
-    );
-});
+const AnimatedViewWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 
 export default class UIModalController<Props, State> extends UIController<
     ModalControllerProps & Props,
@@ -640,6 +627,7 @@ export default class UIModalController<Props, State> extends UIController<
                     onHandlerStateChange={this.onPanHandlerStateChange}
                 >
                     <AnimatedViewWithColor
+                        color={UIBackgroundViewColors.BackgroundPrimary}
                         testIDProp={testIDProp}
                         style={dialogStyle}
                     >
@@ -652,12 +640,9 @@ export default class UIModalController<Props, State> extends UIController<
                                     : null,
                             ]}
                         >
-                            <UIBackgroundView
-                                color={UIBackgroundViewColors.BackgroundPrimary}
-                                style={UIStyle.common.flex()}
-                            >
+                            <View style={UIStyle.common.flex()}>
                                 {this.renderContentView(contentHeight)}
-                            </UIBackgroundView>
+                            </View>
                         </Animated.View>
                         {this.renderSpinnerOverlay()}
                     </AnimatedViewWithColor>
