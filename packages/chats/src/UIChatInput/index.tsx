@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Platform, TextInput } from 'react-native';
+import { BackHandler, Platform, TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
     UICustomKeyboard,
     useCustomKeyboard,
     UICustomKeyboardItem,
+    UICustomKeyboardUtils,
 } from '@tonlabs/uikit.keyboard';
 
 import { ChatInput } from './ChatInput';
@@ -18,7 +19,7 @@ import type {
     MenuItem,
     QuickActionItem,
 } from './types';
-import type { ChatPickerRef } from './ChatPicker';
+import { ChatPicker, ChatPickerRef } from './ChatPicker';
 
 function useMenuPlus(menuPlusHidden = false) {
     const chatPickerRef = React.useRef<ChatPickerRef>(null);
@@ -52,6 +53,31 @@ function useMenuPlus(menuPlusHidden = false) {
     };
 }
 
+function useBackHandler(ref: React.RefObject<TextInput>) {
+    React.useEffect(() => {
+        if (Platform.OS !== 'android') {
+            return undefined;
+        }
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            () => {
+                if (ref.current && ref.current.isFocused()) {
+                    UICustomKeyboardUtils.dismiss();
+                    return true;
+                }
+                return false;
+            },
+        );
+
+        return () => {
+            if (backHandler) {
+                backHandler.remove();
+            }
+        };
+    }, [ref]);
+}
+
 type Props = {
     editable: boolean;
     placeholder?: string;
@@ -83,33 +109,39 @@ export function UIChatInput(props: Props) {
     } = useCustomKeyboard(props.onCustomKeyboardVisible, props.editable);
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
+    useBackHandler(textInputRef);
+
     const input = (
-        <ChatInput
-            editable={props.editable}
-            placeholder={props.placeholder}
-            shortcuts={props.shortcuts}
-            menuPlus={menuPlus}
-            menuPlusDisabled={props.menuPlusDisabled}
-            menuMore={
-                undefined /* TODO: we not render it right now, but could at some point */
-            }
-            menuMoreDisabled={props.menuMoreDisabled}
-            inputHidden={props.inputHidden}
-            quickActions={props.quickActions}
-            textInputRef={textInputRef}
-            pickerRef={chatPickerRef}
-            customKeyboardVisible={customKeyboardVisible}
-            onCustomKeyboardPress={toggleKeyboard}
-            customKeyboardButton={props.customKeyboard?.button}
-            onSendText={props.onSendText}
-            onSendMedia={props.onSendMedia}
-            onSendDocument={props.onSendDocument}
-            onHeightChange={
-                Platform.OS === 'web' ? props.onHeightChange : undefined
-            }
-            onFocus={onFocus}
-            onBlur={onBlur}
-        />
+        <>
+            <ChatInput
+                editable={props.editable}
+                placeholder={props.placeholder}
+                shortcuts={props.shortcuts}
+                menuPlus={menuPlus}
+                menuPlusDisabled={props.menuPlusDisabled}
+                menuMore={
+                    undefined /* TODO: we not render it right now, but could at some point */
+                }
+                menuMoreDisabled={props.menuMoreDisabled}
+                inputHidden={props.inputHidden}
+                quickActions={props.quickActions}
+                textInputRef={textInputRef}
+                customKeyboardVisible={customKeyboardVisible}
+                onCustomKeyboardPress={toggleKeyboard}
+                customKeyboardButton={props.customKeyboard?.button}
+                onSendText={props.onSendText}
+                onHeightChange={
+                    Platform.OS === 'web' ? props.onHeightChange : undefined
+                }
+                onFocus={onFocus}
+                onBlur={onBlur}
+            />
+            <ChatPicker
+                ref={chatPickerRef}
+                onSendDocument={props.onSendDocument}
+                onSendMedia={props.onSendMedia}
+            />
+        </>
     );
 
     return (
