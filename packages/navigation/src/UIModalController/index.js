@@ -129,7 +129,7 @@ const AnimatedViewWithColor = React.forwardRef(({ style, testIDProp, ...rest }: 
 export default class UIModalController<Props, State> extends UIController<
     ModalControllerProps & Props,
     ModalControllerState & State
-    > {
+> {
     fullscreen: boolean;
     dismissible: boolean;
     fromBottom: boolean;
@@ -591,8 +591,8 @@ export default class UIModalController<Props, State> extends UIController<
     };
 
     onPanHandlerStateChange = ({
-                                   nativeEvent: { state, translationY },
-                               }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
+        nativeEvent: { state, translationY },
+    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
         if ((state === RNGHState.END || state === RNGHState.CANCELLED)
             && this.dismissible && this.shouldSwipeToDismiss()) {
             this.onReleaseSwipe(translationY);
