@@ -51,6 +51,7 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
                 // This is our custom prop, we do it in native for Android
                 noPersonalizedLearning={false}
                 placeholderTextColor={theme[ColorVariants.TextTertiary]}
+                selectionColor={theme[ColorVariants.TextAccent]}
                 underlineColorAndroid="transparent"
                 style={[
                     styles.input,

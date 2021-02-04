@@ -15,7 +15,15 @@ import type {
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import type { PointerEvents } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    Typography,
+    TypographyVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    UITextView
+} from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -43,7 +51,7 @@ const styles = StyleSheet.create({
 type TextInputTransitProps = {
     value: string,
     placeholder?: string,
-    placeholderTextColor?: string,
+    placeholderTextColor?: $Values<ColorVariants>,
     editable?: boolean,
     multiline?: boolean,
     secureTextEntry?: boolean,
@@ -72,12 +80,12 @@ type Props = UITextInputProps & TextInputTransitProps;
 type State = {};
 
 class UITextInput extends UIComponent<Props, State> {
-    textInput: ?React.ElementRef<typeof TextInput>;
+    textInput = React.createRef<UITextView>();
 
     // Getters
     isFocused() {
         // $FlowFixMe: somehow TextInput is any
-        return this.textInput && this.textInput.isFocused();
+        return this.textInput.current && this.textInput.current.isFocused();
     }
 
     getTransitProps(): $Exact<TextInputTransitProps> {
@@ -97,16 +105,16 @@ class UITextInput extends UIComponent<Props, State> {
 
     // Actions
     focus() {
-        if (this.textInput) {
+        if (this.textInput.current) {
             // $FlowFixMe: somehow TextInput is any
-            this.textInput.focus();
+            this.textInput.current.focus();
         }
     }
 
     blur() {
-        if (this.textInput) {
+        if (this.textInput.current) {
             // $FlowFixMe: somehow TextInput is any
-            this.textInput.blur();
+            this.textInput.current.blur();
         }
     }
 
@@ -149,18 +157,11 @@ class UITextInput extends UIComponent<Props, State> {
             multiline,
             secureTextEntry,
         } = this.props;
-        const returnKeyTypeProp: ?{|
-            returnKeyType: ReturnKeyType,
-        |} = returnKeyType ? { returnKeyType } : null;
-        const underlineColorAndroid: ?{|
-            underlineColorAndroid: string,
-        |} = secureTextEntry ? null : { underlineColorAndroid: 'transparent' };
+        const returnKeyTypeProp = returnKeyType ? { returnKeyType } : null;
         return (
-            <TextInput
+            <UITextView
                 testID={testID}
-                ref={(component) => {
-                    this.textInput = component;
-                }}
+                ref={this.textInput}
                 {...this.getTransitProps()}
                 value={value}
                 placeholder={placeholder}
@@ -169,17 +170,13 @@ class UITextInput extends UIComponent<Props, State> {
                 autoFocus={autoFocus}
                 editable={editable}
                 multiline={multiline}
-                {...underlineColorAndroid}
                 autoCapitalize={autoCapitalize}
                 secureTextEntry={secureTextEntry}
                 style={[
-                    UIStyle.text.primaryBodyRegular(),
                     styles.textInput,
                     textStyle,
                 ]}
-                selectionColor={UIColor.primary()}
                 keyboardType={keyboardType}
-                // $FlowFixMe
                 {...returnKeyTypeProp}
                 onFocus={onFocus}
                 onBlur={onBlur}

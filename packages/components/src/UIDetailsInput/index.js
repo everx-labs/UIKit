@@ -18,7 +18,7 @@ import type {
     UIColorThemeNameType,
     EventProps,
 } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles, UITextView } from '@tonlabs/uikit.hydrogen';
 
 import UITextButton from '../UITextButton';
 import UIActionImage from '../UIActionImage';
@@ -373,8 +373,8 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     $Shape<Props & UIDetailsInputProps>,
     $Shape<State & UIDetailsInputState>
 > {
-    textInput: ?React.ElementRef<typeof TextInput>;
-    auxTextInput: ?any;
+    textInput = React.createRef<UITextView>();
+    auxTextInput = React.createRef<?any>();
 
     static defaultProps: Props & UIDetailsInputProps;
 
@@ -420,7 +420,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
 
     onWebChange = () => {
         this.setStateSafely({}, () => {
-            const aux = this.auxTextInput;
+            const aux = this.auxTextInput.current;
             if (aux) {
                 const height = (aux._node ? aux._node.scrollHeight : aux.scrollHeight) || 0;
                 this.onHeightChange(height);
@@ -527,21 +527,21 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     // the reference is always 'null', but, on the parent control (the Popover), there is
     // a property called '_elements', there you can access to the refenrence, so, we can
     // pass it here.
-    setTextInputRef(inputRef: ?React.ElementRef<typeof TextInput>) {
-        this.textInput = inputRef;
-    }
+    // setTextInputRef(inputRef: ?React.ElementRef<typeof TextInput>) {
+    //     this.textInput = inputRef;
+    // }
 
     // Getters
     getCommentTestID(): ?string {
         return this.props.commentTestID ? this.props.commentTestID : null;
     }
 
-    getCommentRightTestID(): ?string {
-        return this.props.commentRightTestID ? this.props.commentRightTestID : null;
-    }
+    // getCommentRightTestID(): ?string {
+    //     return this.props.commentRightTestID ? this.props.commentRightTestID : null;
+    // }
 
     isFocused(): boolean {
-        return this.state.focused || (this.textInput && this.textInput.isFocused()) || false;
+        return this.state.focused || (this.textInput.current && this.textInput.current.isFocused()) || false;
     }
 
     isHover(): boolean {
@@ -659,20 +659,20 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
 
     // Actions
     focus() {
-        if (this.textInput) {
-            this.textInput.focus();
+        if (this.textInput.current) {
+            this.textInput.current.focus();
         }
     }
 
     blur() {
-        if (this.textInput) {
-            this.textInput.blur();
+        if (this.textInput.current) {
+            this.textInput.current.blur();
         }
     }
 
     clear() {
-        if (this.textInput) {
-            this.textInput.clear();
+        if (this.textInput.current) {
+            this.textInput.current.clear();
         }
     }
 
@@ -738,7 +738,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
 
         return (
             <TextInput
-                ref={(component) => { this.auxTextInput = component; }}
+                ref={this.auxTextInput}
                 style={[this.textInputStyle(), styles.textInputAux, webStyle]}
                 numberOfLines={1}
                 editable={false}
@@ -789,7 +789,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             ? UIColor.textPlaceholder(theme)
             : UIColor.textDisabled(theme);
         return (
-            <TextInput
+            <UITextView
                 contextMenuHidden={this.props.copyingLocked && value.length !== 0} // iOS only
                 onLayout={this.onLayout}
                 {...accessibilityLabelProp}
@@ -814,7 +814,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 onKeyPress={this.onKeyPress}
                 placeholder={this.getInlinePlaceholder()}
                 placeholderTextColor={placeholderColor}
-                ref={(component) => { this.textInput = component; }}
+                ref={this.textInput}
                 onSelectionChange={this.onSelectionChange}
                 selection={this.getSelection()}
                 {...returnKeyTypeProp}
@@ -830,8 +830,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                         ...minHeight,
                     },
                 ]}
-                selectionColor={UIColor.primary()}
-                underlineColorAndroid="transparent"
                 secureTextEntry={secureTextEntry}
                 inputAccessoryViewID={this.props.inputAccessoryViewID}
                 // $FlowFixMe
