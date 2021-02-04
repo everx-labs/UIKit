@@ -19,7 +19,7 @@ import {
 } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIBackgroundView, UIBackgroundViewColors, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import type {
     AnimationParameters,
@@ -64,11 +64,11 @@ export type ModalControllerState = ControllerState & {
 export type ModalControllerShowArgs =
     | ?boolean
     | {
-          open?: boolean,
-          onCancel?: () => void,
-          onSubmit?: () => void,
-          onSelect?: any => void,
-      };
+    open?: boolean,
+    onCancel?: () => void,
+    onSubmit?: () => void,
+    onSelect?: any => void,
+};
 
 const styles = StyleSheet.create({
     containerCentered: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     dialog: {
-        borderRadius: UIConstant.borderRadius(),
+        borderRadius: UIConstant.mediumBorderRadius(),
         backgroundColor: UIColor.backgroundPrimary(UIColor.Theme.Light),
     },
     dialogOverflow: {
@@ -87,14 +87,14 @@ const styles = StyleSheet.create({
     },
     dialogBorders: {
         borderTopLeftRadius: Platform.select({
-            ios: UIConstant.borderRadius(),
+            ios: UIConstant.mediumBorderRadius(),
             android: 0,
-            web: UIConstant.borderRadius(),
+            web: UIConstant.mediumBorderRadius(),
         }),
         borderTopRightRadius: Platform.select({
-            ios: UIConstant.borderRadius(),
+            ios: UIConstant.mediumBorderRadius(),
             android: 0,
-            web: UIConstant.borderRadius(),
+            web: UIConstant.mediumBorderRadius(),
         }),
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
@@ -111,10 +111,25 @@ const styles = StyleSheet.create({
     },
 });
 
+const AnimatedViewWithColor = React.forwardRef(({ style, testIDProp, ...rest }: *, ref) => {
+    const theme = useTheme();
+    return (
+        <Animated.View
+            ref={ref}
+            {...testIDProp}
+            {...rest}
+            style={[
+                style,
+                { backgroundColor: theme[ColorVariants.BackgroundPrimary] },
+            ]}
+        />
+    );
+});
+
 export default class UIModalController<Props, State> extends UIController<
     ModalControllerProps & Props,
     ModalControllerState & State
-> {
+    > {
     fullscreen: boolean;
     dismissible: boolean;
     fromBottom: boolean;
@@ -576,10 +591,10 @@ export default class UIModalController<Props, State> extends UIController<
     };
 
     onPanHandlerStateChange = ({
-        nativeEvent: { state, translationY },
-    }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
+                                   nativeEvent: { state, translationY },
+                               }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
         if ((state === RNGHState.END || state === RNGHState.CANCELLED)
-        && this.dismissible && this.shouldSwipeToDismiss()) {
+            && this.dismissible && this.shouldSwipeToDismiss()) {
             this.onReleaseSwipe(translationY);
         }
     };
@@ -624,7 +639,10 @@ export default class UIModalController<Props, State> extends UIController<
                     onGestureEvent={this.onPan}
                     onHandlerStateChange={this.onPanHandlerStateChange}
                 >
-                    <Animated.View {...testIDProp} style={dialogStyle}>
+                    <AnimatedViewWithColor
+                        testIDProp={testIDProp}
+                        style={dialogStyle}
+                    >
                         {this.renderModalNavigationBar()}
                         <Animated.View
                             style={[
@@ -642,7 +660,7 @@ export default class UIModalController<Props, State> extends UIController<
                             </UIBackgroundView>
                         </Animated.View>
                         {this.renderSpinnerOverlay()}
-                    </Animated.View>
+                    </AnimatedViewWithColor>
                 </PanGestureHandler>
             </Animated.View>
         );
