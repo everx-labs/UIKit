@@ -53,7 +53,7 @@ function useMenuPlus(menuPlusHidden = false) {
     };
 }
 
-function useBackHandler(ref: React.RefObject<TextInput>) {
+export function useBackHandler(ref: React.RefObject<TextInput>) {
     React.useEffect(() => {
         if (Platform.OS !== 'android') {
             return undefined;
@@ -78,7 +78,7 @@ function useBackHandler(ref: React.RefObject<TextInput>) {
     }, [ref]);
 }
 
-type Props = {
+export type UIChatInputProps = {
     editable: boolean;
     placeholder?: string;
     shortcuts?: Shortcut[];
@@ -98,7 +98,7 @@ type Props = {
     customKeyboard?: UICustomKeyboardItem;
 };
 
-export function UIChatInput(props: Props) {
+export function UIChatInput(props: UIChatInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
     const {
         customKeyboardVisible,
@@ -114,6 +114,7 @@ export function UIChatInput(props: Props) {
     const input = (
         <>
             <ChatInput
+                textInputRef={textInputRef}
                 editable={props.editable}
                 placeholder={props.placeholder}
                 shortcuts={props.shortcuts}
@@ -125,7 +126,6 @@ export function UIChatInput(props: Props) {
                 menuMoreDisabled={props.menuMoreDisabled}
                 inputHidden={props.inputHidden}
                 quickActions={props.quickActions}
-                textInputRef={textInputRef}
                 customKeyboardVisible={customKeyboardVisible}
                 onCustomKeyboardPress={toggleKeyboard}
                 customKeyboardButton={props.customKeyboard?.button}

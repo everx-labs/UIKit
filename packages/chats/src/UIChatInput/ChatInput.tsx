@@ -1,20 +1,16 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
 
-import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import {
-    UITextView,
-    useUITextViewValue,
-    useAutogrowTextView,
-} from '@tonlabs/uikit.hydrogen';
-
+import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.hydrogen';
 import type { OnCustomKeyboardVisible } from '@tonlabs/uikit.keyboard';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
+import { useChatInputValue } from './useChatInputValue';
+import { useChatMaxLengthAlert } from './useChatMaxLengthAlert';
 import type {
     MenuItem,
     QuickActionItem,
@@ -24,94 +20,6 @@ import type {
 } from './types';
 
 const MAX_INPUT_LENGTH = 320;
-
-function useInputValue({
-    ref,
-    onSendText: onSendTextProp,
-    showMaxLengthAlert,
-    resetInputHeight,
-}: {
-    ref: React.RefObject<TextInput>;
-    onSendText: OnSendText;
-    showMaxLengthAlert: () => void;
-    resetInputHeight: () => void;
-}) {
-    const {
-        inputHasValue,
-        inputValue,
-        clear,
-        onChangeText: onBaseChangeText,
-        onKeyPress: onBaseKeyPress,
-    } = useUITextViewValue(ref, true);
-
-    const onSendText = React.useCallback(() => {
-        if (onSendTextProp) {
-            onSendTextProp(inputValue.current);
-        }
-
-        clear();
-        resetInputHeight();
-    }, [onSendTextProp, clear, inputValue, resetInputHeight]);
-
-    const onChangeText = React.useCallback(
-        (text: string) => {
-            onBaseChangeText(text);
-
-            if (text.length >= MAX_INPUT_LENGTH) {
-                showMaxLengthAlert();
-            }
-        },
-        [onBaseChangeText, showMaxLengthAlert],
-    );
-
-    const onKeyPress = React.useCallback(
-        (e: any) => {
-            // Enable only for web (in native e.key is undefined)
-            const wasClearedWithEnter = onBaseKeyPress(e);
-
-            if (wasClearedWithEnter) {
-                onSendText();
-                return;
-            }
-
-            const eventKey = e.key || e.nativeEvent?.key;
-            if (
-                eventKey !== 'Backspace' &&
-                inputValue.current.length === MAX_INPUT_LENGTH
-            ) {
-                showMaxLengthAlert();
-            }
-        },
-        [onSendText, onBaseKeyPress, inputValue, showMaxLengthAlert],
-    );
-
-    return {
-        inputHasValue,
-        onChangeText,
-        onKeyPress,
-        onSendText,
-    };
-}
-
-function useMaxLengthAlert(maxLength: number) {
-    const isAlertShown = React.useRef(false);
-
-    return React.useCallback(() => {
-        if (!isAlertShown.current) {
-            isAlertShown.current = true;
-            UIDropdownAlert.showNotification(
-                uiLocalized.formatString(
-                    uiLocalized.Chats.Alerts.MessageTooLong,
-                    maxLength,
-                ),
-                undefined,
-                () => {
-                    isAlertShown.current = false;
-                },
-            );
-        }
-    }, [maxLength]);
-}
 
 const CHAT_INPUT_NUM_OF_LINES = 5;
 
@@ -151,17 +59,18 @@ export function ChatInput(props: ChatInputProps) {
         props.onHeightChange,
         CHAT_INPUT_NUM_OF_LINES,
     );
-    const showMaxLengthAlert = useMaxLengthAlert(MAX_INPUT_LENGTH);
+    const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);
     const {
         inputHasValue,
         onChangeText,
         onKeyPress,
         onSendText,
-    } = useInputValue({
+    } = useChatInputValue({
         ref: props.textInputRef,
         onSendText: props.onSendText,
         showMaxLengthAlert,
         resetInputHeight,
+        maxInputLength: MAX_INPUT_LENGTH,
     });
 
     const CustomKeyboardButton = props.customKeyboardButton;
