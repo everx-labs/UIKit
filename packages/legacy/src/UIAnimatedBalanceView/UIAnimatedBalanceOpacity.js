@@ -17,6 +17,7 @@ export type Props = {
     fractionalTextStyle?: ViewStyleProp,
     maxFractionalDigits?: ?number,
     maxBalanceLength?: ?number,
+    fractionalTextColor?: ?ColorVariants,
 };
 
 const BalanceSymbolKind = Object.freeze({
@@ -44,11 +45,13 @@ const UIAnimatedBalanceSymbol = React.memo(
         textStyle,
         fractionalTextStyle,
         children,
+        fractionalTextColor,
     }: {
         animation: AnimatedValue | AnimatedInterpolation,
         textStyle: TextStyleProp,
         fractionalTextStyle: TextStyleProp,
         children: BalanceSymbol,
+        fractionalTextColor: ColorVariants,
     }) => {
         const theme = useTheme();
         return (
@@ -61,7 +64,9 @@ const UIAnimatedBalanceSymbol = React.memo(
                         : fractionalTextStyle,
                     {
                         opacity: animation,
-                        color: theme[ColorVariants.TextPrimary],
+                        color: children.kind === BalanceSymbolKind.fractional
+                            ? theme[fractionalTextColor]
+                            : theme[ColorVariants.TextPrimary],
                     },
                 ]}
             >
@@ -92,6 +97,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
         loading: false,
         textStyle: UIStyle.text.titleLight(),
         fractionalTextStyle: UIStyle.text.tertiary(),
+        fractionalTextColor: ColorVariants.TextPrimary,
         maxFractionalDigits: null,
         maxBalanceLength: null,
     };
@@ -223,6 +229,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                             animation={this.getAnimation(index)}
                             textStyle={this.props.textStyle}
                             fractionalTextStyle={this.props.fractionalTextStyle}
+                            fractionalTextColor={this.props.fractionalTextColor}
                         >
                             {symbol}
                         </UIAnimatedBalanceSymbol>
@@ -245,6 +252,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                                 })}
                                 textStyle={this.props.textStyle}
                                 fractionalTextStyle={this.props.fractionalTextStyle}
+                                fractionalTextColor={this.props.fractionalTextColor}
                             >
                                 {symbol}
                             </UIAnimatedBalanceSymbol>
