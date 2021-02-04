@@ -1,13 +1,21 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Text, Image, Platform } from 'react-native';
+import { StyleSheet, View, Image, Platform } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { Typography, TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    TypographyVariants,
+    UIImage,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIBadge from '../UIBadge';
 import UINotice from '../UINotice';
@@ -192,6 +200,60 @@ export type ButtonProps = UIActionComponentProps & {
 
 type State = UIActionComponentState;
 
+// $FlowFixMe
+const ButtonWrapper = React.forwardRef<View, *>(({ buttonStyle, buttonColor, disabled, style, ...rest }: *, ref) => {
+    const theme = useTheme();
+
+    const btnColor = React.useMemo(() => {
+        if (disabled) {
+            return ColorVariants.BackgroundTertiary;
+        }
+        return buttonColor || ColorVariants.BackgroundAccent;
+    }, [disabled, buttonColor]);
+
+    const btnStyle = React.useMemo(() => {
+        if (buttonStyle === 'full') {
+            return {
+                backgroundColor: theme[btnColor],
+            };
+        }
+        if (buttonStyle === 'border') {
+            return {
+                borderColor: theme[btnColor],
+                borderWidth: 1,
+            };
+        }
+        return null;
+    }, [buttonStyle, btnColor]);
+
+    return (
+        <View
+            ref={ref}
+            {...rest}
+            style={[
+                style,
+                btnStyle,
+            ]}
+        />
+    );
+});
+
+type IconProps = {
+    source: ImageSource,
+    tintColor: ColorVariants,
+}
+
+function Icon(props: IconProps) {
+    const theme = useTheme();
+    return (
+        <UIImage
+            {...props}
+            source={props.source}
+            tintColor={theme[props.tintColor]}
+        />
+    );
+}
+
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static buttonSize = {
         default: 'default',
@@ -285,42 +347,29 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     // Getters
     getButtonHeight() {
         switch (this.props.buttonSize) {
-        case UIButton.buttonSize.large:
-            return UIConstant.largeButtonHeight(); // 56
-        case UIButton.buttonSize.medium:
-            return UIConstant.mediumButtonHeight(); // 40
-        case UIButton.buttonSize.small:
-            return UIConstant.smallButtonHeight(); // 32
-        default: // UIButton.buttonSize.default
-            return UIConstant.buttonHeight(); // 48
-        }
-    }
-
-    getTitleFontStyle() {
-        switch (this.props.buttonSize) {
-        case UIButton.buttonSize.large:
-            return Typography[TypographyVariants.Action];
-        case UIButton.buttonSize.medium:
-            return Typography[TypographyVariants.ActionCallout];
-        case UIButton.buttonSize.small:
-            return Typography[TypographyVariants.ActionFootnote];
-        default:
-            return Typography[TypographyVariants.Action];
+            case UIButton.buttonSize.large:
+                return UIConstant.largeButtonHeight(); // 56
+            case UIButton.buttonSize.medium:
+                return UIConstant.mediumButtonHeight(); // 40
+            case UIButton.buttonSize.small:
+                return UIConstant.smallButtonHeight(); // 32
+            default: // UIButton.buttonSize.default
+                return UIConstant.buttonHeight(); // 48
         }
     }
 
     getButtonRadius() {
         switch (this.props.buttonShape) {
-        case UIButton.buttonShape.radius:
-            return UIConstant.smallBorderRadius();
-        case UIButton.buttonShape.mediumRadius:
-            return UIConstant.mediumBorderRadius();
-        case UIButton.buttonShape.rounded:
-            return this.getButtonHeight() / 2.0;
-        case UIButton.buttonShape.full:
-            return 0;
-        default: // UIButton.ButtonShape.Default
-            return UIConstant.tinyBorderRadius();
+            case UIButton.buttonShape.radius:
+                return UIConstant.smallBorderRadius();
+            case UIButton.buttonShape.mediumRadius:
+                return UIConstant.mediumBorderRadius();
+            case UIButton.buttonShape.rounded:
+                return this.getButtonHeight() / 2.0;
+            case UIButton.buttonShape.full:
+                return 0;
+            default: // UIButton.ButtonShape.Default
+                return UIConstant.tinyBorderRadius();
         }
     }
 
@@ -343,13 +392,34 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         return color;
     }
 
-    getButtonColorStyle() {
-        return UIColor.getBackgroundColorStyle(this.getButtonColor());
-    }
+    getTitleRole = (): TypographyVariants => {
+        switch (this.props.buttonSize) {
+            case UIButton.buttonSize.large:
+                return TypographyVariants.Action;
+            case UIButton.buttonSize.medium:
+                return TypographyVariants.ActionCallout;
+            case UIButton.buttonSize.small:
+                return TypographyVariants.ActionFootnote;
+            default:
+                return TypographyVariants.Action;
+        }
+    };
 
-    getBorderStyle() {
-        return { borderColor: this.getButtonColor(), borderWidth: 1 };
-    }
+    getTitleColor = (): ColorVariants => {
+        const { buttonStyle, buttonColor, disabled } = this.props;
+        if (buttonStyle === UIButton.buttonStyle.full) {
+            return disabled
+                ? ColorVariants.TextTertiary
+                : ColorVariants.TextPrimaryInverted;
+        }
+
+        if (disabled) {
+            return ColorVariants.BackgroundTertiary;
+        }
+
+        return buttonColor || ColorVariants.BackgroundAccent;
+    };
+
 
     getTextColor() {
         const { theme, disabled, buttonStyle } = this.props;
@@ -359,10 +429,6 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
             color = this.getButtonColor();
         }
         return color;
-    }
-
-    getTitleColorStyle() {
-        return UIColor.getColorStyle(this.getTextColor());
     }
 
     getIconTintStyle() {
@@ -419,7 +485,14 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
         style.push(propStyle || this.getIconTintStyle());
         const iconResult = iconHovered || icon || iconDefault;
-        return <Image source={iconResult} style={style} key={`buttonIcon~${position}`} />;
+        return (
+            <Icon
+                key={`buttonIcon~${position}`}
+                source={iconResult}
+                style={style}
+                tintColor={this.getTitleColor()}
+            />
+        );
     }
 
     renderIconL() {
@@ -448,16 +521,16 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         }
         const hovered = this.isHover() || this.isTapped();
         return (
-            <Text
+            <UILabel
                 key="buttonTitle"
+                color={this.getTitleColor()}
+                role={this.getTitleRole()}
                 style={[
-                    this.getTitleFontStyle(),
-                    this.getTitleColorStyle(),
                     hovered ? this.props.textHoverStyle : this.props.textStyle,
                 ]}
             >
                 {this.props.title}
-            </Text>
+            </UILabel>
         );
     }
 
@@ -478,7 +551,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     renderData() {
         if (!this.props.data) return null;
-    
+
         const data = (
             <UILabel
                 color={UILabelColors.TextTertiary}
@@ -505,7 +578,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
 
     renderCount() {
         if (!this.props.count) return null;
-    
+
         const data = (
             <UILabel
                 color={UILabelColors.TextSecondary}
@@ -642,12 +715,6 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (bottomExtend) {
             height *= 2;
         }
-        const backgroundColorStyle = (buttonStyle === UIButton.buttonStyle.full)
-            ? this.getButtonColorStyle()
-            : null;
-        const borderStyle = (buttonStyle === UIButton.buttonStyle.border)
-            ? this.getBorderStyle()
-            : null;
 
         const hasIconLeftOnly = (icon || hasIcon) && !iconR && !hasIconR;
         const hasIconRightOnly = (iconR || hasIconR) && !icon && !hasIcon;
@@ -662,8 +729,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
                 textAlign === UIButton.textAlign.left
                     ? UIStyle.container.centerLeft()
                     : textAlign === UIButton.textAlign.right
-                        ? UIStyle.container.centerRight()
-                        : UIStyle.container.center(),
+                    ? UIStyle.container.centerRight()
+                    : UIStyle.container.center(),
             ];
             content = (
                 <View style={alignContainerStyle}>
@@ -682,11 +749,12 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         }
 
         return (
-            <View
+            <ButtonWrapper
+                buttonStyle={buttonStyle}
+                buttonColor={this.props.buttonColor}
+                disabled={this.props.disabled}
                 style={[
                     styles.container,
-                    backgroundColorStyle,
-                    borderStyle,
                     { borderRadius: this.getButtonRadius() },
                     { height },
                     style,
@@ -694,7 +762,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
             >
                 {content}
                 {this.renderBottomExtension()}
-            </View>
+            </ButtonWrapper>
         );
     }
 
