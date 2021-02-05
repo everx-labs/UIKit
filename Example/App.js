@@ -2728,6 +2728,25 @@ const BrowserScreen = () => {
             text: 'This is browser!',
         },
     ]);
+    const inputs = React.useMemo(
+        () => [
+            {
+                type: 'AddressInput',
+                validateAddress: (text: string) => {
+                    if (text.length % 5 === 0) {
+                        return Promise.resolve({
+                            status: 'ERROR',
+                            text: 'Oh no, the length is divided by 5',
+                        });
+                    }
+                    return Promise.resolve({
+                        status: 'NONE',
+                    });
+                },
+            },
+        ],
+        [],
+    );
     return (
         <UIBrowser
             messages={messages}
@@ -2744,17 +2763,7 @@ const BrowserScreen = () => {
                     ...messages,
                 ]);
             }}
-            validateAddress={(text: string) => {
-                if (text.length % 5 === 0) {
-                    return Promise.resolve({
-                        status: 'ERROR',
-                        text: 'Oh no, the length is divided by 5',
-                    });
-                }
-                return Promise.resolve({
-                    status: 'NONE',
-                });
-            }}
+            inputs={inputs}
         />
     );
 };

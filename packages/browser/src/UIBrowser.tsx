@@ -5,15 +5,22 @@ import { UIChatList, ChatMessage } from '@tonlabs/uikit.chats';
 import { UIAddressInput } from './UIAddressInput';
 import type { OnSendText, ValidateAddress } from './types';
 
-type UIBrowserProps = {
-    messages: ChatMessage[];
-    onSendText: OnSendText;
+type DAddressInput = {
+    type: 'AddressInput';
 
     validateAddress: ValidateAddress;
 };
 
-export function UIBrowser(props: UIBrowserProps) {
-    const { messages, onSendText } = props;
+type Input = DAddressInput;
+
+type UIBrowserProps = {
+    messages: ChatMessage[];
+    onSendText: OnSendText;
+
+    inputs: Input[];
+};
+
+export function UIBrowser({ messages, onSendText, inputs }: UIBrowserProps) {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
 
     return (
@@ -26,11 +33,19 @@ export function UIBrowser(props: UIBrowserProps) {
                 messages={messages}
                 bottomInset={bottomInset}
             />
-            <UIAddressInput
-                onSendText={onSendText}
-                onHeightChange={setBottomInset}
-                validateAddress={props.validateAddress}
-            />
+            {inputs.map((input) => {
+                if (input.type === 'AddressInput') {
+                    return (
+                        <UIAddressInput
+                            onSendText={onSendText}
+                            onHeightChange={setBottomInset}
+                            validateAddress={input.validateAddress}
+                        />
+                        // TODO: put qr code reader here
+                    );
+                }
+                return null;
+            })}
         </>
     );
 }
