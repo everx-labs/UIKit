@@ -2,15 +2,18 @@ import * as React from 'react';
 
 import { UIChatList, ChatMessage } from '@tonlabs/uikit.chats';
 
-import { DAddressInput } from './DAddressInput';
-import type { OnSendText } from './types';
+import { UIAddressInput } from './UIAddressInput';
+import type { OnSendText, ValidateAddress } from './types';
 
 type UIBrowserProps = {
     messages: ChatMessage[];
     onSendText: OnSendText;
+
+    validateAddress: ValidateAddress;
 };
 
-export function UIBrowser({ messages, onSendText }: UIBrowserProps) {
+export function UIBrowser(props: UIBrowserProps) {
+    const { messages, onSendText } = props;
     const [bottomInset, setBottomInset] = React.useState<number>(0);
 
     return (
@@ -23,9 +26,10 @@ export function UIBrowser({ messages, onSendText }: UIBrowserProps) {
                 messages={messages}
                 bottomInset={bottomInset}
             />
-            <DAddressInput
+            <UIAddressInput
                 onSendText={onSendText}
                 onHeightChange={setBottomInset}
+                validateAddress={props.validateAddress}
             />
         </>
     );

@@ -25,10 +25,18 @@ import {
     useAutogrowTextView,
     useTheme,
     UIImage,
+    UILabel,
+    UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import type { OnHeightChange, OnSendText } from './types';
+import {
+    OnHeightChange,
+    OnSendText,
+    ValidateAddress,
+    ValidationResult,
+    ValidationResultStatus,
+} from './types';
 
 type ActionButtonProps = {
     inputHasValue: boolean;
@@ -110,6 +118,57 @@ const actionStyles = StyleSheet.create({
 const MAX_INPUT_LENGTH = 120;
 const MAX_INPUT_NUM_OF_LINES = 5;
 
+function useValidation(
+    onBaseChangeText: (text: string) => void,
+    baseClear: () => void,
+    validateAddress: ValidateAddress,
+) {
+    const emptyValidation = React.useRef({
+        status: ValidationResultStatus.NONE,
+    }).current;
+    const [validation, setValidation] = React.useState<ValidationResult>(
+        emptyValidation,
+    );
+
+    const onChangeText = React.useCallback(
+        async (text: string) => {
+            onBaseChangeText(text);
+
+            const currentValidation = await validateAddress(text);
+
+            if (
+                currentValidation.status !== validation.status ||
+                currentValidation.text !== validation.text
+            ) {
+                setValidation(currentValidation);
+            }
+        },
+        [onBaseChangeText, validateAddress, validation],
+    );
+
+    const clear = React.useCallback(() => {
+        baseClear();
+
+        setValidation(emptyValidation);
+    }, [baseClear, emptyValidation]);
+
+    return {
+        validation,
+        onChangeText,
+        clear,
+    };
+}
+
+const getHintColor = (status: ValidationResultStatus) => {
+    if (status === ValidationResultStatus.ERROR) {
+        return ColorVariants.TextNegative;
+    }
+    if (status === ValidationResultStatus.SUCCESS) {
+        return ColorVariants.TextPositive;
+    }
+    return ColorVariants.TextTertiary;
+};
+
 type DAddressInputInternalProps = {
     textInputRef: React.RefObject<TextInput>;
     placeholder?: string;
@@ -117,9 +176,11 @@ type DAddressInputInternalProps = {
     onHeightChange?: OnHeightChange;
     onFocus: () => void;
     onBlur: () => void;
+
+    validateAddress: ValidateAddress;
 };
 
-export function DAddressInputInternal(props: DAddressInputInternalProps) {
+export function UIAddressInputInternal(props: DAddressInputInternalProps) {
     const {
         onContentSizeChange,
         onChange,
@@ -135,16 +196,22 @@ export function DAddressInputInternal(props: DAddressInputInternalProps) {
     const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);
     const {
         inputHasValue,
-        onChangeText,
+        onChangeText: onBaseChangeText,
         onKeyPress,
         onSendText,
-        clear,
+        clear: baseClear,
     } = useChatInputValue({
         ref: props.textInputRef,
         onSendText: props.onSendText,
         showMaxLengthAlert,
         resetInputHeight,
+        maxInputLength: MAX_INPUT_LENGTH,
     });
+    const { validation, onChangeText, clear } = useValidation(
+        onBaseChangeText,
+        baseClear,
+        props.validateAddress,
+    );
 
     return (
         <ChatInputContainer
@@ -153,11 +220,23 @@ export function DAddressInputInternal(props: DAddressInputInternalProps) {
                 <ActionButton
                     inputHasValue={inputHasValue}
                     onSendText={onSendText}
-                    hasError={false /* TODO */}
+                    hasError={
+                        validation.status === ValidationResultStatus.ERROR
+                    }
                     clear={clear}
                 />
             }
         >
+            {validation.text && validation.text.length > 0 ? (
+                <UILabel
+                    role={UILabelRoles.ParagraphFootnote}
+                    color={getHintColor(validation.status)}
+                    style={styles.hint}
+                    numberOfLines={1}
+                >
+                    {validation.text}
+                </UILabel>
+            ) : null}
             <UITextView
                 ref={props.textInputRef}
                 testID="browser_input"
@@ -193,9 +272,10 @@ type DAddressInputProps = {
     onHeightChange?: OnHeightChange;
 
     customKeyboard?: UICustomKeyboardItem;
+    validateAddress: ValidateAddress;
 };
 
-export function DAddressInput(props: DAddressInputProps) {
+export function UIAddressInput(props: DAddressInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
     const {
         customKeyboardVisible,
@@ -203,12 +283,12 @@ export function DAddressInput(props: DAddressInputProps) {
         onKeyboardResigned,
         onFocus,
         onBlur,
-    } = useCustomKeyboard(props.onCustomKeyboardVisible, props.editable);
+    } = useCustomKeyboard(props.onCustomKeyboardVisible, true);
 
     useBackHandler(textInputRef);
 
     const input = (
-        <DAddressInputInternal
+        <UIAddressInputInternal
             textInputRef={textInputRef}
             placeholder={props.placeholder}
             onSendText={props.onSendText}
@@ -217,6 +297,7 @@ export function DAddressInput(props: DAddressInputProps) {
             }
             onFocus={onFocus}
             onBlur={onBlur}
+            validateAddress={props.validateAddress}
         />
     );
 
@@ -238,3 +319,7 @@ export function DAddressInput(props: DAddressInputProps) {
         />
     );
 }
+
+const styles = StyleSheet.create({
+    hint: { marginBottom: 4 },
+});
