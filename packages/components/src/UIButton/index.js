@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Image, Platform , ViewPagerAndroidComponent } from 'react-native';
+import { StyleSheet, View, Image, Platform  } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
@@ -26,7 +26,6 @@ import type {
 } from '../UIActionComponent';
 import UITooltip from '../UITooltip';
 import IconAnimation from './IconAnimation';
-
 
 const iconDefault = UIAssets.icons.ui.triangle;
 
