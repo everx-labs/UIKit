@@ -51,7 +51,7 @@ export function UIQRCodeScannerSheet({
                 <UIImage
                     source={UIAssets.icons.ui.closeDarkThemeSecondary}
                     style={styles.closeIcon}
-                    tintColor={theme[ColorVariants.LineNeutral]}
+                    tintColor={ColorVariants.LineNeutral}
                 />
             </TouchableOpacity>
         </UICardSheet>
