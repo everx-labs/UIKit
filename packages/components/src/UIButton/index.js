@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View, Image, Platform } from 'react-native';
+import { StyleSheet, View, Image, Platform  } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import { MaterialIndicator } from 'react-native-indicators';
 
@@ -200,7 +200,7 @@ export type ButtonProps = UIActionComponentProps & {
 
 type State = UIActionComponentState;
 
-const ButtonWrapper = React.forwardRef<View, ButtonProps>(({ buttonStyle, buttonColor, disabled, style, ...rest }: *, ref) => {
+const ButtonWrapper = React.forwardRef<*, ButtonProps>(({ buttonStyle, buttonColor, disabled, style, ...rest }: *, ref) => {
     const theme = useTheme();
 
     const btnColor = React.useMemo(() => {
@@ -223,10 +223,11 @@ const ButtonWrapper = React.forwardRef<View, ButtonProps>(({ buttonStyle, button
             };
         }
         return null;
-    }, [buttonStyle, btnColor]);
+    }, [theme, buttonStyle, btnColor]);
 
     return (
         <View
+            // $FlowExpectedError
             ref={ref}
             {...rest}
             style={[

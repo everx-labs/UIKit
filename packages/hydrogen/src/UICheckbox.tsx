@@ -64,7 +64,7 @@ export function UICheckbox({
                     ]}
                 />
             );
-        }, [editable, selected]
+        }, [theme, editable, selected]
     );
 
     if (onPress && editable) {

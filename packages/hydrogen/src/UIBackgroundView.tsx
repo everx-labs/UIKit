@@ -22,7 +22,7 @@ export const UIBackgroundView = React.forwardRef<View, Props>(
             () => ({
                 backgroundColor: theme[colorProp],
             }),
-            [colorProp],
+            [theme, colorProp],
         );
         return (
             <View
