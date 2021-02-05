@@ -213,7 +213,7 @@ function useContentInset(
                 });
             }
         }
-    }, [bottomInset]);
+    }, [ref, listContentOffsetRef, bottomInset]);
 
     return contentInset;
 }
@@ -370,7 +370,14 @@ type Props = {
 };
 
 export const UIChatList = React.forwardRef<SectionList, Props>(
-    function UIChatListContainer(props: Props, ref) {
+    function UIChatListContainer({
+        areStickersVisible,
+        canLoadMore,
+        onLoadEarlierMessages,
+        isLoadingMore,
+        messages,
+        bottomInset
+    }: Props, ref) {
         const keyboardDismissProp = React.useMemo(() => {
             if (Platform.OS !== 'ios') {
                 // The following is not working on Android >>>
@@ -384,13 +391,13 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                 // },
             }
 
-            // if (props.areStickersVisible) {
+            // if (areStickersVisible) {
             //    return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
             // }
             // UPD: `interactive` keyboard started working well with UICustomKeyboard :)
 
             return 'interactive';
-        }, [props.areStickersVisible]);
+        }, [/* areStickersVisible */]);
 
         const localRef = React.useRef<SectionList>(null);
 
@@ -401,21 +408,19 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
         });
 
         const renderLoadMore = React.useCallback(() => {
-            if (!props.canLoadMore) {
+            if (!canLoadMore) {
                 return null;
             }
 
             return (
                 <UILoadMoreButton
-                    onLoadMore={props.onLoadEarlierMessages}
-                    isLoadingMore={props.isLoadingMore}
+                    onLoadMore={onLoadEarlierMessages}
+                    isLoadingMore={isLoadingMore}
                 />
             );
-        }, [props.canLoadMore, props.isLoadingMore]);
+        }, [canLoadMore, onLoadEarlierMessages, isLoadingMore]);
 
-        const { getItemLayout, renderItem } = useLayoutHelpers(
-            props.canLoadMore,
-        );
+        const { getItemLayout, renderItem } = useLayoutHelpers(canLoadMore);
         const {
             listContentOffset,
             borderOpacityStyle,
@@ -428,12 +433,12 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
         const contentInset = useContentInset(
             localRef,
             listContentOffset,
-            props.bottomInset,
+            bottomInset,
         );
         const theme = useTheme();
         const sections = React.useMemo(
-            () => UIChatListFormatter.getSections(props.messages),
-            [props.messages],
+            () => UIChatListFormatter.getSections(messages),
+            [messages],
         );
 
         return (
@@ -449,7 +454,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                 />
                 <TapGestureHandler
                     onHandlerStateChange={onHandlerStateChange}
-                    enabled={props.areStickersVisible}
+                    enabled={areStickersVisible}
                 >
                     <SectionList
                         nativeID={CHAT_SECTION_LIST}
@@ -476,7 +481,7 @@ export const UIChatList = React.forwardRef<SectionList, Props>(
                         // the title (date) for each section becomes the footer instead of header.
                         renderSectionFooter={renderSectionTitle}
                         // renderSectionHeader={section => this.renderSectionStatus(section)}
-                        onEndReached={props.onLoadEarlierMessages}
+                        onEndReached={onLoadEarlierMessages}
                         onEndReachedThreshold={0.6}
                         ListFooterComponent={renderLoadMore}
                         renderScrollComponent={renderScrollComponent}

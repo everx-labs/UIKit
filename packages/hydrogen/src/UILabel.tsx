@@ -82,7 +82,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         () => ({
             color: theme[colorProp],
         }),
-        [colorProp],
+        [theme, colorProp],
     );
 
     const TextComponent = textComponent || Text;
