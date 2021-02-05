@@ -17,6 +17,7 @@ export type Props = {
     fractionalTextStyle?: ViewStyleProp,
     maxFractionalDigits?: ?number,
     maxBalanceLength?: ?number,
+    textColor?: ?ColorVariants,
     fractionalTextColor?: ?ColorVariants,
 };
 
@@ -45,12 +46,14 @@ const UIAnimatedBalanceSymbol = React.memo(
         textStyle,
         fractionalTextStyle,
         children,
+        textColor,
         fractionalTextColor,
     }: {
         animation: AnimatedValue | AnimatedInterpolation,
         textStyle: TextStyleProp,
         fractionalTextStyle: TextStyleProp,
         children: BalanceSymbol,
+        textColor: ColorVariants,
         fractionalTextColor: ColorVariants,
     }) => {
         const theme = useTheme();
@@ -64,9 +67,9 @@ const UIAnimatedBalanceSymbol = React.memo(
                         : fractionalTextStyle,
                     {
                         opacity: animation,
-                        color: children.kind === BalanceSymbolKind.fractional
-                            ? theme[fractionalTextColor]
-                            : theme[ColorVariants.TextPrimary],
+                        color: children.kind === BalanceSymbolKind.integer
+                            ? theme[textColor]
+                            : theme[fractionalTextColor],
                     },
                 ]}
             >
@@ -96,6 +99,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
         separator: '.',
         loading: false,
         textStyle: UIStyle.text.titleLight(),
+        textColor: ColorVariants.TextPrimary,
         fractionalTextStyle: UIStyle.text.tertiary(),
         fractionalTextColor: ColorVariants.TextPrimary,
         maxFractionalDigits: null,
