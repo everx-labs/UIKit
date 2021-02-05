@@ -18,11 +18,9 @@ import {
 import {
     UIBackgroundView,
     UIBackgroundViewColors,
-    Typography,
-    TypographyVariants,
+    UITextView,
 } from '@tonlabs/uikit.hydrogen';
 
-import UITextInput from '../UITextInput';
 import UIComponent from '../UIComponent';
 
 import UIDummyNavigationBar from './UIDummyNavigationBar';
@@ -31,10 +29,8 @@ const styles = StyleSheet.create({
     searchInput: {
         flex: 1,
     },
-    textStyle: {
-        width: '100%',
-    },
     searchContainer: {
+        flex: 1,
         flexDirection: 'row',
         marginHorizontal: UIConstant.contentOffset(),
     },
@@ -72,6 +68,8 @@ type State = {
 
 // TODO: rewrite this component to UITextView from hydrogen
 export default class UISearchBar extends UIComponent<Props, State> {
+    textInput = React.createRef<UITextView>();
+
     static defaultProps = {
         value: '',
         placeholder: '',
@@ -91,7 +89,6 @@ export default class UISearchBar extends UIComponent<Props, State> {
     }
 
     // Constructor
-    textInput: ?UITextInput;
     UIDummyNavigationBar: ?UIDummyNavigationBar;
 
     constructor(props: Props) {
@@ -128,8 +125,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
 
     onCancel = () => {
         this.onChangeExpression('');
-        if (this.textInput && this.textInput.isFocused()) {
-            this.textInput.blur(); // onBlurHandler will be called when props.value is already ''.
+        if (this.textInput.current && this.textInput.current.isFocused()) {
+            this.textInput.current.blur(); // onBlurHandler will be called when props.value is already ''.
         } else {
             this.onBlurHandler(true);
         }
@@ -158,8 +155,8 @@ export default class UISearchBar extends UIComponent<Props, State> {
     }
 
     focus() {
-        if (this.textInput) {
-            this.textInput.focus();
+        if (this.textInput.current) {
+            this.textInput.current.focus();
         }
     }
 
@@ -265,17 +262,14 @@ export default class UISearchBar extends UIComponent<Props, State> {
             >
                 <View style={styles.searchContainer}>
                     {this.renderGlass()}
-                    <UITextInput
+                    <UITextView
                         {...testIDProp}
-                        ref={(component) => {
-                            this.textInput = component;
-                        }}
+                        ref={this.textInput}
                         autoFocus={autoFocus}
                         value={value}
                         placeholder={placeholder}
                         returnKeyType="search"
-                        textStyle={[Typography[TypographyVariants.ParagraphText], styles.textStyle]}
-                        containerStyle={styles.searchInput}
+                        style={styles.searchInput}
                         onFocus={this.onFocusHandler}
                         onBlur={this.onBlurHandler}
                         onChangeText={this.onChangeExpression}

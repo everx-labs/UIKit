@@ -385,14 +385,14 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
 
         this.onChangeText(newPhrase, (finalValue) => {
             const { textInput } = this;
-            if (textInput) {
+            if (textInput.current) {
                 if (!this.props.isSeedPhraseValid) {
-                    textInput.focus();
+                    textInput.current.focus();
                 }
 
                 // Apply a fix to move the cursor to the right
                 if (Platform.OS === 'web') {
-                    textInput.setSelectionRange(finalValue.length, finalValue.length);
+                    textInput.current.setSelectionRange(finalValue.length, finalValue.length);
                 } else if (Platform.OS === 'ios') {
                     // nothing
                 } else if (Platform.OS === 'android') {
@@ -426,8 +426,8 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                     // Another hack...
                     // Remove the ending space in order to force the input updating its cursor!
                     // It doesn't affect UX dramatically: the caret just jumps one position left
-                    if (finalValue.endsWith(space)) {
-                        textInput.setNativeProps({
+                    if (textInput.current && finalValue.endsWith(space)) {
+                        textInput.current.setNativeProps({
                             text: finalValue.substr(0, finalValue.length - 1),
                         });
                     }

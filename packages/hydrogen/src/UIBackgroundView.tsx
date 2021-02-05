@@ -7,6 +7,7 @@ import { ColorVariants, useTheme } from './Colors';
 type Props = Omit<ViewProps, 'style'> & {
     color?: ColorVariants,
     style?: ViewStyle;
+    children?: React.ReactNode,
 };
 
 export const UIBackgroundView = React.forwardRef<View, Props>(
