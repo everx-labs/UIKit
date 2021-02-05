@@ -200,8 +200,7 @@ export type ButtonProps = UIActionComponentProps & {
 
 type State = UIActionComponentState;
 
-// $FlowFixMe
-const ButtonWrapper = React.forwardRef<View, *>(({ buttonStyle, buttonColor, disabled, style, ...rest }: *, ref) => {
+const ButtonWrapper = React.forwardRef<View, ButtonProps>(({ buttonStyle, buttonColor, disabled, style, ...rest }: *, ref) => {
     const theme = useTheme();
 
     const btnColor = React.useMemo(() => {

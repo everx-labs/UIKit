@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, Image } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
@@ -165,13 +165,22 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         }
 
         return (
-            <Icon
-                source={icon}
-                tintColor={disabled
-                    ? ColorVariants.TextTertiary
-                    : titleColor || ColorVariants.TextAccent}
-                style={iconStyle}
-            />
+            disableIconColor
+                ? (
+                    <Image
+                        source={icon}
+                        style={iconStyle}
+                    />
+                )
+                : (
+                    <Icon
+                        source={icon}
+                        tintColor={disabled
+                            ? ColorVariants.TextTertiary
+                            : titleColor || ColorVariants.TextAccent}
+                        style={iconStyle}
+                    />
+                )
         );
     }
 
