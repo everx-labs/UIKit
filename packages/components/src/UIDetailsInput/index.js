@@ -523,22 +523,14 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         this.setStateSafely({ hover });
     }
 
-    // TODO: For some reason, when this component is wrapped with the Popover component,
-    // the reference is always 'null', but, on the parent control (the Popover), there is
-    // a property called '_elements', there you can access to the refenrence, so, we can
-    // pass it here.
-    // setTextInputRef(inputRef: ?React.ElementRef<typeof TextInput>) {
-    //     this.textInput = inputRef;
-    // }
-
     // Getters
     getCommentTestID(): ?string {
         return this.props.commentTestID ? this.props.commentTestID : null;
     }
 
-    // getCommentRightTestID(): ?string {
-    //     return this.props.commentRightTestID ? this.props.commentRightTestID : null;
-    // }
+    getCommentRightTestID(): ?string {
+        return this.props.commentRightTestID ? this.props.commentRightTestID : null;
+    }
 
     isFocused(): boolean {
         return this.state.focused || (this.textInput.current && this.textInput.current.isFocused()) || false;

@@ -426,8 +426,7 @@ export default class UISeedPhraseInput extends UIDetailsInput<Props, State> {
                     // Another hack...
                     // Remove the ending space in order to force the input updating its cursor!
                     // It doesn't affect UX dramatically: the caret just jumps one position left
-                    if (finalValue.endsWith(space)) {
-                        // $FlowFixMe
+                    if (textInput.current && finalValue.endsWith(space)) {
                         textInput.current.setNativeProps({
                             text: finalValue.substr(0, finalValue.length - 1),
                         });
