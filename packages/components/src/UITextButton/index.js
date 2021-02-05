@@ -10,7 +10,7 @@ import {
     UIColor,
     UIFunction,
 } from '@tonlabs/uikit.core';
-import { ColorVariants, UIImage, UILabel, UILabelColors, UILabelRoles, useTheme } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIImage, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -59,22 +59,6 @@ type Props = UIActionComponentProps & {
 };
 
 type State = UIActionComponentState;
-
-type IconProps = {
-    source: ImageSource,
-    tintColor: ColorVariants,
-}
-
-function Icon(props: IconProps) {
-    const theme = useTheme();
-    return (
-        <UIImage
-            {...props}
-            source={props.source}
-            tintColor={theme[props.tintColor]}
-        />
-    );
-}
 
 export default class UITextButton extends UIActionComponent<Props, State> {
     static align = {
@@ -173,12 +157,12 @@ export default class UITextButton extends UIActionComponent<Props, State> {
                     />
                 )
                 : (
-                    <Icon
+                    <UIImage
                         source={icon}
+                        style={iconStyle}
                         tintColor={disabled
                             ? ColorVariants.TextTertiary
                             : titleColor || ColorVariants.TextAccent}
-                        style={iconStyle}
                     />
                 )
         );

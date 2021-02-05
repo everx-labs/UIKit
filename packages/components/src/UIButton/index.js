@@ -237,22 +237,6 @@ const ButtonWrapper = React.forwardRef<View, ButtonProps>(({ buttonStyle, button
     );
 });
 
-type IconProps = {
-    source: ImageSource,
-    tintColor: ColorVariants,
-}
-
-function Icon(props: IconProps) {
-    const theme = useTheme();
-    return (
-        <UIImage
-            {...props}
-            source={props.source}
-            tintColor={theme[props.tintColor]}
-        />
-    );
-}
-
 export default class UIButton extends UIActionComponent<ButtonProps, State> {
     static buttonSize = {
         default: 'default',
@@ -485,7 +469,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         style.push(propStyle || this.getIconTintStyle());
         const iconResult = iconHovered || icon || iconDefault;
         return (
-            <Icon
+            <UIImage
                 key={`buttonIcon~${position}`}
                 source={iconResult}
                 style={style}
