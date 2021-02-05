@@ -232,6 +232,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                             key={`next-${index}`}
                             animation={this.getAnimation(index)}
                             textStyle={this.props.textStyle}
+                            textColor={this.propps.textColor}
                             fractionalTextStyle={this.props.fractionalTextStyle}
                             fractionalTextColor={this.props.fractionalTextColor}
                         >
@@ -255,6 +256,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                                     outputRange: ([1, 0]: $ReadOnlyArray<number>),
                                 })}
                                 textStyle={this.props.textStyle}
+                                textColor={this.propps.textColor}
                                 fractionalTextStyle={this.props.fractionalTextStyle}
                                 fractionalTextColor={this.props.fractionalTextColor}
                             >
