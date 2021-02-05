@@ -78,5 +78,6 @@ export function useChatInputValue({
         onChangeText,
         onKeyPress,
         onSendText,
+        clear,
     };
 }

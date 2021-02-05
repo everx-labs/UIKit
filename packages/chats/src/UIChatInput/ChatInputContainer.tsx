@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Animated, ColorValue, Platform, StyleSheet, View } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 
 import { Shortcuts } from './Shortcuts';
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
         // flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
+        minHeight: UIConstant.largeButtonHeight(),
     },
     border: {
         height: 1,

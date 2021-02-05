@@ -116,6 +116,7 @@ import {
     UIQRCodeScannerSheet,
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
+import { UIBrowser } from '@tonlabs/uikit.browser';
 
 enableScreens();
 useWebFonts();
@@ -2624,7 +2625,6 @@ const ChatStack = createStackNavigator();
 const ChatWindowScreen = () => {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
     const [messages, setMessages] = React.useState(initialMessages);
-    const insets = useSafeAreaInsets();
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onSendSticker = React.useCallback(() => undefined, []);
     const onItemSelected = React.useCallback(
@@ -2713,6 +2713,57 @@ const Chat = () => {
                 component={ChatWindowScreen}
             />
         </ChatStack.Navigator>
+    );
+};
+
+const BrowserStack = createStackNavigator();
+
+const BrowserScreen = () => {
+    const [messages, setMessages] = React.useState([
+        {
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 2 * 60 * 1000),
+            sender: '0:123',
+            text: 'This is browser!',
+        },
+    ]);
+    return (
+        <UIBrowser
+            messages={messages}
+            onSendText={(text) => {
+                setMessages([
+                    {
+                        key: `${Date.now()}1`,
+                        type: 'stm',
+                        status: 'sent',
+                        time: Date.now(),
+                        sender: '0:000',
+                        text,
+                    },
+                    ...messages,
+                ]);
+            }}
+        />
+    );
+};
+
+const Browser = () => {
+    const theme = useTheme();
+    return (
+        <BrowserStack.Navigator>
+            <BrowserStack.Screen
+                name="BrowserScreen"
+                options={{
+                    headerShown: false,
+                    title: 'Browser',
+                    cardStyle: {
+                        backgroundColor: theme[ColorVariants.backgroundPrimary],
+                    },
+                }}
+                component={BrowserScreen}
+            />
+        </BrowserStack.Navigator>
     );
 };
 
@@ -2805,6 +2856,11 @@ const Main = ({ navigation }) => {
                     buttonStyle={UIButton.ButtonStyle.Link}
                     title="Chat"
                 />
+                <UIButton
+                    onPress={() => navigation.navigate('browser')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Browser"
+                />
             </ScrollView>
         </SafeAreaView>
     );
@@ -2879,6 +2935,7 @@ const App: () => React$Node = () => {
                         <SurfSplit.Screen name="profile" component={Profile} />
                         <SurfSplit.Screen name="text" component={TextScreen} />
                         <SurfSplit.Screen name="chat" component={Chat} />
+                        <SurfSplit.Screen name="browser" component={Browser} />
                     </SurfSplit.Navigator>
                 </NavigationContainer>
                 <UILayoutManager />
