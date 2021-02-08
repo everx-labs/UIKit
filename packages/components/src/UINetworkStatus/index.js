@@ -5,6 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 
 import { UIColor, UIStyle, UIDevice } from '@tonlabs/uikit.core';
 
+import { DarkTheme, LightTheme } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -30,6 +31,7 @@ type NetInfoState = {
 }
 
 type Props = {
+    isDarkTheme: boolean,
     onConnected: (boolean) => void,
 }
 
@@ -84,16 +86,24 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
     }
 
     handleConnectionChange = ({ isConnected }: NetInfoState) => {
+        const { isDarkTheme, onConnected } = this.props;
         this.setConnected(isConnected);
         // Change status bar color style
-        const statusBarStyle = isConnected ? 'dark-content' : 'light-content';
+        let statusBarStyle = 'light-content';
+        let statusBarColor = 'black';
+        if (isConnected) {
+            statusBarStyle = isDarkTheme ? 'light-content' : 'dark-content';
+            statusBarColor = isDarkTheme
+                ? DarkTheme.BackgroundPrimary
+                : LightTheme.BackgroundPrimary;
+
+        }
         StatusBar.setBarStyle(statusBarStyle, true);
-        const statusBarColor = isConnected ? 'white' : 'black';
         if (Platform.OS === 'android') {
             StatusBar.setBackgroundColor(statusBarColor, true);
         }
         // Pass connection status to props
-        this.props.onConnected(isConnected);
+        onConnected(isConnected);
     };
 
     // Render
@@ -113,7 +123,7 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
 
     render() {
         return (
-            <View style={UIStyle.topScreenContainer} pointerEvents="none">
+            <View style={UIStyle.container.topScreen()} pointerEvents="none">
                 {this.renderSnack()}
             </View>
         );
@@ -123,5 +133,6 @@ export default class UINetworkStatus extends UIComponent<Props, State> {
 }
 
 UINetworkStatus.defaultProps = {
+    isDarkTheme: false,
     onConnected: () => {},
 };
