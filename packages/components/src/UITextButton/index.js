@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Image, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, Image } from 'react-native';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
@@ -10,7 +10,7 @@ import {
     UIColor,
     UIFunction,
 } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIImage, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -129,7 +129,7 @@ export default class UITextButton extends UIActionComponent<Props, State> {
         }
 
         const {
-            theme, disabled, iconHoverColor, title, disableIconColor,
+            theme, disabled, iconHoverColor, title, titleColor, disableIconColor,
         } = this.props;
         const tapped = this.isTapped();
         const hover = this.isHover();
@@ -148,10 +148,24 @@ export default class UITextButton extends UIActionComponent<Props, State> {
             iconStyle.push(isBack ? UIStyle.margin.leftSmall() : UIStyle.margin.rightSmall());
         }
 
-        return (<Image
-            source={icon}
-            style={iconStyle}
-        />);
+        return (
+            disableIconColor
+                ? (
+                    <Image
+                        source={icon}
+                        style={iconStyle}
+                    />
+                )
+                : (
+                    <UIImage
+                        source={icon}
+                        style={iconStyle}
+                        tintColor={disabled
+                            ? ColorVariants.TextTertiary
+                            : titleColor || ColorVariants.TextAccent}
+                    />
+                )
+        );
     }
 
     renderTitle() {

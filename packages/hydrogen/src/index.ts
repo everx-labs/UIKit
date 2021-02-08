@@ -8,6 +8,7 @@ export * from './UIAutogrowTextView';
 export * from './UISheet';
 export * from './UIQRCodeScannerSheet';
 export * from './Portal';
+export * from './UICheckbox';
 export * from './UIImage';
 
 export * from './Colors';

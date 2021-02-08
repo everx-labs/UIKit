@@ -48,7 +48,7 @@ const getCommentColor = (props: UIMaterialTextViewProps): ColorVariants => {
     if (props.error) {
         return ColorVariants.TextNegative;
     }
-    return ColorVariants.TextTertiary;
+    return ColorVariants.TextSecondary;
 };
 
 const FLOATING_LABEL_SPRING_CONFIG = {
@@ -344,7 +344,7 @@ export const UIMaterialTextView = React.forwardRef<
                         {
                             letterSpacing: paragraphTextStyle.letterSpacing,
                             lineHeight: undefined,
-                            color: theme[UILabelColors.TextTertiary],
+                            color: theme[UILabelColors.TextSecondary],
                         },
                         pseudoLabelStyle,
                     ]}
@@ -379,7 +379,7 @@ export const UIMaterialTextView = React.forwardRef<
                     <UILabel
                         onLayout={onActualLabelLayout}
                         role={TypographyVariants.ParagraphText}
-                        color={UILabelColors.TextTertiary}
+                        color={UILabelColors.TextSecondary}
                         textComponent={Animated.Text}
                         // @ts-ignore
                         style={labelStyle}

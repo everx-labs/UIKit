@@ -21,7 +21,7 @@ export const UISafeAreaView = React.forwardRef<SafeAreaView, Props>(
             () => ({
                 backgroundColor: theme[colorProp],
             }),
-            [colorProp],
+            [theme, colorProp],
         );
         return (
             <SafeAreaView

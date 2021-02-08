@@ -1,13 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-
-import UIDetailsView from '../UIDetailsView';
 import UICheckboxItem from '../UICheckboxItem';
-import UIComponent from '../UIComponent';
 import UIDetailsSwitcher from '../UIDetailsSwitcher';
 
 type State = {};
