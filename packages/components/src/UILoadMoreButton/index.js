@@ -1,11 +1,17 @@
 // @flow
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIColor, UIConstant } from '@tonlabs/uikit.core';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -20,7 +26,6 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: UIColor.backgroundTertiary(),
         height: UIConstant.smallCellHeight(),
         borderRadius: UIConstant.smallCellHeight() / 2,
         paddingVertical: UIConstant.tinyContentOffset() / 2,
@@ -73,7 +78,10 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
                 }}
                 disabled={this.props.isLoadingMore}
             >
-                <View style={[styles.wrapper, this.props.wrapperStyle]}>
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundTertiary}
+                    style={[styles.wrapper, this.props.wrapperStyle]}
+                >
                     <UILabel
                         color={UILabelColors.TextTertiary}
                         role={UILabelRoles.ParagraphLabel}
@@ -85,7 +93,7 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
                         {this.props.label}
                     </UILabel>
                     {this.renderIndicator()}
-                </View>
+                </UIBackgroundView>
             </TouchableOpacity>
         );
     }
