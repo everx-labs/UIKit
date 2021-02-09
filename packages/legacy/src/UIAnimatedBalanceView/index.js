@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 // @flow
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle } from '@tonlabs/uikit.core';
@@ -13,7 +13,7 @@ type Props = InnerProps & {
     containerStyle?: ViewStyleProp,
     testID?: string,
     icon?: React$Node,
-    onPress: () => void,
+    onPress: ?() => void,
 };
 
 type State = {
