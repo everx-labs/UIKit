@@ -169,7 +169,7 @@ const getHintColor = (status: ValidationResultStatus) => {
     return ColorVariants.TextTertiary;
 };
 
-type DAddressInputInternalProps = {
+type UIAddressInputInternalProps = {
     textInputRef: React.RefObject<TextInput>;
     placeholder?: string;
     onSendText: OnSendText;
@@ -180,7 +180,7 @@ type DAddressInputInternalProps = {
     validateAddress: ValidateAddress;
 };
 
-export function UIAddressInputInternal(props: DAddressInputInternalProps) {
+export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
     const {
         onContentSizeChange,
         onChange,
@@ -264,7 +264,7 @@ export function UIAddressInputInternal(props: DAddressInputInternalProps) {
     );
 }
 
-type DAddressInputProps = {
+type UIAddressInputProps = {
     placeholder?: string;
 
     onSendText: OnSendText;
@@ -275,7 +275,7 @@ type DAddressInputProps = {
     validateAddress: ValidateAddress;
 };
 
-export function UIAddressInput(props: DAddressInputProps) {
+export function UIAddressInput(props: UIAddressInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
     const {
         customKeyboardVisible,
