@@ -73,6 +73,7 @@ export type ButtonProps = UIActionComponentProps & {
     UIButton.ButtonSize.Large,
     UIButton.ButtonSize.Medium,
     UIButton.ButtonSize.Small,
+    uiButton.ButtonSize.Tiny,
     UIButton.ButtonSize.Default
     @default UIButton.ButtonSize.Default
     */
@@ -244,6 +245,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         large: 'l',
         medium: 'm',
         small: 's',
+        tiny: 't',
     };
 
     static buttonShape = {
@@ -272,6 +274,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         Large: 'l',
         Medium: 'm',
         Small: 's',
+        Tiny: 't',
     };
 
     static ButtonShape = {
@@ -337,6 +340,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
                 return UIConstant.mediumButtonHeight(); // 40
             case UIButton.buttonSize.small:
                 return UIConstant.smallButtonHeight(); // 32
+            case UIButton.buttonSize.tiny:
+                return UIConstant.tinyButtonHeight(); // 20
             default: // UIButton.buttonSize.default
                 return UIConstant.buttonHeight(); // 48
         }
@@ -383,6 +388,8 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
             case UIButton.buttonSize.medium:
                 return TypographyVariants.ActionCallout;
             case UIButton.buttonSize.small:
+                return TypographyVariants.ActionFootnote;
+            case UIButton.buttonSize.tiny:
                 return TypographyVariants.ActionFootnote;
             default:
                 return TypographyVariants.Action;

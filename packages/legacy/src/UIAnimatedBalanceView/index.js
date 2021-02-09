@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle } from '@tonlabs/uikit.core';
@@ -13,6 +13,7 @@ type Props = InnerProps & {
     containerStyle?: ViewStyleProp,
     testID?: string,
     icon?: React$Node,
+    onPress: ?() => void,
 };
 
 type State = {
@@ -70,14 +71,22 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
         this.setState(newState);
     };
 
+    onPress = () => {
+        if (this.props.onPress) {
+            this.props.onPress();
+        }
+    }
+
     render() {
         const {
             testID, icon, containerStyle, ...rest
         } = this.props;
         return (
-            <View
+            <TouchableOpacity
                 testID={testID}
                 style={[UIStyle.common.flexRow(), UIStyle.common.alignCenter(), containerStyle]}
+                disabled={!this.props.onPress}
+                onPress={this.onPress}
             >
                 <UIAnimatedBalanceOpacity
                     {...rest}
@@ -86,7 +95,7 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
                     onAnimationEnd={this.onAnimationEnd}
                 />
                 {icon}
-            </View>
+            </TouchableOpacity>
         );
     }
 }
