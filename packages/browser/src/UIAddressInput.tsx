@@ -71,7 +71,7 @@ function ActionButton({
                     <UIImage
                         source={UIAssets.icons.ui.closeRemove}
                         style={actionStyles.icon}
-                        tintColor={theme[ColorVariants.LinePrimary]}
+                        tintColor={ColorVariants.LinePrimary}
                     />
                 </View>
             </TouchableOpacity>
