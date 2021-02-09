@@ -1,7 +1,5 @@
 // @flow
 
-import { string } from 'prop-types';
-
 export type UILocalizedData = {|
     +Account: string,
     +AccountAddress: string,
