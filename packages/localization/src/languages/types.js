@@ -472,4 +472,9 @@ export type UILocalizedData = {|
         +ErrorPermissions: string,
         +ErrorUnexpected: string,
     },
+    +Browser: {|
+        +AddressInput: {|
+            +Placeholder: string,
+        |},
+    |},
 |};
