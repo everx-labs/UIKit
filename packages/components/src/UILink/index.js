@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { StyleSheet, Linking, Platform } from 'react-native';
+import { StyleSheet, Linking, Platform, View } from 'react-native';
 
 import UIButton from '../UIButton';
 import type { ButtonProps } from '../UIButton';
@@ -53,6 +53,7 @@ export default class UILink extends UIComponent<Props, State> {
         }
         return (
             <UIButton {...this.props} buttonStyle={UIButton.ButtonStyle.Link} />
+
         );
     }
 
