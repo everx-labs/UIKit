@@ -489,6 +489,12 @@
     "Browser": {
         "AddressInput": {
             "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
         }
     }
 }

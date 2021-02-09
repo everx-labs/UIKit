@@ -1,5 +1,7 @@
 // @flow
 
+import { string } from 'prop-types';
+
 export type UILocalizedData = {|
     +Account: string,
     +AccountAddress: string,
@@ -475,6 +477,12 @@ export type UILocalizedData = {|
     +Browser: {|
         +AddressInput: {|
             +Placeholder: string,
+        |},
+        +AddressInputBubble: {|
+            +MainAccount: string,
+            +SelectAsset: string,
+            +EnterManually: string,
+            +ScanQR: string,
         |},
     |},
 |};
