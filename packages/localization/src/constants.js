@@ -31,21 +31,6 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         country: 'FR',
         dayJS: 'fr',
     },
-    it: {
-        name: 'Italiano',
-        country: 'IT',
-        dayJS: 'it',
-    },
-    tr: {
-        name: 'Türkçe',
-        country: 'TR',
-        dayJS: 'tr',
-    },
-    ko: {
-        name: '한국어',
-        country: 'KR',
-        dayJS: 'ko',
-    },
     pt_BR: {
         name: 'Português (Br)',
         country: 'BR',
@@ -56,20 +41,35 @@ export const languagesInfo: { [string]: LanguageInfo } = {
         country: 'DE',
         dayJS: 'de',
     },
-    es: {
-        name: 'Español',
-        country: 'ES',
-        dayJS: 'es',
-    },
     zh_CN: {
         name: '汉语',
         country: 'CN',
         dayJS: 'zh-cn',
     },
+    es: {
+        name: 'Español',
+        country: 'ES',
+        dayJS: 'es',
+    },
     ja: {
         name: '日本語',
         country: 'JP',
         dayJS: 'ja',
+    },
+    tr: {
+        name: 'Türkçe',
+        country: 'TR',
+        dayJS: 'tr',
+    },
+    it: {
+        name: 'Italiano',
+        country: 'IT',
+        dayJS: 'it',
+    },
+    ko: {
+        name: '한국어',
+        country: 'KR',
+        dayJS: 'ko',
     },
 };
 

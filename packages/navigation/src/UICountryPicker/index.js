@@ -84,6 +84,7 @@ function Picker({
     translation,
     disabledCountries,
     excludedCountries,
+    sequenceOrder,
     onPickCountry,
     isLanguages,
     hideFlags,
@@ -102,6 +103,7 @@ function Picker({
             disabledCountries={disabledCountries}
             disabledCountryText={uiLocalized.serviceUnavailable}
             excludedCountries={excludedCountries}
+            sequenceOrder={sequenceOrder}
             styles={{
                 ...countryPickerStyle,
                 container: {
@@ -166,6 +168,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     screenTitle: ?string;
     disabledCountries: ?string[];
     excludedCountries: ?string[];
+    sequenceOrder: ?string[];
     isLanguages: ?boolean;
     searchBarHidden: ?boolean;
     flagsHidden: ?boolean;
@@ -182,6 +185,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         this.screenTitle = null;
         this.disabledCountries = [];
         this.excludedCountries = [];
+        this.sequenceOrder = [];
         this.modalOnWeb = false;
         this.isLanguages = false;
         this.searchBarHidden = false;
@@ -252,6 +256,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 screenTitle = '',
                 disabledCountries = [],
                 excludedCountries = [],
+                sequenceOrder = [],
                 modalOnWeb = false,
                 isLanguages = false,
                 searchBarHidden = false,
@@ -265,6 +270,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             this.screenTitle = screenTitle;
             this.disabledCountries = disabledCountries;
             this.excludedCountries = excludedCountries;
+            this.sequenceOrder = sequenceOrder;
             this.modalOnWeb = modalOnWeb;
             this.isLanguages = isLanguages;
             this.searchBarHidden = searchBarHidden;
@@ -343,6 +349,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                         translation={this.translation}
                         disabledCountries={this.disabledCountries}
                         excludedCountries={this.excludedCountries}
+                        sequenceOrder={this.sequenceOrder}
                         onPickCountry={this.onPickCountry}
                         isLanguages={this.isLanguages}
                         hideFlags={this.flagsHidden}
