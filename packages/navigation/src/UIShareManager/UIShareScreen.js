@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         color: UIColor.black(),
     },
     messageContainer: {
-        marginTop: UIConstant.hugeContentOffset(),
+        marginTop: UIConstant.contentOffset(),
         flex: 1,
     },
     button: {
@@ -96,11 +96,15 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     }
 
     // Events
-    onCopyPressed = () => {
-        (async () => {
-            await Clipboard.setString(this.getMessage());
-            UIToastMessage.showMessage(uiLocalized.MessageCopiedToClipboard);
-        })();
+    onCopyPressed = async () => {
+        // Hide the share screen
+        this.hide();
+
+        // Copy the message into Clipboard
+        Clipboard.setString(this.getMessage());
+
+        // Show the toast message about it
+        UIToastMessage.showMessage(uiLocalized.MessageCopiedToClipboard);
     };
 
     // Setters
