@@ -12,6 +12,8 @@ import { UIStyle } from '@tonlabs/uikit.core';
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
     UITextView,
     useUITextViewValue,
     useTheme,
@@ -246,10 +248,8 @@ export function ChatInput(props: Props) {
 
     return (
         <>
-            <View
-                style={UIStyle.color.getBackgroundColorStyle(
-                    theme[ColorVariants.BackgroundPrimary],
-                )}
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
             >
                 <Shortcuts shortcuts={props.shortcuts} />
                 <Animated.View
@@ -317,7 +317,7 @@ export function ChatInput(props: Props) {
                         menuMoreDisabled={props.menuMoreDisabled}
                     />
                 </View>
-            </View>
+            </UIBackgroundView>
             <ChatPicker
                 ref={props.pickerRef}
                 onSendDocument={props.onSendDocument}

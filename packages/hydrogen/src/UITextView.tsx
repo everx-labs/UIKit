@@ -52,6 +52,8 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
                 noPersonalizedLearning={false}
                 placeholderTextColor={theme[ColorVariants.TextSecondary]}
                 selectionColor={theme[ColorVariants.TextAccent]}
+                // @ts-ignore
+                keyboardAppearance={theme[ColorVariants.ThemeStyle]}
                 underlineColorAndroid="transparent"
                 style={[
                     styles.input,
