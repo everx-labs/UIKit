@@ -5,10 +5,10 @@ export type OnHeightChange = (height: number) => void;
 
 // eslint-disable-next-line no-shadow
 export enum ValidationResultStatus {
-    NONE = 'NONE',
-    SUCCESS = 'SUCCESS',
-    ERROR = 'ERROR',
-    HINT = 'HINT',
+    None = 'NONE',
+    Success = 'SUCCESS',
+    Error = 'ERROR',
+    Hint = 'HINT',
 }
 
 export type ValidationResult = {

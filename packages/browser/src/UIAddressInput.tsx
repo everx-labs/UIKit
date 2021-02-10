@@ -124,7 +124,7 @@ function useValidation(
     validateAddress: ValidateAddress,
 ) {
     const emptyValidation = React.useRef({
-        status: ValidationResultStatus.NONE,
+        status: ValidationResultStatus.None,
     }).current;
     const [validation, setValidation] = React.useState<ValidationResult>(
         emptyValidation,
@@ -160,10 +160,10 @@ function useValidation(
 }
 
 const getHintColor = (status: ValidationResultStatus) => {
-    if (status === ValidationResultStatus.ERROR) {
+    if (status === ValidationResultStatus.Error) {
         return ColorVariants.TextNegative;
     }
-    if (status === ValidationResultStatus.SUCCESS) {
+    if (status === ValidationResultStatus.Success) {
         return ColorVariants.TextPositive;
     }
     return ColorVariants.TextTertiary;
@@ -221,7 +221,7 @@ export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
                     inputHasValue={inputHasValue}
                     onSendText={onSendText}
                     hasError={
-                        validation.status === ValidationResultStatus.ERROR
+                        validation.status === ValidationResultStatus.Error
                     }
                     clear={clear}
                 />
