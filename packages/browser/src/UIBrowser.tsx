@@ -1,120 +1,30 @@
 import * as React from 'react';
 
-import {
-    UIChatList,
-    ChatMessage,
-    ChatMessageType,
-    ChatMessageStatus,
-    UIChatInput,
-} from '@tonlabs/uikit.chats';
+import { UIChatList, ChatMessage } from '@tonlabs/uikit.chats';
 import type { OnHeightChange } from '@tonlabs/uikit.keyboard';
-import { UIQRCodeScannerSheet } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
-
-import type { OnSendText, ValidateAddress } from './types';
-import { UIAddressInput } from './UIAddressInput';
-
-// eslint-disable-next-line no-shadow
-enum InteractiveMessageType {
-    Terminal = 'Terminal',
-    AddressInput = 'AddressInput',
-}
-
-type AddressInputMessage = {
-    type: InteractiveMessageType.AddressInput;
-    onSelect: (selectedButtonText: string, address: string) => void;
-    mainAddress: string;
-    input: {
-        validateAddress: ValidateAddress;
-    };
-    qrCode: {
-        parseData: (data: any) => string;
-    };
-};
-
-type TerminalMessage = {
-    type: InteractiveMessageType.Terminal;
-    onSendText: OnSendText;
-};
+import { Input, InteractiveMessageType } from './types';
+import {
+    TerminalMessage,
+    TerminalState,
+    terminalReducer,
+    getTerminalInput,
+} from './Inputs/terminal';
+import {
+    AddressInputMessage,
+    AddressInputState,
+    AddressInputAction,
+    addressInputReducer,
+    getAddressInput,
+    getAddressInputShared,
+} from './Inputs/addressInput';
 
 type InteractiveMessage = TerminalMessage | AddressInputMessage;
 
 type BrowserMessage = ChatMessage | InteractiveMessage;
 
-type TerminalState = {
-    visible: boolean;
-};
-
-function terminalReducer() {
-    return {
-        visible: true,
-    };
-}
-
-type AddressInputState = {
-    inputVisible: boolean;
-    qrCodeVisible: boolean;
-    addressSelectionVisible: boolean;
-};
-
-type AddressInputAction = {
-    type:
-        | 'OPEN_ADDRESS_INPUT'
-        | 'OPEN_QR_CODE'
-        | 'CLOSE_QR_CODE'
-        | 'OPEN_ADDRESS_SELECTION'
-        | 'CLOSE_ADDRESS_SELECTION';
-};
-
-function addressInputReducer(
-    _state: AddressInputState,
-    action: AddressInputAction,
-) {
-    if (action.type === 'OPEN_ADDRESS_INPUT') {
-        return {
-            inputVisible: true,
-            qrCodeVisible: false,
-            addressSelectionVisible: false,
-        };
-    }
-    if (action.type === 'OPEN_QR_CODE') {
-        return {
-            inputVisible: false,
-            qrCodeVisible: true,
-            addressSelectionVisible: false,
-        };
-    }
-    if (action.type === 'CLOSE_QR_CODE') {
-        return {
-            inputVisible: false,
-            qrCodeVisible: false,
-            addressSelectionVisible: false,
-        };
-    }
-    if (action.type === 'OPEN_ADDRESS_SELECTION') {
-        return {
-            inputVisible: false,
-            qrCodeVisible: false,
-            addressSelectionVisible: true,
-        };
-    }
-    if (action.type === 'CLOSE_ADDRESS_SELECTION') {
-        return {
-            inputVisible: false,
-            qrCodeVisible: false,
-            addressSelectionVisible: false,
-        };
-    }
-    return {
-        inputVisible: false,
-        qrCodeVisible: false,
-        addressSelectionVisible: false,
-    };
-}
-
 type InteractiveMessagesState = {
-    terminal: TerminalState;
-    addressInput: AddressInputState;
+    [InteractiveMessageType.Terminal]: TerminalState;
+    [InteractiveMessageType.AddressInput]: AddressInputState;
 };
 
 type InteractiveMessageAction = {
@@ -127,211 +37,118 @@ function interactiveMessagesReducer(
     action: InteractiveMessageAction,
 ) {
     return {
-        terminal: terminalReducer(),
-        addressInput: addressInputReducer(state.addressInput, action.payload),
+        [InteractiveMessageType.Terminal]: terminalReducer(),
+        [InteractiveMessageType.AddressInput]: addressInputReducer(
+            state[InteractiveMessageType.AddressInput],
+            action.payload,
+        ),
     };
 }
 
-type Input = {
-    messages: ChatMessage[];
-    input: React.ReactNode;
-    shared: React.ReactNode;
+type GetInteractiveInput = (
+    interactiveMessage: BrowserMessage,
+    state: InteractiveMessagesState[InteractiveMessageType],
+    dispatch: (action: InteractiveMessageAction['payload']) => void,
+    onHeightChange: OnHeightChange,
+) => Input;
+
+type GetInteractiveInputShared = (
+    interactiveMessage: BrowserMessage,
+    state: InteractiveMessagesState[InteractiveMessageType],
+    dispatch: (action: InteractiveMessageAction['payload']) => void,
+) => React.ReactNode;
+
+type InputFabric = {
+    type: InteractiveMessageType;
+    getInput: GetInteractiveInput;
+    getInputShared?: GetInteractiveInputShared;
 };
 
-function useTerminal(
-    message: BrowserMessage,
-    onHeightChange: OnHeightChange,
-    state: TerminalState,
-): Input {
-    if (message.type !== InteractiveMessageType.Terminal) {
-        return {
-            messages: [],
-            input: null,
-            shared: null,
-        };
-    }
-    return {
-        messages: [],
-        input: state.visible && (
-            <UIChatInput
-                editable
-                onSendText={message.onSendText}
-                onSendMedia={() => undefined}
-                onSendDocument={() => undefined}
-                onHeightChange={onHeightChange}
-            />
-        ),
-        shared: null,
-    };
-}
-
-function useAddressInput(
-    message: BrowserMessage,
-    onHeightChange: OnHeightChange,
-    state: AddressInputState,
-    dispatch: (action: AddressInputAction) => void,
-): Input {
-    const qrCode = (
-        <UIQRCodeScannerSheet
-            visible={state.qrCodeVisible}
-            onRead={(e: any) => {
-                // @ts-ignore Unfortunatelly to keep animation smooth
-                // have to put it outside of upper guard
-                const m = message as AddressInputMessage;
-                m.onSelect(
-                    uiLocalized.Browser.ScanQR,
-                    m.qrCode.parseData(e.data),
-                );
-            }}
-            onClose={() => {
-                dispatch({
-                    type: 'CLOSE_QR_CODE',
-                });
-            }}
-        />
-    );
-
-    if (message.type !== InteractiveMessageType.AddressInput) {
-        return {
-            messages: [],
-            input: null,
-            shared: qrCode,
-        };
-    }
-
-    return {
-        messages: [
-            {
-                type: ChatMessageType.ActionButton,
-                text: uiLocalized.Browser.ScanQR,
-                key: 'address-input-bubble-action-qr',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
-                onPress: () => {
-                    dispatch({
-                        type: 'OPEN_QR_CODE',
-                    });
-                },
-            },
-            {
-                type: ChatMessageType.ActionButton,
-                text: uiLocalized.Browser.EnterManually,
-                key: 'address-input-bubble-action-enter',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
-                onPress: () => {
-                    dispatch({
-                        type: 'OPEN_ADDRESS_INPUT',
-                    });
-                },
-            },
-            // {
-            //     type: ChatMessageType.ActionButton,
-            //     text: uiLocalized.Browser.SelectAsset,
-            //     key: 'address-input-bubble-select-assets',
-            //     status: ChatMessageStatus.Received,
-            //     time: Date.now(),
-            //     sender: 'system',
-            //     onPress: () => {
-            //         dispatch({
-            //             type: 'OPEN_ADDRESS_SELECTION',
-            //         });
-            //     },
-            // },
-            {
-                type: ChatMessageType.ActionButton,
-                text: uiLocalized.Browser.MainAccount,
-                key: 'address-input-bubble-action-account',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
-                onPress: () => {
-                    message.onSelect(
-                        uiLocalized.Browser.MainAccount,
-                        message.mainAddress,
-                    );
-                },
-            },
-            {
-                type: ChatMessageType.PlainText,
-                text: 'What wallet do you want to work with?',
-                key: 'address-input-bubble',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
-            },
-        ],
-        input: (
-            <>
-                {state.inputVisible && (
-                    <UIAddressInput
-                        onSendText={(addr) => {
-                            message.onSelect(
-                                uiLocalized.Browser.EnterManually,
-                                addr,
-                            );
-                        }}
-                        onHeightChange={onHeightChange}
-                        validateAddress={message.input.validateAddress}
-                    />
-                )}
-            </>
-        ),
-        shared: qrCode,
-    };
-}
-
 function useInteractiveMessages(
-    messages: BrowserMessage[],
+    allMessages: BrowserMessage[],
     onHeightChange: OnHeightChange,
+    inputs: InputFabric[],
 ): {
     messages: ChatMessage[];
     input: React.ReactNode;
 } {
-    const [interactiveMessage, ...rest] = messages;
+    const [interactiveMessage, ...rest] = allMessages;
 
     const [state, dispatch] = React.useReducer(interactiveMessagesReducer, {
-        terminal: {
+        [InteractiveMessageType.Terminal]: {
             visible: false,
         },
-        addressInput: {
+        [InteractiveMessageType.AddressInput]: {
             inputVisible: false,
             qrCodeVisible: false,
             addressSelectionVisible: false,
         },
     });
 
-    const terminal = useTerminal(
-        interactiveMessage,
-        onHeightChange,
-        state.terminal,
+    const inputsPrepared = inputs.reduce<{
+        messages: ChatMessage[];
+        input: React.ReactNode;
+        shared: React.ReactNode[];
+    }>(
+        (acc, { type, getInput, getInputShared }) => {
+            if (type === interactiveMessage.type) {
+                const { messages, input } = getInput(
+                    interactiveMessage,
+                    state[type],
+                    (action) => {
+                        dispatch({
+                            messageType: type,
+                            payload: action,
+                        });
+                    },
+                    onHeightChange,
+                );
+
+                acc.messages = acc.messages.concat(messages);
+                acc.input = input;
+            }
+
+            if (getInputShared != null) {
+                const shared = getInputShared(
+                    interactiveMessage,
+                    state[type],
+                    (action) => {
+                        dispatch({
+                            messageType: type,
+                            payload: action,
+                        });
+                    },
+                );
+
+                acc.shared.push(shared);
+            }
+
+            return acc;
+        },
+        {
+            messages: [],
+            input: null,
+            shared: [],
+        },
     );
 
-    const addressInput = useAddressInput(
-        interactiveMessage,
-        onHeightChange,
-        state.addressInput,
-        (action: AddressInputAction) =>
-            dispatch({
-                messageType: InteractiveMessageType.AddressInput,
-                payload: action,
-            }),
-    );
+    // It's not an interactive message :)
+    if (
+        Object.keys(InteractiveMessageType).indexOf(interactiveMessage.type) ===
+        -1
+    ) {
+        return {
+            messages: allMessages as ChatMessage[],
+            input: null,
+        };
+    }
 
     return {
-        messages: [
-            ...terminal.messages,
-            ...addressInput.messages,
-            ...(rest as ChatMessage[]),
-        ],
+        messages: [...inputsPrepared.messages, ...(rest as ChatMessage[])],
         input: (
             <>
-                {terminal.input}
-                {terminal.shared}
-                {addressInput.input}
-                {addressInput.shared}
+                {inputsPrepared.input}
+                {inputsPrepared.shared}
             </>
         ),
     };
@@ -344,9 +161,26 @@ type UIBrowserProps = {
 export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
 
+    const inputs = React.useMemo(
+        () => [
+            {
+                type: InteractiveMessageType.Terminal,
+                getInput: getTerminalInput,
+            },
+            {
+                type: InteractiveMessageType.AddressInput,
+                getInput: getAddressInput,
+                getInputShared: getAddressInputShared,
+            },
+        ],
+        [],
+    );
+
     const { messages, input } = useInteractiveMessages(
         passedMessages,
         setBottomInset,
+        // @ts-ignore
+        inputs,
     );
 
     return (

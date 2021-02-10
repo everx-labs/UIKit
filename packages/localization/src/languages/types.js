@@ -55,6 +55,25 @@ export type UILocalizedData = {|
     +Channel: string,
     +ChannelInfo: string,
     +ChannelName: string,
+    +Chats: {|
+        +Actions: {|
+            +AttachDocument: string,
+            +AttachImage: string,
+        |},
+        +Alerts: {|
+            +EnableFromSettings: string,
+            +EnableFromSettingsTitle: string,
+            +MessageTooLong: string,
+        |},
+        +Bubbles: {|
+            +TapToResend: string,
+            +TapToSendAgain: string,
+        |},
+        +DateSeparators: {|
+            +Today: string,
+            +Yesterday: string,
+        |},
+    |},
     +ChatWith: string,
     +ChooseDepositToken: string,
     +ChooseFromLibrary: string,
@@ -243,10 +262,6 @@ export type UILocalizedData = {|
     +moreWords11: string,
     +moreWords24: string,
     +moreWords50: string,
-    +words01: string,
-    +words11: string,
-    +words24: string,
-    +words50: string,
     +MyAccount: string,
     +MyMainAccount: string,
     +Name: string,
@@ -305,6 +320,10 @@ export type UILocalizedData = {|
     +PublicChannelsCanBeFoundInSearchAnyoneCanJoinThem: string,
     +PushFeedbackLong: string,
     +PushFeedbackShort: string,
+    +QRCodeScanner: {|
+        +ErrorPermissions: string,
+        +ErrorUnexpected: string,
+    |},
     +Receive: string,
     +Recent: string,
     +Recently: string,
@@ -442,6 +461,10 @@ export type UILocalizedData = {|
     +WeUseContactsToAllowYouToInviteFriends: string,
     +WillGetInTouchWithYouSoon: string,
     +Word: string,
+    +words01: string,
+    +words11: string,
+    +words24: string,
+    +words50: string,
     +WriteOffAccount: string,
     +WrongPassword: string,
     +Yes: string,
@@ -449,34 +472,12 @@ export type UILocalizedData = {|
     +YesterdayAt: string,
     +You: string,
     +YourEmail: string,
-    +Chats: {|
-        +Bubbles: {|
-            +TapToResend: string,
-            +TapToSendAgain: string,
-        |},
-        +DateSeparators: {|
-            +Today: string,
-            +Yesterday: string,
-        |},
-        +Alerts: {|
-            +MessageTooLong: string,
-            +EnableFromSettingsTitle: string,
-            +EnableFromSettings: string,
-        |},
-        +Actions: {|
-            +AttachDocument: string,
-            +AttachImage: string,
-        |},
-    |},
-    +QRCodeScanner: {
-        +ErrorPermissions: string,
-        +ErrorUnexpected: string,
-    },
     +Browser: {|
         +AddressInput: {|
             +Placeholder: string,
         |},
         +AddressInputBubble: {|
+            +Question: string,
             +MainAccount: string,
             +SelectAsset: string,
             +EnterManually: string,
