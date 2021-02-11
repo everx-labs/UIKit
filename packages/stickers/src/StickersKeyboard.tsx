@@ -61,6 +61,7 @@ export function StickersList(props: Props) {
         });
     });
 
+    // theme is passed as a prop here in order to have its actual values, because context is missed for the native keyboard
     const theme = useTheme();
     const { stickers, theme: themeProp } = props;
     const backgroundColor: ViewStyle = React.useMemo(

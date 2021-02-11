@@ -53,7 +53,7 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
                 placeholderTextColor={theme[ColorVariants.TextSecondary]}
                 selectionColor={theme[ColorVariants.TextAccent]}
                 // @ts-ignore
-                keyboardAppearance={theme[ColorVariants.ThemeStyle]}
+                keyboardAppearance={theme[ColorVariants.KeyboardStyle]}
                 underlineColorAndroid="transparent"
                 style={[
                     styles.input,

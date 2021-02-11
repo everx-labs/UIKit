@@ -47,7 +47,7 @@ export enum ColorVariants {
     // IconNegative = 'IconNegative',
     // That ones are for technical reasons
     Transparent = 'Transparent',
-    ThemeStyle = 'ThemeStyle',
+    KeyboardStyle = 'KeyboardStyle',
 }
 
 type Theme = {
@@ -92,7 +92,7 @@ export const LightTheme: Theme = {
     // [ColorVariants.IconNeutral]: '#E2E3E4',
     // [ColorVariants.IconNegative]: '#CA1414',
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
-    [ColorVariants.ThemeStyle]: 'light',
+    [ColorVariants.KeyboardStyle]: 'light',
 };
 
 export const DarkTheme: Theme = {
@@ -125,7 +125,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.LineAccent]: '#0073C4',
     [ColorVariants.LineNegative]: '#CA1414',
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
-    [ColorVariants.ThemeStyle]: 'dark',
+    [ColorVariants.KeyboardStyle]: 'dark',
 };
 
 export const ThemeContext = React.createContext(LightTheme);
