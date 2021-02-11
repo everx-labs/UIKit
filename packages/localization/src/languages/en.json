@@ -485,5 +485,10 @@
     "Yesterday": "Yesterday",
     "YesterdayAt": "Yesterday at {0}",
     "You": "You",
-    "YourEmail": "Your email"
+    "YourEmail": "Your email",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        }
+    }
 }

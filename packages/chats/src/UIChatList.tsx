@@ -361,6 +361,7 @@ const renderScrollComponent: SectionListProps<
 >['renderScrollComponent'] = (scrollProps) => <ScrollView {...scrollProps} />;
 
 type Props = {
+    // @deprecated, need to remove!
     areStickersVisible: boolean;
     onLoadEarlierMessages(): void;
     canLoadMore: boolean;

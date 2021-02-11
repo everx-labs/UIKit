@@ -12,7 +12,7 @@ import { UICardSheet, UICardSheetProps } from './UISheet';
 import { UIImage } from './UIImage';
 import { UIConstant } from './constants';
 
-type UIQRCodeScannerSheetProps = UICardSheetProps & {
+type UIQRCodeScannerSheetProps = Omit<UICardSheetProps, 'children'> & {
     onRead: (event: Event) => void | Promise<void>;
 };
 

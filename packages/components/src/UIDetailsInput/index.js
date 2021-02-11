@@ -291,6 +291,11 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     */
     rightComponent?: React$Node,
     /**
+    do not render right component if input not focused
+    @default null
+    */
+    renderRightComponentOnlyOnFocus?: boolean,
+    /**
     If true, the text input obscures the text entered so that sensitive text like passwords stay secure.
     The default value is false. Does not work with multiline={true}.
     @default false
@@ -903,6 +908,9 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     renderRightComponent() {
+        if (this.props.renderRightComponentOnlyOnFocus && !this.isFocused()) {
+            return null;
+        }
         return this.props.rightComponent || null;
     }
 
