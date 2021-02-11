@@ -6,6 +6,7 @@ export const UIConstant = {
     smallCellHeight: 24,
     defaultCellHeight: 48,
 
+    normalContentOffset: 12,
     contentOffset: 16,
     borderRadius: 8,
     alertBorderRadius: 12,
