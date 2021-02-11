@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, Platform, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { UIConstant, UIDevice, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.components';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
@@ -46,6 +46,7 @@ function Sticker({
 type Props = {
     isNativeKeyboard?: boolean;
     stickers: UIStickerPackage[];
+    theme?: any;
     onItemSelected: OnPickSticker;
 };
 
@@ -59,12 +60,23 @@ export function StickersList(props: Props) {
             setSafeAreaBottomInset(insets.bottom);
         });
     });
+
+    // theme is passed as a prop here in order to have its actual values, because context is missed for the native keyboard
     const theme = useTheme();
+    const { stickers, theme: themeProp } = props;
+    const backgroundColor: ViewStyle = React.useMemo(
+        () => ({
+            backgroundColor: themeProp
+                ? themeProp[ColorVariants.BackgroundSecondary]
+                : theme[ColorVariants.BackgroundSecondary],
+        }),
+        [theme, themeProp],
+    );
 
     return (
         <FlatList
             testID="list_sticker_packages"
-            data={props.stickers}
+            data={stickers}
             renderItem={({ item }) => {
                 return (
                     <ScrollView contentContainerStyle={styles.packageContainer}>
@@ -98,9 +110,7 @@ export function StickersList(props: Props) {
             style={[
                 // @ts-ignore
                 Platform.select({ web: { overflowY: 'overlay' } }),
-                UIStyle.color.getBackgroundColorStyle(
-                    theme[ColorVariants.BackgroundSecondary],
-                ),
+                backgroundColor,
             ]}
             contentContainerStyle={{
                 paddingBottom: safeAreaBottomInset,

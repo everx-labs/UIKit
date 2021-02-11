@@ -64,11 +64,11 @@ export type ButtonProps = UIActionComponentProps & {
     /** Custom button color
     @default null
     */
-    buttonColor?: string,
+    buttonColor?: ColorVariants,
     /** Custom button hover color
     @default null
     */
-    buttonColorHover?: string,
+    buttonColorHover?: ColorVariants,
     /** One of:
     UIButton.ButtonSize.Large,
     UIButton.ButtonSize.Medium,
