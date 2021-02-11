@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import { UIChatList, ChatMessage } from '@tonlabs/uikit.chats';
+import type { ChatMessage } from '@tonlabs/uikit.chats';
 import type { OnHeightChange } from '@tonlabs/uikit.keyboard';
+
 import { Input, InteractiveMessageType } from './types';
 import {
     TerminalMessage,
@@ -17,10 +18,11 @@ import {
     getAddressInput,
     getAddressInputShared,
 } from './Inputs/addressInput';
+import { UIBrowserList } from './UIBrowserList';
 
 type InteractiveMessage = TerminalMessage | AddressInputMessage;
 
-type BrowserMessage = ChatMessage | InteractiveMessage;
+export type BrowserMessage = ChatMessage | InteractiveMessage;
 
 type InteractiveMessagesState = {
     [InteractiveMessageType.Terminal]: TerminalState;
@@ -185,14 +187,7 @@ export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
 
     return (
         <>
-            <UIChatList
-                areStickersVisible={false}
-                onLoadEarlierMessages={() => undefined}
-                canLoadMore={false}
-                isLoadingMore={false}
-                messages={messages}
-                bottomInset={bottomInset}
-            />
+            <UIBrowserList messages={messages} bottomInset={bottomInset} />
             {input}
         </>
     );
