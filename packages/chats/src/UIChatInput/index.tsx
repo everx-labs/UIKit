@@ -100,6 +100,7 @@ export type UIChatInputProps = {
 
 export function UIChatInput(props: UIChatInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
+    const { onHeightChange } = props;
     const {
         customKeyboardVisible,
         toggleKeyboard,
@@ -110,6 +111,16 @@ export function UIChatInput(props: UIChatInputProps) {
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     useBackHandler(textInputRef);
+
+    React.useEffect(
+        () => () => {
+            if (onHeightChange) {
+                // If inputs is unmounted need to reset insets for list
+                onHeightChange(0);
+            }
+        },
+        [onHeightChange],
+    );
 
     const input = (
         <>
@@ -131,7 +142,7 @@ export function UIChatInput(props: UIChatInputProps) {
                 customKeyboardButton={props.customKeyboard?.button}
                 onSendText={props.onSendText}
                 onHeightChange={
-                    Platform.OS === 'web' ? props.onHeightChange : undefined
+                    Platform.OS === 'web' ? onHeightChange : undefined
                 }
                 onFocus={onFocus}
                 onBlur={onBlur}

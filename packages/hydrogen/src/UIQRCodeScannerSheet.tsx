@@ -6,14 +6,14 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
-import { QRCodeScanner } from './QRCodeScanner';
+import { QRCodeScanner, OnReadEvent } from './QRCodeScanner';
 import { useTheme, ColorVariants } from './Colors';
 import { UICardSheet, UICardSheetProps } from './UISheet';
 import { UIImage } from './UIImage';
 import { UIConstant } from './constants';
 
 type UIQRCodeScannerSheetProps = Omit<UICardSheetProps, 'children'> & {
-    onRead: (event: Event) => void | Promise<void>;
+    onRead: (event: OnReadEvent) => void | Promise<void>;
 };
 
 export function UIQRCodeScannerSheet({

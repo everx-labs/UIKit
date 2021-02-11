@@ -485,5 +485,17 @@
     "Yesterday": "Вчера",
     "YesterdayAt": "Вчера в {0}",
     "You": "Вы",
-    "YourEmail": "Ваш адрес электронной почты"
+    "YourEmail": "Ваш адрес электронной почты",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "Question": "What wallet do you want to work with?",
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    }
 }
