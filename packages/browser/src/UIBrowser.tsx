@@ -85,6 +85,17 @@ function useInteractiveMessages(
         },
     });
 
+    // It's not an interactive message :)
+    if (
+        Object.keys(InteractiveMessageType).indexOf(interactiveMessage.type) ===
+        -1
+    ) {
+        return {
+            messages: allMessages as ChatMessage[],
+            input: null,
+        };
+    }
+
     const inputsPrepared = inputs.reduce<{
         messages: ChatMessage[];
         input: React.ReactNode;
@@ -131,17 +142,6 @@ function useInteractiveMessages(
             shared: [],
         },
     );
-
-    // It's not an interactive message :)
-    if (
-        Object.keys(InteractiveMessageType).indexOf(interactiveMessage.type) ===
-        -1
-    ) {
-        return {
-            messages: allMessages as ChatMessage[],
-            input: null,
-        };
-    }
 
     return {
         messages: [...inputsPrepared.messages, ...(rest as ChatMessage[])],

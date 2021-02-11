@@ -80,43 +80,47 @@ function useWheelHandler(handler: (e: WheelEvent) => void) {
         return () => {
             window.removeEventListener(wheelEvent, handler);
         };
-    }, []);
+    }, [handler]);
 }
 
 function useChatListWheelHandler(
     ref: React.Ref<SectionList>,
     listContentOffsetRef: React.RefObject<ListContentOffset>,
 ) {
-    const handler = React.useCallback((e: WheelEvent) => {
-        const scroll = document.getElementById(CHAT_SECTION_LIST);
-        if (
-            scroll == null ||
-            e.target == null ||
-            ref == null ||
-            !('current' in ref)
-        ) {
-            return;
-        }
-        // @ts-ignore (contains type doesn't match e.target one)
-        const doesContain = scroll.contains(e.target);
-        if (doesContain && ref.current) {
-            e.preventDefault();
-            // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
-            const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
-            const delta = e.deltaY || e.detail || 0; // Note. e.detail is used for `DOMMouseScroll`
-            const y = (listContentOffsetRef.current?.y ?? 0) - delta * factor;
-            if (ref.current) {
-                const scrollResponder = ref.current.getScrollResponder();
-                if (scrollResponder) {
-                    // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
-                    const scrollableNode = scrollResponder.getScrollableNode();
-                    if (scrollableNode) {
-                        scrollableNode.scrollTop = y;
+    const handler = React.useCallback(
+        (e: WheelEvent) => {
+            const scroll = document.getElementById(CHAT_SECTION_LIST);
+            if (
+                scroll == null ||
+                e.target == null ||
+                ref == null ||
+                !('current' in ref)
+            ) {
+                return;
+            }
+            // @ts-ignore (contains type doesn't match e.target one)
+            const doesContain = scroll.contains(e.target);
+            if (doesContain && ref.current) {
+                e.preventDefault();
+                // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
+                const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
+                const delta = e.deltaY || e.detail || 0; // Note. e.detail is used for `DOMMouseScroll`
+                const y =
+                    (listContentOffsetRef.current?.y ?? 0) - delta * factor;
+                if (ref.current) {
+                    const scrollResponder = ref.current.getScrollResponder();
+                    if (scrollResponder) {
+                        // scrollResponder.scrollTo({ x: 0, y }); Seems to be async. Move to sync bellow
+                        const scrollableNode = scrollResponder.getScrollableNode();
+                        if (scrollableNode) {
+                            scrollableNode.scrollTop = y;
+                        }
                     }
                 }
             }
-        }
-    }, []);
+        },
+        [listContentOffsetRef, ref],
+    );
 
     useWheelHandler(handler);
 }
@@ -148,6 +152,7 @@ const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
 function useLayoutHelpers(canLoadMore: boolean) {
     const cellsHeight = React.useRef(new Map());
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getItemLayout = React.useCallback(
         sectionListGetItemLayout({
             getItemHeight: (rowData: ChatMessage) => {
@@ -180,6 +185,7 @@ function useLayoutHelpers(canLoadMore: boolean) {
         }
     }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const renderItem = React.useCallback(renderItemInternal(onLayoutCell), [
         onLayoutCell,
     ]);
@@ -277,11 +283,14 @@ function useLinesAnimation() {
         });
     }, []);
 
-    const onLayout = React.useCallback((e: LayoutChangeEvent) => {
-        listSize.current = e.nativeEvent.layout;
+    const onLayout = React.useCallback(
+        (e: LayoutChangeEvent) => {
+            listSize.current = e.nativeEvent.layout;
 
-        checkVisualStyle();
-    }, []);
+            checkVisualStyle();
+        },
+        [checkVisualStyle],
+    );
 
     const onContentSizeChange = React.useCallback(
         (_width: number, height: number) => {
@@ -290,7 +299,7 @@ function useLinesAnimation() {
 
             checkVisualStyle();
         },
-        [],
+        [checkVisualStyle],
     );
 
     const onScrollMessages = React.useCallback(
@@ -301,7 +310,7 @@ function useLinesAnimation() {
 
             callChatOnScrollListener(e.nativeEvent.contentOffset.y);
         },
-        [],
+        [checkVisualStyle],
     );
 
     return {
@@ -371,34 +380,42 @@ type Props = {
 };
 
 export const UIChatList = React.forwardRef<SectionList, Props>(
-    function UIChatListContainer({
-        areStickersVisible,
-        canLoadMore,
-        onLoadEarlierMessages,
-        isLoadingMore,
-        messages,
-        bottomInset
-    }: Props, ref) {
-        const keyboardDismissProp = React.useMemo(() => {
-            if (Platform.OS !== 'ios') {
-                // The following is not working on Android >>>
-                // See https://github.com/facebook/react-native/issues/23364
-                return 'on-drag';
+    function UIChatListContainer(
+        {
+            areStickersVisible,
+            canLoadMore,
+            onLoadEarlierMessages,
+            isLoadingMore,
+            messages,
+            bottomInset,
+        }: Props,
+        ref,
+    ) {
+        const keyboardDismissProp = React.useMemo(
+            () => {
+                if (Platform.OS !== 'ios') {
+                    // The following is not working on Android >>>
+                    // See https://github.com/facebook/react-native/issues/23364
+                    return 'on-drag';
 
-                // This can be used as a workaround >>>>
-                // onScrollBeginDrag: () => {
-                //     Keyboard.dismiss();
-                //     UICustomKeyboardUtils.dismiss();
-                // },
-            }
+                    // This can be used as a workaround >>>>
+                    // onScrollBeginDrag: () => {
+                    //     Keyboard.dismiss();
+                    //     UICustomKeyboardUtils.dismiss();
+                    // },
+                }
 
-            // if (areStickersVisible) {
-            //    return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
-            // }
-            // UPD: `interactive` keyboard started working well with UICustomKeyboard :)
+                // if (areStickersVisible) {
+                //    return 'none'; // `interactive` doesn't work well with UICustomKeyboard :(
+                // }
+                // UPD: `interactive` keyboard started working well with UICustomKeyboard :)
 
-            return 'interactive';
-        }, [/* areStickersVisible */]);
+                return 'interactive';
+            },
+            [
+                /* areStickersVisible */
+            ],
+        );
 
         const localRef = React.useRef<SectionList>(null);
 

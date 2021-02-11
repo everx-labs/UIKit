@@ -77,7 +77,7 @@ export type AddressInputMessage = {
         validateAddress: ValidateAddress;
     };
     qrCode: {
-        parseData: (data: any) => string;
+        parseData: (data: any) => Promise<string>;
     };
 };
 
@@ -180,12 +180,15 @@ export function getAddressInputShared(
         <UIQRCodeScannerSheet
             key={InteractiveMessageType.AddressInput}
             visible={state.qrCodeVisible}
-            onRead={(e: any) => {
+            onRead={async (e: any) => {
                 const mes = message as AddressInputMessage;
                 mes.onSelect(
                     uiLocalized.Browser.AddressInputBubble.ScanQR,
-                    mes.qrCode.parseData(e.data),
+                    await mes.qrCode.parseData(e.data),
                 );
+                dispatch({
+                    type: 'CLOSE_QR_CODE',
+                });
             }}
             onClose={() => {
                 dispatch({
