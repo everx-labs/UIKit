@@ -3,9 +3,10 @@ import { FlatList, FlatListProps } from 'react-native';
 
 import {
     UICommonChatList,
-    BubblePlainText,
+    BubbleSimplePlainText,
     BubbleActionButton,
     ChatMessageType,
+    CommonChatListProps,
 } from '@tonlabs/uikit.chats';
 import type { VisibleMessage } from './types';
 
@@ -38,7 +39,7 @@ function flatListGetItemLayoutFabric({
 
 function renderBubble(item: VisibleMessage) {
     if (item.type === ChatMessageType.PlainText) {
-        return <BubblePlainText {...item} />;
+        return <BubbleSimplePlainText {...item} />;
     }
     if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} />;
@@ -57,7 +58,7 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
                 bottomInset={props.bottomInset}
             >
-                {(chatListProps) => (
+                {(chatListProps: CommonChatListProps<VisibleMessage>) => (
                     <FlatList
                         testID="browser_container"
                         data={props.messages}

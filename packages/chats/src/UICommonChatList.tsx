@@ -26,7 +26,7 @@ import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
 
-import type { ChatMessage } from './types';
+import type { BubbleBaseT, ChatMessage } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
 
@@ -116,11 +116,6 @@ function useChatListWheelHandler(
 }
 
 type RenderBubble<ItemT> = (props: ItemT) => React.ReactNode;
-type BubbleBaseT = {
-    key: string;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
-};
 
 const renderItemInternal = <ItemT extends BubbleBaseT>(
     onLayoutCell: (key: string, e: any) => void,

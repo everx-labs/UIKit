@@ -12,7 +12,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
-import { ChatMessageStatus, TransactionType } from './types';
+import { MessageStatus, TransactionType } from './types';
 import type { TransactionMessage } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
 import { BubbleTransactionComment } from './BubbleTransactionComment';
@@ -21,7 +21,7 @@ const getValueForTestID = (message: TransactionMessage) =>
     message.info.amount.toFixed(1);
 
 const getContainerTestID = (message: TransactionMessage) => {
-    if (message.status === ChatMessageStatus.Pending) {
+    if (message.status === MessageStatus.Pending) {
         return `transaction_message_${getValueForTestID(message)}_pending`;
     }
 
@@ -55,7 +55,7 @@ const useBubbleStyle = (message: TransactionMessage) => {
     const theme = useTheme();
     const { type } = message.info;
 
-    if (message.status === ChatMessageStatus.Aborted) {
+    if (message.status === MessageStatus.Aborted) {
         return [
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundNegative],
@@ -125,7 +125,7 @@ const getCommentText = (message: TransactionMessage) => {
 };
 
 const getActionString = (message: TransactionMessage) => {
-    if (message.status === ChatMessageStatus.Aborted) {
+    if (message.status === MessageStatus.Aborted) {
         return message.actionText ?? uiLocalized.Chats.Bubbles.TapToResend;
     }
 
@@ -133,14 +133,14 @@ const getActionString = (message: TransactionMessage) => {
 };
 
 const getActionStringColor = (message: TransactionMessage) => {
-    if (message.status === ChatMessageStatus.Aborted) {
+    if (message.status === MessageStatus.Aborted) {
         return UILabelColors.TextNegative;
     }
     return UILabelColors.TextTertiary;
 };
 
 function TransactionSublabel(props: TransactionMessage) {
-    if (props.status === ChatMessageStatus.Aborted) {
+    if (props.status === MessageStatus.Aborted) {
         return (
             <>
                 <UILabel
@@ -158,7 +158,7 @@ function TransactionSublabel(props: TransactionMessage) {
             </>
         );
     }
-    if (props.status === ChatMessageStatus.Pending) {
+    if (props.status === MessageStatus.Pending) {
         return (
             <>
                 <UILabel
@@ -205,7 +205,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
                 styles.trxCard,
                 bubbleStyle,
                 getBubbleCornerStyle(position),
-                props.status === ChatMessageStatus.Pending &&
+                props.status === MessageStatus.Pending &&
                     UIStyle.common.opacity70(),
             ]}
         >

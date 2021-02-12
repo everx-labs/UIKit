@@ -11,7 +11,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
-import { ChatMessageStatus } from './types';
+import { MessageStatus } from './types';
 import type { StickerMessage } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
@@ -33,7 +33,7 @@ export const BubbleSticker = (props: StickerMessage) => {
             <View style={styles.inner}>
                 <View
                     style={
-                        props.status === ChatMessageStatus.Pending &&
+                        props.status === MessageStatus.Pending &&
                         UIStyle.common.opacity70()
                     }
                 >
@@ -45,7 +45,7 @@ export const BubbleSticker = (props: StickerMessage) => {
                         UIStyle.color.getBackgroundColorStyle(
                             theme[ColorVariants.BackgroundSecondary],
                         ),
-                        props.status === ChatMessageStatus.Pending &&
+                        props.status === MessageStatus.Pending &&
                             UIStyle.common.opacity70(),
                     ]}
                 >

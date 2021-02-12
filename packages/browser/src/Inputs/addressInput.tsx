@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { ChatMessageStatus, ChatMessageType } from '@tonlabs/uikit.chats';
+import { MessageStatus, ChatMessageType } from '@tonlabs/uikit.chats';
 
 import { AddressInputMessage, InteractiveMessageType } from '../types';
 import type { OnHeightChange, Input } from '../types';
@@ -81,7 +81,7 @@ export function getAddressInput(
                 type: ChatMessageType.ActionButton,
                 text: uiLocalized.Browser.AddressInputBubble.ScanQR,
                 key: 'address-input-bubble-action-qr',
-                status: ChatMessageStatus.Received,
+                status: MessageStatus.Received,
                 onPress: () => {
                     dispatch({
                         type: 'OPEN_QR_CODE',
@@ -92,7 +92,7 @@ export function getAddressInput(
                 type: ChatMessageType.ActionButton,
                 text: uiLocalized.Browser.AddressInputBubble.EnterManually,
                 key: 'address-input-bubble-action-enter',
-                status: ChatMessageStatus.Received,
+                status: MessageStatus.Received,
                 onPress: () => {
                     dispatch({
                         type: 'OPEN_ADDRESS_INPUT',
@@ -116,7 +116,7 @@ export function getAddressInput(
                 type: ChatMessageType.ActionButton,
                 text: uiLocalized.Browser.AddressInputBubble.MainAccount,
                 key: 'address-input-bubble-action-account',
-                status: ChatMessageStatus.Received,
+                status: MessageStatus.Received,
                 onPress: () => {
                     message.onSelect(
                         uiLocalized.Browser.AddressInputBubble.MainAccount,
@@ -128,7 +128,7 @@ export function getAddressInput(
                 type: ChatMessageType.PlainText,
                 text: uiLocalized.Browser.AddressInputBubble.Question,
                 key: 'address-input-bubble',
-                status: ChatMessageStatus.Received,
+                status: MessageStatus.Received,
             },
         ],
         input: (

@@ -1,4 +1,4 @@
-import type { ChatMessageType, ChatMessageStatus } from '@tonlabs/uikit.chats';
+import type { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 
 export type OnSendText = (text: string) => void;
 export type OnHeightChange = (height: number) => void;
@@ -25,7 +25,7 @@ export enum InteractiveMessageType {
 
 type PlainTextMessage = {
     key: string;
-    status: ChatMessageStatus;
+    status: MessageStatus;
     firstFromChain?: boolean;
     lastFromChain?: boolean;
     type: ChatMessageType.PlainText;
@@ -37,7 +37,7 @@ type PlainTextMessage = {
 
 type ActionButtonMessage = {
     key: string;
-    status: ChatMessageStatus;
+    status: MessageStatus;
     firstFromChain?: boolean;
     lastFromChain?: boolean;
     type: ChatMessageType.ActionButton;

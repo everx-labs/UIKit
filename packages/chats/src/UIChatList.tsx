@@ -8,7 +8,7 @@ import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
 import { ChatMessage, ChatMessageType } from './types';
 import { sectionListGetItemLayout } from './UIChatListLayout';
-import { BubblePlainText } from './BubblePlainText';
+import { BubbleChatPlainText } from './BubblePlainText';
 import { BubbleSystem } from './BubbleSystem';
 import { BubbleTransaction } from './BubbleTransaction';
 import { BubbleImage } from './BubbleImage';
@@ -31,7 +31,7 @@ const renderSectionTitle = ({
 const renderBubble = (message: ChatMessage) => {
     switch (message.type) {
         case ChatMessageType.PlainText:
-            return <BubblePlainText {...message} key={message.key} />;
+            return <BubbleChatPlainText {...message} key={message.key} />;
         case ChatMessageType.System:
             return <BubbleSystem {...message} key={message.key} />;
         case ChatMessageType.Transaction:
