@@ -2650,10 +2650,10 @@ const ChatWindowScreen = () => {
     return (
         <>
             <UIChatList
-                areStickersVisible={false}
                 onLoadEarlierMessages={onLoadEarlierMessages}
                 canLoadMore
                 isLoadingMore={false}
+                isCustomKeyboardVisible={false}
                 messages={messages}
                 bottomInset={bottomInset}
             />

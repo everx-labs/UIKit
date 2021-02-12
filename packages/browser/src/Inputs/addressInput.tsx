@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { ChatMessageStatus, ChatMessageType } from '@tonlabs/uikit.chats';
+import { MessageStatus, ChatMessageType } from '@tonlabs/uikit.chats';
 
-import { InteractiveMessageType } from '../types';
-import type { ValidateAddress, OnHeightChange, Input } from '../types';
+import { AddressInputMessage, InteractiveMessageType } from '../types';
+import type { OnHeightChange, Input } from '../types';
 import { UIAddressInput } from '../UIAddressInput';
 
 export type AddressInputState = {
@@ -69,18 +69,6 @@ export function addressInputReducer(
     };
 }
 
-export type AddressInputMessage = {
-    type: InteractiveMessageType.AddressInput;
-    onSelect: (selectedButtonText: string, address: string) => void;
-    mainAddress: string;
-    input: {
-        validateAddress: ValidateAddress;
-    };
-    qrCode: {
-        parseData: (data: any) => Promise<string>;
-    };
-};
-
 export function getAddressInput(
     message: AddressInputMessage,
     state: AddressInputState,
@@ -93,9 +81,7 @@ export function getAddressInput(
                 type: ChatMessageType.ActionButton,
                 text: uiLocalized.Browser.AddressInputBubble.ScanQR,
                 key: 'address-input-bubble-action-qr',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
+                status: MessageStatus.Received,
                 onPress: () => {
                     dispatch({
                         type: 'OPEN_QR_CODE',
@@ -106,9 +92,7 @@ export function getAddressInput(
                 type: ChatMessageType.ActionButton,
                 text: uiLocalized.Browser.AddressInputBubble.EnterManually,
                 key: 'address-input-bubble-action-enter',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
+                status: MessageStatus.Received,
                 onPress: () => {
                     dispatch({
                         type: 'OPEN_ADDRESS_INPUT',
@@ -132,9 +116,7 @@ export function getAddressInput(
                 type: ChatMessageType.ActionButton,
                 text: uiLocalized.Browser.AddressInputBubble.MainAccount,
                 key: 'address-input-bubble-action-account',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
+                status: MessageStatus.Received,
                 onPress: () => {
                     message.onSelect(
                         uiLocalized.Browser.AddressInputBubble.MainAccount,
@@ -146,9 +128,7 @@ export function getAddressInput(
                 type: ChatMessageType.PlainText,
                 text: uiLocalized.Browser.AddressInputBubble.Question,
                 key: 'address-input-bubble',
-                status: ChatMessageStatus.Received,
-                time: Date.now(),
-                sender: 'system',
+                status: MessageStatus.Received,
             },
         ],
         input: (

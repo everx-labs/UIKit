@@ -9,20 +9,18 @@ import type BigNumber from 'bignumber.js';
 // Received - on the left
 //
 // This could be changed in some global config (not there yet).
-export enum ChatMessageStatus {
+export enum MessageStatus {
     Sent = 'sent',
     Pending = 'pending',
     Received = 'received',
     Aborted = 'aborted',
 }
 
-export type ChatMessageMeta = {
+export type BubbleBaseT = {
     key: string;
-    status: ChatMessageStatus;
-    time: number;
-    sender: string;
     firstFromChain?: boolean;
     lastFromChain?: boolean;
+    status: MessageStatus;
 };
 
 export enum ChatMessageType {
@@ -35,7 +33,7 @@ export enum ChatMessageType {
     ActionButton = 'act',
 }
 
-export type PlainTextMessage = ChatMessageMeta & {
+export type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
     text: string;
     actionText?: string;
@@ -43,10 +41,26 @@ export type PlainTextMessage = ChatMessageMeta & {
     onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
 
-export type SystemMessage = ChatMessageMeta & {
-    type: ChatMessageType.System;
+export type ActionButtonMessage = BubbleBaseT & {
+    type: ChatMessageType.ActionButton;
     text: string;
+    textMode?: 'ellipsize' | 'fit';
+    onPress?: () => void | Promise<void>;
 };
+
+// Props that required for proper chat rendering
+type ChatMeta = {
+    time: number;
+    sender: string;
+};
+
+export type ChatPlainTextMessage = ChatMeta & PlainTextMessage;
+
+export type SystemMessage = BubbleBaseT &
+    ChatMeta & {
+        type: ChatMessageType.System;
+        text: string;
+    };
 
 export enum TransactionType {
     Income = 'income',
@@ -58,52 +72,55 @@ export type TransactionComment = {
     encrypted: boolean;
 };
 
-export type TransactionMessage = ChatMessageMeta & {
-    type: ChatMessageType.Transaction;
-    info: {
-        type: TransactionType;
-        amount: BigNumber; // mostly used for testID purposes
-        balanceChange: string | React.ComponentType;
-        text?: string;
+export type TransactionMessage = BubbleBaseT &
+    ChatMeta & {
+        // ---
+        time: number;
+        sender: string;
+        // ---
+        type: ChatMessageType.Transaction;
+        info: {
+            type: TransactionType;
+            amount: BigNumber; // mostly used for testID purposes
+            balanceChange: string | React.ComponentType;
+            text?: string;
+        };
+        comment?: TransactionComment;
+        actionText?: string;
+        onPress?: () => void | Promise<void>;
     };
-    comment?: TransactionComment;
-    actionText?: string;
-    onPress?: () => void | Promise<void>;
-};
 
-export type ImageMessage = ChatMessageMeta & {
-    type: ChatMessageType.Image;
-    // TODO: url???
-    size: {
-        width: number;
-        height: number;
+export type ImageMessage = BubbleBaseT &
+    ChatMeta & {
+        type: ChatMessageType.Image;
+        // TODO: url???
+        size: {
+            width: number;
+            height: number;
+        };
     };
-};
 
-export type DocumentMessage = ChatMessageMeta & {
-    type: ChatMessageType.Document;
-    // TODO: url???
-    docName?: string;
-    fileSize?: number;
-};
+export type DocumentMessage = BubbleBaseT &
+    ChatMeta & {
+        type: ChatMessageType.Document;
+        // TODO: url???
+        docName?: string;
+        fileSize?: number;
+    };
 
-export type StickerMessage = ChatMessageMeta & {
-    type: ChatMessageType.Sticker;
-    source: ImageSourcePropType;
-};
+export type StickerMessage = BubbleBaseT &
+    ChatMeta & {
+        type: ChatMessageType.Sticker;
+        source: ImageSourcePropType;
+    };
 
-export type ActionButtonMessage = ChatMessageMeta & {
-    type: ChatMessageType.ActionButton;
-    text: string;
-    textMode?: 'ellipsize' | 'fit';
-    onPress?: () => void | Promise<void>;
-};
+export type ChatActionButtonMessage = ChatMeta & ActionButtonMessage;
 
 export type ChatMessage =
-    | PlainTextMessage
+    | ChatPlainTextMessage
+    | ChatActionButtonMessage
     | SystemMessage
     | TransactionMessage
     | ImageMessage
     | DocumentMessage
-    | StickerMessage
-    | ActionButtonMessage;
+    | StickerMessage;

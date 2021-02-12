@@ -1,26 +1,26 @@
 import * as React from 'react';
 
-import { UIChatList, ChatMessage } from '@tonlabs/uikit.chats';
 import type { OnHeightChange } from '@tonlabs/uikit.keyboard';
-import { Input, InteractiveMessageType } from './types';
+
 import {
-    TerminalMessage,
+    BrowserMessage,
+    Input,
+    InteractiveMessageType,
+    VisibleMessage,
+} from './types';
+import {
     TerminalState,
     terminalReducer,
     getTerminalInput,
 } from './Inputs/terminal';
 import {
-    AddressInputMessage,
     AddressInputState,
     AddressInputAction,
     addressInputReducer,
     getAddressInput,
     getAddressInputShared,
 } from './Inputs/addressInput';
-
-type InteractiveMessage = TerminalMessage | AddressInputMessage;
-
-type BrowserMessage = ChatMessage | InteractiveMessage;
+import { UIBrowserList } from './UIBrowserList';
 
 type InteractiveMessagesState = {
     [InteractiveMessageType.Terminal]: TerminalState;
@@ -69,7 +69,7 @@ function useInteractiveMessages(
     onHeightChange: OnHeightChange,
     inputs: InputFabric[],
 ): {
-    messages: ChatMessage[];
+    messages: VisibleMessage[];
     input: React.ReactNode;
 } {
     const [interactiveMessage, ...rest] = allMessages;
@@ -91,13 +91,13 @@ function useInteractiveMessages(
         -1
     ) {
         return {
-            messages: allMessages as ChatMessage[],
+            messages: allMessages as VisibleMessage[],
             input: null,
         };
     }
 
     const inputsPrepared = inputs.reduce<{
-        messages: ChatMessage[];
+        messages: VisibleMessage[];
         input: React.ReactNode;
         shared: React.ReactNode[];
     }>(
@@ -144,7 +144,7 @@ function useInteractiveMessages(
     );
 
     return {
-        messages: [...inputsPrepared.messages, ...(rest as ChatMessage[])],
+        messages: [...inputsPrepared.messages, ...(rest as VisibleMessage[])],
         input: (
             <>
                 {inputsPrepared.input}
@@ -185,14 +185,7 @@ export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
 
     return (
         <>
-            <UIChatList
-                areStickersVisible={false}
-                onLoadEarlierMessages={() => undefined}
-                canLoadMore={false}
-                isLoadingMore={false}
-                messages={messages}
-                bottomInset={bottomInset}
-            />
+            <UIBrowserList messages={messages} bottomInset={bottomInset} />
             {input}
         </>
     );
