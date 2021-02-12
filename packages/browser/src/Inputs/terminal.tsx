@@ -1,17 +1,7 @@
 import * as React from 'react';
 
 import { UIChatInput } from '@tonlabs/uikit.chats';
-import type {
-    OnHeightChange,
-    OnSendText,
-    InteractiveMessageType,
-    Input,
-} from '../types';
-
-export type TerminalMessage = {
-    type: InteractiveMessageType.Terminal;
-    onSendText: OnSendText;
-};
+import type { OnHeightChange, TerminalMessage, Input } from '../types';
 
 export type TerminalState = {
     visible: boolean;

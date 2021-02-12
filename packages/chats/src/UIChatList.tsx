@@ -6,8 +6,15 @@ import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
-import type { ChatMessage } from './types';
+import { ChatMessage, ChatMessageType } from './types';
 import { sectionListGetItemLayout } from './UIChatListLayout';
+import { BubblePlainText } from './BubblePlainText';
+import { BubbleSystem } from './BubbleSystem';
+import { BubbleTransaction } from './BubbleTransaction';
+import { BubbleImage } from './BubbleImage';
+import { BubbleDocument } from './BubbleDocument';
+import { BubbleSticker } from './BubbleSticker';
+import { BubbleActionButton } from './BubbleActionButton';
 
 const renderSectionTitle = ({
     section,
@@ -19,6 +26,27 @@ const renderSectionTitle = ({
     }
 
     return <DateSeparator time={section.time} />;
+};
+
+const renderBubble = (message: ChatMessage) => {
+    switch (message.type) {
+        case ChatMessageType.PlainText:
+            return <BubblePlainText {...message} key={message.key} />;
+        case ChatMessageType.System:
+            return <BubbleSystem {...message} key={message.key} />;
+        case ChatMessageType.Transaction:
+            return <BubbleTransaction {...message} key={message.key} />;
+        case ChatMessageType.Image:
+            return <BubbleImage {...message} key={message.key} />;
+        case ChatMessageType.Document:
+            return <BubbleDocument {...message} key={message.key} />;
+        case ChatMessageType.Sticker:
+            return <BubbleSticker {...message} key={message.key} />;
+        case ChatMessageType.ActionButton:
+            return <BubbleActionButton {...message} key={message.key} />;
+        default:
+            return null;
+    }
 };
 
 type UIChatListProps = {
@@ -62,8 +90,9 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
 
         return (
             <UICommonChatList
-                ref={ref}
+                forwardRef={ref}
                 nativeID="chatSectionList"
+                renderBubble={renderBubble}
                 getItemLayoutFabric={sectionListGetItemLayout}
                 isCustomKeyboardVisible={isCustomKeyboardVisible}
                 canLoadMore={canLoadMore}

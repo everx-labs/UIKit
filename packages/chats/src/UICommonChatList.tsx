@@ -26,15 +26,7 @@ import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
 
-import { ChatMessageType } from './types';
 import type { ChatMessage } from './types';
-import { BubblePlainText } from './BubblePlainText';
-import { BubbleSystem } from './BubbleSystem';
-import { BubbleTransaction } from './BubbleTransaction';
-import { BubbleImage } from './BubbleImage';
-import { BubbleDocument } from './BubbleDocument';
-import { BubbleSticker } from './BubbleSticker';
-import { BubbleActionButton } from './BubbleActionButton';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
 
@@ -123,11 +115,17 @@ function useChatListWheelHandler(
     useWheelHandler(handler);
 }
 
-const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
-    item,
-}: {
-    item: ChatMessage;
-}) => {
+type RenderBubble<ItemT> = (props: ItemT) => React.ReactNode;
+type BubbleBaseT = {
+    key: string;
+    firstFromChain?: boolean;
+    lastFromChain?: boolean;
+};
+
+const renderItemInternal = <ItemT extends BubbleBaseT>(
+    onLayoutCell: (key: string, e: any) => void,
+    renderBubble: RenderBubble<ItemT>,
+) => ({ item }: { item: ItemT }) => {
     return (
         <View
             key={item.key}
@@ -147,12 +145,13 @@ const renderItemInternal = (onLayoutCell: (key: string, e: any) => void) => ({
     );
 };
 
-type GetItemLayoutFabric = (
+type GetItemLayoutFabric = <ItemT>(
     ...args: any
-) => Required<VirtualizedListProps<ChatMessage>>['getItemLayout'];
+) => Required<VirtualizedListProps<ItemT>>['getItemLayout'];
 
-function useLayoutHelpers(
+function useLayoutHelpers<ItemT extends BubbleBaseT>(
     canLoadMore: boolean,
+    renderBubble: RenderBubble<ItemT>,
     getItemLayoutFabric: GetItemLayoutFabric,
 ) {
     const cellsHeight = React.useRef(new Map());
@@ -179,7 +178,7 @@ function useLayoutHelpers(
                 );
             },
         }),
-        [canLoadMore, cellsHeight],
+        [canLoadMore, cellsHeight, getItemLayoutFabric],
     );
 
     const onLayoutCell = React.useCallback((key: string, e: any) => {
@@ -191,9 +190,10 @@ function useLayoutHelpers(
     }, []);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const renderItem = React.useCallback(renderItemInternal(onLayoutCell), [
-        onLayoutCell,
-    ]);
+    const renderItem = React.useCallback(
+        renderItemInternal(onLayoutCell, renderBubble),
+        [onLayoutCell, renderBubble],
+    );
 
     return {
         getItemLayout,
@@ -336,41 +336,19 @@ function useLinesAnimation() {
     };
 }
 
-const keyExtractor = (item: ChatMessage) => {
+const keyExtractor = <ItemT extends BubbleBaseT>(item: ItemT) => {
     return item.key;
 };
 
-const renderBubble = (message: ChatMessage) => {
-    switch (message.type) {
-        case ChatMessageType.PlainText:
-            return <BubblePlainText {...message} key={message.key} />;
-        case ChatMessageType.System:
-            return <BubbleSystem {...message} key={message.key} />;
-        case ChatMessageType.Transaction:
-            return <BubbleTransaction {...message} key={message.key} />;
-        case ChatMessageType.Image:
-            return <BubbleImage {...message} key={message.key} />;
-        case ChatMessageType.Document:
-            return <BubbleDocument {...message} key={message.key} />;
-        case ChatMessageType.Sticker:
-            return <BubbleSticker {...message} key={message.key} />;
-        case ChatMessageType.ActionButton:
-            return <BubbleActionButton {...message} key={message.key} />;
-        default:
-            return null;
-    }
-};
+const onScrollToIndexFailed: SectionListProps<any>['onScrollToIndexFailed'] = (
+    info,
+) => console.error('Failed to scroll to index:', info);
 
-const onScrollToIndexFailed: SectionListProps<
-    ChatMessage
->['onScrollToIndexFailed'] = (info) =>
-    console.error('Failed to scroll to index:', info);
+const renderScrollComponent: SectionListProps<any>['renderScrollComponent'] = (
+    scrollProps,
+) => <ScrollView {...scrollProps} />;
 
-const renderScrollComponent: SectionListProps<
-    ChatMessage
->['renderScrollComponent'] = (scrollProps) => <ScrollView {...scrollProps} />;
-
-export type CommonChatListProps = {
+export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     ref: React.RefObject<any>;
     nativeID: string;
     keyboardDismissMode: ScrollViewProps['keyboardDismissMode'];
@@ -378,129 +356,122 @@ export type CommonChatListProps = {
     contentInset: ScrollViewProps['contentInset'];
     scrollIndicatorInsets: ScrollViewProps['contentInset'];
     inverted: boolean;
-    getItemLayout: VirtualizedListProps<ChatMessage>['getItemLayout'];
-    onLayout: VirtualizedListProps<ChatMessage>['onLayout'];
-    onContentSizeChange: VirtualizedListProps<
-        ChatMessage
-    >['onContentSizeChange'];
-    onScroll: VirtualizedListProps<ChatMessage>['onScroll'];
-    onScrollToIndexFailed: VirtualizedListProps<
-        ChatMessage
-    >['onScrollToIndexFailed'];
+    getItemLayout: VirtualizedListProps<ItemT>['getItemLayout'];
+    onLayout: VirtualizedListProps<ItemT>['onLayout'];
+    onContentSizeChange: VirtualizedListProps<ItemT>['onContentSizeChange'];
+    onScroll: VirtualizedListProps<ItemT>['onScroll'];
+    onScrollToIndexFailed: VirtualizedListProps<ItemT>['onScrollToIndexFailed'];
     scrollEventThrottle: number;
     style: StyleProp<ViewStyle>;
     contentContainerStyle: StyleProp<ViewStyle>;
     onViewableItemsChanged: VirtualizedListProps<
-        ChatMessage
+        ItemT
     >['onViewableItemsChanged'];
-    keyExtractor: VirtualizedListProps<ChatMessage>['keyExtractor'];
-    renderItem: ListRenderItem<ChatMessage>;
-    renderScrollComponent: VirtualizedListProps<
-        ChatMessage
-    >['renderScrollComponent'];
+    keyExtractor: VirtualizedListProps<ItemT>['keyExtractor'];
+    renderItem: ListRenderItem<ItemT>;
+    renderScrollComponent: VirtualizedListProps<ItemT>['renderScrollComponent'];
     onEndReachedThreshold: number;
 };
 
-type UICommonChatListProps = {
+type UICommonChatListProps<ItemT extends BubbleBaseT> = {
+    forwardRef: React.Ref<any>;
     nativeID: string;
+    renderBubble: RenderBubble<ItemT>;
     getItemLayoutFabric: GetItemLayoutFabric;
-    children: (props: CommonChatListProps) => React.ReactNode;
+    children: (props: CommonChatListProps<ItemT>) => React.ReactNode;
     canLoadMore?: boolean;
     // If you want custom keyboard to be dismissible on touch outside of it
     isCustomKeyboardVisible?: boolean;
     bottomInset?: number;
 };
 
-export const UICommonChatList = React.forwardRef<any, UICommonChatListProps>(
-    function UIChatListContainer(
-        {
-            nativeID,
-            getItemLayoutFabric,
-            canLoadMore = false,
-            isCustomKeyboardVisible = false,
-            bottomInset = 0,
-            children,
-        }: UICommonChatListProps,
-        ref,
-    ) {
-        const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
-            if (Platform.OS !== 'ios') {
-                // The following is not working on Android >>>
-                // See https://github.com/facebook/react-native/issues/23364
-                return 'on-drag';
+export function UICommonChatList<ItemT extends BubbleBaseT>({
+    forwardRef,
+    nativeID,
+    renderBubble,
+    getItemLayoutFabric,
+    canLoadMore = false,
+    isCustomKeyboardVisible = false,
+    bottomInset = 0,
+    children,
+}: UICommonChatListProps<ItemT>) {
+    const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
+        if (Platform.OS !== 'ios') {
+            // The following is not working on Android >>>
+            // See https://github.com/facebook/react-native/issues/23364
+            return 'on-drag';
 
-                // This can be used as a workaround >>>>
-                // onScrollBeginDrag: () => {
-                //     Keyboard.dismiss();
-                //     UICustomKeyboardUtils.dismiss();
-                // },
-            }
+            // This can be used as a workaround >>>>
+            // onScrollBeginDrag: () => {
+            //     Keyboard.dismiss();
+            //     UICustomKeyboardUtils.dismiss();
+            // },
+        }
 
-            return 'interactive';
-        }, []);
+        return 'interactive';
+    }, []);
 
-        const localRef = React.useRef<any>(null);
+    const localRef = React.useRef<any>(null);
 
-        // @ts-ignore localRef.current can be null by types, hence it contradict with
-        // useImperativeHandle type, but this is actually works
-        React.useImperativeHandle(ref, () => {
-            return localRef.current;
-        });
+    // @ts-ignore localRef.current can be null by types, hence it contradict with
+    // useImperativeHandle type, but this is actually works
+    React.useImperativeHandle(forwardRef, () => {
+        return localRef.current;
+    });
 
-        const { getItemLayout, renderItem } = useLayoutHelpers(
-            canLoadMore,
-            getItemLayoutFabric,
-        );
-        const {
-            listContentOffset,
-            lineStyle,
-            onLayout,
-            onContentSizeChange,
-            onScrollMessages,
-            onViewableItemsChanged,
-        } = useLinesAnimation();
-        const contentInset = useContentInset(
-            localRef,
-            listContentOffset,
-            bottomInset,
-        );
-        useChatListWheelHandler(localRef, nativeID, listContentOffset);
+    const { getItemLayout, renderItem } = useLayoutHelpers(
+        canLoadMore,
+        renderBubble,
+        getItemLayoutFabric,
+    );
+    const {
+        listContentOffset,
+        lineStyle,
+        onLayout,
+        onContentSizeChange,
+        onScrollMessages,
+        onViewableItemsChanged,
+    } = useLinesAnimation();
+    const contentInset = useContentInset(
+        localRef,
+        listContentOffset,
+        bottomInset,
+    );
+    useChatListWheelHandler(localRef, nativeID, listContentOffset);
 
-        return (
-            <SafeAreaView style={styles.container} edges={['bottom']}>
-                <Animated.View style={lineStyle} />
-                <TapGestureHandler
-                    onHandlerStateChange={onHandlerStateChange}
-                    enabled={isCustomKeyboardVisible}
-                >
-                    {children({
-                        ref: localRef,
-                        nativeID,
-                        keyboardDismissMode: keyboardDismissProp,
-                        automaticallyAdjustContentInsets: false,
-                        contentInset,
-                        scrollIndicatorInsets: contentInset,
-                        inverted: true,
-                        getItemLayout,
-                        onLayout,
-                        onContentSizeChange,
-                        onScroll: onScrollMessages,
-                        onScrollToIndexFailed,
-                        scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
-                        style,
-                        contentContainerStyle: styles.messagesList,
-                        onViewableItemsChanged,
-                        keyExtractor,
-                        renderItem,
-                        onEndReachedThreshold: 0.6,
-                        renderScrollComponent,
-                    })}
-                </TapGestureHandler>
-            </SafeAreaView>
-        );
-    },
-);
-
+    return (
+        <SafeAreaView style={styles.container} edges={['bottom']}>
+            <Animated.View style={lineStyle} />
+            <TapGestureHandler
+                onHandlerStateChange={onHandlerStateChange}
+                enabled={isCustomKeyboardVisible}
+            >
+                {children({
+                    ref: localRef,
+                    nativeID,
+                    keyboardDismissMode: keyboardDismissProp,
+                    automaticallyAdjustContentInsets: false,
+                    contentInset,
+                    scrollIndicatorInsets: contentInset,
+                    inverted: true,
+                    getItemLayout,
+                    onLayout,
+                    onContentSizeChange,
+                    onScroll: onScrollMessages,
+                    onScrollToIndexFailed,
+                    scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
+                    style,
+                    contentContainerStyle: styles.messagesList,
+                    onViewableItemsChanged,
+                    keyExtractor,
+                    renderItem,
+                    onEndReachedThreshold: 0.6,
+                    renderScrollComponent,
+                })}
+            </TapGestureHandler>
+        </SafeAreaView>
+    );
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { FlatList, FlatListProps } from 'react-native';
 
-import { UICommonChatList } from '@tonlabs/uikit.chats';
-import type { ChatMessage, CommonChatListProps } from '@tonlabs/uikit.chats';
+import {
+    UICommonChatList,
+    BubblePlainText,
+    BubbleActionButton,
+    ChatMessageType,
+} from '@tonlabs/uikit.chats';
+import type { VisibleMessage } from './types';
 
 type UIBrowserListProps = {
-    messages: ChatMessage[];
+    messages: VisibleMessage[];
     bottomInset?: number;
 };
 
@@ -13,7 +18,7 @@ function flatListGetItemLayoutFabric({
     getItemHeight,
 }: {
     getItemHeight: (rowData?: any, rowIndex?: number) => number;
-}): Required<FlatListProps<ChatMessage>>['getItemLayout'] {
+}): Required<FlatListProps<VisibleMessage>>['getItemLayout'] {
     return (data, index) => {
         if (data == null) {
             return {
@@ -31,20 +36,35 @@ function flatListGetItemLayoutFabric({
     };
 }
 
-export function UIBrowserList(props: UIBrowserListProps) {
-    return (
-        <UICommonChatList
-            nativeID="browserList"
-            bottomInset={props.bottomInset}
-            getItemLayoutFabric={flatListGetItemLayoutFabric}
-        >
-            {(chatListProps: CommonChatListProps) => (
-                <FlatList
-                    testID="browser_container"
-                    data={props.messages}
-                    {...chatListProps}
-                />
-            )}
-        </UICommonChatList>
-    );
+function renderBubble(item: VisibleMessage) {
+    if (item.type === ChatMessageType.PlainText) {
+        return <BubblePlainText {...item} />;
+    }
+    if (item.type === ChatMessageType.ActionButton) {
+        return <BubbleActionButton {...item} />;
+    }
+
+    return null;
 }
+
+export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
+    function UIBrowserListForwarded(props: UIBrowserListProps, ref) {
+        return (
+            <UICommonChatList
+                forwardRef={ref}
+                nativeID="browserList"
+                renderBubble={renderBubble}
+                getItemLayoutFabric={flatListGetItemLayoutFabric}
+                bottomInset={props.bottomInset}
+            >
+                {(chatListProps) => (
+                    <FlatList
+                        testID="browser_container"
+                        data={props.messages}
+                        {...chatListProps}
+                    />
+                )}
+            </UICommonChatList>
+        );
+    },
+);
