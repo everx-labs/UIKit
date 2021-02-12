@@ -126,12 +126,8 @@ const renderItemInternal = <ItemT extends BubbleBaseT>(
             key={item.key}
             onLayout={(e) => onLayoutCell(item.key, e)}
             style={{
-                // TODO: this one is incorrect, there are different paddings for bubbles
                 paddingTop: item.firstFromChain
                     ? UIConstant.smallContentOffset()
-                    : 0,
-                paddingBottom: item.lastFromChain
-                    ? 0
                     : UIConstant.tinyContentOffset(),
             }}
         >

@@ -22,21 +22,20 @@ const getButtonContainer = (position: BubblePosition) => {
     return null;
 };
 
-const getButtonRadius = (position: BubblePosition) => {
-    if (position === BubblePosition.left) {
+const getButtonRadius = (
+    options: ActionButtonMessage,
+    position: BubblePosition,
+) => {
+    if (position === BubblePosition.left && options.firstFromChain) {
         return styles.buttonLeft;
-    } else if (position === BubblePosition.right) {
+    } else if (position === BubblePosition.right && options.lastFromChain) {
         return styles.buttonRight;
     }
     return null;
 };
 
-export function BubbleActionButton({
-    status,
-    text,
-    textMode = 'ellipsize',
-    onPress,
-}: ActionButtonMessage) {
+export function BubbleActionButton(message: ActionButtonMessage) {
+    const { status, text, textMode = 'ellipsize', onPress } = message;
     const position = useBubblePosition(status);
     const theme = useTheme();
 
@@ -51,7 +50,7 @@ export function BubbleActionButton({
                     },
                     styles.button,
                     textMode !== 'fit' && styles.buttonFixedHeight,
-                    getButtonRadius(position),
+                    getButtonRadius(message, position),
                 ]}
                 onPress={onPress}
             >
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: UIConstant.tinyContentOffset(),
     },
     button: {
         paddingVertical: UIConstant.tinyContentOffset(),

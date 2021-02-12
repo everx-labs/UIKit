@@ -9,6 +9,7 @@ import {
     CommonChatListProps,
 } from '@tonlabs/uikit.chats';
 import type { VisibleMessage } from './types';
+import { getFormattedList } from './getFormattedList';
 
 type UIBrowserListProps = {
     messages: VisibleMessage[];
@@ -49,19 +50,26 @@ function renderBubble(item: VisibleMessage) {
 }
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
-    function UIBrowserListForwarded(props: UIBrowserListProps, ref) {
+    function UIBrowserListForwarded(
+        { messages, bottomInset }: UIBrowserListProps,
+        ref,
+    ) {
+        const formattedMessages = React.useMemo(
+            () => getFormattedList(messages),
+            [messages],
+        );
         return (
             <UICommonChatList
                 forwardRef={ref}
                 nativeID="browserList"
                 renderBubble={renderBubble}
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
-                bottomInset={props.bottomInset}
+                bottomInset={bottomInset}
             >
                 {(chatListProps: CommonChatListProps<VisibleMessage>) => (
                     <FlatList
                         testID="browser_container"
-                        data={props.messages}
+                        data={formattedMessages}
                         {...chatListProps}
                     />
                 )}
