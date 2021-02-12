@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { View, StyleSheet, ViewStyle, Platform, Keyboard } from 'react-native';
 
 import {
     PanGestureHandler,
@@ -428,6 +428,9 @@ export function UISheet(props: UISheetProps) {
         }
 
         setIsVisible(true);
+        // TODO: this hack should be removed
+        // instead better to check keyboard height on mount
+        Keyboard.dismiss();
     }, [visible, setIsVisible]);
 
     const onClosePortalRequest = React.useCallback(() => {
