@@ -85,7 +85,7 @@ import {
     UIPopover,
     UIPopoverBackground,
     UIPopoverMenu,
-} from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uikit.navigation_legacy';
 import {
     UIDetailsButton,
     UIFeedback,
