@@ -40,7 +40,7 @@ export enum ColorVariants {
     LineNegative = 'LineNegative',
     // IconAccent = 'IconAccent',
     // IconPrimary = 'IconPrimary',
-    // IconSecondary = 'IconSecondary',
+    IconSecondary = 'IconSecondary',
     // IconTertiary = 'IconTertiary',
     // IconPrimaryInverted = 'IconPrimaryInverted',
     // IconNeutral = 'IconNeutral',
@@ -86,7 +86,7 @@ export const LightTheme: Theme = {
 
     // [ColorVariants.IconAccent]: '#0073C4',
     // [ColorVariants.IconPrimary]: '#20262A',
-    // [ColorVariants.IconSecondary]: '#707376',
+    [ColorVariants.IconSecondary]: '#707376',
     // [ColorVariants.IconTertiary]: '#B6B8BA',
     // [ColorVariants.IconPrimary]Inverted: '#FDFDFD',
     // [ColorVariants.IconNeutral]: '#E2E3E4',
@@ -124,6 +124,9 @@ export const DarkTheme: Theme = {
     [ColorVariants.LineNeutral]: '#FDFDFD',
     [ColorVariants.LineAccent]: '#0073C4',
     [ColorVariants.LineNegative]: '#CA1414',
+
+    [ColorVariants.IconSecondary]: '#ADB0B1',
+
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
 };

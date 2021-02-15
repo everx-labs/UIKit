@@ -48,7 +48,7 @@ import {
     UINumberInput,
     UIPhoneInput,
     UIPinCodeInput,
-    UISearchBar,
+    UISearchBar as UISearchBarOld,
     UISeedPhraseInput,
     UITextInput,
     UITransferInput,
@@ -72,7 +72,7 @@ import {
     UIAlert,
     UIAlertView,
     UIDropdownAlert,
-    UIBackgroundView,
+    UIBackgroundView as UIBackgroundViewOld,
     UIListHeader,
     UISectionHeader,
 } from '@tonlabs/uikit.components';
@@ -114,9 +114,11 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
+    UIBackgroundView,
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { UIBrowser } from '@tonlabs/uikit.browser';
+import { UISearchBar } from '@tonlabs/uikit.navigation';
 
 enableScreens();
 useWebFonts();
@@ -932,7 +934,7 @@ const Inputs = () => {
                 <Text>UISearchBar</Text>
             </View>
             <View style={{ paddingVertical: 20 }}>
-                <UISearchBar
+                <UISearchBarOld
                     value={search}
                     placeholder="Your search expression"
                     onChangeExpression={(newExpression) =>
@@ -941,7 +943,7 @@ const Inputs = () => {
                 />
             </View>
             <View style={{ paddingVertical: 20 }}>
-                <UISearchBar
+                <UISearchBarOld
                     value={search}
                     placeholder="Your search expression"
                     onChangeExpression={(newExpression) =>
@@ -2037,9 +2039,9 @@ const Products = () => (
                 position: 'relative',
             }}
         >
-            <UIBackgroundView
+            <UIBackgroundViewOld
                 screenWidth={300}
-                presetName={UIBackgroundView.PresetNames.Secondary}
+                presetName={UIBackgroundViewOld.PresetNames.Secondary}
             />
         </View>
         <View
@@ -2116,7 +2118,7 @@ const Products = () => (
             <UIStubPage
                 title="labs."
                 needBottomIcon={false}
-                presetName={UIBackgroundView.PresetNames.Action}
+                presetName={UIBackgroundViewOld.PresetNames.Action}
             />
         </View>
         <View
@@ -2810,6 +2812,42 @@ const Browser = () => {
     );
 };
 
+const Navigation = () => {
+    const theme = useTheme();
+
+    return (
+        <SafeAreaView
+            style={{
+                flex: 1,
+                backgroundColor: theme[ColorVariants.BackgroundSecondary],
+            }}
+        >
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UISearchBar</Text>
+            </View>
+            <View
+                style={{
+                    width: '100%',
+                    maxWidth: 500,
+                    paddingVertical: 20,
+                }}
+            >
+                <UISearchBar headerRightLabel="Action" />
+            </View>
+        </SafeAreaView>
+    );
+};
+
 const ThemeSwitcher = React.createContext(null);
 
 const Main = ({ navigation }) => {
@@ -2904,6 +2942,11 @@ const Main = ({ navigation }) => {
                     buttonStyle={UIButton.ButtonStyle.Link}
                     title="Browser"
                 />
+                <UIButton
+                    onPress={() => navigation.navigate('navigation')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Navigation"
+                />
             </ScrollView>
         </SafeAreaView>
     );
@@ -2979,6 +3022,10 @@ const App: () => React$Node = () => {
                         <SurfSplit.Screen name="text" component={TextScreen} />
                         <SurfSplit.Screen name="chat" component={Chat} />
                         <SurfSplit.Screen name="browser" component={Browser} />
+                        <SurfSplit.Screen
+                            name="navigation"
+                            component={Navigation}
+                        />
                     </SurfSplit.Navigator>
                 </NavigationContainer>
                 <UILayoutManager />
@@ -3060,6 +3107,7 @@ const styles = StyleSheet.create({
     detail: {
         flex: 1,
         borderRadius: 5,
+        overflow: 'hidden',
     },
     title: {
         fontSize: 24,
