@@ -1,5 +1,5 @@
 {
-  "name": "@tonlabs/uikit.legacy.navigation_legacy",
+  "name": "@tonlabs/uikit.navigation_legacy",
   "version": "2.1.0",
   "description": "Navigation components for Tonlabs's UIKit",
   "scripts": {
