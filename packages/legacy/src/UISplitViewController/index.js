@@ -2,8 +2,11 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 
 import { UIDevice, UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
-import { UIController } from '@tonlabs/uikit.navigation';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+} from '@tonlabs/uikit.hydrogen';
+import { UIController } from '@tonlabs/uikit.navigation_legacy';
 
 export default class UISplitViewController extends UIController {
     static shouldSplitView() {

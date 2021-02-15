@@ -11,7 +11,7 @@ import {
 import ParsedText from 'react-native-parsed-text';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIShareManager } from '@tonlabs/uikit.navigation';
+import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
 import {
     UILabel,
     UILabelColors,

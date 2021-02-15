@@ -13,7 +13,7 @@ import {
     UIColorPalette,
 } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIShareManager } from '@tonlabs/uikit.navigation';
+import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
 import { UITextButton, UIActionComponent } from '@tonlabs/uikit.components';
 import type { UIActionComponentProps } from '@tonlabs/uikit.components';
 import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
