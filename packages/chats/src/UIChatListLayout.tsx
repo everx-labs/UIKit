@@ -43,7 +43,7 @@ type GetItemLayout = Required<
     SectionListProps<ChatMessage, SectionExtra>
 >['getItemLayout'];
 
-type SectionListGetItemLayout = (args: Parameters) => GetItemLayout;
+export type SectionListGetItemLayout = (args: Parameters) => GetItemLayout;
 
 export const sectionListGetItemLayout: SectionListGetItemLayout = ({
     getItemHeight,

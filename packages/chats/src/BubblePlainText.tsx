@@ -20,14 +20,14 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
-import { ChatMessageMeta, ChatMessageStatus } from './types';
-import type { PlainTextMessage } from './types';
+import { MessageStatus } from './types';
+import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
-const useUrlStyle = (status: ChatMessageStatus) => {
+const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
 
-    if (status === ChatMessageStatus.Received) {
+    if (status === MessageStatus.Received) {
         return [
             { color: theme[ColorVariants.TextPrimary] },
             styles.urlReceived,
@@ -38,11 +38,11 @@ const useUrlStyle = (status: ChatMessageStatus) => {
 };
 
 const getFontColor = (message: PlainTextMessage) => {
-    if (message.status === ChatMessageStatus.Aborted) {
+    if (message.status === MessageStatus.Aborted) {
         return UILabelColors.TextPrimaryInverted; // TODO: is it right color?
     }
 
-    if (message.status === ChatMessageStatus.Received) {
+    if (message.status === MessageStatus.Received) {
         return UILabelColors.TextPrimary;
     }
 
@@ -50,7 +50,7 @@ const getFontColor = (message: PlainTextMessage) => {
 };
 
 const getRoundedCornerStyle = (
-    options: ChatMessageMeta,
+    options: PlainTextMessage,
     position: BubblePosition,
 ) => {
     if (position === BubblePosition.left && options.firstFromChain) {
@@ -79,7 +79,7 @@ const getBubbleContainer = (position: BubblePosition) => {
 const useBubbleStyle = (message: PlainTextMessage) => {
     const theme = useTheme();
 
-    if (message.status === ChatMessageStatus.Aborted) {
+    if (message.status === MessageStatus.Aborted) {
         return [
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundNegative],
@@ -87,7 +87,7 @@ const useBubbleStyle = (message: PlainTextMessage) => {
         ];
     }
 
-    if (message.status === ChatMessageStatus.Received) {
+    if (message.status === MessageStatus.Received) {
         return [
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundTertiary],
@@ -95,7 +95,7 @@ const useBubbleStyle = (message: PlainTextMessage) => {
         ];
     }
 
-    if (message.status === ChatMessageStatus.Sent) {
+    if (message.status === MessageStatus.Sent) {
         return [
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundAccent],
@@ -103,7 +103,7 @@ const useBubbleStyle = (message: PlainTextMessage) => {
         ];
     }
 
-    if (message.status === ChatMessageStatus.Pending) {
+    if (message.status === MessageStatus.Pending) {
         return [
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundAccent],
@@ -116,7 +116,7 @@ const useBubbleStyle = (message: PlainTextMessage) => {
 };
 
 const getActionString = (message: PlainTextMessage) => {
-    if (message.status === ChatMessageStatus.Aborted) {
+    if (message.status === MessageStatus.Aborted) {
         return message.actionText || uiLocalized.Chats.Bubbles.TapToSendAgain;
     }
 
@@ -124,7 +124,7 @@ const getActionString = (message: PlainTextMessage) => {
 };
 
 const getActionStringColor = (message: PlainTextMessage) => {
-    if (message.status === ChatMessageStatus.Aborted) {
+    if (message.status === MessageStatus.Aborted) {
         return UILabelColors.TextNegative;
     }
 
@@ -144,7 +144,7 @@ const createTestId = (pattern: string, text: string) => {
 };
 
 function BubbleTime(
-    props: PlainTextMessage & {
+    props: ChatPlainTextMessage & {
         style?: TextStyle;
         formattedTime: string;
         isHidden?: boolean;
@@ -167,7 +167,9 @@ function BubbleTime(
     );
 }
 
-export function BubblePlainText(props: PlainTextMessage) {
+function PlainTextContainer(
+    props: PlainTextMessage & { children: React.ReactNode },
+) {
     const scale = React.useRef(new Animated.Value(1)).current;
     const bubbleScaleAnimation = (scaleIn = false) => {
         Animated.spring(scale, {
@@ -178,12 +180,7 @@ export function BubblePlainText(props: PlainTextMessage) {
     };
     const position = useBubblePosition(props.status);
     const bubbleStyle = useBubbleStyle(props);
-    const urlStyle = useUrlStyle(props.status);
     const actionString = getActionString(props);
-    const formattedTime = React.useMemo(
-        () => uiLocalized.formatTime(props.time || Date.now()),
-        [props.time],
-    );
 
     return (
         <View style={[getBubbleContainer(position)]}>
@@ -209,52 +206,7 @@ export function BubblePlainText(props: PlainTextMessage) {
                             { transform: [{ scale }] },
                         ]}
                     >
-                        <UILabel
-                            testID={createTestId(
-                                'chat_text_message%',
-                                props.text,
-                            )}
-                            role={UILabelRoles.ParagraphText}
-                            color={getFontColor(props)}
-                            style={styles.textCell}
-                        >
-                            <ParsedText
-                                parse={[
-                                    {
-                                        type: 'url',
-                                        style: urlStyle,
-                                        onPress: (url: string, index: number) =>
-                                            props.onPressUrl &&
-                                            props.onPressUrl(url, index),
-                                    },
-                                ]}
-                            >
-                                {props.text}
-                            </ParsedText>
-                            <BubbleTime
-                                {...props}
-                                isHidden
-                                style={styles.timeHidden}
-                                formattedTime={formattedTime}
-                            />
-                        </UILabel>
-                        {/* The idea is to always draw time in a corner
-                         * but it should be kinda wrapped by a main text.
-                         * In order to achive it we draw it two times.
-                         * First time we draw it with a main text of a message
-                         * but at the same time make it invisible, this allow us
-                         * to have a proper padding for the last line.
-                         * That padding is needed for a time that we draw second time,
-                         * except this time we place it with `position: absolute` in a corner.
-                         */}
-                        <Text
-                            testID={createTestId('chat_text_message%_time', props.text)}
-                            style={styles.timeFloating}>
-                            <BubbleTime
-                                {...props}
-                                formattedTime={formattedTime}
-                            />
-                        </Text>
+                        {props.children}
                     </Animated.View>
                     {actionString && (
                         <UILabel
@@ -268,6 +220,89 @@ export function BubblePlainText(props: PlainTextMessage) {
                 </View>
             </TouchableWithoutFeedback>
         </View>
+    );
+}
+
+export function BubbleChatPlainText(props: ChatPlainTextMessage) {
+    const urlStyle = useUrlStyle(props.status);
+    const formattedTime = React.useMemo(
+        () => uiLocalized.formatTime(props.time || Date.now()),
+        [props.time],
+    );
+
+    return (
+        <PlainTextContainer {...props}>
+            <UILabel
+                testID={createTestId('chat_text_message%', props.text)}
+                role={UILabelRoles.ParagraphText}
+                color={getFontColor(props)}
+                style={styles.textCell}
+            >
+                <ParsedText
+                    parse={[
+                        {
+                            type: 'url',
+                            style: urlStyle,
+                            onPress: (url: string, index: number) =>
+                                props.onPressUrl &&
+                                props.onPressUrl(url, index),
+                        },
+                    ]}
+                >
+                    {props.text}
+                </ParsedText>
+                <BubbleTime
+                    {...props}
+                    isHidden
+                    style={styles.timeHidden}
+                    formattedTime={formattedTime}
+                />
+            </UILabel>
+            {/* The idea is to always draw time in a corner
+             * but it should be kinda wrapped by a main text.
+             * In order to achive it we draw it two times.
+             * First time we draw it with a main text of a message
+             * but at the same time make it invisible, this allow us
+             * to have a proper padding for the last line.
+             * That padding is needed for a time that we draw second time,
+             * except this time we place it with `position: absolute` in a corner.
+             */}
+            <Text
+                testID={createTestId('chat_text_message%_time', props.text)}
+                style={styles.timeFloating}
+            >
+                <BubbleTime {...props} formattedTime={formattedTime} />
+            </Text>
+        </PlainTextContainer>
+    );
+}
+
+export function BubbleSimplePlainText(props: PlainTextMessage) {
+    const urlStyle = useUrlStyle(props.status);
+
+    return (
+        <PlainTextContainer {...props}>
+            <UILabel
+                testID={createTestId('chat_text_message%', props.text)}
+                role={UILabelRoles.ParagraphText}
+                color={getFontColor(props)}
+                style={styles.textCell}
+            >
+                <ParsedText
+                    parse={[
+                        {
+                            type: 'url',
+                            style: urlStyle,
+                            onPress: (url: string, index: number) =>
+                                props.onPressUrl &&
+                                props.onPressUrl(url, index),
+                        },
+                    ]}
+                >
+                    {props.text}
+                </ParsedText>
+            </UILabel>
+        </PlainTextContainer>
     );
 }
 

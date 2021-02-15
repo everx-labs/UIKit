@@ -2650,10 +2650,10 @@ const ChatWindowScreen = () => {
     return (
         <>
             <UIChatList
-                areStickersVisible={false}
                 onLoadEarlierMessages={onLoadEarlierMessages}
                 canLoadMore
                 isLoadingMore={false}
+                isCustomKeyboardVisible={false}
                 messages={messages}
                 bottomInset={bottomInset}
             />
@@ -2721,17 +2721,9 @@ const BrowserStack = createStackNavigator();
 const BrowserScreen = () => {
     const [messages, setMessages] = React.useState([
         {
-            type: 'stm',
-            status: 'received',
-            time: Math.floor(Date.now() - 2 * 60 * 1000),
-            sender: '0:123',
-            text: 'This is browser!',
-        },
-    ]);
-    const inputs = React.useMemo(
-        () => [
-            {
-                type: 'AddressInput',
+            type: 'AddressInput',
+            mainAddress: '0:000',
+            input: {
                 validateAddress: (text: string) => {
                     if (text.length > 0 && text.length % 5 === 0) {
                         return Promise.resolve({
@@ -2744,9 +2736,41 @@ const BrowserScreen = () => {
                     });
                 },
             },
-        ],
-        [],
-    );
+            qrCode: {
+                parseData: (data) => {
+                    return '0:000';
+                },
+            },
+            onSelect: (selectedButtonString: string, address: string) => {
+                setMessages([
+                    {
+                        key: `${Date.now()}-address-input2`,
+                        type: 'stm',
+                        status: 'sent',
+                        time: Date.now(),
+                        sender: '0:000',
+                        text: address,
+                    },
+                    {
+                        key: `${Date.now()}-address-input1`,
+                        type: 'stm',
+                        status: 'sent',
+                        time: Date.now(),
+                        sender: '0:000',
+                        text: selectedButtonString,
+                    },
+                    ...messages.slice(1),
+                ]);
+            },
+        },
+        {
+            type: 'stm',
+            status: 'received',
+            time: Math.floor(Date.now() - 2 * 60 * 1000),
+            sender: '0:123',
+            text: 'This is browser!',
+        },
+    ]);
     return (
         <UIBrowser
             messages={messages}
@@ -2763,7 +2787,6 @@ const BrowserScreen = () => {
                     ...messages,
                 ]);
             }}
-            inputs={inputs}
         />
     );
 };

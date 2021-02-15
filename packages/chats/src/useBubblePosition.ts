@@ -1,19 +1,20 @@
 import * as React from 'react';
-import { ChatMessageStatus } from './types';
+import { MessageStatus } from './types';
 
+// eslint-disable-next-line no-shadow
 export enum BubblePosition {
     left = 'left',
     right = 'right',
 }
 
 export const BubblePositionContext = React.createContext({
-    [ChatMessageStatus.Sent]: BubblePosition.right,
-    [ChatMessageStatus.Pending]: BubblePosition.right,
-    [ChatMessageStatus.Received]: BubblePosition.left,
-    [ChatMessageStatus.Aborted]: BubblePosition.right,
+    [MessageStatus.Sent]: BubblePosition.right,
+    [MessageStatus.Pending]: BubblePosition.right,
+    [MessageStatus.Received]: BubblePosition.left,
+    [MessageStatus.Aborted]: BubblePosition.right,
 });
 
-export function useBubblePosition(status: ChatMessageStatus): BubblePosition {
+export function useBubblePosition(status: MessageStatus): BubblePosition {
     const config = React.useContext(BubblePositionContext);
 
     return config[status];

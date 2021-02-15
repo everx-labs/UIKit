@@ -12,12 +12,12 @@ import {
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
 
-import { ChatMessageStatus, TransactionType } from './types';
+import { MessageStatus, TransactionType } from './types';
 import type { TransactionComment } from './types';
 import { useBubblePosition, BubblePosition } from './useBubblePosition';
 
 type Props = TransactionComment & {
-    status: ChatMessageStatus;
+    status: MessageStatus;
     // This is strange coz it's actually used in getBubbleColor
     // eslint-disable-next-line react/no-unused-prop-types
     type: TransactionType;
@@ -34,7 +34,7 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
 const useBubbleColor = (props: Props) => {
     const theme = useTheme();
 
-    if (props.status === ChatMessageStatus.Aborted) {
+    if (props.status === MessageStatus.Aborted) {
         return [
             UIStyle.color.getBackgroundColorStyle(
                 theme[ColorVariants.BackgroundNegative],
@@ -73,7 +73,7 @@ export function BubbleTransactionComment(props: Props) {
                 UIStyle.padding.horizontalNormal(),
                 getBubbleCornerStyle(position),
                 bubbleColor,
-                props.status === ChatMessageStatus.Pending &&
+                props.status === MessageStatus.Pending &&
                     UIStyle.common.opacity70(),
                 props.encrypted && styles.msgContainerEncrypted,
             ]}

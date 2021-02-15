@@ -124,7 +124,7 @@ function useValidation(
     validateAddress: ValidateAddress,
 ) {
     const emptyValidation = React.useRef({
-        status: ValidationResultStatus.NONE,
+        status: ValidationResultStatus.None,
     }).current;
     const [validation, setValidation] = React.useState<ValidationResult>(
         emptyValidation,
@@ -160,10 +160,10 @@ function useValidation(
 }
 
 const getHintColor = (status: ValidationResultStatus) => {
-    if (status === ValidationResultStatus.ERROR) {
+    if (status === ValidationResultStatus.Error) {
         return ColorVariants.TextNegative;
     }
-    if (status === ValidationResultStatus.SUCCESS) {
+    if (status === ValidationResultStatus.Success) {
         return ColorVariants.TextPositive;
     }
     return ColorVariants.TextTertiary;
@@ -180,7 +180,15 @@ type UIAddressInputInternalProps = {
     validateAddress: ValidateAddress;
 };
 
-export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
+export function UIAddressInputInternal({
+    textInputRef,
+    onHeightChange,
+    onSendText: onSendTextProp,
+    validateAddress,
+    placeholder,
+    onBlur,
+    onFocus,
+}: UIAddressInputInternalProps) {
     const {
         onContentSizeChange,
         onChange,
@@ -189,10 +197,11 @@ export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
         numberOfLinesProp,
         resetInputHeight,
     } = useAutogrowTextView(
-        props.textInputRef,
-        props.onHeightChange,
+        textInputRef,
+        onHeightChange,
         MAX_INPUT_NUM_OF_LINES,
     );
+
     const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);
     const {
         inputHasValue,
@@ -201,8 +210,8 @@ export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
         onSendText,
         clear: baseClear,
     } = useChatInputValue({
-        ref: props.textInputRef,
-        onSendText: props.onSendText,
+        ref: textInputRef,
+        onSendText: onSendTextProp,
         showMaxLengthAlert,
         resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
@@ -210,7 +219,7 @@ export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
     const { validation, onChangeText, clear } = useValidation(
         onBaseChangeText,
         baseClear,
-        props.validateAddress,
+        validateAddress,
     );
 
     return (
@@ -221,7 +230,7 @@ export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
                     inputHasValue={inputHasValue}
                     onSendText={onSendText}
                     hasError={
-                        validation.status === ValidationResultStatus.ERROR
+                        validation.status === ValidationResultStatus.Error
                     }
                     clear={clear}
                 />
@@ -238,7 +247,7 @@ export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
                 </UILabel>
             ) : null}
             <UITextView
-                ref={props.textInputRef}
+                ref={textInputRef}
                 testID="browser_input"
                 autoCapitalize="sentences"
                 autoCorrect={false}
@@ -249,15 +258,14 @@ export function UIAddressInputInternal(props: UIAddressInputInternalProps) {
                 multiline
                 numberOfLines={numberOfLinesProp}
                 placeholder={
-                    props.placeholder ??
-                    uiLocalized.Browser.AddressInput.Placeholder
+                    placeholder ?? uiLocalized.Browser.AddressInput.Placeholder
                 }
                 onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
-                onFocus={props.onFocus}
-                onBlur={props.onBlur}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 style={inputStyle}
             />
         </ChatInputContainer>
@@ -277,6 +285,7 @@ type UIAddressInputProps = {
 
 export function UIAddressInput(props: UIAddressInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
+    const { onHeightChange } = props;
     const {
         customKeyboardVisible,
         toggleKeyboard,
@@ -287,14 +296,22 @@ export function UIAddressInput(props: UIAddressInputProps) {
 
     useBackHandler(textInputRef);
 
+    React.useEffect(
+        () => () => {
+            if (onHeightChange) {
+                // If inputs is unmounted need to reset insets for list
+                onHeightChange(0);
+            }
+        },
+        [onHeightChange],
+    );
+
     const input = (
         <UIAddressInputInternal
             textInputRef={textInputRef}
             placeholder={props.placeholder}
             onSendText={props.onSendText}
-            onHeightChange={
-                Platform.OS === 'web' ? props.onHeightChange : undefined
-            }
+            onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
             onFocus={onFocus}
             onBlur={onBlur}
             validateAddress={props.validateAddress}
