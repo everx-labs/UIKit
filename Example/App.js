@@ -48,7 +48,6 @@ import {
     UINumberInput,
     UIPhoneInput,
     UIPinCodeInput,
-    UISearchBar as UISearchBarOld,
     UISeedPhraseInput,
     UITextInput,
     UITransferInput,
@@ -918,38 +917,6 @@ const Inputs = () => {
                     pinTitle="Pin title"
                     pinDescription="Description"
                     pinCodeEnter={(pin) => {}}
-                />
-            </View>
-            <View
-                style={{
-                    width: '96%',
-                    paddingLeft: 40,
-                    paddingBottom: 10,
-                    marginHorizontal: '2%',
-                    marginTop: 50,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                }}
-            >
-                <Text>UISearchBar</Text>
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISearchBarOld
-                    value={search}
-                    placeholder="Your search expression"
-                    onChangeExpression={(newExpression) =>
-                        setSearch(newExpression)
-                    }
-                />
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISearchBarOld
-                    value={search}
-                    placeholder="Your search expression"
-                    onChangeExpression={(newExpression) =>
-                        setSearch(newExpression)
-                    }
-                    renderGlass
                 />
             </View>
             <View

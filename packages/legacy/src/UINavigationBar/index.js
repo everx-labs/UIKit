@@ -10,7 +10,7 @@ import {
     UIFont,
     UIStyle,
 } from '@tonlabs/uikit.core';
-import { UISearchBar, UIComponent } from '@tonlabs/uikit.components';
+import { UIComponent } from '@tonlabs/uikit.components';
 import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
 import UINavigationBackButton from '../UINavigationBackButton';
@@ -84,7 +84,6 @@ type UINavigationBarOptions = {
     title?: string,
     titleRight?: React$Node,
     useDefaultStyle?: boolean,
-    searchBar?: boolean,
     headerLeft?: React$Node,
     headerRight?: React$Node,
     headerCenter?: React$Node,
@@ -123,8 +122,8 @@ export default class UINavigationBar extends UIComponent<
         const headerLeft = ('headerLeft' in options)
             ? options.headerLeft
             : (<UINavigationBackButton
-                navigation={navigation}
-                testID={`back_btn_${options.title || ''}`}
+                    navigation={navigation}
+                    testID={`back_btn_${options.title || ''}`}
             />);
 
         const hasLeftOrRight = headerLeft || options.headerRight;
@@ -153,12 +152,7 @@ export default class UINavigationBar extends UIComponent<
                 ),
             };
         }
-        if (options.searchBar) {
-            effective = {
-                ...effective,
-                ...UISearchBar.handleHeader(navigation),
-            };
-        }
+
         return effective;
     }
 
