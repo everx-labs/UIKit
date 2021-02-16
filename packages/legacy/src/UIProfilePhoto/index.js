@@ -6,7 +6,7 @@ import type { ImageURISource } from 'react-native/Libraries/Image/ImageSource';
 
 import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UIImageView } from '@tonlabs/uikit.navigation';
+import { UIImageView } from '@tonlabs/uikit.navigation_legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 const cameraImage = UIAssets.icons.ui.camera;

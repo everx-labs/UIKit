@@ -11,7 +11,7 @@ import {
 } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIBottomBar } from '@tonlabs/uikit.navigation';
+import { UIBottomBar } from '@tonlabs/uikit.navigation_legacy';
 
 const styles = StyleSheet.create({
     container: {

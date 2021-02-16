@@ -3,8 +3,8 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
-import { UIModalController } from '@tonlabs/uikit.navigation';
-import type { ModalControllerProps } from '@tonlabs/uikit.navigation';
+import { UIModalController } from '@tonlabs/uikit.navigation_legacy';
+import type { ModalControllerProps } from '@tonlabs/uikit.navigation_legacy';
 import { UISearchBar } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
