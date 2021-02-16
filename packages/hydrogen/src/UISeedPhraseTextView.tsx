@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     ColorValue,
+    Platform,
 } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -19,19 +20,64 @@ import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
 
 type UISeedPhrasePopoverProps = {
     currentHighlightedItemIndex: number;
+    onHighlightedItemIndexChange: (index: number) => void;
     hints: string[];
     onHintSelected: (item: string) => void;
     width: number;
 };
 
 function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
-    const { currentHighlightedItemIndex, hints, onHintSelected, width } = props;
+    const { 
+        currentHighlightedItemIndex,
+        onHighlightedItemIndexChange,
+        hints, 
+        onHintSelected,
+        width,
+    } = props;
     const theme = useTheme();
     const maxHintsToShow = Math.min(hints.length, MAX_CELLS);
-    const height =
-        hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
+    const height = hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
     // Calculate the padding bottom to view cells even if clipped
     const paddingBottom = UIConstant.defaultCellHeight * (maxHintsToShow - 1);
+
+    const renderItem = React.useCallback(({ item, index }) => {
+        const cellBgStyle: {
+            backgroundColor: ColorValue;
+        } = {
+            backgroundColor:
+                theme[
+                    currentHighlightedItemIndex === index
+                        ? ColorVariants.BackgroundSecondary
+                        : ColorVariants.BackgroundPrimary
+                ],
+        };
+
+        return (
+            <TouchableOpacity
+                testID={`profile_backup_key_phrase_${item}`}
+                style={[styles.cellHint, cellBgStyle]}
+                {
+                    ...Platform.select({
+                        web: { // a popover is closing before `onPress` event is triggered on web
+                            onPressIn: () => onHintSelected(item),
+                            onMouseEnter: () => onHighlightedItemIndexChange(index),
+                            onMouseLeave: () => onHighlightedItemIndexChange(-1),
+                        },
+                        default: {
+                            onPress: () => onHintSelected(item),
+                        },
+                    })
+                }
+            >
+                <UILabel
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.ParagraphNote}
+                >
+                    {item}
+                </UILabel>
+            </TouchableOpacity>
+        );
+    }, [theme, currentHighlightedItemIndex, onHintSelected]);
 
     return (
         <View
@@ -50,38 +96,11 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
                     contentContainerStyle={{ paddingBottom }}
                     scrollEnabled
                     showsVerticalScrollIndicator
-                    keyExtractor={(item) => item}
+                    keyExtractor={item => item}
                     keyboardShouldPersistTaps="handled"
                     data={hints}
                     extraData={currentHighlightedItemIndex}
-                    renderItem={({ item, index }) => {
-                        const cellBgStyle: {
-                            backgroundColor: ColorValue;
-                        } = {
-                            backgroundColor:
-                                theme[
-                                    currentHighlightedItemIndex === index
-                                        ? ColorVariants.BackgroundSecondary
-                                        : ColorVariants.BackgroundPrimary
-                                ],
-                        };
-                        return (
-                            <TouchableOpacity
-                                testID={`profile_backup_key_phrase_${item}`}
-                                style={[styles.cellHint, cellBgStyle]}
-                                onPressIn={() => {
-                                    onHintSelected(item);
-                                }}
-                            >
-                                <UILabel
-                                    color={UILabelColors.TextSecondary}
-                                    role={UILabelRoles.ParagraphNote}
-                                >
-                                    {item}
-                                </UILabel>
-                            </TouchableOpacity>
-                        );
-                    }}
+                    renderItem={renderItem}
                 />
             </View>
         </View>
@@ -362,9 +381,55 @@ export const UISeedPhraseTextView = React.forwardRef<
             }
 
             if (refToUse && 'current' in refToUse) {
-                refToUse.current?.setNativeProps({
-                    text: newText,
-                });
+                // Now change the text for the input
+                if (Platform.OS === 'android') {
+                    // Actually Android moves the cursor to the the right visually,
+                    // BUT physically it's not moved, and when the user continues typing
+                    // the cursor stays wherever it was before, but not at the right.
+
+                    /*
+                    At the moment the hack bellow behaves even more terrible then the issue above,
+                    because a native selection of Android's TextInput gets stuck since RN0.60:
+                    https://github.com/facebook/react-native/issues/26047
+
+                    // Thus we change the native position of it ...
+                    refToUse.current?.setNativeProps({
+                        selection: {
+                            start: newText.length - 1,
+                            end: newText.length - 1,
+                        },
+                    });
+                    // ... in order to return it back to the right
+                    refToUse.current?.setNativeProps({
+                        selection: {
+                            start: newText.length,
+                            end: newText.length,
+                        },
+                    });
+                    */
+
+                    // Another hack...
+                    // Remove the ending space in order to force the input updating its cursor
+                    // (This should not affect the UX when selecting hints)
+                    refToUse.current?.setNativeProps({
+                        text: newText.substr(0, newText.length - 1),
+                    });
+
+                    // Now move the cursor position back to the end
+                    requestAnimationFrame(() => {
+                        // await new Promise(resolve => setTimeout(resolve, 0));
+                        refToUse.current?.setNativeProps({
+                            text: newText,
+                        });
+                    });
+                } else {
+                    // The rest platforms behave properly
+                    refToUse.current?.setNativeProps({
+                        text: newText,
+                    });
+                }
+
+                // Focus the input in case the focus was lost on a hint selection
                 refToUse.current?.focus();
 
                 // On web onChange isn't fired, so we need to force it
@@ -585,6 +650,14 @@ export const UISeedPhraseTextView = React.forwardRef<
     const popoverProps = React.useMemo(
         () => ({
             currentHighlightedItemIndex: state.highlight.index,
+            onHighlightedItemIndexChange: (index: number) => {
+                dispatch({
+                    type: 'change_highlighted',
+                    payload: {
+                        index,
+                    },
+                });
+            },
             hints,
             onHintSelected,
             width: inputWidth,
@@ -629,6 +702,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 arrowWidth={0}
                 arrowHeight={0}
                 isVisible={hints.length > 0}
+                offset={{ x: 0, y: -42, /* Don't want to calculate it dynamically */ }}
                 component={UISeedPhrasePopover}
                 componentProps={popoverProps}
             >
@@ -641,7 +715,6 @@ export const UISeedPhraseTextView = React.forwardRef<
 const styles = StyleSheet.create({
     hintsContainer: {
         flex: 1,
-        marginTop: -42, // Don't want to calculate it dinamically, seems to work fine
         ...UIConstant.cardShadow,
         borderBottomLeftRadius: UIConstant.borderRadius,
         borderBottomRightRadius: UIConstant.borderRadius,
