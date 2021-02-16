@@ -27,7 +27,7 @@ export enum ColorVariants {
     BackgroundWarning = 'BackgroundWarning',
     BackgroundPrimaryInverted = 'BackgroundPrimaryInverted',
     // BackgroundSecondaryInverted = 'BackgroundSecondaryInverted',
-    // BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
+    BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
     BackgroundOverlay = 'BackgroundOverlay',
     BackgroundOverlayInverted = 'BackgroundOverlayInverted',
     // BackgroundNulled = 'BackgroundNulled',
@@ -74,6 +74,7 @@ export const LightTheme: Theme = {
     [ColorVariants.BackgroundPositive]: '#36C05C',
     [ColorVariants.BackgroundWarning]: '#FFC043',
     [ColorVariants.BackgroundPrimaryInverted]: '#20262A',
+    [ColorVariants.BackgroundTertiaryInverted]: '#B6B8BA',
     [ColorVariants.BackgroundOverlay]: 'rgba(32, 38, 42, 0.6)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(253, 253, 253, 0.4)',
 
@@ -115,6 +116,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.BackgroundPositive]: '#2FA851',
     [ColorVariants.BackgroundWarning]: '#B08229',
     [ColorVariants.BackgroundPrimaryInverted]: '#FDFDFD',
+    [ColorVariants.BackgroundTertiaryInverted]: '#676B6E',
     [ColorVariants.BackgroundOverlay]: 'rgba(32, 38, 42, 0.8)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(253, 253, 253, 0.2)',
 
