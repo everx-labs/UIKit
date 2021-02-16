@@ -71,7 +71,6 @@ import {
     UIAlert,
     UIAlertView,
     UIDropdownAlert,
-    UIBackgroundView as UIBackgroundViewOld,
     UIListHeader,
     UISectionHeader,
 } from '@tonlabs/uikit.components';
@@ -1996,32 +1995,6 @@ const Products = () => (
                 borderBottomColor: 'rgba(0,0,0,.1)',
             }}
         >
-            <Text>UIBackgroundView</Text>
-        </View>
-        <View
-            style={{
-                width: 300,
-                height: 300,
-                paddingVertical: 20,
-                position: 'relative',
-            }}
-        >
-            <UIBackgroundViewOld
-                screenWidth={300}
-                presetName={UIBackgroundViewOld.PresetNames.Secondary}
-            />
-        </View>
-        <View
-            style={{
-                width: '96%',
-                paddingLeft: 40,
-                paddingBottom: 10,
-                marginHorizontal: '2%',
-                marginTop: 20,
-                borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
-            }}
-        >
             <Text>UIBottomBar</Text>
         </View>
         <View style={{ maxWidth: 500, height: 180, paddingVertical: 20 }}>
@@ -2085,7 +2058,6 @@ const Products = () => (
             <UIStubPage
                 title="labs."
                 needBottomIcon={false}
-                presetName={UIBackgroundViewOld.PresetNames.Action}
             />
         </View>
         <View

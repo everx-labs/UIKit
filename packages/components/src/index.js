@@ -5,7 +5,6 @@ export { default as UIActionImage } from './UIActionImage';
 export { default as UIAlert } from './UIAlert';
 export { default as UIAlertView } from './UIAlertView';
 export { default as UIAmountInput } from './UIAmountInput';
-export { default as UIBackgroundView } from './UIBackgroundView';
 export { default as UIBadge } from './UIBadge';
 export { default as UIBankCardNumberInput } from './UIBankCardNumberInput';
 export { default as UIBanner } from './UIBanner';

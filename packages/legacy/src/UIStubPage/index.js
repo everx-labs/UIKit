@@ -7,7 +7,6 @@ import {
     UIComponent,
     UIEmailInput,
     UIToastMessage,
-    UIBackgroundView,
 } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -44,7 +43,6 @@ const customStyles = {
 };
 
 type Props = {
-    presetName: string,
     needBottomIcon: boolean,
     title: string,
     label: string,
@@ -62,7 +60,6 @@ type State = {
 
 export default class UIStubPage extends UIComponent<Props, State> {
     static defaultProps: Props = {
-        presetName: UIBackgroundView.PresetNames.Primary,
         needBottomIcon: true,
         title: '',
         label: '',

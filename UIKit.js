@@ -16,7 +16,6 @@ export {
     UIAlert,
     UIAlertView,
     UIAmountInput,
-    UIBackgroundView,
     UIBadge,
     UIBanner,
     UIBullet,
