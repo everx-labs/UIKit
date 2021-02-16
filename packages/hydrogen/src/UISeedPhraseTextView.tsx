@@ -418,7 +418,6 @@ export const UISeedPhraseTextView = React.forwardRef<
 
                     // Now move the cursor position back to the end
                     requestAnimationFrame(() => {
-                        // await new Promise(resolve => setTimeout(resolve, 0));
                         refToUse.current?.setNativeProps({
                             text: newText,
                         });
