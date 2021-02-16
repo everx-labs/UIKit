@@ -9,7 +9,6 @@ class Example extends BackgroundContainer {
                     <UIStubPage
                         title="labs."
                         needBottomIcon={false}
-                        presetName={UIBackgroundView.PresetNames.Action}
                     />
                 </View>
                 <UINotice />
