@@ -1,1 +1,1 @@
-export { /* TODO: remove */ }
+export * from './UISearchBar';

@@ -131,7 +131,7 @@ export function useUITextViewValue(
 
             return text;
         },
-        [inputHasValue, useClearWithEnter],
+        [inputHasValue, useClearWithEnter, onChangeTextProp],
     );
 
     const onKeyPress = React.useCallback(
@@ -154,7 +154,7 @@ export function useUITextViewValue(
         }
         inputValue.current = '';
         setInputHasValue(false);
-    }, [setInputHasValue]);
+    }, [ref, setInputHasValue]);
 
     return {
         inputHasValue,
