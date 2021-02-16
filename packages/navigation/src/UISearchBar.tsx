@@ -35,6 +35,10 @@ type UISearchBarRightButtonProps = {
 };
 
 function renderRightAction({ label, onPress }: UISearchBarRightButtonProps) {
+    if (label == null) {
+        return null;
+    }
+
     return (
         <TouchableOpacity
             hitSlop={{
@@ -102,7 +106,6 @@ export function UISearchBar({
 const styles = StyleSheet.create({
     container: {
         minHeight: HEADER_HEIGHT,
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UIConstant.smallContentOffset(),
