@@ -77,7 +77,7 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
                 </UILabel>
             </TouchableOpacity>
         );
-    }, [theme, currentHighlightedItemIndex, onHintSelected]);
+    }, [theme, currentHighlightedItemIndex, onHintSelected, onHighlightedItemIndexChange]);
 
     return (
         <View
@@ -386,6 +386,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                     // Actually Android moves the cursor to the the right visually,
                     // BUT physically it's not moved, and when the user continues typing
                     // the cursor stays wherever it was before, but not at the right.
+                    // N.B. This bug is reproducible on NOT all Android devices, but some!!!
 
                     /*
                     At the moment the hack bellow behaves even more terrible then the issue above,
@@ -665,6 +666,11 @@ export const UISeedPhraseTextView = React.forwardRef<
         [state.highlight.index, hints, onHintSelected, inputWidth],
     );
 
+    const popoverOffset = React.useMemo(
+        () => ({ x: 0, y: -42, /* Don't want to calculate it dynamically */ }),
+        [],
+    );
+
     const inputStyle = React.useMemo(() => ({ height: inputHeight }), [
         inputHeight,
     ]);
@@ -702,7 +708,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 arrowWidth={0}
                 arrowHeight={0}
                 isVisible={hints.length > 0}
-                offset={{ x: 0, y: -42, /* Don't want to calculate it dynamically */ }}
+                offset={popoverOffset}
                 component={UISeedPhrasePopover}
                 componentProps={popoverProps}
             >
