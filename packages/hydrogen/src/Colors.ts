@@ -75,8 +75,8 @@ export const LightTheme: Theme = {
     [ColorVariants.BackgroundWarning]: '#FFC043',
     [ColorVariants.BackgroundPrimaryInverted]: '#20262A',
     [ColorVariants.BackgroundTertiaryInverted]: '#B6B8BA',
-    [ColorVariants.BackgroundOverlay]: 'rgba(32, 38, 42, 0.6)',
-    [ColorVariants.BackgroundOverlayInverted]: 'rgba(253, 253, 253, 0.4)',
+    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.6)',
+    [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.4)',
 
     [ColorVariants.LinePrimary]: '#F4F4F5',
     [ColorVariants.LineSecondary]: '#EBECEC',
@@ -117,8 +117,8 @@ export const DarkTheme: Theme = {
     [ColorVariants.BackgroundWarning]: '#B08229',
     [ColorVariants.BackgroundPrimaryInverted]: '#FDFDFD',
     [ColorVariants.BackgroundTertiaryInverted]: '#676B6E',
-    [ColorVariants.BackgroundOverlay]: 'rgba(32, 38, 42, 0.8)',
-    [ColorVariants.BackgroundOverlayInverted]: 'rgba(253, 253, 253, 0.2)',
+    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.8)',
+    [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.2)',
 
     [ColorVariants.LinePrimary]: '#292F32',
     [ColorVariants.LineSecondary]: '#32373B',
