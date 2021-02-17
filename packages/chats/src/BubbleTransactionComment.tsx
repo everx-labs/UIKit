@@ -45,7 +45,7 @@ const useBubbleColor = (props: Props) => {
     if (props.type === TransactionType.Expense) {
         return [
             UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundPrimaryInverted],
+                theme[ColorVariants.StaticBackgroundBlack],
             ),
         ];
     }
@@ -82,7 +82,7 @@ export function BubbleTransactionComment(props: Props) {
             <UILabel
                 testID={`transaction_comment_${props.text}`}
                 role={UILabelRoles.ParagraphText}
-                color={UILabelColors.TextPrimaryInverted}
+                color={UILabelColors.StaticTextPrimaryLight}
                 style={styles.text}
             >
                 {props.text}

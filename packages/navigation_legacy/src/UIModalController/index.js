@@ -629,8 +629,8 @@ export default class UIModalController<Props, State> extends UIController<
                     onHandlerStateChange={this.onPanHandlerStateChange}
                 >
                     <AnimatedViewWithColor
+                        {...testIDProp}
                         color={UIBackgroundViewColors.BackgroundPrimary}
-                        testIDProp={testIDProp}
                         style={dialogStyle}
                     >
                         {this.renderModalNavigationBar()}
