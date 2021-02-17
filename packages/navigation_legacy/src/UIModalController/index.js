@@ -421,9 +421,11 @@ export default class UIModalController<Props, State> extends UIController<
     // Getters
     getBackgroundColor() {
         if (Platform.OS === 'web' && this.modalOnWeb) {
-            return UIColor.overlay60();
+            return UIBackgroundViewColors.BackgroundOverlay;
         }
-        return Platform.OS === 'web' && this.fullscreen ? 'transparent' : UIColor.overlay60();
+        return Platform.OS === 'web' && this.fullscreen
+            ? UIBackgroundViewColors.Transparent
+            : UIBackgroundViewColors.BackgroundOverlay;
     }
 
     isHeaderLineVisible() {
@@ -609,12 +611,12 @@ export default class UIModalController<Props, State> extends UIController<
                         onGestureEvent={this.onPan}
                         onHandlerStateChange={this.onPanHandlerStateChange}
                     >
-                        <Animated.View
+                        <AnimatedViewWithColor
+                            color={backgroundColor}
                             style={[
                                 // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
                                 // And this brings a layout bug to Safari
                                 UIStyle.Common.absoluteFillContainer(),
-                                { backgroundColor },
                                 { opacity: this.getDYDependentOpacity() },
                             ]}
                             onLayout={this.onLayout}

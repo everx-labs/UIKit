@@ -11,11 +11,15 @@ import {
     TouchableWithoutFeedback,
     View,
 } from 'react-native';
-import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import {
+    ColorVariants,
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    useColorParts,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIController from '../UIController';
 import type { ContentInset, AnimationParameters } from '../UIController';
@@ -90,6 +94,34 @@ export type State = {
     modalVisible: boolean,
     height: number,
 };
+
+const OverlayWrapper = React.forwardRef<*, *>(({ height, position, style, ...rest }: *, ref) => {
+    const {
+        colorParts: overlayColorParts,
+        opacity: overlayOpacity,
+    } = useColorParts(ColorVariants.BackgroundOverlay);
+
+    const backgroundColor = React.useMemo(() => {
+        return (position: any).interpolate({
+            inputRange: [-height, 0],
+            outputRange: [
+                `rgba(${overlayColorParts}, 0)`,
+                `rgba(${overlayColorParts}, ${overlayOpacity})`,
+            ],
+        })
+    }, [height, position]);
+
+    return (
+        <Animated.View
+            ref={ref}
+            {...rest}
+            style={[
+                style,
+                { backgroundColor },
+            ]}
+        />
+    )
+});
 
 export default class UICustomSheet extends UIController<Props, State> {
     static defaultProps: Props = {
@@ -236,15 +268,6 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     getPosition() {
         return Animated.add(this.marginBottom, Animated.multiply(-1, this.dy));
-    }
-
-    getInterpolatedColor(): ColorValue {
-        const height = this.getHeight();
-        const position = this.getPosition();
-        return (position: any).interpolate({
-            inputRange: [-height, 0],
-            outputRange: [UIColor.overlay0(), UIColor.overlay60()],
-        });
     }
 
     // Actions
@@ -418,7 +441,6 @@ export default class UICustomSheet extends UIController<Props, State> {
 
     renderContainer() {
         const paddingBottom = { paddingBottom: this.getSafeAreaInsets().bottom };
-        const backgroundColor = this.getInterpolatedColor();
         return (
             <View
                 testID="background_layer"
@@ -427,8 +449,10 @@ export default class UICustomSheet extends UIController<Props, State> {
                 ref={this.containerRef}
             >
                 <TouchableWithoutFeedback onPress={this.onHide}>
-                    <Animated.View
-                        style={[UIStyle.common.absoluteFillObject(), { backgroundColor }]}
+                    <OverlayWrapper
+                        height={this.getHeight()}
+                        position={this.getPosition()}
+                        style={UIStyle.common.absoluteFillObject()}
                     />
                 </TouchableWithoutFeedback>
                 {this.renderSheet()}
