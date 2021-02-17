@@ -55,6 +55,7 @@ export type Input = {
 
 export type TerminalMessage = {
     type: InteractiveMessageType.Terminal;
+    prompt: string;
     onSendText: OnSendText;
 };
 
