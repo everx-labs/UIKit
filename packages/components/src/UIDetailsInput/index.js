@@ -11,14 +11,19 @@ import {
     UIColor,
     UIConstant,
     UIStyle,
-    UIStyleColor,
 } from '@tonlabs/uikit.core';
 import type {
-    UIColorData,
     UIColorThemeNameType,
     EventProps,
 } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles, UITextView } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    UITextView,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 
 import UITextButton from '../UITextButton';
 import UIActionImage from '../UIActionImage';
@@ -125,7 +130,7 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     Color of comment string
     @default
     */
-    commentColor?: string | null,
+    commentColor?: ColorVariants | null,
     /**
     If true, the text field will blur when submitted.
     Note that for multiline fields, setting blurOnSubmit to true means that pressing return
@@ -138,7 +143,7 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     Color of bottom line
     @default null
     */
-    bottomLineColor?: string | null,
+    bottomLineColor?: ColorVariants | null,
     /**
     Initial value of input
     @ignore
@@ -204,7 +209,7 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     Color of error comment on empty value.
     @default null
     */
-    mandatoryColor?: string | null,
+    mandatoryColor?: ColorVariants | null,
     /**
     Limits the maximum number of characters that can be entered.
     @default null
@@ -373,6 +378,49 @@ type UIDetailsInputState = UIActionComponentState & {
     focused: boolean,
     selection: ?Selection,
 };
+
+const TextViewWrapper = React.forwardRef<*, UIDetailsInputProps>(({
+    value,
+    bottomLineColor,
+    mandatoryColor,
+    commentColor,
+    focused,
+    hover,
+    style,
+    ...rest
+}: *, ref) => {
+    const theme = useTheme();
+
+    const borderBottomColor = React.useMemo(() => {
+        let color: ColorVariants;
+        if (bottomLineColor) {
+            color = bottomLineColor;
+        } else if (mandatoryColor && value) {
+            color = mandatoryColor;
+        } else if (commentColor) {
+            color = commentColor;
+        } else if (focused) {
+            color = ColorVariants.LineAccent;
+        } else if (hover) {
+            color = ColorVariants.LineNeutral;
+        } else {
+            color = ColorVariants.LinePrimary;
+        }
+        return color;
+    }, [bottomLineColor, mandatoryColor, commentColor, focused, hover]);
+
+    return (
+        <View
+            // $FlowFixMe
+            ref={ref}
+            {...rest}
+            style={[
+                style,
+                { borderBottomColor: theme[borderBottomColor] },
+            ]}
+        />
+    );
+});
 
 export class UIDetailsInput<Props, State> extends UIActionComponent<
     $Shape<Props & UIDetailsInputProps>,
@@ -965,41 +1013,28 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
 
     renderTextView() {
         const {
-            hideBottomLine, theme, mandatory, mandatoryColor,
+            hideBottomLine, bottomLineColor, mandatory, mandatoryColor,
         } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.border.bottom();
 
-        let bottomLineColor: UIColorData;
-        if (this.props.bottomLineColor) {
-            ({ bottomLineColor } = this.props);
-        } else if (mandatory && !this.getValue()) {
-            bottomLineColor = mandatoryColor;
-        } else if (this.commentColor()) {
-            if (this.commentColor() === UILabelColors.TextPositive) {
-                bottomLineColor = UIColor.success();
-            } else if (this.commentColor() === UILabelColors.TextNegative) {
-                bottomLineColor = UIColor.error();
-            } else {
-                bottomLineColor = UIColor.detailsInputComment(theme);
-            }
-        } else {
-            bottomLineColor = UIColor.borderBottomColor(theme, this.isFocused(), this.isHover());
-        }
-        const bottomLineColorStyle = UIStyleColor.getBorderBottomColorStyle(bottomLineColor);
-
         return (
-            <View
+            <TextViewWrapper
+                value={this.getValue()}
+                bottomLineColor={bottomLineColor}
+                mandatoryColor={mandatory ? mandatoryColor : null}
+                commentColor={this.commentColor()}
+                focused={this.isFocused()}
+                hover={this.isHover()}
                 style={[
                     UIStyle.padding.topTiny(),
                     UIStyle.padding.bottomSmall(),
                     UIStyle.flex.row(),
                     UIStyle.flex.alignCenter(),
                     bottomLine,
-                    bottomLineColorStyle,
                 ]}
             >
                 {this.renderTextFragment()}
-            </View>
+            </TextViewWrapper>
         );
     }
 
@@ -1128,7 +1163,7 @@ UIDetailsInput.defaultProps = {
     inputStyle: {},
     keyboardType: 'default',
     mandatory: false,
-    mandatoryColor: UIColor.error(),
+    mandatoryColor: ColorVariants.LineNegative,
     maxLines: 1,
     needArrow: false,
     noPersonalizedLearning: false,
