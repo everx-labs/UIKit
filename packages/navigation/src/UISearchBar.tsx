@@ -25,7 +25,7 @@ type UISearchBarRightButtonProps = {
      */
     label?: string;
     /**
-     *
+     * Press handler
      */
     onPress?: OnPress;
     /**
@@ -34,7 +34,11 @@ type UISearchBarRightButtonProps = {
     accessibilityLabel?: string;
 };
 
-function renderRightAction({ label, onPress }: UISearchBarRightButtonProps) {
+function renderRightAction({
+    label,
+    onPress,
+    accessibilityLabel,
+}: UISearchBarRightButtonProps) {
     if (label == null) {
         return null;
     }
@@ -53,6 +57,7 @@ function renderRightAction({ label, onPress }: UISearchBarRightButtonProps) {
             <UILabel
                 role={UILabelRoles.Action}
                 color={UILabelColors.TextAccent}
+                accessibilityLabel={accessibilityLabel}
             >
                 {label}
             </UILabel>
