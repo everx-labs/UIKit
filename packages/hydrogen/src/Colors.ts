@@ -48,6 +48,10 @@ export enum ColorVariants {
     // That ones are for technical reasons
     Transparent = 'Transparent',
     KeyboardStyle = 'KeyboardStyle',
+    StaticTextPrimaryDark = 'StaticTextPrimaryDark',
+    StaticTextPrimaryLight = 'StaticTextPrimaryLight',
+    StaticIconPrimaryDark = 'StaticIconPrimaryDark',
+    StaticIconPrimaryLight = 'StaticIconPrimaryLight',
 }
 
 type Theme = {
@@ -93,6 +97,11 @@ export const LightTheme: Theme = {
     // [ColorVariants.IconNegative]: '#CA1414',
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'light',
+
+    [ColorVariants.StaticTextPrimaryDark]: '#20262A',
+    [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
+    [ColorVariants.StaticIconPrimaryDark]: '#20262A',
+    [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
 };
 
 export const DarkTheme: Theme = {
@@ -129,6 +138,11 @@ export const DarkTheme: Theme = {
 
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
+
+    [ColorVariants.StaticTextPrimaryDark]: '#20262A',
+    [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
+    [ColorVariants.StaticIconPrimaryDark]: '#20262A',
+    [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
 };
 
 export const ThemeContext = React.createContext(LightTheme);
