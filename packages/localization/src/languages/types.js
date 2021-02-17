@@ -477,7 +477,6 @@ export type UILocalizedData = {|
             +Placeholder: string,
         |},
         +AddressInputBubble: {|
-            +Question: string,
             +MainAccount: string,
             +SelectAsset: string,
             +EnterManually: string,

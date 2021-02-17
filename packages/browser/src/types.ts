@@ -60,6 +60,7 @@ export type TerminalMessage = {
 
 export type AddressInputMessage = {
     type: InteractiveMessageType.AddressInput;
+    prompt: string;
     onSelect: (selectedButtonText: string, address: string) => void;
     mainAddress: string;
     input: {
