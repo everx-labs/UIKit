@@ -116,7 +116,7 @@ import {
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { UIBrowser } from '@tonlabs/uikit.browser';
-import { UISearchBar } from '@tonlabs/uikit.navigation';
+import { UISearchBar, UISearchController } from '@tonlabs/uikit.navigation';
 
 enableScreens();
 useWebFonts();
@@ -2755,10 +2755,16 @@ const Browser = () => {
 const Navigation = () => {
     const theme = useTheme();
 
+    const [
+        isSearchControllerVisible,
+        setSearchControllerVisible,
+    ] = React.useState(false);
+
     return (
         <SafeAreaView
             style={{
                 flex: 1,
+                alignItems: 'center',
                 backgroundColor: theme[ColorVariants.BackgroundSecondary],
             }}
         >
@@ -2782,7 +2788,46 @@ const Navigation = () => {
                     paddingVertical: 20,
                 }}
             >
+                <UISearchBar />
+                <View style={{ height: 20 }} />
                 <UISearchBar headerRightLabel="Action" />
+            </View>
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UISearchController</Text>
+            </View>
+            <View
+                style={{
+                    width: '100%',
+                    maxWidth: 500,
+                    paddingVertical: 20,
+                }}
+            >
+                <UIButton
+                    onPress={() =>
+                        setSearchControllerVisible(!isSearchControllerVisible)
+                    }
+                    title="Open search controller"
+                />
+                <UISearchController
+                    visible={isSearchControllerVisible}
+                    onCancel={() => setSearchControllerVisible(false)}
+                >
+                    {(searchText) => (
+                        <View>
+                            <UILabel>{searchText}</UILabel>
+                        </View>
+                    )}
+                </UISearchController>
             </View>
         </SafeAreaView>
     );

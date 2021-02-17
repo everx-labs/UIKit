@@ -17,3 +17,4 @@ export * from './Typography';
 // eslint-disable-next-line import/no-unresolved
 export * from './useWebFonts';
 export * from './useAutogrowTextView';
+export * from './useColorParts';
