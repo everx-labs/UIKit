@@ -55,11 +55,13 @@ export type Input = {
 
 export type TerminalMessage = {
     type: InteractiveMessageType.Terminal;
+    prompt: string;
     onSendText: OnSendText;
 };
 
 export type AddressInputMessage = {
     type: InteractiveMessageType.AddressInput;
+    prompt: string;
     onSelect: (selectedButtonText: string, address: string) => void;
     mainAddress: string;
     input: {

@@ -2663,6 +2663,7 @@ const BrowserScreen = () => {
     const [messages, setMessages] = React.useState([
         {
             type: 'AddressInput',
+            prompt: 'What wallet do you want to work with?',
             mainAddress: '0:000',
             input: {
                 validateAddress: (text: string) => {

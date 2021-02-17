@@ -126,8 +126,8 @@ export function getAddressInput(
             },
             {
                 type: ChatMessageType.PlainText,
-                text: uiLocalized.Browser.AddressInputBubble.Question,
-                key: 'address-input-bubble',
+                text: message.prompt,
+                key: 'address-input-bubble-prompt',
                 status: MessageStatus.Received,
             },
         ],
