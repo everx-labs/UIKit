@@ -87,8 +87,9 @@ function useInteractiveMessages(
 
     // It's not an interactive message :)
     if (
+        interactiveMessage == null ||
         Object.keys(InteractiveMessageType).indexOf(interactiveMessage.type) ===
-        -1
+            -1
     ) {
         return {
             messages: allMessages as VisibleMessage[],
