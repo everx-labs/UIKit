@@ -58,7 +58,15 @@ type Theme = {
     [variant in ColorVariants]: ColorValue;
 };
 
+const StaticTheme = {
+    [ColorVariants.StaticTextPrimaryDark]: '#20262A',
+    [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
+    [ColorVariants.StaticIconPrimaryDark]: '#20262A',
+    [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
+};
+
 export const LightTheme: Theme = {
+    ...StaticTheme,
     [ColorVariants.TextPrimary]: '#20262A',
     [ColorVariants.TextSecondary]: '#707376',
     [ColorVariants.TextTertiary]: '#B6B8BA',
@@ -98,14 +106,10 @@ export const LightTheme: Theme = {
     // [ColorVariants.IconNegative]: '#CA1414',
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'light',
-
-    [ColorVariants.StaticTextPrimaryDark]: '#20262A',
-    [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
-    [ColorVariants.StaticIconPrimaryDark]: '#20262A',
-    [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
 };
 
 export const DarkTheme: Theme = {
+    ...StaticTheme,
     [ColorVariants.TextPrimary]: '#FDFDFD',
     [ColorVariants.TextSecondary]: '#ADB0B1',
     [ColorVariants.TextTertiary]: '#676B6E',
@@ -140,11 +144,6 @@ export const DarkTheme: Theme = {
 
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
-
-    [ColorVariants.StaticTextPrimaryDark]: '#20262A',
-    [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
-    [ColorVariants.StaticIconPrimaryDark]: '#20262A',
-    [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
 };
 
 export const ThemeContext = React.createContext(LightTheme);
