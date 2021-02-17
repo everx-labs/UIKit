@@ -130,7 +130,8 @@ export function UIHeaderItems({ items = [] }: { items?: HeaderItem[] }) {
     return (
         <>
             {items.slice(0, 3).map((item, index) => (
-                <UIHeaderItem {...item} applyMargin={index > 0} />
+                // eslint-disable-next-line react/no-array-index-key
+                <UIHeaderItem key={index} {...item} applyMargin={index > 0} />
             ))}
         </>
     );
