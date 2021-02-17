@@ -290,16 +290,16 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     show({
-             component,
-             headerLeft = null,
-             headerRight = null,
-             fullWidth = false,
-             showHeader = true,
-             containerStyle = null,
-             onShow = () => {},
-             onCancel = () => {},
-             modal = false,
-         }: Props = {}) {
+        component,
+        headerLeft = null,
+        headerRight = null,
+        fullWidth = false,
+        showHeader = true,
+        containerStyle = null,
+        onShow = () => {},
+        onCancel = () => {},
+        modal = false,
+    }: Props = {}) {
         // Hide the keyboard before showing
         Keyboard.dismiss();
         // Now show the sheet
