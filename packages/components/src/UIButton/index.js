@@ -401,7 +401,7 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
         if (buttonStyle === UIButton.buttonStyle.full) {
             return disabled
                 ? ColorVariants.TextTertiary
-                : ColorVariants.TextPrimaryInverted;
+                : ColorVariants.StaticTextPrimaryLight;
         }
 
         if (disabled) {

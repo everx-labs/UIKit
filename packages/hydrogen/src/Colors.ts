@@ -48,13 +48,25 @@ export enum ColorVariants {
     // That ones are for technical reasons
     Transparent = 'Transparent',
     KeyboardStyle = 'KeyboardStyle',
+    StaticTextPrimaryDark = 'StaticTextPrimaryDark',
+    StaticTextPrimaryLight = 'StaticTextPrimaryLight',
+    StaticIconPrimaryDark = 'StaticIconPrimaryDark',
+    StaticIconPrimaryLight = 'StaticIconPrimaryLight',
 }
 
 type Theme = {
     [variant in ColorVariants]: ColorValue;
 };
 
+const StaticTheme = {
+    [ColorVariants.StaticTextPrimaryDark]: '#20262A',
+    [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
+    [ColorVariants.StaticIconPrimaryDark]: '#20262A',
+    [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
+};
+
 export const LightTheme: Theme = {
+    ...StaticTheme,
     [ColorVariants.TextPrimary]: '#20262A',
     [ColorVariants.TextSecondary]: '#707376',
     [ColorVariants.TextTertiary]: '#B6B8BA',
@@ -97,6 +109,7 @@ export const LightTheme: Theme = {
 };
 
 export const DarkTheme: Theme = {
+    ...StaticTheme,
     [ColorVariants.TextPrimary]: '#FDFDFD',
     [ColorVariants.TextSecondary]: '#ADB0B1',
     [ColorVariants.TextTertiary]: '#676B6E',
