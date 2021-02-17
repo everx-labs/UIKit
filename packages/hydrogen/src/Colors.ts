@@ -14,8 +14,8 @@ export enum ColorVariants {
     TextNegative = 'TextNegative',
     TextPositive = 'TextPositive',
     TextWarning = 'TextWarning',
-    // TextOverlay = 'TextOverlay',
-    // TextOverlayInverted = 'TextOverlayInverted',
+    TextOverlay = 'TextOverlay',
+    TextOverlayInverted = 'TextOverlayInverted',
     // TextNulled = 'TextNulled',
     BackgroundPrimary = 'BackgroundPrimary',
     BackgroundSecondary = 'BackgroundSecondary',
@@ -50,6 +50,10 @@ export enum ColorVariants {
     KeyboardStyle = 'KeyboardStyle',
     StaticTextPrimaryDark = 'StaticTextPrimaryDark',
     StaticTextPrimaryLight = 'StaticTextPrimaryLight',
+    StaticTextOverlayDark = 'StaticTextOverlayDark',
+    StaticTextOverlayLight = 'StaticTextOverlayLight',
+    StaticBackgroundBlack = 'StaticBackgroundBlack',
+    StaticBackgroundWhite = 'StaticBackgroundWhite',
     StaticIconPrimaryDark = 'StaticIconPrimaryDark',
     StaticIconPrimaryLight = 'StaticIconPrimaryLight',
 }
@@ -61,6 +65,10 @@ type Theme = {
 const StaticTheme = {
     [ColorVariants.StaticTextPrimaryDark]: '#20262A',
     [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
+    [ColorVariants.StaticTextOverlayDark]: 'rgba(32, 38, 42, 0.6)',
+    [ColorVariants.StaticTextOverlayLight]: 'rgba(253, 253, 253, 0.6)',
+    [ColorVariants.StaticBackgroundBlack]: '#131719',
+    [ColorVariants.StaticBackgroundWhite]: '#FFFFFF',
     [ColorVariants.StaticIconPrimaryDark]: '#20262A',
     [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
 };
@@ -76,6 +84,8 @@ export const LightTheme: Theme = {
     [ColorVariants.TextNegative]: '#CA1414',
     [ColorVariants.TextPositive]: '#2FA851',
     [ColorVariants.TextWarning]: '#B08229',
+    [ColorVariants.TextOverlay]: 'rgba(32, 38, 42, 0.6)',
+    [ColorVariants.TextOverlayInverted]: 'rgba(253, 253, 253, 0.4)',
 
     [ColorVariants.BackgroundPrimary]: '#FDFDFD',
     [ColorVariants.BackgroundSecondary]: '#F4F4F5',
@@ -119,6 +129,8 @@ export const DarkTheme: Theme = {
     [ColorVariants.TextNegative]: '#E71717',
     [ColorVariants.TextPositive]: '#36C05C',
     [ColorVariants.TextWarning]: '#FFC043',
+    [ColorVariants.TextOverlay]: 'rgba(253, 253, 253, 0.4)',
+    [ColorVariants.TextOverlayInverted]: 'rgba(32, 38, 42, 0.6)',
 
     [ColorVariants.BackgroundPrimary]: '#20262A',
     [ColorVariants.BackgroundSecondary]: '#292F32',
