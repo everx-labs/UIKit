@@ -5,9 +5,6 @@ class Example extends BackgroundContainer {
     renderContent() {
         return (
             <React.Fragment>
-                <UIBackgroundView 
-                    presetName={UIBackgroundView.PresetNames.Secondary}
-                />
                 <View style={UIStyle.paddingDefault}>
                     <UIDetailsButton
                         progress

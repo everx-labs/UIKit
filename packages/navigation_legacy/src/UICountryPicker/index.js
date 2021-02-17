@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, Platform, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
 import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
-import { UISearchBar } from '@tonlabs/uikit.components';
+import { UISearchBar } from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,
     Typography,
@@ -59,7 +59,7 @@ const countryPickerStyle = StyleSheet.create({
     },
     separator: {
         marginVertical: 1,
-        marginHorizontal: UIConstant.contentOffset(),
+        marginHorizontal: UIConstant.contentOffset(),	
         backgroundColor: UIColor.grey2(),
     },
 });
@@ -224,7 +224,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         }
     };
 
-    onChangeExpression = (newValue: string) => {
+    onChangeText = (newValue: string) => {
         this.setExpression(newValue);
         if (this.countryPickerRef.current != null) {
             this.countryPickerRef.current.handleFilterChange(newValue);
@@ -312,16 +312,13 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         }
 
         return (
-            <React.Fragment>
+            <View>
                 <UISearchBar
                     value={this.getExpression()}
-                    placeholder={`${uiLocalized.Search}...`}
                     ref={this.countryPickerInputRef}
-                    onChangeExpression={this.onChangeExpression}
-                    bottomSeparatorStyle={countryPickerStyle.separator}
-                    renderGlass
+                    onChangeText={this.onChangeText}
                 />
-            </React.Fragment>
+            </View>
         );
     }
 

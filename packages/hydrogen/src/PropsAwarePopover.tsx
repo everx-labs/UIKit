@@ -6,6 +6,7 @@ export function PropsAwarePopover<T>(props: {
     arrowWidth: number;
     arrowHeight: number;
     isVisible: boolean;
+    offset: { x: number, y: number };
     component: React.ComponentType<T>;
     componentProps: T;
     children: React.ReactNode;
@@ -47,6 +48,7 @@ export function PropsAwarePopover<T>(props: {
             arrowWidth={props.arrowWidth}
             arrowHeight={props.arrowHeight}
             isVisible={props.isVisible}
+            offset={props.offset}
             component={component}
         >
             {props.children}

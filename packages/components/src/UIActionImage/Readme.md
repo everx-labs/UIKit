@@ -9,9 +9,6 @@ class Example extends BackgroundContainer {
     renderContent() {
         return (
             <View>
-                <UIBackgroundView 
-                    presetName={UIBackgroundView.PresetNames.Action}
-                />
                 <View style={UIStyle.paddingDefault}>
                     <View style={UIStyle.centerLeftContainer}>
                         <Text style={[UIStyle.marginRightDefault, UITextStyle.actionMinusSmallMedium]}>

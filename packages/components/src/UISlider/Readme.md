@@ -28,9 +28,6 @@ class Example extends BackgroundContainer {
     renderContent() {
         return (
             <View style={{ overflow: 'hidden', padding: 16 }}>
-                <UIBackgroundView 
-                    presetName={UIBackgroundView.PresetNames.Secondary}
-                />
                 <UISlider
                      itemsList={itemsList}
                      itemRenderer={({title, details}) => (

@@ -48,7 +48,6 @@ import {
     UINumberInput,
     UIPhoneInput,
     UIPinCodeInput,
-    UISearchBar,
     UISeedPhraseInput,
     UITextInput,
     UITransferInput,
@@ -72,7 +71,6 @@ import {
     UIAlert,
     UIAlertView,
     UIDropdownAlert,
-    UIBackgroundView,
     UIListHeader,
     UISectionHeader,
 } from '@tonlabs/uikit.components';
@@ -85,7 +83,7 @@ import {
     UIPopover,
     UIPopoverBackground,
     UIPopoverMenu,
-} from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uikit.navigation_legacy';
 import {
     UIDetailsButton,
     UIFeedback,
@@ -114,9 +112,11 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
+    UIBackgroundView,
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { UIBrowser } from '@tonlabs/uikit.browser';
+import { UISearchBar } from '@tonlabs/uikit.navigation';
 
 enableScreens();
 useWebFonts();
@@ -916,38 +916,6 @@ const Inputs = () => {
                     pinTitle="Pin title"
                     pinDescription="Description"
                     pinCodeEnter={(pin) => {}}
-                />
-            </View>
-            <View
-                style={{
-                    width: '96%',
-                    paddingLeft: 40,
-                    paddingBottom: 10,
-                    marginHorizontal: '2%',
-                    marginTop: 50,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                }}
-            >
-                <Text>UISearchBar</Text>
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISearchBar
-                    value={search}
-                    placeholder="Your search expression"
-                    onChangeExpression={(newExpression) =>
-                        setSearch(newExpression)
-                    }
-                />
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISearchBar
-                    value={search}
-                    placeholder="Your search expression"
-                    onChangeExpression={(newExpression) =>
-                        setSearch(newExpression)
-                    }
-                    renderGlass
                 />
             </View>
             <View
@@ -2027,32 +1995,6 @@ const Products = () => (
                 borderBottomColor: 'rgba(0,0,0,.1)',
             }}
         >
-            <Text>UIBackgroundView</Text>
-        </View>
-        <View
-            style={{
-                width: 300,
-                height: 300,
-                paddingVertical: 20,
-                position: 'relative',
-            }}
-        >
-            <UIBackgroundView
-                screenWidth={300}
-                presetName={UIBackgroundView.PresetNames.Secondary}
-            />
-        </View>
-        <View
-            style={{
-                width: '96%',
-                paddingLeft: 40,
-                paddingBottom: 10,
-                marginHorizontal: '2%',
-                marginTop: 20,
-                borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
-            }}
-        >
             <Text>UIBottomBar</Text>
         </View>
         <View style={{ maxWidth: 500, height: 180, paddingVertical: 20 }}>
@@ -2116,7 +2058,6 @@ const Products = () => (
             <UIStubPage
                 title="labs."
                 needBottomIcon={false}
-                presetName={UIBackgroundView.PresetNames.Action}
             />
         </View>
         <View
@@ -2810,6 +2751,42 @@ const Browser = () => {
     );
 };
 
+const Navigation = () => {
+    const theme = useTheme();
+
+    return (
+        <SafeAreaView
+            style={{
+                flex: 1,
+                backgroundColor: theme[ColorVariants.BackgroundSecondary],
+            }}
+        >
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UISearchBar</Text>
+            </View>
+            <View
+                style={{
+                    width: '100%',
+                    maxWidth: 500,
+                    paddingVertical: 20,
+                }}
+            >
+                <UISearchBar headerRightLabel="Action" />
+            </View>
+        </SafeAreaView>
+    );
+};
+
 const ThemeSwitcher = React.createContext(null);
 
 const Main = ({ navigation }) => {
@@ -2904,6 +2881,11 @@ const Main = ({ navigation }) => {
                     buttonStyle={UIButton.ButtonStyle.Link}
                     title="Browser"
                 />
+                <UIButton
+                    onPress={() => navigation.navigate('navigation')}
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                    title="Navigation"
+                />
             </ScrollView>
         </SafeAreaView>
     );
@@ -2979,6 +2961,10 @@ const App: () => React$Node = () => {
                         <SurfSplit.Screen name="text" component={TextScreen} />
                         <SurfSplit.Screen name="chat" component={Chat} />
                         <SurfSplit.Screen name="browser" component={Browser} />
+                        <SurfSplit.Screen
+                            name="navigation"
+                            component={Navigation}
+                        />
                     </SurfSplit.Navigator>
                 </NavigationContainer>
                 <UILayoutManager />
@@ -3060,6 +3046,7 @@ const styles = StyleSheet.create({
     detail: {
         flex: 1,
         borderRadius: 5,
+        overflow: 'hidden',
     },
     title: {
         fontSize: 24,

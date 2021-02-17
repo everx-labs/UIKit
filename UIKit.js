@@ -1,5 +1,8 @@
 // @flow
-import { UIPopoverMenu, UIPopoverBackground } from './packages/navigation/src';
+import {
+    UIPopoverMenu,
+    UIPopoverBackground,
+} from './packages/navigation_legacy/src';
 
 // Fix deprecated exports
 const UIMenuView = UIPopoverMenu;
@@ -13,7 +16,6 @@ export {
     UIAlert,
     UIAlertView,
     UIAmountInput,
-    UIBackgroundView,
     UIBadge,
     UIBanner,
     UIBullet,
@@ -54,7 +56,6 @@ export {
     UIQRCode,
     UIRadioButtonList,
     UIScaleButton,
-    UISearchBar,
     UISectionHeader,
     UISeedPhraseInput,
     UIContractAddressInput,
@@ -103,7 +104,7 @@ export {
     UIShareManager,
     UIShareScreen,
     UIUnfold,
-} from './packages/navigation/src';
+} from './packages/navigation_legacy/src';
 
 export {
     UIDetailsButton,
@@ -116,7 +117,6 @@ export {
     UINavigationTextButton,
     UINavigator,
     UIAccountPicker,
-    UIAccountPickerScreen,
     UIBalanceView,
     UIAnimatedBalanceView,
     UIFeedback,
@@ -163,15 +163,15 @@ export type {
 } from './packages/core/src/UIFunction';
 export type { UIActionComponentProps as ActionProps } from './packages/components/src/UIActionComponent';
 export type { DetailsList } from './packages/components/src/UIDetailsTable';
-export type { MenuItemType } from './packages/navigation/src/UIActionSheet/MenuItem';
-export type { ShareOptions } from './packages/navigation/src/UIShareManager';
-export type { Country } from './packages/navigation/src/UICountryPicker';
+export type { MenuItemType } from './packages/navigation_legacy/src/UIActionSheet/MenuItem';
+export type { ShareOptions } from './packages/navigation_legacy/src/UIShareManager';
+export type { Country } from './packages/navigation_legacy/src/UICountryPicker';
 export type {
     ContentInset,
     ControllerProps,
-} from './packages/navigation/src/UIController';
+} from './packages/navigation_legacy/src/UIController';
 export type {
     ModalControllerProps,
     ModalControllerState,
-} from './packages/navigation/src/UIModalController';
-export type { ContentOffset } from './packages/navigation/src/UIScreen';
+} from './packages/navigation_legacy/src/UIModalController';
+export type { ContentOffset } from './packages/navigation_legacy/src/UIScreen';
