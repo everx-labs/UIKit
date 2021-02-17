@@ -411,6 +411,7 @@ const TextViewWrapper = React.forwardRef<*, UIDetailsInputProps>(({
 
     return (
         <View
+            // $FlowFixMe
             ref={ref}
             {...rest}
             style={[
