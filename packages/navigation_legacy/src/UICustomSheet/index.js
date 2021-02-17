@@ -14,7 +14,12 @@ import {
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UIBackgroundView, UIBackgroundViewColors, useTheme } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    useColorParts,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIController from '../UIController';
 import type { ContentInset, AnimationParameters } from '../UIController';
@@ -91,12 +96,18 @@ export type State = {
 };
 
 const OverlayWrapper = React.forwardRef<*, *>(({ height, position, style, ...rest }: *, ref) => {
-    const theme = useTheme();
+    const {
+        colorParts: overlayColorParts,
+        opacity: overlayOpacity,
+    } = useColorParts(ColorVariants.BackgroundOverlay);
 
     const backgroundColor = React.useMemo(() => {
         return (position: any).interpolate({
             inputRange: [-height, 0],
-            outputRange: [theme[UIBackgroundViewColors.Transparent], theme[UIBackgroundViewColors.BackgroundOverlay]],
+            outputRange: [
+                `rgba(${overlayColorParts}, 0)`,
+                `rgba(${overlayColorParts}, ${overlayOpacity})`,
+            ],
         })
     }, [height, position]);
 
@@ -279,16 +290,16 @@ export default class UICustomSheet extends UIController<Props, State> {
     }
 
     show({
-        component,
-        headerLeft = null,
-        headerRight = null,
-        fullWidth = false,
-        showHeader = true,
-        containerStyle = null,
-        onShow = () => {},
-        onCancel = () => {},
-        modal = false,
-    }: Props = {}) {
+             component,
+             headerLeft = null,
+             headerRight = null,
+             fullWidth = false,
+             showHeader = true,
+             containerStyle = null,
+             onShow = () => {},
+             onCancel = () => {},
+             modal = false,
+         }: Props = {}) {
         // Hide the keyboard before showing
         Keyboard.dismiss();
         // Now show the sheet
