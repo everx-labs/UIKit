@@ -12,7 +12,7 @@ import debounce from 'lodash/debounce';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
-import { ColorVariants, UILabel, UILabelRoles, UILabelColors, useTheme } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIImage, UILabel, UILabelRoles, UILabelColors, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';
@@ -297,7 +297,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 : UIAssets.icons.security.touchId;
 
         return (
-            <Image source={icon} />
+            <UIImage source={icon} tintColor={ColorVariants.TextPrimary} />
         );
     }
 
