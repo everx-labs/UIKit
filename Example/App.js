@@ -3207,7 +3207,7 @@ const Main = ({ navigation }) => {
                         onPress={() => themeSwitcher?.toggleTheme()}
                     />
                 </View>
-                <UISearchBarButton>
+                <UISearchBarButton forId="search">
                     {(searchText) => (
                         <View>
                             <UILabel>{searchText}</UILabel>

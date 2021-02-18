@@ -10,12 +10,13 @@ import { UISearchBar } from './UISearchBar';
 import { ELASTIC_WIDTH_CONTROLLER } from './constants';
 
 export type UISearchControllerProps = {
+    forId?: string;
     visible: boolean;
     onCancel: () => void | Promise<void>;
     children: (searchText: string) => React.ReactNode;
 };
 
-type UISearchControllerContentProps = UISearchControllerProps & {
+type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
     onClosed: () => void;
 };
 
@@ -169,7 +170,10 @@ function UISearchControllerContent({
     );
 }
 
-export function UISearchController(props: UISearchControllerProps) {
+export function UISearchController({
+    forId,
+    ...props
+}: UISearchControllerProps) {
     const { visible, children } = props;
     const [isVisible, setIsVisible] = React.useState(visible);
 
@@ -186,7 +190,7 @@ export function UISearchController(props: UISearchControllerProps) {
     }
 
     return (
-        <Portal forId="search">
+        <Portal forId={forId}>
             <UISearchControllerContent
                 {...props}
                 onClosed={() => setIsVisible(false)}
