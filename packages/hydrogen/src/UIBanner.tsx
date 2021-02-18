@@ -10,10 +10,9 @@ import type { ColorVariants } from './Colors';
 
 type Props = {
     text: string,
-    // TODO: Make the style strict as it's done for UILabelStyle
     backgroundColor?: ColorVariants,
     textColor?: ColorVariants,
-    style?: StyleProp<ViewStyle>,
+    style?: StyleProp<ViewStyle>, // TODO: Make the style strict as it's done for UILabelStyle
 };
 
 const styles = StyleSheet.create({
