@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { StyleSheet } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 
+import { UIConstant } from './constants';
 import { UIBackgroundView, UIBackgroundViewColors } from './UIBackgroundView';
 import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
 
@@ -13,6 +15,14 @@ type Props = {
     style?: StyleProp<ViewStyle>,
 };
 
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        borderRadius: UIConstant.alertBorderRadius,
+    },
+});
+
 export function UIBanner(props: Props) {
     const {
         text,
@@ -21,14 +31,10 @@ export function UIBanner(props: Props) {
         style,
     } = props;
 
-    if (!text) {
-        return null;
-    }
-
     return (
         <UIBackgroundView
             color={backgroundColor || UIBackgroundViewColors.BackgroundNegative}
-            style={style}
+            style={[style, styles.container]}
         >
             <UILabel
                 role={UILabelRoles.ActionCallout}
