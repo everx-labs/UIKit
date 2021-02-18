@@ -10,12 +10,13 @@ import { UISearchBar } from './UISearchBar';
 import { ELASTIC_WIDTH_CONTROLLER } from './constants';
 
 export type UISearchControllerProps = {
+    forId?: string;
     visible: boolean;
     onCancel: () => void | Promise<void>;
     children: (searchText: string) => React.ReactNode;
 };
 
-type UISearchControllerContentProps = UISearchControllerProps & {
+type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
     onClosed: () => void;
 };
 
@@ -57,8 +58,8 @@ function getAnimationOpacity(
         // Default ones from https://reactnative.dev/docs/animated#spring
         ...Animated.SpringUtils.makeConfigFromBouncinessAndSpeed({
             overshootClamping: false,
-            bounciness: 8,
-            speed: 12,
+            bounciness: 3,
+            speed: 10,
             mass: new Animated.Value(1),
             restSpeedThreshold: new Animated.Value(0.01),
             restDisplacementThreshold: new Animated.Value(0.01),
@@ -169,7 +170,10 @@ function UISearchControllerContent({
     );
 }
 
-export function UISearchController(props: UISearchControllerProps) {
+export function UISearchController({
+    forId,
+    ...props
+}: UISearchControllerProps) {
     const { visible, children } = props;
     const [isVisible, setIsVisible] = React.useState(visible);
 
@@ -186,7 +190,7 @@ export function UISearchController(props: UISearchControllerProps) {
     }
 
     return (
-        <Portal>
+        <Portal forId={forId}>
             <UISearchControllerContent
                 {...props}
                 onClosed={() => setIsVisible(false)}

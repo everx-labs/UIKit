@@ -17,8 +17,10 @@ import { HEADER_HEIGHT } from './constants';
 import { UISearchController } from './UISearchController';
 
 export function UISearchBarButton({
+    forId,
     children,
 }: {
+    forId?: string;
     children: (searchText: string) => React.ReactNode;
 }) {
     const [visible, setVisible] = React.useState(false);
@@ -50,6 +52,7 @@ export function UISearchBarButton({
                 </TouchableOpacity>
             </UIBackgroundView>
             <UISearchController
+                forId={forId}
                 visible={visible}
                 onCancel={() => {
                     setVisible(false);

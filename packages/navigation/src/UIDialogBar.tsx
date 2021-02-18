@@ -11,7 +11,7 @@ type UIDialogBarProps = {
     testID?: string;
     headerLeftItems?: HeaderItem[];
     headerRightItems?: HeaderItem[];
-    hasPuller: boolean;
+    hasPuller?: boolean;
 };
 
 export function UIDialogBar({
