@@ -19,8 +19,9 @@ export function terminalReducer() {
 
 export function getTerminalInput(
     message: TerminalMessage,
-    onHeightChange: OnHeightChange,
     state: TerminalState,
+    _dispatch: (action: any) => void,
+    onHeightChange: OnHeightChange,
 ): Input {
     return {
         messages: [
@@ -34,6 +35,7 @@ export function getTerminalInput(
         input: state.visible && (
             <UIChatInput
                 editable
+                menuPlusHidden
                 onSendText={message.onSendText}
                 onSendMedia={() => undefined}
                 onSendDocument={() => undefined}

@@ -2661,45 +2661,60 @@ const BrowserStack = createStackNavigator();
 
 const BrowserScreen = () => {
     const [messages, setMessages] = React.useState([
+        // {
+        //     type: 'AddressInput',
+        //     prompt: 'What wallet do you want to work with?',
+        //     mainAddress: '0:000',
+        //     input: {
+        //         validateAddress: (text: string) => {
+        //             if (text.length > 0 && text.length % 5 === 0) {
+        //                 return Promise.resolve({
+        //                     status: 'ERROR',
+        //                     text: 'Oh no, the length is divided by 5',
+        //                 });
+        //             }
+        //             return Promise.resolve({
+        //                 status: 'NONE',
+        //             });
+        //         },
+        //     },
+        //     qrCode: {
+        //         parseData: (data) => {
+        //             return '0:000';
+        //         },
+        //     },
+        //     onSelect: (selectedButtonString: string, address: string) => {
+        //         setMessages([
+        //             {
+        //                 key: `${Date.now()}-address-input2`,
+        //                 type: 'stm',
+        //                 status: 'sent',
+        //                 time: Date.now(),
+        //                 sender: '0:000',
+        //                 text: address,
+        //             },
+        //             {
+        //                 key: `${Date.now()}-address-input1`,
+        //                 type: 'stm',
+        //                 status: 'sent',
+        //                 time: Date.now(),
+        //                 sender: '0:000',
+        //                 text: selectedButtonString,
+        //             },
+        //             ...messages.slice(1),
+        //         ]);
+        //     },
+        // },
         {
-            type: 'AddressInput',
-            prompt: 'What wallet do you want to work with?',
-            mainAddress: '0:000',
-            input: {
-                validateAddress: (text: string) => {
-                    if (text.length > 0 && text.length % 5 === 0) {
-                        return Promise.resolve({
-                            status: 'ERROR',
-                            text: 'Oh no, the length is divided by 5',
-                        });
-                    }
-                    return Promise.resolve({
-                        status: 'NONE',
-                    });
-                },
-            },
-            qrCode: {
-                parseData: (data) => {
-                    return '0:000';
-                },
-            },
-            onSelect: (selectedButtonString: string, address: string) => {
+            type: 'Terminal',
+            prompt: 'Type sth!',
+            onSendText: (text) => {
                 setMessages([
                     {
-                        key: `${Date.now()}-address-input2`,
+                        key: `${Date.now()}-terminal`,
                         type: 'stm',
                         status: 'sent',
-                        time: Date.now(),
-                        sender: '0:000',
-                        text: address,
-                    },
-                    {
-                        key: `${Date.now()}-address-input1`,
-                        type: 'stm',
-                        status: 'sent',
-                        time: Date.now(),
-                        sender: '0:000',
-                        text: selectedButtonString,
+                        text,
                     },
                     ...messages.slice(1),
                 ]);
