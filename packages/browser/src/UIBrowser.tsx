@@ -169,7 +169,7 @@ export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
             {
                 type: InteractiveMessageType.Terminal,
                 getInput: getTerminalInput,
-            } as InputFabric,
+            },
             {
                 type: InteractiveMessageType.AddressInput,
                 getInput: getAddressInput,
