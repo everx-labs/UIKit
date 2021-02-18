@@ -10,9 +10,13 @@ import {
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 
-type OnPress = <T = void>() => T | Promise<T>;
+type OnPress = () => void | Promise<void>;
 
 export type HeaderItem = {
+    /**
+     * Id to test things
+     */
+    testID?: string;
     /**
      * Label text for button
      */
@@ -75,16 +79,19 @@ function UIHeaderIconItem({
 }
 
 function UIHeaderItemPressable({
+    testID,
     onPress,
     children,
     applyMargin,
 }: {
+    testID?: string;
     onPress?: OnPress;
     children: React.ReactNode;
     applyMargin: boolean;
 }) {
     return (
         <TouchableOpacity
+            testID={testID}
             hitSlop={{
                 top: UIConstant.smallContentOffset(),
                 bottom: UIConstant.smallContentOffset(),
@@ -106,6 +113,7 @@ function UIHeaderItem({
     if (item.label != null) {
         return (
             <UIHeaderItemPressable
+                testID={item.testID}
                 onPress={item.onPress}
                 applyMargin={applyMargin}
             >
