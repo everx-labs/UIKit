@@ -9,9 +9,9 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UISearchBar } from './UISearchBar';
 import { ELASTIC_WIDTH_CONTROLLER } from './constants';
 
-type UISearchControllerProps = {
+export type UISearchControllerProps = {
     visible: boolean;
-    onCancel: <T = void>() => T | Promise<T>;
+    onCancel: () => void | Promise<void>;
     children: (searchText: string) => React.ReactNode;
 };
 
