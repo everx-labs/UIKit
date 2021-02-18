@@ -11,7 +11,7 @@ type UISlideBarProps = {
     testID?: string;
     headerLeftItems?: HeaderItem[];
     headerRightItems?: HeaderItem[];
-    hasPuller: boolean;
+    hasPuller?: boolean;
 };
 
 export function UISlideBar({

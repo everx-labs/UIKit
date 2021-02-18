@@ -2,38 +2,40 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 type PortalMethods = {
-    mount: (children: React.ReactNode) => number;
-    update: (key: number, children: React.ReactNode) => void;
-    unmount: (key: number) => void;
+    mount: (children: React.ReactNode, forId?: string) => number;
+    update: (key: number, children: React.ReactNode, forId?: string) => void;
+    unmount: (key: number, forId?: string) => void;
 };
 
 const PortalContext = React.createContext<PortalMethods | null>(null);
 
 type PortalConsumerProps = {
+    forId?: string;
     manager: PortalMethods;
     children: React.ReactNode;
 };
 
-function PortalConsumer({ manager, children }: PortalConsumerProps) {
+function PortalConsumer({ forId, manager, children }: PortalConsumerProps) {
     const key = React.useRef<number | null>(null);
 
     React.useEffect(() => {
         if (key.current == null) {
-            key.current = manager.mount(children);
+            key.current = manager.mount(children, forId);
         } else {
-            manager.update(key.current, children);
+            manager.update(key.current, children, forId);
         }
 
         return () => {
             // @ts-ignore
-            manager.unmount(key.current);
+            manager.unmount(key.current, forId);
         };
-    }, [manager, children]);
+    }, [manager, children, forId]);
 
     return null;
 }
 
 interface PortalProps {
+    forId?: string;
     children: React.ReactNode;
 }
 
@@ -42,7 +44,7 @@ export const Portal = (props: PortalProps) => (
         {(manager) => {
             if (manager != null) {
                 return (
-                    <PortalConsumer manager={manager}>
+                    <PortalConsumer forId={props.forId} manager={manager}>
                         {props.children}
                     </PortalConsumer>
                 );
@@ -57,7 +59,7 @@ type PortalManagerState = {
 };
 
 export class PortalManager extends React.PureComponent<
-    { children: React.ReactNode },
+    { id?: string; children: React.ReactNode },
     PortalManagerState
 > {
     state: PortalManagerState = {};
@@ -82,9 +84,18 @@ export class PortalManager extends React.PureComponent<
         return this.counter;
     }
 
+    parentManager: PortalMethods | null = null;
+
     counter: number = 0;
 
-    mount = (children: React.ReactNode) => {
+    mount = (children: React.ReactNode, forId?: string) => {
+        if (
+            this.props.id != null &&
+            this.parentManager &&
+            this.props.id !== forId
+        ) {
+            return this.parentManager.mount(children, forId);
+        }
         const key = this.getKey();
         this.setState((state) => ({
             ...state,
@@ -93,7 +104,15 @@ export class PortalManager extends React.PureComponent<
         return key;
     };
 
-    update = (key: number, children: React.ReactNode) => {
+    update = (key: number, children: React.ReactNode, forId?: string) => {
+        if (
+            this.props.id != null &&
+            this.parentManager &&
+            this.props.id !== forId
+        ) {
+            this.parentManager.update(key, children, forId);
+            return;
+        }
         this.setState((state) => {
             return {
                 ...state,
@@ -102,7 +121,15 @@ export class PortalManager extends React.PureComponent<
         });
     };
 
-    unmount = (key: number) => {
+    unmount = (key: number, forId?: string) => {
+        if (
+            this.props.id != null &&
+            this.parentManager &&
+            this.props.id !== forId
+        ) {
+            this.parentManager.unmount(key, forId);
+            return;
+        }
         this.setState((state) => ({
             ...state,
             [key]: null,
@@ -117,25 +144,32 @@ export class PortalManager extends React.PureComponent<
 
     render() {
         return (
-            <PortalContext.Provider value={this.manager}>
-                {this.props.children}
-                {Object.keys(this.state).map((key: string) => {
-                    const children = this.state[Number(key)];
-                    if (children != null) {
-                        return (
-                            <View
-                                key={`portal_${key}`}
-                                collapsable={false}
-                                pointerEvents="box-none"
-                                style={StyleSheet.absoluteFill}
-                            >
-                                {children}
-                            </View>
-                        );
-                    }
-                    return null;
-                })}
-            </PortalContext.Provider>
+            <PortalContext.Consumer>
+                {(manager) => {
+                    this.parentManager = manager;
+                    return (
+                        <PortalContext.Provider value={this.manager}>
+                            {this.props.children}
+                            {Object.keys(this.state).map((key: string) => {
+                                const children = this.state[Number(key)];
+                                if (children != null) {
+                                    return (
+                                        <View
+                                            key={`portal_${key}`}
+                                            collapsable={false}
+                                            pointerEvents="box-none"
+                                            style={StyleSheet.absoluteFill}
+                                        >
+                                            {children}
+                                        </View>
+                                    );
+                                }
+                                return null;
+                            })}
+                        </PortalContext.Provider>
+                    );
+                }}
+            </PortalContext.Consumer>
         );
     }
 }

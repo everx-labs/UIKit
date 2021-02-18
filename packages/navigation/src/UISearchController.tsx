@@ -186,7 +186,7 @@ export function UISearchController(props: UISearchControllerProps) {
     }
 
     return (
-        <Portal>
+        <Portal forId="search">
             <UISearchControllerContent
                 {...props}
                 onClosed={() => setIsVisible(false)}
