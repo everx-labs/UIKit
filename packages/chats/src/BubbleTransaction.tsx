@@ -18,7 +18,7 @@ import { useBubblePosition, BubblePosition } from './useBubblePosition';
 import { BubbleTransactionComment } from './BubbleTransactionComment';
 
 const getValueForTestID = (message: TransactionMessage) =>
-    message.info.amount.toFixed(1);
+    message.info.amount.toFixed(9);
 
 const getContainerTestID = (message: TransactionMessage) => {
     if (message.status === MessageStatus.Pending) {
