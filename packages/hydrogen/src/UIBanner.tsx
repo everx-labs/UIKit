@@ -10,6 +10,7 @@ import type { ColorVariants } from './Colors';
 
 type Props = {
     text: string,
+    // TODO: Make the style strict as it's done for UILabelStyle
     backgroundColor?: ColorVariants,
     textColor?: ColorVariants,
     style?: StyleProp<ViewStyle>,
