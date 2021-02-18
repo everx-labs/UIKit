@@ -116,7 +116,12 @@ import {
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { UIBrowser } from '@tonlabs/uikit.browser';
-import { UISearchBar, UISearchController } from '@tonlabs/uikit.navigation';
+import {
+    UISearchBar,
+    UISearchController,
+    UIDialogBar,
+    UISlideBar,
+} from '@tonlabs/uikit.navigation';
 
 enableScreens();
 useWebFonts();
@@ -2066,10 +2071,7 @@ const Products = () => (
             <Text>UIStubPage</Text>
         </View>
         <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-            <UIStubPage
-                title="labs."
-                needBottomIcon={false}
-            />
+            <UIStubPage title="labs." needBottomIcon={false} />
         </View>
         <View
             style={{
@@ -2790,71 +2792,366 @@ const Navigation = () => {
         <SafeAreaView
             style={{
                 flex: 1,
-                alignItems: 'center',
                 backgroundColor: theme[ColorVariants.BackgroundSecondary],
             }}
         >
-            <View
-                style={{
-                    width: '96%',
-                    paddingLeft: 40,
-                    paddingBottom: 10,
-                    marginHorizontal: '2%',
-                    marginTop: 20,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                }}
-            >
-                <Text>UISearchBar</Text>
-            </View>
-            <View
-                style={{
-                    width: '100%',
-                    maxWidth: 500,
-                    paddingVertical: 20,
-                }}
-            >
-                <UISearchBar />
-                <View style={{ height: 20 }} />
-                <UISearchBar headerRightLabel="Action" />
-            </View>
-            <View
-                style={{
-                    width: '96%',
-                    paddingLeft: 40,
-                    paddingBottom: 10,
-                    marginHorizontal: '2%',
-                    marginTop: 20,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                }}
-            >
-                <Text>UISearchController</Text>
-            </View>
-            <View
-                style={{
-                    width: '100%',
-                    maxWidth: 500,
-                    paddingVertical: 20,
-                }}
-            >
-                <UIButton
-                    onPress={() =>
-                        setSearchControllerVisible(!isSearchControllerVisible)
-                    }
-                    title="Open search controller"
-                />
-                <UISearchController
-                    visible={isSearchControllerVisible}
-                    onCancel={() => setSearchControllerVisible(false)}
+            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
                 >
-                    {(searchText) => (
-                        <View>
-                            <UILabel>{searchText}</UILabel>
-                        </View>
-                    )}
-                </UISearchController>
-            </View>
+                    <Text>UISearchBar</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UISearchBar />
+                    <View style={{ height: 20 }} />
+                    <UISearchBar headerRightLabel="Action" />
+                </View>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UISearchController</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UIButton
+                        onPress={() =>
+                            setSearchControllerVisible(
+                                !isSearchControllerVisible,
+                            )
+                        }
+                        title="Open search controller"
+                    />
+                    <UISearchController
+                        visible={isSearchControllerVisible}
+                        onCancel={() => setSearchControllerVisible(false)}
+                    >
+                        {(searchText) => (
+                            <View>
+                                <UILabel>{searchText}</UILabel>
+                            </View>
+                        )}
+                    </UISearchController>
+                </View>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UIDialogBar</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UIDialogBar />
+                    <View style={{ height: 20 }} />
+                    <UIDialogBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIDialogBar
+                        headerLeftItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIDialogBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        hasPuller={false}
+                    />
+                </View>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UISlideBar</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UISlideBar />
+                    <View style={{ height: 20 }} />
+                    <UISlideBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UISlideBar
+                        headerLeftItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UISlideBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        hasPuller={false}
+                    />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
