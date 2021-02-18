@@ -9,7 +9,7 @@ import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
 import type { ColorVariants } from './Colors';
 
 type Props = {
-    text?: string,
+    text: string,
     backgroundColor?: ColorVariants,
     textColor?: ColorVariants,
     style?: StyleProp<ViewStyle>,
@@ -40,7 +40,7 @@ export function UIBanner(props: Props) {
                 role={UILabelRoles.ActionCallout}
                 color={textColor || UILabelColors.TextPrimaryInverted}
             >
-                {text || ''}
+                {text}
             </UILabel>
         </UIBackgroundView>
     );
