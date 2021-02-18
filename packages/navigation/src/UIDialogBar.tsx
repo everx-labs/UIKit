@@ -8,18 +8,20 @@ import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 
 type UIDialogBarProps = {
+    testID?: string;
     headerLeftItems?: HeaderItem[];
     headerRightItems?: HeaderItem[];
     hasPuller: boolean;
 };
 
 export function UIDialogBar({
+    testID,
     headerLeftItems,
     headerRightItems,
     hasPuller = true,
 }: UIDialogBarProps) {
     return (
-        <UIBackgroundView style={styles.container}>
+        <UIBackgroundView style={styles.container} testID={testID}>
             <View style={styles.headerLeftItems}>
                 <UIHeaderItems items={headerLeftItems} />
             </View>
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UIConstant.smallContentOffset(),
-        paddingHorizontal: 10,
+        paddingHorizontal: 0,
     },
     puller: {
         width: 32,

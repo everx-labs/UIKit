@@ -8,18 +8,20 @@ import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 
 type UISlideBarProps = {
+    testID?: string;
     headerLeftItems?: HeaderItem[];
     headerRightItems?: HeaderItem[];
     hasPuller: boolean;
 };
 
 export function UISlideBar({
+    testID,
     headerLeftItems,
     headerRightItems,
     hasPuller = true,
 }: UISlideBarProps) {
     return (
-        <UIBackgroundView style={styles.container}>
+        <UIBackgroundView style={styles.container} testID={testID}>
             <View style={styles.headerLeftItems}>
                 <UIHeaderItems items={headerLeftItems} />
             </View>
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UIConstant.smallContentOffset(),
-        paddingHorizontal: 18,
+        paddingHorizontal: 16,
     },
     puller: {
         width: 64,
