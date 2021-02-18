@@ -116,7 +116,11 @@ import {
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { UIBrowser } from '@tonlabs/uikit.browser';
-import { UISearchBar, UISearchController } from '@tonlabs/uikit.navigation';
+import {
+    UISearchBar,
+    UISearchController,
+    UISearchBarButton,
+} from '@tonlabs/uikit.navigation';
 
 enableScreens();
 useWebFonts();
@@ -2855,6 +2859,35 @@ const Navigation = () => {
                     )}
                 </UISearchController>
             </View>
+            <View
+                style={{
+                    width: '96%',
+                    paddingLeft: 40,
+                    paddingBottom: 10,
+                    marginHorizontal: '2%',
+                    marginTop: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgba(0,0,0,.1)',
+                }}
+            >
+                <Text>UISearchController</Text>
+            </View>
+            <View
+                style={{
+                    width: '100%',
+                    maxWidth: 500,
+                    paddingVertical: 20,
+                }}
+            >
+                <UISearchBarButton>
+                    {(searchText) => (
+                        <View>
+                            <UILabel>{searchText}</UILabel>
+                        </View>
+                    )}
+                </UISearchBarButton>
+            </View>
+            <View style={{ height: 20 }} />
         </SafeAreaView>
     );
 };

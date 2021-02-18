@@ -17,7 +17,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { HEADER_HEIGHT } from './constants';
 
-type OnPress = <T = void>() => T | Promise<T>;
+type OnPress = () => void | Promise<void>;
 
 type UISearchBarRightButtonProps = {
     /**
