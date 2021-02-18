@@ -58,8 +58,8 @@ function getAnimationOpacity(
         // Default ones from https://reactnative.dev/docs/animated#spring
         ...Animated.SpringUtils.makeConfigFromBouncinessAndSpeed({
             overshootClamping: false,
-            bounciness: 8,
-            speed: 12,
+            bounciness: 3,
+            speed: 10,
             mass: new Animated.Value(1),
             restSpeedThreshold: new Animated.Value(0.01),
             restDisplacementThreshold: new Animated.Value(0.01),
