@@ -7,7 +7,6 @@ export { default as UIAlertView } from './UIAlertView';
 export { default as UIAmountInput } from './UIAmountInput';
 export { default as UIBadge } from './UIBadge';
 export { default as UIBankCardNumberInput } from './UIBankCardNumberInput';
-export { default as UIBanner } from './UIBanner';
 export { default as UIBullet } from './UIBullet';
 export { default as UIButton } from './UIButton';
 export { default as UIButtonGroup } from './UIButtonGroup';

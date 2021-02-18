@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ViewStyle, View, ColorValue } from 'react-native';
-import type { ViewProps } from 'react-native';
+import type { StyleProp, ViewProps } from 'react-native';
 
 import { ColorVariants, useTheme } from './Colors';
 
 type Props = Omit<ViewProps, 'style'> & {
     color?: ColorVariants,
-    style?: ViewStyle;
+    style?: StyleProp<ViewStyle>;
     children?: React.ReactNode,
 };
 
