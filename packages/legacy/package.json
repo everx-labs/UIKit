@@ -36,7 +36,7 @@
     "@tonlabs/uikit.assets": "^2.1.0",
     "@tonlabs/uikit.components": "^2.1.0",
     "@tonlabs/uikit.core": "^2.1.0",
-    "@tonlabs/uikit.navigation": "^2.1.0",
+    "@tonlabs/uikit.navigation_legacy": "^2.1.0",
     "bignumber.js": "9.0.0",
     "lodash": "4.17.14",
     "prop-types": "15.6.2",

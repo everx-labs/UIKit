@@ -9,7 +9,6 @@ export { default as UINavigationTextButton } from './UINavigationTextButton';
 export { default as UINavigator } from './UINavigator';
 export { default as UIDetailsButton } from './UIDetailsButton';
 export { default as UIAccountPicker } from './UIAccountPicker';
-export { default as UIAccountPickerScreen } from './UIAccountPicker/controllers/UIAccountPickerScreen';
 export { default as UIBalanceView } from './UIBalanceView';
 export { default as UIAnimatedBalanceView } from './UIAnimatedBalanceView';
 export { default as UIFeedback } from './UIFeedback';

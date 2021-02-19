@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-import { UIChatInput } from '@tonlabs/uikit.chats';
+import {
+    ChatMessageType,
+    MessageStatus,
+    UIChatInput,
+} from '@tonlabs/uikit.chats';
 import type { OnHeightChange, TerminalMessage, Input } from '../types';
 
 export type TerminalState = {
@@ -15,14 +19,23 @@ export function terminalReducer() {
 
 export function getTerminalInput(
     message: TerminalMessage,
-    onHeightChange: OnHeightChange,
     state: TerminalState,
+    _dispatch: (action: any) => void,
+    onHeightChange: OnHeightChange,
 ): Input {
     return {
-        messages: [],
+        messages: [
+            {
+                type: ChatMessageType.PlainText,
+                text: message.prompt,
+                key: 'terminal-input-bubble-prompt',
+                status: MessageStatus.Received,
+            },
+        ],
         input: state.visible && (
             <UIChatInput
                 editable
+                menuPlusHidden
                 onSendText={message.onSendText}
                 onSendMedia={() => undefined}
                 onSendDocument={() => undefined}

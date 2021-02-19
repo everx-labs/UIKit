@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIPopoverMenu } from '@tonlabs/uikit.navigation';
+import { UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
 
 import { commonStyles } from './styles';
 import type { MenuItem } from './types';

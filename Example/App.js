@@ -48,7 +48,6 @@ import {
     UINumberInput,
     UIPhoneInput,
     UIPinCodeInput,
-    UISearchBar,
     UISeedPhraseInput,
     UITextInput,
     UITransferInput,
@@ -72,7 +71,6 @@ import {
     UIAlert,
     UIAlertView,
     UIDropdownAlert,
-    UIBackgroundView,
     UIListHeader,
     UISectionHeader,
 } from '@tonlabs/uikit.components';
@@ -85,7 +83,7 @@ import {
     UIPopover,
     UIPopoverBackground,
     UIPopoverMenu,
-} from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uikit.navigation_legacy';
 import {
     UIDetailsButton,
     UIFeedback,
@@ -114,9 +112,17 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
+    UIBackgroundView,
     PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { UIBrowser } from '@tonlabs/uikit.browser';
+import {
+    UISearchBar,
+    UISearchController,
+    UISearchBarButton,
+    UIDialogBar,
+    UISlideBar,
+} from '@tonlabs/uikit.navigation';
 
 enableScreens();
 useWebFonts();
@@ -641,7 +647,18 @@ const Inputs = () => {
                 <Text>UIMaterialTextView</Text>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMaterialTextView label="Label" />
+                    <View style={{ height: 20 }} />
                     <UIMaterialTextView
+                        label="Label with initial value"
+                        value={text}
+                        onChangeText={setText}
+                        helperText="Hint"
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView floating={false} label="Label" />
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        floating={false}
                         label="Label with initial value"
                         value={text}
                         onChangeText={setText}
@@ -916,38 +933,6 @@ const Inputs = () => {
                     pinTitle="Pin title"
                     pinDescription="Description"
                     pinCodeEnter={(pin) => {}}
-                />
-            </View>
-            <View
-                style={{
-                    width: '96%',
-                    paddingLeft: 40,
-                    paddingBottom: 10,
-                    marginHorizontal: '2%',
-                    marginTop: 50,
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,.1)',
-                }}
-            >
-                <Text>UISearchBar</Text>
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISearchBar
-                    value={search}
-                    placeholder="Your search expression"
-                    onChangeExpression={(newExpression) =>
-                        setSearch(newExpression)
-                    }
-                />
-            </View>
-            <View style={{ paddingVertical: 20 }}>
-                <UISearchBar
-                    value={search}
-                    placeholder="Your search expression"
-                    onChangeExpression={(newExpression) =>
-                        setSearch(newExpression)
-                    }
-                    renderGlass
                 />
             </View>
             <View
@@ -2027,32 +2012,6 @@ const Products = () => (
                 borderBottomColor: 'rgba(0,0,0,.1)',
             }}
         >
-            <Text>UIBackgroundView</Text>
-        </View>
-        <View
-            style={{
-                width: 300,
-                height: 300,
-                paddingVertical: 20,
-                position: 'relative',
-            }}
-        >
-            <UIBackgroundView
-                screenWidth={300}
-                presetName={UIBackgroundView.PresetNames.Secondary}
-            />
-        </View>
-        <View
-            style={{
-                width: '96%',
-                paddingLeft: 40,
-                paddingBottom: 10,
-                marginHorizontal: '2%',
-                marginTop: 20,
-                borderBottomWidth: 1,
-                borderBottomColor: 'rgba(0,0,0,.1)',
-            }}
-        >
             <Text>UIBottomBar</Text>
         </View>
         <View style={{ maxWidth: 500, height: 180, paddingVertical: 20 }}>
@@ -2113,11 +2072,7 @@ const Products = () => (
             <Text>UIStubPage</Text>
         </View>
         <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-            <UIStubPage
-                title="labs."
-                needBottomIcon={false}
-                presetName={UIBackgroundView.PresetNames.Action}
-            />
+            <UIStubPage title="labs." needBottomIcon={false} />
         </View>
         <View
             style={{
@@ -2720,44 +2675,60 @@ const BrowserStack = createStackNavigator();
 
 const BrowserScreen = () => {
     const [messages, setMessages] = React.useState([
+        // {
+        //     type: 'AddressInput',
+        //     prompt: 'What wallet do you want to work with?',
+        //     mainAddress: '0:000',
+        //     input: {
+        //         validateAddress: (text: string) => {
+        //             if (text.length > 0 && text.length % 5 === 0) {
+        //                 return Promise.resolve({
+        //                     status: 'ERROR',
+        //                     text: 'Oh no, the length is divided by 5',
+        //                 });
+        //             }
+        //             return Promise.resolve({
+        //                 status: 'NONE',
+        //             });
+        //         },
+        //     },
+        //     qrCode: {
+        //         parseData: (data) => {
+        //             return '0:000';
+        //         },
+        //     },
+        //     onSelect: (selectedButtonString: string, address: string) => {
+        //         setMessages([
+        //             {
+        //                 key: `${Date.now()}-address-input2`,
+        //                 type: 'stm',
+        //                 status: 'sent',
+        //                 time: Date.now(),
+        //                 sender: '0:000',
+        //                 text: address,
+        //             },
+        //             {
+        //                 key: `${Date.now()}-address-input1`,
+        //                 type: 'stm',
+        //                 status: 'sent',
+        //                 time: Date.now(),
+        //                 sender: '0:000',
+        //                 text: selectedButtonString,
+        //             },
+        //             ...messages.slice(1),
+        //         ]);
+        //     },
+        // },
         {
-            type: 'AddressInput',
-            mainAddress: '0:000',
-            input: {
-                validateAddress: (text: string) => {
-                    if (text.length > 0 && text.length % 5 === 0) {
-                        return Promise.resolve({
-                            status: 'ERROR',
-                            text: 'Oh no, the length is divided by 5',
-                        });
-                    }
-                    return Promise.resolve({
-                        status: 'NONE',
-                    });
-                },
-            },
-            qrCode: {
-                parseData: (data) => {
-                    return '0:000';
-                },
-            },
-            onSelect: (selectedButtonString: string, address: string) => {
+            type: 'Terminal',
+            prompt: 'Type sth!',
+            onSendText: (text) => {
                 setMessages([
                     {
-                        key: `${Date.now()}-address-input2`,
+                        key: `${Date.now()}-terminal`,
                         type: 'stm',
                         status: 'sent',
-                        time: Date.now(),
-                        sender: '0:000',
-                        text: address,
-                    },
-                    {
-                        key: `${Date.now()}-address-input1`,
-                        type: 'stm',
-                        status: 'sent',
-                        time: Date.now(),
-                        sender: '0:000',
-                        text: selectedButtonString,
+                        text,
                     },
                     ...messages.slice(1),
                 ]);
@@ -2810,101 +2781,520 @@ const Browser = () => {
     );
 };
 
+const Navigation = () => {
+    const theme = useTheme();
+
+    const [
+        isSearchControllerVisible,
+        setSearchControllerVisible,
+    ] = React.useState(false);
+
+    return (
+        <SafeAreaView
+            style={{
+                flex: 1,
+                backgroundColor: theme[ColorVariants.BackgroundSecondary],
+            }}
+        >
+            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UISearchBar</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UISearchBar />
+                    <View style={{ height: 20 }} />
+                    <UISearchBar headerRightLabel="Action" />
+                </View>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UISearchController</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UIButton
+                        onPress={() =>
+                            setSearchControllerVisible(
+                                !isSearchControllerVisible,
+                            )
+                        }
+                        title="Open search controller"
+                    />
+                    <UISearchController
+                        visible={isSearchControllerVisible}
+                        onCancel={() => setSearchControllerVisible(false)}
+                    >
+                        {(searchText) => (
+                            <View>
+                                <UILabel>{searchText}</UILabel>
+                            </View>
+                        )}
+                    </UISearchController>
+                </View>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UISearchController</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UISearchBarButton>
+                        {(searchText) => (
+                            <View>
+                                <UILabel>{searchText}</UILabel>
+                            </View>
+                        )}
+                    </UISearchBarButton>
+                </View>
+                <View style={{ height: 20 }} />
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UIDialogBar</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UIDialogBar />
+                    <View style={{ height: 20 }} />
+                    <UIDialogBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIDialogBar
+                        headerLeftItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIDialogBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        hasPuller={false}
+                    />
+                </View>
+                <View
+                    style={{
+                        width: '96%',
+                        paddingLeft: 40,
+                        paddingBottom: 10,
+                        marginHorizontal: '2%',
+                        marginTop: 20,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'rgba(0,0,0,.1)',
+                    }}
+                >
+                    <Text>UISlideBar</Text>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UISlideBar />
+                    <View style={{ height: 20 }} />
+                    <UISlideBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UISlideBar
+                        headerLeftItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.camera,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.cloudBlack,
+                                    style: {
+                                        width: 25,
+                                    },
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.glass,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                            {
+                                icon: {
+                                    source: UIAssets.icons.ui.triangle,
+                                },
+                                iconTintColor: 'IconSecondary',
+                            },
+                        ]}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UISlideBar
+                        headerLeftItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        headerRightItems={[
+                            {
+                                label: 'Action1',
+                            },
+                            {
+                                label: 'Action2',
+                            },
+                            {
+                                label: 'Action3',
+                            },
+                            {
+                                label: 'Action4',
+                            },
+                        ]}
+                        hasPuller={false}
+                    />
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    );
+};
+
 const ThemeSwitcher = React.createContext(null);
 
 const Main = ({ navigation }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: 10,
-                }}
-            >
-                <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
-                <UIToggle
-                    active={themeSwitcher?.isDarkTheme}
-                    onPress={() => themeSwitcher?.toggleTheme()}
-                />
-            </View>
-            <ScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={{ paddingBottom: 50 }}
-            >
-                <UIButton
-                    onPress={() => navigation.navigate('buttons')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Buttons"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('checkbox')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Checkbox"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('inputs')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Inputs"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('design')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Design"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('images')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Images"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('layouts')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Layouts"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('menus')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Menus"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('notifications')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Notifications"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('popups')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Popups"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('products')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Products"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('profile')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Profile"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('text')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Text"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('chat')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Chat"
-                />
-                <UIButton
-                    onPress={() => navigation.navigate('browser')}
-                    buttonStyle={UIButton.ButtonStyle.Link}
-                    title="Browser"
-                />
-            </ScrollView>
+            <PortalManager id="search">
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        padding: 10,
+                    }}
+                >
+                    <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
+                    <UIToggle
+                        active={themeSwitcher?.isDarkTheme}
+                        onPress={() => themeSwitcher?.toggleTheme()}
+                    />
+                </View>
+                <UISearchBarButton forId="search">
+                    {(searchText) => (
+                        <View>
+                            <UILabel>{searchText}</UILabel>
+                        </View>
+                    )}
+                </UISearchBarButton>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{ paddingBottom: 50 }}
+                >
+                    <UIButton
+                        onPress={() => navigation.navigate('buttons')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Buttons"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('checkbox')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Checkbox"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('inputs')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Inputs"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('design')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Design"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('images')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Images"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('layouts')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Layouts"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('menus')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Menus"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('notifications')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Notifications"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('popups')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Popups"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('products')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Products"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('profile')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Profile"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('text')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Text"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('chat')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Chat"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('browser')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Browser"
+                    />
+                    <UIButton
+                        onPress={() => navigation.navigate('navigation')}
+                        buttonStyle={UIButton.ButtonStyle.Link}
+                        title="Navigation"
+                    />
+                </ScrollView>
+            </PortalManager>
         </SafeAreaView>
     );
 };
@@ -2979,6 +3369,10 @@ const App: () => React$Node = () => {
                         <SurfSplit.Screen name="text" component={TextScreen} />
                         <SurfSplit.Screen name="chat" component={Chat} />
                         <SurfSplit.Screen name="browser" component={Browser} />
+                        <SurfSplit.Screen
+                            name="navigation"
+                            component={Navigation}
+                        />
                     </SurfSplit.Navigator>
                 </NavigationContainer>
                 <UILayoutManager />
@@ -3060,6 +3454,7 @@ const styles = StyleSheet.create({
     detail: {
         flex: 1,
         borderRadius: 5,
+        overflow: 'hidden',
     },
     title: {
         fontSize: 24,

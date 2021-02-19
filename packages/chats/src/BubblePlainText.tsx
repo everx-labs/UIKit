@@ -11,7 +11,7 @@ import {
 import ParsedText from 'react-native-parsed-text';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIShareManager } from '@tonlabs/uikit.navigation';
+import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
 import {
     UILabel,
     UILabelColors,
@@ -39,14 +39,26 @@ const useUrlStyle = (status: MessageStatus) => {
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === MessageStatus.Aborted) {
-        return UILabelColors.TextPrimaryInverted; // TODO: is it right color?
+        return UILabelColors.StaticTextPrimaryLight;
     }
 
     if (message.status === MessageStatus.Received) {
         return UILabelColors.TextPrimary;
     }
 
-    return UILabelColors.TextPrimaryInverted; // TODO: is it right color?
+    return UILabelColors.StaticTextPrimaryLight;
+};
+
+const getTimeFontColor = (message: PlainTextMessage) => {
+    if (message.status === MessageStatus.Aborted) {
+        return UILabelColors.StaticTextOverlayLight;
+    }
+
+    if (message.status === MessageStatus.Received) {
+        return UILabelColors.TextOverlay;
+    }
+
+    return UILabelColors.StaticTextOverlayLight;
 };
 
 const getRoundedCornerStyle = (
@@ -90,7 +102,7 @@ const useBubbleStyle = (message: PlainTextMessage) => {
     if (message.status === MessageStatus.Received) {
         return [
             UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundTertiary],
+                theme[ColorVariants.BackgroundSecondary],
             ),
         ];
     }
@@ -154,7 +166,7 @@ function BubbleTime(
         <UILabel
             role={UILabelRoles.ParagraphFootnote}
             color={
-                props.isHidden ? UILabelColors.Transparent : getFontColor(props)
+                props.isHidden ? UILabelColors.Transparent : getTimeFontColor(props)
             }
             style={props.style}
         >

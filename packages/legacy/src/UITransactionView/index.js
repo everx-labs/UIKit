@@ -9,9 +9,17 @@ import {
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIConstant, UIColor, UIStyle, UIFont } from '@tonlabs/uikit.core';
+import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UIImage,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIProfileInitials from '../UIProfileInitials';
 
@@ -208,7 +216,10 @@ export default class UITransactionView extends UIComponent<Props, State> {
         }
         return (
             <View style={[UIStyle.flex.row(), UIStyle.margin.topTiny()]}>
-                <View style={this.styles.commentWrapper}>
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundTertiary}
+                    style={this.styles.commentWrapper}
+                >
                     <UILabel
                         color={UILabelColors.TextSecondary}
                         numberOfLines={1}
@@ -219,10 +230,13 @@ export default class UITransactionView extends UIComponent<Props, State> {
                     </UILabel>
                     {encrypted && (
                         <View style={this.styles.keyThin}>
-                            <Image source={UIAssets.icons.ui.keyThinDark} />
+                            <UIImage
+                                source={UIAssets.icons.ui.keyThinDark}
+                                tintColor={ColorVariants.TextSecondary}
+                            />
                         </View>
                     )}
-                </View>
+                </UIBackgroundView>
             </View>
         );
     }

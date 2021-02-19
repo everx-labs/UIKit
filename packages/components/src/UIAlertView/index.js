@@ -10,7 +10,7 @@ import UIComponent from '../UIComponent';
 
 const styles = StyleSheet.create({
     containerStyle: {
-        borderRadius: UIConstant.smallBorderRadius(),
+        borderRadius: UIConstant.mediumBorderRadius(),
         paddingTop: UIConstant.smallContentOffset(),
         paddingHorizontal: UIConstant.contentOffset(),
         paddingBottom: 0,
@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: null,
         height: null,
-        backgroundColor: UIColor.overlay60(),
     },
     titleStyle: {
         paddingVertical: UIConstant.smallContentOffset(),
@@ -76,7 +75,10 @@ function Alert({
         <AwesomeAlert
             useNativeDriver
             alertContainerStyle={{ overflow: 'hidden', zIndex }}
-            overlayStyle={styles.overlayStyle}
+            overlayStyle={[
+                styles.overlayStyle,
+                { backgroundColor: theme[ColorVariants.BackgroundOverlay] },
+            ]}
             contentContainerStyle={[
                 styles.containerStyle,
                 { backgroundColor: theme[ColorVariants.BackgroundPrimary] },

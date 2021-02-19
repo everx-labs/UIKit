@@ -350,7 +350,7 @@
     "RevokeLink": "Аннулировать ссылку",
     "SayHello": "Скажи \"Привет\"",
     "ScanQRCodeWithTONChatApplicationToContinue": "Пожалуйста, используйте приложение TON Wallet для сканирования этого QR-кода.\nНажмите кнопку сканирования, расположенную в правом верхнем углу главного экрана.",
-    "Search": "Искать",
+    "Search": "Искать...",
     "SearchByAccount": "Поиск по аккаунтам...",
     "SearchByToken": "Поиск по токенам...",
     "SearchContacts": "Поиск по контактам...",
@@ -491,7 +491,6 @@
             "Placeholder": "Wallet address…"
         },
         "AddressInputBubble": {
-            "Question": "What wallet do you want to work with?",
             "MainAccount": "Main account",
             "SelectAsset": "Select asset",
             "EnterManually": "Enter manually",

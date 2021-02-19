@@ -11,9 +11,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
 
-import { useTheme, ColorVariants } from './Colors';
+import { ColorVariants } from './Colors';
 import { UIConstant } from './constants';
 import { Portal } from './Portal';
+import { useColorParts } from './useColorParts';
 
 type OnClose = () => void | Promise<void>;
 
@@ -23,30 +24,6 @@ export type UISheetProps = {
     countRubberBandDistance?: boolean;
     children: React.ReactNode;
 };
-
-function useOverlay() {
-    const theme = useTheme();
-
-    return React.useMemo(() => {
-        const rgbaRegex = /rgba\((\d+),\s+(\d+),\s+(\d+),\s+([\d.]+)\)/;
-        const currentColor = theme[ColorVariants.BackgroundOverlay] as string;
-
-        if (!rgbaRegex.test(currentColor)) {
-            return {
-                overlayColor: currentColor,
-                overlayOpacity: 1,
-            };
-        }
-
-        // @ts-ignore
-        const [, red, green, blue, opacity] = currentColor.match(rgbaRegex);
-
-        return {
-            overlayColorParts: `${red}, ${green}, ${blue}`,
-            overlayOpacity: Number(opacity),
-        };
-    }, [theme]);
-}
 
 const RUBBER_BAND_EFFECT_DISTANCE = 50;
 
@@ -296,7 +273,10 @@ function UISheetPortalContent({
     onClosePortalRequest,
 }: UISheetPortalContentProps) {
     const heightValue = Animated.useValue(0);
-    const { overlayColorParts, overlayOpacity } = useOverlay();
+    const {
+        colorParts: overlayColorParts,
+        opacity: overlayOpacity,
+    } = useColorParts(ColorVariants.BackgroundOverlay);
     const keyboardHeightValue = useAnimatedKeyboard();
 
     const { animate, position, onPan } = usePosition(

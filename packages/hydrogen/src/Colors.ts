@@ -14,8 +14,8 @@ export enum ColorVariants {
     TextNegative = 'TextNegative',
     TextPositive = 'TextPositive',
     TextWarning = 'TextWarning',
-    // TextOverlay = 'TextOverlay',
-    // TextOverlayInverted = 'TextOverlayInverted',
+    TextOverlay = 'TextOverlay',
+    TextOverlayInverted = 'TextOverlayInverted',
     // TextNulled = 'TextNulled',
     BackgroundPrimary = 'BackgroundPrimary',
     BackgroundSecondary = 'BackgroundSecondary',
@@ -27,7 +27,7 @@ export enum ColorVariants {
     BackgroundWarning = 'BackgroundWarning',
     BackgroundPrimaryInverted = 'BackgroundPrimaryInverted',
     // BackgroundSecondaryInverted = 'BackgroundSecondaryInverted',
-    // BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
+    BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
     BackgroundOverlay = 'BackgroundOverlay',
     BackgroundOverlayInverted = 'BackgroundOverlayInverted',
     // BackgroundNulled = 'BackgroundNulled',
@@ -40,7 +40,7 @@ export enum ColorVariants {
     LineNegative = 'LineNegative',
     // IconAccent = 'IconAccent',
     // IconPrimary = 'IconPrimary',
-    // IconSecondary = 'IconSecondary',
+    IconSecondary = 'IconSecondary',
     // IconTertiary = 'IconTertiary',
     // IconPrimaryInverted = 'IconPrimaryInverted',
     // IconNeutral = 'IconNeutral',
@@ -48,13 +48,33 @@ export enum ColorVariants {
     // That ones are for technical reasons
     Transparent = 'Transparent',
     KeyboardStyle = 'KeyboardStyle',
+    StaticTextPrimaryDark = 'StaticTextPrimaryDark',
+    StaticTextPrimaryLight = 'StaticTextPrimaryLight',
+    StaticTextOverlayDark = 'StaticTextOverlayDark',
+    StaticTextOverlayLight = 'StaticTextOverlayLight',
+    StaticBackgroundBlack = 'StaticBackgroundBlack',
+    StaticBackgroundWhite = 'StaticBackgroundWhite',
+    StaticIconPrimaryDark = 'StaticIconPrimaryDark',
+    StaticIconPrimaryLight = 'StaticIconPrimaryLight',
 }
 
 type Theme = {
     [variant in ColorVariants]: ColorValue;
 };
 
+const StaticTheme = {
+    [ColorVariants.StaticTextPrimaryDark]: '#20262A',
+    [ColorVariants.StaticTextPrimaryLight]: '#FDFDFD',
+    [ColorVariants.StaticTextOverlayDark]: 'rgba(32, 38, 42, 0.6)',
+    [ColorVariants.StaticTextOverlayLight]: 'rgba(253, 253, 253, 0.6)',
+    [ColorVariants.StaticBackgroundBlack]: '#131719',
+    [ColorVariants.StaticBackgroundWhite]: '#FFFFFF',
+    [ColorVariants.StaticIconPrimaryDark]: '#20262A',
+    [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
+};
+
 export const LightTheme: Theme = {
+    ...StaticTheme,
     [ColorVariants.TextPrimary]: '#20262A',
     [ColorVariants.TextSecondary]: '#707376',
     [ColorVariants.TextTertiary]: '#B6B8BA',
@@ -64,6 +84,8 @@ export const LightTheme: Theme = {
     [ColorVariants.TextNegative]: '#CA1414',
     [ColorVariants.TextPositive]: '#2FA851',
     [ColorVariants.TextWarning]: '#B08229',
+    [ColorVariants.TextOverlay]: 'rgba(32, 38, 42, 0.6)',
+    [ColorVariants.TextOverlayInverted]: 'rgba(253, 253, 253, 0.4)',
 
     [ColorVariants.BackgroundPrimary]: '#FDFDFD',
     [ColorVariants.BackgroundSecondary]: '#F4F4F5',
@@ -74,8 +96,9 @@ export const LightTheme: Theme = {
     [ColorVariants.BackgroundPositive]: '#36C05C',
     [ColorVariants.BackgroundWarning]: '#FFC043',
     [ColorVariants.BackgroundPrimaryInverted]: '#20262A',
-    [ColorVariants.BackgroundOverlay]: 'rgba(32, 38, 42, 0.6)',
-    [ColorVariants.BackgroundOverlayInverted]: 'rgba(253, 253, 253, 0.4)',
+    [ColorVariants.BackgroundTertiaryInverted]: '#B6B8BA',
+    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.6)',
+    [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.4)',
 
     [ColorVariants.LinePrimary]: '#F4F4F5',
     [ColorVariants.LineSecondary]: '#EBECEC',
@@ -86,7 +109,7 @@ export const LightTheme: Theme = {
 
     // [ColorVariants.IconAccent]: '#0073C4',
     // [ColorVariants.IconPrimary]: '#20262A',
-    // [ColorVariants.IconSecondary]: '#707376',
+    [ColorVariants.IconSecondary]: '#707376',
     // [ColorVariants.IconTertiary]: '#B6B8BA',
     // [ColorVariants.IconPrimary]Inverted: '#FDFDFD',
     // [ColorVariants.IconNeutral]: '#E2E3E4',
@@ -96,6 +119,7 @@ export const LightTheme: Theme = {
 };
 
 export const DarkTheme: Theme = {
+    ...StaticTheme,
     [ColorVariants.TextPrimary]: '#FDFDFD',
     [ColorVariants.TextSecondary]: '#ADB0B1',
     [ColorVariants.TextTertiary]: '#676B6E',
@@ -105,6 +129,8 @@ export const DarkTheme: Theme = {
     [ColorVariants.TextNegative]: '#E71717',
     [ColorVariants.TextPositive]: '#36C05C',
     [ColorVariants.TextWarning]: '#FFC043',
+    [ColorVariants.TextOverlay]: 'rgba(253, 253, 253, 0.4)',
+    [ColorVariants.TextOverlayInverted]: 'rgba(32, 38, 42, 0.6)',
 
     [ColorVariants.BackgroundPrimary]: '#20262A',
     [ColorVariants.BackgroundSecondary]: '#292F32',
@@ -115,8 +141,9 @@ export const DarkTheme: Theme = {
     [ColorVariants.BackgroundPositive]: '#2FA851',
     [ColorVariants.BackgroundWarning]: '#B08229',
     [ColorVariants.BackgroundPrimaryInverted]: '#FDFDFD',
-    [ColorVariants.BackgroundOverlay]: 'rgba(32, 38, 42, 0.8)',
-    [ColorVariants.BackgroundOverlayInverted]: 'rgba(253, 253, 253, 0.2)',
+    [ColorVariants.BackgroundTertiaryInverted]: '#676B6E',
+    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.8)',
+    [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.2)',
 
     [ColorVariants.LinePrimary]: '#292F32',
     [ColorVariants.LineSecondary]: '#32373B',
@@ -124,6 +151,9 @@ export const DarkTheme: Theme = {
     [ColorVariants.LineNeutral]: '#FDFDFD',
     [ColorVariants.LineAccent]: '#0073C4',
     [ColorVariants.LineNegative]: '#CA1414',
+
+    [ColorVariants.IconSecondary]: '#ADB0B1',
+
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
 };

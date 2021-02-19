@@ -5,14 +5,13 @@ import {
     View,
     TouchableOpacity,
     Platform,
-    Image,
 } from 'react-native';
 import { BorderlessButton as RNGHBorderlessButton } from 'react-native-gesture-handler';
 import debounce from 'lodash/debounce';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
-import { ColorVariants, UILabel, UILabelRoles, UILabelColors, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { ColorVariants, UIImage, UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';
@@ -40,7 +39,7 @@ type Props = {
     pinToConfirm?: string,
     pinTitle?: string,
     pinDescription?: string,
-    pinDescriptionColor?: string,
+    pinDescriptionColor?: ColorVariants,
     usePredefined?: boolean,
     disabled?: boolean,
     pinCodeEnter: (pin: string) => void,
@@ -64,16 +63,6 @@ const styles = StyleSheet.create({
         maxHeight: UIConstant.pincodeKeyboardOffset(),
     },
 });
-
-function DeleteIcn() {
-    const theme = useTheme();
-    return (
-        <Image
-            source={UIAssets.icons.ui.delete}
-            style={{ tintColor: theme[ColorVariants.TextPrimary] }}
-        />
-    );
-}
 
 export default class UIPinCodeInput extends UIComponent<Props, State> {
     static defaultProps = {
@@ -257,25 +246,18 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
     renderDescription() {
         // eslint-disable-next-line no-nested-ternary
         const color = this.state.wrongPin
-            ? UIColor.textNegative()
+            ? UILabelColors.TextNegative
             : this.state.rightPin
-                ? UIColor.textPositive()
+                ? UILabelColors.TextPositive
                 : this.props.pinDescriptionColor;
 
         const description = this.state.description || this.props.pinDescription;
 
-        const descStyle = StyleSheet.create({
-            descColor: {
-                color,
-            },
-        });
-
         return (
             <UILabel
-                color={UILabelColors.TextSecondary}
+                color={color || UILabelColors.TextSecondary}
                 numberOfLines={1}
                 role={UILabelRoles.ParagraphFootnote}
-                style={descStyle.descColor}
                 selectable={false}
                 testID={this.props.commentTestID}
             >
@@ -297,7 +279,10 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                 : UIAssets.icons.security.touchId;
 
         return (
-            <Image source={icon} />
+            <UIImage
+                source={icon}
+                tintColor={ColorVariants.TextPrimary}
+            />
         );
     }
 
@@ -306,7 +291,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
         const opacityStyle = this.props.disabled ? { opacity: 0.5 } : null;
         return (
             <View testID="digitKeyboard">
-                <View style={[UIStyle.flexRow]}>
+                <View style={[UIStyle.flex.row()]}>
                     <BorderlessButton
                         testID="pincode_digit_1"
                         style={styles.key}
@@ -344,7 +329,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         >3</UILabel>
                     </BorderlessButton>
                 </View>
-                <View style={[UIStyle.flexRow]}>
+                <View style={[UIStyle.flex.row()]}>
                     <BorderlessButton
                         testID="pincode_digit_4"
                         style={styles.key}
@@ -382,7 +367,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         >6</UILabel>
                     </BorderlessButton>
                 </View>
-                <View style={[UIStyle.flexRow]}>
+                <View style={[UIStyle.flex.row()]}>
                     <BorderlessButton
                         testID="pincode_digit_7"
                         style={styles.key}
@@ -420,7 +405,7 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         >9</UILabel>
                     </BorderlessButton>
                 </View>
-                <View style={[UIStyle.flexRow, UIStyle.Margin.bottomMedium()]}>
+                <View style={[UIStyle.flex.row(), UIStyle.margin.bottomMedium()]}>
                     <BorderlessButton
                         testID="pincode_biometry"
                         style={styles.key}
@@ -455,7 +440,10 @@ export default class UIPinCodeInput extends UIComponent<Props, State> {
                         onPress={this.onDeletePress}
                         disabled={this.state.values.length === 0}
                     >
-                        <DeleteIcn />
+                        <UIImage
+                            source={UIAssets.icons.ui.delete}
+                            tintColor={ColorVariants.TextPrimary}
+                        />
                     </BorderlessButton>
                 </View>
             </View>

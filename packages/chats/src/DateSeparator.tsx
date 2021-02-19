@@ -41,13 +41,13 @@ export const DateSeparator = React.memo(({ time }: { time: number }) => {
                 style={[
                     styles.dateSeparator,
                     UIStyle.color.getBackgroundColorStyle(
-                        theme[ColorVariants.BackgroundTertiary],
+                        theme[ColorVariants.BackgroundSecondary],
                     ),
                 ]}
             >
                 <UILabel
-                    role={UILabelRoles.ActionFootnote}
-                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.HeadlineLabel}
+                    color={UILabelColors.TextSecondary}
                 >
                     {getLabel(time)}
                 </UILabel>

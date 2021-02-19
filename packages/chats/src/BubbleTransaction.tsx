@@ -18,7 +18,7 @@ import { useBubblePosition, BubblePosition } from './useBubblePosition';
 import { BubbleTransactionComment } from './BubbleTransactionComment';
 
 const getValueForTestID = (message: TransactionMessage) =>
-    message.info.amount.toFixed(1);
+    message.info.amount.toFixed(9);
 
 const getContainerTestID = (message: TransactionMessage) => {
     if (message.status === MessageStatus.Pending) {
@@ -66,7 +66,7 @@ const useBubbleStyle = (message: TransactionMessage) => {
     if (type === TransactionType.Expense) {
         return [
             UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundPrimaryInverted],
+                theme[ColorVariants.StaticBackgroundBlack],
             ),
         ];
     }
@@ -102,7 +102,7 @@ const getAmountColor = (_message: TransactionMessage) => {
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return { color: UIColor.grey() };
     // }
-    return UILabelColors.TextPrimaryInverted;
+    return UILabelColors.StaticTextPrimaryLight;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -113,7 +113,7 @@ const getCommentColor = (_message: TransactionMessage) => {
     // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
     //     return { color: UIColor.black(), };
     // }
-    return UILabelColors.TextPrimaryInverted;
+    return UILabelColors.StaticTextOverlayLight;
 };
 
 const getCommentText = (message: TransactionMessage) => {
@@ -136,6 +136,7 @@ const getActionStringColor = (message: TransactionMessage) => {
     if (message.status === MessageStatus.Aborted) {
         return UILabelColors.TextNegative;
     }
+
     return UILabelColors.TextTertiary;
 };
 
@@ -147,8 +148,8 @@ function TransactionSublabel(props: TransactionMessage) {
                     testID={`transaction_message_${getValueForTestID(
                         props,
                     )}_aborted`}
-                    role={UILabelRoles.ActionFootnote}
-                    color={UILabelColors.TextPrimaryInverted}
+                    role={UILabelRoles.ParagraphFootnote}
+                    color={getCommentColor(props)}
                 >
                     {uiLocalized.formatString(
                         uiLocalized.TransactionStatus.aborted,
@@ -165,8 +166,8 @@ function TransactionSublabel(props: TransactionMessage) {
                     testID={`transaction_message_${getValueForTestID(
                         props,
                     )}_time`}
-                    role={UILabelRoles.ActionFootnote}
-                    color={UILabelColors.TextPrimaryInverted}
+                    role={UILabelRoles.ParagraphFootnote}
+                    color={getCommentColor(props)}
                 >
                     {uiLocalized.TransactionStatus.sending}
                 </UILabel>
@@ -177,14 +178,14 @@ function TransactionSublabel(props: TransactionMessage) {
     return (
         <>
             <UILabel
-                role={UILabelRoles.ActionFootnote}
+                role={UILabelRoles.ParagraphFootnote}
                 color={getCommentColor(props)}
             >
                 {getCommentText(props)}
             </UILabel>
             <UILabel
                 testID={`transaction_message_${getValueForTestID(props)}_time`}
-                role={UILabelRoles.ActionFootnote}
+                role={UILabelRoles.ParagraphFootnote}
                 color={getCommentColor(props)}
             >
                 {uiLocalized.formatDate(props.time)}

@@ -41,7 +41,6 @@ let staticNarrow;
 
 export default class UIScreen<Props, State>
     extends UIController<Props & NavigationProps, any & ControllerState> {
-    presetName: string;
     scrollView: ?React$ElementRef<*>;
     listenScrollOffset: boolean;
 
@@ -51,7 +50,6 @@ export default class UIScreen<Props, State>
 
     constructor(props: Props & NavigationProps) {
         super(props);
-        this.presetName = '';
         this.listenScrollOffset = true;
 
         // Events

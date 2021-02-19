@@ -5,6 +5,7 @@ import type { OnHeightChange } from '@tonlabs/uikit.keyboard';
 import {
     BrowserMessage,
     Input,
+    InteractiveMessage,
     InteractiveMessageType,
     VisibleMessage,
 } from './types';
@@ -46,15 +47,15 @@ function interactiveMessagesReducer(
 }
 
 type GetInteractiveInput = (
-    interactiveMessage: BrowserMessage,
-    state: InteractiveMessagesState[InteractiveMessageType],
+    interactiveMessage: InteractiveMessage,
+    state: InteractiveMessagesState[InteractiveMessage['type']],
     dispatch: (action: InteractiveMessageAction['payload']) => void,
     onHeightChange: OnHeightChange,
 ) => Input;
 
 type GetInteractiveInputShared = (
-    interactiveMessage: BrowserMessage,
-    state: InteractiveMessagesState[InteractiveMessageType],
+    interactiveMessage: InteractiveMessage,
+    state: InteractiveMessagesState[InteractiveMessage['type']],
     dispatch: (action: InteractiveMessageAction['payload']) => void,
 ) => React.ReactNode;
 
@@ -76,7 +77,7 @@ function useInteractiveMessages(
 
     const [state, dispatch] = React.useReducer(interactiveMessagesReducer, {
         [InteractiveMessageType.Terminal]: {
-            visible: false,
+            visible: true,
         },
         [InteractiveMessageType.AddressInput]: {
             inputVisible: false,
@@ -87,8 +88,9 @@ function useInteractiveMessages(
 
     // It's not an interactive message :)
     if (
+        interactiveMessage == null ||
         Object.keys(InteractiveMessageType).indexOf(interactiveMessage.type) ===
-        -1
+            -1
     ) {
         return {
             messages: allMessages as VisibleMessage[],
@@ -121,7 +123,7 @@ function useInteractiveMessages(
 
             if (getInputShared != null) {
                 const shared = getInputShared(
-                    interactiveMessage,
+                    interactiveMessage as InteractiveMessage,
                     state[type],
                     (action) => {
                         dispatch({
@@ -161,7 +163,8 @@ type UIBrowserProps = {
 export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
 
-    const inputs = React.useMemo(
+    // @ts-ignore
+    const inputs: InputFabric[] = React.useMemo(
         () => [
             {
                 type: InteractiveMessageType.Terminal,
@@ -179,7 +182,6 @@ export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
     const { messages, input } = useInteractiveMessages(
         passedMessages,
         setBottomInset,
-        // @ts-ignore
         inputs,
     );
 
