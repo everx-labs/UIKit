@@ -139,9 +139,6 @@ const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
 
     const clock = new Animated.Clock();
 
-    const prevShow = new Animated.Value<ShowStates>(ShowStates.FOLDING);
-    const innerShow = new Animated.Value<ShowStates>(ShowStates.FOLDING);
-
     const state = {
         finished: new Animated.Value(0),
         velocity: new Animated.Value(0),
@@ -168,22 +165,21 @@ const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
     };
 
     return block([
-        cond(neq(show, prevShow), [set(innerShow, show), set(prevShow, show)]),
-        cond(eq(innerShow, ShowStates.OPEN), [
+        cond(eq(show, ShowStates.OPEN), [
             set(state.finished, 0),
             // @ts-ignore
             set(config.toValue, 1),
-            set(innerShow, ShowStates.OPENING),
+            set(show, ShowStates.OPENING),
             startClock(clock),
         ]),
-        cond(eq(innerShow, ShowStates.FOLD), [
+        cond(eq(show, ShowStates.FOLD), [
             set(state.finished, 0),
             // @ts-ignore
             set(config.toValue, FOLDED_FLOATING_LABEL_SCALE),
-            set(innerShow, ShowStates.FOLDING),
+            set(show, ShowStates.FOLDING),
             startClock(clock),
         ]),
-        cond(neq(innerShow, ShowStates.RESET), [spring(clock, state, config)]),
+        cond(neq(show, ShowStates.RESET), [spring(clock, state, config)]),
         cond(and(state.finished, clockRunning(clock)), [stopClock(clock)]),
         state.position,
     ]);
