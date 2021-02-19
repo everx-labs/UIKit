@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {
-    Animated,
     LayoutChangeEvent,
     StyleSheet,
     TextInput,
     View,
     Text,
+    ViewStyle,
 } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { ColorVariants, useTheme } from './Colors';
 import { Typography, TypographyVariants } from './Typography';
@@ -53,27 +54,6 @@ const getCommentColor = (
     return ColorVariants.TextSecondary;
 };
 
-const FLOATING_LABEL_SPRING_CONFIG = {
-    speed: 20,
-    bounciness: 0,
-    useNativeDriver: true,
-};
-const FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG = {
-    toValue: 0,
-    ...FLOATING_LABEL_SPRING_CONFIG,
-};
-const OPEN_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG = {
-    toValue: 0,
-    ...FLOATING_LABEL_SPRING_CONFIG,
-};
-const FOLDED_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG = {
-    toValue: -30,
-    ...FLOATING_LABEL_SPRING_CONFIG,
-};
-const OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG = {
-    toValue: 0,
-    ...FLOATING_LABEL_SPRING_CONFIG,
-};
 const paragraphTextStyle = StyleSheet.flatten(
     Typography[TypographyVariants.ParagraphText],
 );
@@ -83,14 +63,6 @@ const labelTextStyle = StyleSheet.flatten(
 const FOLDED_FLOATING_LABEL_SCALE =
     // @ts-expect-error
     labelTextStyle.fontSize / paragraphTextStyle.fontSize;
-const FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG = {
-    toValue: FOLDED_FLOATING_LABEL_SCALE,
-    ...FLOATING_LABEL_SPRING_CONFIG,
-};
-const OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG = {
-    toValue: 1,
-    ...FLOATING_LABEL_SPRING_CONFIG,
-};
 const PSEUDO_LABEL_BOTTOM_MARGIN = 4;
 
 const isLabelFolded = (props: UIMaterialTextViewCommonProps) => {
@@ -142,34 +114,83 @@ function useFocused(props: UIMaterialTextViewCommonProps) {
     };
 }
 
+// eslint-disable-next-line no-shadow
+enum ShowStates {
+    FOLD = 0,
+    FOLDING = 1,
+    OPEN = 2,
+    OPENING = 3,
+    RESET = 5,
+}
+
+const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
+    const {
+        block,
+        cond,
+        eq,
+        neq,
+        and,
+        set,
+        spring,
+        startClock,
+        stopClock,
+        clockRunning,
+    } = Animated;
+
+    const clock = new Animated.Clock();
+
+    const state = {
+        finished: new Animated.Value(0),
+        velocity: new Animated.Value(0),
+        position: new Animated.Value(
+            isFolded ? FOLDED_FLOATING_LABEL_SCALE : 1,
+        ),
+        time: new Animated.Value(0),
+    };
+
+    const config: Animated.SpringConfig = {
+        // Default ones from https://reactnative.dev/docs/animated#spring
+        ...Animated.SpringUtils.makeConfigFromBouncinessAndSpeed({
+            overshootClamping: false,
+            bounciness: 0,
+            speed: 20,
+            // mass: new Animated.Value(1),
+            // restSpeedThreshold: new Animated.Value(0.001),
+            // restDisplacementThreshold: new Animated.Value(0.001),
+            mass: 1,
+            restSpeedThreshold: 0.001,
+            restDisplacementThreshold: 0.001,
+            toValue: new Animated.Value(0),
+        }),
+    };
+
+    return block([
+        cond(eq(show, ShowStates.OPEN), [
+            set(state.finished, 0),
+            // @ts-ignore
+            set(config.toValue, 1),
+            set(show, ShowStates.OPENING),
+            startClock(clock),
+        ]),
+        cond(eq(show, ShowStates.FOLD), [
+            set(state.finished, 0),
+            // @ts-ignore
+            set(config.toValue, FOLDED_FLOATING_LABEL_SCALE),
+            set(show, ShowStates.FOLDING),
+            startClock(clock),
+        ]),
+        cond(neq(show, ShowStates.RESET), [spring(clock, state, config)]),
+        cond(and(state.finished, clockRunning(clock)), [stopClock(clock)]),
+        state.position,
+    ]);
+};
+
 function useFloatLabelTransform(
     props: UIMaterialTextViewCommonProps,
     inputHasValue: boolean,
 ) {
     const { value } = props;
     const isFolded = isLabelFolded(props);
-
-    const translateX = React.useRef(
-        new Animated.Value(
-            isFolded
-                ? FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG.toValue
-                : OPEN_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG.toValue,
-        ),
-    );
-    const translateY = React.useRef(
-        new Animated.Value(
-            isFolded
-                ? FOLDED_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG.toValue
-                : OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG.toValue,
-        ),
-    );
-    const scale = React.useRef(
-        new Animated.Value(
-            isFolded
-                ? FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG.toValue
-                : OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG.toValue,
-        ),
-    );
 
     const { isFocused, onFocus, onBlur } = useFocused(props);
 
@@ -180,6 +201,15 @@ function useFloatLabelTransform(
         fullWidth?: number;
     }>({});
 
+    const show = Animated.useValue<ShowStates>(
+        isFolded ? ShowStates.FOLDING : ShowStates.OPENING,
+    );
+
+    const fullHeight = Animated.useValue(0);
+    const fullWidth = Animated.useValue(0);
+    const foldedWidth = Animated.useValue(0);
+    const foldedHeight = Animated.useValue(0);
+
     const [isLabelReady, setIsLabelReady] = React.useState(false);
     const onPseudoLabelLayout = React.useCallback(
         ({ nativeEvent: { layout: measuredLayout } }: LayoutChangeEvent) => {
@@ -188,6 +218,10 @@ function useFloatLabelTransform(
                 foldedHeight: measuredLayout.height,
                 foldedWidth: measuredLayout.width,
             };
+            // @ts-expect-error
+            foldedHeight.setValue(measuredLayout.height);
+            // @ts-expect-error
+            foldedWidth.setValue(measuredLayout.width);
             if (
                 isLabelReady ||
                 layout.current.fullHeight == null ||
@@ -198,8 +232,9 @@ function useFloatLabelTransform(
                 return;
             }
             setIsLabelReady(true);
+            show.setValue(ShowStates.RESET);
         },
-        [isLabelReady, setIsLabelReady],
+        [isLabelReady, setIsLabelReady, foldedHeight, foldedWidth, show],
     );
 
     const onActualLabelLayout = React.useCallback(
@@ -209,6 +244,10 @@ function useFloatLabelTransform(
                 fullHeight: measuredLayout.height,
                 fullWidth: measuredLayout.width,
             };
+            // @ts-expect-error
+            fullHeight.setValue(measuredLayout.height);
+            // @ts-expect-error
+            fullWidth.setValue(measuredLayout.width);
             if (
                 isLabelReady ||
                 layout.current.fullHeight == null ||
@@ -219,8 +258,9 @@ function useFloatLabelTransform(
                 return;
             }
             setIsLabelReady(true);
+            show.setValue(ShowStates.RESET);
         },
-        [isLabelReady, setIsLabelReady],
+        [isLabelReady, setIsLabelReady, fullHeight, fullWidth, show],
     );
 
     React.useEffect(() => {
@@ -234,42 +274,9 @@ function useFloatLabelTransform(
         }
 
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
-        const translateXValue =
-            (layout.current.foldedWidth - layout.current.fullWidth) / 2;
-        const foldedHeightDiff =
-            (layout.current.fullHeight - layout.current.foldedHeight) / 2;
-        const translateYValue =
-            0 -
-            foldedHeightDiff -
-            PSEUDO_LABEL_BOTTOM_MARGIN -
-            layout.current.foldedHeight;
-        Animated.parallel([
-            Animated.spring(
-                translateX.current,
-                isFoldedNow
-                    ? {
-                          ...FOLDED_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG,
-                          toValue: translateXValue,
-                      }
-                    : OPEN_FLOATING_LABEL_TRANSLATE_X_SPRING_CONFIG,
-            ),
-            Animated.spring(
-                translateY.current,
-                isFoldedNow
-                    ? {
-                          ...FOLDED_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG,
-                          toValue: translateYValue,
-                      }
-                    : OPEN_FLOATING_LABEL_TRANSLATE_Y_SPRING_CONFIG,
-            ),
-            Animated.spring(
-                scale.current,
-                isFoldedNow
-                    ? FOLDED_FLOATING_LABEL_SCALE_SPRING_CONFIG
-                    : OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG,
-            ),
-        ]).start();
-    }, [isFocused, inputHasValue, value, isLabelReady]);
+
+        show.setValue(isFoldedNow ? ShowStates.FOLD : ShowStates.OPEN);
+    }, [isFocused, inputHasValue, show, value]);
 
     const pseudoLabelStyle = React.useMemo(() => {
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
@@ -279,42 +286,74 @@ function useFloatLabelTransform(
         };
     }, [isLabelReady, isFocused, inputHasValue, value]);
 
+    const scale = React.useRef(getScale(isFolded, show)).current;
+
     const labelContainerStyle = React.useMemo(() => {
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
         const isVisible = isLabelReady || !isFoldedNow;
         return {
             transform: [
                 {
-                    translateX: translateX.current,
+                    translateX: Animated.interpolate(scale, {
+                        inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
+                        outputRange: [
+                            Animated.divide(
+                                Animated.sub(foldedWidth, fullWidth),
+                                2,
+                            ),
+                            0,
+                        ],
+                    }),
                 },
                 {
-                    translateY: translateY.current,
+                    translateY: Animated.interpolate(scale, {
+                        inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
+                        outputRange: [
+                            Animated.sub(
+                                0,
+                                Animated.divide(
+                                    Animated.sub(fullHeight, foldedHeight),
+                                    2,
+                                ),
+                                PSEUDO_LABEL_BOTTOM_MARGIN,
+                                foldedHeight,
+                            ),
+                            0,
+                        ],
+                    }),
                 },
             ],
             opacity: isVisible ? 1 : 0,
         };
-    }, [isLabelReady, isFocused, inputHasValue, value]);
+    }, [
+        isLabelReady,
+        isFocused,
+        inputHasValue,
+        value,
+        foldedHeight,
+        fullHeight,
+        foldedWidth,
+        fullWidth,
+        scale,
+    ]);
 
     const theme = useTheme();
-    const labelStyle = React.useMemo(() => {
+    const labelStyle: ViewStyle = React.useMemo(() => {
         return {
-            color: scale.current.interpolate({
-                inputRange: [
-                    FOLDED_FLOATING_LABEL_SCALE,
-                    OPEN_FLOATING_LABEL_SCALE_SPRING_CONFIG.toValue,
-                ],
-                outputRange: [
+            color: Animated.interpolateColors(scale, {
+                inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
+                outputColorRange: [
                     theme[ColorVariants.TextTertiary] as string,
                     theme[ColorVariants.TextSecondary] as string,
                 ],
-            }),
+            }) as any,
             transform: [
                 {
-                    scale: scale.current,
+                    scale: scale as any,
                 },
             ],
         };
-    }, [theme]);
+    }, [theme, scale]);
 
     return {
         isFocused,
