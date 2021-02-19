@@ -136,6 +136,7 @@ const getActionStringColor = (message: TransactionMessage) => {
     if (message.status === MessageStatus.Aborted) {
         return UILabelColors.TextNegative;
     }
+
     return UILabelColors.TextTertiary;
 };
 
@@ -147,8 +148,8 @@ function TransactionSublabel(props: TransactionMessage) {
                     testID={`transaction_message_${getValueForTestID(
                         props,
                     )}_aborted`}
-                    role={UILabelRoles.ActionFootnote}
-                    color={UILabelColors.TextPrimaryInverted}
+                    role={UILabelRoles.ParagraphFootnote}
+                    color={getCommentColor(props)}
                 >
                     {uiLocalized.formatString(
                         uiLocalized.TransactionStatus.aborted,
@@ -165,8 +166,8 @@ function TransactionSublabel(props: TransactionMessage) {
                     testID={`transaction_message_${getValueForTestID(
                         props,
                     )}_time`}
-                    role={UILabelRoles.ActionFootnote}
-                    color={UILabelColors.TextPrimaryInverted}
+                    role={UILabelRoles.ParagraphFootnote}
+                    color={getCommentColor(props)}
                 >
                     {uiLocalized.TransactionStatus.sending}
                 </UILabel>
