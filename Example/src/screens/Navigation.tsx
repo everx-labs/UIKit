@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView, Text, View } from 'react-native';
+import { View } from 'react-native';
 
-import { ColorVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UILabel } from '@tonlabs/uikit.hydrogen';
 import {
     UIDialogBar,
     UISearchBar,
@@ -12,36 +11,18 @@ import {
 } from '@tonlabs/uikit.navigation';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIButton } from '@tonlabs/uikit.components';
+import { ExampleSection } from '../components/ExampleSection';
+import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Navigation = () => {
-    const theme = useTheme();
-
     const [
         isSearchControllerVisible,
         setSearchControllerVisible,
     ] = React.useState(false);
 
     return (
-        <SafeAreaView
-            style={{
-                flex: 1,
-                backgroundColor: theme[ColorVariants.BackgroundSecondary],
-            }}
-        >
-            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-                <View
-                    style={{
-                        width: '96%',
-                        paddingLeft: 40,
-                        paddingBottom: 10,
-                        marginHorizontal: '2%',
-                        marginTop: 20,
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'rgba(0,0,0,.1)',
-                    }}
-                >
-                    <Text>UISearchBar</Text>
-                </View>
+        <ExampleScreen color={ColorVariants.BackgroundSecondary}>
+            <ExampleSection title="UISearchBar">
                 <View
                     style={{
                         width: '100%',
@@ -53,19 +34,8 @@ export const Navigation = () => {
                     <View style={{ height: 20 }} />
                     <UISearchBar headerRightLabel="Action" />
                 </View>
-                <View
-                    style={{
-                        width: '96%',
-                        paddingLeft: 40,
-                        paddingBottom: 10,
-                        marginHorizontal: '2%',
-                        marginTop: 20,
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'rgba(0,0,0,.1)',
-                    }}
-                >
-                    <Text>UISearchController</Text>
-                </View>
+            </ExampleSection>
+            <ExampleSection title="UISearchController">
                 <View
                     style={{
                         width: '100%',
@@ -92,19 +62,8 @@ export const Navigation = () => {
                         )}
                     </UISearchController>
                 </View>
-                <View
-                    style={{
-                        width: '96%',
-                        paddingLeft: 40,
-                        paddingBottom: 10,
-                        marginHorizontal: '2%',
-                        marginTop: 20,
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'rgba(0,0,0,.1)',
-                    }}
-                >
-                    <Text>UISearchController</Text>
-                </View>
+            </ExampleSection>
+            <ExampleSection title="UISearchController">
                 <View
                     style={{
                         width: '100%',
@@ -121,19 +80,8 @@ export const Navigation = () => {
                     </UISearchBarButton>
                 </View>
                 <View style={{ height: 20 }} />
-                <View
-                    style={{
-                        width: '96%',
-                        paddingLeft: 40,
-                        paddingBottom: 10,
-                        marginHorizontal: '2%',
-                        marginTop: 20,
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'rgba(0,0,0,.1)',
-                    }}
-                >
-                    <Text>UIDialogBar</Text>
-                </View>
+            </ExampleSection>
+            <ExampleSection title="UIDialogBar">
                 <View
                     style={{
                         width: '100%',
@@ -267,19 +215,8 @@ export const Navigation = () => {
                         hasPuller={false}
                     />
                 </View>
-                <View
-                    style={{
-                        width: '96%',
-                        paddingLeft: 40,
-                        paddingBottom: 10,
-                        marginHorizontal: '2%',
-                        marginTop: 20,
-                        borderBottomWidth: 1,
-                        borderBottomColor: 'rgba(0,0,0,.1)',
-                    }}
-                >
-                    <Text>UISlideBar</Text>
-                </View>
+            </ExampleSection>
+            <ExampleSection title="UISlideBar">
                 <View
                     style={{
                         width: '100%',
@@ -413,7 +350,7 @@ export const Navigation = () => {
                         hasPuller={false}
                     />
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+            </ExampleSection>
+        </ExampleScreen>
     );
 };

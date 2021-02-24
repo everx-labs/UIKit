@@ -45,8 +45,10 @@ import {
     LightTheme,
     ColorVariants,
     PortalManager,
+    UIBackgroundView,
 } from '@tonlabs/uikit.hydrogen';
 import { UISearchBarButton } from '@tonlabs/uikit.navigation';
+
 import { Buttons } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
 import { Inputs } from './screens/Inputs';
@@ -78,111 +80,115 @@ const ThemeSwitcher = React.createContext({
 const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <PortalManager id="search">
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: 10,
-                    }}
-                >
-                    <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
-                    <UIToggle
-                        active={themeSwitcher.isDarkTheme}
-                        onPress={() => themeSwitcher.toggleTheme()}
-                    />
-                </View>
-                <UISearchBarButton forId="search">
-                    {(searchText) => (
-                        <View>
-                            <UILabel>{searchText}</UILabel>
-                        </View>
-                    )}
-                </UISearchBarButton>
-                <ScrollView
-                    style={{ flex: 1 }}
-                    contentContainerStyle={{ paddingBottom: 50 }}
-                >
-                    <UIButton
-                        onPress={() => navigation.navigate('buttons')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Buttons"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('checkbox')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Checkbox"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('inputs')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Inputs"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('design')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Design"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('images')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Images"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('layouts')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Layouts"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('menus')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Menus"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('notifications')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Notifications"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('popups')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Popups"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('products')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Products"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('profile')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Profile"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('text')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Text"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('chat')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Chat"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('browser')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Browser"
-                    />
-                    <UIButton
-                        onPress={() => navigation.navigate('navigation')}
-                        buttonStyle={UIButton.ButtonStyle.Link}
-                        title="Navigation"
-                    />
-                </ScrollView>
-            </PortalManager>
-        </SafeAreaView>
+        <UIBackgroundView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }}>
+                <PortalManager id="search">
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: 10,
+                        }}
+                    >
+                        <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
+                        <UIToggle
+                            active={themeSwitcher.isDarkTheme}
+                            onPress={() => themeSwitcher.toggleTheme()}
+                        />
+                    </View>
+                    <View style={{ paddingHorizontal: 10 }}>
+                        <UISearchBarButton forId="search">
+                            {(searchText) => (
+                                <View>
+                                    <UILabel>{searchText}</UILabel>
+                                </View>
+                            )}
+                        </UISearchBarButton>
+                    </View>
+                    <ScrollView
+                        style={{ flex: 1 }}
+                        contentContainerStyle={{ paddingBottom: 50 }}
+                    >
+                        <UIButton
+                            onPress={() => navigation.navigate('buttons')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Buttons"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('checkbox')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Checkbox"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('inputs')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Inputs"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('design')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Design"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('images')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Images"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('layouts')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Layouts"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('menus')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Menus"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('notifications')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Notifications"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('popups')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Popups"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('products')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Products"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('profile')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Profile"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('text')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Text"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('chat')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Chat"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('browser')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Browser"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('navigation')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Navigation"
+                        />
+                    </ScrollView>
+                </PortalManager>
+            </SafeAreaView>
+        </UIBackgroundView>
     );
 };
 
@@ -209,16 +215,7 @@ const App = () => {
                                             ],
                                     },
                                 ],
-
-                                main: [
-                                    styles.main,
-                                    {
-                                        backgroundColor:
-                                            theme[
-                                                ColorVariants.BackgroundPrimary
-                                            ],
-                                    },
-                                ],
+                                main: [styles.main],
                                 detail: [
                                     styles.detail,
                                     {
@@ -337,6 +334,7 @@ const styles = StyleSheet.create({
         minWidth: 300,
         marginRight: 10,
         borderRadius: 5,
+        overflow: 'hidden',
     },
     detail: {
         flex: 1,
