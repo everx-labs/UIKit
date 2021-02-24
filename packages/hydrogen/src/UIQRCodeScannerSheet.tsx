@@ -90,6 +90,9 @@ function getErrorTranslateY(
     ]);
 }
 
+const ERROR_DURATION = 3 * 1000;
+const ERROR_VIBRATION_DURATION = 400;
+
 function useErrorAnimation() {
     const show = Animated.useValue<ShowStates>(ShowStates.Hiding);
     const errorHeight = Animated.useValue(0);
@@ -118,12 +121,11 @@ function useErrorAnimation() {
     const showError = React.useCallback(() => {
         show.setValue(ShowStates.Open);
         try {
-            Vibration.vibrate();
+            Vibration.vibrate(ERROR_VIBRATION_DURATION);
         } catch (err) {
             // Do nothing
         }
 
-        const ERROR_DURATION = 3 * 1000;
         setTimeout(() => {
             show.setValue(ShowStates.Hide);
         }, ERROR_DURATION);
@@ -164,6 +166,8 @@ export function UIQRCodeScannerSheet({
         <UICardSheet {...rest} onClose={onClose} style={styles.cardContainer}>
             <QRCodeScanner
                 onRead={onRead}
+                reactivate
+                reactivateTimeout={ERROR_VIBRATION_DURATION}
                 containerStyle={[
                     {
                         backgroundColor:

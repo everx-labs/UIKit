@@ -14,6 +14,8 @@ export type OnReadEvent = {
 export type QRCodeScannerProps = {
     onRead: (event: OnReadEvent) => void | Promise<void>;
     containerStyle: StyleProp<ViewStyle>;
+    reactivate?: boolean;
+    reactivateTimeout?: number;
 };
 
 // eslint-disable-next-line no-shadow
@@ -45,6 +47,11 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
                     }}
                     showViewFinder={false}
                     resolution={UIConstant.elasticWidthCardSheet}
+                    delay={
+                        props.reactivate
+                            ? props.reactivateTimeout || 500
+                            : false
+                    }
                 />
             </View>
         );
