@@ -331,7 +331,8 @@
     "PushFeedbackShort": "서핑에 기여할 수 있도록 피드백을 제공해주세요",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "받기",
     "Recent": "최근의",

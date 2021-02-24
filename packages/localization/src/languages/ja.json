@@ -331,7 +331,8 @@
     "PushFeedbackShort": "ストーリーに貢献するため、フィードバックを共有する",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "受信",
     "Recent": "最近",
