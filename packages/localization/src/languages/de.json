@@ -331,7 +331,8 @@
     "PushFeedbackShort": "Geben Sie feedback, um zur Geschichte beizutragen",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "Empfangen",
     "Recent": "Letzten",

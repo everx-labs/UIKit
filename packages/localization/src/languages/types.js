@@ -323,6 +323,7 @@ export type UILocalizedData = {|
     +QRCodeScanner: {|
         +ErrorPermissions: string,
         +ErrorUnexpected: string,
+        +ErrorOnRead: string,
     |},
     +Receive: string,
     +Recent: string,

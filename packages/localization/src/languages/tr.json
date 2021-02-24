@@ -327,7 +327,8 @@
     "PushFeedbackShort": "Surf'e katkıda bulunmak için geribeslemede bulunun",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "Teslim al",
     "Recent": "Son",
