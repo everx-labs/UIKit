@@ -30,6 +30,7 @@ enum ShowStates {
 function getErrorTranslateY(
     show: Animated.Value<ShowStates>,
     height: Animated.Value<number>,
+    onClose: () => void,
 ) {
     const {
         block,
@@ -42,6 +43,8 @@ function getErrorTranslateY(
         clockRunning,
         spring,
         sub,
+        greaterThan,
+        call,
     } = Animated;
 
     const clock = new Animated.Clock();
@@ -70,22 +73,27 @@ function getErrorTranslateY(
     };
 
     return block([
-        cond(eq(show, ShowStates.Open), [
-            set(state.finished, 0),
-            // @ts-ignore
-            set(config.toValue, sub(0, height)),
-            set(show, ShowStates.Opening),
-            startClock(clock),
+        cond(greaterThan(height, 0), [
+            cond(eq(show, ShowStates.Open), [
+                set(state.finished, 0),
+                // @ts-ignore
+                set(config.toValue, sub(0, height)),
+                set(show, ShowStates.Opening),
+                startClock(clock),
+            ]),
+            cond(eq(show, ShowStates.Hide), [
+                set(state.finished, 0),
+                // @ts-ignore
+                set(config.toValue, 0),
+                set(show, ShowStates.Hiding),
+                startClock(clock),
+            ]),
+            spring(clock, state, config),
+            cond(and(state.finished, clockRunning(clock)), [
+                stopClock(clock),
+                cond(eq(show, ShowStates.Hiding), call([], onClose)),
+            ]),
         ]),
-        cond(eq(show, ShowStates.Hide), [
-            set(state.finished, 0),
-            // @ts-ignore
-            set(config.toValue, 0),
-            set(show, ShowStates.Hiding),
-            startClock(clock),
-        ]),
-        spring(clock, state, config),
-        cond(and(state.finished, clockRunning(clock)), [stopClock(clock)]),
         state.position,
     ]);
 }
@@ -93,12 +101,13 @@ function getErrorTranslateY(
 const ERROR_DURATION = 3 * 1000;
 const ERROR_VIBRATION_DURATION = 400;
 
-function useErrorAnimation() {
+function useErrorAnimation(onClose: () => void) {
     const show = Animated.useValue<ShowStates>(ShowStates.Hiding);
     const errorHeight = Animated.useValue(0);
 
-    const translateY = React.useRef(getErrorTranslateY(show, errorHeight))
-        .current;
+    const translateY = React.useRef(
+        getErrorTranslateY(show, errorHeight, onClose),
+    ).current;
 
     const onLayout = React.useCallback(
         ({
@@ -138,28 +147,56 @@ function useErrorAnimation() {
     };
 }
 
+function UIQRCodeError({ onClose }: { onClose: () => void }) {
+    const theme = useTheme();
+    const {
+        onLayout: onErrorLayout,
+        style: errorStyle,
+        showError,
+    } = useErrorAnimation(onClose);
+
+    React.useEffect(() => {
+        showError();
+    }, [showError]);
+
+    return (
+        <Animated.View
+            onLayout={onErrorLayout}
+            style={[
+                styles.errorContainer,
+                {
+                    backgroundColor: theme[ColorVariants.BackgroundNegative],
+                },
+                errorStyle,
+            ]}
+        >
+            <UILabel
+                role={UILabelRoles.ParagraphFootnote}
+                color={UILabelColors.StaticTextPrimaryLight}
+            >
+                {uiLocalized.QRCodeScanner.ErrorOnRead}
+            </UILabel>
+        </Animated.View>
+    );
+}
+
 export function UIQRCodeScannerSheet({
     onRead: onReadProp,
     onClose,
     ...rest
 }: UIQRCodeScannerSheetProps) {
     const theme = useTheme();
-
-    const {
-        onLayout: onErrorLayout,
-        style: errorStyle,
-        showError,
-    } = useErrorAnimation();
+    const [isErrorVisible, setIsErrorVisible] = React.useState(false);
 
     const onRead = React.useCallback(
         async (event: any) => {
             try {
                 await onReadProp(event);
             } catch (err) {
-                showError();
+                setIsErrorVisible(true);
             }
         },
-        [onReadProp, showError],
+        [onReadProp],
     );
 
     return (
@@ -167,7 +204,7 @@ export function UIQRCodeScannerSheet({
             <QRCodeScanner
                 onRead={onRead}
                 reactivate
-                reactivateTimeout={ERROR_VIBRATION_DURATION}
+                reactivateTimeout={ERROR_DURATION}
                 containerStyle={[
                     {
                         backgroundColor:
@@ -197,24 +234,13 @@ export function UIQRCodeScannerSheet({
                     tintColor={ColorVariants.StaticIconPrimaryDark}
                 />
             </TouchableOpacity>
-            <Animated.View
-                onLayout={onErrorLayout}
-                style={[
-                    styles.errorContainer,
-                    {
-                        backgroundColor:
-                            theme[ColorVariants.BackgroundNegative],
-                    },
-                    errorStyle,
-                ]}
-            >
-                <UILabel
-                    role={UILabelRoles.ParagraphFootnote}
-                    color={UILabelColors.StaticTextPrimaryLight}
-                >
-                    {uiLocalized.QRCodeScanner.ErrorOnRead}
-                </UILabel>
-            </Animated.View>
+            {isErrorVisible ? (
+                <UIQRCodeError
+                    onClose={() => {
+                        setIsErrorVisible(false);
+                    }}
+                />
+            ) : null}
         </UICardSheet>
     );
 }
