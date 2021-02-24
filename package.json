@@ -19,6 +19,7 @@
         "cycles:check": "node scripts/checkCircularDependencies.js"
     },
     "pre-commit": [
+        "language:check",
         "flow",
         "tsc",
         "cycles:check"
