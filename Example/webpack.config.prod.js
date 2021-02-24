@@ -45,82 +45,81 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.(j|t)sx?$/,
                 // exclude: /node_modules/,
                 include: [
                     path.resolve(__dirname, './index.web.js'),
-                    path.resolve(__dirname, './App.js'),
                     path.resolve(__dirname, './src/'),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-web/'
+                        '../node_modules/react-native-web/',
                     ),
                     // path.resolve(__dirname, "../UIKit.js"),
                     path.resolve(__dirname, '../packages/'),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-indicators/'
+                        '../node_modules/react-native-indicators/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-dropdownalert/'
+                        '../node_modules/react-native-dropdownalert/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-lightbox/'
+                        '../node_modules/react-native-lightbox/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-simple-popover/'
+                        '../node_modules/react-native-simple-popover/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-flash-message/'
+                        '../node_modules/react-native-flash-message/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-country-picker-modal/'
+                        '../node_modules/react-native-country-picker-modal/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-awesome-alerts/'
+                        '../node_modules/react-native-awesome-alerts/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-parsed-text/'
+                        '../node_modules/react-native-parsed-text/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-fast-image/'
+                        '../node_modules/react-native-fast-image/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-qrcode-svg/'
+                        '../node_modules/react-native-qrcode-svg/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-gesture-handler/'
+                        '../node_modules/react-native-gesture-handler/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-share/'
+                        '../node_modules/react-native-share/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-safe-area/'
+                        '../node_modules/react-native-safe-area/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-navigation-surf/'
+                        '../node_modules/react-navigation-surf/',
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-document-picker/'
+                        '../node_modules/react-native-document-picker/',
                     ),
                     path.resolve(__dirname, '../node_modules/rn-fetch-blob/'),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-ui-lib/'
+                        '../node_modules/react-native-ui-lib/',
                     ),
                 ],
                 loader: 'babel-loader',
@@ -177,7 +176,17 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.web.js', '.js', '.json'],
+        extensions: [
+            '.web.tsx',
+            '.web.ts',
+            '.web.jsx',
+            '.web.js',
+            '.ts',
+            '.tsx',
+            '.js',
+            '.jsx',
+            '.json',
+        ],
         alias: {
             '@react-native-community/async-storage':
                 'react-native-web/dist/exports/AsyncStorage',

@@ -20,7 +20,7 @@ export type HeaderItem = {
     /**
      * Label text for button
      */
-    label: string;
+    label?: string;
     /**
      * Accessibility label for the button for screen readers.
      */
