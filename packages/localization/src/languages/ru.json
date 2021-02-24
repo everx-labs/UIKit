@@ -331,7 +331,8 @@
     "PushFeedbackShort": "Оставьте отзыв, если хотите поучаствовать в разработке приложения",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "Получить",
     "Recent": "Последние",
