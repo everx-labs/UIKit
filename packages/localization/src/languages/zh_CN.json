@@ -485,5 +485,16 @@
     "Yesterday": "昨天",
     "YesterdayAt": "昨天在{0}",
     "You": "您",
-    "YourEmail": "你的邮箱"
+    "YourEmail": "你的邮箱",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    }
 }

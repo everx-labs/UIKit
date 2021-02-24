@@ -485,5 +485,16 @@
     "Yesterday": "Ieri",
     "YesterdayAt": "Ieri alle {0}",
     "You": "tu",
-    "YourEmail": "La tua email"
+    "YourEmail": "La tua email",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    }
 }

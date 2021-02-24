@@ -485,5 +485,16 @@
     "Yesterday": "어제",
     "YesterdayAt": "어제 {0}",
     "You": "당신은",
-    "YourEmail": "이용자의 이메일"
+    "YourEmail": "이용자의 이메일",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    }
 }
