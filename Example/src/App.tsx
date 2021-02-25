@@ -6,7 +6,7 @@
  * @flow
  */
 
-import 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { enableScreens } from 'react-native-screens';
@@ -64,6 +64,7 @@ import { TextScreen } from './screens/Text';
 import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
 import { Navigation } from './screens/Navigation';
+import { SectionsService } from './Search';
 
 enableScreens();
 // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -99,11 +100,41 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
                         <UISearchBarButton forId="search">
-                            {(searchText) => (
-                                <View>
-                                    <UILabel>{searchText}</UILabel>
-                                </View>
-                            )}
+                            {(searchText: string) => {
+                                return (
+                                    <FlatList
+                                        style={{ flex: 1 }}
+                                        data={SectionsService.shared.find(
+                                            searchText,
+                                        )}
+                                        keyExtractor={({ item: { title } }) =>
+                                            title
+                                        }
+                                        renderItem={({
+                                            item: {
+                                                item: { title, routeKey },
+                                            },
+                                        }) => {
+                                            return (
+                                                <TouchableOpacity
+                                                    key={title}
+                                                    style={{
+                                                        width: '100%',
+                                                        padding: 10,
+                                                    }}
+                                                    onPress={() => {
+                                                        navigation.navigate({
+                                                            key: routeKey,
+                                                        });
+                                                    }}
+                                                >
+                                                    <UILabel>{title}</UILabel>
+                                                </TouchableOpacity>
+                                            );
+                                        }}
+                                    />
+                                );
+                            }}
                         </UISearchBarButton>
                     </View>
                     <ScrollView

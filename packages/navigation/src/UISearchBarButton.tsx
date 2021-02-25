@@ -19,9 +19,13 @@ import { UISearchController } from './UISearchController';
 export function UISearchBarButton({
     forId,
     children,
+    onChangeText,
 }: {
     forId?: string;
     children: (searchText: string) => React.ReactNode;
+    onChangeText?: React.ComponentProps<
+        typeof UISearchController
+    >['onChangeText'];
 }) {
     const [visible, setVisible] = React.useState(false);
     return (
@@ -57,6 +61,7 @@ export function UISearchBarButton({
                 onCancel={() => {
                     setVisible(false);
                 }}
+                onChangeText={onChangeText}
             >
                 {children}
             </UISearchController>

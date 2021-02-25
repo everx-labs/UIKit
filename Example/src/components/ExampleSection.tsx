@@ -2,6 +2,8 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import { UILabel, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { useRoute } from '@react-navigation/core';
+import { SectionsService } from '../Search';
 
 export function ExampleSection({
     title,
@@ -11,6 +13,11 @@ export function ExampleSection({
     children: React.ReactNode;
 }) {
     const theme = useTheme();
+    const route = useRoute();
+
+    React.useEffect(() => {
+        SectionsService.shared.registerCommand({ title, routeKey: route.key });
+    }, [title, route]);
 
     return (
         <>

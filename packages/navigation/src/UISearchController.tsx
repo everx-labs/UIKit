@@ -13,7 +13,8 @@ export type UISearchControllerProps = {
     forId?: string;
     visible: boolean;
     onCancel: () => void | Promise<void>;
-    children: (searchText: string) => React.ReactNode;
+    onChangeText?: React.ComponentProps<typeof UISearchBar>['onChangeText'];
+    children: (searchText: string) => React.ReactNode | React.ReactNode;
 };
 
 type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
@@ -115,6 +116,7 @@ function UISearchControllerContent({
     onCancel,
     children,
     onClosed,
+    onChangeText: onChangeTextProp,
 }: UISearchControllerContentProps) {
     const [searchText, setSearchText] = React.useState('');
     const { height } = useWindowDimensions();
@@ -156,15 +158,29 @@ function UISearchControllerContent({
         [backgroundColorParts, backgroundOpacity, height, opacity],
     );
 
+    const onChangeText = React.useCallback(
+        (text: string) => {
+            if (onChangeTextProp) {
+                onChangeTextProp(text);
+            }
+
+            setSearchText(text);
+        },
+        [onChangeTextProp, setSearchText],
+    );
+
     return (
         <Animated.View style={backgroundStyle}>
-            <SafeAreaView style={styles.contentInner}>
+            <SafeAreaView style={styles.contentInner} edges={['top']}>
                 <UISearchBar
-                    onChangeText={setSearchText}
+                    autoFocus
+                    onChangeText={onChangeText}
                     headerRightLabel={uiLocalized.Cancel}
                     headerRightOnPress={onCancel}
                 />
-                {children(searchText)}
+                {typeof children === 'function'
+                    ? children(searchText)
+                    : children}
             </SafeAreaView>
         </Animated.View>
     );
@@ -208,5 +224,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',
+        flex: 1,
     },
 });
