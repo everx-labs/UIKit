@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
-import type { ColorVariants } from 'packages/hydrogen/src';
+import type { ColorVariants } from '@tonlabs/uikit.hydrogen';
 
 export function ExampleScreen({
     children,
