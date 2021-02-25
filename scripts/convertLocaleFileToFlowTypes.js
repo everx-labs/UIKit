@@ -1,11 +1,10 @@
 const fs = require('fs');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const prettier = require('prettier');
 const jsonToFlow = require('json-to-flowtype-generator');
 
 const dictionary = require('../packages/localization/src/languages/en.json');
 
-const exportPath = 'packages/localization/src/languages/types.js';
+export const exportPath = 'packages/localization/src/languages/types.js';
 
 const types = jsonToFlow(dictionary, { name: 'UILocalizedData' });
 
@@ -14,9 +13,12 @@ const content = `
 
     export ${types}
 `;
+export const flowTypes = prettier.format(content, { tabWidth: 4 });
 
-// eslint-disable-next-line consistent-return
-fs.writeFile(exportPath, prettier.format(content, { tabWidth: 4 }), { flag: 'w' }, (err) => {
-    if (err) return console.log(err);
-    console.log('Writing flow types to types.js file');
-});
+export function updateTypesFile() {
+    // eslint-disable-next-line consistent-return
+    fs.writeFileSync(exportPath, flowTypes, { flag: 'w' }, err => {
+        if (err) return console.log(err);
+        console.log('Writing flow types to types.js file');
+    });
+}

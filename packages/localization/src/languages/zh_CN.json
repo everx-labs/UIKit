@@ -331,7 +331,8 @@
     "PushFeedbackShort": "为做Surf的贡献，请提供您的反馈意见",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "接收",
     "Recent": "最近",
@@ -485,5 +486,16 @@
     "Yesterday": "昨天",
     "YesterdayAt": "昨天在{0}",
     "You": "您",
-    "YourEmail": "你的邮箱"
+    "YourEmail": "你的邮箱",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    }
 }

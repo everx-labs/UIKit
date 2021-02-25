@@ -331,7 +331,8 @@
     "PushFeedbackShort": "Geben Sie feedback, um zur Geschichte beizutragen",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "Empfangen",
     "Recent": "Letzten",
@@ -485,5 +486,16 @@
     "Yesterday": "Gestern",
     "YesterdayAt": "Gestern um {0}",
     "You": "Sie",
-    "YourEmail": "Ihre E-Mail"
+    "YourEmail": "Ihre E-Mail",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    }
 }

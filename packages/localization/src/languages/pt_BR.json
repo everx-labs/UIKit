@@ -331,7 +331,8 @@
     "PushFeedbackShort": "Dê seu feedback para contribuir com o Surf",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "Receber",
     "Recent": "Recente",
@@ -485,5 +486,16 @@
     "Yesterday": "Ontem",
     "YesterdayAt": "Ontem às {0}",
     "You": "Você",
-    "YourEmail": "Seu e-mail"
+    "YourEmail": "Seu e-mail",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    }
 }

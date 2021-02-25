@@ -7,10 +7,6 @@
         "total": "Toplam",
         "weekly": "Haftalık"
     },
-    "AccountLimitRule": {
-        "passportVerification": "Pasaport Doğrulaması",
-        "twoFactorAuthentication": "İki faktörlü kimlik doğrulama"
-    },
     "Accounts": "Hesaplar",
     "AccountTypeHint": "Hesap adresinizi herkese açık olarak ayarlamak, hesabınızın profilinizde görünmesini sağlar",
     "Add": "Ekle",
@@ -331,7 +327,8 @@
     "PushFeedbackShort": "Surf'e katkıda bulunmak için geribeslemede bulunun",
     "QRCodeScanner": {
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning"
+        "ErrorUnexpected": "Something unexpected happened during scanning",
+        "ErrorOnRead": "Couldn't read QR code"
     },
     "Receive": "Teslim al",
     "Recent": "Son",
@@ -485,5 +482,20 @@
     "Yesterday": "Dün",
     "YesterdayAt": "Dün {0}",
     "You": "Siz",
-    "YourEmail": "E-posta adresiniz"
+    "YourEmail": "E-posta adresiniz",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "MainAccount": "Main account",
+            "SelectAsset": "Select asset",
+            "EnterManually": "Enter manually",
+            "ScanQR": "Scan QR code"
+        }
+    },
+    "AccountLimitRule": {
+        "passportVerification": "Passport Verification",
+        "twoFactorAuthentication": "2-Factor Authorization"
+    }
 }
