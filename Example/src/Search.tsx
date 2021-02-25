@@ -1,4 +1,3 @@
-// @flow
 import Fuse from 'fuse.js';
 
 export type Section = {
