@@ -497,5 +497,10 @@
             "EnterManually": "Enter manually",
             "ScanQR": "Scan QR code"
         }
-    }
+    },
+    "rounds": "раундов",
+    "rounds01": "раунд",
+    "rounds11": "раундов",
+    "rounds24": "раунда",
+    "rounds50": "раундов"
 }
