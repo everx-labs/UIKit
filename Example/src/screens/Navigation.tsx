@@ -63,7 +63,7 @@ export const Navigation = () => {
                     </UISearchController>
                 </View>
             </ExampleSection>
-            <ExampleSection title="UISearchController">
+            <ExampleSection title="UISearchBarButton">
                 <View
                     style={{
                         width: '100%',
