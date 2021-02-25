@@ -72,6 +72,7 @@
     "react-native-camera": "3.6.0",
     "react-native-permissions": "3.0.0",
     "react-native-qrcode-scanner": "1.4.1",
+    "react-native-navigation-bar-color": "2.0.1",
     "react-navigation-surf": "ssh://git@github.com/tonlabs/react-navigation-surf",
     "rn-fetch-blob": "git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39",
     "validator": "10.11.0"

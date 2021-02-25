@@ -11,6 +11,7 @@ export * from './UIQRCodeScannerSheet';
 export * from './Portal';
 export * from './UICheckbox';
 export * from './UIImage';
+export * from './UIStatusBar';
 
 export * from './Colors';
 export * from './Typography';
