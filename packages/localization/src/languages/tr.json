@@ -497,5 +497,10 @@
     "AccountLimitRule": {
         "passportVerification": "Passport Verification",
         "twoFactorAuthentication": "2-Factor Authorization"
-    }
+    },
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds"
 }
