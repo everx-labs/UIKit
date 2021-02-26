@@ -15,6 +15,7 @@ export function useIsDarkColor(color: ColorVariants) {
 
         // ---
         // https://github.com/gion/is-dark-color/blob/master/src/isDarkColor.js#L14-L24
+        // Based on https://www.w3.org/TR/WCAG20/#relativeluminancedef
 
         const colorArray = [r / 255, g / 255, b / 255].map((v) => {
             if (v <= 0.03928) {
