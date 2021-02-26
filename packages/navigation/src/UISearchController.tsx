@@ -158,6 +158,15 @@ function UISearchControllerContent({
         [backgroundColorParts, backgroundOpacity, height, opacity],
     );
 
+    const contentStyle: ViewStyle = React.useMemo(
+        () => ({
+            flex: 1,
+            // @ts-ignore
+            opacity: opacity as number,
+        }),
+        [opacity],
+    );
+
     const onChangeText = React.useCallback(
         (text: string) => {
             if (onChangeTextProp) {
@@ -178,9 +187,11 @@ function UISearchControllerContent({
                     headerRightLabel={uiLocalized.Cancel}
                     headerRightOnPress={onCancel}
                 />
-                {typeof children === 'function'
-                    ? children(searchText)
-                    : children}
+                <Animated.View style={contentStyle}>
+                    {typeof children === 'function'
+                        ? children(searchText)
+                        : children}
+                </Animated.View>
             </SafeAreaView>
         </Animated.View>
     );
