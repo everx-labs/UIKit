@@ -1,20 +1,24 @@
 import { useEffect } from 'react';
 
-import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import {
+    useTheme,
+    ColorVariants,
+    useIsDarkColor,
+} from '@tonlabs/uikit.hydrogen';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 export function UIAndroidNavigationBar({
     color = ColorVariants.BackgroundPrimary,
-    isLight = true,
 }: {
-    color: ColorVariants;
-    isLight?: boolean;
+    color?: ColorVariants;
 }) {
     const theme = useTheme();
 
+    const isDark = useIsDarkColor(color);
+
     useEffect(() => {
-        changeNavigationBarColor(theme[color] as string, isLight, true);
-    }, [theme, color, isLight]);
+        changeNavigationBarColor(theme[color] as string, !isDark, true);
+    }, [theme, color, isDark]);
 
     return null;
 }

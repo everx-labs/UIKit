@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    View,
-    StyleSheet,
-    ViewStyle,
-    Platform,
-    Keyboard,
-    StatusBarStyle,
-} from 'react-native';
+import { View, StyleSheet, ViewStyle, Platform, Keyboard } from 'react-native';
 
 import {
     PanGestureHandler,
@@ -18,7 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
 
-import { ColorVariants, useTheme } from './Colors';
+import { ColorVariants } from './Colors';
 import { UIConstant } from './constants';
 import { Portal } from './Portal';
 import { useColorParts } from './useColorParts';
@@ -336,12 +329,9 @@ function UISheetPortalContent({
         colorParts: overlayColorParts,
         opacity: overlayOpacity,
     } = useColorParts(ColorVariants.BackgroundOverlay);
-    const theme = useTheme();
 
     useStatusBar({
-        barStyle: theme[
-            ColorVariants.BackgroundOverlayStatusBarStyle
-        ] as StatusBarStyle,
+        backgroundColor: ColorVariants.BackgroundOverlay,
     });
 
     // @ts-ignore TS doesn't understand when backgroundColor is animated node

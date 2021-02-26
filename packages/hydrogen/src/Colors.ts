@@ -48,8 +48,6 @@ export enum ColorVariants {
     // That ones are for technical reasons
     Transparent = 'Transparent',
     KeyboardStyle = 'KeyboardStyle',
-    StatusBarStyle = 'StatusBarStyle',
-    BackgroundOverlayStatusBarStyle = 'BackgroundOverlayStatusBarStyle',
     StaticTextPrimaryDark = 'StaticTextPrimaryDark',
     StaticTextPrimaryLight = 'StaticTextPrimaryLight',
     StaticTextOverlayDark = 'StaticTextOverlayDark',
@@ -118,8 +116,6 @@ export const LightTheme: Theme = {
     // [ColorVariants.IconNegative]: '#CA1414',
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'light',
-    [ColorVariants.StatusBarStyle]: 'dark-content',
-    [ColorVariants.BackgroundOverlayStatusBarStyle]: 'light-content',
 };
 
 export const DarkTheme: Theme = {
@@ -160,8 +156,6 @@ export const DarkTheme: Theme = {
 
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
-    [ColorVariants.StatusBarStyle]: 'light-content',
-    [ColorVariants.BackgroundOverlayStatusBarStyle]: 'light-content',
 };
 
 export const ThemeContext = React.createContext(LightTheme);

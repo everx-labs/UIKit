@@ -25,6 +25,9 @@ import {
     UIMaterialTextView,
     UIQRCodeScannerSheet,
     UICardSheet,
+    useTheme,
+    ColorVariants,
+    UILabel,
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -33,6 +36,7 @@ export const actionSheet = React.createRef<typeof UIActionSheet>();
 export const customSheet = React.createRef<typeof UICustomSheet>();
 
 export const Menus = () => {
+    const theme = useTheme();
     const [activeIndex, setActiveIndex] = useState(0);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
@@ -96,12 +100,13 @@ export const Menus = () => {
                             setCardSheetVisible(false);
                         }}
                         style={{
-                            backgroundColor: 'white',
+                            backgroundColor:
+                                theme[ColorVariants.BackgroundPrimary],
                             padding: 20,
                             borderRadius: 10,
                         }}
                     >
-                        <Text>Hi there!</Text>
+                        <UILabel>Hi there!</UILabel>
                         <UIButton
                             title="close"
                             onPress={() => {
@@ -121,7 +126,8 @@ export const Menus = () => {
                             setCardSheet2Visible(false);
                         }}
                         style={{
-                            backgroundColor: 'white',
+                            backgroundColor:
+                                theme[ColorVariants.BackgroundPrimary],
                             padding: 20,
                             borderRadius: 10,
                         }}
@@ -148,7 +154,8 @@ export const Menus = () => {
                                     setBottomSheetVisible(false);
                                 }}
                                 style={{
-                                    backgroundColor: 'white',
+                                    backgroundColor:
+                                        theme[ColorVariants.BackgroundPrimary],
                                     padding: 20,
                                     paddingBottom: Math.max(
                                         insets?.bottom || 0,
@@ -157,7 +164,7 @@ export const Menus = () => {
                                     borderRadius: 10,
                                 }}
                             >
-                                <Text>Hi there!</Text>
+                                <UILabel>Hi there!</UILabel>
                                 <UIButton
                                     title="close"
                                     onPress={() => {

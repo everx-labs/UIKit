@@ -48,7 +48,10 @@ import {
     UIBackgroundView,
     UIStatusBarManager,
 } from '@tonlabs/uikit.hydrogen';
-import { UISearchBarButton } from '@tonlabs/uikit.navigation';
+import {
+    UISearchBarButton,
+    UIAndroidNavigationBar,
+} from '@tonlabs/uikit.navigation';
 
 import { Buttons } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
@@ -354,6 +357,7 @@ const App = () => {
                     <UIAlert />
                     <UIAlertView />
                     <UIDropdownAlert />
+                    <UIAndroidNavigationBar />
                 </PortalManager>
             </SafeAreaProvider>
         </UIStatusBarManager>

@@ -20,3 +20,4 @@ export * from './Typography';
 export * from './useWebFonts';
 export * from './useAutogrowTextView';
 export * from './useColorParts';
+export * from './useIsDarkColor';

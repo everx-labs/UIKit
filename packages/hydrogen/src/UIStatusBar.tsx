@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { StatusBar, StatusBarStyle } from 'react-native';
 
-import { useTheme, ColorVariants } from './Colors';
+import { ColorVariants, useTheme } from './Colors';
+import { useIsDarkColor } from './useIsDarkColor';
 
 const StatusBarContext = React.createContext<{
-    addBar: (id: number, barStyle: StatusBarStyle) => void;
+    addBar: (
+        id: number,
+        barStyle: StatusBarStyle,
+        backgroundColor: ColorVariants,
+    ) => void;
     removeBar: (id: number) => void;
 } | null>(null);
 
@@ -20,6 +25,73 @@ function useLocalID() {
     return localIdRef.current;
 }
 
+type State = {
+    styles: {
+        [key: number]: {
+            barStyle: StatusBarStyle;
+            backgroundColor: ColorVariants;
+        };
+    };
+    stack: number[];
+};
+
+type AddBarAction = {
+    type: 'ADD_BAR';
+    payload: {
+        id: number;
+        barStyle: StatusBarStyle;
+        backgroundColor: ColorVariants;
+    };
+};
+
+type RemoveBarAction = {
+    type: 'REMOVE_BAR';
+    payload: {
+        id: number;
+    };
+};
+
+function reducer(state: State, action: AddBarAction | RemoveBarAction) {
+    if (action.type === 'ADD_BAR') {
+        const styles = {
+            ...state.styles,
+            [action.payload.id]: {
+                barStyle: action.payload.barStyle,
+                backgroundColor: action.payload.backgroundColor,
+            },
+        };
+        const stack = state.stack.slice();
+        if (stack.indexOf(action.payload.id) === -1) {
+            stack.push(action.payload.id);
+        }
+        return {
+            styles,
+            stack,
+        };
+    }
+    if (action.type === 'REMOVE_BAR') {
+        const styles = { ...state.styles };
+        delete styles[action.payload.id];
+
+        const stack = state.stack.filter(
+            (barId) => barId !== action.payload.id,
+        );
+
+        return {
+            styles,
+            stack,
+        };
+    }
+
+    return state;
+}
+
+function useStatusBarStyle(color: ColorVariants): StatusBarStyle {
+    const isDark = useIsDarkColor(color);
+
+    return isDark ? 'light-content' : 'dark-content';
+}
+
 export function UIStatusBarManager({
     children,
 }: {
@@ -27,52 +99,85 @@ export function UIStatusBarManager({
 }) {
     const theme = useTheme();
     const localID = useLocalID();
-    const styles = React.useRef<{
-        [key: number]: StatusBarStyle;
-    }>({
-        [localID]: theme[ColorVariants.StatusBarStyle] as StatusBarStyle,
-    }).current;
-    const [stack, setStack] = React.useState([localID]);
+
+    const defaultBarStyle = useStatusBarStyle(ColorVariants.BackgroundPrimary);
+
+    const [state, dispatch] = React.useReducer(reducer, {
+        styles: {
+            [localID]: {
+                barStyle: defaultBarStyle,
+                backgroundColor: ColorVariants.BackgroundPrimary,
+            },
+        },
+        stack: [localID],
+    });
+
     const manager = React.useRef({
-        addBar(id: number, barStyle: StatusBarStyle) {
-            styles[id] = barStyle;
-            if (styles[id] != null) {
-                return;
-            }
-            setStack(stack.concat([id]));
+        addBar(
+            id: number,
+            barStyle: StatusBarStyle,
+            backgroundColor: ColorVariants,
+        ) {
+            dispatch({
+                type: 'ADD_BAR',
+                payload: {
+                    id,
+                    barStyle,
+                    backgroundColor,
+                },
+            });
         },
         removeBar(id: number) {
-            delete styles[id];
-            setStack(stack.filter((barId) => barId !== id));
+            dispatch({
+                type: 'REMOVE_BAR',
+                payload: {
+                    id,
+                },
+            });
         },
     }).current;
+
+    const { barStyle, backgroundColor } = React.useMemo(() => {
+        const lastStyleId = state.stack[state.stack.length - 1];
+
+        return state.styles[lastStyleId];
+    }, [state.stack, state.styles]);
 
     return (
         <StatusBarContext.Provider value={manager}>
             {children}
-            <StatusBar barStyle={styles[stack[stack.length - 1]]} />
+            <StatusBar
+                barStyle={barStyle}
+                backgroundColor={theme[backgroundColor]}
+            />
         </StatusBarContext.Provider>
     );
 }
 
-export function useStatusBar({ barStyle }: { barStyle: StatusBarStyle }) {
+export function useStatusBar({
+    backgroundColor,
+}: {
+    backgroundColor: ColorVariants;
+}) {
     const localID = useLocalID();
     const parentManager = React.useContext(StatusBarContext);
+
+    const barStyle = useStatusBarStyle(backgroundColor);
 
     React.useEffect(() => {
         if (parentManager == null) {
             return undefined;
         }
 
-        parentManager.addBar(localID, barStyle);
+        parentManager.addBar(localID, barStyle, backgroundColor);
 
         return () => {
             parentManager.removeBar(localID);
         };
-    }, [parentManager, localID, barStyle]);
+    }, [parentManager, localID, backgroundColor, barStyle]);
 }
 
-export function UIStatusBar(props: { barStyle: StatusBarStyle }) {
+export function UIStatusBar(props: { backgroundColor: ColorVariants }) {
     useStatusBar(props);
 
     return null;
