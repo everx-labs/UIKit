@@ -43,7 +43,7 @@ function UIAccountPickerItem({
             style={[
                 styles.item,
                 {
-                    backgroundColor: theme[ColorVariants.BackgroundSecondary],
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
                 },
             ]}
             onPress={() => {
