@@ -7,6 +7,7 @@ import { MessageStatus, ChatMessageType } from '@tonlabs/uikit.chats';
 import { AddressInputMessage, InteractiveMessageType } from '../types';
 import type { OnHeightChange, Input } from '../types';
 import { UIAddressInput } from '../UIAddressInput';
+import { UIAccountPicker } from '../UIAccountPicker';
 
 export type AddressInputState = {
     inputVisible: boolean;
@@ -99,19 +100,17 @@ export function getAddressInput(
                     });
                 },
             },
-            // {
-            //     type: ChatMessageType.ActionButton,
-            //     text: uiLocalized.Browser.AddressInputBubble.SelectAsset,
-            //     key: 'address-input-bubble-select-assets',
-            //     status: ChatMessageStatus.Received,
-            //     time: Date.now(),
-            //     sender: 'system',
-            //     onPress: () => {
-            //         dispatch({
-            //             type: 'OPEN_ADDRESS_SELECTION',
-            //         });
-            //     },
-            // },
+            {
+                type: ChatMessageType.ActionButton,
+                text: uiLocalized.Browser.AddressInputBubble.SelectAsset,
+                key: 'address-input-bubble-select-assets',
+                status: MessageStatus.Received,
+                onPress: () => {
+                    dispatch({
+                        type: 'OPEN_ADDRESS_SELECTION',
+                    });
+                },
+            },
             {
                 type: ChatMessageType.ActionButton,
                 text: uiLocalized.Browser.AddressInputBubble.MainAccount,
@@ -157,24 +156,44 @@ export function getAddressInputShared(
     dispatch: (action: AddressInputAction) => void,
 ) {
     return (
-        <UIQRCodeScannerSheet
-            key={InteractiveMessageType.AddressInput}
-            visible={state.qrCodeVisible}
-            onRead={async (e: any) => {
-                const mes = message as AddressInputMessage;
-                mes.onSelect(
-                    uiLocalized.Browser.AddressInputBubble.ScanQR,
-                    await mes.qrCode.parseData(e.data),
-                );
-                dispatch({
-                    type: 'CLOSE_QR_CODE',
-                });
-            }}
-            onClose={() => {
-                dispatch({
-                    type: 'CLOSE_QR_CODE',
-                });
-            }}
-        />
+        <React.Fragment key={InteractiveMessageType.AddressInput}>
+            <UIQRCodeScannerSheet
+                visible={state.qrCodeVisible}
+                onRead={async (e: any) => {
+                    const mes = message as AddressInputMessage;
+                    mes.onSelect(
+                        uiLocalized.Browser.AddressInputBubble.ScanQR,
+                        await mes.qrCode.parseData(e.data),
+                    );
+                    dispatch({
+                        type: 'CLOSE_QR_CODE',
+                    });
+                }}
+                onClose={() => {
+                    dispatch({
+                        type: 'CLOSE_QR_CODE',
+                    });
+                }}
+            />
+            <UIAccountPicker
+                visible={state.addressSelectionVisible}
+                onSelect={(address) => {
+                    const mes = message as AddressInputMessage;
+                    mes.onSelect(
+                        uiLocalized.Browser.AddressInputBubble.SelectAsset,
+                        address,
+                    );
+                    dispatch({
+                        type: 'CLOSE_ADDRESS_SELECTION',
+                    });
+                }}
+                onClose={() => {
+                    dispatch({
+                        type: 'CLOSE_ADDRESS_SELECTION',
+                    });
+                }}
+                sections={(message as AddressInputMessage).select}
+            />
+        </React.Fragment>
     );
 }

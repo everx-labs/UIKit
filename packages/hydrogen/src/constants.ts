@@ -11,7 +11,7 @@ export const UIConstant = {
     alertBorderRadius: 12,
 
     elasticWidthCardSheet: 404,
-    elasticWidthBottomSheet: 600,
+    elasticWidthBottomSheet: 448,
 
     swipeThreshold: 50,
 

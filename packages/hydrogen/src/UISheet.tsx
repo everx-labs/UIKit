@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, Platform, Keyboard } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    ViewStyle,
+    StyleProp,
+    Platform,
+    Keyboard,
+} from 'react-native';
 
 import {
     PanGestureHandler,
@@ -390,7 +397,11 @@ function UISheetPortalContent({
                 onGestureEvent={onPan}
                 onHandlerStateChange={onPan}
             >
-                <Animated.View style={cardStyle} onLayout={onSheetLayout}>
+                <Animated.View
+                    style={cardStyle}
+                    onLayout={onSheetLayout}
+                    pointerEvents="box-none"
+                >
                     {children}
                 </Animated.View>
             </PanGestureHandler>
@@ -431,7 +442,7 @@ export function UISheet(props: UISheetProps) {
     );
 }
 
-export type UICardSheetProps = UISheetProps & { style?: ViewStyle };
+export type UICardSheetProps = UISheetProps & { style?: StyleProp<ViewStyle> };
 
 export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
     const { bottom } = useSafeAreaInsets();
@@ -454,7 +465,9 @@ export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
     );
 }
 
-export type UIBottomSheetProps = UISheetProps & { style?: ViewStyle };
+export type UIBottomSheetProps = UISheetProps & {
+    style?: StyleProp<ViewStyle>;
+};
 
 export function UIBottomSheet({
     children,
