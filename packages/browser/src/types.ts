@@ -21,6 +21,7 @@ export type ValidateAddress = (text: string) => Promise<ValidationResult>;
 export enum InteractiveMessageType {
     Terminal = 'Terminal',
     AddressInput = 'AddressInput',
+    Menu = 'Menu',
 }
 
 type PlainTextMessage = {
@@ -72,6 +73,23 @@ export type AddressInputMessage = {
     };
 };
 
-export type InteractiveMessage = TerminalMessage | AddressInputMessage;
+type MenuItem = {
+    handlerId: number;
+    title: string;
+    description?: string;
+};
+
+export type MenuMessage = {
+    type: InteractiveMessageType.Menu;
+    title: string;
+    description?: string;
+    items: MenuItem[];
+    onSelect: (handlerId: number) => void | Promise<void>;
+};
+
+export type InteractiveMessage =
+    | TerminalMessage
+    | AddressInputMessage
+    | MenuMessage;
 
 export type BrowserMessage = VisibleMessage | InteractiveMessage;
