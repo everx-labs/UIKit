@@ -4,6 +4,7 @@ import {
     TouchableOpacity,
     useWindowDimensions,
     Platform,
+    StatusBar,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -98,7 +99,13 @@ export function UIAccountPicker({
         >
             <ScrollView
                 bounces={false}
-                style={{ maxHeight: height - insets.top - PULLER_HEIGHT }}
+                style={{
+                    maxHeight:
+                        height -
+                        (StatusBar.currentHeight ?? 0) -
+                        insets.top -
+                        PULLER_HEIGHT,
+                }}
                 contentContainerStyle={{
                     paddingBottom,
                 }}
