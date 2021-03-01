@@ -22,10 +22,12 @@ import {
     getAddressInputShared,
 } from './Inputs/addressInput';
 import { UIBrowserList } from './UIBrowserList';
+import { getMenuInput, MenuState } from './Inputs/menu';
 
 type InteractiveMessagesState = {
     [InteractiveMessageType.Terminal]: TerminalState;
     [InteractiveMessageType.AddressInput]: AddressInputState;
+    [InteractiveMessageType.Menu]: MenuState;
 };
 
 type InteractiveMessageAction = {
@@ -43,6 +45,7 @@ function interactiveMessagesReducer(
             state[InteractiveMessageType.AddressInput],
             action.payload,
         ),
+        [InteractiveMessageType.Menu]: null,
     };
 }
 
@@ -84,6 +87,7 @@ function useInteractiveMessages(
             qrCodeVisible: false,
             addressSelectionVisible: false,
         },
+        [InteractiveMessageType.Menu]: null,
     });
 
     // It's not an interactive message :)
@@ -174,6 +178,10 @@ export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
                 type: InteractiveMessageType.AddressInput,
                 getInput: getAddressInput,
                 getInputShared: getAddressInputShared,
+            },
+            {
+                type: InteractiveMessageType.Menu,
+                getInput: getMenuInput,
             },
         ],
         [],

@@ -57,20 +57,49 @@ const BrowserScreen = () => {
         //         ]);
         //     },
         // },
+        // {
+        //     type: InteractiveMessageType.Terminal,
+        //     prompt: 'Type sth!',
+        //     onSendText: (text) => {
+        //         setMessages([
+        //             {
+        //                 key: `${Date.now()}-terminal`,
+        //                 type: ChatMessageType.PlainText,
+        //                 status: MessageStatus.Sent,
+        //                 text,
+        //             },
+        //             ...messages.slice(1),
+        //         ]);
+        //     },
+        // },
         {
-            type: InteractiveMessageType.Terminal,
-            prompt: 'Type sth!',
-            onSendText: (text) => {
+            type: InteractiveMessageType.Menu,
+            title: 'Choose:',
+            onSelect: (handlerId: number) => {
                 setMessages([
                     {
-                        key: `${Date.now()}-terminal`,
+                        key: `${Date.now()}-menu`,
                         type: ChatMessageType.PlainText,
                         status: MessageStatus.Sent,
-                        text,
+                        text: `${handlerId} have been chosen`,
                     },
                     ...messages.slice(1),
                 ]);
             },
+            items: [
+                {
+                    handlerId: 1,
+                    title: 'One',
+                },
+                {
+                    handlerId: 2,
+                    title: 'Two',
+                },
+                {
+                    handlerId: 3,
+                    title: 'Three',
+                },
+            ],
         },
         {
             key: `${Date.now()}-initial`,
