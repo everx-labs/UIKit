@@ -37,6 +37,16 @@ const BrowserScreen = () => {
                     return Promise.resolve('0:000');
                 },
             },
+            select: [
+                {
+                    title: 'Accounts',
+                    data: new Array(20).fill(null).map((_i, index) => ({
+                        address: `0:000${index}`,
+                        balance: `12${index}`,
+                        description: 'My Crystals',
+                    })),
+                },
+            ],
             onSelect: (selectedButtonString: string, address: string) => {
                 setMessages([
                     {
@@ -54,17 +64,36 @@ const BrowserScreen = () => {
                     ...messages.slice(1),
                 ]);
             },
-            select: [
-                {
-                    title: 'Accounts',
-                    data: new Array(20).fill(null).map((_i, index) => ({
-                        address: `0:000${index}`,
-                        balance: `12${index}`,
-                        description: 'My Crystals',
-                    })),
-                },
-            ],
         },
+        // {
+        //     type: InteractiveMessageType.Menu,
+        //     title: 'Choose:',
+        //     onSelect: (handlerId: number) => {
+        //         setMessages([
+        //             {
+        //                 key: `${Date.now()}-menu`,
+        //                 type: ChatMessageType.PlainText,
+        //                 status: MessageStatus.Sent,
+        //                 text: `${handlerId} have been chosen`,
+        //             },
+        //             ...messages.slice(1),
+        //         ]);
+        //     },
+        //     items: [
+        //         {
+        //             handlerId: 1,
+        //             title: 'One',
+        //         },
+        //         {
+        //             handlerId: 2,
+        //             title: 'Two',
+        //         },
+        //         {
+        //             handlerId: 3,
+        //             title: 'Three',
+        //         },
+        //     ],
+        // },
         // {
         //     type: InteractiveMessageType.Terminal,
         //     prompt: 'Type sth!',

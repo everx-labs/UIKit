@@ -38,6 +38,7 @@ export enum ColorVariants {
     LineNeutral = 'LineNeutral',
     LineAccent = 'LineAccent',
     LineNegative = 'LineNegative',
+    LinePositive = 'LinePositive',
     // IconAccent = 'IconAccent',
     // IconPrimary = 'IconPrimary',
     IconSecondary = 'IconSecondary',
@@ -106,6 +107,7 @@ export const LightTheme: Theme = {
     [ColorVariants.LineNeutral]: '#20262A',
     [ColorVariants.LineAccent]: '#0083E0',
     [ColorVariants.LineNegative]: '#CA1414',
+    [ColorVariants.LinePositive]: '#2FA851',
 
     // [ColorVariants.IconAccent]: '#0073C4',
     // [ColorVariants.IconPrimary]: '#20262A',
@@ -151,6 +153,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.LineNeutral]: '#FDFDFD',
     [ColorVariants.LineAccent]: '#0073C4',
     [ColorVariants.LineNegative]: '#CA1414',
+    [ColorVariants.LinePositive]: '#36C05C',
 
     [ColorVariants.IconSecondary]: '#ADB0B1',
 
