@@ -60,6 +60,17 @@ export type TerminalMessage = {
     onSendText: OnSendText;
 };
 
+export type AddressInputAccount = {
+    address: string;
+    balance: string | React.ReactNode;
+    description: string;
+};
+
+export type AddressInputAccountData = {
+    title: string;
+    data: AddressInputAccount[];
+};
+
 export type AddressInputMessage = {
     type: InteractiveMessageType.AddressInput;
     prompt: string;
@@ -71,6 +82,7 @@ export type AddressInputMessage = {
     qrCode: {
         parseData: (data: any) => Promise<string>;
     };
+    select: AddressInputAccountData[];
 };
 
 type MenuItem = {

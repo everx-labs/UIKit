@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, Platform, Keyboard } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    ViewStyle,
+    StyleProp,
+    Platform,
+    Keyboard,
+} from 'react-native';
 
 import {
     PanGestureHandler,
@@ -23,6 +30,7 @@ export type UISheetProps = {
     onClose?: OnClose;
     countRubberBandDistance?: boolean;
     children: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
 };
 
 const RUBBER_BAND_EFFECT_DISTANCE = 50;
@@ -271,6 +279,7 @@ function UISheetPortalContent({
     countRubberBandDistance,
     children,
     onClosePortalRequest,
+    style,
 }: UISheetPortalContentProps) {
     const heightValue = Animated.useValue(0);
     const {
@@ -384,16 +393,21 @@ function UISheetPortalContent({
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>
-            <PanGestureHandler
-                maxPointers={1}
-                enabled={onClose != null}
-                onGestureEvent={onPan}
-                onHandlerStateChange={onPan}
+
+            <Animated.View
+                style={cardStyle}
+                onLayout={onSheetLayout}
+                pointerEvents="box-none"
             >
-                <Animated.View style={cardStyle} onLayout={onSheetLayout}>
-                    {children}
-                </Animated.View>
-            </PanGestureHandler>
+                <PanGestureHandler
+                    maxPointers={1}
+                    enabled={onClose != null}
+                    onGestureEvent={onPan}
+                    onHandlerStateChange={onPan}
+                >
+                    <Animated.View style={style}>{children}</Animated.View>
+                </PanGestureHandler>
+            </Animated.View>
         </View>
     );
 }
@@ -431,30 +445,28 @@ export function UISheet(props: UISheetProps) {
     );
 }
 
-export type UICardSheetProps = UISheetProps & { style?: ViewStyle };
+export type UICardSheetProps = UISheetProps & { style?: StyleProp<ViewStyle> };
 
 export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
     const { bottom } = useSafeAreaInsets();
     return (
-        <UISheet {...rest}>
-            <View
-                style={[
-                    styles.card,
-                    {
-                        paddingBottom: Math.max(
-                            bottom,
-                            UIConstant.contentOffset,
-                        ),
-                    },
-                ]}
-            >
-                <View style={[style, styles.cardInner]}>{children}</View>
-            </View>
+        <UISheet
+            {...rest}
+            style={[
+                styles.card,
+                {
+                    paddingBottom: Math.max(bottom, UIConstant.contentOffset),
+                },
+            ]}
+        >
+            <View style={[style, styles.cardInner]}>{children}</View>
         </UISheet>
     );
 }
 
-export type UIBottomSheetProps = UISheetProps & { style?: ViewStyle };
+export type UIBottomSheetProps = UISheetProps & {
+    style?: StyleProp<ViewStyle>;
+};
 
 export function UIBottomSheet({
     children,
@@ -462,21 +474,20 @@ export function UIBottomSheet({
     ...rest
 }: UIBottomSheetProps) {
     return (
-        <UISheet {...rest} countRubberBandDistance>
-            <View
-                style={[
-                    styles.bottom,
-                    style,
-                    {
-                        paddingBottom:
-                            ((StyleSheet.flatten(style)
-                                .paddingBottom as number) ?? 0) +
-                            RUBBER_BAND_EFFECT_DISTANCE,
-                    },
-                ]}
-            >
-                {children}
-            </View>
+        <UISheet
+            {...rest}
+            countRubberBandDistance
+            style={[
+                styles.bottom,
+                style,
+                {
+                    paddingBottom:
+                        ((StyleSheet.flatten(style).paddingBottom as number) ??
+                            0) + RUBBER_BAND_EFFECT_DISTANCE,
+                },
+            ]}
+        >
+            {children}
         </UISheet>
     );
 }
@@ -498,12 +509,12 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
+        maxWidth: UIConstant.elasticWidthCardSheet,
+        alignSelf: 'center',
         paddingHorizontal: UIConstant.contentOffset,
     },
     cardInner: {
         width: '100%',
-        maxWidth: UIConstant.elasticWidthCardSheet,
-        alignSelf: 'center',
     },
     bottom: {
         width: '100%',

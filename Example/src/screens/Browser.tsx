@@ -5,6 +5,7 @@ import {
     InteractiveMessageType,
     UIBrowser,
     BrowserMessage,
+    ValidationResultStatus,
 } from '@tonlabs/uikit.browser';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
@@ -13,54 +14,90 @@ const BrowserStack = createStackNavigator();
 
 const BrowserScreen = () => {
     const [messages, setMessages] = React.useState<BrowserMessage[]>([
+        {
+            type: InteractiveMessageType.AddressInput,
+            prompt: 'What wallet do you want to work with?',
+            mainAddress: '0:000',
+            input: {
+                validateAddress: (text: string) => {
+                    if (text.length > 0 && text.length % 5 === 0) {
+                        return Promise.resolve({
+                            status: ValidationResultStatus.Error,
+                            text: 'Oh no, the length is divided by 5',
+                        });
+                    }
+                    return Promise.resolve({
+                        status: ValidationResultStatus.None,
+                    });
+                },
+            },
+            qrCode: {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                parseData: (_data: any) => {
+                    return Promise.resolve('0:000');
+                },
+            },
+            select: [
+                {
+                    title: 'Accounts',
+                    data: new Array(20).fill(null).map((_i, index) => ({
+                        address: `0:000${index}`,
+                        balance: `12${index}`,
+                        description: 'My Crystals',
+                    })),
+                },
+            ],
+            onSelect: (selectedButtonString: string, address: string) => {
+                setMessages([
+                    {
+                        key: `${Date.now()}-address-input2`,
+                        type: ChatMessageType.PlainText,
+                        status: MessageStatus.Sent,
+                        text: address,
+                    },
+                    {
+                        key: `${Date.now()}-address-input1`,
+                        type: ChatMessageType.PlainText,
+                        status: MessageStatus.Sent,
+                        text: selectedButtonString,
+                    },
+                    ...messages.slice(1),
+                ]);
+            },
+        },
         // {
-        //     type: 'AddressInput',
-        //     prompt: 'What wallet do you want to work with?',
-        //     mainAddress: '0:000',
-        //     input: {
-        //         validateAddress: (text: string) => {
-        //             if (text.length > 0 && text.length % 5 === 0) {
-        //                 return Promise.resolve({
-        //                     status: 'ERROR',
-        //                     text: 'Oh no, the length is divided by 5',
-        //                 });
-        //             }
-        //             return Promise.resolve({
-        //                 status: 'NONE',
-        //             });
-        //         },
-        //     },
-        //     qrCode: {
-        //         parseData: (data) => {
-        //             return '0:000';
-        //         },
-        //     },
-        //     onSelect: (selectedButtonString: string, address: string) => {
+        //     type: InteractiveMessageType.Menu,
+        //     title: 'Choose:',
+        //     onSelect: (handlerId: number) => {
         //         setMessages([
         //             {
-        //                 key: `${Date.now()}-address-input2`,
-        //                 type: 'stm',
-        //                 status: 'sent',
-        //                 time: Date.now(),
-        //                 sender: '0:000',
-        //                 text: address,
-        //             },
-        //             {
-        //                 key: `${Date.now()}-address-input1`,
-        //                 type: 'stm',
-        //                 status: 'sent',
-        //                 time: Date.now(),
-        //                 sender: '0:000',
-        //                 text: selectedButtonString,
+        //                 key: `${Date.now()}-menu`,
+        //                 type: ChatMessageType.PlainText,
+        //                 status: MessageStatus.Sent,
+        //                 text: `${handlerId} have been chosen`,
         //             },
         //             ...messages.slice(1),
         //         ]);
         //     },
+        //     items: [
+        //         {
+        //             handlerId: 1,
+        //             title: 'One',
+        //         },
+        //         {
+        //             handlerId: 2,
+        //             title: 'Two',
+        //         },
+        //         {
+        //             handlerId: 3,
+        //             title: 'Three',
+        //         },
+        //     ],
         // },
         // {
         //     type: InteractiveMessageType.Terminal,
         //     prompt: 'Type sth!',
-        //     onSendText: (text) => {
+        //     onSendText: (text: string) => {
         //         setMessages([
         //             {
         //                 key: `${Date.now()}-terminal`,
@@ -72,35 +109,6 @@ const BrowserScreen = () => {
         //         ]);
         //     },
         // },
-        {
-            type: InteractiveMessageType.Menu,
-            title: 'Choose:',
-            onSelect: (handlerId: number) => {
-                setMessages([
-                    {
-                        key: `${Date.now()}-menu`,
-                        type: ChatMessageType.PlainText,
-                        status: MessageStatus.Sent,
-                        text: `${handlerId} have been chosen`,
-                    },
-                    ...messages.slice(1),
-                ]);
-            },
-            items: [
-                {
-                    handlerId: 1,
-                    title: 'One',
-                },
-                {
-                    handlerId: 2,
-                    title: 'Two',
-                },
-                {
-                    handlerId: 3,
-                    title: 'Three',
-                },
-            ],
-        },
         {
             key: `${Date.now()}-initial`,
             type: ChatMessageType.PlainText,
@@ -118,7 +126,7 @@ export const Browser = () => {
             <BrowserStack.Screen
                 name="BrowserScreen"
                 options={{
-                    headerShown: false,
+                    // headerShown: false,
                     title: 'Browser',
                     cardStyle: {
                         backgroundColor: theme[ColorVariants.BackgroundPrimary],
