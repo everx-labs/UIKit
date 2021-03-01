@@ -22,6 +22,7 @@ import { ColorVariants } from './Colors';
 import { UIConstant } from './constants';
 import { Portal } from './Portal';
 import { useColorParts } from './useColorParts';
+import { useStatusBar } from './UIStatusBar';
 
 type OnClose = () => void | Promise<void>;
 
@@ -282,10 +283,6 @@ function UISheetPortalContent({
     style,
 }: UISheetPortalContentProps) {
     const heightValue = Animated.useValue(0);
-    const {
-        colorParts: overlayColorParts,
-        opacity: overlayOpacity,
-    } = useColorParts(ColorVariants.BackgroundOverlay);
     const keyboardHeightValue = useAnimatedKeyboard();
 
     const { animate, position, onPan } = usePosition(
@@ -337,11 +334,20 @@ function UISheetPortalContent({
         [onClose],
     );
 
+    const {
+        colorParts: overlayColorParts,
+        opacity: overlayOpacity,
+    } = useColorParts(ColorVariants.BackgroundOverlay);
+
+    useStatusBar({
+        backgroundColor: ColorVariants.BackgroundOverlay,
+    });
+
     // @ts-ignore TS doesn't understand when backgroundColor is animated node
     const overlayStyle: ViewStyle = React.useMemo(
         () => ({
             flex: 1,
-            // There was theretically better for perf solution
+            // There was theoretically better for perf solution
             // with opacity, but on web it worked really bad
             // as it seems animated value need some time
             // to initialize before it's applied
