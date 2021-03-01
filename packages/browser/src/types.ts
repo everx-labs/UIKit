@@ -22,6 +22,7 @@ export enum InteractiveMessageType {
     Terminal = 'Terminal',
     AddressInput = 'AddressInput',
     Menu = 'Menu',
+    Confirm = 'Confirm',
 }
 
 type PlainTextMessage = {
@@ -47,7 +48,51 @@ type ActionButtonMessage = {
     onPress?: () => void | Promise<void>;
 };
 
-export type VisibleMessage = PlainTextMessage | ActionButtonMessage;
+// eslint-disable-next-line no-shadow
+export enum BrowserMessageType {
+    ConfirmSuccessful = 'ConfirmSuccessful',
+    ConfirmDeclined = 'ConfirmDeclined',
+    ConfirmButtons = 'ConfirmButtons',
+}
+
+type ConfirmSuccessfulMessage = {
+    key: string;
+    status: MessageStatus;
+    firstFromChain?: boolean;
+    lastFromChain?: boolean;
+    type: BrowserMessageType.ConfirmSuccessful;
+};
+
+type ConfirmDeclinedMessage = {
+    key: string;
+    status: MessageStatus;
+    firstFromChain?: boolean;
+    lastFromChain?: boolean;
+    type: BrowserMessageType.ConfirmDeclined;
+};
+
+export type ConfirmButtonsMessage = {
+    key: string;
+    status: MessageStatus;
+    firstFromChain?: boolean;
+    lastFromChain?: boolean;
+    type: BrowserMessageType.ConfirmButtons;
+    onSuccess: () => void | Promise<void>;
+    onDecline: () => void | Promise<void>;
+};
+
+export type ConfirmMessage = {
+    type: InteractiveMessageType.Confirm;
+    prompt: string;
+    onConfirm: (isConfirmed: boolean) => void | Promise<void>;
+};
+
+export type VisibleMessage =
+    | PlainTextMessage
+    | ActionButtonMessage
+    | ConfirmSuccessfulMessage
+    | ConfirmDeclinedMessage
+    | ConfirmButtonsMessage;
 
 export type Input = {
     messages: VisibleMessage[];
@@ -104,4 +149,7 @@ export type InteractiveMessage =
     | AddressInputMessage
     | MenuMessage;
 
-export type BrowserMessage = VisibleMessage | InteractiveMessage;
+export type BrowserMessage =
+    | VisibleMessage
+    | InteractiveMessage
+    | ConfirmMessage;

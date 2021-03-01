@@ -8,8 +8,13 @@ import {
     ChatMessageType,
     CommonChatListProps,
 } from '@tonlabs/uikit.chats';
-import type { VisibleMessage } from './types';
+import { BrowserMessageType, VisibleMessage } from './types';
 import { getFormattedList } from './getFormattedList';
+import {
+    BubbleConfirmButtons,
+    BubbleConfirmDeclined,
+    BubbleConfirmSuccessful,
+} from './BubbleConfirm';
 
 type UIBrowserListProps = {
     messages: VisibleMessage[];
@@ -44,6 +49,15 @@ function renderBubble(item: VisibleMessage) {
     }
     if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} />;
+    }
+    if (item.type === BrowserMessageType.ConfirmSuccessful) {
+        return <BubbleConfirmSuccessful />;
+    }
+    if (item.type === BrowserMessageType.ConfirmDeclined) {
+        return <BubbleConfirmDeclined />;
+    }
+    if (item.type === BrowserMessageType.ConfirmButtons) {
+        return <BubbleConfirmButtons {...item} />;
     }
 
     return null;
