@@ -121,7 +121,7 @@ export type MenuMessage = {
     title: string;
     description?: string;
     items: MenuItem[];
-    onSelect: (handlerId: number) => void | Promise<void>;
+    onSelect: (handlerId: number, index: number) => void | Promise<void>;
 };
 
 export type InteractiveMessage =
