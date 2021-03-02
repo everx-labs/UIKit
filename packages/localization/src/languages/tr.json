@@ -7,6 +7,10 @@
         "total": "Toplam",
         "weekly": "Haftalık"
     },
+    "AccountLimitRule": {
+        "passportVerification": "Pasaport Doğrulaması",
+        "twoFactorAuthentication": "İki faktörlü kimlik doğrulama"
+    },
     "Accounts": "Hesaplar",
     "AccountTypeHint": "Hesap adresinizi herkese açık olarak ayarlamak, hesabınızın profilinizde görünmesini sağlar",
     "Add": "Ekle",
@@ -45,27 +49,38 @@
     "BankCardNumber": "Kart numarası",
     "Blacklist": "Kara liste",
     "BlockUser": "Kullanıcıyı Engelle",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "İptal",
     "Channel": "Kanal",
     "ChannelInfo": "Kanal Bilgisi",
     "ChannelName": "Kanal Adı",
     "Chats": {
         "Actions": {
-            "AttachDocument": "Document",
-            "AttachImage": "Image"
+            "AttachDocument": "Belge",
+            "AttachImage": "Resim"
         },
         "Alerts": {
-            "EnableFromSettings": "Please enable access directly from your device Settings",
-            "EnableFromSettingsTitle": "Send image",
-            "MessageTooLong": "Your message is longer than {0} characters."
+            "EnableFromSettings": "Lütfen cihaz Ayarlar'ından erişimi etkinleştirin",
+            "EnableFromSettingsTitle": "Resmi gönder",
+            "MessageTooLong": "Mesajınız {0} karakterden uzun."
         },
         "Bubbles": {
-            "TapToResend": "Tap to resend",
-            "TapToSendAgain": "Tap to send again"
+            "TapToResend": "Yeniden gönder",
+            "TapToSendAgain": "Tekrar gönder"
         },
         "DateSeparators": {
-            "Today": "Today",
-            "Yesterday": "Yesterday"
+            "Today": "Bugün",
+            "Yesterday": "Dün"
         }
     },
     "ChatWith": "ile sohbet",
@@ -326,9 +341,9 @@
     "PushFeedbackLong": "Uygulamayı daha iyi hale getirmemize yardımcı olmak için geribeslemenizi verin. Devam etmek için buraya tıklayın",
     "PushFeedbackShort": "Surf'e katkıda bulunmak için geribeslemede bulunun",
     "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorOnRead": "Couldn't read QR code",
+        "ErrorPermissions": "QR kodlarını tarayabilmek için kamera izinlerinizi açın",
+        "ErrorUnexpected": "Tarama sırasında beklenmedik bir şey oldu"
     },
     "Receive": "Teslim al",
     "Recent": "Son",
@@ -345,6 +360,11 @@
     "RestoreFrom12Words": "12 kelimelik anahtar cümleden geri yükle",
     "ReviewAndConfirm": "İncele ve Onayla",
     "RevokeLink": "Bağlantıyı iptal et",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "\"Selam\" deyin",
     "ScanQRCodeWithTONChatApplicationToContinue": "Bu QR kodunu taramak için lütfen TON Cüzdan uygulamasını kullanın.\nAna ekranın sağ üst köşesinde bulunan Tara düğmesine basın.",
     "Search": "Ara",
@@ -472,35 +492,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Arkadaşlarınızı davet edebilmeniz için Kişilerinize erişim izni kullanıyoruz",
     "WillGetInTouchWithYouSoon": "Yakında sizinle iletişime geçeceğiz",
     "Word": "Kelime",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
+    "words01": "kelime",
+    "words11": "kelime",
+    "words24": "kelime",
+    "words50": "kelime",
     "WriteOffAccount": "Silme Hesabı",
     "WrongPassword": "Yanlış şifre",
     "Yes": "Evet",
     "Yesterday": "Dün",
     "YesterdayAt": "Dün {0}",
     "You": "Siz",
-    "YourEmail": "E-posta adresiniz",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Passport Verification",
-        "twoFactorAuthentication": "2-Factor Authorization"
-    },
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds"
+    "YourEmail": "E-posta adresiniz"
 }

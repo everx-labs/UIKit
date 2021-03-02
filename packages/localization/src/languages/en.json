@@ -49,6 +49,17 @@
     "BankCardNumber": "Card number",
     "Blacklist": "Blacklist",
     "BlockUser": "Block User",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "Cancel",
     "Channel": "Channel",
     "ChannelInfo": "Channel Info",
@@ -205,11 +216,6 @@
     "hours11": "hours",
     "hours24": "hours",
     "hours50": "hours",
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds",
     "IdentificationDocument": "Identification Document",
     "IdentityCard": "Identity Card",
     "IdentityDocument": "Identity Document",
@@ -335,9 +341,9 @@
     "PushFeedbackLong": "Give your feedback to help us make the app better. Click here to proceed",
     "PushFeedbackShort": "Give feedback to contribute to Surf",
     "QRCodeScanner": {
+        "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     },
     "Receive": "Receive",
     "Recent": "Recent",
@@ -354,6 +360,11 @@
     "RestoreFrom12Words": "Restore from 12 word key phrase",
     "ReviewAndConfirm": "Review and Confirm",
     "RevokeLink": "Revoke link",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "Say \"Hello\"",
     "ScanQRCodeWithTONChatApplicationToContinue": "Please use TON Wallet app to scan this QR code.\nPress Scan button is located in the upper right-hand corner of the Main screen.",
     "Search": "Search...",
@@ -491,16 +502,5 @@
     "Yesterday": "Yesterday",
     "YesterdayAt": "Yesterday at {0}",
     "You": "You",
-    "YourEmail": "Your email",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    }
+    "YourEmail": "Your email"
 }

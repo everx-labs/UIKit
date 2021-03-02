@@ -49,6 +49,17 @@
     "BankCardNumber": "卡号",
     "Blacklist": "黑单",
     "BlockUser": "阻止用户",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "取消",
     "Channel": "频道",
     "ChannelInfo": "通道信息",
@@ -330,9 +341,9 @@
     "PushFeedbackLong": "为了帮助我们的应用变得更好，请提供您的反馈意见。点击这里分享。",
     "PushFeedbackShort": "为做Surf的贡献，请提供您的反馈意见",
     "QRCodeScanner": {
+        "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     },
     "Receive": "接收",
     "Recent": "最近",
@@ -349,6 +360,11 @@
     "RestoreFrom12Words": "从12字关键字恢复",
     "ReviewAndConfirm": "检查并确认",
     "RevokeLink": "反向链接",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "说\"你好\"",
     "ScanQRCodeWithTONChatApplicationToContinue": "为了扫描此二维码，请使用TON 钱包应用。\n按“扫描”按钮位于主屏幕的右上角。",
     "Search": "搜索",
@@ -486,21 +502,5 @@
     "Yesterday": "昨天",
     "YesterdayAt": "昨天在{0}",
     "You": "您",
-    "YourEmail": "你的邮箱",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds"
+    "YourEmail": "你的邮箱"
 }
