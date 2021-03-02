@@ -1,4 +1,4 @@
-import type { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
+import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
 
 export type OnSendText = (text: string) => void;
 export type OnHeightChange = (height: number) => void;
@@ -22,13 +22,10 @@ export enum InteractiveMessageType {
     Terminal = 'Terminal',
     AddressInput = 'AddressInput',
     Menu = 'Menu',
+    Confirm = 'Confirm',
 }
 
-type PlainTextMessage = {
-    key: string;
-    status: MessageStatus;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
+type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
     text: string;
     actionText?: string;
@@ -36,18 +33,46 @@ type PlainTextMessage = {
     onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
 
-type ActionButtonMessage = {
-    key: string;
-    status: MessageStatus;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
+type ActionButtonMessage = BubbleBaseT & {
     type: ChatMessageType.ActionButton;
     text: string;
     textMode?: 'ellipsize' | 'fit';
     onPress?: () => void | Promise<void>;
 };
 
-export type VisibleMessage = PlainTextMessage | ActionButtonMessage;
+// eslint-disable-next-line no-shadow
+export enum BrowserMessageType {
+    ConfirmSuccessful = 'ConfirmSuccessful',
+    ConfirmDeclined = 'ConfirmDeclined',
+    ConfirmButtons = 'ConfirmButtons',
+}
+
+type ConfirmSuccessfulMessage = BubbleBaseT & {
+    type: BrowserMessageType.ConfirmSuccessful;
+};
+
+type ConfirmDeclinedMessage = BubbleBaseT & {
+    type: BrowserMessageType.ConfirmDeclined;
+};
+
+export type ConfirmButtonsMessage = BubbleBaseT & {
+    type: BrowserMessageType.ConfirmButtons;
+    onSuccess: () => void | Promise<void>;
+    onDecline: () => void | Promise<void>;
+};
+
+export type ConfirmMessage = {
+    type: InteractiveMessageType.Confirm;
+    prompt: string;
+    onConfirm: (isConfirmed: boolean) => void | Promise<void>;
+};
+
+export type VisibleMessage =
+    | PlainTextMessage
+    | ActionButtonMessage
+    | ConfirmSuccessfulMessage
+    | ConfirmDeclinedMessage
+    | ConfirmButtonsMessage;
 
 export type Input = {
     messages: VisibleMessage[];
@@ -102,6 +127,7 @@ export type MenuMessage = {
 export type InteractiveMessage =
     | TerminalMessage
     | AddressInputMessage
-    | MenuMessage;
+    | MenuMessage
+    | ConfirmMessage;
 
 export type BrowserMessage = VisibleMessage | InteractiveMessage;
