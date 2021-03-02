@@ -127,9 +127,7 @@ export type MenuMessage = {
 export type InteractiveMessage =
     | TerminalMessage
     | AddressInputMessage
-    | MenuMessage;
-
-export type BrowserMessage =
-    | VisibleMessage
-    | InteractiveMessage
+    | MenuMessage
     | ConfirmMessage;
+
+export type BrowserMessage = VisibleMessage | InteractiveMessage;
