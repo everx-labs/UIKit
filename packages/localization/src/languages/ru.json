@@ -49,6 +49,17 @@
     "BankCardNumber": "Card number",
     "Blacklist": "Черный список",
     "BlockUser": "Заблокировать пользователя",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "Отмена",
     "Channel": "Канал",
     "ChannelInfo": "Описание канала",
@@ -283,7 +294,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Только администраторы могут добавлять и удалять участников, редактировать название и фото группы.",
     "OpenSettings": "Открыть настройки",
     "operationTime": "Время операции",
-    "orDelimeter": " or ",
+    "orDelimeter": "или",
     "OutOf": "из",
     "Passport": "Паспорт",
     "PassportFetchingStatus": "Получение статуса...",
@@ -330,9 +341,9 @@
     "PushFeedbackLong": "Оставьте отзыв, помогите нам сделать приложение лучше. Нажмите, чтобы продолжить",
     "PushFeedbackShort": "Оставьте отзыв, если хотите поучаствовать в разработке приложения",
     "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorOnRead": "Couldn't read QR code",
+        "ErrorPermissions": "Чтобы сканировать QR-коды, разрешите доступ к камере вашего устройства",
+        "ErrorUnexpected": "Непредвиденная ошибка сканирования"
     },
     "Receive": "Получить",
     "Recent": "Последние",
@@ -349,9 +360,14 @@
     "RestoreFrom12Words": "Восстановить из 12 слов",
     "ReviewAndConfirm": "Проверить и подтвердить",
     "RevokeLink": "Аннулировать ссылку",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "Скажи \"Привет\"",
     "ScanQRCodeWithTONChatApplicationToContinue": "Пожалуйста, используйте приложение TON Wallet для сканирования этого QR-кода.\nНажмите кнопку сканирования, расположенную в правом верхнем углу главного экрана.",
-    "Search": "Искать...",
+    "Search": "Искать",
     "SearchByAccount": "Поиск по аккаунтам...",
     "SearchByToken": "Поиск по токенам...",
     "SearchContacts": "Поиск по контактам...",
@@ -361,7 +377,7 @@
     "SearchFriends": "Поиск друзей...",
     "Sec": "сек",
     "SeedPhrase": "Фраза из 12 слов",
-    "seedPhraseTypo": "Кажется, здесь опечатка. Попробуйте еще раз",
+    "seedPhraseTypo": "Похоже на опечатку. Попробуйте еще раз",
     "Select": "Выбрать",
     "SelectAll": "Выбрать все",
     "SelectCountry": "Выберите страну…",
@@ -486,21 +502,5 @@
     "Yesterday": "Вчера",
     "YesterdayAt": "Вчера в {0}",
     "You": "Вы",
-    "YourEmail": "Ваш адрес электронной почты",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "rounds": "раундов",
-    "rounds01": "раунд",
-    "rounds11": "раундов",
-    "rounds24": "раунда",
-    "rounds50": "раундов"
+    "YourEmail": "Ваш адрес электронной почты"
 }

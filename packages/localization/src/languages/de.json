@@ -49,6 +49,17 @@
     "BankCardNumber": "Kartennummer",
     "Blacklist": "Schwarze Liste",
     "BlockUser": "Benutzer Blockieren",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "Abbrechen",
     "Channel": "Kanal",
     "ChannelInfo": "Kanalinfo",
@@ -330,9 +341,9 @@
     "PushFeedbackLong": "Geben Sie Ihr feedback, um uns zu helfen, die Geschichte besser zu machen. Klicken Sie hier zu teilen",
     "PushFeedbackShort": "Geben Sie feedback, um zur Geschichte beizutragen",
     "QRCodeScanner": {
+        "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     },
     "Receive": "Empfangen",
     "Recent": "Letzten",
@@ -349,6 +360,11 @@
     "RestoreFrom12Words": "Wiederherstellen von 12 Wort schlüsselphrase",
     "ReviewAndConfirm": "Überprüfen und Bestätigen",
     "RevokeLink": "Link widerrufen",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "Sag \" Hallo\"",
     "ScanQRCodeWithTONChatApplicationToContinue": "Bitte Scannen Sie den QR-code aus der TON Wallet-Webanwendung, um Ihr Konto zu synchronisieren",
     "Search": "Suche",
@@ -486,21 +502,5 @@
     "Yesterday": "Gestern",
     "YesterdayAt": "Gestern um {0}",
     "You": "Sie",
-    "YourEmail": "Ihre E-Mail",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds"
+    "YourEmail": "Ihre E-Mail"
 }
