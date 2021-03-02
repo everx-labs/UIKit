@@ -1,4 +1,4 @@
-import type { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
+import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
 
 export type OnSendText = (text: string) => void;
 export type OnHeightChange = (height: number) => void;
@@ -25,11 +25,7 @@ export enum InteractiveMessageType {
     Confirm = 'Confirm',
 }
 
-type PlainTextMessage = {
-    key: string;
-    status: MessageStatus;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
+type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
     text: string;
     actionText?: string;
@@ -37,11 +33,7 @@ type PlainTextMessage = {
     onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
 
-type ActionButtonMessage = {
-    key: string;
-    status: MessageStatus;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
+type ActionButtonMessage = BubbleBaseT & {
     type: ChatMessageType.ActionButton;
     text: string;
     textMode?: 'ellipsize' | 'fit';
@@ -55,27 +47,15 @@ export enum BrowserMessageType {
     ConfirmButtons = 'ConfirmButtons',
 }
 
-type ConfirmSuccessfulMessage = {
-    key: string;
-    status: MessageStatus;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
+type ConfirmSuccessfulMessage = BubbleBaseT & {
     type: BrowserMessageType.ConfirmSuccessful;
 };
 
-type ConfirmDeclinedMessage = {
-    key: string;
-    status: MessageStatus;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
+type ConfirmDeclinedMessage = BubbleBaseT & {
     type: BrowserMessageType.ConfirmDeclined;
 };
 
-export type ConfirmButtonsMessage = {
-    key: string;
-    status: MessageStatus;
-    firstFromChain?: boolean;
-    lastFromChain?: boolean;
+export type ConfirmButtonsMessage = BubbleBaseT & {
     type: BrowserMessageType.ConfirmButtons;
     onSuccess: () => void | Promise<void>;
     onDecline: () => void | Promise<void>;
