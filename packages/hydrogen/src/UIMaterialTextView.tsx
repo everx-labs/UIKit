@@ -20,7 +20,7 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     error?: boolean;
     success?: boolean;
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
-    inlineElementRight?: React.ReactNode;
+    right?: React.ReactNode;
 };
 
 const getBorderColor = (
@@ -451,7 +451,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
     props: UIMaterialTextViewCommonProps,
     ref,
 ) {
-    const { label, onChangeText, onLayout, inlineElementRight, ...rest } = props;
+    const { label, onChangeText, onLayout, right, ...rest } = props;
     const theme = useTheme();
     const {
         inputHasValue,
@@ -511,9 +511,9 @@ const UIMaterialTextViewFloating = React.forwardRef<
                         </Animated.Text>
                     </Animated.View>
                     {
-                        inlineElementRight ? (
+                        right ? (
                             <View>
-                                {inlineElementRight}
+                                {right}
                             </View>
                         ) : null
                     }
@@ -530,7 +530,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
     props: UIMaterialTextViewCommonProps,
     ref,
 ) {
-    const { label, onChangeText, onLayout, inlineElementRight, ...rest } = props;
+    const { label, onChangeText, onLayout, right, ...rest } = props;
     const { onChangeText: onChangeTextProp } = useUITextViewValue(
         ref,
         false,
@@ -551,9 +551,9 @@ const UIMaterialTextViewSimple = React.forwardRef<
                         onChangeText={onChangeTextProp}
                     />
                     {
-                        inlineElementRight ? (
+                        right ? (
                             <View>
-                                {inlineElementRight}
+                                {right}
                             </View>
                         ) : null
                     }
