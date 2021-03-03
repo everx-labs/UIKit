@@ -58,6 +58,9 @@
             "MainAccount": "Conta principal",
             "ScanQR": "Ler o QR code",
             "SelectAsset": "Selecione o ativo"
+        },
+        "AmountInput": {
+            "Placeholder": "Amount…"
         }
     },
     "Cancel": "Cancelar",

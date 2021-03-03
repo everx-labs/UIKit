@@ -251,6 +251,7 @@ export function UIAddressInputInternal({
                 testID="browser_input"
                 autoCapitalize="sentences"
                 autoCorrect={false}
+                autoFocus
                 clearButtonMode="never"
                 keyboardType="default"
                 editable

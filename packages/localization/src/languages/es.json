@@ -58,6 +58,9 @@
             "MainAccount": "Main account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
+        },
+        "AmountInput": {
+            "Placeholder": "Amount…"
         }
     },
     "Cancel": "Cancelar",

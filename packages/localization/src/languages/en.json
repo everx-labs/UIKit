@@ -53,6 +53,9 @@
         "AddressInput": {
             "Placeholder": "Wallet address…"
         },
+        "AmountInput": {
+            "Placeholder": "Amount…"
+        },
         "AddressInputBubble": {
             "EnterManually": "Enter manually",
             "MainAccount": "Main account",

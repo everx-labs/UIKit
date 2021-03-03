@@ -122,11 +122,17 @@ function getPosition(
 
     return {
         value: block([
-            cond(neq(beforeKeyboardHeight, keyboardHeight), [
-                // OPEN gonna start spring animation
-                set(show, SHOW_STATES.OPEN),
-                set(beforeKeyboardHeight, keyboardHeight),
-            ]),
+            cond(
+                and(
+                    eq(show, SHOW_STATES.OPENING),
+                    neq(beforeKeyboardHeight, keyboardHeight),
+                ),
+                [
+                    // OPEN gonna start spring animation
+                    set(show, SHOW_STATES.OPEN),
+                    set(beforeKeyboardHeight, keyboardHeight),
+                ],
+            ),
             cond(eq(height, 0), 0, [
                 cond(
                     eq(gestureState, RNGHState.ACTIVE),
