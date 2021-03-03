@@ -15,6 +15,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { OnHeightChange, OnSendAmount } from './types';
 import { ActionButton } from './ActionButton';
 
+// eslint-disable-next-line no-shadow
 enum ValidationStatus {
     None = 'None',
     Bigger = 'Bigger',
@@ -63,7 +64,7 @@ function useValidation(
             return `The amount is less then ${uiLocalized.amountToLocale(min)}`;
         }
         return null;
-    }, [validationStatus]);
+    }, [validationStatus, max, min]);
 
     return {
         validationStatus,
@@ -126,15 +127,15 @@ function UIAmountInputInternal({
         min,
         max,
     } = React.useMemo(() => {
-        const decimalDivider = 10 ** decimal;
+        const divider = 10 ** decimal;
         return {
-            decimalDivider,
+            decimalDivider: divider,
             decimalPlaceholder: `.${new Array(decimal)
                 .fill(null)
                 .map(() => '0')
                 .join('')}`,
-            min: minProp != null ? minProp / decimalDivider : null,
-            max: maxProp != null ? maxProp / decimalDivider : null,
+            min: minProp != null ? minProp / divider : null,
+            max: maxProp != null ? maxProp / divider : null,
         };
     }, [decimal, minProp, maxProp]);
 
@@ -192,7 +193,7 @@ function UIAmountInputInternal({
         setIsFocused(false);
 
         checkValidation(inputValue.current);
-    }, [setIsFocused]);
+    }, [setIsFocused, inputValue, checkValidation]);
 
     const placeholder = React.useMemo(() => {
         if (isFocused) {
@@ -204,7 +205,7 @@ function UIAmountInputInternal({
         }
 
         return uiLocalized.Browser.AmountInput.Placeholder;
-    }, [placeholderProp, isFocused]);
+    }, [placeholderProp, isFocused, decimalPlaceholder]);
 
     const placeholderColor = React.useMemo(() => {
         if (isFocused) {
@@ -225,7 +226,13 @@ function UIAmountInputInternal({
 
         onSendAmountProp(amount);
         clearBase();
-    }, [onSendAmountProp, clearBase, inputValue]);
+    }, [
+        onSendAmountProp,
+        clearBase,
+        inputValue,
+        decimalDivider,
+        checkValidation,
+    ]);
 
     const clear = React.useCallback(() => {
         clearBase();
@@ -233,7 +240,7 @@ function UIAmountInputInternal({
         textInputRef.current?.focus();
 
         setValidationStatus(ValidationStatus.None);
-    }, [clearBase, setValidationStatus]);
+    }, [clearBase, setValidationStatus, textInputRef]);
 
     return (
         <ChatInputContainer
