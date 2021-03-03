@@ -21,6 +21,58 @@ enum ValidationStatus {
     Less = 'Less',
 }
 
+function useValidation(
+    decimalDivider: number,
+    min: number | null,
+    max: number | null,
+) {
+    const [validationStatus, setValidationStatus] = React.useState(
+        ValidationStatus.None,
+    );
+
+    const checkValidation = React.useCallback(
+        (rawAmount: BigNumber | string) => {
+            const amount = BigNumber.isBigNumber(rawAmount)
+                ? rawAmount.dividedBy(decimalDivider)
+                : new BigNumber(rawAmount.replace(',', '.'));
+
+            if (max != null && amount.isGreaterThanOrEqualTo(max)) {
+                setValidationStatus(ValidationStatus.Bigger);
+
+                return false;
+            }
+
+            if (min != null && amount.isLessThanOrEqualTo(min)) {
+                setValidationStatus(ValidationStatus.Less);
+
+                return false;
+            }
+
+            return true;
+        },
+        [decimalDivider, max, min, setValidationStatus],
+    );
+
+    const validationString = React.useMemo(() => {
+        if (validationStatus === ValidationStatus.Bigger) {
+            return `The amount is bigger then ${uiLocalized.amountToLocale(
+                max,
+            )}`;
+        }
+        if (validationStatus === ValidationStatus.Less) {
+            return `The amount is less then ${uiLocalized.amountToLocale(min)}`;
+        }
+        return null;
+    }, [validationStatus]);
+
+    return {
+        validationStatus,
+        validationString,
+        setValidationStatus,
+        checkValidation,
+    };
+}
+
 type UIAmountInputInternalProps = {
     textInputRef: React.RefObject<TextInput>;
     placeholder?: string;
@@ -86,44 +138,12 @@ function UIAmountInputInternal({
         };
     }, [decimal, minProp, maxProp]);
 
-    const [validationStatus, setValidationStatus] = React.useState(
-        ValidationStatus.None,
-    );
-
-    const checkValidation = React.useCallback(
-        (rawAmount: BigNumber | string) => {
-            const amount = BigNumber.isBigNumber(rawAmount)
-                ? rawAmount.dividedBy(decimalDivider)
-                : new BigNumber(rawAmount.replace(',', '.'));
-
-            if (max != null && amount.isGreaterThanOrEqualTo(max)) {
-                setValidationStatus(ValidationStatus.Bigger);
-
-                return false;
-            }
-
-            if (min != null && amount.isLessThanOrEqualTo(min)) {
-                setValidationStatus(ValidationStatus.Less);
-
-                return false;
-            }
-
-            return true;
-        },
-        [decimalDivider, max, min, setValidationStatus],
-    );
-
-    const validationString = React.useMemo(() => {
-        if (validationStatus === ValidationStatus.Bigger) {
-            return `The amount is bigger then ${uiLocalized.amountToLocale(
-                max,
-            )}`;
-        }
-        if (validationStatus === ValidationStatus.Less) {
-            return `The amount is less then ${uiLocalized.amountToLocale(min)}`;
-        }
-        return null;
-    }, [validationStatus]);
+    const {
+        validationStatus,
+        validationString,
+        setValidationStatus,
+        checkValidation,
+    } = useValidation(decimalDivider, min, max);
 
     const onChangeText = React.useCallback(
         (text: string) => {
