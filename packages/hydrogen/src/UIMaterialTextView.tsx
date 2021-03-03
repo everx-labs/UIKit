@@ -20,6 +20,7 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     error?: boolean;
     success?: boolean;
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
+    inlineElementRight?: React.ReactNode;
 };
 
 const getBorderColor = (
@@ -450,7 +451,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
     props: UIMaterialTextViewCommonProps,
     ref,
 ) {
-    const { label, onChangeText, onLayout, ...rest } = props;
+    const { label, onChangeText, onLayout, inlineElementRight, ...rest } = props;
     const theme = useTheme();
     const {
         inputHasValue,
@@ -509,6 +510,13 @@ const UIMaterialTextViewFloating = React.forwardRef<
                             {label}
                         </Animated.Text>
                     </Animated.View>
+                    {
+                        inlineElementRight ? (
+                            <View>
+                                {inlineElementRight}
+                            </View>
+                        ) : null
+                    }
                 </UIMaterialTextViewBorder>
             </View>
         </UIMaterialTextViewComment>
@@ -522,7 +530,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
     props: UIMaterialTextViewCommonProps,
     ref,
 ) {
-    const { label, onChangeText, onLayout, ...rest } = props;
+    const { label, onChangeText, onLayout, inlineElementRight, ...rest } = props;
     const { onChangeText: onChangeTextProp } = useUITextViewValue(
         ref,
         false,
@@ -542,6 +550,13 @@ const UIMaterialTextViewSimple = React.forwardRef<
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
                     />
+                    {
+                        inlineElementRight ? (
+                            <View>
+                                {inlineElementRight}
+                            </View>
+                        ) : null
+                    }
                 </UIMaterialTextViewBorder>
             </View>
         </UIMaterialTextViewComment>
