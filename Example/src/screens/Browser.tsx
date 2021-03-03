@@ -270,7 +270,10 @@ const BrowserScreen = () => {
                                     {
                                         type:
                                             InteractiveMessageType.AmountInput,
-                                        prompt: 'Enter amount',
+                                        prompt: 'Enter amount:',
+                                        decimal: 9,
+                                        min: 10 * 10 ** 9,
+                                        max: 100 * 10 ** 9,
                                         onSendAmount: (amount: BigNumber) => {
                                             setMessages([
                                                 {
@@ -279,7 +282,9 @@ const BrowserScreen = () => {
                                                         ChatMessageType.PlainText,
                                                     status: MessageStatus.Sent,
                                                     text: uiLocalized.amountToLocale(
-                                                        amount,
+                                                        amount.dividedBy(
+                                                            10 ** 9,
+                                                        ),
                                                     ),
                                                 },
                                                 ...messages,

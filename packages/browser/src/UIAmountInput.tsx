@@ -1,87 +1,46 @@
 import * as React from 'react';
-import {
-    Platform,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-} from 'react-native';
+import { Platform, StyleSheet, TextInput } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { UICustomKeyboard } from '@tonlabs/uikit.keyboard';
 import { useBackHandler, ChatInputContainer } from '@tonlabs/uikit.chats';
 import {
     UITextView,
-    UIImage,
     useUITextViewValue,
     ColorVariants,
+    UILabel,
+    UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import type { OnHeightChange, OnSendAmount } from './types';
+import { ActionButton } from './ActionButton';
 
-type ActionButtonProps = {
-    inputHasValue: boolean;
-    onPress: () => void | Promise<void>;
-};
-
-function ActionButton({ inputHasValue, onPress }: ActionButtonProps) {
-    if (inputHasValue) {
-        return (
-            <TouchableOpacity
-                testID="send_btn"
-                style={actionStyles.buttonContainer}
-                onPress={onPress}
-            >
-                <UIImage
-                    source={UIAssets.icons.ui.buttonMsgSend}
-                    style={actionStyles.icon}
-                />
-            </TouchableOpacity>
-        );
-    }
-    return null;
+enum ValidationStatus {
+    None = 'None',
+    Bigger = 'Bigger',
+    Less = 'Less',
 }
-
-const actionStyles = StyleSheet.create({
-    buttonContainer: {
-        padding: UIConstant.contentOffset(),
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'flex-end',
-        height: UIConstant.largeButtonHeight(),
-    },
-    icon: {
-        height: UIConstant.tinyButtonHeight(),
-        width: UIConstant.tinyButtonHeight(),
-    },
-    iconRound: {
-        height: UIConstant.tinyButtonHeight(),
-        width: UIConstant.tinyButtonHeight(),
-        borderRadius: UIConstant.tinyButtonHeight() / 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
-
-const MAX_INPUT_LENGTH = 120;
-
-// function useAmountInputValue({ ref }: { ref: React.RefObject<TextInput> }) {
-//     const {} = useUITextViewValue();
-// }
 
 type UIAmountInputInternalProps = {
     textInputRef: React.RefObject<TextInput>;
     placeholder?: string;
+
+    decimal: number;
+    min?: number;
+    max?: number;
+
     onSendAmount: OnSendAmount;
     onHeightChange?: OnHeightChange;
 };
 
 function UIAmountInputInternal({
     textInputRef,
+    placeholder: placeholderProp,
+    decimal,
+    min: minProp,
+    max: maxProp,
     onHeightChange,
     onSendAmount: onSendAmountProp,
-    placeholder: placeholderProp,
 }: UIAmountInputInternalProps) {
     const onContentSizeChange = React.useCallback(
         (event: any) => {
@@ -104,10 +63,67 @@ function UIAmountInputInternal({
     const {
         inputHasValue,
         inputValue,
-        clear,
+        clear: clearBase,
         onChangeText: onChangeTextBase,
         onKeyPress,
     } = useUITextViewValue(textInputRef);
+
+    const {
+        decimalDivider,
+        decimalPlaceholder,
+        min,
+        max,
+    } = React.useMemo(() => {
+        const decimalDivider = 10 ** decimal;
+        return {
+            decimalDivider,
+            decimalPlaceholder: `.${new Array(decimal)
+                .fill(null)
+                .map(() => '0')
+                .join('')}`,
+            min: minProp != null ? minProp / decimalDivider : null,
+            max: maxProp != null ? maxProp / decimalDivider : null,
+        };
+    }, [decimal, minProp, maxProp]);
+
+    const [validationStatus, setValidationStatus] = React.useState(
+        ValidationStatus.None,
+    );
+
+    const checkValidation = React.useCallback(
+        (rawAmount: BigNumber | string) => {
+            const amount = BigNumber.isBigNumber(rawAmount)
+                ? rawAmount.dividedBy(decimalDivider)
+                : new BigNumber(rawAmount.replace(',', '.'));
+
+            if (max != null && amount.isGreaterThanOrEqualTo(max)) {
+                setValidationStatus(ValidationStatus.Bigger);
+
+                return false;
+            }
+
+            if (min != null && amount.isLessThanOrEqualTo(min)) {
+                setValidationStatus(ValidationStatus.Less);
+
+                return false;
+            }
+
+            return true;
+        },
+        [decimalDivider, max, min, setValidationStatus],
+    );
+
+    const validationString = React.useMemo(() => {
+        if (validationStatus === ValidationStatus.Bigger) {
+            return `The amount is bigger then ${uiLocalized.amountToLocale(
+                max,
+            )}`;
+        }
+        if (validationStatus === ValidationStatus.Less) {
+            return `The amount is less then ${uiLocalized.amountToLocale(min)}`;
+        }
+        return null;
+    }, [validationStatus]);
 
     const onChangeText = React.useCallback(
         (text: string) => {
@@ -117,6 +133,12 @@ function UIAmountInputInternal({
                 .replace(hasNotValidCharsRegExp, '')
                 .split(/[,.]/)
                 .slice(0, 2)
+                .map((part, index) => {
+                    if (index === 1) {
+                        return part.slice(0, decimal);
+                    }
+                    return part;
+                })
                 .join(uiLocalized.localeInfo.decimal);
 
             if (text !== validatedText) {
@@ -126,11 +148,21 @@ function UIAmountInputInternal({
             }
 
             onChangeTextBase(validatedText);
+
+            if (validationStatus !== ValidationStatus.None) {
+                setValidationStatus(ValidationStatus.None);
+            }
         },
-        [textInputRef, onChangeTextBase],
+        [
+            textInputRef,
+            onChangeTextBase,
+            decimal,
+            validationStatus,
+            setValidationStatus,
+        ],
     );
 
-    const [isFocused, setIsFocused] = React.useState(false);
+    const [isFocused, setIsFocused] = React.useState(true);
 
     const onFocus = React.useCallback(() => {
         setIsFocused(true);
@@ -138,11 +170,13 @@ function UIAmountInputInternal({
 
     const onBlur = React.useCallback(() => {
         setIsFocused(false);
+
+        checkValidation(inputValue.current);
     }, [setIsFocused]);
 
     const placeholder = React.useMemo(() => {
         if (isFocused) {
-            return '.000000000';
+            return decimalPlaceholder;
         }
 
         if (placeholderProp) {
@@ -161,9 +195,25 @@ function UIAmountInputInternal({
     }, [isFocused]);
 
     const onActionPress = React.useCallback(() => {
-        onSendAmountProp(new BigNumber(inputValue.current.replace(',', '.')));
-        clear();
-    }, [onSendAmountProp, clear, inputValue]);
+        const amount = new BigNumber(
+            inputValue.current.replace(',', '.'),
+        ).multipliedBy(decimalDivider);
+
+        if (!checkValidation(amount)) {
+            return;
+        }
+
+        onSendAmountProp(amount);
+        clearBase();
+    }, [onSendAmountProp, clearBase, inputValue]);
+
+    const clear = React.useCallback(() => {
+        clearBase();
+
+        textInputRef.current?.focus();
+
+        setValidationStatus(ValidationStatus.None);
+    }, [clearBase, setValidationStatus]);
 
     return (
         <ChatInputContainer
@@ -171,10 +221,22 @@ function UIAmountInputInternal({
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}
+                    hasError={validationStatus !== ValidationStatus.None}
                     onPress={onActionPress}
+                    clear={clear}
                 />
             }
         >
+            {validationString != null ? (
+                <UILabel
+                    role={UILabelRoles.ParagraphFootnote}
+                    color={ColorVariants.TextNegative}
+                    style={styles.hint}
+                    numberOfLines={1}
+                >
+                    {validationString}
+                </UILabel>
+            ) : null}
             <UITextView
                 ref={textInputRef}
                 testID="browser_input"
@@ -184,31 +246,30 @@ function UIAmountInputInternal({
                 clearButtonMode="never"
                 keyboardType="decimal-pad"
                 editable
-                maxLength={MAX_INPUT_LENGTH}
-                multiline
                 placeholder={placeholder}
                 placeholderTextColor={placeholderColor}
                 onContentSizeChange={onContentSizeChange}
-                // onChange={onChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
-
-                // style={inputStyle}
             />
         </ChatInputContainer>
     );
 }
 
-type UIAddressInputProps = {
+type UIAmountInputProps = {
     placeholder?: string;
+
+    decimal: number;
+    min?: number;
+    max?: number;
 
     onSendAmount: OnSendAmount;
     onHeightChange?: OnHeightChange;
 };
 
-export function UIAmountInput(props: UIAddressInputProps) {
+export function UIAmountInput(props: UIAmountInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
     const { onHeightChange } = props;
 
@@ -228,6 +289,9 @@ export function UIAmountInput(props: UIAddressInputProps) {
         <UIAmountInputInternal
             textInputRef={textInputRef}
             placeholder={props.placeholder}
+            decimal={props.decimal}
+            min={props.min}
+            max={props.max}
             onSendAmount={props.onSendAmount}
             onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
         />
@@ -242,3 +306,7 @@ export function UIAmountInput(props: UIAddressInputProps) {
         />
     );
 }
+
+const styles = StyleSheet.create({
+    hint: { marginBottom: 4 },
+});
