@@ -45,7 +45,11 @@ export type LocalizedStringsMethods = {
     getString(key: string, language: string): string | null,
     getLanguage(): string,
     getLanguageFromString(language: string): Language,
-    amountToLocale(number: BigNumber | string | number, options?: NumberPartsOptions): string,
+    amountToLocale(
+        number: BigNumber | string | number, 
+        options?: NumberPartsOptions,
+        localeInfo?: StringLocaleInfo,
+    ): string,
     localizedStringForValue(value: number, base: string): string,
 
     changeLocaleInfo: (localeInfo: StringLocaleInfo) => void,
@@ -54,7 +58,8 @@ export type LocalizedStringsMethods = {
     formatTime: (time: number, format?: string) => string,
     formatDate: (time: number) => string,
 
+    dayJSLocale: string,
     decimalSeparator: string,
     languageName: string,
-    dayJSLocale: string,
+    +localeInfo: StringLocaleInfo,
 };

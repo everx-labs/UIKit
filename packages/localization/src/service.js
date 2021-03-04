@@ -56,6 +56,7 @@ export class LocalizationService<T> extends LocalizedStrings {
             minimumFractionDigits: 0,
             maximumFractionDigits: UIConstant.maxDecimalDigits,
         },
+        localeInfo: StringLocaleInfo = this.localeInfo,
     ): string {
         let parts: ?NumberParts;
         try {
@@ -71,7 +72,7 @@ export class LocalizationService<T> extends LocalizedStrings {
             if (!isNormalized) { // Check if not normalized
                 throw Error('[LocalizationService] Passed number is not normalized');
             }
-            parts = UIFunction.getNumberParts(numberString, this.localeInfo, options, isNormalized);
+            parts = UIFunction.getNumberParts(numberString, localeInfo, options, isNormalized);
         } catch (error) {
             // failed to get number parts with error
             parts = null;
