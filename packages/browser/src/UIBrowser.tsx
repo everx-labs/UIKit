@@ -24,12 +24,18 @@ import {
 import { UIBrowserList } from './UIBrowserList';
 import { getMenuInput, MenuState } from './Inputs/menu';
 import { ConfirmState, getConfirmInput } from './Inputs/confirm';
+import {
+    AmountInputState,
+    amountReducer,
+    getAmountInput,
+} from './Inputs/amountInput';
 
 type InteractiveMessagesState = {
     [InteractiveMessageType.Terminal]: TerminalState;
     [InteractiveMessageType.AddressInput]: AddressInputState;
     [InteractiveMessageType.Menu]: MenuState;
     [InteractiveMessageType.Confirm]: ConfirmState;
+    [InteractiveMessageType.AmountInput]: AmountInputState;
 };
 
 type InteractiveMessageAction = {
@@ -49,6 +55,7 @@ function interactiveMessagesReducer(
         ),
         [InteractiveMessageType.Menu]: null,
         [InteractiveMessageType.Confirm]: null,
+        [InteractiveMessageType.AmountInput]: amountReducer(),
     };
 }
 
@@ -92,6 +99,9 @@ function useInteractiveMessages(
         },
         [InteractiveMessageType.Menu]: null,
         [InteractiveMessageType.Confirm]: null,
+        [InteractiveMessageType.AmountInput]: {
+            visible: true,
+        },
     });
 
     // It's not an interactive message :)
@@ -193,6 +203,10 @@ export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
             {
                 type: InteractiveMessageType.Confirm,
                 getInput: getConfirmInput,
+            },
+            {
+                type: InteractiveMessageType.AmountInput,
+                getInput: getAmountInput,
             },
         ],
         [],

@@ -51,6 +51,22 @@ export type UILocalizedData = {|
     +BankCardNumber: string,
     +Blacklist: string,
     +BlockUser: string,
+    +Browser: {|
+        +AddressInput: {|
+            +Placeholder: string,
+        |},
+        +AmountInput: {|
+            +Placeholder: string,
+            +ErrorLess: string,
+            +ErrorBigger: string,
+        |},
+        +AddressInputBubble: {|
+            +EnterManually: string,
+            +MainAccount: string,
+            +ScanQR: string,
+            +SelectAsset: string,
+        |},
+    |},
     +Cancel: string,
     +Channel: string,
     +ChannelInfo: string,
@@ -207,11 +223,6 @@ export type UILocalizedData = {|
     +hours11: string,
     +hours24: string,
     +hours50: string,
-    +rounds: string,
-    +rounds01: string,
-    +rounds11: string,
-    +rounds24: string,
-    +rounds50: string,
     +IdentificationDocument: string,
     +IdentityCard: string,
     +IdentityDocument: string,
@@ -326,9 +337,9 @@ export type UILocalizedData = {|
     +PushFeedbackLong: string,
     +PushFeedbackShort: string,
     +QRCodeScanner: {|
+        +ErrorOnRead: string,
         +ErrorPermissions: string,
         +ErrorUnexpected: string,
-        +ErrorOnRead: string,
     |},
     +Receive: string,
     +Recent: string,
@@ -345,6 +356,11 @@ export type UILocalizedData = {|
     +RestoreFrom12Words: string,
     +ReviewAndConfirm: string,
     +RevokeLink: string,
+    +rounds: string,
+    +rounds01: string,
+    +rounds11: string,
+    +rounds24: string,
+    +rounds50: string,
     +SayHello: string,
     +ScanQRCodeWithTONChatApplicationToContinue: string,
     +Search: string,
@@ -478,15 +494,4 @@ export type UILocalizedData = {|
     +YesterdayAt: string,
     +You: string,
     +YourEmail: string,
-    +Browser: {|
-        +AddressInput: {|
-            +Placeholder: string,
-        |},
-        +AddressInputBubble: {|
-            +MainAccount: string,
-            +SelectAsset: string,
-            +EnterManually: string,
-            +ScanQR: string,
-        |},
-    |},
 |};
