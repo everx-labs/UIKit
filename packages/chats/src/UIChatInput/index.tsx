@@ -80,6 +80,7 @@ export function useBackHandler(ref: React.RefObject<TextInput>) {
 
 export type UIChatInputProps = {
     editable: boolean;
+    autoFocus?: boolean;
     placeholder?: string;
     shortcuts?: Shortcut[];
     menuPlusHidden?: boolean;
@@ -127,6 +128,7 @@ export function UIChatInput(props: UIChatInputProps) {
             <ChatInput
                 textInputRef={textInputRef}
                 editable={props.editable}
+                autoFocus={props.autoFocus}
                 placeholder={props.placeholder}
                 shortcuts={props.shortcuts}
                 menuPlus={menuPlus}

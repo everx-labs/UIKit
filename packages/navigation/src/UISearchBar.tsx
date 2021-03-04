@@ -79,12 +79,17 @@ type UISearchBarProps = Omit<UITextViewProps, 'placeholder'> & {
      * onPress handler that will be passed to headerRight
      */
     headerRightOnPress?: OnPress;
+    /**
+     * Alternative string for placeholder
+     */
+    placeholder?: string;
 };
 
 export function UISearchBar({
     headerRight = renderRightAction,
     headerRightLabel,
     headerRightOnPress,
+    placeholder,
     ...inputProps
 }: UISearchBarProps) {
     return (
@@ -98,7 +103,10 @@ export function UISearchBar({
                     style={styles.searchIcon}
                     tintColor={ColorVariants.IconSecondary}
                 />
-                <UITextView placeholder={uiLocalized.Search} {...inputProps} />
+                <UITextView
+                    placeholder={placeholder || uiLocalized.Search}
+                    {...inputProps}
+                />
             </UIBackgroundView>
             {headerRight({
                 label: headerRightLabel,

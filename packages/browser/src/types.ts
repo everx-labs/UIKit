@@ -1,6 +1,8 @@
 import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
+import type BigNumber from 'bignumber.js';
 
 export type OnSendText = (text: string) => void;
+export type OnSendAmount = (amount: BigNumber) => void;
 export type OnHeightChange = (height: number) => void;
 
 // eslint-disable-next-line no-shadow
@@ -23,6 +25,7 @@ export enum InteractiveMessageType {
     AddressInput = 'AddressInput',
     Menu = 'Menu',
     Confirm = 'Confirm',
+    AmountInput = 'AmountInput',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -124,10 +127,20 @@ export type MenuMessage = {
     onSelect: (handlerId: number, index: number) => void | Promise<void>;
 };
 
+export type AmountInputMessage = {
+    type: InteractiveMessageType.AmountInput;
+    prompt: string;
+    decimals: number;
+    min: number;
+    max: number;
+    onSendAmount: OnSendAmount;
+};
+
 export type InteractiveMessage =
     | TerminalMessage
     | AddressInputMessage
     | MenuMessage
-    | ConfirmMessage;
+    | ConfirmMessage
+    | AmountInputMessage;
 
 export type BrowserMessage = VisibleMessage | InteractiveMessage;

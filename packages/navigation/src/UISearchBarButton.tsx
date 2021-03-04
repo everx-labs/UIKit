@@ -17,26 +17,28 @@ import { HEADER_HEIGHT } from './constants';
 import { UISearchController } from './UISearchController';
 
 export function UISearchBarButton({
+    visible,
+    onOpen,
+    onClose,
     forId,
+    placeholder,
     children,
     onChangeText,
 }: {
     forId?: string;
-    children: (searchText: string) => React.ReactNode;
+    placeholder?: string;
+    visible: boolean;
+    onOpen: () => void | Promise<void>;
+    onClose: () => void | Promise<void>;
     onChangeText?: React.ComponentProps<
         typeof UISearchController
     >['onChangeText'];
+    children: ((searchText: string) => React.ReactNode) | React.ReactNode;
 }) {
-    const [visible, setVisible] = React.useState(false);
     return (
         <>
             <UIBackgroundView style={styles.container}>
-                <TouchableOpacity
-                    style={styles.touchable}
-                    onPress={() => {
-                        setVisible(true);
-                    }}
-                >
+                <TouchableOpacity style={styles.touchable} onPress={onOpen}>
                     <UIBackgroundView
                         style={styles.searchContainer}
                         color={ColorVariants.BackgroundSecondary}
@@ -56,11 +58,10 @@ export function UISearchBarButton({
                 </TouchableOpacity>
             </UIBackgroundView>
             <UISearchController
+                placeholder={placeholder}
                 forId={forId}
                 visible={visible}
-                onCancel={() => {
-                    setVisible(false);
-                }}
+                onCancel={onClose}
                 onChangeText={onChangeText}
             >
                 {children}

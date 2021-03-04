@@ -35,6 +35,7 @@ export function getTerminalInput(
         input: state.visible && (
             <UIChatInput
                 editable
+                autoFocus
                 menuPlusHidden
                 onSendText={message.onSendText}
                 onSendMedia={() => undefined}

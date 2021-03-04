@@ -1,0 +1,83 @@
+import * as React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { ColorVariants, UIImage, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIConstant } from '@tonlabs/uikit.core';
+
+type ActionButtonProps = {
+    inputHasValue: boolean;
+    onPress: () => void | Promise<void>;
+    hasError: boolean;
+    clear: () => void;
+};
+
+export function ActionButton({
+    inputHasValue,
+    hasError,
+    onPress,
+    clear,
+}: ActionButtonProps) {
+    const theme = useTheme();
+    if (hasError) {
+        return (
+            <TouchableOpacity
+                testID="send_btn"
+                style={actionStyles.buttonContainer}
+                onPress={clear}
+            >
+                <View
+                    style={[
+                        actionStyles.iconRound,
+                        {
+                            backgroundColor:
+                                theme[ColorVariants.BackgroundPrimaryInverted],
+                        },
+                    ]}
+                >
+                    <UIImage
+                        source={UIAssets.icons.ui.closeRemove}
+                        style={actionStyles.icon}
+                        tintColor={ColorVariants.LinePrimary}
+                    />
+                </View>
+            </TouchableOpacity>
+        );
+    }
+    if (inputHasValue) {
+        return (
+            <TouchableOpacity
+                testID="send_btn"
+                style={actionStyles.buttonContainer}
+                onPress={onPress}
+            >
+                <UIImage
+                    source={UIAssets.icons.ui.buttonMsgSend}
+                    style={actionStyles.icon}
+                />
+            </TouchableOpacity>
+        );
+    }
+    return null;
+}
+
+const actionStyles = StyleSheet.create({
+    buttonContainer: {
+        padding: UIConstant.contentOffset(),
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        height: UIConstant.largeButtonHeight(),
+    },
+    icon: {
+        height: UIConstant.tinyButtonHeight(),
+        width: UIConstant.tinyButtonHeight(),
+    },
+    iconRound: {
+        height: UIConstant.tinyButtonHeight(),
+        width: UIConstant.tinyButtonHeight(),
+        borderRadius: UIConstant.tinyButtonHeight() / 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});

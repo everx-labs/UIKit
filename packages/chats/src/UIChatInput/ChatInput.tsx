@@ -26,6 +26,7 @@ const CHAT_INPUT_NUM_OF_LINES = 5;
 type ChatInputProps = {
     textInputRef: React.RefObject<TextInput>;
 
+    autoFocus?: boolean;
     editable: boolean;
     placeholder?: string;
     shortcuts?: Shortcut[];
@@ -115,6 +116,7 @@ export function ChatInput(props: ChatInputProps) {
                     testID="chat_input"
                     autoCapitalize="sentences"
                     autoCorrect={false}
+                    autoFocus={props.autoFocus}
                     clearButtonMode="never"
                     keyboardType="default"
                     editable={props.editable}

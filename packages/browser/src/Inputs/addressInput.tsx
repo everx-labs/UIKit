@@ -18,6 +18,7 @@ export type AddressInputState = {
 export type AddressInputAction = {
     type:
         | 'OPEN_ADDRESS_INPUT'
+        | 'CLOSE_ADDRESS_INPUT'
         | 'OPEN_QR_CODE'
         | 'CLOSE_QR_CODE'
         | 'OPEN_ADDRESS_SELECTION'
@@ -31,6 +32,13 @@ export function addressInputReducer(
     if (action.type === 'OPEN_ADDRESS_INPUT') {
         return {
             inputVisible: true,
+            qrCodeVisible: false,
+            addressSelectionVisible: false,
+        };
+    }
+    if (action.type === 'CLOSE_ADDRESS_INPUT') {
+        return {
+            inputVisible: false,
             qrCodeVisible: false,
             addressSelectionVisible: false,
         };
@@ -140,6 +148,9 @@ export function getAddressInput(
                                     .EnterManually,
                                 addr,
                             );
+                            dispatch({
+                                type: 'CLOSE_ADDRESS_INPUT',
+                            });
                         }}
                         onHeightChange={onHeightChange}
                         validateAddress={message.input.validateAddress}

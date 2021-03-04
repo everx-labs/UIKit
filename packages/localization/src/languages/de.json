@@ -58,6 +58,11 @@
             "MainAccount": "Main account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
+        },
+        "AmountInput": {
+            "Placeholder": "Amount…",
+            "ErrorLess": "The amount is less than {0}",
+            "ErrorBigger": "The amount is bigger than {0}"
         }
     },
     "Cancel": "Abbrechen",

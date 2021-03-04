@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-    Platform,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Platform, StyleSheet, TextInput } from 'react-native';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import {
     UICustomKeyboard,
     useCustomKeyboard,
@@ -23,13 +16,10 @@ import {
     ColorVariants,
     UITextView,
     useAutogrowTextView,
-    useTheme,
-    UIImage,
     UILabel,
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     OnHeightChange,
     OnSendText,
@@ -37,83 +27,7 @@ import {
     ValidationResult,
     ValidationResultStatus,
 } from './types';
-
-type ActionButtonProps = {
-    inputHasValue: boolean;
-    onSendText: () => void | Promise<void>;
-    hasError: boolean;
-    clear: () => void;
-};
-
-function ActionButton({
-    inputHasValue,
-    hasError,
-    onSendText,
-    clear,
-}: ActionButtonProps) {
-    const theme = useTheme();
-    if (hasError) {
-        return (
-            <TouchableOpacity
-                testID="send_btn"
-                style={actionStyles.buttonContainer}
-                onPress={clear}
-            >
-                <View
-                    style={[
-                        actionStyles.iconRound,
-                        {
-                            backgroundColor:
-                                theme[ColorVariants.BackgroundPrimaryInverted],
-                        },
-                    ]}
-                >
-                    <UIImage
-                        source={UIAssets.icons.ui.closeRemove}
-                        style={actionStyles.icon}
-                        tintColor={ColorVariants.LinePrimary}
-                    />
-                </View>
-            </TouchableOpacity>
-        );
-    }
-    if (inputHasValue) {
-        return (
-            <TouchableOpacity
-                testID="send_btn"
-                style={actionStyles.buttonContainer}
-                onPress={onSendText}
-            >
-                <UIImage
-                    source={UIAssets.icons.ui.buttonMsgSend}
-                    style={actionStyles.icon}
-                />
-            </TouchableOpacity>
-        );
-    }
-    return null;
-}
-
-const actionStyles = StyleSheet.create({
-    buttonContainer: {
-        padding: UIConstant.contentOffset(),
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'flex-end',
-        height: UIConstant.largeButtonHeight(),
-    },
-    icon: {
-        height: UIConstant.tinyButtonHeight(),
-        width: UIConstant.tinyButtonHeight(),
-    },
-    iconRound: {
-        height: UIConstant.tinyButtonHeight(),
-        width: UIConstant.tinyButtonHeight(),
-        borderRadius: UIConstant.tinyButtonHeight() / 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
+import { ActionButton } from './ActionButton';
 
 const MAX_INPUT_LENGTH = 120;
 const MAX_INPUT_NUM_OF_LINES = 5;
@@ -228,7 +142,7 @@ export function UIAddressInputInternal({
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}
-                    onSendText={onSendText}
+                    onPress={onSendText}
                     hasError={
                         validation.status === ValidationResultStatus.Error
                     }
@@ -251,6 +165,7 @@ export function UIAddressInputInternal({
                 testID="browser_input"
                 autoCapitalize="sentences"
                 autoCorrect={false}
+                autoFocus
                 clearButtonMode="never"
                 keyboardType="default"
                 editable

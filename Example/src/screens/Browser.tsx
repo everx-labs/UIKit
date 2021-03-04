@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Route, useNavigation, useRoute } from '@react-navigation/core';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import type BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -19,8 +22,7 @@ import {
     UILabel,
     UILabelColors,
 } from '@tonlabs/uikit.hydrogen';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Route, useNavigation, useRoute } from '@react-navigation/core';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const BrowserStack = createStackNavigator();
 
@@ -247,6 +249,44 @@ const BrowserScreen = () => {
                                                           type:
                                                               BrowserMessageType.ConfirmDeclined,
                                                       },
+                                                ...messages,
+                                            ]);
+                                        },
+                                    },
+                                    ...messages,
+                                ]);
+                                navigation.setParams({
+                                    menuVisible: false,
+                                });
+                            }}
+                            style={{
+                                marginBottom: 10,
+                            }}
+                        />
+                        <UIButton
+                            title="Add AmountInput"
+                            onPress={() => {
+                                setMessages([
+                                    {
+                                        type:
+                                            InteractiveMessageType.AmountInput,
+                                        prompt: 'Enter amount:',
+                                        decimals: 9,
+                                        min: 10 * 10 ** 9,
+                                        max: 100 * 10 ** 9,
+                                        onSendAmount: (amount: BigNumber) => {
+                                            setMessages([
+                                                {
+                                                    key: `${Date.now()}-amount`,
+                                                    type:
+                                                        ChatMessageType.PlainText,
+                                                    status: MessageStatus.Sent,
+                                                    text: uiLocalized.amountToLocale(
+                                                        amount.dividedBy(
+                                                            10 ** 9,
+                                                        ),
+                                                    ),
+                                                },
                                                 ...messages,
                                             ]);
                                         },

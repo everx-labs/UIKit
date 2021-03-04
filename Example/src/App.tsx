@@ -84,6 +84,7 @@ const ThemeSwitcher = React.createContext({
 
 const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
+    const [isSearchVisible, setIsSearchVisible] = React.useState(false);
     return (
         <UIBackgroundView style={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
@@ -103,7 +104,16 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         />
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
-                        <UISearchBarButton forId="search">
+                        <UISearchBarButton
+                            forId="search"
+                            visible={isSearchVisible}
+                            onOpen={() => {
+                                setIsSearchVisible(true);
+                            }}
+                            onClose={() => {
+                                setIsSearchVisible(false);
+                            }}
+                        >
                             {(searchText: string) => {
                                 return (
                                     <FlatList
@@ -130,6 +140,9 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                                         navigation.navigate({
                                                             key: routeKey,
                                                         });
+                                                        setIsSearchVisible(
+                                                            false,
+                                                        );
                                                     }}
                                                 >
                                                     <UILabel>{title}</UILabel>
