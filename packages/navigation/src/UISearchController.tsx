@@ -12,9 +12,10 @@ import { ELASTIC_WIDTH_CONTROLLER } from './constants';
 export type UISearchControllerProps = {
     forId?: string;
     visible: boolean;
+    placeholder?: string;
     onCancel: () => void | Promise<void>;
     onChangeText?: React.ComponentProps<typeof UISearchBar>['onChangeText'];
-    children: (searchText: string) => React.ReactNode | React.ReactNode;
+    children: ((searchText: string) => React.ReactNode) | React.ReactNode;
 };
 
 type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
@@ -113,6 +114,7 @@ function useAnimation(onClosed: () => void) {
 
 function UISearchControllerContent({
     visible,
+    placeholder,
     onCancel,
     children,
     onClosed,
@@ -183,6 +185,7 @@ function UISearchControllerContent({
             <SafeAreaView style={styles.contentInner} edges={['top']}>
                 <UISearchBar
                     autoFocus
+                    placeholder={placeholder}
                     onChangeText={onChangeText}
                     headerRightLabel={uiLocalized.Cancel}
                     headerRightOnPress={onCancel}
