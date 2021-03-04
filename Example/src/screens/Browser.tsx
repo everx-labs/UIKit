@@ -271,7 +271,7 @@ const BrowserScreen = () => {
                                         type:
                                             InteractiveMessageType.AmountInput,
                                         prompt: 'Enter amount:',
-                                        decimal: 9,
+                                        decimals: 9,
                                         min: 10 * 10 ** 9,
                                         max: 100 * 10 ** 9,
                                         onSendAmount: (amount: BigNumber) => {

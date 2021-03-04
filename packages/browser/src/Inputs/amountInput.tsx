@@ -32,7 +32,7 @@ export function getAmountInput(
         ],
         input: state.visible && (
             <UIAmountInput
-                decimal={message.decimal}
+                decimals={message.decimals}
                 min={message.min}
                 max={message.max}
                 onSendAmount={message.onSendAmount}

@@ -86,7 +86,7 @@ type UIAmountInputInternalProps = {
     textInputRef: React.RefObject<TextInput>;
     placeholder?: string;
 
-    decimal: number;
+    decimals: number;
     min?: number;
     max?: number;
 
@@ -97,7 +97,7 @@ type UIAmountInputInternalProps = {
 function UIAmountInputInternal({
     textInputRef,
     placeholder: placeholderProp,
-    decimal,
+    decimals,
     min: minProp,
     max: maxProp,
     onHeightChange,
@@ -135,17 +135,17 @@ function UIAmountInputInternal({
         min,
         max,
     } = React.useMemo(() => {
-        const divider = 10 ** decimal;
+        const divider = 10 ** decimals;
         return {
             decimalDivider: divider,
-            decimalPlaceholder: `.${new Array(decimal)
+            decimalPlaceholder: `.${new Array(decimals)
                 .fill(null)
                 .map(() => '0')
                 .join('')}`,
             min: minProp != null ? minProp / divider : null,
             max: maxProp != null ? maxProp / divider : null,
         };
-    }, [decimal, minProp, maxProp]);
+    }, [decimals, minProp, maxProp]);
 
     const {
         validationStatus,
@@ -164,7 +164,7 @@ function UIAmountInputInternal({
                 .slice(0, 2)
                 .map((part, index) => {
                     if (index === 1) {
-                        return part.slice(0, decimal);
+                        return part.slice(0, decimals);
                     }
                     return part;
                 })
@@ -185,7 +185,7 @@ function UIAmountInputInternal({
         [
             textInputRef,
             onChangeTextBase,
-            decimal,
+            decimals,
             validationStatus,
             setValidationStatus,
         ],
@@ -296,7 +296,7 @@ function UIAmountInputInternal({
 type UIAmountInputProps = {
     placeholder?: string;
 
-    decimal: number;
+    decimals: number;
     min?: number;
     max?: number;
 
@@ -324,7 +324,7 @@ export function UIAmountInput(props: UIAmountInputProps) {
         <UIAmountInputInternal
             textInputRef={textInputRef}
             placeholder={props.placeholder}
-            decimal={props.decimal}
+            decimals={props.decimals}
             min={props.min}
             max={props.max}
             onSendAmount={props.onSendAmount}
