@@ -56,12 +56,16 @@ function useValidation(
 
     const validationString = React.useMemo(() => {
         if (validationStatus === ValidationStatus.Bigger) {
-            return `The amount is bigger then ${uiLocalized.amountToLocale(
-                max,
-            )}`;
+            return uiLocalized.formatString(
+                uiLocalized.Browser.AmountInput.ErrorBigger,
+                uiLocalized.amountToLocale(max),
+            );
         }
         if (validationStatus === ValidationStatus.Less) {
-            return `The amount is less then ${uiLocalized.amountToLocale(min)}`;
+            return uiLocalized.formatString(
+                uiLocalized.Browser.AmountInput.ErrorLess,
+                uiLocalized.amountToLocale(min),
+            );
         }
         return null;
     }, [validationStatus, max, min]);

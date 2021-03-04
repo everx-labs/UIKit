@@ -54,7 +54,9 @@
             "Placeholder": "Wallet address…"
         },
         "AmountInput": {
-            "Placeholder": "Amount…"
+            "Placeholder": "Amount…",
+            "ErrorLess": "The amount is less than {0}",
+            "ErrorBigger": "The amount is bigger than {0}"
         },
         "AddressInputBubble": {
             "EnterManually": "Enter manually",

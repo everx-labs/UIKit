@@ -57,6 +57,8 @@ export type UILocalizedData = {|
         |},
         +AmountInput: {|
             +Placeholder: string,
+            +ErrorLess: string,
+            +ErrorBigger: string,
         |},
         +AddressInputBubble: {|
             +EnterManually: string,

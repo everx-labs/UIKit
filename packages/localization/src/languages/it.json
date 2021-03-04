@@ -60,7 +60,9 @@
             "SelectAsset": "Select asset"
         },
         "AmountInput": {
-            "Placeholder": "Amount…"
+            "Placeholder": "Amount…",
+            "ErrorLess": "The amount is less than {0}",
+            "ErrorBigger": "The amount is bigger than {0}"
         }
     },
     "Cancel": "Annulla",
