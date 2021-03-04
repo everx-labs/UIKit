@@ -21,17 +21,19 @@ export function UISearchBarButton({
     onOpen,
     onClose,
     forId,
+    placeholder,
     children,
     onChangeText,
 }: {
+    forId?: string;
+    placeholder?: string;
     visible: boolean;
     onOpen: () => void | Promise<void>;
     onClose: () => void | Promise<void>;
-    forId?: string;
     onChangeText?: React.ComponentProps<
         typeof UISearchController
     >['onChangeText'];
-    children: (searchText: string) => React.ReactNode;
+    children: ((searchText: string) => React.ReactNode) | React.ReactNode;
 }) {
     return (
         <>
@@ -56,6 +58,7 @@ export function UISearchBarButton({
                 </TouchableOpacity>
             </UIBackgroundView>
             <UISearchController
+                placeholder={placeholder}
                 forId={forId}
                 visible={visible}
                 onCancel={onClose}
