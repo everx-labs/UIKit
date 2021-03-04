@@ -35,7 +35,7 @@ function useValidation(
         (rawAmount: BigNumber | string) => {
             const amount = BigNumber.isBigNumber(rawAmount)
                 ? rawAmount.dividedBy(decimalDivider)
-                : new BigNumber(rawAmount.replace(',', '.'));
+                : getBigNumberFromRawString(rawAmount);
 
             if (max != null && amount.isGreaterThanOrEqualTo(max)) {
                 setValidationStatus(ValidationStatus.Bigger);
@@ -77,6 +77,10 @@ function useValidation(
         checkValidation,
     };
 }
+
+const getBigNumberFromRawString = (value: string) => {
+    return new BigNumber(value.replace(',', '.'));
+};
 
 type UIAmountInputInternalProps = {
     textInputRef: React.RefObject<TextInput>;
@@ -220,8 +224,8 @@ function UIAmountInputInternal({
     }, [isFocused]);
 
     const onActionPress = React.useCallback(() => {
-        const amount = new BigNumber(
-            inputValue.current.replace(',', '.'),
+        const amount = getBigNumberFromRawString(
+            inputValue.current,
         ).multipliedBy(decimalDivider);
 
         if (!checkValidation(amount)) {

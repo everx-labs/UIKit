@@ -124,6 +124,11 @@ function getPosition(
         value: block([
             cond(
                 and(
+                    // Sometimes we could be caught in a situation
+                    // when UISheet was asked to be closed (via visible=false)
+                    // and at the same time a keyboard was opened
+                    // so to prevent opening this guard is needed
+                    // (due to the fact that when sheet is open it's in OPENING state)
                     eq(show, SHOW_STATES.OPENING),
                     neq(beforeKeyboardHeight, keyboardHeight),
                 ),
