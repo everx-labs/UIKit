@@ -129,7 +129,6 @@ const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
         block,
         cond,
         eq,
-        neq,
         and,
         set,
         spring,
@@ -180,7 +179,7 @@ const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
             set(show, ShowStates.FOLDING),
             startClock(clock),
         ]),
-        cond(neq(show, ShowStates.RESET), [spring(clock, state, config)]),
+        spring(clock, state, config),
         cond(and(state.finished, clockRunning(clock)), [stopClock(clock)]),
         state.position,
     ]);
@@ -233,9 +232,8 @@ function useFloatLabelTransform(
                 return;
             }
             setIsLabelReady(true);
-            show.setValue(ShowStates.RESET);
         },
-        [isLabelReady, setIsLabelReady, foldedHeight, foldedWidth, show],
+        [isLabelReady, setIsLabelReady, foldedHeight, foldedWidth],
     );
 
     const onActualLabelLayout = React.useCallback(
@@ -259,9 +257,8 @@ function useFloatLabelTransform(
                 return;
             }
             setIsLabelReady(true);
-            show.setValue(ShowStates.RESET);
         },
-        [isLabelReady, setIsLabelReady, fullHeight, fullWidth, show],
+        [isLabelReady, setIsLabelReady, fullHeight, fullWidth],
     );
 
     React.useEffect(() => {
@@ -277,7 +274,7 @@ function useFloatLabelTransform(
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
 
         show.setValue(isFoldedNow ? ShowStates.FOLD : ShowStates.OPEN);
-    }, [isFocused, inputHasValue, show, value]);
+    }, [isFocused, inputHasValue, value, show, isLabelReady]);
 
     const pseudoLabelStyle = React.useMemo(() => {
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
@@ -510,13 +507,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
                             {label}
                         </Animated.Text>
                     </Animated.View>
-                    {
-                        right ? (
-                            <View>
-                                {right}
-                            </View>
-                        ) : null
-                    }
+                    {right ? <View>{right}</View> : null}
                 </UIMaterialTextViewBorder>
             </View>
         </UIMaterialTextViewComment>
@@ -550,13 +541,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
                     />
-                    {
-                        right ? (
-                            <View>
-                                {right}
-                            </View>
-                        ) : null
-                    }
+                    {right ? <View>{right}</View> : null}
                 </UIMaterialTextViewBorder>
             </View>
         </UIMaterialTextViewComment>
