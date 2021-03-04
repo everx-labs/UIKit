@@ -49,6 +49,17 @@
     "BankCardNumber": "Numéro de carte",
     "Blacklist": "Liste noire",
     "BlockUser": "Bloquer l'utilisateur",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "Annuler",
     "Channel": "Chaîne",
     "ChannelInfo": "Informations sur la chaîne",
@@ -330,9 +341,9 @@
     "PushFeedbackLong": "Donnez votre avis pour nous aider à améliorer l'histoire. Cliquez ici pour partager",
     "PushFeedbackShort": "Donnez des commentaires pour contribuer à l'histoire",
     "QRCodeScanner": {
+        "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     },
     "Receive": "Recevoir",
     "Recent": "Récent",
@@ -349,6 +360,11 @@
     "RestoreFrom12Words": "Restaurer à partir d'une phrase clé de 12 mots",
     "ReviewAndConfirm": "Examiner et confirmer",
     "RevokeLink": "Révoquer le lien",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "Dites \"Bonjour\".",
     "ScanQRCodeWithTONChatApplicationToContinue": "Veuillez utiliser l'application TON Wallet pour scanner ce code QR.\nLe bouton \"Scan\" se trouve dans le coin supérieur droit de l'écran principal.",
     "Search": "Chercher",
@@ -486,21 +502,5 @@
     "Yesterday": "Hier",
     "YesterdayAt": "Hier à {0}",
     "You": "Vous",
-    "YourEmail": "Votre e-mail",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds"
+    "YourEmail": "Votre e-mail"
 }

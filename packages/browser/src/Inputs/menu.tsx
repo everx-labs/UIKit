@@ -10,17 +10,20 @@ export type MenuState = null;
 export function getMenuInput(message: MenuMessage): Input {
     return {
         messages: [
-            ...message.items.reverse().map(
-                (item): ActionButtonMessage => ({
+            ...message.items.map(
+                (item, index): ActionButtonMessage => ({
                     type: ChatMessageType.ActionButton,
                     text: item.title,
-                    key: `menu-item-${item.handlerId}`,
+                    key: `menu-item-${item.handlerId}-${index}`,
                     status: MessageStatus.Received,
                     onPress: () => {
-                        message.onSelect(item.handlerId);
+                        // handlerId it's actually an identifier of an external function,
+                        // for menu item it can be the same handler, so we pass index to it,
+                        // to identify what menu item was chosen
+                        message.onSelect(item.handlerId, index);
                     },
                 }),
-            ),
+            ).reverse(),
             {
                 type: ChatMessageType.PlainText,
                 text: message.title,

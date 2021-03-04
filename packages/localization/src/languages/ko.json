@@ -49,6 +49,17 @@
     "BankCardNumber": "카드 번호",
     "Blacklist": "블랙리스트",
     "BlockUser": "사용자 차단하기",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "취소",
     "Channel": "채널",
     "ChannelInfo": "채널 정보",
@@ -330,9 +341,9 @@
     "PushFeedbackLong": "저희가 더 나은 응용 프로그램을 만들 수 있도록 피드백을 제공해주세요. 진행하려면 여기를 클릭하십시오.",
     "PushFeedbackShort": "서핑에 기여할 수 있도록 피드백을 제공해주세요",
     "QRCodeScanner": {
+        "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     },
     "Receive": "받기",
     "Recent": "최근의",
@@ -349,6 +360,11 @@
     "RestoreFrom12Words": "12개 단어의 단어결합에서 복원하기",
     "ReviewAndConfirm": "리뷰 및 확인",
     "RevokeLink": "링크 보내기 최소",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "\"안녕하세요\"라고 말하세요.",
     "ScanQRCodeWithTONChatApplicationToContinue": "TON 지갑 앱을 쓰고 이 QR 코드를 스캔해주세요. 메인화면의 오른쪽 상단에 있는 스캔버튼을 눌러주세요.",
     "Search": "검색",
@@ -486,21 +502,5 @@
     "Yesterday": "어제",
     "YesterdayAt": "어제 {0}",
     "You": "당신은",
-    "YourEmail": "이용자의 이메일",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds"
+    "YourEmail": "이용자의 이메일"
 }

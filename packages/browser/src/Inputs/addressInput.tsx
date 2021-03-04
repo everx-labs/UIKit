@@ -192,7 +192,7 @@ export function getAddressInputShared(
                         type: 'CLOSE_ADDRESS_SELECTION',
                     });
                 }}
-                sections={(message as AddressInputMessage).select}
+                sections={(message as AddressInputMessage).select || []}
             />
         </React.Fragment>
     );

@@ -49,6 +49,17 @@
     "BankCardNumber": "カード番号",
     "Blacklist": "ブラックリスト",
     "BlockUser": "ユーザーをブロックする",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Wallet address…"
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Enter manually",
+            "MainAccount": "Main account",
+            "ScanQR": "Scan QR code",
+            "SelectAsset": "Select asset"
+        }
+    },
     "Cancel": "キャンセル",
     "Channel": "チャンネル情報",
     "ChannelInfo": "チャンネル情報",
@@ -330,9 +341,9 @@
     "PushFeedbackLong": "ストーリーをより良くするためにフィードバックをお寄せください。ここにクリックすると、共有します。",
     "PushFeedbackShort": "ストーリーに貢献するため、フィードバックを共有する",
     "QRCodeScanner": {
+        "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorUnexpected": "Something unexpected happened during scanning"
     },
     "Receive": "受信",
     "Recent": "最近",
@@ -349,6 +360,11 @@
     "RestoreFrom12Words": "12語のキーフレーズから復元",
     "ReviewAndConfirm": "レビューと確認",
     "RevokeLink": "リンクを取り消す",
+    "rounds": "rounds",
+    "rounds01": "round",
+    "rounds11": "rounds",
+    "rounds24": "rounds",
+    "rounds50": "rounds",
     "SayHello": "「こんにちは」と言ってください",
     "ScanQRCodeWithTONChatApplicationToContinue": "このQRコードをスキャンするには、TONWalletアプリを使用してください。\nプレススキャンボタンはメイン画面の右上隅にあります。",
     "Search": "検索する",
@@ -486,21 +502,5 @@
     "Yesterday": "昨日",
     "YesterdayAt": "昨日{0}に",
     "You": "あなた",
-    "YourEmail": "あなたのメールアドレス",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds"
+    "YourEmail": "あなたのメールアドレス"
 }

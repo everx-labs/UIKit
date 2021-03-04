@@ -82,7 +82,7 @@ export type TransactionMessage = BubbleBaseT &
         info: {
             type: TransactionType;
             amount: BigNumber; // mostly used for testID purposes
-            balanceChange: string | React.ComponentType;
+            balanceChange: string | React.ReactElement<any, any>;
             text?: string;
         };
         comment?: TransactionComment;

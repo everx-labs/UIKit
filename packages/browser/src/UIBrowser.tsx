@@ -23,11 +23,13 @@ import {
 } from './Inputs/addressInput';
 import { UIBrowserList } from './UIBrowserList';
 import { getMenuInput, MenuState } from './Inputs/menu';
+import { ConfirmState, getConfirmInput } from './Inputs/confirm';
 
 type InteractiveMessagesState = {
     [InteractiveMessageType.Terminal]: TerminalState;
     [InteractiveMessageType.AddressInput]: AddressInputState;
     [InteractiveMessageType.Menu]: MenuState;
+    [InteractiveMessageType.Confirm]: ConfirmState;
 };
 
 type InteractiveMessageAction = {
@@ -46,6 +48,7 @@ function interactiveMessagesReducer(
             action.payload,
         ),
         [InteractiveMessageType.Menu]: null,
+        [InteractiveMessageType.Confirm]: null,
     };
 }
 
@@ -76,7 +79,7 @@ function useInteractiveMessages(
     messages: VisibleMessage[];
     input: React.ReactNode;
 } {
-    const [interactiveMessage, ...rest] = allMessages;
+    const [maybeInteractiveMessage, ...rest] = allMessages;
 
     const [state, dispatch] = React.useReducer(interactiveMessagesReducer, {
         [InteractiveMessageType.Terminal]: {
@@ -88,19 +91,23 @@ function useInteractiveMessages(
             addressSelectionVisible: false,
         },
         [InteractiveMessageType.Menu]: null,
+        [InteractiveMessageType.Confirm]: null,
     });
 
     // It's not an interactive message :)
     if (
-        interactiveMessage == null ||
-        Object.keys(InteractiveMessageType).indexOf(interactiveMessage.type) ===
-            -1
+        maybeInteractiveMessage == null ||
+        Object.keys(InteractiveMessageType).indexOf(
+            maybeInteractiveMessage.type,
+        ) === -1
     ) {
         return {
             messages: allMessages as VisibleMessage[],
             input: null,
         };
     }
+
+    const interactiveMessage = maybeInteractiveMessage as InteractiveMessage;
 
     const inputsPrepared = inputs.reduce<{
         messages: VisibleMessage[];
@@ -182,6 +189,10 @@ export function UIBrowser({ messages: passedMessages }: UIBrowserProps) {
             {
                 type: InteractiveMessageType.Menu,
                 getInput: getMenuInput,
+            },
+            {
+                type: InteractiveMessageType.Confirm,
+                getInput: getConfirmInput,
             },
         ],
         [],

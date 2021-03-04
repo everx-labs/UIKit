@@ -49,6 +49,17 @@
     "BankCardNumber": "Número do cartão de crédito",
     "Blacklist": "Lista negra",
     "BlockUser": "Bloquear usuário",
+    "Browser": {
+        "AddressInput": {
+            "Placeholder": "Endereço da carteira..."
+        },
+        "AddressInputBubble": {
+            "EnterManually": "Inserir manualmente",
+            "MainAccount": "Conta principal",
+            "ScanQR": "Ler o QR code",
+            "SelectAsset": "Selecione o ativo"
+        }
+    },
     "Cancel": "Cancelar",
     "Channel": "Canal",
     "ChannelInfo": "Informações do Canal",
@@ -59,7 +70,7 @@
             "AttachImage": "Imagem"
         },
         "Alerts": {
-            "EnableFromSettings": "Por favor, habilite o acesso nas Configurações do seu dispositivo",
+            "EnableFromSettings": "Por favor, habilite o acesso nas configurações do seu dispositivo",
             "EnableFromSettingsTitle": "Enviar imagem",
             "MessageTooLong": "Sua mensagem tem mais de {0} caracteres."
         },
@@ -330,9 +341,9 @@
     "PushFeedbackLong": "Dê sua opinião para ajudar-nos a melhorar o serviço. Clique aqui para compartilhá-la conosco",
     "PushFeedbackShort": "Dê seu feedback para contribuir com o Surf",
     "QRCodeScanner": {
-        "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
-        "ErrorUnexpected": "Something unexpected happened during scanning",
-        "ErrorOnRead": "Couldn't read QR code"
+        "ErrorOnRead": "Não foi possível ler o QR code",
+        "ErrorPermissions": "Ative as permissões da câmera para poder ler os QR Codes",
+        "ErrorUnexpected": "Algo inesperado aconteceu durante a leitura"
     },
     "Receive": "Receber",
     "Recent": "Recente",
@@ -349,9 +360,14 @@
     "RestoreFrom12Words": "Restaurar a partir da chave de 12 palavras",
     "ReviewAndConfirm": "Revisar e Confirmar",
     "RevokeLink": "Revogar link",
+    "rounds": "rodadas",
+    "rounds01": "rodada",
+    "rounds11": "rodadas",
+    "rounds24": "rodadas",
+    "rounds50": "rodadas",
     "SayHello": "Diga \"Olá\"",
     "ScanQRCodeWithTONChatApplicationToContinue": "Use o app TON Wallet para ler este código QR.\nPressione o botão Escanear localizado no canto superior direito da tela principal.",
-    "Search": "Busca",
+    "Search": "Pesquisar…",
     "SearchByAccount": "Pesquisa por Conta…",
     "SearchByToken": "Pesquisar por Token…",
     "SearchContacts": "Procurar contatos…",
@@ -361,7 +377,7 @@
     "SearchFriends": "Procurar amigos…",
     "Sec": "seg",
     "SeedPhrase": "Frase-chave de 12 palavras",
-    "seedPhraseTypo": "Parece que temos um erro de digitação aqui. Tente novamente",
+    "seedPhraseTypo": "Parece um erro de digitação. Por favor, tente novamente",
     "Select": "Selecione",
     "SelectAll": "Selecione todos",
     "SelectCountry": "Selecione o país…",
@@ -476,31 +492,15 @@
     "WeUseContactsToAllowYouToInviteFriends": "Usamos seus contatos para permitir que você convide amigos",
     "WillGetInTouchWithYouSoon": "Entraremos em contato com você em breve",
     "Word": "Palavra",
-    "words01": "word",
-    "words11": "words",
-    "words24": "words",
-    "words50": "words",
+    "words01": "palavra",
+    "words11": "palavras",
+    "words24": "palavras",
+    "words50": "palavras",
     "WriteOffAccount": "Conta Baixada",
     "WrongPassword": "Senha incorreta",
     "Yes": "Sim",
     "Yesterday": "Ontem",
     "YesterdayAt": "Ontem às {0}",
     "You": "Você",
-    "YourEmail": "Seu e-mail",
-    "Browser": {
-        "AddressInput": {
-            "Placeholder": "Wallet address…"
-        },
-        "AddressInputBubble": {
-            "MainAccount": "Main account",
-            "SelectAsset": "Select asset",
-            "EnterManually": "Enter manually",
-            "ScanQR": "Scan QR code"
-        }
-    },
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds"
+    "YourEmail": "Seu e-mail"
 }

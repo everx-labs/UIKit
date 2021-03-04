@@ -1,4 +1,3 @@
-// @flow
 // Original code is taken from https://github.com/jsoendermann/rn-section-list-get-item-layout
 // with some changes applied
 
