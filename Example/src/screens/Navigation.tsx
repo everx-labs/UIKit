@@ -19,6 +19,7 @@ export const Navigation = () => {
         isSearchControllerVisible,
         setSearchControllerVisible,
     ] = React.useState(false);
+    const [isSearchBarVisible, setSearchBarVisible] = React.useState(false);
 
     return (
         <ExampleScreen color={ColorVariants.BackgroundSecondary}>
@@ -71,7 +72,15 @@ export const Navigation = () => {
                         paddingVertical: 20,
                     }}
                 >
-                    <UISearchBarButton>
+                    <UISearchBarButton
+                        visible={isSearchBarVisible}
+                        onOpen={() => {
+                            setSearchBarVisible(true);
+                        }}
+                        onClose={() => {
+                            setSearchBarVisible(false);
+                        }}
+                    >
                         {(searchText: string) => (
                             <View>
                                 <UILabel>{searchText}</UILabel>

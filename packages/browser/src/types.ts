@@ -130,7 +130,7 @@ export type MenuMessage = {
 export type AmountInputMessage = {
     type: InteractiveMessageType.AmountInput;
     prompt: string;
-    decimal: number;
+    decimals: number;
     min: number;
     max: number;
     onSendAmount: OnSendAmount;
