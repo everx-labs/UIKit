@@ -52,7 +52,7 @@ export function UISearchBarButton({
                             role={UILabelRoles.ParagraphText}
                             color={UILabelColors.TextSecondary}
                         >
-                            {uiLocalized.Search}
+                            {placeholder || uiLocalized.Search}
                         </UILabel>
                     </UIBackgroundView>
                 </TouchableOpacity>
