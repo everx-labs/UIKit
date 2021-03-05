@@ -31,6 +31,7 @@
     "@tonlabs/uikit.navigation": "*",
     "@tonlabs/uikit.legacy": "*",
     "@tonlabs/uikit.navigation_legacy": "*",
+    "@tonlabs/uikit.keyboard": "*",
     "bignumber.js": "9.0.0",
     "bowser": "1.9.4",
     "currency-formatter": "1.5.4",

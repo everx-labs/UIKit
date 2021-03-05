@@ -357,6 +357,8 @@ PODS:
   - SDWebImageWebPCoder (0.2.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.0)
+  - UIKitKeyboard (2.0.2):
+    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -427,6 +429,7 @@ DEPENDENCIES:
   - RNScreens (from `../../node_modules/react-native-screens`)
   - RNShare (from `../../node_modules/react-native-share`)
   - RNSVG (from `../../node_modules/react-native-svg`)
+  - UIKitKeyboard (from `../../packages/keyboard/UIKitKeyboard.podspec`)
   - Yoga (from `../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -536,6 +539,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/react-native-share"
   RNSVG:
     :path: "../../node_modules/react-native-svg"
+  UIKitKeyboard:
+    :path: "../../packages/keyboard/UIKitKeyboard.podspec"
   Yoga:
     :path: "../../node_modules/react-native/ReactCommon/yoga"
 
@@ -598,9 +603,10 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   SDWebImage: 9169792e9eec3e45bba2a0c02f74bf8bd922d1ee
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
+  UIKitKeyboard: 52665b111f39cf113066c9af28cdd6e954809b22
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 68d6768bc2454d0ecbcd1dd2e8b732a09ee8e9a8
+PODFILE CHECKSUM: 48efc5d9c43e533f2dfaf556971ece7c736c150b
 
 COCOAPODS: 1.10.1
