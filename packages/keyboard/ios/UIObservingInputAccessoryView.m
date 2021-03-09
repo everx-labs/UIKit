@@ -37,22 +37,15 @@
         (object == self.superview) &&
         ([keyPath isEqualToString:@"center"])
         ) {
-        CGFloat centerY = self.superview.center.y;
-        
-        if([keyPath isEqualToString:@"center"])
-        {
-            centerY = [change[NSKeyValueChangeNewKey] CGPointValue].y;
-        }
+        CGFloat centerY = [change[NSKeyValueChangeNewKey] CGPointValue].y;
         
         CGFloat boundsH = self.superview.bounds.size.height;
         CGFloat keyboardH =
             self.window.bounds.size.height -
             (centerY - boundsH / 2) -
             self.frame.size.height;
-        CGFloat keyboardHeight = MAX(
-                                     0,
-                                     keyboardH
-                                     );
+        
+        CGFloat keyboardHeight = MAX(0, keyboardH);
         
         [_delegate onInputAccessoryViewChangeKeyboardHeight:keyboardHeight];
     } else {

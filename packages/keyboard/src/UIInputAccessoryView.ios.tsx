@@ -10,15 +10,22 @@ type Props = {
     // eslint-disable-next-line react/no-unused-prop-types
     style: StyleProp<ViewStyle>;
     children: React.ReactNode;
+    managedScrollViewNativeID: string;
 };
 
 const NativeUIInputAccessoryView = requireNativeComponent<Props>(
     'UIInputAccessoryView',
 );
 
-export function UIInputAccessoryView({ children }: Props) {
+export function UIInputAccessoryView({
+    children,
+    managedScrollViewNativeID,
+}: Props) {
     return (
-        <NativeUIInputAccessoryView style={styles.container}>
+        <NativeUIInputAccessoryView
+            style={styles.container}
+            managedScrollViewNativeID={managedScrollViewNativeID}
+        >
             {children}
         </NativeUIInputAccessoryView>
     );
