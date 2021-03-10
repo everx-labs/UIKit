@@ -6,17 +6,14 @@ import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/Vie
 import { Popover } from 'react-native-simple-popover';
 
 import {
-    UIColor,
     UIDevice,
-    UIEventHelper,
     UIStyle,
     UIConstant,
 } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, UICardSheet } from '@tonlabs/uikit.hydrogen';
 
 import UIPopoverBackground from '../UIPopoverBackground';
-import UICustomSheet from '../UICustomSheet';
 
 let masterRef = null;
 
@@ -44,6 +41,7 @@ export type PopoverState = {
     isVisible: boolean,
     triggerWidth: number,
     marginLeft: number,
+    cardVisible: boolean,
 };
 
 const styles = StyleSheet.create({
@@ -78,6 +76,7 @@ export default class UIPopover<Props, State>
             isVisible: false,
             triggerWidth: 0,
             marginLeft: 0,
+            cardVisible: false,
         };
         this.countdown = null;
     }
@@ -104,6 +103,10 @@ export default class UIPopover<Props, State>
             this.setStateSafely({ isVisible }, resolve);
         });
     }
+
+    setCardVisible = (visible: boolean) => {
+        this.setStateSafely({ cardVisible: visible });
+    };
 
     setTriggerWidth(triggerWidth: number) {
         this.setStateSafely({ triggerWidth });
@@ -160,11 +163,7 @@ export default class UIPopover<Props, State>
         } else if (this.isMenu) {
             this.showNarrowMenu();
         } else {
-            UICustomSheet.show({
-                containerStyle: this.props.narrowContainerStyle,
-                component: this.props.component,
-                onShow: this.props.onShow,
-            });
+            this.setCardVisible(true);
         }
     }
 
@@ -252,7 +251,6 @@ export default class UIPopover<Props, State>
             : [styles.slimContainer, UIStyle.padding.default()];
         return (
             <UIBackgroundView
-                color={UIBackgroundViewColors.BackgroundPrimary}
                 nativeID={POPOVER_MENU}
                 onLayout={this.onLayout}
                 style={[
@@ -279,25 +277,35 @@ export default class UIPopover<Props, State>
         const testIDProp = testID ? { testID } : null;
 
         return (
-            <Popover
-                placement={placement}
-                arrowWidth={0}
-                arrowHeight={0}
-                isVisible={this.isVisible()}
-                component={this.renderPopover}
-            >
-                <TouchableOpacity
-                    nativeID={POPOVER_TRIGGER}
-                    {...testIDProp}
-                    onPress={this.onShow}
-                    onLayout={this.onTriggerLayout}
-                    style={containerStyle}
+            <>
+                <Popover
+                    placement={placement}
+                    arrowWidth={0}
+                    arrowHeight={0}
+                    isVisible={this.isVisible()}
+                    component={this.renderPopover}
                 >
-                    <View pointerEvents="none" style={style}>
-                        {children}
-                    </View>
-                </TouchableOpacity>
-            </Popover>
+                    <TouchableOpacity
+                        nativeID={POPOVER_TRIGGER}
+                        {...testIDProp}
+                        onPress={this.onShow}
+                        onLayout={this.onTriggerLayout}
+                        style={containerStyle}
+                    >
+                        <View pointerEvents="none" style={style}>
+                            {children}
+                        </View>
+                    </TouchableOpacity>
+                </Popover>
+                <UICardSheet
+                    visible={this.state.cardVisible}
+                    onClose={() => this.setCardVisible(false)}
+                >
+                    <UIBackgroundView style={this.props.narrowContainerStyle}>
+                        {this.props.component}
+                    </UIBackgroundView>
+                </UICardSheet>
+            </>
         );
     }
 }

@@ -1,14 +1,20 @@
 // @flow
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
+import { UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-
+import { UIBackgroundView, UICardSheet } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import MenuItem from './MenuItem';
 import type { MenuItemType } from './MenuItem';
-import UICustomSheet from '../UICustomSheet';
+
+const styles = StyleSheet.create({
+    container: {
+        borderRadius: UIConstant.mediumBorderRadius(),
+    },
+});
 
 type Props = {
     menuItemsList: MenuItemType[],
@@ -20,6 +26,7 @@ type Props = {
 type State = {
     menuItemsList: MenuItemType[],
     needCancelItem: boolean,
+    cardVisible: boolean,
 };
 
 let masterRef = null;
@@ -52,7 +59,6 @@ export default class UIActionSheet extends UIComponent<Props, State> {
 
     fullWidth: boolean;
     onCancel: () => void;
-    customSheet: ?UICustomSheet;
     menuItemsList: MenuItemType[];
     needCancelItem: boolean;
 
@@ -63,6 +69,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         this.state = {
             menuItemsList: [],
             needCancelItem: true,
+            cardVisible: false,
         };
     }
 
@@ -81,6 +88,9 @@ export default class UIActionSheet extends UIComponent<Props, State> {
     }
 
     // Setters
+    setCardVisible = (visible: boolean) => {
+        this.setStateSafely({ cardVisible: visible });
+    };
 
     // Getters
     getMenuItemsList(): MenuItemType[] {
@@ -106,15 +116,14 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 ? needCancelItem
                 : this.props.needCancelItem,
         }, () => {
-            if (this.customSheet) {
-                this.customSheet.show();
-            }
+            this.setCardVisible(true);
         });
     }
 
     hide(callback: () => void) {
-        if (this.customSheet) {
-            this.customSheet.hide(callback);
+        this.setCardVisible(false);
+        if (callback) {
+            callback()
         }
     }
 
@@ -127,9 +136,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
             <MenuItem
                 title={uiLocalized.Cancel}
                 onPress={() => {
-                    if (this.customSheet) {
-                        this.customSheet.hide(this.onCancel);
-                    }
+                    this.hide(this.onCancel);
                 }}
             />
         );
@@ -142,9 +149,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
             <MenuItem
                 {...item}
                 onPress={() => {
-                    if (this.customSheet) {
-                        this.customSheet.hide(item.onPress);
-                    }
+                    this.hide(item.onPress);
                 }}
             />
         );
@@ -167,14 +172,16 @@ export default class UIActionSheet extends UIComponent<Props, State> {
 
     render() {
         return (
-            <UICustomSheet
-                ref={(component) => { this.customSheet = component; }}
-                masterSheet={false}
-                showHeader={false}
-                component={this.renderMenu()}
-                fullWidth={this.fullWidth}
-                onCancel={this.onCancel}
-            />
+            <UICardSheet
+                visible={this.state.cardVisible}
+                onClose={() => this.setCardVisible(false)}
+            >
+                <UIBackgroundView
+                    style={styles.container}
+                >
+                    {this.renderMenu()}
+                </UIBackgroundView>
+            </UICardSheet>
         );
     }
 }

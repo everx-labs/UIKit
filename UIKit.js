@@ -92,7 +92,6 @@ export {
     UIBottomBar,
     UIController,
     UICountryPicker,
-    UICustomSheet,
     UIModalController,
     UIDialogController,
     UIImageView,

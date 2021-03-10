@@ -8,7 +8,7 @@
 
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 // $FlowFixMe
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
@@ -31,7 +31,6 @@ import {
 import {
     UICountryPicker,
     UIActionSheet,
-    UICustomSheet,
     UIPopoverBackground,
 } from '@tonlabs/uikit.navigation_legacy';
 import {
@@ -59,7 +58,7 @@ import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
-import { Menus, actionSheet, customSheet } from './screens/Menus';
+import { Menus, actionSheet } from './screens/Menus';
 import { Notifications } from './screens/Notifications';
 import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
@@ -344,23 +343,6 @@ const App = () => {
                     <UIActionSheet ref={actionSheet} masterSheet={false} />
                     <UIActionSheet />
                     <UICountryPicker navigation={navRef.current} isShared />
-                    <UICustomSheet
-                        ref={customSheet}
-                        masterSheet={false}
-                        component={
-                            <>
-                                <Text>This is custom sheet!</Text>
-                                <UIButton
-                                    title="close"
-                                    onPress={() => {
-                                        if (customSheet.current) {
-                                            customSheet.current.hide();
-                                        }
-                                    }}
-                                />
-                            </>
-                        }
-                    />
                     <View
                         style={StyleSheet.absoluteFill}
                         pointerEvents="box-none"
