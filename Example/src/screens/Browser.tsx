@@ -73,75 +73,65 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add AddressInput"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        key: `${Date.now()}-address-input`,
-                                        status: MessageStatus.Received,
-                                        type:
-                                            InteractiveMessageType.AddressInput,
-                                        prompt:
-                                            'What wallet do you want to work with?',
-                                        mainAddress: '0:000',
-                                        input: {
-                                            validateAddress: (text: string) => {
-                                                if (
-                                                    text.length > 0 &&
-                                                    text.length % 5 === 0
-                                                ) {
-                                                    return Promise.resolve({
-                                                        status:
-                                                            ValidationResultStatus.Error,
-                                                        text:
-                                                            'Oh no, the length is divided by 5',
-                                                    });
-                                                }
+                                const message = {
+                                    key: `${Date.now()}-address-input`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.AddressInput,
+                                    prompt:
+                                        'What wallet do you want to work with?',
+                                    mainAddress: '0:000',
+                                    input: {
+                                        validateAddress: (text: string) => {
+                                            if (
+                                                text.length > 0 &&
+                                                text.length % 5 === 0
+                                            ) {
                                                 return Promise.resolve({
                                                     status:
-                                                        ValidationResultStatus.None,
+                                                        ValidationResultStatus.Error,
+                                                    text:
+                                                        'Oh no, the length is divided by 5',
                                                 });
-                                            },
+                                            }
+                                            return Promise.resolve({
+                                                status:
+                                                    ValidationResultStatus.None,
+                                            });
                                         },
-                                        qrCode: {
-                                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                            parseData: (_data: any) => {
-                                                return Promise.resolve('0:000');
-                                            },
+                                    },
+                                    qrCode: {
+                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                        parseData: (_data: any) => {
+                                            return Promise.resolve('0:000');
                                         },
-                                        select: [
-                                            {
-                                                title: 'Accounts',
-                                                data: new Array(20)
-                                                    .fill(null)
-                                                    .map((_i, index) => ({
-                                                        address: `0:000${index}`,
-                                                        balance: `12${index}`,
-                                                        description:
-                                                            'My Crystals',
-                                                    })),
-                                            },
-                                        ],
-                                        onSelect: (
-                                            selectedButtonString: string,
-                                            address: string,
-                                        ) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-address-input2`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: address,
-                                                },
-                                                {
-                                                    key: `${Date.now()}-address-input1`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: selectedButtonString,
-                                                },
-                                                ...messages,
-                                            ]);
+                                    },
+                                    select: [
+                                        {
+                                            title: 'Accounts',
+                                            data: new Array(20)
+                                                .fill(null)
+                                                .map((_i, index) => ({
+                                                    address: `0:000${index}`,
+                                                    balance: `12${index}`,
+                                                    description: 'My Crystals',
+                                                })),
                                         },
+                                    ],
+                                };
+                                const onSelect = (state: any) => {
+                                    setMessages([
+                                        {
+                                            ...message,
+                                            externalState: state,
+                                            onSelect,
+                                        },
+                                        ...messages,
+                                    ]);
+                                };
+                                setMessages([
+                                    {
+                                        ...message,
+                                        onSelect,
                                     },
                                     ...messages,
                                 ]);
@@ -153,7 +143,7 @@ const BrowserScreen = () => {
                                 marginBottom: 10,
                             }}
                         />
-                        <UIButton
+                        {/* <UIButton
                             title="Add TerminalInput"
                             onPress={() => {
                                 setMessages([
@@ -182,8 +172,8 @@ const BrowserScreen = () => {
                             style={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
+                        /> */}
+                        {/* <UIButton
                             title="Add Menu"
                             onPress={() => {
                                 setMessages([
@@ -226,8 +216,8 @@ const BrowserScreen = () => {
                             style={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
+                        /> */}
+                        {/* <UIButton
                             title="Add Confirm"
                             onPress={() => {
                                 setMessages([
@@ -264,8 +254,8 @@ const BrowserScreen = () => {
                             style={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
+                        /> */}
+                        {/* <UIButton
                             title="Add AmountInput"
                             onPress={() => {
                                 setMessages([
@@ -299,7 +289,7 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                        />
+                        /> */}
                     </UIBottomSheet>
                 )}
             </SafeAreaInsetsContext.Consumer>

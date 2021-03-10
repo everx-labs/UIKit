@@ -121,7 +121,7 @@ export class PortalManager extends React.PureComponent<
             this.parentManager &&
             this.props.id !== forId
         ) {
-            return this.parentManager.mount(children, forId);
+            return this.parentManager.mount(children, forId, absoluteFill);
         }
         const key = this.getKey();
         this.setState((state) => ({
@@ -145,7 +145,7 @@ export class PortalManager extends React.PureComponent<
             this.parentManager &&
             this.props.id !== forId
         ) {
-            this.parentManager.update(key, children, forId);
+            this.parentManager.update(key, children, forId, absoluteFill);
             return;
         }
         this.setState((state) => {

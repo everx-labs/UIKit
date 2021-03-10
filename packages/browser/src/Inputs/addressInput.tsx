@@ -14,7 +14,7 @@ import type { AddressInputMessage, OnHeightChange } from '../types';
 import { UIAddressInput } from '../UIAddressInput';
 import { UIAccountPicker } from '../UIAccountPicker';
 
-type AddressInputState = {
+type AddressInputInternalState = {
     inputVisible: boolean;
     qrCodeVisible: boolean;
     addressSelectionVisible: boolean;
@@ -31,7 +31,7 @@ type AddressInputAction = {
 };
 
 function addressInputReducer(
-    state: AddressInputState,
+    state: AddressInputInternalState,
     action: AddressInputAction,
 ) {
     if (action.type === 'OPEN_ADDRESS_INPUT') {
@@ -90,6 +90,34 @@ export function AddressInput({
         addressSelectionVisible: false,
     });
 
+    if (message.externalState != null) {
+        return (
+            <View key={message.key} onLayout={onLayout}>
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="address-input-bubble-prompt"
+                    text={message.prompt}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                />
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="address-input-bubble-option-answer"
+                    text={message.externalState.chosenOption}
+                    status={MessageStatus.Sent}
+                    firstFromChain
+                />
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="address-input-bubble-address-answer"
+                    text={message.externalState.address}
+                    status={MessageStatus.Sent}
+                    lastFromChain
+                />
+            </View>
+        );
+    }
+
     return (
         <View key={message.key} onLayout={onLayout}>
             <BubbleSimplePlainText
@@ -106,10 +134,11 @@ export function AddressInput({
                 status={MessageStatus.Received}
                 text={uiLocalized.Browser.AddressInputBubble.MainAccount}
                 onPress={() => {
-                    // message.onSelect(
-                    //     uiLocalized.Browser.AddressInputBubble.MainAccount,
-                    //     message.mainAddress,
-                    // );
+                    message.onSelect({
+                        chosenOption:
+                            uiLocalized.Browser.AddressInputBubble.MainAccount,
+                        address: message.mainAddress,
+                    });
                 }}
             />
             <BubbleActionButton
@@ -148,66 +177,60 @@ export function AddressInput({
             {state.inputVisible && (
                 <Portal forId="browser">
                     <UIAddressInput
-                        onSendText={
-                            (/* addr */) => {
-                                // message.onSelect(
-                                //     uiLocalized.Browser.AddressInputBubble
-                                //         .EnterManually,
-                                //     addr,
-                                // );
-                                dispatch({
-                                    type: 'CLOSE_ADDRESS_INPUT',
-                                });
-                            }
-                        }
+                        onSendText={(address) => {
+                            message.onSelect({
+                                chosenOption:
+                                    uiLocalized.Browser.AddressInputBubble
+                                        .EnterManually,
+                                address,
+                            });
+                            dispatch({
+                                type: 'CLOSE_ADDRESS_INPUT',
+                            });
+                        }}
                         onHeightChange={onHeightChange}
                         validateAddress={message.input.validateAddress}
                     />
                 </Portal>
             )}
-            <Portal forId="browser">
-                <UIQRCodeScannerSheet
-                    visible={state.qrCodeVisible}
-                    onRead={
-                        async (/* e: any */) => {
-                            // const mes = message as AddressInputMessage;
-                            // mes.onSelect(
-                            //     uiLocalized.Browser.AddressInputBubble.ScanQR,
-                            //     await mes.qrCode.parseData(e.data),
-                            // );
-                            dispatch({
-                                type: 'CLOSE_QR_CODE',
-                            });
-                        }
-                    }
-                    onClose={() => {
-                        dispatch({
-                            type: 'CLOSE_QR_CODE',
-                        });
-                    }}
-                />
-                <UIAccountPicker
-                    visible={state.addressSelectionVisible}
-                    onSelect={
-                        (/* address */) => {
-                            // const mes = message as AddressInputMessage;
-                            // mes.onSelect(
-                            //     uiLocalized.Browser.AddressInputBubble.SelectAsset,
-                            //     address,
-                            // );
-                            dispatch({
-                                type: 'CLOSE_ADDRESS_SELECTION',
-                            });
-                        }
-                    }
-                    onClose={() => {
-                        dispatch({
-                            type: 'CLOSE_ADDRESS_SELECTION',
-                        });
-                    }}
-                    sections={message.select || []}
-                />
-            </Portal>
+            <UIQRCodeScannerSheet
+                visible={state.qrCodeVisible}
+                onRead={async (e: any) => {
+                    const address = await message.qrCode.parseData(e.data);
+                    message.onSelect({
+                        chosenOption:
+                            uiLocalized.Browser.AddressInputBubble.ScanQR,
+                        address,
+                    });
+                    dispatch({
+                        type: 'CLOSE_QR_CODE',
+                    });
+                }}
+                onClose={() => {
+                    dispatch({
+                        type: 'CLOSE_QR_CODE',
+                    });
+                }}
+            />
+            <UIAccountPicker
+                visible={state.addressSelectionVisible}
+                onSelect={(address) => {
+                    message.onSelect({
+                        chosenOption:
+                            uiLocalized.Browser.AddressInputBubble.SelectAsset,
+                        address,
+                    });
+                    dispatch({
+                        type: 'CLOSE_ADDRESS_SELECTION',
+                    });
+                }}
+                onClose={() => {
+                    dispatch({
+                        type: 'CLOSE_ADDRESS_SELECTION',
+                    });
+                }}
+                sections={message.select || []}
+            />
         </View>
     );
 }
