@@ -92,7 +92,13 @@
     UIEdgeInsets insets = UIEdgeInsetsZero;
     UIEdgeInsets indicatorInsets = UIEdgeInsetsZero;
     
-    CGFloat insetBottom = accessoryTranslation + self.frame.size.height/* - safeAreaBottom*/;
+    /**
+     * You could wonder why indicator insets are different from regular one,
+     * that's because in RN `contentInsetAdjustmentBehavior` by default set to `never`,
+     * that kinda tells ScrolllView to not take safe area insets into account,
+     * but as it usually happens in iOS, it continue to do it for indicator insets...
+     */
+    CGFloat insetBottom = accessoryTranslation + self.frame.size.height;
     
     if (scrollView.inverted) {
         CGFloat indicatorInsetBottom = accessoryTranslation + self.frame.size.height - safeAreaTop;
@@ -122,14 +128,23 @@
                                   scrollView.scrollView.contentInset.right);
     }
     
-    scrollView.automaticallyAdjustContentInsets = NO;
-    
-    if (UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.contentInset, insets)) {
-        return;
+    /**
+     * It's `never` by default in RN,
+     * https://github.com/facebook/react-native/blob/6e6443afd04a847ef23fb6254a84e48c70b45896/React/Views/ScrollView/RCTScrollView.m#L297
+     * but just to be sure we do it again, as it can brake things otherwise
+     */
+    if (@available(iOS 11.0, *)) {
+        scrollView.automaticallyAdjustContentInsets = NO;
+        scrollView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     
-    [scrollView.scrollView setContentInset:insets];
-    [scrollView.scrollView setScrollIndicatorInsets:indicatorInsets];
+    if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.contentInset, insets)) {
+        [scrollView.scrollView setContentInset:insets];
+    }
+    
+    if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.scrollIndicatorInsets, indicatorInsets)) {
+        [scrollView.scrollView setScrollIndicatorInsets:indicatorInsets];
+    }
 }
 
 - (RCTScrollView *)getScrollViewWithID:(NSString *)scrollViewNativeID {
@@ -157,13 +172,13 @@
 
 -(CGFloat)getSafeAreaTop
 {
-    CGFloat bottomSafeArea = 0;
+    CGFloat topSafeArea = 0;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
     if (@available(iOS 11.0, *)) {
-        bottomSafeArea = self.superview ? self.superview.safeAreaInsets.top : self.safeAreaInsets.top;
+        topSafeArea = self.superview ? self.superview.safeAreaInsets.top : self.safeAreaInsets.top;
     }
 #endif
-    return bottomSafeArea;
+    return topSafeArea;
 }
 
 @end
