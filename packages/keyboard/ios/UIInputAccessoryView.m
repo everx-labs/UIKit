@@ -95,7 +95,7 @@
     /**
      * You could wonder why indicator insets are different from regular one,
      * that's because in RN `contentInsetAdjustmentBehavior` by default set to `never`,
-     * that kinda tells ScrolllView to not take safe area insets into account,
+     * that kinda tells ScrollView to not take safe area insets into account,
      * but as it usually happens in iOS, it continue to do it for indicator insets...
      */
     CGFloat insetBottom = accessoryTranslation + self.frame.size.height;
