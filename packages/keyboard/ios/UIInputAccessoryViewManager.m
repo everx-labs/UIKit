@@ -10,7 +10,9 @@
 
 @implementation UIInputAccessoryViewManager
 
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE();
+
+RCT_EXPORT_VIEW_PROPERTY(managedScrollViewNativeID, NSString);
 
 + (BOOL)requiresMainQueueSetup {
     return NO;

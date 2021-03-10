@@ -13,4 +13,6 @@
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 
+@property (nonatomic, copy) NSString *managedScrollViewNativeID;
+
 @end
