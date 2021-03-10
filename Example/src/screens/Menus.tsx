@@ -9,7 +9,6 @@ import { UIConstant } from '@tonlabs/uikit.core';
 import {
     UICountryPicker,
     UIActionSheet,
-    UICustomSheet,
     UIPopover,
     UIPopoverMenu,
 } from '@tonlabs/uikit.navigation_legacy';
@@ -33,7 +32,6 @@ import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const actionSheet = React.createRef<typeof UIActionSheet>();
-export const customSheet = React.createRef<typeof UICustomSheet>();
 
 export const Menus = () => {
     const theme = useTheme();
@@ -78,16 +76,8 @@ export const Menus = () => {
                     />
                 </View>
             </ExampleSection>
-            <ExampleSection title="UICustomSheet">
+            <ExampleSection title="UICardSheet">
                 <View style={{ paddingVertical: 20 }}>
-                    <UITextButton
-                        title="Show UICustomSheet"
-                        onPress={() => {
-                            if (customSheet.current) {
-                                customSheet.current.show();
-                            }
-                        }}
-                    />
                     <UITextButton
                         title="Show UICardSheet"
                         onPress={() => {

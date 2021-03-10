@@ -14,7 +14,6 @@ import type {
     UIDetailsInputProps,
     UIActionComponentState,
 } from '@tonlabs/uikit.components';
-import { UICustomSheet } from '@tonlabs/uikit.navigation_legacy';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void;
@@ -53,7 +52,6 @@ class UIFeedback extends UIComponent<Props, State> {
         if (!email || !feedback) {
             return;
         }
-        UICustomSheet.hide();
         UIToastMessage.showMessage(uiLocalized.ThanksForYourFeedback);
         this.props.onSubmitFeedBack({ email, feedback });
     };
