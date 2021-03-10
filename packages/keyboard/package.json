@@ -32,7 +32,9 @@
   "types": "lib/typescript/src/index.d.ts",
   "files": [
     "lib/",
-    "src/"
+    "src/",
+    "ios/",
+    "UIKitKeyboard.podspec"
   ],
   "dependencies": {
     "@tonlabs/uikit.core": "^2.0.2",

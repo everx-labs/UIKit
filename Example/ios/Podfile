@@ -9,6 +9,8 @@ target 'UIKitExample' do
   permissions_path = '../../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
+  pod 'UIKitKeyboard', :path => "../../packages/keyboard/UIKitKeyboard.podspec"
+
   target 'UIKitExampleTests' do
     inherit! :complete
     # Pods for testing

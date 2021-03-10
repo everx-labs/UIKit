@@ -69,6 +69,7 @@ import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
+import { KeyboardScreen } from './screens/Keyboard';
 
 enableScreens();
 // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -158,6 +159,11 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         style={{ flex: 1 }}
                         contentContainerStyle={{ paddingBottom: 50 }}
                     >
+                        <UIButton
+                            onPress={() => navigation.navigate('keyboard')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Keyboard"
+                        />
                         <UIButton
                             onPress={() => navigation.navigate('buttons')}
                             buttonStyle={UIButton.ButtonStyle.Link}
@@ -337,6 +343,10 @@ const App = () => {
                             <SurfSplit.Screen
                                 name="navigation"
                                 component={Navigation}
+                            />
+                            <SurfSplit.Screen
+                                name="keyboard"
+                                component={KeyboardScreen}
                             />
                         </SurfSplit.Navigator>
                     </NavigationContainer>
