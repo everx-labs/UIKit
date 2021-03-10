@@ -2,8 +2,17 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 type PortalMethods = {
-    mount: (children: React.ReactNode, forId?: string) => number;
-    update: (key: number, children: React.ReactNode, forId?: string) => void;
+    mount: (
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => number;
+    update: (
+        key: number,
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => void;
     unmount: (key: number, forId?: string) => void;
 };
 
@@ -11,31 +20,38 @@ const PortalContext = React.createContext<PortalMethods | null>(null);
 
 type PortalConsumerProps = {
     forId?: string;
+    absoluteFill?: boolean;
     manager: PortalMethods;
     children: React.ReactNode;
 };
 
-function PortalConsumer({ forId, manager, children }: PortalConsumerProps) {
+function PortalConsumer({
+    forId,
+    absoluteFill,
+    manager,
+    children,
+}: PortalConsumerProps) {
     const key = React.useRef<number | null>(null);
 
     React.useEffect(() => {
         if (key.current == null) {
-            key.current = manager.mount(children, forId);
+            key.current = manager.mount(children, forId, absoluteFill);
         } else {
-            manager.update(key.current, children, forId);
+            manager.update(key.current, children, forId, absoluteFill);
         }
 
         return () => {
             // @ts-ignore
-            manager.unmount(key.current, forId);
+            manager.unmount(key.current, forId, absoluteFill);
         };
-    }, [manager, children, forId]);
+    }, [manager, children, forId, absoluteFill]);
 
     return null;
 }
 
 interface PortalProps {
     forId?: string;
+    absoluteFill?: boolean;
     children: React.ReactNode;
 }
 
@@ -44,7 +60,11 @@ export const Portal = (props: PortalProps) => (
         {(manager) => {
             if (manager != null) {
                 return (
-                    <PortalConsumer forId={props.forId} manager={manager}>
+                    <PortalConsumer
+                        forId={props.forId}
+                        manager={manager}
+                        absoluteFill={props.absoluteFill}
+                    >
                         {props.children}
                     </PortalConsumer>
                 );
@@ -55,7 +75,10 @@ export const Portal = (props: PortalProps) => (
 );
 
 type PortalManagerState = {
-    [key: number]: React.ReactNode;
+    [key: number]: {
+        children: React.ReactNode;
+        absoluteFill?: boolean;
+    } | null;
 };
 
 export class PortalManager extends React.PureComponent<
@@ -88,7 +111,11 @@ export class PortalManager extends React.PureComponent<
 
     counter: number = 0;
 
-    mount = (children: React.ReactNode, forId?: string) => {
+    mount = (
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => {
         if (
             this.props.id != null &&
             this.parentManager &&
@@ -99,12 +126,20 @@ export class PortalManager extends React.PureComponent<
         const key = this.getKey();
         this.setState((state) => ({
             ...state,
-            [key]: children,
+            [key]: {
+                children,
+                absoluteFill,
+            },
         }));
         return key;
     };
 
-    update = (key: number, children: React.ReactNode, forId?: string) => {
+    update = (
+        key: number,
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => {
         if (
             this.props.id != null &&
             this.parentManager &&
@@ -116,7 +151,10 @@ export class PortalManager extends React.PureComponent<
         this.setState((state) => {
             return {
                 ...state,
-                [key]: children,
+                [key]: {
+                    children,
+                    absoluteFill,
+                },
             };
         });
     };
@@ -151,16 +189,20 @@ export class PortalManager extends React.PureComponent<
                         <PortalContext.Provider value={this.manager}>
                             {this.props.children}
                             {Object.keys(this.state).map((key: string) => {
-                                const children = this.state[Number(key)];
-                                if (children != null) {
+                                const portal = this.state[Number(key)];
+                                if (portal != null) {
                                     return (
                                         <View
                                             key={`portal_${key}`}
                                             collapsable={false}
                                             pointerEvents="box-none"
-                                            style={StyleSheet.absoluteFill}
+                                            style={
+                                                portal.absoluteFill
+                                                    ? StyleSheet.absoluteFill
+                                                    : null
+                                            }
                                         >
-                                            {children}
+                                            {portal.children}
                                         </View>
                                     );
                                 }

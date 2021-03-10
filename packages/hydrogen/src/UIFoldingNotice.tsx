@@ -154,6 +154,7 @@ export function UIFoldingNotice(props: UIFondingNoticeProps) {
             <UIFoldingNoticePortalContent
                 {...props}
             />
+        <Portal absoluteFill>
         </Portal>
     )
 }

@@ -20,7 +20,7 @@ export const BubbleSticker = (props: StickerMessage) => {
     const theme = useTheme();
 
     return (
-        <View key={props.key} style={containerStyle} onLayout={props.onLayout}>
+        <View style={containerStyle} onLayout={props.onLayout}>
             <View style={styles.inner}>
                 <View
                     style={

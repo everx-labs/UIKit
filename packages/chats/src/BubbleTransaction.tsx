@@ -234,7 +234,7 @@ export function BubbleTransaction(props: TransactionMessage) {
     const actionString = getActionString(props);
 
     return (
-        <View style={containerStyle}>
+        <View style={containerStyle} onLayout={props.onLayout}>
             <UIScaleButton
                 onPress={props.onPress}
                 content={

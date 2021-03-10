@@ -190,7 +190,7 @@ function PlainTextContainer(
     const actionString = getActionString(props);
 
     return (
-        <View key={props.key} style={containerStyle} onLayout={props.onLayout}>
+        <View style={containerStyle} onLayout={props.onLayout}>
             <TouchableWithoutFeedback
                 onPressOut={() => bubbleScaleAnimation()}
                 onPress={props.onTouchText}

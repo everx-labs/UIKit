@@ -36,11 +36,7 @@ export function BubbleActionButton(message: ActionButtonMessage) {
     const theme = useTheme();
 
     return (
-        <View
-            key={message.key}
-            style={containerStyle}
-            onLayout={message.onLayout}
-        >
+        <View style={containerStyle} onLayout={message.onLayout}>
             <TouchableOpacity
                 testID={`chat_action_cell_${text}`}
                 style={[
