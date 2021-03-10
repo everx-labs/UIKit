@@ -66,8 +66,8 @@ export class PortalManager extends React.PureComponent<
 
     getKey(): number {
         const maxMountedKey = Object.keys(this.state)
-            .sort((a, b) => a.localeCompare(b) * -1) // reverse
-            .find(key => !!this.state[Number(key)]);
+            .sort((a, b) => Number(b) - Number(a)) // reversed order by keys
+            .find(key => !!this.state[Number(key)]); // find the first (max) key
 
         if (maxMountedKey != null) {
             return Number(maxMountedKey + 1);
@@ -144,7 +144,7 @@ export class PortalManager extends React.PureComponent<
                         <PortalContext.Provider value={this.manager}>
                             {this.props.children}
                             {Object.keys(this.state)
-                                .sort((a, b) => a.localeCompare(b))
+                                .sort((a, b) => Number(a) - Number(b)) // ordered by keys
                                 .map((key: string) => {
                                 const children = this.state[Number(key)];
                                 if (children != null) {
