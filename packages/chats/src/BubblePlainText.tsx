@@ -22,7 +22,11 @@ import {
 
 import { MessageStatus } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
-import { useBubblePosition, BubblePosition } from './useBubblePosition';
+import {
+    useBubblePosition,
+    BubblePosition,
+    useBubbleContainerStyle,
+} from './useBubblePosition';
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
@@ -71,18 +75,6 @@ const getRoundedCornerStyle = (
 
     if (position === BubblePosition.right && options.lastFromChain) {
         return styles.rightBottomCorner;
-    }
-
-    return null;
-};
-
-const getBubbleContainer = (position: BubblePosition) => {
-    if (position === BubblePosition.left) {
-        return styles.containerLeft;
-    }
-
-    if (position === BubblePosition.right) {
-        return styles.containerRight;
     }
 
     return null;
@@ -166,7 +158,9 @@ function BubbleTime(
         <UILabel
             role={UILabelRoles.ParagraphFootnote}
             color={
-                props.isHidden ? UILabelColors.Transparent : getTimeFontColor(props)
+                props.isHidden
+                    ? UILabelColors.Transparent
+                    : getTimeFontColor(props)
             }
             style={props.style}
         >
@@ -191,11 +185,12 @@ function PlainTextContainer(
         }).start();
     };
     const position = useBubblePosition(props.status);
+    const containerStyle = useBubbleContainerStyle(props);
     const bubbleStyle = useBubbleStyle(props);
     const actionString = getActionString(props);
 
     return (
-        <View style={[getBubbleContainer(position)]}>
+        <View key={props.key} style={containerStyle} onLayout={props.onLayout}>
             <TouchableWithoutFeedback
                 onPressOut={() => bubbleScaleAnimation()}
                 onPress={props.onTouchText}
@@ -319,18 +314,6 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
 }
 
 const styles = StyleSheet.create({
-    containerRight: {
-        paddingLeft: '20%',
-        alignSelf: 'flex-end',
-        justifyContent: 'flex-end',
-        maxWidth: '100%',
-    },
-    containerLeft: {
-        paddingRight: '20%',
-        alignSelf: 'flex-start',
-        justifyContent: 'flex-start',
-        maxWidth: '100%',
-    },
     textCell: {
         textAlign: 'left',
     },

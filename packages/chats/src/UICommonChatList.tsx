@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     Platform,
     SectionList,
-    View,
     StyleSheet,
     Animated,
     NativeScrollEvent,
@@ -14,6 +13,7 @@ import {
     ViewStyle,
     StyleProp,
     ListRenderItem,
+    ViewProps,
 } from 'react-native';
 import {
     TapGestureHandler,
@@ -115,26 +115,10 @@ function useChatListWheelHandler(
     useWheelHandler(handler);
 }
 
-type RenderBubble<ItemT> = (props: ItemT) => React.ReactNode;
-
-const renderItemInternal = <ItemT extends BubbleBaseT>(
-    onLayoutCell: (key: string, e: any) => void,
-    renderBubble: RenderBubble<ItemT>,
-) => ({ item }: { item: ItemT }) => {
-    return (
-        <View
-            key={item.key}
-            onLayout={(e) => onLayoutCell(item.key, e)}
-            style={{
-                paddingTop: item.firstFromChain
-                    ? UIConstant.smallContentOffset()
-                    : UIConstant.tinyContentOffset(),
-            }}
-        >
-            {renderBubble(item)}
-        </View>
-    );
-};
+type RenderBubble<ItemT> = (
+    props: ItemT,
+    onLayoutCell: ViewProps['onLayout'],
+) => React.ReactElement | null;
 
 type GetItemLayoutFabric = <ItemT>(
     ...args: any
@@ -182,7 +166,8 @@ function useLayoutHelpers<ItemT extends BubbleBaseT>(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const renderItem = React.useCallback(
-        renderItemInternal(onLayoutCell, renderBubble),
+        ({ item }: { item: ItemT }) =>
+            renderBubble(item, (e) => onLayoutCell(item.key, e)),
         [onLayoutCell, renderBubble],
     );
 

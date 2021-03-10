@@ -70,18 +70,6 @@ export type ConfirmMessage = {
     onConfirm: (isConfirmed: boolean) => void | Promise<void>;
 };
 
-export type VisibleMessage =
-    | PlainTextMessage
-    | ActionButtonMessage
-    | ConfirmSuccessfulMessage
-    | ConfirmDeclinedMessage
-    | ConfirmButtonsMessage;
-
-export type Input = {
-    messages: VisibleMessage[];
-    input: React.ReactNode;
-};
-
 export type TerminalMessage = {
     type: InteractiveMessageType.Terminal;
     prompt: string;
@@ -99,7 +87,7 @@ export type AddressInputAccountData = {
     data: AddressInputAccount[];
 };
 
-export type AddressInputMessage = {
+export type AddressInputMessage = BubbleBaseT & {
     type: InteractiveMessageType.AddressInput;
     prompt: string;
     onSelect: (selectedButtonText: string, address: string) => void;
@@ -136,11 +124,14 @@ export type AmountInputMessage = {
     onSendAmount: OnSendAmount;
 };
 
-export type InteractiveMessage =
-    | TerminalMessage
-    | AddressInputMessage
-    | MenuMessage
-    | ConfirmMessage
-    | AmountInputMessage;
-
-export type BrowserMessage = VisibleMessage | InteractiveMessage;
+export type BrowserMessage =
+    | PlainTextMessage
+    | ActionButtonMessage
+    | ConfirmSuccessfulMessage
+    | ConfirmDeclinedMessage
+    | ConfirmButtonsMessage
+    // | TerminalMessage
+    | AddressInputMessage;
+// | MenuMessage
+// | ConfirmMessage
+// | AmountInputMessage;

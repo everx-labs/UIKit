@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SectionList } from 'react-native';
+import { SectionList, ViewProps } from 'react-native';
 import type { SectionListData } from 'react-native';
 
 import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
@@ -28,22 +28,55 @@ const renderSectionTitle = ({
     return <DateSeparator time={section.time} />;
 };
 
-const renderBubble = (message: ChatMessage) => {
+const renderBubble = (
+    message: ChatMessage,
+    onLayout: ViewProps['onLayout'],
+) => {
     switch (message.type) {
         case ChatMessageType.PlainText:
-            return <BubbleChatPlainText {...message} key={message.key} />;
+            return (
+                <BubbleChatPlainText
+                    {...message}
+                    key={message.key}
+                    onLayout={onLayout}
+                />
+            );
         case ChatMessageType.System:
-            return <BubbleSystem {...message} key={message.key} />;
+            return (
+                <BubbleSystem
+                    {...message}
+                    key={message.key}
+                    onLayout={onLayout}
+                />
+            );
         case ChatMessageType.Transaction:
-            return <BubbleTransaction {...message} key={message.key} />;
+            return (
+                <BubbleTransaction
+                    {...message}
+                    key={message.key}
+                    onLayout={onLayout}
+                />
+            );
         case ChatMessageType.Image:
             return <BubbleImage {...message} key={message.key} />;
         case ChatMessageType.Document:
             return <BubbleDocument {...message} key={message.key} />;
         case ChatMessageType.Sticker:
-            return <BubbleSticker {...message} key={message.key} />;
+            return (
+                <BubbleSticker
+                    {...message}
+                    key={message.key}
+                    onLayout={onLayout}
+                />
+            );
         case ChatMessageType.ActionButton:
-            return <BubbleActionButton {...message} key={message.key} />;
+            return (
+                <BubbleActionButton
+                    {...message}
+                    key={message.key}
+                    onLayout={onLayout}
+                />
+            );
         default:
             return null;
     }

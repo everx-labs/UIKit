@@ -1,10 +1,10 @@
-import type { VisibleMessage } from './types';
+import type { BrowserMessage } from './types';
 
 export type SectionExtra = { time?: number };
 
 export function getFormattedList(
-    messages: VisibleMessage[],
-): ReadonlyArray<VisibleMessage> {
+    messages: BrowserMessage[],
+): ReadonlyArray<BrowserMessage> {
     return messages.map((message, index) => {
         const nextMessage = messages[index - 1];
         const prevMessage = messages[index + 1];

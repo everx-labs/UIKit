@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, FlatListProps } from 'react-native';
+import { FlatList, FlatListProps, ViewProps } from 'react-native';
 
 import {
     UICommonChatList,
@@ -8,24 +8,31 @@ import {
     ChatMessageType,
     CommonChatListProps,
 } from '@tonlabs/uikit.chats';
-import { BrowserMessageType, VisibleMessage } from './types';
+import {
+    BrowserMessage,
+    BrowserMessageType,
+    InteractiveMessageType,
+    OnHeightChange,
+} from './types';
 import { getFormattedList } from './getFormattedList';
 import {
     BubbleConfirmButtons,
     BubbleConfirmDeclined,
     BubbleConfirmSuccessful,
 } from './BubbleConfirm';
+import { AddressInput } from './Inputs/addressInput';
 
 type UIBrowserListProps = {
-    messages: VisibleMessage[];
+    messages: BrowserMessage[];
     bottomInset?: number;
+    onHeightChange: OnHeightChange;
 };
 
 function flatListGetItemLayoutFabric({
     getItemHeight,
 }: {
     getItemHeight: (rowData?: any, rowIndex?: number) => number;
-}): Required<FlatListProps<VisibleMessage>>['getItemLayout'] {
+}): Required<FlatListProps<BrowserMessage>>['getItemLayout'] {
     return (data, index) => {
         if (data == null) {
             return {
@@ -43,12 +50,15 @@ function flatListGetItemLayoutFabric({
     };
 }
 
-function renderBubble(item: VisibleMessage) {
+const renderBubble = (onHeightChange: OnHeightChange) => (
+    item: BrowserMessage,
+    onLayout: ViewProps['onLayout'],
+) => {
     if (item.type === ChatMessageType.PlainText) {
-        return <BubbleSimplePlainText {...item} />;
+        return <BubbleSimplePlainText {...item} onLayout={onLayout} />;
     }
     if (item.type === ChatMessageType.ActionButton) {
-        return <BubbleActionButton {...item} />;
+        return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
     if (item.type === BrowserMessageType.ConfirmSuccessful) {
         return <BubbleConfirmSuccessful />;
@@ -60,12 +70,22 @@ function renderBubble(item: VisibleMessage) {
         return <BubbleConfirmButtons {...item} />;
     }
 
+    if (item.type === InteractiveMessageType.AddressInput) {
+        return (
+            <AddressInput
+                {...item}
+                onHeightChange={onHeightChange}
+                onLayout={onLayout}
+            />
+        );
+    }
+
     return null;
-}
+};
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
     function UIBrowserListForwarded(
-        { messages, bottomInset }: UIBrowserListProps,
+        { messages, bottomInset, onHeightChange }: UIBrowserListProps,
         ref,
     ) {
         const formattedMessages = React.useMemo(
@@ -76,11 +96,11 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
             <UICommonChatList
                 forwardRef={ref}
                 nativeID="browserList"
-                renderBubble={renderBubble}
+                renderBubble={renderBubble(onHeightChange)}
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
                 bottomInset={bottomInset}
             >
-                {(chatListProps: CommonChatListProps<VisibleMessage>) => (
+                {(chatListProps: CommonChatListProps<BrowserMessage>) => (
                     <FlatList
                         testID="browser_container"
                         data={formattedMessages}

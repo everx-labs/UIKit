@@ -13,23 +13,14 @@ import {
 
 import { MessageStatus } from './types';
 import type { StickerMessage } from './types';
-import { useBubblePosition, BubblePosition } from './useBubblePosition';
-
-const getBubbleContainer = (position: BubblePosition) => {
-    if (position === BubblePosition.left) {
-        return styles.containerLeft;
-    } else if (position === BubblePosition.right) {
-        return styles.containerRight;
-    }
-    return null;
-};
+import { useBubbleContainerStyle } from './useBubblePosition';
 
 export const BubbleSticker = (props: StickerMessage) => {
-    const position = useBubblePosition(props.status);
+    const containerStyle = useBubbleContainerStyle(props);
     const theme = useTheme();
 
     return (
-        <View style={getBubbleContainer(position)}>
+        <View key={props.key} style={containerStyle} onLayout={props.onLayout}>
             <View style={styles.inner}>
                 <View
                     style={
@@ -63,16 +54,6 @@ export const BubbleSticker = (props: StickerMessage) => {
 };
 
 const styles = StyleSheet.create({
-    containerRight: {
-        paddingLeft: '20%',
-        alignSelf: 'flex-end',
-        justifyContent: 'flex-end',
-    },
-    containerLeft: {
-        paddingRight: '20%',
-        alignSelf: 'flex-start',
-        justifyContent: 'flex-start',
-    },
     inner: {
         flexDirection: 'column',
         alignItems: 'flex-end',

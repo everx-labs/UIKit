@@ -11,16 +11,11 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 
 import type { ActionButtonMessage } from './types';
-import { useBubblePosition, BubblePosition } from './useBubblePosition';
-
-const getButtonContainer = (position: BubblePosition) => {
-    if (position === BubblePosition.left) {
-        return styles.containerLeft;
-    } else if (position === BubblePosition.right) {
-        return styles.containerRight;
-    }
-    return null;
-};
+import {
+    useBubblePosition,
+    BubblePosition,
+    useBubbleContainerStyle,
+} from './useBubblePosition';
 
 const getButtonRadius = (
     options: ActionButtonMessage,
@@ -37,10 +32,15 @@ const getButtonRadius = (
 export function BubbleActionButton(message: ActionButtonMessage) {
     const { status, text, textMode = 'ellipsize', onPress } = message;
     const position = useBubblePosition(status);
+    const containerStyle = useBubbleContainerStyle(message);
     const theme = useTheme();
 
     return (
-        <View style={getButtonContainer(position)}>
+        <View
+            key={message.key}
+            style={containerStyle}
+            onLayout={message.onLayout}
+        >
             <TouchableOpacity
                 testID={`chat_action_cell_${text}`}
                 style={[
@@ -67,18 +67,6 @@ export function BubbleActionButton(message: ActionButtonMessage) {
 }
 
 const styles = StyleSheet.create({
-    containerRight: {
-        maxWidth: '100%',
-        paddingLeft: '20%',
-        alignSelf: 'flex-end',
-        justifyContent: 'flex-end',
-    },
-    containerLeft: {
-        maxWidth: '100%',
-        paddingRight: '20%',
-        alignSelf: 'flex-start',
-        justifyContent: 'flex-start',
-    },
     common: {
         borderWidth: 1,
         alignItems: 'center',

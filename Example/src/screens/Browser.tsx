@@ -75,6 +75,8 @@ const BrowserScreen = () => {
                             onPress={() => {
                                 setMessages([
                                     {
+                                        key: `${Date.now()}-address-input`,
+                                        status: MessageStatus.Received,
                                         type:
                                             InteractiveMessageType.AddressInput,
                                         prompt:

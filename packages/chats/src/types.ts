@@ -1,5 +1,9 @@
 /* eslint-disable no-shadow */
-import type { ImageSourcePropType } from 'react-native';
+import type {
+    ImageSourcePropType,
+    LayoutChangeEvent,
+    ViewProps,
+} from 'react-native';
 import type BigNumber from 'bignumber.js';
 
 // Semantically describe a bubble position
@@ -16,11 +20,14 @@ export enum MessageStatus {
     Aborted = 'aborted',
 }
 
+export type OnLayoutCell = (key: string, e: LayoutChangeEvent) => void;
+
 export type BubbleBaseT = {
     key: string;
     firstFromChain?: boolean;
     lastFromChain?: boolean;
     status: MessageStatus;
+    onLayout?: ViewProps['onLayout'];
 };
 
 export enum ChatMessageType {
