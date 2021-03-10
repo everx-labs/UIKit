@@ -120,7 +120,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         });
     }
 
-    hide(callback: () => void) {
+    hide(callback?: () => void) {
         this.setCardVisible(false);
         if (callback) {
             callback()
@@ -149,6 +149,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
             <MenuItem
                 {...item}
                 onPress={() => {
+                    // $FlowFixMe
                     this.hide(item.onPress);
                 }}
             />
