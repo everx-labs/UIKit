@@ -125,7 +125,6 @@ type MenuItem = {
 export type MenuExternalState = {
     chosenHandlerId: number;
     chosenIndex: number;
-    answer?: string;
 };
 
 export type MenuMessage = InteractiveMessage<

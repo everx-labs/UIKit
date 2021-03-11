@@ -26,16 +26,16 @@ export function MenuInput({
                     firstFromChain
                     lastFromChain
                 />
-                {message.externalState.answer != null ? (
-                    <BubbleSimplePlainText
-                        type={ChatMessageType.PlainText}
-                        key="menu-answer"
-                        text={message.externalState.answer}
-                        status={MessageStatus.Sent}
-                        firstFromChain
-                        lastFromChain
-                    />
-                ) : null}
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="menu-answer"
+                    text={
+                        message.items[message.externalState.chosenIndex].title
+                    }
+                    status={MessageStatus.Sent}
+                    firstFromChain
+                    lastFromChain
+                />
             </View>
         );
     }

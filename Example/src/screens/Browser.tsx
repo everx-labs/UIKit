@@ -180,14 +180,11 @@ const BrowserScreen = () => {
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.Menu,
                                     title: 'Choose:',
-                                    onSelect: (state: any) => {
+                                    onSelect: (externalState: any) => {
                                         setMessages([
                                             {
                                                 ...message,
-                                                externalState: {
-                                                    ...state,
-                                                    answer: `${state.chosenHandlerId} was chosen`,
-                                                },
+                                                externalState,
                                             },
                                             ...messages,
                                         ]);
