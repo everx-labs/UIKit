@@ -4,13 +4,15 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import { UIColor, UIConstant } from '@tonlabs/uikit.core';
+import { UIConstant } from '@tonlabs/uikit.core';
 import {
+    ColorVariants,
     UIBackgroundView,
     UIBackgroundViewColors,
     UILabel,
     UILabelColors,
     UILabelRoles,
+    useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -50,6 +52,17 @@ type State = {
     //
 }
 
+function Indicator() {
+    const theme = useTheme();
+    return (
+        <MaterialIndicator
+            style={styles.indicator}
+            color={theme[ColorVariants.StaticBackgroundWhite]}
+            size={20}
+        />
+    );
+}
+
 export default class UILoadMoreButton extends UIComponent<Props, State> {
     static defaultProps = {
         containerStyle: {},
@@ -64,7 +77,9 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
         if (!this.props.isLoadingMore) {
             return null;
         }
-        return (<MaterialIndicator style={styles.indicator} color={UIColor.white()} size={20} />);
+        return (
+            <Indicator />
+        );
     }
 
     render() {
