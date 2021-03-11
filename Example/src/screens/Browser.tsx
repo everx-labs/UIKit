@@ -214,36 +214,25 @@ const BrowserScreen = () => {
                                 marginBottom: 10,
                             }}
                         />
-                        {/* <UIButton
+                        <UIButton
                             title="Add Confirm"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type: InteractiveMessageType.Confirm,
-                                        prompt: 'Are you sure?',
-                                        onConfirm: (isConfirmed: boolean) => {
-                                            setMessages([
-                                                isConfirmed
-                                                    ? {
-                                                          key: `${Date.now()}`,
-                                                          status:
-                                                              MessageStatus.Sent,
-                                                          type:
-                                                              BrowserMessageType.ConfirmSuccessful,
-                                                      }
-                                                    : {
-                                                          key: `${Date.now()}`,
-                                                          status:
-                                                              MessageStatus.Sent,
-                                                          type:
-                                                              BrowserMessageType.ConfirmDeclined,
-                                                      },
-                                                ...messages,
-                                            ]);
-                                        },
+                                const message = {
+                                    key: `${Date.now()}-confirm`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Confirm,
+                                    prompt: 'Are you sure?',
+                                    onConfirm: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });
@@ -251,7 +240,7 @@ const BrowserScreen = () => {
                             style={{
                                 marginBottom: 10,
                             }}
-                        /> */}
+                        />
                         {/* <UIButton
                             title="Add AmountInput"
                             onPress={() => {

@@ -47,7 +47,10 @@ export function BubbleConfirmDeclined() {
 export function BubbleConfirmButtons({
     onSuccess,
     onDecline,
-}: ConfirmButtonsMessage) {
+}: {
+    onSuccess: () => void | Promise<void>;
+    onDecline: () => void | Promise<void>;
+}) {
     const theme = useTheme();
 
     return (
@@ -97,6 +100,7 @@ const styles = StyleSheet.create({
         paddingLeft: '20%',
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
+        paddingTop: UIConstant.smallContentOffset(),
     },
     containerLeft: {
         maxWidth: '100%',
@@ -105,6 +109,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         flexWrap: 'wrap',
+        paddingTop: UIConstant.smallContentOffset(),
     },
     answer: {
         alignItems: 'center',

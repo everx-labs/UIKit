@@ -57,26 +57,17 @@ type InteractiveMessage<
     ExternalState = null
 > = BubbleBaseT & { type: T } & MessageT & { externalState?: ExternalState };
 
-type ConfirmSuccessfulMessage = BubbleBaseT & {
-    type: BrowserMessageType.ConfirmSuccessful;
-};
-
-type ConfirmDeclinedMessage = BubbleBaseT & {
-    type: BrowserMessageType.ConfirmDeclined;
-};
-
-export type ConfirmButtonsMessage = BubbleBaseT & {
-    type: BrowserMessageType.ConfirmButtons;
-    onSuccess: () => void | Promise<void>;
-    onDecline: () => void | Promise<void>;
+export type ConfirmExternalState = {
+    isConfirmed: boolean;
 };
 
 export type ConfirmMessage = InteractiveMessage<
     InteractiveMessageType.Confirm,
     {
         prompt: string;
-        onConfirm: (isConfirmed: boolean) => void | Promise<void>;
-    }
+        onConfirm: (state: ConfirmExternalState) => void | Promise<void>;
+    },
+    ConfirmExternalState
 >;
 
 export type TerminalExternalState = {

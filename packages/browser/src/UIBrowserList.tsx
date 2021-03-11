@@ -23,6 +23,7 @@ import {
 import { AddressInput } from './Inputs/addressInput';
 import { TerminalInput } from './Inputs/terminal';
 import { MenuInput } from './Inputs/menu';
+import { ConfirmInput } from './Inputs/confirm';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -98,6 +99,9 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
                 onLayout={onLayout}
             />
         );
+    }
+    if (item.type === InteractiveMessageType.Confirm) {
+        return <ConfirmInput {...item} onLayout={onLayout} />;
     }
 
     return null;
