@@ -37,13 +37,13 @@ function useValidation(
                 ? rawAmount.dividedBy(decimalDivider)
                 : getBigNumberFromRawString(rawAmount);
 
-            if (max != null && amount.isGreaterThanOrEqualTo(max)) {
+            if (max != null && amount.isGreaterThan(max)) {
                 setValidationStatus(ValidationStatus.Bigger);
 
                 return false;
             }
 
-            if (min != null && amount.isLessThanOrEqualTo(min)) {
+            if (min != null && amount.isLessThan(min)) {
                 setValidationStatus(ValidationStatus.Less);
 
                 return false;
