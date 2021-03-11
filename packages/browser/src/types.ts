@@ -79,12 +79,17 @@ export type ConfirmMessage = InteractiveMessage<
     }
 >;
 
+export type TerminalExternalState = {
+    text: string;
+};
+
 export type TerminalMessage = InteractiveMessage<
     InteractiveMessageType.Terminal,
     {
         prompt: string;
-        onSendText: OnSendText;
-    }
+        onSend: (state: TerminalExternalState) => void;
+    },
+    TerminalExternalState
 >;
 
 export type AddressInputAccount = {

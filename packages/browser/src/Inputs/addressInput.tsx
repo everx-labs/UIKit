@@ -92,7 +92,7 @@ export function AddressInput({
 
     if (message.externalState != null) {
         return (
-            <View key={message.key} onLayout={onLayout}>
+            <View onLayout={onLayout}>
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="address-input-bubble-prompt"
@@ -119,7 +119,7 @@ export function AddressInput({
     }
 
     return (
-        <View key={message.key} onLayout={onLayout}>
+        <View onLayout={onLayout}>
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="address-input-bubble-prompt"

@@ -143,28 +143,25 @@ const BrowserScreen = () => {
                                 marginBottom: 10,
                             }}
                         />
-                        {/* <UIButton
+                        <UIButton
                             title="Add TerminalInput"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type: InteractiveMessageType.Terminal,
-                                        prompt: 'Type sth!',
-                                        onSendText: (text: string) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-terminal`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text,
-                                                },
-                                                ...messages,
-                                            ]);
-                                        },
+                                const message = {
+                                    key: `${Date.now()}-terminal-input`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Terminal,
+                                    prompt: 'Type sth!',
+                                    onSend: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });
@@ -172,7 +169,7 @@ const BrowserScreen = () => {
                             style={{
                                 marginBottom: 10,
                             }}
-                        /> */}
+                        />
                         {/* <UIButton
                             title="Add Menu"
                             onPress={() => {
