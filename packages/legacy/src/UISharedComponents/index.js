@@ -7,7 +7,6 @@ import {
     UIAlertView,
     UIDropdownAlert,
     UIActionSheet,
-    UICustomSheet,
     UICompatibilityView,
     UILayoutManager,
 } from '@tonlabs/uikit.components';
@@ -19,7 +18,6 @@ export default class UISharedComponents extends UIComponent {
                 <UISpinnerOverlay masterSpinner />
                 <UINotice />
                 <UIDropdownAlert />
-                <UICustomSheet />
                 <UIActionSheet />
                 <UIAlertView />
                 <UICompatibilityView />

@@ -13,7 +13,7 @@ export function UIBrowser({ messages }: UIBrowserProps) {
     const [bottomInset, setBottomInset] = React.useState<number>(0);
 
     return (
-        <PortalManager id="browser">
+        <PortalManager id="browser" renderOnlyLastPortal>
             <UIBrowserList
                 messages={messages}
                 bottomInset={bottomInset}

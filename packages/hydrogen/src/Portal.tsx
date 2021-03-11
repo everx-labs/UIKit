@@ -74,33 +74,38 @@ export const Portal = (props: PortalProps) => (
     </PortalContext.Consumer>
 );
 
+type PortalItem = {
+    children: React.ReactNode;
+    absoluteFill?: boolean;
+};
+
 type PortalManagerState = {
-    [key: number]: {
-        children: React.ReactNode;
-        absoluteFill?: boolean;
-    } | null;
+    [key: number]: PortalItem | null;
+};
+
+type PortalManagerProps = {
+    id?: string;
+    renderOnlyLastPortal?: boolean;
+    children: React.ReactNode;
 };
 
 export class PortalManager extends React.PureComponent<
-    { id?: string; children: React.ReactNode },
+    PortalManagerProps,
     PortalManagerState
 > {
     state: PortalManagerState = {};
 
-    getKey(): number {
-        const emptyKey = Object.keys(this.state).reduce<string | null>(
-            (acc, key) => {
-                // @ts-expect-error
-                if (this.state[key] == null) {
-                    return key;
-                }
-                return acc;
-            },
-            null,
-        );
+    getMaxMountedKey() {
+        return Object.keys(this.state)
+            .sort((a, b) => Number(b) - Number(a)) // reversed order by keys
+            .find((key) => !!this.state[Number(key)]); // find the first (max) key
+    }
 
-        if (emptyKey != null) {
-            return Number(emptyKey);
+    getKey(): number {
+        const maxMountedKey = this.getMaxMountedKey();
+
+        if (maxMountedKey != null) {
+            return Number(maxMountedKey + 1);
         }
 
         this.counter = this.counter + 1;
@@ -180,6 +185,43 @@ export class PortalManager extends React.PureComponent<
         unmount: this.unmount,
     };
 
+    renderPortal(key: string | undefined) {
+        const portal = this.state[Number(key)];
+
+        if (portal == null) {
+            return null;
+        }
+
+        return (
+            <View
+                key={`portal_${key}`}
+                collapsable={false}
+                pointerEvents="box-none"
+                style={portal.absoluteFill ? StyleSheet.absoluteFill : null}
+            >
+                {portal.children}
+            </View>
+        );
+    }
+
+    renderLastPortal() {
+        const maxMountedKey = this.getMaxMountedKey();
+
+        if (maxMountedKey == null) {
+            return null;
+        }
+
+        return this.renderPortal(maxMountedKey);
+    }
+
+    renderAllPortals() {
+        return Object.keys(this.state)
+            .sort((a, b) => Number(a) - Number(b)) // ordered by keys
+            .map((key: string) => {
+                return this.renderPortal(key);
+            });
+    }
+
     render() {
         return (
             <PortalContext.Consumer>
@@ -188,26 +230,9 @@ export class PortalManager extends React.PureComponent<
                     return (
                         <PortalContext.Provider value={this.manager}>
                             {this.props.children}
-                            {Object.keys(this.state).map((key: string) => {
-                                const portal = this.state[Number(key)];
-                                if (portal != null) {
-                                    return (
-                                        <View
-                                            key={`portal_${key}`}
-                                            collapsable={false}
-                                            pointerEvents="box-none"
-                                            style={
-                                                portal.absoluteFill
-                                                    ? StyleSheet.absoluteFill
-                                                    : null
-                                            }
-                                        >
-                                            {portal.children}
-                                        </View>
-                                    );
-                                }
-                                return null;
-                            })}
+                            {this.props.renderOnlyLastPortal
+                                ? this.renderLastPortal()
+                                : this.renderAllPortals()}
                         </PortalContext.Provider>
                     );
                 }}
