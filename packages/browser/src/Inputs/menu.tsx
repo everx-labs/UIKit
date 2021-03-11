@@ -24,6 +24,7 @@ export function MenuInput({
                     text={message.title}
                     status={MessageStatus.Received}
                     firstFromChain
+                    lastFromChain
                 />
                 {message.externalState.answer != null ? (
                     <BubbleSimplePlainText
@@ -32,6 +33,7 @@ export function MenuInput({
                         text={message.externalState.answer}
                         status={MessageStatus.Sent}
                         firstFromChain
+                        lastFromChain
                     />
                 ) : null}
             </View>
@@ -46,6 +48,7 @@ export function MenuInput({
                 text={message.title}
                 status={MessageStatus.Received}
                 firstFromChain
+                lastFromChain
             />
             {message.items.map((item, index) => (
                 <BubbleActionButton
@@ -64,6 +67,7 @@ export function MenuInput({
                         });
                     }}
                     firstFromChain={index === 0}
+                    lastFromChain={index === message.items.length - 1}
                 />
             ))}
         </View>

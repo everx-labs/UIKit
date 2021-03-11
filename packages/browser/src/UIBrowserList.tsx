@@ -24,6 +24,7 @@ import { AddressInput } from './Inputs/addressInput';
 import { TerminalInput } from './Inputs/terminal';
 import { MenuInput } from './Inputs/menu';
 import { ConfirmInput } from './Inputs/confirm';
+import { AmountInput } from './Inputs/amountInput';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -63,15 +64,6 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
     if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
-    if (item.type === BrowserMessageType.ConfirmSuccessful) {
-        return <BubbleConfirmSuccessful />;
-    }
-    if (item.type === BrowserMessageType.ConfirmDeclined) {
-        return <BubbleConfirmDeclined />;
-    }
-    if (item.type === BrowserMessageType.ConfirmButtons) {
-        return <BubbleConfirmButtons {...item} />;
-    }
 
     if (item.type === InteractiveMessageType.AddressInput) {
         return (
@@ -102,6 +94,15 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
     }
     if (item.type === InteractiveMessageType.Confirm) {
         return <ConfirmInput {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.AmountInput) {
+        return (
+            <AmountInput
+                {...item}
+                onHeightChange={onHeightChange}
+                onLayout={onLayout}
+            />
+        );
     }
 
     return null;

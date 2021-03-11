@@ -241,41 +241,33 @@ const BrowserScreen = () => {
                                 marginBottom: 10,
                             }}
                         />
-                        {/* <UIButton
+                        <UIButton
                             title="Add AmountInput"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type:
-                                            InteractiveMessageType.AmountInput,
-                                        prompt: 'Enter amount:',
-                                        decimals: 9,
-                                        min: 10 * 10 ** 9,
-                                        max: 100 * 10 ** 9,
-                                        onSendAmount: (amount: BigNumber) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-amount`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: uiLocalized.amountToLocale(
-                                                        amount.dividedBy(
-                                                            10 ** 9,
-                                                        ),
-                                                    ),
-                                                },
-                                                ...messages,
-                                            ]);
-                                        },
+                                const message = {
+                                    key: `${Date.now()}-amount`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.AmountInput,
+                                    prompt: 'Enter amount:',
+                                    decimals: 9,
+                                    min: 10 * 10 ** 9,
+                                    max: 100 * 10 ** 9,
+                                    onSend: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });
                             }}
-                        /> */}
+                        />
                     </UIBottomSheet>
                 )}
             </SafeAreaInsetsContext.Consumer>

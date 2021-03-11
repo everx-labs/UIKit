@@ -139,6 +139,10 @@ export type MenuMessage = InteractiveMessage<
     MenuExternalState
 >;
 
+export type AmountExternalState = {
+    amount: BigNumber;
+};
+
 export type AmountInputMessage = InteractiveMessage<
     InteractiveMessageType.AmountInput,
     {
@@ -146,16 +150,14 @@ export type AmountInputMessage = InteractiveMessage<
         decimals: number;
         min: number;
         max: number;
-        onSendAmount: OnSendAmount;
-    }
+        onSend: (state: AmountExternalState) => void | Promise<void>;
+    },
+    AmountExternalState
 >;
 
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
-    | ConfirmSuccessfulMessage
-    | ConfirmDeclinedMessage
-    | ConfirmButtonsMessage
     | TerminalMessage
     | AddressInputMessage
     | MenuMessage

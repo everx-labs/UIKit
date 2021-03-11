@@ -34,6 +34,7 @@ export function TerminalInput({
                     text={message.externalState.text}
                     status={MessageStatus.Sent}
                     firstFromChain
+                    lastFromChain
                 />
             </View>
         );

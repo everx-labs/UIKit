@@ -99,6 +99,7 @@ export function AddressInput({
                     text={message.prompt}
                     status={MessageStatus.Received}
                     firstFromChain
+                    lastFromChain
                 />
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
@@ -126,6 +127,7 @@ export function AddressInput({
                 text={message.prompt}
                 status={MessageStatus.Received}
                 firstFromChain
+                lastFromChain
             />
             <BubbleActionButton
                 key="address-input-bubble-action-account"
@@ -173,6 +175,7 @@ export function AddressInput({
                         type: 'OPEN_QR_CODE',
                     });
                 }}
+                lastFromChain
             />
             {state.inputVisible && (
                 <Portal forId="browser">
