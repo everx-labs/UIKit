@@ -131,14 +131,21 @@ type MenuItem = {
     description?: string;
 };
 
+export type MenuExternalState = {
+    chosenHandlerId: number;
+    chosenIndex: number;
+    answer?: string;
+};
+
 export type MenuMessage = InteractiveMessage<
     InteractiveMessageType.Menu,
     {
         title: string;
         description?: string;
         items: MenuItem[];
-        onSelect: (handlerId: number, index: number) => void | Promise<void>;
-    }
+        onSelect: (state: MenuExternalState) => void | Promise<void>;
+    },
+    MenuExternalState
 >;
 
 export type AmountInputMessage = InteractiveMessage<

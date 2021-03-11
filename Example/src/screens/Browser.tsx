@@ -170,42 +170,42 @@ const BrowserScreen = () => {
                                 marginBottom: 10,
                             }}
                         />
-                        {/* <UIButton
+                        <UIButton
                             title="Add Menu"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type: InteractiveMessageType.Menu,
-                                        title: 'Choose:',
-                                        onSelect: (handlerId: number) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-menu`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: `${handlerId} have been chosen`,
+                                const message = {
+                                    key: `${Date.now()}-menu`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Menu,
+                                    title: 'Choose:',
+                                    onSelect: (state: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState: {
+                                                    ...state,
+                                                    answer: `${state.chosenHandlerId} was chosen`,
                                                 },
-                                                ...messages,
-                                            ]);
-                                        },
-                                        items: [
-                                            {
-                                                handlerId: 1,
-                                                title: 'One',
                                             },
-                                            {
-                                                handlerId: 2,
-                                                title: 'Two',
-                                            },
-                                            {
-                                                handlerId: 3,
-                                                title: 'Three',
-                                            },
-                                        ],
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                    items: [
+                                        {
+                                            handlerId: 1,
+                                            title: 'One',
+                                        },
+                                        {
+                                            handlerId: 2,
+                                            title: 'Two',
+                                        },
+                                        {
+                                            handlerId: 3,
+                                            title: 'Three',
+                                        },
+                                    ],
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });
@@ -213,7 +213,7 @@ const BrowserScreen = () => {
                             style={{
                                 marginBottom: 10,
                             }}
-                        /> */}
+                        />
                         {/* <UIButton
                             title="Add Confirm"
                             onPress={() => {

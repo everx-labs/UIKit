@@ -22,6 +22,7 @@ import {
 } from './BubbleConfirm';
 import { AddressInput } from './Inputs/addressInput';
 import { TerminalInput } from './Inputs/terminal';
+import { MenuInput } from './Inputs/menu';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -83,6 +84,15 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
     if (item.type === InteractiveMessageType.Terminal) {
         return (
             <TerminalInput
+                {...item}
+                onHeightChange={onHeightChange}
+                onLayout={onLayout}
+            />
+        );
+    }
+    if (item.type === InteractiveMessageType.Menu) {
+        return (
+            <MenuInput
                 {...item}
                 onHeightChange={onHeightChange}
                 onLayout={onLayout}
