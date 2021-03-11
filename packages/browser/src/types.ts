@@ -105,6 +105,7 @@ export type AddressInputMessage = InteractiveMessage<
         prompt: string;
         onSelect: (state: AddressInputExternalState) => void;
         mainAddress: string;
+        mainAddressTitle?: string;
         input: {
             validateAddress: ValidateAddress;
         };
