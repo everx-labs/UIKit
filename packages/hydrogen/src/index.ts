@@ -4,6 +4,7 @@ export * from './UISafeAreaView';
 export * from './UILabel';
 export * from './UITextView';
 export * from './UIMaterialTextView';
+export * from './UINumberTextView';
 export * from './UISeedPhraseTextView';
 export * from './UIAutogrowTextView';
 export * from './UISheet';

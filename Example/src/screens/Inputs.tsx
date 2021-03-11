@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import {
     UIMaterialTextView,
     UISeedPhraseTextView,
+    UINumberTextView,
 } from '@tonlabs/uikit.hydrogen';
 import {
     UISeedPhraseInput,
@@ -122,6 +123,9 @@ export const Inputs = () => {
     const [transfer, setTransfer] = useState(new BigNumber(0));
     return (
         <ExampleScreen>
+            <ExampleSection title="UINumberTextView">
+                <UINumberTextView placeholder="Put number" />
+            </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMaterialTextView label="Label" />
