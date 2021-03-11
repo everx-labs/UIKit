@@ -12,8 +12,6 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 
-import type { ConfirmButtonsMessage } from './types';
-
 export function BubbleConfirmSuccessful() {
     return (
         <View style={styles.containerRight}>

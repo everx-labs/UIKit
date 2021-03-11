@@ -10,16 +10,10 @@ import {
 } from '@tonlabs/uikit.chats';
 import {
     BrowserMessage,
-    BrowserMessageType,
     InteractiveMessageType,
     OnHeightChange,
 } from './types';
 import { getFormattedList } from './getFormattedList';
-import {
-    BubbleConfirmButtons,
-    BubbleConfirmDeclined,
-    BubbleConfirmSuccessful,
-} from './BubbleConfirm';
 import { AddressInput } from './Inputs/addressInput';
 import { TerminalInput } from './Inputs/terminal';
 import { MenuInput } from './Inputs/menu';

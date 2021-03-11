@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Route, useNavigation, useRoute } from '@react-navigation/core';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import type BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -11,7 +10,13 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
-    BrowserMessageType,
+} from '@tonlabs/uikit.browser';
+import type {
+    AddressInputMessage,
+    ConfirmMessage,
+    MenuMessage,
+    TerminalMessage,
+    AmountInputMessage,
 } from '@tonlabs/uikit.browser';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
@@ -22,7 +27,6 @@ import {
     UILabel,
     UILabelColors,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const BrowserStack = createStackNavigator();
 
@@ -73,7 +77,7 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add AddressInput"
                             onPress={() => {
-                                const message = {
+                                const message: AddressInputMessage = {
                                     key: `${Date.now()}-address-input`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.AddressInput,
@@ -117,21 +121,19 @@ const BrowserScreen = () => {
                                                 })),
                                         },
                                     ],
-                                };
-                                const onSelect = (state: any) => {
-                                    setMessages([
-                                        {
-                                            ...message,
-                                            externalState: state,
-                                            onSelect,
-                                        },
-                                        ...messages,
-                                    ]);
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
                                 };
                                 setMessages([
                                     {
                                         ...message,
-                                        onSelect,
                                     },
                                     ...messages,
                                 ]);
@@ -146,7 +148,7 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add TerminalInput"
                             onPress={() => {
-                                const message = {
+                                const message: TerminalMessage = {
                                     key: `${Date.now()}-terminal-input`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.Terminal,
@@ -173,7 +175,7 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add Menu"
                             onPress={() => {
-                                const message = {
+                                const message: MenuMessage = {
                                     key: `${Date.now()}-menu`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.Menu,
@@ -217,7 +219,7 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add Confirm"
                             onPress={() => {
-                                const message = {
+                                const message: ConfirmMessage = {
                                     key: `${Date.now()}-confirm`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.Confirm,
@@ -244,7 +246,7 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add AmountInput"
                             onPress={() => {
-                                const message = {
+                                const message: AmountInputMessage = {
                                     key: `${Date.now()}-amount`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.AmountInput,
