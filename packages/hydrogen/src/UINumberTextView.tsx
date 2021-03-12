@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Platform, TextInput } from 'react-native';
 
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import { UITextView, UITextViewProps } from './UITextView';
 
 const groupReversed = (
@@ -54,7 +56,6 @@ const group = (
 };
 
 const moveWebCaret = (input: HTMLInputElement, position: number) => {
-    console.log(position);
     if (input.setSelectionRange) {
         input.focus();
         input.setSelectionRange(position, position);
@@ -73,11 +74,16 @@ const moveWebCaret = (input: HTMLInputElement, position: number) => {
 export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
     const selectionStart = React.useRef(0);
 
-    const delimeter = '.'; // TODO
-    const integerGroupSize = 3; // TODO
-    const integerSeparator = ','; // TODO
-    const fractionalGroupSize = 3; // TODO
-    const fractionalSeparator = ' '; // TODO
+    const {
+        grouping: integerSeparator,
+        decimal: delimeter,
+        decimalGrouping: fractionalSeparator,
+    } = uiLocalized.localeInfo.numbers;
+
+    // uiLocalized for now doesn't have such configuration
+    // but I think it's good to keep it here configurable
+    const integerGroupSize = 3;
+    const fractionalGroupSize = 3;
 
     const lastNormalizedText = React.useRef('');
     const lastText = React.useRef('');
@@ -99,7 +105,7 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
                 }
             }
         },
-        [],
+        [fractionalSeparator, integerSeparator],
     );
 
     const onChangeText = React.useCallback(
@@ -192,7 +198,7 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
             lastText.current = formattedNumber;
             lastNormalizedText.current = normalizedText;
         },
-        [ref],
+        [ref, delimeter, integerSeparator, fractionalSeparator],
     );
 
     return {
