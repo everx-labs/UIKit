@@ -188,15 +188,6 @@ export function useNumberFormatting(
             if (ref && 'current' in ref && ref.current) {
                 ref.current?.setNativeProps({
                     text: formattedNumber,
-                    ...Platform.select({
-                        default: {
-                            selection: {
-                                start: carretPosition,
-                                end: carretPosition,
-                            },
-                        },
-                        web: null,
-                    }),
                 });
                 if (Platform.OS === 'web') {
                     moveWebCaret(
@@ -204,6 +195,18 @@ export function useNumberFormatting(
                         ref.current as HTMLInputElement,
                         carretPosition,
                     );
+                } else {
+                    ref.current?.setNativeProps({
+                        ...(carretPosition >= 0 &&
+                        carretPosition <= formattedNumber.length
+                            ? {
+                                  selection: {
+                                      start: carretPosition,
+                                      end: carretPosition,
+                                  },
+                              }
+                            : null),
+                    });
                 }
             }
 

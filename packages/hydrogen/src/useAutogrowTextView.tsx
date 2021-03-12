@@ -13,7 +13,7 @@ const textViewHeight =
 export function useAutogrowTextView(
     ref: React.Ref<TextInput> | null,
     onHeightChange?: OnHeightChange,
-    constrainedNumberOfLines: number = 0,
+    constrainedNumberOfLines: number = 1,
 ) {
     const [inputHeight, setInputHeight] = React.useState<number>(
         UIConstant.smallCellHeight,

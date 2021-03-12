@@ -11,6 +11,7 @@ import {
     UILabel,
     UILabelRoles,
     useNumberFormatting,
+    useAutogrowTextView,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { OnHeightChange, OnSendAmount } from './types';
@@ -109,23 +110,13 @@ function UIAmountInputInternal({
     onHeightChange,
     onSendAmount: onSendAmountProp,
 }: UIAmountInputInternalProps) {
-    const onContentSizeChange = React.useCallback(
-        (event: any) => {
-            if (event && event.nativeEvent) {
-                const { contentSize } = event.nativeEvent;
-                const height = contentSize?.height || 0;
-
-                if (height <= 0) {
-                    return;
-                }
-
-                if (onHeightChange) {
-                    onHeightChange(height);
-                }
-            }
-        },
-        [onHeightChange],
-    );
+    const {
+        onChange,
+        onContentSizeChange,
+        numberOfLines,
+        resetInputHeight,
+        inputStyle,
+    } = useAutogrowTextView(textInputRef, onHeightChange);
 
     const {
         inputHasValue,
@@ -238,7 +229,8 @@ function UIAmountInputInternal({
         textInputRef.current?.focus();
 
         setValidationStatus(ValidationStatus.None);
-    }, [clearBase, setValidationStatus, textInputRef]);
+        resetInputHeight();
+    }, [clearBase, setValidationStatus, textInputRef, resetInputHeight]);
 
     const onKeyPress = React.useCallback(
         (e: any) => {
@@ -253,7 +245,7 @@ function UIAmountInputInternal({
 
     return (
         <ChatInputContainer
-            numberOfLines={1}
+            numberOfLines={numberOfLines}
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}
@@ -275,7 +267,7 @@ function UIAmountInputInternal({
             ) : null}
             <UITextView
                 ref={textInputRef}
-                testID="browser_input"
+                testID="browser_amount_input"
                 autoCapitalize="sentences"
                 autoCorrect={false}
                 autoFocus
@@ -286,10 +278,12 @@ function UIAmountInputInternal({
                 placeholderTextColor={placeholderColor}
                 onSelectionChange={onSelectionChange}
                 onContentSizeChange={onContentSizeChange}
+                onChange={onChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                style={inputStyle}
             />
         </ChatInputContainer>
     );
