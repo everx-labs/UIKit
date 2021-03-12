@@ -27,10 +27,10 @@ type UISeedPhrasePopoverProps = {
 };
 
 function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
-    const { 
+    const {
         currentHighlightedItemIndex,
         onHighlightedItemIndexChange,
-        hints, 
+        hints,
         onHintSelected,
         width,
     } = props;

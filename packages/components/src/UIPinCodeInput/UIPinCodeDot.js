@@ -2,7 +2,12 @@
 import React from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 
-import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import {
+    ColorVariants,
+    UIBackgroundView,
+    UIBackgroundViewColors,
+} from '@tonlabs/uikit.hydrogen';
 
 const dotSize = UIConstant.tinyCellHeight();
 
@@ -27,12 +32,14 @@ const styles = StyleSheet.create({
     },
 });
 
-type UIPinCodeDotProps = { valueDefined: boolean, color: string };
+type UIPinCodeDotProps = { valueDefined: boolean, color: ColorVariants };
 type UIPinCodeDotState = {
     show: boolean,
     hide: boolean,
     savedIsValueDefined: boolean,
 };
+
+const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 
 export default class UIPinCodeDot extends React.Component<
     UIPinCodeDotProps,
@@ -88,10 +95,10 @@ export default class UIPinCodeDot extends React.Component<
     render() {
         return (
             <View style={styles.dotView}>
-                <Animated.View
+                <AnimatedWithColor
+                    color={UIBackgroundViewColors.BackgroundNeutral}
                     style={[
                         UIStyle.common.positionAbsolute(),
-                        UIStyle.color.getBackgroundColorStyle(UIColor.grey3()),
                         styles.dot,
                         {
                             opacity: this.invertedAnimation,
@@ -99,9 +106,9 @@ export default class UIPinCodeDot extends React.Component<
                         },
                     ]}
                 />
-                <Animated.View
+                <AnimatedWithColor
+                    color={this.props.color}
                     style={[
-                        UIStyle.color.getBackgroundColorStyle(this.props.color),
                         styles.dot,
                         {
                             opacity: this.animation,
