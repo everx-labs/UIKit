@@ -2,7 +2,8 @@
 import React from 'react';
 import { StyleSheet, Animated, Vibration } from 'react-native';
 
-import { UIConstant, UIColor } from '@tonlabs/uikit.core';
+import { UIConstant } from '@tonlabs/uikit.core';
+import { ColorVariants } from '@tonlabs/uikit.hydrogen';
 
 import UIPinCodeDot from './UIPinCodeDot';
 
@@ -89,11 +90,11 @@ export default class UIPinCodeDots extends React.Component<
         const dots = [];
 
         for (let i = 0; i < length; i += 1) {
-            let dotColor = UIColor.primary();
+            let dotColor = ColorVariants.BackgroundAccent;
             if (this.state.wrongPin) {
-                dotColor = UIColor.backgroundNegative();
+                dotColor = ColorVariants.BackgroundNegative;
             } else if (this.state.rightPin) {
-                dotColor = UIColor.backgroundPositive();
+                dotColor = ColorVariants.BackgroundPositive;
             }
 
             dots.push(<UIPinCodeDot

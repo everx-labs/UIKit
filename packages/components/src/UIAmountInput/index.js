@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
-import { Platform, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIStyle } from '@tonlabs/uikit.core';
+
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { UIDetailsInput } from '../UIDetailsInput';
 import type { UIDetailsInputProps } from '../UIDetailsInput';
@@ -19,15 +21,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'transparent',
-    },
-    transparentValue: {
-        color: 'transparent',
-    },
-    // TODO: Bad practice – padding was selected by eye.
-    // Need better solution. (Michael V.)
-    androidTextInputPadding: {
-        paddingBottom: 6,
-        paddingLeft: 4,
     },
 });
 
@@ -52,22 +45,9 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         onRightButtonPress: () => {},
     };
 
-    static getInputPlaceholderStyle() {
-        // TODO: Bad practice – fast coding.
-        // Need better solution. (Michael V.)
-        return Platform.OS === 'android'
-            ? [styles.inputPlaceholder, styles.androidTextInputPadding]
-            : styles.inputPlaceholder;
-    }
-
     // Getters
     getInlinePlaceholder() {
         return this.hidePlaceholder() || this.isFocused() ? '' : this.getPlaceholder();
-    }
-
-    getInputPlaceholderColor() {
-        const { theme } = this.props;
-        return UIStyle.color.getColorStyle(UIColor.textPlaceholder(theme));
     }
 
     containerStyle() {
@@ -103,13 +83,14 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             return null;
         }
 
-        const defaultTitleStyle = rightButtonDisabled ?
-            UIStyle.text.secondarySmallMedium() : UIStyle.text.actionSmallMedium();
         const button = rightButton instanceof String || typeof rightButton === 'string'
             ? (
-                <Text style={[UIStyle.text.secondaryBodyRegular(), defaultTitleStyle]}>
+                <UILabel
+                    color={rightButtonDisabled ? UILabelColors.TextSecondary : UILabelColors.TextAccent}
+                    role={UILabelRoles.ActionCallout}
+                >
                     {rightButton}
-                </Text>
+                </UILabel>
             )
             : rightButton;
         return (
@@ -124,15 +105,17 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
     }
 
     renderFloatingTitle() {
-        const { floatingTitle, value, theme } = this.props;
+        const { floatingTitle, value } = this.props;
         const text = (!floatingTitle || !value) && !this.isFocused()
             ? ' '
             : this.getPlaceholder();
-        const colorStyle = UIColor.textTertiaryStyle(theme);
         return (
-            <Text style={[UIStyle.text.tinyRegular(), colorStyle]}>
+            <UILabel
+                color={UILabelColors.TextTertiary}
+                role={UILabelRoles.ParagraphLabel}
+            >
                 {text}
-            </Text>
+            </UILabel>
         );
     }
 
@@ -141,13 +124,15 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             return null;
         }
         return (
-            <View style={UIAmountInput.getInputPlaceholderStyle()}>
-                <Text
-                    style={[this.textInputStyle(), this.getInputPlaceholderColor()]}
+            <View style={styles.inputPlaceholder}>
+                <UILabel
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.ParagraphText}
                     selectable={false}
+                    style={this.textInputStyle()}
                 >
                     {this.props.inputPlaceholder}
-                </Text>
+                </UILabel>
             </View>
         );
     }
@@ -158,20 +143,21 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             return null;
         }
         return (
-            <View style={UIAmountInput.getInputPlaceholderStyle()}>
-                <Text
+            <View style={styles.inputPlaceholder}>
+                <UILabel
+                    color={UILabelColors.Transparent}
                     onPress={() => this.focus()}
-                    style={[this.textInputStyle(), styles.transparentValue]}
                     selectable={false}
+                    style={this.textInputStyle()}
                 >
                     {this.props.value}
-                    <Text
-                        style={this.getInputPlaceholderColor()}
+                    <UILabel
+                        color={UILabelColors.TextSecondary}
                         selectable={false}
                     >
                         {trailingValue}
-                    </Text>
-                </Text>
+                    </UILabel>
+                </UILabel>
             </View>
         );
     }

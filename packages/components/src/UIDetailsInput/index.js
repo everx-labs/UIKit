@@ -809,7 +809,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             secureTextEntry,
             blurOnSubmit,
             testID,
-            theme,
             maxHeight,
             value,
             noPersonalizedLearning,
@@ -831,8 +830,8 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         // https://reactjs.org/docs/uncontrolled-components.html
         const valueProp = value != null ? { value: this.getValue() } : null;
         const placeholderColor = editable
-            ? UIColor.textPlaceholder(theme)
-            : UIColor.textDisabled(theme);
+            ? UILabelColors.TextSecondary
+            : UILabelColors.TextTertiary;
         return (
             <UITextView
                 contextMenuHidden={this.props.copyingLocked && value.length !== 0} // iOS only
@@ -1061,14 +1060,14 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 ]}
                 title={comment}
                 titleColor={commentColor || UILabelColors.TextAccent}
-                titleRole={UILabelRoles.ParagraphFootnote}
+                titleRole={UILabelRoles.ParagraphNote}
                 onPress={onPressComment}
             />
         ) : (
             <UILabel
                 {...testIDProp}
                 color={commentColor || UILabelColors.TextTertiary}
-                role={UILabelRoles.ParagraphFootnote}
+                role={UILabelRoles.ParagraphNote}
                 style={[
                     styles.commentStyle,
                     UIStyle.margin.topSmall(),
@@ -1082,7 +1081,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const commentRightLabel = (
             <UILabel
                 color={commentColor || UILabelColors.TextTertiary}
-                role={UILabelRoles.ParagraphFootnote}
+                role={UILabelRoles.ParagraphNote}
                 style={[
                     styles.commentStyle,
                     UIStyle.margin.topSmall(),
