@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle } from '@tonlabs/uikit.core';
@@ -21,12 +21,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'transparent',
-    },
-    // TODO: Bad practice – padding was selected by eye.
-    // Need better solution. (Michael V.)
-    androidTextInputPadding: {
-        paddingBottom: 6,
-        paddingLeft: 4,
     },
 });
 
@@ -50,14 +44,6 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
         rightButtonDisabled: false,
         onRightButtonPress: () => {},
     };
-
-    static getInputPlaceholderStyle() {
-        // TODO: Bad practice – fast coding.
-        // Need better solution. (Michael V.)
-        return Platform.OS === 'android'
-            ? [styles.inputPlaceholder, styles.androidTextInputPadding]
-            : styles.inputPlaceholder;
-    }
 
     // Getters
     getInlinePlaceholder() {
@@ -138,7 +124,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             return null;
         }
         return (
-            <View style={UIAmountInput.getInputPlaceholderStyle()}>
+            <View style={styles.inputPlaceholder}>
                 <UILabel
                     color={UILabelColors.TextSecondary}
                     role={UILabelRoles.ParagraphText}
@@ -157,7 +143,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
             return null;
         }
         return (
-            <View style={UIAmountInput.getInputPlaceholderStyle()}>
+            <View style={styles.inputPlaceholder}>
                 <UILabel
                     color={UILabelColors.Transparent}
                     onPress={() => this.focus()}
