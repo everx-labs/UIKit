@@ -71,7 +71,10 @@ const moveWebCaret = (input: HTMLInputElement, position: number) => {
     }
 };
 
-export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
+export function useNumberFormatting(
+    ref: React.Ref<TextInput> | null,
+    decimals?: number,
+) {
     const selectionStart = React.useRef(0);
 
     const {
@@ -138,6 +141,10 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
                     '',
                 );
 
+                if (decimals) {
+                    normalizedFractionalPart.slice(0, decimals);
+                }
+
                 normalizedText += delimeter;
                 normalizedText += normalizedFractionalPart;
 
@@ -197,8 +204,10 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
 
             lastText.current = formattedNumber;
             lastNormalizedText.current = normalizedText;
+
+            return formattedNumber;
         },
-        [ref, delimeter, integerSeparator, fractionalSeparator],
+        [ref, delimeter, integerSeparator, fractionalSeparator, decimals],
     );
 
     return {

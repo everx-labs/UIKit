@@ -10,6 +10,7 @@ import {
     ColorVariants,
     UILabel,
     UILabelRoles,
+    useNumberFormatting,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { OnHeightChange, OnSendAmount } from './types';
@@ -79,6 +80,10 @@ function useValidation(
 }
 
 const getBigNumberFromRawString = (value: string) => {
+    if (value[0] === ',' || value[0] === '.') {
+        // eslint-disable-next-line no-param-reassign
+        value = `0${value}`;
+    }
     return new BigNumber(value.replace(',', '.'));
 };
 
@@ -126,8 +131,8 @@ function UIAmountInputInternal({
         inputValue,
         clear: clearBase,
         onChangeText: onChangeTextBase,
-        onKeyPress,
-    } = useUITextViewValue(textInputRef);
+        onKeyPress: onKeyPressBase,
+    } = useUITextViewValue(textInputRef, true);
 
     const {
         decimalDivider,
@@ -154,40 +159,24 @@ function UIAmountInputInternal({
         checkValidation,
     } = useValidation(decimalDivider, min, max);
 
+    const {
+        onChangeText: onChangeTextFormatting,
+        onSelectionChange,
+    } = useNumberFormatting(textInputRef, decimals);
+
     const onChangeText = React.useCallback(
         (text: string) => {
-            const hasNotValidCharsRegExp = /[^0-9,.]/g;
-
-            const validatedText = text
-                .replace(hasNotValidCharsRegExp, '')
-                .split(/[,.]/)
-                .slice(0, 2)
-                .map((part, index) => {
-                    if (index === 1) {
-                        return part.slice(0, decimals);
-                    }
-                    return part;
-                })
-                .join(uiLocalized.localeInfo.decimal);
-
-            if (text !== validatedText) {
-                textInputRef.current?.setNativeProps({
-                    text: validatedText,
-                });
-            }
-
-            onChangeTextBase(validatedText);
+            onChangeTextBase(onChangeTextFormatting(text));
 
             if (validationStatus !== ValidationStatus.None) {
                 setValidationStatus(ValidationStatus.None);
             }
         },
         [
-            textInputRef,
             onChangeTextBase,
-            decimals,
-            validationStatus,
+            onChangeTextFormatting,
             setValidationStatus,
+            validationStatus,
         ],
     );
 
@@ -250,6 +239,17 @@ function UIAmountInputInternal({
         setValidationStatus(ValidationStatus.None);
     }, [clearBase, setValidationStatus, textInputRef]);
 
+    const onKeyPress = React.useCallback(
+        (e: any) => {
+            const wasClearedWithEnter = onKeyPressBase(e);
+
+            if (wasClearedWithEnter) {
+                onActionPress();
+            }
+        },
+        [onActionPress, onKeyPressBase],
+    );
+
     return (
         <ChatInputContainer
             numberOfLines={1}
@@ -283,6 +283,7 @@ function UIAmountInputInternal({
                 editable
                 placeholder={placeholder}
                 placeholderTextColor={placeholderColor}
+                onSelectionChange={onSelectionChange}
                 onContentSizeChange={onContentSizeChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
