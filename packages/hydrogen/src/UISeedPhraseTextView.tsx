@@ -611,7 +611,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 )}`;
             }
 
-            return `${acc}${num} ${uiLocalized.orDelimeter} `;
+            return `${acc}${num}${uiLocalized.orDelimeter}`;
         }, '');
     }, [props.totalWords]);
 

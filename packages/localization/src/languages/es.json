@@ -299,7 +299,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Solo los administradores pueden agregar y eliminar miembros y editar el nombre y la foto del grupo.",
     "OpenSettings": "Abrir Configuración",
     "operationTime": "Tiempo de la operación",
-    "orDelimeter": "or",
+    "orDelimeter": " or ",
     "OutOf": "de",
     "Passport": "Pasaporte",
     "PassportFetchingStatus": "Obteniendo estado ...",
