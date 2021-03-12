@@ -27,10 +27,10 @@ type UISeedPhrasePopoverProps = {
 };
 
 function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
-    const { 
+    const {
         currentHighlightedItemIndex,
         onHighlightedItemIndexChange,
-        hints, 
+        hints,
         onHintSelected,
         width,
     } = props;
@@ -611,7 +611,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 )}`;
             }
 
-            return `${acc}${num}${uiLocalized.orDelimeter}`;
+            return `${acc}${num} ${uiLocalized.orDelimeter} `;
         }, '');
     }, [props.totalWords]);
 
