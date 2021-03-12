@@ -31,13 +31,13 @@ export function ActionButton({
                         actionStyles.iconRound,
                         {
                             backgroundColor:
-                                theme[ColorVariants.BackgroundPrimaryInverted],
+                                theme[ColorVariants.BackgroundNegative],
                         },
                     ]}
                 >
                     <UIImage
                         source={UIAssets.icons.ui.closeRemove}
-                        style={actionStyles.icon}
+                        style={actionStyles.iconClear}
                         tintColor={ColorVariants.LinePrimary}
                     />
                 </View>
@@ -72,6 +72,10 @@ const actionStyles = StyleSheet.create({
     icon: {
         height: UIConstant.tinyButtonHeight(),
         width: UIConstant.tinyButtonHeight(),
+    },
+    iconClear: {
+        height: 30,
+        width: 30,
     },
     iconRound: {
         height: UIConstant.tinyButtonHeight(),
