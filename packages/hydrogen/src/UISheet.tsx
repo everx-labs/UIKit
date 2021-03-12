@@ -453,7 +453,7 @@ export function UISheet(props: UISheetProps) {
     }
 
     return (
-        <Portal>
+        <Portal absoluteFill>
             <UISheetPortalContent
                 {...props}
                 onClosePortalRequest={onClosePortalRequest}

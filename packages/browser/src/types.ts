@@ -50,43 +50,38 @@ export enum BrowserMessageType {
     ConfirmButtons = 'ConfirmButtons',
 }
 
-type ConfirmSuccessfulMessage = BubbleBaseT & {
-    type: BrowserMessageType.ConfirmSuccessful;
+type InteractiveMessage<
+    T extends InteractiveMessageType,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    MessageT extends object,
+    ExternalState = null
+> = BubbleBaseT & { type: T } & MessageT & { externalState?: ExternalState };
+
+export type ConfirmExternalState = {
+    isConfirmed: boolean;
 };
 
-type ConfirmDeclinedMessage = BubbleBaseT & {
-    type: BrowserMessageType.ConfirmDeclined;
+export type ConfirmMessage = InteractiveMessage<
+    InteractiveMessageType.Confirm,
+    {
+        prompt: string;
+        onConfirm: (state: ConfirmExternalState) => void | Promise<void>;
+    },
+    ConfirmExternalState
+>;
+
+export type TerminalExternalState = {
+    text: string;
 };
 
-export type ConfirmButtonsMessage = BubbleBaseT & {
-    type: BrowserMessageType.ConfirmButtons;
-    onSuccess: () => void | Promise<void>;
-    onDecline: () => void | Promise<void>;
-};
-
-export type ConfirmMessage = {
-    type: InteractiveMessageType.Confirm;
-    prompt: string;
-    onConfirm: (isConfirmed: boolean) => void | Promise<void>;
-};
-
-export type VisibleMessage =
-    | PlainTextMessage
-    | ActionButtonMessage
-    | ConfirmSuccessfulMessage
-    | ConfirmDeclinedMessage
-    | ConfirmButtonsMessage;
-
-export type Input = {
-    messages: VisibleMessage[];
-    input: React.ReactNode;
-};
-
-export type TerminalMessage = {
-    type: InteractiveMessageType.Terminal;
-    prompt: string;
-    onSendText: OnSendText;
-};
+export type TerminalMessage = InteractiveMessage<
+    InteractiveMessageType.Terminal,
+    {
+        prompt: string;
+        onSend: (state: TerminalExternalState) => void;
+    },
+    TerminalExternalState
+>;
 
 export type AddressInputAccount = {
     address: string;
@@ -99,19 +94,27 @@ export type AddressInputAccountData = {
     data: AddressInputAccount[];
 };
 
-export type AddressInputMessage = {
-    type: InteractiveMessageType.AddressInput;
-    prompt: string;
-    onSelect: (selectedButtonText: string, address: string) => void;
-    mainAddress: string;
-    input: {
-        validateAddress: ValidateAddress;
-    };
-    qrCode: {
-        parseData: (data: any) => Promise<string>;
-    };
-    select: AddressInputAccountData[];
+export type AddressInputExternalState = {
+    chosenOption: string;
+    address: string;
 };
+
+export type AddressInputMessage = InteractiveMessage<
+    InteractiveMessageType.AddressInput,
+    {
+        prompt: string;
+        onSelect: (state: AddressInputExternalState) => void;
+        mainAddress: string;
+        input: {
+            validateAddress: ValidateAddress;
+        };
+        qrCode: {
+            parseData: (data: any) => Promise<string>;
+        };
+        select: AddressInputAccountData[];
+    },
+    AddressInputExternalState
+>;
 
 type MenuItem = {
     handlerId: number;
@@ -119,28 +122,43 @@ type MenuItem = {
     description?: string;
 };
 
-export type MenuMessage = {
-    type: InteractiveMessageType.Menu;
-    title: string;
-    description?: string;
-    items: MenuItem[];
-    onSelect: (handlerId: number, index: number) => void | Promise<void>;
+export type MenuExternalState = {
+    chosenHandlerId: number;
+    chosenIndex: number;
 };
 
-export type AmountInputMessage = {
-    type: InteractiveMessageType.AmountInput;
-    prompt: string;
-    decimals: number;
-    min: number;
-    max: number;
-    onSendAmount: OnSendAmount;
+export type MenuMessage = InteractiveMessage<
+    InteractiveMessageType.Menu,
+    {
+        title: string;
+        description?: string;
+        items: MenuItem[];
+        onSelect: (state: MenuExternalState) => void | Promise<void>;
+    },
+    MenuExternalState
+>;
+
+export type AmountExternalState = {
+    amount: BigNumber;
 };
 
-export type InteractiveMessage =
+export type AmountInputMessage = InteractiveMessage<
+    InteractiveMessageType.AmountInput,
+    {
+        prompt: string;
+        decimals: number;
+        min: number;
+        max: number;
+        onSend: (state: AmountExternalState) => void | Promise<void>;
+    },
+    AmountExternalState
+>;
+
+export type BrowserMessage =
+    | PlainTextMessage
+    | ActionButtonMessage
     | TerminalMessage
     | AddressInputMessage
     | MenuMessage
     | ConfirmMessage
     | AmountInputMessage;
-
-export type BrowserMessage = VisibleMessage | InteractiveMessage;

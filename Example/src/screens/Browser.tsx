@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Route, useNavigation, useRoute } from '@react-navigation/core';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import type BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -11,7 +10,13 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
-    BrowserMessageType,
+} from '@tonlabs/uikit.browser';
+import type {
+    AddressInputMessage,
+    ConfirmMessage,
+    MenuMessage,
+    TerminalMessage,
+    AmountInputMessage,
 } from '@tonlabs/uikit.browser';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
@@ -22,7 +27,6 @@ import {
     UILabel,
     UILabelColors,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const BrowserStack = createStackNavigator();
 
@@ -73,73 +77,63 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add AddressInput"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type:
-                                            InteractiveMessageType.AddressInput,
-                                        prompt:
-                                            'What wallet do you want to work with?',
-                                        mainAddress: '0:000',
-                                        input: {
-                                            validateAddress: (text: string) => {
-                                                if (
-                                                    text.length > 0 &&
-                                                    text.length % 5 === 0
-                                                ) {
-                                                    return Promise.resolve({
-                                                        status:
-                                                            ValidationResultStatus.Error,
-                                                        text:
-                                                            'Oh no, the length is divided by 5',
-                                                    });
-                                                }
+                                const message: AddressInputMessage = {
+                                    key: `${Date.now()}-address-input`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.AddressInput,
+                                    prompt:
+                                        'What wallet do you want to work with?',
+                                    mainAddress: '0:000',
+                                    input: {
+                                        validateAddress: (text: string) => {
+                                            if (
+                                                text.length > 0 &&
+                                                text.length % 5 === 0
+                                            ) {
                                                 return Promise.resolve({
                                                     status:
-                                                        ValidationResultStatus.None,
+                                                        ValidationResultStatus.Error,
+                                                    text:
+                                                        'Oh no, the length is divided by 5',
                                                 });
-                                            },
+                                            }
+                                            return Promise.resolve({
+                                                status:
+                                                    ValidationResultStatus.None,
+                                            });
                                         },
-                                        qrCode: {
-                                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                            parseData: (_data: any) => {
-                                                return Promise.resolve('0:000');
-                                            },
+                                    },
+                                    qrCode: {
+                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                        parseData: (_data: any) => {
+                                            return Promise.resolve('0:000');
                                         },
-                                        select: [
+                                    },
+                                    select: [
+                                        {
+                                            title: 'Accounts',
+                                            data: new Array(20)
+                                                .fill(null)
+                                                .map((_i, index) => ({
+                                                    address: `0:000${index}`,
+                                                    balance: `12${index}`,
+                                                    description: 'My Crystals',
+                                                })),
+                                        },
+                                    ],
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
                                             {
-                                                title: 'Accounts',
-                                                data: new Array(20)
-                                                    .fill(null)
-                                                    .map((_i, index) => ({
-                                                        address: `0:000${index}`,
-                                                        balance: `12${index}`,
-                                                        description:
-                                                            'My Crystals',
-                                                    })),
+                                                ...message,
+                                                externalState,
                                             },
-                                        ],
-                                        onSelect: (
-                                            selectedButtonString: string,
-                                            address: string,
-                                        ) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-address-input2`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: address,
-                                                },
-                                                {
-                                                    key: `${Date.now()}-address-input1`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: selectedButtonString,
-                                                },
-                                                ...messages,
-                                            ]);
-                                        },
+                                            ...messages,
+                                        ]);
+                                    },
+                                };
+                                setMessages([
+                                    {
+                                        ...message,
                                     },
                                     ...messages,
                                 ]);
@@ -154,25 +148,22 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add TerminalInput"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type: InteractiveMessageType.Terminal,
-                                        prompt: 'Type sth!',
-                                        onSendText: (text: string) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-terminal`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text,
-                                                },
-                                                ...messages,
-                                            ]);
-                                        },
+                                const message: TerminalMessage = {
+                                    key: `${Date.now()}-terminal-input`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Terminal,
+                                    prompt: 'Type sth!',
+                                    onSend: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });
@@ -184,39 +175,36 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add Menu"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type: InteractiveMessageType.Menu,
-                                        title: 'Choose:',
-                                        onSelect: (handlerId: number) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-menu`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: `${handlerId} have been chosen`,
-                                                },
-                                                ...messages,
-                                            ]);
-                                        },
-                                        items: [
+                                const message: MenuMessage = {
+                                    key: `${Date.now()}-menu`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Menu,
+                                    title: 'Choose:',
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
                                             {
-                                                handlerId: 1,
-                                                title: 'One',
+                                                ...message,
+                                                externalState,
                                             },
-                                            {
-                                                handlerId: 2,
-                                                title: 'Two',
-                                            },
-                                            {
-                                                handlerId: 3,
-                                                title: 'Three',
-                                            },
-                                        ],
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                    items: [
+                                        {
+                                            handlerId: 1,
+                                            title: 'One',
+                                        },
+                                        {
+                                            handlerId: 2,
+                                            title: 'Two',
+                                        },
+                                        {
+                                            handlerId: 3,
+                                            title: 'Three',
+                                        },
+                                    ],
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });
@@ -228,33 +216,22 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add Confirm"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type: InteractiveMessageType.Confirm,
-                                        prompt: 'Are you sure?',
-                                        onConfirm: (isConfirmed: boolean) => {
-                                            setMessages([
-                                                isConfirmed
-                                                    ? {
-                                                          key: `${Date.now()}`,
-                                                          status:
-                                                              MessageStatus.Sent,
-                                                          type:
-                                                              BrowserMessageType.ConfirmSuccessful,
-                                                      }
-                                                    : {
-                                                          key: `${Date.now()}`,
-                                                          status:
-                                                              MessageStatus.Sent,
-                                                          type:
-                                                              BrowserMessageType.ConfirmDeclined,
-                                                      },
-                                                ...messages,
-                                            ]);
-                                        },
+                                const message: ConfirmMessage = {
+                                    key: `${Date.now()}-confirm`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Confirm,
+                                    prompt: 'Are you sure?',
+                                    onConfirm: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });
@@ -266,33 +243,25 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add AmountInput"
                             onPress={() => {
-                                setMessages([
-                                    {
-                                        type:
-                                            InteractiveMessageType.AmountInput,
-                                        prompt: 'Enter amount:',
-                                        decimals: 9,
-                                        min: 10 * 10 ** 9,
-                                        max: 100 * 10 ** 9,
-                                        onSendAmount: (amount: BigNumber) => {
-                                            setMessages([
-                                                {
-                                                    key: `${Date.now()}-amount`,
-                                                    type:
-                                                        ChatMessageType.PlainText,
-                                                    status: MessageStatus.Sent,
-                                                    text: uiLocalized.amountToLocale(
-                                                        amount.dividedBy(
-                                                            10 ** 9,
-                                                        ),
-                                                    ),
-                                                },
-                                                ...messages,
-                                            ]);
-                                        },
+                                const message: AmountInputMessage = {
+                                    key: `${Date.now()}-amount`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.AmountInput,
+                                    prompt: 'Enter amount:',
+                                    decimals: 9,
+                                    min: 10 * 10 ** 9,
+                                    max: 100 * 10 ** 9,
+                                    onSend: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
-                                    ...messages,
-                                ]);
+                                };
+                                setMessages([message, ...messages]);
                                 navigation.setParams({
                                     menuVisible: false,
                                 });

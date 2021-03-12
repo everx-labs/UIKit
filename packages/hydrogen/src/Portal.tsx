@@ -2,8 +2,17 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 type PortalMethods = {
-    mount: (children: React.ReactNode, forId?: string) => number;
-    update: (key: number, children: React.ReactNode, forId?: string) => void;
+    mount: (
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => number;
+    update: (
+        key: number,
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => void;
     unmount: (key: number, forId?: string) => void;
 };
 
@@ -11,31 +20,38 @@ const PortalContext = React.createContext<PortalMethods | null>(null);
 
 type PortalConsumerProps = {
     forId?: string;
+    absoluteFill?: boolean;
     manager: PortalMethods;
     children: React.ReactNode;
 };
 
-function PortalConsumer({ forId, manager, children }: PortalConsumerProps) {
+function PortalConsumer({
+    forId,
+    absoluteFill,
+    manager,
+    children,
+}: PortalConsumerProps) {
     const key = React.useRef<number | null>(null);
 
     React.useEffect(() => {
         if (key.current == null) {
-            key.current = manager.mount(children, forId);
+            key.current = manager.mount(children, forId, absoluteFill);
         } else {
-            manager.update(key.current, children, forId);
+            manager.update(key.current, children, forId, absoluteFill);
         }
 
         return () => {
             // @ts-ignore
-            manager.unmount(key.current, forId);
+            manager.unmount(key.current, forId, absoluteFill);
         };
-    }, [manager, children, forId]);
+    }, [manager, children, forId, absoluteFill]);
 
     return null;
 }
 
 interface PortalProps {
     forId?: string;
+    absoluteFill?: boolean;
     children: React.ReactNode;
 }
 
@@ -44,7 +60,11 @@ export const Portal = (props: PortalProps) => (
         {(manager) => {
             if (manager != null) {
                 return (
-                    <PortalConsumer forId={props.forId} manager={manager}>
+                    <PortalConsumer
+                        forId={props.forId}
+                        manager={manager}
+                        absoluteFill={props.absoluteFill}
+                    >
                         {props.children}
                     </PortalConsumer>
                 );
@@ -54,20 +74,35 @@ export const Portal = (props: PortalProps) => (
     </PortalContext.Consumer>
 );
 
+type PortalItem = {
+    children: React.ReactNode;
+    absoluteFill?: boolean;
+};
+
 type PortalManagerState = {
-    [key: number]: React.ReactNode;
+    [key: number]: PortalItem | null;
+};
+
+type PortalManagerProps = {
+    id?: string;
+    renderOnlyLastPortal?: boolean;
+    children: React.ReactNode;
 };
 
 export class PortalManager extends React.PureComponent<
-    { id?: string; children: React.ReactNode },
+    PortalManagerProps,
     PortalManagerState
 > {
     state: PortalManagerState = {};
 
-    getKey(): number {
-        const maxMountedKey = Object.keys(this.state)
+    getMaxMountedKey() {
+        return Object.keys(this.state)
             .sort((a, b) => Number(b) - Number(a)) // reversed order by keys
-            .find(key => !!this.state[Number(key)]); // find the first (max) key
+            .find((key) => !!this.state[Number(key)]); // find the first (max) key
+    }
+
+    getKey(): number {
+        const maxMountedKey = this.getMaxMountedKey();
 
         if (maxMountedKey != null) {
             return Number(maxMountedKey + 1);
@@ -81,35 +116,50 @@ export class PortalManager extends React.PureComponent<
 
     counter: number = 0;
 
-    mount = (children: React.ReactNode, forId?: string) => {
+    mount = (
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => {
         if (
             this.props.id != null &&
             this.parentManager &&
             this.props.id !== forId
         ) {
-            return this.parentManager.mount(children, forId);
+            return this.parentManager.mount(children, forId, absoluteFill);
         }
         const key = this.getKey();
         this.setState((state) => ({
             ...state,
-            [key]: children,
+            [key]: {
+                children,
+                absoluteFill,
+            },
         }));
         return key;
     };
 
-    update = (key: number, children: React.ReactNode, forId?: string) => {
+    update = (
+        key: number,
+        children: React.ReactNode,
+        forId?: string,
+        absoluteFill?: boolean,
+    ) => {
         if (
             this.props.id != null &&
             this.parentManager &&
             this.props.id !== forId
         ) {
-            this.parentManager.update(key, children, forId);
+            this.parentManager.update(key, children, forId, absoluteFill);
             return;
         }
         this.setState((state) => {
             return {
                 ...state,
-                [key]: children,
+                [key]: {
+                    children,
+                    absoluteFill,
+                },
             };
         });
     };
@@ -135,6 +185,43 @@ export class PortalManager extends React.PureComponent<
         unmount: this.unmount,
     };
 
+    renderPortal(key: string | undefined) {
+        const portal = this.state[Number(key)];
+
+        if (portal == null) {
+            return null;
+        }
+
+        return (
+            <View
+                key={`portal_${key}`}
+                collapsable={false}
+                pointerEvents="box-none"
+                style={portal.absoluteFill ? StyleSheet.absoluteFill : null}
+            >
+                {portal.children}
+            </View>
+        );
+    }
+
+    renderLastPortal() {
+        const maxMountedKey = this.getMaxMountedKey();
+
+        if (maxMountedKey == null) {
+            return null;
+        }
+
+        return this.renderPortal(maxMountedKey);
+    }
+
+    renderAllPortals() {
+        return Object.keys(this.state)
+            .sort((a, b) => Number(a) - Number(b)) // ordered by keys
+            .map((key: string) => {
+                return this.renderPortal(key);
+            });
+    }
+
     render() {
         return (
             <PortalContext.Consumer>
@@ -143,24 +230,9 @@ export class PortalManager extends React.PureComponent<
                     return (
                         <PortalContext.Provider value={this.manager}>
                             {this.props.children}
-                            {Object.keys(this.state)
-                                .sort((a, b) => Number(a) - Number(b)) // ordered by keys
-                                .map((key: string) => {
-                                const children = this.state[Number(key)];
-                                if (children != null) {
-                                    return (
-                                        <View
-                                            key={`portal_${key}`}
-                                            collapsable={false}
-                                            pointerEvents="box-none"
-                                            style={StyleSheet.absoluteFill}
-                                        >
-                                            {children}
-                                        </View>
-                                    );
-                                }
-                                return null;
-                            })}
+                            {this.props.renderOnlyLastPortal
+                                ? this.renderLastPortal()
+                                : this.renderAllPortals()}
                         </PortalContext.Provider>
                     );
                 }}

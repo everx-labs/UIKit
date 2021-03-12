@@ -1,43 +1,74 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
-import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
-import type { OnHeightChange, Input, AmountInputMessage } from '../types';
+import {
+    BubbleSimplePlainText,
+    ChatMessageType,
+    MessageStatus,
+} from '@tonlabs/uikit.chats';
+import { Portal } from '@tonlabs/uikit.hydrogen';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import type { OnHeightChange, AmountInputMessage } from '../types';
 
 import { UIAmountInput } from '../UIAmountInput';
 
-export type AmountInputState = {
-    visible: boolean;
-};
+export function AmountInput({
+    onLayout,
+    onHeightChange,
+    ...message
+}: AmountInputMessage & {
+    onHeightChange: OnHeightChange;
+}) {
+    if (message.externalState != null) {
+        return (
+            <View onLayout={onLayout}>
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="amount-input-bubble-prompt"
+                    text={message.prompt}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                    lastFromChain
+                />
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="amount-input-bubble-amount"
+                    text={uiLocalized.amountToLocale(
+                        message.externalState.amount.dividedBy(
+                            10 ** message.decimals,
+                        ),
+                    )}
+                    status={MessageStatus.Sent}
+                    firstFromChain
+                    lastFromChain
+                />
+            </View>
+        );
+    }
 
-export function amountReducer() {
-    return {
-        visible: true,
-    };
-}
-
-export function getAmountInput(
-    message: AmountInputMessage,
-    state: AmountInputState,
-    _dispatch: (action: any) => void,
-    onHeightChange: OnHeightChange,
-): Input {
-    return {
-        messages: [
-            {
-                type: ChatMessageType.PlainText,
-                text: message.prompt,
-                key: 'amount-input-bubble-prompt',
-                status: MessageStatus.Received,
-            },
-        ],
-        input: state.visible && (
-            <UIAmountInput
-                decimals={message.decimals}
-                min={message.min}
-                max={message.max}
-                onSendAmount={message.onSendAmount}
-                onHeightChange={onHeightChange}
+    return (
+        <View onLayout={onLayout}>
+            <BubbleSimplePlainText
+                type={ChatMessageType.PlainText}
+                key="amount-input-bubble-prompt"
+                text={message.prompt}
+                status={MessageStatus.Received}
+                firstFromChain
+                lastFromChain
             />
-        ),
-    };
+            <Portal forId="browser">
+                <UIAmountInput
+                    decimals={message.decimals}
+                    min={message.min}
+                    max={message.max}
+                    onSendAmount={(amount) => {
+                        message.onSend({
+                            amount,
+                        });
+                    }}
+                    onHeightChange={onHeightChange}
+                />
+            </Portal>
+        </View>
+    );
 }

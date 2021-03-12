@@ -150,12 +150,10 @@ function UIFoldingNoticePortalContent({
 
 export function UIFoldingNotice(props: UIFondingNoticeProps) {
     return (
-        <Portal>
-            <UIFoldingNoticePortalContent
-                {...props}
-            />
+        <Portal absoluteFill>
+            <UIFoldingNoticePortalContent {...props} />
         </Portal>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

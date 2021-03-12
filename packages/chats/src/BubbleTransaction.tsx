@@ -14,7 +14,11 @@ import {
 
 import { MessageStatus, TransactionType } from './types';
 import type { TransactionMessage } from './types';
-import { useBubblePosition, BubblePosition } from './useBubblePosition';
+import {
+    useBubblePosition,
+    BubblePosition,
+    useBubbleContainerStyle,
+} from './useBubblePosition';
 import { BubbleTransactionComment } from './BubbleTransactionComment';
 
 const getValueForTestID = (message: TransactionMessage) =>
@@ -26,18 +30,6 @@ const getContainerTestID = (message: TransactionMessage) => {
     }
 
     return `transaction_message_${getValueForTestID(message)}`;
-};
-
-const getBubbleContainer = (position: BubblePosition) => {
-    if (position === BubblePosition.left) {
-        return styles.containerLeft;
-    }
-
-    if (position === BubblePosition.right) {
-        return styles.containerRight;
-    }
-
-    return null;
 };
 
 const getBubbleInner = (position: BubblePosition) => {
@@ -238,10 +230,11 @@ function BubbleTransactionMain(props: TransactionMessage) {
 
 export function BubbleTransaction(props: TransactionMessage) {
     const position = useBubblePosition(props.status);
+    const containerStyle = useBubbleContainerStyle(props);
     const actionString = getActionString(props);
 
     return (
-        <View style={getBubbleContainer(position)}>
+        <View style={containerStyle} onLayout={props.onLayout}>
             <UIScaleButton
                 onPress={props.onPress}
                 content={
@@ -272,16 +265,6 @@ export function BubbleTransaction(props: TransactionMessage) {
 }
 
 const styles = StyleSheet.create({
-    containerRight: {
-        paddingLeft: '20%',
-        alignSelf: 'flex-end',
-        justifyContent: 'flex-end',
-    },
-    containerLeft: {
-        paddingRight: '20%',
-        alignSelf: 'flex-start',
-        justifyContent: 'flex-start',
-    },
     innerLeft: {
         flexDirection: 'column',
         alignItems: 'flex-start',

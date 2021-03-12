@@ -1,21 +1,26 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
-import { UIQRCodeScannerSheet } from '@tonlabs/uikit.hydrogen';
+import { Portal, UIQRCodeScannerSheet } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { MessageStatus, ChatMessageType } from '@tonlabs/uikit.chats';
+import {
+    MessageStatus,
+    ChatMessageType,
+    BubbleSimplePlainText,
+    BubbleActionButton,
+} from '@tonlabs/uikit.chats';
 
-import { AddressInputMessage, InteractiveMessageType } from '../types';
-import type { OnHeightChange, Input } from '../types';
+import type { AddressInputMessage, OnHeightChange } from '../types';
 import { UIAddressInput } from '../UIAddressInput';
 import { UIAccountPicker } from '../UIAccountPicker';
 
-export type AddressInputState = {
+type AddressInputInternalState = {
     inputVisible: boolean;
     qrCodeVisible: boolean;
     addressSelectionVisible: boolean;
 };
 
-export type AddressInputAction = {
+type AddressInputAction = {
     type:
         | 'OPEN_ADDRESS_INPUT'
         | 'CLOSE_ADDRESS_INPUT'
@@ -25,49 +30,43 @@ export type AddressInputAction = {
         | 'CLOSE_ADDRESS_SELECTION';
 };
 
-export function addressInputReducer(
-    _state: AddressInputState,
+function addressInputReducer(
+    state: AddressInputInternalState,
     action: AddressInputAction,
 ) {
     if (action.type === 'OPEN_ADDRESS_INPUT') {
         return {
+            ...state,
             inputVisible: true,
-            qrCodeVisible: false,
-            addressSelectionVisible: false,
         };
     }
     if (action.type === 'CLOSE_ADDRESS_INPUT') {
         return {
+            ...state,
             inputVisible: false,
-            qrCodeVisible: false,
-            addressSelectionVisible: false,
         };
     }
     if (action.type === 'OPEN_QR_CODE') {
         return {
-            inputVisible: false,
+            ...state,
             qrCodeVisible: true,
-            addressSelectionVisible: false,
         };
     }
     if (action.type === 'CLOSE_QR_CODE') {
         return {
-            inputVisible: false,
+            ...state,
             qrCodeVisible: false,
-            addressSelectionVisible: false,
         };
     }
     if (action.type === 'OPEN_ADDRESS_SELECTION') {
         return {
-            inputVisible: false,
-            qrCodeVisible: false,
+            ...state,
             addressSelectionVisible: true,
         };
     }
     if (action.type === 'CLOSE_ADDRESS_SELECTION') {
         return {
-            inputVisible: false,
-            qrCodeVisible: false,
+            ...state,
             addressSelectionVisible: false,
         };
     }
@@ -78,76 +77,116 @@ export function addressInputReducer(
     };
 }
 
-export function getAddressInput(
-    message: AddressInputMessage,
-    state: AddressInputState,
-    dispatch: (action: AddressInputAction) => void,
-    onHeightChange: OnHeightChange,
-): Input {
-    return {
-        messages: [
-            {
-                type: ChatMessageType.ActionButton,
-                text: uiLocalized.Browser.AddressInputBubble.ScanQR,
-                key: 'address-input-bubble-action-qr',
-                status: MessageStatus.Received,
-                onPress: () => {
-                    dispatch({
-                        type: 'OPEN_QR_CODE',
+export function AddressInput({
+    onHeightChange,
+    onLayout,
+    ...message
+}: AddressInputMessage & {
+    onHeightChange: OnHeightChange;
+}) {
+    const [state, dispatch] = React.useReducer(addressInputReducer, {
+        inputVisible: false,
+        qrCodeVisible: false,
+        addressSelectionVisible: false,
+    });
+
+    if (message.externalState != null) {
+        return (
+            <View onLayout={onLayout}>
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="address-input-bubble-prompt"
+                    text={message.prompt}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                    lastFromChain
+                />
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="address-input-bubble-option-answer"
+                    text={message.externalState.chosenOption}
+                    status={MessageStatus.Sent}
+                    firstFromChain
+                />
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="address-input-bubble-address-answer"
+                    text={message.externalState.address}
+                    status={MessageStatus.Sent}
+                    lastFromChain
+                />
+            </View>
+        );
+    }
+
+    return (
+        <View onLayout={onLayout}>
+            <BubbleSimplePlainText
+                type={ChatMessageType.PlainText}
+                key="address-input-bubble-prompt"
+                text={message.prompt}
+                status={MessageStatus.Received}
+                firstFromChain
+                lastFromChain
+            />
+            <BubbleActionButton
+                key="address-input-bubble-action-account"
+                firstFromChain
+                type={ChatMessageType.ActionButton}
+                status={MessageStatus.Received}
+                text={uiLocalized.Browser.AddressInputBubble.MainAccount}
+                onPress={() => {
+                    message.onSelect({
+                        chosenOption:
+                            uiLocalized.Browser.AddressInputBubble.MainAccount,
+                        address: message.mainAddress,
                     });
-                },
-            },
-            {
-                type: ChatMessageType.ActionButton,
-                text: uiLocalized.Browser.AddressInputBubble.EnterManually,
-                key: 'address-input-bubble-action-enter',
-                status: MessageStatus.Received,
-                onPress: () => {
-                    dispatch({
-                        type: 'OPEN_ADDRESS_INPUT',
-                    });
-                },
-            },
-            {
-                type: ChatMessageType.ActionButton,
-                text: uiLocalized.Browser.AddressInputBubble.SelectAsset,
-                key: 'address-input-bubble-select-assets',
-                status: MessageStatus.Received,
-                onPress: () => {
+                }}
+            />
+            <BubbleActionButton
+                type={ChatMessageType.ActionButton}
+                key="address-input-bubble-select-assets"
+                status={MessageStatus.Received}
+                text={uiLocalized.Browser.AddressInputBubble.SelectAsset}
+                onPress={() => {
                     dispatch({
                         type: 'OPEN_ADDRESS_SELECTION',
                     });
-                },
-            },
-            {
-                type: ChatMessageType.ActionButton,
-                text: uiLocalized.Browser.AddressInputBubble.MainAccount,
-                key: 'address-input-bubble-action-account',
-                status: MessageStatus.Received,
-                onPress: () => {
-                    message.onSelect(
-                        uiLocalized.Browser.AddressInputBubble.MainAccount,
-                        message.mainAddress,
-                    );
-                },
-            },
-            {
-                type: ChatMessageType.PlainText,
-                text: message.prompt,
-                key: 'address-input-bubble-prompt',
-                status: MessageStatus.Received,
-            },
-        ],
-        input: (
-            <>
-                {state.inputVisible && (
+                }}
+            />
+            <BubbleActionButton
+                type={ChatMessageType.ActionButton}
+                key="address-input-bubble-action-enter"
+                status={MessageStatus.Received}
+                text={uiLocalized.Browser.AddressInputBubble.EnterManually}
+                onPress={() => {
+                    dispatch({
+                        type: 'OPEN_ADDRESS_INPUT',
+                    });
+                }}
+            />
+            <BubbleActionButton
+                type={ChatMessageType.ActionButton}
+                key="address-input-bubble-action-qr"
+                status={MessageStatus.Received}
+                text={uiLocalized.Browser.AddressInputBubble.ScanQR}
+                onPress={() => {
+                    dispatch({
+                        type: 'OPEN_QR_CODE',
+                    });
+                }}
+                lastFromChain
+            />
+            {state.inputVisible && (
+                <Portal forId="browser">
                     <UIAddressInput
-                        onSendText={(addr) => {
-                            message.onSelect(
-                                uiLocalized.Browser.AddressInputBubble
-                                    .EnterManually,
-                                addr,
-                            );
+                        onSendText={(address) => {
+                            message.onSelect({
+                                chosenOption:
+                                    uiLocalized.Browser.AddressInputBubble
+                                        .EnterManually,
+                                address,
+                            });
                             dispatch({
                                 type: 'CLOSE_ADDRESS_INPUT',
                             });
@@ -155,27 +194,17 @@ export function getAddressInput(
                         onHeightChange={onHeightChange}
                         validateAddress={message.input.validateAddress}
                     />
-                )}
-            </>
-        ),
-    };
-}
-
-export function getAddressInputShared(
-    message: AddressInputMessage | any,
-    state: AddressInputState,
-    dispatch: (action: AddressInputAction) => void,
-) {
-    return (
-        <React.Fragment key={InteractiveMessageType.AddressInput}>
+                </Portal>
+            )}
             <UIQRCodeScannerSheet
                 visible={state.qrCodeVisible}
                 onRead={async (e: any) => {
-                    const mes = message as AddressInputMessage;
-                    mes.onSelect(
-                        uiLocalized.Browser.AddressInputBubble.ScanQR,
-                        await mes.qrCode.parseData(e.data),
-                    );
+                    const address = await message.qrCode.parseData(e.data);
+                    message.onSelect({
+                        chosenOption:
+                            uiLocalized.Browser.AddressInputBubble.ScanQR,
+                        address,
+                    });
                     dispatch({
                         type: 'CLOSE_QR_CODE',
                     });
@@ -189,11 +218,11 @@ export function getAddressInputShared(
             <UIAccountPicker
                 visible={state.addressSelectionVisible}
                 onSelect={(address) => {
-                    const mes = message as AddressInputMessage;
-                    mes.onSelect(
-                        uiLocalized.Browser.AddressInputBubble.SelectAsset,
+                    message.onSelect({
+                        chosenOption:
+                            uiLocalized.Browser.AddressInputBubble.SelectAsset,
                         address,
-                    );
+                    });
                     dispatch({
                         type: 'CLOSE_ADDRESS_SELECTION',
                     });
@@ -203,8 +232,8 @@ export function getAddressInputShared(
                         type: 'CLOSE_ADDRESS_SELECTION',
                     });
                 }}
-                sections={(message as AddressInputMessage).select || []}
+                sections={message.select || []}
             />
-        </React.Fragment>
+        </View>
     );
 }

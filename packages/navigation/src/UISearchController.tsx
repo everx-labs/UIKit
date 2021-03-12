@@ -220,7 +220,7 @@ export function UISearchController({
     }
 
     return (
-        <Portal forId={forId}>
+        <Portal forId={forId} absoluteFill>
             <UISearchControllerContent
                 {...props}
                 onClosed={() => setIsVisible(false)}
