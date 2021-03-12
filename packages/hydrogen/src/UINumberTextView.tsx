@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import { Platform, TextInput } from 'react-native';
 
 import { UITextView, UITextViewProps } from './UITextView';
 
@@ -53,52 +53,25 @@ const group = (
     return groupedPart;
 };
 
-const compareTexts = (
-    currentText: string,
-    lastText: string,
-    selectionStart: number,
-) => {
-    if (currentText.length > lastText.length) {
-        for (let i = selectionStart; i < currentText.length; i += 1) {
-            if (currentText[i] !== lastText[i]) {
-                return {
-                    type: 'added',
-                    symbol: currentText[i],
-                    position: i,
-                };
-            }
-        }
-    } else {
-        for (let i = selectionStart - 1; i < currentText.length; i += 1) {
-            if (currentText[i] !== lastText[i]) {
-                return {
-                    type: 'deleted',
-                    symbol: lastText[i],
-                    position: i,
-                };
-            }
-        }
+const moveWebCaret = (input: HTMLInputElement, position: number) => {
+    console.log(position);
+    if (input.setSelectionRange) {
+        input.focus();
+        input.setSelectionRange(position, position);
+
+        return;
     }
-    return {
-        type: 'none',
-    };
+    if ((input as any).createTextRange) {
+        const range = (input as any).createTextRange();
+        range.collapse(true);
+        range.moveEnd(position);
+        range.moveStart(position);
+        range.select();
+    }
 };
 
 export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
     const selectionStart = React.useRef(0);
-    const selectionEnd = React.useRef(0);
-
-    const onSelectionChange = React.useCallback(
-        ({
-            nativeEvent: {
-                selection: { start, end },
-            },
-        }) => {
-            selectionStart.current = start;
-            selectionEnd.current = end;
-        },
-        [],
-    );
 
     const delimeter = '.'; // TODO
     const integerGroupSize = 3; // TODO
@@ -106,37 +79,44 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
     const fractionalGroupSize = 3; // TODO
     const fractionalSeparator = ' '; // TODO
 
+    const lastNormalizedText = React.useRef('');
     const lastText = React.useRef('');
+
+    const onSelectionChange = React.useCallback(
+        ({
+            nativeEvent: {
+                selection: { start },
+            },
+        }) => {
+            selectionStart.current = start;
+
+            for (let i = 0; i < start; i += 1) {
+                if (
+                    lastText.current[i] === integerSeparator ||
+                    lastText.current[i] === fractionalSeparator
+                ) {
+                    selectionStart.current -= 1;
+                }
+            }
+        },
+        [],
+    );
 
     const onChangeText = React.useCallback(
         (rawNumber: string) => {
-            const compared = compareTexts(
-                rawNumber,
-                lastText.current,
-                selectionStart.current,
-            );
-
-            if (compared.type === 'deleted') {
-                if (
-                    compared.symbol === integerSeparator ||
-                    compared.symbol === fractionalSeparator
-                ) {
-                    // eslint-disable-next-line no-param-reassign
-                    rawNumber =
-                        rawNumber.slice(0, compared.position - 1) +
-                        rawNumber.slice(compared.position);
-                }
-            }
-
             const [integerPart, fractionalPart] = rawNumber.split(delimeter);
+            let normalizedText = '';
             const result: string[] = [];
-
             const notNumbersRegexp = /[^0-9]/g;
 
+            // Normalize and group integer part
             const normalizedIntegerPart = integerPart.replace(
                 notNumbersRegexp,
                 '',
             );
+
+            normalizedText += normalizedIntegerPart;
+
             const groupedIntegerPart = groupReversed(
                 normalizedIntegerPart,
                 integerGroupSize,
@@ -145,11 +125,16 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
 
             result.push(groupedIntegerPart);
 
+            // Normalize and group fractional part
             if (fractionalPart != null) {
                 const normalizedFractionalPart = fractionalPart.replace(
                     notNumbersRegexp,
                     '',
                 );
+
+                normalizedText += delimeter;
+                normalizedText += normalizedFractionalPart;
+
                 const groupedFractionalPart = group(
                     normalizedFractionalPart,
                     fractionalGroupSize,
@@ -161,12 +146,51 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null) {
 
             const formattedNumber = result.join(delimeter);
 
-            if (ref && 'current' in ref) {
+            // Adjust carret (calculation)
+            let carretPosition = selectionStart.current;
+
+            if (normalizedText.length !== lastNormalizedText.current.length) {
+                carretPosition +=
+                    normalizedText.length - lastNormalizedText.current.length;
+
+                for (let i = 0; i < carretPosition; i += 1) {
+                    if (
+                        formattedNumber[i] === integerSeparator ||
+                        formattedNumber[i] === fractionalSeparator
+                    ) {
+                        carretPosition += 1;
+                    }
+                }
+
+                selectionStart.current = carretPosition;
+            }
+
+            // Set it to text input
+            // To avoid re-rendering
+            if (ref && 'current' in ref && ref.current) {
                 ref.current?.setNativeProps({
                     text: formattedNumber,
+                    ...Platform.select({
+                        default: {
+                            selection: {
+                                start: carretPosition,
+                                end: carretPosition,
+                            },
+                        },
+                        web: null,
+                    }),
                 });
+                if (Platform.OS === 'web') {
+                    moveWebCaret(
+                        // @ts-ignore
+                        ref.current as HTMLInputElement,
+                        carretPosition,
+                    );
+                }
             }
+
             lastText.current = formattedNumber;
+            lastNormalizedText.current = normalizedText;
         },
         [ref],
     );
@@ -187,6 +211,7 @@ export function UINumberTextView(props: UITextViewProps) {
     return (
         <UITextView
             ref={textViewRef}
+            keyboardType="decimal-pad"
             {...props}
             onSelectionChange={onSelectionChange}
             onChangeText={onChangeText}
