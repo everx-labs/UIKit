@@ -98,17 +98,8 @@ export function useNumberFormatting(
             },
         }) => {
             selectionStart.current = start;
-
-            for (let i = 0; i < start; i += 1) {
-                if (
-                    lastText.current[i] === integerSeparator ||
-                    lastText.current[i] === fractionalSeparator
-                ) {
-                    selectionStart.current -= 1;
-                }
-            }
         },
-        [fractionalSeparator, integerSeparator],
+        [],
     );
 
     const onChangeText = React.useCallback(
@@ -136,13 +127,16 @@ export function useNumberFormatting(
 
             // Normalize and group fractional part
             if (fractionalPart != null) {
-                const normalizedFractionalPart = fractionalPart.replace(
+                let normalizedFractionalPart = fractionalPart.replace(
                     notNumbersRegexp,
                     '',
                 );
 
                 if (decimals) {
-                    normalizedFractionalPart.slice(0, decimals);
+                    normalizedFractionalPart = normalizedFractionalPart.slice(
+                        0,
+                        decimals,
+                    );
                 }
 
                 normalizedText += delimeter;
@@ -163,19 +157,30 @@ export function useNumberFormatting(
             let carretPosition = selectionStart.current;
 
             if (normalizedText.length !== lastNormalizedText.current.length) {
-                carretPosition +=
-                    normalizedText.length - lastNormalizedText.current.length;
+                let carretNormalizedPosition = carretPosition;
 
                 for (let i = 0; i < carretPosition; i += 1) {
+                    if (
+                        lastText.current[i] === integerSeparator ||
+                        lastText.current[i] === fractionalSeparator
+                    ) {
+                        carretNormalizedPosition -= 1;
+                    }
+                }
+
+                carretNormalizedPosition +=
+                    normalizedText.length - lastNormalizedText.current.length;
+
+                for (let i = 0; i < carretNormalizedPosition; i += 1) {
                     if (
                         formattedNumber[i] === integerSeparator ||
                         formattedNumber[i] === fractionalSeparator
                     ) {
-                        carretPosition += 1;
+                        carretNormalizedPosition += 1;
                     }
                 }
 
-                selectionStart.current = carretPosition;
+                carretPosition = carretNormalizedPosition;
             }
 
             // Set it to text input
@@ -202,6 +207,7 @@ export function useNumberFormatting(
                 }
             }
 
+            selectionStart.current = carretPosition;
             lastText.current = formattedNumber;
             lastNormalizedText.current = normalizedText;
 

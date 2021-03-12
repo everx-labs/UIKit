@@ -84,7 +84,8 @@ const getBigNumberFromRawString = (value: string) => {
         // eslint-disable-next-line no-param-reassign
         value = `0${value}`;
     }
-    return new BigNumber(value.replace(',', '.'));
+
+    return new BigNumber(value.replace(/[^0-9.]/g, ''));
 };
 
 type UIAmountInputInternalProps = {
