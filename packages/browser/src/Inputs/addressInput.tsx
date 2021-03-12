@@ -119,6 +119,10 @@ export function AddressInput({
         );
     }
 
+    const mainAccountTitle =
+        message.mainAddressTitle ||
+        uiLocalized.Browser.AddressInputBubble.MainAccount;
+
     return (
         <View onLayout={onLayout}>
             <BubbleSimplePlainText
@@ -134,11 +138,10 @@ export function AddressInput({
                 firstFromChain
                 type={ChatMessageType.ActionButton}
                 status={MessageStatus.Received}
-                text={uiLocalized.Browser.AddressInputBubble.MainAccount}
+                text={mainAccountTitle}
                 onPress={() => {
                     message.onSelect({
-                        chosenOption:
-                            uiLocalized.Browser.AddressInputBubble.MainAccount,
+                        chosenOption: mainAccountTitle,
                         address: message.mainAddress,
                     });
                 }}

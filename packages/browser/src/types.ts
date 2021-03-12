@@ -105,6 +105,7 @@ export type AddressInputMessage = InteractiveMessage<
         prompt: string;
         onSelect: (state: AddressInputExternalState) => void;
         mainAddress: string;
+        mainAddressTitle?: string;
         input: {
             validateAddress: ValidateAddress;
         };
@@ -162,3 +163,9 @@ export type BrowserMessage =
     | MenuMessage
     | ConfirmMessage
     | AmountInputMessage;
+
+type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
+
+export type ExternalState = WithExternalStateHelper<
+    BrowserMessage
+>['externalState'];

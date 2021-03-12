@@ -162,7 +162,7 @@ export function UIAddressInputInternal({
             ) : null}
             <UITextView
                 ref={textInputRef}
-                testID="browser_input"
+                testID="browser_address_input"
                 autoCapitalize="sentences"
                 autoCorrect={false}
                 autoFocus

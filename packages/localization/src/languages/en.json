@@ -60,7 +60,7 @@
         },
         "AddressInputBubble": {
             "EnterManually": "Enter manually",
-            "MainAccount": "Main account",
+            "MainAccount": "My account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
         }

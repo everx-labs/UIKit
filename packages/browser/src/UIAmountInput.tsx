@@ -10,6 +10,8 @@ import {
     ColorVariants,
     UILabel,
     UILabelRoles,
+    useNumberFormatting,
+    useAutogrowTextView,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { OnHeightChange, OnSendAmount } from './types';
@@ -37,13 +39,13 @@ function useValidation(
                 ? rawAmount.dividedBy(decimalDivider)
                 : getBigNumberFromRawString(rawAmount);
 
-            if (max != null && amount.isGreaterThanOrEqualTo(max)) {
+            if (max != null && amount.isGreaterThan(max)) {
                 setValidationStatus(ValidationStatus.Bigger);
 
                 return false;
             }
 
-            if (min != null && amount.isLessThanOrEqualTo(min)) {
+            if (min != null && amount.isLessThan(min)) {
                 setValidationStatus(ValidationStatus.Less);
 
                 return false;
@@ -79,7 +81,12 @@ function useValidation(
 }
 
 const getBigNumberFromRawString = (value: string) => {
-    return new BigNumber(value.replace(',', '.'));
+    if (value[0] === ',' || value[0] === '.') {
+        // eslint-disable-next-line no-param-reassign
+        value = `0${value}`;
+    }
+
+    return new BigNumber(value.replace(/[^0-9.]/g, ''));
 };
 
 type UIAmountInputInternalProps = {
@@ -103,31 +110,21 @@ function UIAmountInputInternal({
     onHeightChange,
     onSendAmount: onSendAmountProp,
 }: UIAmountInputInternalProps) {
-    const onContentSizeChange = React.useCallback(
-        (event: any) => {
-            if (event && event.nativeEvent) {
-                const { contentSize } = event.nativeEvent;
-                const height = contentSize?.height || 0;
-
-                if (height <= 0) {
-                    return;
-                }
-
-                if (onHeightChange) {
-                    onHeightChange(height);
-                }
-            }
-        },
-        [onHeightChange],
-    );
+    const {
+        onChange,
+        onContentSizeChange,
+        numberOfLines,
+        resetInputHeight,
+        inputStyle,
+    } = useAutogrowTextView(textInputRef, onHeightChange);
 
     const {
         inputHasValue,
         inputValue,
         clear: clearBase,
         onChangeText: onChangeTextBase,
-        onKeyPress,
-    } = useUITextViewValue(textInputRef);
+        onKeyPress: onKeyPressBase,
+    } = useUITextViewValue(textInputRef, true);
 
     const {
         decimalDivider,
@@ -154,40 +151,24 @@ function UIAmountInputInternal({
         checkValidation,
     } = useValidation(decimalDivider, min, max);
 
+    const {
+        onChangeText: onChangeTextFormatting,
+        onSelectionChange,
+    } = useNumberFormatting(textInputRef, decimals);
+
     const onChangeText = React.useCallback(
         (text: string) => {
-            const hasNotValidCharsRegExp = /[^0-9,.]/g;
-
-            const validatedText = text
-                .replace(hasNotValidCharsRegExp, '')
-                .split(/[,.]/)
-                .slice(0, 2)
-                .map((part, index) => {
-                    if (index === 1) {
-                        return part.slice(0, decimals);
-                    }
-                    return part;
-                })
-                .join(uiLocalized.localeInfo.decimal);
-
-            if (text !== validatedText) {
-                textInputRef.current?.setNativeProps({
-                    text: validatedText,
-                });
-            }
-
-            onChangeTextBase(validatedText);
+            onChangeTextBase(onChangeTextFormatting(text));
 
             if (validationStatus !== ValidationStatus.None) {
                 setValidationStatus(ValidationStatus.None);
             }
         },
         [
-            textInputRef,
             onChangeTextBase,
-            decimals,
-            validationStatus,
+            onChangeTextFormatting,
             setValidationStatus,
+            validationStatus,
         ],
     );
 
@@ -248,11 +229,23 @@ function UIAmountInputInternal({
         textInputRef.current?.focus();
 
         setValidationStatus(ValidationStatus.None);
-    }, [clearBase, setValidationStatus, textInputRef]);
+        resetInputHeight();
+    }, [clearBase, setValidationStatus, textInputRef, resetInputHeight]);
+
+    const onKeyPress = React.useCallback(
+        (e: any) => {
+            const wasClearedWithEnter = onKeyPressBase(e);
+
+            if (wasClearedWithEnter) {
+                onActionPress();
+            }
+        },
+        [onActionPress, onKeyPressBase],
+    );
 
     return (
         <ChatInputContainer
-            numberOfLines={1}
+            numberOfLines={numberOfLines}
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}
@@ -274,7 +267,7 @@ function UIAmountInputInternal({
             ) : null}
             <UITextView
                 ref={textInputRef}
-                testID="browser_input"
+                testID="browser_amount_input"
                 autoCapitalize="sentences"
                 autoCorrect={false}
                 autoFocus
@@ -283,11 +276,14 @@ function UIAmountInputInternal({
                 editable
                 placeholder={placeholder}
                 placeholderTextColor={placeholderColor}
+                onSelectionChange={onSelectionChange}
                 onContentSizeChange={onContentSizeChange}
+                onChange={onChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                style={inputStyle}
             />
         </ChatInputContainer>
     );
