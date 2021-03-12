@@ -299,7 +299,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Только администраторы могут добавлять и удалять участников, редактировать название и фото группы.",
     "OpenSettings": "Открыть настройки",
     "operationTime": "Время операции",
-    "orDelimeter": "или",
+    "orDelimeter": " или ",
     "OutOf": "из",
     "Passport": "Паспорт",
     "PassportFetchingStatus": "Получение статуса...",
