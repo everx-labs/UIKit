@@ -30,6 +30,14 @@ const groupReversed = (
     return groupedPart;
 };
 
+/**
+ * Anton (@sertony) also suggested cool oneliner for this:
+ *
+ * rawString.match(new RegExp(`\.{1,${groupSize}}`, 'gi')).join(groupSeparator);
+ *
+ * But it's turned out that it's 70% slower
+ * https://jsbench.me/dckm6ihdfj/1
+ */
 const group = (
     rawString: string,
     groupSize: number,
@@ -159,6 +167,8 @@ export function useNumberFormatting(
             if (normalizedText.length !== lastNormalizedText.current.length) {
                 let carretNormalizedPosition = carretPosition;
 
+                // At first we should get a carret position
+                // in normalized value (ie without separators)
                 for (let i = 0; i < carretPosition; i += 1) {
                     if (
                         lastText.current[i] === integerSeparator ||
@@ -168,9 +178,18 @@ export function useNumberFormatting(
                     }
                 }
 
+                // We calculated normalized position exactly for this
+                // as we could easily understand how many symbols
+                // were put, but we can do it only with normalized values
+                // as it hard to count proper value with any amount of separators in it
                 carretNormalizedPosition +=
                     normalizedText.length - lastNormalizedText.current.length;
 
+                // Afrer we got carret position in normalized value
+                // we can get through formatted value from left position
+                // and count every separator that we find on our way to the
+                // carret position, that's how we shift carret from normalized
+                // to position in formatted string
                 for (let i = 0; i < carretNormalizedPosition; i += 1) {
                     if (
                         formattedNumber[i] === integerSeparator ||
@@ -197,6 +216,11 @@ export function useNumberFormatting(
                     );
                 } else {
                     ref.current?.setNativeProps({
+                        // (@savelichalex) I had a crash on Android
+                        // sth like "setSpan(-1..-1) starts before"
+                        // that minus numbers got me suspicious
+                        // that's why I introduced such a check
+                        // and it seems to work
                         ...(carretPosition >= 0 &&
                         carretPosition <= formattedNumber.length
                             ? {
