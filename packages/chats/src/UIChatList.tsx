@@ -83,6 +83,7 @@ const renderBubble = (
 };
 
 type UIChatListProps = {
+    nativeID: string;
     messages: ChatMessage[];
     canLoadMore: boolean;
     isLoadingMore: boolean;
@@ -94,12 +95,12 @@ type UIChatListProps = {
 export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
     function UIChatListContainer(
         {
+            nativeID,
             messages,
             canLoadMore,
             isLoadingMore,
             onLoadEarlierMessages,
             isCustomKeyboardVisible,
-            bottomInset,
         }: UIChatListProps,
         ref,
     ) {
@@ -124,12 +125,11 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
         return (
             <UICommonChatList
                 forwardRef={ref}
-                nativeID="chatSectionList"
+                nativeID={nativeID}
                 renderBubble={renderBubble}
                 getItemLayoutFabric={sectionListGetItemLayout}
                 isCustomKeyboardVisible={isCustomKeyboardVisible}
                 canLoadMore={canLoadMore}
-                bottomInset={bottomInset}
             >
                 {(chatListProps) => (
                     <SectionList

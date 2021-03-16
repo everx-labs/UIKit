@@ -11,7 +11,6 @@ import {
 
 import { ChatInput } from './ChatInput';
 import type {
-    OnHeightChange,
     OnSendText,
     OnSendMedia,
     OnSendDocument,
@@ -94,14 +93,15 @@ export type UIChatInputProps = {
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
     onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
-    onHeightChange?: OnHeightChange;
 
     customKeyboard?: UICustomKeyboardItem;
+
+    managedScrollViewNativeID?: string;
 };
 
 export function UIChatInput(props: UIChatInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
-    const { onHeightChange } = props;
+    const { managedScrollViewNativeID } = props;
     const {
         customKeyboardVisible,
         toggleKeyboard,
@@ -112,16 +112,6 @@ export function UIChatInput(props: UIChatInputProps) {
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     useBackHandler(textInputRef);
-
-    React.useEffect(
-        () => () => {
-            if (onHeightChange) {
-                // If inputs is unmounted need to reset insets for list
-                onHeightChange(0);
-            }
-        },
-        [onHeightChange],
-    );
 
     const input = (
         <>
@@ -143,9 +133,6 @@ export function UIChatInput(props: UIChatInputProps) {
                 onCustomKeyboardPress={toggleKeyboard}
                 customKeyboardButton={props.customKeyboard?.button}
                 onSendText={props.onSendText}
-                onHeightChange={
-                    Platform.OS === 'web' ? onHeightChange : undefined
-                }
                 onFocus={onFocus}
                 onBlur={onBlur}
             />
@@ -171,7 +158,7 @@ export function UIChatInput(props: UIChatInputProps) {
                 props.customKeyboard?.onItemSelected(_id, stk);
             }}
             onKeyboardResigned={onKeyboardResigned}
-            onHeightChange={props.onHeightChange}
+            managedScrollViewNativeID={managedScrollViewNativeID}
         />
     );
 }

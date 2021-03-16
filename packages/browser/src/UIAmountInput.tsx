@@ -334,6 +334,7 @@ export function UIAmountInput(props: UIAmountInputProps) {
             kbInputRef={textInputRef}
             onHeightChange={props.onHeightChange}
             customKeyboardVisible={false}
+            managedScrollViewNativeID="browserList"
         />
     );
 }

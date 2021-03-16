@@ -17,5 +17,6 @@
 @interface UIObservingInputAccessoryView : UIView
 
 @property (nonatomic, weak) id<UIObservingInputAccessoryViewDelegate> delegate;
+@property (nonatomic, readonly) CGFloat keyboardHeight;
 
 @end

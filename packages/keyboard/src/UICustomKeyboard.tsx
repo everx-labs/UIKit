@@ -1,19 +1,18 @@
 import * as React from 'react';
-import { Keyboard, Platform, View } from 'react-native';
-import type { EmitterSubscription } from 'react-native';
+import { Platform, View } from 'react-native';
 import {
-    KeyboardAccessoryView,
     KeyboardRegistry,
     KeyboardUtils,
+    KeyboardAccessoryViewProps,
 } from 'react-native-ui-lib/keyboard';
-import type { KeyboardAccessoryViewProps } from 'react-native-ui-lib/keyboard';
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { CustomKeyboardWrapper } from './CustomKeyboardWrapper';
-import type { OnHeightChange } from './types';
+import { UIInputAccessoryView } from './UIInputAccessoryView';
 
 const registerCustomKeyboard = (
     kbID: string,
@@ -60,18 +59,21 @@ export const UICustomKeyboardUtils = {
     dismiss,
 };
 
-let trackingViewIsReady = false; // global flag to learn if KeyboardTrackingView usable
-
 type Props = KeyboardAccessoryViewProps & {
-    onHeightChange?: OnHeightChange;
+    // onHeightChange?: OnHeightChange;
     customKeyboardComponent?: React.ComponentType<any>;
     customKeyboardVisible: boolean;
     kbID?: string;
+
+    managedScrollViewNativeID?: string;
 };
 
 export function UICustomKeyboard(props: Props) {
-    const CustomKeyboardComponent = props.customKeyboardComponent;
+    const theme = useTheme();
+    const insets = useSafeAreaInsets();
+
     if (Platform.OS === 'web') {
+        const CustomKeyboardComponent = props.customKeyboardComponent;
         return (
             <>
                 {props.renderContent()}
@@ -91,154 +93,22 @@ export function UICustomKeyboard(props: Props) {
         );
     }
 
-    const theme = useTheme();
-    const insets = useSafeAreaInsets();
-
-    // Keyboard
-    const inputHeight = React.useRef<number>(0);
-    const keyboardHeight = React.useRef<number>(0);
-
-    const keyboardWillShowListener = React.useRef<EmitterSubscription>();
-    const keyboardWillHideListener = React.useRef<EmitterSubscription>();
-
-    const updateContentBottomInset = async () => {
-        const bottomInset = keyboardHeight.current + inputHeight.current;
-
-        if (props.onHeightChange) {
-            props.onHeightChange(bottomInset);
-        }
-    };
-
-    const onKeyboardShow = async (e: any) => {
-        const { height } = e.endCoordinates;
-        const kHeight = height - insets.bottom - inputHeight.current;
-        // N.B. `<` sign is important! (do not set `!==`)
-        if (keyboardHeight.current < kHeight) {
-            keyboardHeight.current = kHeight;
-
-            updateContentBottomInset();
-        }
-    };
-
-    const onKeyboardHide = async () => {
-        if (keyboardHeight.current !== 0) {
-            keyboardHeight.current = 0;
-
-            updateContentBottomInset();
-        }
-    };
-
-    const initKeyboardListeners = () => {
-        if (Platform.OS === 'web') {
-            return;
-        }
-
-        keyboardWillShowListener.current = Keyboard.addListener(
-            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-            onKeyboardShow,
-        );
-
-        keyboardWillHideListener.current = Keyboard.addListener(
-            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-            onKeyboardHide,
-        );
-    };
-
-    const deinitKeyboardListeners = () => {
-        if (Platform.OS === 'web') {
-            return;
-        }
-
-        if (keyboardWillHideListener.current) {
-            keyboardWillHideListener.current.remove();
-        }
-
-        if (keyboardWillShowListener.current) {
-            keyboardWillShowListener.current.remove();
-        }
-    };
-
-    // Tracking View Ready Hack
-    const [trackingViewReady, setTrackingViewReady] = React.useState<boolean>(
-        trackingViewIsReady,
-    );
-
-    const makeKeyboardTrackingReady = () => {
-        if (Platform.OS !== 'ios' || trackingViewIsReady) {
-            return; // no need
-        }
-
-        trackingViewIsReady = true;
-
-        // We are to re-render the keyboard tracking view once mounted.
-        // This looks like a hack to make it work, and it actually is! :)
-        setTimeout(() => {
-            // Now re-render
-            setTrackingViewReady(trackingViewIsReady);
-        }, 1000); // wait for a sec
-    };
-
-    // Life-cycle
-    React.useEffect(() => {
-        // Did mount
-        initKeyboardListeners();
-        // KeyboardTrackingView might be not ready. Need to re-render if so.
-        makeKeyboardTrackingReady();
-        // Will unmount
-        return deinitKeyboardListeners;
-    }, []);
-
-    // Events
-    const onLayout = (e: any) => {
-        const { nativeEvent } = e;
-        if (nativeEvent) {
-            const { layout } = nativeEvent;
-            if (inputHeight.current !== layout.height) {
-                inputHeight.current = layout.height;
-
-                updateContentBottomInset();
-            }
-        }
-    };
-
     return (
-        <KeyboardAccessoryView
-            key={`UICustomKeyboard:${trackingViewReady.toString()}`}
-            useSafeArea={false}
-            addBottomView={false}
-            manageScrollView={false}
-            allowHitsOutsideBounds
-            revealKeyboardInteractive
-            {...props}
-            kbComponent={props.customKeyboardVisible ? props.kbID : undefined}
-            renderContent={() => {
-                if (Platform.OS !== 'ios') {
-                    return props.renderContent();
-                }
-                return (
-                    <View
-                        style={{
-                            position: 'relative',
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                        }}
-                        onLayout={onLayout}
-                    >
-                        {props.renderContent()}
-                        <View // A dummy view to make SafeArea translates look nicer
-                            style={[
-                                { height: insets?.bottom ?? 0, top: '100%' },
-                                UIStyle.container.absoluteFillWidth(),
-                                UIStyle.color.getBackgroundColorStyle(
-                                    theme[ColorVariants.BackgroundPrimary],
-                                ),
-                            ]}
-                        />
-                    </View>
-                );
-            }}
-            onKeyboardResigned={props.onKeyboardResigned}
-        />
+        <UIInputAccessoryView
+            managedScrollViewNativeID={props.managedScrollViewNativeID}
+            // kbComponent={props.customKeyboardVisible ? props.kbID : undefined}
+            // onKeyboardResigned={props.onKeyboardResigned}
+        >
+            {props.renderContent()}
+            <View // A dummy view to make SafeArea translates look nicer
+                style={[
+                    { height: insets?.bottom ?? 0, top: '100%' },
+                    UIStyle.container.absoluteFillWidth(),
+                    UIStyle.color.getBackgroundColorStyle(
+                        theme[ColorVariants.BackgroundPrimary],
+                    ),
+                ]}
+            />
+        </UIInputAccessoryView>
     );
 }

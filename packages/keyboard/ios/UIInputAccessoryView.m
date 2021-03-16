@@ -33,7 +33,6 @@
         inputAccessoryView.delegate = self;
         
         _shouldBecomeFirstResponder = YES;
-        
         _bridge = bridge;
     }
     return self;
@@ -46,20 +45,47 @@
 - (void)reactSetFrame:(CGRect)frame {
     [_inputAccessoryView setFrame:frame];
     
-    self.frame = CGRectMake(
-                            0,
-                            [[UIScreen mainScreen] bounds].size.height - frame.size.height,
+    /**
+     * https://developer.apple.com/documentation/uikit/uiview/1622621-frame
+     * It contains following warning:
+     *  If the transform property is not the identity transform,
+     *  the value of this property is undefined and therefore should be ignored.
+     *
+     * Because of that before changing a frame we set it to identity
+     * as it still gonna be applied to correct one on `layoutSubview`
+     */
+    self.transform = CGAffineTransformIdentity;
+    
+    CGFloat parentHeight = self.superview.frame.size.height;
+    
+    if (parentHeight <= 0) {
+        parentHeight = [[UIScreen mainScreen] bounds].size.height;
+    }
+    
+    self.frame = CGRectMake(0,
+                            parentHeight - frame.size.height,
                             frame.size.width,
-                            frame.size.height
-                            );
+                            frame.size.height);
     
     if (_shouldBecomeFirstResponder) {
         _shouldBecomeFirstResponder = NO;
         [self becomeFirstResponder];
     }
-    
-    if (self.managedScrollViewNativeID != nil) {
-        [self manageScrollViewInsets:0];
+}
+
+/**
+ * The method handle two cases:
+ *  1. The one described above, to apply transform after frame was changed
+ *  2. To manage insets of scroll view (if it's needed) on mount
+ */
+- (void)layoutSubviews {
+    [self onInputAccessoryViewChangeKeyboardHeight:((UIObservingInputAccessoryView *)_inputAccessoryView).keyboardHeight];
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    // Current view was unmounted
+    if (newSuperview == nil) {
+        [self resetScrollViewInsets];
     }
 }
 
@@ -67,27 +93,32 @@
 
 - (void)onInputAccessoryViewChangeKeyboardHeight:(CGFloat)keyboardHeight {
     CGFloat safeAreaBottom = [self getSafeAreaBottom];
-    
     CGFloat accessoryTranslation = MIN(-safeAreaBottom, -keyboardHeight);
     
-    self.transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);
     
-    if (self.managedScrollViewNativeID != nil) {
-        [self manageScrollViewInsets:(0 - accessoryTranslation)];
+    if (!CGAffineTransformEqualToTransform(transform, self.transform)) {
+        self.transform = transform;
     }
+    
+    [self manageScrollViewInsets:(0 - accessoryTranslation)];
 }
 
 //MARK:- Managing insets for scroll view
 
 - (void)manageScrollViewInsets:(CGFloat)accessoryTranslation {
+    if (self.managedScrollViewNativeID == nil) {
+        return;
+    }
+    
     RCTScrollView *scrollView = [self getScrollViewWithID:self.managedScrollViewNativeID];
     
     if (scrollView == nil) {
         return;
     }
     
-    CGFloat safeAreaBottom = [self getSafeAreaBottom];
-    CGFloat safeAreaTop = [self getSafeAreaTop];
+    CGFloat safeAreaBottom = [self getSafeAreaBottom:scrollView];
+    CGFloat safeAreaTop = [self getSafeAreaTop:scrollView];
     
     UIEdgeInsets insets = UIEdgeInsetsZero;
     UIEdgeInsets indicatorInsets = UIEdgeInsetsZero;
@@ -101,28 +132,38 @@
     CGFloat insetBottom = accessoryTranslation + self.frame.size.height;
     
     if (scrollView.inverted) {
-        CGFloat indicatorInsetBottom = accessoryTranslation + self.frame.size.height - safeAreaTop;
+        CGFloat indicatorInsetBottom = insetBottom;
         
-        insets = UIEdgeInsetsMake(
-                                  insetBottom,
+        if (@available(iOS 13.0, *)) {
+            // nothing
+        } else {
+            indicatorInsetBottom -= safeAreaTop;
+        }
+        
+        insets = UIEdgeInsetsMake(insetBottom,
                                   scrollView.scrollView.contentInset.left,
-                                  0,
+                                  safeAreaTop,
                                   scrollView.scrollView.contentInset.right);
         indicatorInsets = UIEdgeInsetsMake(
                                   indicatorInsetBottom,
                                   scrollView.scrollView.contentInset.left,
-                                  0,
+                                  safeAreaTop,
                                   scrollView.scrollView.contentInset.right);
     } else {
-        CGFloat indicatorInsetBottom = accessoryTranslation + self.frame.size.height - safeAreaBottom;
+        CGFloat indicatorInsetBottom = insetBottom;
         
-        insets = UIEdgeInsetsMake(
-                                  0,
+        if (@available(iOS 13.0, *)) {
+            // nothing
+        } else {
+            indicatorInsetBottom -= safeAreaBottom;
+        }
+        
+        insets = UIEdgeInsetsMake(safeAreaTop,
                                   scrollView.scrollView.contentInset.left,
                                   insetBottom,
                                   scrollView.scrollView.contentInset.right);
         indicatorInsets = UIEdgeInsetsMake(
-                                  0,
+                                  safeAreaTop,
                                   scrollView.scrollView.contentInset.left,
                                   indicatorInsetBottom,
                                   scrollView.scrollView.contentInset.right);
@@ -137,6 +178,9 @@
         scrollView.automaticallyAdjustContentInsets = NO;
         scrollView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
+    if (@available(iOS 13.0, *)) {
+        scrollView.scrollView.automaticallyAdjustsScrollIndicatorInsets = NO;
+    }
     
     if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.contentInset, insets)) {
         [scrollView.scrollView setContentInset:insets];
@@ -144,6 +188,43 @@
     
     if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.scrollIndicatorInsets, indicatorInsets)) {
         [scrollView.scrollView setScrollIndicatorInsets:indicatorInsets];
+    }
+}
+
+- (void)resetScrollViewInsets {
+    if (self.managedScrollViewNativeID == nil) {
+        return;
+    }
+    
+    RCTScrollView *scrollView = [self getScrollViewWithID:self.managedScrollViewNativeID];
+    
+    if (scrollView == nil) {
+        return;
+    }
+    
+    CGFloat safeAreaBottom = [self getSafeAreaBottom:scrollView];
+    CGFloat safeAreaTop = [self getSafeAreaTop:scrollView];
+    
+    UIEdgeInsets insets = UIEdgeInsetsZero;
+    
+    if (scrollView.inverted) {
+        insets = UIEdgeInsetsMake(safeAreaBottom,
+                                  scrollView.scrollView.contentInset.left,
+                                  safeAreaTop,
+                                  scrollView.scrollView.contentInset.right);
+    } else {
+        insets = UIEdgeInsetsMake(safeAreaTop,
+                                  scrollView.scrollView.contentInset.left,
+                                  safeAreaBottom,
+                                  scrollView.scrollView.contentInset.right);
+    }
+    
+    if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.contentInset, insets)) {
+        [scrollView.scrollView setContentInset:insets];
+    }
+    
+    if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.scrollIndicatorInsets, insets)) {
+        [scrollView.scrollView setScrollIndicatorInsets:insets];
     }
 }
 
@@ -159,23 +240,29 @@
 
 // MARK:- Utils
 
--(CGFloat)getSafeAreaBottom
-{
+- (CGFloat)getSafeAreaBottom {
+    return [self getSafeAreaBottom:self.superview ? self.superview : self];
+}
+
+- (CGFloat)getSafeAreaBottom:(UIView *)view {
     CGFloat bottomSafeArea = 0;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
     if (@available(iOS 11.0, *)) {
-        bottomSafeArea = self.superview ? self.superview.safeAreaInsets.bottom : self.safeAreaInsets.bottom;
+        bottomSafeArea = view.safeAreaInsets.bottom;
     }
 #endif
     return bottomSafeArea;
 }
 
--(CGFloat)getSafeAreaTop
-{
+- (CGFloat)getSafeAreaTop {
+    return [self getSafeAreaTop:self.superview ? self.superview : self];
+}
+
+- (CGFloat)getSafeAreaTop:(UIView *)view {
     CGFloat topSafeArea = 0;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
     if (@available(iOS 11.0, *)) {
-        topSafeArea = self.superview ? self.superview.safeAreaInsets.top : self.safeAreaInsets.top;
+        topSafeArea = view.safeAreaInsets.top;
     }
 #endif
     return topSafeArea;

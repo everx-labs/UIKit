@@ -8,17 +8,11 @@ import {
 } from '@tonlabs/uikit.chats';
 import { Portal } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import type { OnHeightChange, AmountInputMessage } from '../types';
+import type { AmountInputMessage } from '../types';
 
 import { UIAmountInput } from '../UIAmountInput';
 
-export function AmountInput({
-    onLayout,
-    onHeightChange,
-    ...message
-}: AmountInputMessage & {
-    onHeightChange: OnHeightChange;
-}) {
+export function AmountInput({ onLayout, ...message }: AmountInputMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
@@ -66,7 +60,6 @@ export function AmountInput({
                             amount,
                         });
                     }}
-                    onHeightChange={onHeightChange}
                 />
             </Portal>
         </View>

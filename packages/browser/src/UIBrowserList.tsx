@@ -48,7 +48,7 @@ function flatListGetItemLayoutFabric({
     };
 }
 
-const renderBubble = (onHeightChange: OnHeightChange) => (
+const renderBubble = () => (
     item: BrowserMessage,
     onLayout: ViewProps['onLayout'],
 ) => {
@@ -60,53 +60,26 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
     }
 
     if (item.type === InteractiveMessageType.AddressInput) {
-        return (
-            <AddressInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <AddressInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Terminal) {
-        return (
-            <TerminalInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <TerminalInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Menu) {
-        return (
-            <MenuInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <MenuInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Confirm) {
         return <ConfirmInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.AmountInput) {
-        return (
-            <AmountInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <AmountInput {...item} onLayout={onLayout} />;
     }
 
     return null;
 };
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
-    function UIBrowserListForwarded(
-        { messages, bottomInset, onHeightChange }: UIBrowserListProps,
-        ref,
-    ) {
+    function UIBrowserListForwarded({ messages }: UIBrowserListProps, ref) {
         const formattedMessages = React.useMemo(
             () => getFormattedList(messages),
             [messages],
@@ -115,9 +88,8 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
             <UICommonChatList
                 forwardRef={ref}
                 nativeID="browserList"
-                renderBubble={renderBubble(onHeightChange)}
+                renderBubble={renderBubble()}
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
-                bottomInset={bottomInset}
             >
                 {(chatListProps: CommonChatListProps<BrowserMessage>) => (
                     <FlatList

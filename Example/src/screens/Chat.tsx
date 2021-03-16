@@ -307,7 +307,6 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 const ChatStack = createStackNavigator();
 
 const ChatWindowScreen = () => {
-    const [bottomInset, setBottomInset] = React.useState<number>(0);
     const [messages, setMessages] = React.useState(initialMessages);
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onSendMedia = React.useCallback(() => undefined, []);
@@ -335,14 +334,15 @@ const ChatWindowScreen = () => {
     return (
         <>
             <UIChatList
+                nativeID="chatSectionList"
                 onLoadEarlierMessages={onLoadEarlierMessages}
                 canLoadMore
                 isLoadingMore={false}
                 isCustomKeyboardVisible={false}
                 messages={messages}
-                bottomInset={bottomInset}
             />
             <UIChatInput
+                managedScrollViewNativeID="chatSectionList"
                 editable
                 onSendText={(text) => {
                     setMessages([
@@ -375,7 +375,6 @@ const ChatWindowScreen = () => {
                 }}
                 onSendMedia={onSendMedia}
                 onSendDocument={onSendDocument}
-                onHeightChange={setBottomInset}
                 customKeyboard={stickersKeyboard}
             />
         </>

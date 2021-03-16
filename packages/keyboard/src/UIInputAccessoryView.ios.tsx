@@ -8,9 +8,9 @@ import {
 
 type Props = {
     // eslint-disable-next-line react/no-unused-prop-types
-    style: StyleProp<ViewStyle>;
+    style?: StyleProp<ViewStyle>;
     children: React.ReactNode;
-    managedScrollViewNativeID: string;
+    managedScrollViewNativeID?: string;
 };
 
 const NativeUIInputAccessoryView = requireNativeComponent<Props>(

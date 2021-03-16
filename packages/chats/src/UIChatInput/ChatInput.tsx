@@ -11,13 +11,7 @@ import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
 import { useChatInputValue } from './useChatInputValue';
 import { useChatMaxLengthAlert } from './useChatMaxLengthAlert';
-import type {
-    MenuItem,
-    QuickActionItem,
-    OnSendText,
-    OnHeightChange,
-    Shortcut,
-} from './types';
+import type { MenuItem, QuickActionItem, OnSendText, Shortcut } from './types';
 
 const MAX_INPUT_LENGTH = 320;
 
@@ -42,7 +36,6 @@ type ChatInputProps = {
     customKeyboardButton?: React.ComponentType<any>;
 
     onSendText: OnSendText;
-    onHeightChange?: OnHeightChange;
     onFocus: () => void;
     onBlur: () => void;
 };
@@ -57,7 +50,7 @@ export function ChatInput(props: ChatInputProps) {
         resetInputHeight,
     } = useAutogrowTextView(
         props.textInputRef,
-        props.onHeightChange,
+        undefined,
         CHAT_INPUT_NUM_OF_LINES,
     );
     const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);

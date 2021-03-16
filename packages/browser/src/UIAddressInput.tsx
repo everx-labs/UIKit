@@ -248,6 +248,7 @@ export function UIAddressInput(props: UIAddressInputProps) {
             }}
             onKeyboardResigned={onKeyboardResigned}
             onHeightChange={props.onHeightChange}
+            managedScrollViewNativeID="browserList"
         />
     );
 }
