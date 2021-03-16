@@ -81,12 +81,15 @@ function useValidation(
 }
 
 const getBigNumberFromRawString = (value: string) => {
-    if (value[0] === ',' || value[0] === '.') {
+    const { decimal } = uiLocalized.localeInfo.numbers;
+    if (value[0] === decimal) {
         // eslint-disable-next-line no-param-reassign
         value = `0${value}`;
     }
 
-    return new BigNumber(value.replace(/[^0-9.]/g, ''));
+    const clearedValue = value.replace(new RegExp(`[^0-9${decimal}]`, 'g'), '');
+
+    return new BigNumber(clearedValue.replace(decimal, '.'));
 };
 
 type UIAmountInputInternalProps = {
