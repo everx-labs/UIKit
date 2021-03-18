@@ -70,7 +70,8 @@
             "PickSignature": "Pick a signature",
             "UseSecurityCard": "Use Security Card",
             "Signatures": "Signatures",
-            "AddSignature": "Add signature"
+            "AddSignature": "Add signature",
+            "PrivateKey": "Private key"
         }
     },
     "Cancel": "キャンセル",

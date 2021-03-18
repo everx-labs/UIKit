@@ -11,6 +11,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import type { SigningBoxMessage } from '../types';
 import { UISignaturePicker } from '../UISignaturePicker';
+import { UIKeySheet } from '../UIKeySheet';
 
 type SigningBoxInternalState = {
     keyInputVisible: boolean;
@@ -194,6 +195,14 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     });
                 }}
                 signingBoxes={restSigningBoxes}
+            />
+            <UIKeySheet
+                visible={state.keyInputVisible}
+                onClose={() => {
+                    dispatch({
+                        type: 'CLOSE_KEY_INPUT',
+                    });
+                }}
             />
         </View>
     );

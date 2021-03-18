@@ -17,6 +17,7 @@ import type {
     MenuMessage,
     TerminalMessage,
     AmountInputMessage,
+    SigningBoxMessage,
 } from '@tonlabs/uikit.browser';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
@@ -292,7 +293,7 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add SigningBoxInput"
                             onPress={() => {
-                                const message = {
+                                const message: SigningBoxMessage = {
                                     key: `${Date.now()}-signing-box`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.SigningBox,

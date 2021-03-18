@@ -73,6 +73,7 @@ export type UILocalizedData = {|
             +UseSecurityCard: string,
             +Signatures: string,
             +AddSignature: string,
+            +PrivateKey: string,
         |},
     |},
     +Cancel: string,
