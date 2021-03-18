@@ -19,6 +19,7 @@ import { TerminalInput } from './Inputs/terminal';
 import { MenuInput } from './Inputs/menu';
 import { ConfirmInput } from './Inputs/confirm';
 import { AmountInput } from './Inputs/amountInput';
+import { SigningBox } from './Inputs/SigningBox';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -97,6 +98,9 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
                 onLayout={onLayout}
             />
         );
+    }
+    if (item.type === InteractiveMessageType.SigningBox) {
+        return <SigningBox {...item} onLayout={onLayout} />;
     }
 
     return null;

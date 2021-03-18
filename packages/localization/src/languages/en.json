@@ -63,6 +63,14 @@
             "MainAccount": "My account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
+        },
+        "SigningBox": {
+            "Prompt": "How would you like to sign?",
+            "EnterKey": "Enter Key",
+            "PickSignature": "Pick a signature",
+            "UseSecurityCard": "Use Security Card",
+            "Signatures": "Signatures",
+            "AddSignature": "Add signature"
         }
     },
     "Cancel": "Cancel",
