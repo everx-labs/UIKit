@@ -97,14 +97,30 @@
     
     CGAffineTransform transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);
     
+    CGFloat oldTransformY = self.transform.ty;
+    CGFloat diffBetweenTransformsY = accessoryTranslation - oldTransformY;
+    
     if (!CGAffineTransformEqualToTransform(transform, self.transform)) {
         self.transform = transform;
     }
     
+    [self handleScrollViewOffsets:diffBetweenTransformsY];
     [self manageScrollViewInsets:(0 - accessoryTranslation)];
 }
 
-//MARK:- Managing insets for scroll view
+//MARK:- Managing scroll view
+
+- (void)handleScrollViewOffsets:(CGFloat)diffBetweenTransformsY {
+    RCTScrollView *scrollView = [self getScrollViewWithID:self.managedScrollViewNativeID];
+    
+    if (scrollView == nil) {
+        return;
+    }
+    
+    if (!scrollView.scrollView.tracking) {
+        [scrollView.scrollView setContentOffset:CGPointMake(0, scrollView.scrollView.contentOffset.y + diffBetweenTransformsY)];
+    }
+}
 
 - (void)manageScrollViewInsets:(CGFloat)accessoryTranslation {
     if (self.managedScrollViewNativeID == nil) {
