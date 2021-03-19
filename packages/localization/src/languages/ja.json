@@ -516,5 +516,10 @@
     "Yesterday": "昨日",
     "YesterdayAt": "昨日{0}に",
     "You": "あなた",
-    "YourEmail": "あなたのメールアドレス"
+    "YourEmail": "あなたのメールアドレス",
+    "KeyTextView": {
+        "InvalidChars": "The key is not in a HEX format",
+        "InproperLength": "The key should be 64 symbols long",
+        "Valid": "Looks good"
+    }
 }

@@ -151,7 +151,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 }}
                 firstFromChain={message.signingBoxes.length === 0}
             />
-            <BubbleActionButton
+            {/* <BubbleActionButton
                 type={ChatMessageType.ActionButton}
                 key="signing-box-bubble-pick-signature"
                 status={MessageStatus.Received}
@@ -162,7 +162,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     });
                 }}
                 firstFromChain={message.signingBoxes.length === 0}
-            />
+            /> */}
             <BubbleActionButton
                 type={ChatMessageType.ActionButton}
                 key="signing-box-bubble-use-scard"

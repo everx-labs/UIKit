@@ -516,5 +516,10 @@
     "Yesterday": "Вчера",
     "YesterdayAt": "Вчера в {0}",
     "You": "Вы",
-    "YourEmail": "Ваш адрес электронной почты"
+    "YourEmail": "Ваш адрес электронной почты",
+    "KeyTextView": {
+        "InvalidChars": "The key isn't in HEX format",
+        "InproperLength": "The key should be 64 symbols long",
+        "Valid": "Looks good"
+    }
 }

@@ -516,5 +516,10 @@
     "Yesterday": "Ieri",
     "YesterdayAt": "Ieri alle {0}",
     "You": "tu",
-    "YourEmail": "La tua email"
+    "YourEmail": "La tua email",
+    "KeyTextView": {
+        "InvalidChars": "The key is not in a HEX format",
+        "InproperLength": "The key should be 64 symbols long",
+        "Valid": "Looks good"
+    }
 }

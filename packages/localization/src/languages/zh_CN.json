@@ -516,5 +516,10 @@
     "Yesterday": "昨天",
     "YesterdayAt": "昨天在{0}",
     "You": "您",
-    "YourEmail": "你的邮箱"
+    "YourEmail": "你的邮箱",
+    "KeyTextView": {
+        "InvalidChars": "The key is not in a HEX format",
+        "InproperLength": "The key should be 64 symbols long",
+        "Valid": "Looks good"
+    }
 }

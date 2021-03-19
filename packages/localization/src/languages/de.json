@@ -516,5 +516,10 @@
     "Yesterday": "Gestern",
     "YesterdayAt": "Gestern um {0}",
     "You": "Sie",
-    "YourEmail": "Ihre E-Mail"
+    "YourEmail": "Ihre E-Mail",
+    "KeyTextView": {
+        "InvalidChars": "The key is not in a HEX format",
+        "InproperLength": "The key should be 64 symbols long",
+        "Valid": "Looks good"
+    }
 }

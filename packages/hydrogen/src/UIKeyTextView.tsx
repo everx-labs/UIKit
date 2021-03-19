@@ -1,6 +1,8 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
 
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import { useFocused, useUITextViewValue } from './UITextView';
 import {
     UIMaterialTextView,
@@ -53,13 +55,13 @@ export function useKeyTextView(
                 onDone(inputValue.current);
             }
         },
-        [onDone, onKeyPressBase],
+        [onDone, onKeyPressBase, inputValue],
     );
 
     const { helperText, error, success } = React.useMemo(() => {
         if (hasInvalidChars) {
             return {
-                helperText: 'Looks like the value is not in a HEX format',
+                helperText: uiLocalized.KeyTextView.InvalidChars,
                 error: true,
                 success: false,
             };
@@ -67,7 +69,7 @@ export function useKeyTextView(
 
         if (!isFocused && inputHasValue && !hasProperLength) {
             return {
-                helperText: 'The key should be 64 symbols long',
+                helperText: uiLocalized.KeyTextView.InproperLength,
                 error: true,
                 success: false,
             };
@@ -75,7 +77,7 @@ export function useKeyTextView(
 
         if (!hasInvalidChars && hasProperLength) {
             return {
-                helperText: 'Looks good',
+                helperText: uiLocalized.KeyTextView.Valid,
                 error: false,
                 success: true,
             };

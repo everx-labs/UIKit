@@ -249,6 +249,11 @@ export type UILocalizedData = {|
     +InvalidPhone: string,
     +InviteFriends: string,
     +InvitesYouToWallet: string,
+    +KeyTextView: {|
+        +InvalidChars: string,
+        +InproperLength: string,
+        +Valid: string,
+    |},
     +LastMonth: string,
     +LastName: string,
     +LastWeek: string,
