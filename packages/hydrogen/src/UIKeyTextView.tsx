@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { TextInput } from 'react-native';
 
 import { useFocused } from './UITextView';
 import {
@@ -64,7 +65,7 @@ export function useKeyTextView(isFocused: boolean) {
             error: false,
             success: false,
         };
-    }, [hasInvalidChars, hasProperLength, isFocused]);
+    }, [hasValue, hasInvalidChars, hasProperLength, isFocused]);
 
     return {
         helperText,
@@ -79,25 +80,28 @@ type UIKeyTextViewProps = Omit<
     keyof ReturnType<typeof useKeyTextView>
 >;
 
-export function UIKeyTextView(props: UIKeyTextViewProps) {
-    const { isFocused, onFocus, onBlur } = useFocused(
-        props.onFocus,
-        props.onBlur,
-    );
+export const UIKeyTextView = React.forwardRef<TextInput, UIKeyTextViewProps>(
+    function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
+        const { isFocused, onFocus, onBlur } = useFocused(
+            props.onFocus,
+            props.onBlur,
+        );
 
-    const { onChangeText, helperText, success, error } = useKeyTextView(
-        isFocused,
-    );
+        const { onChangeText, helperText, success, error } = useKeyTextView(
+            isFocused,
+        );
 
-    return (
-        <UIMaterialTextView
-            {...props}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onChangeText={onChangeText}
-            helperText={helperText}
-            success={success}
-            error={error}
-        />
-    );
-}
+        return (
+            <UIMaterialTextView
+                ref={ref}
+                {...props}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onChangeText={onChangeText}
+                helperText={helperText}
+                success={success}
+                error={error}
+            />
+        );
+    },
+);
