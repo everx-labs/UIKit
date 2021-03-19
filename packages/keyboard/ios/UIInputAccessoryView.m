@@ -22,6 +22,8 @@
 @implementation UIInputAccessoryView {
     BOOL _shouldBecomeFirstResponder;
     RCTBridge *_bridge;
+    CGFloat _savedTransformY;
+    CGFloat _diffInHeightToApply;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -34,6 +36,12 @@
         
         _shouldBecomeFirstResponder = YES;
         _bridge = bridge;
+        /**
+         * Transform y can't be positive number
+         * so 1 will mean that variable is not
+         * initialized yet
+         */
+        _savedTransformY = 1;
     }
     return self;
 }
@@ -62,6 +70,8 @@
         parentHeight = [[UIScreen mainScreen] bounds].size.height;
     }
     
+    _diffInHeightToApply = self.frame.size.height - frame.size.height;
+    
     self.frame = CGRectMake(0,
                             parentHeight - frame.size.height,
                             frame.size.width,
@@ -80,6 +90,7 @@
  */
 - (void)layoutSubviews {
     [self onInputAccessoryViewChangeKeyboardHeight:((UIObservingInputAccessoryView *)_inputAccessoryView).keyboardHeight];
+    [self handleFrameChanges];
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
@@ -97,29 +108,79 @@
     
     CGAffineTransform transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);
     
-    CGFloat oldTransformY = self.transform.ty;
-    CGFloat diffBetweenTransformsY = accessoryTranslation - oldTransformY;
+    /**
+     * Saved transform only could be less or equal to 0
+     * If that's not true, the it means the transform hasn't been applied yet
+     * so no need to handle content offset
+     */
+    if (_savedTransformY <= 0) {
+        CGFloat diffBetweenTransformsY = accessoryTranslation - _savedTransformY;
+        [self handleScrollViewOffsets:diffBetweenTransformsY];
+    }
     
     if (!CGAffineTransformEqualToTransform(transform, self.transform)) {
         self.transform = transform;
+        /**
+         * It was possible to get this information from previous transform
+         * instead of saving one, but it had as issue, when during frame change
+         * we set transform to identity, we got 0 instead of correct previous value
+         */
+        _savedTransformY = transform.ty;
     }
     
-    [self handleScrollViewOffsets:diffBetweenTransformsY];
     [self manageScrollViewInsets:(0 - accessoryTranslation)];
 }
 
 //MARK:- Managing scroll view
 
-- (void)handleScrollViewOffsets:(CGFloat)diffBetweenTransformsY {
+- (void)handleFrameChanges {
+    if (self.managedScrollViewNativeID == nil) {
+        return;
+    }
+    
     RCTScrollView *scrollView = [self getScrollViewWithID:self.managedScrollViewNativeID];
     
     if (scrollView == nil) {
         return;
     }
     
-    if (!scrollView.scrollView.tracking) {
-        [scrollView.scrollView setContentOffset:CGPointMake(0, scrollView.scrollView.contentOffset.y + diffBetweenTransformsY)];
+    if (scrollView.scrollView.contentSize.height < scrollView.scrollView.frame.size.height) {
+        return;
     }
+    
+    if (_diffInHeightToApply != 0) {
+        [self handleScrollViewOffsets:_diffInHeightToApply];
+        _diffInHeightToApply = 0;
+    }
+}
+
+- (void)handleScrollViewOffsets:(CGFloat)diffBetweenTransformsY {
+    if (diffBetweenTransformsY == 0) {
+        return;
+    }
+    
+    if (self.managedScrollViewNativeID == nil) {
+        return;
+    }
+    
+    RCTScrollView *scrollView = [self getScrollViewWithID:self.managedScrollViewNativeID];
+    
+    if (scrollView == nil) {
+        return;
+    }
+    
+    /**
+     * The guard is needed to prevent changing of content offset
+     * while user scrolls it, i.e. when `keyboardDismissMode`
+     * set to `interactive` and user tries to dismiss keyboard by scrolling
+     */
+    if (scrollView.scrollView.tracking) {
+        return;
+    }
+    
+    CGFloat yToScroll = scrollView.scrollView.contentOffset.y + diffBetweenTransformsY;
+    [scrollView.scrollView setContentOffset:CGPointMake(0, yToScroll)];
+    
 }
 
 - (void)manageScrollViewInsets:(CGFloat)accessoryTranslation {
@@ -145,7 +206,7 @@
      * that kinda tells ScrollView to not take safe area insets into account,
      * but as it usually happens in iOS, it continue to do it for indicator insets...
      */
-    CGFloat insetBottom = accessoryTranslation + self.frame.size.height;
+    CGFloat insetBottom = accessoryTranslation + self.frame.size.height - [self getMarginFromBottom:scrollView];
     
     if (scrollView.inverted) {
         CGFloat indicatorInsetBottom = insetBottom;
@@ -218,22 +279,7 @@
         return;
     }
     
-    CGFloat safeAreaBottom = [self getSafeAreaBottom:scrollView];
-    CGFloat safeAreaTop = [self getSafeAreaTop:scrollView];
-    
-    UIEdgeInsets insets = UIEdgeInsetsZero;
-    
-    if (scrollView.inverted) {
-        insets = UIEdgeInsetsMake(safeAreaBottom,
-                                  scrollView.scrollView.contentInset.left,
-                                  safeAreaTop,
-                                  scrollView.scrollView.contentInset.right);
-    } else {
-        insets = UIEdgeInsetsMake(safeAreaTop,
-                                  scrollView.scrollView.contentInset.left,
-                                  safeAreaBottom,
-                                  scrollView.scrollView.contentInset.right);
-    }
+    UIEdgeInsets insets = scrollView.contentInset;
     
     if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.contentInset, insets)) {
         [scrollView.scrollView setContentInset:insets];
@@ -252,6 +298,13 @@
     }
     
     return nil;
+}
+
+- (CGFloat)getMarginFromBottom:(RCTScrollView *)scrollView {
+    CGFloat positionInSuperview = [scrollView.scrollView.superview convertPoint:scrollView.scrollView.frame.origin toView:nil].y;
+    CGFloat globalHeight = [[UIScreen mainScreen] bounds].size.height;
+    
+    return globalHeight - positionInSuperview;
 }
 
 // MARK:- Utils

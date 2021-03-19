@@ -178,30 +178,29 @@ function useLayoutHelpers<ItemT extends BubbleBaseT>(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useContentInset(
-    ref: React.RefObject<SectionList>,
-    listContentOffsetRef: React.RefObject<ListContentOffset>,
-    bottomInsetProp?: number,
-) {
-    const bottomInset = bottomInsetProp ?? 0;
-    const contentInset = {
-        top: bottomInset,
-    };
+function useContentInset(ref: React.RefObject<SectionList>) {
+    const bottomInset = useSafeAreaInsets().bottom;
+    const contentInset = React.useMemo(
+        () => ({
+            top: bottomInset,
+        }),
+        [bottomInset],
+    );
 
-    React.useEffect(() => {
-        if (
-            listContentOffsetRef.current &&
-            listContentOffsetRef.current.y < bottomInset
-        ) {
+    React.useLayoutEffect(() => {
+        function scrollToTop() {
             const scrollResponder = ref?.current?.getScrollResponder();
             if (scrollResponder) {
                 scrollResponder.scrollTo({
                     y: -bottomInset,
                     animated: true,
                 });
+                return;
             }
+            requestAnimationFrame(scrollToTop);
         }
-    }, [ref, listContentOffsetRef, bottomInset]);
+        scrollToTop();
+    }, [bottomInset, ref]);
 
     return contentInset;
 }
@@ -407,14 +406,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
         onViewableItemsChanged,
     } = useLinesAnimation();
     useChatListWheelHandler(localRef, nativeID, listContentOffset);
-
-    const bottomInset = useSafeAreaInsets().bottom;
-    const contentInset = React.useMemo(
-        () => ({
-            top: bottomInset,
-        }),
-        [bottomInset],
-    );
+    const contentInset = useContentInset(localRef);
 
     return (
         <>
