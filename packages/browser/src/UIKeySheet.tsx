@@ -8,7 +8,11 @@ import { UIPullerSheet } from './UIPullerSheet';
 
 // We wrap it with a component to be able
 // to focus input on every new sheet mounting
-function UIKeySheetContent() {
+function UIKeySheetContent({
+    onKeyRetrieved,
+}: {
+    onKeyRetrieved: (key: string) => void;
+}) {
     const keyRef = React.useRef<TextInput>(null);
 
     React.useLayoutEffect(() => {
@@ -30,6 +34,7 @@ function UIKeySheetContent() {
             <UIKeyTextView
                 ref={keyRef}
                 label={uiLocalized.Browser.SigningBox.PrivateKey}
+                onDone={onKeyRetrieved}
             />
         </View>
     );
@@ -38,13 +43,15 @@ function UIKeySheetContent() {
 export function UIKeySheet({
     visible,
     onClose,
+    onKeyRetrieved,
 }: {
     visible: boolean;
     onClose: () => void;
+    onKeyRetrieved: (key: string) => void;
 }) {
     return (
         <UIPullerSheet visible={visible} onClose={onClose}>
-            <UIKeySheetContent />
+            <UIKeySheetContent onKeyRetrieved={onKeyRetrieved} />
         </UIPullerSheet>
     );
 }

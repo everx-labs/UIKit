@@ -30,7 +30,7 @@ const getButtonRadius = (
 };
 
 export function BubbleActionButton(message: ActionButtonMessage) {
-    const { status, text, textMode = 'ellipsize', onPress } = message;
+    const { status, text, textMode = 'ellipsize', disabled, onPress } = message;
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
     const theme = useTheme();
@@ -42,17 +42,26 @@ export function BubbleActionButton(message: ActionButtonMessage) {
                 style={[
                     styles.common,
                     {
-                        borderColor: theme[ColorVariants.LineAccent],
+                        borderColor:
+                            theme[
+                                disabled
+                                    ? ColorVariants.LineTertiary
+                                    : ColorVariants.LineAccent
+                            ],
                     },
                     styles.button,
                     textMode !== 'fit' && styles.buttonFixedHeight,
                     getButtonRadius(message, position),
                 ]}
-                onPress={onPress}
+                onPress={disabled ? undefined : onPress}
             >
                 <UILabel
                     role={UILabelRoles.ActionCallout}
-                    color={UILabelColors.TextAccent}
+                    color={
+                        disabled
+                            ? UILabelColors.TextTertiary
+                            : UILabelColors.TextAccent
+                    }
                     numberOfLines={textMode === 'ellipsize' ? 1 : undefined}
                 >
                     {text}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
 
-import { useFocused } from './UITextView';
+import { useFocused, useUITextViewValue } from './UITextView';
 import {
     UIMaterialTextView,
     UIMaterialTextViewProps,
@@ -9,18 +9,26 @@ import {
 
 const MAX_KEY_LENGTH = 64;
 
-export function useKeyTextView(isFocused: boolean) {
-    const [hasValue, setHasValue] = React.useState(false);
+type OnDone = (key: string) => void | Promise<void>;
+
+export function useKeyTextView(
+    ref: React.Ref<TextInput> | null,
+    isFocused: boolean,
+    onDone: OnDone,
+) {
+    const {
+        inputValue,
+        inputHasValue,
+        onChangeText: onChangeTextBase,
+        onKeyPress: onKeyPressBase,
+    } = useUITextViewValue(ref, true);
+
     const [hasInvalidChars, setHasInvalidChars] = React.useState(false);
     const [hasProperLength, setHasProperLength] = React.useState(false);
 
     const onChangeText = React.useCallback(
-        (text: string) => {
-            const isNotEmpty = text.length > 0;
-
-            if (hasValue !== isNotEmpty) {
-                setHasValue(isNotEmpty);
-            }
+        (t: string) => {
+            const text = onChangeTextBase(t);
 
             const isProperLength = text.length === MAX_KEY_LENGTH;
 
@@ -34,7 +42,18 @@ export function useKeyTextView(isFocused: boolean) {
                 setHasInvalidChars(isCharsInvalid);
             }
         },
-        [hasValue, hasInvalidChars, hasProperLength],
+        [hasInvalidChars, hasProperLength, onChangeTextBase],
+    );
+
+    const onKeyPress = React.useCallback(
+        (e: any) => {
+            const wasClearedWithEnter = onKeyPressBase(e);
+
+            if (wasClearedWithEnter) {
+                onDone(inputValue.current);
+            }
+        },
+        [onDone, onKeyPressBase],
     );
 
     const { helperText, error, success } = React.useMemo(() => {
@@ -46,7 +65,7 @@ export function useKeyTextView(isFocused: boolean) {
             };
         }
 
-        if (!isFocused && hasValue && !hasProperLength) {
+        if (!isFocused && inputHasValue && !hasProperLength) {
             return {
                 helperText: 'The key should be 64 symbols long',
                 error: true,
@@ -56,6 +75,7 @@ export function useKeyTextView(isFocused: boolean) {
 
         if (!hasInvalidChars && hasProperLength) {
             return {
+                helperText: 'Looks good',
                 error: false,
                 success: true,
             };
@@ -65,20 +85,23 @@ export function useKeyTextView(isFocused: boolean) {
             error: false,
             success: false,
         };
-    }, [hasValue, hasInvalidChars, hasProperLength, isFocused]);
+    }, [inputHasValue, hasInvalidChars, hasProperLength, isFocused]);
 
     return {
         helperText,
         error,
         success,
         onChangeText,
+        onKeyPress,
     };
 }
 
 type UIKeyTextViewProps = Omit<
     UIMaterialTextViewProps,
     keyof ReturnType<typeof useKeyTextView>
->;
+> & {
+    onDone: OnDone;
+};
 
 export const UIKeyTextView = React.forwardRef<TextInput, UIKeyTextViewProps>(
     function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
@@ -86,10 +109,13 @@ export const UIKeyTextView = React.forwardRef<TextInput, UIKeyTextViewProps>(
             props.onFocus,
             props.onBlur,
         );
-
-        const { onChangeText, helperText, success, error } = useKeyTextView(
-            isFocused,
-        );
+        const {
+            onChangeText,
+            onKeyPress,
+            helperText,
+            success,
+            error,
+        } = useKeyTextView(ref, isFocused, props.onDone);
 
         return (
             <UIMaterialTextView
@@ -98,6 +124,7 @@ export const UIKeyTextView = React.forwardRef<TextInput, UIKeyTextViewProps>(
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={onChangeText}
+                onKeyPress={onKeyPress}
                 helperText={helperText}
                 success={success}
                 error={error}

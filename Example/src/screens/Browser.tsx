@@ -311,6 +311,16 @@ const BrowserScreen = () => {
                                             ...signingBoxes,
                                             newSigningBox,
                                         ]);
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                signingBoxes: [
+                                                    ...signingBoxes,
+                                                    newSigningBox,
+                                                ],
+                                            },
+                                            ...messages,
+                                        ]);
 
                                         return Promise.resolve(newSigningBox);
                                     },

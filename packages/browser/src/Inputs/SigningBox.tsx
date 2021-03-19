@@ -93,7 +93,17 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
                         key="signing-box-bubble-address-answer"
-                        text={message.externalState.signingBox.title}
+                        text={
+                            message.externalState.signingBox.title ===
+                            mainSigningBox.title
+                                ? mainSigningBox.title
+                                : `${
+                                      message.externalState.signingBox.title
+                                  } ${message.externalState.signingBox.publicKey.slice(
+                                      0,
+                                      2,
+                                  )} ·· `
+                        }
                         status={MessageStatus.Sent}
                         firstFromChain={
                             message.externalState.chosenOption == null
@@ -158,6 +168,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 key="signing-box-bubble-use-scard"
                 status={MessageStatus.Received}
                 text={uiLocalized.Browser.SigningBox.UseSecurityCard}
+                disabled={!message.securityCardSupported}
                 onPress={async () => {
                     const isSuccessful = await message.onUseSecurityCard();
 
@@ -199,6 +210,18 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
             <UIKeySheet
                 visible={state.keyInputVisible}
                 onClose={() => {
+                    dispatch({
+                        type: 'CLOSE_KEY_INPUT',
+                    });
+                }}
+                onKeyRetrieved={async (key: string) => {
+                    const signingBox = await message.onAddSigningBox(key);
+
+                    message.onSelect({
+                        chosenOption: uiLocalized.Browser.SigningBox.EnterKey,
+                        signingBox,
+                    });
+
                     dispatch({
                         type: 'CLOSE_KEY_INPUT',
                     });

@@ -189,9 +189,21 @@ function getPosition(
                         neq(height, beforeHeight),
                     ),
                     [
-                        set(
-                            state.position,
-                            sub(0, add(height, beforeKeyboardHeight)),
+                        cond(
+                            state.finished,
+                            [
+                                set(
+                                    state.position,
+                                    sub(0, add(height, beforeKeyboardHeight)),
+                                ),
+                            ],
+                            [
+                                set(
+                                    // @ts-ignore
+                                    config.toValue,
+                                    sub(0, add(height, beforeKeyboardHeight)),
+                                ),
+                            ],
                         ),
                     ],
                 ),
