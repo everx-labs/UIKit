@@ -17,6 +17,7 @@ import { useAutogrowTextView } from './useAutogrowTextView';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
+import { moveCarret } from './moveCarret';
 
 type UISeedPhrasePopoverProps = {
     currentHighlightedItemIndex: number;
@@ -674,6 +675,21 @@ export const UISeedPhraseTextView = React.forwardRef<
         inputHeight,
     ]);
 
+    const onSelectionChange = React.useCallback(
+        ({
+            nativeEvent: {
+                selection: { start, end },
+            },
+        }) => {
+            // We want to protect seed phrase against copying
+            // as it might be occasionally compromised in clipboard
+            if (Platform.OS !== 'ios' && start !== end) {
+                moveCarret(refToUse, state.phrase.length);
+            }
+        },
+        [state, refToUse],
+    );
+
     return (
         <>
             <UIMaterialTextView
@@ -683,6 +699,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 autoCompleteType="off"
                 autoCorrect={false}
                 multiline
+                contextMenuHidden
                 label={uiLocalized.MasterPassword}
                 onLayout={onInputLayout}
                 onChangeText={onChangeText}
@@ -691,6 +708,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onBlur={onBlur}
                 onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
+                onSelectionChange={onSelectionChange}
                 numberOfLines={numberOfLinesProp}
                 style={inputStyle}
                 helperText={helperText}
