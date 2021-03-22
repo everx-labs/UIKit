@@ -228,11 +228,14 @@ export default class UIModalController<Props, State> extends UIController<
 
     hardwareBackEventHandler = (): boolean => {
         if (this.dismissible) {
+            // If the modal screen is dismissible, the back button should emulate a cancel press.
             this.onCancelPress();
         } else {
+            // Otherwise user cannot return to the previous screen by pressing the back button,
+            // hence it should fold the app on Android when the modal screen cannot be dismissed.
             BackHandler.exitApp();
         }
-
+        // Return `true` as the back button event was handled.
         return true;
     };
 
