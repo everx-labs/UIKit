@@ -137,6 +137,13 @@ export const Inputs = () => {
                         helperText="Hint"
                     />
                     <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        label="Label with placeholder"
+                        onChangeText={setText}
+                        helperText="Hint"
+                        placeholder="Works with folded label"
+                    />
+                    <View style={{ height: 20 }} />
                     <UIMaterialTextView floating={false} label="Label" />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView

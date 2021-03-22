@@ -124,7 +124,11 @@ enum ShowStates {
     RESET = 5,
 }
 
-const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
+const getScale = (
+    isFolded: boolean,
+    show: Animated.Value<ShowStates>,
+    onFolded: () => void,
+) => {
     const {
         block,
         cond,
@@ -135,6 +139,7 @@ const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
         startClock,
         stopClock,
         clockRunning,
+        call,
     } = Animated;
 
     const clock = new Animated.Clock();
@@ -154,12 +159,9 @@ const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
             overshootClamping: false,
             bounciness: 0,
             speed: 20,
-            // mass: new Animated.Value(1),
-            // restSpeedThreshold: new Animated.Value(0.001),
-            // restDisplacementThreshold: new Animated.Value(0.001),
-            mass: 1,
-            restSpeedThreshold: 0.001,
-            restDisplacementThreshold: 0.001,
+            mass: new Animated.Value(1),
+            restSpeedThreshold: new Animated.Value(0.001),
+            restDisplacementThreshold: new Animated.Value(0.001),
             toValue: new Animated.Value(0),
         }),
     };
@@ -168,19 +170,33 @@ const getScale = (isFolded: boolean, show: Animated.Value<ShowStates>) => {
         cond(eq(show, ShowStates.OPEN), [
             set(state.finished, 0),
             // @ts-ignore
+            set(config.restSpeedThreshold, 0.001),
+            // @ts-ignore
+            set(config.restDisplacementThreshold, 0.001),
+            // @ts-ignore
             set(config.toValue, 1),
             set(show, ShowStates.OPENING),
             startClock(clock),
         ]),
         cond(eq(show, ShowStates.FOLD), [
             set(state.finished, 0),
+            // This two were "accurately" taken out by "eye" testing
+            // to have no delay to show a placeholder
+            // after label was folded :D
+            // @ts-ignore
+            set(config.restSpeedThreshold, 1),
+            // @ts-ignore
+            set(config.restDisplacementThreshold, 0.1),
             // @ts-ignore
             set(config.toValue, FOLDED_FLOATING_LABEL_SCALE),
             set(show, ShowStates.FOLDING),
             startClock(clock),
         ]),
         spring(clock, state, config),
-        cond(and(state.finished, clockRunning(clock)), [stopClock(clock)]),
+        cond(and(state.finished, clockRunning(clock)), [
+            stopClock(clock),
+            cond(eq(show, ShowStates.FOLDING), [call([], onFolded)]),
+        ]),
         state.position,
     ]);
 };
@@ -261,6 +277,15 @@ function useFloatLabelTransform(
         [isLabelReady, setIsLabelReady, fullHeight, fullWidth],
     );
 
+    const [
+        isDefaultPlaceholderVisible,
+        setDefaultPlaceholderVisible,
+    ] = React.useState(isFolded);
+
+    const markDefaultPlacehoderAsVisible = React.useCallback(() => {
+        setDefaultPlaceholderVisible(true);
+    }, []);
+
     React.useEffect(() => {
         if (
             layout.current.fullHeight == null ||
@@ -273,7 +298,14 @@ function useFloatLabelTransform(
 
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
 
-        show.setValue(isFoldedNow ? ShowStates.FOLD : ShowStates.OPEN);
+        if (isFoldedNow) {
+            show.setValue(ShowStates.FOLD);
+
+            return;
+        }
+
+        show.setValue(ShowStates.OPEN);
+        setDefaultPlaceholderVisible(false);
     }, [isFocused, inputHasValue, value, show, isLabelReady]);
 
     const pseudoLabelStyle = React.useMemo(() => {
@@ -284,7 +316,9 @@ function useFloatLabelTransform(
         };
     }, [isLabelReady, isFocused, inputHasValue, value]);
 
-    const scale = React.useRef(getScale(isFolded, show)).current;
+    const scale = React.useRef(
+        getScale(isFolded, show, markDefaultPlacehoderAsVisible),
+    ).current;
 
     const labelContainerStyle = React.useMemo(() => {
         const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
@@ -362,6 +396,7 @@ function useFloatLabelTransform(
         onBlur,
         onPseudoLabelLayout,
         onActualLabelLayout,
+        isDefaultPlaceholderVisible,
     };
 }
 
@@ -454,6 +489,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
         inputHasValue,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, onChangeText);
+
     const {
         isFocused,
         pseudoLabelStyle,
@@ -463,6 +499,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
         onBlur,
         onPseudoLabelLayout,
         onActualLabelLayout,
+        isDefaultPlaceholderVisible,
     } = useFloatLabelTransform(props, inputHasValue);
 
     return (
@@ -488,7 +525,11 @@ const UIMaterialTextViewFloating = React.forwardRef<
                     <UITextView
                         ref={ref}
                         {...rest}
-                        placeholder={undefined}
+                        placeholder={
+                            isDefaultPlaceholderVisible
+                                ? props.placeholder
+                                : undefined
+                        }
                         onFocus={onFocus}
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
