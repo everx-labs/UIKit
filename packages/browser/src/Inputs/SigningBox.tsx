@@ -74,7 +74,9 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="signing-box-bubble-prompt"
-                    text="How would you like to sign?"
+                    text={
+                        message.prompt || uiLocalized.Browser.SigningBox.Prompt
+                    }
                     status={MessageStatus.Received}
                     firstFromChain
                     lastFromChain

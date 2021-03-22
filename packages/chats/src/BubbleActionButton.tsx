@@ -54,6 +54,7 @@ export function BubbleActionButton(message: ActionButtonMessage) {
                     getButtonRadius(message, position),
                 ]}
                 onPress={disabled ? undefined : onPress}
+                disabled={disabled}
             >
                 <UILabel
                     role={UILabelRoles.ActionCallout}
