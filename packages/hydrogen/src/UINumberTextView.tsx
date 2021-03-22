@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Platform, TextInput } from 'react-native';
+import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UITextView, UITextViewProps } from './UITextView';
+import { moveCarret } from './moveCarret';
 
 const groupReversed = (
     rawString: string,
@@ -61,22 +62,6 @@ const group = (
     }
 
     return groupedPart;
-};
-
-const moveWebCaret = (input: HTMLInputElement, position: number) => {
-    if (input.setSelectionRange) {
-        input.focus();
-        input.setSelectionRange(position, position);
-
-        return;
-    }
-    if ((input as any).createTextRange) {
-        const range = (input as any).createTextRange();
-        range.collapse(true);
-        range.moveEnd(position);
-        range.moveStart(position);
-        range.select();
-    }
 };
 
 export function useNumberFormatting(
@@ -208,30 +193,7 @@ export function useNumberFormatting(
                 ref.current?.setNativeProps({
                     text: formattedNumber,
                 });
-                if (Platform.OS === 'web') {
-                    moveWebCaret(
-                        // @ts-ignore
-                        ref.current as HTMLInputElement,
-                        carretPosition,
-                    );
-                } else {
-                    ref.current?.setNativeProps({
-                        // (@savelichalex) I had a crash on Android
-                        // sth like "setSpan(-1..-1) starts before"
-                        // that minus numbers got me suspicious
-                        // that's why I introduced such a check
-                        // and it seems to work
-                        ...(carretPosition >= 0 &&
-                        carretPosition <= formattedNumber.length
-                            ? {
-                                  selection: {
-                                      start: carretPosition,
-                                      end: carretPosition,
-                                  },
-                              }
-                            : null),
-                    });
-                }
+                moveCarret(ref, carretPosition, formattedNumber.length);
             }
 
             selectionStart.current = carretPosition;
