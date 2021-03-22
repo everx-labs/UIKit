@@ -229,7 +229,10 @@ export default class UIModalController<Props, State> extends UIController<
     hardwareBackEventHandler = (): boolean => {
         if (this.dismissible) {
             this.onCancelPress();
+        } else {
+            BackHandler.exitApp();
         }
+
         return true;
     };
 
