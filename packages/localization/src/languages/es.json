@@ -63,6 +63,15 @@
             "Placeholder": "Amount…",
             "ErrorLess": "The amount is less than {0}",
             "ErrorBigger": "The amount is bigger than {0}"
+        },
+        "SigningBox": {
+            "Prompt": "How would you like to sign?",
+            "EnterKey": "Enter Key",
+            "PickSignature": "Pick a signature",
+            "UseSecurityCard": "Use Security Card",
+            "Signatures": "Signatures",
+            "AddSignature": "Add signature",
+            "PrivateKey": "Private key"
         }
     },
     "Cancel": "Cancelar",
@@ -507,5 +516,10 @@
     "Yesterday": "Ayer",
     "YesterdayAt": "Ayer a las {0}",
     "You": "Tú",
-    "YourEmail": "Tu correo electrónico"
+    "YourEmail": "Tu correo electrónico",
+    "KeyTextView": {
+        "InvalidChars": "The key is not in a HEX format",
+        "InproperLength": "The key should be 64 symbols long",
+        "Valid": "Looks good"
+    }
 }

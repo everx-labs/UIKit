@@ -52,6 +52,7 @@ export type ActionButtonMessage = BubbleBaseT & {
     type: ChatMessageType.ActionButton;
     text: string;
     textMode?: 'ellipsize' | 'fit';
+    disabled?: boolean;
     onPress?: () => void | Promise<void>;
 };
 

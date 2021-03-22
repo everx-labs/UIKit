@@ -12,7 +12,12 @@ import Animated from 'react-native-reanimated';
 import { ColorVariants, useTheme } from './Colors';
 import { Typography, TypographyVariants } from './Typography';
 import { UILabel, UILabelColors } from './UILabel';
-import { UITextView, UITextViewProps, useUITextViewValue } from './UITextView';
+import {
+    UITextView,
+    UITextViewProps,
+    useFocused,
+    useUITextViewValue,
+} from './UITextView';
 
 export type UIMaterialTextViewCommonProps = UITextViewProps & {
     label: string;
@@ -83,37 +88,6 @@ const getIsFolded = (
 ) => {
     return Boolean(isFocused || inputHasValue || value);
 };
-
-function useFocused(props: UIMaterialTextViewCommonProps) {
-    const { onFocus: onFocusProp, onBlur: onBlurProp } = props;
-    const [isFocused, setIsFocused] = React.useState(false);
-    const onFocus = React.useCallback(
-        (e) => {
-            setIsFocused(true);
-
-            if (onFocusProp) {
-                onFocusProp(e);
-            }
-        },
-        [onFocusProp, setIsFocused],
-    );
-    const onBlur = React.useCallback(
-        (e) => {
-            setIsFocused(false);
-
-            if (onBlurProp) {
-                onBlurProp(e);
-            }
-        },
-        [onBlurProp, setIsFocused],
-    );
-
-    return {
-        isFocused,
-        onFocus,
-        onBlur,
-    };
-}
 
 // eslint-disable-next-line no-shadow
 enum ShowStates {
@@ -208,7 +182,10 @@ function useFloatLabelTransform(
     const { value } = props;
     const isFolded = isLabelFolded(props);
 
-    const { isFocused, onFocus, onBlur } = useFocused(props);
+    const { isFocused, onFocus, onBlur } = useFocused(
+        props.onFocus,
+        props.onBlur,
+    );
 
     const layout = React.useRef<{
         foldedHeight?: number;
@@ -568,7 +545,10 @@ const UIMaterialTextViewSimple = React.forwardRef<
         false,
         onChangeText,
     );
-    const { isFocused, onFocus, onBlur } = useFocused(props);
+    const { isFocused, onFocus, onBlur } = useFocused(
+        props.onFocus,
+        props.onBlur,
+    );
 
     return (
         <UIMaterialTextViewComment {...props}>
