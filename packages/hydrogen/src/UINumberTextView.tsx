@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Platform, TextInput } from 'react-native';
+import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UITextView, UITextViewProps } from './UITextView';
+import { moveCarret } from './moveCarret';
 
 const groupReversed = (
     rawString: string,
@@ -63,27 +64,89 @@ const group = (
     return groupedPart;
 };
 
-const moveWebCaret = (input: HTMLInputElement, position: number) => {
-    if (input.setSelectionRange) {
-        input.focus();
-        input.setSelectionRange(position, position);
+function getCarretNormalizedPosition(
+    carretPosition: number,
+    previousText: string,
+    integerSeparator: string,
+    fractionalSeparator: string,
+) {
+    let carretNormalizedPosition = carretPosition;
 
-        return;
+    for (let i = 0; i < carretPosition; i += 1) {
+        if (
+            previousText[i] === integerSeparator ||
+            previousText[i] === fractionalSeparator
+        ) {
+            carretNormalizedPosition -= 1;
+        }
     }
-    if ((input as any).createTextRange) {
-        const range = (input as any).createTextRange();
-        range.collapse(true);
-        range.moveEnd(position);
-        range.moveStart(position);
-        range.select();
+
+    return carretNormalizedPosition;
+}
+
+function getNewCarretPosition(
+    startPosition: number,
+    endPosition: number,
+    text: string,
+    normalizedText: string,
+    previousText: string,
+    previousNormalizedText: string,
+    integerSeparator: string,
+    fractionalSeparator: string,
+) {
+    if (normalizedText.length === previousNormalizedText.length) {
+        return startPosition;
     }
-};
+
+    // At first we should get a carret position
+    // in normalized value (ie without separators)
+    const startCarretNormalizedPosition = getCarretNormalizedPosition(
+        startPosition,
+        previousText,
+        integerSeparator,
+        fractionalSeparator,
+    );
+    const endCarretNormalizedPosition = getCarretNormalizedPosition(
+        endPosition,
+        previousText,
+        integerSeparator,
+        fractionalSeparator,
+    );
+
+    let newCarretPosition = startCarretNormalizedPosition;
+
+    // We calculated normalized position exactly for this
+    // as we could easily understand how many symbols
+    // were put, but we can do it only with normalized values
+    // as it hard to count proper value with any amount of separators in it
+
+    newCarretPosition += normalizedText.length - previousNormalizedText.length;
+
+    if (startCarretNormalizedPosition !== endCarretNormalizedPosition) {
+        newCarretPosition +=
+            endCarretNormalizedPosition - startCarretNormalizedPosition;
+    }
+
+    // Afrer we got carret position in normalized value
+    // we can get through formatted value from left position
+    // and count every separator that we find on our way to the
+    // carret position, that's how we shift carret from normalized
+    // to position in formatted string
+    for (let i = 0; i < newCarretPosition; i += 1) {
+        if (text[i] === integerSeparator || text[i] === fractionalSeparator) {
+            newCarretPosition += 1;
+        }
+    }
+
+    return newCarretPosition;
+}
 
 export function useNumberFormatting(
     ref: React.Ref<TextInput> | null,
     decimals?: number,
 ) {
     const selectionStart = React.useRef(0);
+    const selectionEnd = React.useRef(0);
 
     const {
         grouping: integerSeparator,
@@ -102,10 +165,11 @@ export function useNumberFormatting(
     const onSelectionChange = React.useCallback(
         ({
             nativeEvent: {
-                selection: { start },
+                selection: { start, end },
             },
         }) => {
             selectionStart.current = start;
+            selectionEnd.current = end;
         },
         [],
     );
@@ -162,45 +226,16 @@ export function useNumberFormatting(
             const formattedNumber = result.join(delimeter);
 
             // Adjust carret (calculation)
-            let carretPosition = selectionStart.current;
-
-            if (normalizedText.length !== lastNormalizedText.current.length) {
-                let carretNormalizedPosition = carretPosition;
-
-                // At first we should get a carret position
-                // in normalized value (ie without separators)
-                for (let i = 0; i < carretPosition; i += 1) {
-                    if (
-                        lastText.current[i] === integerSeparator ||
-                        lastText.current[i] === fractionalSeparator
-                    ) {
-                        carretNormalizedPosition -= 1;
-                    }
-                }
-
-                // We calculated normalized position exactly for this
-                // as we could easily understand how many symbols
-                // were put, but we can do it only with normalized values
-                // as it hard to count proper value with any amount of separators in it
-                carretNormalizedPosition +=
-                    normalizedText.length - lastNormalizedText.current.length;
-
-                // Afrer we got carret position in normalized value
-                // we can get through formatted value from left position
-                // and count every separator that we find on our way to the
-                // carret position, that's how we shift carret from normalized
-                // to position in formatted string
-                for (let i = 0; i < carretNormalizedPosition; i += 1) {
-                    if (
-                        formattedNumber[i] === integerSeparator ||
-                        formattedNumber[i] === fractionalSeparator
-                    ) {
-                        carretNormalizedPosition += 1;
-                    }
-                }
-
-                carretPosition = carretNormalizedPosition;
-            }
+            const carretPosition = getNewCarretPosition(
+                selectionStart.current,
+                selectionEnd.current,
+                formattedNumber,
+                normalizedText,
+                lastText.current,
+                lastNormalizedText.current,
+                integerSeparator,
+                fractionalSeparator,
+            );
 
             // Set it to text input
             // To avoid re-rendering
@@ -208,30 +243,7 @@ export function useNumberFormatting(
                 ref.current?.setNativeProps({
                     text: formattedNumber,
                 });
-                if (Platform.OS === 'web') {
-                    moveWebCaret(
-                        // @ts-ignore
-                        ref.current as HTMLInputElement,
-                        carretPosition,
-                    );
-                } else {
-                    ref.current?.setNativeProps({
-                        // (@savelichalex) I had a crash on Android
-                        // sth like "setSpan(-1..-1) starts before"
-                        // that minus numbers got me suspicious
-                        // that's why I introduced such a check
-                        // and it seems to work
-                        ...(carretPosition >= 0 &&
-                        carretPosition <= formattedNumber.length
-                            ? {
-                                  selection: {
-                                      start: carretPosition,
-                                      end: carretPosition,
-                                  },
-                              }
-                            : null),
-                    });
-                }
+                moveCarret(ref, carretPosition, formattedNumber.length);
             }
 
             selectionStart.current = carretPosition;

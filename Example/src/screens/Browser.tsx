@@ -17,6 +17,7 @@ import type {
     MenuMessage,
     TerminalMessage,
     AmountInputMessage,
+    SigningBoxMessage,
 } from '@tonlabs/uikit.browser';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
@@ -24,6 +25,7 @@ import {
     useTheme,
     ColorVariants,
     UIBottomSheet,
+    UICardSheet,
     UILabel,
     UILabelColors,
 } from '@tonlabs/uikit.hydrogen';
@@ -42,6 +44,24 @@ const BrowserScreen = () => {
             type: ChatMessageType.PlainText,
             status: MessageStatus.Received,
             text: 'This is browser!',
+        },
+    ]);
+    const [isUsingSecCard, setUsingSecCard] = React.useState(false);
+    const [signingBoxes, setSigningBoxes] = React.useState([
+        {
+            id: 1,
+            title: 'Sign with Surf',
+            publicKey: '1c2f3b4a',
+        },
+        {
+            id: 2,
+            title: 'Governance key',
+            publicKey: '2f3b4a',
+        },
+        {
+            id: 3,
+            title: 'Signature',
+            publicKey: '3b4a',
         },
     ]);
 
@@ -266,10 +286,85 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
+                            style={{
+                                marginBottom: 10,
+                            }}
+                        />
+                        <UIButton
+                            title="Add SigningBoxInput"
+                            onPress={() => {
+                                const message: SigningBoxMessage = {
+                                    key: `${Date.now()}-signing-box`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.SigningBox,
+                                    signingBoxes,
+                                    onAddSigningBox: (privateKey: string) => {
+                                        const newSigningBox = {
+                                            id:
+                                                signingBoxes[
+                                                    signingBoxes.length - 1
+                                                ].id + 1,
+                                            title: 'Signature',
+                                            publicKey: privateKey,
+                                        };
+                                        setSigningBoxes([
+                                            ...signingBoxes,
+                                            newSigningBox,
+                                        ]);
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                signingBoxes: [
+                                                    ...signingBoxes,
+                                                    newSigningBox,
+                                                ],
+                                            },
+                                            ...messages,
+                                        ]);
+
+                                        return Promise.resolve(newSigningBox);
+                                    },
+                                    onUseSecurityCard: () => {
+                                        setUsingSecCard(true);
+
+                                        return new Promise((resolve) => {
+                                            setTimeout(() => {
+                                                setUsingSecCard(false);
+                                                resolve(true);
+                                            }, 1000);
+                                        });
+                                    },
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                navigation.setParams({
+                                    menuVisible: false,
+                                });
+                            }}
                         />
                     </UIBottomSheet>
                 )}
             </SafeAreaInsetsContext.Consumer>
+            <UICardSheet
+                visible={isUsingSecCard}
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    padding: 20,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <UILabel>Pretending to using a security card...</UILabel>
+            </UICardSheet>
         </>
     );
 };

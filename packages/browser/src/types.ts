@@ -26,6 +26,7 @@ export enum InteractiveMessageType {
     Menu = 'Menu',
     Confirm = 'Confirm',
     AmountInput = 'AmountInput',
+    SigningBox = 'SigningBox',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -42,13 +43,6 @@ type ActionButtonMessage = BubbleBaseT & {
     textMode?: 'ellipsize' | 'fit';
     onPress?: () => void | Promise<void>;
 };
-
-// eslint-disable-next-line no-shadow
-export enum BrowserMessageType {
-    ConfirmSuccessful = 'ConfirmSuccessful',
-    ConfirmDeclined = 'ConfirmDeclined',
-    ConfirmButtons = 'ConfirmButtons',
-}
 
 type InteractiveMessage<
     T extends InteractiveMessageType,
@@ -155,6 +149,31 @@ export type AmountInputMessage = InteractiveMessage<
     AmountExternalState
 >;
 
+export type SigningBox = {
+    id: number; // e.g. may be equal to SigningBox handler
+    title: string;
+    publicKey: string;
+};
+
+export type SigningBoxExternalState = {
+    chosenOption?: string;
+    signingBox?: SigningBox;
+};
+
+export type SigningBoxMessage = InteractiveMessage<
+    InteractiveMessageType.SigningBox,
+    {
+        prompt?: string;
+        signingBoxes: SigningBox[];
+        securityCardSupported?: boolean;
+        /* in case of a manual enter */
+        onAddSigningBox: (privateKey: string) => Promise<SigningBox>;
+        onUseSecurityCard: () => Promise<boolean>;
+        onSelect: (state: SigningBoxExternalState) => void;
+    },
+    SigningBoxExternalState
+>;
+
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
@@ -162,7 +181,8 @@ export type BrowserMessage =
     | AddressInputMessage
     | MenuMessage
     | ConfirmMessage
-    | AmountInputMessage;
+    | AmountInputMessage
+    | SigningBoxMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

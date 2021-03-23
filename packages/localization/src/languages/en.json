@@ -63,6 +63,15 @@
             "MainAccount": "My account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
+        },
+        "SigningBox": {
+            "Prompt": "How would you like to sign?",
+            "EnterKey": "Enter Key",
+            "PickSignature": "Pick a signature",
+            "UseSecurityCard": "Use Security Card",
+            "Signatures": "Signatures",
+            "AddSignature": "Add signature",
+            "PrivateKey": "Private key"
         }
     },
     "Cancel": "Cancel",
@@ -238,6 +247,11 @@
     "InvalidPhone": "Invalid phone",
     "InviteFriends": "Invite Friends",
     "InvitesYouToWallet": "Invites you to join TON Surf and receive a transfer",
+    "KeyTextView": {
+        "InvalidChars": "The key isn't in HEX format",
+        "InproperLength": "The key should be 64 symbols long",
+        "Valid": "Looks good"
+    },
     "LastMonth": "was last month",
     "LastName": "Last name",
     "LastWeek": "was last week",

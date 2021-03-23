@@ -119,6 +119,7 @@ function getPosition(
     const dragY = new Animated.Value(0);
     const beforeDragPosition = new Animated.Value(0);
     const beforeKeyboardHeight = new Animated.Value(0);
+    const beforeHeight = new Animated.Value(0);
 
     return {
         value: block([
@@ -181,6 +182,32 @@ function getPosition(
                         ),
                     ],
                 ),
+                // If height is changed when sheet is opened, need to adjust position
+                cond(
+                    and(
+                        eq(show, SHOW_STATES.OPENING),
+                        neq(height, beforeHeight),
+                    ),
+                    [
+                        cond(
+                            state.finished,
+                            [
+                                set(
+                                    state.position,
+                                    sub(0, add(height, beforeKeyboardHeight)),
+                                ),
+                            ],
+                            [
+                                set(
+                                    // @ts-ignore
+                                    config.toValue,
+                                    sub(0, add(height, beforeKeyboardHeight)),
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+                cond(neq(height, beforeHeight), [set(beforeHeight, height)]),
                 // Opening/Closing spring animation
                 // All this blocks should be after gesture handling
                 // because it changes `show` variable, that could affect this part

@@ -1,7 +1,15 @@
 // @flow
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import { StyleSheet, Platform, Dimensions, Animated, BackHandler, View } from 'react-native';
+import {
+    Animated,
+    BackHandler,
+    Dimensions,
+    NativeModules,
+    Platform,
+    StyleSheet,
+    View,
+} from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import {
@@ -228,8 +236,20 @@ export default class UIModalController<Props, State> extends UIController<
 
     hardwareBackEventHandler = (): boolean => {
         if (this.dismissible) {
+            // If the modal screen is dismissible, the back button should emulate a cancel press.
             this.onCancelPress();
+        } else {
+            // Otherwise user cannot return to the previous screen by pressing the back button,
+            // hence it should fold the app on Android when the modal screen cannot be dismissed.
+
+            // For that purpose we should have ExitAndroid native modules installed in the app.
+            if (NativeModules.ExitAndroid) {
+                NativeModules.ExitAndroid.sendToBackApp();
+            } else { // If there is no any, just exit the app.
+                BackHandler.exitApp();
+            }
         }
+        // Return `true` as the back button event was handled.
         return true;
     };
 
