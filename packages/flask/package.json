@@ -30,16 +30,17 @@
   "react-native": "src/index.ts",
   "types": "lib/typescript/src/index.d.ts",
   "files": [
-    "assets/",
     "lib/",
     "src/"
   ],
   "dependencies": {
     "@tonlabs/uikit.assets": "^2.1.0",
-    "@tonlabs/uikit.components": "^2.1.0",
+    "@tonlabs/uikit.chats": "^2.1.0",
     "@tonlabs/uikit.core": "^2.1.0",
     "@tonlabs/uikit.hydrogen": "^2.0.2",
-    "@tonlabs/uikit.localization": "^2.0.2"
+    "@tonlabs/uikit.localization": "^2.0.2",
+    "@tonlabs/uikit.keyboard": "^2.0.2",
+    "bignumber.js": "9.0.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
@@ -47,8 +48,7 @@
     "@types/react-native": "0.63.37",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-native": "^0.63.0",
-    "typescript": "^4.0.3"
+    "react-native": "^0.63.0"
   },
   "peerDependencies": {
     "react": "^16.13.1",

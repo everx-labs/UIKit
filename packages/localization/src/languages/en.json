@@ -337,6 +337,11 @@
     "Private": "Private",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "Private channels can only be joined via an invite link.",
     "Profile": "Profile",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Public",
     "PublicAccount": "Public account",
     "PublicAccountWarning": "Attention! If you provide your public address to third parties it will be visible to them even after you make it private.",

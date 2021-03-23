@@ -337,6 +337,11 @@
     "Private": "Gizli",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "Gizli kanallara sadece bir davet bağlantısıyla katılınabilir.",
     "Profile": "Profil",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Genel",
     "PublicAccount": "Açık hesap",
     "PublicAccountWarning": "Dikkat! Açık adresinizi üçüncü şahıslara verirseniz, bunu gizli yaptıktan sonra bile onlar tarafından görülebilir.",

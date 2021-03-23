@@ -337,6 +337,11 @@
     "Private": "비공개",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "비공개 채널에 초대 링크를 통해서만 들어갈 수 있습니다.",
     "Profile": "프로필",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "공개",
     "PublicAccount": "공개 계정",
     "PublicAccountWarning": "주목! 만약에 공개 주소를 제 3자에게 제공한다면 비공개로 설정 한 후에도 그 사람들에게 공개 주소로 작동될 것입니다.",

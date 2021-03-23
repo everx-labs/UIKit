@@ -13,6 +13,7 @@ import { ColorVariants, useTheme } from './Colors';
 import { Typography, TypographyVariants } from './Typography';
 import { UILabel, UILabelColors } from './UILabel';
 import { UITextView, UITextViewProps, useUITextViewValue } from './UITextView';
+import { useHover } from './useHover';
 
 export type UIMaterialTextViewCommonProps = UITextViewProps & {
     label: string;
@@ -362,22 +363,6 @@ function useFloatLabelTransform(
         onBlur,
         onPseudoLabelLayout,
         onActualLabelLayout,
-    };
-}
-
-function useHover() {
-    const [isHovered, setIsHovered] = React.useState(false);
-    const onMouseEnter = React.useCallback(() => {
-        setIsHovered(true);
-    }, [setIsHovered]);
-    const onMouseLeave = React.useCallback(() => {
-        setIsHovered(false);
-    }, [setIsHovered]);
-
-    return {
-        isHovered,
-        onMouseEnter,
-        onMouseLeave,
     };
 }
 

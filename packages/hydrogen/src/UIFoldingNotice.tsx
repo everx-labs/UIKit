@@ -1,12 +1,17 @@
 import * as React from 'react';
-import { Animated, StyleSheet, TouchableOpacity, View, ViewStyle, ImageProps } from 'react-native';
+import { Animated, ImageProps, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
-import { Portal } from './Portal';
+import { ColorVariants } from './Colors';
 import { UIConstant } from './constants';
+import { UIBackgroundView } from './UIBackgroundView';
 import { UIImage } from './UIImage';
+import { Portal } from './Portal';
+import { useHover } from './useHover';
 
 const minimize = require('../assets/icons/minimize/minimize.png');
+
+const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 
 type OnFold = () => void | Promise<void>;
 
@@ -31,6 +36,15 @@ function UIFoldingNoticePortalContent({
     const [contentWidth, setContentWidth] = React.useState(0);
     const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
     const foldingAnim = React.useRef(new Animated.Value(0)).current;
+    const iconPaddingAnim = React.useRef(new Animated.Value(UIConstant.normalContentOffset)).current;
+    const iconHoverAnim = React.useRef(new Animated.Value(UIConstant.minNoticeIconSize)).current;
+
+    const {
+        isHovered: isIconHovered,
+        onMouseEnter: onIconMouseEnter,
+        onMouseLeave: onIconMouseLeave,
+    } = useHover();
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const show = () => {
         Animated.timing(visibleAnim, {
@@ -55,9 +69,39 @@ function UIFoldingNoticePortalContent({
 
     const unfoldNotice = () => {
         Animated.timing(foldingAnim, {
-            toValue: UIConstant.minNoticeSize + contentWidth + UIConstant.contentOffset,
+            toValue: UIConstant.minNoticeSize + contentWidth,
             useNativeDriver: false,
         }).start();
+    };
+
+    const foldNoticeIcon = () => {
+        Animated.parallel([
+            Animated.timing(iconHoverAnim, {
+                toValue: UIConstant.minNoticeIconSize,
+                useNativeDriver: false,
+                duration: 150,
+            }),
+            Animated.timing(iconPaddingAnim, {
+                toValue: UIConstant.normalContentOffset,
+                useNativeDriver: false,
+                duration: 150,
+            }),
+        ]).start();
+    };
+
+    const expandNoticeIcon = () => {
+        Animated.parallel([
+            Animated.timing(iconHoverAnim, {
+                toValue: UIConstant.maxNoticeIconSize,
+                useNativeDriver: false,
+                duration: 150,
+            }),
+            Animated.timing(iconPaddingAnim, {
+                toValue: 0,
+                useNativeDriver: false,
+                duration: 150,
+            }),
+        ]).start();
     };
 
     React.useEffect(
@@ -82,6 +126,21 @@ function UIFoldingNoticePortalContent({
         [folded, contentWidth],
     );
 
+    React.useEffect(
+        () => {
+            if (folded) {
+                if (isIconHovered) {
+                    expandNoticeIcon();
+                } else {
+                    foldNoticeIcon();
+                }
+            } else {
+                foldNoticeIcon();
+            }
+        },
+        [folded, isIconHovered, foldNoticeIcon, expandNoticeIcon],
+    );
+
     const containerStyle = React.useMemo(
         () => [
             styles.container,
@@ -89,7 +148,7 @@ function UIFoldingNoticePortalContent({
                 right: visibleAnim,
             }
         ],
-        [],
+        [visibleAnim],
     );
 
     const noticeStyle = React.useMemo(
@@ -100,7 +159,27 @@ function UIFoldingNoticePortalContent({
                 width: foldingAnim,
             },
         ],
-        []
+        [style, foldingAnim]
+    );
+
+    const noticeIconContainerStyle = React.useMemo(
+        () => [
+            {
+                padding: iconPaddingAnim,
+            }
+        ],
+        [iconPaddingAnim],
+    );
+
+    const noticeIconStyle = React.useMemo(
+        () => [
+            styles.noticeIcon,
+            {
+                width: iconHoverAnim,
+                height: iconHoverAnim,
+            },
+        ],
+        [iconHoverAnim],
     );
 
     const onContainerLayout = React.useCallback(
@@ -134,15 +213,43 @@ function UIFoldingNoticePortalContent({
                 enabled={folded}
                 onGestureEvent={onFold}
             >
-                <Animated.View style={noticeStyle}>
-                    <UIImage source={icon} style={styles.noticeIcon} />
+                <AnimatedWithColor
+                    color={ColorVariants.BackgroundPrimary}
+                    style={noticeStyle}
+                >
+                    <Animated.View
+                        style={noticeIconContainerStyle}
+                    >
+                        <AnimatedWithColor
+                            // @ts-expect-error
+                            onMouseEnter={onIconMouseEnter}
+                            onMouseLeave={onIconMouseLeave}
+                            color={ColorVariants.BackgroundAccent}
+                            style={noticeIconStyle}
+                        >
+                            <UIImage source={icon} />
+                        </AnimatedWithColor>
+                    </Animated.View>
                     <View style={styles.content} onLayout={onContentLayout}>
-                        {children}
-                        <TouchableOpacity onPress={onFold}>
-                            <UIImage source={minimize} style={styles.noticeBtn} />
+                        <View style={styles.contentContainer}>
+                            {children}
+                        </View>
+                        <TouchableOpacity
+                            // @ts-expect-error
+                            onMouseEnter={onMouseEnter}
+                            onMouseLeave={onMouseLeave}
+                            onPress={onFold}
+                            style={styles.noticeButton}
+                        >
+                            <UIImage
+                                source={minimize}
+                                tintColor={isHovered
+                                    ? ColorVariants.TextAccent
+                                    : ColorVariants.TextPrimary}
+                            />
                         </TouchableOpacity>
                     </View>
-                </Animated.View>
+                </AnimatedWithColor>
             </TapGestureHandler>
         </Animated.View>
     );
@@ -169,14 +276,24 @@ const styles = StyleSheet.create({
         maxWidth: 'auto',
         flexDirection: 'row',
         overflow: 'hidden',
-    },
-    content: {
-        flexDirection: 'row',
+        borderRadius: UIConstant.alertBorderRadius,
+        ...UIConstant.cardShadow,
     },
     noticeIcon: {
-        marginRight: UIConstant.contentOffset,
+        borderRadius: UIConstant.alertBorderRadius,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    noticeBtn: {
-        marginLeft: UIConstant.contentOffset,
+    content: {
+        paddingVertical: UIConstant.normalContentOffset,
+        flexDirection: 'row',
+    },
+    contentContainer: {
+        paddingHorizontal: UIConstant.tinyContentOffset,
+        justifyContent: 'center',
+    },
+    noticeButton: {
+        marginHorizontal: UIConstant.normalContentOffset,
+        height: UIConstant.smallCellHeight,
     },
 });

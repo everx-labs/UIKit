@@ -337,6 +337,11 @@
     "Private": "Privé",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "Les chaînes privées ne peuvent être rejointes que par un lien d'invitation.",
     "Profile": "Profil",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Publique",
     "PublicAccount": "Compte public",
     "PublicAccountWarning": "Attention! Si vous fournissez votre adresse publique à des tiers, elle leur sera visible même après l'avoir rendue privée.",
