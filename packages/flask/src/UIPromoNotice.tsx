@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Linking, Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { ImageProps, Linking, Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
@@ -10,6 +10,12 @@ import {
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+
+type UIPromoNoticeProps = {
+    appStoreUrl: string;
+    googlePlayUrl: string;
+    icon?: ImageProps;
+};
 
 const styles = StyleSheet.create({
     noticeText: {
@@ -26,7 +32,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export function UIPromoNotice() {
+export function UIPromoNotice({
+    appStoreUrl,
+    googlePlayUrl,
+    icon,
+}: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
     const [folded, setFolded] = React.useState(false);
     const windowWidth = useWindowDimensions().width;
@@ -48,19 +58,19 @@ export function UIPromoNotice() {
     }, [folded]);
 
     const onAppStore = React.useCallback(() => {
-        Linking.openURL('https://apps.apple.com/app/ton-surf-blockchain-browser/id1481986831');
-    }, []);
+        Linking.openURL(appStoreUrl);
+    }, [appStoreUrl]);
 
     const onGooglePlay = React.useCallback(() => {
-        Linking.openURL('https://play.google.com/store/apps/details?id=surf.ton');
-    }, []);
+        Linking.openURL(googlePlayUrl);
+    }, [googlePlayUrl]);
 
     return (
         <UIFoldingNotice
             visible={visible}
             folded={folded}
             onFold={onFold}
-            icon={UIAssets.icons.brand.tonSymbol}
+            icon={icon || UIAssets.icons.brand.tonSymbol}
         >
             <UILabel
                 color={UILabelColors.TextPrimary}

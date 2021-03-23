@@ -240,7 +240,10 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             title="Navigation"
                         />
                     </ScrollView>
-                    <UIPromoNotice />
+                    <UIPromoNotice
+                        appStoreUrl="https://www.apple.com/app-store/"
+                        googlePlayUrl="https://play.google.com/store"
+                    />
                 </PortalManager>
             </SafeAreaView>
         </UIBackgroundView>

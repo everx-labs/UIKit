@@ -1,7 +1,7 @@
 {
   "name": "@tonlabs/uikit.flask",
   "version": "2.0.0",
-  "description": "Flask package for brand data and logo templates based on Tonlabs's UIKit",
+  "description": "Flask package is a set of user stories built upon the components from uikit.hydrogen",
   "scripts": {
     "prepare": "bob build",
     "test": "echo \"Error: no test specified\" && exit 1"
