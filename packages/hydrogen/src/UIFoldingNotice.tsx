@@ -47,28 +47,28 @@ function UIFoldingNoticePortalContent({
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const show = () => {
-        Animated.timing(visibleAnim, {
+        Animated.spring(visibleAnim, {
             toValue: (UIConstant.contentOffset * 2),
             useNativeDriver: false,
         }).start();
     };
 
     const hide = () => {
-        Animated.timing(visibleAnim, {
+        Animated.spring(visibleAnim, {
             toValue: -containerWidth - (UIConstant.contentOffset * 2),
             useNativeDriver: false,
         }).start();
     };
 
     const foldNotice = () => {
-        Animated.timing(foldingAnim, {
+        Animated.spring(foldingAnim, {
             toValue: UIConstant.minNoticeSize,
             useNativeDriver: false,
         }).start();
     };
 
     const unfoldNotice = () => {
-        Animated.timing(foldingAnim, {
+        Animated.spring(foldingAnim, {
             toValue: UIConstant.minNoticeSize + contentWidth,
             useNativeDriver: false,
         }).start();
@@ -128,12 +128,8 @@ function UIFoldingNoticePortalContent({
 
     React.useEffect(
         () => {
-            if (folded) {
-                if (isIconHovered) {
-                    expandNoticeIcon();
-                } else {
-                    foldNoticeIcon();
-                }
+            if (folded && isIconHovered) {
+                expandNoticeIcon();
             } else {
                 foldNoticeIcon();
             }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Linking, Platform, StyleSheet, View } from 'react-native';
+import { Linking, Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
@@ -26,35 +26,10 @@ const styles = StyleSheet.create({
     },
 });
 
-function getWindowWidth() {
-    const { innerWidth: width } = window;
-
-    return width;
-}
-
-function useWindowWidth() {
-    const [windowWidth, setWindowWidth] = React.useState(getWindowWidth());
-
-    React.useEffect(
-        () => {
-            function handleResize() {
-                setWindowWidth(getWindowWidth());
-            }
-
-            window.addEventListener('resize', handleResize);
-
-            return () => window.removeEventListener('resize', handleResize);
-        },
-        [],
-    );
-
-    return windowWidth;
-}
-
 export function UIPromoNotice() {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
     const [folded, setFolded] = React.useState(false);
-    const windowWidth = useWindowWidth();
+    const windowWidth = useWindowDimensions().width;
 
     React.useEffect(() => {
         if (Platform.OS === 'web') {

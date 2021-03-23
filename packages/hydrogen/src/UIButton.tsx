@@ -16,19 +16,6 @@ export function UIButton({
     title,
 }: UIButtonProps) {
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-    const content = React.useMemo(
-        () => {
-            return (
-                <UILabel
-                    color={isHovered ? UILabelColors.TextAccent : UILabelColors.TextPrimary}
-                    role={UILabelRoles.Action}
-                >
-                    {title}
-                </UILabel>
-            );
-        },
-        [title, isHovered]
-    );
 
     return (
         <TouchableOpacity
@@ -38,7 +25,12 @@ export function UIButton({
             onPress={onPress}
             style={style}
         >
-            {content}
+            <UILabel
+                color={isHovered ? UILabelColors.TextAccent : UILabelColors.TextPrimary}
+                role={UILabelRoles.Action}
+            >
+                {title}
+            </UILabel>
         </TouchableOpacity>
     );
 }
