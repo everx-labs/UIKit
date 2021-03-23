@@ -25,6 +25,7 @@
     "@tonlabs/uikit.components": "*",
     "@tonlabs/uikit.chats": "*",
     "@tonlabs/uikit.core": "*",
+    "@tonlabs/uikit.flask": "*",
     "@tonlabs/uikit.hydrogen": "*",
     "@tonlabs/uikit.stickers": "*",
     "@tonlabs/uikit.browser": "*",

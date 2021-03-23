@@ -346,6 +346,11 @@
     "Private": "プライベート",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "プライベートチャンネルには、招待リンクのみで参加できます。",
     "Profile": "プロフィール",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "公共",
     "PublicAccount": "公共アカウント",
     "PublicAccountWarning": "注意！共有アドレスを第三者に提供すると、プライベートにした後でもこの第三者に公開されます。",

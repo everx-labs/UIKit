@@ -346,6 +346,11 @@
     "Private": "Private",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "Private Kanäle können nur über einen Einladungslink verbunden werden.",
     "Profile": "Profil",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Öffentlich",
     "PublicAccount": "Öffentliches Konto",
     "PublicAccountWarning": "Achtung! Wenn Sie Ihre öffentliche Adresse an Dritte weitergeben, ist Sie für Sie auch nach der privaten Nutzung sichtbar.",
