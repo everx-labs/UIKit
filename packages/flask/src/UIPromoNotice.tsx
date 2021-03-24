@@ -44,16 +44,12 @@ export function UIPromoNotice({
     const windowWidth = useWindowDimensions().width;
 
     React.useEffect(() => {
-        if (Platform.OS === 'web') {
-            if (windowWidth < minimumWidthToShow) {
-                setVisible(false);
-            } else {
-                setVisible(true);
-            }
-        } else {
+        if (windowWidth < minimumWidthToShow) {
             setVisible(false);
+        } else {
+            setVisible(true);
         }
-    }, [windowWidth]);
+    }, [windowWidth, minimumWidthToShow]);
 
     const onFold = React.useCallback(() => {
         setFolded(!folded);
@@ -68,31 +64,34 @@ export function UIPromoNotice({
     }, [googlePlayUrl]);
 
     return (
-        <UIFoldingNotice
-            visible={visible}
-            folded={folded}
-            onFold={onFold}
-            icon={icon || UIAssets.icons.brand.tonSymbol}
-        >
-            <UILabel
-                color={UILabelColors.TextPrimary}
-                role={UILabelRoles.ParagraphFootnote}
-                style={styles.noticeText}
-            >
-                {uiLocalized.promoDownload.notice}
-            </UILabel>
-            <View style={styles.buttons}>
-                <UIButton
-                    title={uiLocalized.promoDownload.appStore}
-                    onPress={onAppStore}
-                    style={styles.leftButton}
-                />
-                <UIButton
-                    title={uiLocalized.promoDownload.googlePlay}
-                    onPress={onGooglePlay}
-                    style={styles.rightButton}
-                />
-            </View>
-        </UIFoldingNotice>
+        Platform.OS === 'web'
+            ? (
+                <UIFoldingNotice
+                    visible={visible}
+                    folded={folded}
+                    onFold={onFold}
+                    icon={icon || UIAssets.icons.brand.tonSymbol}
+                >
+                    <UILabel
+                        color={UILabelColors.TextPrimary}
+                        role={UILabelRoles.ParagraphFootnote}
+                        style={styles.noticeText}
+                    >
+                        {uiLocalized.promoDownload.notice}
+                    </UILabel>
+                    <View style={styles.buttons}>
+                        <UIButton
+                            title={uiLocalized.promoDownload.appStore}
+                            onPress={onAppStore}
+                            style={styles.leftButton}
+                        />
+                        <UIButton
+                            title={uiLocalized.promoDownload.googlePlay}
+                            onPress={onGooglePlay}
+                            style={styles.rightButton}
+                        />
+                    </View>
+                </UIFoldingNotice>
+            ) : null
     );
 }
