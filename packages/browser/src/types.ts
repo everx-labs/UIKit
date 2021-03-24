@@ -142,8 +142,8 @@ export type AmountInputMessage = InteractiveMessage<
     {
         prompt: string;
         decimals: number;
-        min: number;
-        max: number;
+        min?: BigNumber;
+        max?: BigNumber;
         onSend: (state: AmountExternalState) => void | Promise<void>;
     },
     AmountExternalState
