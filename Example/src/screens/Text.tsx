@@ -16,6 +16,7 @@ export const TextScreen = () => (
                 }}
             >
                 <UILabel
+                    testID="uiLabel_default"
                     color={UILabelColors.TextPrimary}
                     role={UILabelRoles.ParagraphText}
                 >
@@ -31,6 +32,7 @@ export const TextScreen = () => (
                 }}
             >
                 <UILabel
+                    testID="uiLabel_comment"
                     color={UILabelColors.TextSecondary}
                     role={UILabelRoles.ParagraphLabel}
                 >
@@ -45,7 +47,7 @@ export const TextScreen = () => (
                     paddingVertical: 20,
                 }}
             >
-                <UIListHeader title="List header" />
+                <UIListHeader testId="uiListHeader_default" title="List header" />
             </View>
         </ExampleSection>
         <ExampleSection title="UISectionHeader">
@@ -56,6 +58,7 @@ export const TextScreen = () => (
                 }}
             >
                 <UISectionHeader
+                    testID="uiSectionHeader_default"
                     title="Section header"
                     titleRight="Title on the right side" // This will be rendered on the right side of the header
                     containerStyle={{ marginBottom: 16 }}
@@ -68,6 +71,7 @@ export const TextScreen = () => (
                 }}
             >
                 <UISectionHeader
+                    testID="uiSectionHeader_with_border_on_top"
                     title="Section header with border on top"
                     needBorder
                 />

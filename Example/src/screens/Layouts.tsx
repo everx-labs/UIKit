@@ -16,6 +16,7 @@ export const Layouts = () => (
         <ExampleSection title="UIDetailsTable">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIDetailsTable
+                    testID="uiDetailsTable_default"
                     detailsList={[
                         {
                             caption: 'row 1',
@@ -47,7 +48,7 @@ export const Layouts = () => (
         </ExampleSection>
         <ExampleSection title="UIGrid">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIGrid type={UIGrid.Type.C6} style={styles.grid}>
+                <UIGrid testID="uiGrid_default" type={UIGrid.Type.C6} style={styles.grid}>
                     <UIGridColumn
                         style={{ backgroundColor: UIColor.success() }}
                         medium={3}
@@ -155,6 +156,7 @@ export const Layouts = () => (
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIGrid
+                    testID="uiGrid_type_2"
                     type={UIGrid.Type.C12}
                     style={styles.grid}
                     gutter={4}
