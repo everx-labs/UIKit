@@ -15,6 +15,7 @@ type UIPromoNoticeProps = {
     appStoreUrl: string;
     googlePlayUrl: string;
     icon?: ImageProps;
+    minimumWidthToShow?: number;
 };
 
 const styles = StyleSheet.create({
@@ -36,14 +37,15 @@ export function UIPromoNotice({
     appStoreUrl,
     googlePlayUrl,
     icon,
+    minimumWidthToShow = 600,
 }: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
-    const [folded, setFolded] = React.useState(false);
+    const [folded, setFolded] = React.useState(true);
     const windowWidth = useWindowDimensions().width;
 
     React.useEffect(() => {
         if (Platform.OS === 'web') {
-            if (windowWidth < 600) {
+            if (windowWidth < minimumWidthToShow) {
                 setVisible(false);
             } else {
                 setVisible(true);
