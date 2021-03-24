@@ -119,7 +119,7 @@ function UIAmountInputInternal({
         numberOfLines,
         resetInputHeight,
         inputStyle,
-    } = useAutogrowTextView(textInputRef, onHeightChange);
+    } = useAutogrowTextView(textInputRef, onHeightChange, 1);
 
     const {
         inputHasValue,
