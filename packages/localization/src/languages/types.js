@@ -342,6 +342,11 @@ export type UILocalizedData = {|
     +Private: string,
     +PrivateChannelsCanOnlyBeJoinedViaAnInviteLink: string,
     +Profile: string,
+    +promoDownload: {|
+        +appStore: string,
+        +googlePlay: string,
+        +notice: string,
+    |},
     +Public: string,
     +PublicAccount: string,
     +PublicAccountWarning: string,

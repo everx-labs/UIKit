@@ -346,6 +346,11 @@
     "Private": "私人",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "私人频道只能通过邀请链接加入。",
     "Profile": "配置文件",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "公开",
     "PublicAccount": "公众账号",
     "PublicAccountWarning": "注意！如果您向第三方提供您的公共地址，即使您将其设为私有，它们也可以看到它。",

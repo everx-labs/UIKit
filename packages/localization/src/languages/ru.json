@@ -346,6 +346,11 @@
     "Private": "Частный",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "На частные каналы можно подписаться только по ссылке-приглашению",
     "Profile": "Профиль",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Публичный",
     "PublicAccount": "Публичный аккаунт",
     "PublicAccountWarning": "Внимание! Если вы предоставите публичный адрес третьим лицам, он будет доступен им даже после того, как вы сделаете его приватным.",
