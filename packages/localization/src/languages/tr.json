@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "Belge yüklenmesi başarısız.",
     "FailedToSendTransaction": "Başarısız aktarım",
     "FailedToSetLimit": "Sınır ayarlaması başarısız",
-    "fee": "Ücret",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Kadın",
     "FileIsTooBig": "Maalesef bunu işleyemiyoruz. Dosya çok büyük (maks: {0} MB).",

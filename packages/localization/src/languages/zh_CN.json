@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "未能加载文档。",
     "FailedToSendTransaction": "发送交易失败",
     "FailedToSetLimit": "设置限制失败",
-    "fee": "费用",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "女性",
     "FileIsTooBig": "很抱歉，我们无法处理。文件太大（最大值：{0} MB）。",

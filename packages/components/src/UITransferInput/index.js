@@ -12,7 +12,7 @@ import type {
     BigNum,
     UIColorData,
 } from '@tonlabs/uikit.core';
-import { UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIComponent from '../UIComponent';
@@ -277,6 +277,31 @@ export default class UITransferInput extends UIComponent<Props, State> {
         );
     }
 
+    renderFractional(stringNumber: string) {
+        if (!stringNumber) {
+            return null;
+        }
+
+        const { localeInfo } = this.props;
+        const localizedSeparator = localeInfo.numbers.decimal;
+        const [integer, fractional] = stringNumber.split(localizedSeparator);
+
+        return (
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.ParagraphText}
+            >
+                {integer}
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.MonoText}
+                >
+                    {`${localizedSeparator}${fractional}`}
+                </UILabel>
+            </UILabel>
+        );
+    }
+
     renderFees() {
         return (
             <UIDetailsView
@@ -286,10 +311,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
                 // when its focus is switched to a selected non-input component.
                 // Thus disable such an ability.
                 selectable={false}
-                value={uiLocalized.formatString(
+                value={this.renderFractional(uiLocalized.formatString(
                     uiLocalized.feeAmount,
                     uiLocalized.amountToLocale(this.getFees(), options),
-                )}
+                ))}
                 comments={uiLocalized.fee}
                 commentsRole={UILabelRoles.ParagraphLabel}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}

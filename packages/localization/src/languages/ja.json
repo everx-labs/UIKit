@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "ドキュメントを読み込みできませんでした。",
     "FailedToSendTransaction": "トランザクションを送信できませんでした。",
     "FailedToSetLimit": "制限を設定できませんでした。",
-    "fee": "料金",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "女性",
     "FileIsTooBig": "申し訳ありませんが、これを処理できません。ファイルが大きすぎます（最大： {0} MB）。",
