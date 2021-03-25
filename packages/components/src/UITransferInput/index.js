@@ -279,7 +279,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
 
     renderFractional(stringNumber: string) {
         if (!stringNumber) {
-            return null;
+            return '';
         }
 
         const { localeInfo } = this.props;
