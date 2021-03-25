@@ -47,7 +47,7 @@ export const TextScreen = () => (
                     paddingVertical: 20,
                 }}
             >
-                <UIListHeader testId="uiListHeader_default" title="List header" />
+                <UIListHeader testID="uiListHeader_default" title="List header" />
             </View>
         </ExampleSection>
         <ExampleSection title="UISectionHeader">
