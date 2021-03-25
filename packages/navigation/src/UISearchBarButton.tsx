@@ -24,9 +24,11 @@ export function UISearchBarButton({
     placeholder,
     children,
     onChangeText,
+    searching,
 }: {
     forId?: string;
     placeholder?: string;
+    searching?: boolean;
     visible: boolean;
     onOpen: () => void | Promise<void>;
     onClose: () => void | Promise<void>;
@@ -62,6 +64,7 @@ export function UISearchBarButton({
                 forId={forId}
                 visible={visible}
                 onCancel={onClose}
+                searching={searching}
                 onChangeText={onChangeText}
             >
                 {children}

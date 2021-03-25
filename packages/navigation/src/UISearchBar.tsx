@@ -117,13 +117,13 @@ export function UISearchBar({
                     placeholder={placeholder || uiLocalized.Search}
                     {...inputProps}
                 />
-                {searching != null ? (
+                {searching && (
                     <UIIndicator
                         style={styles.loadingIcon}
                         size={ICON_SEARCHING_INDICATOR_SIZE}
                         trackWidth={2}
                     />
-                ) : null}
+                )}
             </UIBackgroundView>
             {headerRight({
                 label: headerRightLabel,
