@@ -7,15 +7,19 @@
 
 #import "UIInputAccessoryView.h"
 #import "UIObservingInputAccessoryView.h"
+#import "UICustomKeyboardViewController.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollView.h>
+#import <React/RCTConvert.h>
 
 @interface UIInputAccessoryView() <UIObservingInputAccessoryViewDelegate>
 
 // Overriding `inputAccessoryView` to `readwrite`.
 @property (nonatomic, readwrite, retain) UIView *inputAccessoryView;
+// Overriding `inputViewController` to `readwrite`.
+@property (nonatomic, readwrite, retain) UIViewController *inputViewController;
 
 @end
 
@@ -305,6 +309,34 @@
     CGFloat globalHeight = [[UIScreen mainScreen] bounds].size.height;
     
     return globalHeight - positionInSuperview;
+}
+
+// MARK:- Custom keyboard
+
+- (void)setCustomKeyboardView:(NSDictionary *)customKeyboardView {
+    if (customKeyboardView == nil) {
+        _inputViewController = nil;
+        
+        [self reloadInputViews];
+    } else {
+        NSString *moduleName = [customKeyboardView objectForKey:@"moduleName"];
+        NSDictionary *initialProps = [customKeyboardView objectForKey:@"initialProps"];
+        UIColor *backgroundColor = [RCTConvert UIColor:[customKeyboardView objectForKey:@"backgroundColor"]];
+    
+        _inputViewController = [[UICustomKeyboardViewController alloc]
+                                initWithBridge:_bridge
+                                moduleName:moduleName
+                                initialProperties:initialProps
+                                backgroundColor:backgroundColor
+                                keyboardHeight:((UIObservingInputAccessoryView *)_inputAccessoryView).keyboardHeight];
+        
+        [self reloadInputViews];
+        // Even though it might be already a first responder
+        // It's crucial to call it again,
+        // as only after this call
+        // inputViewController will be applied
+        [self becomeFirstResponder];
+    }
 }
 
 // MARK:- Utils

@@ -1,18 +1,51 @@
 import * as React from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+    View,
+    TextInput,
+    TouchableOpacity,
+    StyleSheet,
+    AppRegistry,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UILabel } from '@tonlabs/uikit.hydrogen';
+import { UILabel, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 import {
     // @ts-ignore
     UIInputAccessoryView,
 } from '@tonlabs/uikit.keyboard';
+import { useStickers } from '@tonlabs/uikit.stickers';
 
 import { ExampleScreen } from '../components/ExampleScreen';
+
+const stickers = new Array(10).fill(null).map((_a, i) => ({
+    id: `test${i}`,
+    date: Date.now(),
+    description: '',
+    name: 'test',
+    stickers: new Array(4).fill(null).map((_b, j) => ({
+        name: `crown${j}`,
+        url:
+            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+    })),
+}));
 
 export function KeyboardScreen() {
     const insets = useSafeAreaInsets();
     const inverted = true;
+    const cStickers = useStickers(stickers, () => {});
+    const theme = useTheme();
+    const cKeyboard = React.useMemo(
+        () => ({
+            moduleName: cStickers.kbID,
+            initialProps: cStickers.props,
+            backgroundColor: theme[ColorVariants.BackgroundSecondary],
+        }),
+        [cStickers, theme],
+    );
+    const [customKeyboard, setCustomKeyboard] = React.useState<
+        typeof cKeyboard | null
+    >(null);
+
     return (
         <>
             <ExampleScreen
@@ -52,7 +85,10 @@ export function KeyboardScreen() {
                         );
                     })}
             </ExampleScreen>
-            <UIInputAccessoryView managedScrollViewNativeID="keyboardScreenScrollView">
+            <UIInputAccessoryView
+                managedScrollViewNativeID="keyboardScreenScrollView"
+                customKeyboardView={customKeyboard}
+            >
                 <View
                     style={{
                         height: 100,
@@ -65,7 +101,13 @@ export function KeyboardScreen() {
                         style={{ flex: 1, backgroundColor: 'red' }}
                         placeholder="Type here"
                     />
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setCustomKeyboard(
+                                customKeyboard == null ? cKeyboard : null,
+                            );
+                        }}
+                    >
                         <UILabel>Press</UILabel>
                     </TouchableOpacity>
                 </View>
@@ -73,6 +115,10 @@ export function KeyboardScreen() {
         </>
     );
 }
+
+AppRegistry.registerComponent('TestCustomKeyboard', () => () => (
+    <View style={{ flex: 1, backgroundColor: 'rgba(0, 255, 0, .5)' }} />
+));
 
 const styles = StyleSheet.create({
     verticallyInverted: {

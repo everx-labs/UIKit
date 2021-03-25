@@ -4,6 +4,8 @@ import {
     StyleProp,
     StyleSheet,
     ViewStyle,
+    ColorValue,
+    processColor,
 } from 'react-native';
 
 type Props = {
@@ -11,6 +13,11 @@ type Props = {
     style?: StyleProp<ViewStyle>;
     children: React.ReactNode;
     managedScrollViewNativeID?: string;
+    customKeyboardView?: {
+        moduleName: string;
+        initialProps?: Record<string, unknown>;
+        backgroundColor?: ColorValue;
+    };
 };
 
 const NativeUIInputAccessoryView = requireNativeComponent<Props>(
@@ -20,11 +27,29 @@ const NativeUIInputAccessoryView = requireNativeComponent<Props>(
 export function UIInputAccessoryView({
     children,
     managedScrollViewNativeID,
+    customKeyboardView,
 }: Props) {
+    const processedCustomKeyboardView = React.useMemo(() => {
+        if (customKeyboardView == null) {
+            return undefined;
+        }
+
+        return {
+            ...customKeyboardView,
+            ...(customKeyboardView.backgroundColor != null
+                ? {
+                      backgroundColor: processColor(
+                          customKeyboardView.backgroundColor,
+                      ) as ColorValue,
+                  }
+                : null),
+        };
+    }, [customKeyboardView]);
     return (
         <NativeUIInputAccessoryView
             style={styles.container}
             managedScrollViewNativeID={managedScrollViewNativeID}
+            customKeyboardView={processedCustomKeyboardView}
         >
             {children}
         </NativeUIInputAccessoryView>

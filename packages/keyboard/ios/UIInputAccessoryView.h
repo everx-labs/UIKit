@@ -14,5 +14,6 @@
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 
 @property (nonatomic, copy) NSString *managedScrollViewNativeID;
+@property (nonatomic, copy) NSDictionary *customKeyboardView;
 
 @end
