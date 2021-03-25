@@ -1,13 +1,27 @@
 // @flow
 import BigNumber from 'bignumber.js';
+import type { NumberParts, NumberPartsOptions, StringLocaleInfo } from './types';
 
-export type LanguageConstants = {
-    [string]: any,
-}
+export type LanguageConstants = Record<string, any>
 
 export const predefinedConstants: LanguageConstants = {
     CURRENT_YEAR: (new Date()).getFullYear(),
 };
+
+// eslint-disable-next-line no-shadow
+export enum Language {
+    En = 'en',
+    Ru = 'ru',
+    Fr = 'fr',
+    PtBR = 'pt_BR',
+    De = 'de',
+    ZhCN = 'zh_CN',
+    Es = 'es',
+    Ja = 'ja',
+    Tr = 'tr',
+    It = 'it',
+    Ko = 'ko',
+}
 
 export type LanguageInfo = {
     name: string,
@@ -15,58 +29,58 @@ export type LanguageInfo = {
     dayJS: string, // Works with DayJS
 }
 
-export const languagesInfo: { [string]: LanguageInfo } = {
-    en: {
+export const languagesInfo: Record<Language, LanguageInfo> = {
+    [Language.En]: {
         name: 'English',
         country: 'US',
         dayJS: 'en',
     },
-    ru: {
+    [Language.Ru]: {
         name: 'Русский',
         country: 'RU',
         dayJS: 'ru',
     },
-    fr: {
+    [Language.Fr]: {
         name: 'Français',
         country: 'FR',
         dayJS: 'fr',
     },
-    pt_BR: {
+    [Language.PtBR]: {
         name: 'Português (Br)',
         country: 'BR',
         dayJS: 'pt-br',
     },
-    de: {
+    [Language.De]: {
         name: 'Deutsch',
         country: 'DE',
         dayJS: 'de',
     },
-    zh_CN: {
+    [Language.ZhCN]: {
         name: '汉语',
         country: 'CN',
         dayJS: 'zh-cn',
     },
-    es: {
+    [Language.Es]: {
         name: 'Español',
         country: 'ES',
         dayJS: 'es',
     },
-    ja: {
+    [Language.Ja]: {
         name: '日本語',
         country: 'JP',
         dayJS: 'ja',
     },
-    tr: {
+    [Language.Tr]: {
         name: 'Türkçe',
         country: 'TR',
         dayJS: 'tr',
     },
-    it: {
+    [Language.It]: {
         name: 'Italiano',
         country: 'IT',
         dayJS: 'it',
     },
-    ko: {
+    [Language.Ko]: {
         name: '한국어',
         country: 'KR',
         dayJS: 'ko',
@@ -77,62 +91,9 @@ export const UIConstant = {
     maxDecimalDigits: 9,
 };
 
-interface BigNum {
-    eq: (x: BigNum) => boolean;
-    lt: (x: BigNum) => boolean;
-    gt: (x: BigNum) => boolean;
-    lte: (x: BigNum) => boolean;
-    gte: (x: BigNum) => boolean;
-
-    plus: (x: BigNum) => BigNum;
-    minus: (x: BigNum) => BigNum;
-    times: (x: BigNum) => BigNum;
-    div: (x: BigNum) => BigNum;
-    negated: () => BigNum;
-    abs: () => BigNum;
-
-    toFixed: (z?: number) => string;
-    toNumber: () => number;
-}
-
-export type NumberParts = {
-    value: BigNum,
-    integer: string,
-    decimal: string,
-    valueString: string,
-};
-
-export type NumberPartsOptions = {
-    minimumFractionDigits: number,
-    maximumFractionDigits: number,
-};
-
-type NumberFormatInfo = {
-    grouping: string,
-    thousands: string,
-    decimal: string,
-    decimalGrouping: string,
-};
-
-// This stores the order of the date and the separator character
-// for a locale configuration. i.e.  for the date: 07.06.1986
-// the position for each part is: day = 0, month = 1, year = 2
-// and the separator is: '.'
-type DateFormatInfo = {
-    separator: string,
-    localePattern: string,
-    components: string[],
-};
-
-export type StringLocaleInfo = {
-    name: string,
-    numbers: NumberFormatInfo,
-    dates: DateFormatInfo,
-};
-
-export const UIFunction = {
+export class UIFunction {
     // Allows to print small numbers with "-e" suffix
-    getNumberString(number: number | BigNum, digits: number = 10): string {
+    static getNumberString(number: number | BigNumber, digits: number = 10): string {
         // $FlowExpectedError
         if (!(number instanceof BigNumber) && Math.abs(number) > 1) {
             // Apply BigNumber conversion only for non-small numbers!
@@ -143,9 +104,9 @@ export const UIFunction = {
             }
         }
         return number.toFixed(digits).replace(/\.?0+$/, '');
-    },
+    }
 
-    getNumberParts(
+    static getNumberParts(
         value: string,
         localeInfo: StringLocaleInfo,
         options: NumberPartsOptions = {
@@ -153,7 +114,7 @@ export const UIFunction = {
             maximumFractionDigits: 9,
         },
         isNormalized: boolean = false,
-    ): ?NumberParts {
+    ): NumberParts | null {
         // Normalize passed value
         const normalizedValue = isNormalized
             ? value
@@ -223,38 +184,44 @@ export const UIFunction = {
                 .match(/.{1,3}/g)
                 ?.join(localeInfo.numbers.decimalGrouping) || '';
         result.valueString = `${integerString}${separatorString}${decFormatted}`;
+
         // Return result
         return result;
-    },
+    }
 
-    toFixedDown(number: number | string, fixed: number = 2) {
+    static toFixedDown(number: number | string, fixed: number = 2): string {
         const reg = new RegExp(`(^-?\\d+\\.\\d{${fixed}})`);
         const match = number.toString().match(reg);
         return match ? match[0] : Number(number).toFixed(fixed);
-    },
+    }
 
-    normalizedAmount(s: ?string, localeInfo: StringLocaleInfo): ?string {
+    static normalizedAmount(s: string | null, localeInfo: StringLocaleInfo): string | null {
         if (s === undefined || s === null) {
             return null;
         }
+
         let normalized = UIFunction.replaceAll(`${s}`, ' ', '');
+
         const {
             grouping,
             thousands,
             decimal,
             decimalGrouping,
         } = localeInfo.numbers;
+
         normalized = UIFunction.replaceAll(normalized, grouping, '');
         normalized = UIFunction.replaceAll(normalized, thousands, '');
         normalized = UIFunction.replaceAll(normalized, decimalGrouping, '');
         normalized = normalized.replace(decimal, '.');
-        return normalized;
-    },
 
-    replaceAll(s: string, search: string, replace: string): string {
+        return normalized;
+    }
+
+    static replaceAll(s: string, search: string, replace: string): string {
         if (search === '') {
             return s;
         }
+
         return s.split(search).join(replace);
-    },
-};
+    }
+}

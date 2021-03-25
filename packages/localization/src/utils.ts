@@ -1,34 +1,47 @@
 // @flow
 /* eslint-disable no-use-before-define */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import type {
-    Language,
-    Languages,
-    LanguageOptions,
-    LanguageConstants,
-    NumberFormatInfo,
     DateFormatInfo,
+    LanguageItem,
+    LanguageOptions,
+    Languages, LanguagesOptions,
+    LanguageValue,
+    NumberFormatInfo,
 } from './types';
+import type { Language, LanguageConstants } from './constants';
 
-function prepareObject(object: { [string]: any }, options: LanguageOptions) {
-    const result = {};
-    Object.keys(object).forEach((key) => {
+function prepareArray(
+    array: LanguageValue[],
+    options: LanguageOptions,
+): LanguageValue[] {
+    return array.map((item) => prepareValue(item, options)) as LanguageValue[];
+}
+
+function prepareObject<T = LanguageItem>(
+    object: LanguageItem,
+    options: LanguageOptions,
+): T {
+    const result: any = {} as T;
+
+    Object.keys(object).forEach(key => {
         result[key] = prepareValue(object[key], options);
     });
-    return result;
+
+    return result as T;
 }
 
-function prepareArray(array: any[], options: LanguageOptions) {
-    return array.map(item => prepareValue(item, options));
-}
-
-function prepareValue(value: Object | Array<any> | string | boolean, options: LanguageOptions) {
+function prepareValue(
+    value: LanguageValue | LanguageItem,
+    options: LanguageOptions,
+): LanguageItem | LanguageItem[] | LanguageValue | LanguageValue[] {
     if (Array.isArray(value)) {
         return prepareArray(value, options);
     }
 
     if (typeof value === 'string' || value instanceof String) {
         const { images } = options;
-        if (images && /^{IMG_[A-Z_0-9]*}$/.test(value)) {
+        if (images && /^{IMG_[A-Z_0-9]*}$/.test(value as string)) {
             const key = value.replace(/[{}]/g, '');
             return images[key];
         }
@@ -42,17 +55,20 @@ function prepareValue(value: Object | Array<any> | string | boolean, options: La
                     const key = constant.replace(/[{}]/g, '');
                     // Filtering numerals
                     if (/[A-Z]/.test(constant)) {
-                        value.replace(new RegExp(constant, 'g'), constants[key]);
+                        value.replace(
+                            new RegExp(constant, 'g'),
+                            constants[key],
+                        );
                     }
                 });
             }
         }
 
-        return value;
+        return value as string;
     }
 
     if (typeof value === 'object') {
-        return prepareObject(value, options);
+        return prepareObject(value as LanguageItem, options);
     }
 
     if (typeof value === 'boolean') {
@@ -67,24 +83,31 @@ function prepareValue(value: Object | Array<any> | string | boolean, options: La
  * Method works faster then prepare
  * @see prepare
  *
- * @param {Languages<T>} langs
+ * @param {Languages} langs
  * @param constants
- * @returns {Languages<T>}
+ * @returns {Languages}
  */
-export function prepareLocales<T>(langs: Languages<T>, constants: LanguageConstants): Languages<T> {
-    const preparedLanguages: Languages<T> = {};
+export function prepareLocales<T = LanguageItem>(
+    langs: Languages,
+    constants: LanguageConstants,
+): Languages<T> {
+    const preparedLanguages: Languages = {};
+    const languages: Language[] = Object.keys(langs) as Language[];
 
-    Object.keys(langs).forEach((lang: Language) => {
+    languages.forEach((lang: Language) => {
         let content = JSON.stringify(langs[lang]) || '';
 
         Object.keys(constants).forEach((key: string) => {
-            content = content.replace(new RegExp(`{${key}}`, 'g'), constants[key]);
+            content = content.replace(
+                new RegExp(`{${key}}`, 'g'),
+                constants[key],
+            );
         });
 
         preparedLanguages[lang] = JSON.parse(content);
     });
 
-    return preparedLanguages;
+    return preparedLanguages as Languages<T>;
 }
 
 /**
@@ -92,25 +115,31 @@ export function prepareLocales<T>(langs: Languages<T>, constants: LanguageConsta
  * Method works slower then prepareLocales
  * @see prepareLocales
  *
- * @param {Languages<T>} langs
+ * @param {Languages} langs
  * @param {Languages<LanguageOptions>} options
- * @returns {Languages<T>}
+ * @returns {Languages}
  */
-export function prepare<T>(langs: Languages<T>, options: Languages<LanguageOptions>): Languages<T> {
-    const preparedLanguages: Languages<T> = {};
+export function prepare<T>(
+    langs: Languages<T>,
+    options: LanguagesOptions,
+): Languages<T> {
+    const preparedLanguages: Languages<T> = {} as Languages<T>;
+    const languages: Language[] = Object.keys(langs) as Language[];
 
-    Object.keys(langs).forEach((lang) => {
-        // $FlowExpectedError Need because flow doesn't correct works with generic
-        preparedLanguages[lang] = prepareObject(langs[lang], options[lang]);
+    languages.forEach((lang) => {
+        const value = langs[lang] as T
+        preparedLanguages[lang] = prepareObject(
+            (value as unknown) as LanguageItem,
+            options[lang] as LanguageOptions,
+        );
     });
 
     return preparedLanguages;
 }
 
-
 export function getNumberFormatInfo(): NumberFormatInfo {
     const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
-    const parts = formatParser.exec(111222333.444.toLocaleString()) || ['', '', '', '.'];
+    const parts = formatParser.exec((111222333.444).toLocaleString()) || ['', '', '', '.'];
     return {
         grouping: parts[1],
         thousands: parts[2],
@@ -139,15 +168,15 @@ export function getDateFormatInfo(): DateFormatInfo {
 
     const separator = parts[2] || '.';
     const components = ['year', 'month', 'day'];
-    const symbols = {
+    const symbols: Record<string, string> = {
         year: 'YYYY',
         month: 'MM',
         day: 'DD',
     };
 
-    const shortDateNumbers = [];
+    const shortDateNumbers: number[] = [];
     const splitDate = localeDate.split(separator);
-    splitDate.forEach(component => shortDateNumbers.push(Number(component)));
+    splitDate.forEach((component) => shortDateNumbers.push(Number(component)));
 
     if (shortDateNumbers?.length === 3) {
         components[shortDateNumbers.indexOf(d)] = 'day';
