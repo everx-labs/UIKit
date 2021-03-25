@@ -5,11 +5,11 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import {
     UIConstant,
-    UIFunction,
     UIStyle,
 } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import type { UIAccountData } from '../types/UIAccountData';
 
@@ -83,7 +83,8 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
             return null;
         }
 
-        const [integer, fractional] = stringNumber.split('.');
+        const separator = this.getDecimalSeparator();
+        const [integer, fractional] = stringNumber.split(separator);
 
         const decimals = (fractional && fractional.length > 0)
             ? fractional
@@ -102,7 +103,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                     color={UILabelColors.TextTertiary}
                     role={UILabelRoles.MonoText}
                 >
-                    {`${this.getDecimalSeparator()}${decimals}`}
+                    {`${separator}${decimals}`}
                     {tokenSymbol ? ' ' : '' /* space between */}
                     {tokenSymbol}
                 </UILabel>
@@ -138,7 +139,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                 >
                     {name}
                 </UILabel>
-                {this.renderFractional(UIFunction.getNumberString(account.balance))}
+                {this.renderFractional(uiLocalized.amountToLocale(account.balance))}
             </View>
         );
     }
