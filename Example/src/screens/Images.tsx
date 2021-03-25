@@ -12,6 +12,7 @@ export const Images = () => (
         <ExampleSection title="UIActionImage">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIActionImage
+                    testID="uiActionImage_default"
                     iconEnabled={UIAssets.icons.ui.keyThinDark}
                     iconDisabled={UIAssets.icons.ui.keyThinGrey}
                     iconHovered={UIAssets.icons.ui.keyThinWhite}
@@ -19,6 +20,7 @@ export const Images = () => (
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIActionImage
+                    testID="uiActionImage_disabled"
                     iconEnabled={UIAssets.icons.ui.keyThinDark}
                     iconDisabled={UIAssets.icons.ui.keyThinGrey}
                     iconHovered={UIAssets.icons.ui.keyThinWhite}
@@ -29,12 +31,13 @@ export const Images = () => (
         <ExampleSection title="UIImage">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 {/* $FlowFixMe */}
-                <UIImage source={UIAssets.icons.ui.keyThinDark} />
+                <UIImage testID="uiImage_default" source={UIAssets.icons.ui.keyThinDark} />
             </View>
         </ExampleSection>
         <ExampleSection title="UIImageView Editable (press it)">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIImageView
+                    testID="uiImageView_default"
                     photoStyle={{ width: 100, height: 100 }}
                     source={UIAssets.icons.ui.keyThinDark}
                     editable
@@ -44,6 +47,7 @@ export const Images = () => (
         <ExampleSection title="UIImageView Fullscreen (press it)">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIImageView
+                    testID="uiImageView_fullscreen"
                     photoStyle={{ width: 100, height: 100 }}
                     sourceBig={UIAssets.icons.logo.tonlabsPrimary}
                     source={UIAssets.icons.logo.tonlabsPrimary}

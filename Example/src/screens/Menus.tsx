@@ -45,6 +45,7 @@ export const Menus = () => {
             <ExampleSection title="UIActionSheet">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UITextButton
+                        testID="show_actionSheet"
                         title="Show ActionSheet"
                         onPress={() => {
                             if (actionSheet.current) {
@@ -71,6 +72,7 @@ export const Menus = () => {
             <ExampleSection title="UICountryPicker">
                 <View style={{ paddingVertical: 20 }}>
                     <UITextButton
+                        testID="show_uiCountryPicker"
                         title="Show UICountryPicker"
                         onPress={() => UICountryPicker.show({})}
                     />
@@ -79,6 +81,7 @@ export const Menus = () => {
             <ExampleSection title="UICardSheet">
                 <View style={{ paddingVertical: 20 }}>
                     <UITextButton
+                        testID="show_uiCardSheet"
                         title="Show UICardSheet"
                         onPress={() => {
                             setCardSheetVisible(true);
@@ -105,6 +108,7 @@ export const Menus = () => {
                         />
                     </UICardSheet>
                     <UITextButton
+                        testID="show_uiCardSheet_with_input"
                         title="Show UICardSheet with input"
                         onPress={() => {
                             setCardSheet2Visible(true);
@@ -131,6 +135,7 @@ export const Menus = () => {
                         />
                     </UICardSheet>
                     <UITextButton
+                        testID="show_uiBottomSheet"
                         title="Show UIBottomSheet"
                         onPress={() => {
                             setBottomSheetVisible(true);
@@ -165,6 +170,7 @@ export const Menus = () => {
                         )}
                     </SafeAreaInsetsContext.Consumer>
                     <UITextButton
+                        testID="show_uiQRCodeScannerSheet"
                         title="Show UIQRcodeScannerSheet"
                         onPress={() => {
                             setQrVisible(true);
@@ -187,7 +193,7 @@ export const Menus = () => {
                         placement="top"
                         component={<Text>This is a popover</Text>}
                     >
-                        <UITextButton title="Show UIPopover" />
+                        <UITextButton testID="show_uiPopover" title="Show UIPopover" />
                     </UIPopover>
                 </View>
             </ExampleSection>
@@ -213,6 +219,7 @@ export const Menus = () => {
             <ExampleSection title="UISlider">
                 <View style={{ paddingVertical: 20 }}>
                     <UISlider
+                        testID="uiSlider_default"
                         itemsList={[
                             {
                                 title: 'Card 1',
@@ -243,6 +250,7 @@ export const Menus = () => {
                             details: string;
                         }) => (
                             <View
+                                testID={`uiSlider_item_${title}`}
                                 key={`slider-item-${title}-${details}`}
                                 style={{ width: 200, height: 200 }}
                             >
@@ -257,6 +265,7 @@ export const Menus = () => {
             <ExampleSection title="UIStepBar">
                 <View style={{ paddingVertical: 20 }}>
                     <UIStepBar
+                        testID="uiStepBar_default"
                         itemsList={['Item 1', 'Item 2', 'Item 3', 'Item 4']}
                         activeIndex={activeIndex}
                         onPress={(i: number) => setActiveIndex(i)}
@@ -266,6 +275,7 @@ export const Menus = () => {
             <ExampleSection title="UITabView">
                 <View style={{ paddingVertical: 20 }}>
                     <UITabView
+                        testID="uiTabView_default"
                         width={95}
                         pages={[
                             {

@@ -21,6 +21,7 @@ export const Profile = () => (
                 }}
             >
                 <UIProfileInitials
+                    testID="uiProfileInitials_default"
                     containerStyle={[
                         UIStyle.margin.bottomDefault(),
                         UIStyle.margin.rightDefault(),
@@ -37,7 +38,7 @@ export const Profile = () => (
                     paddingVertical: 20,
                 }}
             >
-                <UIProfilePhoto source={UIAssets.icons.security.faceId} />
+                <UIProfilePhoto testID="uiProfilePhoto_default" source={UIAssets.icons.security.faceId} />
             </View>
         </ExampleSection>
         <ExampleSection title="UIProfileView">
@@ -48,6 +49,7 @@ export const Profile = () => (
                 }}
             >
                 <UIProfileView
+                    testID="uiProfileView_default"
                     editable
                     containerStyle={{ marginRight: 16 }}
                     photo={UIAssets.icons.security.faceId}

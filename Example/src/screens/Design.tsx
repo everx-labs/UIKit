@@ -9,7 +9,7 @@ export const Design = () => (
     <ExampleScreen>
         <ExampleSection title="UIBadge">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIBadge badge={1} />
+                <UIBadge testID="uiBadge_count_1" badge={1} />
             </View>
             <View
                 style={{
@@ -25,17 +25,17 @@ export const Design = () => (
                 <Text>UIDot</Text>
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDot />
+                <UIDot testID="uiDot_default"/>
             </View>
         </ExampleSection>
         <ExampleSection title="UISeparator">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UISeparator style={{ width: 300 }} />
+                <UISeparator testID="uiSeparator_default" style={{ width: 300 }} />
             </View>
         </ExampleSection>
         <ExampleSection title="UITag">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITag title="Tag title" />
+                <UITag testID="uiTag_default" title="Tag title" />
             </View>
         </ExampleSection>
     </ExampleScreen>

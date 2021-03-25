@@ -16,6 +16,7 @@ export const Products = () => (
         <ExampleSection title="UIBottomBar">
             <View style={{ maxWidth: 500, height: 180, paddingVertical: 20 }}>
                 <UIBottomBar
+                    testID="uiBottomBar_info"
                     leftText="Feedback"
                     companyName="Wallet solutions OÜ"
                     address="Jõe 2"
@@ -29,22 +30,23 @@ export const Products = () => (
         </ExampleSection>
         <ExampleSection title="UIFeedback">
             <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-                <UIFeedback />
+                <UIFeedback testID="uiFeedback_default" />
             </View>
         </ExampleSection>
         <ExampleSection title="UIPushFeedback">
             <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-                <UIPushFeedback onPress={() => undefined} />
+                <UIPushFeedback testID="uiPushFeedback_message" onPress={() => undefined} />
             </View>
         </ExampleSection>
         <ExampleSection title="UIStubPage">
             <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-                <UIStubPage title="labs." needBottomIcon={false} />
+                <UIStubPage testID="uiStubPage_default" title="labs." needBottomIcon={false} />
             </View>
         </ExampleSection>
         <ExampleSection title="UITokenCell">
             <View style={{ width: 300, paddingVertical: 20 }}>
                 <UITokenCell
+                    testID="uiTokenCell_Gram"
                     title="GRAM"
                     details="balance"
                     balance="100.0000"
