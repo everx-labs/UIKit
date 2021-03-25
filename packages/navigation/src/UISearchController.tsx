@@ -16,6 +16,7 @@ export type UISearchControllerProps = {
     onCancel: () => void | Promise<void>;
     onChangeText?: React.ComponentProps<typeof UISearchBar>['onChangeText'];
     children: ((searchText: string) => React.ReactNode) | React.ReactNode;
+    searching?: boolean
 };
 
 type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
@@ -118,6 +119,7 @@ function UISearchControllerContent({
     onCancel,
     children,
     onClosed,
+    searching,
     onChangeText: onChangeTextProp,
 }: UISearchControllerContentProps) {
     const [searchText, setSearchText] = React.useState('');
@@ -185,6 +187,7 @@ function UISearchControllerContent({
             <SafeAreaView style={styles.contentInner} edges={['top']}>
                 <UISearchBar
                     autoFocus
+                    searching={searching}
                     placeholder={placeholder}
                     onChangeText={onChangeText}
                     headerRightLabel={uiLocalized.Cancel}
