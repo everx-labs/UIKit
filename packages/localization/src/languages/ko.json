@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "문서를 로드하지 못했습니다.",
     "FailedToSendTransaction": "트랜잭션을 보내지 못했습니다.",
     "FailedToSetLimit": "한도를 설정하지 못했습니다.",
-    "fee": "수수료",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "여성",
     "FileIsTooBig": "죄송합니다, 이 파일을 처리할 수 없습니다. 파일이 너무 큰 편입니다 (최대: {0} MB).",

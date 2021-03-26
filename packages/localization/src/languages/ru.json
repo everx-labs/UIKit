@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "Не удалось загрузить документ",
     "FailedToSendTransaction": "Не удалось отправить перевод",
     "FailedToSetLimit": "Не удалось установить лимит",
-    "fee": "Комиссия",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Женщина",
     "FileIsTooBig": "Извините, мы не можем это обработать. Файл слишком большой (лимит: {0} MB).",

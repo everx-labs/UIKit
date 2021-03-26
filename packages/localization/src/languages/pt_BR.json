@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "Falha ao carregar o documento.",
     "FailedToSendTransaction": "Falha ao enviar transação",
     "FailedToSetLimit": "Falha ao definir limite",
-    "fee": "Taxas",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Feminino",
     "FileIsTooBig": "Desculpe, não podemos processar isso. O arquivo é muito grande (máx: {0} MB).",

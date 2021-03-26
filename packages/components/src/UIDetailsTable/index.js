@@ -26,6 +26,7 @@ export type DetailsRow = {
     captionType?: string,
     screen?: string,
     component?: React$Node,
+    comment?: string,
     onPress?: () => void,
     key?: string,
     showAlways?: boolean,
@@ -304,7 +305,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         } = this.props;
         return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
             const {
-                caption, value, captionType, key, showAlways, component,
+                caption, value, captionType, key, showAlways, component, comment,
             } = item;
 
             const { header, topOffset, boldTopOffset } = UIDetailsTable.captionType;
@@ -326,7 +327,9 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     )}
                     <View
                         style={[
-                            UIStyle.padding.vertical(),
+                            comment
+                                ? [UIStyle.padding.topDefault(), UIStyle.padding.bottomTiny()]
+                                : UIStyle.padding.vertical(),
                             UIStyle.common.flexRow(),
                             rowContainerStyle,
                             marginTopStyle,
@@ -344,6 +347,15 @@ class UIDetailsTable extends UIComponent<Props, State> {
                             </View>
                         )}
                     </View>
+                    {comment ? (
+                        <UILabel
+                            color={UILabelColors.TextSecondary}
+                            role={UILabelRoles.ParagraphNote}
+                            style={UIStyle.padding.bottomDefault()}
+                        >
+                            {comment}
+                        </UILabel>
+                    ) : null}
                 </View>
             );
         });

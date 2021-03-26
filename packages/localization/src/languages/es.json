@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "No se pudo cargar el documento.",
     "FailedToSendTransaction": "Error al enviar la transacción",
     "FailedToSetLimit": "No se pudo establecer el límite",
-    "fee": "Tarifas",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Mujer",
     "FileIsTooBig": "Lo sentimos, no podemos procesar esto. El archivo es demasiado grande (máx: {0} MB).",

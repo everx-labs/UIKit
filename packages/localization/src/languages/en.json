@@ -198,7 +198,7 @@
     "FailedToLoadDocument": "Failed to load document.",
     "FailedToSendTransaction": "Failed to send transfer",
     "FailedToSetLimit": "Failed to set limit",
-    "fee": "Fees",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Female",
     "FileIsTooBig": "Sorry we cannot process this. File is too big (max: {0} MB).",
