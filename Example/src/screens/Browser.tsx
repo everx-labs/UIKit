@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Route, useNavigation, useRoute } from '@react-navigation/core';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -269,8 +270,18 @@ const BrowserScreen = () => {
                                     type: InteractiveMessageType.AmountInput,
                                     prompt: 'Enter amount:',
                                     decimals: 9,
-                                    min: 10 * 10 ** 9,
-                                    max: 100 * 10 ** 9,
+                                    min: new BigNumber('10.25').multipliedBy(
+                                        10 ** 9,
+                                    ),
+                                    max: new BigNumber('100').multipliedBy(
+                                        10 ** 9,
+                                    ),
+                                    // min: new BigNumber(
+                                    //     '100000000000000000000000.1111111',
+                                    // ),
+                                    // max: new BigNumber(
+                                    //     '10000000000000000000000000.1111111',
+                                    // ),
                                     onSend: (externalState: any) => {
                                         setMessages([
                                             {

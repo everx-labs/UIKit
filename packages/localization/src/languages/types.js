@@ -59,6 +59,8 @@ export type UILocalizedData = {|
             +Placeholder: string,
             +ErrorLess: string,
             +ErrorBigger: string,
+            +HintMin: string,
+            +HintMax: string,
         |},
         +AddressInputBubble: {|
             +EnterManually: string,
