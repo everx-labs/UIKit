@@ -45,6 +45,7 @@ export function UIInputAccessoryView({
                 : null),
         };
     }, [customKeyboardView]);
+
     return (
         <NativeUIInputAccessoryView
             style={styles.container}

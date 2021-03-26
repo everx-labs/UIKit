@@ -5,6 +5,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     AppRegistry,
+    Keyboard,
+    KeyboardEvent,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -32,7 +34,7 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 export function KeyboardScreen() {
     const insets = useSafeAreaInsets();
     const inverted = true;
-    const cStickers = useStickers(stickers, () => {});
+    const cStickers = useStickers(stickers, () => undefined);
     const theme = useTheme();
     const cKeyboard = React.useMemo(
         () => ({
@@ -45,6 +47,26 @@ export function KeyboardScreen() {
     const [customKeyboard, setCustomKeyboard] = React.useState<
         typeof cKeyboard | null
     >(null);
+    const cKeyboardRef = React.useRef<typeof cKeyboard | null>(null);
+
+    React.useEffect(() => {
+        const callback = ({ duration }: KeyboardEvent) => {
+            if (cKeyboardRef.current == null) {
+                return;
+            }
+
+            setTimeout(() => {
+                setCustomKeyboard(null);
+            }, duration);
+        };
+        Keyboard.addListener('keyboardWillHide', callback);
+
+        return () => {
+            Keyboard.removeListener('keyboardWillHide', callback);
+        };
+    }, []);
+
+    const inputRef = React.useRef<TextInput>(null);
 
     return (
         <>
@@ -98,14 +120,34 @@ export function KeyboardScreen() {
                     }}
                 >
                     <TextInput
+                        ref={inputRef}
+                        autoCompleteType="off"
+                        autoCorrect={false}
+                        nativeID="test-input-for-keyboard"
                         style={{ flex: 1, backgroundColor: 'red' }}
                         placeholder="Type here"
+                        onFocus={() => {
+                            setCustomKeyboard(null);
+                            cKeyboardRef.current = null;
+
+                            // setTimeout(() => {
+                            //     inputRef.current?.focus();
+                            // }, 100);
+                            // setTimeout(() => {
+                            //     inputRef.current?.focus();
+                            // }, 200);
+                            // setTimeout(() => {
+                            //     inputRef.current?.focus();
+                            // }, 300);
+                        }}
                     />
                     <TouchableOpacity
                         onPress={() => {
                             setCustomKeyboard(
                                 customKeyboard == null ? cKeyboard : null,
                             );
+                            cKeyboardRef.current =
+                                customKeyboard == null ? cKeyboard : null;
                         }}
                     >
                         <UILabel>Press</UILabel>

@@ -20,7 +20,6 @@
         self.inputView = [[UIInputView alloc] initWithFrame:CGRectZero inputViewStyle:UIInputViewStyleKeyboard];
         
         UIView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:moduleName initialProperties:initialProperties];
-        
         rootView.translatesAutoresizingMaskIntoConstraints = NO;
         
         [self.inputView addSubview:rootView];
@@ -33,10 +32,12 @@
         ]];
         
         if (keyboardHeight > 0) {
-            [self.inputView.heightAnchor constraintEqualToConstant:keyboardHeight].active = YES;
+            NSLayoutConstraint *inputViewHeightConstraint = [self.view.heightAnchor constraintEqualToConstant:keyboardHeight];
+            inputViewHeightConstraint.active = YES;
             [self.inputView setAllowsSelfSizing:YES];
         }
         
+        self.view.backgroundColor = backgroundColor;
         self.inputView.backgroundColor = backgroundColor;
         [self.inputView setNeedsLayout];
         

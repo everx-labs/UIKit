@@ -13,6 +13,7 @@
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollView.h>
 #import <React/RCTConvert.h>
+#import <React/RCTBaseTextInputView.h>
 
 @interface UIInputAccessoryView() <UIObservingInputAccessoryViewDelegate>
 
@@ -314,10 +315,42 @@
 // MARK:- Custom keyboard
 
 - (void)setCustomKeyboardView:(NSDictionary *)customKeyboardView {
+    if (customKeyboardView == _customKeyboardView) {
+        return;
+    }
+    
     if (customKeyboardView == nil) {
-        _inputViewController = nil;
+        /**
+         * Imagine following situation:
+         * You have a TextInput and you want to close custom keyboard.
+         * Then TextInput is focused obvious solution is to set
+         * `customKeyboardView` prop to `null`, that trigers closing of it.
+         * At the same time with focus on input you might want to see
+         * default keyboard, but after focus event, with passing a prop
+         * we have to call `becomeFirstResponder`, to apply `inputView` changes.
+         * Hence in order not to lost focus on text input
+         * we need to do it here manually.
+         */
+        UIView *focusedView = [self getFirstResponder];
         
-        [self reloadInputViews];
+        if (focusedView == nil || focusedView == self) {
+            /**
+             * If no other keyboards should be shown, just closing it.
+             */
+            _inputViewController = nil;
+            
+            [self reloadInputViews];
+        } else {
+            [self becomeFirstResponder];
+            
+            _inputViewController = nil;
+            
+            if ([focusedView respondsToSelector:@selector(reactFocus)]) {
+                [focusedView reactFocus];
+            } else {
+                [focusedView becomeFirstResponder];
+            }
+        }
     } else {
         NSString *moduleName = [customKeyboardView objectForKey:@"moduleName"];
         NSDictionary *initialProps = [customKeyboardView objectForKey:@"initialProps"];
@@ -331,12 +364,15 @@
                                 keyboardHeight:((UIObservingInputAccessoryView *)_inputAccessoryView).keyboardHeight];
         
         [self reloadInputViews];
-        // Even though it might be already a first responder
-        // It's crucial to call it again,
-        // as only after this call
-        // inputViewController will be applied
+        /**
+         * Even though it might be already a first responder
+         * It's crucial to call it again, as only after this call
+         * `inputViewController` changes will be applied
+         */
         [self becomeFirstResponder];
     }
+    
+    _customKeyboardView = customKeyboardView;
 }
 
 // MARK:- Utils
@@ -368,5 +404,29 @@
 #endif
     return topSafeArea;
 }
+
+-(UIView*)getFirstResponder
+{
+    return [self getFirstResponder:self];
+}
+
+-(UIView*)getFirstResponder:(UIView*)view
+{
+    if (view == nil || [view isFirstResponder])
+    {
+        return view;
+    }
+    
+    for (UIView *subview in view.subviews)
+    {
+        UIView *firstResponder = [self getFirstResponder:subview];
+        if(firstResponder != nil)
+        {
+            return firstResponder;
+        }
+    }
+    return nil;
+}
+
 
 @end
