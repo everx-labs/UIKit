@@ -45,7 +45,7 @@
         _shouldBecomeFirstResponder = YES;
         self.currentBridge = bridge;
         /**
-         * Transform y can't be positive number
+         * Transform y can't be a positive number
          * so 1 will mean that variable is not
          * initialized yet
          */
@@ -130,7 +130,7 @@
         self.transform = transform;
         /**
          * It was possible to get this information from previous transform
-         * instead of saving one, but it had as issue, when during frame change
+         * instead of saving one, but it had an issue, when during a frame change
          * we set transform to identity, we got 0 instead of correct previous value
          */
         _savedTransformY = transform.ty;
