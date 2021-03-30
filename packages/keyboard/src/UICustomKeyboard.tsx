@@ -1,15 +1,12 @@
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 import {
     KeyboardRegistry,
     KeyboardUtils,
     KeyboardAccessoryViewProps,
 } from 'react-native-ui-lib/keyboard';
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { UIStyle } from '@tonlabs/uikit.core';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { CustomKeyboardWrapper } from './CustomKeyboardWrapper';
 import { UIInputAccessoryView } from './UIInputAccessoryView';
@@ -69,9 +66,6 @@ type Props = KeyboardAccessoryViewProps & {
 };
 
 export function UICustomKeyboard(props: Props) {
-    const theme = useTheme();
-    const insets = useSafeAreaInsets();
-
     if (Platform.OS === 'web') {
         const CustomKeyboardComponent = props.customKeyboardComponent;
         return (
@@ -100,15 +94,6 @@ export function UICustomKeyboard(props: Props) {
             // onKeyboardResigned={props.onKeyboardResigned}
         >
             {props.renderContent()}
-            <View // A dummy view to make SafeArea translates look nicer
-                style={[
-                    { height: insets?.bottom ?? 0, top: '100%' },
-                    UIStyle.container.absoluteFillWidth(),
-                    UIStyle.color.getBackgroundColorStyle(
-                        theme[ColorVariants.BackgroundPrimary],
-                    ),
-                ]}
-            />
         </UIInputAccessoryView>
     );
 }

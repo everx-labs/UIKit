@@ -3,7 +3,7 @@ import { requireNativeComponent } from 'react-native';
 import type { ColorValue } from 'react-native';
 
 type CustomKeyboardView = {
-    component: React.Component<any>;
+    component: typeof React.Component;
     initialProps?: Record<string, unknown>;
     backgroundColor?: ColorValue;
 };
@@ -13,9 +13,9 @@ type UIInputAccessoryViewProps = {
     customKeyboardView?: CustomKeyboardView;
 };
 
-const CustomKeyboardNativeView = requireNativeComponent<{}>(
-    'CustomKeyboardNativeView',
-);
+const CustomKeyboardNativeView = requireNativeComponent<
+    UIInputAccessoryViewProps
+>('CustomKeyboardNativeView');
 
 export function UIInputAccessoryView({
     children,

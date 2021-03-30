@@ -6,7 +6,9 @@ import {
     ViewStyle,
     ColorValue,
     processColor,
+    View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {
     // eslint-disable-next-line react/no-unused-prop-types
@@ -29,6 +31,8 @@ export function UIInputAccessoryView({
     managedScrollViewNativeID,
     customKeyboardView,
 }: Props) {
+    const insets = useSafeAreaInsets();
+
     const processedCustomKeyboardView = React.useMemo(() => {
         if (customKeyboardView == null) {
             return undefined;
@@ -53,6 +57,18 @@ export function UIInputAccessoryView({
             customKeyboardView={processedCustomKeyboardView}
         >
             {children}
+            <View // A dummy view to make SafeArea translates look nicer
+                style={[
+                    { height: insets?.bottom ?? 0 },
+                    styles.safeAreaFiller,
+                    customKeyboardView?.backgroundColor != null
+                        ? {
+                              backgroundColor:
+                                  customKeyboardView.backgroundColor,
+                          }
+                        : null,
+                ]}
+            />
         </NativeUIInputAccessoryView>
     );
 }
@@ -63,5 +79,11 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
+    },
+    safeAreaFiller: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: '100%',
     },
 });
