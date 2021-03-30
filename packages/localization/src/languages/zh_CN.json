@@ -1,16 +1,6 @@
 {
     "Account": "账户",
     "AccountAddress": "地址",
-    "AccountLimitPeriod": {
-        "daily": "每天",
-        "monthly": "每月",
-        "total": "总计",
-        "weekly": "每周"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "护照验证",
-        "twoFactorAuthentication": "双因素授权"
-    },
     "Accounts": "账户",
     "AccountTypeHint": "将您的账户地址设置为public将使其在您的个人资料中可见",
     "Add": "添加",

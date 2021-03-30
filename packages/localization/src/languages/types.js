@@ -3,16 +3,6 @@
 export type UILocalizedData = {|
     +Account: string,
     +AccountAddress: string,
-    +AccountLimitPeriod: {|
-        +daily: string,
-        +monthly: string,
-        +total: string,
-        +weekly: string,
-    |},
-    +AccountLimitRule: {|
-        +passportVerification: string,
-        +twoFactorAuthentication: string,
-    |},
     +Accounts: string,
     +AccountTypeHint: string,
     +Add: string,
