@@ -33,7 +33,6 @@ import {
     UIActionSheet,
     UIPopoverBackground,
 } from '@tonlabs/uikit.navigation_legacy';
-import { UIPromoNotice } from '@tonlabs/uikit.flask';
 import {
     // @ts-ignore
     useWebFonts,
@@ -241,10 +240,6 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             title="Navigation"
                         />
                     </ScrollView>
-                    <UIPromoNotice
-                        appStoreUrl="https://www.apple.com/app-store/"
-                        googlePlayUrl="https://play.google.com/store"
-                    />
                 </PortalManager>
             </SafeAreaView>
         </UIBackgroundView>
