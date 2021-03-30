@@ -39,6 +39,7 @@ export function KeyboardScreen() {
     const cKeyboard = React.useMemo(
         () => ({
             moduleName: cStickers.kbID,
+            component: cStickers.component,
             initialProps: cStickers.props,
             backgroundColor: theme[ColorVariants.BackgroundSecondary],
         }),
@@ -143,6 +144,7 @@ export function KeyboardScreen() {
                     />
                     <TouchableOpacity
                         onPress={() => {
+                            inputRef.current?.blur();
                             setCustomKeyboard(
                                 customKeyboard == null ? cKeyboard : null,
                             );
