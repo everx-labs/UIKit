@@ -3,7 +3,6 @@ import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.hydrogen';
-import type { OnCustomKeyboardVisible } from '@tonlabs/uikit.keyboard';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';
@@ -32,12 +31,12 @@ type ChatInputProps = {
     inputHidden?: boolean;
 
     customKeyboardVisible: boolean;
-    onCustomKeyboardPress: OnCustomKeyboardVisible;
+    onCustomKeyboardPress: () => void;
     customKeyboardButton?: React.ComponentType<any>;
 
     onSendText: OnSendText;
     onFocus: () => void;
-    onBlur: () => void;
+    onBlur?: () => void;
 };
 
 export function ChatInput(props: ChatInputProps) {

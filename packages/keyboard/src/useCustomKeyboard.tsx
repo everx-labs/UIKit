@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Keyboard, TextInput, KeyboardEvent } from 'react-native';
+import { Keyboard, TextInput, KeyboardEvent, Platform } from 'react-native';
 import type { UICustomKeyboardView } from './types';
 
 export type OnCustomKeyboardVisible = (
@@ -38,7 +38,7 @@ export function useCustomKeyboard(
     }, []);
 
     const toggle = React.useCallback(() => {
-        if (inputRef && 'current' in inputRef) {
+        if (Platform.OS === 'android' && inputRef && 'current' in inputRef) {
             inputRef.current?.blur();
         }
 

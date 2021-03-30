@@ -24,11 +24,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
-import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
 
 import type { BubbleBaseT, ChatMessage } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
+import { callChatOnTapListener } from './useChatOnTapListener';
 
 type RNGHEvent<T> = { nativeEvent: T };
 
@@ -36,7 +36,7 @@ const onHandlerStateChange = ({
     nativeEvent: { state },
 }: RNGHEvent<{ state: RNGHState }>) => {
     if (state === RNGHState.ACTIVE) {
-        UICustomKeyboardUtils.dismiss();
+        callChatOnTapListener();
     }
 };
 
