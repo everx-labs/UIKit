@@ -9,28 +9,19 @@ import {
     View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import type { UIInputAccessoryViewProps } from './types';
 
-type Props = {
-    // eslint-disable-next-line react/no-unused-prop-types
-    style?: StyleProp<ViewStyle>;
-    children: React.ReactNode;
-    managedScrollViewNativeID?: string;
-    customKeyboardView?: {
-        moduleName: string;
-        initialProps?: Record<string, unknown>;
-        backgroundColor?: ColorValue;
-    };
-};
+const NativeUIInputAccessoryView = requireNativeComponent<
+    UIInputAccessoryViewProps & {
+        style?: StyleProp<ViewStyle>;
+    }
+>('UIInputAccessoryView');
 
-const NativeUIInputAccessoryView = requireNativeComponent<Props>(
-    'UIInputAccessoryView',
-);
-
-export function UIInputAccessoryView({
+export function InputAccessoryView({
     children,
     managedScrollViewNativeID,
     customKeyboardView,
-}: Props) {
+}: UIInputAccessoryViewProps) {
     const insets = useSafeAreaInsets();
 
     const processedCustomKeyboardView = React.useMemo(() => {

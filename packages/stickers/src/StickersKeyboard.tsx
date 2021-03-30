@@ -1,18 +1,24 @@
 import * as React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, Platform, ViewStyle } from 'react-native';
+import {
+    FlatList,
+    StyleSheet,
+    TouchableOpacity,
+    Platform,
+    ViewStyle,
+    AppRegistry,
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.components';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
-import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
 import type {
     UISticker,
     UIStickerPackage,
     PickedSticker,
-    OnPickSticker,
+    // OnPickSticker,
 } from './types';
 
 export const StickerPickerKeyboardName = 'UIStickerPickerKeyboard';
@@ -44,10 +50,9 @@ function Sticker({
 }
 
 type Props = {
-    isNativeKeyboard?: boolean;
     stickers: UIStickerPackage[];
     theme?: any;
-    onItemSelected: OnPickSticker;
+    // onItemSelected: OnPickSticker;
 };
 
 export function StickersList(props: Props) {
@@ -86,18 +91,18 @@ export function StickersList(props: Props) {
                                 sticker={sticker}
                                 pkgID={item.id}
                                 onPress={(stk) => {
-                                    const {
-                                        isNativeKeyboard,
-                                        onItemSelected,
-                                    } = props;
-                                    if (onItemSelected) {
-                                        onItemSelected(undefined, stk);
-                                    } else if (isNativeKeyboard) {
-                                        UICustomKeyboardUtils.onItemSelected(
-                                            StickerPickerKeyboardName,
-                                            stk,
-                                        );
-                                    }
+                                    // const {
+                                    //     isNativeKeyboard,
+                                    //     onItemSelected,
+                                    // } = props;
+                                    // if (onItemSelected) {
+                                    //     onItemSelected(undefined, stk);
+                                    // } else if (isNativeKeyboard) {
+                                    //     UICustomKeyboardUtils.onItemSelected(
+                                    //         StickerPickerKeyboardName,
+                                    //         stk,
+                                    //     );
+                                    // }
                                 }}
                             />
                         ))}
@@ -119,10 +124,7 @@ export function StickersList(props: Props) {
     );
 }
 
-UICustomKeyboardUtils.registerCustomKeyboard(
-    StickerPickerKeyboardName,
-    StickersList,
-);
+AppRegistry.registerComponent(StickerPickerKeyboardName, () => StickersList);
 
 const styles = StyleSheet.create({
     sticker: {

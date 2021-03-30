@@ -5,15 +5,14 @@ import {
     TouchableOpacity,
     StyleSheet,
     AppRegistry,
-    Keyboard,
-    KeyboardEvent,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UILabel, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { UILabel } from '@tonlabs/uikit.hydrogen';
 import {
     // @ts-ignore
     UIInputAccessoryView,
+    useCustomKeyboard,
 } from '@tonlabs/uikit.keyboard';
 import { useStickers } from '@tonlabs/uikit.stickers';
 
@@ -34,40 +33,13 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 export function KeyboardScreen() {
     const insets = useSafeAreaInsets();
     const inverted = true;
-    const cStickers = useStickers(stickers, () => undefined);
-    const theme = useTheme();
-    const cKeyboard = React.useMemo(
-        () => ({
-            moduleName: cStickers.kbID,
-            component: cStickers.component,
-            initialProps: cStickers.props,
-            backgroundColor: theme[ColorVariants.BackgroundSecondary],
-        }),
-        [cStickers, theme],
-    );
-    const [customKeyboard, setCustomKeyboard] = React.useState<
-        typeof cKeyboard | null
-    >(null);
-    const cKeyboardRef = React.useRef<typeof cKeyboard | null>(null);
-
-    React.useEffect(() => {
-        const callback = ({ duration }: KeyboardEvent) => {
-            if (cKeyboardRef.current == null) {
-                return;
-            }
-
-            setTimeout(() => {
-                setCustomKeyboard(null);
-            }, duration);
-        };
-        Keyboard.addListener('keyboardWillHide', callback);
-
-        return () => {
-            Keyboard.removeListener('keyboardWillHide', callback);
-        };
-    }, []);
 
     const inputRef = React.useRef<TextInput>(null);
+    const cStickers = useStickers(stickers, () => undefined);
+    const { customKeyboardView, dismiss, toggle } = useCustomKeyboard(
+        inputRef,
+        cStickers,
+    );
 
     return (
         <>
@@ -110,7 +82,7 @@ export function KeyboardScreen() {
             </ExampleScreen>
             <UIInputAccessoryView
                 managedScrollViewNativeID="keyboardScreenScrollView"
-                customKeyboardView={customKeyboard}
+                customKeyboardView={customKeyboardView}
             >
                 <View
                     style={{
@@ -127,31 +99,9 @@ export function KeyboardScreen() {
                         nativeID="test-input-for-keyboard"
                         style={{ flex: 1, backgroundColor: 'red' }}
                         placeholder="Type here"
-                        onFocus={() => {
-                            setCustomKeyboard(null);
-                            cKeyboardRef.current = null;
-
-                            // setTimeout(() => {
-                            //     inputRef.current?.focus();
-                            // }, 100);
-                            // setTimeout(() => {
-                            //     inputRef.current?.focus();
-                            // }, 200);
-                            // setTimeout(() => {
-                            //     inputRef.current?.focus();
-                            // }, 300);
-                        }}
+                        onFocus={dismiss}
                     />
-                    <TouchableOpacity
-                        onPress={() => {
-                            inputRef.current?.blur();
-                            setCustomKeyboard(
-                                customKeyboard == null ? cKeyboard : null,
-                            );
-                            cKeyboardRef.current =
-                                customKeyboard == null ? cKeyboard : null;
-                        }}
-                    >
+                    <TouchableOpacity onPress={toggle}>
                         <UILabel>Press</UILabel>
                     </TouchableOpacity>
                 </View>

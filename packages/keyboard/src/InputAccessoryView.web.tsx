@@ -1,20 +1,9 @@
 import * as React from 'react';
-import type { ColorValue } from 'react-native';
 
 import { CustomKeyboardWrapper } from './CustomKeyboardWrapper';
+import type { UIInputAccessoryViewProps } from './types';
 
-type CustomKeyboardView = {
-    component: typeof React.Component;
-    initialProps?: Record<string, unknown>;
-    backgroundColor?: ColorValue;
-};
-
-type UIInputAccessoryViewProps = {
-    children: React.ReactNode;
-    customKeyboardView?: CustomKeyboardView;
-};
-
-export function UIInputAccessoryView({
+export function InputAccessoryView({
     children,
     customKeyboardView,
 }: UIInputAccessoryViewProps) {
