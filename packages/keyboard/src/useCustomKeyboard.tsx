@@ -18,16 +18,19 @@ export function registerKeyboardComponent<KeyboardProps>(
     moduleName: string,
     keyboardComponent: React.ComponentType<KeyboardProps>,
 ) {
-    function UIKeyboard(props: KeyboardProps) {
+    function UIKeyboard({
+        keyboardID,
+        ...props
+    }: KeyboardProps & { keyboardID: number }) {
         return React.createElement(keyboardComponent, {
             ...props,
             onEvent: (...args: any[]) => {
-                const cb = callbacks[moduleName];
+                const cb = callbacks[`${moduleName}:${keyboardID}`];
                 if (cb != null) {
                     cb(...args);
                 }
             },
-        });
+        } as any);
     }
 
     UIKeyboard.displayName = `UIKeyboard(${moduleName})`;
@@ -37,14 +40,38 @@ export function registerKeyboardComponent<KeyboardProps>(
     return UIKeyboard;
 }
 
+let globalID = 0;
+
 export function useCustomKeyboard(
     inputRef: React.Ref<TextInput>,
     cKeyboard?: UICustomKeyboardView,
 ) {
+    const keyboardID = React.useRef<number>(null);
+
+    if (keyboardID.current == null) {
+        globalID += 1;
+        // @ts-expect-error
+        keyboardID.current = globalID;
+    }
+
+    const cKeyboardPrepared = React.useMemo(() => {
+        if (cKeyboard == null) {
+            return undefined;
+        }
+
+        return {
+            ...cKeyboard,
+            initialProps: {
+                ...cKeyboard?.initialProps,
+                keyboardID: keyboardID.current,
+            },
+        };
+    }, [cKeyboard]);
+
     const [customKeyboard, setCustomKeyboard] = React.useState<
-        typeof cKeyboard
+        typeof cKeyboardPrepared
     >(undefined);
-    const customKeyboardRef = React.useRef<typeof cKeyboard>(undefined);
+    const customKeyboardRef = React.useRef<typeof cKeyboardPrepared>(undefined);
 
     React.useEffect(() => {
         const callback = ({ duration }: KeyboardEvent) => {
@@ -78,34 +105,47 @@ export function useCustomKeyboard(
             inputRef.current?.blur();
         }
 
-        setCustomKeyboard(customKeyboard == null ? cKeyboard : undefined);
+        setCustomKeyboard(
+            customKeyboard == null ? cKeyboardPrepared : undefined,
+        );
         customKeyboardRef.current =
-            customKeyboard == null ? cKeyboard : undefined;
-    }, [cKeyboard, customKeyboard, inputRef]);
+            customKeyboard == null ? cKeyboardPrepared : undefined;
+    }, [cKeyboardPrepared, customKeyboard, inputRef]);
+
+    const onEventCallback = React.useCallback(
+        (...args: any[]) => {
+            if (cKeyboard?.onEvent == null) {
+                return false;
+            }
+
+            const shouldDismiss = cKeyboard?.onEvent(...args);
+
+            console.log(args, cKeyboard.onEvent, shouldDismiss);
+
+            if (shouldDismiss) {
+                dismiss();
+            }
+
+            return true;
+        },
+        [cKeyboard, dismiss],
+    );
 
     React.useEffect(() => {
         if (cKeyboard?.moduleName) {
-            callbacks[cKeyboard?.moduleName] = (...args: any[]) => {
-                if (cKeyboard?.onEvent == null) {
-                    return false;
-                }
-
-                const shouldDismiss = cKeyboard?.onEvent(...args);
-
-                if (shouldDismiss) {
-                    dismiss();
-                }
-
-                return true;
-            };
+            callbacks[
+                `${cKeyboard?.moduleName}:${keyboardID.current}`
+            ] = onEventCallback;
         }
 
         () => {
             if (cKeyboard?.moduleName) {
-                callbacks[cKeyboard?.moduleName] = undefined;
+                callbacks[
+                    `${cKeyboard?.moduleName}:${keyboardID.current}`
+                ] = undefined;
             }
         };
-    }, [cKeyboard, dismiss]);
+    }, [cKeyboard, onEventCallback]);
 
     return {
         customKeyboardView: customKeyboard,
