@@ -50,7 +50,7 @@ function UIFoldingNoticePortalContent({
         onMouseEnter: onIconMouseEnter,
         onMouseLeave: onIconMouseLeave,
     } = useHover();
-    // const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const show = () => {
         Animated.spring(visibleAnim, {
@@ -249,20 +249,32 @@ function UIFoldingNoticePortalContent({
                         <View style={styles.contentContainer}>
                             {children}
                         </View>
-                        <TouchableOpacity
-                            // onMouseEnter={onMouseEnter}
-                            // onMouseLeave={onMouseLeave}
-                            onPress={onNoticeButtonPress}
-                            style={styles.noticeButton}
-                        >
-                            <UIImage
-                                source={closable ? close : minimize}
-                                tintColor={ColorVariants.TextAccent}
-                                // tintColor={isHovered
-                                //     ? ColorVariants.TextAccent
-                                //     : ColorVariants.TextPrimary}
-                            />
-                        </TouchableOpacity>
+                        {closable ? (
+                            <TouchableOpacity
+                                onPress={onNoticeButtonPress}
+                                style={styles.noticeButton}
+                            >
+                                <UIImage
+                                    source={close}
+                                    tintColor={ColorVariants.TextAccent}
+                                />
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                // @ts-expect-error
+                                onMouseEnter={onMouseEnter}
+                                onMouseLeave={onMouseLeave}
+                                onPress={onNoticeButtonPress}
+                                style={styles.noticeButton}
+                            >
+                                <UIImage
+                                    source={minimize}
+                                    tintColor={isHovered
+                                        ? ColorVariants.TextAccent
+                                        : ColorVariants.TextPrimary}
+                                />
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </AnimatedWithColor>
             </TapGestureHandler>

@@ -165,9 +165,9 @@ export function UIPromoNotice({
             ? (
                 <UIFoldingNotice
                     visible={visible}
-                    closable
+                    closable // for now always closable, later should be closable only on mobile web
                     onClose={onClose}
-                    folded={false} // folded
+                    folded={false} // for now always unfolded
                     // onFold={onFold}
                     icon={icon || UIAssets.icons.brand.tonSymbol}
                 >
