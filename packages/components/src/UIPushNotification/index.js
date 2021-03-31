@@ -158,14 +158,14 @@ export default class UIPushNotification {
                         }}
                     >
                         <UIBackgroundView
-                            color={UIBackgroundViewColors.BackgroundPrimary}
+                            color={UIBackgroundViewColors.StaticBackgroundBlack}
                             style={styles.pnStyle}
                         >
                             {
                                 this.title.length > 0
                                     ? (
                                         <UILabel
-                                            color={UILabelColors.TextPrimary}
+                                            color={UILabelColors.StaticTextPrimaryLight}
                                             role={UILabelRoles.HeadlineFootnote}
                                             testID="title_notification"
                                         >
@@ -175,7 +175,7 @@ export default class UIPushNotification {
                                     : undefined
                             }
                             <UILabel
-                                color={UILabelColors.TextPrimary}
+                                color={UILabelColors.StaticTextPrimaryLight}
                                 role={UILabelRoles.ParagraphFootnote}
                                 testID="message_notification"
                             >
