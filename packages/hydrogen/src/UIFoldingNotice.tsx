@@ -10,14 +10,18 @@ import { Portal } from './Portal';
 import { useHover } from './useHover';
 
 const minimize = require('../assets/icons/minimize/minimize.png');
+const close = require('../assets/icons/close/close.png');
 
 const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 
 type OnFold = () => void | Promise<void>;
+type OnClose = () => void | Promise<void>;
 
 export type UIFondingNoticeProps = {
     visible: boolean;
+    closable: boolean;
     folded: boolean;
+    onClose?: OnClose;
     onFold?: OnFold;
     icon: ImageProps;
     children: React.ReactNode;
@@ -26,7 +30,9 @@ export type UIFondingNoticeProps = {
 
 function UIFoldingNoticePortalContent({
     visible,
+    closable,
     folded,
+    onClose,
     onFold,
     icon,
     children,
@@ -44,7 +50,7 @@ function UIFoldingNoticePortalContent({
         onMouseEnter: onIconMouseEnter,
         onMouseLeave: onIconMouseLeave,
     } = useHover();
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+    // const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const show = () => {
         Animated.spring(visibleAnim, {
@@ -200,6 +206,19 @@ function UIFoldingNoticePortalContent({
         [],
     );
 
+    const onNoticeButtonPress = React.useCallback(
+        () => {
+            if (closable) {
+                if (onClose) {
+                    onClose();
+                }
+            } else if (onFold) {
+                onFold();
+            }
+        },
+        [closable, onClose, onFold],
+    );
+
     return (
         <Animated.View
             style={containerStyle}
@@ -231,17 +250,17 @@ function UIFoldingNoticePortalContent({
                             {children}
                         </View>
                         <TouchableOpacity
-                            // @ts-expect-error
-                            onMouseEnter={onMouseEnter}
-                            onMouseLeave={onMouseLeave}
-                            onPress={onFold}
+                            // onMouseEnter={onMouseEnter}
+                            // onMouseLeave={onMouseLeave}
+                            onPress={onNoticeButtonPress}
                             style={styles.noticeButton}
                         >
                             <UIImage
-                                source={minimize}
-                                tintColor={isHovered
-                                    ? ColorVariants.TextAccent
-                                    : ColorVariants.TextPrimary}
+                                source={closable ? close : minimize}
+                                tintColor={ColorVariants.TextAccent}
+                                // tintColor={isHovered
+                                //     ? ColorVariants.TextAccent
+                                //     : ColorVariants.TextPrimary}
                             />
                         </TouchableOpacity>
                     </View>

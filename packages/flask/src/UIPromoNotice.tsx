@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { ImageProps, Linking, Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
+import {
+    ImageProps,
+    Linking,
+    Platform,
+    StyleSheet,
+    View,
+    // useWindowDimensions,
+} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
@@ -15,7 +23,7 @@ type UIPromoNoticeProps = {
     appStoreUrl: string;
     googlePlayUrl: string;
     icon?: ImageProps;
-    minimumWidthToShow?: number;
+    // minimumWidthToShow?: number;
 };
 
 const styles = StyleSheet.create({
@@ -33,45 +41,100 @@ const styles = StyleSheet.create({
     },
 });
 
+const getDeviceOS = () => {
+    const systemName = DeviceInfo.getSystemName();
+    if (systemName && (systemName.toLowerCase().includes('ios') ||
+        systemName.toLowerCase().includes('iphone'))) {
+        return 'ios';
+    } else if (systemName && systemName.toLowerCase().includes('android')) {
+        return 'android';
+    }
+    return 'web';
+};
+
+const openLink = (OS: string, link: string) => {
+    if (!link) {
+        return;
+    }
+    if (OS === 'web') {
+        window.open(link, '_blank');
+    } else {
+        Linking.openURL(link);
+    }
+};
+
 export function UIPromoNotice({
     appStoreUrl,
     googlePlayUrl,
     icon,
-    minimumWidthToShow = 600,
+    // minimumWidthToShow = 600,
 }: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
-    const [folded, setFolded] = React.useState(true);
-    const windowWidth = useWindowDimensions().width;
+    // const [folded, setFolded] = React.useState(true);
+    // const windowWidth = useWindowDimensions().width;
+    const deviceOS = getDeviceOS();
 
-    React.useEffect(() => {
-        if (windowWidth < minimumWidthToShow) {
-            setVisible(false);
-        } else {
-            setVisible(true);
-        }
-    }, [windowWidth, minimumWidthToShow]);
+    // React.useEffect(() => {
+    //     if (windowWidth < minimumWidthToShow) {
+    //         setVisible(false);
+    //     } else {
+    //         setVisible(true);
+    //     }
+    // }, [windowWidth, minimumWidthToShow]);
 
-    const onFold = React.useCallback(() => {
-        setFolded(!folded);
-    }, [folded]);
+    const onClose = React.useCallback(() => {
+        setVisible(false);
+    }, []);
+
+    // const onFold = React.useCallback(() => {
+    //     setFolded(!folded);
+    // }, [folded]);
 
     const onAppStore = React.useCallback(() => {
-        Linking.openURL(appStoreUrl);
-    }, [appStoreUrl]);
+        openLink(deviceOS, appStoreUrl);
+    }, [deviceOS, appStoreUrl]);
 
     const onGooglePlay = React.useCallback(() => {
-        Linking.openURL(googlePlayUrl);
-    }, [googlePlayUrl]);
+        openLink(deviceOS, googlePlayUrl);
+    }, [deviceOS, googlePlayUrl]);
 
-    return (
-        Platform.OS === 'web'
-            ? (
-                <UIFoldingNotice
-                    visible={visible}
-                    folded={folded}
-                    onFold={onFold}
-                    icon={icon || UIAssets.icons.brand.tonSymbol}
-                >
+    const content = React.useMemo(
+        () => {
+            if (deviceOS === 'ios') {
+                return (
+                    <View>
+                        <UIButton
+                            title={uiLocalized.promoDownload.appStore}
+                            onPress={onAppStore}
+                        />
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.ParagraphFootnote}
+                            style={styles.noticeText}
+                        >
+                            {uiLocalized.promoDownload.notice}
+                        </UILabel>
+                    </View>
+                );
+            } else if (deviceOS === 'android') {
+                return (
+                    <View>
+                        <UIButton
+                            title={uiLocalized.promoDownload.googlePlay}
+                            onPress={onGooglePlay}
+                        />
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.ParagraphFootnote}
+                            style={styles.noticeText}
+                        >
+                            {uiLocalized.promoDownload.notice}
+                        </UILabel>
+                    </View>
+                );
+            }
+            return (
+                <View>
                     <UILabel
                         color={UILabelColors.TextPrimary}
                         role={UILabelRoles.ParagraphFootnote}
@@ -91,6 +154,24 @@ export function UIPromoNotice({
                             style={styles.rightButton}
                         />
                     </View>
+                </View>
+            );
+        },
+        [deviceOS, onAppStore, onGooglePlay],
+    );
+
+    return (
+        Platform.OS === 'web'
+            ? (
+                <UIFoldingNotice
+                    visible={visible}
+                    closable
+                    onClose={onClose}
+                    folded={false} // folded
+                    // onFold={onFold}
+                    icon={icon || UIAssets.icons.brand.tonSymbol}
+                >
+                    {content}
                 </UIFoldingNotice>
             ) : null
     );
