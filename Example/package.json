@@ -66,7 +66,6 @@
     "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
     "react-native-status-bar-height": "1.0.1",
     "react-native-svg": "^12.1.0",
-    "react-native-ui-lib": "5.14.0",
     "react-native-web": "^0.13.0",
     "react-native-web-image-loader": "^0.1.1",
     "react-native-web-modal": "^1.0.1",
