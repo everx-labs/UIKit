@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
 import {
-    StyleSheet, View, Text,
-    Image, TouchableOpacity, Dimensions,
-    TouchableWithoutFeedback, Animated,
+    StyleSheet,
+    TouchableOpacity,
+    Dimensions,
+    TouchableWithoutFeedback,
+    Animated,
 } from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
 import {
@@ -11,8 +13,14 @@ import {
     State as RNGHState,
 } from 'react-native-gesture-handler';
 
-import { UIConstant, UIColor, UIFont } from '@tonlabs/uikit.core';
-import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIConstant } from '@tonlabs/uikit.core';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UINotice from '../UINotice';
 import type { MessageObject, NoticeAction } from '../UINotice';
@@ -28,20 +36,11 @@ const styles = StyleSheet.create({
     },
     toastStyle: {
         width: Math.min(UIConstant.toastWidth(), pageToastWidth),
-        height: 52,
-        borderRadius: UIConstant.smallBorderRadius(),
-        paddingHorizontal: UIConstant.contentOffset(),
+        borderRadius: UIConstant.mediumBorderRadius(),
+        padding: UIConstant.contentOffset(),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-    },
-    titleStyle: {
-        color: UIColor.fa(),
-        ...UIFont.captionRegular(),
-    },
-    actionTitleStyle: {
-        color: UIColor.fa(),
-        ...UIFont.smallMedium(),
     },
 });
 
@@ -63,17 +62,17 @@ export default class UIToastMessage {
     static Type = {
         Default: 'default',
         Alert: 'alert',
-    }
+    };
 
     static Place = {
         Center: 'center',
         Left: 'flex-start',
-    }
+    };
 
     static Duration = {
         Long: UIConstant.toastDurationLong(),
         Short: UIConstant.toastDurationShort(),
-    }
+    };
 
     static showMessage(args: string | ToastObject, duration?: number) {
         if (typeof args === 'string') {
@@ -157,23 +156,18 @@ export default class UIToastMessage {
 
     // Render
     static renderCloseButton() {
-        if (this.type === this.Type.Alert) {
-            return (
-                <TouchableOpacity
-                    testID="toast-action-button"
-                    onPress={() => this.closeToast()}
-                >
-                    <Image source={UIAssets.icons.ui.closeLight} />
-                </TouchableOpacity>
-            );
-        }
         if (this.type === this.Type.Default && this.action.title) {
             return (
                 <TouchableOpacity
                     testID="toast-action-button"
                     onPress={() => this.closeToast()}
                 >
-                    <Text style={styles.actionTitleStyle}>{this.action.title}</Text>
+                    <UILabel
+                        color={UILabelColors.StaticTextPrimaryLight}
+                        role={UILabelRoles.ActionCallout}
+                    >
+                        {this.action.title}
+                    </UILabel>
                 </TouchableOpacity>
             );
         }
@@ -181,7 +175,6 @@ export default class UIToastMessage {
     }
 
     static renderMessageComponent() {
-        const color = this.type === this.Type.Alert ? UIColor.error() : UIColor.black();
         return (
             <PanGestureHandler
                 onGestureEvent={this.onPanGestureEvent}
@@ -205,15 +198,21 @@ export default class UIToastMessage {
                             this.swiping = false;
                         }}
                     >
-                        <View style={[styles.toastStyle, { backgroundColor: color }]}>
-                            <Text
+                        <UIBackgroundView
+                            color={this.type === this.Type.Alert
+                                ? UIBackgroundViewColors.BackgroundNegative
+                                : UIBackgroundViewColors.StaticBackgroundBlack}
+                            style={styles.toastStyle}
+                        >
+                            <UILabel
+                                color={UILabelColors.StaticTextPrimaryLight}
+                                role={UILabelRoles.ParagraphFootnote}
                                 testID={`message_${this.type}`}
-                                style={styles.titleStyle}
                             >
                                 {this.message}
-                            </Text>
+                            </UILabel>
                             {this.renderCloseButton()}
-                        </View>
+                        </UIBackgroundView>
                     </TouchableWithoutFeedback>
                 </Animated.View>
             </PanGestureHandler>
