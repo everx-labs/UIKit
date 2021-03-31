@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    View,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    AppRegistry,
-} from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILabel } from '@tonlabs/uikit.hydrogen';
@@ -35,7 +29,9 @@ export function KeyboardScreen() {
     const inverted = true;
 
     const inputRef = React.useRef<TextInput>(null);
-    const cStickers = useStickers(stickers, () => undefined);
+    const cStickers = useStickers(stickers, (/* sticker */) => {
+        return true;
+    });
     const { customKeyboardView, dismiss, toggle } = useCustomKeyboard(
         inputRef,
         cStickers,
@@ -109,10 +105,6 @@ export function KeyboardScreen() {
         </>
     );
 }
-
-AppRegistry.registerComponent('TestCustomKeyboard', () => () => (
-    <View style={{ flex: 1, backgroundColor: 'rgba(0, 255, 0, .5)' }} />
-));
 
 const styles = StyleSheet.create({
     verticallyInverted: {

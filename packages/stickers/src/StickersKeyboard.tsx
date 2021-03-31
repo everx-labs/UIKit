@@ -5,19 +5,20 @@ import {
     TouchableOpacity,
     Platform,
     ViewStyle,
-    AppRegistry,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.components';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { registerKeyboardComponent } from '@tonlabs/uikit.keyboard';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
 import type {
     UISticker,
     UIStickerPackage,
     PickedSticker,
+    OnPickSticker,
     // OnPickSticker,
 } from './types';
 
@@ -52,7 +53,7 @@ function Sticker({
 type Props = {
     stickers: UIStickerPackage[];
     theme?: any;
-    // onItemSelected: OnPickSticker;
+    onEvent: OnPickSticker;
 };
 
 export function StickersList(props: Props) {
@@ -90,20 +91,7 @@ export function StickersList(props: Props) {
                                 key={`pkg_${item.id}_sticker_${sticker.name}`}
                                 sticker={sticker}
                                 pkgID={item.id}
-                                onPress={(stk) => {
-                                    // const {
-                                    //     isNativeKeyboard,
-                                    //     onItemSelected,
-                                    // } = props;
-                                    // if (onItemSelected) {
-                                    //     onItemSelected(undefined, stk);
-                                    // } else if (isNativeKeyboard) {
-                                    //     UICustomKeyboardUtils.onItemSelected(
-                                    //         StickerPickerKeyboardName,
-                                    //         stk,
-                                    //     );
-                                    // }
-                                }}
+                                onPress={props.onEvent}
                             />
                         ))}
                     </ScrollView>
@@ -124,7 +112,10 @@ export function StickersList(props: Props) {
     );
 }
 
-AppRegistry.registerComponent(StickerPickerKeyboardName, () => StickersList);
+export const StickersKeyboard = registerKeyboardComponent(
+    StickerPickerKeyboardName,
+    StickersList,
+);
 
 const styles = StyleSheet.create({
     sticker: {

@@ -117,8 +117,11 @@ export function UIChatInput(props: UIChatInputProps) {
 
     useChatOnTapListener(dismissKeyboard);
 
-    const input = (
-        <>
+    return (
+        <UIInputAccessoryView
+            managedScrollViewNativeID={props.managedScrollViewNativeID}
+            customKeyboardView={customKeyboardView}
+        >
             <ChatInput
                 textInputRef={textInputRef}
                 editable={props.editable}
@@ -145,15 +148,6 @@ export function UIChatInput(props: UIChatInputProps) {
                 onSendMedia={props.onSendMedia}
                 dismissKeyboard={dismissKeyboard}
             />
-        </>
-    );
-
-    return (
-        <UIInputAccessoryView
-            managedScrollViewNativeID={props.managedScrollViewNativeID}
-            customKeyboardView={customKeyboardView}
-        >
-            {input}
         </UIInputAccessoryView>
     );
 }

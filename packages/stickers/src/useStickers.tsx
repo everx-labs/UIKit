@@ -4,15 +4,15 @@ import type { UICustomKeyboardView } from '@tonlabs/uikit.keyboard';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { StickersButton } from './StickersButton';
-import { StickerPickerKeyboardName, StickersList } from './StickersKeyboard';
-import type {
-    // OnPickSticker,
-    UIStickerPackage,
-} from './types';
+import {
+    StickerPickerKeyboardName,
+    StickersKeyboard,
+} from './StickersKeyboard';
+import type { OnPickSticker, UIStickerPackage } from './types';
 
 export function useStickers(
     stickers: UIStickerPackage[],
-    // onItemSelected: OnPickSticker,
+    onStickerSelected: OnPickSticker,
 ): UICustomKeyboardView {
     const theme = useTheme();
     const stickersKeyboard = React.useMemo(() => {
@@ -20,7 +20,7 @@ export function useStickers(
             // onItemSelected,
             button: StickersButton,
             moduleName: StickerPickerKeyboardName,
-            component: StickersList,
+            component: StickersKeyboard,
             initialProps: {
                 stickers,
                 theme,
@@ -28,8 +28,9 @@ export function useStickers(
             backgroundColor: theme[
                 ColorVariants.BackgroundSecondary
             ] as ColorValue,
+            onEvent: onStickerSelected,
         };
-    }, [stickers, /* onItemSelected, */ theme]);
+    }, [stickers, onStickerSelected, theme]);
 
     return stickersKeyboard;
 }

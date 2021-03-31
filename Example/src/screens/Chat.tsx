@@ -312,7 +312,7 @@ const ChatWindowScreen = () => {
     const onSendMedia = React.useCallback(() => undefined, []);
     const onSendDocument = React.useCallback(() => undefined, []);
     const onItemSelected = React.useCallback(
-        (_id, stk) => {
+        (stk) => {
             setMessages([
                 {
                     key: `${Date.now()}stk`,
@@ -326,6 +326,8 @@ const ChatWindowScreen = () => {
                 },
                 ...messages,
             ]);
+
+            return true;
         },
         [messages, setMessages],
     );
@@ -344,7 +346,7 @@ const ChatWindowScreen = () => {
             <UIChatInput
                 managedScrollViewNativeID="chatSectionList"
                 editable
-                onSendText={(text) => {
+                onSendText={(text: string) => {
                     setMessages([
                         {
                             key: `${Date.now()}1`,

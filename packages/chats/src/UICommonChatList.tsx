@@ -14,6 +14,7 @@ import {
     StyleProp,
     ListRenderItem,
     ViewProps,
+    Keyboard,
 } from 'react-native';
 import {
     TapGestureHandler,
@@ -36,7 +37,11 @@ const onHandlerStateChange = ({
     nativeEvent: { state },
 }: RNGHEvent<{ state: RNGHState }>) => {
     if (state === RNGHState.ACTIVE) {
-        callChatOnTapListener();
+        if (Platform.OS === 'android') {
+            callChatOnTapListener();
+        } else {
+            Keyboard.dismiss();
+        }
     }
 };
 

@@ -8,11 +8,7 @@ import {
     ChatMessageType,
     CommonChatListProps,
 } from '@tonlabs/uikit.chats';
-import {
-    BrowserMessage,
-    InteractiveMessageType,
-    OnHeightChange,
-} from './types';
+import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
 import { AddressInput } from './Inputs/addressInput';
 import { TerminalInput } from './Inputs/terminal';
@@ -23,7 +19,6 @@ import { AmountInput } from './Inputs/amountInput';
 type UIBrowserListProps = {
     messages: BrowserMessage[];
     bottomInset?: number;
-    onHeightChange: OnHeightChange;
 };
 
 function flatListGetItemLayoutFabric({

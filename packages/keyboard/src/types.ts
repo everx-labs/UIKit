@@ -2,10 +2,7 @@ import type { ColorValue } from 'react-native';
 
 export type OnHeightChange = (height: number) => void;
 
-export type OnItemSelected<T = any> = (
-    id: string | undefined,
-    item: T,
-) => void | Promise<void>;
+export type OnEvent = (...args: any[]) => boolean | Promise<boolean>;
 
 export type UICustomKeyboardView = {
     moduleName: string;
@@ -13,7 +10,7 @@ export type UICustomKeyboardView = {
     component: React.ComponentType<any>;
     initialProps?: Record<string, unknown>;
     backgroundColor?: ColorValue;
-    // onItemSelected: OnItemSelected;
+    onEvent?: OnEvent;
 };
 
 export type UIInputAccessoryViewProps = {

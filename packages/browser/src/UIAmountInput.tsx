@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { UICustomKeyboard } from '@tonlabs/uikit.keyboard';
-import { useBackHandler, ChatInputContainer } from '@tonlabs/uikit.chats';
+import { UIInputAccessoryView } from '@tonlabs/uikit.keyboard';
+import { ChatInputContainer } from '@tonlabs/uikit.chats';
 import {
     UITextView,
     useUITextViewValue,
@@ -304,8 +304,6 @@ export function UIAmountInput(props: UIAmountInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
     const { onHeightChange } = props;
 
-    useBackHandler(textInputRef);
-
     React.useEffect(
         () => () => {
             if (onHeightChange) {
@@ -316,26 +314,20 @@ export function UIAmountInput(props: UIAmountInputProps) {
         [onHeightChange],
     );
 
-    const input = (
-        <UIAmountInputInternal
-            textInputRef={textInputRef}
-            placeholder={props.placeholder}
-            decimals={props.decimals}
-            min={props.min}
-            max={props.max}
-            onSendAmount={props.onSendAmount}
-            onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
-        />
-    );
-
     return (
-        <UICustomKeyboard
-            renderContent={() => input}
-            kbInputRef={textInputRef}
-            onHeightChange={props.onHeightChange}
-            customKeyboardVisible={false}
-            managedScrollViewNativeID="browserList"
-        />
+        <UIInputAccessoryView managedScrollViewNativeID="browserList">
+            <UIAmountInputInternal
+                textInputRef={textInputRef}
+                placeholder={props.placeholder}
+                decimals={props.decimals}
+                min={props.min}
+                max={props.max}
+                onSendAmount={props.onSendAmount}
+                onHeightChange={
+                    Platform.OS === 'web' ? onHeightChange : undefined
+                }
+            />
+        </UIInputAccessoryView>
     );
 }
 
