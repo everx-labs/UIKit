@@ -65,12 +65,14 @@ export function UIPromoNotice({
     const deviceOS = UIDevice.deviceOS();
 
     React.useEffect(() => {
-        if (windowWidth < minimumWidthToShowFoldingNotice) {
-            setVisible(false);
-        } else {
-            setVisible(true);
+        if (folding) {
+            if (windowWidth < minimumWidthToShowFoldingNotice) {
+                setVisible(false);
+            } else {
+                setVisible(true);
+            }
         }
-    }, [windowWidth, minimumWidthToShowFoldingNotice]);
+    }, [folding, windowWidth, minimumWidthToShowFoldingNotice]);
 
     const onClose = React.useCallback(() => {
         setVisible(false);
