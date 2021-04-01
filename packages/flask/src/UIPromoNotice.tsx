@@ -5,7 +5,6 @@ import {
     Platform,
     StyleSheet,
     View,
-    useWindowDimensions,
 } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -24,7 +23,6 @@ type UIPromoNoticeProps = {
     googlePlayUrl: string;
     icon?: ImageProps;
     folding?: boolean;
-    minimumWidthToShowFoldingNotice?: number;
 };
 
 const styles = StyleSheet.create({
@@ -58,21 +56,9 @@ export function UIPromoNotice({
     googlePlayUrl,
     icon = UIAssets.icons.brand.tonSymbol,
     folding = false,
-    minimumWidthToShowFoldingNotice = 600,
 }: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
-    const windowWidth = useWindowDimensions().width;
     const deviceOS = UIDevice.deviceOS();
-
-    React.useEffect(() => {
-        if (folding) {
-            if (windowWidth < minimumWidthToShowFoldingNotice) {
-                setVisible(false);
-            } else {
-                setVisible(true);
-            }
-        }
-    }, [folding, windowWidth, minimumWidthToShowFoldingNotice]);
 
     const onClose = React.useCallback(() => {
         setVisible(false);

@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Animated, ImageProps, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+    Animated,
+    ImageProps,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    useWindowDimensions,
+} from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -41,6 +48,7 @@ function UIFoldingNotice({
     const foldingAnim = React.useRef(new Animated.Value(0)).current;
     const iconPaddingAnim = React.useRef(new Animated.Value(UIConstant.normalContentOffset)).current;
     const iconHoverAnim = React.useRef(new Animated.Value(UIConstant.minNoticeIconSize)).current;
+    const windowWidth = useWindowDimensions().width;
 
     const {
         isHovered: isIconHovered,
@@ -121,6 +129,16 @@ function UIFoldingNotice({
         },
         [visible, containerWidth],
     );
+
+    // TODO: think whether it should be implemented somehow else
+    //  or min screen width should be moved to a prop
+    React.useEffect(() => {
+        if (windowWidth < UIConstant.minimumWidthToShowFoldingNotice) {
+            hide();
+        } else {
+            show();
+        }
+    }, [windowWidth, show, hide]);
 
     React.useEffect(
         () => {
