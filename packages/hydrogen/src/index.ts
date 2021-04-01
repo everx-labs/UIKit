@@ -10,7 +10,7 @@ export * from './UISeedPhraseTextView';
 export * from './UIAutogrowTextView';
 export * from './UISheet';
 export * from './UIQRCodeScannerSheet';
-export * from './UIFoldingNotice';
+export * from './UINotice';
 export * from './Portal';
 export * from './UICheckbox';
 export * from './UIImage';

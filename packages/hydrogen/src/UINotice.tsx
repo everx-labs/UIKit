@@ -6,7 +6,7 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { ColorVariants } from './Colors';
 import { UIConstant } from './constants';
-import { UIBackgroundView } from './UIBackgroundView';
+import { UIBackgroundView, UIBackgroundViewColors } from './UIBackgroundView';
 import { UIImage } from './UIImage';
 import { Portal } from './Portal';
 import { useHover } from './useHover';
@@ -16,27 +16,40 @@ const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 type OnFold = () => void | Promise<void>;
 type OnClose = () => void | Promise<void>;
 
-export type UIFondingNoticeProps = {
+export type UINoticeCommonProps = {
     visible: boolean;
-    closable: boolean;
-    folded: boolean;
-    onClose?: OnClose;
-    onFold?: OnFold;
     icon: ImageProps;
     children: React.ReactNode;
     style?: ViewStyle;
 };
 
-function UIFoldingNoticePortalContent({
+export type UIFoldingNoticeProps = UINoticeCommonProps & {
+    folded?: boolean;
+    onFold?: OnFold;
+};
+
+export type UIClosableNoticeProps = UINoticeCommonProps & {
+    onClose?: OnClose;
+};
+
+export type UINoticeProps = UINoticeCommonProps & {
+    /**
+     * Whether to add folding behaviour or to use default notice
+     */
+    folding?: boolean;
+    folded?: boolean;
+    onFold?: OnFold;
+    onClose?: OnClose;
+};
+
+function UIFoldingNotice({
     visible,
-    closable,
-    folded,
-    onClose,
+    folded = true,
     onFold,
     icon,
     children,
     style,
-}: UIFondingNoticeProps) {
+}: UIFoldingNoticeProps) {
     const [containerWidth, setContainerWidth] = React.useState(0);
     const [contentWidth, setContentWidth] = React.useState(0);
     const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
@@ -205,18 +218,11 @@ function UIFoldingNoticePortalContent({
         [],
     );
 
-    const onNoticeButtonPress = React.useCallback(
-        () => {
-            if (closable) {
-                if (onClose) {
-                    onClose();
-                }
-            } else if (onFold) {
-                onFold();
-            }
-        },
-        [closable, onClose, onFold],
-    );
+    const onFoldPress = React.useCallback(() => {
+        if (onFold) {
+            onFold();
+        }
+    }, [onFold]);
 
     return (
         <Animated.View
@@ -225,7 +231,7 @@ function UIFoldingNoticePortalContent({
         >
             <TapGestureHandler
                 enabled={folded}
-                onGestureEvent={onFold}
+                onGestureEvent={onFoldPress}
             >
                 <AnimatedWithColor
                     color={ColorVariants.BackgroundPrimary}
@@ -248,32 +254,20 @@ function UIFoldingNoticePortalContent({
                         <View style={styles.contentContainer}>
                             {children}
                         </View>
-                        {closable ? (
-                            <TouchableOpacity
-                                onPress={onNoticeButtonPress}
-                                style={styles.noticeButton}
-                            >
-                                <UIImage
-                                    source={UIAssets.icons.ui.buttonClose}
-                                    tintColor={ColorVariants.TextAccent}
-                                />
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableOpacity
-                                // @ts-expect-error
-                                onMouseEnter={onMouseEnter}
-                                onMouseLeave={onMouseLeave}
-                                onPress={onNoticeButtonPress}
-                                style={styles.noticeButton}
-                            >
-                                <UIImage
-                                    source={UIAssets.icons.ui.buttonMinimize}
-                                    tintColor={isHovered
-                                        ? ColorVariants.TextAccent
-                                        : ColorVariants.TextPrimary}
-                                />
-                            </TouchableOpacity>
-                        )}
+                        <TouchableOpacity
+                            // @ts-expect-error
+                            onMouseEnter={onMouseEnter}
+                            onMouseLeave={onMouseLeave}
+                            onPress={onFoldPress}
+                            style={styles.noticeButton}
+                        >
+                            <UIImage
+                                source={UIAssets.icons.ui.buttonMinimize}
+                                tintColor={isHovered
+                                    ? ColorVariants.TextAccent
+                                    : ColorVariants.TextPrimary}
+                            />
+                        </TouchableOpacity>
                     </View>
                 </AnimatedWithColor>
             </TapGestureHandler>
@@ -281,10 +275,115 @@ function UIFoldingNoticePortalContent({
     );
 }
 
-export function UIFoldingNotice(props: UIFondingNoticeProps) {
+function UIClosableNotice({
+    visible,
+    onClose,
+    icon,
+    children,
+    style,
+}: UIClosableNoticeProps) {
+    const [containerWidth, setContainerWidth] = React.useState(0);
+    const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
+
+    const show = () => {
+        Animated.spring(visibleAnim, {
+            toValue: (UIConstant.contentOffset * 2),
+            useNativeDriver: false,
+        }).start();
+    };
+
+    const hide = () => {
+        Animated.spring(visibleAnim, {
+            toValue: -containerWidth - (UIConstant.contentOffset * 2),
+            useNativeDriver: false,
+        }).start();
+    };
+
+    React.useEffect(
+        () => {
+            if (visible) {
+                show();
+            } else {
+                hide();
+            }
+        },
+        [visible, containerWidth],
+    );
+
+    const containerStyle = React.useMemo(
+        () => [
+            styles.container,
+            {
+                right: visibleAnim,
+            }
+        ],
+        [visibleAnim],
+    );
+
+    const onContainerLayout = React.useCallback(
+        ({
+             nativeEvent: {
+                 layout: { width: lWidth },
+             },
+         }) => {
+            setContainerWidth(lWidth);
+        },
+        [],
+    );
+
+    const onClosePress = React.useCallback(() => {
+        if (onClose) {
+            onClose();
+        }
+    }, [onClose]);
+
+    return (
+        <Animated.View
+            style={containerStyle}
+            onLayout={onContainerLayout}
+        >
+            <UIBackgroundView
+                color={ColorVariants.BackgroundPrimary}
+                style={[style, styles.notice]}
+            >
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundAccent}
+                    style={[styles.noticeIcon, styles.closableNoticeIcon]}
+                >
+                    <UIImage source={icon} />
+                </UIBackgroundView>
+                <View style={styles.content}>
+                    <View style={styles.contentContainer}>
+                        {children}
+                    </View>
+                    <TouchableOpacity
+                        onPress={onClosePress}
+                        style={styles.noticeButton}
+                    >
+                        <UIImage
+                            source={UIAssets.icons.ui.buttonClose}
+                            tintColor={ColorVariants.TextAccent}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </UIBackgroundView>
+        </Animated.View>
+    );
+}
+
+export function UINotice({
+    folding,
+    ...props
+}: UINoticeProps) {
     return (
         <Portal absoluteFill>
-            <UIFoldingNoticePortalContent {...props} />
+            {
+                folding ? (
+                    <UIFoldingNotice {...props} />
+                ) : (
+                    <UIClosableNotice {...props} />
+                )
+            }
         </Portal>
     );
 }
@@ -309,6 +408,11 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.alertBorderRadius,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    closableNoticeIcon: {
+        width: UIConstant.minNoticeIconSize,
+        height: UIConstant.minNoticeIconSize,
+        margin: UIConstant.normalContentOffset,
     },
     content: {
         paddingVertical: UIConstant.normalContentOffset,

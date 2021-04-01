@@ -5,14 +5,14 @@ import {
     Platform,
     StyleSheet,
     View,
-    // useWindowDimensions,
+    useWindowDimensions,
 } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIDevice } from '@tonlabs/uikit.core';
 import {
     UIButton,
-    UIFoldingNotice,
+    UINotice,
     UILabel,
     UILabelColors,
     UILabelRoles,
@@ -23,7 +23,8 @@ type UIPromoNoticeProps = {
     appStoreUrl: string;
     googlePlayUrl: string;
     icon?: ImageProps;
-    // minimumWidthToShow?: number;
+    folding?: boolean;
+    minimumWidthToShowFoldingNotice?: number;
 };
 
 const styles = StyleSheet.create({
@@ -55,29 +56,30 @@ const openLink = (OS: string, link: string) => {
 export function UIPromoNotice({
     appStoreUrl,
     googlePlayUrl,
-    icon,
-    // minimumWidthToShow = 600,
+    icon= UIAssets.icons.brand.tonSymbol,
+    folding= false,
+    minimumWidthToShowFoldingNotice = 600,
 }: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
-    // const [folded, setFolded] = React.useState(true);
-    // const windowWidth = useWindowDimensions().width;
+    const [folded, setFolded] = React.useState(true);
+    const windowWidth = useWindowDimensions().width;
     const deviceOS = UIDevice.deviceOS();
 
-    // React.useEffect(() => {
-    //     if (windowWidth < minimumWidthToShow) {
-    //         setVisible(false);
-    //     } else {
-    //         setVisible(true);
-    //     }
-    // }, [windowWidth, minimumWidthToShow]);
+    React.useEffect(() => {
+        if (windowWidth < minimumWidthToShowFoldingNotice) {
+            setVisible(false);
+        } else {
+            setVisible(true);
+        }
+    }, [windowWidth, minimumWidthToShowFoldingNotice]);
 
     const onClose = React.useCallback(() => {
         setVisible(false);
     }, []);
 
-    // const onFold = React.useCallback(() => {
-    //     setFolded(!folded);
-    // }, [folded]);
+    const onFold = React.useCallback(() => {
+        setFolded(!folded);
+    }, [folded]);
 
     const onAppStore = React.useCallback(() => {
         openLink(deviceOS, appStoreUrl);
@@ -152,16 +154,16 @@ export function UIPromoNotice({
     return (
         Platform.OS === 'web'
             ? (
-                <UIFoldingNotice
+                <UINotice
+                    folding={folding}
+                    folded={folded}
+                    onFold={onFold}
                     visible={visible}
-                    closable // for now always closable, later should be closable only on mobile web
                     onClose={onClose}
-                    folded={false} // for now always unfolded
-                    // onFold={onFold}
-                    icon={icon || UIAssets.icons.brand.tonSymbol}
+                    icon={icon}
                 >
                     {content}
-                </UIFoldingNotice>
+                </UINotice>
             ) : null
     );
 }
