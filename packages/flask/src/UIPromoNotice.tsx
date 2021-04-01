@@ -7,9 +7,9 @@ import {
     View,
     // useWindowDimensions,
 } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIDevice } from '@tonlabs/uikit.core';
 import {
     UIButton,
     UIFoldingNotice,
@@ -41,17 +41,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const getDeviceOS = () => {
-    const systemName = DeviceInfo.getSystemName();
-    if (systemName && (systemName.toLowerCase().includes('ios') ||
-        systemName.toLowerCase().includes('iphone'))) {
-        return 'ios';
-    } else if (systemName && systemName.toLowerCase().includes('android')) {
-        return 'android';
-    }
-    return 'web';
-};
-
 const openLink = (OS: string, link: string) => {
     if (!link) {
         return;
@@ -72,7 +61,7 @@ export function UIPromoNotice({
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
     // const [folded, setFolded] = React.useState(true);
     // const windowWidth = useWindowDimensions().width;
-    const deviceOS = getDeviceOS();
+    const deviceOS = UIDevice.deviceOS();
 
     // React.useEffect(() => {
     //     if (windowWidth < minimumWidthToShow) {
