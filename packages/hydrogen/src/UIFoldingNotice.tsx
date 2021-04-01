@@ -2,15 +2,14 @@ import * as React from 'react';
 import { Animated, ImageProps, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
+
 import { ColorVariants } from './Colors';
 import { UIConstant } from './constants';
 import { UIBackgroundView } from './UIBackgroundView';
 import { UIImage } from './UIImage';
 import { Portal } from './Portal';
 import { useHover } from './useHover';
-
-const minimize = require('../assets/icons/minimize/minimize.png');
-const close = require('../assets/icons/close/close.png');
 
 const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 
@@ -255,7 +254,7 @@ function UIFoldingNoticePortalContent({
                                 style={styles.noticeButton}
                             >
                                 <UIImage
-                                    source={close}
+                                    source={UIAssets.icons.ui.buttonClose}
                                     tintColor={ColorVariants.TextAccent}
                                 />
                             </TouchableOpacity>
@@ -268,7 +267,7 @@ function UIFoldingNoticePortalContent({
                                 style={styles.noticeButton}
                             >
                                 <UIImage
-                                    source={minimize}
+                                    source={UIAssets.icons.ui.buttonMinimize}
                                     tintColor={isHovered
                                         ? ColorVariants.TextAccent
                                         : ColorVariants.TextPrimary}
