@@ -1,16 +1,6 @@
 {
     "Account": "계정",
     "AccountAddress": "주소",
-    "AccountLimitPeriod": {
-        "daily": "데일리",
-        "monthly": "먼슬리",
-        "total": "전부",
-        "weekly": "위클리"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "여권 인증",
-        "twoFactorAuthentication": "2 단계 인증"
-    },
     "Accounts": "계정",
     "AccountTypeHint": "계정 주소를 공개로 설정하면 프로필에 표시됩니다.",
     "Add": "추가",

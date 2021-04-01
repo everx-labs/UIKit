@@ -1,16 +1,6 @@
 {
     "Account": "Аккаунт",
     "AccountAddress": "Адрес",
-    "AccountLimitPeriod": {
-        "daily": "Ежедневно",
-        "monthly": "Ежемесячно",
-        "total": "Всего",
-        "weekly": "Еженедельно"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Подтверждение паспорта",
-        "twoFactorAuthentication": "Двухфакторная авторизация"
-    },
     "Accounts": "Аккаунты",
     "AccountTypeHint": "Когда вы делаете адрес аккаунта публичным, он отображается в вашем профиле",
     "Add": "Добавить",

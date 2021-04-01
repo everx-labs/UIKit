@@ -1,16 +1,6 @@
 {
     "Account": "Konto",
     "AccountAddress": "Adresse",
-    "AccountLimitPeriod": {
-        "daily": "Täglich",
-        "monthly": "Monatlich",
-        "total": "Insgesamt",
-        "weekly": "Wöchentlich"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Passkontrolle",
-        "twoFactorAuthentication": "2-Faktor-Autorisierung"
-    },
     "Accounts": "Konten",
     "AccountTypeHint": "Wenn Sie Ihre kontoadresse auf öffentlich setzen, wird Sie in Ihrem Profil sichtbar.",
     "Add": "Hinzufügen",

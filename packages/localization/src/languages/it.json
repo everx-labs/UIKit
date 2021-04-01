@@ -1,16 +1,6 @@
 {
     "Account": "Conto",
     "AccountAddress": "Indirizzo",
-    "AccountLimitPeriod": {
-        "daily": "Tutti i giorni",
-        "monthly": "Mensile",
-        "total": "Totale",
-        "weekly": "Settimanale"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Verifica del passaporto",
-        "twoFactorAuthentication": "Autorizzazione a 2 fattori"
-    },
     "Accounts": "Conti",
     "AccountTypeHint": "Impostare l'indirizzo del tuo account su pubblico lo renderà visibile nel tuo profilo.",
     "Add": "Aggiungi",

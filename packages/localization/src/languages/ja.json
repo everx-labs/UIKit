@@ -1,16 +1,6 @@
 {
     "Account": "アカウント",
     "AccountAddress": "アドレス",
-    "AccountLimitPeriod": {
-        "daily": "毎日",
-        "monthly": "毎月",
-        "total": "トータル",
-        "weekly": "毎週"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "パスポートの検証",
-        "twoFactorAuthentication": "2 要素認証"
-    },
     "Accounts": "アカウント",
     "AccountTypeHint": "アカウント・アドレスを公有に設定すると、プロフィールに表示されます。",
     "Add": "追加する",
