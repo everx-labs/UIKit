@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, ImageProps, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Animated, ImageProps, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -13,22 +13,12 @@ import { useHover } from './useHover';
 
 const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 
-type OnFold = () => void | Promise<void>;
 type OnClose = () => void | Promise<void>;
 
 export type UINoticeCommonProps = {
     visible: boolean;
     icon: ImageProps;
     children: React.ReactNode;
-    style?: ViewStyle;
-};
-
-export type UIFoldingNoticeProps = UINoticeCommonProps & {
-    folded?: boolean;
-    onFold?: OnFold;
-};
-
-export type UIClosableNoticeProps = UINoticeCommonProps & {
     onClose?: OnClose;
 };
 
@@ -37,19 +27,14 @@ export type UINoticeProps = UINoticeCommonProps & {
      * Whether to add folding behaviour or to use default notice
      */
     folding?: boolean;
-    folded?: boolean;
-    onFold?: OnFold;
-    onClose?: OnClose;
 };
 
 function UIFoldingNotice({
     visible,
-    folded = true,
-    onFold,
     icon,
     children,
-    style,
-}: UIFoldingNoticeProps) {
+}: UINoticeCommonProps) {
+    const [folded, setFolded] = React.useState(false);
     const [containerWidth, setContainerWidth] = React.useState(0);
     const [contentWidth, setContentWidth] = React.useState(0);
     const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
@@ -63,6 +48,10 @@ function UIFoldingNotice({
         onMouseLeave: onIconMouseLeave,
     } = useHover();
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+
+    const onFold = React.useCallback(() => {
+        setFolded(!folded);
+    }, [folded]);
 
     const show = () => {
         Animated.spring(visibleAnim, {
@@ -167,13 +156,12 @@ function UIFoldingNotice({
 
     const noticeStyle = React.useMemo(
         () => [
-            style,
             styles.notice,
             {
                 width: foldingAnim,
             },
         ],
-        [style, foldingAnim]
+        [foldingAnim]
     );
 
     const noticeIconContainerStyle = React.useMemo(
@@ -218,12 +206,6 @@ function UIFoldingNotice({
         [],
     );
 
-    const onFoldPress = React.useCallback(() => {
-        if (onFold) {
-            onFold();
-        }
-    }, [onFold]);
-
     return (
         <Animated.View
             style={containerStyle}
@@ -231,7 +213,7 @@ function UIFoldingNotice({
         >
             <TapGestureHandler
                 enabled={folded}
-                onGestureEvent={onFoldPress}
+                onGestureEvent={onFold}
             >
                 <AnimatedWithColor
                     color={ColorVariants.BackgroundPrimary}
@@ -258,7 +240,7 @@ function UIFoldingNotice({
                             // @ts-expect-error
                             onMouseEnter={onMouseEnter}
                             onMouseLeave={onMouseLeave}
-                            onPress={onFoldPress}
+                            onPress={onFold}
                             style={styles.noticeButton}
                         >
                             <UIImage
@@ -280,8 +262,7 @@ function UIClosableNotice({
     onClose,
     icon,
     children,
-    style,
-}: UIClosableNoticeProps) {
+}: UINoticeCommonProps) {
     const [containerWidth, setContainerWidth] = React.useState(0);
     const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
 
@@ -344,7 +325,7 @@ function UIClosableNotice({
         >
             <UIBackgroundView
                 color={ColorVariants.BackgroundPrimary}
-                style={[style, styles.notice]}
+                style={styles.notice}
             >
                 <UIBackgroundView
                     color={UIBackgroundViewColors.BackgroundAccent}
@@ -372,7 +353,7 @@ function UIClosableNotice({
 }
 
 export function UINotice({
-    folding,
+    folding = false,
     ...props
 }: UINoticeProps) {
     return (

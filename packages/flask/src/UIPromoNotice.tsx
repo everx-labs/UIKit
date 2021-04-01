@@ -56,12 +56,11 @@ const openLink = (OS: string, link: string) => {
 export function UIPromoNotice({
     appStoreUrl,
     googlePlayUrl,
-    icon= UIAssets.icons.brand.tonSymbol,
-    folding= false,
+    icon = UIAssets.icons.brand.tonSymbol,
+    folding = false,
     minimumWidthToShowFoldingNotice = 600,
 }: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
-    const [folded, setFolded] = React.useState(true);
     const windowWidth = useWindowDimensions().width;
     const deviceOS = UIDevice.deviceOS();
 
@@ -76,10 +75,6 @@ export function UIPromoNotice({
     const onClose = React.useCallback(() => {
         setVisible(false);
     }, []);
-
-    const onFold = React.useCallback(() => {
-        setFolded(!folded);
-    }, [folded]);
 
     const onAppStore = React.useCallback(() => {
         openLink(deviceOS, appStoreUrl);
@@ -156,8 +151,6 @@ export function UIPromoNotice({
             ? (
                 <UINotice
                     folding={folding}
-                    folded={folded}
-                    onFold={onFold}
                     visible={visible}
                     onClose={onClose}
                     icon={icon}
