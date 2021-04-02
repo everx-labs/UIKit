@@ -61,35 +61,35 @@ function UIFoldingNotice({
         setFolded(!folded);
     }, [folded]);
 
-    const show = () => {
+    const show = React.useCallback(() => {
         Animated.spring(visibleAnim, {
             toValue: (UIConstant.contentOffset * 2),
             useNativeDriver: false,
         }).start();
-    };
+    }, [visibleAnim]);
 
-    const hide = () => {
+    const hide = React.useCallback(() => {
         Animated.spring(visibleAnim, {
             toValue: -containerWidth - (UIConstant.contentOffset * 2),
             useNativeDriver: false,
         }).start();
-    };
+    }, [visibleAnim, containerWidth]);
 
-    const foldNotice = () => {
+    const foldNotice = React.useCallback(() => {
         Animated.spring(foldingAnim, {
             toValue: UIConstant.minNoticeSize,
             useNativeDriver: false,
         }).start();
-    };
+    }, [foldingAnim]);
 
-    const unfoldNotice = () => {
+    const unfoldNotice = React.useCallback(() => {
         Animated.spring(foldingAnim, {
             toValue: UIConstant.minNoticeSize + contentWidth,
             useNativeDriver: false,
         }).start();
-    };
+    }, [contentWidth, foldingAnim]);
 
-    const foldNoticeIcon = () => {
+    const foldNoticeIcon = React.useCallback(() => {
         Animated.parallel([
             Animated.timing(iconHoverAnim, {
                 toValue: UIConstant.minNoticeIconSize,
@@ -102,9 +102,9 @@ function UIFoldingNotice({
                 duration: 150,
             }),
         ]).start();
-    };
+    }, [iconHoverAnim, iconPaddingAnim]);
 
-    const expandNoticeIcon = () => {
+    const expandNoticeIcon = React.useCallback(() => {
         Animated.parallel([
             Animated.timing(iconHoverAnim, {
                 toValue: UIConstant.maxNoticeIconSize,
@@ -117,7 +117,7 @@ function UIFoldingNotice({
                 duration: 150,
             }),
         ]).start();
-    };
+    }, [iconHoverAnim, iconPaddingAnim]);
 
     React.useEffect(
         () => {
@@ -127,7 +127,7 @@ function UIFoldingNotice({
                 hide();
             }
         },
-        [visible, containerWidth],
+        [visible, show, hide],
     );
 
     // TODO: think whether it should be implemented somehow else
@@ -148,7 +148,7 @@ function UIFoldingNotice({
                 unfoldNotice();
             }
         },
-        [folded, contentWidth],
+        [folded, foldNotice, unfoldNotice],
     );
 
     React.useEffect(
@@ -284,19 +284,19 @@ function UIClosableNotice({
     const [containerWidth, setContainerWidth] = React.useState(0);
     const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
 
-    const show = () => {
+    const show = React.useCallback(() => {
         Animated.spring(visibleAnim, {
             toValue: (UIConstant.contentOffset * 2),
             useNativeDriver: false,
         }).start();
-    };
+    }, [visibleAnim]);
 
-    const hide = () => {
+    const hide = React.useCallback(() => {
         Animated.spring(visibleAnim, {
             toValue: -containerWidth - (UIConstant.contentOffset * 2),
             useNativeDriver: false,
         }).start();
-    };
+    }, [visibleAnim, containerWidth]);
 
     React.useEffect(
         () => {
@@ -306,7 +306,7 @@ function UIClosableNotice({
                 hide();
             }
         },
-        [visible, containerWidth],
+        [visible, show, hide],
     );
 
     const containerStyle = React.useMemo(
