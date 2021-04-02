@@ -601,6 +601,7 @@ const UIMaterialTextViewForward = React.forwardRef<
 });
 
 // @ts-expect-error
+// ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIMaterialTextView: typeof UIMaterialTextViewForward & {
     Icon: typeof UIMaterialTextViewIcon;
     Action: typeof UIMaterialTextViewAction;

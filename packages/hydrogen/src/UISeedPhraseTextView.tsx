@@ -11,7 +11,7 @@ import {
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { UIMaterialTextView } from './UIMaterialTextView/UIMaterialTextView';
+import { UIMaterialTextView } from './UIMaterialTextView';
 import { PropsAwarePopover } from './PropsAwarePopover';
 import { useAutogrowTextView } from './useAutogrowTextView';
 import { UIConstant } from './constants';

@@ -7,7 +7,7 @@ import { useFocused, useUITextViewValue } from './UITextView';
 import {
     UIMaterialTextView,
     UIMaterialTextViewProps,
-} from './UIMaterialTextView/UIMaterialTextView';
+} from './UIMaterialTextView';
 
 const MAX_KEY_LENGTH = 64;
 
