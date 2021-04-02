@@ -7,7 +7,7 @@ import { useFocused, useUITextViewValue } from './UITextView';
 import {
     UIMaterialTextView,
     UIMaterialTextViewProps,
-} from './UIMaterialTextView';
+} from './UIMaterialTextView/UIMaterialTextView';
 
 const MAX_KEY_LENGTH = 64;
 
@@ -16,14 +16,17 @@ type OnDone = (key: string) => void | Promise<void>;
 export function useKeyTextView(
     ref: React.Ref<TextInput> | null,
     isFocused: boolean,
-    onDone: OnDone,
+    props: UIMaterialTextViewProps & {
+        onDone: OnDone;
+    },
 ) {
     const {
         inputValue,
         inputHasValue,
         onChangeText: onChangeTextBase,
         onKeyPress: onKeyPressBase,
-    } = useUITextViewValue(ref, true);
+    } = useUITextViewValue(ref, true, props);
+    const { onDone } = props;
 
     const [hasInvalidChars, setHasInvalidChars] = React.useState(false);
     const [hasProperLength, setHasProperLength] = React.useState(false);
@@ -117,7 +120,7 @@ export const UIKeyTextView = React.forwardRef<TextInput, UIKeyTextViewProps>(
             helperText,
             success,
             error,
-        } = useKeyTextView(ref, isFocused, props.onDone);
+        } = useKeyTextView(ref, isFocused, props);
 
         return (
             <UIMaterialTextView

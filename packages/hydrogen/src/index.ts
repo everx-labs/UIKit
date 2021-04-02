@@ -3,7 +3,7 @@ export * from './UIBanner';
 export * from './UISafeAreaView';
 export * from './UILabel';
 export * from './UITextView';
-export * from './UIMaterialTextView';
+export * from './UIMaterialTextView/UIMaterialTextView';
 export * from './UINumberTextView';
 export * from './UIKeyTextView';
 export * from './UISeedPhraseTextView';

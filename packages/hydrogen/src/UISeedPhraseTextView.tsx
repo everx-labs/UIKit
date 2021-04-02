@@ -11,7 +11,7 @@ import {
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { UIMaterialTextView } from './UIMaterialTextView';
+import { UIMaterialTextView } from './UIMaterialTextView/UIMaterialTextView';
 import { PropsAwarePopover } from './PropsAwarePopover';
 import { useAutogrowTextView } from './useAutogrowTextView';
 import { UIConstant } from './constants';
@@ -37,48 +37,58 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
     } = props;
     const theme = useTheme();
     const maxHintsToShow = Math.min(hints.length, MAX_CELLS);
-    const height = hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
+    const height =
+        hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
     // Calculate the padding bottom to view cells even if clipped
     const paddingBottom = UIConstant.defaultCellHeight * (maxHintsToShow - 1);
 
-    const renderItem = React.useCallback(({ item, index }) => {
-        const cellBgStyle: {
-            backgroundColor: ColorValue;
-        } = {
-            backgroundColor:
-                theme[
-                    currentHighlightedItemIndex === index
-                        ? ColorVariants.BackgroundSecondary
-                        : ColorVariants.BackgroundPrimary
-                ],
-        };
+    const renderItem = React.useCallback(
+        ({ item, index }) => {
+            const cellBgStyle: {
+                backgroundColor: ColorValue;
+            } = {
+                backgroundColor:
+                    theme[
+                        currentHighlightedItemIndex === index
+                            ? ColorVariants.BackgroundSecondary
+                            : ColorVariants.BackgroundPrimary
+                    ],
+            };
 
-        return (
-            <TouchableOpacity
-                testID={`profile_backup_key_phrase_${item}`}
-                style={[styles.cellHint, cellBgStyle]}
-                {
-                    ...Platform.select({
-                        web: { // a popover is closing before `onPress` event is triggered on web
+            return (
+                <TouchableOpacity
+                    testID={`profile_backup_key_phrase_${item}`}
+                    style={[styles.cellHint, cellBgStyle]}
+                    {...Platform.select({
+                        web: {
+                            // a popover is closing before `onPress` event is triggered on web
                             onPressIn: () => onHintSelected(item),
-                            onMouseEnter: () => onHighlightedItemIndexChange(index),
-                            onMouseLeave: () => onHighlightedItemIndexChange(-1),
+                            onMouseEnter: () =>
+                                onHighlightedItemIndexChange(index),
+                            onMouseLeave: () =>
+                                onHighlightedItemIndexChange(-1),
                         },
                         default: {
                             onPress: () => onHintSelected(item),
                         },
-                    })
-                }
-            >
-                <UILabel
-                    color={UILabelColors.TextSecondary}
-                    role={UILabelRoles.ParagraphNote}
+                    })}
                 >
-                    {item}
-                </UILabel>
-            </TouchableOpacity>
-        );
-    }, [theme, currentHighlightedItemIndex, onHintSelected, onHighlightedItemIndexChange]);
+                    <UILabel
+                        color={UILabelColors.TextSecondary}
+                        role={UILabelRoles.ParagraphNote}
+                    >
+                        {item}
+                    </UILabel>
+                </TouchableOpacity>
+            );
+        },
+        [
+            theme,
+            currentHighlightedItemIndex,
+            onHintSelected,
+            onHighlightedItemIndexChange,
+        ],
+    );
 
     return (
         <View
@@ -97,7 +107,7 @@ function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
                     contentContainerStyle={{ paddingBottom }}
                     scrollEnabled
                     showsVerticalScrollIndicator
-                    keyExtractor={item => item}
+                    keyExtractor={(item) => item}
                     keyboardShouldPersistTaps="handled"
                     data={hints}
                     extraData={currentHighlightedItemIndex}
@@ -667,7 +677,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     );
 
     const popoverOffset = React.useMemo(
-        () => ({ x: 0, y: -42, /* Don't want to calculate it dynamically */ }),
+        () => ({ x: 0, y: -42 /* Don't want to calculate it dynamically */ }),
         [],
     );
 
