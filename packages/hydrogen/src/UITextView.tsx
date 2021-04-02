@@ -103,10 +103,24 @@ const styles = StyleSheet.create({
 export function useUITextViewValue(
     ref: React.Ref<TextInput> | null,
     useClearWithEnter = false,
-    onChangeTextProp?: (text: string) => void | Promise<void>,
+    { value: valueProp, onChangeText: onChangeTextProp }: UITextViewProps = {},
 ) {
     // Little optimisation to not re-render children on every value change
-    const [inputHasValue, setInputHasValue] = React.useState(false);
+    const [inputHasValue, setInputHasValue] = React.useState(
+        valueProp != null && valueProp !== '',
+    );
+
+    React.useEffect(() => {
+        if (valueProp == null) {
+            return;
+        }
+
+        const hasValue = valueProp.length > 0;
+        if (hasValue !== inputHasValue) {
+            setInputHasValue(hasValue);
+        }
+    }, [valueProp, inputHasValue]);
+
     const inputValue = React.useRef('');
     const wasClearedWithEnter = React.useRef(false);
 
@@ -162,7 +176,11 @@ export function useUITextViewValue(
         }
         inputValue.current = '';
         setInputHasValue(false);
-    }, [ref, setInputHasValue]);
+
+        if (onChangeTextProp) {
+            onChangeTextProp('');
+        }
+    }, [ref, setInputHasValue, onChangeTextProp]);
 
     return {
         inputHasValue,

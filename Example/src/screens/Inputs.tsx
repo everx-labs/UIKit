@@ -7,6 +7,7 @@ import {
     UIMaterialTextView,
     UISeedPhraseTextView,
     UINumberTextView,
+    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
 import {
     UISeedPhraseInput,
@@ -24,6 +25,7 @@ import {
     UITransferInput,
     UIUploadFileInput,
 } from '@tonlabs/uikit.components';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -124,11 +126,17 @@ export const Inputs = () => {
     return (
         <ExampleScreen>
             <ExampleSection title="UINumberTextView">
-                <UINumberTextView testID="uiNumberTextView_default" placeholder="Put number" />
+                <UINumberTextView
+                    testID="uiNumberTextView_default"
+                    placeholder="Put number"
+                />
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_default"
+                        label="Label"
+                    />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_initial_value"
@@ -147,6 +155,49 @@ export const Inputs = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
+                        testID="uiMaterialTextView_with_icons"
+                        label="Input with right icon"
+                        helperText="Hint"
+                    >
+                        <UIMaterialTextView.Icon
+                            source={UIAssets.icons.ui.buttonClose}
+                            tintColor={ColorVariants.IconSecondary}
+                        />
+                    </UIMaterialTextView>
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_with_icons"
+                        label="Input with right icon"
+                        helperText="Hint"
+                    >
+                        <UIMaterialTextView.Icon
+                            source={UIAssets.icons.ui.buttonPlus}
+                            tintColor={ColorVariants.IconSecondary}
+                        />
+                        <UIMaterialTextView.Icon
+                            source={UIAssets.icons.ui.buttonClose}
+                            tintColor={ColorVariants.IconSecondary}
+                        />
+                    </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_with_action"
+                        label="Input with right action"
+                        helperText="Hint"
+                    >
+                        <UIMaterialTextView.Action>
+                            Action
+                        </UIMaterialTextView.Action>
+                    </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_with_action"
+                        label="Input with right text"
+                        helperText="Hint"
+                    >
+                        <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
+                    </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
                         testID="uiMaterialTextView_without_floating"
                         floating={false}
                         label="Label"
@@ -160,6 +211,26 @@ export const Inputs = () => {
                         onChangeText={setText}
                         helperText="Hint"
                     />
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_with_action"
+                        floating={false}
+                        label="Input with right action"
+                        helperText="Hint"
+                    >
+                        <UIMaterialTextView.Action>
+                            Action
+                        </UIMaterialTextView.Action>
+                    </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_with_action"
+                        floating={false}
+                        label="Input with right text"
+                        helperText="Hint"
+                    >
+                        <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
+                    </UIMaterialTextView>
                 </View>
             </ExampleSection>
             <ExampleSection title="UISeedPhraseInput">
@@ -359,7 +430,10 @@ export const Inputs = () => {
             </ExampleSection>
             <ExampleSection title="UIUploadFileInput">
                 <View style={{ paddingVertical: 20 }}>
-                    <UIUploadFileInput testID="uiUploadFileInput_default" uploadText="Upload file" />
+                    <UIUploadFileInput
+                        testID="uiUploadFileInput_default"
+                        uploadText="Upload file"
+                    />
                 </View>
             </ExampleSection>
         </ExampleScreen>
