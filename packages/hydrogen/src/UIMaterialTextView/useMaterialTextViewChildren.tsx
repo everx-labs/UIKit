@@ -102,7 +102,7 @@ export function useMaterialTextViewChildren(
     if (inputHasValue) {
         return (
             <TouchableOpacity
-                testID="send_btn"
+                testID="clear_btn"
                 style={styles.clearButtonContainer}
                 onPress={clear}
             >
