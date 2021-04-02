@@ -20,6 +20,7 @@ type Props = {
     displayNameOnly?: boolean,
     notActive?: boolean,
     tokenSymbol?: string | React$Element<any>,
+    hideBalance?: boolean,
 };
 type State = {
     // Empty
@@ -34,6 +35,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
         displayNameOnly: false,
         notActive: false,
         tokenSymbol: '',
+        hideBalance: false,
     };
 
     renderTitle() {
@@ -56,6 +58,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
             displayNameOnly,
             notActive,
             tokenSymbol,
+            hideBalance,
         } = this.props;
 
         if (!account) {
@@ -70,6 +73,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
                 displayNameOnly={displayNameOnly}
                 notActive={notActive}
                 tokenSymbol={tokenSymbol}
+                hideBalance={hideBalance}
             />
         );
     }
