@@ -27,6 +27,7 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     success?: boolean;
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
     right?: React.ReactNode;
+    borderViewRef?: React.Ref<View>;
 };
 
 const getBorderColor = (
@@ -420,6 +421,7 @@ function UIMaterialTextViewBorder(
 
     return (
         <View
+            ref={props.borderViewRef}
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
