@@ -33,6 +33,7 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     error?: boolean;
     success?: boolean;
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
+    borderViewRef?: React.Ref<View>;
     children?: React.ReactNode;
 };
 
@@ -427,6 +428,7 @@ function UIMaterialTextViewBorder(
 
     return (
         <View
+            ref={props.borderViewRef}
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
