@@ -56,7 +56,6 @@ export {
     UIRadioButtonList,
     UIScaleButton,
     UISectionHeader,
-    UISeedPhraseInput,
     UIContractAddressInput,
     UIPushNotification,
     UISeparator,

@@ -10,7 +10,6 @@ import {
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
 import {
-    UISeedPhraseInput,
     UIAmountInput,
     UIBankCardNumberInput,
     UIContractAddressInput,
@@ -233,18 +232,8 @@ export const Inputs = () => {
                     </UIMaterialTextView>
                 </View>
             </ExampleSection>
-            <ExampleSection title="UISeedPhraseInput">
+            <ExampleSection title="UISeedPhraseTextView">
                 <View style={{ paddingVertical: 20, width: '50%' }}>
-                    <UISeedPhraseInput
-                        testID="uiSeedPhraseInput_default"
-                        value={seedPhrase}
-                        onChangeText={(newText: string) =>
-                            setSeedPhrase(newText)
-                        }
-                        phraseToCheck={mnemonicWords.join(' - ')}
-                        totalWords={4}
-                        words={mnemonicWords}
-                    />
                     <UISeedPhraseTextView
                         testID="uiSeedPhraseTextView_5_or_10"
                         words={mnemonicWords}
