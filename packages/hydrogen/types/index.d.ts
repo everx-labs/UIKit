@@ -1,6 +1,5 @@
 declare module '*.css';
 
-declare module 'react-native-simple-popover';
 declare module 'react-qr-reader';
 declare module 'react-native-indicators' {
     import * as React from 'react';
