@@ -23,6 +23,7 @@ type UIPromoNoticeProps = {
     googlePlayUrl: string;
     icon?: ImageProps;
     folding?: boolean;
+    testID?: string;
 };
 
 const styles = StyleSheet.create({
@@ -56,6 +57,7 @@ export function UIPromoNotice({
     googlePlayUrl,
     icon = UIAssets.icons.brand.tonSymbol,
     folding = false,
+    testID, 
 }: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
     const deviceOS = UIDevice.deviceOS();
@@ -142,6 +144,7 @@ export function UIPromoNotice({
                     visible={visible}
                     onClose={onClose}
                     icon={icon}
+                    testID={testID}
                 >
                     {content}
                 </UINotice>
