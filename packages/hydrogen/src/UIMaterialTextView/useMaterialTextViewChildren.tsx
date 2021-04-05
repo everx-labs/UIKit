@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { ColorVariants, useTheme } from '../Colors';
+import { ColorVariants } from '../Colors';
 import { UIImage, UIImageProps } from '../UIImage';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 
@@ -97,8 +97,6 @@ export function useMaterialTextViewChildren(
     inputHasValue: boolean,
     clear: () => void,
 ) {
-    const theme = useTheme();
-
     if (inputHasValue) {
         return (
             <TouchableOpacity
@@ -106,21 +104,10 @@ export function useMaterialTextViewChildren(
                 style={styles.clearButtonContainer}
                 onPress={clear}
             >
-                <View
-                    style={[
-                        styles.clearIconRoundBackground,
-                        {
-                            backgroundColor:
-                                theme[ColorVariants.BackgroundPrimaryInverted],
-                        },
-                    ]}
-                >
-                    <UIImage
-                        source={UIAssets.icons.ui.closeRemove}
-                        style={styles.clearIcon}
-                        tintColor={ColorVariants.LinePrimary}
-                    />
-                </View>
+                <UIImage
+                    source={UIAssets.icons.ui.clear}
+                    tintColor={ColorVariants.BackgroundPrimaryInverted}
+                />
             </TouchableOpacity>
         );
     }
@@ -208,16 +195,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'flex-end',
         height: 24,
-    },
-    clearIcon: {
-        height: 30,
-        width: 30,
-    },
-    clearIconRoundBackground: {
-        height: 20,
-        width: 20,
-        borderRadius: 20 / 2,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 });
