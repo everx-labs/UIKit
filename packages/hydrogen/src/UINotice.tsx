@@ -41,6 +41,7 @@ function UIFoldingNotice({
     visible,
     icon,
     children,
+    testID,
 }: UINoticeCommonProps) {
     const [folded, setFolded] = React.useState(false);
     const [containerWidth, setContainerWidth] = React.useState(0);
@@ -251,7 +252,11 @@ function UIFoldingNotice({
                             <UIImage source={icon} />
                         </AnimatedWithColor>
                     </Animated.View>
-                    <View style={styles.content} onLayout={onContentLayout}>
+                    <View 
+                        style={styles.content}
+                        onLayout={onContentLayout}
+                        testID={testID}
+                    >
                         <View style={styles.contentContainer}>
                             {children}
                         </View>
@@ -378,10 +383,7 @@ export function UINotice({
     ...props
 }: UINoticeProps) {
     return (
-        <Portal 
-        absoluteFill
-        testID={props.testID}
-        >
+        <Portal absoluteFill>
             {
                 folding ? (
                     <UIFoldingNotice {...props} />

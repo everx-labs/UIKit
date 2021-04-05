@@ -23,7 +23,6 @@ type PortalConsumerProps = {
     absoluteFill?: boolean;
     manager: PortalMethods;
     children: React.ReactNode;
-    testID?: string;
 };
 
 function PortalConsumer({
@@ -54,7 +53,6 @@ interface PortalProps {
     forId?: string;
     absoluteFill?: boolean;
     children: React.ReactNode;
-    testID?: string;
 }
 
 export const Portal = (props: PortalProps) => (
@@ -63,7 +61,6 @@ export const Portal = (props: PortalProps) => (
             if (manager != null) {
                 return (
                     <PortalConsumer
-                        testID={props.testID}
                         forId={props.forId}
                         manager={manager}
                         absoluteFill={props.absoluteFill}
