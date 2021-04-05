@@ -27,6 +27,7 @@ export type UINoticeCommonProps = {
     icon: ImageProps;
     children: React.ReactNode;
     onClose?: OnClose;
+    testID?: string;
 };
 
 export type UINoticeProps = UINoticeCommonProps & {
@@ -280,6 +281,7 @@ function UIClosableNotice({
     onClose,
     icon,
     children,
+    testID,
 }: UINoticeCommonProps) {
     const [containerWidth, setContainerWidth] = React.useState(0);
     const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
@@ -344,6 +346,7 @@ function UIClosableNotice({
             <UIBackgroundView
                 color={ColorVariants.BackgroundPrimary}
                 style={styles.notice}
+                testID={testID}
             >
                 <UIBackgroundView
                     color={UIBackgroundViewColors.BackgroundAccent}
@@ -375,7 +378,10 @@ export function UINotice({
     ...props
 }: UINoticeProps) {
     return (
-        <Portal absoluteFill>
+        <Portal 
+        absoluteFill
+        testID={props.testID}
+        >
             {
                 folding ? (
                     <UIFoldingNotice {...props} />
