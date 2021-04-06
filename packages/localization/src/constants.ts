@@ -1,7 +1,12 @@
 import BigNumber from 'bignumber.js';
-import type { NumberParts, NumberPartsOptions, StringLocaleInfo } from './types';
+import type {
+    LanguageConstants,
+    LanguageInfo,
+    NumberParts,
+    NumberPartsOptions,
+    StringLocaleInfo
+} from './types';
 
-export type LanguageConstants = Record<string, any>
 
 export const predefinedConstants: LanguageConstants = {
     CURRENT_YEAR: (new Date()).getFullYear(),
@@ -20,12 +25,6 @@ export enum Language {
     Tr = 'tr',
     It = 'it',
     Ko = 'ko',
-}
-
-export type LanguageInfo = {
-    name: string,
-    country: string, // Works with UICountryPicker
-    dayJS: string, // Works with DayJS
 }
 
 export const languagesInfo: Record<Language, LanguageInfo> = {

@@ -14,6 +14,8 @@ export interface LanguageOptions {
 export type Languages<T = LanguageItem> = Partial<Record<Language, T>>;
 export type LanguagesOptions = Languages<LanguageOptions>;
 
+export type LanguageConstants = Record<string, any>
+
 export type NumberFormatInfo = {
     grouping: string;
     thousands: string;
@@ -75,3 +77,9 @@ export type LocalizedStringsMethods = {
     languageName: string;
     readonly localeInfo: StringLocaleInfo;
 };
+
+export type LanguageInfo = {
+    name: string,
+    country: string, // Works with UICountryPicker
+    dayJS: string, // Works with DayJS
+}

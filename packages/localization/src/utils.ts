@@ -1,13 +1,15 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import type {
     DateFormatInfo,
+    LanguageConstants,
     LanguageItem,
     LanguageOptions,
-    Languages, LanguagesOptions,
+    Languages,
+    LanguagesOptions,
     LanguageValue,
     NumberFormatInfo,
 } from './types';
-import type { Language, LanguageConstants } from './constants';
+import type { Language } from './constants';
 
 function prepareArray(
     array: LanguageValue[],
