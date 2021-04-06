@@ -17,6 +17,7 @@ export * from './UIImage';
 export * from './UIStatusBar';
 export * from './UIIndicator';
 export * from './UIButton';
+export * from './UIBoxButton';
 
 export * from './Colors';
 export * from './Typography';

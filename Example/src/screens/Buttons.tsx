@@ -1,19 +1,29 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     UIButton,
     UIImageButton,
     UIScaleButton,
     UITextButton,
 } from '@tonlabs/uikit.components';
+import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
 import { UIDetailsButton } from '@tonlabs/uikit.legacy';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Buttons = () => (
     <ExampleScreen>
+        <ExampleSection title="UIBoxButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    icon={UIAssets.icons.ui.camera}
+                    title="UIBoxButtonAction"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+        </ExampleSection>
         <ExampleSection title="UIButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIButton testID="uiButton_default" title="Example" />
@@ -190,7 +200,7 @@ export const Buttons = () => (
             >
                 <UIImageButton
                     testID="uiImageButton_close_light"
-                    image={UIImageButton.Images.closeLight} 
+                    image={UIImageButton.Images.closeLight}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
