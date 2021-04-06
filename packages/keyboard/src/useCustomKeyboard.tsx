@@ -13,6 +13,7 @@ export type OnCustomKeyboardVisible = (
 ) => void | Promise<void>;
 
 const callbacks: { [id: string]: OnEvent | undefined } = {};
+const dismisses: { [id: string]: () => void | undefined } = {};
 
 export function registerKeyboardComponent<KeyboardProps>(
     moduleName: string,
@@ -136,6 +137,10 @@ export function useCustomKeyboard(
             callbacks[
                 `${cKeyboard?.moduleName}:${keyboardID.current}`
             ] = onEventCallback;
+
+            dismisses[
+                `${cKeyboard?.moduleName}:${keyboardID.current}`
+            ] = dismiss;
         }
 
         () => {
@@ -143,13 +148,28 @@ export function useCustomKeyboard(
                 callbacks[
                     `${cKeyboard?.moduleName}:${keyboardID.current}`
                 ] = undefined;
+                dismisses[
+                    `${cKeyboard?.moduleName}:${keyboardID.current}`
+                ] = undefined;
             }
         };
-    }, [cKeyboard, onEventCallback]);
+    }, [cKeyboard, onEventCallback, dismiss]);
 
     return {
         customKeyboardView: customKeyboard,
         dismiss,
         toggle,
     };
+}
+
+export function dismiss() {
+    Keyboard.dismiss();
+
+    Object.keys(dismisses).forEach((kbID) => {
+        const dismissCb = dismisses[kbID];
+
+        if (dismissCb) {
+            dismissCb();
+        }
+    });
 }

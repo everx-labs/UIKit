@@ -14,7 +14,6 @@ import {
     StyleProp,
     ListRenderItem,
     ViewProps,
-    Keyboard,
 } from 'react-native';
 import {
     TapGestureHandler,
@@ -25,11 +24,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { dismiss as dismissKeyboard } from '@tonlabs/uikit.keyboard';
 
 import type { BubbleBaseT, ChatMessage } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
-import { callChatOnTapListener } from './useChatOnTapListener';
 
 type RNGHEvent<T> = { nativeEvent: T };
 
@@ -37,11 +36,7 @@ const onHandlerStateChange = ({
     nativeEvent: { state },
 }: RNGHEvent<{ state: RNGHState }>) => {
     if (state === RNGHState.ACTIVE) {
-        if (Platform.OS === 'android') {
-            callChatOnTapListener();
-        } else {
-            Keyboard.dismiss();
-        }
+        dismissKeyboard();
     }
 };
 
@@ -381,8 +376,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
 
             // This can be used as a workaround >>>>
             // onScrollBeginDrag: () => {
-            //     Keyboard.dismiss();
-            //     UICustomKeyboardUtils.dismiss();
+            //     dismissKeyboard();
             // },
         }
 

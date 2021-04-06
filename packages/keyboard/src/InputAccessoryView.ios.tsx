@@ -9,6 +9,9 @@ import {
     View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+
 import type { UIInputAccessoryViewProps } from './types';
 
 const NativeUIInputAccessoryView = requireNativeComponent<
@@ -22,6 +25,7 @@ export function InputAccessoryView({
     managedScrollViewNativeID,
     customKeyboardView,
 }: UIInputAccessoryViewProps) {
+    const theme = useTheme();
     const insets = useSafeAreaInsets();
 
     const processedCustomKeyboardView = React.useMemo(() => {
@@ -52,12 +56,9 @@ export function InputAccessoryView({
                 style={[
                     { height: insets?.bottom ?? 0 },
                     styles.safeAreaFiller,
-                    customKeyboardView?.backgroundColor != null
-                        ? {
-                              backgroundColor:
-                                  customKeyboardView.backgroundColor,
-                          }
-                        : null,
+                    {
+                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    },
                 ]}
             />
         </NativeUIInputAccessoryView>

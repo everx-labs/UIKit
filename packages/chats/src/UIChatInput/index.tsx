@@ -18,7 +18,6 @@ import type {
     QuickActionItem,
 } from './types';
 import { ChatPicker, ChatPickerRef } from './ChatPicker';
-import { useChatOnTapListener } from '../useChatOnTapListener';
 
 function useMenuPlus(menuPlusHidden = false) {
     const chatPickerRef = React.useRef<ChatPickerRef>(null);
@@ -114,8 +113,6 @@ export function UIChatInput(props: UIChatInputProps) {
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
     useBackHandler(textInputRef, dismissKeyboard);
-
-    useChatOnTapListener(dismissKeyboard);
 
     return (
         <UIInputAccessoryView

@@ -97,6 +97,25 @@
  *  2. To manage insets of scroll view (if it's needed) on mount
  */
 - (void)layoutSubviews {
+    /**
+     * Sometimes during `reactSetFrame` superview's frame is incorrect
+     * so we have to double check it here
+     * Identity check here is to identify that `layoutSubviews` method was called after
+     * `reactSetFrame` changes
+     */
+    if (CGAffineTransformIsIdentity(self.transform)) {
+        CGFloat parentHeight = self.superview.frame.size.height;
+        CGFloat y = parentHeight - self.frame.size.height;
+        
+        if (self.frame.origin.y != y) {
+            self.frame = CGRectMake(self.frame.origin.x,
+                                    y,
+                                    self.frame.size.width,
+                                    self.frame.size.height);
+        }
+    }
+    
+    
     [self onInputAccessoryViewChangeKeyboardHeight:((UIObservingInputAccessoryView *)self.inputAccessoryView).keyboardHeight];
     [self handleFrameChanges];
 }
