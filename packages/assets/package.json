@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.assets",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Assets for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",

@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.navigation",
-  "version": "3.0.0",
+  "version": "2.2.0",
   "description": "Navigation for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -35,11 +35,11 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.1.0",
-    "@tonlabs/uikit.components": "^2.1.0",
-    "@tonlabs/uikit.core": "^2.1.0",
-    "@tonlabs/uikit.hydrogen": "^2.1.0",
-    "@tonlabs/uikit.localization": "^2.0.2"
+    "@tonlabs/uikit.assets": "^2.2.0",
+    "@tonlabs/uikit.components": "^2.2.0",
+    "@tonlabs/uikit.core": "^2.2.0",
+    "@tonlabs/uikit.hydrogen": "^2.2.0",
+    "@tonlabs/uikit.localization": "^2.2.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
