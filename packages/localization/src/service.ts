@@ -6,6 +6,7 @@ import {
     getDateFormatInfo,
     getNumberFormatInfo,
     prepare,
+    UIFunction,
 } from './utils';
 import type {
     Languages,
@@ -18,7 +19,6 @@ import {
     languagesInfo,
     predefinedConstants,
     UIConstant,
-    UIFunction,
 } from './constants';
 
 const preparedLanguages = prepare<UILocalizedData>(
