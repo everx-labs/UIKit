@@ -8,11 +8,14 @@
 #import "UIInputAccessoryViewManager.h"
 #import "UIInputAccessoryView.h"
 
+#import <React/RCTView.h>
+
 @implementation UIInputAccessoryViewManager
 
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_VIEW_PROPERTY(managedScrollViewNativeID, NSString);
+RCT_EXPORT_VIEW_PROPERTY(customKeyboardView, NSDictionary);
 
 + (BOOL)requiresMainQueueSetup {
     return NO;
@@ -20,6 +23,11 @@ RCT_EXPORT_VIEW_PROPERTY(managedScrollViewNativeID, NSString);
 
 - (UIView *)view {
     return [[UIInputAccessoryView alloc] initWithBridge:self.bridge];
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(transform, CATransform3D, RCTView)
+{
+    return;
 }
 
 @end

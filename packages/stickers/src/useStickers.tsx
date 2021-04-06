@@ -1,28 +1,36 @@
 import * as React from 'react';
-import type { UICustomKeyboardItem } from '@tonlabs/uikit.keyboard';
-import { useTheme } from '@tonlabs/uikit.hydrogen';
+import type { ColorValue } from 'react-native';
+import type { UICustomKeyboardView } from '@tonlabs/uikit.keyboard';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { StickersButton } from './StickersButton';
-import { StickerPickerKeyboardName, StickersList } from './StickersKeyboard';
+import {
+    StickerPickerKeyboardName,
+    StickersKeyboard,
+} from './StickersKeyboard';
 import type { OnPickSticker, UIStickerPackage } from './types';
 
 export function useStickers(
     stickers: UIStickerPackage[],
-    onItemSelected: OnPickSticker,
-): UICustomKeyboardItem {
+    onStickerSelected: OnPickSticker,
+): UICustomKeyboardView {
     const theme = useTheme();
     const stickersKeyboard = React.useMemo(() => {
         return {
+            // onItemSelected,
             button: StickersButton,
-            kbID: StickerPickerKeyboardName,
-            component: StickersList,
-            props: {
+            moduleName: StickerPickerKeyboardName,
+            component: StickersKeyboard,
+            initialProps: {
                 stickers,
                 theme,
             },
-            onItemSelected,
+            backgroundColor: theme[
+                ColorVariants.BackgroundSecondary
+            ] as ColorValue,
+            onEvent: onStickerSelected,
         };
-    }, [stickers, onItemSelected, theme]);
+    }, [stickers, onStickerSelected, theme]);
 
     return stickersKeyboard;
 }

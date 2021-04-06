@@ -13,6 +13,7 @@
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 
-@property (nonatomic, copy) NSString *managedScrollViewNativeID;
+@property (nonatomic, readwrite, retain) RCTBridge *currentBridge;
+@property (nonatomic, readwrite) CGFloat diffInHeightToApply;
 
 @end

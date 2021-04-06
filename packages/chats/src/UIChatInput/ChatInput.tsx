@@ -3,7 +3,6 @@ import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.hydrogen';
-import type { OnCustomKeyboardVisible } from '@tonlabs/uikit.keyboard';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';
@@ -11,13 +10,7 @@ import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
 import { useChatInputValue } from './useChatInputValue';
 import { useChatMaxLengthAlert } from './useChatMaxLengthAlert';
-import type {
-    MenuItem,
-    QuickActionItem,
-    OnSendText,
-    OnHeightChange,
-    Shortcut,
-} from './types';
+import type { MenuItem, QuickActionItem, OnSendText, Shortcut } from './types';
 
 const MAX_INPUT_LENGTH = 320;
 
@@ -38,13 +31,12 @@ type ChatInputProps = {
     inputHidden?: boolean;
 
     customKeyboardVisible: boolean;
-    onCustomKeyboardPress: OnCustomKeyboardVisible;
+    onCustomKeyboardPress: () => void;
     customKeyboardButton?: React.ComponentType<any>;
 
     onSendText: OnSendText;
-    onHeightChange?: OnHeightChange;
     onFocus: () => void;
-    onBlur: () => void;
+    onBlur?: () => void;
 };
 
 export function ChatInput(props: ChatInputProps) {
@@ -57,7 +49,7 @@ export function ChatInput(props: ChatInputProps) {
         resetInputHeight,
     } = useAutogrowTextView(
         props.textInputRef,
-        props.onHeightChange,
+        undefined,
         CHAT_INPUT_NUM_OF_LINES,
     );
     const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);

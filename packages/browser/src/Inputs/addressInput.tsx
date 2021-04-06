@@ -10,7 +10,7 @@ import {
     BubbleActionButton,
 } from '@tonlabs/uikit.chats';
 
-import type { AddressInputMessage, OnHeightChange } from '../types';
+import type { AddressInputMessage } from '../types';
 import { UIAddressInput } from '../UIAddressInput';
 import { UIAccountPicker } from '../UIAccountPicker';
 
@@ -77,13 +77,7 @@ function addressInputReducer(
     };
 }
 
-export function AddressInput({
-    onHeightChange,
-    onLayout,
-    ...message
-}: AddressInputMessage & {
-    onHeightChange: OnHeightChange;
-}) {
+export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
     const [state, dispatch] = React.useReducer(addressInputReducer, {
         inputVisible: false,
         qrCodeVisible: false,
@@ -194,7 +188,6 @@ export function AddressInput({
                                 type: 'CLOSE_ADDRESS_INPUT',
                             });
                         }}
-                        onHeightChange={onHeightChange}
                         validateAddress={message.input.validateAddress}
                     />
                 </Portal>

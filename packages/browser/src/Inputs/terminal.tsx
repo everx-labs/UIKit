@@ -9,15 +9,9 @@ import {
 } from '@tonlabs/uikit.chats';
 import { Portal } from '@tonlabs/uikit.hydrogen';
 
-import type { OnHeightChange, TerminalMessage } from '../types';
+import type { TerminalMessage } from '../types';
 
-export function TerminalInput({
-    onHeightChange,
-    onLayout,
-    ...message
-}: TerminalMessage & {
-    onHeightChange: OnHeightChange;
-}) {
+export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
@@ -61,7 +55,7 @@ export function TerminalInput({
                     }}
                     onSendMedia={() => undefined}
                     onSendDocument={() => undefined}
-                    onHeightChange={onHeightChange}
+                    managedScrollViewNativeID="browserList"
                 />
             </Portal>
         </View>

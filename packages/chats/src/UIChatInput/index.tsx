@@ -3,15 +3,13 @@ import { BackHandler, Platform, TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
-    UICustomKeyboard,
     useCustomKeyboard,
-    UICustomKeyboardItem,
-    UICustomKeyboardUtils,
+    UIInputAccessoryView,
+    UICustomKeyboardView,
 } from '@tonlabs/uikit.keyboard';
 
 import { ChatInput } from './ChatInput';
 import type {
-    OnHeightChange,
     OnSendText,
     OnSendMedia,
     OnSendDocument,
@@ -53,7 +51,10 @@ function useMenuPlus(menuPlusHidden = false) {
     };
 }
 
-export function useBackHandler(ref: React.RefObject<TextInput>) {
+export function useBackHandler(
+    ref: React.RefObject<TextInput>,
+    dismissKeyboard: () => void,
+) {
     React.useEffect(() => {
         if (Platform.OS !== 'android') {
             return undefined;
@@ -63,7 +64,7 @@ export function useBackHandler(ref: React.RefObject<TextInput>) {
             'hardwareBackPress',
             () => {
                 if (ref.current && ref.current.isFocused()) {
-                    UICustomKeyboardUtils.dismiss();
+                    dismissKeyboard();
                     return true;
                 }
                 return false;
@@ -75,7 +76,7 @@ export function useBackHandler(ref: React.RefObject<TextInput>) {
                 backHandler.remove();
             }
         };
-    }, [ref]);
+    }, [ref, dismissKeyboard]);
 }
 
 export type UIChatInputProps = {
@@ -94,37 +95,30 @@ export type UIChatInputProps = {
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
     onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
-    onHeightChange?: OnHeightChange;
 
-    customKeyboard?: UICustomKeyboardItem;
+    customKeyboard?: UICustomKeyboardView;
+
+    managedScrollViewNativeID?: string;
 };
 
 export function UIChatInput(props: UIChatInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
-    const { onHeightChange } = props;
+
     const {
-        customKeyboardVisible,
-        toggleKeyboard,
-        onKeyboardResigned,
-        onFocus,
-        onBlur,
-    } = useCustomKeyboard(props.onCustomKeyboardVisible, props.editable);
+        customKeyboardView,
+        toggle: toggleKeyboard,
+        dismiss: dismissKeyboard,
+    } = useCustomKeyboard(textInputRef, props.customKeyboard);
+
     const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
 
-    useBackHandler(textInputRef);
+    useBackHandler(textInputRef, dismissKeyboard);
 
-    React.useEffect(
-        () => () => {
-            if (onHeightChange) {
-                // If inputs is unmounted need to reset insets for list
-                onHeightChange(0);
-            }
-        },
-        [onHeightChange],
-    );
-
-    const input = (
-        <>
+    return (
+        <UIInputAccessoryView
+            managedScrollViewNativeID={props.managedScrollViewNativeID}
+            customKeyboardView={customKeyboardView}
+        >
             <ChatInput
                 textInputRef={textInputRef}
                 editable={props.editable}
@@ -139,39 +133,18 @@ export function UIChatInput(props: UIChatInputProps) {
                 menuMoreDisabled={props.menuMoreDisabled}
                 inputHidden={props.inputHidden}
                 quickActions={props.quickActions}
-                customKeyboardVisible={customKeyboardVisible}
+                customKeyboardVisible={customKeyboardView != null}
                 onCustomKeyboardPress={toggleKeyboard}
                 customKeyboardButton={props.customKeyboard?.button}
                 onSendText={props.onSendText}
-                onHeightChange={
-                    Platform.OS === 'web' ? onHeightChange : undefined
-                }
-                onFocus={onFocus}
-                onBlur={onBlur}
+                onFocus={dismissKeyboard}
             />
             <ChatPicker
                 ref={chatPickerRef}
                 onSendDocument={props.onSendDocument}
                 onSendMedia={props.onSendMedia}
+                dismissKeyboard={dismissKeyboard}
             />
-        </>
-    );
-
-    return (
-        <UICustomKeyboard
-            renderContent={() => input}
-            kbInputRef={textInputRef}
-            kbID={props.customKeyboard?.kbID}
-            customKeyboardVisible={customKeyboardVisible}
-            customKeyboardComponent={props.customKeyboard?.component}
-            kbInitialProps={props.customKeyboard?.props}
-            onItemSelected={(_id: string | undefined, stk: any) => {
-                toggleKeyboard();
-
-                props.customKeyboard?.onItemSelected(_id, stk);
-            }}
-            onKeyboardResigned={onKeyboardResigned}
-            onHeightChange={props.onHeightChange}
-        />
+        </UIInputAccessoryView>
     );
 }
