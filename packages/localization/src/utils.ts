@@ -1,6 +1,4 @@
-// @flow
-/* eslint-disable no-use-before-define */
-/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
 import type {
     DateFormatInfo,
     LanguageItem,

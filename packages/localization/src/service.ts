@@ -1,4 +1,3 @@
-// @flow
 import dayjs from 'dayjs';
 import LocalizedStrings from 'react-native-localization';
 import BigNumber from 'bignumber.js';
@@ -6,11 +5,10 @@ import availableLanguages, { UILocalizedData } from './languages';
 import {
     getDateFormatInfo,
     getNumberFormatInfo,
-    prepareLocales,
+    prepare,
 } from './utils';
 import type {
     Languages,
-    LocalizedStringsMethods,
     NumberParts,
     NumberPartsOptions,
     StringLocaleInfo,
@@ -23,7 +21,7 @@ import {
     UIFunction,
 } from './constants';
 
-const preparedLanguages = prepareLocales<UILocalizedData>(
+const preparedLanguages = prepare<UILocalizedData>(
     availableLanguages,
     predefinedConstants,
 );

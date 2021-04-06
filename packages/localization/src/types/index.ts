@@ -13,7 +13,7 @@ export interface LanguageOptions {
 }
 
 export type Languages<T = LanguageItem> = Partial<Record<Language, T>>;
-export type LanguagesOptions = Partial<Record<Language, LanguageOptions>>;
+export type LanguagesOptions = Languages<LanguageOptions>;
 
 export type NumberFormatInfo = {
     grouping: string;

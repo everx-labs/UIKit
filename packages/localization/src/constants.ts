@@ -1,4 +1,3 @@
-// @flow
 import BigNumber from 'bignumber.js';
 import type { NumberParts, NumberPartsOptions, StringLocaleInfo } from './types';
 
