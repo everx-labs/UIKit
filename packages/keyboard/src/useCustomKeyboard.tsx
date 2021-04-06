@@ -13,7 +13,7 @@ export type OnCustomKeyboardVisible = (
 ) => void | Promise<void>;
 
 const callbacks: { [id: string]: OnEvent | undefined } = {};
-const dismisses: { [id: string]: () => void | undefined } = {};
+const dismisses: { [id: string]: (() => void) | undefined } = {};
 
 export function registerKeyboardComponent<KeyboardProps>(
     moduleName: string,
