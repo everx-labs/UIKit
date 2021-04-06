@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import LocalizedStrings from 'react-native-localization';
+import LocalizedStringsService, { LocalizedStrings } from 'react-native-localization';
 import BigNumber from 'bignumber.js';
 import availableLanguages, { UILocalizedData } from './languages';
 import {
@@ -37,10 +37,10 @@ type LanguageServiceOptions<T> = {
     localeInfo?: StringLocaleInfo
 }
 
-export type LocalizedInstance<T> = T & LocalizationService<T>
+export type LocalizedInstance<T> = LocalizedStrings<T> & LocalizationService<T>
 
 // @ts-ignore
-export class LocalizationService<T> extends (LocalizedStrings as LocalizedInstance<T>) {
+export class LocalizationService<T> extends (LocalizedStringsService as LocalizedStrings<T>) {
     languages: Language[];
     localeInfo: StringLocaleInfo;
 
@@ -178,7 +178,7 @@ export class LocalizationService<T> extends (LocalizedStrings as LocalizedInstan
     }
 }
 
-export const uiLocalized: LocalizationService<UILocalizedData>
-    = new LocalizationService<UILocalizedData>({ languages: preparedLanguages })
+export const uiLocalized: LocalizedInstance<UILocalizedData> =
+    (new LocalizationService<UILocalizedData>({ languages: preparedLanguages }) as any)
 
 export const TIME_FORMAT = 'HH:mm';
