@@ -69,7 +69,7 @@ function useValidation(
                 uiLocalized.amountToLocale(min),
             ) as string;
         }
-        return null;
+        return undefined;
     }, [validationStatus, max, min]);
 
     return {
@@ -112,7 +112,7 @@ function numberToSignsCount(number: string, count: number) {
 }
 
 type UIAmountInputHintProps = {
-    validationText?: string | null;
+    validationText?: string;
     validationStatus: ValidationStatus;
 
     decimals: number;
