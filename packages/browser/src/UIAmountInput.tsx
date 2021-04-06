@@ -26,8 +26,8 @@ enum ValidationStatus {
 
 function useValidation(
     decimalDivider: number,
-    min: number | null,
-    max: number | null,
+    min: BigNumber | null,
+    max: BigNumber | null,
 ) {
     const [validationStatus, setValidationStatus] = React.useState(
         ValidationStatus.None,
@@ -80,6 +80,13 @@ function useValidation(
     };
 }
 
+const getHintColor = (status: ValidationStatus) => {
+    if (status !== ValidationStatus.None) {
+        return ColorVariants.TextNegative;
+    }
+    return ColorVariants.TextTertiary;
+};
+
 const getBigNumberFromRawString = (value: string) => {
     const { decimal } = uiLocalized.localeInfo.numbers;
     if (value[0] === decimal) {
@@ -92,13 +99,131 @@ const getBigNumberFromRawString = (value: string) => {
     return new BigNumber(clearedValue.replace(decimal, '.'));
 };
 
+function numberToSignsCount(number: string, count: number) {
+    if (number.length < count) {
+        return `${number}${'0'.repeat(count - number.length)}`;
+    }
+
+    if (number.length > count) {
+        return number.slice(0, count);
+    }
+
+    return number;
+}
+
+type UIAmountInputHintProps = {
+    validationText?: string;
+    validationStatus: ValidationStatus;
+
+    decimals: number;
+    min: BigNumber | null;
+    max: BigNumber | null;
+};
+
+const UIAmountInputHint = React.memo(function UIAmountInputHintMemoized({
+    validationText,
+    validationStatus,
+    decimals: decimalsProp,
+    min,
+    max,
+}: UIAmountInputHintProps) {
+    const minMaxHint = React.useMemo(() => {
+        if (min == null && max == null) {
+            return null;
+        }
+
+        const fmt = {
+            decimalSeparator: uiLocalized.localeInfo.numbers.decimal,
+        };
+        const minParts = min?.toFormat(fmt).split(fmt.decimalSeparator);
+        const maxParts = max?.toFormat(fmt).split(fmt.decimalSeparator);
+
+        let minInteger = null;
+        let minDecimal = null;
+        let maxInteger = null;
+        let maxDecimal = null;
+
+        if (minParts) {
+            [minInteger, minDecimal] = minParts;
+        }
+
+        if (maxParts) {
+            [maxInteger, maxDecimal] = maxParts;
+        }
+
+        const decimals = Math.min(
+            Math.max(minDecimal?.length || 0, maxDecimal?.length || 0),
+            decimalsProp,
+        );
+
+        if (minDecimal) {
+            minDecimal = numberToSignsCount(minDecimal, decimals);
+        }
+
+        if (maxDecimal) {
+            maxDecimal = numberToSignsCount(maxDecimal, decimals);
+        }
+
+        const minString = minParts
+            ? [minInteger, minDecimal]
+                  .filter((i) => i != null)
+                  .join(fmt.decimalSeparator)
+            : null;
+        const maxString = maxParts
+            ? [maxInteger, maxDecimal]
+                  .filter((i) => i != null)
+                  .join(fmt.decimalSeparator)
+            : null;
+
+        const hint = [
+            minString != null
+                ? `${uiLocalized.Browser.AmountInput.HintMin} ${minString}`
+                : null,
+            maxString != null
+                ? `${maxString} ${uiLocalized.Browser.AmountInput.HintMax}`
+                : null,
+        ]
+            .filter((i) => i != null)
+            .join(' – ');
+
+        return hint;
+    }, [decimalsProp, min, max]);
+
+    if (validationText) {
+        return (
+            <UILabel
+                role={UILabelRoles.ParagraphFootnote}
+                color={getHintColor(validationStatus)}
+                style={styles.hint}
+                numberOfLines={1}
+            >
+                {validationText}
+            </UILabel>
+        );
+    }
+
+    if (minMaxHint) {
+        return (
+            <UILabel
+                role={UILabelRoles.ParagraphFootnote}
+                color={ColorVariants.TextTertiary}
+                style={styles.hint}
+            >
+                {minMaxHint}
+            </UILabel>
+        );
+    }
+
+    return null;
+});
+
 type UIAmountInputInternalProps = {
     textInputRef: React.RefObject<TextInput>;
     placeholder?: string;
 
     decimals: number;
-    min?: number;
-    max?: number;
+    min?: BigNumber;
+    max?: BigNumber;
 
     onSendAmount: OnSendAmount;
     onHeightChange?: OnHeightChange;
@@ -119,7 +244,7 @@ function UIAmountInputInternal({
         numberOfLines,
         resetInputHeight,
         inputStyle,
-    } = useAutogrowTextView(textInputRef, onHeightChange);
+    } = useAutogrowTextView(textInputRef, onHeightChange, 1);
 
     const {
         inputHasValue,
@@ -142,8 +267,8 @@ function UIAmountInputInternal({
                 .fill(null)
                 .map(() => '0')
                 .join('')}`,
-            min: minProp != null ? minProp / divider : null,
-            max: maxProp != null ? maxProp / divider : null,
+            min: minProp != null ? minProp.dividedBy(divider) : null,
+            max: maxProp != null ? maxProp.dividedBy(divider) : null,
         };
     }, [decimals, minProp, maxProp]);
 
@@ -258,16 +383,13 @@ function UIAmountInputInternal({
                 />
             }
         >
-            {validationString != null ? (
-                <UILabel
-                    role={UILabelRoles.ParagraphFootnote}
-                    color={ColorVariants.TextNegative}
-                    style={styles.hint}
-                    numberOfLines={1}
-                >
-                    {validationString}
-                </UILabel>
-            ) : null}
+            <UIAmountInputHint
+                validationText={validationString}
+                validationStatus={validationStatus}
+                decimals={decimals}
+                min={min}
+                max={max}
+            />
             <UITextView
                 ref={textInputRef}
                 testID="browser_amount_input"
@@ -296,8 +418,8 @@ type UIAmountInputProps = {
     placeholder?: string;
 
     decimals: number;
-    min?: number;
-    max?: number;
+    min?: BigNumber;
+    max?: BigNumber;
 
     onSendAmount: OnSendAmount;
     onHeightChange?: OnHeightChange;

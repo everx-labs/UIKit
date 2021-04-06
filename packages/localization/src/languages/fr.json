@@ -1,16 +1,6 @@
 {
     "Account": "Compte",
     "AccountAddress": "Adresse",
-    "AccountLimitPeriod": {
-        "daily": "Quotidien",
-        "monthly": "Mensuel",
-        "total": "Total",
-        "weekly": "Hebdomadaire"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Vérification du passeport",
-        "twoFactorAuthentication": "Autorisation à 2 facteurs"
-    },
     "Accounts": "Comptes",
     "AccountTypeHint": "Si vous définissez votre adresse de compte comme publique, elle sera visible dans votre profil.",
     "Add": "Ajouter",
@@ -62,7 +52,9 @@
         "AmountInput": {
             "Placeholder": "Amount…",
             "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}"
+            "ErrorBigger": "The amount is bigger than {0}",
+            "HintMin": "min.",
+            "HintMax": "max."
         },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
@@ -198,7 +190,7 @@
     "FailedToLoadDocument": "Échec du chargement du document.",
     "FailedToSendTransaction": "Échec de l'envoi de la transaction",
     "FailedToSetLimit": "Échec de la définition de la limite",
-    "fee": "Frais",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Femme",
     "FileIsTooBig": "Désolé, nous ne pouvons pas traiter cela. Le fichier est trop volumineux (maximum: {0} MB).",
@@ -346,6 +338,11 @@
     "Private": "Privé",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "Les chaînes privées ne peuvent être rejointes que par un lien d'invitation.",
     "Profile": "Profil",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Publique",
     "PublicAccount": "Compte public",
     "PublicAccountWarning": "Attention! Si vous fournissez votre adresse publique à des tiers, elle leur sera visible même après l'avoir rendue privée.",

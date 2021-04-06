@@ -99,6 +99,7 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     >
                         <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
                         <UIToggle
+                            testID="theme_switcher"
                             active={themeSwitcher.isDarkTheme}
                             onPress={() => themeSwitcher.toggleTheme()}
                         />

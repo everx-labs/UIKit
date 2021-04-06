@@ -1,114 +1,15 @@
 import * as React from 'react';
-import {
-    TextInput,
-    View,
-    FlatList,
-    StyleSheet,
-    TouchableOpacity,
-    ColorValue,
-    Platform,
-} from 'react-native';
+import { TextInput, View, Platform } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { UIMaterialTextView } from './UIMaterialTextView';
-import { PropsAwarePopover } from './PropsAwarePopover';
-import { useAutogrowTextView } from './useAutogrowTextView';
-import { UIConstant } from './constants';
-import { ColorVariants, useTheme } from './Colors';
-import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
-import { moveCarret } from './moveCarret';
+import { UIMaterialTextView } from '../UIMaterialTextView';
+import { useAutogrowTextView } from '../useAutogrowTextView';
+import { UIConstant } from '../constants';
+import { moveCarret } from '../moveCarret';
 
-type UISeedPhrasePopoverProps = {
-    currentHighlightedItemIndex: number;
-    onHighlightedItemIndexChange: (index: number) => void;
-    hints: string[];
-    onHintSelected: (item: string) => void;
-    width: number;
-};
+import { UISeedPhrasePopover } from './UISeedPhrasePopover';
 
-function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
-    const {
-        currentHighlightedItemIndex,
-        onHighlightedItemIndexChange,
-        hints,
-        onHintSelected,
-        width,
-    } = props;
-    const theme = useTheme();
-    const maxHintsToShow = Math.min(hints.length, MAX_CELLS);
-    const height = hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
-    // Calculate the padding bottom to view cells even if clipped
-    const paddingBottom = UIConstant.defaultCellHeight * (maxHintsToShow - 1);
-
-    const renderItem = React.useCallback(({ item, index }) => {
-        const cellBgStyle: {
-            backgroundColor: ColorValue;
-        } = {
-            backgroundColor:
-                theme[
-                    currentHighlightedItemIndex === index
-                        ? ColorVariants.BackgroundSecondary
-                        : ColorVariants.BackgroundPrimary
-                ],
-        };
-
-        return (
-            <TouchableOpacity
-                testID={`profile_backup_key_phrase_${item}`}
-                style={[styles.cellHint, cellBgStyle]}
-                {
-                    ...Platform.select({
-                        web: { // a popover is closing before `onPress` event is triggered on web
-                            onPressIn: () => onHintSelected(item),
-                            onMouseEnter: () => onHighlightedItemIndexChange(index),
-                            onMouseLeave: () => onHighlightedItemIndexChange(-1),
-                        },
-                        default: {
-                            onPress: () => onHintSelected(item),
-                        },
-                    })
-                }
-            >
-                <UILabel
-                    color={UILabelColors.TextSecondary}
-                    role={UILabelRoles.ParagraphNote}
-                >
-                    {item}
-                </UILabel>
-            </TouchableOpacity>
-        );
-    }, [theme, currentHighlightedItemIndex, onHintSelected, onHighlightedItemIndexChange]);
-
-    return (
-        <View
-            nativeID="hints-view"
-            style={[
-                styles.hintsContainer,
-                {
-                    height,
-                    width,
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                },
-            ]}
-        >
-            <View style={styles.hintsInner}>
-                <FlatList
-                    contentContainerStyle={{ paddingBottom }}
-                    scrollEnabled
-                    showsVerticalScrollIndicator
-                    keyExtractor={item => item}
-                    keyboardShouldPersistTaps="handled"
-                    data={hints}
-                    extraData={currentHighlightedItemIndex}
-                    renderItem={renderItem}
-                />
-            </View>
-        </View>
-    );
-}
-
-const MAX_CELLS = 3;
 const SPLITTER = ` ${UIConstant.dashSymbol} `;
 
 const identifyWordThatChanged = (
@@ -277,7 +178,8 @@ export const UISeedPhraseTextView = React.forwardRef<
         return props.totalWords;
     }, [props.totalWords]);
 
-    const textInputRef = React.useRef(null);
+    const textInputRef = React.useRef<TextInput>(null);
+    const textInputBorderViewRef = React.useRef<View>(null);
     const refToUse = ref || textInputRef;
 
     const [state, dispatch] = React.useReducer(reducer, {
@@ -452,6 +354,15 @@ export const UISeedPhraseTextView = React.forwardRef<
             refToUse,
         ],
     );
+
+    const onHighlightedItemIndexChange = React.useCallback((index: number) => {
+        dispatch({
+            type: 'change_highlighted',
+            payload: {
+                index,
+            },
+        });
+    }, []);
 
     const onKeyPress = React.useCallback(
         (e: any) => {
@@ -635,42 +546,6 @@ export const UISeedPhraseTextView = React.forwardRef<
         return [uiLocalized.localizedStringForValue(entered, 'words'), false];
     }, [isFocused, isValid, hasValue, state.parts, totalWordsString]);
 
-    const [inputWidth, setInputWidth] = React.useState(0);
-
-    const onInputLayout = React.useCallback(
-        ({
-            nativeEvent: {
-                layout: { width },
-            },
-        }) => {
-            setInputWidth(width);
-        },
-        [setInputWidth],
-    );
-
-    const popoverProps = React.useMemo(
-        () => ({
-            currentHighlightedItemIndex: state.highlight.index,
-            onHighlightedItemIndexChange: (index: number) => {
-                dispatch({
-                    type: 'change_highlighted',
-                    payload: {
-                        index,
-                    },
-                });
-            },
-            hints,
-            onHintSelected,
-            width: inputWidth,
-        }),
-        [state.highlight.index, hints, onHintSelected, inputWidth],
-    );
-
-    const popoverOffset = React.useMemo(
-        () => ({ x: 0, y: -42, /* Don't want to calculate it dynamically */ }),
-        [],
-    );
-
     const inputStyle = React.useMemo(() => ({ height: inputHeight }), [
         inputHeight,
     ]);
@@ -694,6 +569,7 @@ export const UISeedPhraseTextView = React.forwardRef<
         <>
             <UIMaterialTextView
                 ref={refToUse}
+                borderViewRef={textInputBorderViewRef}
                 testID={testID}
                 autoCapitalize="none"
                 autoCompleteType="off"
@@ -701,7 +577,6 @@ export const UISeedPhraseTextView = React.forwardRef<
                 multiline
                 contextMenuHidden
                 label={uiLocalized.MasterPassword}
-                onLayout={onInputLayout}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
@@ -718,40 +593,15 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onSubmitEditing={onSubmitEditing}
                 blurOnSubmit
             />
-            <PropsAwarePopover
+            <UISeedPhrasePopover
                 // if number of lines changed, redraw it
                 key={numberOfLines}
-                placement="bottom"
-                arrowWidth={0}
-                arrowHeight={0}
-                isVisible={hints.length > 0}
-                offset={popoverOffset}
-                component={UISeedPhrasePopover}
-                componentProps={popoverProps}
-            >
-                <View />
-            </PropsAwarePopover>
+                elementRef={textInputBorderViewRef}
+                currentHighlightedItemIndex={state.highlight.index}
+                onHighlightedItemIndexChange={onHighlightedItemIndexChange}
+                hints={hints}
+                onHintSelected={onHintSelected}
+            />
         </>
     );
-});
-
-const styles = StyleSheet.create({
-    hintsContainer: {
-        flex: 1,
-        ...UIConstant.cardShadow,
-        borderBottomLeftRadius: UIConstant.borderRadius,
-        borderBottomRightRadius: UIConstant.borderRadius,
-    },
-    hintsInner: {
-        flex: 1,
-        overflow: 'hidden',
-        borderBottomLeftRadius: UIConstant.borderRadius,
-        borderBottomRightRadius: UIConstant.borderRadius,
-    },
-    cellHint: {
-        zIndex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: UIConstant.contentOffset,
-        minHeight: UIConstant.defaultCellHeight,
-    },
 });

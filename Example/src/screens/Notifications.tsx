@@ -16,6 +16,7 @@ export const Notifications = () => (
         <ExampleSection title="UINotice">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UITextButton
+                    testID="show_default_uiNotice_message"
                     title="Show default notice with message only"
                     onPress={() =>
                         UINotice.showMessage(
@@ -27,12 +28,13 @@ export const Notifications = () => (
         </ExampleSection>
         <ExampleSection title="UINotificationBadge">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UINotificationBadge value={100} />
+                <UINotificationBadge testID="uiNotificationBadge_default"  value={100} />
             </View>
         </ExampleSection>
         <ExampleSection title="UIToastMessage">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UITextButton
+                    testID="show_default_uiToastMessageg"
                     title="Show default notice with message only"
                     onPress={() =>
                         UIToastMessage.showMessage(

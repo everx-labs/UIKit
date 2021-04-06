@@ -1,16 +1,6 @@
 {
     "Account": "账户",
     "AccountAddress": "地址",
-    "AccountLimitPeriod": {
-        "daily": "每天",
-        "monthly": "每月",
-        "total": "总计",
-        "weekly": "每周"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "护照验证",
-        "twoFactorAuthentication": "双因素授权"
-    },
     "Accounts": "账户",
     "AccountTypeHint": "将您的账户地址设置为public将使其在您的个人资料中可见",
     "Add": "添加",
@@ -62,7 +52,9 @@
         "AmountInput": {
             "Placeholder": "Amount…",
             "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}"
+            "ErrorBigger": "The amount is bigger than {0}",
+            "HintMin": "min.",
+            "HintMax": "max."
         },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
@@ -198,7 +190,7 @@
     "FailedToLoadDocument": "未能加载文档。",
     "FailedToSendTransaction": "发送交易失败",
     "FailedToSetLimit": "设置限制失败",
-    "fee": "费用",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "女性",
     "FileIsTooBig": "很抱歉，我们无法处理。文件太大（最大值：{0} MB）。",
@@ -346,6 +338,11 @@
     "Private": "私人",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "私人频道只能通过邀请链接加入。",
     "Profile": "配置文件",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "公开",
     "PublicAccount": "公众账号",
     "PublicAccountWarning": "注意！如果您向第三方提供您的公共地址，即使您将其设为私有，它们也可以看到它。",

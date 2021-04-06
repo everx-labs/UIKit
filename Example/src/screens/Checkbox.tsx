@@ -25,6 +25,7 @@ export const Checkbox = () => {
             <ExampleSection title="UICheckboxItem">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UICheckboxItem
+                        testID="uiCheckboxItem_editable"
                         editable
                         onPress={() => {
                             setSelected(!selected);
@@ -34,6 +35,7 @@ export const Checkbox = () => {
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UICheckboxItem
+                        testID="uiCheckboxItem_selected_state"
                         editable
                         onPress={() => undefined}
                         selected
@@ -41,6 +43,7 @@ export const Checkbox = () => {
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UICheckboxItem
+                        testID="uiCheckboxItem_disabled_state"
                         onPress={() => undefined}
                         editable={false}
                     />
@@ -49,6 +52,7 @@ export const Checkbox = () => {
             <ExampleSection title="UIDetailsCheckbox">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsCheckbox
+                        testID="uiDetailsCheckbox_comment_left"
                         details="Example checkbox"
                         comments="with comment"
                         active={selected2}
@@ -57,6 +61,7 @@ export const Checkbox = () => {
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsCheckbox
+                        testID="uiDetailsCheckbox_comment_right"
                         details="Example checkbox"
                         comments="with comment"
                         active={selected2}
@@ -68,6 +73,7 @@ export const Checkbox = () => {
             <ExampleSection title="UIDetailsRadio">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsRadio
+                        testID="uiDetailsRadio_comment_left"
                         details="Example radio"
                         comments="with comment"
                         active={selected3}
@@ -76,6 +82,7 @@ export const Checkbox = () => {
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsRadio
+                        testID="uiDetailsRadio_comment_right"
                         details="Example radio"
                         comments="with comment"
                         active={selected3}
@@ -87,6 +94,7 @@ export const Checkbox = () => {
             <ExampleSection title="UIDetailsToggle">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsToggle
+                        testID="uiDetailsToggle_comment_left"
                         details="Example toggle"
                         comments="with comment"
                         active={selected4}
@@ -95,6 +103,7 @@ export const Checkbox = () => {
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsToggle
+                        testID="uiDetailsToggle_comment_right"
                         details="Example toggle"
                         comments="with comment"
                         active={selected4}
@@ -107,6 +116,7 @@ export const Checkbox = () => {
             <ExampleSection title="UIRadioButtonList">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIRadioButtonList
+                        testID="uiRadioButtonList_default"
                         onSelect={(index: number) => setSelectedRadio(index)}
                         state={{
                             selected: selectedRadio,
@@ -122,12 +132,14 @@ export const Checkbox = () => {
             <ExampleSection title="UIToggle">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIToggle
+                        testID="uiToggle_default"
                         active={selectedToggle}
                         onPress={() => setSelectedToggle(!selectedToggle)}
                     />
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIToggle
+                        testID="uiToggle_colored"
                         colored
                         containerStyle={{ marginLeft: 16 }}
                         active={selectedToggle}

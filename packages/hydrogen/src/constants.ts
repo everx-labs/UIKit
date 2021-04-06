@@ -6,8 +6,12 @@ export const UIConstant = {
     smallCellHeight: 24,
     defaultCellHeight: 48,
 
+    minimumWidthToShowFoldingNotice: 400,
     minNoticeSize: 88,
+    minNoticeIconSize: 64,
+    maxNoticeIconSize: 88,
 
+    tinyContentOffset: 4,
     normalContentOffset: 12,
     contentOffset: 16,
     borderRadius: 8,

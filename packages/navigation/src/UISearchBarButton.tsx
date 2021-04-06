@@ -13,7 +13,7 @@ import {
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { HEADER_HEIGHT } from './constants';
+import { HEADER_HEIGHT, ICON_SEARCH_SIZE } from './constants';
 import { UISearchController } from './UISearchController';
 
 export function UISearchBarButton({
@@ -24,9 +24,11 @@ export function UISearchBarButton({
     placeholder,
     children,
     onChangeText,
+    searching,
 }: {
     forId?: string;
     placeholder?: string;
+    searching?: boolean;
     visible: boolean;
     onOpen: () => void | Promise<void>;
     onClose: () => void | Promise<void>;
@@ -62,6 +64,7 @@ export function UISearchBarButton({
                 forId={forId}
                 visible={visible}
                 onCancel={onClose}
+                searching={searching}
                 onChangeText={onChangeText}
             >
                 {children}
@@ -82,11 +85,12 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         alignItems: 'center',
         borderRadius: UIConstant.mediumBorderRadius(),
-        paddingHorizontal: UIConstant.smallContentOffset(),
+        paddingLeft: 10,
+        paddingRight: 14,
     },
     searchIcon: {
-        width: UIConstant.iconSize(),
-        height: UIConstant.iconSize(),
+        width: ICON_SEARCH_SIZE,
+        height: ICON_SEARCH_SIZE,
         marginRight: UIConstant.tinyContentOffset(),
     },
 });

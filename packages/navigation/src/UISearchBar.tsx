@@ -6,6 +6,7 @@ import {
     ColorVariants,
     UITextView,
     UITextViewProps,
+    UIIndicator,
     UIImage,
     UILabel,
     UILabelRoles,
@@ -15,7 +16,11 @@ import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { HEADER_HEIGHT } from './constants';
+import {
+    HEADER_HEIGHT,
+    ICON_SEARCHING_INDICATOR_SIZE,
+    ICON_SEARCH_SIZE,
+} from './constants';
 
 type OnPress = () => void | Promise<void>;
 
@@ -83,6 +88,10 @@ type UISearchBarProps = Omit<UITextViewProps, 'placeholder'> & {
      * Alternative string for placeholder
      */
     placeholder?: string;
+    /**
+     * Whether to show indicator animation on the right side of input
+     */
+    searching?: boolean;
 };
 
 export function UISearchBar({
@@ -90,6 +99,7 @@ export function UISearchBar({
     headerRightLabel,
     headerRightOnPress,
     placeholder,
+    searching,
     ...inputProps
 }: UISearchBarProps) {
     return (
@@ -107,6 +117,13 @@ export function UISearchBar({
                     placeholder={placeholder || uiLocalized.Search}
                     {...inputProps}
                 />
+                {searching && (
+                    <UIIndicator
+                        style={styles.loadingIcon}
+                        size={ICON_SEARCHING_INDICATOR_SIZE}
+                        trackWidth={2}
+                    />
+                )}
             </UIBackgroundView>
             {headerRight({
                 label: headerRightLabel,
@@ -130,12 +147,17 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         alignItems: 'center',
         borderRadius: UIConstant.mediumBorderRadius(),
-        paddingHorizontal: UIConstant.smallContentOffset(),
+        paddingLeft: 10,
+        paddingRight: 14,
     },
     searchIcon: {
-        width: UIConstant.iconSize(),
-        height: UIConstant.iconSize(),
+        width: ICON_SEARCH_SIZE,
+        height: ICON_SEARCH_SIZE,
         marginRight: UIConstant.tinyContentOffset(),
+    },
+    loadingIcon: {
+        flex: undefined,
+        marginLeft: UIConstant.tinyContentOffset(),
     },
     actionButton: {
         marginLeft: UIConstant.contentOffset(),

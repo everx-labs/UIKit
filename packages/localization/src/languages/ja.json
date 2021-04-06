@@ -1,16 +1,6 @@
 {
     "Account": "アカウント",
     "AccountAddress": "アドレス",
-    "AccountLimitPeriod": {
-        "daily": "毎日",
-        "monthly": "毎月",
-        "total": "トータル",
-        "weekly": "毎週"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "パスポートの検証",
-        "twoFactorAuthentication": "2 要素認証"
-    },
     "Accounts": "アカウント",
     "AccountTypeHint": "アカウント・アドレスを公有に設定すると、プロフィールに表示されます。",
     "Add": "追加する",
@@ -62,7 +52,9 @@
         "AmountInput": {
             "Placeholder": "Amount…",
             "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}"
+            "ErrorBigger": "The amount is bigger than {0}",
+            "HintMin": "min.",
+            "HintMax": "max."
         },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
@@ -198,7 +190,7 @@
     "FailedToLoadDocument": "ドキュメントを読み込みできませんでした。",
     "FailedToSendTransaction": "トランザクションを送信できませんでした。",
     "FailedToSetLimit": "制限を設定できませんでした。",
-    "fee": "料金",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "女性",
     "FileIsTooBig": "申し訳ありませんが、これを処理できません。ファイルが大きすぎます（最大： {0} MB）。",
@@ -346,6 +338,11 @@
     "Private": "プライベート",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "プライベートチャンネルには、招待リンクのみで参加できます。",
     "Profile": "プロフィール",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "公共",
     "PublicAccount": "公共アカウント",
     "PublicAccountWarning": "注意！共有アドレスを第三者に提供すると、プライベートにした後でもこの第三者に公開されます。",

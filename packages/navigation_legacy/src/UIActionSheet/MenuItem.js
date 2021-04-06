@@ -5,7 +5,7 @@ import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleS
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { UIActionComponent } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import type {
     UIActionComponentProps,
     UIActionComponentState,
@@ -15,6 +15,7 @@ export type MenuItemType = UIActionComponentProps & {
     style?: ViewStyleProp,
     title: string,
     titleStyle?: TextStyleProp,
+    titleRole?: TypographyVariants,
     details?: string,
     detailsStyle?: TextStyleProp,
     chosen?: boolean,
@@ -40,7 +41,7 @@ export default class MenuItem extends UIActionComponent<
 
     renderContent() {
         const {
-            title, details, titleStyle, detailsStyle, chosen, disabled, reversedColors, style,
+            title, details, titleStyle, titleRole, detailsStyle, chosen, disabled, reversedColors, style,
         } = this.props;
 
         const contentStyle = details
@@ -69,7 +70,7 @@ export default class MenuItem extends UIActionComponent<
                 <UILabel
                     color={disabled ? UILabelColors.TextTertiary : (titleStyle || defaultTitleStyle)}
                     numberOfLines={1}
-                    role={UILabelRoles.ActionCallout}
+                    role={titleRole || UILabelRoles.ActionCallout}
                     style={marginRight}
                     testID={MenuItem.testIDs.menuItem(title)}
                 >

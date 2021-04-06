@@ -13,10 +13,10 @@ const textViewHeight =
 export function useAutogrowTextView(
     ref: React.Ref<TextInput> | null,
     onHeightChange?: OnHeightChange,
-    constrainedNumberOfLines: number = 1,
+    constrainedNumberOfLines?: number,
 ) {
     const [inputHeight, setInputHeight] = React.useState<number>(
-        UIConstant.smallCellHeight,
+        textViewHeight,
     );
 
     const onContentSizeChange = React.useCallback(
@@ -72,16 +72,16 @@ export function useAutogrowTextView(
     }, [ref, onContentSizeChange]);
 
     const resetInputHeight = React.useCallback(() => {
-        setInputHeight(UIConstant.smallCellHeight);
+        setInputHeight(textViewHeight);
 
         if (Platform.OS === 'web' && ref && 'current' in ref && ref.current) {
             // eslint-disable-next-line no-param-reassign
             const elem = (ref.current as unknown) as HTMLTextAreaElement;
-            elem.style.height = `${UIConstant.smallCellHeight}px`;
+            elem.style.height = `${textViewHeight}px`;
         }
     }, [ref]);
 
-    const numberOfLines = Math.round(inputHeight / UIConstant.smallCellHeight);
+    const numberOfLines = Math.round(inputHeight / textViewHeight);
     const numberOfLinesProp = Platform.select({
         ios: numberOfLines,
         default: undefined,
@@ -91,10 +91,14 @@ export function useAutogrowTextView(
         () => ({
             padding: 0,
             flex: undefined,
-            maxHeight:
-                (StyleSheet.flatten(
-                    Typography[TypographyVariants.ParagraphText],
-                ).lineHeight ?? 0) * constrainedNumberOfLines,
+            ...(constrainedNumberOfLines
+                ? {
+                      maxHeight:
+                          (StyleSheet.flatten(
+                              Typography[TypographyVariants.ParagraphText],
+                          ).lineHeight ?? 0) * constrainedNumberOfLines,
+                  }
+                : null),
             ...Platform.select({
                 web: {
                     outlineStyle: 'none',

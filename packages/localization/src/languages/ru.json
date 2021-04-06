@@ -1,16 +1,6 @@
 {
     "Account": "Аккаунт",
     "AccountAddress": "Адрес",
-    "AccountLimitPeriod": {
-        "daily": "Ежедневно",
-        "monthly": "Ежемесячно",
-        "total": "Всего",
-        "weekly": "Еженедельно"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Подтверждение паспорта",
-        "twoFactorAuthentication": "Двухфакторная авторизация"
-    },
     "Accounts": "Аккаунты",
     "AccountTypeHint": "Когда вы делаете адрес аккаунта публичным, он отображается в вашем профиле",
     "Add": "Добавить",
@@ -62,7 +52,9 @@
         "AmountInput": {
             "Placeholder": "Amount…",
             "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}"
+            "ErrorBigger": "The amount is bigger than {0}",
+            "HintMin": "min.",
+            "HintMax": "max."
         },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
@@ -198,7 +190,7 @@
     "FailedToLoadDocument": "Не удалось загрузить документ",
     "FailedToSendTransaction": "Не удалось отправить перевод",
     "FailedToSetLimit": "Не удалось установить лимит",
-    "fee": "Комиссия",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Женщина",
     "FileIsTooBig": "Извините, мы не можем это обработать. Файл слишком большой (лимит: {0} MB).",
@@ -346,6 +338,11 @@
     "Private": "Частный",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "На частные каналы можно подписаться только по ссылке-приглашению",
     "Profile": "Профиль",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Публичный",
     "PublicAccount": "Публичный аккаунт",
     "PublicAccountWarning": "Внимание! Если вы предоставите публичный адрес третьим лицам, он будет доступен им даже после того, как вы сделаете его приватным.",

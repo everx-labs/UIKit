@@ -1,16 +1,6 @@
 {
     "Account": "Konto",
     "AccountAddress": "Adresse",
-    "AccountLimitPeriod": {
-        "daily": "Täglich",
-        "monthly": "Monatlich",
-        "total": "Insgesamt",
-        "weekly": "Wöchentlich"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Passkontrolle",
-        "twoFactorAuthentication": "2-Faktor-Autorisierung"
-    },
     "Accounts": "Konten",
     "AccountTypeHint": "Wenn Sie Ihre kontoadresse auf öffentlich setzen, wird Sie in Ihrem Profil sichtbar.",
     "Add": "Hinzufügen",
@@ -62,7 +52,9 @@
         "AmountInput": {
             "Placeholder": "Amount…",
             "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}"
+            "ErrorBigger": "The amount is bigger than {0}",
+            "HintMin": "min.",
+            "HintMax": "max."
         },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
@@ -198,7 +190,7 @@
     "FailedToLoadDocument": "Fehler beim laden des Dokuments.",
     "FailedToSendTransaction": "Transaktion konnte nicht gesendet werden",
     "FailedToSetLimit": "Limit konnte nicht festgelegt werden",
-    "fee": "Gebühren",
+    "fee": "Network fees",
     "feeAmount": "≈{0}",
     "Female": "Weiblich",
     "FileIsTooBig": "Leider können wir das nicht verarbeiten. Datei ist zu groß (max: {0} MB).",
@@ -346,6 +338,11 @@
     "Private": "Private",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "Private Kanäle können nur über einen Einladungslink verbunden werden.",
     "Profile": "Profil",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Öffentlich",
     "PublicAccount": "Öffentliches Konto",
     "PublicAccountWarning": "Achtung! Wenn Sie Ihre öffentliche Adresse an Dritte weitergeben, ist Sie für Sie auch nach der privaten Nutzung sichtbar.",

@@ -50,9 +50,11 @@ import iconBrandTonlabsTransparent from '../brand/tonlines/tonlabs-transparent.p
 import iconBrandTonlabs from '../brand/tonlines/tonlabs.png';
 import iconBrandTonwalletOld from '../brand/tonlines/tonwallet-old.png';
 import iconBrandTonwallet from '../brand/tonlines/tonwallet.png';
+import iconBrandTonSymbol from '../brand/tonlines/surf.png';
 
 import iconButtonClose from '../btn_close/btn_close.png';
 import iconButtonDots from '../btn_dots/btn_dots.png';
+import iconButtonMinimize from '../btn_minimize/minimize.png';
 import iconButtonMsgSend from '../btn_msg_send/btn_msg_send.png';
 import iconButtonPlus from '../btn_plus/btn_plus.png';
 import iconButtonPlusDisabled from '../btn_plus_disabled/btn_plus_disabled.png';
@@ -149,6 +151,7 @@ export const UIAssets = {
             tonlabs: iconBrandTonlabs,
             tonwalletOld: iconBrandTonwalletOld,
             tonwallet: iconBrandTonwallet,
+            tonSymbol: iconBrandTonSymbol,
         },
 
         payment: {
@@ -189,6 +192,7 @@ export const UIAssets = {
         ui: {
             buttonClose: iconButtonClose,
             buttonDots: iconButtonDots,
+            buttonMinimize: iconButtonMinimize,
             buttonMsgSend: iconButtonMsgSend,
             buttonPlus: iconButtonPlus,
             buttonPlusDisabled: iconButtonPlusDisabled,

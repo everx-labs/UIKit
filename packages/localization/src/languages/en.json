@@ -1,16 +1,6 @@
 {
     "Account": "Account",
     "AccountAddress": "Address",
-    "AccountLimitPeriod": {
-        "daily": "Daily",
-        "monthly": "Monthly",
-        "total": "Total",
-        "weekly": "Weekly"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Passport Verification",
-        "twoFactorAuthentication": "2-Factor Authorization"
-    },
     "Accounts": "Accounts",
     "AccountTypeHint": "Setting your account address to public will make it visible in your profile",
     "Add": "Add",
@@ -56,7 +46,9 @@
         "AmountInput": {
             "Placeholder": "Amount…",
             "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}"
+            "ErrorBigger": "The amount is bigger than {0}",
+            "HintMin": "min.",
+            "HintMax": "max."
         },
         "AddressInputBubble": {
             "EnterManually": "Enter manually",
@@ -198,7 +190,7 @@
     "FailedToLoadDocument": "Failed to load document.",
     "FailedToSendTransaction": "Failed to send transfer",
     "FailedToSetLimit": "Failed to set limit",
-    "fee": "Fees",
+    "fee": "Network fees",
     "feeAmount": "≈ {0}",
     "Female": "Female",
     "FileIsTooBig": "Sorry we cannot process this. File is too big (max: {0} MB).",
@@ -351,6 +343,11 @@
     "Private": "Private",
     "PrivateChannelsCanOnlyBeJoinedViaAnInviteLink": "Private channels can only be joined via an invite link.",
     "Profile": "Profile",
+    "promoDownload": {
+        "appStore": "App Store",
+        "googlePlay": "Google Play",
+        "notice": "Download application"
+    },
     "Public": "Public",
     "PublicAccount": "Public account",
     "PublicAccountWarning": "Attention! If you provide your public address to third parties it will be visible to them even after you make it private.",
