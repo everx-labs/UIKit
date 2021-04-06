@@ -52,7 +52,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-gesture-handler": "^1.9.0"
+    "react-native-gesture-handler": "^1.10.3"
   },
   "@react-native-community/bob": {
     "source": "src",
