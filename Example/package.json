@@ -6,7 +6,6 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
     "lint": "eslint .",
     "web": "webpack-dev-server -d --config webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
     "web:bundle": "webpack -p --config webpack.config.prod.js --progress --colors --display-error-details",

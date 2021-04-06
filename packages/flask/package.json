@@ -3,8 +3,7 @@
   "version": "2.0.0",
   "description": "Flask package is a set of user stories built upon the components from uikit.hydrogen",
   "scripts": {
-    "prepare": "bob build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "bob build"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
