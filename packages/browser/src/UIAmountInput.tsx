@@ -61,13 +61,13 @@ function useValidation(
             return uiLocalized.formatString(
                 uiLocalized.Browser.AmountInput.ErrorBigger,
                 uiLocalized.amountToLocale(max),
-            );
+            ) as string;
         }
         if (validationStatus === ValidationStatus.Less) {
             return uiLocalized.formatString(
                 uiLocalized.Browser.AmountInput.ErrorLess,
                 uiLocalized.amountToLocale(min),
-            );
+            ) as string;
         }
         return null;
     }, [validationStatus, max, min]);
@@ -112,7 +112,7 @@ function numberToSignsCount(number: string, count: number) {
 }
 
 type UIAmountInputHintProps = {
-    validationText?: string;
+    validationText?: string | null;
     validationStatus: ValidationStatus;
 
     decimals: number;
