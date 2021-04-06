@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.components",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Base components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -52,7 +52,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-fast-image": "^7.0.2",
+    "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
     "react-native-qrcode-svg": "^6.0.6",
@@ -63,7 +63,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-fast-image": "^7.0.2",
+    "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "*",
     "react-native-qrcode-svg": "^6.0.6",
