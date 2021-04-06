@@ -112,7 +112,6 @@ export const Inputs = () => {
     const [number, setNumber] = useState('');
     const [phone, setPhone] = useState('');
     const [search] = useState('');
-    const [seedPhrase, setSeedPhrase] = useState('');
     const mnemonicWords = [
         'report',
         'replenish',
