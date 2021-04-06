@@ -1,4 +1,3 @@
-// @flow
 import type BigNumber from 'bignumber.js';
 
 import type { Language } from '../constants';
