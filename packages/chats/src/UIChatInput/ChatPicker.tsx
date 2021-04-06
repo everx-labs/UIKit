@@ -230,8 +230,8 @@ export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
                         if (wasAccessToCameraOrGalleryDenied(msg)) {
                             UIAlertView.showAlert(
                                 uiLocalized.Chats.Alerts
-                                    .enableFromSettingsTitle,
-                                uiLocalized.Chats.Alerts.enableFromSettings,
+                                    .EnableFromSettingsTitle,
+                                uiLocalized.Chats.Alerts.EnableFromSettings,
                                 [
                                     {
                                         title: uiLocalized.OK,
