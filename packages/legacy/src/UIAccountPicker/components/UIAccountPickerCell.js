@@ -22,6 +22,7 @@ type Props = {
     displayNameOnly?: boolean,
     notActive?: boolean,
     tokenSymbol?: string | React$Element<any>,
+    hideBalance?: boolean,
 };
 
 type State = {
@@ -38,6 +39,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         displayNameOnly: false,
         notActive: false,
         tokenSymbol: '',
+        hideBalance: false,
     };
 
     // constructor
@@ -112,7 +114,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     renderAccount() {
-        const { notActive } = this.props;
+        const { notActive, hideBalance } = this.props;
         const account = this.getAccount();
 
         if (!account) {
@@ -139,7 +141,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                 >
                     {name}
                 </UILabel>
-                {this.renderFractional(uiLocalized.amountToLocale(account.balance))}
+                {!hideBalance && this.renderFractional(uiLocalized.amountToLocale(account.balance))}
             </View>
         );
     }

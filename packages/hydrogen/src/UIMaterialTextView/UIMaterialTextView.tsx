@@ -9,16 +9,23 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { ColorVariants, useTheme } from './Colors';
-import { Typography, TypographyVariants } from './Typography';
-import { UILabel, UILabelColors } from './UILabel';
+import { ColorVariants, useTheme } from '../Colors';
+import { Typography, TypographyVariants } from '../Typography';
 import {
     UITextView,
     UITextViewProps,
     useFocused,
     useUITextViewValue,
-} from './UITextView';
-import { useHover } from './useHover';
+} from '../UITextView';
+import { useHover } from '../useHover';
+import { UILabel, UILabelColors } from '../UILabel';
+
+import {
+    useMaterialTextViewChildren,
+    UIMaterialTextViewIcon,
+    UIMaterialTextViewAction,
+    UIMaterialTextViewText,
+} from './useMaterialTextViewChildren';
 
 export type UIMaterialTextViewCommonProps = UITextViewProps & {
     label: string;
@@ -26,7 +33,8 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     error?: boolean;
     success?: boolean;
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
-    right?: React.ReactNode;
+    borderViewRef?: React.Ref<View>;
+    children?: React.ReactNode;
 };
 
 const getBorderColor = (
@@ -420,6 +428,7 @@ function UIMaterialTextViewBorder(
 
     return (
         <View
+            ref={props.borderViewRef}
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
@@ -443,15 +452,18 @@ const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewCommonProps
 >(function UIMaterialTextViewFloatingForwarded(
     props: UIMaterialTextViewCommonProps,
-    ref,
+    passedRef,
 ) {
-    const { label, onChangeText, onLayout, right, ...rest } = props;
+    const localRef = React.useRef<TextInput>(null);
+    const ref = passedRef || localRef;
+
+    const { label, onLayout, children, ...rest } = props;
     const theme = useTheme();
     const {
         inputHasValue,
+        clear,
         onChangeText: onChangeTextProp,
-    } = useUITextViewValue(ref, false, onChangeText);
-
+    } = useUITextViewValue(ref, false, props);
     const {
         isFocused,
         pseudoLabelStyle,
@@ -463,6 +475,11 @@ const UIMaterialTextViewFloating = React.forwardRef<
         onActualLabelLayout,
         isDefaultPlaceholderVisible,
     } = useFloatLabelTransform(props, inputHasValue);
+    const processedChildren = useMaterialTextViewChildren(
+        children,
+        inputHasValue,
+        clear,
+    );
 
     return (
         <UIMaterialTextViewComment {...props}>
@@ -495,6 +512,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
                         onFocus={onFocus}
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
+                        style={styles.input}
                     />
                     <Animated.View
                         pointerEvents="none"
@@ -510,7 +528,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
                             {label}
                         </Animated.Text>
                     </Animated.View>
-                    {right ? <View>{right}</View> : null}
+                    {processedChildren}
                 </UIMaterialTextViewBorder>
             </View>
         </UIMaterialTextViewComment>
@@ -522,17 +540,25 @@ const UIMaterialTextViewSimple = React.forwardRef<
     UIMaterialTextViewCommonProps
 >(function UIMaterialTextViewSimpleForwarded(
     props: UIMaterialTextViewCommonProps,
-    ref,
+    passedRef,
 ) {
-    const { label, onChangeText, onLayout, right, ...rest } = props;
-    const { onChangeText: onChangeTextProp } = useUITextViewValue(
-        ref,
-        false,
-        onChangeText,
-    );
+    const localRef = React.useRef<TextInput>(null);
+    const ref = passedRef || localRef;
+
+    const { label, onLayout, children, ...rest } = props;
+    const {
+        inputHasValue,
+        clear,
+        onChangeText: onChangeTextProp,
+    } = useUITextViewValue(ref, false, props);
     const { isFocused, onFocus, onBlur } = useFocused(
         props.onFocus,
         props.onBlur,
+    );
+    const processedChildren = useMaterialTextViewChildren(
+        children,
+        inputHasValue,
+        clear,
     );
 
     return (
@@ -546,8 +572,9 @@ const UIMaterialTextViewSimple = React.forwardRef<
                         onFocus={onFocus}
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
+                        style={styles.input}
                     />
-                    {right ? <View>{right}</View> : null}
+                    {processedChildren}
                 </UIMaterialTextViewBorder>
             </View>
         </UIMaterialTextViewComment>
@@ -561,7 +588,7 @@ export type UIMaterialTextViewProps = UIMaterialTextViewCommonProps & {
     floating?: boolean;
 };
 
-export const UIMaterialTextView = React.forwardRef<
+const UIMaterialTextViewForward = React.forwardRef<
     TextInput,
     UIMaterialTextViewProps
 >(function UIMaterialTextViewForwarded(
@@ -575,9 +602,24 @@ export const UIMaterialTextView = React.forwardRef<
     );
 });
 
+// @ts-expect-error
+// ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
+export const UIMaterialTextView: typeof UIMaterialTextViewForward & {
+    Icon: typeof UIMaterialTextViewIcon;
+    Action: typeof UIMaterialTextViewAction;
+    Text: typeof UIMaterialTextViewText;
+} = UIMaterialTextViewForward;
+
+UIMaterialTextView.Icon = UIMaterialTextViewIcon;
+UIMaterialTextView.Action = UIMaterialTextViewAction;
+UIMaterialTextView.Text = UIMaterialTextViewText;
+
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
+    },
+    input: {
+        minHeight: 24, // At least size of right icons to not jump
     },
     inputWrapper: {
         position: 'relative',

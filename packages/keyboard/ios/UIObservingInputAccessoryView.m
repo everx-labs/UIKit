@@ -15,6 +15,8 @@
     if (self) {
         self.userInteractionEnabled = NO;
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        _keyboardHeight = 0;
     }
     return self;
 }
@@ -48,6 +50,7 @@
         CGFloat keyboardHeight = MAX(0, keyboardH);
         
         [_delegate onInputAccessoryViewChangeKeyboardHeight:keyboardHeight];
+        _keyboardHeight = keyboardHeight;
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }

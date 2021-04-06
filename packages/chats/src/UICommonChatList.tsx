@@ -20,11 +20,11 @@ import {
     ScrollView,
     State as RNGHState,
 } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
-import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
+import { dismiss as dismissKeyboard } from '@tonlabs/uikit.keyboard';
 
 import type { BubbleBaseT, ChatMessage } from './types';
 
@@ -36,7 +36,7 @@ const onHandlerStateChange = ({
     nativeEvent: { state },
 }: RNGHEvent<{ state: RNGHState }>) => {
     if (state === RNGHState.ACTIVE) {
-        UICustomKeyboardUtils.dismiss();
+        dismissKeyboard();
     }
 };
 
@@ -177,30 +177,30 @@ function useLayoutHelpers<ItemT extends BubbleBaseT>(
     };
 }
 
-function useContentInset(
-    ref: React.RefObject<SectionList>,
-    listContentOffsetRef: React.RefObject<ListContentOffset>,
-    bottomInsetProp?: number,
-) {
-    const bottomInset = bottomInsetProp ?? 0;
-    const contentInset = {
-        top: bottomInset,
-    };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function useContentInset(ref: React.RefObject<SectionList>) {
+    const bottomInset = useSafeAreaInsets().bottom;
+    const contentInset = React.useMemo(
+        () => ({
+            top: bottomInset,
+        }),
+        [bottomInset],
+    );
 
-    React.useEffect(() => {
-        if (
-            listContentOffsetRef.current &&
-            listContentOffsetRef.current.y < bottomInset
-        ) {
+    React.useLayoutEffect(() => {
+        function scrollToTop() {
             const scrollResponder = ref?.current?.getScrollResponder();
             if (scrollResponder) {
                 scrollResponder.scrollTo({
                     y: -bottomInset,
                     animated: true,
                 });
+                return;
             }
+            requestAnimationFrame(scrollToTop);
         }
-    }, [ref, listContentOffsetRef, bottomInset]);
+        scrollToTop();
+    }, [bottomInset, ref]);
 
     return contentInset;
 }
@@ -330,7 +330,6 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     keyboardDismissMode: ScrollViewProps['keyboardDismissMode'];
     automaticallyAdjustContentInsets: boolean;
     contentInset: ScrollViewProps['contentInset'];
-    scrollIndicatorInsets: ScrollViewProps['contentInset'];
     inverted: boolean;
     getItemLayout: VirtualizedListProps<ItemT>['getItemLayout'];
     onLayout: VirtualizedListProps<ItemT>['onLayout'];
@@ -358,7 +357,6 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     canLoadMore?: boolean;
     // If you want custom keyboard to be dismissible on touch outside of it
     isCustomKeyboardVisible?: boolean;
-    bottomInset?: number;
 };
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
@@ -368,7 +366,6 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     getItemLayoutFabric,
     canLoadMore = false,
     isCustomKeyboardVisible = false,
-    bottomInset = 0,
     children,
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
@@ -379,8 +376,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
 
             // This can be used as a workaround >>>>
             // onScrollBeginDrag: () => {
-            //     Keyboard.dismiss();
-            //     UICustomKeyboardUtils.dismiss();
+            //     dismissKeyboard();
             // },
         }
 
@@ -408,15 +404,11 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
         onScrollMessages,
         onViewableItemsChanged,
     } = useLinesAnimation();
-    const contentInset = useContentInset(
-        localRef,
-        listContentOffset,
-        bottomInset,
-    );
     useChatListWheelHandler(localRef, nativeID, listContentOffset);
+    const contentInset = useContentInset(localRef);
 
     return (
-        <SafeAreaView style={styles.container} edges={['bottom']}>
+        <>
             <Animated.View style={lineStyle} />
             <TapGestureHandler
                 onHandlerStateChange={onHandlerStateChange}
@@ -428,7 +420,6 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
                     keyboardDismissMode: keyboardDismissProp,
                     automaticallyAdjustContentInsets: false,
                     contentInset,
-                    scrollIndicatorInsets: contentInset,
                     inverted: true,
                     getItemLayout,
                     onLayout,
@@ -445,7 +436,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
                     renderScrollComponent,
                 })}
             </TapGestureHandler>
-        </SafeAreaView>
+        </>
     );
 }
 const styles = StyleSheet.create({

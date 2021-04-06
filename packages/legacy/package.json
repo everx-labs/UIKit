@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.legacy",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "Legacy components of Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -33,10 +33,10 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.1.0",
-    "@tonlabs/uikit.components": "^2.1.0",
-    "@tonlabs/uikit.core": "^2.1.0",
-    "@tonlabs/uikit.navigation_legacy": "^2.1.0",
+    "@tonlabs/uikit.assets": "^2.2.0",
+    "@tonlabs/uikit.components": "^2.2.0",
+    "@tonlabs/uikit.core": "^2.2.0",
+    "@tonlabs/uikit.navigation_legacy": "^2.2.0",
     "bignumber.js": "9.0.0",
     "lodash": "4.17.14",
     "prop-types": "15.6.2",
@@ -48,14 +48,14 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-fast-image": "^7.0.2",
+    "react-native-fast-image": "^8.3.4",
     "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-fast-image": "^7.0.2",
+    "react-native-fast-image": "^8.3.4",
     "react-native-svg": "^12.1.0"
   },
   "@react-native-community/bob": {

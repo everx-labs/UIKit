@@ -6,13 +6,37 @@ import { UILabel } from '@tonlabs/uikit.hydrogen';
 import {
     // @ts-ignore
     UIInputAccessoryView,
+    useCustomKeyboard,
 } from '@tonlabs/uikit.keyboard';
+import { useStickers } from '@tonlabs/uikit.stickers';
 
 import { ExampleScreen } from '../components/ExampleScreen';
+
+const stickers = new Array(10).fill(null).map((_a, i) => ({
+    id: `test${i}`,
+    date: Date.now(),
+    description: '',
+    name: 'test',
+    stickers: new Array(4).fill(null).map((_b, j) => ({
+        name: `crown${j}`,
+        url:
+            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+    })),
+}));
 
 export function KeyboardScreen() {
     const insets = useSafeAreaInsets();
     const inverted = true;
+
+    const inputRef = React.useRef<TextInput>(null);
+    const cStickers = useStickers(stickers, (/* sticker */) => {
+        return true;
+    });
+    const { customKeyboardView, dismiss, toggle } = useCustomKeyboard(
+        inputRef,
+        cStickers,
+    );
+
     return (
         <>
             <ExampleScreen
@@ -52,7 +76,10 @@ export function KeyboardScreen() {
                         );
                     })}
             </ExampleScreen>
-            <UIInputAccessoryView managedScrollViewNativeID="keyboardScreenScrollView">
+            <UIInputAccessoryView
+                managedScrollViewNativeID="keyboardScreenScrollView"
+                customKeyboardView={customKeyboardView}
+            >
                 <View
                     style={{
                         height: 100,
@@ -62,10 +89,15 @@ export function KeyboardScreen() {
                     }}
                 >
                     <TextInput
+                        ref={inputRef}
+                        autoCompleteType="off"
+                        autoCorrect={false}
+                        nativeID="test-input-for-keyboard"
                         style={{ flex: 1, backgroundColor: 'red' }}
                         placeholder="Type here"
+                        onFocus={dismiss}
                     />
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={toggle}>
                         <UILabel>Press</UILabel>
                     </TouchableOpacity>
                 </View>

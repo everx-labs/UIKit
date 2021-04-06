@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.components",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "Base components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -33,8 +33,8 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.1.0",
-    "@tonlabs/uikit.core": "^2.1.0",
+    "@tonlabs/uikit.assets": "^2.2.0",
+    "@tonlabs/uikit.core": "^2.2.0",
     "bignumber.js": "9.0.0",
     "bowser": "1.9.4",
     "dayjs": "1.9.1",
@@ -44,7 +44,6 @@
     "react-native-dropdownalert": "4.3.0",
     "react-native-flash-message": "0.1.13",
     "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
-    "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
     "react-style-proptype": "3.2.2"
   },
   "devDependencies": {
@@ -53,8 +52,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-fast-image": "^7.0.2",
-    "react-native-gesture-handler": "^1.9.0",
+    "react-native-fast-image": "^8.3.4",
+    "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
     "react-native-qrcode-svg": "^6.0.6",
     "react-native-svg": "^12.1.0"
@@ -64,8 +63,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-fast-image": "^7.0.2",
-    "react-native-gesture-handler": "^1.9.0",
+    "react-native-fast-image": "^8.3.4",
+    "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "*",
     "react-native-qrcode-svg": "^6.0.6",
     "react-native-svg": "^12.1.0"

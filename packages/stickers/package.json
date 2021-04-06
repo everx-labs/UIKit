@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.stickers",
-  "version": "2.0.2",
+  "version": "2.2.0",
   "description": "Stickers components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -34,11 +34,11 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.0.2",
-    "@tonlabs/uikit.core": "^2.0.2",
-    "@tonlabs/uikit.hydrogen": "^2.0.2",
-    "@tonlabs/uikit.components": "^2.0.2",
-    "@tonlabs/uikit.keyboard": "^2.0.2"
+    "@tonlabs/uikit.assets": "^2.2.0",
+    "@tonlabs/uikit.components": "^2.2.0",
+    "@tonlabs/uikit.core": "^2.2.0",
+    "@tonlabs/uikit.hydrogen": "^2.2.0",
+    "@tonlabs/uikit.keyboard": "^2.2.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
@@ -52,7 +52,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
-    "react-native-gesture-handler": "^1.9.0"
+    "react-native-gesture-handler": "^1.10.3"
   },
   "@react-native-community/bob": {
     "source": "src",

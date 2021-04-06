@@ -21,6 +21,13 @@ const UI_IS_DESKTOP_WEB = Platform.OS === 'web'
 const UI_IS_MOBILE_WEB = Platform.OS === 'web'
     && (new MobileDetect(window.navigator.userAgent)).phone();
 
+const UI_IS_MOBILE_WEB_IOS = Platform.OS === 'web'
+    && ((new MobileDetect(window.navigator.userAgent)).os() === 'iOS' ||
+        (new MobileDetect(window.navigator.userAgent)).os() === 'iPadOS');
+
+const UI_IS_MOBILE_WEB_ANDROID = Platform.OS === 'web'
+    && (new MobileDetect(window.navigator.userAgent)).os() === 'AndroidOS';
+
 const UI_IS_TABLET_WEB = Platform.OS === 'web'
         && (new MobileDetect(window.navigator.userAgent)).tablet();
 
@@ -108,6 +115,18 @@ export default class UIDevice {
 
     static deviceModel(): string {
         return DEVICE_MODEL;
+    }
+
+    static deviceOS(): string {
+        if (Platform.OS === 'web') {
+            if (UI_IS_MOBILE_WEB_IOS) {
+                return 'ios';
+            } else if (UI_IS_MOBILE_WEB_ANDROID) {
+                return 'android';
+            }
+            return 'web';
+        }
+        return Platform.OS;
     }
 
     static systemVersion(): string {

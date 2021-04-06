@@ -1,97 +1,175 @@
 import * as React from 'react';
-import { Keyboard, Platform } from 'react-native';
-
-import { UICustomKeyboardUtils } from './UICustomKeyboard';
-
-const AndroidKeyboardAdjust =
-    Platform.OS === 'android'
-        ? require('react-native-android-keyboard-adjust')
-        : null;
+import {
+    Keyboard,
+    TextInput,
+    KeyboardEvent,
+    Platform,
+    AppRegistry,
+} from 'react-native';
+import type { OnEvent, UICustomKeyboardView } from './types';
 
 export type OnCustomKeyboardVisible = (
     visible: boolean,
 ) => void | Promise<void>;
 
-export function useCustomKeyboard(
-    onCustomKeyboardVisible?: OnCustomKeyboardVisible,
-    editable?: boolean,
+const callbacks: { [id: string]: OnEvent | undefined } = {};
+const dismisses: { [id: string]: (() => void) | undefined } = {};
+
+export function registerKeyboardComponent<KeyboardProps>(
+    moduleName: string,
+    keyboardComponent: React.ComponentType<KeyboardProps>,
 ) {
-    const [customKeyboardVisible, setCustomKeyboardVisible] = React.useState<
-        boolean
-    >(false);
+    function UIKeyboard({
+        keyboardID,
+        ...props
+    }: KeyboardProps & { keyboardID: number }) {
+        return React.createElement(keyboardComponent, {
+            ...props,
+            onEvent: (...args: any[]) => {
+                const cb = callbacks[`${moduleName}:${keyboardID}`];
+                if (cb != null) {
+                    cb(...args);
+                }
+            },
+        } as any);
+    }
 
-    const toggleKeyboard = React.useCallback(() => {
-        if (AndroidKeyboardAdjust) {
-            // Apply a hack for Android animation
-            AndroidKeyboardAdjust.setAdjustNothing();
-            // N.B. It will change back to resize automatically once UICustomKeyboard is dismissed!
+    UIKeyboard.displayName = `UIKeyboard(${moduleName})`;
+
+    AppRegistry.registerComponent(moduleName, () => UIKeyboard);
+
+    return UIKeyboard;
+}
+
+let globalID = 0;
+
+export function useCustomKeyboard(
+    inputRef: React.Ref<TextInput>,
+    cKeyboard?: UICustomKeyboardView,
+) {
+    const keyboardID = React.useRef<number>(null);
+
+    if (keyboardID.current == null) {
+        globalID += 1;
+        // @ts-expect-error
+        keyboardID.current = globalID;
+    }
+
+    const cKeyboardPrepared = React.useMemo(() => {
+        if (cKeyboard == null) {
+            return undefined;
         }
 
-        if (Platform.OS !== 'web') {
-            // Manage the keyboard as per the latest state
-            if (customKeyboardVisible) {
-                UICustomKeyboardUtils.dismiss();
-            } else {
-                Keyboard.dismiss();
+        return {
+            ...cKeyboard,
+            initialProps: {
+                ...cKeyboard?.initialProps,
+                keyboardID: keyboardID.current,
+            },
+        };
+    }, [cKeyboard]);
+
+    const [customKeyboard, setCustomKeyboard] = React.useState<
+        typeof cKeyboardPrepared
+    >(undefined);
+    const customKeyboardRef = React.useRef<typeof cKeyboardPrepared>(undefined);
+
+    React.useEffect(() => {
+        const callback = ({ duration }: KeyboardEvent) => {
+            if (customKeyboardRef.current == null) {
+                return;
             }
-        }
 
-        // Change the state
-        const nextState = !!editable && !customKeyboardVisible;
-        setCustomKeyboardVisible(nextState);
-
-        // Trigger an event about the state change
-        if (onCustomKeyboardVisible) {
-            onCustomKeyboardVisible(nextState);
-        }
-    }, [editable, customKeyboardVisible]);
-
-    const onFocus = React.useCallback(() => {
-        if (Platform.OS === 'android') {
             setTimeout(() => {
-                setCustomKeyboardVisible(false);
-            }, 0); // required to fix an issue with the keyboard animation
-        } else {
-            setCustomKeyboardVisible(false);
-        }
+                setCustomKeyboard(undefined);
+            }, duration);
+        };
+        Keyboard.addListener('keyboardWillHide', callback);
 
-        if (onCustomKeyboardVisible) {
-            onCustomKeyboardVisible(false);
-        }
-
-        if (Platform.OS !== 'android') {
-            return;
-        }
-
-        if (!customKeyboardVisible && AndroidKeyboardAdjust) {
-            AndroidKeyboardAdjust.setAdjustResize();
-        }
-    }, [customKeyboardVisible]);
-
-    const onBlur = React.useCallback(() => {
-        if (Platform.OS !== 'android') {
-            return;
-        }
-
-        if (!customKeyboardVisible) {
-            UICustomKeyboardUtils.dismiss();
-        } else {
-            // This is not a likely case that stickers are visible on blur, but we need to ensure!
-            // eslint-disable-next-line no-lonely-if
-            if (AndroidKeyboardAdjust) {
-                AndroidKeyboardAdjust.setAdjustResize();
-            }
-        }
-    }, [customKeyboardVisible]);
-
-    const onKeyboardResigned = React.useCallback(() => {
-        setCustomKeyboardVisible(false);
+        return () => {
+            Keyboard.removeListener('keyboardWillHide', callback);
+        };
     }, []);
+
+    const dismiss = React.useCallback(() => {
+        setCustomKeyboard(undefined);
+        customKeyboardRef.current = undefined;
+    }, []);
+
+    const toggle = React.useCallback(() => {
+        if (Platform.OS === 'android' && inputRef && 'current' in inputRef) {
+            // Unfortunatelly when you tap a button on Android
+            // TextInput doesn't lose focus, that lead to a case
+            // when custom keyboard is opened, and then on tap
+            // on TextInput we want to see regular one
+            // but on Android it won't fire `focus` event again
+            inputRef.current?.blur();
+        }
+
+        setCustomKeyboard(
+            customKeyboard == null ? cKeyboardPrepared : undefined,
+        );
+        customKeyboardRef.current =
+            customKeyboard == null ? cKeyboardPrepared : undefined;
+    }, [cKeyboardPrepared, customKeyboard, inputRef]);
+
+    const onEventCallback = React.useCallback(
+        (...args: any[]) => {
+            if (cKeyboard?.onEvent == null) {
+                return false;
+            }
+
+            const shouldDismiss = cKeyboard?.onEvent(...args);
+
+            console.log(args, cKeyboard.onEvent, shouldDismiss);
+
+            if (shouldDismiss) {
+                dismiss();
+            }
+
+            return true;
+        },
+        [cKeyboard, dismiss],
+    );
+
+    React.useEffect(() => {
+        if (cKeyboard?.moduleName) {
+            callbacks[
+                `${cKeyboard?.moduleName}:${keyboardID.current}`
+            ] = onEventCallback;
+
+            dismisses[
+                `${cKeyboard?.moduleName}:${keyboardID.current}`
+            ] = dismiss;
+        }
+
+        () => {
+            if (cKeyboard?.moduleName) {
+                callbacks[
+                    `${cKeyboard?.moduleName}:${keyboardID.current}`
+                ] = undefined;
+                dismisses[
+                    `${cKeyboard?.moduleName}:${keyboardID.current}`
+                ] = undefined;
+            }
+        };
+    }, [cKeyboard, onEventCallback, dismiss]);
+
     return {
-        customKeyboardVisible: customKeyboardVisible && !!editable,
-        toggleKeyboard,
-        onKeyboardResigned,
-        onFocus,
-        onBlur,
+        customKeyboardView: customKeyboard,
+        dismiss,
+        toggle,
     };
+}
+
+export function dismiss() {
+    Keyboard.dismiss();
+
+    Object.keys(dismisses).forEach((kbID) => {
+        const dismissCb = dismisses[kbID];
+
+        if (dismissCb) {
+            dismissCb();
+        }
+    });
 }

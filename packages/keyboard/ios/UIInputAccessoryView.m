@@ -6,35 +6,50 @@
 //
 
 #import "UIInputAccessoryView.h"
+#import "UIInputAccessoryView+ScrollView.h"
+#import "UIInputAccessoryView+CustomKeyboard.h"
 #import "UIObservingInputAccessoryView.h"
+#import "UICustomKeyboardViewController.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollView.h>
+#import <React/RCTConvert.h>
+#import <React/RCTBaseTextInputView.h>
 
 @interface UIInputAccessoryView() <UIObservingInputAccessoryViewDelegate>
 
 // Overriding `inputAccessoryView` to `readwrite`.
 @property (nonatomic, readwrite, retain) UIView *inputAccessoryView;
+// Overriding `inputViewController` to `readwrite`.
+@property (nonatomic, readwrite, retain) UIViewController *inputViewController;
 
 @end
 
 @implementation UIInputAccessoryView {
     BOOL _shouldBecomeFirstResponder;
-    RCTBridge *_bridge;
+    CGFloat _savedTransformY;
 }
+
+@synthesize inputAccessoryView;
+@synthesize inputViewController;
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
     if (self = [super init]) {
         UIObservingInputAccessoryView *inputAccessoryView = [UIObservingInputAccessoryView new];
         
-        _inputAccessoryView = inputAccessoryView;
+        [self setInputAccessoryView:inputAccessoryView];
         
         inputAccessoryView.delegate = self;
         
         _shouldBecomeFirstResponder = YES;
-        
-        _bridge = bridge;
+        self.currentBridge = bridge;
+        /**
+         * Transform y can't be a positive number
+         * so 1 will mean that variable is not
+         * initialized yet
+         */
+        _savedTransformY = 1;
     }
     return self;
 }
@@ -44,22 +59,71 @@
 }
 
 - (void)reactSetFrame:(CGRect)frame {
-    [_inputAccessoryView setFrame:frame];
+    [self.inputAccessoryView setFrame:frame];
     
-    self.frame = CGRectMake(
-                            0,
-                            [[UIScreen mainScreen] bounds].size.height - frame.size.height,
+    /**
+     * https://developer.apple.com/documentation/uikit/uiview/1622621-frame
+     * It contains following warning:
+     *  If the transform property is not the identity transform,
+     *  the value of this property is undefined and therefore should be ignored.
+     *
+     * Because of that before changing a frame we set it to identity
+     * as it still gonna be applied to correct one on `layoutSubview`
+     */
+    self.transform = CGAffineTransformIdentity;
+    
+    CGFloat parentHeight = self.superview.frame.size.height;
+    
+    if (parentHeight <= 0) {
+        parentHeight = [[UIScreen mainScreen] bounds].size.height;
+    }
+    
+    self.diffInHeightToApply = self.frame.size.height - frame.size.height;
+    
+    self.frame = CGRectMake(0,
+                            parentHeight - frame.size.height,
                             frame.size.width,
-                            frame.size.height
-                            );
+                            frame.size.height);
     
     if (_shouldBecomeFirstResponder) {
         _shouldBecomeFirstResponder = NO;
         [self becomeFirstResponder];
     }
+}
+
+/**
+ * The method handle two cases:
+ *  1. The one described above, to apply transform after frame was changed
+ *  2. To manage insets of scroll view (if it's needed) on mount
+ */
+- (void)layoutSubviews {
+    /**
+     * Sometimes during `reactSetFrame` superview's frame is incorrect
+     * so we have to double check it here
+     * Identity check here is to identify that `layoutSubviews` method was called after
+     * `reactSetFrame` changes
+     */
+    if (CGAffineTransformIsIdentity(self.transform)) {
+        CGFloat parentHeight = self.superview.frame.size.height;
+        CGFloat y = parentHeight - self.frame.size.height;
+        
+        if (self.frame.origin.y != y) {
+            self.frame = CGRectMake(self.frame.origin.x,
+                                    y,
+                                    self.frame.size.width,
+                                    self.frame.size.height);
+        }
+    }
     
-    if (self.managedScrollViewNativeID != nil) {
-        [self manageScrollViewInsets:0];
+    
+    [self onInputAccessoryViewChangeKeyboardHeight:((UIObservingInputAccessoryView *)self.inputAccessoryView).keyboardHeight];
+    [self handleFrameChanges];
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    // Current view was unmounted
+    if (newSuperview == nil) {
+        [self resetScrollViewInsets];
     }
 }
 
@@ -67,118 +131,31 @@
 
 - (void)onInputAccessoryViewChangeKeyboardHeight:(CGFloat)keyboardHeight {
     CGFloat safeAreaBottom = [self getSafeAreaBottom];
-    
     CGFloat accessoryTranslation = MIN(-safeAreaBottom, -keyboardHeight);
     
-    self.transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);
-    
-    if (self.managedScrollViewNativeID != nil) {
-        [self manageScrollViewInsets:(0 - accessoryTranslation)];
-    }
-}
-
-//MARK:- Managing insets for scroll view
-
-- (void)manageScrollViewInsets:(CGFloat)accessoryTranslation {
-    RCTScrollView *scrollView = [self getScrollViewWithID:self.managedScrollViewNativeID];
-    
-    if (scrollView == nil) {
-        return;
-    }
-    
-    CGFloat safeAreaBottom = [self getSafeAreaBottom];
-    CGFloat safeAreaTop = [self getSafeAreaTop];
-    
-    UIEdgeInsets insets = UIEdgeInsetsZero;
-    UIEdgeInsets indicatorInsets = UIEdgeInsetsZero;
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);
     
     /**
-     * You could wonder why indicator insets are different from regular one,
-     * that's because in RN `contentInsetAdjustmentBehavior` by default set to `never`,
-     * that kinda tells ScrollView to not take safe area insets into account,
-     * but as it usually happens in iOS, it continue to do it for indicator insets...
+     * Saved transform only could be less or equal to 0
+     * If that's not true, the it means the transform hasn't been applied yet
+     * so no need to handle content offset
      */
-    CGFloat insetBottom = accessoryTranslation + self.frame.size.height;
-    
-    if (scrollView.inverted) {
-        CGFloat indicatorInsetBottom = accessoryTranslation + self.frame.size.height - safeAreaTop;
-        
-        insets = UIEdgeInsetsMake(
-                                  insetBottom,
-                                  scrollView.scrollView.contentInset.left,
-                                  0,
-                                  scrollView.scrollView.contentInset.right);
-        indicatorInsets = UIEdgeInsetsMake(
-                                  indicatorInsetBottom,
-                                  scrollView.scrollView.contentInset.left,
-                                  0,
-                                  scrollView.scrollView.contentInset.right);
-    } else {
-        CGFloat indicatorInsetBottom = accessoryTranslation + self.frame.size.height - safeAreaBottom;
-        
-        insets = UIEdgeInsetsMake(
-                                  0,
-                                  scrollView.scrollView.contentInset.left,
-                                  insetBottom,
-                                  scrollView.scrollView.contentInset.right);
-        indicatorInsets = UIEdgeInsetsMake(
-                                  0,
-                                  scrollView.scrollView.contentInset.left,
-                                  indicatorInsetBottom,
-                                  scrollView.scrollView.contentInset.right);
+    if (_savedTransformY <= 0) {
+        CGFloat diffBetweenTransformsY = accessoryTranslation - _savedTransformY;
+        [self handleScrollViewOffsets:diffBetweenTransformsY];
     }
     
-    /**
-     * It's `never` by default in RN,
-     * https://github.com/facebook/react-native/blob/6e6443afd04a847ef23fb6254a84e48c70b45896/React/Views/ScrollView/RCTScrollView.m#L297
-     * but just to be sure we do it again, as it can brake things otherwise
-     */
-    if (@available(iOS 11.0, *)) {
-        scrollView.automaticallyAdjustContentInsets = NO;
-        scrollView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    if (!CGAffineTransformEqualToTransform(transform, self.transform)) {
+        self.transform = transform;
+        /**
+         * It was possible to get this information from previous transform
+         * instead of saving one, but it had an issue, when during a frame change
+         * we set transform to identity, we got 0 instead of correct previous value
+         */
+        _savedTransformY = transform.ty;
     }
     
-    if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.contentInset, insets)) {
-        [scrollView.scrollView setContentInset:insets];
-    }
-    
-    if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.scrollView.scrollIndicatorInsets, indicatorInsets)) {
-        [scrollView.scrollView setScrollIndicatorInsets:indicatorInsets];
-    }
-}
-
-- (RCTScrollView *)getScrollViewWithID:(NSString *)scrollViewNativeID {
-    UIView *view = [_bridge.uiManager viewForNativeID:scrollViewNativeID withRootTag:self.rootTag];
-    
-    if ([view isKindOfClass:[RCTScrollView class]]) {
-        return (RCTScrollView *)view;
-    }
-    
-    return nil;
-}
-
-// MARK:- Utils
-
--(CGFloat)getSafeAreaBottom
-{
-    CGFloat bottomSafeArea = 0;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
-    if (@available(iOS 11.0, *)) {
-        bottomSafeArea = self.superview ? self.superview.safeAreaInsets.bottom : self.safeAreaInsets.bottom;
-    }
-#endif
-    return bottomSafeArea;
-}
-
--(CGFloat)getSafeAreaTop
-{
-    CGFloat topSafeArea = 0;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
-    if (@available(iOS 11.0, *)) {
-        topSafeArea = self.superview ? self.superview.safeAreaInsets.top : self.safeAreaInsets.top;
-    }
-#endif
-    return topSafeArea;
+    [self manageScrollViewInsets:(0 - accessoryTranslation)];
 }
 
 @end

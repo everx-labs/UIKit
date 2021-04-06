@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.assets",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "Assets for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -37,6 +37,7 @@
     "brand/",
     "btn_close/",
     "btn_dots/",
+    "btn_minimize/",
     "btn_msg_send/",
     "btn_plus/",
     "btn_plus_disabled/",
@@ -63,11 +64,21 @@
     "ico-glass/",
     "ico-menu-contained/",
     "ico-open-menu/",
+    "ico-progress/",
+    "ico-radiobutton-active/",
+    "ico-radiobutton-inactive/",
+    "ico-search/",
+    "ico-toggle-active/",
+    "ico-toggle-inactive/",
+    "ico-toggle-off/",
+    "ico-toggle-on/",
+    "ico-touch-id/",
+    "ico-triangle/",
+    "ico-unfold/",
     "icon-plus/",
     "icon-plus-disabled/",
     "key-thin/",
-    "logo/",
-    "ico-touch-id/"
+    "logo/"
   ],
   "devDependencies": {
     "@react-native-community/bob": "^0.16.2"

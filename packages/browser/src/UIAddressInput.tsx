@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 
+import { UIInputAccessoryView } from '@tonlabs/uikit.keyboard';
 import {
-    UICustomKeyboard,
-    useCustomKeyboard,
-    UICustomKeyboardItem,
-} from '@tonlabs/uikit.keyboard';
-import {
-    useBackHandler,
     ChatInputContainer,
     useChatInputValue,
     useChatMaxLengthAlert,
@@ -88,8 +83,6 @@ type UIAddressInputInternalProps = {
     placeholder?: string;
     onSendText: OnSendText;
     onHeightChange?: OnHeightChange;
-    onFocus: () => void;
-    onBlur: () => void;
 
     validateAddress: ValidateAddress;
 };
@@ -100,8 +93,6 @@ export function UIAddressInputInternal({
     onSendText: onSendTextProp,
     validateAddress,
     placeholder,
-    onBlur,
-    onFocus,
 }: UIAddressInputInternalProps) {
     const {
         onContentSizeChange,
@@ -179,8 +170,6 @@ export function UIAddressInputInternal({
                 onChange={onChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
-                onFocus={onFocus}
-                onBlur={onBlur}
                 style={inputStyle}
             />
         </ChatInputContainer>
@@ -191,25 +180,14 @@ type UIAddressInputProps = {
     placeholder?: string;
 
     onSendText: OnSendText;
-    onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
     onHeightChange?: OnHeightChange;
 
-    customKeyboard?: UICustomKeyboardItem;
     validateAddress: ValidateAddress;
 };
 
 export function UIAddressInput(props: UIAddressInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
     const { onHeightChange } = props;
-    const {
-        customKeyboardVisible,
-        toggleKeyboard,
-        onKeyboardResigned,
-        onFocus,
-        onBlur,
-    } = useCustomKeyboard(props.onCustomKeyboardVisible, true);
-
-    useBackHandler(textInputRef);
 
     React.useEffect(
         () => () => {
@@ -221,34 +199,18 @@ export function UIAddressInput(props: UIAddressInputProps) {
         [onHeightChange],
     );
 
-    const input = (
-        <UIAddressInputInternal
-            textInputRef={textInputRef}
-            placeholder={props.placeholder}
-            onSendText={props.onSendText}
-            onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            validateAddress={props.validateAddress}
-        />
-    );
-
     return (
-        <UICustomKeyboard
-            renderContent={() => input}
-            kbInputRef={textInputRef}
-            kbID={props.customKeyboard?.kbID}
-            customKeyboardVisible={customKeyboardVisible}
-            customKeyboardComponent={props.customKeyboard?.component}
-            kbInitialProps={props.customKeyboard?.props}
-            onItemSelected={(_id: string | undefined, stk: any) => {
-                toggleKeyboard();
-
-                props.customKeyboard?.onItemSelected(_id, stk);
-            }}
-            onKeyboardResigned={onKeyboardResigned}
-            onHeightChange={props.onHeightChange}
-        />
+        <UIInputAccessoryView managedScrollViewNativeID="browserList">
+            <UIAddressInputInternal
+                textInputRef={textInputRef}
+                placeholder={props.placeholder}
+                onSendText={props.onSendText}
+                onHeightChange={
+                    Platform.OS === 'web' ? onHeightChange : undefined
+                }
+                validateAddress={props.validateAddress}
+            />
+        </UIInputAccessoryView>
     );
 }
 

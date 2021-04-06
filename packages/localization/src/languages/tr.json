@@ -1,16 +1,6 @@
 {
     "Account": "Hesap",
     "AccountAddress": "Adres",
-    "AccountLimitPeriod": {
-        "daily": "Günlük",
-        "monthly": "Aylık",
-        "total": "Toplam",
-        "weekly": "Haftalık"
-    },
-    "AccountLimitRule": {
-        "passportVerification": "Pasaport Doğrulaması",
-        "twoFactorAuthentication": "İki faktörlü kimlik doğrulama"
-    },
     "Accounts": "Hesaplar",
     "AccountTypeHint": "Hesap adresinizi herkese açık olarak ayarlamak, hesabınızın profilinizde görünmesini sağlar",
     "Add": "Ekle",

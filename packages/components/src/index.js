@@ -47,7 +47,6 @@ export { default as UIQRCode } from './UIQRCode';
 export { default as UIRadioButtonList } from './UIRadioButtonList';
 export { default as UIScaleButton } from './UIScaleButton';
 export { default as UISectionHeader } from './UISectionHeader';
-export { default as UISeedPhraseInput } from './UISeedPhraseInput';
 export { default as UISeparator } from './UISeparator';
 export { default as UISlider } from './UISlider';
 export { default as UISpinnerOverlay } from './UISpinnerOverlay';

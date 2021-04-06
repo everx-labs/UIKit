@@ -6,7 +6,6 @@ import DocumentPicker from 'react-native-document-picker';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAlertView, UIImageView } from '@tonlabs/uikit.navigation_legacy';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UICustomKeyboardUtils } from '@tonlabs/uikit.keyboard';
 
 import type { OnSendMedia, OnSendDocument, ImageSize } from './types';
 
@@ -162,6 +161,7 @@ export type ChatPickerRef = {
 };
 
 type Props = {
+    dismissKeyboard: () => void;
     onSendDocument?: OnSendDocument;
     onSendMedia?: OnSendMedia;
 };
@@ -173,12 +173,12 @@ export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(
 
         React.useImperativeHandle(ref, () => ({
             openImageDialog: () => {
-                UICustomKeyboardUtils.dismiss();
+                props.dismissKeyboard();
 
                 uiImageViewRef.current?.openDialog();
             },
             openDocumentDialog: () => {
-                UICustomKeyboardUtils.dismiss();
+                props.dismissKeyboard();
 
                 if (Platform.OS === 'web') {
                     inputRef.current?.click();

@@ -7,14 +7,9 @@ import {
     ChatMessageType,
     MessageStatus,
 } from '@tonlabs/uikit.chats';
-import type { MenuMessage, OnHeightChange } from '../types';
+import type { MenuMessage } from '../types';
 
-export function MenuInput({
-    onLayout,
-    ...message
-}: MenuMessage & {
-    onHeightChange: OnHeightChange;
-}) {
+export function MenuInput({ onLayout, ...message }: MenuMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>

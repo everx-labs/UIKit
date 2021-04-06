@@ -8,11 +8,7 @@ import {
     ChatMessageType,
     CommonChatListProps,
 } from '@tonlabs/uikit.chats';
-import {
-    BrowserMessage,
-    InteractiveMessageType,
-    OnHeightChange,
-} from './types';
+import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
 import { AddressInput } from './Inputs/addressInput';
 import { TerminalInput } from './Inputs/terminal';
@@ -24,7 +20,6 @@ import { SigningBox } from './Inputs/SigningBox';
 type UIBrowserListProps = {
     messages: BrowserMessage[];
     bottomInset?: number;
-    onHeightChange: OnHeightChange;
 };
 
 function flatListGetItemLayoutFabric({
@@ -49,7 +44,7 @@ function flatListGetItemLayoutFabric({
     };
 }
 
-const renderBubble = (onHeightChange: OnHeightChange) => (
+const renderBubble = () => (
     item: BrowserMessage,
     onLayout: ViewProps['onLayout'],
 ) => {
@@ -61,43 +56,19 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
     }
 
     if (item.type === InteractiveMessageType.AddressInput) {
-        return (
-            <AddressInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <AddressInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Terminal) {
-        return (
-            <TerminalInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <TerminalInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Menu) {
-        return (
-            <MenuInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <MenuInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Confirm) {
         return <ConfirmInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.AmountInput) {
-        return (
-            <AmountInput
-                {...item}
-                onHeightChange={onHeightChange}
-                onLayout={onLayout}
-            />
-        );
+        return <AmountInput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.SigningBox) {
         return <SigningBox {...item} onLayout={onLayout} />;
@@ -107,10 +78,7 @@ const renderBubble = (onHeightChange: OnHeightChange) => (
 };
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
-    function UIBrowserListForwarded(
-        { messages, bottomInset, onHeightChange }: UIBrowserListProps,
-        ref,
-    ) {
+    function UIBrowserListForwarded({ messages }: UIBrowserListProps, ref) {
         const formattedMessages = React.useMemo(
             () => getFormattedList(messages),
             [messages],
@@ -119,9 +87,8 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
             <UICommonChatList
                 forwardRef={ref}
                 nativeID="browserList"
-                renderBubble={renderBubble(onHeightChange)}
+                renderBubble={renderBubble()}
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
-                bottomInset={bottomInset}
             >
                 {(chatListProps: CommonChatListProps<BrowserMessage>) => (
                     <FlatList
