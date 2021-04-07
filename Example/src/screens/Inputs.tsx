@@ -8,6 +8,7 @@ import {
     UISeedPhraseTextView,
     UINumberTextView,
     ColorVariants,
+    UIAddressTextView,
 } from '@tonlabs/uikit.hydrogen';
 import {
     UIAmountInput,
@@ -260,6 +261,17 @@ export const Inputs = () => {
                         onSubmit={() => {
                             console.log('submit');
                         }}
+                    />
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIAddressInput">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIAddressTextView
+                        testID="uiAddressInput_default"
+                        label="Type address"
+                        validateAddress={() => Promise.resolve(null)}
+                        onQRCodeRead={() => undefined}
+                        onOpenContactBook={() => undefined}
                     />
                 </View>
             </ExampleSection>
