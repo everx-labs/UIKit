@@ -37,13 +37,13 @@ function prepareValue(
     }
 
     if (typeof value === 'string' || value instanceof String) {
-        const { images } = options;
+        const { images, constants } = options;
+
         if (images && /^{IMG_[A-Z_0-9]*}$/.test(value as string)) {
             const key = value.replace(/[{}]/g, '');
             return images[key];
         }
 
-        const { constants } = options;
         if (constants) {
             const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
 

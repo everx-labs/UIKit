@@ -20,10 +20,16 @@ import {
     predefinedConstants,
     UIConstant,
 } from './constants';
+import { LanguagesOptions } from './types';
+
+const langsOptions: LanguagesOptions = Object.values(Language).reduce(
+    (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
+    {},
+);
 
 const preparedLanguages = prepare<UILocalizedData>(
     availableLanguages,
-    predefinedConstants,
+    langsOptions,
 );
 
 const defaultLocaleInfo: StringLocaleInfo = {
@@ -66,7 +72,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         try {
             let numberString: string;
 
-            if (value instanceof BigNumber) {
+            if (BigNumber.isBigNumber(value)) {
                 numberString = value.toFixed();
             } else if (typeof value === 'string') {
                 numberString = value;
