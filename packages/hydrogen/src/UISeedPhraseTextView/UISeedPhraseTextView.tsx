@@ -4,11 +4,11 @@ import { TextInput, View, Platform } from 'react-native';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIMaterialTextView } from '../UIMaterialTextView';
-import { useAutogrowTextView } from '../useAutogrowTextView';
 import { UIConstant } from '../constants';
 import { moveCarret } from '../moveCarret';
 
 import { UISeedPhrasePopover } from './UISeedPhrasePopover';
+import { calculateWebInputHeight } from '../useAutogrowTextView';
 
 const SPLITTER = ` ${UIConstant.dashSymbol} `;
 
@@ -239,14 +239,6 @@ export const UISeedPhraseTextView = React.forwardRef<
         }, 50);
     }, [refToUse]);
 
-    const {
-        onContentSizeChange,
-        onChange,
-        inputHeight,
-        numberOfLines,
-        numberOfLinesProp,
-    } = useAutogrowTextView(refToUse);
-
     const hints = React.useMemo(() => {
         if (!isFocused) {
             return [];
@@ -335,8 +327,11 @@ export const UISeedPhraseTextView = React.forwardRef<
                 // Focus the input in case the focus was lost on a hint selection
                 refToUse.current?.focus();
 
-                // On web onChange isn't fired, so we need to force it
-                onChange && onChange();
+                // On web onChange isn't fired, so we need to force recalculation
+                if (Platform.OS === 'web') {
+                    const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
+                    calculateWebInputHeight(elem);
+                }
             }
 
             dispatchAndSavePhrase({
@@ -346,13 +341,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 },
             });
         },
-        [
-            totalWords,
-            state.typed.index,
-            onChange,
-            dispatchAndSavePhrase,
-            refToUse,
-        ],
+        [totalWords, state.typed.index, dispatchAndSavePhrase, refToUse],
     );
 
     const onHighlightedItemIndexChange = React.useCallback((index: number) => {
@@ -426,7 +415,10 @@ export const UISeedPhraseTextView = React.forwardRef<
                     refToUse.current?.setNativeProps({
                         text: newText,
                     });
-                    onChange && onChange();
+                    if (Platform.OS === 'web') {
+                        const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
+                        calculateWebInputHeight(elem);
+                    }
                 }
 
                 dispatchAndSavePhrase({
@@ -447,7 +439,10 @@ export const UISeedPhraseTextView = React.forwardRef<
                     refToUse.current?.setNativeProps({
                         text: newText,
                     });
-                    onChange && onChange();
+                    if (Platform.OS === 'web') {
+                        const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
+                        calculateWebInputHeight(elem);
+                    }
                 }
 
                 dispatchAndSavePhrase({
@@ -464,7 +459,10 @@ export const UISeedPhraseTextView = React.forwardRef<
                 refToUse.current?.setNativeProps({
                     text: newText,
                 });
-                onChange && onChange();
+                if (Platform.OS === 'web') {
+                    const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
+                    calculateWebInputHeight(elem);
+                }
             }
 
             dispatchAndSavePhrase({
@@ -472,7 +470,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 payload: { phrase: newText },
             });
         },
-        [totalWords, onChange, dispatchAndSavePhrase, refToUse],
+        [totalWords, dispatchAndSavePhrase, refToUse],
     );
 
     const [isValid, setIsValid] = React.useState(false);
@@ -546,10 +544,6 @@ export const UISeedPhraseTextView = React.forwardRef<
         return [uiLocalized.localizedStringForValue(entered, 'words'), false];
     }, [isFocused, isValid, hasValue, state.parts, totalWordsString]);
 
-    const inputStyle = React.useMemo(() => ({ height: inputHeight }), [
-        inputHeight,
-    ]);
-
     const onSelectionChange = React.useCallback(
         ({
             nativeEvent: {
@@ -563,6 +557,14 @@ export const UISeedPhraseTextView = React.forwardRef<
             }
         },
         [state, refToUse],
+    );
+
+    const [height, setHeight] = React.useState(0);
+    const onHeightChange = React.useCallback(
+        (newHeight: number) => {
+            setHeight(newHeight);
+        },
+        [setHeight],
     );
 
     return (
@@ -581,21 +583,18 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
-                onContentSizeChange={onContentSizeChange}
-                onChange={onChange}
                 onSelectionChange={onSelectionChange}
-                numberOfLines={numberOfLinesProp}
-                style={inputStyle}
                 helperText={helperText}
                 error={error}
                 success={isValid && !isFocused}
                 returnKeyType="done"
                 onSubmitEditing={onSubmitEditing}
                 blurOnSubmit
+                onHeightChange={onHeightChange}
             />
             <UISeedPhrasePopover
                 // if number of lines changed, redraw it
-                key={numberOfLines}
+                key={height}
                 elementRef={textInputBorderViewRef}
                 currentHighlightedItemIndex={state.highlight.index}
                 onHighlightedItemIndexChange={onHighlightedItemIndexChange}

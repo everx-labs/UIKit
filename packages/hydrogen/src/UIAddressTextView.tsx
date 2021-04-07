@@ -8,7 +8,6 @@ import {
     UIMaterialTextView,
     UIMaterialTextViewProps,
 } from './UIMaterialTextView';
-import { useAutogrowTextView } from './useAutogrowTextView';
 import {
     UIQRCodeScannerSheet,
     UIQRCodeScannerSheetProps,
@@ -89,9 +88,6 @@ export const UIAddressTextView = React.forwardRef<
     TextInput,
     UIAddressTextViewProps
 >(function UIAddressTextViewForwarded(props: UIAddressTextViewProps, ref) {
-    const textInputRef = React.useRef<TextInput>(null);
-    const refToUse = ref || textInputRef;
-
     const {
         onQRCodeRead,
         onOpenContactBook,
@@ -100,39 +96,23 @@ export const UIAddressTextView = React.forwardRef<
         ...rest
     } = props;
     const {
-        onContentSizeChange,
-        onChange,
-        inputHeight,
-        numberOfLinesProp,
-        // resetInputHeight,
-    } = useAutogrowTextView(refToUse);
-    const {
         onChangeText,
         onKeyPress,
         helperText,
         success,
         error,
-    } = useAddressTextView(refToUse, props);
-
+    } = useAddressTextView(ref, props);
     const [qrVisible, setQrVisible] = React.useState(false);
-
-    const inputStyle = React.useMemo(() => ({ height: inputHeight }), [
-        inputHeight,
-    ]);
 
     return (
         <>
             <UIMaterialTextView
-                ref={refToUse}
+                ref={ref}
                 {...rest}
                 autoCapitalize="none"
                 autoCompleteType="off"
                 autoCorrect={false}
-                onContentSizeChange={onContentSizeChange}
-                onChange={onChange}
                 multiline
-                numberOfLines={numberOfLinesProp}
-                style={inputStyle}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 helperText={helperText}

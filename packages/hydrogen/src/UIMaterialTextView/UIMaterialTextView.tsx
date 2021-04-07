@@ -6,6 +6,8 @@ import {
     View,
     Text,
     ViewStyle,
+    NativeSyntheticEvent,
+    TextInputChangeEventData,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -19,6 +21,7 @@ import {
 } from '../UITextView';
 import { useHover } from '../useHover';
 import { UILabel, UILabelColors } from '../UILabel';
+import { OnHeightChange, useAutogrowTextView } from '../useAutogrowTextView';
 
 import {
     useMaterialTextViewChildren,
@@ -35,6 +38,7 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
     borderViewRef?: React.Ref<View>;
     children?: React.ReactNode;
+    onHeightChange?: OnHeightChange;
 };
 
 const getBorderColor = (
@@ -386,6 +390,74 @@ function useFloatLabelTransform(
     };
 }
 
+function useAutogrow(
+    ref: React.Ref<TextInput>,
+    props: UIMaterialTextViewProps,
+    onHeightChange?: OnHeightChange,
+) {
+    const {
+        onContentSizeChange: onContentSizeChangeProp,
+        onChange: onChangeProp,
+        multiline,
+        numberOfLines,
+    } = props;
+    const {
+        onContentSizeChange: onAutogrowContentSizeChange,
+        onChange: onAutogrowChange,
+        inputHeight,
+        numberOfLinesProp,
+        resetInputHeight,
+    } = useAutogrowTextView(ref, onHeightChange, multiline ? numberOfLines : 1);
+
+    const onContentSizeChange = React.useCallback(
+        (event: any) => {
+            if (onAutogrowContentSizeChange) {
+                onAutogrowContentSizeChange(event);
+            }
+
+            if (onContentSizeChangeProp) {
+                onContentSizeChangeProp(event);
+            }
+        },
+        [onAutogrowContentSizeChange, onContentSizeChangeProp],
+    );
+
+    const onChange = React.useCallback(
+        (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
+            if (onAutogrowChange) {
+                onAutogrowChange(event);
+            }
+
+            if (onChangeProp) {
+                onChangeProp(event);
+            }
+        },
+        [onAutogrowChange, onChangeProp],
+    );
+
+    const style = React.useMemo(() => [styles.input, { height: inputHeight }], [
+        inputHeight,
+    ]);
+
+    if (!props.multiline) {
+        return {
+            onContentSizeChange: onContentSizeChangeProp,
+            onChange: onChangeProp,
+            resetInputHeight,
+            numberOfLines,
+            style: styles.input,
+        };
+    }
+
+    return {
+        onContentSizeChange,
+        onChange,
+        resetInputHeight,
+        numberOfLines: numberOfLinesProp,
+        style,
+    };
+}
+
 function UIMaterialTextViewComment(
     props: UIMaterialTextViewCommonProps & {
         onLayout?: Pick<UITextViewProps, 'onLayout'>;
@@ -457,11 +529,11 @@ const UIMaterialTextViewFloating = React.forwardRef<
     const localRef = React.useRef<TextInput>(null);
     const ref = passedRef || localRef;
 
-    const { label, onLayout, children, ...rest } = props;
+    const { label, onLayout, children, onHeightChange, ...rest } = props;
     const theme = useTheme();
     const {
         inputHasValue,
-        clear,
+        clear: clearInput,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
     const {
@@ -475,6 +547,17 @@ const UIMaterialTextViewFloating = React.forwardRef<
         onActualLabelLayout,
         isDefaultPlaceholderVisible,
     } = useFloatLabelTransform(props, inputHasValue);
+    const {
+        onContentSizeChange,
+        onChange,
+        numberOfLines,
+        style,
+        resetInputHeight,
+    } = useAutogrow(ref, props, onHeightChange);
+    const clear = React.useCallback(() => {
+        clearInput();
+        resetInputHeight();
+    }, [clearInput, resetInputHeight]);
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
@@ -512,7 +595,10 @@ const UIMaterialTextViewFloating = React.forwardRef<
                         onFocus={onFocus}
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
-                        style={styles.input}
+                        onContentSizeChange={onContentSizeChange}
+                        onChange={onChange}
+                        numberOfLines={numberOfLines}
+                        style={style}
                     />
                     <Animated.View
                         pointerEvents="none"
@@ -545,16 +631,27 @@ const UIMaterialTextViewSimple = React.forwardRef<
     const localRef = React.useRef<TextInput>(null);
     const ref = passedRef || localRef;
 
-    const { label, onLayout, children, ...rest } = props;
+    const { label, onLayout, children, onHeightChange, ...rest } = props;
     const {
         inputHasValue,
-        clear,
+        clear: clearInput,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
     const { isFocused, onFocus, onBlur } = useFocused(
         props.onFocus,
         props.onBlur,
     );
+    const {
+        onContentSizeChange,
+        onChange,
+        numberOfLines,
+        style,
+        resetInputHeight,
+    } = useAutogrow(localRef, props, onHeightChange);
+    const clear = React.useCallback(() => {
+        clearInput();
+        resetInputHeight();
+    }, [clearInput, resetInputHeight]);
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
@@ -572,7 +669,10 @@ const UIMaterialTextViewSimple = React.forwardRef<
                         onFocus={onFocus}
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
-                        style={styles.input}
+                        onContentSizeChange={onContentSizeChange}
+                        onChange={onChange}
+                        numberOfLines={numberOfLines}
+                        style={style}
                     />
                     {processedChildren}
                 </UIMaterialTextViewBorder>
