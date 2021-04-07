@@ -20,10 +20,16 @@ import {
     predefinedConstants,
     UIConstant,
 } from './constants';
+import { LanguagesOptions } from './types';
+
+const langsOptions: LanguagesOptions = Object.values(Language).reduce(
+    (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
+    {},
+);
 
 const preparedLanguages = prepare<UILocalizedData>(
     availableLanguages,
-    predefinedConstants,
+    langsOptions,
 );
 
 const defaultLocaleInfo: StringLocaleInfo = {
