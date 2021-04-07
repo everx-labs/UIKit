@@ -6,7 +6,7 @@ import {
     ButtonContent,
     ButtonIcon,
     ButtonTitle,
-    useButtonChildren,
+    // useButtonChildren,
 } from './useButtonChildren';
 
 type ButtonProps = {
@@ -21,7 +21,7 @@ type ButtonProps = {
 const ButtonForward = React.forwardRef<
     TouchableOpacity,
     ButtonProps
-    >(function ButtonForwarded(
+>(function ButtonForwarded(
     {
         children,
         containerStyle,
@@ -31,21 +31,28 @@ const ButtonForward = React.forwardRef<
         testID,
         ...props
     }: ButtonProps,
-    ref,
+    ref
 ) {
-    const processedChildren = useButtonChildren(children);
+    const handleOnPress = React.useCallback(
+        () => {
+            if (!loading) {
+                onPress();
+            }
+        },
+        [loading, onPress],
+    );
     return (
         <TouchableOpacity
             ref={ref}
             {...props}
             disabled={disabled}
-            onPress={onPress}
+            onPress={handleOnPress}
             testID={testID}
         >
             <View style={[styles.content, containerStyle]}>
                 {loading ? (
                     <ActivityIndicator />
-                ) : processedChildren}
+                ) : children}
             </View>
         </TouchableOpacity>
     );

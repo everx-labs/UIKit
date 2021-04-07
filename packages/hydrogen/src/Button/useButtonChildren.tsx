@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, ViewProps } from 'react-native';
 
+import { UIConstant } from '../constants';
 import { UIImage, UIImageProps } from '../UIImage';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 import type { ColorVariants } from '../Colors';
@@ -22,10 +23,32 @@ export function ButtonContent({
 export function ButtonIcon({
     source,
     tintColor,
+    style,
+    size = 'normal',
     ...props
-}: UIImageProps) {
+}: UIImageProps & {
+    size?: 'normal' | 'small';
+}) {
+    const iconSize = React.useMemo(() => {
+        if (size === 'small') {
+            return UIConstant.smallButtonIconSize;
+        }
+        return UIConstant.normalButtonIconSize;
+    }, [size]);
+
     return (
-        <UIImage {...props} source={source} tintColor={tintColor} />
+        <UIImage
+            {...props}
+            source={source}
+            style={[
+                {
+                    width: iconSize,
+                    height: iconSize,
+                },
+                style,
+            ]}
+            tintColor={tintColor}
+        />
     );
 }
 
@@ -50,16 +73,16 @@ export function ButtonTitle({
 
 export const useButtonChildren = (children: React.ReactNode) => {
     // here we may need to order children in a particular way or add some styles
+    // TODO: understand whether we need to limit icons to one at a time and remove others
     const configs = React.Children.toArray(children);
-    const { length } = configs;
     return (
         <View>
             {React.Children.map(
                 configs,
-                (child, index) =>
+                child =>
                     child && [
                         child,
-                        index !== length - 1 && <View style={{ paddingLeft: 16 }} />,
+                        <View style={{ paddingLeft: 16 }} />,
                     ]
             )}
         </View>

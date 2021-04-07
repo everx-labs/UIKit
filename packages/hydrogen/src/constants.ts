@@ -3,6 +3,9 @@ import { Platform } from 'react-native';
 export const UIConstant = {
     iconSize: 24,
 
+    smallButtonIconSize: 12,
+    normalButtonIconSize: 20,
+
     boxButtonHeight: 48,
     msgButtonHeight: 40,
     pillButtonHeight: 32,

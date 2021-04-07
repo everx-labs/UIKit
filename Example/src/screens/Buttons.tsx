@@ -18,8 +18,42 @@ export const Buttons = () => (
         <ExampleSection title="UIBoxButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
+                    testID="uiBoxButton_default"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
                     icon={UIAssets.icons.ui.camera}
-                    title="UIBoxButtonAction"
+                    testID="uiBoxButton_leftIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    icon={UIAssets.icons.ui.buttonDots}
+                    iconPosition="middle"
+                    testID="uiBoxButton_middleIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    icon={UIAssets.icons.ui.camera}
+                    iconPosition="right"
+                    testID="uiBoxButton_rightIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_rightIcon"
+                    title="Action"
+                    loading
                     onPress={() => console.log('Pressed UIBoxButton')}
                 />
             </View>

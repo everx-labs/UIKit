@@ -67,10 +67,10 @@ export const UIBoxButton = ({
             onPress={onPress}
             testID={testID}
         >
-            <Button.Content>
+            <Button.Content style={styles.centerContent}>
                 {iconPosition === 'left' && icon && <Button.Icon source={icon} />}
                 <Button.Title>{title}</Button.Title>
-                {iconPosition === 'middle' && icon && <Button.Icon source={icon} />}
+                {iconPosition === 'middle' && icon && <Button.Icon source={icon} size="small" />}
             </Button.Content>
             {iconPosition === 'right' && icon && <Button.Icon source={icon} />}
         </Button>
@@ -79,9 +79,17 @@ export const UIBoxButton = ({
 
 const styles = StyleSheet.create({
     container: {
+        flexDirection: 'row',
+        alignItems: 'center',
         height: UIConstant.boxButtonHeight,
+        width: 250,
+    },
+    centerContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     primary: {
         backgroundColor: 'blue',
+        justifyContent: 'center',
     },
 });
