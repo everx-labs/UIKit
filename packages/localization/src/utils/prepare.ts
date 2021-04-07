@@ -37,27 +37,29 @@ function prepareValue(
     }
 
     if (typeof value === 'string' || value instanceof String) {
-        const { images } = options;
-        if (images && /^{IMG_[A-Z_0-9]*}$/.test(value as string)) {
-            const key = value.replace(/[{}]/g, '');
-            return images[key];
-        }
+        if (options) {
+            const { images, constants } = options;
 
-        const { constants } = options;
-        if (constants) {
-            const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
+            if (images && /^{IMG_[A-Z_0-9]*}$/.test(value as string)) {
+                const key = value.replace(/[{}]/g, '');
+                return images[key];
+            }
 
-            if (foundConstants) {
-                foundConstants.forEach((constant) => {
-                    const key = constant.replace(/[{}]/g, '');
-                    // Filtering numerals
-                    if (/[A-Z]/.test(constant)) {
-                        value.replace(
-                            new RegExp(constant, 'g'),
-                            constants[key],
-                        );
-                    }
-                });
+            if (constants) {
+                const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
+
+                if (foundConstants) {
+                    foundConstants.forEach((constant) => {
+                        const key = constant.replace(/[{}]/g, '');
+                        // Filtering numerals
+                        if (/[A-Z]/.test(constant)) {
+                            value.replace(
+                                new RegExp(constant, 'g'),
+                                constants[key],
+                            );
+                        }
+                    });
+                }
             }
         }
 
