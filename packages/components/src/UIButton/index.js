@@ -194,7 +194,7 @@ export type ButtonProps = UIActionComponentProps & {
      */
     titleColor?: ColorVariants,
     /** button title style
-    @default null'
+    @default null
     */
     tooltip?: string,
     /** @ignore */
