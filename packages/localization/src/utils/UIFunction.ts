@@ -9,7 +9,7 @@ export class UIFunction {
         digits: number = 10,
     ): string {
         // $FlowExpectedError
-        if (!(number instanceof BigNumber) && Math.abs(number) > 1) {
+        if (!BigNumber.isBigNumber(number) && Math.abs(number) > 1) {
             // Apply BigNumber conversion only for non-small numbers!
             try {
                 return new BigNumber(number.toString()).toString();

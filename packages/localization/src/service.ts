@@ -66,7 +66,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         try {
             let numberString: string;
 
-            if (value instanceof BigNumber) {
+            if (BigNumber.isBigNumber(value)) {
                 numberString = value.toFixed();
             } else if (typeof value === 'string') {
                 numberString = value;
