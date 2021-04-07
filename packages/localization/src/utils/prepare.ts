@@ -1,12 +1,12 @@
 /* eslint-disable no-use-before-define, @typescript-eslint/no-use-before-define */
-import {
+import type {
     LanguageConstants,
     LanguageItem,
     LanguageOptions,
     Languages, LanguagesOptions,
     LanguageValue
 } from '../types';
-import { Language } from '../constants';
+import type { Language } from '../constants';
 
 function prepareArray(
     array: LanguageValue[],

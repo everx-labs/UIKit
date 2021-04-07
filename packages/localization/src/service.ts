@@ -20,7 +20,7 @@ import {
     predefinedConstants,
     UIConstant,
 } from './constants';
-import { LanguagesOptions } from './types';
+import type { LanguagesOptions } from './types';
 
 const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),

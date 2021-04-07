@@ -1,4 +1,4 @@
-import { DateFormatInfo, NumberFormatInfo } from '../types';
+import type { DateFormatInfo, NumberFormatInfo } from '../types';
 
 export function getNumberFormatInfo(): NumberFormatInfo {
     const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
