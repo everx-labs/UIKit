@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { NumberParts, NumberPartsOptions, StringLocaleInfo } from '../types';
+import type { NumberParts, NumberPartsOptions, StringLocaleInfo } from '../types';
 
 export class UIFunction {
     // Allows to print small numbers with "-e" suffix
