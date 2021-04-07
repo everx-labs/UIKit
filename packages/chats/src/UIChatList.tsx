@@ -88,7 +88,6 @@ type UIChatListProps = {
     canLoadMore: boolean;
     isLoadingMore: boolean;
     onLoadEarlierMessages: () => void;
-    isCustomKeyboardVisible?: boolean;
     bottomInset?: number;
 };
 
@@ -100,7 +99,6 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
             canLoadMore,
             isLoadingMore,
             onLoadEarlierMessages,
-            isCustomKeyboardVisible,
         }: UIChatListProps,
         ref,
     ) {
@@ -128,7 +126,6 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
                 nativeID={nativeID}
                 renderBubble={renderBubble}
                 getItemLayoutFabric={sectionListGetItemLayout}
-                isCustomKeyboardVisible={isCustomKeyboardVisible}
                 canLoadMore={canLoadMore}
             >
                 {(chatListProps) => (

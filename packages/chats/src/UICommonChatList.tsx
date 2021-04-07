@@ -328,6 +328,7 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     ref: React.RefObject<any>;
     nativeID: string;
     keyboardDismissMode: ScrollViewProps['keyboardDismissMode'];
+    keyboardShouldPersistTaps: ScrollViewProps['keyboardShouldPersistTaps'];
     automaticallyAdjustContentInsets: boolean;
     contentInset: ScrollViewProps['contentInset'];
     inverted: boolean;
@@ -355,8 +356,6 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     getItemLayoutFabric: GetItemLayoutFabric;
     children: (props: CommonChatListProps<ItemT>) => React.ReactNode;
     canLoadMore?: boolean;
-    // If you want custom keyboard to be dismissible on touch outside of it
-    isCustomKeyboardVisible?: boolean;
 };
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
@@ -365,7 +364,6 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     renderBubble,
     getItemLayoutFabric,
     canLoadMore = false,
-    isCustomKeyboardVisible = false,
     children,
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
@@ -412,12 +410,13 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
             <Animated.View style={lineStyle} />
             <TapGestureHandler
                 onHandlerStateChange={onHandlerStateChange}
-                enabled={isCustomKeyboardVisible}
+                enabled
             >
                 {children({
                     ref: localRef,
                     nativeID,
                     keyboardDismissMode: keyboardDismissProp,
+                    keyboardShouldPersistTaps: 'handled',
                     automaticallyAdjustContentInsets: false,
                     contentInset,
                     inverted: true,
