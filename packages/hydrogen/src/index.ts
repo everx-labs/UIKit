@@ -8,7 +8,6 @@ export * from './UINumberTextView';
 export * from './UIKeyTextView';
 export * from './UISeedPhraseTextView';
 export * from './UIAutogrowTextView';
-export * from './UIAddressTextView';
 export * from './UISheet';
 export * from './UIQRCodeScannerSheet';
 export * from './UINotice';

@@ -8,8 +8,8 @@ import {
     UISeedPhraseTextView,
     UINumberTextView,
     ColorVariants,
-    UIAddressTextView,
 } from '@tonlabs/uikit.hydrogen';
+import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {
     UIAmountInput,
     UIBankCardNumberInput,

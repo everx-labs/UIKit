@@ -3,16 +3,14 @@ import type { TextInput } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { useUITextViewValue } from './UITextView';
 import {
+    useUITextViewValue,
     UIMaterialTextView,
     UIMaterialTextViewProps,
-} from './UIMaterialTextView';
-import {
     UIQRCodeScannerSheet,
     UIQRCodeScannerSheetProps,
-} from './UIQRCodeScannerSheet';
-import { ColorVariants } from './Colors';
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
 
 export type UIAddressTextViewValidationResult = {
     helperText?: string;
