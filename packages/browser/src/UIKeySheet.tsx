@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { UIKeyTextView } from '@tonlabs/uikit.hydrogen';
+import { UIKeyTextView, UIMaterialTextViewRef } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIPullerSheet } from './UIPullerSheet';
-import type { UIMaterialTextViewRef } from 'packages/hydrogen/typescript/src';
 
 // We wrap it with a component to be able
 // to focus input on every new sheet mounting
