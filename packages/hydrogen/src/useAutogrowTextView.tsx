@@ -10,6 +10,22 @@ const textViewHeight =
     StyleSheet.flatten(Typography[TypographyVariants.ParagraphText])
         .lineHeight ?? UIConstant.smallCellHeight;
 
+export function calculateWebInputHeight(elem: HTMLTextAreaElement) {
+    // To get real height of a textarea
+    // (that is used under the hood of TextInput in rn-web)
+    // eslint-disable-next-line no-param-reassign
+    elem.style.height = 'auto';
+
+    const height = elem.scrollHeight;
+
+    // Remove it to apply again styles we pass in props
+    // @ts-ignore
+    // eslint-disable-next-line no-param-reassign
+    elem.style.height = `${height}px`;
+
+    return height;
+}
+
 export function useAutogrowTextView(
     ref: React.Ref<TextInput> | null,
     onHeightChange?: OnHeightChange,
@@ -51,25 +67,25 @@ export function useAutogrowTextView(
         [inputHeight, constrainedNumberOfLines, onHeightChange],
     );
 
-    const onChangeOnWeb = React.useCallback(() => {
-        if (ref && 'current' in ref && ref.current) {
-            // eslint-disable-next-line no-param-reassign
-            const elem = (ref.current as unknown) as HTMLTextAreaElement;
-            // To get real height of a textarea
-            // (that is used under the hood of TextInput in rn-web)
-            elem.style.height = 'auto';
-            onContentSizeChange({
-                nativeEvent: {
-                    contentSize: {
-                        height: elem.scrollHeight,
+    const onChangeOnWeb = React.useCallback(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        (_event: any) => {
+            if (ref && 'current' in ref && ref.current) {
+                // eslint-disable-next-line no-param-reassign
+                const elem = (ref.current as unknown) as HTMLTextAreaElement;
+                const height = calculateWebInputHeight(elem);
+
+                onContentSizeChange({
+                    nativeEvent: {
+                        contentSize: {
+                            height,
+                        },
                     },
-                },
-            });
-            // Remove it to apply again styles we pass in props
-            // @ts-ignore
-            elem.style.height = `${elem.scrollHeight}px`;
-        }
-    }, [ref, onContentSizeChange]);
+                });
+            }
+        },
+        [ref, onContentSizeChange],
+    );
 
     const resetInputHeight = React.useCallback(() => {
         setInputHeight(textViewHeight);
