@@ -14,6 +14,7 @@ import {
     StyleProp,
     ListRenderItem,
     ViewProps,
+    Keyboard,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -312,6 +313,7 @@ function useCloseKeyboardOnTap() {
             return;
         }
 
+        Keyboard.dismiss();
         dismissKeyboard();
     }, []);
 
