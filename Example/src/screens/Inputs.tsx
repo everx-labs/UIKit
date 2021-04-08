@@ -270,8 +270,13 @@ export const Inputs = () => {
                         testID="uiAddressInput_default"
                         label="Type address"
                         validateAddress={() => Promise.resolve(null)}
-                        onQRCodeRead={() => undefined}
-                        onOpenContactBook={() => undefined}
+                        qrCode={{
+                            parseData: () => {
+                                return Promise.resolve(
+                                    '0:00000000000000000000000000000000000000000000000000000000000',
+                                );
+                            },
+                        }}
                     />
                 </View>
             </ExampleSection>

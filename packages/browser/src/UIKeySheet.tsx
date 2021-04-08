@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { UIKeyTextView } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIPullerSheet } from './UIPullerSheet';
+import type { UIMaterialTextViewRef } from 'packages/hydrogen/typescript/src';
 
 // We wrap it with a component to be able
 // to focus input on every new sheet mounting
@@ -13,7 +14,7 @@ function UIKeySheetContent({
 }: {
     onKeyRetrieved: (key: string) => void;
 }) {
-    const keyRef = React.useRef<TextInput>(null);
+    const keyRef = React.useRef<UIMaterialTextViewRef>(null);
 
     React.useLayoutEffect(() => {
         function focus() {

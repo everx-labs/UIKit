@@ -8,8 +8,8 @@ import {
     UIMaterialTextView,
     UIMaterialTextViewProps,
     UIQRCodeScannerSheet,
-    UIQRCodeScannerSheetProps,
     ColorVariants,
+    UIMaterialTextViewRef,
 } from '@tonlabs/uikit.hydrogen';
 
 export type UIAddressTextViewValidationResult = {
@@ -24,8 +24,9 @@ export type UIAddressTextViewValidateAddress = (
 
 type UIAddressTextViewProps = UIMaterialTextViewProps & {
     validateAddress: UIAddressTextViewValidateAddress;
-    onOpenContactBook: () => void;
-    onQRCodeRead: UIQRCodeScannerSheetProps['onRead'];
+    qrCode: {
+        parseData: (data: any) => Promise<string>;
+    };
 };
 
 function useAddressTextView(
@@ -83,14 +84,19 @@ function useAddressTextView(
 }
 
 export const UIAddressTextView = React.forwardRef<
-    TextInput,
+    UIMaterialTextViewRef,
     UIAddressTextViewProps
->(function UIAddressTextViewForwarded(props: UIAddressTextViewProps, ref) {
+>(function UIAddressTextViewForwarded(
+    props: UIAddressTextViewProps,
+    passedRef,
+) {
+    const localRef = React.useRef<UIMaterialTextViewRef>(null);
+    const ref = passedRef || localRef;
     const {
-        onQRCodeRead,
-        onOpenContactBook,
+        // To not pass it as a prop to UIMaterialTextView
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         validateAddress,
+        qrCode,
         ...rest
     } = props;
     const {
@@ -101,6 +107,21 @@ export const UIAddressTextView = React.forwardRef<
         error,
     } = useAddressTextView(ref, props);
     const [qrVisible, setQrVisible] = React.useState(false);
+
+    const onRead = React.useCallback(
+        async (data: any) => {
+            const address = await qrCode.parseData(data);
+
+            if (ref && 'current' in ref) {
+                ref.current?.changeText(address);
+            }
+
+            if (onChangeText) {
+                onChangeText(address);
+            }
+        },
+        [qrCode, ref, onChangeText],
+    );
 
     return (
         <>
@@ -117,12 +138,7 @@ export const UIAddressTextView = React.forwardRef<
                 success={success}
                 error={error}
             >
-                <UIMaterialTextView.Icon
-                    testID="address_text_view_contacts_picker"
-                    source={UIAssets.icons.addressInput.book}
-                    onPress={onOpenContactBook}
-                    tintColor={ColorVariants.TextAccent}
-                />
+                {props.children}
                 <UIMaterialTextView.Icon
                     testID="address_text_view_scanner"
                     source={UIAssets.icons.addressInput.scan}
@@ -135,7 +151,7 @@ export const UIAddressTextView = React.forwardRef<
             <UIQRCodeScannerSheet
                 visible={qrVisible}
                 onClose={() => setQrVisible(false)}
-                onRead={onQRCodeRead}
+                onRead={onRead}
             />
         </>
     );

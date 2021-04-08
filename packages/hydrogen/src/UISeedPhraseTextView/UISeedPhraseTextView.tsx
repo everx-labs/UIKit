@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { TextInput, View, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { UIMaterialTextView } from '../UIMaterialTextView';
+import {
+    UIMaterialTextView,
+    UIMaterialTextViewRef,
+} from '../UIMaterialTextView';
 import { UIConstant } from '../constants';
 import { moveCarret } from '../moveCarret';
 
 import { UISeedPhrasePopover } from './UISeedPhrasePopover';
-import { calculateWebInputHeight } from '../useAutogrowTextView';
 
 const SPLITTER = ` ${UIConstant.dashSymbol} `;
 
@@ -163,7 +165,7 @@ export type UISeedPhraseTextViewProps = {
 };
 
 export const UISeedPhraseTextView = React.forwardRef<
-    TextInput,
+    UIMaterialTextViewRef,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(
     props: UISeedPhraseTextViewProps,
@@ -178,7 +180,7 @@ export const UISeedPhraseTextView = React.forwardRef<
         return props.totalWords;
     }, [props.totalWords]);
 
-    const textInputRef = React.useRef<TextInput>(null);
+    const textInputRef = React.useRef<UIMaterialTextViewRef>(null);
     const textInputBorderViewRef = React.useRef<View>(null);
     const refToUse = ref || textInputRef;
 
@@ -319,19 +321,11 @@ export const UISeedPhraseTextView = React.forwardRef<
                     });
                 } else {
                     // The rest platforms behave properly
-                    refToUse.current?.setNativeProps({
-                        text: newText,
-                    });
+                    refToUse.current?.changeText(newText, false);
                 }
 
                 // Focus the input in case the focus was lost on a hint selection
                 refToUse.current?.focus();
-
-                // On web onChange isn't fired, so we need to force recalculation
-                if (Platform.OS === 'web') {
-                    const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
-                    calculateWebInputHeight(elem);
-                }
             }
 
             dispatchAndSavePhrase({
@@ -412,13 +406,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                         : text.trim();
 
                 if (refToUse && 'current' in refToUse) {
-                    refToUse.current?.setNativeProps({
-                        text: newText,
-                    });
-                    if (Platform.OS === 'web') {
-                        const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
-                        calculateWebInputHeight(elem);
-                    }
+                    refToUse.current?.changeText(newText, false);
                 }
 
                 dispatchAndSavePhrase({
@@ -436,13 +424,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 const newText = text.slice(0, text.length - 2);
 
                 if (refToUse && 'current' in refToUse) {
-                    refToUse.current?.setNativeProps({
-                        text: newText,
-                    });
-                    if (Platform.OS === 'web') {
-                        const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
-                        calculateWebInputHeight(elem);
-                    }
+                    refToUse.current?.changeText(newText, false);
                 }
 
                 dispatchAndSavePhrase({
@@ -456,13 +438,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             const newText = text.match(/(\w+)/g)?.join(SPLITTER) ?? '';
 
             if (newText !== text && refToUse && 'current' in refToUse) {
-                refToUse.current?.setNativeProps({
-                    text: newText,
-                });
-                if (Platform.OS === 'web') {
-                    const elem = (refToUse.current as unknown) as HTMLTextAreaElement;
-                    calculateWebInputHeight(elem);
-                }
+                refToUse.current?.changeText(newText, false);
             }
 
             dispatchAndSavePhrase({
@@ -495,9 +471,7 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const onSubmitEditing = React.useCallback(() => {
         if (refToUse && 'current' in refToUse) {
-            refToUse.current?.setNativeProps({
-                text: phraseRef.current,
-            });
+            refToUse.current?.changeText(phraseRef.current, false);
         }
         if (isValid) {
             onSubmit && onSubmit();
