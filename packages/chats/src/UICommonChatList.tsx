@@ -15,11 +15,7 @@ import {
     ListRenderItem,
     ViewProps,
 } from 'react-native';
-import {
-    TapGestureHandler,
-    ScrollView,
-    State as RNGHState,
-} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
@@ -29,16 +25,6 @@ import { dismiss as dismissKeyboard } from '@tonlabs/uikit.keyboard';
 import type { BubbleBaseT, ChatMessage } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
-
-type RNGHEvent<T> = { nativeEvent: T };
-
-const onHandlerStateChange = ({
-    nativeEvent: { state },
-}: RNGHEvent<{ state: RNGHState }>) => {
-    if (state === RNGHState.ACTIVE) {
-        dismissKeyboard();
-    }
-};
 
 // Apply overflowY style for web to make the scrollbar appear as an overlay
 // thus not affecting the content width of SectionList to prevent layout issues
@@ -312,6 +298,29 @@ function useLinesAnimation() {
     };
 }
 
+function useCloseKeyboardOnTap() {
+    const scrollViewWasScrolled = React.useRef(false);
+
+    const onResponderGrant = React.useCallback(() => {
+        scrollViewWasScrolled.current = true;
+    }, []);
+
+    const onTouchEnd = React.useCallback(() => {
+        if (scrollViewWasScrolled.current) {
+            scrollViewWasScrolled.current = false;
+
+            return;
+        }
+
+        dismissKeyboard();
+    }, []);
+
+    return {
+        onResponderGrant,
+        onTouchEnd,
+    };
+}
+
 const keyExtractor = <ItemT extends BubbleBaseT>(item: ItemT) => {
     return item.key;
 };
@@ -331,6 +340,8 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     keyboardShouldPersistTaps: ScrollViewProps['keyboardShouldPersistTaps'];
     automaticallyAdjustContentInsets: boolean;
     contentInset: ScrollViewProps['contentInset'];
+    onResponderGrant: ScrollViewProps['onResponderGrant'];
+    onTouchEnd: ScrollViewProps['onTouchEnd'];
     inverted: boolean;
     getItemLayout: VirtualizedListProps<ItemT>['getItemLayout'];
     onLayout: VirtualizedListProps<ItemT>['onLayout'];
@@ -404,37 +415,34 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     } = useLinesAnimation();
     useChatListWheelHandler(localRef, nativeID, listContentOffset);
     const contentInset = useContentInset(localRef);
+    const handlers = useCloseKeyboardOnTap();
 
     return (
         <>
             <Animated.View style={lineStyle} />
-            <TapGestureHandler
-                onHandlerStateChange={onHandlerStateChange}
-                enabled
-            >
-                {children({
-                    ref: localRef,
-                    nativeID,
-                    keyboardDismissMode: keyboardDismissProp,
-                    keyboardShouldPersistTaps: 'handled',
-                    automaticallyAdjustContentInsets: false,
-                    contentInset,
-                    inverted: true,
-                    getItemLayout,
-                    onLayout,
-                    onContentSizeChange,
-                    onScroll: onScrollMessages,
-                    onScrollToIndexFailed,
-                    scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
-                    style,
-                    contentContainerStyle: styles.messagesList,
-                    onViewableItemsChanged,
-                    keyExtractor,
-                    renderItem,
-                    onEndReachedThreshold: 0.6,
-                    renderScrollComponent,
-                })}
-            </TapGestureHandler>
+            {children({
+                ref: localRef,
+                nativeID,
+                keyboardDismissMode: keyboardDismissProp,
+                keyboardShouldPersistTaps: 'handled',
+                automaticallyAdjustContentInsets: false,
+                contentInset,
+                inverted: true,
+                getItemLayout,
+                onLayout,
+                onContentSizeChange,
+                onScroll: onScrollMessages,
+                onScrollToIndexFailed,
+                scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
+                style,
+                contentContainerStyle: styles.messagesList,
+                onViewableItemsChanged,
+                keyExtractor,
+                renderItem,
+                onEndReachedThreshold: 0.6,
+                renderScrollComponent,
+                ...handlers,
+            })}
         </>
     );
 }
