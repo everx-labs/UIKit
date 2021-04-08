@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { ImageSourcePropType, StyleSheet } from 'react-native';
+import {ImageSourcePropType, StyleSheet} from 'react-native';
 
-import { Button } from './Button';
-import { UIConstant } from './constants';
+import {Button} from './Button';
+import {UIConstant} from './constants';
+import {ColorVariants, useTheme} from "./Colors";
 
 export type UIBoxButtonProps = {
     /**
@@ -29,7 +30,7 @@ export type UIBoxButtonProps = {
      */
     onPress: () => void;
     /**
-     * testID for usage in tests
+     * ID for usage in tests
      */
     testID?: string;
     /**
@@ -46,6 +47,66 @@ export type UIBoxButtonProps = {
     type?: 'primary' | 'secondary' | 'tertiary' | 'nulled';
 };
 
+function useButtonStyles(
+    type: string,
+    disabled?: boolean,
+) {
+    let backgroundColor: ColorVariants = ColorVariants.Transparent;
+    let borderColor: ColorVariants = ColorVariants.Transparent;
+    let titleColor: ColorVariants = ColorVariants.TextAccent;
+    let borderRadius: number = 0;
+    let borderWidth: number = 0;
+    if (type === 'primary') {
+        if (disabled) {
+            backgroundColor = ColorVariants.BackgroundTertiary;
+            titleColor = ColorVariants.TextTertiary;
+        } else {
+            backgroundColor = ColorVariants.BackgroundAccent;
+            titleColor = ColorVariants.StaticTextPrimaryLight;
+        }
+        borderRadius = UIConstant.alertBorderRadius;
+    } else if (type === 'secondary') {
+        if (disabled) {
+            backgroundColor = ColorVariants.BackgroundTertiary;
+            titleColor = ColorVariants.TextTertiary;
+        } else {
+            backgroundColor = ColorVariants.BackgroundPrimaryInverted;
+            titleColor = ColorVariants.TextPrimaryInverted;
+        }
+        borderRadius = UIConstant.alertBorderRadius;
+    } else if (type === 'tertiary') {
+        if (disabled) {
+            borderColor = ColorVariants.BackgroundTertiary;
+            titleColor = ColorVariants.TextTertiary;
+        } else {
+            borderColor = ColorVariants.BackgroundPrimaryInverted;
+            titleColor = ColorVariants.TextPrimary;
+        }
+        borderRadius = UIConstant.alertBorderRadius;
+        borderWidth = UIConstant.buttonBorderWidth;
+    } else if (type === 'nulled') {
+        if (disabled) {
+            titleColor = ColorVariants.TextTertiary;
+        } else {
+            titleColor = ColorVariants.TextAccent;
+        }
+    }
+
+    const theme = useTheme();
+
+    const buttonStyle = {
+        backgroundColor: theme[ColorVariants[backgroundColor]],
+        borderColor: theme[ColorVariants[borderColor]],
+        borderRadius,
+        borderWidth,
+    };
+
+    return {
+        buttonStyle,
+        titleColor,
+    };
+}
+
 export const UIBoxButton = ({
     disabled,
     icon,
@@ -56,40 +117,49 @@ export const UIBoxButton = ({
     title,
     type= 'primary'
 }: UIBoxButtonProps) => {
+    const { buttonStyle, titleColor } = useButtonStyles(type, disabled);
     return (
         <Button
             containerStyle={[
                 styles.container,
-                type === 'primary' ? styles.primary : null,
+                // @ts-ignore
+                buttonStyle,
             ]}
             disabled={disabled}
             loading={loading}
             onPress={onPress}
             testID={testID}
         >
-            <Button.Content style={styles.centerContent}>
-                {iconPosition === 'left' && icon && <Button.Icon source={icon} />}
-                <Button.Title>{title}</Button.Title>
-                {iconPosition === 'middle' && icon && <Button.Icon source={icon} size="small" />}
+            <Button.Content style={styles.content}>
+                {
+                    iconPosition === 'left' && icon &&
+                    <Button.Icon source={icon} />
+                }
+                <Button.Title titleColor={titleColor}>{title}</Button.Title>
+                {
+                    iconPosition === 'middle' && icon &&
+                    <Button.Icon source={icon} size="small" />
+                }
             </Button.Content>
-            {iconPosition === 'right' && icon && <Button.Icon source={icon} />}
+            {
+                (type === 'primary' || type === 'secondary') &&
+                icon && iconPosition === 'right' &&
+                <Button.Icon
+                    source={icon}
+                />
+            }
         </Button>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
         height: UIConstant.boxButtonHeight,
         width: 250,
     },
-    centerContent: {
+    content: {
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    primary: {
-        backgroundColor: 'blue',
-        justifyContent: 'center',
+        backgroundColor: 'green',
     },
 });

@@ -18,15 +18,25 @@ export const Buttons = () => (
         <ExampleSection title="UIBoxButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
-                    testID="uiBoxButton_default"
+                    testID="uiBoxButton_primary"
                     title="Action"
-                    onPress={() => console.log('Pressed UIBoxButton')}
+                    onPress={() => console.log('Pressed UIBoxButton primary')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_primary_disabled"
+                    title="Disabled"
+                    onPress={() => {
+                        // empty
+                    }}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     icon={UIAssets.icons.ui.camera}
-                    testID="uiBoxButton_leftIcon"
+                    testID="uiBoxButton_primary_leftIcon"
                     title="Action"
                     onPress={() => console.log('Pressed UIBoxButton')}
                 />
@@ -35,7 +45,7 @@ export const Buttons = () => (
                 <UIBoxButton
                     icon={UIAssets.icons.ui.buttonDots}
                     iconPosition="middle"
-                    testID="uiBoxButton_middleIcon"
+                    testID="uiBoxButton_primary_middleIcon"
                     title="Action"
                     onPress={() => console.log('Pressed UIBoxButton')}
                 />
@@ -44,17 +54,74 @@ export const Buttons = () => (
                 <UIBoxButton
                     icon={UIAssets.icons.ui.camera}
                     iconPosition="right"
-                    testID="uiBoxButton_rightIcon"
+                    testID="uiBoxButton_primary_rightIcon"
                     title="Action"
                     onPress={() => console.log('Pressed UIBoxButton')}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
-                    testID="uiBoxButton_rightIcon"
+                    testID="uiBoxButton_primary_loading"
                     title="Action"
                     loading
                     onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_secondary"
+                    title="Action"
+                    type="secondary"
+                    onPress={() => console.log('Pressed UIBoxButton secondary')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_secondary_disabled"
+                    title="Action"
+                    type="secondary"
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_tertiary"
+                    title="Action"
+                    type="tertiary"
+                    onPress={() => console.log('Pressed UIBoxButton tertiary')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_tertiary_disabled"
+                    title="Action"
+                    type="tertiary"
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_nulled"
+                    title="Action"
+                    type="nulled"
+                    onPress={() => console.log('Pressed UIBoxButton nulled')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_nulled_disabled"
+                    title="Action"
+                    type="nulled"
+                    onPress={() => {
+                        // empty
+                    }}
                 />
             </View>
         </ExampleSection>

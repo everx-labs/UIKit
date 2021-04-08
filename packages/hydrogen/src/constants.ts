@@ -6,6 +6,8 @@ export const UIConstant = {
     smallButtonIconSize: 12,
     normalButtonIconSize: 20,
 
+    buttonBorderWidth: 1,
+
     boxButtonHeight: 48,
     msgButtonHeight: 40,
     pillButtonHeight: 32,

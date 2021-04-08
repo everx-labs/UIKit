@@ -6,8 +6,9 @@ import {
     ButtonContent,
     ButtonIcon,
     ButtonTitle,
-    // useButtonChildren,
+    useButtonChildren,
 } from './useButtonChildren';
+import { useHover } from '../useHover';
 
 type ButtonProps = {
     children: React.ReactNode;
@@ -41,18 +42,35 @@ const ButtonForward = React.forwardRef<
         },
         [loading, onPress],
     );
+
+    const handlePressIn = () => {
+        console.log('on press in');
+    };
+
+    const handlePressOut = () => {
+        console.log('on press out');
+    };
+
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+    const processedChildren = useButtonChildren(children);
+
     return (
         <TouchableOpacity
             ref={ref}
             {...props}
-            disabled={disabled}
+            disabled={isHovered}
             onPress={handleOnPress}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            // @ts-expect-error
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             testID={testID}
         >
             <View style={[styles.content, containerStyle]}>
                 {loading ? (
                     <ActivityIndicator />
-                ) : children}
+                ) : processedChildren}
             </View>
         </TouchableOpacity>
     );
@@ -73,5 +91,7 @@ Button.Title = ButtonTitle;
 const styles = StyleSheet.create({
     content: {
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
