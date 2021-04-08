@@ -9,6 +9,7 @@ import {
     UINumberTextView,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {
     UIAmountInput,
     UIBankCardNumberInput,
@@ -259,6 +260,22 @@ export const Inputs = () => {
                         }}
                         onSubmit={() => {
                             console.log('submit');
+                        }}
+                    />
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIAddressInput">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIAddressTextView
+                        testID="uiAddressInput_default"
+                        label="Type address"
+                        validateAddress={() => Promise.resolve(null)}
+                        qrCode={{
+                            parseData: () => {
+                                return Promise.resolve(
+                                    '0:00000000000000000000000000000000000000000000000000000000000',
+                                );
+                            },
                         }}
                     />
                 </View>

@@ -7,6 +7,7 @@ import { useFocused, useUITextViewValue } from './UITextView';
 import {
     UIMaterialTextView,
     UIMaterialTextViewProps,
+    UIMaterialTextViewRef,
 } from './UIMaterialTextView';
 
 const MAX_KEY_LENGTH = 64;
@@ -108,32 +109,33 @@ type UIKeyTextViewProps = Omit<
     onDone: OnDone;
 };
 
-export const UIKeyTextView = React.forwardRef<TextInput, UIKeyTextViewProps>(
-    function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
-        const { isFocused, onFocus, onBlur } = useFocused(
-            props.onFocus,
-            props.onBlur,
-        );
-        const {
-            onChangeText,
-            onKeyPress,
-            helperText,
-            success,
-            error,
-        } = useKeyTextView(ref, isFocused, props);
+export const UIKeyTextView = React.forwardRef<
+    UIMaterialTextViewRef,
+    UIKeyTextViewProps
+>(function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
+    const { isFocused, onFocus, onBlur } = useFocused(
+        props.onFocus,
+        props.onBlur,
+    );
+    const {
+        onChangeText,
+        onKeyPress,
+        helperText,
+        success,
+        error,
+    } = useKeyTextView(ref, isFocused, props);
 
-        return (
-            <UIMaterialTextView
-                ref={ref}
-                {...props}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                onChangeText={onChangeText}
-                onKeyPress={onKeyPress}
-                helperText={helperText}
-                success={success}
-                error={error}
-            />
-        );
-    },
-);
+    return (
+        <UIMaterialTextView
+            ref={ref}
+            {...props}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onChangeText={onChangeText}
+            onKeyPress={onKeyPress}
+            helperText={helperText}
+            success={success}
+            error={error}
+        />
+    );
+});

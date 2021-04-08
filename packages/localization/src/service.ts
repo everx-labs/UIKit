@@ -1,28 +1,35 @@
-// @flow
 import dayjs from 'dayjs';
-import LocalizedStrings from 'react-native-localization';
+import LocalizedStringsService, { LocalizedStrings } from 'react-native-localization';
 import BigNumber from 'bignumber.js';
-
-import availableLanguages from './languages';
-import { getDateFormatInfo, getNumberFormatInfo, prepareLocales } from './utils';
+import availableLanguages, { UILocalizedData } from './languages';
+import {
+    getDateFormatInfo,
+    getNumberFormatInfo,
+    prepare,
+    UIFunction,
+} from './utils';
 import type {
-    Language,
     Languages,
-    LocalizedStringsMethods,
+    NumberParts,
+    NumberPartsOptions,
     StringLocaleInfo,
 } from './types';
-import type { UILocalizedData } from './languages/types';
 import {
+    Language,
     languagesInfo,
     predefinedConstants,
     UIConstant,
-    UIFunction,
 } from './constants';
-import type { NumberParts, NumberPartsOptions } from './constants';
+import type { LanguagesOptions } from './types';
 
-const preparedLanguages = prepareLocales<UILocalizedData>(
+const langsOptions: LanguagesOptions = Object.values(Language).reduce(
+    (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
+    {},
+);
+
+const preparedLanguages = prepare<UILocalizedData>(
     availableLanguages,
-    predefinedConstants,
+    langsOptions,
 );
 
 const defaultLocaleInfo: StringLocaleInfo = {
@@ -36,13 +43,16 @@ type LanguageServiceOptions<T> = {
     localeInfo?: StringLocaleInfo
 }
 
-export class LocalizationService<T> extends LocalizedStrings {
+export type LocalizedInstance<T> = LocalizedStrings<T> & LocalizationService<T>
+
+// @ts-ignore
+export class LocalizationService<T> extends (LocalizedStringsService as LocalizedStrings<T>) {
     languages: Language[];
     localeInfo: StringLocaleInfo;
 
     constructor({ languages, localeInfo = defaultLocaleInfo }: LanguageServiceOptions<T>) {
         super(languages);
-        this.languages = Object.keys(languages);
+        this.languages = Object.keys(languages) as Language[];
         this.localeInfo = localeInfo;
     }
 
@@ -51,33 +61,40 @@ export class LocalizationService<T> extends LocalizedStrings {
     }
 
     amountToLocale(
-        number: BigNumber | string | number,
+        value: BigNumber | string | number | unknown,
         options: NumberPartsOptions = {
             minimumFractionDigits: 0,
             maximumFractionDigits: UIConstant.maxDecimalDigits,
         },
         localeInfo: StringLocaleInfo = this.localeInfo,
     ): string {
-        let parts: ?NumberParts;
+        let parts: NumberParts | null;
         try {
-            let numberString;
-            if (number instanceof BigNumber) {
-                numberString = number.toFixed();
-            } else if (number instanceof String || typeof number === 'string') {
-                numberString = number;
-            } else { // number
-                numberString = UIFunction.getNumberString(number);
+            let numberString: string;
+
+            if (BigNumber.isBigNumber(value)) {
+                numberString = value.toFixed();
+            } else if (typeof value === 'string') {
+                numberString = value;
+            }  else if (value instanceof String) {
+                numberString = value.toString();
+            } else if (typeof value === 'number') {
+                numberString = UIFunction.getNumberString(value);
+            } else {
+                throw Error('[LocalizationService] Passed number is unknown type')
             }
+
             const isNormalized = !Number.isNaN(Number(numberString));
             if (!isNormalized) { // Check if not normalized
                 throw Error('[LocalizationService] Passed number is not normalized');
             }
+
             parts = UIFunction.getNumberParts(numberString, localeInfo, options, isNormalized);
         } catch (error) {
             // failed to get number parts with error
             parts = null;
         }
-        return parts?.valueString || `${number}`;
+        return parts?.valueString || `${value}`;
     }
 
     localizedStringForValue(value: number, base: string) {
@@ -153,23 +170,21 @@ export class LocalizationService<T> extends LocalizedStrings {
     }
 
     getLanguageFromString(language: string): Language {
-        if (this.languages.includes(language)) {
-            return language;
+        if (this.languages.includes(language as Language)) {
+            return language as Language;
         }
 
-        const [lang] = this.getInterfaceLanguage().split('-');
+        const [lang]: Language[] = this.getInterfaceLanguage().split('-');
 
         if (this.languages.includes(lang)) {
             return lang;
         }
 
-        return 'en';
+        return Language.En;
     }
 }
 
-export type LocalizedInstance<T> = T & LocalizedStringsMethods
-
-export const uiLocalized: LocalizedInstance<UILocalizedData>
-    = (new LocalizationService<UILocalizedData>({ languages: preparedLanguages }): any);
+export const uiLocalized: LocalizedInstance<UILocalizedData> =
+    (new LocalizationService<UILocalizedData>({ languages: preparedLanguages }) as any)
 
 export const TIME_FORMAT = 'HH:mm';

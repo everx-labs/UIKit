@@ -44,4 +44,4 @@ export function UIBanner(props: Props) {
             </UILabel>
         </UIBackgroundView>
     );
-};
+}

@@ -125,7 +125,11 @@ export function useUITextViewValue(
     const wasClearedWithEnter = React.useRef(false);
 
     const onChangeText = React.useCallback(
-        (text: string) => {
+        // Sometimes when we trying to change a value with
+        // a ref's method `changeValue`, we don't want to call onChangeText prop,
+        // since the call might be already from an onChangeText prop
+        // and it could cause a recursive calls
+        (text: string, callOnChangeProp = true) => {
             // It could be that we sent a message with "Enter" from keyboard
             // But the event with newline is fired after this
             // So, to prevent setting it, need to check a flag
@@ -147,7 +151,7 @@ export function useUITextViewValue(
                 setInputHasValue(hasValue);
             }
 
-            if (onChangeTextProp) {
+            if (callOnChangeProp && onChangeTextProp) {
                 onChangeTextProp(text);
             }
 

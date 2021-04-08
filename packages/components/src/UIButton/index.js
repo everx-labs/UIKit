@@ -189,6 +189,10 @@ export type ButtonProps = UIActionComponentProps & {
     @default ''
     */
     title?: string,
+    /** Button title color
+     @default null
+     */
+    titleColor?: ColorVariants,
     /** button title style
     @default ''
     */
@@ -397,7 +401,10 @@ export default class UIButton extends UIActionComponent<ButtonProps, State> {
     };
 
     getTitleColor = (): ColorVariants => {
-        const { buttonStyle, buttonColor, disabled } = this.props;
+        const { buttonStyle, buttonColor, disabled, titleColor } = this.props;
+        if (titleColor) {
+            return titleColor;
+        }
         if (buttonStyle === UIButton.buttonStyle.full) {
             return disabled
                 ? ColorVariants.TextTertiary
@@ -782,6 +789,7 @@ UIButton.defaultProps = {
     iconHover: null,
     theme: UIColor.Theme.Light,
     title: '',
+    titleColor: null,
     iconR: null,
     iconRHover: null,
     iconStyle: null,
