@@ -7,18 +7,46 @@
 
 #import "UIObservingInputAccessoryView.h"
 
-@implementation UIObservingInputAccessoryView
+@implementation UIObservingInputAccessoryView {
+    UIView *_filler;
+    NSLayoutConstraint *_heightContraint;
+}
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.userInteractionEnabled = NO;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
+//        self.userInteractionEnabled = NO;
+        _filler = [UIView new];
+        _filler.backgroundColor = [UIColor clearColor];
+        [self addSubview:_filler];
+        
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        _filler.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        _heightContraint = [_filler.heightAnchor constraintEqualToConstant:0];
+        _heightContraint.active = YES;
+        
+        [_filler.leftAnchor constraintEqualToAnchor:self.leftAnchor].active = YES;
+        [_filler.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = YES;
+        [_filler.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
+        [_filler.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
         
         _keyboardHeight = 0;
     }
     return self;
+}
+
+- (CGSize)intrinsicContentSize {
+    return CGSizeZero;
+}
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [_filler setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    
+    _heightContraint.constant = frame.size.height;
+    [self layoutIfNeeded];
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
