@@ -3,6 +3,7 @@
   "version": "2.2.0",
   "description": "Browser based on Tonlabs's UIKit",
   "scripts": {
+    "tsc": "tsc --noEmit",
     "prepare": "bob build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

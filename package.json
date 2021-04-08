@@ -11,7 +11,8 @@
     "scripts": {
         "test": "jest",
         "flow": "flow check",
-        "tsc": "tsc --noEmit",
+        "tsc": "lerna run tsc",
+        "tsc-example": "cd ./Example && yarn run tsc",
         "test:coverage": "jest --coverage",
         "language:check": "babel-node --config-file ./babel.config.js scripts/checkLanguageFiles.js",
         "language:sync": "babel-node --config-file ./babel.config.js scripts/syncLanguageFiles.js",
@@ -21,6 +22,7 @@
     "pre-commit": [
         "flow",
         "tsc",
+        "tsc-example",
         "cycles:check"
     ],
     "peerDependencies": {
