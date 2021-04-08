@@ -1,4 +1,4 @@
-package com.uikitexample;
+package tonlabs.uikit;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

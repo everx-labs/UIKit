@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
+		137F8A98A77769BBB45BB98F /* libPods-Quiver UI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6514A8C6CC5A82913914A6D6 /* libPods-Quiver UI.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1C35FC4EE0A072D56C0D2B43 /* libPods-Quiver UI-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920B7E7862E0BC2B9C24DE6A /* libPods-Quiver UI-tvOSTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
-		83B4B93FB91DCDF93E35FF91 /* libPods-UIKitExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */; };
 		A60D4178253DCC370046B610 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A60D4177253DCC370046B610 /* Images.xcassets */; };
 		A622D2B3257E818B00AAB081 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2AF257E818B00AAB081 /* Inter-Light.ttf */; };
 		A622D2B4257E818B00AAB081 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2B0257E818B00AAB081 /* Inter-Regular.ttf */; };
@@ -24,9 +25,8 @@
 		A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */; };
 		A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */; };
 		A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */; };
-		A9FFE61E4C14237EF4E5251B /* libPods-UIKitExample-UIKitExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */; };
-		C6B086BB07A3517EAC4310E8 /* libPods-UIKitExample-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */; };
-		D2D9D630BBD44660184620B6 /* libPods-UIKitExample-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */; };
+		A9F25BF479AD46690EDC59F7 /* libPods-Quiver UI-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC1E7B3792F6703709E9BE7A /* libPods-Quiver UI-tvOS.a */; };
+		DFE32877C0459E80C54C110A /* libPods-Quiver UI-Quiver UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,33 +47,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* UIKitExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIKitExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* Quiver UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Quiver UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNavigationSurfTests.m; sourceTree = "<group>"; };
-		0599A40149174638195124F1 /* Pods-UIKitExample-UIKitExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-UIKitExampleTests.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* UIKitExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D289A5D8B1E5788B9D470EA /* Pods-Quiver UI-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOSTests/Pods-Quiver UI-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Quiver UI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quiver UI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1BE8DF481CF4A66EDEF6AF9D /* Pods-UIKitExample-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOSTests/Pods-UIKitExample-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E47B1E0B4A5D006451C7 /* UIKitExample-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UIKitExample-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* UIKitExample-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UIKitExample-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B20525732C8538644827907 /* Pods-UIKitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample/Pods-UIKitExample.debug.xcconfig"; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* Quiver UI-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quiver UI-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* Quiver UI-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Quiver UI-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4722F4DF2801567DBF7D754C /* Pods-UIKitExample-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOS/Pods-UIKitExample-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		497E81DB1805FCE954E1ECE4 /* Pods-UIKitExample-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOS.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOS/Pods-UIKitExample-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		697F6A2495B147C2B50869CC /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-ReactNavigationSurfTests/Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig"; sourceTree = "<group>"; };
-		7318379B65F0B868B457795F /* Pods-ReactNavigationSurf-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOS/Pods-ReactNavigationSurf-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		73989467B48B018703E22EDE /* Pods-ReactNavigationSurf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf/Pods-ReactNavigationSurf.debug.xcconfig"; sourceTree = "<group>"; };
-		74CB3C7999866CB70E7474E5 /* Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOSTests/Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		8AE3D25E3B79BE8FFA7C74AD /* Pods-UIKitExample-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-tvOSTests/Pods-UIKitExample-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-UIKitExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9555C60EBB07695A97BCD7EB /* Pods-ReactNavigationSurf-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOS/Pods-ReactNavigationSurf-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		59539D78125A9EE36E0F0D05 /* Pods-Quiver UI-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOS/Pods-Quiver UI-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		6514A8C6CC5A82913914A6D6 /* libPods-Quiver UI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F4C5F87858C1A722DD4EFBA /* Pods-Quiver UI-Quiver UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-Quiver UITests.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests.release.xcconfig"; sourceTree = "<group>"; };
+		920B7E7862E0BC2B9C24DE6A /* libPods-Quiver UI-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A60D4177253DCC370046B610 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A622D2AF257E818B00AAB081 /* Inter-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Light.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		A622D2B0257E818B00AAB081 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Regular.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
@@ -83,13 +73,15 @@
 		A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "../../assets/fonts/SFProText-Bold.ttf"; sourceTree = "<group>"; };
 		A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Medium.ttf"; path = "../../assets/fonts/SFProText-Medium.ttf"; sourceTree = "<group>"; };
 		A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Light.ttf"; path = "../../assets/fonts/SFProText-Light.ttf"; sourceTree = "<group>"; };
-		AE025ECA7E246D7BBD62B1EE /* Pods-ReactNavigationSurf-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-tvOSTests/Pods-ReactNavigationSurf-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		E2E21460888583133CC543BC /* Pods-ReactNavigationSurf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf.release.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf/Pods-ReactNavigationSurf.release.xcconfig"; sourceTree = "<group>"; };
+		B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-Quiver UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7083FA2B9E71BE3A4E39210 /* Pods-Quiver UI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.release.xcconfig"; sourceTree = "<group>"; };
+		C37FD4F69612A9731C064BBD /* Pods-Quiver UI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.debug.xcconfig"; sourceTree = "<group>"; };
+		DC1E7B3792F6703709E9BE7A /* libPods-Quiver UI-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E627402D77B0E9F3D62DE311 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOSTests/Pods-Quiver UI-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EC3E581BCA3A297ABD1105C3 /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-Quiver UITests.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIKitExample-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F40460B8FBCC7AEAF18A7F0A /* Pods-UIKitExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitExample.release.xcconfig"; path = "Target Support Files/Pods-UIKitExample/Pods-UIKitExample.release.xcconfig"; sourceTree = "<group>"; };
-		FB116A9CDBFAAB40C921E2F4 /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactNavigationSurf-ReactNavigationSurfTests/Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F63E59532F0DABD263B45D96 /* Pods-Quiver UI-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOS/Pods-Quiver UI-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9FFE61E4C14237EF4E5251B /* libPods-UIKitExample-UIKitExampleTests.a in Frameworks */,
+				DFE32877C0459E80C54C110A /* libPods-Quiver UI-Quiver UITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,7 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83B4B93FB91DCDF93E35FF91 /* libPods-UIKitExample.a in Frameworks */,
+				137F8A98A77769BBB45BB98F /* libPods-Quiver UI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6B086BB07A3517EAC4310E8 /* libPods-UIKitExample-tvOS.a in Frameworks */,
+				A9F25BF479AD46690EDC59F7 /* libPods-Quiver UI-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,20 +113,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2D9D630BBD44660184620B6 /* libPods-UIKitExample-tvOSTests.a in Frameworks */,
+				1C35FC4EE0A072D56C0D2B43 /* libPods-Quiver UI-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* UIKitExampleTests */ = {
+		00E356EF1AD99517003FC87E /* Quiver UITests */ = {
 			isa = PBXGroup;
 			children = (
 				00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = UIKitExampleTests;
+			path = "Quiver UITests";
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -145,7 +137,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* UIKitExample */ = {
+		13B07FAE1A68108700A75B9A /* Quiver UI */ = {
 			isa = PBXGroup;
 			children = (
 				A60D4177253DCC370046B610 /* Images.xcassets */,
@@ -155,7 +147,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			path = UIKitExample;
+			path = "Quiver UI";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -164,10 +156,10 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */,
-				5C7F1D65FA9D6F0CD13C160C /* libPods-UIKitExample.a */,
-				903EA805D0C49D5A2047220E /* libPods-UIKitExample-UIKitExampleTests.a */,
-				29CAC08FF8DA01A7DDBDD74C /* libPods-UIKitExample-tvOS.a */,
-				ED782C973FE32BE14B6CF738 /* libPods-UIKitExample-tvOSTests.a */,
+				6514A8C6CC5A82913914A6D6 /* libPods-Quiver UI.a */,
+				B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */,
+				DC1E7B3792F6703709E9BE7A /* libPods-Quiver UI-tvOS.a */,
+				920B7E7862E0BC2B9C24DE6A /* libPods-Quiver UI-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -182,9 +174,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* UIKitExample */,
+				13B07FAE1A68108700A75B9A /* Quiver UI */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* UIKitExampleTests */,
+				00E356EF1AD99517003FC87E /* Quiver UITests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				A63C5DEC252EF7CF0024AA83 /* Resources */,
@@ -198,10 +190,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* UIKitExample.app */,
-				00E356EE1AD99517003FC87E /* UIKitExampleTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* UIKitExample-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* UIKitExample-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Quiver UI.app */,
+				00E356EE1AD99517003FC87E /* Quiver UITests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* Quiver UI-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* Quiver UI-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -224,22 +216,14 @@
 		F1C06A65FCFB57C82C3593B9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				73989467B48B018703E22EDE /* Pods-ReactNavigationSurf.debug.xcconfig */,
-				E2E21460888583133CC543BC /* Pods-ReactNavigationSurf.release.xcconfig */,
-				FB116A9CDBFAAB40C921E2F4 /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.debug.xcconfig */,
-				697F6A2495B147C2B50869CC /* Pods-ReactNavigationSurf-ReactNavigationSurfTests.release.xcconfig */,
-				7318379B65F0B868B457795F /* Pods-ReactNavigationSurf-tvOS.debug.xcconfig */,
-				9555C60EBB07695A97BCD7EB /* Pods-ReactNavigationSurf-tvOS.release.xcconfig */,
-				74CB3C7999866CB70E7474E5 /* Pods-ReactNavigationSurf-tvOSTests.debug.xcconfig */,
-				AE025ECA7E246D7BBD62B1EE /* Pods-ReactNavigationSurf-tvOSTests.release.xcconfig */,
-				3B20525732C8538644827907 /* Pods-UIKitExample.debug.xcconfig */,
-				F40460B8FBCC7AEAF18A7F0A /* Pods-UIKitExample.release.xcconfig */,
-				9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */,
-				0599A40149174638195124F1 /* Pods-UIKitExample-UIKitExampleTests.release.xcconfig */,
-				4722F4DF2801567DBF7D754C /* Pods-UIKitExample-tvOS.debug.xcconfig */,
-				497E81DB1805FCE954E1ECE4 /* Pods-UIKitExample-tvOS.release.xcconfig */,
-				8AE3D25E3B79BE8FFA7C74AD /* Pods-UIKitExample-tvOSTests.debug.xcconfig */,
-				1BE8DF481CF4A66EDEF6AF9D /* Pods-UIKitExample-tvOSTests.release.xcconfig */,
+				C37FD4F69612A9731C064BBD /* Pods-Quiver UI.debug.xcconfig */,
+				B7083FA2B9E71BE3A4E39210 /* Pods-Quiver UI.release.xcconfig */,
+				EC3E581BCA3A297ABD1105C3 /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */,
+				6F4C5F87858C1A722DD4EFBA /* Pods-Quiver UI-Quiver UITests.release.xcconfig */,
+				F63E59532F0DABD263B45D96 /* Pods-Quiver UI-tvOS.debug.xcconfig */,
+				59539D78125A9EE36E0F0D05 /* Pods-Quiver UI-tvOS.release.xcconfig */,
+				E627402D77B0E9F3D62DE311 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */,
+				0D289A5D8B1E5788B9D470EA /* Pods-Quiver UI-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -247,9 +231,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* UIKitExampleTests */ = {
+		00E356ED1AD99517003FC87E /* Quiver UITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UIKitExampleTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "Quiver UITests" */;
 			buildPhases = (
 				835D8AAE5BFD46033004B2B8 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -262,14 +246,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = UIKitExampleTests;
+			name = "Quiver UITests";
 			productName = ReactNavigationSurfTests;
-			productReference = 00E356EE1AD99517003FC87E /* UIKitExampleTests.xctest */;
+			productReference = 00E356EE1AD99517003FC87E /* Quiver UITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* UIKitExample */ = {
+		13B07F861A680F5B00A75B9A /* Quiver UI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "UIKitExample" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Quiver UI" */;
 			buildPhases = (
 				EE680C6F5F4B8C7F1A7F4011 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -283,14 +267,14 @@
 			);
 			dependencies = (
 			);
-			name = UIKitExample;
+			name = "Quiver UI";
 			productName = ReactNavigationSurf;
-			productReference = 13B07F961A680F5B00A75B9A /* UIKitExample.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Quiver UI.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* UIKitExample-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* Quiver UI-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Quiver UI-tvOS" */;
 			buildPhases = (
 				9C6B62F986608769DC2D7612 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
@@ -303,14 +287,14 @@
 			);
 			dependencies = (
 			);
-			name = "UIKitExample-tvOS";
+			name = "Quiver UI-tvOS";
 			productName = "ReactNavigationSurf-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* UIKitExample-tvOS.app */;
+			productReference = 2D02E47B1E0B4A5D006451C7 /* Quiver UI-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* UIKitExample-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* Quiver UI-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Quiver UI-tvOSTests" */;
 			buildPhases = (
 				0EE596F1C19CE9098EE356FB /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
@@ -322,9 +306,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "UIKitExample-tvOSTests";
+			name = "Quiver UI-tvOSTests";
 			productName = "ReactNavigationSurf-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* UIKitExample-tvOSTests.xctest */;
+			productReference = 2D02E4901E0B4A5D006451C7 /* Quiver UI-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -340,7 +324,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = G4M86J75U4;
+						DevelopmentTeam = S87M7476F9;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -354,7 +338,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "UIKitExample" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Quiver UI" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -367,10 +351,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* UIKitExample */,
-				00E356ED1AD99517003FC87E /* UIKitExampleTests */,
-				2D02E47A1E0B4A5D006451C7 /* UIKitExample-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* UIKitExample-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* Quiver UI */,
+				00E356ED1AD99517003FC87E /* Quiver UITests */,
+				2D02E47A1E0B4A5D006451C7 /* Quiver UI-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* Quiver UI-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -437,7 +421,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -446,7 +430,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UIKitExample-UIKitExampleTests/Pods-UIKitExample-UIKitExampleTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		0EE596F1C19CE9098EE356FB /* [CP] Check Pods Manifest.lock */ = {
@@ -464,7 +448,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -491,7 +475,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UIKitExample/Pods-UIKitExample-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Quiver UI/Pods-Quiver UI-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -500,7 +484,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UIKitExample/Pods-UIKitExample-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI/Pods-Quiver UI-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		835D8AAE5BFD46033004B2B8 /* [CP] Check Pods Manifest.lock */ = {
@@ -518,7 +502,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-UIKitExampleTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-Quiver UITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -540,7 +524,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -562,7 +546,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UIKitExample-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -649,12 +633,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* UIKitExample */;
+			target = 13B07F861A680F5B00A75B9A /* Quiver UI */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* UIKitExample-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* Quiver UI-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -673,7 +657,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C50D33348B7562A31D3466C /* Pods-UIKitExample-UIKitExampleTests.debug.xcconfig */;
+			baseConfigurationReference = EC3E581BCA3A297ABD1105C3 /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -690,13 +674,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample.app/UIKitExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quiver UI.app/Quiver UI";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0599A40149174638195124F1 /* Pods-UIKitExample-UIKitExampleTests.release.xcconfig */;
+			baseConfigurationReference = 6F4C5F87858C1A722DD4EFBA /* Pods-Quiver UI-Quiver UITests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -710,32 +694,32 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample.app/UIKitExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quiver UI.app/Quiver UI";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B20525732C8538644827907 /* Pods-UIKitExample.debug.xcconfig */;
+			baseConfigurationReference = C37FD4F69612A9731C064BBD /* Pods-Quiver UI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G4M86J75U4;
+				DEVELOPMENT_TEAM = S87M7476F9;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = UIKitExample/Info.plist;
+				INFOPLIST_FILE = "Quiver UI/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = UIKitExample;
+				PRODUCT_BUNDLE_IDENTIFIER = tonlabs.uikit;
+				PRODUCT_NAME = "Quiver UI";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -744,21 +728,21 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F40460B8FBCC7AEAF18A7F0A /* Pods-UIKitExample.release.xcconfig */;
+			baseConfigurationReference = B7083FA2B9E71BE3A4E39210 /* Pods-Quiver UI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G4M86J75U4;
-				INFOPLIST_FILE = UIKitExample/Info.plist;
+				DEVELOPMENT_TEAM = S87M7476F9;
+				INFOPLIST_FILE = "Quiver UI/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = UIKitExample;
+				PRODUCT_BUNDLE_IDENTIFIER = tonlabs.uikit;
+				PRODUCT_NAME = "Quiver UI";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -766,7 +750,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4722F4DF2801567DBF7D754C /* Pods-UIKitExample-tvOS.debug.xcconfig */;
+			baseConfigurationReference = F63E59532F0DABD263B45D96 /* Pods-Quiver UI-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -794,7 +778,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 497E81DB1805FCE954E1ECE4 /* Pods-UIKitExample-tvOS.release.xcconfig */;
+			baseConfigurationReference = 59539D78125A9EE36E0F0D05 /* Pods-Quiver UI-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -822,7 +806,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8AE3D25E3B79BE8FFA7C74AD /* Pods-UIKitExample-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = E627402D77B0E9F3D62DE311 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -842,14 +826,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.ReactNavigationSurf-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample-tvOS.app/UIKitExample-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quiver UI-tvOS.app/Quiver UI-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1BE8DF481CF4A66EDEF6AF9D /* Pods-UIKitExample-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 0D289A5D8B1E5788B9D470EA /* Pods-Quiver UI-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -869,7 +853,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.ReactNavigationSurf-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitExample-tvOS.app/UIKitExample-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quiver UI-tvOS.app/Quiver UI-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -990,7 +974,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UIKitExampleTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "Quiver UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -999,7 +983,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "UIKitExample" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Quiver UI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1008,7 +992,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Quiver UI-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -1017,7 +1001,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "UIKitExample-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Quiver UI-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -1026,7 +1010,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "UIKitExample" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Quiver UI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
