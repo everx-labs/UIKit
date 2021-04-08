@@ -340,7 +340,6 @@ const ChatWindowScreen = () => {
                 onLoadEarlierMessages={onLoadEarlierMessages}
                 canLoadMore
                 isLoadingMore={false}
-                isCustomKeyboardVisible={false}
                 messages={messages}
             />
             <UIChatInput
