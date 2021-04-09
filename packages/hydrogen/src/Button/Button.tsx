@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { ActivityIndicator, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
+import { TouchableElement } from './TouchableElement';
 
 import {
     ButtonContent,
@@ -19,7 +22,7 @@ type ButtonProps = {
 }
 
 const ButtonForward = React.forwardRef<
-    TouchableOpacity,
+    typeof TouchableElement,
     ButtonProps
 >(function ButtonForwarded(
     {
@@ -31,7 +34,6 @@ const ButtonForward = React.forwardRef<
         testID,
         ...props
     }: ButtonProps,
-    ref
 ) {
     const handleOnPress = React.useCallback(
         () => {
@@ -42,32 +44,22 @@ const ButtonForward = React.forwardRef<
         [loading, onPress],
     );
 
-    const handlePressIn = () => {
-        console.log('on press in');
-    };
-
-    const handlePressOut = () => {
-        console.log('on press out');
-    };
-
     const processedChildren = useButtonChildren(children);
 
     return (
-        <TouchableOpacity
-            ref={ref}
+        <TouchableElement
             {...props}
             disabled={disabled}
             onPress={handleOnPress}
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
+            style={[containerStyle, styles.content]}
             testID={testID}
         >
-            <View style={[styles.content, containerStyle]}>
+            <View>
                 {loading ? (
                     <ActivityIndicator />
                 ) : processedChildren}
             </View>
-        </TouchableOpacity>
+        </TouchableElement>
     );
 });
 

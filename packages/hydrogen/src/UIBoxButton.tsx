@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
     container: {
         height: UIConstant.boxButtonHeight,
         padding: UIConstant.normalContentOffset,
-        width: 300,
     },
     leftIcon: {
         marginRight: 10,

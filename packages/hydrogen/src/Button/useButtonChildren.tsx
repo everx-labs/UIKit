@@ -15,7 +15,7 @@ export function ButtonContent({
     children: React.ReactNode;
 }) {
     return (
-        <View style={[styles.content, style]} {...props}>
+        <View {...props} style={[styles.content, style]}>
             {children}
         </View>
     );
@@ -57,7 +57,7 @@ export function ButtonTitle({
     children,
     titleColor = UILabelColors.TextPrimaryInverted,
     titleRole = UILabelRoles.Action,
-    ...rest
+    ...props
 }: {
     children: string,
     titleColor?: ColorVariants,
@@ -65,7 +65,7 @@ export function ButtonTitle({
 }) {
     return (
         <UILabel
-            {...rest}
+            {...props}
             color={titleColor}
             role={titleRole}
         >
