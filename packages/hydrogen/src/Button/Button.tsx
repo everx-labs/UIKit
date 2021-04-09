@@ -8,7 +8,6 @@ import {
     ButtonTitle,
     useButtonChildren,
 } from './useButtonChildren';
-import { useHover } from '../useHover';
 
 type ButtonProps = {
     children: React.ReactNode;
@@ -51,20 +50,16 @@ const ButtonForward = React.forwardRef<
         console.log('on press out');
     };
 
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useButtonChildren(children);
 
     return (
         <TouchableOpacity
             ref={ref}
             {...props}
-            disabled={isHovered}
+            disabled={disabled}
             onPress={handleOnPress}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
-            // @ts-expect-error
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
             testID={testID}
         >
             <View style={[styles.content, containerStyle]}>

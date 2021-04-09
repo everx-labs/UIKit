@@ -9,12 +9,13 @@ import type { TypographyVariants } from '../Typography';
 
 export function ButtonContent({
     children,
+    style,
     ...props
 }: ViewProps & {
     children: React.ReactNode;
 }) {
     return (
-        <View {...props}>
+        <View style={[styles.content, style]} {...props}>
             {children}
         </View>
     );
@@ -55,7 +56,8 @@ export function ButtonIcon({
 export function ButtonTitle({
     children,
     titleColor = UILabelColors.TextPrimaryInverted,
-    titleRole = UILabelRoles.Action
+    titleRole = UILabelRoles.Action,
+    ...rest
 }: {
     children: string,
     titleColor?: ColorVariants,
@@ -63,6 +65,7 @@ export function ButtonTitle({
 }) {
     return (
         <UILabel
+            {...rest}
             color={titleColor}
             role={titleRole}
         >
@@ -143,6 +146,10 @@ export const useButtonChildren = (children: React.ReactNode) => {
 };
 
 const styles = StyleSheet.create({
+    content: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     singleElementContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -156,14 +163,20 @@ const styles = StyleSheet.create({
     },
     left: {
         flex: 1,
-        alignItems: 'flex-start',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     center: {
         flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     right: {
         flex: 1,
-        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
 });

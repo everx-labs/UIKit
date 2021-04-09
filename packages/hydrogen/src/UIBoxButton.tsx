@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {ImageSourcePropType, StyleSheet} from 'react-native';
+import { ImageSourcePropType, StyleSheet } from 'react-native';
 
-import {Button} from './Button';
-import {UIConstant} from './constants';
-import {ColorVariants, useTheme} from "./Colors";
+import { Button } from './Button';
+import { UIConstant } from './constants';
+import { ColorVariants, useTheme } from './Colors';
 
 export type UIBoxButtonProps = {
     /**
@@ -130,23 +130,21 @@ export const UIBoxButton = ({
             onPress={onPress}
             testID={testID}
         >
-            <Button.Content style={styles.content}>
+            <Button.Content>
                 {
                     iconPosition === 'left' && icon &&
-                    <Button.Icon source={icon} />
+                    <Button.Icon source={icon} style={styles.leftIcon} />
                 }
                 <Button.Title titleColor={titleColor}>{title}</Button.Title>
                 {
                     iconPosition === 'middle' && icon &&
-                    <Button.Icon source={icon} size="small" />
+                    <Button.Icon source={icon} size="small" style={styles.middleIcon} />
                 }
             </Button.Content>
             {
                 (type === 'primary' || type === 'secondary') &&
                 icon && iconPosition === 'right' &&
-                <Button.Icon
-                    source={icon}
-                />
+                <Button.Icon source={icon} style={styles.rightIcon} />
             }
         </Button>
     );
@@ -155,11 +153,16 @@ export const UIBoxButton = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.boxButtonHeight,
-        width: 250,
+        padding: UIConstant.normalContentOffset,
+        width: 300,
     },
-    content: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'green',
+    leftIcon: {
+        marginRight: 10,
+    },
+    middleIcon: {
+        marginLeft: 6,
+    },
+    rightIcon: {
+        marginRight: 4,
     },
 });
