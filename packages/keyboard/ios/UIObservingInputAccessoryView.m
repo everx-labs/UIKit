@@ -16,9 +16,13 @@
 {
     self = [super init];
     if (self) {
-//        self.userInteractionEnabled = NO;
+        self.userInteractionEnabled = NO;
+        /**
+         * A filler is needed to set a proper height for the current view
+         * as for some reason it's not enough to just set frame
+         */
         _filler = [UIView new];
-        _filler.backgroundColor = [UIColor clearColor];
+        
         [self addSubview:_filler];
         
         self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -38,6 +42,7 @@
 }
 
 - (CGSize)intrinsicContentSize {
+    // This is needed so the view size is based on autolayout constraints.
     return CGSizeZero;
 }
 
@@ -46,6 +51,7 @@
     [_filler setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     
     _heightContraint.constant = frame.size.height;
+    
     [self layoutIfNeeded];
 }
 

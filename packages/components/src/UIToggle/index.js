@@ -1,6 +1,11 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    Platform,
+} from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
@@ -97,10 +102,16 @@ export default class UIToggle extends UIComponent<Props, {}> {
             >
                 <View style={containerStyle}>
                     {React.cloneElement(element, {
-                        style: [element.props.style, {
-                            cursor: 'pointer',
-                            touchAction: 'manipulation',
-                        }],
+                        style: [
+                            element.props.style,
+                            Platform.select({
+                                web: {
+                                    cursor: 'pointer',
+                                    touchAction: 'manipulation',
+                                },
+                                default: null,
+                            }),
+                        ],
                     })}
                 </View>
             </TouchableWithoutFeedback>

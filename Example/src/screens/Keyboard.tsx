@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+    View,
+    TextInput,
+    TouchableOpacity,
+    StyleSheet,
+    InputAccessoryView,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILabel } from '@tonlabs/uikit.hydrogen';
@@ -26,7 +32,7 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 
 export function KeyboardScreen() {
     const insets = useSafeAreaInsets();
-    const inverted = true;
+    const inverted = false;
 
     const inputRef = React.useRef<TextInput>(null);
     const cStickers = useStickers(stickers, (/* sticker */) => {
@@ -36,6 +42,14 @@ export function KeyboardScreen() {
         inputRef,
         cStickers,
     );
+
+    const IAV = true ? UIInputAccessoryView : InputAccessoryView;
+
+    // TODO:
+    // So the reason for now is that textinput losing focus wheen pop gesture begins
+    // Maybe try https://github.com/cotap/TAPKeyboardPop/blob/master/Classes/UIViewController%2BTAPKeyboardPop.m
+    // again, but instead of doing animation, just trying to return textinput as a firstResponder
+    // in our case?
 
     return (
         <>
@@ -56,6 +70,13 @@ export function KeyboardScreen() {
                         : { paddingTop: insets.bottom }),
                 }}
             >
+                <TouchableOpacity
+                    onPress={() => {
+                        inputRef.current?.focus();
+                    }}
+                >
+                    <UILabel>Press</UILabel>
+                </TouchableOpacity>
                 <UILabel style={inverted ? styles.verticallyInverted : null}>
                     Hi there!
                 </UILabel>
@@ -76,9 +97,9 @@ export function KeyboardScreen() {
                         );
                     })}
             </ExampleScreen>
-            <UIInputAccessoryView
-                managedScrollViewNativeID="keyboardScreenScrollView"
-                customKeyboardView={customKeyboardView}
+            <IAV
+            // managedScrollViewNativeID="keyboardScreenScrollView"
+            // customKeyboardView={customKeyboardView}
             >
                 <View
                     style={{
@@ -96,12 +117,13 @@ export function KeyboardScreen() {
                         style={{ flex: 1, backgroundColor: 'red' }}
                         placeholder="Type here"
                         onFocus={dismiss}
+                        onBlur={() => console.log("why I'm blured?")}
                     />
                     <TouchableOpacity onPress={toggle}>
                         <UILabel>Press</UILabel>
                     </TouchableOpacity>
                 </View>
-            </UIInputAccessoryView>
+            </IAV>
         </>
     );
 }

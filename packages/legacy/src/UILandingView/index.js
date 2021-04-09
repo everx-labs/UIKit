@@ -11,7 +11,7 @@ import { UIComponent } from '@tonlabs/uikit.components';
 import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 const FastImage =
-    Platform.OS !== 'web' ? require('react-native-fast-image').default : null;
+    Platform.OS !== 'web' ? require('react-native-fast-image') : null;
 
 const ImageComponent: any = Platform.OS === 'web' ? Image : FastImage;
 
@@ -44,9 +44,7 @@ const styles = StyleSheet.create({
 export default class UILandingView extends UIComponent<Props, State> {
     // Render
     render() {
-        const {
-            icon, title, description, content,
-        } = this.props;
+        const { icon, title, description, content } = this.props;
 
         return (
             <React.Fragment>
