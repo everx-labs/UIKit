@@ -19,19 +19,30 @@ export const TouchableElement = ({
     testID,
     ...props
 }: TouchableElementProps) => {
-    const handlePressIn = () => {
-        // empty
-    };
-
-    const handlePressOut = () => {
-        // empty
-    };
-
     const {
-        // isHovered,
+        isHovered,
         onMouseEnter,
         onMouseLeave,
     } = useHover();
+
+    const handlePressIn = () => {
+        // TODO: add pressIn animation
+    };
+
+    const handlePressOut = () => {
+        // TODO: add pressOut animation
+    };
+
+    React.useEffect(
+        () => {
+            if (!disabled && isHovered) {
+                // TODO: add hover animation/effect
+            } else {
+                // TODO: turn back to normal state
+            }
+        },
+        [disabled, isHovered],
+    );
 
     return (
         <TouchableWithoutFeedback
