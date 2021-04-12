@@ -14,9 +14,6 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_VIEW_PROPERTY(managedScrollViewNativeID, NSString);
-RCT_EXPORT_VIEW_PROPERTY(customKeyboardView, NSDictionary);
-
 + (BOOL)requiresMainQueueSetup {
     return NO;
 }

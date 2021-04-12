@@ -26,7 +26,7 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 
 export function KeyboardScreen() {
     const insets = useSafeAreaInsets();
-    const inverted = true;
+    const inverted = false;
 
     const inputRef = React.useRef<TextInput>(null);
     const cStickers = useStickers(stickers, (/* sticker */) => {
@@ -56,6 +56,13 @@ export function KeyboardScreen() {
                         : { paddingTop: insets.bottom }),
                 }}
             >
+                <TouchableOpacity
+                    onPress={() => {
+                        inputRef.current?.focus();
+                    }}
+                >
+                    <UILabel>Press</UILabel>
+                </TouchableOpacity>
                 <UILabel style={inverted ? styles.verticallyInverted : null}>
                     Hi there!
                 </UILabel>
@@ -96,6 +103,7 @@ export function KeyboardScreen() {
                         style={{ flex: 1, backgroundColor: 'red' }}
                         placeholder="Type here"
                         onFocus={dismiss}
+                        onBlur={() => console.log("why I'm blured?")}
                     />
                     <TouchableOpacity onPress={toggle}>
                         <UILabel>Press</UILabel>

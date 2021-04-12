@@ -8,6 +8,7 @@
 #import "UIInputAccessoryView.h"
 #import "UIInputAccessoryView+ScrollView.h"
 #import "UIInputAccessoryView+CustomKeyboard.h"
+#import "UIInputAccessoryView+ListenTextField.h"
 #import "UIObservingInputAccessoryView.h"
 #import "UICustomKeyboardViewController.h"
 
@@ -16,6 +17,7 @@
 #import <React/RCTScrollView.h>
 #import <React/RCTConvert.h>
 #import <React/RCTBaseTextInputView.h>
+#import <React/RCTTouchHandler.h>
 
 @interface UIInputAccessoryView() <UIObservingInputAccessoryViewDelegate>
 
@@ -34,22 +36,29 @@
 @synthesize inputAccessoryView;
 @synthesize inputViewController;
 
+static UIInputAccessoryView *_currentView;
+
++ (instancetype)currentView {
+    return _currentView;
+}
+
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
     if (self = [super init]) {
         UIObservingInputAccessoryView *inputAccessoryView = [UIObservingInputAccessoryView new];
-        
         [self setInputAccessoryView:inputAccessoryView];
-        
         inputAccessoryView.delegate = self;
         
         _shouldBecomeFirstResponder = YES;
         self.currentBridge = bridge;
+        
         /**
          * Transform y can't be a positive number
          * so 1 will mean that variable is not
          * initialized yet
          */
         _savedTransformY = 1;
+        
+        _currentView = self;
     }
     return self;
 }
@@ -124,12 +133,28 @@
     // Current view was unmounted
     if (newSuperview == nil) {
         [self resetScrollViewInsets];
+        
+        [self stopListenToTextField];
+        _currentView = nil;
+    } else {
+        [self startListenToTextField];
     }
 }
 
 //MARK:- UIObservingInputView delegate
 
 - (void)onInputAccessoryViewChangeKeyboardHeight:(CGFloat)keyboardHeight {
+    /**
+     * For some reason when pop gesture begins,
+     * keyboard is animated to the bottom
+     * instead of moving alongside with a keyboard,
+     * preventing it from applying transform
+     * does the trick
+     */
+    if (self.isInAppearanceTransition) {
+        return;
+    }
+    
     CGFloat safeAreaBottom = [self getSafeAreaBottom];
     CGFloat accessoryTranslation = MIN(-safeAreaBottom, -keyboardHeight);
     

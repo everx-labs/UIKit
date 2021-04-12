@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { Platform, TouchableWithoutFeedback } from 'react-native';
 
 import UIPureComponent from '../UIPureComponent';
 
@@ -131,10 +131,16 @@ export class UIActionComponent<Props, State> extends UIPureComponent<
                 {React.cloneElement(element, {
                     onMouseEnter: this.onMouseEnter,
                     onMouseLeave: this.onMouseLeave,
-                    style: [element.props.style, {
-                        cursor: 'pointer',
-                        touchAction: 'manipulation',
-                    }],
+                    style: [
+                        element.props.style,
+                        Platform.select({
+                            web: {
+                                cursor: 'pointer',
+                                touchAction: 'manipulation',
+                            },
+                            default: null,
+                        }),
+                    ],
                 })}
             </TouchableWithoutFeedback>
         );

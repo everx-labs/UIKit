@@ -11,6 +11,8 @@
 
 @interface UIInputAccessoryView : UIView
 
++ (instancetype)currentView;
+
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 
 @property (nonatomic, readwrite, retain) RCTBridge *currentBridge;
