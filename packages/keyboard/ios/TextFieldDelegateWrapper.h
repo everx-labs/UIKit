@@ -10,7 +10,7 @@
 @interface TextFieldDelegateWrapper : NSObject <UITextFieldDelegate, UITextViewDelegate>
 
 @property (nonatomic, weak) id originalDelegate;
-@property (nonatomic, weak) id fakeDelegate;
+@property (nonatomic, weak) id interceptorDelegate;
 
 - (instancetype)init;
 

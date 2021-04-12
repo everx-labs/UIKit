@@ -64,7 +64,7 @@
         }
         TextFieldDelegateWrapper *delegateWrapper = [[TextFieldDelegateWrapper alloc] init];
         delegateWrapper.originalDelegate = currentTextField.delegate;
-        delegateWrapper.fakeDelegate = self;
+        delegateWrapper.interceptorDelegate = self;
         
         self.delegateWrapper = delegateWrapper;
         currentTextField.delegate = delegateWrapper;

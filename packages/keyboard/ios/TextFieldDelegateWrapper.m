@@ -14,8 +14,8 @@
 }
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
-    if ([self.fakeDelegate respondsToSelector:aSelector]) {
-        return self.fakeDelegate;
+    if ([self.interceptorDelegate respondsToSelector:aSelector]) {
+        return self.interceptorDelegate;
     } else if ([self.originalDelegate respondsToSelector:aSelector]) {
         return self.originalDelegate;
     } else {
@@ -24,8 +24,7 @@
 }
 
 - (BOOL)respondsToSelector:(SEL)aSelector {
-    NSLog(@"%@", NSStringFromSelector(aSelector));
-    if ([self.fakeDelegate respondsToSelector:aSelector]) {
+    if ([self.interceptorDelegate respondsToSelector:aSelector]) {
         return YES;
     } else if ([self.originalDelegate respondsToSelector:aSelector]) {
         return YES;
