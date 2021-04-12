@@ -37,12 +37,6 @@ export function KeyboardScreen() {
         cStickers,
     );
 
-    // TODO:
-    // So the reason for now is that textinput losing focus wheen pop gesture begins
-    // Maybe try https://github.com/cotap/TAPKeyboardPop/blob/master/Classes/UIViewController%2BTAPKeyboardPop.m
-    // again, but instead of doing animation, just trying to return textinput as a firstResponder
-    // in our case?
-
     return (
         <>
             <ExampleScreen
