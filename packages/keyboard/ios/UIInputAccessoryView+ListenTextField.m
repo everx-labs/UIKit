@@ -7,8 +7,6 @@
 
 #import "UIInputAccessoryView+ListenTextField.h"
 
-#import <React/UIView+React.h>
-
 #import <objc/runtime.h>
 
 /**
@@ -32,10 +30,20 @@
 
 - (void)setIsInAppearanceTransition:(BOOL)isInAppearanceTransition {
     NSNumber *isInAppearanceTransitionBool = [NSNumber numberWithBool:isInAppearanceTransition];
-    return objc_setAssociatedObject(
-                                    self,
+    return objc_setAssociatedObject(self,
                                     @selector(isInAppearanceTransition),
                                     isInAppearanceTransitionBool,
+                                    OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (TextFieldDelegateWrapper *)delegateWrapper {
+    return objc_getAssociatedObject(self, @selector(delegateWrapper));
+}
+
+- (void)setDelegateWrapper:(TextFieldDelegateWrapper *)delegateWrapper {
+    return objc_setAssociatedObject(self,
+                                    @selector(delegateWrapper),
+                                    delegateWrapper,
                                     OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -51,16 +59,32 @@
     UITextField *currentTextField = note.object;
     
     if ([currentTextField isDescendantOfView:self]) {
-        currentTextField.delegate = self;
+        if ([currentTextField.delegate isKindOfClass:[TextFieldDelegateWrapper class]]) {
+            return;
+        }
+        TextFieldDelegateWrapper *delegateWrapper = [[TextFieldDelegateWrapper alloc] init];
+        delegateWrapper.originalDelegate = currentTextField.delegate;
+        delegateWrapper.fakeDelegate = self;
+        
+        self.delegateWrapper = delegateWrapper;
+        currentTextField.delegate = delegateWrapper;
     }
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    return !self.isInAppearanceTransition;
+    if (self.isInAppearanceTransition) {
+        return NO;
+    }
+    
+    return [self.delegateWrapper.originalDelegate textFieldShouldEndEditing:textField];
 }
 
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {
-    return !self.isInAppearanceTransition;
+    if (self.isInAppearanceTransition) {
+        return NO;
+    }
+    
+    return [self.delegateWrapper.originalDelegate textViewShouldEndEditing:textView];
 }
 
 - (void)stopListenToTextField {

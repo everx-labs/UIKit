@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 
 #import "UIInputAccessoryView.h"
+#import "TextFieldDelegateWrapper.h"
 
 @interface UIInputAccessoryView (ListenTextField) <UITextFieldDelegate, UITextViewDelegate>
 
@@ -15,5 +16,6 @@
 - (void)stopListenToTextField;
 
 @property (nonatomic, assign) BOOL isInAppearanceTransition;
+@property (nonatomic, retain) TextFieldDelegateWrapper *delegateWrapper;
 
 @end
