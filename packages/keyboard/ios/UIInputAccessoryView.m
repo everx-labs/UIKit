@@ -8,6 +8,7 @@
 #import "UIInputAccessoryView.h"
 #import "UIInputAccessoryView+ScrollView.h"
 #import "UIInputAccessoryView+CustomKeyboard.h"
+#import "UIInputAccessoryView+ListenTextField.h"
 #import "UIObservingInputAccessoryView.h"
 #import "UICustomKeyboardViewController.h"
 
@@ -35,6 +36,12 @@
 @synthesize inputAccessoryView;
 @synthesize inputViewController;
 
+static UIInputAccessoryView *_currentView;
+
++ (instancetype)currentView {
+    return _currentView;
+}
+
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
     if (self = [super init]) {
         UIObservingInputAccessoryView *inputAccessoryView = [UIObservingInputAccessoryView new];
@@ -50,12 +57,13 @@
          * initialized yet
          */
         _savedTransformY = 1;
+        
+        _currentView = self;
     }
     return self;
 }
 
 - (BOOL)canBecomeFirstResponder {
-    NSLog(@"canBecomeFirstResponder 1");
     return true;
 }
 
@@ -125,12 +133,28 @@
     // Current view was unmounted
     if (newSuperview == nil) {
         [self resetScrollViewInsets];
+        
+        [self stopListenToTextField];
+        _currentView = nil;
+    } else {
+        [self startListenToTextField];
     }
 }
 
 //MARK:- UIObservingInputView delegate
 
 - (void)onInputAccessoryViewChangeKeyboardHeight:(CGFloat)keyboardHeight {
+    /**
+     * For some reason when pop gesture begins,
+     * keyboard is animated to the bottom
+     * instead of moving alongside with a keyboard,
+     * preventing it from applying transform
+     * does the trick
+     */
+    if (self.isInAppearanceTransition) {
+        return;
+    }
+    
     CGFloat safeAreaBottom = [self getSafeAreaBottom];
     CGFloat accessoryTranslation = MIN(-safeAreaBottom, -keyboardHeight);
     

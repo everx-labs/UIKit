@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    View,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    InputAccessoryView,
-} from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILabel } from '@tonlabs/uikit.hydrogen';
@@ -42,8 +36,6 @@ export function KeyboardScreen() {
         inputRef,
         cStickers,
     );
-
-    const IAV = true ? UIInputAccessoryView : InputAccessoryView;
 
     // TODO:
     // So the reason for now is that textinput losing focus wheen pop gesture begins
@@ -97,9 +89,9 @@ export function KeyboardScreen() {
                         );
                     })}
             </ExampleScreen>
-            <IAV
-            // managedScrollViewNativeID="keyboardScreenScrollView"
-            // customKeyboardView={customKeyboardView}
+            <UIInputAccessoryView
+                managedScrollViewNativeID="keyboardScreenScrollView"
+                customKeyboardView={customKeyboardView}
             >
                 <View
                     style={{
@@ -123,7 +115,7 @@ export function KeyboardScreen() {
                         <UILabel>Press</UILabel>
                     </TouchableOpacity>
                 </View>
-            </IAV>
+            </UIInputAccessoryView>
         </>
     );
 }
