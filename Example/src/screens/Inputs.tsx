@@ -221,6 +221,15 @@ export const Inputs = () => {
                             Action
                         </UIMaterialTextView.Action>
                     </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_with_animated_action"
+                        floating={false}
+                        label="Input with right text"
+                        helperText="Hint"
+                    >
+                        <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
+                    </UIMaterialTextView>
                 </View>
             </ExampleSection>
             <ExampleSection title="UISeedPhraseTextView">
