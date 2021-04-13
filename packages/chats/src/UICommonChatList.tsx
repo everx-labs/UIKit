@@ -21,7 +21,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
-import { dismiss as dismissKeyboard } from '@tonlabs/uikit.keyboard';
 
 import type { BubbleBaseT, ChatMessage } from './types';
 
@@ -314,7 +313,6 @@ function useCloseKeyboardOnTap() {
         }
 
         Keyboard.dismiss();
-        dismissKeyboard();
     }, []);
 
     return {
@@ -387,7 +385,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
 
             // This can be used as a workaround >>>>
             // onScrollBeginDrag: () => {
-            //     dismissKeyboard();
+            //     Keyboard.dismiss();
             // },
         }
 
