@@ -22,12 +22,14 @@ export function UISearchBarButton({
     onClose,
     forId,
     placeholder,
+    searchBarPlaceholder,
     children,
     onChangeText,
     searching,
 }: {
     forId?: string;
     placeholder?: string;
+    searchBarPlaceholder?: string;
     searching?: boolean;
     visible: boolean;
     onOpen: () => void | Promise<void>;
@@ -60,7 +62,7 @@ export function UISearchBarButton({
                 </TouchableOpacity>
             </UIBackgroundView>
             <UISearchController
-                placeholder={placeholder}
+                placeholder={searchBarPlaceholder || placeholder}
                 forId={forId}
                 visible={visible}
                 onCancel={onClose}
