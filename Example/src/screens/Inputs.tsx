@@ -154,7 +154,7 @@ export const Inputs = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_with_icons"
+                        testID="uiMaterialTextView_with_icon"
                         label="Input with right icon"
                         helperText="Hint"
                     >
@@ -189,7 +189,7 @@ export const Inputs = () => {
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_with_action"
+                        testID="uiMaterialTextView_with_text"
                         label="Input with right text"
                         helperText="Hint"
                     >
@@ -223,7 +223,7 @@ export const Inputs = () => {
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_with_action"
+                        testID="uiMaterialTextView_no_label_animation"
                         floating={false}
                         label="Input with right text"
                         helperText="Hint"
