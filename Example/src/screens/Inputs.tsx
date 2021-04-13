@@ -223,7 +223,7 @@ export const Inputs = () => {
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_with_animated_action"
+                        testID="uiMaterialTextView_no_label_animation"
                         floating={false}
                         label="Input with right text"
                         helperText="Hint"
