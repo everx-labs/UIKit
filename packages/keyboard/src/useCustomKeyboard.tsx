@@ -172,3 +172,9 @@ export function dismiss() {
         }
     });
 }
+
+const originalKeyboardDismiss = Keyboard.dismiss;
+Keyboard.dismiss = function rnDismissKeyboard() {
+    originalKeyboardDismiss();
+    dismiss();
+};
