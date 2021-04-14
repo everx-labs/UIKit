@@ -48,16 +48,20 @@ function prepareValue(
             const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
 
             if (foundConstants) {
+                let modifiedValue = value;
+
                 foundConstants.forEach((constant) => {
                     const key = constant.replace(/[{}]/g, '');
                     // Filtering numerals
                     if (/[A-Z]/.test(constant)) {
-                        value.replace(
+                        modifiedValue = modifiedValue.replace(
                             new RegExp(constant, 'g'),
                             constants[key],
                         );
                     }
                 });
+
+                return modifiedValue as string;
             }
         }
 
