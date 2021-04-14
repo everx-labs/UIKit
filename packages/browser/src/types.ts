@@ -28,7 +28,7 @@ export enum InteractiveMessageType {
     Confirm = 'Confirm',
     AmountInput = 'AmountInput',
     SigningBox = 'SigningBox',
-    Approve = 'Approve',
+    TransactionConfirmation = 'TransactionConfirmation',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -176,12 +176,12 @@ export type SigningBoxMessage = InteractiveMessage<
     SigningBoxExternalState
 >;
 
-export type ApproveExternalState = {
+export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
 
-export type ApproveMessage = InteractiveMessage<
-    InteractiveMessageType.Approve,
+export type TransactionConfirmationMessage = InteractiveMessage<
+    InteractiveMessageType.TransactionConfirmation,
     {
         toAddress: string;
         onAddressPress: () => void | Promise<void>;
@@ -190,12 +190,14 @@ export type ApproveMessage = InteractiveMessage<
         fees: string | React.ReactElement<any, any>;
         signature: SigningBox;
         onApprove: (
-            externalState: ApproveExternalState,
+            externalState: TransactionConfirmationExternalState,
         ) => void | Promise<void>;
-        onCancel: (externalState: ApproveExternalState) => void | Promise<void>;
+        onCancel: (
+            externalState: TransactionConfirmationExternalState,
+        ) => void | Promise<void>;
         isDangerous?: boolean;
     },
-    ApproveExternalState
+    TransactionConfirmationExternalState
 >;
 
 export type BrowserMessage =
@@ -207,7 +209,7 @@ export type BrowserMessage =
     | ConfirmMessage
     | AmountInputMessage
     | SigningBoxMessage
-    | ApproveMessage;
+    | TransactionConfirmationMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

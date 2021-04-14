@@ -11,7 +11,7 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
-    ApproveMessage,
+    TransactionConfirmation,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -367,12 +367,13 @@ const BrowserScreen = () => {
                             }}
                         />
                         <UIButton
-                            title="Add ApproveMessage"
+                            title="Add TransactionConfirmationMessage"
                             onPress={() => {
-                                const message: ApproveMessage = {
+                                const message: TransactionConfirmation = {
                                     key: `${Date.now()}-approve`,
                                     status: MessageStatus.Received,
-                                    type: InteractiveMessageType.Approve,
+                                    type:
+                                        InteractiveMessageType.TransactionConfirmation,
                                     toAddress: '0:12300000006789',
                                     onAddressPress: () => {},
                                     recipientsCount: 255,
