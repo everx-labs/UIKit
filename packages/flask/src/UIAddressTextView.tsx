@@ -109,8 +109,8 @@ export const UIAddressTextView = React.forwardRef<
     const [qrVisible, setQrVisible] = React.useState(false);
 
     const onRead = React.useCallback(
-        async (data: any) => {
-            const address = await qrCode.parseData(data);
+        async (e: any) => {
+            const address = await qrCode.parseData(e.data);
 
             if (ref && 'current' in ref) {
                 ref.current?.changeText(address);
