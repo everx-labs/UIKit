@@ -27,5 +27,6 @@ export * from './UITextView';
 export * from './useWebFonts';
 export * from './useAutogrowTextView';
 export * from './useColorParts';
+export * from './useColorShades';
 export * from './useIsDarkColor';
 export * from './useHover';
