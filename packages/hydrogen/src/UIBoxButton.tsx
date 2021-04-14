@@ -1,9 +1,24 @@
 import * as React from 'react';
 import { ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { Button } from './Button';
+import { Button, ButtonIconSize } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
+
+// eslint-disable-next-line no-shadow
+export enum UIBoxButtonTypes {
+    Primary = 'Primary',
+    Secondary = 'Secondary',
+    Tertiary = 'Tertiary',
+    Nulled = 'Nulled',
+}
+
+// eslint-disable-next-line no-shadow
+export enum UIBoxButtonIconPosition {
+    Left = 'Left',
+    Middle = 'Middle',
+    Right = 'Right',
+}
 
 export type UIBoxButtonProps = {
     /**
@@ -16,11 +31,11 @@ export type UIBoxButtonProps = {
     icon?: ImageSourcePropType;
     /**
      * Position of icon on the button
-     * - `left` - icon to the left near the title
-     * - `middle` - icon to the right near the title
-     * - `right` - icon at the end of the button
+     * - `UIBoxButtonIconPosition.Left` - icon to the left near the title
+     * - `UIBoxButtonIconPosition.Middle` - icon to the right near the title
+     * - `UIBoxButtonIconPosition.Right` - icon at the end of the button
      */
-    iconPosition?: 'left' | 'middle' | 'right';
+    iconPosition?: UIBoxButtonIconPosition;
     /**
      * Whether to display a loading indicator instead of button content or not
      */
@@ -39,12 +54,12 @@ export type UIBoxButtonProps = {
     title: string;
     /**
      * Type of the button; specific type allows to set the corresponding accent
-     * - `primary` - button with current theme primary background color
-     * - `secondary` - button with current theme secondary background color
-     * - `tertiary` - button with 1 px border style
-     * - `nulled` - button without visible borders and background color
+     * - `UIBoxButtonTypes.Primary` - button with current theme primary background color
+     * - `UIBoxButtonTypes.Secondary` - button with current theme secondary background color
+     * - `UIBoxButtonTypes.Tertiary` - button with 1 px border style
+     * - `UIBoxButtonTypes.Nulled` - button without visible borders and background color
      */
-    type?: 'primary' | 'secondary' | 'tertiary' | 'nulled';
+    type?: UIBoxButtonTypes;
 };
 
 function useButtonStyles(
@@ -56,7 +71,7 @@ function useButtonStyles(
     let titleColor: ColorVariants = ColorVariants.TextAccent;
     let borderRadius: number = 0;
     let borderWidth: number = 0;
-    if (type === 'primary') {
+    if (type === UIBoxButtonTypes.Primary) {
         if (disabled) {
             backgroundColor = ColorVariants.BackgroundTertiary;
             titleColor = ColorVariants.TextTertiary;
@@ -65,7 +80,7 @@ function useButtonStyles(
             titleColor = ColorVariants.StaticTextPrimaryLight;
         }
         borderRadius = UIConstant.alertBorderRadius;
-    } else if (type === 'secondary') {
+    } else if (type === UIBoxButtonTypes.Secondary) {
         if (disabled) {
             backgroundColor = ColorVariants.BackgroundTertiary;
             titleColor = ColorVariants.TextTertiary;
@@ -74,7 +89,7 @@ function useButtonStyles(
             titleColor = ColorVariants.TextPrimaryInverted;
         }
         borderRadius = UIConstant.alertBorderRadius;
-    } else if (type === 'tertiary') {
+    } else if (type === UIBoxButtonTypes.Tertiary) {
         if (disabled) {
             borderColor = ColorVariants.BackgroundTertiary;
             titleColor = ColorVariants.TextTertiary;
@@ -84,7 +99,7 @@ function useButtonStyles(
         }
         borderRadius = UIConstant.alertBorderRadius;
         borderWidth = UIConstant.buttonBorderWidth;
-    } else if (type === 'nulled') {
+    } else if (type === UIBoxButtonTypes.Nulled) {
         if (disabled) {
             titleColor = ColorVariants.TextTertiary;
         } else {
@@ -110,12 +125,12 @@ function useButtonStyles(
 export const UIBoxButton = ({
     disabled,
     icon,
-    iconPosition = 'left',
+    iconPosition = UIBoxButtonIconPosition.Left,
     loading,
     onPress,
     testID,
     title,
-    type= 'primary'
+    type= UIBoxButtonTypes.Primary
 }: UIBoxButtonProps) => {
     const { buttonStyle, titleColor } = useButtonStyles(type, disabled);
     return (
@@ -132,18 +147,18 @@ export const UIBoxButton = ({
         >
             <Button.Content>
                 {
-                    iconPosition === 'left' && icon &&
+                    iconPosition === UIBoxButtonIconPosition.Left && icon &&
                     <Button.Icon source={icon} style={styles.leftIcon} />
                 }
                 <Button.Title titleColor={titleColor}>{title}</Button.Title>
                 {
-                    iconPosition === 'middle' && icon &&
-                    <Button.Icon source={icon} size="small" style={styles.middleIcon} />
+                    iconPosition === UIBoxButtonIconPosition.Middle && icon &&
+                    <Button.Icon source={icon} size={ButtonIconSize.Small} style={styles.middleIcon} />
                 }
             </Button.Content>
             {
-                (type === 'primary' || type === 'secondary') &&
-                icon && iconPosition === 'right' &&
+                (type === UIBoxButtonTypes.Primary || type === UIBoxButtonTypes.Secondary) &&
+                icon && iconPosition === UIBoxButtonIconPosition.Right &&
                 <Button.Icon source={icon} style={styles.rightIcon} />
             }
         </Button>

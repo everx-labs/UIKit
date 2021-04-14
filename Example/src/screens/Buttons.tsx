@@ -2,13 +2,8 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import {
-    UIButton,
-    UIImageButton,
-    UIScaleButton,
-    UITextButton,
-} from '@tonlabs/uikit.components';
-import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
+import { UIButton, UIImageButton, UIScaleButton, UITextButton } from '@tonlabs/uikit.components';
+import { UIBoxButton, UIBoxButtonIconPosition, UIBoxButtonTypes } from '@tonlabs/uikit.hydrogen';
 import { UIDetailsButton } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -44,7 +39,7 @@ export const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     icon={UIAssets.icons.ui.camera}
-                    iconPosition="middle"
+                    iconPosition={UIBoxButtonIconPosition.Middle}
                     testID="uiBoxButton_primary_middleIcon"
                     title="Action"
                     onPress={() => console.log('Pressed UIBoxButton')}
@@ -53,7 +48,7 @@ export const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     icon={UIAssets.icons.ui.camera}
-                    iconPosition="right"
+                    iconPosition={UIBoxButtonIconPosition.Right}
                     testID="uiBoxButton_primary_rightIcon"
                     title="Action"
                     onPress={() => console.log('Pressed UIBoxButton')}
@@ -71,7 +66,7 @@ export const Buttons = () => (
                 <UIBoxButton
                     testID="uiBoxButton_secondary"
                     title="Action"
-                    type="secondary"
+                    type={UIBoxButtonTypes.Secondary}
                     onPress={() => console.log('Pressed UIBoxButton secondary')}
                 />
             </View>
@@ -80,7 +75,7 @@ export const Buttons = () => (
                     disabled
                     testID="uiBoxButton_secondary_disabled"
                     title="Action"
-                    type="secondary"
+                    type={UIBoxButtonTypes.Secondary}
                     onPress={() => {
                         // empty
                     }}
@@ -90,7 +85,7 @@ export const Buttons = () => (
                 <UIBoxButton
                     testID="uiBoxButton_tertiary"
                     title="Action"
-                    type="tertiary"
+                    type={UIBoxButtonTypes.Tertiary}
                     onPress={() => console.log('Pressed UIBoxButton tertiary')}
                 />
             </View>
@@ -99,7 +94,7 @@ export const Buttons = () => (
                     disabled
                     testID="uiBoxButton_tertiary_disabled"
                     title="Action"
-                    type="tertiary"
+                    type={UIBoxButtonTypes.Tertiary}
                     onPress={() => {
                         // empty
                     }}
@@ -109,7 +104,7 @@ export const Buttons = () => (
                 <UIBoxButton
                     testID="uiBoxButton_nulled"
                     title="Action"
-                    type="nulled"
+                    type={UIBoxButtonTypes.Nulled}
                     onPress={() => console.log('Pressed UIBoxButton nulled')}
                 />
             </View>
@@ -118,7 +113,7 @@ export const Buttons = () => (
                     disabled
                     testID="uiBoxButton_nulled_disabled"
                     title="Action"
-                    type="nulled"
+                    type={UIBoxButtonTypes.Nulled}
                     onPress={() => {
                         // empty
                     }}

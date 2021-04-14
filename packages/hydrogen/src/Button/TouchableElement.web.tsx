@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useHover } from '../useHover';
 
@@ -68,6 +68,5 @@ export const TouchableElement = ({
 const styles = StyleSheet.create({
     touchable: {
         position: 'relative',
-        ...(Platform.OS === 'web' && { cursor: 'pointer' }),
     }
 });

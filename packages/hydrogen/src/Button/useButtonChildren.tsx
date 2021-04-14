@@ -21,17 +21,23 @@ export function ButtonContent({
     );
 }
 
+// eslint-disable-next-line no-shadow
+export enum IconSize {
+    Normal = 'Normal',
+    Small = 'Small',
+}
+
 export function ButtonIcon({
     source,
     tintColor,
     style,
-    size = 'normal',
+    size = IconSize.Normal,
     ...props
 }: UIImageProps & {
-    size?: 'normal' | 'small';
+    size?: IconSize;
 }) {
     const iconSize = React.useMemo(() => {
-        if (size === 'small') {
+        if (size === IconSize.Small) {
             return UIConstant.smallButtonIconSize;
         }
         return UIConstant.normalButtonIconSize;

@@ -1,16 +1,20 @@
 import * as React from 'react';
-import { ActivityIndicator, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
 import { TouchableElement } from './TouchableElement';
+import { UIIndicator } from '../UIIndicator';
 
 import {
     ButtonContent,
     ButtonIcon,
     ButtonTitle,
+    IconSize,
     useButtonChildren,
 } from './useButtonChildren';
+import { ColorVariants } from '../Colors';
+import { UIConstant } from '../constants';
 
 type ButtonProps = {
     children: React.ReactNode;
@@ -56,7 +60,10 @@ const ButtonForward = React.forwardRef<
         >
             <View>
                 {loading ? (
-                    <ActivityIndicator />
+                    <UIIndicator
+                        color={ColorVariants.StaticTextPrimaryLight}
+                        size={UIConstant.normalButtonIconSize}
+                    />
                 ) : processedChildren}
             </View>
         </TouchableElement>
@@ -74,6 +81,8 @@ export const Button: typeof ButtonForward & {
 Button.Content = ButtonContent;
 Button.Icon = ButtonIcon;
 Button.Title = ButtonTitle;
+
+export const ButtonIconSize = IconSize;
 
 const styles = StyleSheet.create({
     content: {
