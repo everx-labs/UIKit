@@ -3,7 +3,7 @@
   "version": "2.2.0",
   "description": "Flask package is a set of user stories built upon the components from uikit.hydrogen",
   "scripts": {
-    "tsc": "tsc --noEmit",
+    "tsc": "tsc --noEmit --composite false",
     "prepare": "bob build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

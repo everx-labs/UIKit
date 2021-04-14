@@ -12,6 +12,7 @@ import {
     UIBackgroundView,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export function Approve({
     onLayout,
@@ -44,14 +45,14 @@ export function Approve({
             <View style={styles.container}>
                 <UIBackgroundView style={[styles.card, shadow]}>
                     <UILabel role={UILabelRoles.TitleSmall}>
-                        Transaction confirmation
+                        {uiLocalized.Browser.Approve.Title}
                     </UILabel>
                     <View style={styles.cardRow}>
                         <UILabel
                             role={UILabelRoles.ParagraphLabel}
                             color={UILabelColors.TextTertiary}
                         >
-                            To
+                            {uiLocalized.Browser.Approve.To}
                         </UILabel>
                         <View style={styles.address}>
                             <UILabel>
@@ -67,7 +68,7 @@ export function Approve({
                             role={UILabelRoles.ParagraphLabel}
                             color={UILabelColors.TextTertiary}
                         >
-                            Recipients
+                            {uiLocalized.Browser.Approve.Recipients}
                         </UILabel>
                         <UILabel>{recipientsCount}</UILabel>
                     </View>
@@ -76,7 +77,7 @@ export function Approve({
                             role={UILabelRoles.ParagraphLabel}
                             color={UILabelColors.TextTertiary}
                         >
-                            Total
+                            {uiLocalized.Browser.Approve.Total}
                         </UILabel>
                         {totalAmount}
                     </View>
@@ -85,7 +86,7 @@ export function Approve({
                             role={UILabelRoles.ParagraphLabel}
                             color={UILabelColors.TextTertiary}
                         >
-                            Fees
+                            {uiLocalized.Browser.Approve.Fees}
                         </UILabel>
                         {fees}
                     </View>
@@ -94,7 +95,7 @@ export function Approve({
                             role={UILabelRoles.ParagraphLabel}
                             color={UILabelColors.TextTertiary}
                         >
-                            Signature
+                            {uiLocalized.Browser.Approve.Signature}
                         </UILabel>
                         <UILabel>{signature.title}</UILabel>
                     </View>
@@ -104,11 +105,10 @@ export function Approve({
                                 role={UILabelRoles.ParagraphLabel}
                                 color={UILabelColors.TextNegative}
                             >
-                                Attention
+                                {uiLocalized.Browser.Approve.Attention}
                             </UILabel>
                             <UILabel color={UILabelColors.TextNegative}>
-                                This transaction is trying to change the
-                                contract and will not be performed
+                                {uiLocalized.Browser.Approve.AttentionDesc}
                             </UILabel>
                         </View>
                     )}
@@ -130,7 +130,7 @@ export function Approve({
                             role={UILabelRoles.Action}
                             color={UILabelColors.TextAccent}
                         >
-                            Confirm
+                            {uiLocalized.Browser.Approve.Confirm}
                         </UILabel>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -147,7 +147,7 @@ export function Approve({
                             role={UILabelRoles.Action}
                             color={UILabelColors.TextAccent}
                         >
-                            Cancel
+                            {uiLocalized.Browser.Approve.Cancel}
                         </UILabel>
                     </TouchableOpacity>
                 </View>
