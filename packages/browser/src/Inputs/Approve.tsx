@@ -10,13 +10,16 @@ import {
     useTheme,
     useShadow,
     UIBackgroundView,
+    UIImage,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 export function Approve({
     onLayout,
     toAddress,
+    onAddressPress,
     recipientsCount,
     totalAmount,
     fees,
@@ -54,14 +57,19 @@ export function Approve({
                         >
                             {uiLocalized.Browser.Approve.To}
                         </UILabel>
-                        <View style={styles.address}>
-                            <UILabel>
-                                {`${toAddress.slice(
-                                    0,
-                                    4,
-                                )} ···· ${toAddress.slice(-4)}`}
-                            </UILabel>
-                        </View>
+                        <TouchableOpacity onPress={onAddressPress}>
+                            <View style={styles.address}>
+                                <UILabel>
+                                    {`${toAddress.slice(
+                                        0,
+                                        4,
+                                    )} ···· ${toAddress.slice(-4)}`}
+                                </UILabel>
+                                <UIImage
+                                    source={UIAssets.icons.ui.arrowUpRight}
+                                />
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.cardRow}>
                         <UILabel
