@@ -16,6 +16,7 @@ import { MenuInput } from './Inputs/menu';
 import { ConfirmInput } from './Inputs/confirm';
 import { AmountInput } from './Inputs/amountInput';
 import { SigningBox } from './Inputs/SigningBox';
+import { Approve } from './Inputs/Approve';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -72,6 +73,9 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.SigningBox) {
         return <SigningBox {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.Approve) {
+        return <Approve {...item} onLayout={onLayout} />;
     }
 
     return null;

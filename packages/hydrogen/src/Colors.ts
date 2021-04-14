@@ -57,6 +57,7 @@ export enum ColorVariants {
     StaticBackgroundWhite = 'StaticBackgroundWhite',
     StaticIconPrimaryDark = 'StaticIconPrimaryDark',
     StaticIconPrimaryLight = 'StaticIconPrimaryLight',
+    Shadow = 'Shadow',
 }
 
 type Theme = {
@@ -118,6 +119,8 @@ export const LightTheme: Theme = {
     // [ColorVariants.IconNegative]: '#CA1414',
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'light',
+
+    [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
 };
 
 export const DarkTheme: Theme = {
@@ -159,10 +162,77 @@ export const DarkTheme: Theme = {
 
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
+
+    [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
 };
 
 export const ThemeContext = React.createContext(LightTheme);
 
 export function useTheme() {
     return React.useContext(ThemeContext);
+}
+
+const Shadow = {
+    1: {
+        offset: {
+            width: 0,
+            height: 1,
+        },
+        opacity: 0.1,
+        radius: 2,
+    },
+    2: {
+        offset: {
+            width: 0,
+            height: 3,
+        },
+        opacity: 0.03,
+        radius: 8,
+    },
+    3: {
+        offset: {
+            width: 0,
+            height: 6,
+        },
+        opacity: 0.04,
+        radius: 16,
+    },
+    4: {
+        offset: {
+            width: 0,
+            height: 4,
+        },
+        opacity: 0.06,
+        radius: 16,
+    },
+    5: {
+        offset: {
+            width: 0,
+            height: 8,
+        },
+        opacity: 0.1,
+        radius: 20,
+    },
+    6: {
+        offset: {
+            width: -1,
+            height: 1,
+        },
+        opacity: 0.05,
+        radius: 32,
+    },
+};
+
+export function useShadow(level: 1 | 2 | 3 | 4 | 5 | 6) {
+    const theme = useTheme();
+    return React.useMemo(
+        () => ({
+            shadowColor: theme[ColorVariants.Shadow] as ColorValue,
+            shadowOffset: Shadow[level].offset,
+            shadowOpacity: Shadow[level].opacity,
+            shadowRadius: Shadow[level].radius,
+            elevation: level,
+        }),
+        [theme, level],
+    );
 }
