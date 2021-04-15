@@ -1,5 +1,6 @@
 import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
+import type React from 'react';
 
 export type OnSendText = (text: string) => void;
 export type OnSendAmount = (amount: BigNumber) => void;
@@ -27,6 +28,7 @@ export enum InteractiveMessageType {
     Confirm = 'Confirm',
     AmountInput = 'AmountInput',
     SigningBox = 'SigningBox',
+    TransactionConfirmation = 'TransactionConfirmation',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -174,6 +176,30 @@ export type SigningBoxMessage = InteractiveMessage<
     SigningBoxExternalState
 >;
 
+export type TransactionConfirmationExternalState = {
+    status: 'approved' | 'cancelled';
+};
+
+export type TransactionConfirmationMessage = InteractiveMessage<
+    InteractiveMessageType.TransactionConfirmation,
+    {
+        toAddress: string;
+        onAddressPress: () => void | Promise<void>;
+        recipientsCount: number;
+        totalAmount: string | React.ReactElement<any, any>;
+        fees: string | React.ReactElement<any, any>;
+        signature: SigningBox;
+        onApprove: (
+            externalState: TransactionConfirmationExternalState,
+        ) => void | Promise<void>;
+        onCancel: (
+            externalState: TransactionConfirmationExternalState,
+        ) => void | Promise<void>;
+        isDangerous?: boolean;
+    },
+    TransactionConfirmationExternalState
+>;
+
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
@@ -182,7 +208,8 @@ export type BrowserMessage =
     | MenuMessage
     | ConfirmMessage
     | AmountInputMessage
-    | SigningBoxMessage;
+    | SigningBoxMessage
+    | TransactionConfirmationMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

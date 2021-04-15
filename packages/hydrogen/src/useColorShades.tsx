@@ -16,25 +16,23 @@ export function useColorShades(color: ColorVariants) {
 
         const [r, g, b] = colorPartsArray;
 
-        let darkenColorValue = '#';
-        [
+        const darkenColorValue = [
             Math.floor(r * (1 - SHADE_FACTOR)),
             Math.floor(g * (1 - SHADE_FACTOR)),
             Math.floor(b * (1 - SHADE_FACTOR)),
-        ].forEach((v) => {
+        ].reduce((acc, v) => {
             const hex = v.toString(16);
-            darkenColorValue += hex.length === 1 ? `0${hex}` : hex;
-        });
+            return acc + (hex.length === 1 ? `0${hex}` : hex);
+        }, '#');
 
-        let lightenColorValue = '#';
-        [
+        const lightenColorValue = [
             Math.floor(r + ((255 - r) * SHADE_FACTOR)),
             Math.floor(g + ((255 - g) * SHADE_FACTOR)),
             Math.floor(b + ((255 - b) * SHADE_FACTOR)),
-        ].forEach((v) => {
+        ].reduce((acc, v) => {
             const hex = v.toString(16);
-            lightenColorValue += hex.length === 1 ? `0${hex}` : hex;
-        });
+            return acc + (hex.length === 1 ? `0${hex}` : hex);
+        }, '#');
 
         return {
             color: colorThemedValue,

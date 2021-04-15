@@ -19,6 +19,7 @@ import type {
     TerminalMessage,
     AmountInputMessage,
     SigningBoxMessage,
+    TransactionConfirmationMessage,
 } from '@tonlabs/uikit.browser';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
@@ -29,6 +30,7 @@ import {
     UICardSheet,
     UILabel,
     UILabelColors,
+    UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 
 const BrowserStack = createStackNavigator();
@@ -346,6 +348,84 @@ const BrowserScreen = () => {
                                         });
                                     },
                                     onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                navigation.setParams({
+                                    menuVisible: false,
+                                });
+                            }}
+                            style={{
+                                marginBottom: 10,
+                            }}
+                        />
+                        <UIButton
+                            title="Add TransactionConfirmationMessage"
+                            onPress={() => {
+                                const message: TransactionConfirmationMessage = {
+                                    key: `${Date.now()}-approve`,
+                                    status: MessageStatus.Received,
+                                    type:
+                                        InteractiveMessageType.TransactionConfirmation,
+                                    toAddress: '0:12300000006789',
+                                    onAddressPress: () => {},
+                                    recipientsCount: 255,
+                                    totalAmount: (
+                                        <UILabel>
+                                            <UILabel
+                                                role={UILabelRoles.MonoText}
+                                            >
+                                                0,000
+                                            </UILabel>
+                                            <UILabel
+                                                role={UILabelRoles.MonoText}
+                                                color={
+                                                    UILabelColors.TextTertiary
+                                                }
+                                            >
+                                                .000 000 000
+                                            </UILabel>
+                                        </UILabel>
+                                    ),
+                                    fees: (
+                                        <UILabel>
+                                            <UILabel
+                                                role={UILabelRoles.MonoText}
+                                            >
+                                                0
+                                            </UILabel>
+                                            <UILabel
+                                                role={UILabelRoles.MonoText}
+                                                color={
+                                                    UILabelColors.TextTertiary
+                                                }
+                                            >
+                                                .000 000 000
+                                            </UILabel>
+                                        </UILabel>
+                                    ),
+                                    signature: {
+                                        id: 1,
+                                        title: 'My Surf',
+                                        publicKey: '1c2f3b4a',
+                                    },
+                                    onApprove: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                    onCancel: (externalState: any) => {
                                         setMessages([
                                             {
                                                 ...message,
