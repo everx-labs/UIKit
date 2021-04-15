@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
         marginLeft: 6,
     },
     rightIcon: {
+        marginLeft: 6,
         marginRight: 4,
     },
 });
