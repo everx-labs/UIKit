@@ -1,19 +1,125 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import {
-    UIButton,
-    UIImageButton,
-    UIScaleButton,
-    UITextButton,
-} from '@tonlabs/uikit.components';
-import { UIDetailsButton } from '@tonlabs/uikit.legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIButton, UIImageButton, UIScaleButton, UITextButton } from '@tonlabs/uikit.components';
+import { UIBoxButton, UIBoxButtonIconPosition, UIBoxButtonTypes } from '@tonlabs/uikit.hydrogen';
+import { UIDetailsButton } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Buttons = () => (
     <ExampleScreen>
+        <ExampleSection title="UIBoxButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_primary"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton primary')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_primary_disabled"
+                    title="Disabled"
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    icon={UIAssets.icons.ui.camera}
+                    testID="uiBoxButton_primary_leftIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    icon={UIAssets.icons.ui.camera}
+                    iconPosition={UIBoxButtonIconPosition.Middle}
+                    testID="uiBoxButton_primary_middleIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    icon={UIAssets.icons.ui.camera}
+                    iconPosition={UIBoxButtonIconPosition.Right}
+                    testID="uiBoxButton_primary_rightIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_primary_loading"
+                    title="Action"
+                    loading
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_secondary"
+                    title="Action"
+                    type={UIBoxButtonTypes.Secondary}
+                    onPress={() => console.log('Pressed UIBoxButton secondary')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_secondary_disabled"
+                    title="Action"
+                    type={UIBoxButtonTypes.Secondary}
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_tertiary"
+                    title="Action"
+                    type={UIBoxButtonTypes.Tertiary}
+                    onPress={() => console.log('Pressed UIBoxButton tertiary')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_tertiary_disabled"
+                    title="Action"
+                    type={UIBoxButtonTypes.Tertiary}
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_nulled"
+                    title="Action"
+                    type={UIBoxButtonTypes.Nulled}
+                    onPress={() => console.log('Pressed UIBoxButton nulled')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_nulled_disabled"
+                    title="Action"
+                    type={UIBoxButtonTypes.Nulled}
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+        </ExampleSection>
         <ExampleSection title="UIButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIButton testID="uiButton_default" title="Example" />
@@ -190,7 +296,7 @@ export const Buttons = () => (
             >
                 <UIImageButton
                     testID="uiImageButton_close_light"
-                    image={UIImageButton.Images.closeLight} 
+                    image={UIImageButton.Images.closeLight}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
