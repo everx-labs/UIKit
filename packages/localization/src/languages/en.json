@@ -65,7 +65,7 @@
             "AddSignature": "Add signature",
             "PrivateKey": "Private key"
         },
-        "Approve": {
+        "TransactionConfirmation": {
             "Title": "Transaction confirmation",
             "To": "To",
             "Recipients": "Recipients",
