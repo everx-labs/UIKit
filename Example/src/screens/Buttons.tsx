@@ -3,7 +3,12 @@ import { Text, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIButton, UIImageButton, UIScaleButton, UITextButton } from '@tonlabs/uikit.components';
-import { UIBoxButton, UIBoxButtonIconPosition, UIBoxButtonTypes } from '@tonlabs/uikit.hydrogen';
+import {
+    UIBoxButton,
+    UIBoxButtonIconPosition,
+    UIBoxButtonTypes,
+    UIMsgButton,
+} from '@tonlabs/uikit.hydrogen';
 import { UIDetailsButton } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -116,6 +121,17 @@ export const Buttons = () => (
                     type={UIBoxButtonTypes.Nulled}
                     onPress={() => {
                         // empty
+                    }}
+                />
+            </View>
+        </ExampleSection>
+        <ExampleSection title="UIMsgButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    testID="uiMsgButton_default"
+                    title="Action"
+                    onPress={() => {
+                        //
                     }}
                 />
             </View>
