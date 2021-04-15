@@ -11,7 +11,6 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
-    TransactionConfirmation,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -20,6 +19,7 @@ import type {
     TerminalMessage,
     AmountInputMessage,
     SigningBoxMessage,
+    TransactionConfirmationMessage,
 } from '@tonlabs/uikit.browser';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
@@ -369,7 +369,7 @@ const BrowserScreen = () => {
                         <UIButton
                             title="Add TransactionConfirmationMessage"
                             onPress={() => {
-                                const message: TransactionConfirmation = {
+                                const message: TransactionConfirmationMessage = {
                                     key: `${Date.now()}-approve`,
                                     status: MessageStatus.Received,
                                     type:
