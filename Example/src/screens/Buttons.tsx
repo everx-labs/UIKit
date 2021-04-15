@@ -8,6 +8,7 @@ import {
     UIBoxButtonIconPosition,
     UIBoxButtonTypes,
     UIMsgButton,
+    UIMsgButtonCornerPosition,
 } from '@tonlabs/uikit.hydrogen';
 import { UIDetailsButton } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
@@ -129,6 +130,36 @@ export const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIMsgButton
                     testID="uiMsgButton_default"
+                    title="Action"
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    cornerPosition={UIMsgButtonCornerPosition.BottomLeft}
+                    testID="uiMsgButton_cornerPosition_bottomLeft"
+                    title="Action"
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    disabled
+                    testID="uiMsgButton_disabled"
+                    title="Disabled"
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    icon={UIAssets.icons.ui.camera}
+                    testID="uiMsgButton_leftIcon"
                     title="Action"
                     onPress={() => {
                         //
