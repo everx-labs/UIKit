@@ -119,6 +119,8 @@ export const UIAddressTextView = React.forwardRef<
             if (onChangeText) {
                 onChangeText(address);
             }
+
+            setQrVisible(false)
         },
         [qrCode, ref, onChangeText],
     );
