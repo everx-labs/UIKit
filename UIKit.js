@@ -134,8 +134,6 @@ export {
 
 export { UIAssets } from './packages/assets/src';
 
-export { uiLocalized as UILocalized } from './packages/localization/src';
-
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';
 export type {

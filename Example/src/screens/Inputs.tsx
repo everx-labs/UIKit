@@ -9,6 +9,7 @@ import {
     UINumberTextView,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {
     UIAmountInput,
     UIBankCardNumberInput,
@@ -153,7 +154,7 @@ export const Inputs = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_with_icons"
+                        testID="uiMaterialTextView_with_icon"
                         label="Input with right icon"
                         helperText="Hint"
                     >
@@ -188,7 +189,7 @@ export const Inputs = () => {
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_with_action"
+                        testID="uiMaterialTextView_with_text"
                         label="Input with right text"
                         helperText="Hint"
                     >
@@ -222,7 +223,7 @@ export const Inputs = () => {
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_with_action"
+                        testID="uiMaterialTextView_no_label_animation"
                         floating={false}
                         label="Input with right text"
                         helperText="Hint"
@@ -259,6 +260,22 @@ export const Inputs = () => {
                         }}
                         onSubmit={() => {
                             console.log('submit');
+                        }}
+                    />
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIAddressInput">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIAddressTextView
+                        testID="uiAddressInput_default"
+                        label="Type address"
+                        validateAddress={() => Promise.resolve(null)}
+                        qrCode={{
+                            parseData: () => {
+                                return Promise.resolve(
+                                    '0:00000000000000000000000000000000000000000000000000000000000',
+                                );
+                            },
                         }}
                     />
                 </View>

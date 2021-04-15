@@ -3,12 +3,12 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIImage } from '@tonlabs/uikit.components';
 import {
     ColorVariants,
     UILabel,
     UILabelRoles,
     useTheme,
+    UIImage,
 } from '@tonlabs/uikit.hydrogen';
 
 import { MessageStatus } from './types';

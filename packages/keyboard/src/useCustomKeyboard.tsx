@@ -91,6 +91,7 @@ export function useCustomKeyboard(
         };
     }, []);
 
+    // eslint-disable-next-line no-shadow
     const dismiss = React.useCallback(() => {
         setCustomKeyboard(undefined);
         customKeyboardRef.current = undefined;
@@ -163,8 +164,6 @@ export function useCustomKeyboard(
 }
 
 export function dismiss() {
-    Keyboard.dismiss();
-
     Object.keys(dismisses).forEach((kbID) => {
         const dismissCb = dismisses[kbID];
 
@@ -173,3 +172,9 @@ export function dismiss() {
         }
     });
 }
+
+const originalKeyboardDismiss = Keyboard.dismiss;
+Keyboard.dismiss = function rnDismissKeyboard() {
+    originalKeyboardDismiss();
+    dismiss();
+};

@@ -14,31 +14,17 @@ import {
     StyleProp,
     ListRenderItem,
     ViewProps,
+    Keyboard,
 } from 'react-native';
-import {
-    TapGestureHandler,
-    ScrollView,
-    State as RNGHState,
-} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
-import { dismiss as dismissKeyboard } from '@tonlabs/uikit.keyboard';
 
 import type { BubbleBaseT, ChatMessage } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
-
-type RNGHEvent<T> = { nativeEvent: T };
-
-const onHandlerStateChange = ({
-    nativeEvent: { state },
-}: RNGHEvent<{ state: RNGHState }>) => {
-    if (state === RNGHState.ACTIVE) {
-        dismissKeyboard();
-    }
-};
 
 // Apply overflowY style for web to make the scrollbar appear as an overlay
 // thus not affecting the content width of SectionList to prevent layout issues
@@ -312,6 +298,29 @@ function useLinesAnimation() {
     };
 }
 
+function useCloseKeyboardOnTap() {
+    const scrollViewWasScrolled = React.useRef(false);
+
+    const onResponderGrant = React.useCallback(() => {
+        scrollViewWasScrolled.current = true;
+    }, []);
+
+    const onTouchEnd = React.useCallback(() => {
+        if (scrollViewWasScrolled.current) {
+            scrollViewWasScrolled.current = false;
+
+            return;
+        }
+
+        Keyboard.dismiss();
+    }, []);
+
+    return {
+        onResponderGrant,
+        onTouchEnd,
+    };
+}
+
 const keyExtractor = <ItemT extends BubbleBaseT>(item: ItemT) => {
     return item.key;
 };
@@ -328,8 +337,11 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     ref: React.RefObject<any>;
     nativeID: string;
     keyboardDismissMode: ScrollViewProps['keyboardDismissMode'];
+    keyboardShouldPersistTaps: ScrollViewProps['keyboardShouldPersistTaps'];
     automaticallyAdjustContentInsets: boolean;
     contentInset: ScrollViewProps['contentInset'];
+    onResponderGrant: ScrollViewProps['onResponderGrant'];
+    onTouchEnd: ScrollViewProps['onTouchEnd'];
     inverted: boolean;
     getItemLayout: VirtualizedListProps<ItemT>['getItemLayout'];
     onLayout: VirtualizedListProps<ItemT>['onLayout'];
@@ -355,8 +367,6 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     getItemLayoutFabric: GetItemLayoutFabric;
     children: (props: CommonChatListProps<ItemT>) => React.ReactNode;
     canLoadMore?: boolean;
-    // If you want custom keyboard to be dismissible on touch outside of it
-    isCustomKeyboardVisible?: boolean;
 };
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
@@ -365,7 +375,6 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     renderBubble,
     getItemLayoutFabric,
     canLoadMore = false,
-    isCustomKeyboardVisible = false,
     children,
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
@@ -376,7 +385,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
 
             // This can be used as a workaround >>>>
             // onScrollBeginDrag: () => {
-            //     dismissKeyboard();
+            //     Keyboard.dismiss();
             // },
         }
 
@@ -406,36 +415,34 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     } = useLinesAnimation();
     useChatListWheelHandler(localRef, nativeID, listContentOffset);
     const contentInset = useContentInset(localRef);
+    const handlers = useCloseKeyboardOnTap();
 
     return (
         <>
             <Animated.View style={lineStyle} />
-            <TapGestureHandler
-                onHandlerStateChange={onHandlerStateChange}
-                enabled={isCustomKeyboardVisible}
-            >
-                {children({
-                    ref: localRef,
-                    nativeID,
-                    keyboardDismissMode: keyboardDismissProp,
-                    automaticallyAdjustContentInsets: false,
-                    contentInset,
-                    inverted: true,
-                    getItemLayout,
-                    onLayout,
-                    onContentSizeChange,
-                    onScroll: onScrollMessages,
-                    onScrollToIndexFailed,
-                    scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
-                    style,
-                    contentContainerStyle: styles.messagesList,
-                    onViewableItemsChanged,
-                    keyExtractor,
-                    renderItem,
-                    onEndReachedThreshold: 0.6,
-                    renderScrollComponent,
-                })}
-            </TapGestureHandler>
+            {children({
+                ref: localRef,
+                nativeID,
+                keyboardDismissMode: keyboardDismissProp,
+                keyboardShouldPersistTaps: 'handled',
+                automaticallyAdjustContentInsets: false,
+                contentInset,
+                inverted: true,
+                getItemLayout,
+                onLayout,
+                onContentSizeChange,
+                onScroll: onScrollMessages,
+                onScrollToIndexFailed,
+                scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
+                style,
+                contentContainerStyle: styles.messagesList,
+                onViewableItemsChanged,
+                keyExtractor,
+                renderItem,
+                onEndReachedThreshold: 0.6,
+                renderScrollComponent,
+                ...handlers,
+            })}
         </>
     );
 }

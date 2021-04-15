@@ -61,15 +61,15 @@ function useValidation(
             return uiLocalized.formatString(
                 uiLocalized.Browser.AmountInput.ErrorBigger,
                 uiLocalized.amountToLocale(max),
-            );
+            ) as string;
         }
         if (validationStatus === ValidationStatus.Less) {
             return uiLocalized.formatString(
                 uiLocalized.Browser.AmountInput.ErrorLess,
                 uiLocalized.amountToLocale(min),
-            );
+            ) as string;
         }
-        return null;
+        return undefined;
     }, [validationStatus, max, min]);
 
     return {

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
-import { UIKeyTextView } from '@tonlabs/uikit.hydrogen';
+import { UIKeyTextView, UIMaterialTextViewRef } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIPullerSheet } from './UIPullerSheet';
@@ -13,7 +13,7 @@ function UIKeySheetContent({
 }: {
     onKeyRetrieved: (key: string) => void;
 }) {
-    const keyRef = React.useRef<TextInput>(null);
+    const keyRef = React.useRef<UIMaterialTextViewRef>(null);
 
     React.useLayoutEffect(() => {
         function focus() {

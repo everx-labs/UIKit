@@ -1,6 +1,6 @@
 // @flow
 import React, { useCallback } from 'react';
-import { View, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Image, TouchableWithoutFeedback, Platform } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
@@ -43,14 +43,18 @@ const UIToggle = ({
     const testIDProp = testID ? { testID } : null;
 
     return (
-        <TouchableWithoutFeedback
-            {...testIDProp}
-            onPress={onPresHandler}
-        >
-            <View style={[containerStyle, {
-                cursor: 'pointer',
-                touchAction: 'manipulation',
-            }]}
+        <TouchableWithoutFeedback {...testIDProp} onPress={onPresHandler}>
+            <View
+                style={[
+                    containerStyle,
+                    Platform.select({
+                        web: {
+                            cursor: 'pointer',
+                            touchAction: 'manipulation',
+                        },
+                        default: null,
+                    }),
+                ]}
             >
                 <Image source={source} />
             </View>

@@ -1,6 +1,6 @@
 // @flow
 import React, { useRef, useState } from 'react';
-import { TouchableWithoutFeedback, View } from 'react-native';
+import { Platform, TouchableWithoutFeedback, View } from 'react-native';
 
 export type ActionProps = {
     testID?: string,
@@ -79,10 +79,16 @@ const UIActionComponent = ({
                     ref: childrenRef,
                     isTapped,
                     isHover,
-                    style: [{
-                        cursor: 'pointer',
-                        touchAction: 'manipulation',
-                    }, children.props.style],
+                    style: [
+                        Platform.select({
+                            web: {
+                                cursor: 'pointer',
+                                touchAction: 'manipulation',
+                            },
+                            default: null,
+                        }),
+                        children.props.style,
+                    ],
                 })}
             </View>
         </TouchableWithoutFeedback>

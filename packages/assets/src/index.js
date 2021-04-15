@@ -119,6 +119,9 @@ import iconLogoTonlabsPrimaryMinus from '../logo/tonlabs/tonlabs-primary-minus.p
 import iconFaceId from '../face-id/face-id.png';
 import iconTouchId from '../ico-touch-id/touch-id.png';
 
+import iconBook from '../ico-book/ico-book.png';
+import iconScan from '../ico-scan/ico-scan.png';
+
 import countries from '../countries/countries.json'; // TODO
 
 export const UIAssets = {
@@ -260,6 +263,11 @@ export const UIAssets = {
         security: {
             touchId: iconTouchId,
             faceId: iconFaceId,
+        },
+
+        addressInput: {
+            book: iconBook,
+            scan: iconScan,
         },
     },
     // TODO: need to make it lazy!

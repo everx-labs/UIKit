@@ -15,7 +15,7 @@ import { UIImage } from './UIImage';
 import { UIConstant } from './constants';
 import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
 
-type UIQRCodeScannerSheetProps = Omit<UICardSheetProps, 'children'> & {
+export type UIQRCodeScannerSheetProps = Omit<UICardSheetProps, 'children'> & {
     onRead: (event: OnReadEvent) => void | Promise<void>;
 };
 
