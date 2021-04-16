@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { ColorValue, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { Button, ButtonIconSize } from './Button';
 import { UIConstant } from './constants';
@@ -63,7 +63,7 @@ function useButtonStyles(
 
     const buttonStyle = [
         {
-            backgroundColor: theme[ColorVariants[backgroundColor]],
+            backgroundColor: theme[ColorVariants[backgroundColor]] as ColorValue,
             borderRadius: UIConstant.alertBorderRadius,
         },
         cornerStyle,
@@ -89,7 +89,6 @@ export const UIMsgButton = ({
         <Button
             containerStyle={[
                 styles.container,
-                // @ts-ignore
                 buttonStyle,
             ]}
             disabled={disabled}
