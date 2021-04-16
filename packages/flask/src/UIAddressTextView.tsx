@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import type { TextInput, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
@@ -38,11 +38,44 @@ function useAddressTextView(
         onChangeText: onChangeTextBase,
         onKeyPress: onKeyPressBase,
     } = useUITextViewValue(ref, true, props);
-    const { validateAddress, onSubmitEditing } = props;
+
+    const { 
+        validateAddress, 
+        onSubmitEditing,
+        onBlur: onBlurBase,
+    } = props;
+
     const [
         validation,
         setValidation,
     ] = React.useState<UIAddressTextViewValidationResult | null>(null);
+
+    const onBlur = React.useCallback(
+        async (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+            if (onBlurBase) {
+                onBlurBase(e);
+            }
+
+            // Keep in mind that the `text` value from `nativeEvent` can be undefined for `onBlur`
+            // as per https://reactnative.dev/docs/textinput#onblur
+            // RN suggests to use `onEndEditing` which is unfortunately not supported on web :(
+            const { text } = e.nativeEvent;
+            if (text == null) {
+                return;
+            }
+
+            const currentValidation = await validateAddress(text);
+
+            if (
+                currentValidation?.helperText !== validation?.helperText ||
+                currentValidation?.success !== validation?.success ||
+                currentValidation?.error !== validation?.error
+            ) {
+                setValidation(currentValidation);
+            }
+        },
+        [validateAddress, validation, onBlurBase],
+    );
 
     const onChangeText = React.useCallback(
         async (t: string) => {
@@ -75,6 +108,7 @@ function useAddressTextView(
     );
 
     return {
+        onBlur,
         onChangeText,
         onKeyPress,
         helperText: validation?.helperText || props.helperText,
@@ -100,6 +134,7 @@ export const UIAddressTextView = React.forwardRef<
         ...rest
     } = props;
     const {
+        onBlur,
         onChangeText,
         onKeyPress,
         helperText,
@@ -134,6 +169,7 @@ export const UIAddressTextView = React.forwardRef<
                 autoCompleteType="off"
                 autoCorrect={false}
                 multiline
+                onBlur={onBlur}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 helperText={helperText}
