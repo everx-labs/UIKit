@@ -22,6 +22,7 @@ export const UIConstant = {
     maxNoticeIconSize: 88,
 
     tinyContentOffset: 4,
+    smallContentOffset: 8,
     normalContentOffset: 12,
     contentOffset: 16,
     borderRadius: 8,

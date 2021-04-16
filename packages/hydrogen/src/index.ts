@@ -13,6 +13,7 @@ export * from './UIIndicator';
 export * from './UIKeyTextView';
 export * from './UILabel';
 export * from './UIMaterialTextView';
+export * from './UIMsgButton';
 export * from './UINotice';
 export * from './UINumberTextView';
 export * from './UIQRCodeScannerSheet';

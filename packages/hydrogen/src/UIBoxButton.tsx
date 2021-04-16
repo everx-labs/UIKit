@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ImageSourcePropType, StyleSheet } from 'react-native';
+import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
 
 import { Button, ButtonIconSize } from './Button';
 import { UIConstant } from './constants';
@@ -110,8 +110,8 @@ function useButtonStyles(
     const theme = useTheme();
 
     const buttonStyle = {
-        backgroundColor: theme[ColorVariants[backgroundColor]],
-        borderColor: theme[ColorVariants[borderColor]],
+        backgroundColor: theme[ColorVariants[backgroundColor]] as ColorValue,
+        borderColor: theme[ColorVariants[borderColor]] as ColorValue,
         borderRadius,
         borderWidth,
     };
@@ -137,7 +137,6 @@ export const UIBoxButton = ({
         <Button
             containerStyle={[
                 styles.container,
-                // @ts-ignore
                 buttonStyle,
             ]}
             disabled={disabled}
