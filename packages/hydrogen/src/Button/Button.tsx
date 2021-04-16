@@ -38,6 +38,7 @@ const ButtonForward = React.forwardRef<
         testID,
         ...props
     }: ButtonProps,
+    ref,
 ) {
     const handleOnPress = React.useCallback(
         () => {
@@ -52,6 +53,7 @@ const ButtonForward = React.forwardRef<
 
     return (
         <TouchableElement
+            ref={ref}
             {...props}
             disabled={disabled}
             onPress={handleOnPress}
