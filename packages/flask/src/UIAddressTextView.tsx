@@ -56,15 +56,7 @@ function useAddressTextView(
                 onBlurBase(e);
             }
 
-            // Keep in mind that the `text` value from `nativeEvent` can be undefined for `onBlur`
-            // as per https://reactnative.dev/docs/textinput#onblur
-            // RN suggests to use `onEndEditing` which is unfortunately not supported on web :(
-            const { text } = e.nativeEvent;
-            if (text == null) {
-                return;
-            }
-
-            const currentValidation = await validateAddress(text);
+            const currentValidation = await validateAddress(inputValue.current);
 
             if (
                 currentValidation?.helperText !== validation?.helperText ||
@@ -74,7 +66,7 @@ function useAddressTextView(
                 setValidation(currentValidation);
             }
         },
-        [validateAddress, validation, onBlurBase],
+        [validateAddress, validation, inputValue, onBlurBase],
     );
 
     const onChangeText = React.useCallback(
