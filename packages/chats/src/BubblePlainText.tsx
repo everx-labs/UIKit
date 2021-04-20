@@ -38,7 +38,7 @@ const useUrlStyle = (status: MessageStatus) => {
         ];
     }
 
-    return [{ color: theme[ColorVariants.TextSecondary] }, styles.urlSent];
+    return [{ color: theme[ColorVariants.StaticTextPrimaryLight] }, styles.urlSent];
 };
 
 const getFontColor = (message: PlainTextMessage) => {
