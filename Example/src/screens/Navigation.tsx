@@ -31,9 +31,12 @@ export const Navigation = () => {
                         paddingVertical: 20,
                     }}
                 >
-                    <UISearchBar />
+                    <UISearchBar testID="UISearchBar_default" />
                     <View style={{ height: 20 }} />
-                    <UISearchBar headerRightLabel="Action" />
+                    <UISearchBar
+                        headerRightLabel="Action"
+                        testID="UISearchBar_with_action_button"
+                    />
                 </View>
             </ExampleSection>
             <ExampleSection title="UISearchController">
@@ -45,6 +48,7 @@ export const Navigation = () => {
                     }}
                 >
                     <UIButton
+                        testID="UISearchController_open_button"
                         onPress={() =>
                             setSearchControllerVisible(
                                 !isSearchControllerVisible,
@@ -66,6 +70,7 @@ export const Navigation = () => {
             </ExampleSection>
             <ExampleSection title="UISearchBarButton">
                 <View
+                    testID="UISearchBarButton_open_button"
                     style={{
                         width: '100%',
                         maxWidth: 500,
@@ -98,9 +103,10 @@ export const Navigation = () => {
                         paddingVertical: 20,
                     }}
                 >
-                    <UIDialogBar />
+                    <UIDialogBar testID="UIDialogBar_default"/>
                     <View style={{ height: 20 }} />
                     <UIDialogBar
+                        testID="UIDialogBar_with_action_buttons"
                         headerLeftItems={[
                             {
                                 label: 'Action1',
@@ -132,6 +138,7 @@ export const Navigation = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UIDialogBar
+                        testID="UIDialogBar_with_icons"
                         headerLeftItems={[
                             {
                                 icon: {
@@ -193,6 +200,7 @@ export const Navigation = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UIDialogBar
+                        testID="UIDialogBar_without_slider"
                         headerLeftItems={[
                             {
                                 label: 'Action1',
@@ -233,9 +241,10 @@ export const Navigation = () => {
                         paddingVertical: 20,
                     }}
                 >
-                    <UISlideBar />
+                    <UISlideBar testID="UISlideBar_default" />
                     <View style={{ height: 20 }} />
                     <UISlideBar
+                        testID="UISlideBar_with_actions_buttons"
                         headerLeftItems={[
                             {
                                 label: 'Action1',
@@ -267,6 +276,7 @@ export const Navigation = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UISlideBar
+                        testID="UISlideBar_with_icons"
                         headerLeftItems={[
                             {
                                 icon: {
@@ -328,6 +338,7 @@ export const Navigation = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UISlideBar
+                        testID="UISlideBar_without_slider"
                         headerLeftItems={[
                             {
                                 label: 'Action1',
