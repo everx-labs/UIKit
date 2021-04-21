@@ -244,7 +244,7 @@ export const Navigation = () => {
                     <UISlideBar testID="UISlideBar_default" />
                     <View style={{ height: 20 }} />
                     <UISlideBar
-                        testID="UISlideBar_with_actions_buttons"
+                        testID="UISlideBar_with_action_buttons"
                         headerLeftItems={[
                             {
                                 label: 'Action1',
