@@ -2,11 +2,11 @@ import * as React from 'react';
 import { FlatList, FlatListProps, ViewProps } from 'react-native';
 
 import {
-    UICommonChatList,
-    BubbleSimplePlainText,
     BubbleActionButton,
+    BubbleSimplePlainText,
     ChatMessageType,
     CommonChatListProps,
+    UICommonChatList,
 } from '@tonlabs/uikit.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
@@ -17,6 +17,7 @@ import { ConfirmInput } from './Inputs/confirm';
 import { AmountInput } from './Inputs/amountInput';
 import { SigningBox } from './Inputs/SigningBox';
 import { TransactionConfirmation } from './Inputs/TransactionConfirmation';
+import { QRCode } from './Inputs/qrCode';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -76,6 +77,9 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.QRCode) {
+        return <QRCode {...item} onLayout={onLayout} />
     }
 
     return null;
