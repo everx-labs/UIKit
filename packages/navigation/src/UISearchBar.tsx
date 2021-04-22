@@ -123,9 +123,10 @@ export function UISearchBar({
             if (onChangeTextProp) {
                 onChangeTextProp('');
             }
+            setSearchText('');
             clear();
         },
-        [onChangeTextProp, clear],
+        [onChangeTextProp, setSearchText, clear],
     );
 
     return (
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: UIConstant.mediumBorderRadius(),
         paddingLeft: 10,
-        paddingRight: 14,
+        paddingRight: 8,
     },
     searchIcon: {
         width: ICON_SEARCH_SIZE,
@@ -198,6 +199,7 @@ const styles = StyleSheet.create({
     loadingIcon: {
         flex: undefined,
         marginLeft: UIConstant.tinyContentOffset(),
+        marginRight: 6,
     },
     actionButton: {
         marginLeft: UIConstant.contentOffset(),
