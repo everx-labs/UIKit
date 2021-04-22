@@ -106,6 +106,7 @@ export function UISearchBar({
         inputHasValue,
         clear,
     } = useUITextViewValue(ref, false, { value: searchText, ...inputProps });
+
     const onChangeText = React.useCallback(
         (text: string) => {
             if (onChangeTextProp) {
@@ -115,6 +116,16 @@ export function UISearchBar({
             setSearchText(text);
         },
         [onChangeTextProp, setSearchText],
+    );
+
+    const onClear = React.useCallback(
+        () => {
+            if (onChangeTextProp) {
+                onChangeTextProp('');
+            }
+            clear();
+        },
+        [onChangeTextProp, clear],
     );
 
     return (
@@ -145,7 +156,7 @@ export function UISearchBar({
                     <TouchableOpacity
                         testID="search_bar_clear_btn"
                         style={styles.clearButtonContainer}
-                        onPress={clear}
+                        onPress={onClear}
                     >
                         <UIImage
                             source={UIAssets.icons.ui.clear}
