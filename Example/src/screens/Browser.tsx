@@ -452,7 +452,7 @@ const BrowserScreen = () => {
                                     key: `${Date.now()}-qr-code`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.QRCode,
-                                    onSelect: (externalState: any) => {
+                                    onScan: (externalState: any) => {
                                         setMessages([
                                             {
                                                 ...message,

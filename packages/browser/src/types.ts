@@ -202,13 +202,13 @@ export type TransactionConfirmationMessage = InteractiveMessage<
 >;
 
 export type QRCodeExternalState = {
-    address: string;
+    value: string;
 };
 
 export type QRCodeMessage = InteractiveMessage<
     InteractiveMessageType.QRCode,
     {
-        onSelect: (state: QRCodeExternalState) => void;
+        onScan: (state: QRCodeExternalState) => void;
         parseData: (data: any) => Promise<string>;
     },
     QRCodeExternalState

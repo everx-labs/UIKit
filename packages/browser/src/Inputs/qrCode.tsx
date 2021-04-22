@@ -63,9 +63,9 @@ export function QRCode({
             <UIQRCodeScannerSheet
                 visible={state.qrCodeVisible}
                 onRead={async (e: any) => {
-                    const address = await message.parseData(e.data);
-                    message.onSelect({
-                        address,
+                    const value = await message.parseData(e.data);
+                    message.onScan({
+                        value,
                     });
                     dispatch({
                         type: 'CLOSE_QR_CODE',
