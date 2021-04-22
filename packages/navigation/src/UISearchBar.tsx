@@ -97,14 +97,26 @@ export function UISearchBar({
     headerRightOnPress,
     placeholder,
     searching,
+    onChangeText: onChangeTextProp,
     ...inputProps
 }: UISearchBarProps) {
+    const [searchText, setSearchText] = React.useState('');
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
         clear,
-        onChangeText: onChangeTextProp,
-    } = useUITextViewValue(ref, false, inputProps);
+    } = useUITextViewValue(ref, false, { value: searchText, ...inputProps });
+    const onChangeText = React.useCallback(
+        (text: string) => {
+            if (onChangeTextProp) {
+                onChangeTextProp(text);
+            }
+
+            setSearchText(text);
+        },
+        [onChangeTextProp, setSearchText],
+    );
+
     return (
         <UIBackgroundView style={styles.container}>
             <UIBackgroundView
@@ -119,7 +131,7 @@ export function UISearchBar({
                 <UITextView
                     ref={ref}
                     placeholder={placeholder || uiLocalized.Search}
-                    onChangeText={onChangeTextProp}
+                    onChangeText={onChangeText}
                     {...inputProps}
                 />
                 {searching && (
