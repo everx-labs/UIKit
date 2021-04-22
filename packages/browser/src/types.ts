@@ -29,6 +29,7 @@ export enum InteractiveMessageType {
     AmountInput = 'AmountInput',
     SigningBox = 'SigningBox',
     TransactionConfirmation = 'TransactionConfirmation',
+    QRCode = 'QRCode',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -200,6 +201,19 @@ export type TransactionConfirmationMessage = InteractiveMessage<
     TransactionConfirmationExternalState
 >;
 
+export type QRCodeExternalState = {
+    value: string;
+};
+
+export type QRCodeMessage = InteractiveMessage<
+    InteractiveMessageType.QRCode,
+    {
+        onScan: (state: QRCodeExternalState) => void;
+        parseData: (data: any) => Promise<string>;
+    },
+    QRCodeExternalState
+>;
+
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
@@ -209,7 +223,8 @@ export type BrowserMessage =
     | ConfirmMessage
     | AmountInputMessage
     | SigningBoxMessage
-    | TransactionConfirmationMessage;
+    | TransactionConfirmationMessage
+    | QRCodeMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

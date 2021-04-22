@@ -11,6 +11,7 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
+    QRCodeMessage,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -433,6 +434,36 @@ const BrowserScreen = () => {
                                             },
                                             ...messages,
                                         ]);
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                navigation.setParams({
+                                    menuVisible: false,
+                                });
+                            }}
+                            style={{
+                                marginBottom: 10,
+                            }}
+                        />
+                        <UIButton
+                            title="Add QRCodeMessage"
+                            onPress={() => {
+                                const message: QRCodeMessage = {
+                                    key: `${Date.now()}-qr-code`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.QRCode,
+                                    onScan: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                    parseData: (_data: any) => {
+                                        return Promise.resolve('0:000');
                                     },
                                 };
                                 setMessages([message, ...messages]);
