@@ -1,26 +1,23 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 import {
-    UIBackgroundView,
     ColorVariants,
+    UIBackgroundView,
+    UIImage,
+    UIIndicator,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
     UITextView,
     UITextViewProps,
-    UIIndicator,
-    UIImage,
-    UILabel,
-    UILabelRoles,
-    UILabelColors,
+    useUITextViewValue,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import {
-    HEADER_HEIGHT,
-    ICON_SEARCHING_INDICATOR_SIZE,
-    ICON_SEARCH_SIZE,
-} from './constants';
+import { HEADER_HEIGHT, ICON_SEARCH_SIZE, ICON_SEARCHING_INDICATOR_SIZE } from './constants';
 
 type OnPress = () => void | Promise<void>;
 
@@ -100,8 +97,38 @@ export function UISearchBar({
     headerRightOnPress,
     placeholder,
     searching,
+    onChangeText: onChangeTextProp,
     ...inputProps
 }: UISearchBarProps) {
+    const [searchText, setSearchText] = React.useState('');
+    const ref = React.useRef<TextInput>(null);
+    const {
+        inputHasValue,
+        clear,
+    } = useUITextViewValue(ref, false, { value: searchText, ...inputProps });
+
+    const onChangeText = React.useCallback(
+        (text: string) => {
+            if (onChangeTextProp) {
+                onChangeTextProp(text);
+            }
+
+            setSearchText(text);
+        },
+        [onChangeTextProp, setSearchText],
+    );
+
+    const onClear = React.useCallback(
+        () => {
+            if (onChangeTextProp) {
+                onChangeTextProp('');
+            }
+            setSearchText('');
+            clear();
+        },
+        [onChangeTextProp, setSearchText, clear],
+    );
+
     return (
         <UIBackgroundView style={styles.container}>
             <UIBackgroundView
@@ -114,7 +141,9 @@ export function UISearchBar({
                     tintColor={ColorVariants.IconSecondary}
                 />
                 <UITextView
+                    ref={ref}
                     placeholder={placeholder || uiLocalized.Search}
+                    onChangeText={onChangeText}
                     {...inputProps}
                 />
                 {searching && (
@@ -123,6 +152,18 @@ export function UISearchBar({
                         size={ICON_SEARCHING_INDICATOR_SIZE}
                         trackWidth={2}
                     />
+                )}
+                {!searching && inputHasValue && (
+                    <TouchableOpacity
+                        testID="search_bar_clear_btn"
+                        style={styles.clearButtonContainer}
+                        onPress={onClear}
+                    >
+                        <UIImage
+                            source={UIAssets.icons.ui.clear}
+                            tintColor={ColorVariants.BackgroundPrimaryInverted}
+                        />
+                    </TouchableOpacity>
                 )}
             </UIBackgroundView>
             {headerRight({
@@ -148,7 +189,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: UIConstant.mediumBorderRadius(),
         paddingLeft: 10,
-        paddingRight: 14,
+        paddingRight: 8,
     },
     searchIcon: {
         width: ICON_SEARCH_SIZE,
@@ -158,8 +199,14 @@ const styles = StyleSheet.create({
     loadingIcon: {
         flex: undefined,
         marginLeft: UIConstant.tinyContentOffset(),
+        marginRight: 6,
     },
     actionButton: {
         marginLeft: UIConstant.contentOffset(),
+    },
+    clearButtonContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 24,
     },
 });
