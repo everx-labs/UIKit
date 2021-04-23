@@ -1,7 +1,16 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIBadge, UIDot, UISeparator, UITag } from '@tonlabs/uikit.components';
+import {
+    UIBlurView,
+    UIImage,
+    UILabel,
+    UILabelColors,
+    UILabelRoles
+} from '@tonlabs/uikit.hydrogen';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -36,6 +45,28 @@ export const Design = () => (
         <ExampleSection title="UITag">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UITag testID="uiTag_default" title="Tag title" />
+            </View>
+        </ExampleSection>
+        <ExampleSection title="UIBlurView">
+            <View style={{ paddingVertical: 20 }}>
+                <View style={{ padding: 16, alignItems: 'center', justifyContent: 'center' }}>
+                    <UIImage source={UIAssets.images[404]} />
+                    <UIBlurView style={{ padding: 16, borderRadius: 12, position: 'absolute' }}>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.TitleMedium}
+                        >
+                            Earn 5.0 % a year just for holding crystals
+                        </UILabel>
+                        <UILabel
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.ParagraphNote}
+                            style={{ marginTop: 8 }}
+                        >
+                            Delegate tokens to Smart Contracts and enjoy your rewards every day
+                        </UILabel>
+                    </UIBlurView>
+                </View>
             </View>
         </ExampleSection>
     </ExampleScreen>

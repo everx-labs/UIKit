@@ -5,6 +5,7 @@ export * from './Typography';
 export * from './UIAutogrowTextView';
 export * from './UIBackgroundView';
 export * from './UIBanner';
+export * from './UIBlurView';
 export * from './UIBoxButton';
 export * from './UIButton';
 export * from './UICheckbox';
