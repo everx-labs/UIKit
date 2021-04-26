@@ -1,25 +1,28 @@
 import * as React from 'react';
+import { View, ViewStyle} from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
+import { ColorVariants, useTheme } from '../Colors';
 
-type Props = Omit<BlurView, 'style'> & {
-    style?: StyleProp<ViewProps>;
+type Props = Omit<ViewProps, 'style'> & {
+    style?: StyleProp<ViewStyle>;
     children?: React.ReactNode;
 };
 
-export const UIBlurView = React.forwardRef<BlurView, Props>(
+export const UIBlurView = React.forwardRef<View, Props>(
     function UIBlurViewForwarded({
         style,
         ...rest
     }: Props, ref) {
+        const color = useTheme()[ColorVariants.BackgroundOverlayInverted] as string;
+
         return (
-            <BlurView
+            <View
                 ref={ref}
                 {...rest}
-                blurType="light"
-                blurAmount={10}
-                reducedTransparencyFallbackColor="white"
                 style={[
+                    {
+                        backgroundColor: color,
+                    },
                     style,
                 ]}
             />
