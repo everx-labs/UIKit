@@ -62,10 +62,10 @@
         "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
         "react-native-lightbox": "0.7.0",
         "react-native-localization": "2.1.6",
+        "react-native-navigation-bar-color": "2.0.1",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
-        "react-native-navigation-bar-color": "2.0.1",
         "react-qr-reader": "2.2.1",
         "react-style-proptype": "3.2.2",
         "validator": "10.11.0"
