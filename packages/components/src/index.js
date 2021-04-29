@@ -31,6 +31,7 @@ export { default as UIGridColumn } from './UIGridColumn';
 export { default as UIImage } from './UIImage';
 export { default as UIImageButton } from './UIImageButton';
 export { default as UILayoutManager } from './UILayoutManager';
+export { default as UILightweightChart } from './UILightweightChart';
 export { default as UILink } from './UILink';
 export { default as UILinkInput } from './UILinkInput';
 export { default as UIListHeader } from './UIListHeader';

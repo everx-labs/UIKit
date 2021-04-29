@@ -53,6 +53,7 @@ import {
 } from '@tonlabs/uikit.navigation';
 
 import { Buttons } from './screens/Buttons';
+import { Chart } from './screens/Chart';
 import { Checkbox } from './screens/Checkbox';
 import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
@@ -168,6 +169,11 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             onPress={() => navigation.navigate('buttons')}
                             buttonStyle={UIButton.ButtonStyle.Link}
                             title="Buttons"
+                        />
+                        <UIButton
+                            onPress={() => navigation.navigate('chart')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Chart"
                         />
                         <UIButton
                             onPress={() => navigation.navigate('checkbox')}
@@ -293,6 +299,10 @@ const App = () => {
                             <SurfSplit.Screen
                                 name="buttons"
                                 component={Buttons}
+                            />
+                            <SurfSplit.Screen
+                                name="chart"
+                                component={Chart}
                             />
                             <SurfSplit.Screen
                                 name="checkbox"
