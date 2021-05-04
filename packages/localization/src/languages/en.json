@@ -56,6 +56,9 @@
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
         },
+        "Menu": {
+            "More": "More..."
+        },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
             "EnterKey": "Enter Key",

@@ -7,9 +7,13 @@ import {
     ChatMessageType,
     MessageStatus,
 } from '@tonlabs/uikit.chats';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import type { MenuMessage } from '../types';
 
 export function MenuInput({ onLayout, ...message }: MenuMessage) {
+    const [unfolded, setUnfolded] = React.useState(false);
+
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
@@ -35,6 +39,8 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
         );
     }
 
+    const items = unfolded ? message.items : message.items.slice(0, 5);
+
     return (
         <View onLayout={onLayout}>
             <BubbleSimplePlainText
@@ -45,7 +51,7 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                 firstFromChain
                 lastFromChain
             />
-            {message.items.map((item, index) => (
+            {items.map((item, index) => (
                 <BubbleActionButton
                     type={ChatMessageType.ActionButton}
                     // eslint-disable-next-line react/no-array-index-key
@@ -62,9 +68,23 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                         });
                     }}
                     firstFromChain={index === 0}
-                    lastFromChain={index === message.items.length - 1}
+                    lastFromChain={
+                        unfolded && index === message.items.length - 1
+                    }
                 />
             ))}
+            {!unfolded && (
+                <BubbleActionButton
+                    type={ChatMessageType.ActionButton}
+                    key="menu-more"
+                    text={uiLocalized.Browser.Menu.More}
+                    status={MessageStatus.Received}
+                    onPress={() => {
+                        setUnfolded(true);
+                    }}
+                    lastFromChain
+                />
+            )}
         </View>
     );
 }

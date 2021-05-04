@@ -226,6 +226,22 @@ const BrowserScreen = () => {
                                             handlerId: 3,
                                             title: 'Three',
                                         },
+                                        {
+                                            handlerId: 4,
+                                            title: 'Four',
+                                        },
+                                        {
+                                            handlerId: 5,
+                                            title: 'Five',
+                                        },
+                                        {
+                                            handlerId: 6,
+                                            title: 'Six',
+                                        },
+                                        {
+                                            handlerId: 7,
+                                            title: 'Seven',
+                                        },
                                     ],
                                 };
                                 setMessages([message, ...messages]);
