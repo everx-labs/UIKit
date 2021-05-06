@@ -8,7 +8,7 @@
 
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 // $FlowFixMe
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
@@ -286,6 +286,12 @@ const App = () => {
                                         },
                                     ],
                                 },
+                                ...Platform.select({
+                                    android: {
+                                        stackAnimation: 'slide_from_right',
+                                    },
+                                    default: null,
+                                }),
                             }}
                             mainWidth={900}
                         >
