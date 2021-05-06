@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { Button, ButtonIconSize } from './Button';
+import { Button, ButtonIconSize, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
@@ -37,13 +37,17 @@ export type UIBoxButtonProps = {
      */
     iconPosition?: UIBoxButtonIconPosition;
     /**
+     * Allows to set top, right, bottom and left margins to the button container
+     */
+    layout?: UILayout;
+    /**
      * Whether to display a loading indicator instead of button content or not
      */
     loading?: boolean;
     /**
      * Function will be called on button press
      */
-    onPress: () => void;
+    onPress?: () => void | Promise<void>;
     /**
      * ID for usage in tests
      */
@@ -127,6 +131,7 @@ export const UIBoxButton = ({
     disabled,
     icon,
     iconPosition = UIBoxButtonIconPosition.Left,
+    layout,
     loading,
     onPress,
     testID,
@@ -139,6 +144,7 @@ export const UIBoxButton = ({
             containerStyle={[
                 styles.container,
                 buttonStyle,
+                layout,
             ]}
             disabled={disabled}
             loading={loading}

@@ -22,12 +22,12 @@ import type {
     SigningBoxMessage,
     TransactionConfirmationMessage,
 } from '@tonlabs/uikit.browser';
-import { UIButton } from '@tonlabs/uikit.components';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import {
     useTheme,
     ColorVariants,
     UIBottomSheet,
+    UIBoxButton,
     UICardSheet,
     UILabel,
     UILabelColors,
@@ -98,8 +98,11 @@ const BrowserScreen = () => {
                             borderRadius: 10,
                         }}
                     >
-                        <UIButton
+                        <UIBoxButton
                             title="Add AddressInput"
+                            layout={{
+                                marginBottom: 10,
+                            }}
                             onPress={() => {
                                 const message: AddressInputMessage = {
                                     key: `${Date.now()}-address-input`,
@@ -115,15 +118,13 @@ const BrowserScreen = () => {
                                                 text.length % 5 === 0
                                             ) {
                                                 return Promise.resolve({
-                                                    status:
-                                                        ValidationResultStatus.Error,
+                                                    status: ValidationResultStatus.Error,
                                                     text:
                                                         'Oh no, the length is divided by 5',
                                                 });
                                             }
                                             return Promise.resolve({
-                                                status:
-                                                    ValidationResultStatus.None,
+                                                status: ValidationResultStatus.None,
                                             });
                                         },
                                     },
@@ -165,12 +166,12 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                            style={{
+                        />
+                        <UIBoxButton
+                            title="Add TerminalInput"
+                            layout={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
-                            title="Add TerminalInput"
                             onPress={() => {
                                 const message: TerminalMessage = {
                                     key: `${Date.now()}-terminal-input`,
@@ -192,12 +193,12 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                            style={{
+                        />
+                        <UIBoxButton
+                            title="Add Menu"
+                            layout={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
-                            title="Add Menu"
                             onPress={() => {
                                 const message: MenuMessage = {
                                     key: `${Date.now()}-menu`,
@@ -249,12 +250,12 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                            style={{
+                        />
+                        <UIBoxButton
+                            title="Add Confirm"
+                            layout={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
-                            title="Add Confirm"
                             onPress={() => {
                                 const message: ConfirmMessage = {
                                     key: `${Date.now()}-confirm`,
@@ -276,12 +277,12 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                            style={{
+                        />
+                        <UIBoxButton
+                            title="Add AmountInput"
+                            layout={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
-                            title="Add AmountInput"
                             onPress={() => {
                                 const message: AmountInputMessage = {
                                     key: `${Date.now()}-amount`,
@@ -316,12 +317,12 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                            style={{
+                        />
+                        <UIBoxButton
+                            title="Add SigningBoxInput"
+                            layout={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
-                            title="Add SigningBoxInput"
                             onPress={() => {
                                 const message: SigningBoxMessage = {
                                     key: `${Date.now()}-signing-box`,
@@ -332,8 +333,8 @@ const BrowserScreen = () => {
                                         const newSigningBox = {
                                             id:
                                                 signingBoxes[
-                                                    signingBoxes.length - 1
-                                                ].id + 1,
+                                                signingBoxes.length - 1
+                                                    ].id + 1,
                                             title: 'Signature',
                                             publicKey: privateKey,
                                         };
@@ -379,18 +380,18 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                            style={{
+                        />
+                        <UIBoxButton
+                            title="Add TransactionConfirmationMessage"
+                            layout={{
                                 marginBottom: 10,
                             }}
-                        />
-                        <UIButton
-                            title="Add TransactionConfirmationMessage"
                             onPress={() => {
                                 const message: TransactionConfirmationMessage = {
                                     key: `${Date.now()}-approve`,
                                     status: MessageStatus.Received,
                                     type:
-                                        InteractiveMessageType.TransactionConfirmation,
+                                    InteractiveMessageType.TransactionConfirmation,
                                     toAddress: '0:12300000006789',
                                     onAddressPress: () => {},
                                     recipientsCount: 255,
@@ -457,11 +458,8 @@ const BrowserScreen = () => {
                                     menuVisible: false,
                                 });
                             }}
-                            style={{
-                                marginBottom: 10,
-                            }}
                         />
-                        <UIButton
+                        <UIBoxButton
                             title="Add QRCodeMessage"
                             onPress={() => {
                                 const message: QRCodeMessage = {

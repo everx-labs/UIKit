@@ -16,12 +16,19 @@ import {
 import { ColorVariants } from '../Colors';
 import { UIConstant } from '../constants';
 
+export type UILayout = {
+    marginTop?: number;
+    marginRight?: number;
+    marginBottom?: number;
+    marginLeft?: number;
+}
+
 type ButtonProps = {
     children: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle>;
     disabled?: boolean;
     loading?: boolean;
-    onPress: () => void;
+    onPress?: () => void | Promise<void>;
     testID?: string;
 }
 
@@ -42,7 +49,7 @@ const ButtonForward = React.forwardRef<
 ) {
     const handleOnPress = React.useCallback(
         () => {
-            if (!loading) {
+            if (!loading && onPress) {
                 onPress();
             }
         },

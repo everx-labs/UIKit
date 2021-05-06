@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import { Button, ButtonIconSize } from './Button';
+import { Button, ButtonIconSize, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
@@ -32,7 +32,7 @@ export type UIMsgButtonProps = {
      * Position of non-rounded corner of the button
      * - `UIMsgButtonCornerPosition.BottomLeft` - bottom left corner has zero radius
      * - `UIMsgButtonCornerPosition.BottomRight` - bottom right corner has zero radius
-     * - `UIMsgButtonCornerPosition.TopLeft` - top left corner has zero radius (default)
+     * - `UIMsgButtonCornerPosition.TopLeft` - top left corner has zero radius
      * - `UIMsgButtonCornerPosition.TopRight` - top right corner has zero radius
      */
     cornerPosition?: UIMsgButtonCornerPosition;
@@ -52,9 +52,13 @@ export type UIMsgButtonProps = {
      */
     iconPosition?: UIMsgButtonIconPosition;
     /**
+     * Allows to set top, right, bottom and left margins to the button container
+     */
+    layout?: UILayout;
+    /**
      * Function will be called on button press
      */
-    onPress: () => void;
+    onPress?: () => void | Promise<void>;
     /**
      * ID for usage in tests
      */
@@ -74,7 +78,7 @@ export type UIMsgButtonProps = {
 
 function useButtonStyles(
     type: UIMsgButtonType,
-    cornerPosition: UIMsgButtonCornerPosition,
+    cornerPosition?: UIMsgButtonCornerPosition,
     disabled?: boolean,
 ) {
     let backgroundColor: ColorVariants = ColorVariants.Transparent;
@@ -149,10 +153,11 @@ function useButtonStyles(
 }
 
 export const UIMsgButton = ({
-    cornerPosition = UIMsgButtonCornerPosition.TopLeft,
+    cornerPosition,
     disabled,
     icon,
     iconPosition = UIMsgButtonIconPosition.Left,
+    layout,
     onPress,
     testID,
     title,
@@ -164,6 +169,7 @@ export const UIMsgButton = ({
             containerStyle={[
                 styles.container,
                 buttonStyle,
+                layout,
             ]}
             disabled={disabled}
             onPress={onPress}
@@ -191,7 +197,8 @@ export const UIMsgButton = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.msgButtonHeight,
-        padding: UIConstant.smallContentOffset,
+        paddingVertical: UIConstant.smallContentOffset,
+        paddingHorizontal: UIConstant.normalContentOffset,
     },
     leftIcon: {
         marginLeft: 8,
