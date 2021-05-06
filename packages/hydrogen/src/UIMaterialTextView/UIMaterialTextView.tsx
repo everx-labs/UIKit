@@ -648,7 +648,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={style}
+                        style={[styles.textView, style]}
                     />
                     <Animated.View
                         pointerEvents="none"
@@ -721,7 +721,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={style}
+                        style={[styles.textView, style]}
                     />
                     {processedChildren}
                 </UIMaterialTextViewBorder>
@@ -775,6 +775,14 @@ const styles = StyleSheet.create({
         paddingBottom: 9,
         borderBottomWidth: 1,
         flexDirection: 'row',
+    },
+    textView: {
+        ...Platform.select({
+            web: {
+                minWidth: 0,
+            },
+            default: null,
+        }),
     },
     pseudoLabel: {
         // To inner text be in intrinsic size
