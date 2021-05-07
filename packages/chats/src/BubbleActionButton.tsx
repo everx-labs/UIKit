@@ -4,12 +4,26 @@ import { View } from 'react-native';
 import {
     UIMsgButton,
     UIMsgButtonType,
+    UIMsgButtonCornerPosition,
 } from '@tonlabs/uikit.hydrogen';
-import { useBubbleContainerStyle } from './useBubblePosition';
+import { BubblePosition, useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import type { ActionButtonMessage } from './types';
 
+const getButtonRadius = (
+    options: ActionButtonMessage,
+    position: BubblePosition,
+) => {
+    if (position === BubblePosition.left && options.firstFromChain) {
+        return UIMsgButtonCornerPosition.TopLeft;
+    } else if (position === BubblePosition.right && options.lastFromChain) {
+        return UIMsgButtonCornerPosition.BottomRight;
+    }
+    return undefined;
+};
+
 export function BubbleActionButton(message: ActionButtonMessage) {
-    const { text, disabled, onPress } = message; // textMode = 'ellipsize',
+    const { status, text, disabled, onPress } = message; // textMode = 'ellipsize',
+    const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
 
     return (
@@ -20,6 +34,7 @@ export function BubbleActionButton(message: ActionButtonMessage) {
                 testID={`chat_action_cell_${text}`}
                 title={text}
                 type={UIMsgButtonType.Secondary}
+                cornerPosition={getButtonRadius(message, position)}
             />
         </View>
     );
