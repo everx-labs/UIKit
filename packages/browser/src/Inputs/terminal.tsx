@@ -48,7 +48,7 @@ export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
                     editable
                     autoFocus
                     menuPlusHidden
-                    onSendText={(text) => {
+                    onSendText={(text: string) => {
                         message.onSend({
                             text,
                         });

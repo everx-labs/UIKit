@@ -65,8 +65,9 @@ export function BubbleConfirmButtons({
                 onPress={onSuccess}
             >
                 <UILabel
-                    role={UILabelRoles.ActionCallout}
+                    role={UILabelRoles.Action}
                     color={UILabelColors.TextPositive}
+                    style={styles.buttonTitle}
                 >
                     {uiLocalized.Yes}
                 </UILabel>
@@ -82,8 +83,9 @@ export function BubbleConfirmButtons({
                 onPress={onDecline}
             >
                 <UILabel
-                    role={UILabelRoles.ActionCallout}
+                    role={UILabelRoles.Action}
                     color={UILabelColors.TextNegative}
+                    style={styles.buttonTitle}
                 >
                     {uiLocalized.No}
                 </UILabel>
@@ -112,8 +114,8 @@ const styles = StyleSheet.create({
     answer: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: UIConstant.tinyContentOffset(),
-        paddingHorizontal: UIConstant.spaciousContentOffset(),
+        paddingVertical: UIConstant.smallContentOffset(),
+        paddingHorizontal: UIConstant.normalContentOffset(),
         borderRadius: UIConstant.borderRadius(),
         borderBottomRightRadius: 0,
     },
@@ -121,8 +123,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: UIConstant.tinyContentOffset(),
-        paddingHorizontal: UIConstant.spaciousContentOffset(),
+        height: UIConstant.mediumButtonHeight(),
+        paddingHorizontal: UIConstant.normalContentOffset(),
         borderRadius: UIConstant.borderRadius(),
+    },
+    buttonTitle: {
+        width: 96,
+        textAlign: 'center',
     },
 });

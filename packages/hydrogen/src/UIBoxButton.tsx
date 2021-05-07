@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { Button, ButtonIconSize } from './Button';
+import { Button, ButtonIconSize, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
 // eslint-disable-next-line no-shadow
-export enum UIBoxButtonTypes {
+export enum UIBoxButtonType {
     Primary = 'Primary',
     Secondary = 'Secondary',
     Tertiary = 'Tertiary',
@@ -37,13 +37,17 @@ export type UIBoxButtonProps = {
      */
     iconPosition?: UIBoxButtonIconPosition;
     /**
+     * Allows to set top, right, bottom and left margins to the button container
+     */
+    layout?: UILayout;
+    /**
      * Whether to display a loading indicator instead of button content or not
      */
     loading?: boolean;
     /**
      * Function will be called on button press
      */
-    onPress: () => void;
+    onPress?: () => void | Promise<void>;
     /**
      * ID for usage in tests
      */
@@ -54,12 +58,12 @@ export type UIBoxButtonProps = {
     title: string;
     /**
      * Type of the button; specific type allows to set the corresponding accent
-     * - `UIBoxButtonTypes.Primary` - button with current theme primary background color
-     * - `UIBoxButtonTypes.Secondary` - button with current theme secondary background color
-     * - `UIBoxButtonTypes.Tertiary` - button with 1 px border style
-     * - `UIBoxButtonTypes.Nulled` - button without visible borders and background color
+     * - `UIBoxButtonType.Primary` - button with current theme accent background color (default)
+     * - `UIBoxButtonType.Secondary` - button with current theme primary inverted background color
+     * - `UIBoxButtonType.Tertiary` - button with 1 px border style
+     * - `UIBoxButtonType.Nulled` - button without visible borders and background color
      */
-    type?: UIBoxButtonTypes;
+    type?: UIBoxButtonType;
 };
 
 function useButtonStyles(
@@ -71,7 +75,8 @@ function useButtonStyles(
     let titleColor: ColorVariants = ColorVariants.TextAccent;
     let borderRadius: number = 0;
     let borderWidth: number = 0;
-    if (type === UIBoxButtonTypes.Primary) {
+
+    if (type === UIBoxButtonType.Primary) {
         if (disabled) {
             backgroundColor = ColorVariants.BackgroundTertiary;
             titleColor = ColorVariants.TextTertiary;
@@ -80,7 +85,7 @@ function useButtonStyles(
             titleColor = ColorVariants.StaticTextPrimaryLight;
         }
         borderRadius = UIConstant.alertBorderRadius;
-    } else if (type === UIBoxButtonTypes.Secondary) {
+    } else if (type === UIBoxButtonType.Secondary) {
         if (disabled) {
             backgroundColor = ColorVariants.BackgroundTertiary;
             titleColor = ColorVariants.TextTertiary;
@@ -89,7 +94,7 @@ function useButtonStyles(
             titleColor = ColorVariants.TextPrimaryInverted;
         }
         borderRadius = UIConstant.alertBorderRadius;
-    } else if (type === UIBoxButtonTypes.Tertiary) {
+    } else if (type === UIBoxButtonType.Tertiary) {
         if (disabled) {
             borderColor = ColorVariants.BackgroundTertiary;
             titleColor = ColorVariants.TextTertiary;
@@ -99,7 +104,7 @@ function useButtonStyles(
         }
         borderRadius = UIConstant.alertBorderRadius;
         borderWidth = UIConstant.buttonBorderWidth;
-    } else if (type === UIBoxButtonTypes.Nulled) {
+    } else if (type === UIBoxButtonType.Nulled) {
         if (disabled) {
             titleColor = ColorVariants.TextTertiary;
         } else {
@@ -126,11 +131,12 @@ export const UIBoxButton = ({
     disabled,
     icon,
     iconPosition = UIBoxButtonIconPosition.Left,
+    layout,
     loading,
     onPress,
     testID,
     title,
-    type= UIBoxButtonTypes.Primary
+    type= UIBoxButtonType.Primary
 }: UIBoxButtonProps) => {
     const { buttonStyle, titleColor } = useButtonStyles(type, disabled);
     return (
@@ -138,6 +144,7 @@ export const UIBoxButton = ({
             containerStyle={[
                 styles.container,
                 buttonStyle,
+                layout,
             ]}
             disabled={disabled}
             loading={loading}
@@ -156,7 +163,7 @@ export const UIBoxButton = ({
                 }
             </Button.Content>
             {
-                (type === UIBoxButtonTypes.Primary || type === UIBoxButtonTypes.Secondary) &&
+                (type === UIBoxButtonType.Primary || type === UIBoxButtonType.Secondary) &&
                 icon && iconPosition === UIBoxButtonIconPosition.Right &&
                 <Button.Icon source={icon} style={styles.rightIcon} />
             }

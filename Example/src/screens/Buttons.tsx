@@ -6,9 +6,10 @@ import { UIButton, UIImageButton, UIScaleButton, UITextButton } from '@tonlabs/u
 import {
     UIBoxButton,
     UIBoxButtonIconPosition,
-    UIBoxButtonTypes,
+    UIBoxButtonType,
     UIMsgButton,
     UIMsgButtonCornerPosition,
+    UIMsgButtonType,
 } from '@tonlabs/uikit.hydrogen';
 import { UIDetailsButton } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
@@ -72,7 +73,7 @@ export const Buttons = () => (
                 <UIBoxButton
                     testID="uiBoxButton_secondary"
                     title="Action"
-                    type={UIBoxButtonTypes.Secondary}
+                    type={UIBoxButtonType.Secondary}
                     onPress={() => console.log('Pressed UIBoxButton secondary')}
                 />
             </View>
@@ -81,7 +82,7 @@ export const Buttons = () => (
                     disabled
                     testID="uiBoxButton_secondary_disabled"
                     title="Action"
-                    type={UIBoxButtonTypes.Secondary}
+                    type={UIBoxButtonType.Secondary}
                     onPress={() => {
                         // empty
                     }}
@@ -91,7 +92,7 @@ export const Buttons = () => (
                 <UIBoxButton
                     testID="uiBoxButton_tertiary"
                     title="Action"
-                    type={UIBoxButtonTypes.Tertiary}
+                    type={UIBoxButtonType.Tertiary}
                     onPress={() => console.log('Pressed UIBoxButton tertiary')}
                 />
             </View>
@@ -100,7 +101,7 @@ export const Buttons = () => (
                     disabled
                     testID="uiBoxButton_tertiary_disabled"
                     title="Action"
-                    type={UIBoxButtonTypes.Tertiary}
+                    type={UIBoxButtonType.Tertiary}
                     onPress={() => {
                         // empty
                     }}
@@ -110,7 +111,7 @@ export const Buttons = () => (
                 <UIBoxButton
                     testID="uiBoxButton_nulled"
                     title="Action"
-                    type={UIBoxButtonTypes.Nulled}
+                    type={UIBoxButtonType.Nulled}
                     onPress={() => console.log('Pressed UIBoxButton nulled')}
                 />
             </View>
@@ -119,7 +120,7 @@ export const Buttons = () => (
                     disabled
                     testID="uiBoxButton_nulled_disabled"
                     title="Action"
-                    type={UIBoxButtonTypes.Nulled}
+                    type={UIBoxButtonType.Nulled}
                     onPress={() => {
                         // empty
                     }}
@@ -161,6 +162,48 @@ export const Buttons = () => (
                     icon={UIAssets.icons.ui.camera}
                     testID="uiMsgButton_leftIcon"
                     title="Action"
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    testID="uiMsgButton_secondary"
+                    title="Secondary"
+                    type={UIMsgButtonType.Secondary}
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    disabled
+                    testID="uiMsgButton_secondary_disabled"
+                    title="Secondary disabled"
+                    type={UIMsgButtonType.Secondary}
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    testID="uiMsgButton_tertiary"
+                    title="Tertiary"
+                    type={UIMsgButtonType.Tertiary}
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    disabled
+                    testID="uiMsgButton_tertiary_disabled"
+                    title="Tertiary disabled"
+                    type={UIMsgButtonType.Tertiary}
                     onPress={() => {
                         //
                     }}

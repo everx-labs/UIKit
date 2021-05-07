@@ -1,95 +1,53 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import {
-    UILabel,
-    UILabelRoles,
-    UILabelColors,
-    useTheme,
-    ColorVariants,
+    UIMsgButton,
+    UIMsgButtonType,
+    UIMsgButtonCornerPosition,
 } from '@tonlabs/uikit.hydrogen';
-
+import { BubblePosition, useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import type { ActionButtonMessage } from './types';
-import {
-    useBubblePosition,
-    BubblePosition,
-    useBubbleContainerStyle,
-} from './useBubblePosition';
 
 const getButtonRadius = (
     options: ActionButtonMessage,
     position: BubblePosition,
 ) => {
     if (position === BubblePosition.left && options.firstFromChain) {
-        return styles.buttonLeft;
+        return UIMsgButtonCornerPosition.TopLeft;
     } else if (position === BubblePosition.right && options.lastFromChain) {
-        return styles.buttonRight;
+        return UIMsgButtonCornerPosition.BottomRight;
     }
-    return null;
+    return undefined;
 };
 
 export function BubbleActionButton(message: ActionButtonMessage) {
-    const { status, text, textMode = 'ellipsize', disabled, onPress } = message;
+    const { status, text, disabled, onPress } = message; // textMode = 'ellipsize',
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
-    const theme = useTheme();
 
     return (
         <View style={containerStyle} onLayout={message.onLayout}>
-            <TouchableOpacity
-                testID={`chat_action_cell_${text}`}
-                style={[
-                    styles.common,
-                    {
-                        borderColor:
-                            theme[
-                                disabled
-                                    ? ColorVariants.LineTertiary
-                                    : ColorVariants.LineAccent
-                            ],
-                    },
-                    styles.button,
-                    textMode !== 'fit' && styles.buttonFixedHeight,
-                    getButtonRadius(message, position),
-                ]}
-                onPress={disabled ? undefined : onPress}
+            <UIMsgButton
                 disabled={disabled}
-            >
-                <UILabel
-                    role={UILabelRoles.ActionCallout}
-                    color={
-                        disabled
-                            ? UILabelColors.TextTertiary
-                            : UILabelColors.TextAccent
-                    }
-                    numberOfLines={textMode === 'ellipsize' ? 1 : undefined}
-                >
-                    {text}
-                </UILabel>
-            </TouchableOpacity>
+                onPress={onPress}
+                testID={`chat_action_cell_${text}`}
+                title={text}
+                type={UIMsgButtonType.Secondary}
+                cornerPosition={getButtonRadius(message, position)}
+            />
         </View>
     );
+    // TODO: add textMode processing to UIMsgButton if needed
+    // <TouchableOpacity
+    //     style={[
+    //         textMode !== 'fit' && styles.buttonFixedHeight,
+    //     ]}
+    // >
+    //     <UILabel
+    //         numberOfLines={textMode === 'ellipsize' ? 1 : undefined}
+    //     >
+    //         {text}
+    //     </UILabel>
+    // </TouchableOpacity>
 }
-
-const styles = StyleSheet.create({
-    common: {
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    button: {
-        paddingVertical: UIConstant.tinyContentOffset(),
-        paddingHorizontal: UIConstant.spaciousContentOffset(),
-        borderRadius: UIConstant.borderRadius(),
-    },
-    buttonFixedHeight: {
-        height: UIConstant.smallButtonHeight(),
-    },
-    buttonLeft: {
-        borderTopLeftRadius: 0,
-    },
-    buttonRight: {
-        borderBottomRightRadius: 0,
-    },
-});

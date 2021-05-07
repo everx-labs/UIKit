@@ -1,20 +1,22 @@
 import * as React from 'react';
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
-import type { TransactionConfirmationMessage } from '../types';
 
 import {
     ColorVariants,
+    UIBackgroundView,
+    UIImage,
     UILabel,
     UILabelColors,
     UILabelRoles,
-    useTheme,
+    UIMsgButton,
+    UIMsgButtonType,
     useShadow,
-    UIBackgroundView,
-    UIImage,
+    useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import type { TransactionConfirmationMessage } from '../types';
 
 export function TransactionConfirmation({
     onLayout,
@@ -132,43 +134,21 @@ export function TransactionConfirmation({
             {mainBubble}
             {externalState?.status == null ? (
                 <View style={styles.buttonsContainer}>
-                    <TouchableOpacity
+                    <UIMsgButton
                         testID="transaction_confirmation_confirm"
-                        style={[
-                            styles.button,
-                            {
-                                borderColor: theme[ColorVariants.LineAccent],
-                            },
-                        ]}
+                        title={uiLocalized.Browser.TransactionConfirmation.Confirm}
+                        type={UIMsgButtonType.Secondary}
                         onPress={onApprove}
-                    >
-                        <UILabel
-                            role={UILabelRoles.Action}
-                            color={UILabelColors.TextAccent}
-                        >
-                            {
-                                uiLocalized.Browser.TransactionConfirmation
-                                    .Confirm
-                            }
-                        </UILabel>
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                        layout={{
+                            marginRight: UIConstant.tinyContentOffset(),
+                        }}
+                    />
+                    <UIMsgButton
                         testID="transaction_confirmation_cancel"
-                        style={[
-                            styles.button,
-                            {
-                                borderColor: theme[ColorVariants.LineAccent],
-                            },
-                        ]}
+                        title={uiLocalized.Browser.TransactionConfirmation.Cancel}
+                        type={UIMsgButtonType.Secondary}
                         onPress={onCancel}
-                    >
-                        <UILabel
-                            role={UILabelRoles.Action}
-                            color={UILabelColors.TextAccent}
-                        >
-                            {uiLocalized.Browser.TransactionConfirmation.Cancel}
-                        </UILabel>
-                    </TouchableOpacity>
+                    />
                 </View>
             ) : (
                 <View style={styles.responseContainer}>
