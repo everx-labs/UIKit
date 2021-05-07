@@ -8,8 +8,7 @@
 
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { enableScreens } from 'react-native-screens';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 // $FlowFixMe
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 // $FlowFixMe
@@ -70,7 +69,6 @@ import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
 
-enableScreens();
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
 
@@ -286,6 +284,12 @@ const App = () => {
                                         },
                                     ],
                                 },
+                                ...Platform.select({
+                                    android: {
+                                        stackAnimation: 'slide_from_right',
+                                    },
+                                    default: null,
+                                }),
                             }}
                             mainWidth={900}
                         >
