@@ -67,7 +67,7 @@ export function BubbleConfirmButtons({
                 <UILabel
                     role={UILabelRoles.Action}
                     color={UILabelColors.TextPositive}
-                    style={styles.lblWidth}
+                    style={styles.buttonTitle}
                 >
                     {uiLocalized.Yes}
                 </UILabel>
@@ -85,7 +85,7 @@ export function BubbleConfirmButtons({
                 <UILabel
                     role={UILabelRoles.Action}
                     color={UILabelColors.TextNegative}
-                    style={styles.lblWidth}
+                    style={styles.buttonTitle}
                 >
                     {uiLocalized.No}
                 </UILabel>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.normalContentOffset(),
         borderRadius: UIConstant.borderRadius(),
     },
-    lblWidth: {
+    buttonTitle: {
         width: 96,
         textAlign: 'center',
     },
