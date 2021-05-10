@@ -197,7 +197,6 @@ export const UIMsgButton = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.msgButtonHeight,
-        paddingVertical: UIConstant.smallContentOffset,
         paddingHorizontal: UIConstant.normalContentOffset,
     },
     leftIcon: {
