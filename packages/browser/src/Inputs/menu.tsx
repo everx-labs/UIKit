@@ -11,6 +11,8 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import type { MenuMessage } from '../types';
 
+const ITEMS_TO_FOLD_COUNT = 5;
+
 export function MenuInput({ onLayout, ...message }: MenuMessage) {
     const [unfolded, setUnfolded] = React.useState(false);
 
@@ -39,7 +41,9 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
         );
     }
 
-    const items = unfolded ? message.items : message.items.slice(0, 5);
+    const items = unfolded
+        ? message.items
+        : message.items.slice(0, ITEMS_TO_FOLD_COUNT);
 
     return (
         <View onLayout={onLayout}>
@@ -73,7 +77,7 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                     }
                 />
             ))}
-            {!unfolded && (
+            {!unfolded && message.items.length > ITEMS_TO_FOLD_COUNT && (
                 <BubbleActionButton
                     type={ChatMessageType.ActionButton}
                     key="menu-more"
