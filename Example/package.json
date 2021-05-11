@@ -40,7 +40,7 @@
     "currency-formatter": "1.5.4",
     "fuse.js": "3.4.6",
     "libphonenumber-js": "1.7.14",
-    "lodash": "4.17.14",
+    "lodash": "4.17.21",
     "mobile-detect": "1.4.3",
     "moment": "2.24.0",
     "react": "^16.13.1",
