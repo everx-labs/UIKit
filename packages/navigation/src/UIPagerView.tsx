@@ -3,13 +3,13 @@ import { StyleSheet, View } from 'react-native';
 
 export type UIPagerViewType = 'Left' | 'Center'
 
-export interface IUIPagerViewPage {
+export type IUIPagerViewPage = {
     id: string,
     title: string,
     layout: React.ReactNode,
 }
 
-export interface IUIPagerViewProps {
+export type IUIPagerViewProps = {
     type: UIPagerViewType;
     pageList: IUIPagerViewPage[];
     initialPageIndex: number;
