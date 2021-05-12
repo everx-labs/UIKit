@@ -16,19 +16,25 @@ const styles = StyleSheet.create({
     },
 });
 
+// TODO: add descriptions for documentation
 type Props = Omit<ViewProps, 'style'> & {
     children?: React.ReactNode;
     style?: StyleProp<ViewStyle>;
+    testID?: string;
 };
 
 export function UIBlurView({
     children,
     style,
+    testID,
 }: Props) {
     const color = useTheme()[ColorVariants.BackgroundOverlayInverted] as string;
 
     return (
-        <View style={style}>
+        <View
+            style={style}
+            testID={testID}
+        >
             <BlurView
                 style={styles.blur}
                 blurType="light"

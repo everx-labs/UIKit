@@ -62,6 +62,7 @@ export const Design = () => (
                         )
                     }
                     <UIBlurView
+                        testID="uiBlurView"
                         style={{
                             marginHorizontal: 16,
                             padding: 16,

@@ -9,9 +9,11 @@ const styles = StyleSheet.create({
     },
 });
 
+// TODO: add descriptions for documentation
 type Props = Omit<ViewProps, 'style'> & {
     children?: React.ReactNode;
     style?: StyleProp<ViewStyle>;
+    testID?: string;
 };
 
 function isBlurSupported() {
@@ -37,6 +39,7 @@ function getBlurStyle(color: string): Record<string, string> {
 export const UIBlurView = React.forwardRef<View, Props>(
     function UIBlurViewForwarded({
         style,
+        testID,
         ...rest
     }: Props, ref) {
         const color = useTheme()[ColorVariants.BackgroundOverlayInverted] as string;
@@ -45,6 +48,7 @@ export const UIBlurView = React.forwardRef<View, Props>(
         return (
             <View
                 ref={ref}
+                testID={testID}
                 {...rest}
                 style={[
                     styles.container,
