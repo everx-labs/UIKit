@@ -486,6 +486,34 @@ const BrowserScreen = () => {
                                 });
                             }}
                         />
+                        <UIBoxButton
+                            title="Add QRCodeMessage with fast scan"
+                            onPress={() => {
+                                const message: QRCodeMessage = {
+                                    key: `${Date.now()}-qr-code`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.QRCode,
+                                    fastScan: true,
+                                    onScan: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                    parseData: (_data: any) => {
+                                        return Promise.resolve('0:000');
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                navigation.setParams({
+                                    menuVisible: false,
+                                });
+                            }}
+                        />
                     </UIBottomSheet>
                 )}
             </SafeAreaInsetsContext.Consumer>

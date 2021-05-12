@@ -43,7 +43,7 @@ export function QRCode({
     ...message
 }: QRCodeMessage) {
     const [state, dispatch] = React.useReducer(qrCodeReducer, {
-        qrCodeVisible: false,
+        qrCodeVisible: message.fastScan || false,
     });
 
     return (
