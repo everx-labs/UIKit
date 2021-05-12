@@ -61,7 +61,15 @@ export const Design = () => (
                             />
                         )
                     }
-                    <UIBlurView style={{ marginHorizontal: 16, padding: 16, borderRadius: 12, position: 'absolute' }}>
+                    <UIBlurView
+                        style={{
+                            marginHorizontal: 16,
+                            padding: 16,
+                            borderRadius: 12,
+                            position: 'absolute',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
                         <UILabel
                             color={UILabelColors.TextPrimary}
                             role={UILabelRoles.TitleMedium}

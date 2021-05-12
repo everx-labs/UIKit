@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { View, ViewStyle} from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from '../Colors';
+
+const styles = StyleSheet.create({
+    container: {
+        borderRadius: 12,
+    },
+});
 
 type Props = Omit<ViewProps, 'style'> & {
     children?: React.ReactNode;
@@ -41,6 +47,7 @@ export const UIBlurView = React.forwardRef<View, Props>(
                 ref={ref}
                 {...rest}
                 style={[
+                    styles.container,
                     style,
                     blurStyle,
                 ]}

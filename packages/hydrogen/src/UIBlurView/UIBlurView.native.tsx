@@ -6,10 +6,6 @@ import type { ViewStyle} from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     blur: {
         position: 'absolute',
         top: 0,
@@ -30,7 +26,7 @@ export function UIBlurView({
     style,
 }: Props) {
     return (
-        <View style={[styles.container, style]}>
+        <View style={style}>
             <BlurView
                 style={styles.blur}
                 blurType="light"
