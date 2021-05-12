@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { ColorVariants, UILabel } from '@tonlabs/uikit.hydrogen';
 import {
     UIDialogBar,
+    UIPagerView,
     UISearchBar,
     UISearchBarButton,
     UISearchController,
@@ -23,6 +24,25 @@ export const Navigation = () => {
 
     return (
         <ExampleScreen color={ColorVariants.BackgroundSecondary}>
+            <ExampleSection title="UIPagerView">
+                <View
+                    testID="UIPagerView"
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UIPagerView
+                        type="Left"
+                        pageList={[]}
+                        initialPageIndex={0}
+                        onPageIndexChange={(newPageIndex: number) => newPageIndex}
+                        testID="UIPagerView"
+                    />
+                </View>
+                <View style={{ height: 20 }} />
+            </ExampleSection>
             <ExampleSection title="UISearchBar">
                 <View
                     style={{
