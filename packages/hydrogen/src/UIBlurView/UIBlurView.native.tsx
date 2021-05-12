@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
-
 import type { ViewStyle} from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
+import { ColorVariants, useTheme } from '../Colors';
 
 const styles = StyleSheet.create({
     blur: {
@@ -25,13 +25,15 @@ export function UIBlurView({
     children,
     style,
 }: Props) {
+    const color = useTheme()[ColorVariants.BackgroundOverlayInverted] as string;
+
     return (
         <View style={style}>
             <BlurView
                 style={styles.blur}
                 blurType="light"
-                blurAmount={10}
-                reducedTransparencyFallbackColor="white"
+                blurAmount={16}
+                reducedTransparencyFallbackColor={color}
             />
             {children}
         </View>
