@@ -4,8 +4,8 @@ import type { StyleProp, ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from '../Colors';
 
 type Props = Omit<ViewProps, 'style'> & {
-    style?: StyleProp<ViewStyle>;
     children?: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
 };
 
 function isBlurSupported() {

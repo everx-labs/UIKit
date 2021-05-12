@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIBadge, UIDot, UISeparator, UITag } from '@tonlabs/uikit.components';
 import {
+    ColorVariants,
     UIBlurView,
     UIImage,
     UILabel,
     UILabelColors,
-    UILabelRoles
+    UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 
 import { ExampleSection } from '../components/ExampleSection';
@@ -48,10 +49,19 @@ export const Design = () => (
             </View>
         </ExampleSection>
         <ExampleSection title="UIBlurView">
-            <View style={{ paddingVertical: 20 }}>
-                <View style={{ padding: 16, alignItems: 'center', justifyContent: 'center' }}>
-                    <UIImage source={UIAssets.images[404]} />
-                    <UIBlurView style={{ padding: 16, borderRadius: 12, position: 'absolute' }}>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ width: 300, height: 200, padding: 16, alignItems: 'center', justifyContent: 'center' }}>
+                    {
+                        Platform.OS === 'web' ? (
+                            <UIImage source={UIAssets.images[404]} />
+                        ) : (
+                            <UIImage
+                                source={UIAssets.icons.ui.camera}
+                                tintColor={ColorVariants.TextAccent}
+                            />
+                        )
+                    }
+                    <UIBlurView style={{ marginHorizontal: 16, padding: 16, borderRadius: 12, position: 'absolute' }}>
                         <UILabel
                             color={UILabelColors.TextPrimary}
                             role={UILabelRoles.TitleMedium}

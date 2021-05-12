@@ -39,6 +39,7 @@
     "fonts.gradle"
   ],
   "dependencies": {
+    "@react-native-community/blur": "^3.6.0",
     "@react-native-community/hooks": "2.6.0",
     "@tonlabs/uikit.assets": "^2.2.0",
     "@tonlabs/uikit.localization": "^2.2.0",
