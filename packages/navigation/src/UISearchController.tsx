@@ -16,7 +16,7 @@ export type UISearchControllerProps = {
     onCancel: () => void | Promise<void>;
     onChangeText?: React.ComponentProps<typeof UISearchBar>['onChangeText'];
     children: ((searchText: string) => React.ReactNode) | React.ReactNode;
-    searching?: boolean
+    searching?: boolean;
 };
 
 type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
@@ -152,7 +152,7 @@ function UISearchControllerContent({
             }),
             transform: [
                 {
-                    translateY: Animated.interpolate(opacity, {
+                    translateY: Animated.interpolateNode(opacity, {
                         inputRange: [0, 1],
                         outputRange: [0 - height / 2, 0],
                     }),

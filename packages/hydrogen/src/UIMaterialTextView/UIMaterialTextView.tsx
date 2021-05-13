@@ -321,7 +321,7 @@ function useFloatLabelTransform(
         return {
             transform: [
                 {
-                    translateX: Animated.interpolate(scale, {
+                    translateX: Animated.interpolateNode(scale, {
                         inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
                         outputRange: [
                             Animated.divide(
@@ -333,7 +333,7 @@ function useFloatLabelTransform(
                     }),
                 },
                 {
-                    translateY: Animated.interpolate(scale, {
+                    translateY: Animated.interpolateNode(scale, {
                         inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
                         outputRange: [
                             Animated.sub(
