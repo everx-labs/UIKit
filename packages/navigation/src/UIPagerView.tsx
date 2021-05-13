@@ -1,31 +1,30 @@
-import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { UIPagerViewContainer } from './UIPagerViewContainer';
+import { UIPagerViewPage } from './UIPagerViewPage';
 
-export type UIPagerViewType = 'Left' | 'Center'
+export type UIPagerViewType = 'Left' | 'Center';
 
-export type IUIPagerViewPage = {
-    id: string,
-    title: string,
-    layout: React.ReactNode,
-}
-
-export type IUIPagerViewProps = {
+export type IUIPagerViewContainerProps = {
     type: UIPagerViewType;
-    pageList: IUIPagerViewPage[];
     initialPageIndex: number;
     onPageIndexChange: (newPageIndex: number) => void;
+    children:
+        | React.ReactElement<IUIPagerViewPageProps>
+        | React.ReactElement<IUIPagerViewPageProps>[];
     testID?: string;
-}
+};
 
-export const UIPagerView: React.FC<IUIPagerViewProps> = (props: IUIPagerViewProps) => {
-    // TODO
-    return (
-        <View style={styles.container} testID={props.testID} />
-    );
-}
+export type IUIPagerViewPageProps = {
+    title: string;
+    component: React.ReactNode;
+    testID?: string;
+};
 
-const styles = StyleSheet.create({
-    container: {
-        // TODO
-    },
-});
+export type UIPagerView = {
+    Container: React.FC<IUIPagerViewContainerProps>;
+    Page: React.FC<IUIPagerViewPageProps>;
+};
+
+export const UIPagerView: UIPagerView = {
+    Container: UIPagerViewContainer,
+    Page: UIPagerViewPage,
+};

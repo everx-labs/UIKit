@@ -33,13 +33,17 @@ export const Navigation = () => {
                         paddingVertical: 20,
                     }}
                 >
-                    <UIPagerView
+                    <UIPagerView.Container
                         type="Left"
-                        pageList={[]}
                         initialPageIndex={0}
-                        onPageIndexChange={(newPageIndex: number) => newPageIndex}
+                        onPageIndexChange={(newPageIndex: number) =>
+                            newPageIndex
+                        }
                         testID="UIPagerView"
-                    />
+                    >
+                        <UIPagerView.Page title="Item" component={<View />} />
+                        <UIPagerView.Page title="Item2" component={<View />} />
+                    </UIPagerView.Container>
                 </View>
                 <View style={{ height: 20 }} />
             </ExampleSection>
@@ -123,7 +127,7 @@ export const Navigation = () => {
                         paddingVertical: 20,
                     }}
                 >
-                    <UIDialogBar testID="UIDialogBar_default"/>
+                    <UIDialogBar testID="UIDialogBar_default" />
                     <View style={{ height: 20 }} />
                     <UIDialogBar
                         testID="UIDialogBar_with_action_buttons"
