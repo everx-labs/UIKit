@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
+    "@react-native-community/blur": "3.6.0",
     "@react-native-community/bob": "^0.16.2",
     "@types/react-native": "0.63.37",
     "react": "^16.13.1",
@@ -67,6 +68,7 @@
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
     "react-native-camera": "^3.6.0",
+    "@react-native-community/blur": "^3.6.0",
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-permissions": "^3.0.0",
