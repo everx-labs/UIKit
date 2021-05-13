@@ -5,14 +5,23 @@ import { ColorVariants, useTheme } from '../Colors';
 
 const styles = StyleSheet.create({
     container: {
+        overflow: 'hidden',
         borderRadius: 12,
     },
 });
 
-// TODO: add descriptions for documentation
 type Props = Omit<ViewProps, 'style'> & {
+    /**
+     * Elements to be rendered on the BlurView
+     */
     children?: React.ReactNode;
+    /**
+     * Style of the BlurView
+     */
     style?: StyleProp<ViewStyle>;
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
 };
 

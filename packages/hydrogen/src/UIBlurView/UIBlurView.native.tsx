@@ -6,20 +6,31 @@ import type { StyleProp, ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from '../Colors';
 
 const styles = StyleSheet.create({
+    container: {
+        overflow: 'hidden',
+        borderRadius: 12,
+    },
     blur: {
         position: 'absolute',
         top: 0,
         left: 0,
         bottom: 0,
         right: 0,
-        borderRadius: 12,
     },
 });
 
-// TODO: add descriptions for documentation
 type Props = Omit<ViewProps, 'style'> & {
+    /**
+     * Elements to be rendered on the BlurView
+     */
     children?: React.ReactNode;
+    /**
+     * Style of the container View that wraps BlurView
+     */
     style?: StyleProp<ViewStyle>;
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
 };
 
@@ -32,7 +43,7 @@ export function UIBlurView({
 
     return (
         <View
-            style={style}
+            style={[styles.container, style]}
             testID={testID}
         >
             <BlurView
