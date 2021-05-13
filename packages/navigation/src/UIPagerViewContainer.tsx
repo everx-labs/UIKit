@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import type { IUIPagerViewContainerProps } from './UIPagerView';
+import type { UIPagerViewContainerProps } from './UIPagerView';
 
-export const UIPagerViewContainer: React.FC<IUIPagerViewContainerProps> = (
-    props: IUIPagerViewContainerProps,
+export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = (
+    props: UIPagerViewContainerProps,
 ) => {
     // TODO
     return <View style={styles.container} testID={props.testID} />;

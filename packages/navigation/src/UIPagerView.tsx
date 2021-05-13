@@ -1,27 +1,47 @@
 import { UIPagerViewContainer } from './UIPagerViewContainer';
 import { UIPagerViewPage } from './UIPagerViewPage';
 
-export type UIPagerViewType = 'Left' | 'Center';
+/** type of UIPagerViewContainer */
+export type UIPagerViewContainerType = 'Left' | 'Center';
 
-export type IUIPagerViewContainerProps = {
-    type: UIPagerViewType;
+/**
+ * Container properties.
+ */
+export type UIPagerViewContainerProps = {
+    /** type of UIPagerViewContainer */
+    type: UIPagerViewContainerType;
+    /** index of first shown page */
     initialPageIndex: number;
+    /** callback that is called when the page changes */
     onPageIndexChange: (newPageIndex: number) => void;
+    /** only UIPagerViewPage can be passed to children */
     children:
-        | React.ReactElement<IUIPagerViewPageProps>
-        | React.ReactElement<IUIPagerViewPageProps>[];
+        | React.ReactElement<UIPagerViewPageProps>
+        | React.ReactElement<UIPagerViewPageProps>[];
+    /** used for autotests */
     testID?: string;
 };
 
-export type IUIPagerViewPageProps = {
+/**
+ * Page properties.
+ */
+export type UIPagerViewPageProps = {
+    /** title of page */
     title: string;
+    /** main content component for the page */
     component: React.ReactNode;
+    /** used for autotests */
     testID?: string;
 };
 
+/**
+ * UIPagerView components
+ */
 export type UIPagerView = {
-    Container: React.FC<IUIPagerViewContainerProps>;
-    Page: React.FC<IUIPagerViewPageProps>;
+    /** Parent component that contains the pages */
+    Container: React.FC<UIPagerViewContainerProps>;
+    /** Page component */
+    Page: React.FC<UIPagerViewPageProps>;
 };
 
 export const UIPagerView: UIPagerView = {
