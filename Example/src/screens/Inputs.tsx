@@ -428,6 +428,7 @@ export const Inputs = () => {
                         value={transfer}
                         placeholder="Your transfer"
                         maxDecimals={3}
+                        minDecimals={3}
                         onValueChange={(num: BigNumber) => setTransfer(num)}
                         localeInfo={localeInfo}
                     />
