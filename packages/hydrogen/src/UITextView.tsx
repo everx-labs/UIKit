@@ -41,6 +41,24 @@ export type UITextViewProps = Omit<
     style?: StyleProp<UITextViewStyle>;
 };
 
+function useAutoFocus(
+    ref: React.Ref<TextInput>,
+    autoFocus: boolean | undefined,
+) {
+    if (
+        Platform.OS === 'ios' &&
+        (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH != null
+    ) {
+        // See @tonlabs/uikit.navigation -> useAutoFocus
+        return (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH(
+            ref,
+            autoFocus,
+        );
+    }
+
+    return autoFocus;
+}
+
 export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
     function UITextViewForwarded(
         {
@@ -54,10 +72,7 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
         const fallbackRef = React.useRef<TextInput>(null);
         const ref = passedRef || fallbackRef;
         const theme = useTheme();
-        const autoFocusProp = (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH
-            ? // See @tonlabs/uikit.navigation -> useAutoFocus
-              (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH(ref, autoFocus)
-            : autoFocus;
+        const autoFocusProp = useAutoFocus(ref, autoFocus);
 
         return (
             <TextInput
