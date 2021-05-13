@@ -18,6 +18,7 @@ type Props = {
     account: ?UIAccountData,
     decimalSeparator: ?string,
     maxDecimals: number,
+    minDecimals: number,
     onPress?: () => void,
     displayNameOnly?: boolean,
     notActive?: boolean,
@@ -35,6 +36,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         account: null,
         decimalSeparator: '.',
         maxDecimals: UIConstant.maxDecimalDigits(),
+        minDecimals: UIConstant.minDecimalDigits(),
         onPress: () => {},
         displayNameOnly: false,
         notActive: false,
@@ -64,6 +66,10 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         return this.props.maxDecimals;
     }
 
+    getMinDecimals(): number {
+        return this.props.minDecimals;
+    }
+
     getTokenSymbol(): string | React$Element<any> {
         return this.props.tokenSymbol || '';
     }
@@ -90,7 +96,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
 
         const decimals = (fractional && fractional.length > 0)
             ? fractional
-            : '0'.repeat(UIConstant.minDecimalDigits());
+            : '0'.repeat(this.getMinDecimals());
 
         const tokenSymbol = this.getTokenSymbol();
 
