@@ -36,6 +36,7 @@
     "src/"
   ],
   "dependencies": {
+    "@react-navigation/native": "^5.8.10",
     "@tonlabs/uikit.assets": "^2.2.0",
     "@tonlabs/uikit.components": "^2.2.0",
     "@tonlabs/uikit.core": "^2.2.0",

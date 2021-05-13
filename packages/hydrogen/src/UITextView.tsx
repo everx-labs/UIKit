@@ -46,15 +46,24 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
         {
             style,
             placeholderTextColor = ColorVariants.TextSecondary,
+            autoFocus,
             ...rest
         }: UITextViewProps,
-        ref,
+        passedRef,
     ) {
+        const fallbackRef = React.useRef<TextInput>(null);
+        const ref = passedRef || fallbackRef;
         const theme = useTheme();
+        const autoFocusProp = (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH
+            ? // See @tonlabs/uikit.navigation -> useAutoFocus
+              (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH(ref, autoFocus)
+            : autoFocus;
+
         return (
             <TextInput
                 ref={ref}
                 {...rest}
+                autoFocus={autoFocusProp}
                 // @ts-ignore
                 // This is our custom prop, we do it in native for Android
                 noPersonalizedLearning={false}
