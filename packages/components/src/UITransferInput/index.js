@@ -32,6 +32,7 @@ type Props = {
     commentRight?: string,
     commentColor?: UIColorData,
     maxDecimals: number,
+    minDecimals: number,
     onValueChange?: (number: ?BigNum) => void,
     onBlur?: () => void,
     rightButton?: string,
@@ -51,16 +52,11 @@ type State = {
     inputPlaceholder: string,
 };
 
-const decimalDigits = 3;
-const options = {
-    minimumFractionDigits: decimalDigits,
-    maximumFractionDigits: decimalDigits,
-};
-
 export default class UITransferInput extends UIComponent<Props, State> {
     static defaultProps = {
         value: undefined,
         maxDecimals: UIConstant.maxDecimalDigits(),
+        minDecimals: UIConstant.minDecimalDigits(),
         minValue: undefined,
         maxValue: undefined,
         fees: new BigNumber(0),
@@ -98,6 +94,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
     // Getters
     getMaxDecimals(): number {
         return this.props.maxDecimals;
+    }
+
+    getMinDecimals(): number {
+        return this.props.minDecimals;
     }
 
     getValue(): ?BigNum {
@@ -195,7 +195,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
         }
         const value = !text ? undefined : parts.value;
         const valueString = !text ? '' : parts.valueString;
-        const zeros = Math.min(UIConstant.minDecimalDigits(), this.getMaxDecimals());
+        const zeros = Math.min(this.getMinDecimals(), this.getMaxDecimals());
         const decimalPlaceholder = '0'.repeat(zeros);
         const inputPlaceholder = `0${localizedSeparator}${decimalPlaceholder}`;
         return { value, valueString, inputPlaceholder };
@@ -313,7 +313,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
                 selectable={false}
                 value={this.renderFractional(uiLocalized.formatString(
                     uiLocalized.feeAmount,
-                    uiLocalized.amountToLocale(this.getFees(), options),
+                    uiLocalized.amountToLocale(this.getFees(), {
+                        minimumFractionDigits: this.getMinDecimals(),
+                        maximumFractionDigits: this.getMinDecimals(),
+                    }),
                 ))}
                 comments={uiLocalized.fee}
                 commentsRole={UILabelRoles.ParagraphLabel}
