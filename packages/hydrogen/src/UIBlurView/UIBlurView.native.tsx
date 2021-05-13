@@ -4,11 +4,12 @@ import { BlurView } from '@react-native-community/blur';
 import type { ViewStyle} from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from '../Colors';
+import { UIConstant } from '../constants';
 
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
-        borderRadius: 12,
+        borderRadius: UIConstant.alertBorderRadius,
     },
     blur: {
         position: 'absolute',
