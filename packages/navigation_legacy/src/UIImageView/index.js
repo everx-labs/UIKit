@@ -10,8 +10,8 @@ import {
     UISpinnerOverlay,
     UIAlertView,
     UIComponent,
-    UIImage,
 } from '@tonlabs/uikit.components';
+import { UIImage } from '@tonlabs/uikit.hydrogen';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

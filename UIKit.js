@@ -38,7 +38,6 @@ export {
     UIEmailInput,
     UIGrid,
     UIGridColumn,
-    UIImage,
     UIImageButton,
     UILayoutManager,
     UILink,
