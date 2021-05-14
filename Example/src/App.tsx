@@ -68,6 +68,7 @@ import { Chat } from './screens/Chat';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
+import { ReanimatedScreen } from './screens/Reanimated';
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
@@ -157,6 +158,11 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         style={{ flex: 1 }}
                         contentContainerStyle={{ paddingBottom: 50 }}
                     >
+                        <UIButton
+                            onPress={() => navigation.navigate('reanimated')}
+                            buttonStyle={UIButton.ButtonStyle.Link}
+                            title="Reanimated"
+                        />
                         <UIButton
                             onPress={() => navigation.navigate('keyboard')}
                             buttonStyle={UIButton.ButtonStyle.Link}
@@ -351,6 +357,10 @@ const App = () => {
                             <SurfSplit.Screen
                                 name="keyboard"
                                 component={KeyboardScreen}
+                            />
+                            <SurfSplit.Screen
+                                name="reanimated"
+                                component={ReanimatedScreen}
                             />
                         </SurfSplit.Navigator>
                     </NavigationContainer>
