@@ -129,7 +129,7 @@ export function useUITextViewValue(
     useClearWithEnter = false,
     { value: valueProp, onChangeText: onChangeTextProp }: UITextViewProps = {},
 ) {
-    // Little optimisation to not re-render children on every value change
+    // Little optimization to not re-render children on every value change
     const [inputHasValue, setInputHasValue] = React.useState(
         valueProp != null && valueProp !== '',
     );
@@ -145,7 +145,12 @@ export function useUITextViewValue(
         }
     }, [valueProp, inputHasValue]);
 
-    const inputValue = React.useRef('');
+    // Create a ref to the current input value
+    const inputValue = React.useRef(valueProp || '');
+    React.useEffect(() => {
+        inputValue.current = valueProp || '';
+    }, [valueProp])
+
     const wasClearedWithEnter = React.useRef(false);
 
     const onChangeText = React.useCallback(
