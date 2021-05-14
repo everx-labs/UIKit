@@ -15,6 +15,18 @@ import { UIButton } from '@tonlabs/uikit.components';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
+// import { UIPagerView } from '../../../packages/navigation/src/UIPagerView'
+
+const component = () => (
+    <View
+        style={{
+            borderWidth: 1,
+            flex: 1,
+            backgroundColor: `#${(Math.random() * 999999).toFixed()}`,
+        }}
+    />
+);
+
 export const Navigation = () => {
     const [
         isSearchControllerVisible,
@@ -31,8 +43,10 @@ export const Navigation = () => {
                         width: '100%',
                         maxWidth: 500,
                         paddingVertical: 20,
+                        alignItems: 'center',
                     }}
                 >
+                    <UILabel>type = Left</UILabel>
                     <UIPagerView.Container
                         type="Left"
                         initialPageIndex={0}
@@ -41,8 +55,53 @@ export const Navigation = () => {
                         }
                         testID="UIPagerView"
                     >
-                        <UIPagerView.Page title="Item" component={<View />} />
-                        <UIPagerView.Page title="Item2" component={<View />} />
+                        <UIPagerView.Page title="Item" component={component} />
+                        <UIPagerView.Page
+                            title="Item2123"
+                            component={component}
+                        />
+                        <UIPagerView.Page title="Ite" component={component} />
+                        <UIPagerView.Page title="Item4" component={component} />
+                        <UIPagerView.Page title="Item5" component={component} />
+                        <UIPagerView.Page
+                            title="Item123"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            title="Item212313"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            title="Ite123"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            title="Item4123"
+                            component={component}
+                        />
+                    </UIPagerView.Container>
+                </View>
+                <View style={{ height: 20 }} />
+                <View
+                    testID="UIPagerView"
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                        alignItems: 'center',
+                    }}
+                >
+                    <UILabel>type = Center</UILabel>
+                    <UIPagerView.Container
+                        type="Center"
+                        initialPageIndex={0}
+                        onPageIndexChange={(newPageIndex: number) =>
+                            newPageIndex
+                        }
+                        testID="UIPagerView"
+                    >
+                        <UIPagerView.Page title="Item3" component={component} />
+                        <UIPagerView.Page title="Item4" component={component} />
                     </UIPagerView.Container>
                 </View>
                 <View style={{ height: 20 }} />

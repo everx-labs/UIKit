@@ -14,10 +14,16 @@ import {
     SceneRendererProps,
     NavigationState,
 } from 'react-native-tab-view';
-import { UILabel, UILabelColors, UILabelRoles, useTheme } from '@tonlabs/uikit.hydrogen';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 import type {
     UIPagerViewContainerProps,
     UIPagerViewPageProps,
+    UIPagerViewContainerType,
 } from './UIPagerView';
 
 const getRoutes = (
@@ -49,27 +55,28 @@ const getSceneList = (
             sceneMap: SceneList,
             Page: React.ReactElement<UIPagerViewPageProps>,
         ): SceneList => {
-            const scene: React.FC = () => Page;
             return {
                 ...sceneMap,
-                [Page.props.title]: scene,
+                [Page.props.title]: Page.props.component,
             };
         },
         {},
     );
 };
 
-const renderLabel = (
-    scene: {
-        route: Route,
-        focused: boolean;
-        color: string;
-    },
-) => {
+const renderLabel = (scene: {
+    route: Route;
+    focused: boolean;
+    color: string;
+}): React.ReactElement => {
     return (
         <UILabel
             testID="uiPagerView_label"
-            color={scene.focused ? UILabelColors.TextPrimary : UILabelColors.TextSecondary}
+            color={
+                scene.focused
+                    ? UILabelColors.TextPrimary
+                    : UILabelColors.TextSecondary
+            }
             role={UILabelRoles.ActionCallout}
         >
             {scene.route.title}
@@ -77,13 +84,12 @@ const renderLabel = (
     );
 };
 
-const renderTabBar = (
-    indicatorColor: ColorValue,
-    indicatorContainerColor: ColorValue,
-) => (
+const renderCenterTabBar = (
     props: SceneRendererProps & {
         navigationState: NavigationState<Route>;
     },
+    indicatorColor: ColorValue,
+    indicatorContainerColor: ColorValue,
 ) => {
     return (
         <TabBar
@@ -105,25 +111,83 @@ const renderTabBar = (
                 bottom: 16,
                 height: 1,
                 backgroundColor: indicatorContainerColor,
-                width: 'none',
-            }}
-            contentContainerStyle={{
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
             }}
         />
     );
 };
 
+const renderLeftTabBar = (
+    props: SceneRendererProps & {
+        navigationState: NavigationState<Route>;
+    },
+    indicatorColor: ColorValue,
+    indicatorContainerColor: ColorValue,
+) => {
+    return (
+        <TabBar
+            {...props}
+            scrollEnabled
+            indicatorStyle={{
+                height: 1,
+                backgroundColor: indicatorColor,
+            }}
+            style={{
+                height: 72,
+                backgroundColor: 'transparent',
+                shadowColor: 'none',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                marginHorizontal: 16,
+            }}
+            renderLabel={renderLabel}
+            indicatorContainerStyle={{
+                top: 'none',
+                bottom: 16,
+                height: 1,
+                backgroundColor: indicatorContainerColor,
+            }}
+            tabStyle={{
+                paddingHorizontal: 8,
+                width: 'auto',
+            }}
+        />
+    );
+};
+
+const renderTabBar = (
+    indicatorColor: ColorValue,
+    indicatorContainerColor: ColorValue,
+    type: UIPagerViewContainerType,
+) => (
+    props: SceneRendererProps & {
+        navigationState: NavigationState<Route>;
+    },
+) => {
+    switch (type) {
+        case 'Left':
+            return renderLeftTabBar(
+                props,
+                indicatorColor,
+                indicatorContainerColor,
+            );
+        case 'Center':
+        default:
+            return renderCenterTabBar(
+                props,
+                indicatorColor,
+                indicatorContainerColor,
+            );
+    }
+};
+
 export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
-    // type,
+    type,
     initialPageIndex,
     onPageIndexChange,
     children,
     testID,
 }: UIPagerViewContainerProps) => {
-    const theme = useTheme()
+    const theme = useTheme();
     const [currentIndex, setCurrentIndex] = React.useState(initialPageIndex);
 
     React.useEffect(() => {
@@ -152,11 +216,19 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     return (
         <View style={styles.container} testID={testID}>
             <TabView<Route>
+                // lazy
                 navigationState={{ index: currentIndex, routes }}
                 renderScene={renderScene}
                 onIndexChange={setCurrentIndex}
                 initialLayout={{ width: layout.width }}
-                renderTabBar={renderTabBar(theme.TextPrimary, theme.LinePrimary)}
+                renderTabBar={renderTabBar(
+                    theme.TextPrimary,
+                    theme.LinePrimary,
+                    type,
+                )}
+                style={{
+                    backgroundColor: theme.BackgroundPrimary,
+                }}
             />
         </View>
     );

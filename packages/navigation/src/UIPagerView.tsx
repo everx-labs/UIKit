@@ -29,7 +29,7 @@ export type UIPagerViewPageProps = {
     /** title of page */
     title: string;
     /** main content component for the page */
-    component: React.ReactNode;
+    component: () => React.ReactElement;
     /** used for autotests */
     testID?: string;
 };
