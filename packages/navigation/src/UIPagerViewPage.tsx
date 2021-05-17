@@ -6,7 +6,7 @@ export const UIPagerViewPage: React.FC<UIPagerViewPageProps> = (
     props: UIPagerViewPageProps,
 ) => {
     return (
-        <View style={[styles.container]} testID={props.testID}>
+        <View style={styles.container} testID={props.testID}>
             {props.component}
         </View>
     );

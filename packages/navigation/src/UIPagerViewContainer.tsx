@@ -1,18 +1,18 @@
 import * as React from 'react';
 import {
-    StyleSheet,
+    ColorValue,
+    ScaledSize,
     View,
     useWindowDimensions,
-    ScaledSize,
-    ColorValue,
+    StyleSheet,
 } from 'react-native';
 import {
+    NavigationState,
+    Route,
+    SceneMap,
+    SceneRendererProps,
     TabBar,
     TabView,
-    SceneMap,
-    Route,
-    SceneRendererProps,
-    NavigationState,
 } from 'react-native-tab-view';
 import {
     UILabel,
@@ -22,8 +22,8 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import type {
     UIPagerViewContainerProps,
-    UIPagerViewPageProps,
     UIPagerViewContainerType,
+    UIPagerViewPageProps,
 } from './UIPagerView';
 
 const getRoutes = (
@@ -53,11 +53,11 @@ const getSceneList = (
     return pages.reduce(
         (
             sceneMap: SceneList,
-            Page: React.ReactElement<UIPagerViewPageProps>,
+            page: React.ReactElement<UIPagerViewPageProps>,
         ): SceneList => {
             return {
                 ...sceneMap,
-                [Page.props.title]: Page.props.component,
+                [page.props.title]: page.props.component,
             };
         },
         {},
@@ -90,28 +90,24 @@ const renderCenterTabBar = (
     },
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
-) => {
+): React.ReactElement => {
     return (
         <TabBar
             {...props}
-            indicatorStyle={{
-                height: 1,
-                backgroundColor: indicatorColor,
-            }}
-            style={{
-                height: 72,
-                backgroundColor: 'transparent',
-                shadowColor: 'none',
-                justifyContent: 'center',
-                marginHorizontal: 16,
-            }}
+            indicatorStyle={[
+                styles.indicator,
+                {
+                    backgroundColor: indicatorColor,
+                },
+            ]}
+            style={styles.centerTabBar}
             renderLabel={renderLabel}
-            indicatorContainerStyle={{
-                top: 'none',
-                bottom: 16,
-                height: 1,
-                backgroundColor: indicatorContainerColor,
-            }}
+            indicatorContainerStyle={[
+                styles.indicatorContainer,
+                {
+                    backgroundColor: indicatorContainerColor,
+                },
+            ]}
         />
     );
 };
@@ -122,34 +118,26 @@ const renderLeftTabBar = (
     },
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
-) => {
+): React.ReactElement => {
     return (
         <TabBar
             {...props}
             scrollEnabled
-            indicatorStyle={{
-                height: 1,
-                backgroundColor: indicatorColor,
-            }}
-            style={{
-                height: 72,
-                backgroundColor: 'transparent',
-                shadowColor: 'none',
-                justifyContent: 'center',
-                overflow: 'hidden',
-                marginHorizontal: 16,
-            }}
+            indicatorStyle={[
+                styles.indicator,
+                {
+                    backgroundColor: indicatorColor,
+                },
+            ]}
+            style={styles.leftTabBar}
             renderLabel={renderLabel}
-            indicatorContainerStyle={{
-                top: 'none',
-                bottom: 16,
-                height: 1,
-                backgroundColor: indicatorContainerColor,
-            }}
-            tabStyle={{
-                paddingHorizontal: 8,
-                width: 'auto',
-            }}
+            indicatorContainerStyle={[
+                styles.indicatorContainer,
+                {
+                    backgroundColor: indicatorContainerColor,
+                },
+            ]}
+            tabStyle={styles.leftTab}
         />
     );
 };
@@ -162,7 +150,7 @@ const renderTabBar = (
     props: SceneRendererProps & {
         navigationState: NavigationState<Route>;
     },
-) => {
+): React.ReactElement => {
     switch (type) {
         case 'Left':
             return renderLeftTabBar(
@@ -188,7 +176,9 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     testID,
 }: UIPagerViewContainerProps) => {
     const theme = useTheme();
-    const [currentIndex, setCurrentIndex] = React.useState(initialPageIndex);
+    const [currentIndex, setCurrentIndex] = React.useState<number>(
+        initialPageIndex,
+    );
 
     React.useEffect(() => {
         onPageIndexChange(currentIndex);
@@ -202,7 +192,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
         ? children
         : [children];
 
-    if (!pages || pages.length === 0) {
+    if (pages.length === 0) {
         console.error(
             `UIPagerViewContainer: children must have at least 1 item`,
         );
@@ -211,12 +201,15 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
 
     const routes: Route[] = getRoutes(pages);
 
-    const renderScene = SceneMap(getSceneList(pages));
+    const renderScene: (
+        props: SceneRendererProps & {
+            route: Route;
+        },
+    ) => React.ReactNode = SceneMap(getSceneList(pages));
 
     return (
         <View style={styles.container} testID={testID}>
             <TabView<Route>
-                // lazy
                 navigationState={{ index: currentIndex, routes }}
                 renderScene={renderScene}
                 onIndexChange={setCurrentIndex}
@@ -239,5 +232,32 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: 500,
         width: 400,
+    },
+    indicator: {
+        height: 1,
+    },
+    centerTabBar: {
+        height: 72,
+        backgroundColor: 'transparent',
+        shadowColor: 'none',
+        justifyContent: 'center',
+        marginHorizontal: 16,
+    },
+    indicatorContainer: {
+        top: 'none',
+        bottom: 16,
+        height: 1,
+    },
+    leftTabBar: {
+        height: 72,
+        backgroundColor: 'transparent',
+        shadowColor: 'none',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        marginHorizontal: 16,
+    },
+    leftTab: {
+        paddingHorizontal: 8,
+        width: 'auto',
     },
 });
