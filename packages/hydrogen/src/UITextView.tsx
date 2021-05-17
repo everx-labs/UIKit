@@ -41,20 +41,44 @@ export type UITextViewProps = Omit<
     style?: StyleProp<UITextViewStyle>;
 };
 
+function useAutoFocus(
+    ref: React.Ref<TextInput>,
+    autoFocus: boolean | undefined,
+) {
+    if (
+        Platform.OS === 'ios' &&
+        (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH != null
+    ) {
+        // See @tonlabs/uikit.navigation -> useAutoFocus
+        return (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH(
+            ref,
+            autoFocus,
+        );
+    }
+
+    return autoFocus;
+}
+
 export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
     function UITextViewForwarded(
         {
             style,
             placeholderTextColor = ColorVariants.TextSecondary,
+            autoFocus,
             ...rest
         }: UITextViewProps,
-        ref,
+        passedRef,
     ) {
+        const fallbackRef = React.useRef<TextInput>(null);
+        const ref = passedRef || fallbackRef;
         const theme = useTheme();
+        const autoFocusProp = useAutoFocus(ref, autoFocus);
+
         return (
             <TextInput
                 ref={ref}
                 {...rest}
+                autoFocus={autoFocusProp}
                 // @ts-ignore
                 // This is our custom prop, we do it in native for Android
                 noPersonalizedLearning={false}
@@ -105,7 +129,7 @@ export function useUITextViewValue(
     useClearWithEnter = false,
     { value: valueProp, onChangeText: onChangeTextProp }: UITextViewProps = {},
 ) {
-    // Little optimisation to not re-render children on every value change
+    // Little optimization to not re-render children on every value change
     const [inputHasValue, setInputHasValue] = React.useState(
         valueProp != null && valueProp !== '',
     );
@@ -121,7 +145,12 @@ export function useUITextViewValue(
         }
     }, [valueProp, inputHasValue]);
 
-    const inputValue = React.useRef('');
+    // Create a ref to the current input value
+    const inputValue = React.useRef(valueProp || '');
+    React.useEffect(() => {
+        inputValue.current = valueProp || '';
+    }, [valueProp])
+
     const wasClearedWithEnter = React.useRef(false);
 
     const onChangeText = React.useCallback(

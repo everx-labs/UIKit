@@ -10,7 +10,13 @@ import {
     UIColor,
     UIFunction,
 } from '@tonlabs/uikit.core';
-import { ColorVariants, UIImage, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UIImage,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import { UIActionComponent } from '../UIActionComponent';
 import type {

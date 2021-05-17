@@ -116,6 +116,10 @@ module.exports = {
                         '../node_modules/react-native-document-picker/',
                     ),
                     path.resolve(__dirname, '../node_modules/rn-fetch-blob/'),
+                    path.resolve(
+                        __dirname,
+                        '../node_modules/react-native-reanimated/',
+                    ),
                 ],
                 loader: 'babel-loader',
                 query: {
@@ -143,6 +147,7 @@ module.exports = {
                             '@babel/plugin-proposal-class-properties',
                             { loose: true },
                         ],
+                        'react-native-reanimated/plugin',
                     ],
                 },
             },
