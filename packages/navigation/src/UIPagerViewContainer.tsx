@@ -123,6 +123,7 @@ const renderLeftTabBar = (
         <TabBar
             {...props}
             scrollEnabled
+            pressColor="transparent"
             indicatorStyle={[
                 styles.indicator,
                 {
@@ -240,24 +241,25 @@ const styles = StyleSheet.create({
     centerTabBar: {
         height: 72,
         backgroundColor: 'transparent',
-        shadowColor: 'none',
+        shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
         marginHorizontal: 16,
         overflow: 'visible',
     },
     indicatorContainer: {
-        top: 'none',
+        top: undefined,
         bottom: 16,
         height: 1,
     },
     leftTabBar: {
         height: 72,
         backgroundColor: 'transparent',
-        shadowColor: 'none',
+        shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
         // overflow: 'hidden',
+        overflow: 'visible',
         marginHorizontal: 16,
     },
     leftTab: {
