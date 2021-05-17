@@ -233,7 +233,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: '100%',
         width: '100%',
-        overflow: 'visible',
     },
     indicator: {
         height: 1,
@@ -245,7 +244,6 @@ const styles = StyleSheet.create({
         elevation: 0,
         justifyContent: 'center',
         marginHorizontal: 16,
-        overflow: 'visible',
     },
     indicatorContainer: {
         top: undefined,
@@ -258,8 +256,7 @@ const styles = StyleSheet.create({
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
-        // overflow: 'hidden',
-        overflow: 'visible',
+        overflow: 'hidden',
         marginHorizontal: 16,
     },
     leftTab: {
