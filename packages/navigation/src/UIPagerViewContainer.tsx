@@ -201,7 +201,7 @@ const renderTabBar = (
 
 export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     type,
-    initialPageIndex,
+    initialPageIndex = 0,
     onPageIndexChange,
     children,
     testID,
@@ -212,7 +212,9 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     );
 
     React.useEffect(() => {
-        onPageIndexChange(currentIndex);
+        if (onPageIndexChange) {
+            onPageIndexChange(currentIndex);
+        }
     }, [currentIndex, onPageIndexChange]);
 
     const layout: ScaledSize = useWindowDimensions();

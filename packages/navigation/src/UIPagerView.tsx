@@ -10,9 +10,9 @@ export type UIPagerViewContainerProps = {
     /** type of UIPagerViewContainer */
     type: UIPagerViewContainerType;
     /** index of first shown page */
-    initialPageIndex: number;
+    initialPageIndex?: number;
     /** callback that is called when the page changes */
-    onPageIndexChange: (newPageIndex: number) => void;
+    onPageIndexChange?: (newPageIndex: number) => void;
     /** only UIPagerViewPage can be passed to children */
     children:
         | React.ReactElement<UIPagerViewPageProps>
