@@ -17,11 +17,12 @@ import { ExampleScreen } from '../components/ExampleScreen';
 
 // import { UIPagerView } from '../../../packages/navigation/src/UIPagerView'
 
-const component = () => (
+const component = (): React.ReactElement<View> => (
     <View
         style={{
             borderWidth: 1,
             flex: 1,
+            height: 500,
             backgroundColor: `#${(Math.random() * 999999).toFixed()}`,
         }}
     />
@@ -42,6 +43,7 @@ export const Navigation = () => {
                     style={{
                         width: '100%',
                         maxWidth: 500,
+                        height: 500,
                         paddingVertical: 20,
                         alignItems: 'center',
                     }}
@@ -55,28 +57,28 @@ export const Navigation = () => {
                         }
                         testID="UIPagerView"
                     >
-                        <UIPagerView.Page title="Item" component={component} />
+                        <UIPagerView.Page title="Item 1" component={component} />
                         <UIPagerView.Page
-                            title="Item2123"
+                            title="Item 2"
                             component={component}
                         />
-                        <UIPagerView.Page title="Ite" component={component} />
-                        <UIPagerView.Page title="Item4" component={component} />
-                        <UIPagerView.Page title="Item5" component={component} />
+                        <UIPagerView.Page title="Item 3" component={component} />
+                        <UIPagerView.Page title="Long title of item is displayed in its entirety 4" component={component} />
+                        <UIPagerView.Page title="Item 5" component={component} />
                         <UIPagerView.Page
-                            title="Item123"
-                            component={component}
-                        />
-                        <UIPagerView.Page
-                            title="Item212313"
+                            title="I6"
                             component={component}
                         />
                         <UIPagerView.Page
-                            title="Ite123"
+                            title="Item 7"
                             component={component}
                         />
                         <UIPagerView.Page
-                            title="Item4123"
+                            title="Item 8"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            title="Item 9"
                             component={component}
                         />
                     </UIPagerView.Container>
@@ -87,6 +89,7 @@ export const Navigation = () => {
                     style={{
                         width: '100%',
                         maxWidth: 500,
+                        height: 500,
                         paddingVertical: 20,
                         alignItems: 'center',
                     }}

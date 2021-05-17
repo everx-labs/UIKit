@@ -1,5 +1,4 @@
 import { UIPagerViewContainer } from './UIPagerViewContainer';
-import { UIPagerViewPage } from './UIPagerViewPage';
 
 /** type of UIPagerViewContainer */
 export type UIPagerViewContainerType = 'Left' | 'Center';
@@ -43,6 +42,8 @@ export type UIPagerView = {
     /** Page component */
     Page: React.FC<UIPagerViewPageProps>;
 };
+
+const UIPagerViewPage: React.FC<UIPagerViewPageProps> = () => null
 
 export const UIPagerView: UIPagerView = {
     Container: UIPagerViewContainer,

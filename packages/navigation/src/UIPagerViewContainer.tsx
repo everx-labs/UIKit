@@ -230,8 +230,9 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        height: 500,
-        width: 400,
+        height: '100%',
+        width: '100%',
+        overflow: 'visible',
     },
     indicator: {
         height: 1,
@@ -240,8 +241,10 @@ const styles = StyleSheet.create({
         height: 72,
         backgroundColor: 'transparent',
         shadowColor: 'none',
+        elevation: 0,
         justifyContent: 'center',
         marginHorizontal: 16,
+        overflow: 'visible',
     },
     indicatorContainer: {
         top: 'none',
@@ -252,8 +255,9 @@ const styles = StyleSheet.create({
         height: 72,
         backgroundColor: 'transparent',
         shadowColor: 'none',
+        elevation: 0,
         justifyContent: 'center',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         marginHorizontal: 16,
     },
     leftTab: {
