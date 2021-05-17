@@ -66,11 +66,12 @@ export const Navigation = () => {
                             component={component}
                         />
                         <UIPagerView.Page
-                            title="Long title of item is displayed in its entirety 4"
+                            title="Destructive"
                             component={component}
+                            isDestructive
                         />
                         <UIPagerView.Page
-                            title="Item 5"
+                            title="Long title of item is displayed in its entirety 4"
                             component={component}
                         />
                         <UIPagerView.Page title="I6" component={component} />

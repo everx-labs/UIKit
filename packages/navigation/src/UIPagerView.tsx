@@ -29,6 +29,8 @@ export type UIPagerViewPageProps = {
     title: string;
     /** main content component for the page */
     component: () => React.ReactElement;
+    /** Set if page is destructive ("Danger zone") */
+    isDestructive?: boolean;
     /** used for autotests */
     testID?: string;
 };

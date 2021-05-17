@@ -19,6 +19,7 @@ import {
     UILabelColors,
     UILabelRoles,
     useTheme,
+    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
 import type {
     UIPagerViewContainerProps,
@@ -64,19 +65,43 @@ const getSceneList = (
     );
 };
 
-const renderLabel = (scene: {
+const getLabelColor = (
+    focused: boolean,
+    page: React.ReactElement<UIPagerViewPageProps>,
+): ColorVariants => {
+    if (page.props.isDestructive) {
+        return UILabelColors.TextNegative;
+    }
+    if (focused) {
+        return UILabelColors.TextPrimary;
+    }
+    return UILabelColors.TextSecondary;
+};
+
+const renderLabel = (
+    pages: React.ReactElement<UIPagerViewPageProps>[],
+) => (scene: {
     route: Route;
     focused: boolean;
     color: string;
-}): React.ReactElement => {
+}): React.ReactElement<typeof UILabel> | null => {
+    const currentPage:
+        | React.ReactElement<UIPagerViewPageProps>
+        | undefined = pages.find(
+        (page: React.ReactElement<UIPagerViewPageProps>): boolean =>
+            page.props.title === scene.route.title,
+    );
+
+    if (!currentPage) {
+        return null;
+    }
+
+    const color: ColorVariants = getLabelColor(scene.focused, currentPage);
+
     return (
         <UILabel
-            testID="uiPagerView_label"
-            color={
-                scene.focused
-                    ? UILabelColors.TextPrimary
-                    : UILabelColors.TextSecondary
-            }
+            testID={`uiPagerView_label-${currentPage.props.testID}`}
+            color={color}
             role={UILabelRoles.ActionCallout}
         >
             {scene.route.title}
@@ -88,6 +113,7 @@ const renderCenterTabBar = (
     props: SceneRendererProps & {
         navigationState: NavigationState<Route>;
     },
+    pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
 ): React.ReactElement => {
@@ -101,7 +127,7 @@ const renderCenterTabBar = (
                 },
             ]}
             style={styles.centerTabBar}
-            renderLabel={renderLabel}
+            renderLabel={renderLabel(pages)}
             indicatorContainerStyle={[
                 styles.indicatorContainer,
                 {
@@ -116,6 +142,7 @@ const renderLeftTabBar = (
     props: SceneRendererProps & {
         navigationState: NavigationState<Route>;
     },
+    pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
 ): React.ReactElement => {
@@ -131,7 +158,7 @@ const renderLeftTabBar = (
                 },
             ]}
             style={styles.leftTabBar}
-            renderLabel={renderLabel}
+            renderLabel={renderLabel(pages)}
             indicatorContainerStyle={[
                 styles.indicatorContainer,
                 {
@@ -144,6 +171,7 @@ const renderLeftTabBar = (
 };
 
 const renderTabBar = (
+    pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
     type: UIPagerViewContainerType,
@@ -156,6 +184,7 @@ const renderTabBar = (
         case 'Left':
             return renderLeftTabBar(
                 props,
+                pages,
                 indicatorColor,
                 indicatorContainerColor,
             );
@@ -163,6 +192,7 @@ const renderTabBar = (
         default:
             return renderCenterTabBar(
                 props,
+                pages,
                 indicatorColor,
                 indicatorContainerColor,
             );
@@ -216,6 +246,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
                 onIndexChange={setCurrentIndex}
                 initialLayout={{ width: layout.width }}
                 renderTabBar={renderTabBar(
+                    pages,
                     theme.TextPrimary,
                     theme.LinePrimary,
                     type,
