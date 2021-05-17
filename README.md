@@ -18,3 +18,18 @@ Second run `npm run web` or `yarn web`
 ```sh
 npx lerna publish --no-private
 ```
+
+# Run iOS
+
+First run command `npx lerna bootstrap && npx lerna run prepare`
+
+Then move to the `ios` folder `cd Example/ios`
+
+If cocoapods is not installed install it `sudo gem install cocoapods`
+Install pods `pod install`
+
+If pod install failure with Flipper-Glog dependency try `sudo xcode-select --switch /Applications/Xcode.app` and rerun `pod install`
+
+Open `Example/ios` folder in XCode, build and run.
+
+Run `yarn run start` from `Example` folder.
