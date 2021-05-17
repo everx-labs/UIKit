@@ -15,14 +15,10 @@ import { UIButton } from '@tonlabs/uikit.components';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-// import { UIPagerView } from '../../../packages/navigation/src/UIPagerView'
-
 const component = (): React.ReactElement<View> => (
     <View
         style={{
-            borderWidth: 1,
             flex: 1,
-            height: 500,
             backgroundColor: `#${(Math.random() * 999999).toFixed()}`,
         }}
     />
@@ -57,18 +53,27 @@ export const Navigation = () => {
                         }
                         testID="UIPagerView"
                     >
-                        <UIPagerView.Page title="Item 1" component={component} />
+                        <UIPagerView.Page
+                            title="Item 1"
+                            component={component}
+                        />
                         <UIPagerView.Page
                             title="Item 2"
                             component={component}
                         />
-                        <UIPagerView.Page title="Item 3" component={component} />
-                        <UIPagerView.Page title="Long title of item is displayed in its entirety 4" component={component} />
-                        <UIPagerView.Page title="Item 5" component={component} />
                         <UIPagerView.Page
-                            title="I6"
+                            title="Item 3"
                             component={component}
                         />
+                        <UIPagerView.Page
+                            title="Long title of item is displayed in its entirety 4"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            title="Item 5"
+                            component={component}
+                        />
+                        <UIPagerView.Page title="I6" component={component} />
                         <UIPagerView.Page
                             title="Item 7"
                             component={component}
