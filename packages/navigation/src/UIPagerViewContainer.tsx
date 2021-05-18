@@ -27,17 +27,29 @@ import type {
     UIPagerViewPageProps,
 } from './UIPagerView';
 
-const getRoutes = (
+const useRoutes = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
 ): Route[] => {
-    return pages.map(
-        (child: React.ReactElement<UIPagerViewPageProps>): Route => {
-            return {
-                key: child.props.id,
-                title: child.props.title,
-            };
-        },
-    );
+    return React.useMemo(() => {
+        return pages.map(
+            (child: React.ReactElement<UIPagerViewPageProps>): Route => {
+                return {
+                    key: child.props.id,
+                    title: child.props.title,
+                };
+            },
+        );
+    }, [pages]);
+};
+
+const usePages = (
+    children:
+        | React.ReactElement<UIPagerViewPageProps>
+        | React.ReactElement<UIPagerViewPageProps>[],
+): React.ReactElement<UIPagerViewPageProps>[] => {
+    return React.useMemo(() => {
+        return Array.isArray(children) ? children : [children];
+    }, [children]);
 };
 
 type SceneProps = SceneRendererProps & {
@@ -47,6 +59,12 @@ type SceneProps = SceneRendererProps & {
 type SceneList = {
     [key: string]: React.ComponentType<SceneProps>;
 };
+
+type RenderSceneProps = SceneRendererProps & {
+    route: Route;
+};
+
+type RenderSceneComponent = (props: RenderSceneProps) => React.ReactNode;
 
 const getSceneList = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
@@ -62,6 +80,17 @@ const getSceneList = (
             };
         },
         {},
+    );
+};
+
+const useScene = (
+    pages: React.ReactElement<UIPagerViewPageProps>[],
+): RenderSceneComponent => {
+    return React.useMemo(
+        () => {
+            return SceneMap(getSceneList(pages));
+        },
+        [pages],
     );
 };
 
@@ -217,9 +246,12 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
         initialPageIndex,
     );
 
-    const onLayout: (event: LayoutChangeEvent) => void = React.useCallback((event: LayoutChangeEvent) => {
-        setLayout(event.nativeEvent.layout);
-    }, []);
+    const onLayout: (event: LayoutChangeEvent) => void = React.useCallback(
+        (event: LayoutChangeEvent) => {
+            setLayout(event.nativeEvent.layout);
+        },
+        [],
+    );
 
     React.useEffect(() => {
         if (onPageIndexChange) {
@@ -227,11 +259,13 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
         }
     }, [currentIndex, onPageIndexChange]);
 
-    const pages: React.ReactElement<UIPagerViewPageProps>[] = Array.isArray(
+    const pages: React.ReactElement<UIPagerViewPageProps>[] = usePages(
         children,
-    )
-        ? children
-        : [children];
+    );
+
+    const routes: Route[] = useRoutes(pages);
+
+    const renderScene: RenderSceneComponent = useScene(pages);
 
     if (pages.length === 0) {
         console.error(
@@ -239,14 +273,6 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
         );
         return null;
     }
-
-    const routes: Route[] = getRoutes(pages);
-
-    const renderScene: (
-        props: SceneRendererProps & {
-            route: Route;
-        },
-    ) => React.ReactNode = SceneMap(getSceneList(pages));
 
     return (
         <View onLayout={onLayout} style={styles.container} testID={testID}>
