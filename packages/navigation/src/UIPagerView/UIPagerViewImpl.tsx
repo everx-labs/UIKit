@@ -339,9 +339,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        height: '100%',
-        width: '100%',
+        flex: 1,
     },
     indicator: {
         height: 1,

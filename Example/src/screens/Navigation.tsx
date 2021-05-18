@@ -34,6 +34,7 @@ export const Navigation = () => {
     return (
         <ExampleScreen color={ColorVariants.BackgroundSecondary}>
             <ExampleSection title="UIPagerView">
+                <UILabel>type = Left</UILabel>
                 <View
                     testID="UIPagerView"
                     style={{
@@ -41,10 +42,8 @@ export const Navigation = () => {
                         maxWidth: 500,
                         height: 500,
                         paddingVertical: 20,
-                        alignItems: 'center',
                     }}
                 >
-                    <UILabel>type = Left</UILabel>
                     <UIPagerView.Container
                         type="Left"
                         initialPageIndex={0}
@@ -104,6 +103,7 @@ export const Navigation = () => {
                     </UIPagerView.Container>
                 </View>
                 <View style={{ height: 20 }} />
+                <UILabel>type = Center</UILabel>
                 <View
                     testID="UIPagerView"
                     style={{
@@ -111,10 +111,8 @@ export const Navigation = () => {
                         maxWidth: 500,
                         height: 500,
                         paddingVertical: 20,
-                        alignItems: 'center',
                     }}
                 >
-                    <UILabel>type = Center</UILabel>
                     <UIPagerView.Container
                         type="Center"
                         initialPageIndex={0}
