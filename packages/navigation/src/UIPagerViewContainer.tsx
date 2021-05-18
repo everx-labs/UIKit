@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
     ColorValue,
-    ScaledSize,
-    View,
-    useWindowDimensions,
+    LayoutChangeEvent,
+    LayoutRectangle,
     StyleSheet,
+    View,
 } from 'react-native';
 import {
     NavigationState,
@@ -207,17 +207,25 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     testID,
 }: UIPagerViewContainerProps) => {
     const theme = useTheme();
+    const [layout, setLayout] = React.useState<LayoutRectangle>({
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+    });
     const [currentIndex, setCurrentIndex] = React.useState<number>(
         initialPageIndex,
     );
+
+    const onLayout: (event: LayoutChangeEvent) => void = React.useCallback((event: LayoutChangeEvent) => {
+        setLayout(event.nativeEvent.layout);
+    }, []);
 
     React.useEffect(() => {
         if (onPageIndexChange) {
             onPageIndexChange(currentIndex);
         }
     }, [currentIndex, onPageIndexChange]);
-
-    const layout: ScaledSize = useWindowDimensions();
 
     const pages: React.ReactElement<UIPagerViewPageProps>[] = Array.isArray(
         children,
@@ -241,7 +249,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     ) => React.ReactNode = SceneMap(getSceneList(pages));
 
     return (
-        <View style={styles.container} testID={testID}>
+        <View onLayout={onLayout} style={styles.container} testID={testID}>
             <TabView<Route>
                 navigationState={{ index: currentIndex, routes }}
                 renderScene={renderScene}
