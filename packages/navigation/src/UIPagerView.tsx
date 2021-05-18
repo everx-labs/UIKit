@@ -25,6 +25,8 @@ export type UIPagerViewContainerProps = {
  * Page properties.
  */
 export type UIPagerViewPageProps = {
+    /** Unique string for the page */
+    id: string,
     /** title of page */
     title: string;
     /** main content component for the page */

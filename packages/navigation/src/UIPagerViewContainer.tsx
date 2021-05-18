@@ -33,7 +33,7 @@ const getRoutes = (
     return pages.map(
         (child: React.ReactElement<UIPagerViewPageProps>): Route => {
             return {
-                key: child.props.title,
+                key: child.props.id,
                 title: child.props.title,
             };
         },
@@ -58,7 +58,7 @@ const getSceneList = (
         ): SceneList => {
             return {
                 ...sceneMap,
-                [page.props.title]: page.props.component,
+                [page.props.id]: page.props.component,
             };
         },
         {},
@@ -89,7 +89,7 @@ const renderLabel = (
         | React.ReactElement<UIPagerViewPageProps>
         | undefined = pages.find(
         (page: React.ReactElement<UIPagerViewPageProps>): boolean =>
-            page.props.title === scene.route.title,
+            page.props.id === scene.route.key,
     );
 
     if (!currentPage) {
