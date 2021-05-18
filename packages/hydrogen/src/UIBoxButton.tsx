@@ -14,12 +14,6 @@ export enum UIBoxButtonType {
 }
 
 // eslint-disable-next-line no-shadow
-export enum UIBoxButtonNulledColorVariant {
-    Primary = ColorVariants.TextPrimary,
-    Negative = ColorVariants.TextNegative,
-}
-
-// eslint-disable-next-line no-shadow
 export enum UIBoxButtonIconPosition {
     Left = 'Left',
     Middle = 'Middle',
