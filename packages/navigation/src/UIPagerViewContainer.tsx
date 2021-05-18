@@ -27,6 +27,27 @@ import type {
     UIPagerViewPageProps,
 } from './UIPagerView';
 
+type SceneProps = SceneRendererProps & {
+    route: Route;
+};
+
+type SceneList = {
+    [key: string]: React.ComponentType<SceneProps>;
+};
+
+type SceneComponent = (props: SceneProps) => React.ReactNode;
+
+type TabBarProps = SceneRendererProps & {
+    navigationState: NavigationState<Route>;
+};
+
+type TabBarComponent = (props: TabBarProps) => React.ReactElement;
+
+type LabelProps = {
+    route: Route;
+    focused: boolean;
+};
+
 const useRoutes = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
 ): Route[] => {
@@ -52,20 +73,6 @@ const usePages = (
     }, [children]);
 };
 
-type SceneProps = SceneRendererProps & {
-    route: Route;
-};
-
-type SceneList = {
-    [key: string]: React.ComponentType<SceneProps>;
-};
-
-type RenderSceneProps = SceneRendererProps & {
-    route: Route;
-};
-
-type RenderSceneComponent = (props: RenderSceneProps) => React.ReactNode;
-
 const getSceneList = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
 ): SceneList => {
@@ -85,13 +92,10 @@ const getSceneList = (
 
 const useScene = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
-): RenderSceneComponent => {
-    return React.useMemo(
-        () => {
-            return SceneMap(getSceneList(pages));
-        },
-        [pages],
-    );
+): SceneComponent => {
+    return React.useMemo(() => {
+        return SceneMap(getSceneList(pages));
+    }, [pages]);
 };
 
 const getLabelColor = (
@@ -107,25 +111,21 @@ const getLabelColor = (
     return UILabelColors.TextSecondary;
 };
 
-const renderLabel = (
-    pages: React.ReactElement<UIPagerViewPageProps>[],
-) => (scene: {
-    route: Route;
-    focused: boolean;
-    color: string;
-}): React.ReactElement<typeof UILabel> | null => {
+const renderLabel = (pages: React.ReactElement<UIPagerViewPageProps>[]) => (
+    props: LabelProps,
+): React.ReactElement<typeof UILabel> | null => {
     const currentPage:
         | React.ReactElement<UIPagerViewPageProps>
         | undefined = pages.find(
         (page: React.ReactElement<UIPagerViewPageProps>): boolean =>
-            page.props.id === scene.route.key,
+            page.props.id === props.route.key,
     );
 
     if (!currentPage) {
         return null;
     }
 
-    const color: ColorVariants = getLabelColor(scene.focused, currentPage);
+    const color: ColorVariants = getLabelColor(props.focused, currentPage);
 
     return (
         <UILabel
@@ -133,15 +133,13 @@ const renderLabel = (
             color={color}
             role={UILabelRoles.ActionCallout}
         >
-            {scene.route.title}
+            {props.route.title}
         </UILabel>
     );
 };
 
 const renderCenterTabBar = (
-    props: SceneRendererProps & {
-        navigationState: NavigationState<Route>;
-    },
+    props: TabBarProps,
     pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
@@ -168,9 +166,7 @@ const renderCenterTabBar = (
 };
 
 const renderLeftTabBar = (
-    props: SceneRendererProps & {
-        navigationState: NavigationState<Route>;
-    },
+    props: TabBarProps,
     pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
@@ -199,34 +195,34 @@ const renderLeftTabBar = (
     );
 };
 
-const renderTabBar = (
+const useTabBar = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
     type: UIPagerViewContainerType,
-) => (
-    props: SceneRendererProps & {
-        navigationState: NavigationState<Route>;
-    },
-): React.ReactElement => {
-    switch (type) {
-        case 'Left':
-            return renderLeftTabBar(
-                props,
-                pages,
-                indicatorColor,
-                indicatorContainerColor,
-            );
-        case 'Center':
-        default:
-            return renderCenterTabBar(
-                props,
-                pages,
-                indicatorColor,
-                indicatorContainerColor,
-            );
-    }
-};
+): TabBarComponent =>
+    React.useCallback(
+        (props: TabBarProps): React.ReactElement => {
+            switch (type) {
+                case 'Left':
+                    return renderLeftTabBar(
+                        props,
+                        pages,
+                        indicatorColor,
+                        indicatorContainerColor,
+                    );
+                case 'Center':
+                default:
+                    return renderCenterTabBar(
+                        props,
+                        pages,
+                        indicatorColor,
+                        indicatorContainerColor,
+                    );
+            }
+        },
+        [pages, indicatorColor, indicatorContainerColor, type],
+    );
 
 export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     type,
@@ -265,7 +261,14 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
 
     const routes: Route[] = useRoutes(pages);
 
-    const renderScene: RenderSceneComponent = useScene(pages);
+    const renderScene: SceneComponent = useScene(pages);
+
+    const renderTabBar: TabBarComponent = useTabBar(
+        pages,
+        theme.TextPrimary,
+        theme.LinePrimary,
+        type,
+    );
 
     if (pages.length === 0) {
         console.error(
@@ -281,12 +284,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
                 renderScene={renderScene}
                 onIndexChange={setCurrentIndex}
                 initialLayout={{ width: layout.width }}
-                renderTabBar={renderTabBar(
-                    pages,
-                    theme.TextPrimary,
-                    theme.LinePrimary,
-                    type,
-                )}
+                renderTabBar={renderTabBar}
                 style={{
                     backgroundColor: theme.BackgroundPrimary,
                 }}
