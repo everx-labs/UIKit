@@ -7,29 +7,29 @@ We use `@react-navigation` as dependency and use typings for it from `flow-typed
 npx flow-typed install @react-navigation/core@5.x.x @react-navigation/native@5.x.x @react-navigation/bottom-tabs@5.x.x @react-navigation/stack@5.x.x
 ```
 
-# Run example
+# Run web
 
 First run command `npx lerna bootstrap && npx lerna run prepare`
 
 Second run `npm run web` or `yarn web`
+
+# Run Mobile
+
+Move to the `Example` folder `cd Example`
+
+Run `npm run reinstall` or `yarn reinstall`
+
+If pod install failure with Flipper-Glog dependency try `sudo xcode-select --switch /Applications/Xcode.app`
+
+Run `npm run start` or `yarn start`
+
+## iOS
+Open `Example/ios` folder in XCode, build and run.
+## Android
+Open `Example/android` folder in Android Studio, build and run.
 
 # Publish packages
 
 ```sh
 npx lerna publish --no-private
 ```
-
-# Run iOS
-
-First run command `npx lerna bootstrap && npx lerna run prepare`
-
-Then move to the `ios` folder `cd Example/ios`
-
-If cocoapods is not installed install it `sudo gem install cocoapods`
-Install pods `pod install`
-
-If pod install failure with Flipper-Glog dependency try `sudo xcode-select --switch /Applications/Xcode.app` and rerun `pod install`
-
-Open `Example/ios` folder in XCode, build and run.
-
-Run `yarn run start` from `Example` folder.
