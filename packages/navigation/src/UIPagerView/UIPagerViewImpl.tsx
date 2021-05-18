@@ -25,7 +25,7 @@ import type {
     UIPagerViewContainerProps,
     UIPagerViewContainerType,
     UIPagerViewPageProps,
-} from './UIPagerView';
+} from '../UIPagerView';
 
 type SceneProps = SceneRendererProps & {
     route: Route;
@@ -63,13 +63,55 @@ const useRoutes = (
     }, [pages]);
 };
 
+const getPages = (
+    children: React.ReactNode,
+): React.ReactElement<UIPagerViewPageProps>[] => {
+    const childElements: React.ReactElement<
+        UIPagerViewPageProps
+    >[] = React.Children.toArray(children).reduce<
+        React.ReactElement<UIPagerViewPageProps>[]
+    >((acc, child) => {
+        if (React.isValidElement(child)) {
+            if (child.type === UIPagerViewPage) {
+                return [...acc, child];
+            }
+
+            if (child.type === React.Fragment) {
+                return [...acc, ...getPages(child.props.children)];
+            }
+        }
+        if (__DEV__) {
+            throw new Error(
+                `UIPagerViewContainer can only contain 'UIPagerView.Page' components as its direct children (found ${
+                    // eslint-disable-next-line no-nested-ternary
+                    React.isValidElement(child)
+                        ? `${
+                              typeof child.type === 'string'
+                                  ? child.type
+                                  : child.type?.name
+                          }`
+                        : typeof child === 'object'
+                        ? JSON.stringify(child)
+                        : `'${String(child)}'`
+                })`,
+            );
+        }
+        return acc;
+    }, []);
+
+    return childElements;
+};
+
 const usePages = (
     children:
         | React.ReactElement<UIPagerViewPageProps>
         | React.ReactElement<UIPagerViewPageProps>[],
 ): React.ReactElement<UIPagerViewPageProps>[] => {
     return React.useMemo(() => {
-        return Array.isArray(children) ? children : [children];
+        const pages: React.ReactElement<UIPagerViewPageProps>[] = getPages(
+            children,
+        );
+        return pages;
     }, [children]);
 };
 
@@ -223,6 +265,8 @@ const useTabBar = (
         },
         [pages, indicatorColor, indicatorContainerColor, type],
     );
+
+export const UIPagerViewPage: React.FC<UIPagerViewPageProps> = () => null;
 
 export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     type,

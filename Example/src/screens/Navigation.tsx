@@ -53,16 +53,18 @@ export const Navigation = () => {
                         }
                         testID="UIPagerView"
                     >
-                        <UIPagerView.Page
-                            id="Item 1"
-                            title="Item 1"
-                            component={component}
-                        />
-                        <UIPagerView.Page
-                            id="Item 2"
-                            title="Item 2"
-                            component={component}
-                        />
+                        <>
+                            <UIPagerView.Page
+                                id="Item 1"
+                                title="Item 1"
+                                component={component}
+                            />
+                            <UIPagerView.Page
+                                id="Item 2"
+                                title="Item 2"
+                                component={component}
+                            />
+                        </>
                         <UIPagerView.Page
                             id="Item 3"
                             title="Item 3"
