@@ -15,6 +15,15 @@ import { UIButton } from '@tonlabs/uikit.components';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
+const component = (): React.ReactElement<View> => (
+    <View
+        style={{
+            flex: 1,
+            backgroundColor: `#${(Math.random() * 999999).toFixed()}`,
+        }}
+    />
+);
+
 export const Navigation = () => {
     const [
         isSearchControllerVisible,
@@ -25,11 +34,13 @@ export const Navigation = () => {
     return (
         <ExampleScreen color={ColorVariants.BackgroundSecondary}>
             <ExampleSection title="UIPagerView">
+                <UILabel>type = Left</UILabel>
                 <View
                     testID="UIPagerView"
                     style={{
                         width: '100%',
                         maxWidth: 500,
+                        height: 500,
                         paddingVertical: 20,
                     }}
                 >
@@ -41,8 +52,85 @@ export const Navigation = () => {
                         }
                         testID="UIPagerView"
                     >
-                        <UIPagerView.Page title="Item" component={<View />} />
-                        <UIPagerView.Page title="Item2" component={<View />} />
+                        <>
+                            <UIPagerView.Page
+                                id="Item 1"
+                                title="Item 1"
+                                component={component}
+                            />
+                            <UIPagerView.Page
+                                id="Item 2"
+                                title="Item 2"
+                                component={component}
+                            />
+                        </>
+                        <UIPagerView.Page
+                            id="Item 3"
+                            title="Item 3"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            id="Item 4"
+                            title="Destructive"
+                            component={component}
+                            isDestructive
+                        />
+                        <UIPagerView.Page
+                            id="Item 5"
+                            title="Long title of item is displayed in its entirety 4"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            id="Item 6"
+                            title="I6"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            id="Item 7"
+                            title="Item 7"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            id="Item 8"
+                            title="Item 8"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            id="Item 9"
+                            title="Item 9"
+                            component={component}
+                        />
+                    </UIPagerView.Container>
+                </View>
+                <View style={{ height: 20 }} />
+                <UILabel>type = Center</UILabel>
+                <View
+                    testID="UIPagerView"
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        height: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UIPagerView.Container
+                        type="Center"
+                        initialPageIndex={0}
+                        onPageIndexChange={(newPageIndex: number) =>
+                            newPageIndex
+                        }
+                        testID="UIPagerView"
+                    >
+                        <UIPagerView.Page
+                            id="Item 1"
+                            title="Item 1"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            id="Item 2"
+                            title="Item 2"
+                            component={component}
+                        />
                     </UIPagerView.Container>
                 </View>
                 <View style={{ height: 20 }} />

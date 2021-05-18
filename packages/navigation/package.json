@@ -41,7 +41,8 @@
     "@tonlabs/uikit.components": "^2.2.0",
     "@tonlabs/uikit.core": "^2.2.0",
     "@tonlabs/uikit.hydrogen": "^2.2.0",
-    "@tonlabs/uikit.localization": "^2.2.0"
+    "@tonlabs/uikit.localization": "^2.2.0",
+    "react-native-tab-view": "3.0.1"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
