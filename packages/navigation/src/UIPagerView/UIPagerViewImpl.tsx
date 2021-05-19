@@ -53,7 +53,7 @@ type LabelProps = {
 const useRoutes = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
 ): Route[] => {
-    return React.useMemo(() => {
+    return React.useMemo((): Route[] => {
         return pages.map(
             (child: React.ReactElement<UIPagerViewPageProps>): Route => {
                 return {
@@ -72,34 +72,43 @@ const getPages = (
         UIPagerViewPageProps
     >[] = React.Children.toArray(children).reduce<
         React.ReactElement<UIPagerViewPageProps>[]
-    >((acc, child) => {
-        if (React.isValidElement(child)) {
-            if (child.type === UIPagerViewPage) {
-                return [...acc, child];
-            }
+    >(
+        (
+            acc: React.ReactElement<UIPagerViewPageProps>[],
+            child: React.ReactNode,
+        ): React.ReactElement<UIPagerViewPageProps>[] => {
+            if (React.isValidElement(child)) {
+                const pages: React.ReactElement<UIPagerViewPageProps>[] = acc;
+                if (child.type === UIPagerViewPage) {
+                    pages.push(child);
+                    return pages;
+                }
 
-            if (child.type === React.Fragment) {
-                return [...acc, ...getPages(child.props.children)];
+                if (child.type === React.Fragment) {
+                    pages.push(...getPages(child.props.children));
+                    return pages;
+                }
             }
-        }
-        if (__DEV__) {
-            throw new Error(
-                `UIPagerViewContainer can only contain 'UIPagerView.Page' components as its direct children (found ${
-                    // eslint-disable-next-line no-nested-ternary
-                    React.isValidElement(child)
-                        ? `${
-                              typeof child.type === 'string'
-                                  ? child.type
-                                  : child.type?.name
-                          }`
-                        : typeof child === 'object'
-                        ? JSON.stringify(child)
-                        : `'${String(child)}'`
-                })`,
-            );
-        }
-        return acc;
-    }, []);
+            if (__DEV__) {
+                throw new Error(
+                    `UIPagerViewContainer can only contain 'UIPagerView.Page' components as its direct children (found ${
+                        // eslint-disable-next-line no-nested-ternary
+                        React.isValidElement(child)
+                            ? `${
+                                  typeof child.type === 'string'
+                                      ? child.type
+                                      : child.type?.name
+                              }`
+                            : typeof child === 'object'
+                            ? JSON.stringify(child)
+                            : `'${String(child)}'`
+                    })`,
+                );
+            }
+            return acc;
+        },
+        [],
+    );
 
     return childElements;
 };
@@ -109,7 +118,7 @@ const usePages = (
         | React.ReactElement<UIPagerViewPageProps>
         | React.ReactElement<UIPagerViewPageProps>[],
 ): React.ReactElement<UIPagerViewPageProps>[] => {
-    return React.useMemo(() => {
+    return React.useMemo((): React.ReactElement<UIPagerViewPageProps>[] => {
         const pages: React.ReactElement<UIPagerViewPageProps>[] = getPages(
             children,
         );
@@ -125,10 +134,9 @@ const getSceneList = (
             sceneMap: SceneList,
             page: React.ReactElement<UIPagerViewPageProps>,
         ): SceneList => {
-            return {
-                ...sceneMap,
-                [page.props.id]: page.props.component,
-            };
+            const updatedSceneMap: SceneList = sceneMap;
+            updatedSceneMap[page.props.id] = page.props.component;
+            return updatedSceneMap;
         },
         {},
     );
@@ -137,7 +145,7 @@ const getSceneList = (
 const useScene = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
 ): SceneComponent => {
-    return React.useMemo(() => {
+    return React.useMemo((): SceneComponent => {
         return SceneMap(getSceneList(pages));
     }, [pages]);
 };
@@ -300,13 +308,13 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     );
 
     const onLayout: (event: LayoutChangeEvent) => void = React.useCallback(
-        (event: LayoutChangeEvent) => {
+        (event: LayoutChangeEvent): void => {
             setLayout(event.nativeEvent.layout);
         },
         [],
     );
 
-    React.useEffect(() => {
+    React.useEffect((): void => {
         if (onPageIndexChange) {
             onPageIndexChange(currentIndex);
         }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, ColorValue } from 'react-native';
 
 import { ColorVariants, UILabel } from '@tonlabs/uikit.hydrogen';
 import {
@@ -15,11 +15,11 @@ import { UIButton } from '@tonlabs/uikit.components';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-const component = (): React.ReactElement<View> => (
+const component = (color: ColorValue) => (): React.ReactElement<View> => (
     <View
         style={{
             flex: 1,
-            backgroundColor: `#${(Math.random() * 999999).toFixed()}`,
+            backgroundColor: color,
         }}
     />
 );
@@ -56,49 +56,49 @@ export const Navigation = () => {
                             <UIPagerView.Page
                                 id="Item 1"
                                 title="Item 1"
-                                component={component}
+                                component={component('red')}
                             />
                             <UIPagerView.Page
                                 id="Item 2"
                                 title="Item 2"
-                                component={component}
+                                component={component('green')}
                             />
                         </>
                         <UIPagerView.Page
                             id="Item 3"
                             title="Item 3"
-                            component={component}
+                            component={component('blue')}
                         />
                         <UIPagerView.Page
                             id="Item 4"
                             title="Destructive"
-                            component={component}
+                            component={component('yellow')}
                             isDestructive
                         />
                         <UIPagerView.Page
                             id="Item 5"
                             title="Long title of item is displayed in its entirety"
-                            component={component}
+                            component={component('gray')}
                         />
                         <UIPagerView.Page
                             id="Item 6"
                             title="I6"
-                            component={component}
+                            component={component('black')}
                         />
                         <UIPagerView.Page
                             id="Item 7"
                             title="Item 7"
-                            component={component}
+                            component={component('white')}
                         />
                         <UIPagerView.Page
                             id="Item 8"
                             title="Item 8"
-                            component={component}
+                            component={component('lightblue')}
                         />
                         <UIPagerView.Page
                             id="Item 9"
                             title="Item 9"
-                            component={component}
+                            component={component('pink')}
                         />
                     </UIPagerView.Container>
                 </View>
@@ -123,12 +123,12 @@ export const Navigation = () => {
                         <UIPagerView.Page
                             id="Item 1"
                             title="Item 1"
-                            component={component}
+                            component={component('green')}
                         />
                         <UIPagerView.Page
                             id="Item 2"
                             title="Long title of item is displayed in its entirety"
-                            component={component}
+                            component={component('blue')}
                         />
                     </UIPagerView.Container>
                 </View>
@@ -154,12 +154,12 @@ export const Navigation = () => {
                         <UIPagerView.Page
                             id="Item 1"
                             title="Item 1"
-                            component={component}
+                            component={component('green')}
                         />
                         <UIPagerView.Page
                             id="Item 2"
                             title="Long title of item is displayed in its entirety"
-                            component={component}
+                            component={component('blue')}
                         />
                     </UIPagerView.Container>
                 </View>
