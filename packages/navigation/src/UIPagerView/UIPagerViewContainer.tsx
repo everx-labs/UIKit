@@ -29,7 +29,7 @@ import type {
     UIPagerViewContainerType,
     UIPagerViewPageProps,
 } from '../UIPagerView';
-import { UIPagerViewPage } from './UIPagerViewPage'
+import { UIPagerViewPage } from './UIPagerViewPage';
 
 type SceneProps = SceneRendererProps & {
     route: Route;
@@ -203,9 +203,7 @@ const renderFixedTabBar = (
     type: UIPagerViewContainerType,
 ): React.ReactElement => {
     const tabBarStyle: StyleProp<ViewStyle> =
-        type === 'FixedPadded'
-            ? styles.fixedPaddedTabBar
-            : styles.fixedTabBar;
+        type === 'FixedPadded' ? styles.fixedPaddedTabBar : styles.fixedTabBar;
     return (
         <TabBar
             {...props}
@@ -217,7 +215,7 @@ const renderFixedTabBar = (
             ]}
             style={tabBarStyle}
             renderLabel={renderLabel(pages)}
-            tabStyle={styles.fixedTab}
+            tabStyle={[styles.tab, styles.fixedTab]}
             indicatorContainerStyle={[
                 styles.indicatorContainer,
                 {
@@ -253,7 +251,7 @@ const renderScrollableTabBar = (
                     backgroundColor: indicatorContainerColor,
                 },
             ]}
-            tabStyle={styles.scrollableTab}
+            tabStyle={[styles.tab, styles.scrollableTab]}
         />
     );
 };
@@ -380,10 +378,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: CONTENT_OFFSET,
     },
-    fixedTab: {
+    tab: {
         minHeight: 40,
         paddingVertical: 10,
         paddingHorizontal: CONTENT_OFFSET,
+    },
+    fixedTab: {
         alignItems: 'stretch',
     },
     indicatorContainer: {
@@ -400,9 +400,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     scrollableTab: {
-        minHeight: 40,
-        paddingVertical: 10,
-        paddingHorizontal: CONTENT_OFFSET,
         width: 'auto',
     },
     labelStyle: {
