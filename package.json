@@ -66,6 +66,7 @@
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
+        "react-native-tab-view": "3.0.1",
         "react-qr-reader": "2.2.1",
         "react-style-proptype": "3.2.2",
         "validator": "10.11.0"
