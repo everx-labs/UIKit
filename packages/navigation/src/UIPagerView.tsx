@@ -1,4 +1,5 @@
-import { UIPagerViewContainer, UIPagerViewPage } from './UIPagerView/UIPagerViewImpl';
+import { UIPagerViewContainer } from './UIPagerView/UIPagerViewContainer';
+import { UIPagerViewPage } from './UIPagerView/UIPagerViewPage';
 
 /** type of UIPagerViewContainer */
 export type UIPagerViewContainerType = 'Scrollable' | 'Fixed' | 'FixedPadded';

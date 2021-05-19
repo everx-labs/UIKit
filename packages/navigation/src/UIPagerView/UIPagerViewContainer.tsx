@@ -23,11 +23,13 @@ import {
     useTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { CONTENT_OFFSET, PAGER_VIEW_HEIGHT } from '../constants';
 import type {
     UIPagerViewContainerProps,
     UIPagerViewContainerType,
     UIPagerViewPageProps,
 } from '../UIPagerView';
+import { UIPagerViewPage } from './UIPagerViewPage'
 
 type SceneProps = SceneRendererProps & {
     route: Route;
@@ -287,8 +289,6 @@ const useTabBar = (
         [pages, indicatorColor, indicatorContainerColor, type],
     );
 
-export const UIPagerViewPage: React.FC<UIPagerViewPageProps> = () => null;
-
 export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     type,
     initialPageIndex = 0,
@@ -366,24 +366,24 @@ const styles = StyleSheet.create({
         height: 1,
     },
     fixedTabBar: {
-        height: 72,
+        height: PAGER_VIEW_HEIGHT,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
     },
     fixedPaddedTabBar: {
-        height: 72,
+        height: PAGER_VIEW_HEIGHT,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
-        marginHorizontal: 16,
+        marginHorizontal: CONTENT_OFFSET,
     },
     fixedTab: {
         minHeight: 40,
         paddingVertical: 10,
-        paddingHorizontal: 16,
+        paddingHorizontal: CONTENT_OFFSET,
         alignItems: 'stretch',
     },
     indicatorContainer: {
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         height: 1,
     },
     scrollableTabBar: {
-        height: 72,
+        height: PAGER_VIEW_HEIGHT,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
     scrollableTab: {
         minHeight: 40,
         paddingVertical: 10,
-        paddingHorizontal: 16,
+        paddingHorizontal: CONTENT_OFFSET,
         width: 'auto',
     },
     labelStyle: {

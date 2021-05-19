@@ -134,7 +134,7 @@ export const Navigation = () => {
                 </View>
 
                 <View style={{ height: 20 }} />
-                <UILabel>type = FixedPadding</UILabel>
+                <UILabel>type = FixedPadded</UILabel>
                 <View
                     testID="UIPagerView"
                     style={{
