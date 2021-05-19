@@ -4,7 +4,6 @@ import { Text, View } from 'react-native';
 
 import { UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import {
-    UIButton,
     UIComponent,
     UIDetailsInput,
     UIToastMessage,
@@ -14,6 +13,7 @@ import type {
     UIDetailsInputProps,
     UIActionComponentState,
 } from '@tonlabs/uikit.components';
+import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export type UIFeedbackSubmitFunc = ({ email: string, feedback: string }) => void;
@@ -126,10 +126,10 @@ class UIFeedback extends UIComponent<Props, State> {
                     onChangeText={this.onChangeFeedback}
                     onSubmitEditing={this.onSubmitFeedBack}
                 />
-                <UIButton
-                    disabled={this.isSubmitDisabled()}
+                <UIBoxButton
                     title={uiLocalized.Send}
-                    style={UIStyle.Margin.topDefault()}
+                    disabled={this.isSubmitDisabled()}
+                    layout={UIStyle.margin.topDefault()}
                     onPress={this.onSubmitFeedBack}
                 />
             </View>

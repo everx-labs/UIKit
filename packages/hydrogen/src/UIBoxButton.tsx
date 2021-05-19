@@ -45,6 +45,10 @@ export type UIBoxButtonProps = {
      */
     loading?: boolean;
     /**
+     * Color of the UIBoxButtonType.Nulled button title
+     */
+    nulledColor?: ColorVariants;
+    /**
      * Function will be called on button press
      */
     onPress?: () => void | Promise<void>;
@@ -69,6 +73,7 @@ export type UIBoxButtonProps = {
 function useButtonStyles(
     type: string,
     disabled?: boolean,
+    nulledColor?: ColorVariants,
 ) {
     let backgroundColor: ColorVariants = ColorVariants.Transparent;
     let borderColor: ColorVariants = ColorVariants.Transparent;
@@ -108,7 +113,7 @@ function useButtonStyles(
         if (disabled) {
             titleColor = ColorVariants.TextTertiary;
         } else {
-            titleColor = ColorVariants.TextAccent;
+            titleColor = nulledColor || ColorVariants.TextAccent;
         }
     }
 
@@ -133,12 +138,13 @@ export const UIBoxButton = ({
     iconPosition = UIBoxButtonIconPosition.Left,
     layout,
     loading,
+    nulledColor,
     onPress,
     testID,
     title,
     type= UIBoxButtonType.Primary
 }: UIBoxButtonProps) => {
-    const { buttonStyle, titleColor } = useButtonStyles(type, disabled);
+    const { buttonStyle, titleColor } = useButtonStyles(type, disabled, nulledColor);
     return (
         <Button
             containerStyle={[
