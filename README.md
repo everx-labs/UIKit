@@ -19,8 +19,6 @@ Move to the `Example` folder `cd Example`
 
 Run `npm run reinstall` or `yarn reinstall`
 
-If pod install failure with Flipper-Glog dependency try `sudo xcode-select --switch /Applications/Xcode.app`
-
 Run `npm run start` or `yarn start`
 
 ## iOS
@@ -33,3 +31,6 @@ Open `Example/android` folder in Android Studio, build and run.
 ```sh
 npx lerna publish --no-private
 ```
+
+## Troubleshooting
+If pod install failure with Flipper-Glog dependency try `sudo xcode-select --switch /Applications/Xcode.app`
