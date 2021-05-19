@@ -3,6 +3,7 @@ import {
     View,
     StyleSheet,
     ScrollView as RNScrollView,
+    ScrollViewProps as RNScrollViewProps,
     NativeSyntheticEvent,
     NativeScrollEvent,
     ScrollViewProps,
@@ -19,9 +20,18 @@ import Animated, {
     useDerivedValue,
     withTiming,
     Extrapolate,
+    useAnimatedGestureHandler,
 } from 'react-native-reanimated';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    NativeViewGestureHandler,
+    PanGestureHandler,
+    PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
 
+const AnimatedScrollView = Animated.createAnimatedComponent<RNScrollViewProps>(
+    RNScrollView,
+);
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
 const RUBBER_BAND_EFFECT_DISTANCE = 150;
@@ -44,9 +54,11 @@ const ScrollableContext = React.createContext<{
     scrollHandler:
         | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
         | null;
+    gestureHandler: ((event: PanGestureHandlerGestureEvent) => void) | null;
 }>({
     ref: null,
     scrollHandler: null,
+    gestureHandler: null,
 });
 
 type LargeTitleHeaderProps = {
@@ -87,6 +99,8 @@ function LargeTitleHeader({
 
     const yWithoutRubberBand = useSharedValue(0);
 
+    const yOverScroll = useSharedValue(true);
+
     const scrollHandler = useAnimatedScrollHandler({
         onScroll: (event) => {
             const { y } = event.contentOffset;
@@ -99,6 +113,7 @@ function LargeTitleHeader({
                     // nothing
                 }
             }
+            yOverScroll.value = y <= 0;
             if (y <= 0) {
                 // scrollTo reset real y, so we need to count it ourselves
                 yWithoutRubberBand.value -= y;
@@ -209,12 +224,44 @@ function LargeTitleHeader({
         opacity: headerTitleOpacity.value,
     }));
 
+    const ghYPrev = useSharedValue(0);
+    const gestureHandler = useAnimatedGestureHandler({
+        onActive: (event) => {
+            const y = ghYPrev.value - event.translationY;
+            ghYPrev.value = event.translationY;
+
+            if (yOverScroll.value) {
+                if (y > 0) {
+                    return;
+                }
+
+                yWithoutRubberBand.value -= y;
+                if (blockShift.value > 0) {
+                    blockShift.value = getYWithRubberBandEffect(
+                        yWithoutRubberBand.value,
+                    );
+                } else {
+                    blockShift.value -= y;
+                }
+            }
+        },
+        onStart: () => {
+            if (yOverScroll.value) {
+                yWithoutRubberBand.value = blockShift.value;
+            }
+        },
+        onEnd: () => {
+            ghYPrev.value = 0;
+        },
+    });
+
     const scrollableContextValue = React.useMemo(
         () => ({
             ref: scrollRef,
             scrollHandler,
+            gestureHandler,
         }),
-        [scrollRef, scrollHandler],
+        [scrollRef, scrollHandler, gestureHandler],
     );
 
     const { top } = useSafeAreaInsets();
@@ -292,15 +339,36 @@ function LargeTitleHeader({
 }
 
 function ScrollView(props: ScrollViewProps & { children: React.ReactNode }) {
+    const panGestureRef = React.useRef<PanGestureHandler>(null);
+    const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
     return (
         <ScrollableContext.Consumer>
-            {({ ref, scrollHandler }) => (
-                <Animated.ScrollView
-                    {...props}
-                    ref={ref}
-                    onScroll={scrollHandler}
-                    scrollEventThrottle={16}
-                />
+            {({ ref, scrollHandler, gestureHandler }) => (
+                <PanGestureHandler
+                    ref={panGestureRef}
+                    // enabled={false}
+                    shouldCancelWhenOutside={false}
+                    // simultaneousHandlers={nativeGestureRef}
+                    onGestureEvent={gestureHandler}
+                    waitFor={nativeGestureRef}
+                >
+                    <Animated.View style={{ flex: 1 }}>
+                        <NativeViewGestureHandler
+                            ref={nativeGestureRef}
+                            // simultaneousHandlers={panGestureRef}
+                        >
+                            <Animated.View style={styles.sceneContainer}>
+                                <Animated.ScrollView
+                                    {...props}
+                                    ref={ref}
+                                    overScrollMode="never"
+                                    onScrollBeginDrag={scrollHandler}
+                                    scrollEventThrottle={16}
+                                />
+                            </Animated.View>
+                        </NativeViewGestureHandler>
+                    </Animated.View>
+                </PanGestureHandler>
             )}
         </ScrollableContext.Consumer>
     );
