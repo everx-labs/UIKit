@@ -201,8 +201,8 @@ const renderFixedTabBar = (
     type: UIPagerViewContainerType,
 ): React.ReactElement => {
     const tabBarStyle: StyleProp<ViewStyle> =
-        type === 'FixedPadding'
-            ? styles.fixedPaddingTabBar
+        type === 'FixedPadded'
+            ? styles.fixedPaddedTabBar
             : styles.fixedTabBar;
     return (
         <TabBar
@@ -273,7 +273,7 @@ const useTabBar = (
                         indicatorContainerColor,
                     );
                 case 'Fixed':
-                case 'FixedPadding':
+                case 'FixedPadded':
                 default:
                     return renderFixedTabBar(
                         props,
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
         elevation: 0,
         justifyContent: 'center',
     },
-    fixedPaddingTabBar: {
+    fixedPaddedTabBar: {
         height: 72,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',

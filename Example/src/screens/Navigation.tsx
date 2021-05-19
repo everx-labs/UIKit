@@ -144,7 +144,7 @@ export const Navigation = () => {
                     }}
                 >
                     <UIPagerView.Container
-                        type="FixedPadding"
+                        type="FixedPadded"
                         initialPageIndex={0}
                         onPageIndexChange={(newPageIndex: number) =>
                             newPageIndex
