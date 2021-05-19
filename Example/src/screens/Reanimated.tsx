@@ -7,12 +7,13 @@ import {
     NativeSyntheticEvent,
     NativeScrollEvent,
     ScrollViewProps,
+    Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
     useAnimatedScrollHandler,
-    scrollTo,
-    measure,
+    scrollTo as scrollToNative,
+    measure as measureNative,
     useAnimatedStyle,
     useSharedValue,
     useAnimatedRef,
@@ -34,7 +35,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent<RNScrollViewProps>(
 );
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
-const RUBBER_BAND_EFFECT_DISTANCE = 150;
+const RUBBER_BAND_EFFECT_DISTANCE = Platform.select({ web: 50, default: 150 });
 
 function getYWithRubberBandEffect(y: number) {
     'worklet';
@@ -55,10 +56,12 @@ const ScrollableContext = React.createContext<{
         | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
         | null;
     gestureHandler: ((event: PanGestureHandlerGestureEvent) => void) | null;
+    onWheel: (() => void) | null;
 }>({
     ref: null,
     scrollHandler: null,
     gestureHandler: null,
+    onWheel: null,
 });
 
 type LargeTitleHeaderProps = {
@@ -84,6 +87,48 @@ type LargeTitleHeaderProps = {
     children: React.ReactNode;
 };
 
+const measure: (
+    ...args: Parameters<typeof measureNative>
+) => Promise<ReturnType<typeof measureNative>> = (...args) => {
+    'worklet';
+
+    if (Platform.OS === 'web') {
+        return new Promise((resolve, reject) => {
+            const [aref] = args;
+            if (aref && aref.current) {
+                aref.current.measure((x, y, width, height, pageX, pageY) => {
+                    resolve({ x, y, width, height, pageX, pageY });
+                });
+            } else {
+                reject(new Error('measure: animated ref not ready'));
+            }
+        });
+    }
+
+    return Promise.resolve(measureNative(...args));
+};
+
+const scrollTo: (
+    ...args: Parameters<typeof scrollToNative>
+) => Promise<void> = (...args) => {
+    'worklet';
+
+    if (Platform.OS === 'web') {
+        return new Promise((resolve, reject) => {
+            const [aref, x, y] = args;
+            if (aref && aref.current) {
+                aref.current.scrollTo({ x, y });
+                resolve(undefined);
+            } else {
+                reject(new Error('measure: animated ref not ready'));
+            }
+        });
+    }
+
+    scrollToNative(...args);
+    return Promise.resolve(undefined);
+};
+
 function LargeTitleHeader({
     title,
     caption,
@@ -107,8 +152,10 @@ function LargeTitleHeader({
 
             if (largeTitleHeight.value === 0) {
                 try {
+                    // largeTitleHeight.value =
+                    //     (await measure(largeTitleViewRef)).height || 0;
                     largeTitleHeight.value =
-                        measure(largeTitleViewRef).height || 0;
+                        measureNative(largeTitleViewRef).height || 0;
                 } catch (e) {
                     // nothing
                 }
@@ -124,7 +171,8 @@ function LargeTitleHeader({
                 } else {
                     blockShift.value -= y;
                 }
-                scrollTo(scrollRef, 0, 0, false);
+                // await scrollTo(scrollRef, 0, 0, false);
+                scrollToNative(scrollRef, 0, 0, false);
             } else if (blockShift.value > 0 - largeTitleHeight.value) {
                 // scrollTo reset real y, so we need to count it ourselves
                 yWithoutRubberBand.value -= y;
@@ -132,7 +180,8 @@ function LargeTitleHeader({
                     blockShift.value - y,
                     0 - largeTitleHeight.value,
                 );
-                scrollTo(scrollRef, 0, 0, false);
+                // await scrollTo(scrollRef, 0, 0, false);
+                scrollToNative(scrollRef, 0, 0, false);
             }
         },
         onBeginDrag: () => {
@@ -161,7 +210,7 @@ function LargeTitleHeader({
 
     const titleWidth = useSharedValue(0);
 
-    const LARGE_TITLE_SCALE = 1.2;
+    const LARGE_TITLE_SCALE = Platform.select({ web: 1.1, default: 1.2 });
     const largeTitleStyle = useAnimatedStyle(() => ({
         transform: [
             {
@@ -255,13 +304,53 @@ function LargeTitleHeader({
         },
     });
 
+    let onWheelEndTimeout: NodeJS.Timeout | null = null;
+    const onWheelEndCbRef = React.useRef(() => {
+        if (blockShift.value > (0 - largeTitleHeight.value) / 2) {
+            blockShift.value = withSpring(0, {
+                overshootClamping: true,
+            });
+        } else {
+            blockShift.value = withSpring(0 - largeTitleHeight.value, {
+                overshootClamping: true,
+            });
+        }
+        onWheelEndTimeout = null;
+    });
+    const onWheel = React.useCallback(
+        (event) => {
+            const { deltaY } = event.nativeEvent;
+
+            if (onWheelEndTimeout != null) {
+                clearTimeout(onWheelEndTimeout);
+            } else if (yOverScroll.value) {
+                yWithoutRubberBand.value = blockShift.value;
+            }
+
+            onWheelEndTimeout = setTimeout(onWheelEndCbRef.current, 100);
+
+            if (yOverScroll.value && deltaY < 0) {
+                yWithoutRubberBand.value -= deltaY;
+                if (blockShift.value > 0) {
+                    blockShift.value = getYWithRubberBandEffect(
+                        yWithoutRubberBand.value,
+                    );
+                } else {
+                    blockShift.value -= deltaY;
+                }
+            }
+        },
+        [yOverScroll, blockShift, yWithoutRubberBand],
+    );
+
     const scrollableContextValue = React.useMemo(
         () => ({
             ref: scrollRef,
             scrollHandler,
             gestureHandler,
+            onWheel: Platform.OS === 'web' && onWheel,
         }),
-        [scrollRef, scrollHandler, gestureHandler],
+        [scrollRef, scrollHandler, gestureHandler, onWheel],
     );
 
     const { top } = useSafeAreaInsets();
@@ -343,10 +432,10 @@ function ScrollView(props: ScrollViewProps & { children: React.ReactNode }) {
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
     return (
         <ScrollableContext.Consumer>
-            {({ ref, scrollHandler, gestureHandler }) => (
+            {({ ref, scrollHandler, gestureHandler, onWheel }) => (
                 <PanGestureHandler
                     ref={panGestureRef}
-                    // enabled={false}
+                    enabled={Platform.OS !== 'web'}
                     shouldCancelWhenOutside={false}
                     // simultaneousHandlers={nativeGestureRef}
                     onGestureEvent={gestureHandler}
@@ -364,6 +453,7 @@ function ScrollView(props: ScrollViewProps & { children: React.ReactNode }) {
                                     overScrollMode="never"
                                     onScrollBeginDrag={scrollHandler}
                                     scrollEventThrottle={16}
+                                    onWheel={onWheel}
                                 />
                             </Animated.View>
                         </NativeViewGestureHandler>
