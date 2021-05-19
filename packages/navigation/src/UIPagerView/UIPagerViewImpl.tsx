@@ -3,8 +3,10 @@ import {
     ColorValue,
     LayoutChangeEvent,
     LayoutRectangle,
+    StyleProp,
     StyleSheet,
     View,
+    ViewStyle,
 } from 'react-native';
 import {
     NavigationState,
@@ -174,18 +176,26 @@ const renderLabel = (pages: React.ReactElement<UIPagerViewPageProps>[]) => (
             testID={`uiPagerView_label-${currentPage.props.testID}`}
             color={color}
             role={UILabelRoles.ActionCallout}
+            style={styles.labelStyle}
+            numberOfLines={1}
+            ellipsizeMode="tail"
         >
             {props.route.title}
         </UILabel>
     );
 };
 
-const renderCenterTabBar = (
+const renderFixedTabBar = (
     props: TabBarProps,
     pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
+    type: UIPagerViewContainerType,
 ): React.ReactElement => {
+    const tabBarStyle: StyleProp<ViewStyle> =
+        type === 'FixedPadding'
+            ? styles.fixedPaddingTabBar
+            : styles.fixedTabBar;
     return (
         <TabBar
             {...props}
@@ -195,8 +205,9 @@ const renderCenterTabBar = (
                     backgroundColor: indicatorColor,
                 },
             ]}
-            style={styles.centerTabBar}
+            style={tabBarStyle}
             renderLabel={renderLabel(pages)}
+            tabStyle={styles.fixedTab}
             indicatorContainerStyle={[
                 styles.indicatorContainer,
                 {
@@ -207,7 +218,7 @@ const renderCenterTabBar = (
     );
 };
 
-const renderLeftTabBar = (
+const renderScrollableTabBar = (
     props: TabBarProps,
     pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
@@ -224,7 +235,7 @@ const renderLeftTabBar = (
                     backgroundColor: indicatorColor,
                 },
             ]}
-            style={styles.leftTabBar}
+            style={styles.scrollableTabBar}
             renderLabel={renderLabel(pages)}
             indicatorContainerStyle={[
                 styles.indicatorContainer,
@@ -232,7 +243,7 @@ const renderLeftTabBar = (
                     backgroundColor: indicatorContainerColor,
                 },
             ]}
-            tabStyle={styles.leftTab}
+            tabStyle={styles.scrollableTab}
         />
     );
 };
@@ -246,20 +257,22 @@ const useTabBar = (
     React.useCallback(
         (props: TabBarProps): React.ReactElement => {
             switch (type) {
-                case 'Left':
-                    return renderLeftTabBar(
+                case 'Scrollable':
+                    return renderScrollableTabBar(
                         props,
                         pages,
                         indicatorColor,
                         indicatorContainerColor,
                     );
-                case 'Center':
+                case 'Fixed':
+                case 'FixedPadding':
                 default:
-                    return renderCenterTabBar(
+                    return renderFixedTabBar(
                         props,
                         pages,
                         indicatorColor,
                         indicatorContainerColor,
+                        type,
                     );
             }
         },
@@ -344,30 +357,47 @@ const styles = StyleSheet.create({
     indicator: {
         height: 1,
     },
-    centerTabBar: {
+    fixedTabBar: {
+        height: 72,
+        backgroundColor: 'transparent',
+        shadowColor: 'transparent',
+        elevation: 0,
+        justifyContent: 'center',
+    },
+    fixedPaddingTabBar: {
         height: 72,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
         marginHorizontal: 16,
+    },
+    fixedTab: {
+        minHeight: 40,
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        alignItems: 'stretch',
     },
     indicatorContainer: {
         top: undefined,
         bottom: 16,
         height: 1,
     },
-    leftTabBar: {
+    scrollableTabBar: {
         height: 72,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
         overflow: 'hidden',
-        marginHorizontal: 16,
     },
-    leftTab: {
-        paddingHorizontal: 8,
+    scrollableTab: {
+        minHeight: 40,
+        paddingVertical: 10,
+        paddingHorizontal: 16,
         width: 'auto',
+    },
+    labelStyle: {
+        textAlign: 'center',
     },
 });

@@ -34,18 +34,18 @@ export const Navigation = () => {
     return (
         <ExampleScreen color={ColorVariants.BackgroundSecondary}>
             <ExampleSection title="UIPagerView">
-                <UILabel>type = Left</UILabel>
+                <View style={{ height: 20 }} />
+                <UILabel>type = Scrollable</UILabel>
                 <View
                     testID="UIPagerView"
                     style={{
                         width: '100%',
                         maxWidth: 500,
                         height: 500,
-                        paddingVertical: 20,
                     }}
                 >
                     <UIPagerView.Container
-                        type="Left"
+                        type="Scrollable"
                         initialPageIndex={0}
                         onPageIndexChange={(newPageIndex: number) =>
                             newPageIndex
@@ -77,7 +77,7 @@ export const Navigation = () => {
                         />
                         <UIPagerView.Page
                             id="Item 5"
-                            title="Long title of item is displayed in its entirety 4"
+                            title="Long title of item is displayed in its entirety"
                             component={component}
                         />
                         <UIPagerView.Page
@@ -103,18 +103,17 @@ export const Navigation = () => {
                     </UIPagerView.Container>
                 </View>
                 <View style={{ height: 20 }} />
-                <UILabel>type = Center</UILabel>
+                <UILabel>type = Fixed</UILabel>
                 <View
                     testID="UIPagerView"
                     style={{
                         width: '100%',
                         maxWidth: 500,
                         height: 500,
-                        paddingVertical: 20,
                     }}
                 >
                     <UIPagerView.Container
-                        type="Center"
+                        type="Fixed"
                         initialPageIndex={0}
                         onPageIndexChange={(newPageIndex: number) =>
                             newPageIndex
@@ -128,7 +127,38 @@ export const Navigation = () => {
                         />
                         <UIPagerView.Page
                             id="Item 2"
-                            title="Item 2"
+                            title="Long title of item is displayed in its entirety"
+                            component={component}
+                        />
+                    </UIPagerView.Container>
+                </View>
+
+                <View style={{ height: 20 }} />
+                <UILabel>type = FixedPadding</UILabel>
+                <View
+                    testID="UIPagerView"
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        height: 500,
+                    }}
+                >
+                    <UIPagerView.Container
+                        type="FixedPadding"
+                        initialPageIndex={0}
+                        onPageIndexChange={(newPageIndex: number) =>
+                            newPageIndex
+                        }
+                        testID="UIPagerView"
+                    >
+                        <UIPagerView.Page
+                            id="Item 1"
+                            title="Item 1"
+                            component={component}
+                        />
+                        <UIPagerView.Page
+                            id="Item 2"
+                            title="Long title of item is displayed in its entirety"
                             component={component}
                         />
                     </UIPagerView.Container>

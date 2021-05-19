@@ -1,7 +1,7 @@
 import { UIPagerViewContainer, UIPagerViewPage } from './UIPagerView/UIPagerViewImpl';
 
 /** type of UIPagerViewContainer */
-export type UIPagerViewContainerType = 'Left' | 'Center';
+export type UIPagerViewContainerType = 'Scrollable' | 'Fixed' | 'FixedPadding';
 
 /**
  * Container properties.
