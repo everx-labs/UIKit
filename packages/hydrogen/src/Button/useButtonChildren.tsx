@@ -40,7 +40,7 @@ export function ButtonIcon({
         if (size === IconSize.Small) {
             return UIConstant.smallButtonIconSize;
         }
-        return UIConstant.normalButtonIconSize;
+        return UIConstant.iconSize;
     }, [size]);
 
     return (
