@@ -3,8 +3,10 @@ import {
     ColorValue,
     LayoutChangeEvent,
     LayoutRectangle,
+    StyleProp,
     StyleSheet,
     View,
+    ViewStyle,
 } from 'react-native';
 import {
     NavigationState,
@@ -21,11 +23,13 @@ import {
     useTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { CONTENT_OFFSET, PAGER_VIEW_HEIGHT } from '../constants';
 import type {
     UIPagerViewContainerProps,
     UIPagerViewContainerType,
     UIPagerViewPageProps,
 } from '../UIPagerView';
+import { UIPagerViewPage } from './UIPagerViewPage';
 
 type SceneProps = SceneRendererProps & {
     route: Route;
@@ -51,7 +55,7 @@ type LabelProps = {
 const useRoutes = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
 ): Route[] => {
-    return React.useMemo(() => {
+    return React.useMemo((): Route[] => {
         return pages.map(
             (child: React.ReactElement<UIPagerViewPageProps>): Route => {
                 return {
@@ -70,34 +74,43 @@ const getPages = (
         UIPagerViewPageProps
     >[] = React.Children.toArray(children).reduce<
         React.ReactElement<UIPagerViewPageProps>[]
-    >((acc, child) => {
-        if (React.isValidElement(child)) {
-            if (child.type === UIPagerViewPage) {
-                return [...acc, child];
-            }
+    >(
+        (
+            acc: React.ReactElement<UIPagerViewPageProps>[],
+            child: React.ReactNode,
+        ): React.ReactElement<UIPagerViewPageProps>[] => {
+            if (React.isValidElement(child)) {
+                const pages: React.ReactElement<UIPagerViewPageProps>[] = acc;
+                if (child.type === UIPagerViewPage) {
+                    pages.push(child);
+                    return pages;
+                }
 
-            if (child.type === React.Fragment) {
-                return [...acc, ...getPages(child.props.children)];
+                if (child.type === React.Fragment) {
+                    pages.push(...getPages(child.props.children));
+                    return pages;
+                }
             }
-        }
-        if (__DEV__) {
-            throw new Error(
-                `UIPagerViewContainer can only contain 'UIPagerView.Page' components as its direct children (found ${
-                    // eslint-disable-next-line no-nested-ternary
-                    React.isValidElement(child)
-                        ? `${
-                              typeof child.type === 'string'
-                                  ? child.type
-                                  : child.type?.name
-                          }`
-                        : typeof child === 'object'
-                        ? JSON.stringify(child)
-                        : `'${String(child)}'`
-                })`,
-            );
-        }
-        return acc;
-    }, []);
+            if (__DEV__) {
+                throw new Error(
+                    `UIPagerViewContainer can only contain 'UIPagerView.Page' components as its direct children (found ${
+                        // eslint-disable-next-line no-nested-ternary
+                        React.isValidElement(child)
+                            ? `${
+                                  typeof child.type === 'string'
+                                      ? child.type
+                                      : child.type?.name
+                              }`
+                            : typeof child === 'object'
+                            ? JSON.stringify(child)
+                            : `'${String(child)}'`
+                    })`,
+                );
+            }
+            return acc;
+        },
+        [],
+    );
 
     return childElements;
 };
@@ -107,7 +120,7 @@ const usePages = (
         | React.ReactElement<UIPagerViewPageProps>
         | React.ReactElement<UIPagerViewPageProps>[],
 ): React.ReactElement<UIPagerViewPageProps>[] => {
-    return React.useMemo(() => {
+    return React.useMemo((): React.ReactElement<UIPagerViewPageProps>[] => {
         const pages: React.ReactElement<UIPagerViewPageProps>[] = getPages(
             children,
         );
@@ -123,10 +136,9 @@ const getSceneList = (
             sceneMap: SceneList,
             page: React.ReactElement<UIPagerViewPageProps>,
         ): SceneList => {
-            return {
-                ...sceneMap,
-                [page.props.id]: page.props.component,
-            };
+            const updatedSceneMap: SceneList = sceneMap;
+            updatedSceneMap[page.props.id] = page.props.component;
+            return updatedSceneMap;
         },
         {},
     );
@@ -135,7 +147,7 @@ const getSceneList = (
 const useScene = (
     pages: React.ReactElement<UIPagerViewPageProps>[],
 ): SceneComponent => {
-    return React.useMemo(() => {
+    return React.useMemo((): SceneComponent => {
         return SceneMap(getSceneList(pages));
     }, [pages]);
 };
@@ -174,18 +186,24 @@ const renderLabel = (pages: React.ReactElement<UIPagerViewPageProps>[]) => (
             testID={`uiPagerView_label-${currentPage.props.testID}`}
             color={color}
             role={UILabelRoles.ActionCallout}
+            style={styles.labelStyle}
+            numberOfLines={1}
+            ellipsizeMode="tail"
         >
             {props.route.title}
         </UILabel>
     );
 };
 
-const renderCenterTabBar = (
+const renderFixedTabBar = (
     props: TabBarProps,
     pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
     indicatorContainerColor: ColorValue,
+    type: UIPagerViewContainerType,
 ): React.ReactElement => {
+    const tabBarStyle: StyleProp<ViewStyle> =
+        type === 'FixedPadded' ? styles.fixedPaddedTabBar : styles.fixedTabBar;
     return (
         <TabBar
             {...props}
@@ -195,8 +213,9 @@ const renderCenterTabBar = (
                     backgroundColor: indicatorColor,
                 },
             ]}
-            style={styles.centerTabBar}
+            style={tabBarStyle}
             renderLabel={renderLabel(pages)}
+            tabStyle={[styles.tab, styles.fixedTab]}
             indicatorContainerStyle={[
                 styles.indicatorContainer,
                 {
@@ -207,7 +226,7 @@ const renderCenterTabBar = (
     );
 };
 
-const renderLeftTabBar = (
+const renderScrollableTabBar = (
     props: TabBarProps,
     pages: React.ReactElement<UIPagerViewPageProps>[],
     indicatorColor: ColorValue,
@@ -224,7 +243,7 @@ const renderLeftTabBar = (
                     backgroundColor: indicatorColor,
                 },
             ]}
-            style={styles.leftTabBar}
+            style={styles.scrollableTabBar}
             renderLabel={renderLabel(pages)}
             indicatorContainerStyle={[
                 styles.indicatorContainer,
@@ -232,7 +251,7 @@ const renderLeftTabBar = (
                     backgroundColor: indicatorContainerColor,
                 },
             ]}
-            tabStyle={styles.leftTab}
+            tabStyle={[styles.tab, styles.scrollableTab]}
         />
     );
 };
@@ -246,27 +265,27 @@ const useTabBar = (
     React.useCallback(
         (props: TabBarProps): React.ReactElement => {
             switch (type) {
-                case 'Left':
-                    return renderLeftTabBar(
+                case 'Scrollable':
+                    return renderScrollableTabBar(
                         props,
                         pages,
                         indicatorColor,
                         indicatorContainerColor,
                     );
-                case 'Center':
+                case 'Fixed':
+                case 'FixedPadded':
                 default:
-                    return renderCenterTabBar(
+                    return renderFixedTabBar(
                         props,
                         pages,
                         indicatorColor,
                         indicatorContainerColor,
+                        type,
                     );
             }
         },
         [pages, indicatorColor, indicatorContainerColor, type],
     );
-
-export const UIPagerViewPage: React.FC<UIPagerViewPageProps> = () => null;
 
 export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     type,
@@ -287,13 +306,13 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     );
 
     const onLayout: (event: LayoutChangeEvent) => void = React.useCallback(
-        (event: LayoutChangeEvent) => {
+        (event: LayoutChangeEvent): void => {
             setLayout(event.nativeEvent.layout);
         },
         [],
     );
 
-    React.useEffect(() => {
+    React.useEffect((): void => {
         if (onPageIndexChange) {
             onPageIndexChange(currentIndex);
         }
@@ -344,30 +363,46 @@ const styles = StyleSheet.create({
     indicator: {
         height: 1,
     },
-    centerTabBar: {
-        height: 72,
+    fixedTabBar: {
+        height: PAGER_VIEW_HEIGHT,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
-        marginHorizontal: 16,
+    },
+    fixedPaddedTabBar: {
+        height: PAGER_VIEW_HEIGHT,
+        backgroundColor: 'transparent',
+        shadowColor: 'transparent',
+        elevation: 0,
+        justifyContent: 'center',
+        marginHorizontal: CONTENT_OFFSET,
+    },
+    tab: {
+        minHeight: 40,
+        paddingVertical: 10,
+        paddingHorizontal: CONTENT_OFFSET,
+    },
+    fixedTab: {
+        alignItems: 'stretch',
     },
     indicatorContainer: {
         top: undefined,
         bottom: 16,
         height: 1,
     },
-    leftTabBar: {
-        height: 72,
+    scrollableTabBar: {
+        height: PAGER_VIEW_HEIGHT,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
         overflow: 'hidden',
-        marginHorizontal: 16,
     },
-    leftTab: {
-        paddingHorizontal: 8,
+    scrollableTab: {
         width: 'auto',
+    },
+    labelStyle: {
+        textAlign: 'center',
     },
 });
