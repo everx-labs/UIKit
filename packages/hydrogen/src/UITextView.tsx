@@ -127,11 +127,16 @@ const styles = StyleSheet.create({
 export function useUITextViewValue(
     ref: React.Ref<TextInput> | null,
     useClearWithEnter = false,
-    { value: valueProp, onChangeText: onChangeTextProp }: UITextViewProps = {},
+    {
+        value: valueProp,
+        defaultValue: defaultValueProp,
+        onChangeText: onChangeTextProp,
+    }: UITextViewProps = {},
 ) {
     // Little optimization to not re-render children on every value change
     const [inputHasValue, setInputHasValue] = React.useState(
-        valueProp != null && valueProp !== '',
+        (valueProp != null && valueProp !== '') ||
+            (defaultValueProp != null && defaultValueProp !== ''),
     );
 
     React.useEffect(() => {
@@ -149,7 +154,7 @@ export function useUITextViewValue(
     const inputValue = React.useRef(valueProp || '');
     React.useEffect(() => {
         inputValue.current = valueProp || '';
-    }, [valueProp])
+    }, [valueProp]);
 
     const wasClearedWithEnter = React.useRef(false);
 
