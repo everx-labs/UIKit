@@ -153,18 +153,20 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 }}
                 firstFromChain={message.signingBoxes.length === 0}
             />
-            {/* <BubbleActionButton
-                type={ChatMessageType.ActionButton}
-                key="signing-box-bubble-pick-signature"
-                status={MessageStatus.Received}
-                text={uiLocalized.Browser.SigningBox.PickSignature}
-                onPress={() => {
-                    dispatch({
-                        type: 'OPEN_SIGNATURE_PICKER',
-                    });
-                }}
-                firstFromChain={message.signingBoxes.length === 0}
-            /> */}
+            {message.signingBoxes.length > 1 && (
+                <BubbleActionButton
+                    type={ChatMessageType.ActionButton}
+                    key="signing-box-bubble-pick-signature"
+                    status={MessageStatus.Received}
+                    text={uiLocalized.Browser.SigningBox.PickSignature}
+                    onPress={() => {
+                        dispatch({
+                            type: 'OPEN_SIGNATURE_PICKER',
+                        });
+                    }}
+                    firstFromChain={message.signingBoxes.length === 0}
+                />
+            )}
             <BubbleActionButton
                 type={ChatMessageType.ActionButton}
                 key="signing-box-bubble-use-scard"
