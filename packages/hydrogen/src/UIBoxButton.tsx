@@ -171,7 +171,7 @@ export const UIBoxButton = ({
                     iconPosition === UIBoxButtonIconPosition.Middle && icon &&
                     <Button.Icon
                         source={icon}
-                        style={styles.middleIcon}
+                        size={ButtonIconSize.Normal}
                         tintColor={titleColor}
                     />
                 }
@@ -195,9 +195,6 @@ const styles = StyleSheet.create({
     },
     leftIcon: {
         marginRight: 10,
-    },
-    middleIcon: {
-        marginLeft: 6,
     },
     rightIcon: {
         marginLeft: 6,
