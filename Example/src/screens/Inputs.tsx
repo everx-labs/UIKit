@@ -230,6 +230,13 @@ export const Inputs = () => {
                     >
                         <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
                     </UIMaterialTextView>
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_multiline"
+                        multiline
+                        label="Input multiline"
+                        helperText="Hint"
+                        defaultValue="Very long text that should be multiline and that is what we gonna check there"
+                    />
                 </View>
             </ExampleSection>
             <ExampleSection title="UISeedPhraseTextView">
