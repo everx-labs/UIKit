@@ -45,7 +45,7 @@ export const Buttons = () => (
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
-                    icon={UIAssets.icons.ui.camera}
+                    icon={UIAssets.icons.ui.arrowUpRight}
                     iconPosition={UIBoxButtonIconPosition.Middle}
                     testID="uiBoxButton_primary_middleIcon"
                     title="Action"

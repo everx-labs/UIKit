@@ -189,8 +189,7 @@ export const UIMsgButton = ({
                     iconPosition === UIMsgButtonIconPosition.Middle && icon &&
                     <Button.Icon
                         source={icon}
-                        size={ButtonIconSize.Small}
-                        style={styles.middleIcon}
+                        size={ButtonIconSize.Normal}
                         tintColor={titleColor}
                     />
                 }
@@ -215,9 +214,6 @@ const styles = StyleSheet.create({
     leftIcon: {
         marginLeft: 8,
         marginRight: 10,
-    },
-    middleIcon: {
-        marginHorizontal: 6,
     },
     rightIcon: {
         marginHorizontal: 2,
