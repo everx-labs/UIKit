@@ -160,18 +160,29 @@ export const UIBoxButton = ({
             <Button.Content>
                 {
                     iconPosition === UIBoxButtonIconPosition.Left && icon &&
-                    <Button.Icon source={icon} style={styles.leftIcon} />
+                    <Button.Icon
+                        source={icon}
+                        style={styles.leftIcon}
+                        tintColor={titleColor}
+                    />
                 }
                 <Button.Title titleColor={titleColor}>{title}</Button.Title>
                 {
                     iconPosition === UIBoxButtonIconPosition.Middle && icon &&
-                    <Button.Icon source={icon} size={ButtonIconSize.Small} style={styles.middleIcon} />
+                    <Button.Icon
+                        source={icon}
+                        style={styles.middleIcon}
+                        tintColor={titleColor}
+                    />
                 }
             </Button.Content>
             {
-                (type === UIBoxButtonType.Primary || type === UIBoxButtonType.Secondary) &&
-                icon && iconPosition === UIBoxButtonIconPosition.Right &&
-                <Button.Icon source={icon} style={styles.rightIcon} />
+                iconPosition === UIBoxButtonIconPosition.Right && icon &&
+                <Button.Icon
+                    source={icon}
+                    style={styles.rightIcon}
+                    tintColor={titleColor}
+                />
             }
         </Button>
     );

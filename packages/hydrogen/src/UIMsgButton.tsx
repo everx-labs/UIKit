@@ -178,17 +178,30 @@ export const UIMsgButton = ({
             <Button.Content>
                 {
                     iconPosition === UIMsgButtonIconPosition.Left && icon &&
-                    <Button.Icon source={icon} style={styles.leftIcon} />
+                    <Button.Icon
+                        source={icon}
+                        style={styles.leftIcon}
+                        tintColor={titleColor}
+                    />
                 }
                 <Button.Title titleColor={titleColor}>{title}</Button.Title>
                 {
                     iconPosition === UIMsgButtonIconPosition.Middle && icon &&
-                    <Button.Icon source={icon} size={ButtonIconSize.Small} style={styles.middleIcon} />
+                    <Button.Icon
+                        source={icon}
+                        size={ButtonIconSize.Small}
+                        style={styles.middleIcon}
+                        tintColor={titleColor}
+                    />
                 }
             </Button.Content>
             {
                 iconPosition === UIMsgButtonIconPosition.Right && icon &&
-                <Button.Icon source={icon} style={styles.rightIcon} />
+                <Button.Icon
+                    source={icon}
+                    style={styles.rightIcon}
+                    tintColor={titleColor}
+                />
             }
         </Button>
     )
