@@ -68,7 +68,7 @@ import { Chat } from './screens/Chat';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
-import { ReanimatedScreen } from './screens/Reanimated';
+import { LargeHeaderScreen } from './screens/LargeHeader';
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
@@ -159,9 +159,9 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         contentContainerStyle={{ paddingBottom: 50 }}
                     >
                         <UIButton
-                            onPress={() => navigation.navigate('reanimated')}
+                            onPress={() => navigation.navigate('large-header')}
                             buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Reanimated"
+                            title="Large header"
                         />
                         <UIButton
                             onPress={() => navigation.navigate('keyboard')}
@@ -359,8 +359,8 @@ const App = () => {
                                 component={KeyboardScreen}
                             />
                             <SurfSplit.Screen
-                                name="reanimated"
-                                component={ReanimatedScreen}
+                                name="large-header"
+                                component={LargeHeaderScreen}
                             />
                         </SurfSplit.Navigator>
                     </NavigationContainer>
