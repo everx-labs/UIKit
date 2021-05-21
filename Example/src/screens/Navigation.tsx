@@ -7,13 +7,15 @@ import {
     UIPagerView,
     UISearchBar,
     UISearchBarButton,
-    UISearchController,
+    // UISearchController,
     UISlideBar,
 } from '@tonlabs/uikit.navigation';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+import { UISearchController } from '../../../packages/navigation/src/UISearchController2'
 
 const component = (color: ColorValue) => (): React.ReactElement<View> => (
     <View
@@ -33,6 +35,35 @@ export const Navigation = () => {
 
     return (
         <ExampleScreen color={ColorVariants.BackgroundSecondary}>
+            <ExampleSection title="UISearchController">
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 500,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <UIButton
+                        testID="UISearchController_open_button"
+                        onPress={() =>
+                            setSearchControllerVisible(
+                                !isSearchControllerVisible,
+                            )
+                        }
+                        title="Open search controller"
+                    />
+                    <UISearchController
+                        visible={isSearchControllerVisible}
+                        onCancel={() => setSearchControllerVisible(false)}
+                    >
+                        {(searchText: string) => (
+                            <View>
+                                <UILabel>{searchText}</UILabel>
+                            </View>
+                        )}
+                    </UISearchController>
+                </View>
+            </ExampleSection>
             <ExampleSection title="UIPagerView">
                 <View style={{ height: 20 }} />
                 <UILabel>type = Scrollable</UILabel>
@@ -179,35 +210,6 @@ export const Navigation = () => {
                         headerRightLabel="Action"
                         testID="UISearchBar_with_action_button"
                     />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UISearchController">
-                <View
-                    style={{
-                        width: '100%',
-                        maxWidth: 500,
-                        paddingVertical: 20,
-                    }}
-                >
-                    <UIButton
-                        testID="UISearchController_open_button"
-                        onPress={() =>
-                            setSearchControllerVisible(
-                                !isSearchControllerVisible,
-                            )
-                        }
-                        title="Open search controller"
-                    />
-                    <UISearchController
-                        visible={isSearchControllerVisible}
-                        onCancel={() => setSearchControllerVisible(false)}
-                    >
-                        {(searchText: string) => (
-                            <View>
-                                <UILabel>{searchText}</UILabel>
-                            </View>
-                        )}
-                    </UISearchController>
                 </View>
             </ExampleSection>
             <ExampleSection title="UISearchBarButton">
