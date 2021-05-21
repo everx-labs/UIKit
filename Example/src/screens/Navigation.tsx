@@ -7,15 +7,13 @@ import {
     UIPagerView,
     UISearchBar,
     UISearchBarButton,
-    // UISearchController,
+    UISearchController,
     UISlideBar,
 } from '@tonlabs/uikit.navigation';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIButton } from '@tonlabs/uikit.components';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-
-import { UISearchController } from '../../../packages/navigation/src/UISearchController2'
 
 const component = (color: ColorValue) => (): React.ReactElement<View> => (
     <View

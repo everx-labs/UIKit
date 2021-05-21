@@ -1,9 +1,20 @@
 import * as React from 'react';
-import { useWindowDimensions, ViewStyle, StyleSheet } from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+    useWindowDimensions,
+    ViewStyle,
+    StyleSheet,
+} from 'react-native';
+import Animated, {
+    useSharedValue,
+    useDerivedValue,
+    withSpring,
+    useAnimatedStyle,
+    interpolate,
+    runOnJS,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Portal, useColorParts, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { Portal, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UISearchBar } from './UISearchBar';
@@ -20,156 +31,77 @@ export type UISearchControllerProps = {
 };
 
 type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
-    onClosed: () => void;
+    animationValue: Readonly<Animated.SharedValue<number>>;
 };
 
-// eslint-disable-next-line no-shadow
-enum ShowStates {
-    Close = 0,
-    Closing = 1,
-    Open = 2,
-    Opening = 3,
-}
+const withSpringConfig: Animated.WithSpringConfig = {
+    damping: 18,
+    mass: 1,
+    stiffness: 200,
+    // overshootClamping: true,
+    // velocity?: number;
+};
 
-function getAnimationOpacity(
-    show: Animated.Value<ShowStates>,
+const useAnimationValue = (
+    visible: boolean,
     onClosed: () => void,
-) {
-    const {
-        block,
-        cond,
-        eq,
-        set,
-        startClock,
-        stopClock,
-        clockRunning,
-        and,
-        call,
-        spring,
-    } = Animated;
+): Readonly<Animated.SharedValue<number>> => {
+    const progress = useSharedValue<number>(0);
 
-    const clock = new Animated.Clock();
+    React.useEffect(() => {
+        progress.value = visible ? 1 : 0;
+    }, [visible, progress]);
 
-    const state = {
-        finished: new Animated.Value(0),
-        velocity: new Animated.Value(0),
-        position: new Animated.Value(0),
-        time: new Animated.Value(0),
-    };
+    const onAnimation = React.useCallback(
+        (isFinished: boolean) => {
+            'worklet';
 
-    const config: Animated.SpringConfig = {
-        // Default ones from https://reactnative.dev/docs/animated#spring
-        ...Animated.SpringUtils.makeConfigFromBouncinessAndSpeed({
-            overshootClamping: false,
-            bounciness: 3,
-            speed: 10,
-            mass: new Animated.Value(1),
-            restSpeedThreshold: new Animated.Value(0.01),
-            restDisplacementThreshold: new Animated.Value(0.01),
-            toValue: new Animated.Value(0),
-        }),
-    };
-
-    return block([
-        cond(eq(show, ShowStates.Close), [
-            set(state.finished, 0),
-            // @ts-ignore
-            set(config.toValue, 0),
-            set(show, ShowStates.Closing),
-            startClock(clock),
-        ]),
-        cond(eq(show, ShowStates.Open), [
-            set(state.finished, 0),
-            // @ts-ignore
-            set(config.toValue, 1),
-            set(show, ShowStates.Opening),
-            startClock(clock),
-        ]),
-        cond(and(state.finished, clockRunning(clock)), [
-            stopClock(clock),
-            // Animated.debug('stopped', show),
-            cond(eq(show, ShowStates.Closing), call([], onClosed)),
-        ]),
-        spring(clock, state, config),
-        state.position,
-    ]);
-}
-
-function useAnimation(onClosed: () => void) {
-    const show = Animated.useValue<ShowStates>(ShowStates.Closing);
-
-    const opacity = React.useRef(getAnimationOpacity(show, onClosed)).current;
-
-    const animate = React.useCallback(
-        (visible) => {
-            show.setValue(visible ? ShowStates.Open : ShowStates.Close);
+            if (isFinished && progress.value === 0) {
+                runOnJS(onClosed)();
+            }
         },
-        [show],
+        [onClosed, progress.value],
     );
 
-    return {
-        opacity,
-        animate,
-    };
-}
+    const animationValue = useDerivedValue(() => {
+        return withSpring(progress.value, withSpringConfig, onAnimation);
+    }, [progress.value]);
+
+    return animationValue;
+};
 
 function UISearchControllerContent({
-    visible,
     placeholder,
     onCancel,
     children,
-    onClosed,
     searching,
     onChangeText: onChangeTextProp,
+    animationValue,
 }: UISearchControllerContentProps) {
     const [searchText, setSearchText] = React.useState('');
+    const theme = useTheme();
+
     const { height } = useWindowDimensions();
-
-    const { animate, opacity } = useAnimation(onClosed);
-
-    React.useEffect(() => {
-        animate(visible);
-    }, [visible, animate]);
-
-    const {
-        colorParts: backgroundColorParts,
-        opacity: backgroundOpacity,
-    } = useColorParts(ColorVariants.BackgroundPrimary);
-
-    // @ts-ignore TS doesn't understand when backgroundColor is animated node
-    const backgroundStyle: ViewStyle = React.useMemo(
+    const animatedStyle = useAnimatedStyle(
         () => ({
-            flex: 1,
-            // On web we can't just animate opacity
-            // as it has a bug, it flickers a bit
-            // on mounting
-            backgroundColor: Animated.interpolateColors(opacity, {
-                inputRange: [0, 1],
-                outputColorRange: [
-                    `rgba(${backgroundColorParts}, 0)`,
-                    `rgba(${backgroundColorParts}, ${backgroundOpacity})`,
-                ],
-            }),
+            opacity: animationValue.value,
             transform: [
                 {
-                    translateY: Animated.interpolateNode(opacity, {
-                        inputRange: [0, 1],
-                        outputRange: [0 - height / 2, 0],
-                    }),
+                    translateY: interpolate(
+                        animationValue.value,
+                        [0, 1],
+                        [-height / 2, 0],
+                    ),
                 },
             ],
         }),
-        [backgroundColorParts, backgroundOpacity, height, opacity],
+        [height, animationValue.value],
     );
 
-    const contentStyle: ViewStyle = React.useMemo(
-        () => ({
-            flex: 1,
-            // @ts-ignore
-            opacity: opacity as number,
-        }),
-        [opacity],
-    );
+    const baseStyle: ViewStyle = {
+        flex: 1,
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+    };
 
     const onChangeText = React.useCallback(
         (text: string) => {
@@ -183,7 +115,7 @@ function UISearchControllerContent({
     );
 
     return (
-        <Animated.View style={backgroundStyle}>
+        <Animated.View style={[baseStyle, animatedStyle]}>
             <SafeAreaView style={styles.contentInner} edges={['top']}>
                 <UISearchBar
                     autoFocus
@@ -193,11 +125,9 @@ function UISearchControllerContent({
                     headerRightLabel={uiLocalized.Cancel}
                     headerRightOnPress={onCancel}
                 />
-                <Animated.View style={contentStyle}>
-                    {typeof children === 'function'
-                        ? children(searchText)
-                        : children}
-                </Animated.View>
+                {typeof children === 'function'
+                    ? children(searchText)
+                    : children}
             </SafeAreaView>
         </Animated.View>
     );
@@ -214,9 +144,16 @@ export function UISearchController({
         if (!visible) {
             return;
         }
-
         setIsVisible(true);
     }, [visible]);
+
+    const onClosed = React.useCallback(() => {
+        setIsVisible(false);
+    }, [setIsVisible]);
+
+    const animationValue: Readonly<Animated.SharedValue<
+        number
+    >> = useAnimationValue(visible, onClosed);
 
     if (!isVisible) {
         return null;
@@ -226,7 +163,7 @@ export function UISearchController({
         <Portal forId={forId} absoluteFill>
             <UISearchControllerContent
                 {...props}
-                onClosed={() => setIsVisible(false)}
+                animationValue={animationValue}
             >
                 {children}
             </UISearchControllerContent>
