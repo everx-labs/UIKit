@@ -83,19 +83,21 @@ function UISearchControllerContent({
 
     const { height } = useWindowDimensions();
     const animatedStyle = useAnimatedStyle(
-        () => ({
-            opacity: animationValue.value,
-            transform: [
-                {
-                    translateY: interpolate(
-                        animationValue.value,
-                        [0, 1],
-                        [-height / 2, 0],
-                    ),
-                },
-            ],
-        }),
-        [height, animationValue.value],
+        () => {
+            return {
+                opacity: animationValue.value,
+                transform: [
+                    {
+                        translateY: interpolate(
+                            animationValue.value,
+                            [0, 1],
+                            [-height / 2, 0],
+                        ),
+                    },
+                ],
+            }
+        },
+        [height, animationValue],
     );
 
     const baseStyle: ViewStyle = {
