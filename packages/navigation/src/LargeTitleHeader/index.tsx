@@ -58,14 +58,16 @@ export function LargeTitleHeader({
     note,
     children,
 }: LargeTitleHeaderProps) {
+    // TODO: rename
     const blockShift = useSharedValue(0);
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
     const largeTitleViewRef = useAnimatedRef<Animated.View>();
     const largeTitleHeight = useSharedValue(0);
 
+    // TODO: explain what it is
     const yWithoutRubberBand = useSharedValue(0);
-
+    // TODO: explain what it is
     const yOverScroll = useSharedValue(true);
 
     const onScroll = useOnScrollHandler(
@@ -159,7 +161,7 @@ export function LargeTitleHeader({
             });
             headerTitleVisible.value = false;
         }
-    });
+    }, [largeTitleHeight, blockShift]);
 
     const headerTitleStyle = useAnimatedStyle(() => {
         return {
@@ -168,6 +170,7 @@ export function LargeTitleHeader({
     });
 
     const ghYPrev = useSharedValue(0);
+    // TODO: explain why we need GH at all
     const gestureHandler = useAnimatedGestureHandler({
         onActive: (event) => {
             const y = ghYPrev.value - event.translationY;
@@ -178,6 +181,7 @@ export function LargeTitleHeader({
                     return;
                 }
 
+                // TODO: copy pasted
                 yWithoutRubberBand.value -= y;
                 if (blockShift.value > 0) {
                     blockShift.value = getYWithRubberBandEffect(
@@ -199,6 +203,7 @@ export function LargeTitleHeader({
         },
     });
 
+    // TODO: explain how it works and about wheel events on macos
     const onWheel = useOnWheelHandler(
         blockShift,
         largeTitleHeight,
@@ -312,9 +317,9 @@ const styles = StyleSheet.create({
     },
     largeTitleHeaderContainer: {
         padding: 16,
-        // backgroundColor: 'white', // TODO: do we need to set a color? TODO: theme support
     },
     sceneContainer: {
+        // TODO: explain this
         height: '100%',
     },
 });
