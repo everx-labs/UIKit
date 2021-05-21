@@ -39,6 +39,12 @@ export type UITextViewProps = Omit<
 > & {
     placeholderTextColor?: ColorVariants;
     style?: StyleProp<UITextViewStyle>;
+    /**
+     * Android only
+     * A flag to apply EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING
+     * to inner EditText view
+     */
+    noPersonalizedLearning?: boolean;
 };
 
 function useAutoFocus(
@@ -65,6 +71,7 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
             style,
             placeholderTextColor = ColorVariants.TextSecondary,
             autoFocus,
+            noPersonalizedLearning,
             ...rest
         }: UITextViewProps,
         passedRef,
@@ -79,9 +86,10 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
                 ref={ref}
                 {...rest}
                 autoFocus={autoFocusProp}
-                // @ts-ignore
                 // This is our custom prop, we do it in native for Android
-                noPersonalizedLearning={false}
+                {...(Platform.OS === 'android'
+                    ? { noPersonalizedLearning }
+                    : null)}
                 placeholderTextColor={theme[placeholderTextColor]}
                 selectionColor={theme[ColorVariants.TextAccent]}
                 // @ts-ignore

@@ -565,6 +565,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onSubmitEditing={onSubmitEditing}
                 blurOnSubmit
                 onHeightChange={onHeightChange}
+                noPersonalizedLearning
             />
             <UISeedPhrasePopover
                 // if number of lines changed, redraw it
