@@ -41,25 +41,42 @@ const useAnimationValue = (
     visible: boolean,
     onClosed: () => void,
 ): Readonly<Animated.SharedValue<number>> => {
-    const progress = useSharedValue<number>(0);
+    /* Controller visibility status (0/1) */
+    const visibleState = useSharedValue<number>(0);
+    /* Indicates that the rendering is the first one. */
+    const isFirstRender = useSharedValue<boolean>(true);
 
     React.useEffect(() => {
-        progress.value = visible ? 1 : 0;
-    }, [visible, progress]);
+        if (
+            (visible && visibleState.value === 0) ||
+            (!visible && visibleState.value === 1)
+        ) {
+            /** State were changed */
+
+            if (isFirstRender.value) {
+                isFirstRender.value = false;
+            }
+            visibleState.value = visible ? 1 : 0;
+        }
+    }, [visible, visibleState, isFirstRender]);
 
     const onAnimation = React.useCallback(
         (isFinished: boolean) => {
             'worklet';
 
-            if (isFinished && progress.value === 0) {
+            if (
+                isFinished &&
+                visibleState.value === 0 &&
+                !isFirstRender.value
+            ) {
                 runOnJS(onClosed)();
             }
         },
-        [onClosed, progress.value],
+        [onClosed, visibleState.value, isFirstRender.value],
     );
 
     const animationValue = useDerivedValue(() => {
-        return withSpring(progress.value, withSpringConfig, onAnimation);
+        return withSpring(visibleState.value, withSpringConfig, onAnimation);
     }, []);
 
     return animationValue;
@@ -139,7 +156,7 @@ export function UISearchController({
         setIsVisible(true);
     }, [visible]);
 
-    const onClosed = React.useCallback(() => {
+    const onClosed = React.useCallback((): void => {
         setIsVisible(false);
     }, [setIsVisible]);
 
