@@ -131,7 +131,7 @@ module.exports = {
                         [
                             '@babel/preset-env',
                             {
-                                loose: true,
+                                loose: false,
                                 exclude: ['transform-typeof-symbol'],
                                 targets: '> 0.25%, not dead',
                             },
