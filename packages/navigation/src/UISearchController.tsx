@@ -46,7 +46,7 @@ const useAnimationValue = (
     /* Indicates that the rendering is the first one. */
     const isFirstRender = useSharedValue<boolean>(true);
 
-    React.useEffect(() => {
+    React.useEffect((): void => {
         if (
             (visible && visibleState.value === 0) ||
             (!visible && visibleState.value === 1)
@@ -61,7 +61,7 @@ const useAnimationValue = (
     }, [visible, visibleState, isFirstRender]);
 
     const onAnimation = React.useCallback(
-        (isFinished: boolean) => {
+        (isFinished: boolean): void => {
             'worklet';
 
             if (
@@ -75,7 +75,7 @@ const useAnimationValue = (
         [onClosed, visibleState.value, isFirstRender.value],
     );
 
-    const animationValue = useDerivedValue(() => {
+    const animationValue: Readonly<Animated.SharedValue<number>> = useDerivedValue((): number => {
         return withSpring(visibleState.value, withSpringConfig, onAnimation);
     }, []);
 
