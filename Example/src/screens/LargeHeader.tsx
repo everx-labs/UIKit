@@ -5,7 +5,10 @@ import { LargeTitleHeader, ScrollView } from '@tonlabs/uikit.navigation';
 
 export function LargeHeaderScreen() {
     return (
-        <LargeTitleHeader title="Long title">
+        <LargeTitleHeader
+            title="Long title"
+            headerRightItems={[{ label: 'Action' }]}
+        >
             <ScrollView>
                 {new Array(9)
                     .fill(null)

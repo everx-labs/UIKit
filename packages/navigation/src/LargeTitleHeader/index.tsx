@@ -23,20 +23,17 @@ import { getYWithRubberBandEffect } from './getYWithRubberBandEffect';
 import { ScrollableContext } from '../Scrollable/Context';
 import useOnWheelHandler from './useOnWheelHandler/useOnWheelHandler.web';
 import { useResetPosition } from './useResetPosition';
+import { HEADER_HEIGHT } from '../constants';
+import {
+    UINavigationBar,
+    UINavigationBarPublicProps,
+} from '../UINavigationBar';
 
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
 const RUBBER_BAND_EFFECT_DISTANCE = Platform.select({ web: 50, default: 150 });
 
-type LargeTitleHeaderProps = {
-    /**
-     * A title string
-     */
-    title?: string;
-    /**
-     * A caption string
-     */
-    caption?: string;
+type LargeTitleHeaderProps = UINavigationBarPublicProps & {
     /**
      * A label string
      */
@@ -52,11 +49,10 @@ type LargeTitleHeaderProps = {
 };
 
 export function LargeTitleHeader({
-    title,
-    caption,
     label,
     note,
     children,
+    ...navigationBarProps
 }: LargeTitleHeaderProps) {
     // TODO: rename
     const blockShift = useSharedValue(0);
@@ -163,12 +159,6 @@ export function LargeTitleHeader({
         }
     }, [largeTitleHeight, blockShift]);
 
-    const headerTitleStyle = useAnimatedStyle(() => {
-        return {
-            opacity: headerTitleOpacity.value,
-        };
-    });
-
     const ghYPrev = useSharedValue(0);
     // TODO: explain why we need GH at all
     const gestureHandler = useAnimatedGestureHandler({
@@ -240,7 +230,7 @@ export function LargeTitleHeader({
                             {label}
                         </UILabel>
                     )}
-                    {title && (
+                    {navigationBarProps.title && (
                         <AnimatedUILabel
                             role={UILabelRoles.TitleLarge}
                             style={largeTitleStyle}
@@ -252,7 +242,7 @@ export function LargeTitleHeader({
                                 titleWidth.value = width;
                             }}
                         >
-                            {title}
+                            {navigationBarProps.title}
                         </AnimatedUILabel>
                     )}
                     {note && (
@@ -271,26 +261,13 @@ export function LargeTitleHeader({
             <UIBackgroundView
                 style={[
                     styles.mainHeaderContainer,
-                    { height: 56 + top, paddingTop: top },
+                    { height: HEADER_HEIGHT + top, paddingTop: top },
                 ]}
             >
-                <Animated.View
-                    style={[styles.mainHeaderTitleContainer, headerTitleStyle]}
-                >
-                    {title && (
-                        <UILabel role={UILabelRoles.HeadlineHead}>
-                            {title}
-                        </UILabel>
-                    )}
-                    {caption && (
-                        <UILabel
-                            role={UILabelRoles.ParagraphFootnote}
-                            color={UILabelColors.TextSecondary}
-                        >
-                            {caption}
-                        </UILabel>
-                    )}
-                </Animated.View>
+                <UINavigationBar
+                    {...navigationBarProps}
+                    headerTitleOpacity={headerTitleOpacity}
+                />
             </UIBackgroundView>
         </UIBackgroundView>
     );
@@ -302,14 +279,12 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    mainHeaderFiller: { height: 56 },
+    mainHeaderFiller: { height: HEADER_HEIGHT },
     mainHeaderContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
-        flexDirection: 'row',
-        justifyContent: 'center',
     },
     mainHeaderTitleContainer: {
         alignItems: 'center',
