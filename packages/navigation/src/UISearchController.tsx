@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-    useWindowDimensions,
-    ViewStyle,
-    StyleSheet,
-} from 'react-native';
+import { ViewStyle, StyleSheet } from 'react-native';
 import Animated, {
     useSharedValue,
     useDerivedValue,
@@ -20,6 +16,8 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UISearchBar } from './UISearchBar';
 import { ELASTIC_WIDTH_CONTROLLER } from './constants';
 
+const ANIMATION_TRANSITION: number = 40;
+
 export type UISearchControllerProps = {
     forId?: string;
     visible: boolean;
@@ -35,11 +33,8 @@ type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
 };
 
 const withSpringConfig: Animated.WithSpringConfig = {
-    damping: 18,
-    mass: 1,
+    damping: 16,
     stiffness: 200,
-    // overshootClamping: true,
-    // velocity?: number;
 };
 
 const useAnimationValue = (
@@ -65,7 +60,7 @@ const useAnimationValue = (
 
     const animationValue = useDerivedValue(() => {
         return withSpring(progress.value, withSpringConfig, onAnimation);
-    }, [progress.value]);
+    }, []);
 
     return animationValue;
 };
@@ -81,27 +76,22 @@ function UISearchControllerContent({
     const [searchText, setSearchText] = React.useState('');
     const theme = useTheme();
 
-    const { height } = useWindowDimensions();
-    const animatedStyle = useAnimatedStyle(
-        () => {
-            return {
-                opacity: animationValue.value,
-                transform: [
-                    {
-                        translateY: interpolate(
-                            animationValue.value,
-                            [0, 1],
-                            [-height / 2, 0],
-                        ),
-                    },
-                ],
-            }
-        },
-        [height, animationValue],
-    );
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            opacity: animationValue.value,
+            transform: [
+                {
+                    translateY: interpolate(
+                        animationValue.value,
+                        [0, 1],
+                        [-ANIMATION_TRANSITION, 0],
+                    ),
+                },
+            ],
+        };
+    }, []);
 
     const baseStyle: ViewStyle = {
-        flex: 1,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
     };
 
@@ -117,7 +107,7 @@ function UISearchControllerContent({
     );
 
     return (
-        <Animated.View style={[baseStyle, animatedStyle]}>
+        <Animated.View style={[styles.container, baseStyle, animatedStyle]}>
             <SafeAreaView style={styles.contentInner} edges={['top']}>
                 <UISearchBar
                     autoFocus
@@ -174,6 +164,15 @@ export function UISearchController({
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        position: 'absolute',
+        top: -ANIMATION_TRANSITION,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        paddingTop: ANIMATION_TRANSITION,
+    },
     contentInner: {
         width: '100%',
         maxWidth: ELASTIC_WIDTH_CONTROLLER,
