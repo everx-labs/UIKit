@@ -18,6 +18,9 @@ import { ELASTIC_WIDTH_CONTROLLER } from './constants';
 
 const ANIMATION_TRANSITION_SPACE: number = 40;
 
+const VISIBLE_STATE_CLOSED: number = 0;
+const VISIBLE_STATE_OPENED: number = 1;
+
 export type UISearchControllerProps = {
     forId?: string;
     visible: boolean;
@@ -41,22 +44,25 @@ const useProgress = (
     visible: boolean,
     onClosed: () => void,
 ): Readonly<Animated.SharedValue<number>> => {
-    /* Controller visibility status (0/1) */
-    const visibleState = useSharedValue<number>(0);
+    /* Controller visibility status (VISIBLE_STATE_CLOSED/VISIBLE_STATE_OPENED) */
+    const visibleState = useSharedValue<number>(VISIBLE_STATE_CLOSED);
+
     /* Indicates that the rendering is the first one. */
     const isFirstRender = useSharedValue<boolean>(true);
 
     React.useEffect((): void => {
         if (
-            (visible && visibleState.value === 0) ||
-            (!visible && visibleState.value === 1)
+            (visible && visibleState.value === VISIBLE_STATE_CLOSED) ||
+            (!visible && visibleState.value === VISIBLE_STATE_OPENED)
         ) {
             /** State were changed */
 
             if (isFirstRender.value) {
                 isFirstRender.value = false;
             }
-            visibleState.value = visible ? 1 : 0;
+            visibleState.value = visible
+                ? VISIBLE_STATE_OPENED
+                : VISIBLE_STATE_CLOSED;
         }
     }, [visible, visibleState, isFirstRender]);
 
@@ -66,7 +72,10 @@ const useProgress = (
 
             if (
                 isFinished &&
-                visibleState.value === 0 &&
+                visibleState.value === VISIBLE_STATE_CLOSED &&
+                /** Web tries to call onClosed on the first render
+                 * when controller still closed. Preventing this.
+                 */
                 !isFirstRender.value
             ) {
                 runOnJS(onClosed)();
@@ -75,7 +84,9 @@ const useProgress = (
         [onClosed, visibleState.value, isFirstRender.value],
     );
 
-    const progress: Readonly<Animated.SharedValue<number>> = useDerivedValue((): number => {
+    const progress: Readonly<Animated.SharedValue<
+        number
+    >> = useDerivedValue((): number => {
         return withSpring(visibleState.value, withSpringConfig, onAnimation);
     }, []);
 
@@ -100,7 +111,7 @@ function UISearchControllerContent({
                 {
                     translateY: interpolate(
                         progress.value,
-                        [0, 1],
+                        [VISIBLE_STATE_CLOSED, VISIBLE_STATE_OPENED],
                         [-ANIMATION_TRANSITION_SPACE, 0],
                     ),
                 },
@@ -160,9 +171,10 @@ export function UISearchController({
         setIsVisible(false);
     }, [setIsVisible]);
 
-    const progress: Readonly<Animated.SharedValue<
-        number
-    >> = useProgress(visible, onClosed);
+    const progress: Readonly<Animated.SharedValue<number>> = useProgress(
+        visible,
+        onClosed,
+    );
 
     if (!isVisible) {
         return null;
@@ -170,10 +182,7 @@ export function UISearchController({
 
     return (
         <Portal forId={forId} absoluteFill>
-            <UISearchControllerContent
-                {...props}
-                progress={progress}
-            >
+            <UISearchControllerContent {...props} progress={progress}>
                 {children}
             </UISearchControllerContent>
         </Portal>
@@ -182,11 +191,12 @@ export function UISearchController({
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
+        ...StyleSheet.absoluteFillObject,
+
+        /** Since the view moves with a spring it goes out of bounds from above
+         * and there is an empty space left.
+         * To eliminate this, we use this hack to "compensate" the space */
         top: -ANIMATION_TRANSITION_SPACE,
-        bottom: 0,
-        left: 0,
-        right: 0,
         paddingTop: ANIMATION_TRANSITION_SPACE,
     },
     contentInner: {
