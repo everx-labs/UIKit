@@ -29,7 +29,7 @@ export type UISearchControllerProps = {
 };
 
 type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
-    animationValue: Readonly<Animated.SharedValue<number>>;
+    progress: Readonly<Animated.SharedValue<number>>;
 };
 
 const withSpringConfig: Animated.WithSpringConfig = {
@@ -37,7 +37,7 @@ const withSpringConfig: Animated.WithSpringConfig = {
     stiffness: 200,
 };
 
-const useAnimationValue = (
+const useProgress = (
     visible: boolean,
     onClosed: () => void,
 ): Readonly<Animated.SharedValue<number>> => {
@@ -75,11 +75,11 @@ const useAnimationValue = (
         [onClosed, visibleState.value, isFirstRender.value],
     );
 
-    const animationValue: Readonly<Animated.SharedValue<number>> = useDerivedValue((): number => {
+    const progress: Readonly<Animated.SharedValue<number>> = useDerivedValue((): number => {
         return withSpring(visibleState.value, withSpringConfig, onAnimation);
     }, []);
 
-    return animationValue;
+    return progress;
 };
 
 function UISearchControllerContent({
@@ -88,18 +88,18 @@ function UISearchControllerContent({
     children,
     searching,
     onChangeText: onChangeTextProp,
-    animationValue,
+    progress,
 }: UISearchControllerContentProps) {
     const [searchText, setSearchText] = React.useState('');
     const theme = useTheme();
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
-            opacity: animationValue.value,
+            opacity: progress.value,
             transform: [
                 {
                     translateY: interpolate(
-                        animationValue.value,
+                        progress.value,
                         [0, 1],
                         [-ANIMATION_TRANSITION_SPACE, 0],
                     ),
@@ -160,9 +160,9 @@ export function UISearchController({
         setIsVisible(false);
     }, [setIsVisible]);
 
-    const animationValue: Readonly<Animated.SharedValue<
+    const progress: Readonly<Animated.SharedValue<
         number
-    >> = useAnimationValue(visible, onClosed);
+    >> = useProgress(visible, onClosed);
 
     if (!isVisible) {
         return null;
@@ -172,7 +172,7 @@ export function UISearchController({
         <Portal forId={forId} absoluteFill>
             <UISearchControllerContent
                 {...props}
-                animationValue={animationValue}
+                progress={progress}
             >
                 {children}
             </UISearchControllerContent>
@@ -182,7 +182,6 @@ export function UISearchController({
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         position: 'absolute',
         top: -ANIMATION_TRANSITION_SPACE,
         bottom: 0,
