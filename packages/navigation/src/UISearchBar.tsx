@@ -12,12 +12,17 @@ import {
     UITextView,
     UITextViewProps,
     useUITextViewValue,
+    useClearButton,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { HEADER_HEIGHT, ICON_SEARCH_SIZE, ICON_SEARCHING_INDICATOR_SIZE } from './constants';
+import {
+    HEADER_HEIGHT,
+    ICON_SEARCH_SIZE,
+    ICON_SEARCHING_INDICATOR_SIZE,
+} from './constants';
 
 type OnPress = () => void | Promise<void>;
 
@@ -65,6 +70,28 @@ function renderRightAction({
             </UILabel>
         </TouchableOpacity>
     );
+}
+
+function useInnerRightAction(
+    inputHasValue: boolean,
+    searching: boolean | undefined,
+    clear: () => void,
+) {
+    const clearButton = useClearButton(inputHasValue, clear);
+
+    if (searching) {
+        <UIIndicator
+            style={styles.loadingIcon}
+            size={ICON_SEARCHING_INDICATOR_SIZE}
+            trackWidth={2}
+        />;
+    }
+
+    if (clearButton) {
+        return clearButton;
+    }
+
+    return null;
 }
 
 type UISearchBarProps = Omit<UITextViewProps, 'placeholder'> & {
@@ -118,15 +145,18 @@ export function UISearchBar({
         [onChangeTextProp, setSearchText],
     );
 
-    const onClear = React.useCallback(
-        () => {
-            if (onChangeTextProp) {
-                onChangeTextProp('');
-            }
-            setSearchText('');
-            clear();
-        },
-        [onChangeTextProp, setSearchText, clear],
+    const onClear = React.useCallback(() => {
+        if (onChangeTextProp) {
+            onChangeTextProp('');
+        }
+        setSearchText('');
+        clear();
+    }, [onChangeTextProp, setSearchText, clear]);
+
+    const innerRightAction = useInnerRightAction(
+        inputHasValue,
+        searching,
+        onClear,
     );
 
     return (
@@ -146,25 +176,7 @@ export function UISearchBar({
                     onChangeText={onChangeText}
                     {...inputProps}
                 />
-                {searching && (
-                    <UIIndicator
-                        style={styles.loadingIcon}
-                        size={ICON_SEARCHING_INDICATOR_SIZE}
-                        trackWidth={2}
-                    />
-                )}
-                {!searching && inputHasValue && (
-                    <TouchableOpacity
-                        testID="search_bar_clear_btn"
-                        style={styles.clearButtonContainer}
-                        onPress={onClear}
-                    >
-                        <UIImage
-                            source={UIAssets.icons.ui.clear}
-                            tintColor={ColorVariants.BackgroundPrimaryInverted}
-                        />
-                    </TouchableOpacity>
-                )}
+                {innerRightAction}
             </UIBackgroundView>
             {headerRight({
                 label: headerRightLabel,
@@ -203,10 +215,5 @@ const styles = StyleSheet.create({
     },
     actionButton: {
         marginLeft: UIConstant.contentOffset(),
-    },
-    clearButtonContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 24,
     },
 });

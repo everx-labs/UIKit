@@ -32,3 +32,4 @@ export * from './useColorParts';
 export * from './useColorShades';
 export * from './useIsDarkColor';
 export * from './useHover';
+export * from './UIMaterialTextView/useClearButton';
