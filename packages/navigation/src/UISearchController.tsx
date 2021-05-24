@@ -73,8 +73,12 @@ const useProgress = (
             if (
                 isFinished &&
                 visibleState.value === VISIBLE_STATE_CLOSED &&
-                /** Web tries to call onClosed on the first render
+                /** On web `reanimated` tries to call onAnimation 
+                 * (passed to `withSpring`) on the first render
                  * when controller still closed. Preventing this.
+                 *
+                 * This is probably a bug in reanimation.
+                 * TODO: create an issue in reanimated repo
                  */
                 !isFirstRender.value
             ) {
