@@ -16,7 +16,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UISearchBar } from './UISearchBar';
 import { ELASTIC_WIDTH_CONTROLLER } from './constants';
 
-const ANIMATION_TRANSITION: number = 40;
+const ANIMATION_TRANSITION_SPACE: number = 40;
 
 export type UISearchControllerProps = {
     forId?: string;
@@ -101,7 +101,7 @@ function UISearchControllerContent({
                     translateY: interpolate(
                         animationValue.value,
                         [0, 1],
-                        [-ANIMATION_TRANSITION, 0],
+                        [-ANIMATION_TRANSITION_SPACE, 0],
                     ),
                 },
             ],
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         position: 'absolute',
-        top: -ANIMATION_TRANSITION,
+        top: -ANIMATION_TRANSITION_SPACE,
         bottom: 0,
         left: 0,
         right: 0,
-        paddingTop: ANIMATION_TRANSITION,
+        paddingTop: ANIMATION_TRANSITION_SPACE,
     },
     contentInner: {
         width: '100%',
