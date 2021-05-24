@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
+import { ColorVariants, UIImage } from '@tonlabs/uikit.hydrogen';
 
 type Props = {
     onPress: () => void,
@@ -23,7 +24,7 @@ export default class UINavigationIconButton extends UIComponent<Props, State> {
         containerStyle: {},
         icon: null,
         disabled: false,
-    }
+    };
 
     // Render
     render() {
@@ -38,7 +39,10 @@ export default class UINavigationIconButton extends UIComponent<Props, State> {
                 disabled={disabled}
                 onPress={() => onPress()}
             >
-                <Image source={icon} />
+                <UIImage
+                    source={icon}
+                    tintColor={disabled ? ColorVariants.LineTertiary : null}
+                />
             </TouchableOpacity>
         );
     }
