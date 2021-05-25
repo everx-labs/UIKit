@@ -48,7 +48,9 @@ function UINavigationBarAnimatedTitle({
 
 export type UINavigationBarProps = {
     testID?: string;
+    headerLeft?: () => React.ReactNode; // TODO: should we limit it?
     headerLeftItems?: HeaderItem[];
+    headerRight?: () => React.ReactNode; // TODO: should we limit it?
     headerRightItems?: HeaderItem[];
     /**
      * A title string
@@ -66,7 +68,9 @@ type PrivateProps = {
 
 export function UINavigationBar({
     testID,
+    headerLeft,
     headerLeftItems,
+    headerRight,
     headerRightItems,
     title,
     caption,
@@ -88,7 +92,11 @@ export function UINavigationBar({
     return (
         <UIBackgroundView style={styles.container} testID={testID}>
             <View style={styles.headerLeftItems}>
-                <UIHeaderItems items={headerLeftItems} />
+                {headerLeft == null ? (
+                    <UIHeaderItems items={headerLeftItems} />
+                ) : (
+                    headerLeft()
+                )}
             </View>
             {headerTitleOpacity != null ? (
                 <UINavigationBarAnimatedTitle
@@ -104,7 +112,11 @@ export function UINavigationBar({
                 </UIBackgroundView>
             )}
             <View style={styles.headerRightItems}>
-                <UIHeaderItems items={headerRightItems} />
+                {headerRight == null ? (
+                    <UIHeaderItems items={headerRightItems} />
+                ) : (
+                    headerRight()
+                )}
             </View>
         </UIBackgroundView>
     );

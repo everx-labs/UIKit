@@ -18,7 +18,7 @@ export function ScrollView(
             {({ ref, scrollHandler, gestureHandler, onWheel }) => (
                 <PanGestureHandler
                     ref={panGestureRef}
-                    enabled={Platform.OS !== 'web'}
+                    enabled={Platform.OS === 'android'}
                     shouldCancelWhenOutside={false}
                     onGestureEvent={gestureHandler}
                     waitFor={nativeGestureRef}
