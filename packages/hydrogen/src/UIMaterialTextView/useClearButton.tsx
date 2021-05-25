@@ -5,6 +5,7 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIImage } from '../UIImage';
 import { ColorVariants } from '../Colors';
+import { UIConstant } from '../constants';
 
 export function useClearButton(inputHasValue: boolean, clear: () => void) {
     return React.useMemo(() => {
@@ -14,12 +15,7 @@ export function useClearButton(inputHasValue: boolean, clear: () => void) {
                     testID="clear_btn"
                     style={styles.clearButtonContainer}
                     onPress={clear}
-                    hitSlop={{
-                        top: 24,
-                        bottom: 24,
-                        left: 24,
-                        right: 24,
-                    }}
+                    hitSlop={UIConstant.hitSlop}
                 >
                     <UIImage
                         source={UIAssets.icons.ui.clear}
@@ -37,6 +33,6 @@ const styles = StyleSheet.create({
     clearButtonContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: 24,
+        height: UIConstant.iconSize,
     },
 });

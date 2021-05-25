@@ -80,11 +80,13 @@ function useInnerRightAction(
     const clearButton = useClearButton(inputHasValue, clear);
 
     if (searching) {
-        <UIIndicator
-            style={styles.loadingIcon}
-            size={ICON_SEARCHING_INDICATOR_SIZE}
-            trackWidth={2}
-        />;
+        return (
+            <UIIndicator
+                style={styles.loadingIcon}
+                size={ICON_SEARCHING_INDICATOR_SIZE}
+                trackWidth={2}
+            />
+        );
     }
 
     if (clearButton) {
