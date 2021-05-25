@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
-
-import { ColorVariants } from '../Colors';
 import { UIImage, UIImageProps } from '../UIImage';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
+import { useClearButton } from './useClearButton';
 
 export function UIMaterialTextViewIcon({
     onPress,
@@ -97,19 +95,15 @@ export function useMaterialTextViewChildren(
     inputHasValue: boolean,
     clear: () => void,
 ) {
-    if (inputHasValue) {
-        return (
-            <TouchableOpacity
-                testID="clear_btn"
-                style={styles.clearButtonContainer}
-                onPress={clear}
-            >
-                <UIImage
-                    source={UIAssets.icons.ui.clear}
-                    tintColor={ColorVariants.BackgroundPrimaryInverted}
-                />
-            </TouchableOpacity>
-        );
+    const clearButton = useClearButton(inputHasValue, clear);
+
+    if (clearButton) {
+        /**
+         * It's wrapped with a View
+         * to stick a clear button to the bottom
+         * when an input is multilined
+         */
+        return <View style={styles.clearButtonWrapper}>{clearButton}</View>;
     }
 
     const { icons, action, text } = getChilds(children).reduce<{
@@ -190,10 +184,7 @@ const styles = StyleSheet.create({
     iconsFiller: {
         marginLeft: 24,
     },
-    clearButtonContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'flex-end',
-        height: 24,
+    clearButtonWrapper: {
+        justifyContent: 'flex-end',
     },
 });
