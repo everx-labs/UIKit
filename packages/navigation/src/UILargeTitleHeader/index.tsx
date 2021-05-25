@@ -21,19 +21,16 @@ import {
 import { useOnScrollHandler } from './useOnScrollHandler';
 import { getYWithRubberBandEffect } from './getYWithRubberBandEffect';
 import { ScrollableContext } from '../Scrollable/Context';
-import useOnWheelHandler from './useOnWheelHandler/useOnWheelHandler.web';
+import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
-import { HEADER_HEIGHT } from '../constants';
-import {
-    UINavigationBar,
-    UINavigationBarPublicProps,
-} from '../UINavigationBar';
+import { HEADER_HEIGHT, SCREEN_CONTENT_INSET_HORIZONTAL } from '../constants';
+import { UINavigationBar, UINavigationBarProps } from '../UINavigationBar';
 
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
 const RUBBER_BAND_EFFECT_DISTANCE = Platform.select({ web: 50, default: 150 });
 
-type LargeTitleHeaderProps = UINavigationBarPublicProps & {
+type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
      * A label string
      */
@@ -48,12 +45,12 @@ type LargeTitleHeaderProps = UINavigationBarPublicProps & {
     children: React.ReactNode;
 };
 
-export function LargeTitleHeader({
+export function UILargeTitleHeader({
     label,
     note,
     children,
     ...navigationBarProps
-}: LargeTitleHeaderProps) {
+}: UILargeTitleHeaderProps) {
     // TODO: rename
     const blockShift = useSharedValue(0);
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -291,7 +288,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     largeTitleHeaderContainer: {
-        padding: 16,
+        padding: SCREEN_CONTENT_INSET_HORIZONTAL,
     },
     sceneContainer: {
         // TODO: explain this

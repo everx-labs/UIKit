@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import {
     UIBackgroundView,
     UILabel,
@@ -11,7 +10,11 @@ import {
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 
-import { HEADER_HEIGHT } from './constants';
+import {
+    HEADER_HEIGHT,
+    SCREEN_CONTENT_INSET_HORIZONTAL,
+    CONTENT_INSET_VERTICAL_X2,
+} from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 
@@ -35,13 +38,15 @@ function UINavigationBarAnimatedTitle({
     });
 
     return (
-        <UIBackgroundViewAnimated style={[styles.puller, headerTitleStyle]}>
+        <UIBackgroundViewAnimated
+            style={[styles.titleWrapper, headerTitleStyle]}
+        >
             {children}
         </UIBackgroundViewAnimated>
     );
 }
 
-export type UINavigationBarPublicProps = {
+export type UINavigationBarProps = {
     testID?: string;
     headerLeftItems?: HeaderItem[];
     headerRightItems?: HeaderItem[];
@@ -55,7 +60,7 @@ export type UINavigationBarPublicProps = {
     caption?: string;
 };
 
-export type UINavigationBarPrivateProps = {
+type PrivateProps = {
     headerTitleOpacity?: Animated.SharedValue<number>;
 };
 
@@ -67,7 +72,7 @@ export function UINavigationBar({
     caption,
     // private
     headerTitleOpacity,
-}: UINavigationBarPublicProps & UINavigationBarPrivateProps) {
+}: UINavigationBarProps & PrivateProps) {
     const titleElement = title ? (
         <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
     ) : null;
@@ -93,7 +98,7 @@ export function UINavigationBar({
                     {captionElement}
                 </UINavigationBarAnimatedTitle>
             ) : (
-                <UIBackgroundView style={styles.puller}>
+                <UIBackgroundView style={styles.titleWrapper}>
                     {titleElement}
                     {captionElement}
                 </UIBackgroundView>
@@ -110,14 +115,12 @@ const styles = StyleSheet.create({
         minHeight: HEADER_HEIGHT,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: UIConstant.smallContentOffset(),
-        paddingHorizontal: 16,
+        paddingVertical: CONTENT_INSET_VERTICAL_X2,
+        paddingHorizontal: SCREEN_CONTENT_INSET_HORIZONTAL,
     },
-    puller: {
-        marginHorizontal: UIConstant.smallContentOffset(),
-    },
-    emptyDivider: {
-        marginHorizontal: UIConstant.smallContentOffset(),
+
+    titleWrapper: {
+        marginHorizontal: CONTENT_INSET_VERTICAL_X2,
     },
     headerLeftItems: {
         flex: 1,
