@@ -1,19 +1,15 @@
 import * as React from 'react';
 import {
-    LayoutChangeEvent,
     StyleSheet,
     TextInput,
     View,
-    Text,
-    ViewStyle,
     NativeSyntheticEvent,
     TextInputChangeEventData,
     Platform,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
 
 import { ColorVariants, useTheme } from '../Colors';
-import { Typography, TypographyVariants } from '../Typography';
+import { TypographyVariants } from '../Typography';
 import {
     UITextView,
     UITextViewProps,
@@ -21,7 +17,7 @@ import {
     useUITextViewValue,
 } from '../UITextView';
 import { useHover } from '../useHover';
-import { UILabel, UILabelColors } from '../UILabel';
+import { UILabel } from '../UILabel';
 import {
     calculateWebInputHeight,
     OnHeightChange,
@@ -34,6 +30,16 @@ import {
     UIMaterialTextViewAction,
     UIMaterialTextViewText,
 } from './useMaterialTextViewChildren';
+
+import {
+    FloatingLabel,
+    expandedLabelLineHeight,
+    foldedLabelLineHeight,
+} from './FloatingLabel';
+
+const topOffsetForLabel: number =
+    (expandedLabelLineHeight - foldedLabelLineHeight) / 2 + // space between input and folded label (by design mockups)
+    foldedLabelLineHeight;
 
 export type UIMaterialTextViewCommonProps = UITextViewProps & {
     label: string;
@@ -78,320 +84,49 @@ const getCommentColor = (
     return ColorVariants.TextSecondary;
 };
 
-const paragraphTextStyle = StyleSheet.flatten(
-    Typography[TypographyVariants.ParagraphText],
-);
-const labelTextStyle = StyleSheet.flatten(
-    Typography[TypographyVariants.ParagraphLabel],
-);
-const FOLDED_FLOATING_LABEL_SCALE =
-    // @ts-expect-error
-    labelTextStyle.fontSize / paragraphTextStyle.fontSize;
-const PSEUDO_LABEL_BOTTOM_MARGIN = 4;
-
-const isLabelFolded = (props: UIMaterialTextViewCommonProps) => {
-    if (props.defaultValue) {
-        return true;
-    }
-    if (props.value) {
-        return true;
-    }
-    return false;
-};
-
 const getIsFolded = (
     isFocused: boolean,
     inputHasValue: boolean,
     value: string | undefined,
-) => {
+): boolean => {
     return Boolean(isFocused || inputHasValue || value);
 };
 
-// eslint-disable-next-line no-shadow
-enum ShowStates {
-    FOLD = 0,
-    FOLDING = 1,
-    OPEN = 2,
-    OPENING = 3,
-    RESET = 5,
-}
-
-const getScale = (
-    isFolded: boolean,
-    show: Animated.Value<ShowStates>,
-    onFolded: () => void,
-) => {
-    const {
-        block,
-        cond,
-        eq,
-        and,
-        set,
-        spring,
-        startClock,
-        stopClock,
-        clockRunning,
-        call,
-    } = Animated;
-
-    const clock = new Animated.Clock();
-
-    const state = {
-        finished: new Animated.Value(0),
-        velocity: new Animated.Value(0),
-        position: new Animated.Value(
-            isFolded ? FOLDED_FLOATING_LABEL_SCALE : 1,
-        ),
-        time: new Animated.Value(0),
-    };
-
-    const config: Animated.SpringConfig = {
-        // Default ones from https://reactnative.dev/docs/animated#spring
-        ...Animated.SpringUtils.makeConfigFromBouncinessAndSpeed({
-            overshootClamping: false,
-            bounciness: 0,
-            speed: 20,
-            mass: new Animated.Value(1),
-            restSpeedThreshold: new Animated.Value(0.001),
-            restDisplacementThreshold: new Animated.Value(0.001),
-            toValue: new Animated.Value(0),
-        }),
-    };
-
-    return block([
-        cond(eq(show, ShowStates.OPEN), [
-            set(state.finished, 0),
-            // @ts-ignore
-            set(config.restSpeedThreshold, 0.001),
-            // @ts-ignore
-            set(config.restDisplacementThreshold, 0.001),
-            // @ts-ignore
-            set(config.toValue, 1),
-            set(show, ShowStates.OPENING),
-            startClock(clock),
-        ]),
-        cond(eq(show, ShowStates.FOLD), [
-            set(state.finished, 0),
-            // This two were "accurately" taken out by "eye" testing
-            // to have no delay to show a placeholder
-            // after label was folded :D
-            // @ts-ignore
-            set(config.restSpeedThreshold, 1),
-            // @ts-ignore
-            set(config.restDisplacementThreshold, 0.1),
-            // @ts-ignore
-            set(config.toValue, FOLDED_FLOATING_LABEL_SCALE),
-            set(show, ShowStates.FOLDING),
-            startClock(clock),
-        ]),
-        spring(clock, state, config),
-        cond(and(state.finished, clockRunning(clock)), [
-            stopClock(clock),
-            cond(eq(show, ShowStates.FOLDING), [call([], onFolded)]),
-        ]),
-        state.position,
-    ]);
-};
-
-function useFloatLabelTransform(
+function useFloatingLabelAttribute(
     props: UIMaterialTextViewCommonProps,
     inputHasValue: boolean,
 ) {
     const { value } = props;
-    const isFolded = isLabelFolded(props);
 
     const { isFocused, onFocus, onBlur } = useFocused(
         props.onFocus,
         props.onBlur,
     );
 
-    const layout = React.useRef<{
-        foldedHeight?: number;
-        foldedWidth?: number;
-        fullHeight?: number;
-        fullWidth?: number;
-    }>({});
-
-    const show = Animated.useValue<ShowStates>(
-        isFolded ? ShowStates.FOLDING : ShowStates.OPENING,
-    );
-
-    const fullHeight = Animated.useValue(0);
-    const fullWidth = Animated.useValue(0);
-    const foldedWidth = Animated.useValue(0);
-    const foldedHeight = Animated.useValue(0);
-
-    const [isLabelReady, setIsLabelReady] = React.useState(false);
-    const onPseudoLabelLayout = React.useCallback(
-        ({ nativeEvent: { layout: measuredLayout } }: LayoutChangeEvent) => {
-            layout.current = {
-                ...layout.current,
-                foldedHeight: measuredLayout.height,
-                foldedWidth: measuredLayout.width,
-            };
-            // @ts-expect-error
-            foldedHeight.setValue(measuredLayout.height);
-            // @ts-expect-error
-            foldedWidth.setValue(measuredLayout.width);
-            if (
-                isLabelReady ||
-                layout.current.fullHeight == null ||
-                layout.current.fullWidth == null ||
-                layout.current.foldedWidth == null ||
-                layout.current.foldedHeight == null
-            ) {
-                return;
-            }
-            setIsLabelReady(true);
-        },
-        [isLabelReady, setIsLabelReady, foldedHeight, foldedWidth],
-    );
-
-    const onActualLabelLayout = React.useCallback(
-        ({ nativeEvent: { layout: measuredLayout } }: LayoutChangeEvent) => {
-            layout.current = {
-                ...layout.current,
-                fullHeight: measuredLayout.height,
-                fullWidth: measuredLayout.width,
-            };
-            // @ts-expect-error
-            fullHeight.setValue(measuredLayout.height);
-            // @ts-expect-error
-            fullWidth.setValue(measuredLayout.width);
-            if (
-                isLabelReady ||
-                layout.current.fullHeight == null ||
-                layout.current.fullWidth == null ||
-                layout.current.foldedWidth == null ||
-                layout.current.foldedHeight == null
-            ) {
-                return;
-            }
-            setIsLabelReady(true);
-        },
-        [isLabelReady, setIsLabelReady, fullHeight, fullWidth],
-    );
+    const isLabelFolded: boolean = getIsFolded(isFocused, inputHasValue, value);
 
     const [
         isDefaultPlaceholderVisible,
         setDefaultPlaceholderVisible,
-    ] = React.useState(isFolded);
+    ] = React.useState(isLabelFolded);
 
     const markDefaultPlacehoderAsVisible = React.useCallback(() => {
         setDefaultPlaceholderVisible(true);
     }, []);
 
     React.useEffect(() => {
-        if (
-            layout.current.fullHeight == null ||
-            layout.current.fullWidth == null ||
-            layout.current.foldedWidth == null ||
-            layout.current.foldedHeight == null
-        ) {
-            return;
+        if (!isLabelFolded) {
+            setDefaultPlaceholderVisible(false);
         }
-
-        const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
-
-        if (isFoldedNow) {
-            show.setValue(ShowStates.FOLD);
-
-            return;
-        }
-
-        show.setValue(ShowStates.OPEN);
-        setDefaultPlaceholderVisible(false);
-    }, [isFocused, inputHasValue, value, show, isLabelReady]);
-
-    const pseudoLabelStyle = React.useMemo(() => {
-        const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
-        const isHidden = isLabelReady || !isFoldedNow;
-        return {
-            opacity: isHidden ? 0 : 1,
-        };
-    }, [isLabelReady, isFocused, inputHasValue, value]);
-
-    const scale = React.useRef(
-        getScale(isFolded, show, markDefaultPlacehoderAsVisible),
-    ).current;
-
-    const labelContainerStyle = React.useMemo(() => {
-        const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
-        const isVisible = isLabelReady || !isFoldedNow;
-        return {
-            transform: [
-                {
-                    translateX: Animated.interpolateNode(scale, {
-                        inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
-                        outputRange: [
-                            Animated.divide(
-                                Animated.sub(foldedWidth, fullWidth),
-                                2,
-                            ),
-                            0,
-                        ],
-                    }),
-                },
-                {
-                    translateY: Animated.interpolateNode(scale, {
-                        inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
-                        outputRange: [
-                            Animated.sub(
-                                0,
-                                Animated.divide(
-                                    Animated.sub(fullHeight, foldedHeight),
-                                    2,
-                                ),
-                                PSEUDO_LABEL_BOTTOM_MARGIN,
-                                foldedHeight,
-                            ),
-                            0,
-                        ],
-                    }),
-                },
-            ],
-            opacity: isVisible ? 1 : 0,
-        };
-    }, [
-        isLabelReady,
-        isFocused,
-        inputHasValue,
-        value,
-        foldedHeight,
-        fullHeight,
-        foldedWidth,
-        fullWidth,
-        scale,
-    ]);
-
-    const theme = useTheme();
-    const labelStyle: ViewStyle = React.useMemo(() => {
-        return {
-            color: Animated.interpolateColors(scale, {
-                inputRange: [FOLDED_FLOATING_LABEL_SCALE, 1],
-                outputColorRange: [
-                    theme[ColorVariants.TextTertiary] as string,
-                    theme[ColorVariants.TextSecondary] as string,
-                ],
-            }) as any,
-            transform: [
-                {
-                    scale: scale as any,
-                },
-            ],
-        };
-    }, [theme, scale]);
+    }, [isLabelFolded]);
 
     return {
         isFocused,
-        pseudoLabelStyle,
-        labelContainerStyle,
-        labelStyle,
         onFocus,
         onBlur,
-        onPseudoLabelLayout,
-        onActualLabelLayout,
         isDefaultPlaceholderVisible,
+        markDefaultPlacehoderAsVisible,
+        isLabelFolded,
     };
 }
 
@@ -578,7 +313,6 @@ const UIMaterialTextViewFloating = React.forwardRef<
     passedRef,
 ) {
     const { label, onLayout, children, onHeightChange, ...rest } = props;
-    const theme = useTheme();
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
@@ -588,15 +322,12 @@ const UIMaterialTextViewFloating = React.forwardRef<
     useExtendedRef(passedRef, ref, props, onChangeTextProp);
     const {
         isFocused,
-        pseudoLabelStyle,
-        labelContainerStyle,
-        labelStyle,
         onFocus,
         onBlur,
-        onPseudoLabelLayout,
-        onActualLabelLayout,
         isDefaultPlaceholderVisible,
-    } = useFloatLabelTransform(props, inputHasValue);
+        markDefaultPlacehoderAsVisible,
+        isLabelFolded,
+    } = useFloatingLabelAttribute(props, inputHasValue);
     const {
         onContentSizeChange,
         onChange,
@@ -616,23 +347,15 @@ const UIMaterialTextViewFloating = React.forwardRef<
 
     return (
         <UIMaterialTextViewComment {...props}>
-            <View style={styles.container} onLayout={onLayout}>
-                <View style={styles.pseudoLabel}>
-                    <Text
-                        onLayout={onPseudoLabelLayout}
-                        style={[
-                            Typography[TypographyVariants.ParagraphLabel],
-                            {
-                                letterSpacing: paragraphTextStyle.letterSpacing,
-                                lineHeight: undefined,
-                                color: theme[UILabelColors.TextTertiary],
-                            },
-                            pseudoLabelStyle,
-                        ]}
-                    >
-                        {label}
-                    </Text>
-                </View>
+            <View
+                style={[
+                    styles.container,
+                    {
+                        paddingTop: label ? topOffsetForLabel : 0,
+                    },
+                ]}
+                onLayout={onLayout}
+            >
                 <UIMaterialTextViewBorder {...props} isFocused={isFocused}>
                     <UITextView
                         ref={ref}
@@ -650,20 +373,12 @@ const UIMaterialTextViewFloating = React.forwardRef<
                         numberOfLines={numberOfLines}
                         style={[styles.textView, style]}
                     />
-                    <Animated.View
-                        pointerEvents="none"
-                        style={[styles.floatingLabel, labelContainerStyle]}
+                    <FloatingLabel
+                        isFolded={isLabelFolded}
+                        onFolded={markDefaultPlacehoderAsVisible}
                     >
-                        <Animated.Text
-                            onLayout={onActualLabelLayout}
-                            style={[
-                                Typography[TypographyVariants.ParagraphText],
-                                labelStyle,
-                            ]}
-                        >
-                            {label}
-                        </Animated.Text>
-                    </Animated.View>
+                        {label}
+                    </FloatingLabel>
                     {processedChildren}
                 </UIMaterialTextViewBorder>
             </View>
@@ -783,11 +498,6 @@ const styles = StyleSheet.create({
             },
             default: null,
         }),
-    },
-    pseudoLabel: {
-        // To inner text be in intrinsic size
-        alignItems: 'flex-start',
-        paddingBottom: PSEUDO_LABEL_BOTTOM_MARGIN,
     },
     floatingLabel: {
         position: 'absolute',
