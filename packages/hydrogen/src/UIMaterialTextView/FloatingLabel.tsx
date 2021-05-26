@@ -232,11 +232,6 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
     },
-    pseudoLabel: {
-        // To inner text be in intrinsic size
-        alignItems: 'flex-start',
-        opacity: 0,
-    },
     floatingLabel: {
         position: 'absolute',
     },
