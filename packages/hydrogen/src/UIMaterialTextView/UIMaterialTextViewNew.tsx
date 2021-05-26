@@ -76,16 +76,6 @@ const getCommentColor = (
     return ColorVariants.TextSecondary;
 };
 
-// const getIsLabelFolded = (props: UIMaterialTextViewCommonProps) => {
-//     if (props.defaultValue) {
-//         return true;
-//     }
-//     if (props.value) {
-//         return true;
-//     }
-//     return false;
-// };
-
 const getIsFolded = (
     isFocused: boolean,
     inputHasValue: boolean,
@@ -94,12 +84,11 @@ const getIsFolded = (
     return Boolean(isFocused || inputHasValue || value);
 };
 
-function useFloatLabelTransform(
+function useFloatLabelAttribute(
     props: UIMaterialTextViewCommonProps,
     inputHasValue: boolean,
 ) {
     const { value } = props;
-    // const isFolded = getIsLabelFolded(props);
 
     const { isFocused, onFocus, onBlur } = useFocused(
         props.onFocus,
@@ -335,7 +324,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
         isDefaultPlaceholderVisible,
         markDefaultPlacehoderAsVisible,
         isLabelFolded,
-    } = useFloatLabelTransform(props, inputHasValue);
+    } = useFloatLabelAttribute(props, inputHasValue);
     const {
         onContentSizeChange,
         onChange,

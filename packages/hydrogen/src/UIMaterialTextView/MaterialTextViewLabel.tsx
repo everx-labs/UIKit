@@ -98,10 +98,15 @@ const Label: React.FC<LabelProps> = (props: LabelProps) => {
     );
 };
 
+/**
+ * Returns animated label position.
+ * It can be in the range from POSITION_FOLDED to POSITION_EXPANDED
+ */
 const useAnimatedPosition = (
     isFolded: boolean,
     onFolded: () => void,
 ): Readonly<Animated.SharedValue<number>> => {
+    /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
     const position: Animated.SharedValue<number> = Animated.useSharedValue<
         number
     >(getPosition(isFolded));
@@ -179,6 +184,7 @@ export const MaterialTextViewLabel: React.FC<MaterialTextViewLabelProps> = (
 ) => {
     const { isFolded, onFolded, children } = props;
 
+    /** Dimensions of label in the expanded state */
     const [
         expandedLabelDimensions,
         setExpandedLabelDimensions,
