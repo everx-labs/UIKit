@@ -18,15 +18,6 @@ export type FloatingLabelProps = {
     onFolded: () => void;
 };
 
-type Dimensions = {
-    width: number;
-    height: number;
-};
-const initialDimensions: Dimensions = {
-    width: 0,
-    height: 0,
-};
-
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
     Typography[TypographyVariants.ParagraphText],
 );
@@ -158,24 +149,29 @@ const getFoldedY = (height: number): number => {
 };
 
 const useOnPseudoLabelLayout = (
-    expandedLabelDimensions: Dimensions,
-    setExpandedLabelDimensions: (newDimensions: Dimensions) => void,
+    expandedLabelWidth: Animated.SharedValue<number>,
+    expandedLabelHeight: Animated.SharedValue<number>,
 ) => {
     return React.useCallback(
         (layoutChangeEvent: LayoutChangeEvent) => {
             if (
-                expandedLabelDimensions.width !==
-                    layoutChangeEvent.nativeEvent.layout.width ||
-                expandedLabelDimensions.height !==
-                    layoutChangeEvent.nativeEvent.layout.height
+                expandedLabelWidth.value !==
+                layoutChangeEvent.nativeEvent.layout.width
             ) {
-                setExpandedLabelDimensions({
-                    width: layoutChangeEvent.nativeEvent.layout.width,
-                    height: layoutChangeEvent.nativeEvent.layout.height,
-                });
+                // eslint-disable-next-line no-param-reassign
+                expandedLabelWidth.value =
+                    layoutChangeEvent.nativeEvent.layout.width;
+            }
+            if (
+                expandedLabelHeight.value !==
+                layoutChangeEvent.nativeEvent.layout.height
+            ) {
+                // eslint-disable-next-line no-param-reassign
+                expandedLabelHeight.value =
+                    layoutChangeEvent.nativeEvent.layout.height;
             }
         },
-        [expandedLabelDimensions, setExpandedLabelDimensions],
+        [expandedLabelWidth, expandedLabelHeight],
     );
 };
 
@@ -185,14 +181,16 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
     const { isFolded, onFolded, children } = props;
 
     /** Dimensions of label in the expanded state */
-    const [
-        expandedLabelDimensions,
-        setExpandedLabelDimensions,
-    ] = React.useState<Dimensions>(initialDimensions);
+    const expandedLabelWidth: Animated.SharedValue<number> = Animated.useSharedValue<
+        number
+    >(0);
+    const expandedLabelHeight: Animated.SharedValue<number> = Animated.useSharedValue<
+        number
+    >(0);
 
     const onPseudoLabelLayout = useOnPseudoLabelLayout(
-        expandedLabelDimensions,
-        setExpandedLabelDimensions,
+        expandedLabelWidth,
+        expandedLabelHeight,
     );
 
     const animatedPosition: Readonly<Animated.SharedValue<
@@ -200,8 +198,8 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
     >> = useAnimatedPosition(isFolded, onFolded);
 
     const labelContainerStyle: StyleProp<ViewStyle> = Animated.useAnimatedStyle(() => {
-        const foldedX: number = getFoldedX(expandedLabelDimensions.width);
-        const foldedY: number = getFoldedY(expandedLabelDimensions.height);
+        const foldedX: number = getFoldedX(expandedLabelWidth.value);
+        const foldedY: number = getFoldedY(expandedLabelHeight.value);
         return {
             transform: [
                 {
@@ -227,17 +225,17 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
                 },
             ],
         };
-    }, [expandedLabelDimensions]);
+    }, [expandedLabelWidth, expandedLabelHeight]);
 
     if (!validateChildren(children)) {
         return null;
     }
     return (
         <View style={styles.container} pointerEvents="none">
-            <View style={styles.pseudoLabel} onLayout={onPseudoLabelLayout}>
-                <Label animatedPosition={animatedPosition}>{children}</Label>
-            </View>
-            <Animated.View style={[styles.floatingLabel, labelContainerStyle]}>
+            <Animated.View
+                style={[styles.floatingLabel, labelContainerStyle]}
+                onLayout={onPseudoLabelLayout}
+            >
                 <Label animatedPosition={animatedPosition}>{children}</Label>
             </Animated.View>
         </View>
