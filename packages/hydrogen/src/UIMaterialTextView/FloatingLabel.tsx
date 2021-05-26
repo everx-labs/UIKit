@@ -228,7 +228,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
                 },
             ],
         };
-    }, [expandedLabelWidth, expandedLabelHeight]);
+    });
 
     if (!validateChildren(children)) {
         return null;
