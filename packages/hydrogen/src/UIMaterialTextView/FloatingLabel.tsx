@@ -24,11 +24,9 @@ const paragraphTextStyle: TextStyle = StyleSheet.flatten(
 const labelTextStyle: TextStyle = StyleSheet.flatten(
     Typography[TypographyVariants.ParagraphLabel],
 );
-const FOLDED_LABEL_SCALE: number =
-    labelTextStyle.fontSize !== undefined &&
-    paragraphTextStyle.fontSize !== undefined
-        ? labelTextStyle.fontSize / paragraphTextStyle.fontSize
-        : 0.7;
+export const expandedLabelLineHeight: number = paragraphTextStyle.lineHeight ? paragraphTextStyle.lineHeight : 24
+export const foldedLabelLineHeight: number = labelTextStyle.lineHeight ? labelTextStyle.lineHeight : 16
+const FOLDED_LABEL_SCALE: number = foldedLabelLineHeight / expandedLabelLineHeight;
 
 const POSITION_FOLDED: number = 0;
 const POSITION_EXPANDED: number = 1;

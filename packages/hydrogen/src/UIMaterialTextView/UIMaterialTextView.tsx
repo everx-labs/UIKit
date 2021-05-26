@@ -31,7 +31,15 @@ import {
     UIMaterialTextViewText,
 } from './useMaterialTextViewChildren';
 
-import { FloatingLabel } from './FloatingLabel';
+import {
+    FloatingLabel,
+    expandedLabelLineHeight,
+    foldedLabelLineHeight,
+} from './FloatingLabel';
+
+const topOffsetForLabel: number =
+    (expandedLabelLineHeight - foldedLabelLineHeight) / 2 +
+    foldedLabelLineHeight;
 
 export type UIMaterialTextViewCommonProps = UITextViewProps & {
     label: string;
@@ -95,11 +103,7 @@ function useFloatingLabelAttribute(
         props.onBlur,
     );
 
-    const isLabelFolded: boolean = getIsFolded(
-        isFocused,
-        inputHasValue,
-        value,
-    );
+    const isLabelFolded: boolean = getIsFolded(isFocused, inputHasValue, value);
 
     const [
         isDefaultPlaceholderVisible,
@@ -115,7 +119,6 @@ function useFloatingLabelAttribute(
             setDefaultPlaceholderVisible(false);
         }
     }, [isLabelFolded]);
-
 
     return {
         isFocused,
@@ -344,7 +347,15 @@ const UIMaterialTextViewFloating = React.forwardRef<
 
     return (
         <UIMaterialTextViewComment {...props}>
-            <View style={styles.container} onLayout={onLayout}>
+            <View
+                style={[
+                    styles.container,
+                    {
+                        paddingTop: label ? topOffsetForLabel : 0,
+                    },
+                ]}
+                onLayout={onLayout}
+            >
                 <UIMaterialTextViewBorder {...props} isFocused={isFocused}>
                     <UITextView
                         ref={ref}
