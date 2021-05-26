@@ -67,6 +67,11 @@ type LabelProps = {
 const Label: React.FC<LabelProps> = (props: LabelProps) => {
     const { children, animatedPosition, labelOpacity } = props;
     const theme = useTheme();
+    const labelContainerStyle = Animated.useAnimatedStyle(() => {
+        return {
+            opacity: labelOpacity.value,
+        };
+    });
     const labelStyle = Animated.useAnimatedStyle(() => {
         return {
             color: Animated.interpolateColor(
@@ -77,17 +82,18 @@ const Label: React.FC<LabelProps> = (props: LabelProps) => {
                     theme[ColorVariants.TextSecondary] as string,
                 ],
             ),
-            opacity: labelOpacity.value,
         };
     });
     return (
-        <Animated.Text
-            style={[Typography[TypographyVariants.ParagraphText], labelStyle]}
-            numberOfLines={1}
-            lineBreakMode="tail"
-        >
-            {children}
-        </Animated.Text>
+        <Animated.View style={labelContainerStyle}>
+            <Animated.Text
+                style={[Typography[TypographyVariants.ParagraphText], labelStyle]}
+                numberOfLines={1}
+                lineBreakMode="tail"
+            >
+                {children}
+            </Animated.Text>
+        </Animated.View>
     );
 };
 
