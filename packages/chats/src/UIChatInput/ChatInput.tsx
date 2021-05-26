@@ -12,7 +12,7 @@ import { useChatInputValue } from './useChatInputValue';
 import { useChatMaxLengthAlert } from './useChatMaxLengthAlert';
 import type { MenuItem, QuickActionItem, OnSendText, Shortcut } from './types';
 
-const MAX_INPUT_LENGTH = 320;
+const MAX_INPUT_LENGTH = 2 ** 10;
 
 const CHAT_INPUT_NUM_OF_LINES = 5;
 

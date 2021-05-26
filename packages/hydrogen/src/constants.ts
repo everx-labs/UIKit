@@ -48,4 +48,11 @@ export const UIConstant = {
               },
 
     dashSymbol: '\u2014',
+
+    hitSlop: {
+        top: 24,
+        bottom: 24,
+        left: 24,
+        right: 24,
+    },
 };

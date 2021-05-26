@@ -466,9 +466,8 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     moveToBottom(onFinish: ?() => void) {
-        const maxHeight = this.getMaxHeight();
         this.closeAnimation = Animated.spring(this.dy, {
-            toValue: maxHeight,
+            toValue: this.getMaxHeight(),
             velocity: 0,
             tension: 15,
             friction: 10,
@@ -478,24 +477,33 @@ export default class UIModalController<Props, State> extends UIController<
             restSpeedThreshold: 100,
             restDisplacementThreshold: 40,
             useNativeDriver: true,
-        }).start(({ finished }) => {
+        });
+
+        this.closeAnimation.start(({ finished }) => {
             if (!finished) {
                 return;
             }
+
             if (onFinish != null) {
                 onFinish();
             }
+
+            // Clean the `closeAnimation` variable once it's not animating
+            // We use it to identify if the modal is in process of closing
             this.closeAnimation = null;
         });
     }
 
     openDialog() {
         this.onWillAppear();
-        const maxHeight = this.getMaxHeight();
+
         if (this.closeAnimation != null) {
+            // Stop the closing animation if it was started
             this.closeAnimation.stop();
         }
-        this.dy.setValue(maxHeight);
+        
+        // Open the modal
+        this.dy.setValue(this.getMaxHeight());
         this.moveToTop(this.onDidAppearHandler);
     }
 
@@ -529,8 +537,10 @@ export default class UIModalController<Props, State> extends UIController<
 
     async hide() {
         if (this.closeAnimation != null) {
+            // Already closing, no further actions are required
             return;
         }
+
         if (this.state.controllerVisible) {
             this.onWillHide();
             this.moveToBottom(this.onDidHideHandler);
@@ -586,6 +596,11 @@ export default class UIModalController<Props, State> extends UIController<
     panHandlerRef = React.createRef<TapGestureHandler>();
 
     onReleaseSwipe = (dy: number) => {
+        if (this.closeAnimation != null) {
+            // Do not process the swipe release as the modal is already closing
+            return;
+        }
+        
         if (dy > UIConstant.swipeThreshold()) {
             this.onCancelPress();
         } else {
