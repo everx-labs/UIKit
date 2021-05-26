@@ -24,9 +24,14 @@ const paragraphTextStyle: TextStyle = StyleSheet.flatten(
 const labelTextStyle: TextStyle = StyleSheet.flatten(
     Typography[TypographyVariants.ParagraphLabel],
 );
-export const expandedLabelLineHeight: number = paragraphTextStyle.lineHeight ? paragraphTextStyle.lineHeight : 24
-export const foldedLabelLineHeight: number = labelTextStyle.lineHeight ? labelTextStyle.lineHeight : 16
-const FOLDED_LABEL_SCALE: number = foldedLabelLineHeight / expandedLabelLineHeight;
+export const expandedLabelLineHeight: number = paragraphTextStyle.lineHeight
+    ? paragraphTextStyle.lineHeight
+    : 24;
+export const foldedLabelLineHeight: number = labelTextStyle.lineHeight
+    ? labelTextStyle.lineHeight
+    : 16;
+const FOLDED_LABEL_SCALE: number =
+    foldedLabelLineHeight / expandedLabelLineHeight;
 
 const POSITION_FOLDED: number = 0;
 const POSITION_EXPANDED: number = 1;
@@ -57,9 +62,10 @@ const getPosition = (isFolded: boolean): number => {
 type LabelProps = {
     children: string;
     animatedPosition: Readonly<Animated.SharedValue<number>>;
+    labelOpacity: Animated.SharedValue<number>;
 };
 const Label: React.FC<LabelProps> = (props: LabelProps) => {
-    const { children, animatedPosition } = props;
+    const { children, animatedPosition, labelOpacity } = props;
     const theme = useTheme();
     const labelStyle = Animated.useAnimatedStyle(() => {
         return {
@@ -71,6 +77,7 @@ const Label: React.FC<LabelProps> = (props: LabelProps) => {
                     theme[ColorVariants.TextSecondary] as string,
                 ],
             ),
+            opacity: labelOpacity.value,
         };
     });
     return (
@@ -178,6 +185,12 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
         expandedLabelHeight,
     );
 
+    const labelOpacity: Animated.SharedValue<number> = Animated.useDerivedValue<
+        number
+    >(() => {
+        return expandedLabelWidth.value && expandedLabelHeight.value ? 1 : 0;
+    }, [expandedLabelWidth, expandedLabelHeight]);
+
     const animatedPosition: Readonly<Animated.SharedValue<
         number
     >> = useAnimatedPosition(isFolded, onFolded);
@@ -220,7 +233,12 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
                 style={[styles.floatingLabel, labelContainerStyle]}
                 onLayout={onLabelLayout}
             >
-                <Label animatedPosition={animatedPosition}>{children}</Label>
+                <Label
+                    animatedPosition={animatedPosition}
+                    labelOpacity={labelOpacity}
+                >
+                    {children}
+                </Label>
             </Animated.View>
         </View>
     );
