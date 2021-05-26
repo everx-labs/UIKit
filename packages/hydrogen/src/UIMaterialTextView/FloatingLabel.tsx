@@ -34,9 +34,6 @@ const POSITION_FOLDED: number = 0;
 const POSITION_EXPANDED: number = 1;
 
 const LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 1;
-const BOTTOM_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 6;
-
-const BOTTOM_OFFSET_OF_FOLDED_LABEL_FROM_EXPANDED_LABEL: number = 4;
 
 const withSpringConfig: Animated.WithSpringConfig = {
     damping: 17,
@@ -138,16 +135,6 @@ const getFoldedX = (width: number): number => {
     );
 };
 
-const getFoldedY = (height: number): number => {
-    'worklet';
-
-    return (
-        -height +
-        BOTTOM_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2 -
-        BOTTOM_OFFSET_OF_FOLDED_LABEL_FROM_EXPANDED_LABEL
-    );
-};
-
 const useOnPseudoLabelLayout = (
     expandedLabelWidth: Animated.SharedValue<number>,
     expandedLabelHeight: Animated.SharedValue<number>,
@@ -199,7 +186,6 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
 
     const labelContainerStyle: StyleProp<ViewStyle> = Animated.useAnimatedStyle(() => {
         const foldedX: number = getFoldedX(expandedLabelWidth.value);
-        const foldedY: number = getFoldedY(expandedLabelHeight.value);
         return {
             transform: [
                 {
@@ -213,7 +199,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
                     translateY: Animated.interpolate(
                         animatedPosition.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
-                        [foldedY, 0],
+                        [-expandedLabelHeight.value, 0],
                     ),
                 },
                 {
