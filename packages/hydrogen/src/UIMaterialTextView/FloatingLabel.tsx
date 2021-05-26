@@ -12,7 +12,7 @@ import Animated from 'react-native-reanimated';
 import { ColorVariants, useTheme } from '../Colors';
 import { Typography, TypographyVariants } from '../Typography';
 
-export type MaterialTextViewLabelProps = {
+export type FloatingLabelProps = {
     children: string;
     isFolded: boolean;
     onFolded: () => void;
@@ -56,7 +56,7 @@ const validateChildren = (children: string): boolean => {
     if (typeof children !== 'string') {
         if (__DEV__) {
             console.error(
-                `MaterialTextViewLabel: prop 'children' must have only 'string' value`,
+                `FloatingLabel: prop 'children' must have only 'string' value`,
             );
         }
         return false;
@@ -179,8 +179,8 @@ const useOnPseudoLabelLayout = (
     );
 };
 
-export const MaterialTextViewLabel: React.FC<MaterialTextViewLabelProps> = (
-    props: MaterialTextViewLabelProps,
+export const FloatingLabel: React.FC<FloatingLabelProps> = (
+    props: FloatingLabelProps,
 ) => {
     const { isFolded, onFolded, children } = props;
 
