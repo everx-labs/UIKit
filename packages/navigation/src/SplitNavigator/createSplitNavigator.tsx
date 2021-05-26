@@ -17,18 +17,21 @@ import {
 } from '@react-navigation/native';
 import type {
     StackNavigationState,
-    GenericNavigationAction,
     NavigationProp,
     ParamListBase,
 } from '@react-navigation/native';
 import { screensEnabled, ScreenContainer } from 'react-native-screens';
 import { StackView } from '@react-navigation/stack';
-import type { StackOptions } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 
 import { ResourceSavingScene } from './ResourceSavingScene';
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
-import { SplitRouter, SplitActions, MAIN_SCREEN_NAME } from './SplitRouter';
+import {
+    SplitRouter,
+    SplitActions,
+    MAIN_SCREEN_NAME,
+    SplitActionHelpers,
+} from './SplitRouter';
 import type { SplitNavigationState, SplitRouterOptions } from './SplitRouter';
 
 const getIsSplitted = ({ width }: { width: number }, mainWidth: number) =>
@@ -97,8 +100,7 @@ type SurfSplitNavigatorProps = {
             main?: StyleProp<ViewStyle>;
             detail?: StyleProp<ViewStyle>;
         };
-        headerShown?: boolean;
-    };
+    } & SplitRouterOptions;
 };
 
 export const SplitNavigator = ({
@@ -120,18 +122,14 @@ export const SplitNavigator = ({
     };
     const { state, navigation, descriptors } = useNavigationBuilder<
         SplitNavigationState,
-        GenericNavigationAction,
-        StackOptions,
+        SplitRouterOptions,
+        SplitActionHelpers,
         SplitRouterOptions,
         NavigationProp<ParamListBase>
     >(SplitRouter, {
         children,
         initialRouteName,
-        // $FlowExpectedError
-        screenOptions: {
-            ...restScreenOptions,
-            headerShown: false,
-        },
+        screenOptions: restScreenOptions,
         isSplitted,
     });
 
@@ -211,7 +209,7 @@ export const SplitNavigator = ({
         );
     }
 
-    const stackState: StackNavigationState = {
+    const stackState: StackNavigationState<ParamListBase> = {
         ...state,
         type: 'stack',
     };
@@ -224,23 +222,21 @@ export const SplitNavigator = ({
             <NativeStackView
                 state={stackState}
                 // we can't use StackNavigationProp 'cause we'd got errors in other places
-                // $FlowExpectedError
                 navigation={navigation}
                 // we can't use StackNavigationProp 'cause we'd got errors in other places
-                // $FlowExpectedError
+                // @ts-ignore
                 descriptors={descriptors}
             />
         );
     }
     return (
+        // @ts-ignore
         <StackView
             headerMode="none"
             state={stackState}
             // we can't use StackNavigationProp 'cause we'd got errors in other places
-            // $FlowExpectedError
             navigation={navigation}
             // we can't use StackNavigationProp 'cause we'd got errors in other places
-            // $FlowExpectedError
             descriptors={descriptors}
         />
     );
