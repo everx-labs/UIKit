@@ -135,7 +135,7 @@ const getFoldedX = (width: number): number => {
     );
 };
 
-const useOnPseudoLabelLayout = (
+const useOnLabelLayout = (
     expandedLabelWidth: Animated.SharedValue<number>,
     expandedLabelHeight: Animated.SharedValue<number>,
 ) => {
@@ -175,7 +175,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
         number
     >(0);
 
-    const onPseudoLabelLayout = useOnPseudoLabelLayout(
+    const onLabelLayout = useOnLabelLayout(
         expandedLabelWidth,
         expandedLabelHeight,
     );
@@ -220,7 +220,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
         <View style={styles.container} pointerEvents="none">
             <Animated.View
                 style={[styles.floatingLabel, labelContainerStyle]}
-                onLayout={onPseudoLabelLayout}
+                onLayout={onLabelLayout}
             >
                 <Label animatedPosition={animatedPosition}>{children}</Label>
             </Animated.View>
@@ -230,10 +230,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'column',
         position: 'absolute',
-        top: 0,
-        left: 0,
     },
     pseudoLabel: {
         // To inner text be in intrinsic size
@@ -242,7 +239,5 @@ const styles = StyleSheet.create({
     },
     floatingLabel: {
         position: 'absolute',
-        top: 0,
-        left: 0,
     },
 });
