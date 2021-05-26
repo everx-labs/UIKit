@@ -375,7 +375,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
                     />
                     <MaterialTextViewLabel
                         isFolded={isLabelFolded}
-                        onFold={markDefaultPlacehoderAsVisible}
+                        onFolded={markDefaultPlacehoderAsVisible}
                     >
                         {label}
                     </MaterialTextViewLabel>

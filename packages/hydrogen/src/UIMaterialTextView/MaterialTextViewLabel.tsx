@@ -9,14 +9,13 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { ColorVariants } from '../Colors';
+import { ColorVariants, useTheme } from '../Colors';
 import { Typography, TypographyVariants } from '../Typography';
-import { UILabel } from '../UILabel';
 
 export type MaterialTextViewLabelProps = {
     children: string;
     isFolded: boolean;
-    onFold: () => void;
+    onFolded: () => void;
 };
 
 type Dimensions = {
@@ -39,7 +38,6 @@ const FOLDED_LABEL_SCALE: number =
     paragraphTextStyle.fontSize !== undefined
         ? labelTextStyle.fontSize / paragraphTextStyle.fontSize
         : 0.7;
-// const FOLDED_LABEL_OPACITY: number = 0.5
 
 const POSITION_FOLDED: number = 0;
 const POSITION_EXPANDED: number = 1;
@@ -70,22 +68,39 @@ const getPosition = (isFolded: boolean): number => {
     return isFolded ? POSITION_FOLDED : POSITION_EXPANDED;
 };
 
-const renderLabel = (title: string): React.ReactElement<typeof UILabel> => {
+type LabelProps = {
+    children: string;
+    animatedPosition: Readonly<Animated.SharedValue<number>>;
+};
+const Label: React.FC<LabelProps> = (props: LabelProps) => {
+    const { children, animatedPosition } = props;
+    const theme = useTheme();
+    const labelStyle = Animated.useAnimatedStyle(() => {
+        return {
+            color: Animated.interpolateColor(
+                animatedPosition.value,
+                [POSITION_FOLDED, POSITION_EXPANDED],
+                [
+                    theme[ColorVariants.TextTertiary] as string,
+                    theme[ColorVariants.TextSecondary] as string,
+                ],
+            ),
+        };
+    });
     return (
-        <UILabel
-            role={TypographyVariants.ParagraphText}
-            color={ColorVariants.TextTertiary}
+        <Animated.Text
+            style={[Typography[TypographyVariants.ParagraphText], labelStyle]}
             numberOfLines={1}
             lineBreakMode="tail"
         >
-            {title}
-        </UILabel>
+            {children}
+        </Animated.Text>
     );
 };
 
 const useAnimatedPosition = (
     isFolded: boolean,
-    onFold: () => void,
+    onFolded: () => void,
 ): Readonly<Animated.SharedValue<number>> => {
     const position: Animated.SharedValue<number> = Animated.useSharedValue<
         number
@@ -100,10 +115,10 @@ const useAnimatedPosition = (
             'worklet';
 
             if (isFinished && position.value === POSITION_FOLDED) {
-                Animated.runOnJS(onFold)();
+                Animated.runOnJS(onFolded)();
             }
         },
-        [position.value, onFold],
+        [position.value, onFolded],
     );
 
     const animatedPosition: Readonly<Animated.SharedValue<
@@ -162,7 +177,7 @@ const useOnPseudoLabelLayout = (
 export const MaterialTextViewLabel: React.FC<MaterialTextViewLabelProps> = (
     props: MaterialTextViewLabelProps,
 ) => {
-    const { isFolded, onFold, children } = props;
+    const { isFolded, onFolded, children } = props;
 
     const [
         expandedLabelDimensions,
@@ -176,7 +191,7 @@ export const MaterialTextViewLabel: React.FC<MaterialTextViewLabelProps> = (
 
     const animatedPosition: Readonly<Animated.SharedValue<
         number
-    >> = useAnimatedPosition(isFolded, onFold);
+    >> = useAnimatedPosition(isFolded, onFolded);
 
     const labelContainerStyle: StyleProp<ViewStyle> = Animated.useAnimatedStyle(() => {
         const foldedX: number = getFoldedX(expandedLabelDimensions.width);
@@ -205,11 +220,6 @@ export const MaterialTextViewLabel: React.FC<MaterialTextViewLabelProps> = (
                     ),
                 },
             ],
-            // opacity: Animated.interpolate(
-            //     animatedPosition.value,
-            //     [POSITION_FOLDED, POSITION_EXPANDED],
-            //     [FOLDED_LABEL_OPACITY, 1],
-            // ),
         };
     }, [expandedLabelDimensions]);
 
@@ -219,10 +229,10 @@ export const MaterialTextViewLabel: React.FC<MaterialTextViewLabelProps> = (
     return (
         <View style={styles.container} pointerEvents="none">
             <View style={styles.pseudoLabel} onLayout={onPseudoLabelLayout}>
-                {renderLabel(children)}
+                <Label animatedPosition={animatedPosition}>{children}</Label>
             </View>
             <Animated.View style={[styles.floatingLabel, labelContainerStyle]}>
-                {renderLabel(children)}
+                <Label animatedPosition={animatedPosition}>{children}</Label>
             </Animated.View>
         </View>
     );
