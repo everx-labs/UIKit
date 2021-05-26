@@ -38,7 +38,7 @@ import {
 } from './FloatingLabel';
 
 const topOffsetForLabel: number =
-    (expandedLabelLineHeight - foldedLabelLineHeight) / 2 +
+    (expandedLabelLineHeight - foldedLabelLineHeight) / 2 + // space between input and folded label (by design mockups)
     foldedLabelLineHeight;
 
 export type UIMaterialTextViewCommonProps = UITextViewProps & {
