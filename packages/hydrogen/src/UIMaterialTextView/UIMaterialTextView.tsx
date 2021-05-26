@@ -104,18 +104,18 @@ function useFloatLabelAttribute(
         setDefaultPlaceholderVisible(true);
     }, []);
 
-    React.useEffect(() => {
-        const isFoldedNow = getIsFolded(isFocused, inputHasValue, value);
-        if (!isFoldedNow) {
-            setDefaultPlaceholderVisible(false);
-        }
-    }, [isFocused, inputHasValue, value]);
-
     const isLabelFolded: boolean = getIsFolded(
         isFocused,
         inputHasValue,
         props.value,
     );
+
+    React.useEffect(() => {
+        if (!isLabelFolded) {
+            setDefaultPlaceholderVisible(false);
+        }
+    }, [isLabelFolded]);
+
 
     return {
         isFocused,
