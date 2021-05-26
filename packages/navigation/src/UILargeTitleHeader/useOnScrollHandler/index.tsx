@@ -10,9 +10,9 @@ export function useOnScrollHandler(
     scrollRef: React.RefObject<Animated.ScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
-    yOverScroll: Animated.SharedValue<boolean>,
+    yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
-    blockShift: Animated.SharedValue<number>,
+    shift: Animated.SharedValue<number>,
     rubberBandDistance: number,
 ) {
     const onScrollCbRef = React.useRef<
@@ -24,9 +24,9 @@ export function useOnScrollHandler(
             scrollRef,
             largeTitleViewRef,
             largeTitleHeight,
-            yOverScroll,
+            yIsNegative,
             yWithoutRubberBand,
-            blockShift,
+            shift,
             rubberBandDistance,
         ) as (event: NativeScrollEvent) => void;
     }

@@ -8,9 +8,9 @@ import { resetPosition } from '../useResetPosition';
 const END_THRESHOLD = 100;
 
 export default function useOnWheelHandler(
-    blockShift: Animated.SharedValue<number>,
+    shift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
-    yOverScroll: Animated.SharedValue<boolean>,
+    yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     rubberBandDistance: number,
 ) {
@@ -19,7 +19,7 @@ export default function useOnWheelHandler(
 
     if (onWheelEndCbRef.current == null) {
         onWheelEndCbRef.current = () => {
-            resetPosition(blockShift, largeTitleHeight);
+            resetPosition(shift, largeTitleHeight);
             onWheelEndTimeout.current = null;
         };
     }
@@ -30,8 +30,8 @@ export default function useOnWheelHandler(
 
             if (onWheelEndTimeout.current != null) {
                 clearTimeout(onWheelEndTimeout.current);
-            } else if (yOverScroll.value) {
-                yWithoutRubberBand.value = blockShift.value;
+            } else if (yIsNegative.value) {
+                yWithoutRubberBand.value = shift.value;
             }
 
             onWheelEndTimeout.current = setTimeout(
@@ -40,19 +40,19 @@ export default function useOnWheelHandler(
             );
 
             // TODO: copy pasted
-            if (yOverScroll.value && deltaY < 0) {
+            if (yIsNegative.value && deltaY < 0) {
                 yWithoutRubberBand.value -= deltaY;
-                if (blockShift.value > 0) {
-                    blockShift.value = getYWithRubberBandEffect(
+                if (shift.value > 0) {
+                    shift.value = getYWithRubberBandEffect(
                         yWithoutRubberBand.value,
                         rubberBandDistance,
                     );
                 } else {
-                    blockShift.value -= deltaY;
+                    shift.value -= deltaY;
                 }
             }
         },
-        [yOverScroll, blockShift, yWithoutRubberBand, rubberBandDistance],
+        [yIsNegative, shift, yWithoutRubberBand, rubberBandDistance],
     );
 
     return onWheel;

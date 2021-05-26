@@ -7,9 +7,9 @@ import type Animated from 'react-native-reanimated';
 import onWheelHandler from './useOnWheelHandler';
 
 export const useOnWheelHandler: (
-    blockShift: Animated.SharedValue<number>,
+    shift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
-    yOverScroll: Animated.SharedValue<boolean>,
+    yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     rubberBandDistance: number,
 ) =>

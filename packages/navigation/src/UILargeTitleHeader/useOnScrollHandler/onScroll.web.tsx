@@ -52,9 +52,9 @@ export default function (
     scrollRef: React.RefObject<RNScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
-    yOverScroll: Animated.SharedValue<boolean>,
+    yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
-    blockShift: Animated.SharedValue<number>,
+    shift: Animated.SharedValue<number>,
     rubberBandDistance: number,
 ) {
     return async (event: NativeScrollEvent) => {
@@ -68,30 +68,27 @@ export default function (
                 // nothing
             }
         }
-        yOverScroll.value = y <= 0;
+        yIsNegative.value = y <= 0;
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves
             yWithoutRubberBand.value -= y;
-            if (blockShift.value > 0) {
-                blockShift.value = getYWithRubberBandEffect(
+            if (shift.value > 0) {
+                shift.value = getYWithRubberBandEffect(
                     yWithoutRubberBand.value,
                     rubberBandDistance,
                 );
             } else {
-                blockShift.value -= y;
+                shift.value -= y;
             }
             try {
                 await scrollTo(scrollRef, 0, 0, false);
             } catch (e) {
                 // nothing
             }
-        } else if (blockShift.value > 0 - largeTitleHeight.value) {
+        } else if (shift.value > 0 - largeTitleHeight.value) {
             // scrollTo reset real y, so we need to count it ourselves
             yWithoutRubberBand.value -= y;
-            blockShift.value = Math.max(
-                blockShift.value - y,
-                0 - largeTitleHeight.value,
-            );
+            shift.value = Math.max(shift.value - y, 0 - largeTitleHeight.value);
             try {
                 await scrollTo(scrollRef, 0, 0, false);
             } catch (e) {

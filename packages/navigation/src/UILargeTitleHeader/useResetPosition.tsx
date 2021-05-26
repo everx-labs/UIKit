@@ -3,24 +3,24 @@ import * as React from 'react';
 import Animated, { withSpring } from 'react-native-reanimated';
 
 export function resetPosition(
-    blockShift: Animated.SharedValue<number>,
+    shift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
 ) {
     'worklet';
 
-    if (blockShift.value > (0 - largeTitleHeight.value) / 2) {
-        blockShift.value = withSpring(0, {
+    if (shift.value > (0 - largeTitleHeight.value) / 2) {
+        shift.value = withSpring(0, {
             overshootClamping: true,
         });
     } else {
-        blockShift.value = withSpring(0 - largeTitleHeight.value, {
+        shift.value = withSpring(0 - largeTitleHeight.value, {
             overshootClamping: true,
         });
     }
 }
 
 export function useResetPosition(
-    blockShift: Animated.SharedValue<number>,
+    shift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
 ) {
     const resetPositionRef = React.useRef<(() => void) | null>(null);
@@ -29,7 +29,7 @@ export function useResetPosition(
         resetPositionRef.current = () => {
             'worklet';
 
-            resetPosition(blockShift, largeTitleHeight);
+            resetPosition(shift, largeTitleHeight);
         };
     }
 
