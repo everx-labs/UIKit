@@ -1,8 +1,8 @@
-import { UIPagerViewContainer } from './UIPagerViewContainer';
-import { UIPagerViewPage } from './UIPagerViewPage';
+import { UIPagerViewContainer } from './UIPagerView/UIPagerViewContainer';
+import { UIPagerViewPage } from './UIPagerView/UIPagerViewPage';
 
 /** type of UIPagerViewContainer */
-export type UIPagerViewContainerType = 'Left' | 'Center';
+export type UIPagerViewContainerType = 'Scrollable' | 'Fixed' | 'FixedPadded';
 
 /**
  * Container properties.
@@ -11,9 +11,9 @@ export type UIPagerViewContainerProps = {
     /** type of UIPagerViewContainer */
     type: UIPagerViewContainerType;
     /** index of first shown page */
-    initialPageIndex: number;
+    initialPageIndex?: number;
     /** callback that is called when the page changes */
-    onPageIndexChange: (newPageIndex: number) => void;
+    onPageIndexChange?: (newPageIndex: number) => void;
     /** only UIPagerViewPage can be passed to children */
     children:
         | React.ReactElement<UIPagerViewPageProps>
@@ -26,10 +26,14 @@ export type UIPagerViewContainerProps = {
  * Page properties.
  */
 export type UIPagerViewPageProps = {
+    /** Unique string for the page */
+    id: string,
     /** title of page */
     title: string;
     /** main content component for the page */
-    component: React.ReactNode;
+    component: () => React.ReactElement;
+    /** Set if page is destructive ("Danger zone") */
+    isDestructive?: boolean;
     /** used for autotests */
     testID?: string;
 };

@@ -11,7 +11,13 @@ import debounce from 'lodash/debounce';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { ColorVariants, UIImage, UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
+import { 
+    ColorVariants,
+    UIImage,
+    UILabel,
+    UILabelRoles,
+    UILabelColors,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 import UIPinCodeDots from './UIPinCodeDots';

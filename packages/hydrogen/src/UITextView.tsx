@@ -39,6 +39,12 @@ export type UITextViewProps = Omit<
 > & {
     placeholderTextColor?: ColorVariants;
     style?: StyleProp<UITextViewStyle>;
+    /**
+     * Android only
+     * A flag to apply EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING
+     * to inner EditText view
+     */
+    noPersonalizedLearning?: boolean;
 };
 
 function useAutoFocus(
@@ -65,6 +71,7 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
             style,
             placeholderTextColor = ColorVariants.TextSecondary,
             autoFocus,
+            noPersonalizedLearning,
             ...rest
         }: UITextViewProps,
         passedRef,
@@ -79,9 +86,10 @@ export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
                 ref={ref}
                 {...rest}
                 autoFocus={autoFocusProp}
-                // @ts-ignore
                 // This is our custom prop, we do it in native for Android
-                noPersonalizedLearning={false}
+                {...(Platform.OS === 'android'
+                    ? { noPersonalizedLearning }
+                    : null)}
                 placeholderTextColor={theme[placeholderTextColor]}
                 selectionColor={theme[ColorVariants.TextAccent]}
                 // @ts-ignore
@@ -127,11 +135,16 @@ const styles = StyleSheet.create({
 export function useUITextViewValue(
     ref: React.Ref<TextInput> | null,
     useClearWithEnter = false,
-    { value: valueProp, onChangeText: onChangeTextProp }: UITextViewProps = {},
+    {
+        value: valueProp,
+        defaultValue: defaultValueProp,
+        onChangeText: onChangeTextProp,
+    }: UITextViewProps = {},
 ) {
-    // Little optimisation to not re-render children on every value change
+    // Little optimization to not re-render children on every value change
     const [inputHasValue, setInputHasValue] = React.useState(
-        valueProp != null && valueProp !== '',
+        (valueProp != null && valueProp !== '') ||
+            (defaultValueProp != null && defaultValueProp !== ''),
     );
 
     React.useEffect(() => {
@@ -145,7 +158,12 @@ export function useUITextViewValue(
         }
     }, [valueProp, inputHasValue]);
 
-    const inputValue = React.useRef('');
+    // Create a ref to the current input value
+    const inputValue = React.useRef(valueProp || '');
+    React.useEffect(() => {
+        inputValue.current = valueProp || '';
+    }, [valueProp]);
+
     const wasClearedWithEnter = React.useRef(false);
 
     const onChangeText = React.useCallback(

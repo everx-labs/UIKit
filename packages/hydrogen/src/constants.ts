@@ -2,9 +2,8 @@ import { Platform } from 'react-native';
 
 export const UIConstant = {
     iconSize: 24,
-
+    middleButtonIconSize: 20,
     smallButtonIconSize: 12,
-    normalButtonIconSize: 20,
 
     buttonBorderWidth: 1,
 
@@ -49,4 +48,11 @@ export const UIConstant = {
               },
 
     dashSymbol: '\u2014',
+
+    hitSlop: {
+        top: 24,
+        bottom: 24,
+        left: 24,
+        right: 24,
+    },
 };

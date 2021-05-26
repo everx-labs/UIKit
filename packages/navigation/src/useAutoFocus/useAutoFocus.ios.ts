@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 /**
  * Motivation:
@@ -18,7 +18,13 @@ export function useAutoFocus(
     ref: React.Ref<TextInput>,
     autoFocus: boolean | undefined,
 ) {
-    const navigation = useNavigation();
+    let navigation: NavigationProp<any> | null = null;
+    try {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        navigation = useNavigation();
+    } catch (e) {
+        // nothing
+    }
 
     React.useEffect(() => {
         if (!autoFocus || ref == null || !('current' in ref)) {
@@ -65,18 +71,18 @@ export function useAutoFocus(
         };
 
         // @ts-ignore
-        navigation.addListener('transitionStart', transitionStartListener);
+        navigation?.addListener('transitionStart', transitionStartListener);
         // @ts-ignore
-        navigation.addListener('transitionEnd', transitionEndListener);
+        navigation?.addListener('transitionEnd', transitionEndListener);
 
         return () => {
-            navigation.removeListener(
+            navigation?.removeListener(
                 // @ts-ignore
                 'transitionStart',
                 transitionStartListener,
             );
             // @ts-ignore
-            navigation.removeListener('transitionEnd', transitionEndListener);
+            navigation?.removeListener('transitionEnd', transitionEndListener);
         };
     }, [ref, autoFocus, navigation]);
 

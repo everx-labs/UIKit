@@ -45,6 +45,10 @@ export type UIBoxButtonProps = {
      */
     loading?: boolean;
     /**
+     * Color of the UIBoxButtonType.Nulled button title
+     */
+    nulledColor?: ColorVariants;
+    /**
      * Function will be called on button press
      */
     onPress?: () => void | Promise<void>;
@@ -69,6 +73,7 @@ export type UIBoxButtonProps = {
 function useButtonStyles(
     type: string,
     disabled?: boolean,
+    nulledColor?: ColorVariants,
 ) {
     let backgroundColor: ColorVariants = ColorVariants.Transparent;
     let borderColor: ColorVariants = ColorVariants.Transparent;
@@ -108,7 +113,7 @@ function useButtonStyles(
         if (disabled) {
             titleColor = ColorVariants.TextTertiary;
         } else {
-            titleColor = ColorVariants.TextAccent;
+            titleColor = nulledColor || ColorVariants.TextAccent;
         }
     }
 
@@ -133,12 +138,13 @@ export const UIBoxButton = ({
     iconPosition = UIBoxButtonIconPosition.Left,
     layout,
     loading,
+    nulledColor,
     onPress,
     testID,
     title,
     type= UIBoxButtonType.Primary
 }: UIBoxButtonProps) => {
-    const { buttonStyle, titleColor } = useButtonStyles(type, disabled);
+    const { buttonStyle, titleColor } = useButtonStyles(type, disabled, nulledColor);
     return (
         <Button
             containerStyle={[
@@ -154,18 +160,29 @@ export const UIBoxButton = ({
             <Button.Content>
                 {
                     iconPosition === UIBoxButtonIconPosition.Left && icon &&
-                    <Button.Icon source={icon} style={styles.leftIcon} />
+                    <Button.Icon
+                        source={icon}
+                        style={styles.leftIcon}
+                        tintColor={titleColor}
+                    />
                 }
                 <Button.Title titleColor={titleColor}>{title}</Button.Title>
                 {
                     iconPosition === UIBoxButtonIconPosition.Middle && icon &&
-                    <Button.Icon source={icon} size={ButtonIconSize.Small} style={styles.middleIcon} />
+                    <Button.Icon
+                        source={icon}
+                        size={ButtonIconSize.Normal}
+                        tintColor={titleColor}
+                    />
                 }
             </Button.Content>
             {
-                (type === UIBoxButtonType.Primary || type === UIBoxButtonType.Secondary) &&
-                icon && iconPosition === UIBoxButtonIconPosition.Right &&
-                <Button.Icon source={icon} style={styles.rightIcon} />
+                iconPosition === UIBoxButtonIconPosition.Right && icon &&
+                <Button.Icon
+                    source={icon}
+                    style={styles.rightIcon}
+                    tintColor={titleColor}
+                />
             }
         </Button>
     );
@@ -178,9 +195,6 @@ const styles = StyleSheet.create({
     },
     leftIcon: {
         marginRight: 10,
-    },
-    middleIcon: {
-        marginLeft: 6,
     },
     rightIcon: {
         marginLeft: 6,

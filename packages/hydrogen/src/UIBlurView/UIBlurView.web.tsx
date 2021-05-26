@@ -1,11 +1,29 @@
 import * as React from 'react';
-import { View, ViewStyle} from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from '../Colors';
+import { UIConstant } from '../constants';
+
+const styles = StyleSheet.create({
+    container: {
+        overflow: 'hidden',
+        borderRadius: UIConstant.alertBorderRadius,
+    },
+});
 
 type Props = Omit<ViewProps, 'style'> & {
-    style?: StyleProp<ViewStyle>;
+    /**
+     * Elements to be rendered on the BlurView
+     */
     children?: React.ReactNode;
+    /**
+     * Style of the BlurView
+     */
+    style?: StyleProp<ViewStyle>;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 function isBlurSupported() {
@@ -31,6 +49,7 @@ function getBlurStyle(color: string): Record<string, string> {
 export const UIBlurView = React.forwardRef<View, Props>(
     function UIBlurViewForwarded({
         style,
+        testID,
         ...rest
     }: Props, ref) {
         const color = useTheme()[ColorVariants.BackgroundOverlayInverted] as string;
@@ -39,8 +58,10 @@ export const UIBlurView = React.forwardRef<View, Props>(
         return (
             <View
                 ref={ref}
+                testID={testID}
                 {...rest}
                 style={[
+                    styles.container,
                     style,
                     blurStyle,
                 ]}

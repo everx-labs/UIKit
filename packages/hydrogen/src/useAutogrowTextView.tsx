@@ -87,6 +87,14 @@ export function useAutogrowTextView(
         [ref, onContentSizeChange],
     );
 
+    React.useLayoutEffect(() => {
+        // When the default value is too long that it should be multiline
+        // we have to force a height measurement to draw it correctly
+        if (Platform.OS === 'web') {
+            requestAnimationFrame(() => onChangeOnWeb(null));
+        }
+    }, [onChangeOnWeb]);
+
     const resetInputHeight = React.useCallback(() => {
         setInputHeight(textViewHeight);
 

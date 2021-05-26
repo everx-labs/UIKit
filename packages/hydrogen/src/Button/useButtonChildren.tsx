@@ -24,6 +24,7 @@ export function ButtonContent({
 // eslint-disable-next-line no-shadow
 export enum IconSize {
     Normal = 'Normal',
+    Middle = 'Middle',
     Small = 'Small',
 }
 
@@ -31,16 +32,19 @@ export function ButtonIcon({
     source,
     tintColor,
     style,
-    size = IconSize.Normal,
+    size = IconSize.Middle,
     ...props
 }: UIImageProps & {
     size?: IconSize;
 }) {
     const iconSize = React.useMemo(() => {
+        if (size === IconSize.Normal) {
+            return UIConstant.iconSize;
+        }
         if (size === IconSize.Small) {
             return UIConstant.smallButtonIconSize;
         }
-        return UIConstant.normalButtonIconSize;
+        return UIConstant.middleButtonIconSize;
     }, [size]);
 
     return (

@@ -4,10 +4,12 @@ import { StyleSheet, View, Image } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageURISource } from 'react-native/Libraries/Image/ImageSource';
 
-import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { UIComponent } from '@tonlabs/uikit.components';
-import { UIImageView } from '@tonlabs/uikit.navigation_legacy';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { UIImageView } from '@tonlabs/uikit.navigation_legacy';
+
 
 const cameraImage = UIAssets.icons.ui.camera;
 
@@ -26,9 +28,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    overlay: {
-        backgroundColor: UIColor.overlay20(),
-    },
 });
 
 export default class UIProfilePhoto extends UIComponent<Props, {}> {
@@ -46,11 +45,11 @@ export default class UIProfilePhoto extends UIComponent<Props, {}> {
             return null;
         }
         return (
-            <View
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundOverlay}
                 style={[
                     UIStyle.common.absoluteFillObject(),
                     UIStyle.common.profilePhoto(),
-                    styles.overlay,
                 ]}
                 pointerEvents="none"
             />

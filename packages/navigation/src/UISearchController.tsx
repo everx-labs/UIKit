@@ -1,13 +1,25 @@
 import * as React from 'react';
-import { useWindowDimensions, ViewStyle, StyleSheet } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { ViewStyle, StyleSheet } from 'react-native';
+import Animated, {
+    useSharedValue,
+    useDerivedValue,
+    withSpring,
+    useAnimatedStyle,
+    interpolate,
+    runOnJS,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Portal, useColorParts, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { Portal, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UISearchBar } from './UISearchBar';
 import { ELASTIC_WIDTH_CONTROLLER } from './constants';
+
+const ANIMATION_TRANSITION_SPACE: number = 40;
+
+const VISIBLE_STATE_CLOSED: number = 0;
+const VISIBLE_STATE_OPENED: number = 1;
 
 export type UISearchControllerProps = {
     forId?: string;
@@ -20,156 +32,100 @@ export type UISearchControllerProps = {
 };
 
 type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
-    onClosed: () => void;
+    progress: Readonly<Animated.SharedValue<number>>;
 };
 
-// eslint-disable-next-line no-shadow
-enum ShowStates {
-    Close = 0,
-    Closing = 1,
-    Open = 2,
-    Opening = 3,
-}
+const withSpringConfig: Animated.WithSpringConfig = {
+    damping: 16,
+    stiffness: 200,
+};
 
-function getAnimationOpacity(
-    show: Animated.Value<ShowStates>,
+const useProgress = (
+    visible: boolean,
     onClosed: () => void,
-) {
-    const {
-        block,
-        cond,
-        eq,
-        set,
-        startClock,
-        stopClock,
-        clockRunning,
-        and,
-        call,
-        spring,
-    } = Animated;
+): Readonly<Animated.SharedValue<number>> => {
+    /* Controller visibility status (VISIBLE_STATE_CLOSED/VISIBLE_STATE_OPENED) */
+    const visibleState = useSharedValue<number>(VISIBLE_STATE_CLOSED);
 
-    const clock = new Animated.Clock();
+    /* Indicates that the rendering is the first one. */
+    const isFirstRender = useSharedValue<boolean>(true);
 
-    const state = {
-        finished: new Animated.Value(0),
-        velocity: new Animated.Value(0),
-        position: new Animated.Value(0),
-        time: new Animated.Value(0),
-    };
+    React.useEffect((): void => {
+        if (
+            (visible && visibleState.value === VISIBLE_STATE_CLOSED) ||
+            (!visible && visibleState.value === VISIBLE_STATE_OPENED)
+        ) {
+            /** State were changed */
 
-    const config: Animated.SpringConfig = {
-        // Default ones from https://reactnative.dev/docs/animated#spring
-        ...Animated.SpringUtils.makeConfigFromBouncinessAndSpeed({
-            overshootClamping: false,
-            bounciness: 3,
-            speed: 10,
-            mass: new Animated.Value(1),
-            restSpeedThreshold: new Animated.Value(0.01),
-            restDisplacementThreshold: new Animated.Value(0.01),
-            toValue: new Animated.Value(0),
-        }),
-    };
+            if (isFirstRender.value) {
+                isFirstRender.value = false;
+            }
+            visibleState.value = visible
+                ? VISIBLE_STATE_OPENED
+                : VISIBLE_STATE_CLOSED;
+        }
+    }, [visible, visibleState, isFirstRender]);
 
-    return block([
-        cond(eq(show, ShowStates.Close), [
-            set(state.finished, 0),
-            // @ts-ignore
-            set(config.toValue, 0),
-            set(show, ShowStates.Closing),
-            startClock(clock),
-        ]),
-        cond(eq(show, ShowStates.Open), [
-            set(state.finished, 0),
-            // @ts-ignore
-            set(config.toValue, 1),
-            set(show, ShowStates.Opening),
-            startClock(clock),
-        ]),
-        cond(and(state.finished, clockRunning(clock)), [
-            stopClock(clock),
-            // Animated.debug('stopped', show),
-            cond(eq(show, ShowStates.Closing), call([], onClosed)),
-        ]),
-        spring(clock, state, config),
-        state.position,
-    ]);
-}
+    const onAnimation = React.useCallback(
+        (isFinished: boolean): void => {
+            'worklet';
 
-function useAnimation(onClosed: () => void) {
-    const show = Animated.useValue<ShowStates>(ShowStates.Closing);
-
-    const opacity = React.useRef(getAnimationOpacity(show, onClosed)).current;
-
-    const animate = React.useCallback(
-        (visible) => {
-            show.setValue(visible ? ShowStates.Open : ShowStates.Close);
+            if (
+                isFinished &&
+                visibleState.value === VISIBLE_STATE_CLOSED &&
+                /** On web `reanimated` tries to call onAnimation 
+                 * (passed to `withSpring`) on the first render
+                 * when controller still closed. Preventing this.
+                 *
+                 * This is probably a bug in reanimation.
+                 * TODO: create an issue in reanimated repo
+                 */
+                !isFirstRender.value
+            ) {
+                runOnJS(onClosed)();
+            }
         },
-        [show],
+        [onClosed, visibleState.value, isFirstRender.value],
     );
 
-    return {
-        opacity,
-        animate,
-    };
-}
+    const progress: Readonly<Animated.SharedValue<
+        number
+    >> = useDerivedValue((): number => {
+        return withSpring(visibleState.value, withSpringConfig, onAnimation);
+    }, []);
+
+    return progress;
+};
 
 function UISearchControllerContent({
-    visible,
     placeholder,
     onCancel,
     children,
-    onClosed,
     searching,
     onChangeText: onChangeTextProp,
+    progress,
 }: UISearchControllerContentProps) {
     const [searchText, setSearchText] = React.useState('');
-    const { height } = useWindowDimensions();
+    const theme = useTheme();
 
-    const { animate, opacity } = useAnimation(onClosed);
-
-    React.useEffect(() => {
-        animate(visible);
-    }, [visible, animate]);
-
-    const {
-        colorParts: backgroundColorParts,
-        opacity: backgroundOpacity,
-    } = useColorParts(ColorVariants.BackgroundPrimary);
-
-    // @ts-ignore TS doesn't understand when backgroundColor is animated node
-    const backgroundStyle: ViewStyle = React.useMemo(
-        () => ({
-            flex: 1,
-            // On web we can't just animate opacity
-            // as it has a bug, it flickers a bit
-            // on mounting
-            backgroundColor: Animated.interpolateColors(opacity, {
-                inputRange: [0, 1],
-                outputColorRange: [
-                    `rgba(${backgroundColorParts}, 0)`,
-                    `rgba(${backgroundColorParts}, ${backgroundOpacity})`,
-                ],
-            }),
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            opacity: progress.value,
             transform: [
                 {
-                    translateY: Animated.interpolateNode(opacity, {
-                        inputRange: [0, 1],
-                        outputRange: [0 - height / 2, 0],
-                    }),
+                    translateY: interpolate(
+                        progress.value,
+                        [VISIBLE_STATE_CLOSED, VISIBLE_STATE_OPENED],
+                        [-ANIMATION_TRANSITION_SPACE, 0],
+                    ),
                 },
             ],
-        }),
-        [backgroundColorParts, backgroundOpacity, height, opacity],
-    );
+        };
+    }, []);
 
-    const contentStyle: ViewStyle = React.useMemo(
-        () => ({
-            flex: 1,
-            // @ts-ignore
-            opacity: opacity as number,
-        }),
-        [opacity],
-    );
+    const baseStyle: ViewStyle = {
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+    };
 
     const onChangeText = React.useCallback(
         (text: string) => {
@@ -183,7 +139,7 @@ function UISearchControllerContent({
     );
 
     return (
-        <Animated.View style={backgroundStyle}>
+        <Animated.View style={[styles.container, baseStyle, animatedStyle]}>
             <SafeAreaView style={styles.contentInner} edges={['top']}>
                 <UISearchBar
                     autoFocus
@@ -193,11 +149,9 @@ function UISearchControllerContent({
                     headerRightLabel={uiLocalized.Cancel}
                     headerRightOnPress={onCancel}
                 />
-                <Animated.View style={contentStyle}>
-                    {typeof children === 'function'
-                        ? children(searchText)
-                        : children}
-                </Animated.View>
+                {typeof children === 'function'
+                    ? children(searchText)
+                    : children}
             </SafeAreaView>
         </Animated.View>
     );
@@ -214,9 +168,17 @@ export function UISearchController({
         if (!visible) {
             return;
         }
-
         setIsVisible(true);
     }, [visible]);
+
+    const onClosed = React.useCallback((): void => {
+        setIsVisible(false);
+    }, [setIsVisible]);
+
+    const progress: Readonly<Animated.SharedValue<number>> = useProgress(
+        visible,
+        onClosed,
+    );
 
     if (!isVisible) {
         return null;
@@ -224,10 +186,7 @@ export function UISearchController({
 
     return (
         <Portal forId={forId} absoluteFill>
-            <UISearchControllerContent
-                {...props}
-                onClosed={() => setIsVisible(false)}
-            >
+            <UISearchControllerContent {...props} progress={progress}>
                 {children}
             </UISearchControllerContent>
         </Portal>
@@ -235,6 +194,15 @@ export function UISearchController({
 }
 
 const styles = StyleSheet.create({
+    container: {
+        ...StyleSheet.absoluteFillObject,
+
+        /** Since the view moves with a spring it goes out of bounds from above
+         * and there is an empty space left.
+         * To eliminate this, we use this hack to "compensate" the space */
+        top: -ANIMATION_TRANSITION_SPACE,
+        paddingTop: ANIMATION_TRANSITION_SPACE,
+    },
     contentInner: {
         width: '100%',
         maxWidth: ELASTIC_WIDTH_CONTROLLER,

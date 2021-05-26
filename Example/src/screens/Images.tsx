@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import { UIImageView } from '@tonlabs/uikit.navigation_legacy';
-import { UIActionImage, UIImage } from '@tonlabs/uikit.components';
+import { UIActionImage } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -26,12 +26,6 @@ export const Images = () => (
                     iconHovered={UIAssets.icons.ui.keyThinWhite}
                     disabled
                 />
-            </View>
-        </ExampleSection>
-        <ExampleSection title="UIImage">
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                {/* $FlowFixMe */}
-                <UIImage testID="uiImage_default" source={UIAssets.icons.ui.keyThinDark} />
             </View>
         </ExampleSection>
         <ExampleSection title="UIImageView Editable (press it)">
