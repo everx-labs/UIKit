@@ -8,14 +8,14 @@
 
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View, ScrollView, Platform } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 // $FlowFixMe
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 // $FlowFixMe
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { UIColor } from '@tonlabs/uikit.core';
 import {
@@ -37,7 +37,6 @@ import {
     useWebFonts,
     useTheme,
     UILabel,
-    UILabelRoles,
     ThemeContext,
     DarkTheme,
     LightTheme,
@@ -49,6 +48,8 @@ import {
 import {
     UISearchBarButton,
     UIAndroidNavigationBar,
+    UILargeTitleHeader,
+    ScrollView,
 } from '@tonlabs/uikit.navigation';
 
 import { Buttons } from './screens/Buttons';
@@ -86,23 +87,17 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
     return (
         <UIBackgroundView style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1 }}>
-                <PortalManager id="search">
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: 10,
-                        }}
-                    >
-                        <UILabel role={UILabelRoles.TitleLarge}>Main</UILabel>
+            <PortalManager id="search">
+                <UILargeTitleHeader
+                    title="Main"
+                    headerRight={() => (
                         <UIToggle
                             testID="theme_switcher"
                             active={themeSwitcher.isDarkTheme}
                             onPress={() => themeSwitcher.toggleTheme()}
                         />
-                    </View>
+                    )}
+                >
                     <View style={{ paddingHorizontal: 10 }}>
                         <UISearchBarButton
                             forId="search"
@@ -158,11 +153,11 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         style={{ flex: 1 }}
                         contentContainerStyle={{ paddingBottom: 50 }}
                     >
-                        <UIButton
+                        {/* <UIButton
                             onPress={() => navigation.navigate('large-header')}
                             buttonStyle={UIButton.ButtonStyle.Link}
                             title="Large header"
-                        />
+                        /> */}
                         <UIButton
                             onPress={() => navigation.navigate('keyboard')}
                             buttonStyle={UIButton.ButtonStyle.Link}
@@ -244,8 +239,8 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             title="Navigation"
                         />
                     </ScrollView>
-                </PortalManager>
-            </SafeAreaView>
+                </UILargeTitleHeader>
+            </PortalManager>
         </UIBackgroundView>
     );
 };

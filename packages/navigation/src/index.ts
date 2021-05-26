@@ -8,5 +8,5 @@ export * from './UIDialogBar';
 export * from './UISlideBar';
 export * from './UIAndroidNavigationBar';
 export * from './Scrollable';
-export * from './LargeTitleHeader';
+export * from './UILargeTitleHeader';
 export * from './constants';

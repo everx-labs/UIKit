@@ -21,22 +21,16 @@ import {
 import { useOnScrollHandler } from './useOnScrollHandler';
 import { getYWithRubberBandEffect } from './getYWithRubberBandEffect';
 import { ScrollableContext } from '../Scrollable/Context';
-import useOnWheelHandler from './useOnWheelHandler/useOnWheelHandler.web';
+import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
+import { HEADER_HEIGHT, SCREEN_CONTENT_INSET_HORIZONTAL } from '../constants';
+import { UINavigationBar, UINavigationBarProps } from '../UINavigationBar';
 
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
 const RUBBER_BAND_EFFECT_DISTANCE = Platform.select({ web: 50, default: 150 });
 
-type LargeTitleHeaderProps = {
-    /**
-     * A title string
-     */
-    title?: string;
-    /**
-     * A caption string
-     */
-    caption?: string;
+type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
      * A label string
      */
@@ -51,13 +45,12 @@ type LargeTitleHeaderProps = {
     children: React.ReactNode;
 };
 
-export function LargeTitleHeader({
-    title,
-    caption,
+export function UILargeTitleHeader({
     label,
     note,
     children,
-}: LargeTitleHeaderProps) {
+    ...navigationBarProps
+}: UILargeTitleHeaderProps) {
     // TODO: rename
     const blockShift = useSharedValue(0);
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -163,12 +156,6 @@ export function LargeTitleHeader({
         }
     }, [largeTitleHeight, blockShift]);
 
-    const headerTitleStyle = useAnimatedStyle(() => {
-        return {
-            opacity: headerTitleOpacity.value,
-        };
-    });
-
     const ghYPrev = useSharedValue(0);
     // TODO: explain why we need GH at all
     const gestureHandler = useAnimatedGestureHandler({
@@ -240,7 +227,7 @@ export function LargeTitleHeader({
                             {label}
                         </UILabel>
                     )}
-                    {title && (
+                    {navigationBarProps.title && (
                         <AnimatedUILabel
                             role={UILabelRoles.TitleLarge}
                             style={largeTitleStyle}
@@ -252,7 +239,7 @@ export function LargeTitleHeader({
                                 titleWidth.value = width;
                             }}
                         >
-                            {title}
+                            {navigationBarProps.title}
                         </AnimatedUILabel>
                     )}
                     {note && (
@@ -271,26 +258,13 @@ export function LargeTitleHeader({
             <UIBackgroundView
                 style={[
                     styles.mainHeaderContainer,
-                    { height: 56 + top, paddingTop: top },
+                    { height: HEADER_HEIGHT + top, paddingTop: top },
                 ]}
             >
-                <Animated.View
-                    style={[styles.mainHeaderTitleContainer, headerTitleStyle]}
-                >
-                    {title && (
-                        <UILabel role={UILabelRoles.HeadlineHead}>
-                            {title}
-                        </UILabel>
-                    )}
-                    {caption && (
-                        <UILabel
-                            role={UILabelRoles.ParagraphFootnote}
-                            color={UILabelColors.TextSecondary}
-                        >
-                            {caption}
-                        </UILabel>
-                    )}
-                </Animated.View>
+                <UINavigationBar
+                    {...navigationBarProps}
+                    headerTitleOpacity={headerTitleOpacity}
+                />
             </UIBackgroundView>
         </UIBackgroundView>
     );
@@ -302,21 +276,19 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    mainHeaderFiller: { height: 56 },
+    mainHeaderFiller: { height: HEADER_HEIGHT },
     mainHeaderContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
-        flexDirection: 'row',
-        justifyContent: 'center',
     },
     mainHeaderTitleContainer: {
         alignItems: 'center',
         justifyContent: 'center',
     },
     largeTitleHeaderContainer: {
-        padding: 16,
+        padding: SCREEN_CONTENT_INSET_HORIZONTAL,
     },
     sceneContainer: {
         // TODO: explain this

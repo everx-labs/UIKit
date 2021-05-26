@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { LargeTitleHeader, ScrollView } from '@tonlabs/uikit.navigation';
+import { UILargeTitleHeader, ScrollView } from '@tonlabs/uikit.navigation';
 
 export function LargeHeaderScreen() {
     return (
-        <LargeTitleHeader title="Long title">
+        <UILargeTitleHeader
+            title="Long title"
+            headerRightItems={[{ label: 'Action' }]}
+        >
             <ScrollView>
                 {new Array(9)
                     .fill(null)
@@ -21,6 +24,6 @@ export function LargeHeaderScreen() {
                         />
                     ))}
             </ScrollView>
-        </LargeTitleHeader>
+        </UILargeTitleHeader>
     );
 }
