@@ -131,7 +131,7 @@ export const Inputs = () => {
                 />
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ maxWidth: 300, paddingVertical: 20, minWidth: 250 }}>
                     <UIMaterialTextView
                         testID="uiMaterialTextView_default"
                         label="Label"
