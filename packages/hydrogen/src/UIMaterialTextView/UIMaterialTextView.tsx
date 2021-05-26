@@ -95,20 +95,20 @@ function useFloatLabelAttribute(
         props.onBlur,
     );
 
+    const isLabelFolded: boolean = getIsFolded(
+        isFocused,
+        inputHasValue,
+        value,
+    );
+
     const [
         isDefaultPlaceholderVisible,
         setDefaultPlaceholderVisible,
-    ] = React.useState(getIsFolded(isFocused, inputHasValue, value));
+    ] = React.useState(isLabelFolded);
 
     const markDefaultPlacehoderAsVisible = React.useCallback(() => {
         setDefaultPlaceholderVisible(true);
     }, []);
-
-    const isLabelFolded: boolean = getIsFolded(
-        isFocused,
-        inputHasValue,
-        props.value,
-    );
 
     React.useEffect(() => {
         if (!isLabelFolded) {
