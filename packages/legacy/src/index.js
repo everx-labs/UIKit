@@ -3,7 +3,6 @@ export { default as UISplitViewController } from './UISplitViewController';
 export { default as UINavigationBackButton } from './UINavigationBackButton';
 export { default as UINavigationBar } from './UINavigationBar';
 export { default as UINavigationIconButton } from './UINavigationIconButton';
-export { default as UINavigationPlusButton } from './UINavigationPlusButton';
 export { default as UINavigationTextButton } from './UINavigationTextButton';
 export { default as UINavigator } from './UINavigator';
 export { default as UIAccountPicker } from './UIAccountPicker';

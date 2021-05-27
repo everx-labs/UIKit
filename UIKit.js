@@ -107,7 +107,6 @@ export {
     UINavigationBackButton,
     UINavigationBar,
     UINavigationIconButton,
-    UINavigationPlusButton,
     UINavigationTextButton,
     UINavigator,
     UIAccountPicker,
