@@ -129,7 +129,12 @@ export const SplitNavigator = ({
     >(SplitRouter, {
         children,
         initialRouteName,
-        screenOptions: restScreenOptions,
+        screenOptions: {
+            ...restScreenOptions,
+            // @ts-ignore it's doesn't exist in our options
+            // but it's needed to turn of header in react-native-screens
+            headerShown: false,
+        },
         isSplitted,
     });
 
@@ -221,9 +226,7 @@ export const SplitNavigator = ({
         return (
             <NativeStackView
                 state={stackState}
-                // we can't use StackNavigationProp 'cause we'd got errors in other places
                 navigation={navigation}
-                // we can't use StackNavigationProp 'cause we'd got errors in other places
                 // @ts-ignore
                 descriptors={descriptors}
             />
@@ -234,9 +237,7 @@ export const SplitNavigator = ({
         <StackView
             headerMode="none"
             state={stackState}
-            // we can't use StackNavigationProp 'cause we'd got errors in other places
             navigation={navigation}
-            // we can't use StackNavigationProp 'cause we'd got errors in other places
             descriptors={descriptors}
         />
     );

@@ -15,7 +15,10 @@ import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+    SafeAreaProvider,
+    useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import { UIColor } from '@tonlabs/uikit.core';
 import {
@@ -85,8 +88,9 @@ const ThemeSwitcher = React.createContext({
 const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
+    const { top } = useSafeAreaInsets();
     return (
-        <UIBackgroundView style={{ flex: 1 }}>
+        <UIBackgroundView style={{ flex: 1, paddingTop: top }}>
             <PortalManager id="search">
                 <UILargeTitleHeader
                     title="Main"
