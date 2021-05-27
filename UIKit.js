@@ -103,11 +103,9 @@ export {
 } from './packages/navigation_legacy/src';
 
 export {
-    UIDetailsButton,
     UISplitViewController,
     UINavigationBackButton,
     UINavigationBar,
-    UINavigationCloseButton,
     UINavigationIconButton,
     UINavigationPlusButton,
     UINavigationTextButton,
@@ -120,13 +118,9 @@ export {
     UIFlashMessage,
     UIIdleDetector,
     UILandingView,
-    UIProfilePhoto,
     UIProfileInitials,
-    UIProfileView,
-    UIQuote,
     UISharedComponents,
     UIStubPage,
-    UITokenCell,
     UITransactionView,
     UITransitionView,
 } from './packages/legacy/src';
