@@ -41,7 +41,7 @@ export default class UINavigationIconButton extends UIComponent<Props, State> {
             >
                 <UIImage
                     source={icon}
-                    tintColor={disabled ? ColorVariants.LineTertiary : null}
+                    tintColor={disabled ? ColorVariants.LineTertiary : ColorVariants.LineAccent}
                 />
             </TouchableOpacity>
         );
