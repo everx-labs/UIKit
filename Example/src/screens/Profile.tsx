@@ -3,7 +3,6 @@ import { View } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { UIProfileInitials } from '@tonlabs/uikit.legacy';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
