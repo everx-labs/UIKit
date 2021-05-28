@@ -11,13 +11,11 @@ import { ScrollableContext } from './Context';
 export function ScrollView(
     props: ScrollViewProps & { children?: React.ReactNode },
 ) {
-    const panGestureRef = React.useRef<PanGestureHandler>(null);
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
     return (
         <ScrollableContext.Consumer>
             {({ ref, scrollHandler, gestureHandler, onWheel }) => (
                 <PanGestureHandler
-                    ref={panGestureRef}
                     enabled={Platform.OS === 'android'}
                     shouldCancelWhenOutside={false}
                     onGestureEvent={gestureHandler}
