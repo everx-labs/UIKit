@@ -88,7 +88,7 @@ const ThemeSwitcher = React.createContext({
 const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
-    const { top } = useSafeAreaInsets();
+    const { top, bottom } = useSafeAreaInsets();
     return (
         <UIBackgroundView style={{ flex: 1, paddingTop: top }}>
             <PortalManager id="search">
@@ -155,7 +155,7 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     </View>
                     <ScrollView
                         style={{ flex: 1 }}
-                        contentContainerStyle={{ paddingBottom: 50 }}
+                        contentContainerStyle={{ paddingBottom: bottom }}
                     >
                         {/* <UIButton
                             onPress={() => navigation.navigate('large-header')}

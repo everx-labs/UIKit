@@ -9,7 +9,7 @@ import {
 import { ScrollableContext } from './Context';
 
 export function ScrollView(
-    props: ScrollViewProps & { children: React.ReactNode },
+    props: ScrollViewProps & { children?: React.ReactNode },
 ) {
     const panGestureRef = React.useRef<PanGestureHandler>(null);
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
