@@ -47,7 +47,7 @@ type StackNavigationOptions = {
      */
     title?: string;
     /**
-     * Boolean to set native property to prefer large title header (like in iOS setting).
+     * Boolean to prefer large title header (like in iOS setting).
      * For large title to collapse on scroll, the content of the screen
      * should be wrapped in a scrollable view such as `ScrollView` or `FlatList`
      * from our package.
@@ -58,7 +58,7 @@ type StackNavigationOptions = {
      */
     headerShown?: boolean;
     /**
-     * Background color for the whole scene
+     * Background color for the whole screen
      */
     backgroundColor?: ColorVariants;
 };
