@@ -388,8 +388,7 @@ export const Chat = () => {
             <ChatStack.Screen
                 name="ChatWindow"
                 options={{
-                    // headerLargeTitle: true,
-                    // headerShown: false,
+                    // headerVisible: false,
                     title: 'Chat',
                     backgroundColor: ColorVariants.BackgroundPrimary,
                 }}

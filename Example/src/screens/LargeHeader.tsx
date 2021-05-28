@@ -31,7 +31,7 @@ export function LargeHeaderScreen() {
             <LargeHeaderStack.Screen
                 name="LargeHeaderWindow"
                 options={{
-                    headerLargeTitle: true,
+                    useHeaderLargeTitle: true,
                     title: 'Long title',
                 }}
                 component={LargeHeaderExample}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
     useNavigationBuilder,
     createNavigatorFactory,
@@ -24,7 +24,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.hydrogen';
 
 import { UINavigationBar } from '../UINavigationBar';
-import { UILargeTitleHeader } from '../UILargeTitleHeader';
+import {
+    UILargeTitleHeader,
+    UILargeTitleHeaderProps,
+} from '../UILargeTitleHeader';
 
 const DescriptorsContext = React.createContext<
     Record<
@@ -41,22 +44,31 @@ const DescriptorsContext = React.createContext<
     >
 >({});
 
-type StackNavigationOptions = {
+type StackNavigationOptions = Omit<UILargeTitleHeaderProps, 'children'> & {
     /**
-     * String to display in the header as title. Defaults to scene `title`.
+     * A string or ReactNode to render in large title header
+     *
+     * `title` property is used as a fallback
      */
-    title?: string;
+    headerLargeTitle?: React.ReactNode | string;
     /**
      * Boolean to prefer large title header (like in iOS setting).
      * For large title to collapse on scroll, the content of the screen
      * should be wrapped in a scrollable view such as `ScrollView` or `FlatList`
      * from our package.
      */
-    headerLargeTitle?: boolean;
+    useHeaderLargeTitle?: boolean;
     /**
      * Whether to show header or not
+     *
+     * Defaults to true
+     *
+     * P.S. Basically it's the same options as [`headerShown`](https://github.com/software-mansion/react-native-screens/blob/master/createNativeStackNavigator/README.md#headershown).
+     *      Unfortunatelly we can't name it the same,
+     *      because we're already using it to prevent drawing of
+     *      original header in underlying libraries.
      */
-    headerShown?: boolean;
+    headerVisible?: boolean;
     /**
      * Background color for the whole screen
      */
@@ -73,33 +85,17 @@ function wrapScreenComponentWithHeader(
         const route = useRoute();
         const descriptor = descriptors[route.key];
 
-        let content: React.ReactNode = null;
-        if (descriptor.options.headerLargeTitle) {
-            content = (
-                <UILargeTitleHeader
-                    title={descriptor.options.title}
-                    headerLeft={descriptor.options.headerLeft}
-                    headerLeftItems={descriptor.options.headerLeftItems}
-                    headerBackButton={descriptor.options.headerBackButton}
-                    headerRight={descriptor.options.headerRight}
-                    headerRightItems={descriptor.options.headerRightItems}
+        if (descriptor.options.headerVisible === false) {
+            return (
+                <UIBackgroundView
+                    color={
+                        descriptor.options.backgroundColor ||
+                        ColorVariants.BackgroundPrimary
+                    }
+                    style={styles.screenContainer}
                 >
                     <ScreenComponent {...props} />
-                </UILargeTitleHeader>
-            );
-        } else {
-            content = (
-                <>
-                    <UINavigationBar
-                        title={descriptor.options.title}
-                        headerLeft={descriptor.options.headerLeft}
-                        headerLeftItems={descriptor.options.headerLeftItems}
-                        headerBackButton={descriptor.options.headerBackButton}
-                        headerRight={descriptor.options.headerRight}
-                        headerRightItems={descriptor.options.headerRightItems}
-                    />
-                    <ScreenComponent {...props} />
-                </>
+                </UIBackgroundView>
             );
         }
 
@@ -109,12 +105,47 @@ function wrapScreenComponentWithHeader(
                     descriptor.options.backgroundColor ||
                     ColorVariants.BackgroundPrimary
                 }
-                style={{
-                    flex: 1,
-                    paddingTop: top,
-                }}
+                style={[
+                    styles.screenContainer,
+                    {
+                        paddingTop: top,
+                    },
+                ]}
             >
-                {content}
+                {descriptor.options.useHeaderLargeTitle ? (
+                    <UILargeTitleHeader
+                        testID={descriptor.options.testID}
+                        title={
+                            descriptor.options.headerLargeTitle != null
+                                ? descriptor.options.headerLargeTitle
+                                : descriptor.options.title
+                        }
+                        headerLeft={descriptor.options.headerLeft}
+                        headerLeftItems={descriptor.options.headerLeftItems}
+                        headerBackButton={descriptor.options.headerBackButton}
+                        headerRight={descriptor.options.headerRight}
+                        headerRightItems={descriptor.options.headerRightItems}
+                    >
+                        <ScreenComponent {...props} />
+                    </UILargeTitleHeader>
+                ) : (
+                    <>
+                        <UINavigationBar
+                            testID={descriptor.options.testID}
+                            title={descriptor.options.title}
+                            headerLeft={descriptor.options.headerLeft}
+                            headerLeftItems={descriptor.options.headerLeftItems}
+                            headerBackButton={
+                                descriptor.options.headerBackButton
+                            }
+                            headerRight={descriptor.options.headerRight}
+                            headerRightItems={
+                                descriptor.options.headerRightItems
+                            }
+                        />
+                        <ScreenComponent {...props} />
+                    </>
+                )}
             </UIBackgroundView>
         );
     }
@@ -176,6 +207,7 @@ export const StackNavigator = ({
         initialRouteName,
         screenOptions: {
             ...screenOptions,
+            // @ts-ignore
             headerShown: false,
         },
     });
@@ -226,6 +258,7 @@ export const StackNavigator = ({
                 headerMode="none"
                 state={state}
                 navigation={navigation}
+                // @ts-ignore `title` types are incompatible
                 descriptors={descriptors}
             />
         </DescriptorsContext.Provider>
@@ -233,3 +266,9 @@ export const StackNavigator = ({
 };
 
 export const createStackNavigator = createNavigatorFactory(StackNavigator);
+
+const styles = StyleSheet.create({
+    screenContainer: {
+        flex: 1,
+    },
+});

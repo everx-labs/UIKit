@@ -40,7 +40,7 @@ const HEADER_TITLE_OPACITY_ANIM_DURATION = 100;
  */
 const LARGE_HEADER_BOTTOM_OFFSET_TO_SHOW_TITLE = 20;
 
-type UILargeTitleHeaderProps = UINavigationBarProps & {
+export type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
      * A label string
      */
@@ -50,7 +50,7 @@ type UILargeTitleHeaderProps = UINavigationBarProps & {
      */
     note?: string;
     /**
-     * Header has a context provider to children to use in scrollables
+     * Header has a context provider for children to use in scrollables
      */
     children: React.ReactNode;
 };

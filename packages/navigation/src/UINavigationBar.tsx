@@ -94,19 +94,45 @@ function useHeaderLeft(
 }
 
 export type UINavigationBarProps = {
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
+    /**
+     * Method to render any content of the left side of header.
+     * Has a higer priority then `headerLeftItems`.
+     */
     headerLeft?: () => React.ReactNode;
+    /**
+     * Set of items to render on the left side of header.
+     * Limited to 3 items.
+     */
     headerLeftItems?: HeaderItem[];
     /**
-     * Configuration for header back button only
+     * Configuration for header back button only.
+     *
+     * Usefull if you want to customise back button,
+     * but doesn't want to provide all the `HeaderItem`
+     * options themself.
+     * (It will be merged with default,
+     *  so for example you don't need to pass `onPress`
+     *  to have a proper behaviour)
      */
     headerBackButton?: HeaderItem;
+    /**
+     * Method to render any content of the right side of header.
+     * Has a higer priority then `headerRightItems`.
+     */
     headerRight?: () => React.ReactNode; // TODO: should we limit it?
+    /**
+     * Set of items to render on the left side of header.
+     * Limited to 3 items.
+     */
     headerRightItems?: HeaderItem[];
     /**
-     * A title string
+     * String to display in the header as title. Defaults to scene `title`.
      */
-    title?: string;
+    title?: React.ReactNode | string;
     /**
      * A caption string
      */
