@@ -94,6 +94,7 @@ export function UISignaturePicker({
                     onSelect={onSelect}
                 />
             ))}
+            {/* TODO: use UILinkButton instead once it's ready! */}
             <View style={styles.addButtonContainer}>
                 <UIBoxButton
                     testID="signing-box-add-signature"
