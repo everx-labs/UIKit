@@ -78,7 +78,11 @@ function wrapScreenComponentWithHeader(
             content = (
                 <UILargeTitleHeader
                     title={descriptor.options.title}
-                    headerRightItems={[{ label: 'Action' }]}
+                    headerLeft={descriptor.options.headerLeft}
+                    headerLeftItems={descriptor.options.headerLeftItems}
+                    headerBackButton={descriptor.options.headerBackButton}
+                    headerRight={descriptor.options.headerRight}
+                    headerRightItems={descriptor.options.headerRightItems}
                 >
                     <ScreenComponent {...props} />
                 </UILargeTitleHeader>
@@ -88,7 +92,11 @@ function wrapScreenComponentWithHeader(
                 <>
                     <UINavigationBar
                         title={descriptor.options.title}
-                        headerRightItems={[{ label: 'Action' }]}
+                        headerLeft={descriptor.options.headerLeft}
+                        headerLeftItems={descriptor.options.headerLeftItems}
+                        headerBackButton={descriptor.options.headerBackButton}
+                        headerRight={descriptor.options.headerRight}
+                        headerRightItems={descriptor.options.headerRightItems}
                     />
                     <ScreenComponent {...props} />
                 </>

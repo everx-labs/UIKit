@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { useNavigation } from '@react-navigation/core';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import {
@@ -8,7 +9,9 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import {
     HEADER_HEIGHT,
@@ -46,10 +49,58 @@ function UINavigationBarAnimatedTitle({
     );
 }
 
+function useHeaderLeft(
+    headerLeft?: () => React.ReactNode,
+    headerLeftItems?: HeaderItem[],
+    headerBackButton?: HeaderItem,
+) {
+    const navigation = useNavigation();
+
+    if (headerLeft != null) {
+        return headerLeft();
+    }
+
+    if (headerLeftItems != null) {
+        return <UIHeaderItems items={headerLeftItems} />;
+    }
+
+    if (navigation.canGoBack()) {
+        const defaultBackButton: HeaderItem = {
+            testID: 'uinavigation-back-button',
+            icon: {
+                source: UIAssets.icons.ui.arrowLeftBlack,
+            },
+            iconTintColor: ColorVariants.IconAccent,
+            onPress: navigation.goBack,
+        };
+
+        if (headerBackButton != null) {
+            return (
+                <UIHeaderItems
+                    items={[
+                        {
+                            ...defaultBackButton,
+                            ...headerBackButton,
+                        },
+                    ]}
+                />
+            );
+        }
+
+        return <UIHeaderItems items={[defaultBackButton]} />;
+    }
+
+    return null;
+}
+
 export type UINavigationBarProps = {
     testID?: string;
-    headerLeft?: () => React.ReactNode; // TODO: should we limit it?
+    headerLeft?: () => React.ReactNode;
     headerLeftItems?: HeaderItem[];
+    /**
+     * Configuration for header back button only
+     */
+    headerBackButton?: HeaderItem;
     headerRight?: () => React.ReactNode; // TODO: should we limit it?
     headerRightItems?: HeaderItem[];
     /**
@@ -70,6 +121,7 @@ export function UINavigationBar({
     testID,
     headerLeft,
     headerLeftItems,
+    headerBackButton,
     headerRight,
     headerRightItems,
     title,
@@ -89,15 +141,15 @@ export function UINavigationBar({
         </UILabel>
     ) : null;
 
+    const headerLeftElement = useHeaderLeft(
+        headerLeft,
+        headerLeftItems,
+        headerBackButton,
+    );
+
     return (
         <UIBackgroundView style={styles.container} testID={testID}>
-            <View style={styles.headerLeftItems}>
-                {headerLeft == null ? (
-                    <UIHeaderItems items={headerLeftItems} />
-                ) : (
-                    headerLeft()
-                )}
-            </View>
+            <View style={styles.headerLeftItems}>{headerLeftElement}</View>
             {headerTitleOpacity != null ? (
                 <UINavigationBarAnimatedTitle
                     headerTitleOpacity={headerTitleOpacity}
