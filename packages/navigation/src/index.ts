@@ -10,3 +10,5 @@ export * from './UIAndroidNavigationBar';
 export * from './Scrollable';
 export * from './UILargeTitleHeader';
 export * from './constants';
+
+export * from './StackNavigator/createStackNavigator';

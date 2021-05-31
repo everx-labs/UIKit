@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import { Route, useNavigation, useRoute } from '@react-navigation/core';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -33,6 +31,7 @@ import {
     UILabelColors,
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
+import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
 const BrowserStack = createStackNavigator();
 
@@ -534,39 +533,23 @@ const BrowserScreen = () => {
 };
 
 export const Browser = () => {
-    const theme = useTheme();
     return (
         <BrowserStack.Navigator>
             <BrowserStack.Screen
                 name="BrowserScreen"
                 options={({ navigation }) => ({
-                    // headerShown: false,
+                    // headerVisible: false,
                     title: 'Browser',
-                    headerTitleStyle: {
-                        color: theme[ColorVariants.TextPrimary],
-                    },
-                    headerStyle: {
-                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    },
-                    cardStyle: {
-                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    },
-                    headerRight: () => {
-                        return (
-                            <TouchableOpacity
-                                style={{ marginRight: 16 }}
-                                onPress={() => {
-                                    navigation.setParams({
-                                        menuVisible: true,
-                                    });
-                                }}
-                            >
-                                <UILabel color={UILabelColors.TextAccent}>
-                                    Add
-                                </UILabel>
-                            </TouchableOpacity>
-                        );
-                    },
+                    headerRightItems: [
+                        {
+                            label: 'Add',
+                            onPress: () => {
+                                navigation.setParams({
+                                    menuVisible: true,
+                                });
+                            },
+                        },
+                    ],
                 })}
                 component={BrowserScreen}
                 initialParams={{

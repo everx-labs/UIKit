@@ -15,7 +15,10 @@ import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
 import { createSurfSplitNavigator } from 'react-navigation-surf';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+    SafeAreaProvider,
+    useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import { UIColor } from '@tonlabs/uikit.core';
 import {
@@ -52,7 +55,7 @@ import {
     ScrollView,
 } from '@tonlabs/uikit.navigation';
 
-import { Buttons } from './screens/Buttons';
+import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
 import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
@@ -85,8 +88,9 @@ const ThemeSwitcher = React.createContext({
 const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
+    const { top, bottom } = useSafeAreaInsets();
     return (
-        <UIBackgroundView style={{ flex: 1 }}>
+        <UIBackgroundView style={{ flex: 1, paddingTop: top }}>
             <PortalManager id="search">
                 <UILargeTitleHeader
                     title="Main"
@@ -150,19 +154,18 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         </UISearchBarButton>
                     </View>
                     <ScrollView
-                        style={{ flex: 1 }}
-                        contentContainerStyle={{ paddingBottom: 50 }}
+                        contentContainerStyle={{ paddingBottom: bottom }}
                     >
                         {/* <UIButton
                             onPress={() => navigation.navigate('large-header')}
                             buttonStyle={UIButton.ButtonStyle.Link}
                             title="Large header"
-                        /> */}
+                        />
                         <UIButton
                             onPress={() => navigation.navigate('keyboard')}
                             buttonStyle={UIButton.ButtonStyle.Link}
                             title="Keyboard"
-                        />
+                        /> */}
                         <UIButton
                             onPress={() => navigation.navigate('buttons')}
                             buttonStyle={UIButton.ButtonStyle.Link}
@@ -297,7 +300,7 @@ const App = () => {
                             <SurfSplit.Screen name="main" component={Main} />
                             <SurfSplit.Screen
                                 name="buttons"
-                                component={Buttons}
+                                component={ButtonsScreen}
                             />
                             <SurfSplit.Screen
                                 name="checkbox"

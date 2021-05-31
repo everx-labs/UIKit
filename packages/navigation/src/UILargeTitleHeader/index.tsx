@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
     useAnimatedScrollHandler,
     useAnimatedStyle,
@@ -41,7 +40,7 @@ const HEADER_TITLE_OPACITY_ANIM_DURATION = 100;
  */
 const LARGE_HEADER_BOTTOM_OFFSET_TO_SHOW_TITLE = 20;
 
-type UILargeTitleHeaderProps = UINavigationBarProps & {
+export type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
      * A label string
      */
@@ -51,7 +50,7 @@ type UILargeTitleHeaderProps = UINavigationBarProps & {
      */
     note?: string;
     /**
-     * Header has a context provider to children to use in scrollables
+     * Header has a context provider for children to use in scrollables
      */
     children: React.ReactNode;
 };
@@ -236,10 +235,8 @@ export function UILargeTitleHeader({
         [scrollRef, scrollHandler, gestureHandler, onWheel],
     );
 
-    const { top } = useSafeAreaInsets();
-
     return (
-        <UIBackgroundView style={[styles.container, { paddingTop: top }]}>
+        <UIBackgroundView style={[styles.container]}>
             <View style={styles.mainHeaderFiller} />
             <Animated.View style={[{ flex: 1 }, style]}>
                 <Animated.View
@@ -283,10 +280,7 @@ export function UILargeTitleHeader({
                 </ScrollableContext.Provider>
             </Animated.View>
             <UIBackgroundView
-                style={[
-                    styles.mainHeaderContainer,
-                    { height: HEADER_HEIGHT + top, paddingTop: top },
-                ]}
+                style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
             >
                 <UINavigationBar
                     {...navigationBarProps}

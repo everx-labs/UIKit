@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import BigNumber from 'bignumber.js';
 
-import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.hydrogen';
 import { UIChatInput, UIChatList } from '@tonlabs/uikit.chats';
 import { useStickers } from '@tonlabs/uikit.stickers';
+import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
 const initialMessages = [
     {
@@ -383,17 +383,14 @@ const ChatWindowScreen = () => {
 };
 
 export const Chat = () => {
-    const theme = useTheme();
     return (
         <ChatStack.Navigator>
             <ChatStack.Screen
                 name="ChatWindow"
                 options={{
-                    headerShown: false,
+                    // headerVisible: false,
                     title: 'Chat',
-                    cardStyle: {
-                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    },
+                    backgroundColor: ColorVariants.BackgroundPrimary,
                 }}
                 component={ChatWindowScreen}
             />
