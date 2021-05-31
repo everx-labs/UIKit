@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIComponent } from '@tonlabs/uikit.components';
+import { UIStyle } from '@tonlabs/uikit.core';
+import { ColorVariants, UIImage } from '@tonlabs/uikit.hydrogen';
 
 type Props = {
     testID: string,
@@ -63,7 +64,10 @@ export default class UINavigationBackButton extends UIComponent<Props, State> {
                     this.getNavigation().goBack(null);
                 }}
             >
-                <Image source={this.getIcon() || UIAssets.icons.ui.arrowLeft} />
+                <UIImage
+                    source={this.getIcon() || UIAssets.icons.ui.arrowLeft}
+                    tintColor={ColorVariants.LineAccent}
+                />
             </TouchableOpacity>
         );
     }

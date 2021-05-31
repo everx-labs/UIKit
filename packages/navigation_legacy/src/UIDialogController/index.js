@@ -9,7 +9,6 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UIProfilePhoto } from '@tonlabs/uikit.components';
 import {
     UIBackgroundView,
     UIBackgroundViewColors,
@@ -59,7 +58,6 @@ const styles = StyleSheet.create({
  * Configuration Options
  * ---------------------
  * this.title = null
- * this.hasPhotoView = false
  * this.hasTextInput = false
  * this.hasAuxTextInput = false
  * this.testID = undefined
@@ -91,7 +89,6 @@ class UIDialogController extends UIController {
         this.wrapContentInScrollView = true;
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
         this.title = undefined;
-        this.hasPhotoView = false;
         this.hasTextInput = false;
         this.hasAuxTextInput = false;
         this.testID = undefined;
@@ -114,7 +111,6 @@ class UIDialogController extends UIController {
         this.state = {
             input: '',
             auxInput: '',
-            photo: null,
             showIndicator: false,
             bottomPanelHeight: 0,
         };
@@ -128,12 +124,6 @@ class UIDialogController extends UIController {
     onChangeAuxInput = (text) => {
         this.setAuxInput(text);
     };
-
-    onUploadPhoto(photo) {
-        this.setStateSafely({
-            photo,
-        });
-    }
 
     // Setters
     setInput(input) {
@@ -173,10 +163,6 @@ class UIDialogController extends UIController {
         return this.state.auxInput;
     }
 
-    getPhoto() {
-        return this.state.photo;
-    }
-
     getContentContainerStyle() {
         return null;
     }
@@ -204,24 +190,8 @@ class UIDialogController extends UIController {
         );
     }
 
-    renderPhoto() {
-        if (!this.hasPhotoView) {
-            return null;
-        }
-        return (
-            <UIProfilePhoto
-                style={UIStyle.marginTopMedium}
-                editable
-                source={this.getPhoto()}
-                onUploadPhoto={(photo, showHUD, hideHUD) => {
-                    this.onUploadPhoto(photo, showHUD, hideHUD);
-                }}
-            />
-        );
-    }
-
     renderTextInput() {
-        if (!this.hasTextInput || this.hasPhotoView) {
+        if (!this.hasTextInput) {
             return null;
         }
         const keyboardTypeProp = this.textInputKeyboardType
@@ -345,7 +315,6 @@ class UIDialogController extends UIController {
         const content = (
             <React.Fragment>
                 {this.renderTitle()}
-                {this.renderPhoto()}
                 {this.renderTextInput()}
                 {this.renderAuxTextInput()}
                 {this.renderSubtitleContainer()}

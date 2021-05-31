@@ -53,7 +53,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
     "@react-native-community/bob": "^0.16.2",
-    "@types/react-native": "^0.63.37",
+    "@types/react-native": "0.63.37",
     "@types/lodash": "^4.14.170",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

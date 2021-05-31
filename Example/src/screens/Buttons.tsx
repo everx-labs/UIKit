@@ -16,7 +16,6 @@ import {
     UIMsgButtonCornerPosition,
     UIMsgButtonType,
 } from '@tonlabs/uikit.hydrogen';
-import { UIDetailsButton } from '@tonlabs/uikit.legacy';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
 import { ExampleSection } from '../components/ExampleSection';
@@ -354,43 +353,6 @@ const Buttons = () => (
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIButton testID="uiButton_animation" showIndicator />
-            </View>
-        </ExampleSection>
-        <ExampleSection title="UIDetailsButton">
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton
-                    testID="uiDetailsButton_default"
-                    title="Example"
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton
-                    testID="uiDetailsButton_animation"
-                    title="Example"
-                    progress
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton
-                    testID="uiDetailsButton_details"
-                    title="Example"
-                    details="details"
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton
-                    testID="uiDetailsButton_second_details"
-                    title="Example"
-                    secondDetails="second details"
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton
-                    testID="uiDetailsButton_long_details"
-                    title="Example"
-                    details="long second details title title title title title title title"
-                    truncDetails
-                />
             </View>
         </ExampleSection>
         <ExampleSection title="UIImageButton">

@@ -9,7 +9,6 @@ import {
     UIFeedback,
     UIPushFeedback,
     UIStubPage,
-    UITokenCell,
 } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -67,16 +66,6 @@ export const Products = () => {
             <ExampleSection title="UIStubPage">
                 <View style={{ maxWidth: 500, paddingVertical: 20 }}>
                     <UIStubPage testID="uiStubPage_default" title="labs." needBottomIcon={false} />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UITokenCell">
-                <View style={{ width: 300, paddingVertical: 20 }}>
-                    <UITokenCell
-                        testID="uiTokenCell_Gram"
-                        title="GRAM"
-                        details="balance"
-                        balance="100.0000"
-                    />
                 </View>
             </ExampleSection>
         </ExampleScreen>

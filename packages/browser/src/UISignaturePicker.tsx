@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, TouchableOpacity, Platform, View } from 'react-native';
 import { TouchableOpacity as RNGHTouchableOpacity } from 'react-native-gesture-handler';
 
 import {
@@ -10,6 +10,8 @@ import {
     useTheme,
     ColorVariants,
     UIImage,
+    UIBoxButton,
+    UIBoxButtonType,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -92,14 +94,16 @@ export function UISignaturePicker({
                     onSelect={onSelect}
                 />
             ))}
-            <Touchable onPress={onAddSignature} style={styles.addButton}>
-                <UILabel
-                    color={UILabelColors.TextAccent}
-                    role={UILabelRoles.Action}
-                >
-                    {uiLocalized.Browser.SigningBox.AddSignature}
-                </UILabel>
-            </Touchable>
+            {/* TODO: use UILinkButton instead once it's ready! */}
+            <View style={styles.addButtonContainer}>
+                <UIBoxButton
+                    testID="signing-box-add-signature"
+                    disabled
+                    title={uiLocalized.Browser.SigningBox.AddSignature}
+                    type={UIBoxButtonType.Nulled}
+                    onPress={onAddSignature}
+                />
+            </View>
         </UIPullerSheet>
     );
 }
@@ -122,8 +126,9 @@ const styles = StyleSheet.create({
         height: 30,
         aspectRatio: 1,
     },
-    addButton: {
-        paddingVertical: 12,
-        paddingHorizontal: 16,
+    addButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        paddingHorizontal: 4,
     },
 });
