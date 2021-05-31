@@ -14,6 +14,7 @@ import Animated, {
     Extrapolate,
 } from 'react-native-reanimated';
 import { interpolatePath, parse } from 'react-native-redash';
+import useMergeRefs from 'react-native-web/dist/modules/useMergeRefs';
 
 import { parsePath, getPointAtLength } from './SVG';
 
@@ -54,7 +55,35 @@ type IProps = {
     data: [number, number][];
 };
 
-const AnimatedPath = Animated.createAnimatedComponent(Path);
+function usePlatformMethods() {
+    return React.useMemo(function () {
+        return (hostNode) => {
+            hostNode.setNativeProps = (nativeProps) => {
+                Object.keys(nativeProps.style).forEach((key) => {
+                    const prop = nativeProps.style[key];
+
+                    if (prop) {
+                        hostNode.setAttribute(key, prop);
+                        // hostNode[key] = prop;
+                    }
+                });
+            };
+
+            return hostNode;
+        };
+    }, []);
+}
+
+const PPath = React.forwardRef((props, forwardedRef) => {
+    const platformRef = usePlatformMethods();
+    const ref = useMergeRefs(forwardedRef, platformRef);
+
+    return <Path forwardedRef={ref} {...props} />;
+});
+
+const AnimatedPath = Animated.createAnimatedComponent(
+    Platform.OS === 'web' ? PPath : Path,
+);
 
 const Graph = (props: IProps) => {
     const { data } = props;
@@ -163,21 +192,12 @@ const Graph = (props: IProps) => {
                             <Stop stopColor="#FEFFFF" offset="100%" />
                         </LinearGradient>
                     </Defs> */}
-                    {Platform.OS === 'web' ? (
-                        <AnimatedPath
-                            fill="transparent"
-                            stroke="#367be2"
-                            strokeWidth={2}
-                            d={d}
-                        />
-                    ) : (
-                        <AnimatedPath
-                            animatedProps={animatedProps} // causes the web to crash
-                            fill="transparent"
-                            stroke="#367be2"
-                            strokeWidth={2}
-                        />
-                    )}
+                    <AnimatedPath
+                        animatedProps={animatedProps} // causes the web to crash
+                        fill="transparent"
+                        stroke="#367be2"
+                        strokeWidth={2}
+                    />
                     {/* <Path
                         d={`${d}  L ${dimensions.width} ${dimensions.height} L 0 ${dimensions.height}`}
                         fill="url(#gradient)"
