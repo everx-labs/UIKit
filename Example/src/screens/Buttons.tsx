@@ -2,7 +2,12 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIButton, UIImageButton, UIScaleButton, UITextButton } from '@tonlabs/uikit.components';
+import {
+    UIButton,
+    UIImageButton,
+    UIScaleButton,
+    UITextButton,
+} from '@tonlabs/uikit.components';
 import {
     UIBoxButton,
     UIBoxButtonIconPosition,
@@ -12,10 +17,12 @@ import {
     UIMsgButtonType,
 } from '@tonlabs/uikit.hydrogen';
 import { UIDetailsButton } from '@tonlabs/uikit.legacy';
+import { createStackNavigator } from '@tonlabs/uikit.navigation';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-export const Buttons = () => (
+const Buttons = () => (
     <ExampleScreen>
         <ExampleSection title="UIBoxButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -215,7 +222,11 @@ export const Buttons = () => (
                 <UIButton testID="uiButton_default" title="Example" />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIButton testID="uiButton_with_counter" title="Example" badge={2} />
+                <UIButton
+                    testID="uiButton_with_counter"
+                    title="Example"
+                    badge={2}
+                />
             </View>
             <View
                 style={{
@@ -300,10 +311,18 @@ export const Buttons = () => (
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIButton testID="uiButton_counter_1" title="Example" count="1" />
+                <UIButton
+                    testID="uiButton_counter_1"
+                    title="Example"
+                    count="1"
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIButton testID="uiButton_with_data" title="Example" data="data" />
+                <UIButton
+                    testID="uiButton_with_data"
+                    title="Example"
+                    data="data"
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIButton
@@ -320,10 +339,18 @@ export const Buttons = () => (
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIButton testID="uiButton_with_tooltip" title="With tooltip" tooltip="Hi there!" />
+                <UIButton
+                    testID="uiButton_with_tooltip"
+                    title="With tooltip"
+                    tooltip="Hi there!"
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIButton testID="uiButton_disabled" title="Disabled" disabled />
+                <UIButton
+                    testID="uiButton_disabled"
+                    title="Disabled"
+                    disabled
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIButton testID="uiButton_animation" showIndicator />
@@ -331,13 +358,24 @@ export const Buttons = () => (
         </ExampleSection>
         <ExampleSection title="UIDetailsButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton testID="uiDetailsButton_default" title="Example" />
+                <UIDetailsButton
+                    testID="uiDetailsButton_default"
+                    title="Example"
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton testID="uiDetailsButton_animation" title="Example" progress />
+                <UIDetailsButton
+                    testID="uiDetailsButton_animation"
+                    title="Example"
+                    progress
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIDetailsButton testID="uiDetailsButton_details" title="Example" details="details" />
+                <UIDetailsButton
+                    testID="uiDetailsButton_details"
+                    title="Example"
+                    details="details"
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIDetailsButton
@@ -357,13 +395,22 @@ export const Buttons = () => (
         </ExampleSection>
         <ExampleSection title="UIImageButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIImageButton testID="uiImageButton_back" image={UIImageButton.Images.back} />
+                <UIImageButton
+                    testID="uiImageButton_back"
+                    image={UIImageButton.Images.back}
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIImageButton testID="uiImageButton_close_primary" image={UIImageButton.Images.closePrimary} />
+                <UIImageButton
+                    testID="uiImageButton_close_primary"
+                    image={UIImageButton.Images.closePrimary}
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIImageButton testID="uiImageButton_close_secondary" image={UIImageButton.Images.closeSecondary} />
+                <UIImageButton
+                    testID="uiImageButton_close_secondary"
+                    image={UIImageButton.Images.closeSecondary}
+                />
             </View>
             <View
                 style={{
@@ -409,14 +456,20 @@ export const Buttons = () => (
                 </UIScaleButton>
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIScaleButton testID="uiScaleButton_factor_2" scaleInFactor={2}>
+                <UIScaleButton
+                    testID="uiScaleButton_factor_2"
+                    scaleInFactor={2}
+                >
                     <Text>Scale example factor 2</Text>
                 </UIScaleButton>
             </View>
         </ExampleSection>
         <ExampleSection title="UITextButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton testID="uiTextButton_default" title="Text button" />
+                <UITextButton
+                    testID="uiTextButton_default"
+                    title="Text button"
+                />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UITextButton
@@ -435,3 +488,20 @@ export const Buttons = () => (
         </ExampleSection>
     </ExampleScreen>
 );
+
+const ButtonsStack = createStackNavigator();
+
+export function ButtonsScreen() {
+    return (
+        <ButtonsStack.Navigator>
+            <ButtonsStack.Screen
+                name="ButtonsWindow"
+                options={{
+                    useHeaderLargeTitle: true,
+                    title: 'Buttons',
+                }}
+                component={Buttons}
+            />
+        </ButtonsStack.Navigator>
+    );
+}

@@ -55,7 +55,7 @@ import {
     ScrollView,
 } from '@tonlabs/uikit.navigation';
 
-import { Buttons } from './screens/Buttons';
+import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
 import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
@@ -154,19 +154,18 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         </UISearchBarButton>
                     </View>
                     <ScrollView
-                        style={{ flex: 1 }}
                         contentContainerStyle={{ paddingBottom: bottom }}
                     >
                         {/* <UIButton
                             onPress={() => navigation.navigate('large-header')}
                             buttonStyle={UIButton.ButtonStyle.Link}
                             title="Large header"
-                        /> */}
+                        />
                         <UIButton
                             onPress={() => navigation.navigate('keyboard')}
                             buttonStyle={UIButton.ButtonStyle.Link}
                             title="Keyboard"
-                        />
+                        /> */}
                         <UIButton
                             onPress={() => navigation.navigate('buttons')}
                             buttonStyle={UIButton.ButtonStyle.Link}
@@ -301,7 +300,7 @@ const App = () => {
                             <SurfSplit.Screen name="main" component={Main} />
                             <SurfSplit.Screen
                                 name="buttons"
-                                component={Buttons}
+                                component={ButtonsScreen}
                             />
                             <SurfSplit.Screen
                                 name="checkbox"
