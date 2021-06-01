@@ -19,11 +19,11 @@ const getData = (): [number, number][] => {
         .map((p) => [p.x.getTime(), p.y]);
 };
 
-export function Graph() {
-    const [data, setGraphData] = useState<[number, number][]>(getData());
+export function Chart() {
+    const [data, setChartData] = useState<[number, number][]>(getData());
     return (
         <ExampleScreen>
-            <ExampleSection title="Graph">
+            <ExampleSection title="Chart">
                 <View
                     style={{
                         width: '100%',
@@ -37,7 +37,7 @@ export function Graph() {
                     <UIButton
                         title="refresh"
                         onPress={() => {
-                            setGraphData(getData());
+                            setChartData(getData());
                         }}
                     />
                 </View>

@@ -1,4 +1,4 @@
-import React, { ForwardedRef } from 'react';
+import * as React from 'react';
 import {
     View,
     StyleSheet,
@@ -65,7 +65,7 @@ const usePlatformMethods = () => {
     }, []);
 }
 
-const WebPath: any = React.forwardRef<any, any>((props, forwardedRef: ForwardedRef<any>) => {
+const WebPath: any = React.forwardRef<any, any>((props, forwardedRef: React.ForwardedRef<any>) => {
     const platformRef = usePlatformMethods();
     const ref = useMergeRefs(forwardedRef, platformRef);
 

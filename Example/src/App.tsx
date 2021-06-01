@@ -56,7 +56,7 @@ import { Buttons } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
 import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
-import { Graph } from './screens/Graph';
+import { Chart } from './screens/Chart';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
 import { Menus, actionSheet } from './screens/Menus';
@@ -185,9 +185,9 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             title="Design"
                         />
                         <UIButton
-                            onPress={() => navigation.navigate('graph')}
+                            onPress={() => navigation.navigate('chart')}
                             buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Graph"
+                            title="Chart"
                         />
                         <UIButton
                             onPress={() => navigation.navigate('images')}
@@ -318,8 +318,8 @@ const App = () => {
                                 component={Design}
                             />
                             <SurfSplit.Screen
-                                name="graph"
-                                component={Graph}
+                                name="chart"
+                                component={Chart}
                             />
                             <SurfSplit.Screen
                                 name="images"
