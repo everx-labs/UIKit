@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.normalContentOffset,
     },
     leftIcon: {
-        marginLeft: 8,
         marginRight: 10,
     },
     rightIcon: {

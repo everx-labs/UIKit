@@ -28,6 +28,9 @@ export const flexStyles = {
     alignSelfCenter: {
         alignSelf: 'center',
     },
+    alignSelfEnd: {
+        alignSelf: 'flex-end',
+    },
     alignEnd: {
         alignItems: 'flex-end',
     },
@@ -104,6 +107,10 @@ export default class UIStyleFlex {
 
     static alignSelfCenter() {
         return styles.alignSelfCenter;
+    }
+
+    static alignSelfEnd() {
+        return styles.alignSelfEnd;
     }
 
     static alignEnd() {
