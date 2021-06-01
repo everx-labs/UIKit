@@ -1,21 +1,11 @@
 import * as React from 'react';
-import {
-    View,
-    StyleSheet,
-    LayoutChangeEvent,
-    Platform,
-} from 'react-native';
-import Svg, { Path, PathProps } from 'react-native-svg';
+import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import * as shape from 'd3-shape';
-import Animated, {
-    interpolate,
-    Extrapolate,
-} from 'react-native-reanimated';
+import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import { interpolatePath, parse } from 'react-native-redash';
 
-// @ts-ignore
-// eslint-disable-next-line import/no-extraneous-dependencies
-import useMergeRefs from 'react-native-web/dist/modules/useMergeRefs';
+import { addNativeProps } from '../Utils';
 
 const scale = (v: number, d: number[], r: number[]) => {
     'worklet';
@@ -45,36 +35,7 @@ type IProps = {
     data: [number, number][];
 };
 
-const usePlatformMethods = () => {
-    return React.useMemo(() => {
-        return (hostNode: Record<string, any>) => {
-            // eslint-disable-next-line no-param-reassign
-            hostNode.setNativeProps = (nativeProps: Record<string, any>) => {
-                Object.keys(nativeProps.style).forEach((key) => {
-                    const prop = nativeProps.style[key];
-
-                    if (prop) {
-                        hostNode.setAttribute(key, prop);
-                        // hostNode[key] = prop;
-                    }
-                });
-            };
-
-            return hostNode;
-        };
-    }, []);
-}
-
-const WebPath: any = React.forwardRef<any, any>((props, forwardedRef: React.ForwardedRef<any>) => {
-    const platformRef = usePlatformMethods();
-    const ref = useMergeRefs(forwardedRef, platformRef);
-
-    return <Path forwardedRef={ref} {...props} />;
-});
-
-const AnimatedPath = Animated.createAnimatedComponent<PathProps>(
-    Platform.OS === 'web' ? WebPath : Path,
-);
+const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(Path));
 
 export const LinearChart = (props: IProps) => {
     const { data } = props;
@@ -138,7 +99,9 @@ export const LinearChart = (props: IProps) => {
         });
     }, [progress, current]);
 
-    const animatedProps: Partial<Animated.AnimateProps<any>> = Animated.useAnimatedProps(() => {
+    const animatedProps: Partial<Animated.AnimateProps<
+        any
+    >> = Animated.useAnimatedProps(() => {
         return {
             d: interpolatePath(
                 progress.value,

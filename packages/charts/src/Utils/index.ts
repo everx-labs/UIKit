@@ -1,0 +1,1 @@
+export { addNativeProps } from './addNativeProps';

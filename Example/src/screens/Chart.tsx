@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { UIButton } from '@tonlabs/uikit.hydrogen'
-import { LinearChart } from '@tonlabs/uikit.charts'
+// import { LinearChart } from '@tonlabs/uikit.charts'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-// import { LinearChart } from '../../../packages/charts/src/index';
+import { LinearChart } from '../../../packages/charts/src/index';
 
 const getRandomValue = () => Math.floor(Math.random() * 100000) / 100;
 
