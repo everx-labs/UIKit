@@ -21,40 +21,20 @@ export function ButtonContent({
     );
 }
 
-// eslint-disable-next-line no-shadow
-export enum IconSize {
-    Normal = 'Normal',
-    Middle = 'Middle',
-    Small = 'Small',
-}
-
 export function ButtonIcon({
     source,
     tintColor,
     style,
-    size = IconSize.Middle,
     ...props
-}: UIImageProps & {
-    size?: IconSize;
-}) {
-    const iconSize = React.useMemo(() => {
-        if (size === IconSize.Normal) {
-            return UIConstant.iconSize;
-        }
-        if (size === IconSize.Small) {
-            return UIConstant.smallButtonIconSize;
-        }
-        return UIConstant.middleButtonIconSize;
-    }, [size]);
-
+}: UIImageProps) {
     return (
         <UIImage
             {...props}
             source={source}
             style={[
                 {
-                    width: iconSize,
-                    height: iconSize,
+                    width: UIConstant.iconSize,
+                    height: UIConstant.iconSize,
                 },
                 style,
             ]}
@@ -126,6 +106,7 @@ const getChilds = (children: React.ReactNode) => {
 export const useButtonChildren = (children: React.ReactNode) => {
     // here we may need to order children in a particular way or add some styles
     // TODO: understand whether we need to limit icons to one at a time and remove others
+    // TODO: think about possibility to add a few icons (set them in array)
 
     const childElements = getChilds(children);
     const { length } = childElements;
