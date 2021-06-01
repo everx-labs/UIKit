@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { UIButton } from '@tonlabs/uikit.hydrogen'
+import { UIButton } from '@tonlabs/uikit.hydrogen';
 // import { LinearChart } from '@tonlabs/uikit.charts'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 import { LinearChart } from '../../../packages/charts/src/index';
 
-const getRandomValue = () => Math.floor(Math.random() * 100000) / 100;
+const getRandomSign = (): number => {
+    return Math.random() > 0.5 ? 1 : -1;
+};
+const getRandomValue = () =>
+    (Math.floor(Math.random() * 10) / 10) * getRandomSign();
+
+let acc = 100;
+const getСumulativeValue = () => {
+    acc += getRandomValue();
+    return acc;
+};
 
 const dataLength: number = 30;
 
 const getData = (): [number, number][] => {
+    acc = 100;
     return Array(dataLength)
         .fill(0)
         .map((_, index: number) => {
-            return { x: new Date(2020, 5, index), y: getRandomValue() };
+            return { x: new Date(2020, 5, index), y: getСumulativeValue() };
         })
         .map((p) => [p.x.getTime(), p.y]);
 };
