@@ -27,6 +27,7 @@
     "@react-navigation/stack": "^5.6.2",
     "@tonlabs/uikit.assets": "*",
     "@tonlabs/uikit.browser": "*",
+    "@tonlabs/uikit.charts": "*",
     "@tonlabs/uikit.chats": "*",
     "@tonlabs/uikit.components": "*",
     "@tonlabs/uikit.core": "*",

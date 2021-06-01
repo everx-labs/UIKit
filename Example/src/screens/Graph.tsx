@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { UIButton } from '@tonlabs/uikit.hydrogen'
+import { LinearChart } from '@tonlabs/uikit.charts'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-import GraphImpl from '../../../packages/hydrogen/src/Graph/Graph';
+// import { LinearChart } from '../../../packages/charts/src/index';
 
 const getRandomValue = () => Math.floor(Math.random() * 100000) / 100;
 
@@ -32,7 +33,7 @@ export function Graph() {
                         height: 300,
                     }}
                 >
-                    <GraphImpl {...{ data }} />
+                    <LinearChart {...{ data }} />
                     <UIButton
                         title="refresh"
                         onPress={() => {
