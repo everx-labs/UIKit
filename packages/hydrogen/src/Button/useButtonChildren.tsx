@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { UIConstant } from '../constants';
 import { UIImage, UIImageProps } from '../UIImage';
@@ -25,22 +26,34 @@ export function ButtonIcon({
     source,
     tintColor,
     style,
+    onPress,
     ...props
-}: UIImageProps) {
-    return (
-        <UIImage
-            {...props}
-            source={source}
-            style={[
-                {
-                    width: UIConstant.iconSize,
-                    height: UIConstant.iconSize,
-                },
-                style,
-            ]}
-            tintColor={tintColor}
-        />
-    );
+}: UIImageProps & {
+    // add possibility to pass action to the icon, may be used for the right icons
+    onPress?: () => void | Promise<void>,
+}) {
+    const image = React.useMemo(() => {
+        return (
+            <UIImage
+                {...props}
+                source={source}
+                style={[
+                    {
+                        width: UIConstant.iconSize,
+                        height: UIConstant.iconSize,
+                    },
+                    style,
+                ]}
+                tintColor={tintColor}
+            />
+        );
+    }, [props, source, style, tintColor]);
+
+    return onPress ? (
+        <TouchableOpacity onPress={onPress}>
+            {image}
+        </TouchableOpacity>
+    ) : image;
 }
 
 export function ButtonTitle({
@@ -106,7 +119,6 @@ const getChilds = (children: React.ReactNode) => {
 export const useButtonChildren = (children: React.ReactNode) => {
     // here we may need to order children in a particular way or add some styles
     // TODO: understand whether we need to limit icons to one at a time and remove others
-    // TODO: think about possibility to add a few icons (set them in array)
 
     const childElements = getChilds(children);
     const { length } = childElements;

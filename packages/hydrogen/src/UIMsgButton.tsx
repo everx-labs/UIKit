@@ -205,7 +205,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.normalContentOffset,
     },
     leftIcon: {
-        // TODO: process case when there is only one icon in the button without title
         marginRight: UIConstant.smallContentOffset,
     },
 });
