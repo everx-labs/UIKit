@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { UIConstant } from '../constants';
 import { UIImage, UIImageProps } from '../UIImage';
@@ -21,46 +22,38 @@ export function ButtonContent({
     );
 }
 
-// eslint-disable-next-line no-shadow
-export enum IconSize {
-    Normal = 'Normal',
-    Middle = 'Middle',
-    Small = 'Small',
-}
-
 export function ButtonIcon({
     source,
     tintColor,
     style,
-    size = IconSize.Middle,
+    onPress,
     ...props
 }: UIImageProps & {
-    size?: IconSize;
+    // add possibility to pass action to the icon, may be used for the right icons
+    onPress?: () => void | Promise<void>,
 }) {
-    const iconSize = React.useMemo(() => {
-        if (size === IconSize.Normal) {
-            return UIConstant.iconSize;
-        }
-        if (size === IconSize.Small) {
-            return UIConstant.smallButtonIconSize;
-        }
-        return UIConstant.middleButtonIconSize;
-    }, [size]);
+    const image = React.useMemo(() => {
+        return (
+            <UIImage
+                {...props}
+                source={source}
+                style={[
+                    {
+                        width: UIConstant.iconSize,
+                        height: UIConstant.iconSize,
+                    },
+                    style,
+                ]}
+                tintColor={tintColor}
+            />
+        );
+    }, [props, source, style, tintColor]);
 
-    return (
-        <UIImage
-            {...props}
-            source={source}
-            style={[
-                {
-                    width: iconSize,
-                    height: iconSize,
-                },
-                style,
-            ]}
-            tintColor={tintColor}
-        />
-    );
+    return onPress ? (
+        <TouchableOpacity onPress={onPress}>
+            {image}
+        </TouchableOpacity>
+    ) : image;
 }
 
 export function ButtonTitle({
