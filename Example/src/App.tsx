@@ -14,7 +14,6 @@ import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 // $FlowFixMe
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 // $FlowFixMe
-import { createSurfSplitNavigator } from 'react-navigation-surf';
 import {
     SafeAreaProvider,
     useSafeAreaInsets,
@@ -53,6 +52,7 @@ import {
     UIAndroidNavigationBar,
     UILargeTitleHeader,
     ScrollView,
+    createSplitNavigator,
 } from '@tonlabs/uikit.navigation';
 
 import { ButtonsScreen } from './screens/Buttons';
@@ -77,7 +77,7 @@ import { LargeHeaderScreen } from './screens/LargeHeader';
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
 
-const SurfSplit = createSurfSplitNavigator();
+const Split = createSplitNavigator();
 
 const ThemeSwitcher = React.createContext({
     isDarkTheme: false,
@@ -262,7 +262,7 @@ const App = () => {
                         ref={navRef}
                         linking={{ prefixes: ['/'] }}
                     >
-                        <SurfSplit.Navigator
+                        <Split.Navigator
                             initialRouteName="buttons"
                             screenOptions={{
                                 splitStyles: {
@@ -297,70 +297,46 @@ const App = () => {
                             }}
                             mainWidth={900}
                         >
-                            <SurfSplit.Screen name="main" component={Main} />
-                            <SurfSplit.Screen
+                            <Split.Screen name="main" component={Main} />
+                            <Split.Screen
                                 name="buttons"
                                 component={ButtonsScreen}
                             />
-                            <SurfSplit.Screen
+                            <Split.Screen
                                 name="checkbox"
                                 component={Checkbox}
                             />
-                            <SurfSplit.Screen
-                                name="inputs"
-                                component={Inputs}
-                            />
-                            <SurfSplit.Screen
-                                name="design"
-                                component={Design}
-                            />
-                            <SurfSplit.Screen
-                                name="images"
-                                component={Images}
-                            />
-                            <SurfSplit.Screen
-                                name="layouts"
-                                component={Layouts}
-                            />
-                            <SurfSplit.Screen name="menus" component={Menus} />
-                            <SurfSplit.Screen
+                            <Split.Screen name="inputs" component={Inputs} />
+                            <Split.Screen name="design" component={Design} />
+                            <Split.Screen name="images" component={Images} />
+                            <Split.Screen name="layouts" component={Layouts} />
+                            <Split.Screen name="menus" component={Menus} />
+                            <Split.Screen
                                 name="notifications"
                                 component={Notifications}
                             />
-                            <SurfSplit.Screen
-                                name="popups"
-                                component={Popups}
-                            />
-                            <SurfSplit.Screen
+                            <Split.Screen name="popups" component={Popups} />
+                            <Split.Screen
                                 name="products"
                                 component={Products}
                             />
-                            <SurfSplit.Screen
-                                name="profile"
-                                component={Profile}
-                            />
-                            <SurfSplit.Screen
-                                name="text"
-                                component={TextScreen}
-                            />
-                            <SurfSplit.Screen name="chat" component={Chat} />
-                            <SurfSplit.Screen
-                                name="browser"
-                                component={Browser}
-                            />
-                            <SurfSplit.Screen
+                            <Split.Screen name="profile" component={Profile} />
+                            <Split.Screen name="text" component={TextScreen} />
+                            <Split.Screen name="chat" component={Chat} />
+                            <Split.Screen name="browser" component={Browser} />
+                            <Split.Screen
                                 name="navigation"
                                 component={Navigation}
                             />
-                            <SurfSplit.Screen
+                            <Split.Screen
                                 name="keyboard"
                                 component={KeyboardScreen}
                             />
-                            <SurfSplit.Screen
+                            <Split.Screen
                                 name="large-header"
                                 component={LargeHeaderScreen}
                             />
-                        </SurfSplit.Navigator>
+                        </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
                     <UIActionSheet ref={actionSheet} masterSheet={false} />

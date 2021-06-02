@@ -12,3 +12,4 @@ export * from './UILargeTitleHeader';
 export * from './constants';
 
 export * from './StackNavigator/createStackNavigator';
+export * from './SplitNavigator/createSplitNavigator';
