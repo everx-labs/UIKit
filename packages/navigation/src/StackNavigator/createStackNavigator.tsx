@@ -16,7 +16,7 @@ import type {
     ParamListBase,
 } from '@react-navigation/native';
 import { screensEnabled } from 'react-native-screens';
-import { StackView } from '@react-navigation/stack';
+import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typescript/src/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -44,7 +44,10 @@ const DescriptorsContext = React.createContext<
     >
 >({});
 
-type StackNavigationOptions = Omit<UILargeTitleHeaderProps, 'children'> & {
+export type StackNavigationOptions = Omit<
+    UILargeTitleHeaderProps,
+    'children'
+> & {
     /**
      * A string or ReactNode to render in large title header
      *
@@ -85,6 +88,10 @@ function wrapScreenComponentWithHeader(
         const route = useRoute();
         const descriptor = descriptors[route.key];
 
+        if (descriptor == null) {
+            return null;
+        }
+
         if (descriptor.options.headerVisible === false) {
             return (
                 <UIBackgroundView
@@ -120,6 +127,7 @@ function wrapScreenComponentWithHeader(
                                 ? descriptor.options.headerLargeTitle
                                 : descriptor.options.title
                         }
+                        caption={descriptor.options.caption}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
@@ -127,6 +135,89 @@ function wrapScreenComponentWithHeader(
                         headerRightItems={descriptor.options.headerRightItems}
                     >
                         <ScreenComponent {...props} />
+                    </UILargeTitleHeader>
+                ) : (
+                    <>
+                        <UINavigationBar
+                            testID={descriptor.options.testID}
+                            title={descriptor.options.title}
+                            caption={descriptor.options.caption}
+                            headerLeft={descriptor.options.headerLeft}
+                            headerLeftItems={descriptor.options.headerLeftItems}
+                            headerBackButton={
+                                descriptor.options.headerBackButton
+                            }
+                            headerRight={descriptor.options.headerRight}
+                            headerRightItems={
+                                descriptor.options.headerRightItems
+                            }
+                        />
+                        <ScreenComponent {...props} />
+                    </>
+                )}
+            </UIBackgroundView>
+        );
+    }
+
+    return ScreenWithHeader;
+}
+
+function wrapScreenRenderPropWithHeader(
+    screenRenderProp: (props: any) => React.ReactNode,
+) {
+    function ScreenWithHeader(props: any) {
+        const { top } = useSafeAreaInsets();
+
+        const descriptors = React.useContext(DescriptorsContext);
+        const route = useRoute();
+        const descriptor = descriptors[route.key];
+
+        if (descriptor == null) {
+            return null;
+        }
+
+        if (descriptor.options.headerVisible === false) {
+            return (
+                <UIBackgroundView
+                    color={
+                        descriptor.options.backgroundColor ||
+                        ColorVariants.BackgroundPrimary
+                    }
+                    style={styles.screenContainer}
+                >
+                    {screenRenderProp(props)}
+                </UIBackgroundView>
+            );
+        }
+
+        return (
+            <UIBackgroundView
+                color={
+                    descriptor.options.backgroundColor ||
+                    ColorVariants.BackgroundPrimary
+                }
+                style={[
+                    styles.screenContainer,
+                    {
+                        paddingTop: top,
+                    },
+                ]}
+            >
+                {descriptor.options.useHeaderLargeTitle ? (
+                    <UILargeTitleHeader
+                        testID={descriptor.options.testID}
+                        title={
+                            descriptor.options.headerLargeTitle != null
+                                ? descriptor.options.headerLargeTitle
+                                : descriptor.options.title
+                        }
+                        headerLeft={descriptor.options.headerLeft}
+                        headerLeftItems={descriptor.options.headerLeftItems}
+                        headerBackButton={descriptor.options.headerBackButton}
+                        headerRight={descriptor.options.headerRight}
+                        headerRightItems={descriptor.options.headerRightItems}
+                    >
+                        {screenRenderProp(props)}
                     </UILargeTitleHeader>
                 ) : (
                     <>
@@ -143,7 +234,7 @@ function wrapScreenComponentWithHeader(
                                 descriptor.options.headerRightItems
                             }
                         />
-                        <ScreenComponent {...props} />
+                        {screenRenderProp(props)}
                     </>
                 )}
             </UIBackgroundView>
@@ -174,6 +265,19 @@ function wrapScreensWithHeader(children: React.ReactNode) {
                     );
                     return acc;
                 }
+
+                if (child.props && 'children' in child.props) {
+                    acc.push(
+                        React.cloneElement(child, {
+                            ...child.props,
+                            component: wrapScreenRenderPropWithHeader(
+                                child.props.children,
+                            ),
+                            children: null,
+                        }),
+                    );
+                    return acc;
+                }
             }
             return acc;
         },
@@ -195,6 +299,10 @@ export const StackNavigator = ({
     screenOptions,
 }: SurfSplitNavigatorProps) => {
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
+    const wrappedChildren = React.useMemo(
+        () => wrapScreensWithHeader(children),
+        [children],
+    );
 
     const { state, navigation, descriptors } = useNavigationBuilder<
         StackNavigationState<ParamListBase>,
@@ -203,12 +311,18 @@ export const StackNavigator = ({
         StackNavigationOptions,
         StackNavigationEventMap
     >(StackRouter, {
-        children: wrapScreensWithHeader(children),
+        children: wrappedChildren,
         initialRouteName,
         screenOptions: {
             ...screenOptions,
             // @ts-ignore
             headerShown: false,
+            ...(doesSupportNative
+                ? null
+                : {
+                      ...TransitionPresets.SlideFromRightIOS,
+                      animationEnabled: true,
+                  }),
         },
     });
 

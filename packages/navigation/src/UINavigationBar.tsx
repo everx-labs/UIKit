@@ -20,6 +20,7 @@ import {
 } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
+import { NestedInModalContext } from './ModalNavigator/createModalNavigator';
 
 const UIBackgroundViewAnimated = Animated.createAnimatedComponent(
     UIBackgroundView,
@@ -55,6 +56,7 @@ function useHeaderLeft(
     headerBackButton?: HeaderItem,
 ) {
     const navigation = useNavigation();
+    const closeModal = React.useContext(NestedInModalContext);
 
     if (headerLeft != null) {
         return headerLeft();
@@ -64,7 +66,11 @@ function useHeaderLeft(
         return <UIHeaderItems items={headerLeftItems} />;
     }
 
-    if (navigation.canGoBack()) {
+    const state = navigation.dangerouslyGetState();
+    const canGoBackIfStack =
+        state.type === 'stack' ? state.routes.length > 1 : true;
+
+    if (navigation.canGoBack() && canGoBackIfStack) {
         const defaultBackButton: HeaderItem = {
             testID: 'uinavigation-back-button',
             icon: {
@@ -88,6 +94,32 @@ function useHeaderLeft(
         }
 
         return <UIHeaderItems items={[defaultBackButton]} />;
+    }
+
+    if (closeModal != null) {
+        const defaultCloseButton: HeaderItem = {
+            testID: 'uinavigation-close-modal-button',
+            icon: {
+                source: UIAssets.icons.ui.closeBlack,
+            },
+            iconTintColor: ColorVariants.IconAccent,
+            onPress: closeModal,
+        };
+
+        if (headerBackButton != null) {
+            return (
+                <UIHeaderItems
+                    items={[
+                        {
+                            ...defaultCloseButton,
+                            ...headerBackButton,
+                        },
+                    ]}
+                />
+            );
+        }
+
+        return <UIHeaderItems items={[defaultCloseButton]} />;
     }
 
     return null;
@@ -211,6 +243,7 @@ const styles = StyleSheet.create({
 
     titleWrapper: {
         marginHorizontal: CONTENT_INSET_VERTICAL_X2,
+        alignItems: 'center',
     },
     headerLeftItems: {
         flex: 1,

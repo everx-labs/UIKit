@@ -6,7 +6,6 @@ import {
     Animated,
     LayoutAnimation,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import {
@@ -16,6 +15,7 @@ import {
     UILabelColors,
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
+import { ScrollView } from '@tonlabs/uikit.navigation';
 
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';

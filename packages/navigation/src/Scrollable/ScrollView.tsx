@@ -8,6 +8,13 @@ import {
 
 import { ScrollableContext } from './Context';
 
+/**
+ * What about have a context,
+ * that will apply container with height: 100%,
+ * for large title header,
+ * only when scrollable is registered?
+ */
+
 export function ScrollView(
     props: ScrollViewProps & { children?: React.ReactNode },
 ) {

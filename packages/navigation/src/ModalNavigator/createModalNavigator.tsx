@@ -23,6 +23,10 @@ type ModalControllerProps = {
     navigation: NavigationProp<ParamListBase>;
 };
 
+export const NestedInModalContext = React.createContext<(() => void) | null>(
+    null,
+);
+
 export class ModalController extends React.Component<ModalControllerProps> {
     static show(name: string, params?: Record<string, unknown>) {
         if (ModalController.instance) {
@@ -75,7 +79,13 @@ export class ModalController extends React.Component<ModalControllerProps> {
                 return null;
             }
 
-            return descriptor.render();
+            return (
+                <NestedInModalContext.Provider
+                    value={() => this.hide(route.name)}
+                >
+                    {descriptor.render()}
+                </NestedInModalContext.Provider>
+            );
         });
     }
 }
@@ -198,7 +208,7 @@ type ModalScreenOptions = {
     defaultProps: Record<string, unknown>;
 };
 
-export const createSurfModalNavigator = createNavigatorFactory<
+export const createModalNavigator = createNavigatorFactory<
     ModalNavigationState,
     ModalScreenOptions,
     EventMapBase,
