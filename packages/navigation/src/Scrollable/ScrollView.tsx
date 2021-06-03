@@ -8,20 +8,40 @@ import {
 
 import { ScrollableContext } from './Context';
 
-/**
- * What about have a context,
- * that will apply container with height: 100%,
- * for large title header,
- * only when scrollable is registered?
- */
-
 export function ScrollView(
     props: ScrollViewProps & { children?: React.ReactNode },
 ) {
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
+
+    const scrollViewOutterHeight = React.useRef(0);
+    const scrollViewInnerHeight = React.useRef(0);
+
+    const compareHeights = React.useCallback((setHasScroll) => {
+        if (!setHasScroll) {
+            return;
+        }
+
+        if (
+            scrollViewInnerHeight.current === 0 ||
+            scrollViewOutterHeight.current === 0
+        ) {
+            return;
+        }
+
+        setHasScroll(
+            scrollViewInnerHeight.current > scrollViewOutterHeight.current,
+        );
+    }, []);
+
     return (
         <ScrollableContext.Consumer>
-            {({ ref, scrollHandler, gestureHandler, onWheel }) => (
+            {({
+                ref,
+                scrollHandler,
+                gestureHandler,
+                onWheel,
+                setHasScroll,
+            }) => (
                 <PanGestureHandler
                     enabled={Platform.OS === 'android'}
                     shouldCancelWhenOutside={false}
@@ -38,6 +58,20 @@ export function ScrollView(
                                 scrollEventThrottle={16}
                                 // @ts-ignore
                                 onWheel={onWheel}
+                                onLayout={({
+                                    nativeEvent: {
+                                        layout: { height },
+                                    },
+                                }) => {
+                                    scrollViewOutterHeight.current = height;
+
+                                    compareHeights(setHasScroll);
+                                }}
+                                onContentSizeChange={(_width, height) => {
+                                    scrollViewInnerHeight.current = height;
+
+                                    compareHeights(setHasScroll);
+                                }}
                             />
                         </NativeViewGestureHandler>
                     </Animated.View>

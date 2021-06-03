@@ -12,9 +12,11 @@ export const ScrollableContext = React.createContext<{
         | ((event: PanGestureHandlerGestureEvent) => void)
         | undefined;
     onWheel: ((event: any) => void) | null;
+    setHasScroll: ((hasScroll: boolean) => void) | undefined;
 }>({
     ref: null,
     scrollHandler: undefined,
     gestureHandler: undefined,
     onWheel: null,
+    setHasScroll: undefined,
 });

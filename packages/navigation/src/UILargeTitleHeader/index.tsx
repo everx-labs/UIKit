@@ -225,14 +225,32 @@ export function UILargeTitleHeader({
         RUBBER_BAND_EFFECT_DISTANCE,
     );
 
+    const [hasScroll, setHasScroll] = React.useState(false);
+
+    const setHasScrollGuarded = React.useCallback(
+        (newHasScroll) => {
+            if (newHasScroll !== hasScroll) {
+                setHasScroll(newHasScroll);
+            }
+        },
+        [hasScroll, setHasScroll],
+    );
+
     const scrollableContextValue = React.useMemo(
         () => ({
             ref: scrollRef,
             scrollHandler,
             gestureHandler,
             onWheel,
+            setHasScroll: setHasScrollGuarded,
         }),
-        [scrollRef, scrollHandler, gestureHandler, onWheel],
+        [
+            scrollRef,
+            scrollHandler,
+            gestureHandler,
+            onWheel,
+            setHasScrollGuarded,
+        ],
     );
 
     return (
@@ -274,7 +292,13 @@ export function UILargeTitleHeader({
                 </Animated.View>
 
                 <ScrollableContext.Provider value={scrollableContextValue}>
-                    <Animated.View style={styles.sceneContainer}>
+                    <Animated.View
+                        style={
+                            hasScroll
+                                ? styles.sceneContainerWithScroll
+                                : styles.sceneContainerWithoutScroll
+                        }
+                    >
                         {children}
                     </Animated.View>
                 </ScrollableContext.Provider>
@@ -311,7 +335,10 @@ const styles = StyleSheet.create({
     largeTitleHeaderContainer: {
         padding: SCREEN_CONTENT_INSET_HORIZONTAL,
     },
-    sceneContainer: {
+    sceneContainerWithoutScroll: {
+        flex: 1,
+    },
+    sceneContainerWithScroll: {
         /**
          * We render both large title container and a content in one wrapper. So, now let's try imagine how it's drawed:
          *
