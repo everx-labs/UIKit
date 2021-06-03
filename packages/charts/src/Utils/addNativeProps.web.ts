@@ -6,19 +6,26 @@ import useMergeRefs from 'react-native-web/dist/modules/useMergeRefs';
 
 const usePlatformMethods = () => {
     return React.useMemo(() => {
-        return (hostNode: Record<string, any>) => {
-            // eslint-disable-next-line no-param-reassign
-            hostNode.setNativeProps = (nativeProps: Record<string, any>) => {
-                Object.keys(nativeProps.style).forEach((key) => {
-                    const prop = nativeProps.style[key];
+        return (
+            hostNode: Record<string, any>,
+        ): Record<string, any> | undefined => {
+            if (hostNode) {
+                // eslint-disable-next-line no-param-reassign
+                hostNode.setNativeProps = (
+                    nativeProps: Record<string, any>,
+                ) => {
+                    Object.keys(nativeProps.style).forEach((key) => {
+                        const prop = nativeProps.style[key];
 
-                    if (prop) {
-                        hostNode.setAttribute(key, prop);
-                    }
-                });
-            };
+                        if (prop) {
+                            hostNode.setAttribute(key, prop);
+                        }
+                    });
+                };
 
-            return hostNode;
+                return hostNode;
+            }
+            return undefined;
         };
     }, []);
 };

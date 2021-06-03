@@ -4,7 +4,7 @@ import { UIButton } from '@tonlabs/uikit.hydrogen';
 // import { LinearChart } from '@tonlabs/uikit.charts'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-import { LinearChart } from '../../../packages/charts/src/index';
+import { LinearChart, Point } from '../../../packages/charts/src/index';
 
 const getRandomSign = (): number => {
     return Math.random() > 0.5 ? 1 : -1;
@@ -20,18 +20,20 @@ const getСumulativeValue = () => {
 
 const dataLength: number = 30;
 
-const getData = (): [number, number][] => {
+const getData = (): Point[] => {
     acc = 100;
     return Array(dataLength)
         .fill(0)
         .map((_, index: number) => {
-            return { x: new Date(2020, 5, index), y: getСumulativeValue() };
-        })
-        .map((p) => [p.x.getTime(), p.y]);
+            return {
+                x: new Date(2020, 5, index).getTime(),
+                y: getСumulativeValue(),
+            };
+        });
 };
 
 export function Chart() {
-    const [data, setChartData] = useState<[number, number][]>(getData());
+    const [data, setChartData] = useState<Point[]>(getData());
     return (
         <ExampleScreen>
             <ExampleSection title="Chart">
