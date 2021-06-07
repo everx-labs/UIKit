@@ -23,11 +23,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.hydrogen';
 
-import { UINavigationBar } from '../UINavigationBar';
 import {
     UILargeTitleHeader,
     UILargeTitleHeaderProps,
 } from '../UILargeTitleHeader';
+import { NestedInModalContext } from '../ModalNavigator/createModalNavigator';
+import { UIStackNavigationBar } from '../UIStackNavigationBar';
 
 const DescriptorsContext = React.createContext<
     Record<
@@ -88,6 +89,8 @@ function wrapScreenComponentWithHeader(
         const route = useRoute();
         const descriptor = descriptors[route.key];
 
+        const closeModal = React.useContext(NestedInModalContext);
+
         if (descriptor == null) {
             return null;
         }
@@ -114,9 +117,11 @@ function wrapScreenComponentWithHeader(
                 }
                 style={[
                     styles.screenContainer,
-                    {
-                        paddingTop: top,
-                    },
+                    closeModal == null
+                        ? {
+                              paddingTop: top,
+                          }
+                        : null,
                 ]}
             >
                 {descriptor.options.useHeaderLargeTitle ? (
@@ -138,7 +143,7 @@ function wrapScreenComponentWithHeader(
                     </UILargeTitleHeader>
                 ) : (
                     <>
-                        <UINavigationBar
+                        <UIStackNavigationBar
                             testID={descriptor.options.testID}
                             title={descriptor.options.title}
                             caption={descriptor.options.caption}
@@ -211,6 +216,7 @@ function wrapScreenRenderPropWithHeader(
                                 ? descriptor.options.headerLargeTitle
                                 : descriptor.options.title
                         }
+                        caption={descriptor.options.caption}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
@@ -221,9 +227,10 @@ function wrapScreenRenderPropWithHeader(
                     </UILargeTitleHeader>
                 ) : (
                     <>
-                        <UINavigationBar
+                        <UIStackNavigationBar
                             testID={descriptor.options.testID}
                             title={descriptor.options.title}
+                            caption={descriptor.options.caption}
                             headerLeft={descriptor.options.headerLeft}
                             headerLeftItems={descriptor.options.headerLeftItems}
                             headerBackButton={

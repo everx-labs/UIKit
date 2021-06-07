@@ -19,6 +19,7 @@ export {
 export {
     createModalNavigator,
     withModalSceneWrapper,
+    NestedInDismissibleModalContext,
 } from './ModalNavigator/createModalNavigator';
 export { ModalActions } from './ModalNavigator/ModalRouter';
 export * from './StackNavigator/createStackNavigator';

@@ -27,6 +27,10 @@ export const NestedInModalContext = React.createContext<(() => void) | null>(
     null,
 );
 
+export const NestedInDismissibleModalContext = React.createContext<boolean>(
+    false,
+);
+
 export class ModalController extends React.Component<ModalControllerProps> {
     static show(name: string, params?: Record<string, unknown>) {
         if (ModalController.instance) {

@@ -23,7 +23,8 @@ import { ScrollableContext } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
 import { HEADER_HEIGHT, SCREEN_CONTENT_INSET_HORIZONTAL } from '../constants';
-import { UINavigationBar, UINavigationBarProps } from '../UINavigationBar';
+import type { UINavigationBarProps } from '../UINavigationBar';
+import { UIStackNavigationBar } from '../UIStackNavigationBar';
 
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
@@ -306,7 +307,7 @@ export function UILargeTitleHeader({
             <UIBackgroundView
                 style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
             >
-                <UINavigationBar
+                <UIStackNavigationBar
                     {...navigationBarProps}
                     headerTitleOpacity={headerTitleOpacity}
                 />

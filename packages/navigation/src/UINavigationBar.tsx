@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useNavigation } from '@react-navigation/core';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import {
@@ -9,9 +8,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
-    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
-import { UIAssets } from '@tonlabs/uikit.assets';
 
 import {
     HEADER_HEIGHT,
@@ -20,7 +17,7 @@ import {
 } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
-import { NestedInModalContext } from './ModalNavigator/createModalNavigator';
+import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
 
 const UIBackgroundViewAnimated = Animated.createAnimatedComponent(
     UIBackgroundView,
@@ -48,81 +45,6 @@ function UINavigationBarAnimatedTitle({
             {children}
         </UIBackgroundViewAnimated>
     );
-}
-
-function useHeaderLeft(
-    headerLeft?: () => React.ReactNode,
-    headerLeftItems?: HeaderItem[],
-    headerBackButton?: HeaderItem,
-) {
-    const navigation = useNavigation();
-    const closeModal = React.useContext(NestedInModalContext);
-
-    if (headerLeft != null) {
-        return headerLeft();
-    }
-
-    if (headerLeftItems != null) {
-        return <UIHeaderItems items={headerLeftItems} />;
-    }
-
-    const state = navigation.dangerouslyGetState();
-    const canGoBackIfStack =
-        state.type === 'stack' ? state.routes.length > 1 : true;
-
-    if (navigation.canGoBack() && canGoBackIfStack) {
-        const defaultBackButton: HeaderItem = {
-            testID: 'uinavigation-back-button',
-            icon: {
-                source: UIAssets.icons.ui.arrowLeftBlack,
-            },
-            iconTintColor: ColorVariants.IconAccent,
-            onPress: navigation.goBack,
-        };
-
-        if (headerBackButton != null) {
-            return (
-                <UIHeaderItems
-                    items={[
-                        {
-                            ...defaultBackButton,
-                            ...headerBackButton,
-                        },
-                    ]}
-                />
-            );
-        }
-
-        return <UIHeaderItems items={[defaultBackButton]} />;
-    }
-
-    if (closeModal != null) {
-        const defaultCloseButton: HeaderItem = {
-            testID: 'uinavigation-close-modal-button',
-            icon: {
-                source: UIAssets.icons.ui.closeBlack,
-            },
-            iconTintColor: ColorVariants.IconAccent,
-            onPress: closeModal,
-        };
-
-        if (headerBackButton != null) {
-            return (
-                <UIHeaderItems
-                    items={[
-                        {
-                            ...defaultCloseButton,
-                            ...headerBackButton,
-                        },
-                    ]}
-                />
-            );
-        }
-
-        return <UIHeaderItems items={[defaultCloseButton]} />;
-    }
-
-    return null;
 }
 
 export type UINavigationBarProps = {
@@ -199,7 +121,7 @@ export function UINavigationBar({
         </UILabel>
     ) : null;
 
-    const headerLeftElement = useHeaderLeft(
+    const headerLeftElement = useNavigationHeaderLeftItems(
         headerLeft,
         headerLeftItems,
         headerBackButton,
