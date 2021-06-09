@@ -16,20 +16,29 @@ function findIfCanGoBackForStack(
         return false;
     }
 
-    const canGoBackIfStack =
-        state.type === 'stack' ? state.routes.length > 1 : true;
-
-    if (!canGoBackIfStack) {
-        const parent = navigation.dangerouslyGetParent();
-
-        if (parent == null) {
-            return false;
-        }
-
-        return findIfCanGoBackForStack(parent);
+    if (state.type !== 'stack') {
+        return false;
     }
 
-    return true;
+    if (state.routes.length > 1) {
+        return true;
+    }
+
+    // Check that it's nested in another stack
+    // that means that we can go back
+    const parent = navigation.dangerouslyGetParent();
+
+    if (parent == null) {
+        return false;
+    }
+
+    const parentState = parent.dangerouslyGetState();
+
+    if (parentState == null) {
+        return false;
+    }
+
+    return parentState.type === 'stack' || parentState.type === 'split';
 }
 
 export function useNavigationHeaderLeftItems(

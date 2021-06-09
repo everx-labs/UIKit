@@ -9,16 +9,16 @@ type PrivateProps = {
     headerTitleOpacity?: Animated.SharedValue<number>;
 };
 
-export function UIStackNavigationBar(
-    props: UINavigationBarProps & PrivateProps,
-) {
+export function UIStackNavigationBar({
+    ...rest
+}: UINavigationBarProps & PrivateProps) {
     const isNestedInDismissibleModalContext = React.useContext(
         NestedInDismissibleModalContext,
     );
 
     if (isNestedInDismissibleModalContext) {
-        return <UISlideBar {...props} />;
+        return <UISlideBar {...rest} />;
     }
 
-    return <UINavigationBar {...props} />;
+    return <UINavigationBar {...rest} />;
 }
