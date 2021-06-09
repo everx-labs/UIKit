@@ -43,6 +43,10 @@ const LARGE_HEADER_BOTTOM_OFFSET_TO_SHOW_TITLE = 20;
 
 export type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
+     * A title to use only for collapsible title
+     */
+    headerLargeTitle: UINavigationBarProps['title'];
+    /**
      * A label string
      */
     label?: string;
@@ -254,39 +258,53 @@ export function UILargeTitleHeader({
         ],
     );
 
+    const title =
+        navigationBarProps.headerLargeTitle || navigationBarProps.title;
+
+    const hasSomethingInHeader = title != null || label != null || note != null;
+
     return (
         <UIBackgroundView style={[styles.container]}>
             <View style={styles.mainHeaderFiller} />
             <Animated.View style={[{ flex: 1 }, style]}>
                 <Animated.View
                     ref={largeTitleViewRef}
-                    style={[styles.largeTitleHeaderContainer]}
+                    style={
+                        hasSomethingInHeader && styles.largeTitleHeaderContainer
+                    }
                 >
                     {label && (
                         <UILabel
                             role={UILabelRoles.ParagraphLabel}
                             color={UILabelColors.TextSecondary}
+                            style={{ marginBottom: 8 }}
                         >
                             {label}
                         </UILabel>
                     )}
-                    {navigationBarProps.title && (
-                        <AnimatedUILabel
-                            role={UILabelRoles.TitleLarge}
-                            style={largeTitleStyle}
-                            onLayout={({
-                                nativeEvent: {
-                                    layout: { width },
-                                },
-                            }) => {
-                                titleWidth.value = width;
-                            }}
-                        >
-                            {navigationBarProps.title}
-                        </AnimatedUILabel>
-                    )}
+                    {title &&
+                        (React.isValidElement(title) ? (
+                            title
+                        ) : (
+                            <AnimatedUILabel
+                                role={UILabelRoles.TitleLarge}
+                                style={largeTitleStyle}
+                                onLayout={({
+                                    nativeEvent: {
+                                        layout: { width },
+                                    },
+                                }) => {
+                                    titleWidth.value = width;
+                                }}
+                            >
+                                {title}
+                            </AnimatedUILabel>
+                        ))}
                     {note && (
-                        <UILabel role={UILabelRoles.ParagraphNote}>
+                        <UILabel
+                            role={UILabelRoles.ParagraphNote}
+                            style={{ marginTop: 8 }}
+                        >
                             {note}
                         </UILabel>
                     )}

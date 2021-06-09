@@ -127,11 +127,8 @@ function wrapScreenComponentWithHeader(
                 {descriptor.options.useHeaderLargeTitle ? (
                     <UILargeTitleHeader
                         testID={descriptor.options.testID}
-                        title={
-                            descriptor.options.headerLargeTitle != null
-                                ? descriptor.options.headerLargeTitle
-                                : descriptor.options.title
-                        }
+                        title={descriptor.options.title}
+                        headerLargeTitle={descriptor.options.headerLargeTitle}
                         caption={descriptor.options.caption}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}

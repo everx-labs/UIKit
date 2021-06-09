@@ -109,9 +109,15 @@ export function UINavigationBar({
     // private
     headerTitleOpacity,
 }: UINavigationBarProps & PrivateProps) {
-    const titleElement = title ? (
-        <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
-    ) : null;
+    let titleElement: React.ReactNode = null;
+    if (React.isValidElement(title)) {
+        titleElement = title;
+    } else if (title != null) {
+        titleElement = (
+            <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
+        );
+    }
+
     const captionElement = caption ? (
         <UILabel
             role={UILabelRoles.ParagraphFootnote}
