@@ -202,6 +202,7 @@ export default class UIController<Props, State> extends UIComponent<
 
     // constructor
     hasSpinnerOverlay: boolean;
+    trackKeyboard: boolean;
 
     // Guard for react-navigation v5 first mount focus event
     isFocused = false;
@@ -211,6 +212,7 @@ export default class UIController<Props, State> extends UIComponent<
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
         this.hasSpinnerOverlay = false;
+        this.trackKeyboard = false;
 
         if (configuration.navigationVersion < 5) {
             this.handlePathAndParams();
@@ -573,6 +575,9 @@ export default class UIController<Props, State> extends UIComponent<
 
     // Keyboard
     initKeyboardListeners() {
+        if (!this.trackKeyboard) {
+            return;
+        }
         this.deinitKeyboardListeners();
         if (Platform.OS === 'ios') {
             this.keyboardWillShowListener = Keyboard.addListener(
@@ -608,6 +613,9 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     deinitKeyboardListeners() {
+        if (!this.trackKeyboard) {
+            return;
+        }
         if (Platform.OS === 'android') {
             // Remove this screen from keyboard panning if it is
             UIController.removeKeyboardPanningScreen(this);

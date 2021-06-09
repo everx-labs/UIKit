@@ -14,11 +14,17 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    Portal,
+    PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
 
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';
+
+const AnimatedUIBackgroundView = Animated.createAnimatedComponent(
+    UIBackgroundView,
+);
 
 const styles = StyleSheet.create({
     scrollContainer: {
@@ -100,6 +106,7 @@ class UIDialogController extends UIController {
         this.textInputBeginningTag = undefined;
         this.textInputTagSeparator = undefined;
         this.auxTextInputPlaceholder = undefined;
+        this.trackKeyboard = true;
 
         this.onSubmitEditingTextInput = () => {
             if (this.auxTextInput) {
@@ -256,17 +263,29 @@ class UIDialogController extends UIController {
 
     renderBottomContainer() {
         let bottom = this.renderBottom();
+
         if (Array.isArray(bottom)) {
-            bottom = <React.Fragment>{bottom}</React.Fragment>;
+            bottom = (
+                <Portal forId="scene">
+                    <React.Fragment>{bottom}</React.Fragment>
+                </Portal>
+            );
         }
+
         return (
-            <UIBackgroundView
-                color={UIBackgroundViewColors.BackgroundPrimary}
-                style={styles.bottomContainer}
-                onLayout={this.onLayoutBottomContainer}
-            >
-                {bottom}
-            </UIBackgroundView>
+            <Portal forId="scene">
+                <AnimatedUIBackgroundView
+                    style={[
+                        styles.bottomContainer,
+                        {
+                            marginBottom: this.getMarginBottom(),
+                        },
+                    ]}
+                    onLayout={this.onLayoutBottomContainer}
+                >
+                    {bottom}
+                </AnimatedUIBackgroundView>
+            </Portal>
         );
     }
 
@@ -355,7 +374,7 @@ class UIDialogController extends UIController {
         );
         const animatedContainerStyle = {
             flex: 1,
-            marginBottom: this.getMarginBottom(),
+            // marginBottom: this.getMarginBottom(),
         };
         return (
             <Animated.View style={animatedContainerStyle}>

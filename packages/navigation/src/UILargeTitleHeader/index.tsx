@@ -15,6 +15,7 @@ import {
     UILabelColors,
     UILabelRoles,
     UIBackgroundView,
+    PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 
 import { useOnScrollHandler } from './useOnScrollHandler';
@@ -264,73 +265,79 @@ export function UILargeTitleHeader({
     const hasSomethingInHeader = title != null || label != null || note != null;
 
     return (
-        <UIBackgroundView style={[styles.container]}>
-            <View style={styles.mainHeaderFiller} />
-            <Animated.View style={[{ flex: 1 }, style]}>
-                <Animated.View
-                    ref={largeTitleViewRef}
-                    style={
-                        hasSomethingInHeader && styles.largeTitleHeaderContainer
-                    }
-                >
-                    {label && (
-                        <UILabel
-                            role={UILabelRoles.ParagraphLabel}
-                            color={UILabelColors.TextSecondary}
-                            style={{ marginBottom: 8 }}
-                        >
-                            {label}
-                        </UILabel>
-                    )}
-                    {title &&
-                        (React.isValidElement(title) ? (
-                            title
-                        ) : (
-                            <AnimatedUILabel
-                                role={UILabelRoles.TitleLarge}
-                                style={largeTitleStyle}
-                                onLayout={({
-                                    nativeEvent: {
-                                        layout: { width },
-                                    },
-                                }) => {
-                                    titleWidth.value = width;
-                                }}
-                            >
-                                {title}
-                            </AnimatedUILabel>
-                        ))}
-                    {note && (
-                        <UILabel
-                            role={UILabelRoles.ParagraphNote}
-                            style={{ marginTop: 8 }}
-                        >
-                            {note}
-                        </UILabel>
-                    )}
-                </Animated.View>
-
-                <ScrollableContext.Provider value={scrollableContextValue}>
+        <PortalManager id="scene">
+            <UIBackgroundView style={[styles.container]}>
+                <View style={styles.mainHeaderFiller} />
+                <Animated.View style={[{ flex: 1 }, style]}>
                     <Animated.View
+                        ref={largeTitleViewRef}
                         style={
-                            hasScroll
-                                ? styles.sceneContainerWithScroll
-                                : styles.sceneContainerWithoutScroll
+                            hasSomethingInHeader &&
+                            styles.largeTitleHeaderContainer
                         }
                     >
-                        {children}
+                        {label && (
+                            <UILabel
+                                role={UILabelRoles.ParagraphLabel}
+                                color={UILabelColors.TextSecondary}
+                                style={{ marginBottom: 8 }}
+                            >
+                                {label}
+                            </UILabel>
+                        )}
+                        {title &&
+                            (React.isValidElement(title) ? (
+                                title
+                            ) : (
+                                <AnimatedUILabel
+                                    role={UILabelRoles.TitleLarge}
+                                    style={largeTitleStyle}
+                                    onLayout={({
+                                        nativeEvent: {
+                                            layout: { width },
+                                        },
+                                    }) => {
+                                        titleWidth.value = width;
+                                    }}
+                                >
+                                    {title}
+                                </AnimatedUILabel>
+                            ))}
+                        {note && (
+                            <UILabel
+                                role={UILabelRoles.ParagraphNote}
+                                style={{ marginTop: 8 }}
+                            >
+                                {note}
+                            </UILabel>
+                        )}
                     </Animated.View>
-                </ScrollableContext.Provider>
-            </Animated.View>
-            <UIBackgroundView
-                style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
-            >
-                <UIStackNavigationBar
-                    {...navigationBarProps}
-                    headerTitleOpacity={headerTitleOpacity}
-                />
+
+                    <ScrollableContext.Provider value={scrollableContextValue}>
+                        <Animated.View
+                            style={
+                                hasScroll
+                                    ? styles.sceneContainerWithScroll
+                                    : styles.sceneContainerWithoutScroll
+                            }
+                        >
+                            {children}
+                        </Animated.View>
+                    </ScrollableContext.Provider>
+                </Animated.View>
+                <UIBackgroundView
+                    style={[
+                        styles.mainHeaderContainer,
+                        { height: HEADER_HEIGHT },
+                    ]}
+                >
+                    <UIStackNavigationBar
+                        {...navigationBarProps}
+                        headerTitleOpacity={headerTitleOpacity}
+                    />
+                </UIBackgroundView>
             </UIBackgroundView>
-        </UIBackgroundView>
+        </PortalManager>
     );
 }
 
