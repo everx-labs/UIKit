@@ -44,17 +44,7 @@
     "@tonlabs/uikit.localization": "^2.2.0",
     "fontfaceobserver-es": "3.3.3",
     "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
-    "react-qr-reader": "2.2.1",
-    "@types/svg-path-parser": "1.1.1",
-    "@types/abs-svg-path": "0.1.0",
-    "svg-path-parser": "1.1.0",
-    "parse-svg-path": "0.1.2",
-    "abs-svg-path": "0.1.1",
-    "react-native-svg": "12.1.1",
-    "d3-shape": "2.1.0",
-    "@types/d3-shape": "2.1.0",
-    "react-native-redash": "16.0.11",
-    "normalize-svg-path": "1.1.0"
+    "react-qr-reader": "2.2.1"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
