@@ -1,17 +1,20 @@
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
-import type { Path as RedashPath } from 'react-native-redash';
+import type { Path } from 'react-native-redash';
 import type { Point, Dimensions } from './LinearChart';
 
-export const scale = (value: number, domain: number[], range: number[]) => {
+/**
+ * @worklet
+ */
+const scale = (value: number, domain: number[], range: number[]) => {
     'worklet';
 
     return interpolate(value, domain, range, Extrapolate.CLAMP);
 };
 
-export const getScaledData = (
-    data: Point[],
-    dimensions: Dimensions,
-): Point[] => {
+/**
+ * @worklet
+ */
+const getScaledData = (data: Point[], dimensions: Dimensions): Point[] => {
     'worklet';
 
     const domain = {
@@ -39,7 +42,11 @@ export const getScaledData = (
     );
 };
 
-export const createPath = (move: Point): RedashPath => {
+/**
+ * @worklet
+ * Was copied from `react-native-redash/Paths`
+ */
+const createPath = (move: Point): Path => {
     'worklet';
 
     return {
@@ -49,6 +56,10 @@ export const createPath = (move: Point): RedashPath => {
     };
 };
 
+/**
+ * @worklet
+ * Was copied from `react-native-redash/Paths`
+ */
 const getCurve = (currentPoint: Point, p0: Point, p1: Point) => {
     'worklet';
 
@@ -65,7 +76,16 @@ const getCurve = (currentPoint: Point, p0: Point, p1: Point) => {
     };
 };
 
-export const curveLines = (points: Point[]) => {
+/**
+ * Functions `createPath`, `getCurve` and `curveLines` were copied from `react-native-redash/Paths` package
+ * because the `curveLines` function does not behave as expected and had to be changed
+ */
+
+/**
+ * @worklet
+ * Was copied from `react-native-redash/Paths` and changed
+ */
+const curveLines = (points: Point[]) => {
     'worklet';
 
     const path = createPath(points[0]);
@@ -74,25 +94,28 @@ export const curveLines = (points: Point[]) => {
             continue;
         }
         const currentPoint = points[i];
-        const prevtPoint = points[i - 1];
+        const previousPoint = points[i - 1];
 
-        const p0 = points[i - 2] || prevtPoint;
-        const p1 = points[i - 1];
+        const p0 = points[i - 2] || previousPoint;
 
-        path.curves.push(getCurve(currentPoint, p0, p1));
+        path.curves.push(getCurve(currentPoint, p0, previousPoint));
+
         if (i === points.length - 1) {
-            const p2 = points[i - 1];
-            const p3 = points[i];
-            path.curves.push(getCurve(currentPoint, p2, p3));
+            path.curves.push(
+                getCurve(currentPoint, previousPoint, currentPoint),
+            );
         }
     }
     return path;
 };
 
+/**
+ * @worklet
+ */
 export const convertDataToPath = (
     data: Point[],
     dimensions: Dimensions,
-): RedashPath => {
+): Path => {
     'worklet';
 
     const scaledData: Point[] = getScaledData(data, dimensions);
@@ -101,13 +124,15 @@ export const convertDataToPath = (
 
 /**
  * @worklet
+ * Was copied from `react-native-redash/Paths` and changed
+ * (the function must return Path)
  */
-export const interpolatePathCustom = (
+export const interpolatePath = (
     value: number,
     inputRange: number[],
-    outputRange: RedashPath[],
+    outputRange: Path[],
     extrapolate = Animated.Extrapolate.CLAMP,
-): RedashPath => {
+): Path => {
     'worklet';
 
     const path = {

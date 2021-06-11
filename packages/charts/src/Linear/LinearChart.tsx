@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { runOnUI } from 'react-native-reanimated';
-import { Path as RedashPath, serialize } from 'react-native-redash';
+import { Path, serialize } from 'react-native-redash';
 
 import { addNativeProps } from '../Utils';
-import { convertDataToPath, interpolatePathCustom } from './pathUtil';
+import { convertDataToPath, interpolatePath } from './linearChartUtils';
 
 const styles = StyleSheet.create({
     container: {
@@ -43,9 +43,9 @@ type IProps = {
     testID?: string;
 };
 
-const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(Path));
+const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath));
 
-export const LinearChart = (props: IProps) => {
+export const LinearChart: React.FC<IProps> = (props: IProps) => {
     const { data } = props;
 
     const [dimensions, setDimensions] = React.useState<Dimensions>(
@@ -72,7 +72,7 @@ export const LinearChart = (props: IProps) => {
 
     const progressTarget = Animated.useSharedValue<number>(0);
 
-    const intermediatePath = Animated.useSharedValue<RedashPath | null>(null);
+    const intermediatePath = Animated.useSharedValue<Path | null>(null);
 
     const targetPath = Animated.useDerivedValue(() => {
         'worklet';
@@ -82,10 +82,10 @@ export const LinearChart = (props: IProps) => {
 
     const progress = Animated.useSharedValue<number>(0);
 
-    const currentPath = Animated.useDerivedValue<RedashPath>(() => {
+    const currentPath = Animated.useDerivedValue<Path>(() => {
         'worklet';
 
-        return interpolatePathCustom(
+        return interpolatePath(
             progress.value,
             [
                 getOppositeProgressTarget(progressTarget.value),
