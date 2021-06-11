@@ -10,7 +10,6 @@ import {
     ButtonContent,
     ButtonIcon,
     ButtonTitle,
-    IconSize,
     useButtonChildren,
 } from './useButtonChildren';
 import { ColorVariants } from '../Colors';
@@ -71,7 +70,7 @@ const ButtonForward = React.forwardRef<
                 {loading ? (
                     <UIIndicator
                         color={ColorVariants.StaticTextPrimaryLight}
-                        size={UIConstant.middleButtonIconSize}
+                        size={UIConstant.iconSize}
                     />
                 ) : processedChildren}
             </View>
@@ -91,12 +90,11 @@ Button.Content = ButtonContent;
 Button.Icon = ButtonIcon;
 Button.Title = ButtonTitle;
 
-export const ButtonIconSize = IconSize;
-
 const styles = StyleSheet.create({
     content: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden',
     },
 });

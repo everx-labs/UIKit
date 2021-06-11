@@ -24,6 +24,9 @@ export const paddingStyles = {
     paddingHorizontalTiny: { // 4
         paddingHorizontal: UIConstant.tinyContentOffset(),
     },
+    paddingHorizontalSmall: { // 8
+        paddingHorizontal: UIConstant.smallContentOffset(),
+    },
     paddingHorizontal: { // 16
         paddingHorizontal: UIConstant.contentOffset(),
     },
@@ -142,6 +145,10 @@ export default class UIStylePadding {
 
     static horizontalTiny() { // 4
         return styles.paddingHorizontalTiny;
+    }
+
+    static horizontalSmall() { // 8
+        return styles.paddingHorizontalSmall;
     }
 
     static horizontalNormal() { // 12

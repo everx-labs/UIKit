@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
 
-import { Button, ButtonIconSize, UILayout } from './Button';
+import { Button, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
@@ -169,20 +169,12 @@ export const UIBoxButton = ({
                 <Button.Title titleColor={titleColor}>{title}</Button.Title>
                 {
                     iconPosition === UIBoxButtonIconPosition.Middle && icon &&
-                    <Button.Icon
-                        source={icon}
-                        size={ButtonIconSize.Normal}
-                        tintColor={titleColor}
-                    />
+                    <Button.Icon source={icon} tintColor={titleColor} />
                 }
             </Button.Content>
             {
                 iconPosition === UIBoxButtonIconPosition.Right && icon &&
-                <Button.Icon
-                    source={icon}
-                    style={styles.rightIcon}
-                    tintColor={titleColor}
-                />
+                <Button.Icon source={icon} tintColor={titleColor} />
             }
         </Button>
     );
@@ -194,10 +186,6 @@ const styles = StyleSheet.create({
         padding: UIConstant.normalContentOffset,
     },
     leftIcon: {
-        marginRight: 10,
-    },
-    rightIcon: {
-        marginLeft: 6,
-        marginRight: 4,
+        marginRight: UIConstant.smallContentOffset,
     },
 });

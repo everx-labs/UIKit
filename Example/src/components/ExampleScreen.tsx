@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { ScrollView, ScrollViewProps } from 'react-native';
+import type { ScrollViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
 import type { ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { ScrollView } from '@tonlabs/uikit.navigation';
 
 export function ExampleScreen({
     children,
@@ -17,7 +18,6 @@ export function ExampleScreen({
     return (
         <UIBackgroundView style={{ flex: 1 }} color={color}>
             <ScrollView
-                style={{ flex: 1 }}
                 contentContainerStyle={{
                     alignItems: 'center',
                     paddingTop: insets.top,

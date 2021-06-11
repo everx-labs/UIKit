@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import { Button, ButtonIconSize, UILayout } from './Button';
+import { Button, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
@@ -184,23 +184,16 @@ export const UIMsgButton = ({
                         tintColor={titleColor}
                     />
                 }
+                {/* TODO: think about the case when there is no title, only icon */}
                 <Button.Title titleColor={titleColor}>{title}</Button.Title>
                 {
                     iconPosition === UIMsgButtonIconPosition.Middle && icon &&
-                    <Button.Icon
-                        source={icon}
-                        size={ButtonIconSize.Normal}
-                        tintColor={titleColor}
-                    />
+                    <Button.Icon source={icon} tintColor={titleColor} />
                 }
             </Button.Content>
             {
                 iconPosition === UIMsgButtonIconPosition.Right && icon &&
-                <Button.Icon
-                    source={icon}
-                    style={styles.rightIcon}
-                    tintColor={titleColor}
-                />
+                <Button.Icon source={icon} tintColor={titleColor} />
             }
         </Button>
     )
@@ -212,10 +205,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.normalContentOffset,
     },
     leftIcon: {
-        marginLeft: 8,
-        marginRight: 10,
-    },
-    rightIcon: {
-        marginHorizontal: 2,
+        marginRight: UIConstant.smallContentOffset,
     },
 });

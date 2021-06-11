@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { useNavigation } from '@react-navigation/core';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import {
@@ -8,7 +9,9 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import {
     HEADER_HEIGHT,
@@ -46,16 +49,90 @@ function UINavigationBarAnimatedTitle({
     );
 }
 
+function useHeaderLeft(
+    headerLeft?: () => React.ReactNode,
+    headerLeftItems?: HeaderItem[],
+    headerBackButton?: HeaderItem,
+) {
+    const navigation = useNavigation();
+
+    if (headerLeft != null) {
+        return headerLeft();
+    }
+
+    if (headerLeftItems != null) {
+        return <UIHeaderItems items={headerLeftItems} />;
+    }
+
+    if (navigation.canGoBack()) {
+        const defaultBackButton: HeaderItem = {
+            testID: 'uinavigation-back-button',
+            icon: {
+                source: UIAssets.icons.ui.arrowLeftBlack,
+            },
+            iconTintColor: ColorVariants.IconAccent,
+            onPress: navigation.goBack,
+        };
+
+        if (headerBackButton != null) {
+            return (
+                <UIHeaderItems
+                    items={[
+                        {
+                            ...defaultBackButton,
+                            ...headerBackButton,
+                        },
+                    ]}
+                />
+            );
+        }
+
+        return <UIHeaderItems items={[defaultBackButton]} />;
+    }
+
+    return null;
+}
+
 export type UINavigationBarProps = {
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
-    headerLeft?: () => React.ReactNode; // TODO: should we limit it?
+    /**
+     * Method to render any content of the left side of header.
+     * Has a higer priority then `headerLeftItems`.
+     */
+    headerLeft?: () => React.ReactNode;
+    /**
+     * Set of items to render on the left side of header.
+     * Limited to 3 items.
+     */
     headerLeftItems?: HeaderItem[];
+    /**
+     * Configuration for header back button only.
+     *
+     * Usefull if you want to customise back button,
+     * but doesn't want to provide all the `HeaderItem`
+     * options themself.
+     * (It will be merged with default,
+     *  so for example you don't need to pass `onPress`
+     *  to have a proper behaviour)
+     */
+    headerBackButton?: HeaderItem;
+    /**
+     * Method to render any content of the right side of header.
+     * Has a higer priority then `headerRightItems`.
+     */
     headerRight?: () => React.ReactNode; // TODO: should we limit it?
+    /**
+     * Set of items to render on the left side of header.
+     * Limited to 3 items.
+     */
     headerRightItems?: HeaderItem[];
     /**
-     * A title string
+     * String to display in the header as title. Defaults to scene `title`.
      */
-    title?: string;
+    title?: React.ReactNode | string;
     /**
      * A caption string
      */
@@ -70,6 +147,7 @@ export function UINavigationBar({
     testID,
     headerLeft,
     headerLeftItems,
+    headerBackButton,
     headerRight,
     headerRightItems,
     title,
@@ -89,15 +167,15 @@ export function UINavigationBar({
         </UILabel>
     ) : null;
 
+    const headerLeftElement = useHeaderLeft(
+        headerLeft,
+        headerLeftItems,
+        headerBackButton,
+    );
+
     return (
         <UIBackgroundView style={styles.container} testID={testID}>
-            <View style={styles.headerLeftItems}>
-                {headerLeft == null ? (
-                    <UIHeaderItems items={headerLeftItems} />
-                ) : (
-                    headerLeft()
-                )}
-            </View>
+            <View style={styles.headerLeftItems}>{headerLeftElement}</View>
             {headerTitleOpacity != null ? (
                 <UINavigationBarAnimatedTitle
                     headerTitleOpacity={headerTitleOpacity}
