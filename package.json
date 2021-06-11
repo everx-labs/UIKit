@@ -69,6 +69,7 @@
         "react-native-tab-view": "3.0.1",
         "react-qr-reader": "2.2.1",
         "react-style-proptype": "3.2.2",
+        "react-native-redash": "16.0.11",
         "validator": "10.11.0"
     },
     "devDependencies": {
