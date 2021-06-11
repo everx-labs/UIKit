@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { UIButton } from '@tonlabs/uikit.hydrogen';
-// import { LinearChart } from '@tonlabs/uikit.charts'
+import { LinearChart, Point } from '@tonlabs/uikit.charts'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-import { LinearChart, Point } from '../../../packages/charts/src/index';
 
 const getRandomSign = (): number => {
     return Math.random() > 0.5 ? 1 : -1;
@@ -41,19 +40,20 @@ export function Chart() {
                     style={{
                         width: '100%',
                         maxWidth: 900,
-                        paddingVertical: 20,
+                        marginVertical: 20,
                         borderWidth: 1,
+                        borderStyle: 'dotted',
                         height: 300,
                     }}
                 >
                     <LinearChart {...{ data }} />
-                    <UIButton
-                        title="refresh"
-                        onPress={() => {
-                            setChartData(getData());
-                        }}
-                    />
                 </View>
+                <UIButton
+                    title="Refresh"
+                    onPress={() => {
+                        setChartData(getData());
+                    }}
+                />
             </ExampleSection>
         </ExampleScreen>
     );
