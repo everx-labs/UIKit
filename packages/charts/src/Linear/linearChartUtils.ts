@@ -60,7 +60,12 @@ const createPath = (move: Point): Path => {
  * @worklet
  * Was copied from `react-native-redash/Paths`
  */
-const getCurve = (currentPoint: Point, p0: Point, p1: Point) => {
+const getCurve = (
+    currentPoint: Point,
+    p0: Point,
+    p1: Point,
+    isLastPoint: boolean,
+) => {
     'worklet';
 
     const cp1x = (2 * p0.x + p1.x) / 3;
@@ -72,7 +77,7 @@ const getCurve = (currentPoint: Point, p0: Point, p1: Point) => {
     return {
         c1: { x: cp1x, y: cp1y },
         c2: { x: cp2x, y: cp2y },
-        to: { x: cp3x, y: cp3y },
+        to: isLastPoint ? currentPoint : { x: cp3x, y: cp3y },
     };
 };
 
@@ -98,11 +103,11 @@ const curveLines = (points: Point[]) => {
 
         const p0 = points[i - 2] || previousPoint;
 
-        path.curves.push(getCurve(currentPoint, p0, previousPoint));
+        path.curves.push(getCurve(currentPoint, p0, previousPoint, false));
 
         if (i === points.length - 1) {
             path.curves.push(
-                getCurve(currentPoint, previousPoint, currentPoint),
+                getCurve(currentPoint, previousPoint, currentPoint, true),
             );
         }
     }
