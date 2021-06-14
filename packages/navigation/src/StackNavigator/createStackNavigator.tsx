@@ -327,7 +327,12 @@ export const StackNavigator = ({
             // @ts-ignore
             headerShown: false,
             ...(doesSupportNative
-                ? null
+                ? Platform.select({
+                      android: {
+                          stackAnimation: 'slide_from_right',
+                      },
+                      default: null,
+                  })
                 : {
                       ...TransitionPresets.SlideFromRightIOS,
                       animationEnabled: true,
