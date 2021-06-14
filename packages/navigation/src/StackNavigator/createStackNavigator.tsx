@@ -174,6 +174,8 @@ function wrapScreenRenderPropWithHeader(
         const route = useRoute();
         const descriptor = descriptors[route.key];
 
+        const closeModal = React.useContext(NestedInModalContext);
+
         if (descriptor == null) {
             return null;
         }
@@ -200,9 +202,11 @@ function wrapScreenRenderPropWithHeader(
                 }
                 style={[
                     styles.screenContainer,
-                    {
-                        paddingTop: top,
-                    },
+                    closeModal == null
+                        ? {
+                              paddingTop: top,
+                          }
+                        : null,
                 ]}
             >
                 {descriptor.options.useHeaderLargeTitle ? (
@@ -213,6 +217,7 @@ function wrapScreenRenderPropWithHeader(
                                 ? descriptor.options.headerLargeTitle
                                 : descriptor.options.title
                         }
+                        headerLargeTitle={descriptor.options.headerLargeTitle}
                         caption={descriptor.options.caption}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
