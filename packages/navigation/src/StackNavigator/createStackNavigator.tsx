@@ -219,6 +219,10 @@ function wrapScreenRenderPropWithHeader(
                         }
                         headerLargeTitle={descriptor.options.headerLargeTitle}
                         caption={descriptor.options.caption}
+                        onTitlePress={descriptor.options.onTitlePress}
+                        onHeaderLargeTitlePress={
+                            descriptor.options.onHeaderLargeTitlePress
+                        }
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
@@ -233,6 +237,10 @@ function wrapScreenRenderPropWithHeader(
                             testID={descriptor.options.testID}
                             title={descriptor.options.title}
                             caption={descriptor.options.caption}
+                            onTitlePress={descriptor.options.onTitlePress}
+                            onHeaderLargeTitlePress={
+                                descriptor.options.onHeaderLargeTitlePress
+                            }
                             headerLeft={descriptor.options.headerLeft}
                             headerLeftItems={descriptor.options.headerLeftItems}
                             headerBackButton={

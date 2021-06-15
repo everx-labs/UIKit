@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
@@ -91,6 +91,10 @@ export type UINavigationBarProps = {
      * A caption string
      */
     caption?: string;
+    /**
+     * A callback that fires when user taps on title area (including caption)
+     */
+    onTitlePress?: () => void;
 };
 
 type PrivateProps = {
@@ -106,6 +110,7 @@ export function UINavigationBar({
     headerRightItems,
     title,
     caption,
+    onTitlePress,
     // private
     headerTitleOpacity,
 }: UINavigationBarProps & PrivateProps) {
@@ -133,6 +138,19 @@ export function UINavigationBar({
         headerBackButton,
     );
 
+    const titleInnerElement =
+        onTitlePress != null ? (
+            <TouchableOpacity onPress={onTitlePress}>
+                {titleElement}
+                {captionElement}
+            </TouchableOpacity>
+        ) : (
+            <>
+                {titleElement}
+                {captionElement}
+            </>
+        );
+
     return (
         <UIBackgroundView style={styles.container} testID={testID}>
             <View style={styles.headerLeftItems}>{headerLeftElement}</View>
@@ -140,13 +158,11 @@ export function UINavigationBar({
                 <UINavigationBarAnimatedTitle
                     headerTitleOpacity={headerTitleOpacity}
                 >
-                    {titleElement}
-                    {captionElement}
+                    {titleInnerElement}
                 </UINavigationBarAnimatedTitle>
             ) : (
                 <UIBackgroundView style={styles.titleWrapper}>
-                    {titleElement}
-                    {captionElement}
+                    {titleInnerElement}
                 </UIBackgroundView>
             )}
             <View style={styles.headerRightItems}>

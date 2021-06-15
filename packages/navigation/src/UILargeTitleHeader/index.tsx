@@ -10,6 +10,7 @@ import Animated, {
     Extrapolate,
     useAnimatedGestureHandler,
 } from 'react-native-reanimated';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
     UILabel,
     UILabelColors,
@@ -48,6 +49,10 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
      */
     headerLargeTitle: UINavigationBarProps['title'];
     /**
+     * A callback that fires when user press on large title header content
+     */
+    onHeaderLargeTitlePress?: () => void;
+    /**
      * A label string
      */
     label?: string;
@@ -65,6 +70,7 @@ export function UILargeTitleHeader({
     label,
     note,
     children,
+    onHeaderLargeTitlePress,
     ...navigationBarProps
 }: UILargeTitleHeaderProps) {
     const shift = useSharedValue(0);
@@ -264,6 +270,46 @@ export function UILargeTitleHeader({
 
     const hasSomethingInHeader = title != null || label != null || note != null;
 
+    const largeTitleInnerElement = (
+        <>
+            {label && (
+                <UILabel
+                    role={UILabelRoles.ParagraphLabel}
+                    color={UILabelColors.TextSecondary}
+                    style={{ marginBottom: 8 }}
+                >
+                    {label}
+                </UILabel>
+            )}
+            {title &&
+                (React.isValidElement(title) ? (
+                    title
+                ) : (
+                    <AnimatedUILabel
+                        role={UILabelRoles.TitleLarge}
+                        style={largeTitleStyle}
+                        onLayout={({
+                            nativeEvent: {
+                                layout: { width },
+                            },
+                        }) => {
+                            titleWidth.value = width;
+                        }}
+                    >
+                        {title}
+                    </AnimatedUILabel>
+                ))}
+            {note && (
+                <UILabel
+                    role={UILabelRoles.ParagraphNote}
+                    style={{ marginTop: 8 }}
+                >
+                    {note}
+                </UILabel>
+            )}
+        </>
+    );
+
     return (
         <PortalManager id="scene">
             <UIBackgroundView style={[styles.container]}>
@@ -276,40 +322,12 @@ export function UILargeTitleHeader({
                             styles.largeTitleHeaderContainer
                         }
                     >
-                        {label && (
-                            <UILabel
-                                role={UILabelRoles.ParagraphLabel}
-                                color={UILabelColors.TextSecondary}
-                                style={{ marginBottom: 8 }}
-                            >
-                                {label}
-                            </UILabel>
-                        )}
-                        {title &&
-                            (React.isValidElement(title) ? (
-                                title
-                            ) : (
-                                <AnimatedUILabel
-                                    role={UILabelRoles.TitleLarge}
-                                    style={largeTitleStyle}
-                                    onLayout={({
-                                        nativeEvent: {
-                                            layout: { width },
-                                        },
-                                    }) => {
-                                        titleWidth.value = width;
-                                    }}
-                                >
-                                    {title}
-                                </AnimatedUILabel>
-                            ))}
-                        {note && (
-                            <UILabel
-                                role={UILabelRoles.ParagraphNote}
-                                style={{ marginTop: 8 }}
-                            >
-                                {note}
-                            </UILabel>
+                        {onHeaderLargeTitlePress != null ? (
+                            <TouchableOpacity onPress={onHeaderLargeTitlePress}>
+                                {largeTitleInnerElement}
+                            </TouchableOpacity>
+                        ) : (
+                            largeTitleInnerElement
                         )}
                     </Animated.View>
 
