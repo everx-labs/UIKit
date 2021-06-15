@@ -13,6 +13,8 @@ import {
     getControlPoints,
 } from './linearChartUtils';
 
+const STROKE_WIDTH: number = 2;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -20,6 +22,7 @@ const styles = StyleSheet.create({
     },
     chartСontainer: {
         flex: 1,
+        overflow: 'visible',
     },
     labelContainer: {
         position: 'absolute',
@@ -169,7 +172,7 @@ const useAnimatedPathProps = (
     const targetPath = Animated.useDerivedValue(() => {
         'worklet';
 
-        return convertDataToPath(data, dimensions.value);
+        return convertDataToPath(data, dimensions.value, STROKE_WIDTH);
     }, [data, dimensions]);
 
     const currentPath = Animated.useDerivedValue<Path>(() => {
@@ -262,20 +265,27 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
         'worklet';
 
         return {
-            width: dimensions.value.width,
-            height: dimensions.value.height,
+            width: dimensions.value.width + STROKE_WIDTH,
+            height: dimensions.value.height + STROKE_WIDTH,
         };
     });
 
     return (
         <View testID={props.testID} style={styles.container}>
             <View onLayout={onLayout} style={styles.chartСontainer}>
-                <AnimatedSvg animatedProps={animatedSvgProps}>
+                <AnimatedSvg
+                    animatedProps={animatedSvgProps}
+                    style={{
+                        overflow: 'visible',
+                        top: -STROKE_WIDTH / 2,
+                        left: -STROKE_WIDTH / 2,
+                    }}
+                >
                     <AnimatedPath
                         animatedProps={animatedPathProps}
                         fill="transparent"
                         stroke="#367be2"
-                        strokeWidth={2}
+                        strokeWidth={STROKE_WIDTH}
                     />
                 </AnimatedSvg>
             </View>
