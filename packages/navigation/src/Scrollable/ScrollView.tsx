@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { ScrollViewProps, Platform } from 'react-native';
+import {
+    ScrollViewProps,
+    Platform,
+    ScrollView as RNScrollView,
+} from 'react-native';
 import Animated from 'react-native-reanimated';
 import {
     NativeViewGestureHandler,
@@ -8,75 +12,82 @@ import {
 
 import { ScrollableContext } from './Context';
 
-export function ScrollView(
-    props: ScrollViewProps & { children?: React.ReactNode },
-) {
-    const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
+type Props = ScrollViewProps & { children?: React.ReactNode };
 
-    const scrollViewOutterHeight = React.useRef(0);
-    const scrollViewInnerHeight = React.useRef(0);
+export const ScrollView = React.forwardRef<RNScrollView>(
+    function ScrollViewForwarded(props: Props, forwardRef) {
+        const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
 
-    const compareHeights = React.useCallback((setHasScroll) => {
-        if (!setHasScroll) {
-            return;
-        }
+        const scrollViewOutterHeight = React.useRef(0);
+        const scrollViewInnerHeight = React.useRef(0);
 
-        if (
-            scrollViewInnerHeight.current === 0 ||
-            scrollViewOutterHeight.current === 0
-        ) {
-            return;
-        }
+        const compareHeights = React.useCallback((setHasScroll) => {
+            if (!setHasScroll) {
+                return;
+            }
 
-        setHasScroll(
-            scrollViewInnerHeight.current > scrollViewOutterHeight.current,
+            if (
+                scrollViewInnerHeight.current === 0 ||
+                scrollViewOutterHeight.current === 0
+            ) {
+                return;
+            }
+
+            setHasScroll(
+                scrollViewInnerHeight.current > scrollViewOutterHeight.current,
+            );
+        }, []);
+
+        const {
+            ref,
+            scrollHandler,
+            gestureHandler,
+            onWheel,
+            setHasScroll,
+        } = React.useContext(ScrollableContext);
+
+        React.useImperativeHandle(forwardRef, () => {
+            // @ts-ignore
+            return ref?.current;
+        });
+
+        return (
+            <PanGestureHandler
+                enabled={Platform.OS === 'android'}
+                shouldCancelWhenOutside={false}
+                onGestureEvent={gestureHandler}
+                waitFor={nativeGestureRef}
+            >
+                <Animated.View style={{ flex: 1 }}>
+                    <NativeViewGestureHandler ref={nativeGestureRef}>
+                        <Animated.ScrollView
+                            {...props}
+                            ref={ref}
+                            overScrollMode="never"
+                            onScrollBeginDrag={scrollHandler}
+                            scrollEventThrottle={16}
+                            // @ts-ignore
+                            onWheel={onWheel}
+                            onLayout={({
+                                nativeEvent: {
+                                    layout: { height },
+                                },
+                            }) => {
+                                scrollViewOutterHeight.current = height;
+
+                                compareHeights(setHasScroll);
+                            }}
+                            onContentSizeChange={(_width, height) => {
+                                scrollViewInnerHeight.current = height;
+
+                                compareHeights(setHasScroll);
+                            }}
+                        />
+                    </NativeViewGestureHandler>
+                </Animated.View>
+            </PanGestureHandler>
         );
-    }, []);
+    },
+);
 
-    return (
-        <ScrollableContext.Consumer>
-            {({
-                ref,
-                scrollHandler,
-                gestureHandler,
-                onWheel,
-                setHasScroll,
-            }) => (
-                <PanGestureHandler
-                    enabled={Platform.OS === 'android'}
-                    shouldCancelWhenOutside={false}
-                    onGestureEvent={gestureHandler}
-                    waitFor={nativeGestureRef}
-                >
-                    <Animated.View style={{ flex: 1 }}>
-                        <NativeViewGestureHandler ref={nativeGestureRef}>
-                            <Animated.ScrollView
-                                {...props}
-                                ref={ref}
-                                overScrollMode="never"
-                                onScrollBeginDrag={scrollHandler}
-                                scrollEventThrottle={16}
-                                // @ts-ignore
-                                onWheel={onWheel}
-                                onLayout={({
-                                    nativeEvent: {
-                                        layout: { height },
-                                    },
-                                }) => {
-                                    scrollViewOutterHeight.current = height;
-
-                                    compareHeights(setHasScroll);
-                                }}
-                                onContentSizeChange={(_width, height) => {
-                                    scrollViewInnerHeight.current = height;
-
-                                    compareHeights(setHasScroll);
-                                }}
-                            />
-                        </NativeViewGestureHandler>
-                    </Animated.View>
-                </PanGestureHandler>
-            )}
-        </ScrollableContext.Consumer>
-    );
-}
+ScrollView.displayName = 'ScrollView';
