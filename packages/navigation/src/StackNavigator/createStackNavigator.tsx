@@ -130,6 +130,10 @@ function wrapScreenComponentWithHeader(
                         title={descriptor.options.title}
                         headerLargeTitle={descriptor.options.headerLargeTitle}
                         caption={descriptor.options.caption}
+                        onTitlePress={descriptor.options.onTitlePress}
+                        onHeaderLargeTitlePress={
+                            descriptor.options.onHeaderLargeTitlePress
+                        }
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
@@ -144,6 +148,7 @@ function wrapScreenComponentWithHeader(
                             testID={descriptor.options.testID}
                             title={descriptor.options.title}
                             caption={descriptor.options.caption}
+                            onTitlePress={descriptor.options.onTitlePress}
                             headerLeft={descriptor.options.headerLeft}
                             headerLeftItems={descriptor.options.headerLeftItems}
                             headerBackButton={
@@ -238,9 +243,6 @@ function wrapScreenRenderPropWithHeader(
                             title={descriptor.options.title}
                             caption={descriptor.options.caption}
                             onTitlePress={descriptor.options.onTitlePress}
-                            onHeaderLargeTitlePress={
-                                descriptor.options.onHeaderLargeTitlePress
-                            }
                             headerLeft={descriptor.options.headerLeft}
                             headerLeftItems={descriptor.options.headerLeftItems}
                             headerBackButton={

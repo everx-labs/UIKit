@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
+import { UIConstant } from '@tonlabs/uikit.core';
 import {
     UIBackgroundView,
     UILabel,
@@ -18,10 +19,6 @@ import {
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
-
-const UIBackgroundViewAnimated = Animated.createAnimatedComponent(
-    UIBackgroundView,
-);
 
 type UINavigationBarAnimatedTitleProps = {
     children: React.ReactNode;
@@ -39,11 +36,11 @@ function UINavigationBarAnimatedTitle({
     });
 
     return (
-        <UIBackgroundViewAnimated
-            style={[styles.titleWrapper, headerTitleStyle]}
-        >
-            {children}
-        </UIBackgroundViewAnimated>
+        <UIBackgroundView>
+            <Animated.View style={[styles.titleInner, headerTitleStyle]}>
+                {children}
+            </Animated.View>
+        </UIBackgroundView>
     );
 }
 
@@ -119,7 +116,15 @@ export function UINavigationBar({
         titleElement = title;
     } else if (title != null) {
         titleElement = (
-            <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
+            <UILabel
+                role={UILabelRoles.HeadlineHead}
+                adjustsFontSizeToFit
+                minimumFontScale={0.7}
+                numberOfLines={1}
+                ellipsizeMode="middle"
+            >
+                {title}
+            </UILabel>
         );
     }
 
@@ -140,7 +145,7 @@ export function UINavigationBar({
 
     const titleInnerElement =
         onTitlePress != null ? (
-            <TouchableOpacity onPress={onTitlePress}>
+            <TouchableOpacity onPress={onTitlePress} style={styles.titleInner}>
                 {titleElement}
                 {captionElement}
             </TouchableOpacity>
@@ -151,25 +156,42 @@ export function UINavigationBar({
             </>
         );
 
+    let headerRightElement = null;
+
+    if (headerRight != null) {
+        headerRightElement = headerRight();
+    } else if (headerRightItems != null && headerRightItems.length > 0) {
+        headerRightElement = <UIHeaderItems items={headerRightItems} />;
+    }
+
     return (
         <UIBackgroundView style={styles.container} testID={testID}>
             <View style={styles.headerLeftItems}>{headerLeftElement}</View>
-            {headerTitleOpacity != null ? (
-                <UINavigationBarAnimatedTitle
-                    headerTitleOpacity={headerTitleOpacity}
-                >
-                    {titleInnerElement}
-                </UINavigationBarAnimatedTitle>
-            ) : (
-                <UIBackgroundView style={styles.titleWrapper}>
-                    {titleInnerElement}
-                </UIBackgroundView>
-            )}
-            <View style={styles.headerRightItems}>
-                {headerRight == null ? (
-                    <UIHeaderItems items={headerRightItems} />
+            <View style={styles.headerRightItems}>{headerRightElement}</View>
+            <View
+                style={[
+                    styles.titleContainer,
+                    {
+                        right:
+                            (React.isValidElement(headerRightElement)
+                                ? UIConstant.iconSize()
+                                : 0) +
+                            CONTENT_INSET_VERTICAL_X2 +
+                            SCREEN_CONTENT_INSET_HORIZONTAL,
+                    },
+                ]}
+                // pointerEvents="box-none"
+            >
+                {headerTitleOpacity != null ? (
+                    <UINavigationBarAnimatedTitle
+                        headerTitleOpacity={headerTitleOpacity}
+                    >
+                        {titleInnerElement}
+                    </UINavigationBarAnimatedTitle>
                 ) : (
-                    headerRight()
+                    <UIBackgroundView style={styles.titleInner}>
+                        {titleInnerElement}
+                    </UIBackgroundView>
                 )}
             </View>
         </UIBackgroundView>
@@ -183,10 +205,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: CONTENT_INSET_VERTICAL_X2,
         paddingHorizontal: SCREEN_CONTENT_INSET_HORIZONTAL,
+        flexWrap: 'nowrap',
     },
-
-    titleWrapper: {
-        marginHorizontal: CONTENT_INSET_VERTICAL_X2,
+    titleContainer: {
+        position: 'absolute',
+        top: CONTENT_INSET_VERTICAL_X2,
+        bottom: CONTENT_INSET_VERTICAL_X2,
+        left:
+            UIConstant.iconSize() +
+            CONTENT_INSET_VERTICAL_X2 +
+            SCREEN_CONTENT_INSET_HORIZONTAL,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+    },
+    titleInner: {
+        flexDirection: 'column',
         alignItems: 'center',
     },
     headerLeftItems: {
