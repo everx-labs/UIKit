@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
         top: -8,
         height: 16,
         width: 40,
+    },
+    label: {
+        flex: 1,
         borderWidth: 1,
     },
     leftLabelContainer: {
@@ -69,7 +72,9 @@ const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath));
 const AnimatedSvg = Animated.createAnimatedComponent(addNativeProps(Svg));
 
 type LabelStyles = {
+    leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     leftLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     rightLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
 };
 const useLabelStyles = (
@@ -108,7 +113,7 @@ const useLabelStyles = (
         }
     }, [data]);
 
-    const leftLabelStyle = Animated.useAnimatedStyle(() => {
+    const leftLabelContainerStyle = Animated.useAnimatedStyle(() => {
         return {
             transform: [
                 {
@@ -120,8 +125,13 @@ const useLabelStyles = (
             ],
         };
     });
+    const leftLabelStyle = Animated.useAnimatedStyle(() => {
+        return {
+            opacity: startLabelYCoordinate.value === null ? 0 : 1,
+        };
+    });
 
-    const rightLabelStyle = Animated.useAnimatedStyle(() => {
+    const rightLabelContainerStyle = Animated.useAnimatedStyle(() => {
         return {
             transform: [
                 {
@@ -134,9 +144,16 @@ const useLabelStyles = (
         };
     });
 
+    const rightLabelStyle = Animated.useAnimatedStyle(() => {
+        return {
+            opacity: endLabelYCoordinate.value === null ? 0 : 1,
+        };
+    });
     return {
         leftLabelStyle,
+        leftLabelContainerStyle,
         rightLabelStyle,
+        rightLabelContainerStyle,
     };
 };
 
@@ -268,16 +285,24 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 style={[
                     styles.labelContainer,
                     styles.leftLabelContainer,
-                    labelStyles.leftLabelStyle,
+                    labelStyles.leftLabelContainerStyle,
                 ]}
-            />
+            >
+                <Animated.View
+                    style={[styles.label, labelStyles.leftLabelStyle]}
+                />
+            </Animated.View>
             <Animated.View
                 style={[
                     styles.labelContainer,
                     styles.rightLabelContainer,
-                    labelStyles.rightLabelStyle,
+                    labelStyles.rightLabelContainerStyle,
                 ]}
-            />
+            >
+                <Animated.View
+                    style={[styles.label, labelStyles.rightLabelStyle]}
+                />
+            </Animated.View>
         </View>
     );
 };
