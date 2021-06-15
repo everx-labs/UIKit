@@ -1,4 +1,3 @@
-// @flow strict-local
 import * as React from 'react';
 import {
     SafeAreaProvider,
