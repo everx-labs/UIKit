@@ -3,6 +3,7 @@ import { View, StyleSheet, LayoutChangeEvent, ViewStyle } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { runOnUI } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
+import { UILabel, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 
 import { addNativeProps } from '../Utils';
 import {
@@ -25,10 +26,7 @@ const styles = StyleSheet.create({
         top: -8,
         height: 16,
         width: 40,
-    },
-    label: {
-        flex: 1,
-        borderWidth: 1,
+        paddingHorizontal: 4,
     },
     leftLabelContainer: {
         left: 0,
@@ -288,9 +286,11 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                     labelStyles.leftLabelContainerStyle,
                 ]}
             >
-                <Animated.View
-                    style={[styles.label, labelStyles.leftLabelStyle]}
-                />
+                <Animated.View style={[labelStyles.leftLabelStyle]}>
+                    <UILabel role={TypographyVariants.ParagraphLabel}>
+                        {Math.round(data[0].y * 100) / 100}
+                    </UILabel>
+                </Animated.View>
             </Animated.View>
             <Animated.View
                 style={[
@@ -299,9 +299,14 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                     labelStyles.rightLabelContainerStyle,
                 ]}
             >
-                <Animated.View
-                    style={[styles.label, labelStyles.rightLabelStyle]}
-                />
+                <Animated.View style={[labelStyles.rightLabelStyle]}>
+                    <UILabel
+                        role={TypographyVariants.ParagraphLabel}
+                        numberOfLines={1}
+                    >
+                        {Math.round(data[data.length - 1].y * 100) / 100}
+                    </UILabel>
+                </Animated.View>
             </Animated.View>
         </View>
     );
