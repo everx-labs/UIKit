@@ -1,15 +1,37 @@
 import * as React from 'react';
-import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
+import { View, StyleSheet, LayoutChangeEvent, ViewStyle } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { runOnUI } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
 
 import { addNativeProps } from '../Utils';
-import { convertDataToPath, interpolatePath } from './linearChartUtils';
+import {
+    convertDataToPath,
+    interpolatePath,
+    getScaledData,
+    getControlPoints,
+} from './linearChartUtils';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 40,
+    },
+    chartСontainer: {
+        flex: 1,
+    },
+    labelContainer: {
+        position: 'absolute',
+        top: -8,
+        height: 16,
+        width: 40,
+        borderWidth: 1,
+    },
+    leftLabelContainer: {
+        left: 0,
+    },
+    rightLabelContainer: {
+        right: 0,
     },
 });
 
@@ -44,32 +66,87 @@ type IProps = {
 };
 
 const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath));
+const AnimatedSvg = Animated.createAnimatedComponent(addNativeProps(Svg));
 
-export const LinearChart: React.FC<IProps> = (props: IProps) => {
-    const { data } = props;
+type LabelStyles = {
+    leftLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    rightLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+};
+const useLabelStyles = (
+    dimensions: Animated.SharedValue<Dimensions>,
+    data: Point[],
+): LabelStyles => {
+    const startLabelYCoordinate = Animated.useSharedValue<number | null>(null);
+    const endLabelYCoordinate = Animated.useSharedValue<number | null>(null);
 
-    const [dimensions, setDimensions] = React.useState<Dimensions>(
-        initialDimensions,
-    );
-    const [previousDimensions, setPreviousDimensions] = React.useState<
-        Dimensions
-    >(dimensions);
+    Animated.useDerivedValue(() => {
+        'worklet';
 
-    const onLayout = React.useCallback(
-        (event: LayoutChangeEvent): void => {
-            if (
-                event.nativeEvent.layout.height !== dimensions.height ||
-                event.nativeEvent.layout.width !== dimensions.width
-            ) {
-                setDimensions({
-                    height: event.nativeEvent.layout.height,
-                    width: event.nativeEvent.layout.width,
-                });
+        if (dimensions.value.height === 0 || dimensions.value.width === 0) {
+            return;
+        }
+
+        const scaledData: Point[] = getScaledData(data, dimensions.value);
+        const controlPoints = getControlPoints(data, scaledData);
+        if (startLabelYCoordinate.value !== controlPoints.start.y) {
+            if (startLabelYCoordinate.value === null) {
+                startLabelYCoordinate.value = controlPoints.start.y;
             }
-        },
-        [dimensions],
-    );
+            startLabelYCoordinate.value = Animated.withSpring(
+                controlPoints.start.y,
+                withSpringConfig,
+            );
+        }
+        if (endLabelYCoordinate.value !== controlPoints.end.y) {
+            if (endLabelYCoordinate.value === null) {
+                endLabelYCoordinate.value = controlPoints.end.y;
+            }
+            endLabelYCoordinate.value = Animated.withSpring(
+                controlPoints.end.y,
+                withSpringConfig,
+            );
+        }
+    }, [data]);
 
+    const leftLabelStyle = Animated.useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY:
+                        startLabelYCoordinate.value === null
+                            ? 0
+                            : startLabelYCoordinate.value,
+                },
+            ],
+        };
+    });
+
+    const rightLabelStyle = Animated.useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY:
+                        endLabelYCoordinate.value === null
+                            ? 0
+                            : endLabelYCoordinate.value,
+                },
+            ],
+        };
+    });
+
+    return {
+        leftLabelStyle,
+        rightLabelStyle,
+    };
+};
+
+const useAnimatedPathProps = (
+    dimensions: Animated.SharedValue<Dimensions>,
+    data: Point[],
+): Partial<{
+    d: string;
+}> => {
+    const progress = Animated.useSharedValue<number>(0);
     const progressTarget = Animated.useSharedValue<number>(0);
 
     const intermediatePath = Animated.useSharedValue<Path | null>(null);
@@ -77,10 +154,8 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
     const targetPath = Animated.useDerivedValue(() => {
         'worklet';
 
-        return convertDataToPath(data, dimensions);
+        return convertDataToPath(data, dimensions.value);
     }, [data, dimensions]);
-
-    const progress = Animated.useSharedValue<number>(0);
 
     const currentPath = Animated.useDerivedValue<Path>(() => {
         'worklet';
@@ -111,30 +186,15 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
             );
             intermediatePath.value = currentPath.value;
 
-            if (
-                previousDimensions.width &&
-                previousDimensions.height &&
-                dimensions.width &&
-                dimensions.height &&
-                dimensions.width === previousDimensions.width &&
-                dimensions.height === previousDimensions.height
-            ) {
+            if (!dimensions.value.width || !dimensions.value.height) {
+                progress.value = progressTarget.value;
+            } else {
                 progress.value = Animated.withSpring(
                     progressTarget.value,
                     withSpringConfig,
                 );
-            } else {
-                progress.value = progressTarget.value;
             }
         })();
-        return () => {
-            if (
-                previousDimensions.height !== dimensions.height ||
-                previousDimensions.width !== dimensions.width
-            ) {
-                setPreviousDimensions(dimensions);
-            }
-        };
     }, [
         data,
         progressTarget,
@@ -142,12 +202,9 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
         currentPath,
         progress,
         dimensions,
-        previousDimensions,
     ]);
 
-    const animatedProps: Partial<Animated.AnimateProps<
-        any
-    >> = Animated.useAnimatedProps(() => {
+    const animatedPathProps = Animated.useAnimatedProps(() => {
         'worklet';
 
         return {
@@ -155,20 +212,72 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
         };
     }, [currentPath]);
 
+    return animatedPathProps;
+};
+
+export const LinearChart: React.FC<IProps> = (props: IProps) => {
+    const { data } = props;
+
+    const dimensions = Animated.useSharedValue<Dimensions>({
+        ...initialDimensions,
+    });
+
+    const onLayout = React.useCallback(
+        (event: LayoutChangeEvent): void => {
+            if (
+                event.nativeEvent.layout.height !== dimensions.value.height ||
+                event.nativeEvent.layout.width !== dimensions.value.width
+            ) {
+                dimensions.value = {
+                    height: event.nativeEvent.layout.height,
+                    width: event.nativeEvent.layout.width,
+                };
+            }
+        },
+        [dimensions],
+    );
+
+    const animatedPathProps: Partial<{
+        d: string;
+    }> = useAnimatedPathProps(dimensions, data);
+
+    const labelStyles: LabelStyles = useLabelStyles(dimensions, data);
+
+    const animatedSvgProps = Animated.useAnimatedProps(() => {
+        'worklet';
+
+        return {
+            width: dimensions.value.width,
+            height: dimensions.value.height,
+        };
+    });
+
     return (
-        <View
-            testID={props.testID}
-            style={styles.container}
-            onLayout={onLayout}
-        >
-            <Svg width={dimensions.width} height={dimensions.height}>
-                <AnimatedPath
-                    animatedProps={animatedProps}
-                    fill="transparent"
-                    stroke="#367be2"
-                    strokeWidth={2}
-                />
-            </Svg>
+        <View testID={props.testID} style={styles.container}>
+            <View onLayout={onLayout} style={styles.chartСontainer}>
+                <AnimatedSvg animatedProps={animatedSvgProps}>
+                    <AnimatedPath
+                        animatedProps={animatedPathProps}
+                        fill="transparent"
+                        stroke="#367be2"
+                        strokeWidth={2}
+                    />
+                </AnimatedSvg>
+            </View>
+            <Animated.View
+                style={[
+                    styles.labelContainer,
+                    styles.leftLabelContainer,
+                    labelStyles.leftLabelStyle,
+                ]}
+            />
+            <Animated.View
+                style={[
+                    styles.labelContainer,
+                    styles.rightLabelContainer,
+                    labelStyles.rightLabelStyle,
+                ]}
+            />
         </View>
     );
 };

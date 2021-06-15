@@ -14,7 +14,10 @@ const scale = (value: number, domain: number[], range: number[]) => {
 /**
  * @worklet
  */
-const getScaledData = (data: Point[], dimensions: Dimensions): Point[] => {
+export const getScaledData = (
+    data: Point[],
+    dimensions: Dimensions,
+): Point[] => {
     'worklet';
 
     const domain = {
@@ -40,6 +43,36 @@ const getScaledData = (data: Point[], dimensions: Dimensions): Point[] => {
             };
         },
     );
+};
+
+export type ControlPoint = {
+    value: number;
+    x: number;
+    y: number;
+};
+export type ControlPoints = {
+    start: ControlPoint;
+    end: ControlPoint;
+};
+
+export const getControlPoints = (
+    data: Point[],
+    scaledData: Point[],
+): ControlPoints => {
+    'worklet';
+
+    return {
+        start: {
+            value: data[0].y,
+            x: scaledData[0].x,
+            y: scaledData[0].y,
+        },
+        end: {
+            value: data[data.length - 1].y,
+            x: scaledData[scaledData.length - 1].x,
+            y: scaledData[scaledData.length - 1].y,
+        },
+    };
 };
 
 /**
