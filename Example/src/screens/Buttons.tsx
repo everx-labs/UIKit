@@ -133,6 +133,7 @@ const Buttons = () => (
                 />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIMsgButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIMsgButton
@@ -185,6 +186,18 @@ const Buttons = () => (
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIMsgButton
+                    testID="uiMsgButton_secondary_with_caption"
+                    title="1.000000000"
+                    caption="Sell 1 · Buy 0"
+                    cornerPosition={UIMsgButtonCornerPosition.TopLeft}
+                    type={UIMsgButtonType.Secondary}
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
                     disabled
                     testID="uiMsgButton_secondary_disabled"
                     title="Secondary disabled"
@@ -216,6 +229,7 @@ const Buttons = () => (
                 />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIButton testID="uiButton_default" title="Example" />
@@ -355,6 +369,7 @@ const Buttons = () => (
                 <UIButton testID="uiButton_animation" showIndicator />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIImageButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIImageButton
@@ -411,6 +426,7 @@ const Buttons = () => (
                 />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIScaleButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIScaleButton testID="uiScaleButton_default">
@@ -426,6 +442,7 @@ const Buttons = () => (
                 </UIScaleButton>
             </View>
         </ExampleSection>
+
         <ExampleSection title="UITextButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UITextButton
