@@ -13,6 +13,7 @@ export * from './UIImage';
 export * from './UIIndicator';
 export * from './UIKeyTextView';
 export * from './UILabel';
+export * from './UILinkButton';
 export * from './UIMaterialTextView';
 export * from './UIMsgButton';
 export * from './UINotice';
