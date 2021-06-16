@@ -93,7 +93,7 @@ const useLabelStyles = (
         }
 
         const scaledData: Point[] = getScaledData(data, dimensions.value);
-        const controlPoints = getControlPoints(data, scaledData);
+        const controlPoints = getControlPoints(data, scaledData, STROKE_WIDTH);
         if (startLabelYCoordinate.value !== controlPoints.start.y) {
             if (startLabelYCoordinate.value === null) {
                 startLabelYCoordinate.value = controlPoints.start.y;
@@ -247,8 +247,8 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 event.nativeEvent.layout.width !== dimensions.value.width
             ) {
                 dimensions.value = {
-                    height: event.nativeEvent.layout.height,
-                    width: event.nativeEvent.layout.width,
+                    height: event.nativeEvent.layout.height - STROKE_WIDTH,
+                    width: event.nativeEvent.layout.width - STROKE_WIDTH,
                 };
             }
         },
@@ -277,8 +277,6 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                     animatedProps={animatedSvgProps}
                     style={{
                         overflow: 'visible',
-                        top: -STROKE_WIDTH / 2,
-                        left: -STROKE_WIDTH / 2,
                     }}
                 >
                     <AnimatedPath

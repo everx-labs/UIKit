@@ -58,19 +58,20 @@ export type ControlPoints = {
 export const getControlPoints = (
     data: Point[],
     scaledData: Point[],
+    curveWidth: number,
 ): ControlPoints => {
     'worklet';
 
     return {
         start: {
             value: data[0].y,
-            x: scaledData[0].x,
-            y: scaledData[0].y,
+            x: scaledData[0].x + curveWidth / 2,
+            y: scaledData[0].y + curveWidth / 2,
         },
         end: {
             value: data[data.length - 1].y,
-            x: scaledData[scaledData.length - 1].x,
-            y: scaledData[scaledData.length - 1].y,
+            x: scaledData[scaledData.length - 1].x + curveWidth / 2,
+            y: scaledData[scaledData.length - 1].y + curveWidth / 2,
         },
     };
 };
@@ -170,12 +171,12 @@ const movePoint = (curveWidth: number) => {
 export const convertDataToPath = (
     data: Point[],
     dimensions: Dimensions,
-    strokeWidth: number,
+    curveWidth: number,
 ): Path => {
     'worklet';
 
     const scaledData: Point[] = getScaledData(data, dimensions);
-    const movedScaledData: Point[] = scaledData.map(movePoint(strokeWidth));
+    const movedScaledData: Point[] = scaledData.map(movePoint(curveWidth));
     return curveLines(movedScaledData);
 };
 
