@@ -115,20 +115,6 @@ const getCurve = (
 };
 
 /**
- * @worklet
- * used so that the curve is not clipped
- */
-const movePoint = (point: Point, curveWidth: number): Point => {
-    'worklet';
-
-    return {
-        ...point,
-        x: point.x + curveWidth / 2,
-        y: point.y + curveWidth / 2,
-    };
-};
-
-/**
  * Functions `createPath`, `getCurve` and `curveLines` were copied from `react-native-redash/Paths` package
  * because the `curveLines` function does not behave as expected and had to be changed
  */
@@ -137,10 +123,10 @@ const movePoint = (point: Point, curveWidth: number): Point => {
  * @worklet
  * Was copied from `react-native-redash/Paths` and changed
  */
-const curveLines = (points: Point[], curveWidth: number) => {
+const curveLines = (points: Point[]) => {
     'worklet';
 
-    const path = createPath(movePoint(points[0], curveWidth));
+    const path = createPath(points[0]);
     for (let i = 0; i < points.length; i += 1) {
         if (i === 0) {
             continue;
@@ -149,27 +135,33 @@ const curveLines = (points: Point[], curveWidth: number) => {
         const previousPoint = points[i - 1];
         const p0 = points[i - 2] || previousPoint;
 
-        path.curves.push(
-            getCurve(
-                movePoint(currentPoint, curveWidth),
-                movePoint(p0, curveWidth),
-                movePoint(previousPoint, curveWidth),
-                false,
-            ),
-        );
+        path.curves.push(getCurve(currentPoint, p0, previousPoint, false));
 
         if (i === points.length - 1) {
             path.curves.push(
-                getCurve(
-                    movePoint(currentPoint, curveWidth),
-                    movePoint(previousPoint, curveWidth),
-                    movePoint(currentPoint, curveWidth),
-                    true,
-                ),
+                getCurve(currentPoint, previousPoint, currentPoint, true),
             );
         }
     }
     return path;
+};
+
+/**
+ * @worklet
+ * used so that the curve is not clipped
+ */
+const movePoint = (curveWidth: number) => {
+    'worklet';
+
+    return (point: Point): Point => {
+        'worklet';
+
+        return {
+            ...point,
+            x: point.x + curveWidth / 2,
+            y: point.y + curveWidth / 2,
+        };
+    };
 };
 
 /**
@@ -183,7 +175,8 @@ export const convertDataToPath = (
     'worklet';
 
     const scaledData: Point[] = getScaledData(data, dimensions);
-    return curveLines(scaledData, strokeWidth);
+    const movedScaledData: Point[] = scaledData.map(movePoint(strokeWidth));
+    return curveLines(movedScaledData);
 };
 
 /**
