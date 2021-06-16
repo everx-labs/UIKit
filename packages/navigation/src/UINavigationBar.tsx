@@ -168,20 +168,7 @@ export function UINavigationBar({
         <UIBackgroundView style={styles.container} testID={testID}>
             <View style={styles.headerLeftItems}>{headerLeftElement}</View>
             <View style={styles.headerRightItems}>{headerRightElement}</View>
-            <View
-                style={[
-                    styles.titleContainer,
-                    {
-                        right:
-                            (React.isValidElement(headerRightElement)
-                                ? UIConstant.iconSize()
-                                : 0) +
-                            CONTENT_INSET_VERTICAL_X2 +
-                            SCREEN_CONTENT_INSET_HORIZONTAL,
-                    },
-                ]}
-                // pointerEvents="box-none"
-            >
+            <View style={styles.titleContainer} pointerEvents="box-none">
                 {headerTitleOpacity != null ? (
                     <UINavigationBarAnimatedTitle
                         headerTitleOpacity={headerTitleOpacity}
@@ -212,6 +199,10 @@ const styles = StyleSheet.create({
         top: CONTENT_INSET_VERTICAL_X2,
         bottom: CONTENT_INSET_VERTICAL_X2,
         left:
+            UIConstant.iconSize() +
+            CONTENT_INSET_VERTICAL_X2 +
+            SCREEN_CONTENT_INSET_HORIZONTAL,
+        right:
             UIConstant.iconSize() +
             CONTENT_INSET_VERTICAL_X2 +
             SCREEN_CONTENT_INSET_HORIZONTAL,

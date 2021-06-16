@@ -20,7 +20,6 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 
 import { useOnScrollHandler } from './useOnScrollHandler';
-import { getYWithRubberBandEffect } from './getYWithRubberBandEffect';
 import { ScrollableContext } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
@@ -177,6 +176,20 @@ export function UILargeTitleHeader({
     }, [largeTitleHeight, shift]);
 
     const ghYPrev = useSharedValue(0);
+
+    const [hasScroll, setHasScroll] = React.useState(false);
+    const hasScrollShared = useSharedValue(false);
+
+    const setHasScrollGuarded = React.useCallback(
+        (newHasScroll) => {
+            if (newHasScroll !== hasScroll) {
+                setHasScroll(newHasScroll);
+                hasScrollShared.value = newHasScroll;
+            }
+        },
+        [hasScroll, setHasScroll, hasScrollShared],
+    );
+
     /**
      * On Android ScrollView stops to fire events when it reaches the end (y is 0).
      * For that reason we place a ScrollView inside of PanResponder,
@@ -192,29 +205,30 @@ export function UILargeTitleHeader({
             const y = ghYPrev.value - event.translationY;
             ghYPrev.value = event.translationY;
 
-            if (yIsNegative.value) {
-                if (y > 0) {
-                    return;
-                }
+            if (!hasScrollShared.value) {
+                // @ts-ignore
+                onScroll({ contentOffset: { y } });
+                return;
+            }
 
-                // TODO: copy pasted
-                yWithoutRubberBand.value -= y;
-                if (shift.value > 0) {
-                    shift.value = getYWithRubberBandEffect(
-                        yWithoutRubberBand.value,
-                        RUBBER_BAND_EFFECT_DISTANCE,
-                    );
-                } else {
-                    shift.value -= y;
-                }
+            if (yIsNegative.value && y < 0) {
+                // @ts-ignore
+                onScroll({ contentOffset: { y } });
             }
         },
         onStart: () => {
+            if (!hasScrollShared.value) {
+                yWithoutRubberBand.value = shift.value;
+                return;
+            }
             if (yIsNegative.value) {
                 yWithoutRubberBand.value = shift.value;
             }
         },
         onEnd: () => {
+            if (!hasScrollShared.value) {
+                onEndDrag();
+            }
             ghYPrev.value = 0;
         },
     });
@@ -234,19 +248,28 @@ export function UILargeTitleHeader({
         largeTitleHeight,
         yIsNegative,
         yWithoutRubberBand,
-        RUBBER_BAND_EFFECT_DISTANCE,
+        hasScrollShared,
+        onScroll,
     );
 
-    const [hasScroll, setHasScroll] = React.useState(false);
+    const [scrollablesCount, setScrollablesCount] = React.useState(0);
+    const scrollablesCountRef = React.useRef(0);
 
-    const setHasScrollGuarded = React.useCallback(
-        (newHasScroll) => {
-            if (newHasScroll !== hasScroll) {
-                setHasScroll(newHasScroll);
-            }
-        },
-        [hasScroll, setHasScroll],
-    );
+    const hasScrollables = React.useMemo(() => scrollablesCount > 0, [
+        scrollablesCount,
+    ]);
+
+    const registerScrollable = React.useCallback(() => {
+        const count = scrollablesCountRef.current + 1;
+        setScrollablesCount(count);
+        scrollablesCountRef.current = count;
+    }, [setScrollablesCount]);
+
+    const unregisterScrollable = React.useCallback(() => {
+        const count = scrollablesCountRef.current + 1;
+        setScrollablesCount(count);
+        scrollablesCountRef.current = count;
+    }, [setScrollablesCount]);
 
     const scrollableContextValue = React.useMemo(
         () => ({
@@ -254,14 +277,20 @@ export function UILargeTitleHeader({
             scrollHandler,
             gestureHandler,
             onWheel,
+            hasScroll,
             setHasScroll: setHasScrollGuarded,
+            registerScrollable,
+            unregisterScrollable,
         }),
         [
             scrollRef,
             scrollHandler,
             gestureHandler,
             onWheel,
+            hasScroll,
             setHasScrollGuarded,
+            registerScrollable,
+            unregisterScrollable,
         ],
     );
 
@@ -334,7 +363,7 @@ export function UILargeTitleHeader({
                     <ScrollableContext.Provider value={scrollableContextValue}>
                         <Animated.View
                             style={
-                                hasScroll
+                                hasScroll || hasScrollables
                                     ? styles.sceneContainerWithScroll
                                     : styles.sceneContainerWithoutScroll
                             }
