@@ -64,10 +64,10 @@ const ButtonForward = React.forwardRef<
             {...props}
             disabled={disabled}
             onPress={handleOnPress}
-            style={[containerStyle, styles.content]}
+            style={[containerStyle, styles.container]}
             testID={testID}
         >
-            <View>
+            <View style={styles.content}>
                 {loading ? (
                     <UIIndicator
                         color={ColorVariants.StaticTextPrimaryLight}
@@ -94,10 +94,12 @@ Button.Icon = ButtonIcon;
 Button.Title = ButtonTitle;
 
 const styles = StyleSheet.create({
-    content: {
+    container: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
+    },
+    content: {
+        flex: 1,
     },
 });

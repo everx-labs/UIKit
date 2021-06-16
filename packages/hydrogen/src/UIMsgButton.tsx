@@ -197,10 +197,7 @@ export const UIMsgButton = ({
         return [
             (
                 <>
-                    <Button.Content
-                        direction={Button.ContentDirection.Row}
-                        style={styles.singleLineContainer}
-                    >
+                    <Button.Content direction={Button.ContentDirection.Row}>
                         {
                             iconPosition === UIMsgButtonIconPosition.Left && icon &&
                             <Button.Icon
@@ -222,7 +219,7 @@ export const UIMsgButton = ({
                     }
                 </>
             ),
-            styles.container,
+            styles.singleLineContainer,
         ];
     }, [caption, icon, iconPosition, title, titleColor]);
 
@@ -243,10 +240,8 @@ export const UIMsgButton = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
-        height: UIConstant.msgButtonHeight,
-    },
     singleLineContainer: {
+        height: UIConstant.msgButtonHeight,
         paddingHorizontal: UIConstant.normalContentOffset,
     },
     doubleLineContainer: {

@@ -174,9 +174,11 @@ export const useButtonChildren = (children: React.ReactNode) => {
 const styles = StyleSheet.create({
     centerContent: {
         alignItems: 'center',
+        flex: 1,
     },
     leftContent: {
         alignItems: 'flex-start',
+        flex: 1,
     },
     singleElementContainer: {
         flexDirection: 'row',
