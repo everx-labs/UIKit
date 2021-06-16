@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { UIButton } from '@tonlabs/uikit.hydrogen';
 import { LinearChart, Point } from '@tonlabs/uikit.charts'
 import { ExampleSection } from '../components/ExampleSection';
@@ -38,22 +38,33 @@ export function Chart() {
             <ExampleSection title="Chart">
                 <View
                     style={{
-                        width: '100%',
+                        alignSelf: 'stretch',
                         maxWidth: 900,
                         marginVertical: 20,
-                        borderWidth: 1,
-                        borderStyle: 'dotted',
+                        marginHorizontal: Platform.OS === 'web' ? 20 : 0,
                         height: 300,
                     }}
                 >
-                    <LinearChart {...{ data }} />
+                    <View
+                        style={{
+                            flex: 1,
+                            borderWidth: 0.5,
+                            borderStyle: 'dotted',
+                        }}
+                    >
+                        <LinearChart {...{ data }} />
+                    </View>
+                    <UIButton
+                        title="Refresh"
+                        onPress={() => {
+                            setChartData(getData());
+                        }}
+                        style={{
+                            margin: 16,
+                            alignSelf: 'flex-end',
+                        }}
+                    />
                 </View>
-                <UIButton
-                    title="Refresh"
-                    onPress={() => {
-                        setChartData(getData());
-                    }}
-                />
             </ExampleSection>
         </ExampleScreen>
     );
