@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 
 export const UIConstant = {
+    smallIconSize: 12,
     iconSize: 24,
 
     buttonBorderWidth: 1,

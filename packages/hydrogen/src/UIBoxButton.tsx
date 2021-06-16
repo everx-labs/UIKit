@@ -14,6 +14,13 @@ export enum UIBoxButtonType {
 }
 
 // eslint-disable-next-line no-shadow
+export enum UIBoxButtonVariant {
+    Default = 'Neutral',
+    Negative = 'Negative',
+    Positive = 'Positive',
+}
+
+// eslint-disable-next-line no-shadow
 export enum UIBoxButtonIconPosition {
     Left = 'Left',
     Middle = 'Middle',
@@ -45,7 +52,7 @@ export type UIBoxButtonProps = {
      */
     loading?: boolean;
     /**
-     * Color of the UIBoxButtonType.Nulled button title
+     * Color of the UIBoxButtonType.Nulled button title // TODO: WTF?! Maybe we just need to set title as not required param??? And remove this one?
      */
     nulledColor?: ColorVariants;
     /**
@@ -68,52 +75,64 @@ export type UIBoxButtonProps = {
      * - `UIBoxButtonType.Nulled` - button without visible borders and background color
      */
     type?: UIBoxButtonType;
+    /**
+     * Variant of the button; specific type allows to display the corresponding button action nature
+     * - `UIBoxButtonVariant.Neutral` - button with regular action (default)
+     * - `UIBoxButtonVariant.Negative` - button associated with some destructive action
+     * - `UIBoxButtonVariant.Positive` - button associated with some affirmative action
+     */
+    variant?: UIBoxButtonVariant;
 };
+
+// function useButtonStates(
+//     type: string,
+//     variant: string,
+//     state: string,
+// ) {
+//     // TODO: add set of different states & actions
+//     // hover, press, disabled, progress
+// }
 
 function useButtonStyles(
     type: string,
-    disabled?: boolean,
-    nulledColor?: ColorVariants,
+    variant: string,
 ) {
     let backgroundColor: ColorVariants = ColorVariants.Transparent;
-    let borderColor: ColorVariants = ColorVariants.Transparent;
     let titleColor: ColorVariants = ColorVariants.TextAccent;
-    let borderRadius: number = 0;
-    let borderWidth: number = 0;
 
     if (type === UIBoxButtonType.Primary) {
-        if (disabled) {
-            backgroundColor = ColorVariants.BackgroundTertiary;
-            titleColor = ColorVariants.TextTertiary;
+        if (variant === UIBoxButtonVariant.Negative) {
+            backgroundColor = ColorVariants.BackgroundNegative;
+        } else if (variant === UIBoxButtonVariant.Positive) {
+            backgroundColor = ColorVariants.BackgroundPositive;
         } else {
             backgroundColor = ColorVariants.BackgroundAccent;
-            titleColor = ColorVariants.StaticTextPrimaryLight;
         }
-        borderRadius = UIConstant.alertBorderRadius;
+        titleColor = ColorVariants.TextPrimaryInverted;
     } else if (type === UIBoxButtonType.Secondary) {
-        if (disabled) {
-            backgroundColor = ColorVariants.BackgroundTertiary;
-            titleColor = ColorVariants.TextTertiary;
+        if (variant === UIBoxButtonVariant.Negative) {
+            titleColor = ColorVariants.TextNegative;
+        } else if (variant === UIBoxButtonVariant.Positive) {
+            titleColor = ColorVariants.TextPositive;
         } else {
-            backgroundColor = ColorVariants.BackgroundPrimaryInverted;
-            titleColor = ColorVariants.TextPrimaryInverted;
-        }
-        borderRadius = UIConstant.alertBorderRadius;
-    } else if (type === UIBoxButtonType.Tertiary) {
-        if (disabled) {
-            borderColor = ColorVariants.BackgroundTertiary;
-            titleColor = ColorVariants.TextTertiary;
-        } else {
-            borderColor = ColorVariants.BackgroundPrimaryInverted;
             titleColor = ColorVariants.TextPrimary;
         }
-        borderRadius = UIConstant.alertBorderRadius;
-        borderWidth = UIConstant.buttonBorderWidth;
-    } else if (type === UIBoxButtonType.Nulled) {
-        if (disabled) {
-            titleColor = ColorVariants.TextTertiary;
+        backgroundColor = ColorVariants.BackgroundSecondary;
+    } else if (type === UIBoxButtonType.Tertiary) {
+        if (variant === UIBoxButtonVariant.Negative) {
+            titleColor = ColorVariants.TextNegative;
+        } else if (variant === UIBoxButtonVariant.Positive) {
+            titleColor = ColorVariants.TextPositive;
         } else {
-            titleColor = nulledColor || ColorVariants.TextAccent;
+            titleColor = ColorVariants.TextAccent;
+        }
+    } else if (type === UIBoxButtonType.Nulled) {
+        if (variant === UIBoxButtonVariant.Negative) {
+            titleColor = ColorVariants.TextNegative;
+        } else if (variant === UIBoxButtonVariant.Positive) {
+            titleColor = ColorVariants.TextPositive;
+        } else {
+            titleColor = ColorVariants.TextPrimary;
         }
     }
 
@@ -121,9 +140,7 @@ function useButtonStyles(
 
     const buttonStyle = {
         backgroundColor: theme[ColorVariants[backgroundColor]] as ColorValue,
-        borderColor: theme[ColorVariants[borderColor]] as ColorValue,
-        borderRadius,
-        borderWidth,
+        borderRadius: UIConstant.alertBorderRadius,
     };
 
     return {
@@ -132,19 +149,83 @@ function useButtonStyles(
     };
 }
 
+// function useButtonStyles(
+//     type: string,
+//     disabled?: boolean,
+//     nulledColor?: ColorVariants,
+// ) {
+//     let backgroundColor: ColorVariants = ColorVariants.Transparent;
+//     let borderColor: ColorVariants = ColorVariants.Transparent;
+//     let titleColor: ColorVariants = ColorVariants.TextAccent;
+//     let borderRadius: number = 0;
+//     let borderWidth: number = 0;
+//
+//     if (type === UIBoxButtonType.Primary) {
+//         if (disabled) {
+//             backgroundColor = ColorVariants.BackgroundTertiary;
+//             titleColor = ColorVariants.TextTertiary;
+//         } else {
+//             backgroundColor = ColorVariants.BackgroundAccent;
+//             titleColor = ColorVariants.StaticTextPrimaryLight;
+//         }
+//         borderRadius = UIConstant.alertBorderRadius;
+//     } else if (type === UIBoxButtonType.Secondary) {
+//         if (disabled) {
+//             backgroundColor = ColorVariants.BackgroundTertiary;
+//             titleColor = ColorVariants.TextTertiary;
+//         } else {
+//             backgroundColor = ColorVariants.BackgroundPrimaryInverted;
+//             titleColor = ColorVariants.TextPrimaryInverted;
+//         }
+//         borderRadius = UIConstant.alertBorderRadius;
+//     } else if (type === UIBoxButtonType.Tertiary) {
+//         if (disabled) {
+//             borderColor = ColorVariants.BackgroundTertiary;
+//             titleColor = ColorVariants.TextTertiary;
+//         } else {
+//             borderColor = ColorVariants.BackgroundPrimaryInverted;
+//             titleColor = ColorVariants.TextPrimary;
+//         }
+//         borderRadius = UIConstant.alertBorderRadius;
+//         borderWidth = UIConstant.buttonBorderWidth;
+//     } else if (type === UIBoxButtonType.Nulled) {
+//         if (disabled) {
+//             titleColor = ColorVariants.TextTertiary;
+//         } else {
+//             titleColor = nulledColor || ColorVariants.TextAccent;
+//         }
+//     }
+//
+//     const theme = useTheme();
+//
+//     const buttonStyle = {
+//         backgroundColor: theme[ColorVariants[backgroundColor]] as ColorValue,
+//         borderColor: theme[ColorVariants[borderColor]] as ColorValue,
+//         borderRadius,
+//         borderWidth,
+//     };
+//
+//     return {
+//         buttonStyle,
+//         titleColor,
+//     };
+// }
+
 export const UIBoxButton = ({
     disabled,
     icon,
     iconPosition = UIBoxButtonIconPosition.Left,
     layout,
     loading,
-    nulledColor,
+    // nulledColor,
     onPress,
     testID,
     title,
-    type= UIBoxButtonType.Primary
+    type= UIBoxButtonType.Primary,
+    variant = UIBoxButtonVariant.Default,
 }: UIBoxButtonProps) => {
-    const { buttonStyle, titleColor } = useButtonStyles(type, disabled, nulledColor);
+    const { buttonStyle, titleColor } = useButtonStyles(type, variant);
+    // const { buttonStyle, titleColor } = useButtonStyles(type, variant, disabled, nulledColor);
     return (
         <Button
             containerStyle={[
