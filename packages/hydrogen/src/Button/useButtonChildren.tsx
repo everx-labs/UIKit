@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { UIConstant } from '../constants';
@@ -37,7 +37,7 @@ export function ButtonContent({
     }, [direction]);
 
     return (
-        <View {...props} style={[childrenDirection, style]}>
+        <View {...props} style={[childrenDirection, Platform.OS === 'web' ? styles.flex : null, style]}>
             {children}
         </View>
     );
@@ -174,10 +174,11 @@ export const useButtonChildren = (children: React.ReactNode) => {
 const styles = StyleSheet.create({
     centerContent: {
         alignItems: 'center',
-        flex: 1,
     },
     leftContent: {
         alignItems: 'flex-start',
+    },
+    flex: {
         flex: 1,
     },
     singleElementContainer: {
