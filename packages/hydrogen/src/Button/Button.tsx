@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
@@ -67,7 +67,7 @@ const ButtonForward = React.forwardRef<
             style={[containerStyle, styles.container]}
             testID={testID}
         >
-            <View style={styles.content}>
+            <View style={Platform.OS === 'web' ? styles.content : null}>
                 {loading ? (
                     <UIIndicator
                         color={ColorVariants.StaticTextPrimaryLight}
