@@ -17,8 +17,12 @@ const scale = (value: number, domain: number[], range: number[]) => {
 export const getScaledData = (
     data: Point[],
     dimensions: Dimensions,
-): Point[] => {
+): Point[] | null => {
     'worklet';
+
+    if (dimensions.height === 0 || dimensions.width === 0) {
+        return null;
+    }
 
     const domain = {
         x: [
@@ -53,15 +57,53 @@ export type ControlPoint = {
 export type ControlPoints = {
     start: ControlPoint;
     end: ControlPoint;
+    minimum: ControlPoint;
+    maximum: ControlPoint;
+};
+
+type Extremum = {
+    minimumPoint: Point;
+    minimumScaledPoint: Point;
+    maximumPoint: Point;
+    maximumScaledPoint: Point;
+};
+const getExtremum = (data: Point[], scaledData: Point[]): Extremum => {
+    'worklet';
+
+    let minimumPoint: Point = data[0];
+    let minimumScaledPoint: Point = scaledData[0];
+    let maximumPoint: Point = data[0];
+    let maximumScaledPoint: Point = scaledData[0];
+    for (let i = 0; i < data.length; i += 1) {
+        if (data[i].y < minimumPoint.y) {
+            minimumPoint = data[i];
+            minimumScaledPoint = scaledData[i];
+        }
+        if (data[i].y > maximumPoint.y) {
+            maximumPoint = data[i];
+            maximumScaledPoint = scaledData[i];
+        }
+    }
+    return {
+        minimumPoint,
+        minimumScaledPoint,
+        maximumPoint,
+        maximumScaledPoint,
+    };
 };
 
 export const getControlPoints = (
     data: Point[],
-    scaledData: Point[],
+    scaledData: Point[] | null,
     curveWidth: number,
-): ControlPoints => {
+): ControlPoints | null => {
     'worklet';
 
+    if (scaledData === null) {
+        return null;
+    }
+
+    const extremum: Extremum = getExtremum(data, scaledData);
     return {
         start: {
             value: data[0].y,
@@ -72,6 +114,16 @@ export const getControlPoints = (
             value: data[data.length - 1].y,
             x: scaledData[scaledData.length - 1].x + curveWidth / 2,
             y: scaledData[scaledData.length - 1].y + curveWidth / 2,
+        },
+        minimum: {
+            value: extremum.minimumPoint.y,
+            x: extremum.minimumScaledPoint.x,
+            y: extremum.minimumScaledPoint.y,
+        },
+        maximum: {
+            value: extremum.maximumPoint.y,
+            x: extremum.maximumScaledPoint.x,
+            y: extremum.maximumScaledPoint.y,
         },
     };
 };
@@ -172,10 +224,13 @@ export const convertDataToPath = (
     data: Point[],
     dimensions: Dimensions,
     curveWidth: number,
-): Path => {
+): Path | null => {
     'worklet';
 
-    const scaledData: Point[] = getScaledData(data, dimensions);
+    const scaledData: Point[] | null = getScaledData(data, dimensions);
+    if (scaledData === null) {
+        return null;
+    }
     const movedScaledData: Point[] = scaledData.map(movePoint(curveWidth));
     return curveLines(movedScaledData);
 };

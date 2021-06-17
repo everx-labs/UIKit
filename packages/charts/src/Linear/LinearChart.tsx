@@ -4,14 +4,16 @@ import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { runOnUI } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.hydrogen';
-
 import { addNativeProps } from '../Utils';
 import {
     convertDataToPath,
     interpolatePath,
     getScaledData,
     getControlPoints,
+    ControlPoints,
 } from './linearChartUtils';
+
+Animated.addWhitelistedNativeProps({ text: true, value: true });
 
 const STROKE_WIDTH: number = 2;
 
@@ -36,6 +38,40 @@ const styles = StyleSheet.create({
     },
     rightLabelContainer: {
         right: 0,
+    },
+    maximumLabelArea: {
+        position: 'absolute',
+        top: -20,
+        left: 40,
+        right: 40,
+        height: 20,
+    },
+    maximumLabelContainer: {
+        position: 'absolute',
+        top: 0,
+        left: -25,
+        height: 16,
+        width: 50,
+        paddingHorizontal: 4,
+        alignItems: 'center',
+        borderWidth: 1,
+    },
+    minimumLabelArea: {
+        position: 'absolute',
+        bottom: -20,
+        left: 40,
+        right: 40,
+        height: 20,
+    },
+    minimumLabelContainer: {
+        position: 'absolute',
+        top: 0,
+        left: -25,
+        height: 16,
+        width: 50,
+        paddingHorizontal: 4,
+        alignItems: 'center',
+        borderWidth: 1,
     },
 });
 
@@ -72,47 +108,94 @@ type IProps = {
 const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath));
 const AnimatedSvg = Animated.createAnimatedComponent(addNativeProps(Svg));
 
-type LabelStyles = {
+type LabelData = {
     leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     leftLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
     rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     rightLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    maximumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    maximumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    minimumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    minimumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    maximumValue: string;
+    minimumValue: string;
 };
-const useLabelStyles = (
+const useLabelData = (
     dimensions: Animated.SharedValue<Dimensions>,
     data: Point[],
-): LabelStyles => {
-    const startLabelYCoordinate = Animated.useSharedValue<number | null>(null);
-    const endLabelYCoordinate = Animated.useSharedValue<number | null>(null);
-
-    Animated.useDerivedValue(() => {
-        'worklet';
-
-        if (dimensions.value.height === 0 || dimensions.value.width === 0) {
-            return;
-        }
-
-        const scaledData: Point[] = getScaledData(data, dimensions.value);
-        const controlPoints = getControlPoints(data, scaledData, STROKE_WIDTH);
-        if (startLabelYCoordinate.value !== controlPoints.start.y) {
-            if (startLabelYCoordinate.value === null) {
-                startLabelYCoordinate.value = controlPoints.start.y;
-            }
-            startLabelYCoordinate.value = Animated.withSpring(
-                controlPoints.start.y,
-                withSpringConfig,
-            );
-        }
-        if (endLabelYCoordinate.value !== controlPoints.end.y) {
-            if (endLabelYCoordinate.value === null) {
-                endLabelYCoordinate.value = controlPoints.end.y;
-            }
-            endLabelYCoordinate.value = Animated.withSpring(
-                controlPoints.end.y,
-                withSpringConfig,
-            );
-        }
+): LabelData => {
+    const scaledData = Animated.useDerivedValue<Point[] | null>(() => {
+        return getScaledData(data, dimensions.value);
     }, [data]);
+
+    const controlPoints = Animated.useDerivedValue<ControlPoints | null>(() => {
+        return getControlPoints(data, scaledData.value, STROKE_WIDTH);
+    }, [data]);
+
+    const maximum = Animated.useDerivedValue<number | null>(() => {
+        if (controlPoints.value === null) {
+            return null;
+        }
+        return controlPoints.value.maximum.value;
+    });
+    const minimum = Animated.useDerivedValue<number | null>(() => {
+        if (controlPoints.value === null) {
+            return null;
+        }
+        return controlPoints.value.minimum.value;
+    });
+
+    const minimumLabelXCoordinate = Animated.useSharedValue<number>(0);
+    const maximumLabelXCoordinate = Animated.useSharedValue<number>(0);
+    const startLabelYCoordinate = Animated.useSharedValue<number>(0);
+    const endLabelYCoordinate = Animated.useSharedValue<number>(0);
+
+    type Reaction = {
+        dimensions: Dimensions;
+        controlPoints: ControlPoints | null;
+    };
+    Animated.useAnimatedReaction(
+        () => {
+            return {
+                dimensions: dimensions.value,
+                controlPoints: controlPoints.value,
+            };
+        },
+        (current: Reaction, previous: Reaction | null) => {
+            if (current.controlPoints === null) {
+                return;
+            }
+            if (
+                !previous ||
+                current.dimensions.width !== previous.dimensions.width ||
+                current.dimensions.height !== previous.dimensions.height ||
+                !previous.controlPoints
+            ) {
+                minimumLabelXCoordinate.value = current.controlPoints.minimum.x;
+                maximumLabelXCoordinate.value = current.controlPoints.maximum.x;
+                startLabelYCoordinate.value = current.controlPoints.start.y;
+                endLabelYCoordinate.value = current.controlPoints.end.y;
+            } else {
+                minimumLabelXCoordinate.value = Animated.withSpring(
+                    current.controlPoints.minimum.x,
+                    withSpringConfig,
+                );
+                maximumLabelXCoordinate.value = Animated.withSpring(
+                    current.controlPoints.maximum.x,
+                    withSpringConfig,
+                );
+                startLabelYCoordinate.value = Animated.withSpring(
+                    current.controlPoints.start.y,
+                    withSpringConfig,
+                );
+                endLabelYCoordinate.value = Animated.withSpring(
+                    current.controlPoints.end.y,
+                    withSpringConfig,
+                );
+            }
+        },
+        [controlPoints.value, dimensions.value],
+    );
 
     const leftLabelContainerStyle = Animated.useAnimatedStyle(() => {
         return {
@@ -144,17 +227,87 @@ const useLabelStyles = (
             ],
         };
     });
-
     const rightLabelStyle = Animated.useAnimatedStyle(() => {
         return {
             opacity: endLabelYCoordinate.value === null ? 0 : 1,
         };
     });
+
+    const maximumLabelContainerStyle = Animated.useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateX:
+                        maximumLabelXCoordinate.value === null
+                            ? 0
+                            : maximumLabelXCoordinate.value,
+                },
+            ],
+        };
+    });
+    const maximumLabelStyle = Animated.useAnimatedStyle(() => {
+        return {
+            opacity: maximumLabelXCoordinate.value === null ? 0 : 1,
+        };
+    });
+
+    const minimumLabelContainerStyle = Animated.useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateX:
+                        minimumLabelXCoordinate.value === null
+                            ? 0
+                            : minimumLabelXCoordinate.value,
+                },
+            ],
+        };
+    });
+    const minimumLabelStyle = Animated.useAnimatedStyle(() => {
+        return {
+            opacity: minimumLabelXCoordinate.value === null ? 0 : 1,
+        };
+    });
+
+    const maximumText = Animated.useDerivedValue(() => {
+        'worklet';
+
+        return maximum.value ? maximum.value.toFixed(1) : '';
+    }, []);
+    const minimumText = Animated.useDerivedValue(() => {
+        'worklet';
+
+        return minimum.value ? minimum.value.toFixed(1) : 'Empty';
+    }, []);
+
+    const [minimumValue, setMinimumValue] = React.useState<string>('');
+    const [maximumValue, setMaximumValue] = React.useState<string>('');
+
+    Animated.useAnimatedReaction(
+        () => minimumText.value,
+        (text: string) => {
+            Animated.runOnJS(setMinimumValue)(text);
+        },
+    );
+
+    Animated.useAnimatedReaction(
+        () => maximumText.value,
+        (text: string) => {
+            Animated.runOnJS(setMaximumValue)(text);
+        },
+    );
+
     return {
         leftLabelStyle,
         leftLabelContainerStyle,
         rightLabelStyle,
         rightLabelContainerStyle,
+        maximumLabelContainerStyle,
+        maximumLabelStyle,
+        minimumLabelContainerStyle,
+        minimumLabelStyle,
+        maximumValue,
+        minimumValue,
     };
 };
 
@@ -175,8 +328,12 @@ const useAnimatedPathProps = (
         return convertDataToPath(data, dimensions.value, STROKE_WIDTH);
     }, [data, dimensions]);
 
-    const currentPath = Animated.useDerivedValue<Path>(() => {
+    const currentPath = Animated.useDerivedValue<Path | null>(() => {
         'worklet';
+
+        if (targetPath.value === null) {
+            return null;
+        }
 
         return interpolatePath(
             progress.value,
@@ -225,6 +382,11 @@ const useAnimatedPathProps = (
     const animatedPathProps = Animated.useAnimatedProps(() => {
         'worklet';
 
+        if (currentPath.value === null) {
+            return {
+                d: '',
+            };
+        }
         return {
             d: serialize(currentPath.value),
         };
@@ -235,7 +397,6 @@ const useAnimatedPathProps = (
 
 export const LinearChart: React.FC<IProps> = (props: IProps) => {
     const { data } = props;
-
     const dimensions = Animated.useSharedValue<Dimensions>({
         ...initialDimensions,
     });
@@ -259,7 +420,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
         d: string;
     }> = useAnimatedPathProps(dimensions, data);
 
-    const labelStyles: LabelStyles = useLabelStyles(dimensions, data);
+    const labelData: LabelData = useLabelData(dimensions, data);
 
     const animatedSvgProps = Animated.useAnimatedProps(() => {
         'worklet';
@@ -291,12 +452,12 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 style={[
                     styles.labelContainer,
                     styles.leftLabelContainer,
-                    labelStyles.leftLabelContainerStyle,
+                    labelData.leftLabelContainerStyle,
                 ]}
             >
-                <Animated.View style={[labelStyles.leftLabelStyle]}>
+                <Animated.View style={[labelData.leftLabelStyle]}>
                     <UILabel role={TypographyVariants.ParagraphLabel}>
-                        {Math.round(data[0].y * 100) / 100}
+                        {data[0].y.toFixed(1)}
                     </UILabel>
                 </Animated.View>
             </Animated.View>
@@ -304,18 +465,52 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 style={[
                     styles.labelContainer,
                     styles.rightLabelContainer,
-                    labelStyles.rightLabelContainerStyle,
+                    labelData.rightLabelContainerStyle,
                 ]}
             >
-                <Animated.View style={[labelStyles.rightLabelStyle]}>
+                <Animated.View style={[labelData.rightLabelStyle]}>
                     <UILabel
                         role={TypographyVariants.ParagraphLabel}
                         numberOfLines={1}
                     >
-                        {Math.round(data[data.length - 1].y * 100) / 100}
+                        {data[data.length - 1].y.toFixed(1)}
                     </UILabel>
                 </Animated.View>
             </Animated.View>
+            <View style={styles.maximumLabelArea}>
+                <Animated.View
+                    style={[
+                        styles.maximumLabelContainer,
+                        labelData.maximumLabelContainerStyle,
+                    ]}
+                >
+                    <Animated.View style={labelData.maximumLabelStyle}>
+                        <UILabel
+                            role={TypographyVariants.ParagraphLabel}
+                            numberOfLines={1}
+                        >
+                            {labelData.maximumValue}
+                        </UILabel>
+                    </Animated.View>
+                </Animated.View>
+            </View>
+            <View style={styles.minimumLabelArea}>
+                <Animated.View
+                    style={[
+                        styles.minimumLabelContainer,
+                        labelData.minimumLabelContainerStyle,
+                    ]}
+                >
+                    <Animated.View style={labelData.minimumLabelStyle}>
+                        <UILabel
+                            role={TypographyVariants.ParagraphLabel}
+                            numberOfLines={1}
+                        >
+                            {labelData.minimumValue}
+                        </UILabel>
+                    </Animated.View>
+                </Animated.View>
+            </View>
         </View>
     );
 };
