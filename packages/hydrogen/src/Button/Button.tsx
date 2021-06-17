@@ -8,6 +8,7 @@ import { UIIndicator } from '../UIIndicator';
 
 import {
     ButtonContent,
+    ButtonContentDirection,
     ButtonIcon,
     ButtonTitle,
     useButtonChildren,
@@ -63,10 +64,10 @@ const ButtonForward = React.forwardRef<
             {...props}
             disabled={disabled}
             onPress={handleOnPress}
-            style={[containerStyle, styles.content]}
+            style={[containerStyle, styles.container]}
             testID={testID}
         >
-            <View>
+            <View style={styles.content}>
                 {loading ? (
                     <UIIndicator
                         color={ColorVariants.StaticTextPrimaryLight}
@@ -82,19 +83,23 @@ const ButtonForward = React.forwardRef<
 // ts doesn't understand that we assign [Content|Icon|Title] later, and want to see it right away
 export const Button: typeof ButtonForward & {
     Content: typeof ButtonContent;
+    ContentDirection: typeof ButtonContentDirection;
     Icon: typeof ButtonIcon;
     Title: typeof ButtonTitle;
 } = ButtonForward;
 
 Button.Content = ButtonContent;
+Button.ContentDirection = ButtonContentDirection;
 Button.Icon = ButtonIcon;
 Button.Title = ButtonTitle;
 
 const styles = StyleSheet.create({
-    content: {
+    container: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
+    },
+    content: {
+        flex: 1,
     },
 });
