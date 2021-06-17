@@ -645,10 +645,12 @@ export default class UIModalController<Props, State> extends UIController<
             <NestedInDismissibleModalContext.Provider value={this.dismissible}>
                 <Animated.View style={containerStyle}>
                     <TapGestureHandler
-                        enabled={
-                            this.dismissible && this.shouldSwipeToDismiss()
-                        }
-                        waitFor={this.panHandlerRef}
+                        enabled={this.dismissible}
+                        {...(this.dismissible && this.shouldSwipeToDismiss()
+                            ? {
+                                  waitFor: this.panHandlerRef,
+                              }
+                            : null)}
                         onHandlerStateChange={this.onTapHandlerStateChange}
                     >
                         <PanGestureHandler

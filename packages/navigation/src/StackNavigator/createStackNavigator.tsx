@@ -21,7 +21,11 @@ import { NativeStackView } from 'react-native-screens/native-stack';
 import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typescript/src/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UIBackgroundView,
+    PortalManager,
+} from '@tonlabs/uikit.hydrogen';
 
 import {
     UILargeTitleHeader,
@@ -125,25 +129,33 @@ function wrapScreenComponentWithHeader(
                 ]}
             >
                 {descriptor.options.useHeaderLargeTitle ? (
-                    <UILargeTitleHeader
-                        testID={descriptor.options.testID}
-                        title={descriptor.options.title}
-                        headerLargeTitle={descriptor.options.headerLargeTitle}
-                        caption={descriptor.options.caption}
-                        onTitlePress={descriptor.options.onTitlePress}
-                        onHeaderLargeTitlePress={
-                            descriptor.options.onHeaderLargeTitlePress
-                        }
-                        headerLeft={descriptor.options.headerLeft}
-                        headerLeftItems={descriptor.options.headerLeftItems}
-                        headerBackButton={descriptor.options.headerBackButton}
-                        headerRight={descriptor.options.headerRight}
-                        headerRightItems={descriptor.options.headerRightItems}
-                    >
-                        <ScreenComponent {...props} />
-                    </UILargeTitleHeader>
+                    <PortalManager id="scene">
+                        <UILargeTitleHeader
+                            testID={descriptor.options.testID}
+                            title={descriptor.options.title}
+                            headerLargeTitle={
+                                descriptor.options.headerLargeTitle
+                            }
+                            caption={descriptor.options.caption}
+                            onTitlePress={descriptor.options.onTitlePress}
+                            onHeaderLargeTitlePress={
+                                descriptor.options.onHeaderLargeTitlePress
+                            }
+                            headerLeft={descriptor.options.headerLeft}
+                            headerLeftItems={descriptor.options.headerLeftItems}
+                            headerBackButton={
+                                descriptor.options.headerBackButton
+                            }
+                            headerRight={descriptor.options.headerRight}
+                            headerRightItems={
+                                descriptor.options.headerRightItems
+                            }
+                        >
+                            <ScreenComponent {...props} />
+                        </UILargeTitleHeader>
+                    </PortalManager>
                 ) : (
-                    <>
+                    <PortalManager id="scene">
                         <UIStackNavigationBar
                             testID={descriptor.options.testID}
                             title={descriptor.options.title}
@@ -160,7 +172,7 @@ function wrapScreenComponentWithHeader(
                             }
                         />
                         <ScreenComponent {...props} />
-                    </>
+                    </PortalManager>
                 )}
             </UIBackgroundView>
         );
@@ -215,29 +227,37 @@ function wrapScreenRenderPropWithHeader(
                 ]}
             >
                 {descriptor.options.useHeaderLargeTitle ? (
-                    <UILargeTitleHeader
-                        testID={descriptor.options.testID}
-                        title={
-                            descriptor.options.headerLargeTitle != null
-                                ? descriptor.options.headerLargeTitle
-                                : descriptor.options.title
-                        }
-                        headerLargeTitle={descriptor.options.headerLargeTitle}
-                        caption={descriptor.options.caption}
-                        onTitlePress={descriptor.options.onTitlePress}
-                        onHeaderLargeTitlePress={
-                            descriptor.options.onHeaderLargeTitlePress
-                        }
-                        headerLeft={descriptor.options.headerLeft}
-                        headerLeftItems={descriptor.options.headerLeftItems}
-                        headerBackButton={descriptor.options.headerBackButton}
-                        headerRight={descriptor.options.headerRight}
-                        headerRightItems={descriptor.options.headerRightItems}
-                    >
-                        {screenRenderProp(props)}
-                    </UILargeTitleHeader>
+                    <PortalManager id="scene">
+                        <UILargeTitleHeader
+                            testID={descriptor.options.testID}
+                            title={
+                                descriptor.options.headerLargeTitle != null
+                                    ? descriptor.options.headerLargeTitle
+                                    : descriptor.options.title
+                            }
+                            headerLargeTitle={
+                                descriptor.options.headerLargeTitle
+                            }
+                            caption={descriptor.options.caption}
+                            onTitlePress={descriptor.options.onTitlePress}
+                            onHeaderLargeTitlePress={
+                                descriptor.options.onHeaderLargeTitlePress
+                            }
+                            headerLeft={descriptor.options.headerLeft}
+                            headerLeftItems={descriptor.options.headerLeftItems}
+                            headerBackButton={
+                                descriptor.options.headerBackButton
+                            }
+                            headerRight={descriptor.options.headerRight}
+                            headerRightItems={
+                                descriptor.options.headerRightItems
+                            }
+                        >
+                            {screenRenderProp(props)}
+                        </UILargeTitleHeader>
+                    </PortalManager>
                 ) : (
-                    <>
+                    <PortalManager id="scene">
                         <UIStackNavigationBar
                             testID={descriptor.options.testID}
                             title={descriptor.options.title}
@@ -254,7 +274,7 @@ function wrapScreenRenderPropWithHeader(
                             }
                         />
                         {screenRenderProp(props)}
-                    </>
+                    </PortalManager>
                 )}
             </UIBackgroundView>
         );

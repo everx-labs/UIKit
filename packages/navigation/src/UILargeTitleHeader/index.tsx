@@ -16,7 +16,6 @@ import {
     UILabelColors,
     UILabelRoles,
     UIBackgroundView,
-    PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 
 import { useOnScrollHandler } from './useOnScrollHandler';
@@ -46,7 +45,7 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
      * A title to use only for collapsible title
      */
-    headerLargeTitle: UINavigationBarProps['title'];
+    headerLargeTitle?: UINavigationBarProps['title'];
     /**
      * A callback that fires when user press on large title header content
      */
@@ -340,51 +339,45 @@ export function UILargeTitleHeader({
     );
 
     return (
-        <PortalManager id="scene">
-            <UIBackgroundView style={[styles.container]}>
-                <View style={styles.mainHeaderFiller} />
-                <Animated.View style={[{ flex: 1 }, style]}>
+        <UIBackgroundView style={[styles.container]}>
+            <View style={styles.mainHeaderFiller} />
+            <Animated.View style={[{ flex: 1 }, style]}>
+                <Animated.View
+                    ref={largeTitleViewRef}
+                    style={
+                        hasSomethingInHeader && styles.largeTitleHeaderContainer
+                    }
+                >
+                    {onHeaderLargeTitlePress != null ? (
+                        <TouchableOpacity onPress={onHeaderLargeTitlePress}>
+                            {largeTitleInnerElement}
+                        </TouchableOpacity>
+                    ) : (
+                        largeTitleInnerElement
+                    )}
+                </Animated.View>
+
+                <ScrollableContext.Provider value={scrollableContextValue}>
                     <Animated.View
-                        ref={largeTitleViewRef}
                         style={
-                            hasSomethingInHeader &&
-                            styles.largeTitleHeaderContainer
+                            hasScroll || hasScrollables
+                                ? styles.sceneContainerWithScroll
+                                : styles.sceneContainerWithoutScroll
                         }
                     >
-                        {onHeaderLargeTitlePress != null ? (
-                            <TouchableOpacity onPress={onHeaderLargeTitlePress}>
-                                {largeTitleInnerElement}
-                            </TouchableOpacity>
-                        ) : (
-                            largeTitleInnerElement
-                        )}
+                        {children}
                     </Animated.View>
-
-                    <ScrollableContext.Provider value={scrollableContextValue}>
-                        <Animated.View
-                            style={
-                                hasScroll || hasScrollables
-                                    ? styles.sceneContainerWithScroll
-                                    : styles.sceneContainerWithoutScroll
-                            }
-                        >
-                            {children}
-                        </Animated.View>
-                    </ScrollableContext.Provider>
-                </Animated.View>
-                <UIBackgroundView
-                    style={[
-                        styles.mainHeaderContainer,
-                        { height: HEADER_HEIGHT },
-                    ]}
-                >
-                    <UIStackNavigationBar
-                        {...navigationBarProps}
-                        headerTitleOpacity={headerTitleOpacity}
-                    />
-                </UIBackgroundView>
+                </ScrollableContext.Provider>
+            </Animated.View>
+            <UIBackgroundView
+                style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
+            >
+                <UIStackNavigationBar
+                    {...navigationBarProps}
+                    headerTitleOpacity={headerTitleOpacity}
+                />
             </UIBackgroundView>
-        </PortalManager>
+        </UIBackgroundView>
     );
 }
 
