@@ -106,49 +106,16 @@ type IProps = {
 const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath));
 const AnimatedSvg = Animated.createAnimatedComponent(addNativeProps(Svg));
 
-type LabelData = {
-    leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    leftLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    rightLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    minimumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    minimumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumValue: string;
-    minimumValue: string;
-};
-const useLabelData = (
+const useLabelCoordinates = (
     dimensions: Animated.SharedValue<Dimensions>,
-    data: Point[],
-): LabelData => {
-    const scaledData = Animated.useDerivedValue<Point[] | null>(() => {
-        return getScaledData(data, dimensions.value);
-    }, [data]);
-
-    const controlPoints = Animated.useDerivedValue<ControlPoints | null>(() => {
-        return getControlPoints(data, scaledData.value, STROKE_WIDTH);
-    }, [data]);
-
-    const maximum = Animated.useDerivedValue<number | null>(() => {
-        if (controlPoints.value === null) {
-            return null;
-        }
-        return controlPoints.value.maximum.value;
-    });
-    const minimum = Animated.useDerivedValue<number | null>(() => {
-        if (controlPoints.value === null) {
-            return null;
-        }
-        return controlPoints.value.minimum.value;
-    });
-
+    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
+) => {
     const minimumLabelXCoordinate = Animated.useSharedValue<number>(0);
     const maximumLabelXCoordinate = Animated.useSharedValue<number>(0);
     const startLabelYCoordinate = Animated.useSharedValue<number>(0);
     const endLabelYCoordinate = Animated.useSharedValue<number>(0);
 
-    type Reaction = {
+    type AnimatedState = {
         dimensions: Dimensions;
         controlPoints: ControlPoints | null;
     };
@@ -159,35 +126,44 @@ const useLabelData = (
                 controlPoints: controlPoints.value,
             };
         },
-        (current: Reaction, previous: Reaction | null) => {
-            if (current.controlPoints === null) {
+        (
+            currentAnimatedState: AnimatedState,
+            previousAnimatedState: AnimatedState | null,
+        ) => {
+            if (currentAnimatedState.controlPoints === null) {
                 return;
             }
             if (
-                !previous ||
-                current.dimensions.width !== previous.dimensions.width ||
-                current.dimensions.height !== previous.dimensions.height ||
-                !previous.controlPoints
+                !previousAnimatedState ||
+                currentAnimatedState.dimensions.width !==
+                    previousAnimatedState.dimensions.width ||
+                currentAnimatedState.dimensions.height !==
+                    previousAnimatedState.dimensions.height ||
+                !previousAnimatedState.controlPoints
             ) {
-                minimumLabelXCoordinate.value = current.controlPoints.minimum.x;
-                maximumLabelXCoordinate.value = current.controlPoints.maximum.x;
-                startLabelYCoordinate.value = current.controlPoints.start.y;
-                endLabelYCoordinate.value = current.controlPoints.end.y;
+                minimumLabelXCoordinate.value =
+                    currentAnimatedState.controlPoints.minimum.x;
+                maximumLabelXCoordinate.value =
+                    currentAnimatedState.controlPoints.maximum.x;
+                startLabelYCoordinate.value =
+                    currentAnimatedState.controlPoints.start.y;
+                endLabelYCoordinate.value =
+                    currentAnimatedState.controlPoints.end.y;
             } else {
                 minimumLabelXCoordinate.value = Animated.withSpring(
-                    current.controlPoints.minimum.x,
+                    currentAnimatedState.controlPoints.minimum.x,
                     withSpringConfig,
                 );
                 maximumLabelXCoordinate.value = Animated.withSpring(
-                    current.controlPoints.maximum.x,
+                    currentAnimatedState.controlPoints.maximum.x,
                     withSpringConfig,
                 );
                 startLabelYCoordinate.value = Animated.withSpring(
-                    current.controlPoints.start.y,
+                    currentAnimatedState.controlPoints.start.y,
                     withSpringConfig,
                 );
                 endLabelYCoordinate.value = Animated.withSpring(
-                    current.controlPoints.end.y,
+                    currentAnimatedState.controlPoints.end.y,
                     withSpringConfig,
                 );
             }
@@ -195,6 +171,22 @@ const useLabelData = (
         [controlPoints.value, dimensions.value],
     );
 
+    return {
+        minimumLabelXCoordinate,
+        maximumLabelXCoordinate,
+        startLabelYCoordinate,
+        endLabelYCoordinate,
+    };
+};
+
+const useLabelStyles = (
+    dimensions: Animated.SharedValue<Dimensions>,
+    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
+    minimumLabelXCoordinate: Animated.SharedValue<number>,
+    maximumLabelXCoordinate: Animated.SharedValue<number>,
+    startLabelYCoordinate: Animated.SharedValue<number>,
+    endLabelYCoordinate: Animated.SharedValue<number>,
+) => {
     const leftLabelContainerStyle = Animated.useAnimatedStyle(() => {
         return {
             transform: [
@@ -276,6 +268,33 @@ const useLabelData = (
                     : 1,
         };
     });
+    return {
+        leftLabelStyle,
+        leftLabelContainerStyle,
+        rightLabelStyle,
+        rightLabelContainerStyle,
+        maximumLabelContainerStyle,
+        maximumLabelStyle,
+        minimumLabelContainerStyle,
+        minimumLabelStyle,
+    };
+};
+
+const useLabelText = (
+    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
+) => {
+    const maximum = Animated.useDerivedValue<number | null>(() => {
+        if (controlPoints.value === null) {
+            return null;
+        }
+        return controlPoints.value.maximum.value;
+    });
+    const minimum = Animated.useDerivedValue<number | null>(() => {
+        if (controlPoints.value === null) {
+            return null;
+        }
+        return controlPoints.value.minimum.value;
+    });
 
     const maximumText = Animated.useDerivedValue(() => {
         'worklet';
@@ -304,6 +323,63 @@ const useLabelData = (
             Animated.runOnJS(setMaximumValue)(text);
         },
     );
+
+    return {
+        minimumValue,
+        maximumValue,
+    };
+};
+
+type LabelData = {
+    leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    leftLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    rightLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    maximumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    maximumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    minimumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    minimumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    maximumValue: string;
+    minimumValue: string;
+};
+const useLabelData = (
+    dimensions: Animated.SharedValue<Dimensions>,
+    data: Point[],
+): LabelData => {
+    const scaledData = Animated.useDerivedValue<Point[] | null>(() => {
+        return getScaledData(data, dimensions.value);
+    }, [data]);
+
+    const controlPoints = Animated.useDerivedValue<ControlPoints | null>(() => {
+        return getControlPoints(data, scaledData.value, STROKE_WIDTH);
+    }, [data]);
+
+    const {
+        minimumLabelXCoordinate,
+        maximumLabelXCoordinate,
+        startLabelYCoordinate,
+        endLabelYCoordinate,
+    } = useLabelCoordinates(dimensions, controlPoints);
+
+    const {
+        leftLabelStyle,
+        leftLabelContainerStyle,
+        rightLabelStyle,
+        rightLabelContainerStyle,
+        maximumLabelContainerStyle,
+        maximumLabelStyle,
+        minimumLabelContainerStyle,
+        minimumLabelStyle,
+    } = useLabelStyles(
+        dimensions,
+        controlPoints,
+        minimumLabelXCoordinate,
+        maximumLabelXCoordinate,
+        startLabelYCoordinate,
+        endLabelYCoordinate,
+    );
+
+    const { minimumValue, maximumValue } = useLabelText(controlPoints);
 
     return {
         leftLabelStyle,
