@@ -29,6 +29,7 @@ import {
 } from '@tonlabs/uikit.components';
 import { UISafeAreaView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UILargeTitleContainerRefContext } from '@tonlabs/uikit.navigation';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
@@ -717,9 +718,23 @@ export default class UIController<Props, State> extends UIComponent<
                 color={UIBackgroundViewColors.BackgroundPrimary}
                 style={UIStyle.container.screen()}
             >
-                <View style={UIStyle.common.flex()} collapsable={false} ref={this.containerRef}>
-                    {this.renderSafely()}
-                </View>
+                <UILargeTitleContainerRefContext.Consumer>
+                    {(ref) => {
+                        if (ref != null) {
+                            this.containerRef = ref;
+                        }
+
+                        return (
+                            <View
+                                style={UIStyle.common.flex()}
+                                collapsable={false}
+                                ref={ref == null ? this.containerRef : null}
+                            >
+                                {this.renderSafely()}
+                            </View>
+                        );
+                    }}
+                </UILargeTitleContainerRefContext.Consumer>
             </UISafeAreaView>
         );
         const overlays = [].concat(

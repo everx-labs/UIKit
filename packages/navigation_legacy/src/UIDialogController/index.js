@@ -374,7 +374,7 @@ class UIDialogController extends UIController {
         );
         const animatedContainerStyle = {
             flex: 1,
-            // marginBottom: this.getMarginBottom(),
+            marginBottom: this.getMarginBottom(),
         };
         return (
             <Animated.View style={animatedContainerStyle}>

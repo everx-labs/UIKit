@@ -41,6 +41,10 @@ const HEADER_TITLE_OPACITY_ANIM_DURATION = 100;
  */
 const LARGE_HEADER_BOTTOM_OFFSET_TO_SHOW_TITLE = 20;
 
+export const UILargeTitleContainerRefContext = React.createContext<React.RefObject<
+    View
+> | null>(null);
+
 export type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
      * A title to use only for collapsible title
@@ -338,8 +342,14 @@ export function UILargeTitleHeader({
         </>
     );
 
+    const contentContainerRef = React.useRef<View>(null);
+
     return (
-        <UIBackgroundView style={[styles.container]}>
+        <UIBackgroundView
+            style={styles.container}
+            ref={contentContainerRef}
+            collapsible={false}
+        >
             <View style={styles.mainHeaderFiller} />
             <Animated.View style={[{ flex: 1 }, style]}>
                 <Animated.View
@@ -357,17 +367,23 @@ export function UILargeTitleHeader({
                     )}
                 </Animated.View>
 
-                <ScrollableContext.Provider value={scrollableContextValue}>
-                    <Animated.View
-                        style={
-                            hasScroll || hasScrollables
-                                ? styles.sceneContainerWithScroll
-                                : styles.sceneContainerWithoutScroll
-                        }
-                    >
-                        {children}
-                    </Animated.View>
-                </ScrollableContext.Provider>
+                {/* TODO(savelichalex): This is a huge hack for UIController measurement mechanics
+                need to get rid of it as soon as we'll manage to remove UIController  */}
+                <UILargeTitleContainerRefContext.Provider
+                    value={contentContainerRef}
+                >
+                    <ScrollableContext.Provider value={scrollableContextValue}>
+                        <Animated.View
+                            style={
+                                hasScroll || hasScrollables
+                                    ? styles.sceneContainerWithScroll
+                                    : styles.sceneContainerWithoutScroll
+                            }
+                        >
+                            {children}
+                        </Animated.View>
+                    </ScrollableContext.Provider>
+                </UILargeTitleContainerRefContext.Provider>
             </Animated.View>
             <UIBackgroundView
                 style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
