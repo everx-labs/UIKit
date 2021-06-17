@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 type TouchableElementProps = {
@@ -7,6 +7,7 @@ type TouchableElementProps = {
     children: React.ReactNode;
     onPress: () => void;
     style?: StyleProp<ViewStyle>;
+    contentStyle?: StyleProp<ViewStyle>;
     testID?: string;
 }
 
@@ -15,6 +16,7 @@ export const TouchableElement = ({
     children,
     onPress,
     style,
+    contentStyle,
     testID,
     ...props
 }: TouchableElementProps) => {
@@ -25,15 +27,11 @@ export const TouchableElement = ({
             testID={testID}
             onPress={onPress}
         >
-            <View style={[styles.overflowHidden, style]}>
-                {React.Children.only(children)}
+            <View style={style}>
+                <View style={contentStyle}>
+                    {React.Children.only(children)}
+                </View>
             </View>
         </TouchableNativeFeedback>
     );
 };
-
-const styles = StyleSheet.create({
-    overflowHidden: {
-        overflow: 'hidden',
-    },
-});

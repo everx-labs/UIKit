@@ -96,30 +96,51 @@ export type UIBoxButtonProps = {
 function useButtonStyles(
     type: string,
     variant: string,
+    disabled?: boolean,
+    loading?: boolean,
 ) {
     let backgroundColor: ColorVariants = ColorVariants.Transparent;
     let titleColor: ColorVariants = ColorVariants.TextAccent;
 
     if (type === UIBoxButtonType.Primary) {
-        if (variant === UIBoxButtonVariant.Negative) {
+        // primary background color
+        if (loading) {
+            backgroundColor = ColorVariants.BackgroundNeutral;
+        } else if (variant === UIBoxButtonVariant.Negative) {
             backgroundColor = ColorVariants.BackgroundNegative;
         } else if (variant === UIBoxButtonVariant.Positive) {
             backgroundColor = ColorVariants.BackgroundPositive;
         } else {
             backgroundColor = ColorVariants.BackgroundAccent;
         }
-        titleColor = ColorVariants.TextPrimaryInverted;
+        // primary content color (title, icons)
+        if (disabled) {
+            titleColor = ColorVariants.TextOverlayInverted;
+        } else {
+            titleColor = ColorVariants.TextPrimaryInverted;
+        }
     } else if (type === UIBoxButtonType.Secondary) {
-        if (variant === UIBoxButtonVariant.Negative) {
+        // secondary background color
+        if (loading) {
+            backgroundColor = ColorVariants.BackgroundNeutral;
+        } else {
+            backgroundColor = ColorVariants.BackgroundSecondary;
+        }
+        // secondary content color (title, icons)
+        if (disabled) {
+            titleColor = ColorVariants.TextOverlay;
+        } else if (variant === UIBoxButtonVariant.Negative) {
             titleColor = ColorVariants.TextNegative;
         } else if (variant === UIBoxButtonVariant.Positive) {
             titleColor = ColorVariants.TextPositive;
         } else {
             titleColor = ColorVariants.TextPrimary;
         }
-        backgroundColor = ColorVariants.BackgroundSecondary;
     } else if (type === UIBoxButtonType.Tertiary) {
-        if (variant === UIBoxButtonVariant.Negative) {
+        // tertiary content color (title, icons)
+        if (disabled) {
+            titleColor = ColorVariants.TextOverlay;
+        } else if (variant === UIBoxButtonVariant.Negative) {
             titleColor = ColorVariants.TextNegative;
         } else if (variant === UIBoxButtonVariant.Positive) {
             titleColor = ColorVariants.TextPositive;
@@ -127,7 +148,10 @@ function useButtonStyles(
             titleColor = ColorVariants.TextAccent;
         }
     } else if (type === UIBoxButtonType.Nulled) {
-        if (variant === UIBoxButtonVariant.Negative) {
+        // nulled content color (title, icons)
+        if (disabled) {
+            titleColor = ColorVariants.TextOverlay;
+        } else if (variant === UIBoxButtonVariant.Negative) {
             titleColor = ColorVariants.TextNegative;
         } else if (variant === UIBoxButtonVariant.Positive) {
             titleColor = ColorVariants.TextPositive;
@@ -224,7 +248,7 @@ export const UIBoxButton = ({
     type= UIBoxButtonType.Primary,
     variant = UIBoxButtonVariant.Default,
 }: UIBoxButtonProps) => {
-    const { buttonStyle, titleColor } = useButtonStyles(type, variant);
+    const { buttonStyle, titleColor } = useButtonStyles(type, variant, disabled, loading);
     // const { buttonStyle, titleColor } = useButtonStyles(type, variant, disabled, nulledColor);
     return (
         <Button
@@ -233,6 +257,7 @@ export const UIBoxButton = ({
                 buttonStyle,
                 layout,
             ]}
+            contentStyle={styles.content}
             disabled={disabled}
             loading={loading}
             onPress={onPress}
@@ -264,6 +289,8 @@ export const UIBoxButton = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.boxButtonHeight,
+    },
+    content: {
         padding: UIConstant.normalContentOffset,
     },
     leftIcon: {

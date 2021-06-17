@@ -25,6 +25,7 @@ export type UILayout = {
 type ButtonProps = {
     children: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle>;
+    contentStyle?: StyleProp<ViewStyle>;
     disabled?: boolean;
     loading?: boolean;
     onPress?: () => void | Promise<void>;
@@ -38,6 +39,7 @@ const ButtonForward = React.forwardRef<
     {
         children,
         containerStyle,
+        contentStyle,
         disabled,
         loading,
         onPress,
@@ -63,14 +65,15 @@ const ButtonForward = React.forwardRef<
             {...props}
             disabled={disabled}
             onPress={handleOnPress}
-            style={[containerStyle, styles.content]}
+            style={[styles.container, containerStyle]}
+            contentStyle={[styles.content, contentStyle]}
             testID={testID}
         >
             <View>
                 {loading ? (
                     <UIIndicator
                         color={ColorVariants.StaticIconPrimaryDark}
-                        size={UIConstant.smallIconSize}
+                        size={UIConstant.iconSize}
                     />
                 ) : processedChildren}
             </View>
@@ -91,6 +94,9 @@ Button.Icon = ButtonIcon;
 Button.Title = ButtonTitle;
 
 const styles = StyleSheet.create({
+    container: {
+        overflow: 'hidden',
+    },
     content: {
         flexDirection: 'row',
         alignItems: 'center',

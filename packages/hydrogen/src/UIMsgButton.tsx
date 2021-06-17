@@ -171,6 +171,7 @@ export const UIMsgButton = ({
                 buttonStyle,
                 layout,
             ]}
+            contentStyle={styles.content}
             disabled={disabled}
             onPress={onPress}
             testID={testID}
@@ -202,6 +203,8 @@ export const UIMsgButton = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.msgButtonHeight,
+    },
+    content: {
         paddingHorizontal: UIConstant.normalContentOffset,
     },
     leftIcon: {

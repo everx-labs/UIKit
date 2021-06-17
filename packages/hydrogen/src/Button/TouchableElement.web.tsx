@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
+
 import { useHover } from '../useHover';
 
 type TouchableElementProps = {
@@ -8,6 +10,7 @@ type TouchableElementProps = {
     children: React.ReactNode;
     onPress: () => void;
     style?: StyleProp<ViewStyle>;
+    contentStyle?: StyleProp<ViewStyle>;
     testID?: string;
 }
 
@@ -16,6 +19,7 @@ export const TouchableElement = ({
     children,
     onPress,
     style,
+    contentStyle,
     testID,
     ...props
 }: TouchableElementProps) => {
@@ -44,6 +48,10 @@ export const TouchableElement = ({
         [disabled, isHovered],
     );
 
+    // const overlayStyle = Animated.useAnimatedStyle(() => {
+    //     return {}
+    // });
+
     return (
         <TouchableWithoutFeedback
             {...props}
@@ -53,20 +61,16 @@ export const TouchableElement = ({
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
         >
-            <View
-                // @ts-expect-error
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                style={[styles.touchable, style]}
-            >
-                {React.Children.only(children)}
+            <View style={style}>
+                <Animated.View
+                    // @ts-expect-error
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
+                    style={[contentStyle, isHovered ? { backgroundColor: 'pink' } : null]}
+                >
+                    {React.Children.only(children)}
+                </Animated.View>
             </View>
         </TouchableWithoutFeedback>
     );
 };
-
-const styles = StyleSheet.create({
-    touchable: {
-        position: 'relative',
-    }
-});
