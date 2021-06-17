@@ -348,7 +348,7 @@ export function UILargeTitleHeader({
         <UIBackgroundView
             style={styles.container}
             ref={contentContainerRef}
-            collapsible={false}
+            collapsable={false}
         >
             <View style={styles.mainHeaderFiller} />
             <Animated.View style={[{ flex: 1 }, style]}>

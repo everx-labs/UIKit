@@ -563,31 +563,6 @@ export default class UIModalController<Props, State> extends UIController<
 
     renderModalNavigationBar() {
         return null;
-        if (!this.dismissible) {
-            return null;
-        }
-        if (this.state.header) {
-            return this.state.header;
-        }
-        return (
-            <UIModalNavigationBar
-                dismissStripeStyle={
-                    this.smallStripe ? styles.smallDismissStripe : styles.defaultDismissStripe
-                }
-                height={this.getNavigationBarHeight()}
-                swipeToDismiss={this.shouldSwipeToDismiss()}
-                leftComponent={this.renderLeftHeader()}
-                centralComponent={this.renderCentralHeader()}
-                rightComponent={this.renderRightHeader()}
-                bottomLine={this.isHeaderLineVisible()}
-                // onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], {
-                //     useNativeDriver: true,
-                // })}
-                // onRelease={this.onReleaseSwipe}
-                onCancel={this.onCancelPress}
-                cancelImage={this.getCancelImage()}
-            />
-        );
     }
 
     // eslint-disable-next-line no-unused-vars
