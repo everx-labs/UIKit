@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
         width: 50,
         paddingHorizontal: 4,
         alignItems: 'center',
-        borderWidth: 1,
     },
     minimumLabelArea: {
         position: 'absolute',
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
         width: 50,
         paddingHorizontal: 4,
         alignItems: 'center',
-        borderWidth: 1,
     },
 });
 
@@ -247,7 +245,12 @@ const useLabelData = (
     });
     const maximumLabelStyle = Animated.useAnimatedStyle(() => {
         return {
-            opacity: maximumLabelXCoordinate.value === null ? 0 : 1,
+            opacity:
+                maximumLabelXCoordinate.value === null ||
+                controlPoints.value?.maximum.x === 0 ||
+                controlPoints.value?.maximum.x === dimensions.value.width
+                    ? 0
+                    : 1,
         };
     });
 
@@ -265,7 +268,12 @@ const useLabelData = (
     });
     const minimumLabelStyle = Animated.useAnimatedStyle(() => {
         return {
-            opacity: minimumLabelXCoordinate.value === null ? 0 : 1,
+            opacity:
+                minimumLabelXCoordinate.value === null ||
+                controlPoints.value?.minimum.x === 0 ||
+                controlPoints.value?.minimum.x === dimensions.value.width
+                    ? 0
+                    : 1,
         };
     });
 
