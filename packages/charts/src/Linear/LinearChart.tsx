@@ -3,7 +3,11 @@ import { View, StyleSheet, LayoutChangeEvent, ViewStyle } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { runOnUI } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
-import { UILabel, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import {
+    UILabel,
+    TypographyVariants,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
 import { addNativeProps } from '../Utils';
 import {
     convertDataToPath,
@@ -15,40 +19,56 @@ import {
 
 Animated.addWhitelistedNativeProps({ text: true, value: true });
 
+const CONTENT_HORIZONTAL_OFFSET: number = 16;
 const STROKE_WIDTH: number = 2;
+const HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE: number = 60;
+const VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE: number = 24;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 40,
+        paddingHorizontal: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        paddingVertical: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     },
     chartСontainer: {
         flex: 1,
         overflow: 'visible',
     },
     labelContainer: {
-        position: 'absolute',
-        top: -8,
         height: 16,
-        width: 40,
-        paddingHorizontal: 4,
+        top: -8,
     },
-    leftLabelContainer: {
+    labelArea: {
+        width: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+    },
+    leftLabelArea: {
+        position: 'absolute',
+        top: 0,
         left: 0,
+        bottom: 0,
+        paddingLeft: CONTENT_HORIZONTAL_OFFSET,
+        marginVertical: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     },
-    rightLabelContainer: {
+    rightLabelArea: {
+        position: 'absolute',
+        top: 0,
         right: 0,
+        bottom: 0,
+        paddingLeft: 8,
+        marginVertical: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+    },
+    extremumLabelArea: {
+        left: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        right: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        height: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        alignItems: 'center',
+        flexDirection: 'row',
     },
     maximumLabelArea: {
         position: 'absolute',
-        top: -20,
-        left: 40,
-        right: 40,
-        height: 20,
-    },
-    maximumLabelContainer: {
-        position: 'absolute',
         top: 0,
+    },
+    extremumLabelContainer: {
         left: -25,
         height: 16,
         width: 50,
@@ -57,19 +77,7 @@ const styles = StyleSheet.create({
     },
     minimumLabelArea: {
         position: 'absolute',
-        bottom: -20,
-        left: 40,
-        right: 40,
-        height: 20,
-    },
-    minimumLabelContainer: {
-        position: 'absolute',
-        top: 0,
-        left: -25,
-        height: 16,
-        width: 50,
-        paddingHorizontal: 4,
-        alignItems: 'center',
+        bottom: 0,
     },
 });
 
@@ -299,12 +307,12 @@ const useLabelText = (
     const maximumText = Animated.useDerivedValue(() => {
         'worklet';
 
-        return maximum.value ? maximum.value.toFixed(1) : '';
+        return maximum.value ? maximum.value.toFixed(2) : '';
     }, []);
     const minimumText = Animated.useDerivedValue(() => {
         'worklet';
 
-        return minimum.value ? minimum.value.toFixed(1) : 'Empty';
+        return minimum.value ? minimum.value.toFixed(2) : 'Empty';
     }, []);
 
     const [minimumValue, setMinimumValue] = React.useState<string>('');
@@ -532,45 +540,52 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                     />
                 </AnimatedSvg>
             </View>
-            <Animated.View
-                style={[
-                    styles.labelContainer,
-                    styles.leftLabelContainer,
-                    labelData.leftLabelContainerStyle,
-                ]}
-            >
-                <Animated.View style={[labelData.leftLabelStyle]}>
-                    <UILabel role={TypographyVariants.ParagraphLabel}>
-                        {data[0].y.toFixed(1)}
-                    </UILabel>
-                </Animated.View>
-            </Animated.View>
-            <Animated.View
-                style={[
-                    styles.labelContainer,
-                    styles.rightLabelContainer,
-                    labelData.rightLabelContainerStyle,
-                ]}
-            >
-                <Animated.View style={[labelData.rightLabelStyle]}>
-                    <UILabel
-                        role={TypographyVariants.ParagraphLabel}
-                        numberOfLines={1}
-                    >
-                        {data[data.length - 1].y.toFixed(1)}
-                    </UILabel>
-                </Animated.View>
-            </Animated.View>
-            <View style={styles.maximumLabelArea}>
+            <View style={[styles.labelArea, styles.leftLabelArea]}>
                 <Animated.View
                     style={[
-                        styles.maximumLabelContainer,
+                        styles.labelContainer,
+                        labelData.leftLabelContainerStyle,
+                    ]}
+                >
+                    <Animated.View style={[labelData.leftLabelStyle]}>
+                        <UILabel
+                            role={TypographyVariants.ParagraphLabel}
+                            color={ColorVariants.TextPrimary}
+                        >
+                            {data[0].y.toFixed(2)}
+                        </UILabel>
+                    </Animated.View>
+                </Animated.View>
+            </View>
+            <View style={[styles.labelArea, styles.rightLabelArea]}>
+                <Animated.View
+                    style={[
+                        styles.labelContainer,
+                        labelData.rightLabelContainerStyle,
+                    ]}
+                >
+                    <Animated.View style={[labelData.rightLabelStyle]}>
+                        <UILabel
+                            role={TypographyVariants.ParagraphLabel}
+                            color={ColorVariants.TextPrimary}
+                            numberOfLines={1}
+                        >
+                            {data[data.length - 1].y.toFixed(2)}
+                        </UILabel>
+                    </Animated.View>
+                </Animated.View>
+            </View>
+            <View style={[styles.extremumLabelArea, styles.maximumLabelArea]}>
+                <Animated.View
+                    style={[
+                        styles.extremumLabelContainer,
                         labelData.maximumLabelContainerStyle,
                     ]}
                 >
                     <Animated.View style={labelData.maximumLabelStyle}>
                         <UILabel
                             role={TypographyVariants.ParagraphLabel}
+                            color={ColorVariants.TextTertiary}
                             numberOfLines={1}
                         >
                             {labelData.maximumValue}
@@ -578,16 +593,17 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                     </Animated.View>
                 </Animated.View>
             </View>
-            <View style={styles.minimumLabelArea}>
+            <View style={[styles.extremumLabelArea, styles.minimumLabelArea]}>
                 <Animated.View
                     style={[
-                        styles.minimumLabelContainer,
+                        styles.extremumLabelContainer,
                         labelData.minimumLabelContainerStyle,
                     ]}
                 >
                     <Animated.View style={labelData.minimumLabelStyle}>
                         <UILabel
                             role={TypographyVariants.ParagraphLabel}
+                            color={ColorVariants.TextTertiary}
                             numberOfLines={1}
                         >
                             {labelData.minimumValue}
