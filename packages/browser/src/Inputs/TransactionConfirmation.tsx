@@ -72,7 +72,7 @@ export function TransactionConfirmation({
                         </TouchableOpacity>
                     </View>
                 )}
-                {Number.isFinite(recipientsCount) && (
+                {recipientsCount != null && Number.isFinite(recipientsCount) && (
                     <View style={styles.cardRow}>
                         <UILabel
                             role={UILabelRoles.ParagraphLabel}
