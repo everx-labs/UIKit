@@ -15,6 +15,7 @@ import {
     HEADER_HEIGHT,
     SCREEN_CONTENT_INSET_HORIZONTAL,
     CONTENT_INSET_VERTICAL_X2,
+    TITLE_MINIMUM_FONT_SCALE,
 } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
@@ -119,7 +120,7 @@ export function UINavigationBar({
             <UILabel
                 role={UILabelRoles.HeadlineHead}
                 adjustsFontSizeToFit
-                minimumFontScale={0.7}
+                minimumFontScale={TITLE_MINIMUM_FONT_SCALE}
                 numberOfLines={1}
                 ellipsizeMode="middle"
             >

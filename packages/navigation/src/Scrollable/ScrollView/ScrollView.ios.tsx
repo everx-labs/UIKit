@@ -40,7 +40,6 @@ export const ScrollView = React.forwardRef<RNScrollView>(
                 <Animated.ScrollView
                     {...props}
                     ref={ref}
-                    overScrollMode="never"
                     onScrollBeginDrag={scrollHandler}
                     scrollEventThrottle={16}
                     onLayout={onLayout}

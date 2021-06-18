@@ -21,7 +21,6 @@ export const ScrollView = React.forwardRef<RNScrollView>(
             ref,
             scrollHandler,
             gestureHandler,
-            onWheel,
             registerScrollable,
             unregisterScrollable,
         } = React.useContext(ScrollableContext);
@@ -62,8 +61,6 @@ export const ScrollView = React.forwardRef<RNScrollView>(
                                 overScrollMode="never"
                                 onScrollBeginDrag={scrollHandler}
                                 scrollEventThrottle={16}
-                                // @ts-ignore
-                                onWheel={onWheel}
                                 onLayout={onLayout}
                                 onContentSizeChange={onContentSizeChange}
                             />
