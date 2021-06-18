@@ -168,8 +168,11 @@ const getCurve = (
 };
 
 /**
- * Functions `createPath`, `getCurve` and `curveLines` were copied from `react-native-redash/Paths` package
- * because the `curveLines` function does not behave as expected and had to be changed
+ * Functions `createPath`, `getCurve` and `curveLines`
+ * were copied from `react-native-redash/Paths` package
+ * because the `curveLines` function does not behave as expected
+ * (The curve between the second to last and last point is always straight.)
+ * and had to be changed.
  */
 
 /**
