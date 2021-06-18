@@ -344,7 +344,7 @@ const useLabelText = (
         () => {
             'worklet';
 
-            return minimumText.value
+            return minimumText.value;
         },
         (text: string) => {
             'worklet';
@@ -357,7 +357,7 @@ const useLabelText = (
         () => {
             'worklet';
 
-            return maximumText.value
+            return maximumText.value;
         },
         (text: string) => {
             'worklet';
@@ -444,6 +444,10 @@ const useAnimatedPathProps = (
     const progress = Animated.useSharedValue<number>(0);
     const progressTarget = Animated.useSharedValue<number>(0);
 
+    /** Used to avoid unwanted chart jumps.
+     * We need it to save path state if the animation did not have time to end,
+     * and the data changed again.
+     */
     const intermediatePath = Animated.useSharedValue<Path | null>(null);
 
     const targetPath = Animated.useDerivedValue(() => {
