@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     content: {
-        flex: 1,
+        flexShrink: 1
     },
 });

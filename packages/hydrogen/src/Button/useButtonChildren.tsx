@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     flex: {
-        flex: 1,
+        flexShrink: 1
     },
     singleElementContainer: {
         flexDirection: 'row',
