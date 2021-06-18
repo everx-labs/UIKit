@@ -531,6 +531,11 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 event.nativeEvent.layout.height !== dimensions.value.height ||
                 event.nativeEvent.layout.width !== dimensions.value.width
             ) {
+                /**
+                 * We should subtract STROKE_WIDTH from dimensions.
+                 * So that the thick line of the graph is not cut off at the edges of the graph.
+                 * The line is built from its center.
+                 */
                 dimensions.value = {
                     height: event.nativeEvent.layout.height - STROKE_WIDTH,
                     width: event.nativeEvent.layout.width - STROKE_WIDTH,
