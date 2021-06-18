@@ -462,7 +462,16 @@ const useAnimatedPathProps = (
         if (targetPath.value === null) {
             return null;
         }
-
+        if (
+            targetPath.value.curves.length !==
+            intermediatePath.value?.curves.length
+        ) {
+            /**
+             * If the number of points has changed, the interpolatePath function crashes with an error
+             * TODO: Remove this if-block and fix these crashes.
+             */
+            return targetPath.value;
+        }
         return interpolatePath(
             progress.value,
             [negateProgressTarget(progressTarget.value), progressTarget.value],
