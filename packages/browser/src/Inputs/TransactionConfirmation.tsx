@@ -51,34 +51,38 @@ export function TransactionConfirmation({
                 <UILabel role={UILabelRoles.TitleSmall}>
                     {uiLocalized.Browser.TransactionConfirmation.Title}
                 </UILabel>
-                <View style={styles.cardRow}>
-                    <UILabel
-                        role={UILabelRoles.ParagraphLabel}
-                        color={UILabelColors.TextTertiary}
-                    >
-                        {uiLocalized.Browser.TransactionConfirmation.To}
-                    </UILabel>
-                    <TouchableOpacity onPress={onAddressPress}>
-                        <View style={styles.address}>
-                            <UILabel>
-                                {`${toAddress.slice(
-                                    0,
-                                    4,
-                                )} ···· ${toAddress.slice(-4)}`}
-                            </UILabel>
-                            <UIImage source={UIAssets.icons.ui.arrowUpRight} />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.cardRow}>
-                    <UILabel
-                        role={UILabelRoles.ParagraphLabel}
-                        color={UILabelColors.TextTertiary}
-                    >
-                        {uiLocalized.Browser.TransactionConfirmation.Recipients}
-                    </UILabel>
-                    <UILabel>{recipientsCount}</UILabel>
-                </View>
+                {toAddress && (
+                    <View style={styles.cardRow}>
+                        <UILabel
+                            role={UILabelRoles.ParagraphLabel}
+                            color={UILabelColors.TextTertiary}
+                        >
+                            {uiLocalized.Browser.TransactionConfirmation.To}
+                        </UILabel>
+                        <TouchableOpacity onPress={onAddressPress}>
+                            <View style={styles.address}>
+                                <UILabel>
+                                    {`${toAddress.slice(
+                                        0,
+                                        4,
+                                    )} ···· ${toAddress.slice(-4)}`}
+                                </UILabel>
+                                <UIImage source={UIAssets.icons.ui.arrowUpRight} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )}
+                {Number.isFinite(recipientsCount) && (
+                    <View style={styles.cardRow}>
+                        <UILabel
+                            role={UILabelRoles.ParagraphLabel}
+                            color={UILabelColors.TextTertiary}
+                        >
+                            {uiLocalized.Browser.TransactionConfirmation.Recipients}
+                        </UILabel>
+                        <UILabel>{recipientsCount}</UILabel>
+                    </View>
+                )}
                 <View style={styles.cardRow}>
                     <UILabel
                         role={UILabelRoles.ParagraphLabel}
