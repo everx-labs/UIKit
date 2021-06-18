@@ -112,8 +112,15 @@ type IProps = {
     testID?: string;
 };
 
-const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath));
-const AnimatedSvg = Animated.createAnimatedComponent(addNativeProps(Svg));
+const AnimatedPath = Animated.createAnimatedComponent(
+    addNativeProps(SvgPath, { d: true }),
+);
+const AnimatedSvg = Animated.createAnimatedComponent(
+    addNativeProps(Svg, {
+        width: true,
+        height: true,
+    }),
+);
 
 type AnimatedState = {
     dimensions: Dimensions;

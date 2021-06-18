@@ -4,7 +4,7 @@ import * as React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import useMergeRefs from 'react-native-web/dist/modules/useMergeRefs';
 
-const usePlatformMethods = () => {
+const usePlatformMethods = (properties: { [key: string]: true }) => {
     return React.useMemo(() => {
         return (
             hostNode: Record<string, any>,
@@ -14,29 +14,34 @@ const usePlatformMethods = () => {
                 hostNode.setNativeProps = (
                     nativeProps: Record<string, any>,
                 ) => {
-                    Object.keys(nativeProps.style).forEach((key) => {
-                        const prop = nativeProps.style[key];
+                    if (nativeProps && nativeProps.style) {
+                        Object.keys(properties).forEach((key) => {
+                            const prop = nativeProps.style[key];
 
-                        if (prop) {
-                            hostNode.setAttribute(key, prop);
-                        }
-                    });
+                            if (prop) {
+                                hostNode.setAttribute(key, prop);
+                            }
+                        });
+                    }
                 };
 
                 return hostNode;
             }
             return undefined;
         };
-    }, []);
+    }, [properties]);
 };
 
 export const addNativeProps = <P>(
-    Component: React.ComponentClass<P>,
+    component: React.ComponentClass<P>,
+    properties: {
+        [key: string]: true;
+    },
 ): React.ForwardRefExoticComponent<P> => {
     return React.forwardRef<any, any>((props, ref: React.ForwardedRef<any>) => {
-        const platformRef = usePlatformMethods();
+        const platformRef = usePlatformMethods(properties);
         const forwardedRef = useMergeRefs(ref, platformRef);
 
-        return React.createElement(Component, { ...props, forwardedRef });
+        return React.createElement(component, { ...props, forwardedRef });
     });
 };
