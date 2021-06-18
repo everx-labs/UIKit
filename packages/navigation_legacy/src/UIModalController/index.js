@@ -561,10 +561,6 @@ export default class UIModalController<Props, State> extends UIController<
         return null;
     }
 
-    renderModalNavigationBar() {
-        return null;
-    }
-
     // eslint-disable-next-line no-unused-vars
     renderContentView(contentHeight: number): React$Node {
         return null;
@@ -660,7 +656,6 @@ export default class UIModalController<Props, State> extends UIController<
                             color={UIBackgroundViewColors.BackgroundPrimary}
                             style={dialogStyle}
                         >
-                            {this.renderModalNavigationBar()}
                             <Animated.View
                                 style={[
                                     UIStyle.common.flex(),
