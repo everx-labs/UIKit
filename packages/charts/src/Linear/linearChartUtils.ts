@@ -206,7 +206,7 @@ const curveLines = (points: Point[]) => {
  * @worklet
  * used so that the curve is not clipped
  */
-const movePoint = (curveWidth: number) => {
+const getMovedPointbyHalfCurveWidth = (curveWidth: number) => {
     'worklet';
 
     return (point: Point): Point => {
@@ -234,7 +234,7 @@ export const convertDataToPath = (
     if (scaledData === null) {
         return null;
     }
-    const movedScaledData: Point[] = scaledData.map(movePoint(curveWidth));
+    const movedScaledData: Point[] = scaledData.map(getMovedPointbyHalfCurveWidth(curveWidth));
     return curveLines(movedScaledData);
 };
 
