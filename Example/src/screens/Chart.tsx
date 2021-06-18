@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Platform } from 'react-native';
-import { UIButton } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIButton, useTheme } from '@tonlabs/uikit.hydrogen';
 import { LinearChart, Point } from '@tonlabs/uikit.charts'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -17,7 +17,7 @@ const getСumulativeValue = () => {
     return acc;
 };
 
-const dataLength: number = 30;
+const dataLength: number = 60;
 
 const getData = (): Point[] => {
     acc = 100;
@@ -32,6 +32,7 @@ const getData = (): Point[] => {
 };
 
 export function Chart() {
+    const theme = useTheme();
     const [data, setChartData] = useState<Point[]>(getData());
     return (
         <ExampleScreen>
@@ -48,8 +49,8 @@ export function Chart() {
                     <View
                         style={{
                             flex: 1,
-                            borderWidth: 0.5,
-                            borderStyle: 'dotted',
+                            backgroundColor:
+                                theme[ColorVariants.BackgroundSecondary],
                         }}
                     >
                         <LinearChart {...{ data }} />
