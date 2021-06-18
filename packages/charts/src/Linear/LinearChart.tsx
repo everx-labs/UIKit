@@ -199,17 +199,9 @@ const useLabelStyles = (
         return {
             transform: [
                 {
-                    translateY:
-                        startLabelYCoordinate.value === null
-                            ? 0
-                            : startLabelYCoordinate.value,
+                    translateY: startLabelYCoordinate.value,
                 },
             ],
-        };
-    });
-    const leftLabelStyle = Animated.useAnimatedStyle(() => {
-        return {
-            opacity: startLabelYCoordinate.value === null ? 0 : 1,
         };
     });
 
@@ -217,17 +209,9 @@ const useLabelStyles = (
         return {
             transform: [
                 {
-                    translateY:
-                        endLabelYCoordinate.value === null
-                            ? 0
-                            : endLabelYCoordinate.value,
+                    translateY: endLabelYCoordinate.value,
                 },
             ],
-        };
-    });
-    const rightLabelStyle = Animated.useAnimatedStyle(() => {
-        return {
-            opacity: endLabelYCoordinate.value === null ? 0 : 1,
         };
     });
 
@@ -235,10 +219,7 @@ const useLabelStyles = (
         return {
             transform: [
                 {
-                    translateX:
-                        maximumLabelXCoordinate.value === null
-                            ? 0
-                            : maximumLabelXCoordinate.value,
+                    translateX: maximumLabelXCoordinate.value,
                 },
             ],
         };
@@ -246,9 +227,9 @@ const useLabelStyles = (
     const maximumLabelStyle = Animated.useAnimatedStyle(() => {
         return {
             opacity:
-                maximumLabelXCoordinate.value === null ||
-                controlPoints.value?.maximum.x === 0 ||
-                controlPoints.value?.maximum.x === dimensions.value.width
+                !controlPoints.value ||
+                controlPoints.value.maximum.x <= 0 ||
+                controlPoints.value.maximum.x >= dimensions.value.width
                     ? 0
                     : 1,
         };
@@ -258,10 +239,7 @@ const useLabelStyles = (
         return {
             transform: [
                 {
-                    translateX:
-                        minimumLabelXCoordinate.value === null
-                            ? 0
-                            : minimumLabelXCoordinate.value,
+                    translateX: minimumLabelXCoordinate.value,
                 },
             ],
         };
@@ -270,16 +248,15 @@ const useLabelStyles = (
         return {
             opacity:
                 minimumLabelXCoordinate.value === null ||
-                controlPoints.value?.minimum.x === 0 ||
-                controlPoints.value?.minimum.x === dimensions.value.width
+                !controlPoints.value ||
+                controlPoints.value.minimum.x <= 0 ||
+                controlPoints.value.minimum.x >= dimensions.value.width
                     ? 0
                     : 1,
         };
     });
     return {
-        leftLabelStyle,
         leftLabelContainerStyle,
-        rightLabelStyle,
         rightLabelContainerStyle,
         maximumLabelContainerStyle,
         maximumLabelStyle,
@@ -340,9 +317,7 @@ const useLabelText = (
 
 type LabelData = {
     leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    leftLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
     rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    rightLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
     maximumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     maximumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
     minimumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
@@ -370,9 +345,7 @@ const useLabelData = (
     } = useLabelCoordinates(dimensions, controlPoints);
 
     const {
-        leftLabelStyle,
         leftLabelContainerStyle,
-        rightLabelStyle,
         rightLabelContainerStyle,
         maximumLabelContainerStyle,
         maximumLabelStyle,
@@ -390,9 +363,7 @@ const useLabelData = (
     const { minimumValue, maximumValue } = useLabelText(controlPoints);
 
     return {
-        leftLabelStyle,
         leftLabelContainerStyle,
-        rightLabelStyle,
         rightLabelContainerStyle,
         maximumLabelContainerStyle,
         maximumLabelStyle,
@@ -547,14 +518,12 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                         labelData.leftLabelContainerStyle,
                     ]}
                 >
-                    <Animated.View style={[labelData.leftLabelStyle]}>
-                        <UILabel
-                            role={TypographyVariants.ParagraphLabel}
-                            color={ColorVariants.TextPrimary}
-                        >
-                            {data[0].y.toFixed(2)}
-                        </UILabel>
-                    </Animated.View>
+                    <UILabel
+                        role={TypographyVariants.ParagraphLabel}
+                        color={ColorVariants.TextPrimary}
+                    >
+                        {data[0].y.toFixed(2)}
+                    </UILabel>
                 </Animated.View>
             </View>
             <View style={[styles.labelArea, styles.rightLabelArea]}>
@@ -564,15 +533,13 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                         labelData.rightLabelContainerStyle,
                     ]}
                 >
-                    <Animated.View style={[labelData.rightLabelStyle]}>
-                        <UILabel
-                            role={TypographyVariants.ParagraphLabel}
-                            color={ColorVariants.TextPrimary}
-                            numberOfLines={1}
-                        >
-                            {data[data.length - 1].y.toFixed(2)}
-                        </UILabel>
-                    </Animated.View>
+                    <UILabel
+                        role={TypographyVariants.ParagraphLabel}
+                        color={ColorVariants.TextPrimary}
+                        numberOfLines={1}
+                    >
+                        {data[data.length - 1].y.toFixed(2)}
+                    </UILabel>
                 </Animated.View>
             </View>
             <View style={[styles.extremumLabelArea, styles.maximumLabelArea]}>
