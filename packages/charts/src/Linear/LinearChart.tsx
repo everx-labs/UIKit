@@ -95,7 +95,7 @@ const withSpringConfig: Animated.WithSpringConfig = {
     stiffness: 200,
 };
 
-const getOppositeProgressTarget = (progressTarget: number): number => {
+const negateProgressTarget = (progressTarget: number): number => {
     'worklet';
 
     return progressTarget ? 0 : 1;
@@ -418,7 +418,7 @@ const useAnimatedPathProps = (
         return interpolatePath(
             progress.value,
             [
-                getOppositeProgressTarget(progressTarget.value),
+                negateProgressTarget(progressTarget.value),
                 progressTarget.value,
             ],
             [
@@ -436,7 +436,7 @@ const useAnimatedPathProps = (
             'worklet';
 
             progress.value = progressTarget.value;
-            progressTarget.value = getOppositeProgressTarget(
+            progressTarget.value = negateProgressTarget(
                 progressTarget.value,
             );
             intermediatePath.value = currentPath.value;
