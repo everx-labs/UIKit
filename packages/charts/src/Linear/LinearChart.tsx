@@ -4,9 +4,10 @@ import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { runOnUI } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
 import {
-    UILabel,
     TypographyVariants,
     ColorVariants,
+    UILabel,
+    useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { addNativeProps } from '../Utils';
 import {
@@ -417,10 +418,7 @@ const useAnimatedPathProps = (
 
         return interpolatePath(
             progress.value,
-            [
-                negateProgressTarget(progressTarget.value),
-                progressTarget.value,
-            ],
+            [negateProgressTarget(progressTarget.value), progressTarget.value],
             [
                 intermediatePath.value
                     ? intermediatePath.value
@@ -436,9 +434,7 @@ const useAnimatedPathProps = (
             'worklet';
 
             progress.value = progressTarget.value;
-            progressTarget.value = negateProgressTarget(
-                progressTarget.value,
-            );
+            progressTarget.value = negateProgressTarget(progressTarget.value);
             intermediatePath.value = currentPath.value;
 
             if (!dimensions.value.width || !dimensions.value.height) {
@@ -476,6 +472,7 @@ const useAnimatedPathProps = (
 };
 
 export const LinearChart: React.FC<IProps> = (props: IProps) => {
+    const theme = useTheme();
     const { data } = props;
     const dimensions = Animated.useSharedValue<Dimensions>({
         ...initialDimensions,
@@ -514,13 +511,12 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
     return (
         <View testID={props.testID} style={styles.container}>
             <View onLayout={onLayout} style={styles.chartСontainer}>
-                <AnimatedSvg
-                    animatedProps={animatedSvgProps}
-                >
+                <AnimatedSvg animatedProps={animatedSvgProps}>
                     <AnimatedPath
                         animatedProps={animatedPathProps}
                         fill="transparent"
-                        stroke="#367be2"
+                        // @ts-ignore
+                        stroke={theme[ColorVariants.LineAccent]}
                         strokeWidth={STROKE_WIDTH}
                     />
                 </AnimatedSvg>
