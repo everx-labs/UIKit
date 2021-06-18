@@ -516,9 +516,6 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
             <View onLayout={onLayout} style={styles.chartСontainer}>
                 <AnimatedSvg
                     animatedProps={animatedSvgProps}
-                    style={{
-                        overflow: 'visible',
-                    }}
                 >
                     <AnimatedPath
                         animatedProps={animatedPathProps}
