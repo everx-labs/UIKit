@@ -114,6 +114,29 @@ type IProps = {
 const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath));
 const AnimatedSvg = Animated.createAnimatedComponent(addNativeProps(Svg));
 
+type AnimatedState = {
+    dimensions: Dimensions;
+    controlPoints: ControlPoints | null;
+};
+
+const getIsNoAnimationNeeded = (
+    currentAnimatedState: AnimatedState,
+    previousAnimatedState: AnimatedState | null,
+): boolean => {
+    'worklet';
+
+    if (!previousAnimatedState || !previousAnimatedState.controlPoints) {
+        return true;
+    }
+    const isWidthChanged: boolean =
+        currentAnimatedState.dimensions.width !==
+        previousAnimatedState.dimensions.width;
+    const isHeightChanged: boolean =
+        currentAnimatedState.dimensions.height !==
+        previousAnimatedState.dimensions.height;
+    return isWidthChanged || isHeightChanged;
+};
+
 const useLabelCoordinates = (
     dimensions: Animated.SharedValue<Dimensions>,
     controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
@@ -123,10 +146,6 @@ const useLabelCoordinates = (
     const startLabelYCoordinate = Animated.useSharedValue<number>(0);
     const endLabelYCoordinate = Animated.useSharedValue<number>(0);
 
-    type AnimatedState = {
-        dimensions: Dimensions;
-        controlPoints: ControlPoints | null;
-    };
     Animated.useAnimatedReaction(
         () => {
             return {
@@ -142,12 +161,10 @@ const useLabelCoordinates = (
                 return;
             }
             if (
-                !previousAnimatedState ||
-                currentAnimatedState.dimensions.width !==
-                    previousAnimatedState.dimensions.width ||
-                currentAnimatedState.dimensions.height !==
-                    previousAnimatedState.dimensions.height ||
-                !previousAnimatedState.controlPoints
+                getIsNoAnimationNeeded(
+                    currentAnimatedState,
+                    previousAnimatedState,
+                )
             ) {
                 minimumLabelXCoordinate.value =
                     currentAnimatedState.controlPoints.minimum.x;
