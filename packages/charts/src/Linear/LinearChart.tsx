@@ -156,6 +156,8 @@ const useLabelCoordinates = (
 
     Animated.useAnimatedReaction(
         () => {
+            'worklet';
+
             return {
                 dimensions: dimensions.value,
                 controlPoints: controlPoints.value,
@@ -165,6 +167,8 @@ const useLabelCoordinates = (
             currentAnimatedState: AnimatedState,
             previousAnimatedState: AnimatedState | null,
         ) => {
+            'worklet';
+
             if (currentAnimatedState.controlPoints === null) {
                 return;
             }
@@ -221,6 +225,8 @@ const useLabelStyles = (
     endLabelYCoordinate: Animated.SharedValue<number>,
 ) => {
     const leftLabelContainerStyle = Animated.useAnimatedStyle(() => {
+        'worklet';
+
         return {
             transform: [
                 {
@@ -231,6 +237,8 @@ const useLabelStyles = (
     });
 
     const rightLabelContainerStyle = Animated.useAnimatedStyle(() => {
+        'worklet';
+
         return {
             transform: [
                 {
@@ -241,6 +249,8 @@ const useLabelStyles = (
     });
 
     const maximumLabelContainerStyle = Animated.useAnimatedStyle(() => {
+        'worklet';
+
         return {
             transform: [
                 {
@@ -250,6 +260,8 @@ const useLabelStyles = (
         };
     });
     const maximumLabelStyle = Animated.useAnimatedStyle(() => {
+        'worklet';
+
         return {
             opacity:
                 !controlPoints.value ||
@@ -261,6 +273,8 @@ const useLabelStyles = (
     });
 
     const minimumLabelContainerStyle = Animated.useAnimatedStyle(() => {
+        'worklet';
+
         return {
             transform: [
                 {
@@ -270,6 +284,8 @@ const useLabelStyles = (
         };
     });
     const minimumLabelStyle = Animated.useAnimatedStyle(() => {
+        'worklet';
+
         return {
             opacity:
                 minimumLabelXCoordinate.value === null ||
@@ -294,12 +310,16 @@ const useLabelText = (
     controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
 ) => {
     const maximum = Animated.useDerivedValue<number | null>(() => {
+        'worklet';
+
         if (controlPoints.value === null) {
             return null;
         }
         return controlPoints.value.maximum.value;
     });
     const minimum = Animated.useDerivedValue<number | null>(() => {
+        'worklet';
+
         if (controlPoints.value === null) {
             return null;
         }
@@ -321,15 +341,27 @@ const useLabelText = (
     const [maximumValue, setMaximumValue] = React.useState<string>('');
 
     Animated.useAnimatedReaction(
-        () => minimumText.value,
+        () => {
+            'worklet';
+
+            return minimumText.value
+        },
         (text: string) => {
+            'worklet';
+
             Animated.runOnJS(setMinimumValue)(text);
         },
     );
 
     Animated.useAnimatedReaction(
-        () => maximumText.value,
+        () => {
+            'worklet';
+
+            return maximumText.value
+        },
         (text: string) => {
+            'worklet';
+
             Animated.runOnJS(setMaximumValue)(text);
         },
     );
@@ -355,10 +387,14 @@ const useLabelData = (
     data: Point[],
 ): LabelData => {
     const scaledData = Animated.useDerivedValue<Point[] | null>(() => {
+        'worklet';
+
         return getScaledData(data, dimensions.value);
     }, [data]);
 
     const controlPoints = Animated.useDerivedValue<ControlPoints | null>(() => {
+        'worklet';
+
         return getControlPoints(data, scaledData.value, STROKE_WIDTH);
     }, [data]);
 
