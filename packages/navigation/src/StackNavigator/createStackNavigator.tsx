@@ -326,6 +326,40 @@ function wrapScreensWithHeader(children: React.ReactNode) {
     return screens;
 }
 
+function filterDescriptorOptionsForOriginalImplementation(
+    descriptors: Record<
+        string,
+        Descriptor<
+            // eslint-disable-next-line @typescript-eslint/ban-types
+            Record<string, object | undefined>,
+            string,
+            StackNavigationState<ParamListBase>,
+            StackNavigationOptions,
+            // eslint-disable-next-line @typescript-eslint/ban-types
+            {}
+        >
+    >,
+) {
+    return Object.keys(descriptors).reduce<Record<string, any>>((acc, key) => {
+        const originalDescriptor = descriptors[key];
+
+        const {
+            headerShown,
+            stackAnimation,
+        } = originalDescriptor.options as any;
+
+        acc[key] = {
+            ...originalDescriptor,
+            options: {
+                headerShown,
+                stackAnimation,
+            },
+        };
+
+        return acc;
+    }, {});
+}
+
 type SurfSplitNavigatorProps = {
     children?: React.ReactNode;
     initialRouteName: string;
@@ -395,17 +429,16 @@ export const StackNavigator = ({
         [navigation, state.index, state.key],
     );
 
-    // TODO: there could be issues on iOS with rendering
-    // need to check it and disable for iOS if it works badly
-    // if (Platform.OS === 'android' && screensEnabled()) {
     if (doesSupportNative) {
+        const descriptorsFiltered = filterDescriptorOptionsForOriginalImplementation(
+            descriptors,
+        );
         return (
             <DescriptorsContext.Provider value={descriptors}>
                 <NativeStackView
                     state={state}
                     navigation={navigation}
-                    // @ts-ignore
-                    descriptors={descriptors}
+                    descriptors={descriptorsFiltered}
                 />
             </DescriptorsContext.Provider>
         );
