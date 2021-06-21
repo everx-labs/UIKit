@@ -24,6 +24,7 @@ export type UILayout = {
 }
 
 type ButtonProps = {
+    animations?: any;
     children: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle>;
     contentStyle?: StyleProp<ViewStyle>;
@@ -38,6 +39,7 @@ const ButtonForward = React.forwardRef<
     ButtonProps
 >(function ButtonForwarded(
     {
+        animations,
         children,
         containerStyle,
         contentStyle,
@@ -64,7 +66,9 @@ const ButtonForward = React.forwardRef<
         <TouchableElement
             ref={ref}
             {...props}
+            animations={animations}
             disabled={disabled}
+            loading={loading}
             onPress={handleOnPress}
             style={[styles.container, containerStyle]}
             contentStyle={[styles.content, contentStyle]}
@@ -74,7 +78,7 @@ const ButtonForward = React.forwardRef<
                 {loading ? (
                     <UIIndicator
                         color={ColorVariants.StaticIconPrimaryDark}
-                        size={UIConstant.iconSize}
+                        size={UIConstant.loaderSize}
                     />
                 ) : processedChildren}
             </View>

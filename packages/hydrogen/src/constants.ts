@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 export const UIConstant = {
     iconSize: 24,
 
+    loaderSize: 18,
+
     buttonBorderWidth: 1,
 
     boxButtonHeight: 48,
@@ -29,6 +31,8 @@ export const UIConstant = {
     elasticWidthBottomSheet: 448,
 
     swipeThreshold: 50,
+
+    opacityAnimDuration: 100,
 
     cardShadow:
         Platform.OS === 'android'

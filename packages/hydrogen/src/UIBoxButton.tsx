@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { Button, UILayout } from './Button';
 import { UIConstant } from './constants';
@@ -15,7 +16,7 @@ export enum UIBoxButtonType {
 
 // eslint-disable-next-line no-shadow
 export enum UIBoxButtonVariant {
-    Default = 'Neutral',
+    Neutral = 'Neutral',
     Negative = 'Negative',
     Positive = 'Positive',
 }
@@ -52,10 +53,6 @@ export type UIBoxButtonProps = {
      */
     loading?: boolean;
     /**
-     * Color of the UIBoxButtonType.Nulled button title // TODO: WTF?! Maybe we just need to set title as not required param??? And remove this one?
-     */
-    nulledColor?: ColorVariants;
-    /**
      * Function will be called on button press
      */
     onPress?: () => void | Promise<void>;
@@ -66,7 +63,7 @@ export type UIBoxButtonProps = {
     /**
      * Text displayed on the button
      */
-    title: string;
+    title?: string;
     /**
      * Type of the button; specific type allows to set the corresponding accent
      * - `UIBoxButtonType.Primary` - button with current theme accent background color (default)
@@ -84,18 +81,133 @@ export type UIBoxButtonProps = {
     variant?: UIBoxButtonVariant;
 };
 
-// function useButtonStates(
-//     type: string,
-//     variant: string,
-//     state: string,
-// ) {
-//     // TODO: add set of different states & actions
-//     // hover, press, disabled, progress
-// }
+const getButtonStates = (
+    type: UIBoxButtonType,
+) => {
+    if (type === UIBoxButtonType.Primary) {
+        return {
+            hoverOverlayColor: ColorVariants.StaticHoverOverlay,
+            pressOverlayColor: ColorVariants.StaticPressOverlay,
+            activeTitleColor: ColorVariants.StaticTextPrimaryLight,
+        };
+    } else if (type === UIBoxButtonType.Secondary) {
+        return {
+            hoverOverlayColor: ColorVariants.BackgroundTertiary,
+            pressOverlayColor: ColorVariants.BackgroundNeutral,
+            activeTitleColor: ColorVariants.TextPrimary,
+        }
+    } else if (type === UIBoxButtonType.Tertiary) {
+        return {
+            hoverOverlayColor: ColorVariants.Transparent,
+            pressOverlayColor: ColorVariants.Transparent,
+            activeTitleColor: ColorVariants.TextPrimary,
+        }
+    }
+    return {
+        hoverOverlayColor: ColorVariants.Transparent,
+        pressOverlayColor: ColorVariants.Transparent,
+        activeTitleColor: ColorVariants.TextAccent,
+    };
+};
+
+function useButtonAnimations(
+    type: UIBoxButtonType,
+    titleColor: ColorVariants,
+) {
+    const { hoverOverlayColor, pressOverlayColor, activeTitleColor } = getButtonStates(type);
+    const theme = useTheme();
+
+    const hoverOverlay = Animated.useSharedValue(0);
+    const hoverOverlayValue = Animated.useDerivedValue(() => {
+        return Animated.interpolateColor(
+            hoverOverlay.value,
+            [0, 1],
+            [
+                theme[ColorVariants.Transparent] as string,
+                theme[ColorVariants[hoverOverlayColor]] as string,
+            ],
+        );
+    });
+    const hoverOverlayStyle = Animated.useAnimatedStyle(() => {
+        return {
+            backgroundColor: hoverOverlayValue.value,
+        };
+    });
+
+    const pressOverlay = Animated.useSharedValue(0);
+    const pressOverlayValue = Animated.useDerivedValue(() => {
+        return Animated.interpolateColor(
+            pressOverlay.value,
+            [0, 1],
+            [
+                theme[ColorVariants.Transparent] as string,
+                theme[ColorVariants[pressOverlayColor]] as string,
+            ],
+        );
+    });
+    const pressOverlayStyle = Animated.useAnimatedStyle(() => {
+        return {
+            backgroundColor: pressOverlayValue.value,
+        };
+    });
+
+    const titleAnim = Animated.useSharedValue(0);
+    const titleAnimValue = Animated.useDerivedValue(() => {
+        return Animated.interpolateColor(
+            titleAnim.value,
+            [0, 1],
+            [
+                theme[ColorVariants[titleColor]] as string,
+                theme[ColorVariants[activeTitleColor]] as string,
+            ],
+        );
+    });
+    const titleAnimStyle = Animated.useAnimatedStyle(() => {
+        return {
+            color: titleAnimValue.value,
+        };
+    });
+
+    const iconAnim = Animated.useSharedValue(0);
+    const iconAnimValue = Animated.useDerivedValue(() => {
+        return Animated.interpolateColor(
+            iconAnim.value,
+            [0, 1],
+            [
+                theme[ColorVariants[titleColor]] as string,
+                theme[ColorVariants[activeTitleColor]] as string,
+            ],
+        );
+    });
+    const iconAnimStyle = Animated.useAnimatedStyle(() => {
+        return {
+            tintColor: iconAnimValue.value,
+        };
+    });
+
+    return {
+        animatedHover: {
+            hoverOverlay,
+            hoverOverlayStyle,
+        },
+        animatedPress: {
+            pressOverlay,
+            pressOverlayStyle,
+        },
+        animatedTitle: {
+            titleAnim,
+            titleAnimStyle,
+        },
+        animatedIcon: {
+            iconAnim,
+            iconAnimStyle,
+        },
+    };
+}
 
 function useButtonStyles(
-    type: string,
-    variant: string,
+    type: UIBoxButtonType,
+    variant: UIBoxButtonVariant,
     disabled?: boolean,
     loading?: boolean,
 ) {
@@ -117,7 +229,7 @@ function useButtonStyles(
         if (disabled) {
             titleColor = ColorVariants.TextOverlayInverted;
         } else {
-            titleColor = ColorVariants.TextPrimaryInverted;
+            titleColor = ColorVariants.StaticTextPrimaryLight;
         }
     } else if (type === UIBoxButtonType.Secondary) {
         // secondary background color
@@ -173,83 +285,21 @@ function useButtonStyles(
     };
 }
 
-// function useButtonStyles(
-//     type: string,
-//     disabled?: boolean,
-//     nulledColor?: ColorVariants,
-// ) {
-//     let backgroundColor: ColorVariants = ColorVariants.Transparent;
-//     let borderColor: ColorVariants = ColorVariants.Transparent;
-//     let titleColor: ColorVariants = ColorVariants.TextAccent;
-//     let borderRadius: number = 0;
-//     let borderWidth: number = 0;
-//
-//     if (type === UIBoxButtonType.Primary) {
-//         if (disabled) {
-//             backgroundColor = ColorVariants.BackgroundTertiary;
-//             titleColor = ColorVariants.TextTertiary;
-//         } else {
-//             backgroundColor = ColorVariants.BackgroundAccent;
-//             titleColor = ColorVariants.StaticTextPrimaryLight;
-//         }
-//         borderRadius = UIConstant.alertBorderRadius;
-//     } else if (type === UIBoxButtonType.Secondary) {
-//         if (disabled) {
-//             backgroundColor = ColorVariants.BackgroundTertiary;
-//             titleColor = ColorVariants.TextTertiary;
-//         } else {
-//             backgroundColor = ColorVariants.BackgroundPrimaryInverted;
-//             titleColor = ColorVariants.TextPrimaryInverted;
-//         }
-//         borderRadius = UIConstant.alertBorderRadius;
-//     } else if (type === UIBoxButtonType.Tertiary) {
-//         if (disabled) {
-//             borderColor = ColorVariants.BackgroundTertiary;
-//             titleColor = ColorVariants.TextTertiary;
-//         } else {
-//             borderColor = ColorVariants.BackgroundPrimaryInverted;
-//             titleColor = ColorVariants.TextPrimary;
-//         }
-//         borderRadius = UIConstant.alertBorderRadius;
-//         borderWidth = UIConstant.buttonBorderWidth;
-//     } else if (type === UIBoxButtonType.Nulled) {
-//         if (disabled) {
-//             titleColor = ColorVariants.TextTertiary;
-//         } else {
-//             titleColor = nulledColor || ColorVariants.TextAccent;
-//         }
-//     }
-//
-//     const theme = useTheme();
-//
-//     const buttonStyle = {
-//         backgroundColor: theme[ColorVariants[backgroundColor]] as ColorValue,
-//         borderColor: theme[ColorVariants[borderColor]] as ColorValue,
-//         borderRadius,
-//         borderWidth,
-//     };
-//
-//     return {
-//         buttonStyle,
-//         titleColor,
-//     };
-// }
-
 export const UIBoxButton = ({
     disabled,
     icon,
     iconPosition = UIBoxButtonIconPosition.Left,
     layout,
     loading,
-    // nulledColor,
     onPress,
     testID,
     title,
     type= UIBoxButtonType.Primary,
-    variant = UIBoxButtonVariant.Default,
+    variant = UIBoxButtonVariant.Neutral,
 }: UIBoxButtonProps) => {
     const { buttonStyle, titleColor } = useButtonStyles(type, variant, disabled, loading);
-    // const { buttonStyle, titleColor } = useButtonStyles(type, variant, disabled, nulledColor);
+    const buttonAnimations = useButtonAnimations(type, titleColor);
+
     return (
         <Button
             containerStyle={[
@@ -258,6 +308,7 @@ export const UIBoxButton = ({
                 layout,
             ]}
             contentStyle={styles.content}
+            animations={buttonAnimations}
             disabled={disabled}
             loading={loading}
             onPress={onPress}
@@ -269,18 +320,32 @@ export const UIBoxButton = ({
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
-                        tintColor={titleColor}
+                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
                     />
                 }
-                <Button.Title titleColor={titleColor}>{title}</Button.Title>
+                {
+                    title &&
+                    <Button.Title
+                        titleColor={titleColor}
+                        titleAnimStyle={buttonAnimations.animatedTitle.titleAnimStyle}
+                    >
+                        {title}
+                    </Button.Title>
+                }
                 {
                     iconPosition === UIBoxButtonIconPosition.Middle && icon &&
-                    <Button.Icon source={icon} tintColor={titleColor} />
+                    <Button.Icon
+                        source={icon}
+                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                    />
                 }
             </Button.Content>
             {
                 iconPosition === UIBoxButtonIconPosition.Right && icon &&
-                <Button.Icon source={icon} tintColor={titleColor} />
+                <Button.Icon
+                    source={icon}
+                    iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                />
             }
         </Button>
     );

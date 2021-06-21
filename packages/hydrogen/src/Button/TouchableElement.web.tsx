@@ -4,10 +4,13 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
 import { useHover } from '../useHover';
+import { UIConstant } from '../constants';
 
 type TouchableElementProps = {
-    disabled?: boolean;
+    animations?: any;
     children: React.ReactNode;
+    disabled?: boolean;
+    loading?: boolean;
     onPress: () => void;
     style?: StyleProp<ViewStyle>;
     contentStyle?: StyleProp<ViewStyle>;
@@ -15,8 +18,10 @@ type TouchableElementProps = {
 }
 
 export const TouchableElement = ({
-    disabled,
+    animations,
     children,
+    disabled,
+    loading,
     onPress,
     style,
     contentStyle,
@@ -24,33 +29,82 @@ export const TouchableElement = ({
     ...props
 }: TouchableElementProps) => {
     const {
+        animatedHover: {
+            hoverOverlay,
+            hoverOverlayStyle,
+        },
+        animatedPress: {
+            pressOverlay,
+            pressOverlayStyle,
+        },
+        animatedTitle: {
+            titleAnim,
+        },
+        animatedIcon: {
+            iconAnim,
+        },
+    } = animations;
+
+    const {
         isHovered,
         onMouseEnter,
         onMouseLeave,
     } = useHover();
 
+    React.useEffect(
+        () => {
+            if (!disabled && !loading && isHovered) {
+                hoverOverlay.value = Animated.withTiming(1, {
+                    duration: UIConstant.opacityAnimDuration,
+                });
+                titleAnim.value = Animated.withTiming(1, {
+                    duration: UIConstant.opacityAnimDuration,
+                });
+                iconAnim.value = Animated.withTiming(1, {
+                    duration: UIConstant.opacityAnimDuration,
+                });
+            } else {
+                hoverOverlay.value = Animated.withTiming(0, {
+                    duration: UIConstant.opacityAnimDuration,
+                });
+                titleAnim.value = Animated.withTiming(0, {
+                    duration: UIConstant.opacityAnimDuration,
+                });
+                iconAnim.value = Animated.withTiming(0, {
+                    duration: UIConstant.opacityAnimDuration,
+                });
+            }
+        },
+        [disabled, loading, isHovered, hoverOverlay, titleAnim, iconAnim],
+    );
+
     const handlePressIn = () => {
-        // TODO: add pressIn animation
+        if (!loading) {
+            pressOverlay.value = Animated.withTiming(1, {
+                duration: UIConstant.opacityAnimDuration,
+            });
+            titleAnim.value = Animated.withTiming(1, {
+                duration: UIConstant.opacityAnimDuration,
+            });
+            iconAnim.value = Animated.withTiming(1, {
+                duration: UIConstant.opacityAnimDuration,
+            });
+        }
     };
 
     const handlePressOut = () => {
-        // TODO: add pressOut animation
+        if (!loading) {
+            pressOverlay.value = Animated.withTiming(0, {
+                duration: UIConstant.opacityAnimDuration,
+            });
+            titleAnim.value = Animated.withTiming(0, {
+                duration: UIConstant.opacityAnimDuration,
+            });
+            iconAnim.value = Animated.withTiming(0, {
+                duration: UIConstant.opacityAnimDuration,
+            });
+        }
     };
-
-    React.useEffect(
-        () => {
-            if (!disabled && isHovered) {
-                // TODO: add hover animation/effect
-            } else {
-                // TODO: turn back to normal state
-            }
-        },
-        [disabled, isHovered],
-    );
-
-    // const overlayStyle = Animated.useAnimatedStyle(() => {
-    //     return {}
-    // });
 
     return (
         <TouchableWithoutFeedback
@@ -66,7 +120,7 @@ export const TouchableElement = ({
                     // @ts-expect-error
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
-                    style={[contentStyle, isHovered ? { backgroundColor: 'pink' } : null]}
+                    style={[contentStyle, hoverOverlayStyle, pressOverlayStyle]}
                 >
                     {React.Children.only(children)}
                 </Animated.View>

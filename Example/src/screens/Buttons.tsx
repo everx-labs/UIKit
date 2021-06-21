@@ -23,25 +23,15 @@ const Buttons = () => (
         <ExampleSection title="UIBoxButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
-                    testID="uiBoxButton_primary"
-                    title="Action"
+                    testID="uiBoxButton_primary_default"
+                    title="Primary"
                     onPress={() => console.log('Pressed UIBoxButton primary')}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
-                    disabled
-                    testID="uiBoxButton_primary_disabled"
-                    title="Action"
-                    onPress={() => {
-                        // empty
-                    }}
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIBoxButton
                     testID="uiBoxButton_primary_negative"
-                    title="Action"
+                    title="Primary negative"
                     variant={UIBoxButtonVariant.Negative}
                     onPress={() => {
                         // empty
@@ -51,11 +41,29 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_primary_positive"
-                    title="Action"
+                    title="Primary positive"
                     variant={UIBoxButtonVariant.Positive}
                     onPress={() => {
                         // empty
                     }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    disabled
+                    testID="uiBoxButton_primary_disabled"
+                    title="Primary disabled"
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIBoxButton
+                    testID="uiBoxButton_primary_loading"
+                    title="Action"
+                    loading
+                    onPress={() => console.log('Pressed UIBoxButton')}
                 />
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -86,16 +94,8 @@ const Buttons = () => (
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
-                    testID="uiBoxButton_primary_loading"
-                    title="Action"
-                    loading
-                    onPress={() => console.log('Pressed UIBoxButton')}
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIBoxButton
                     testID="uiBoxButton_secondary"
-                    title="Action"
+                    title="Secondary"
                     type={UIBoxButtonType.Secondary}
                     onPress={() => console.log('Pressed UIBoxButton secondary')}
                 />
@@ -103,7 +103,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_secondary_negative"
-                    title="Action"
+                    title="Secondary negative"
                     type={UIBoxButtonType.Secondary}
                     variant={UIBoxButtonVariant.Negative}
                     onPress={() => console.log('Pressed UIBoxButton secondary negative')}
@@ -112,7 +112,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_secondary_positive"
-                    title="Action"
+                    title="Secondary positive"
                     type={UIBoxButtonType.Secondary}
                     variant={UIBoxButtonVariant.Positive}
                     onPress={() => console.log('Pressed UIBoxButton secondary positive')}
@@ -122,7 +122,7 @@ const Buttons = () => (
                 <UIBoxButton
                     disabled
                     testID="uiBoxButton_secondary_disabled"
-                    title="Action"
+                    title="Secondary disabled"
                     type={UIBoxButtonType.Secondary}
                     onPress={() => {
                         // empty
@@ -132,7 +132,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_tertiary"
-                    title="Action"
+                    title="Tertiary"
                     type={UIBoxButtonType.Tertiary}
                     onPress={() => console.log('Pressed UIBoxButton tertiary')}
                 />
@@ -140,7 +140,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_tertiary_negative"
-                    title="Action"
+                    title="Tertiary negative"
                     type={UIBoxButtonType.Tertiary}
                     variant={UIBoxButtonVariant.Negative}
                     onPress={() => console.log('Pressed UIBoxButton tertiary negative')}
@@ -149,7 +149,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_tertiary_positive"
-                    title="Action"
+                    title="Tertiary positive"
                     type={UIBoxButtonType.Tertiary}
                     variant={UIBoxButtonVariant.Positive}
                     onPress={() => console.log('Pressed UIBoxButton tertiary positive')}
@@ -159,7 +159,7 @@ const Buttons = () => (
                 <UIBoxButton
                     disabled
                     testID="uiBoxButton_tertiary_disabled"
-                    title="Action"
+                    title="Tertiary disabled"
                     type={UIBoxButtonType.Tertiary}
                     onPress={() => {
                         // empty
@@ -169,7 +169,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_nulled"
-                    title="Action"
+                    title="Nulled"
                     type={UIBoxButtonType.Nulled}
                     onPress={() => console.log('Pressed UIBoxButton nulled')}
                 />
@@ -177,7 +177,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_nulled_negative"
-                    title="Action"
+                    title="Nulled negative"
                     type={UIBoxButtonType.Nulled}
                     variant={UIBoxButtonVariant.Negative}
                     onPress={() => console.log('Pressed UIBoxButton nulled negative')}
@@ -186,7 +186,7 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIBoxButton
                     testID="uiBoxButton_nulled_positive"
-                    title="Action"
+                    title="Nulled positive"
                     type={UIBoxButtonType.Nulled}
                     variant={UIBoxButtonVariant.Positive}
                     onPress={() => console.log('Pressed UIBoxButton nulled positive')}
@@ -196,7 +196,7 @@ const Buttons = () => (
                 <UIBoxButton
                     disabled
                     testID="uiBoxButton_nulled_disabled"
-                    title="Action"
+                    title="Nulled disabled"
                     type={UIBoxButtonType.Nulled}
                     onPress={() => {
                         // empty
