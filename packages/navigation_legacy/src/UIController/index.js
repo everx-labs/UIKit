@@ -29,6 +29,7 @@ import {
 } from '@tonlabs/uikit.components';
 import { UISafeAreaView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UILargeTitleContainerRefContext } from '@tonlabs/uikit.navigation';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
@@ -202,6 +203,7 @@ export default class UIController<Props, State> extends UIComponent<
 
     // constructor
     hasSpinnerOverlay: boolean;
+    trackKeyboard: boolean;
 
     // Guard for react-navigation v5 first mount focus event
     isFocused = false;
@@ -211,6 +213,7 @@ export default class UIController<Props, State> extends UIComponent<
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
         this.hasSpinnerOverlay = false;
+        this.trackKeyboard = false;
 
         if (configuration.navigationVersion < 5) {
             this.handlePathAndParams();
@@ -573,6 +576,9 @@ export default class UIController<Props, State> extends UIComponent<
 
     // Keyboard
     initKeyboardListeners() {
+        if (!this.trackKeyboard) {
+            return;
+        }
         this.deinitKeyboardListeners();
         if (Platform.OS === 'ios') {
             this.keyboardWillShowListener = Keyboard.addListener(
@@ -608,6 +614,9 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     deinitKeyboardListeners() {
+        if (!this.trackKeyboard) {
+            return;
+        }
         if (Platform.OS === 'android') {
             // Remove this screen from keyboard panning if it is
             UIController.removeKeyboardPanningScreen(this);
@@ -709,9 +718,23 @@ export default class UIController<Props, State> extends UIComponent<
                 color={UIBackgroundViewColors.BackgroundPrimary}
                 style={UIStyle.container.screen()}
             >
-                <View style={UIStyle.common.flex()} collapsable={false} ref={this.containerRef}>
-                    {this.renderSafely()}
-                </View>
+                <UILargeTitleContainerRefContext.Consumer>
+                    {(ref) => {
+                        if (ref != null) {
+                            this.containerRef = ref;
+                        }
+
+                        return (
+                            <View
+                                style={UIStyle.common.flex()}
+                                collapsable={false}
+                                ref={ref == null ? this.containerRef : null}
+                            >
+                                {this.renderSafely()}
+                            </View>
+                        );
+                    }}
+                </UILargeTitleContainerRefContext.Consumer>
             </UISafeAreaView>
         );
         const overlays = [].concat(

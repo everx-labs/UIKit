@@ -11,5 +11,16 @@ export * from './Scrollable';
 export * from './UILargeTitleHeader';
 export * from './constants';
 
+export * from './SplitNavigator/createSplitNavigator';
+export {
+    MAIN_SCREEN_NAME as SPLIT_MAIN_SCREEN_NAME,
+    SplitActions,
+} from './SplitNavigator/SplitRouter';
+export {
+    createModalNavigator,
+    withModalSceneWrapper,
+    NestedInDismissibleModalContext,
+} from './ModalNavigator/createModalNavigator';
+export { ModalActions } from './ModalNavigator/ModalRouter';
 export * from './StackNavigator/createStackNavigator';
 export * from './SplitNavigator/createSplitNavigator';
