@@ -117,10 +117,10 @@ function useButtonAnimations(
     const { hoverOverlayColor, pressOverlayColor, activeTitleColor } = getButtonStates(type);
     const theme = useTheme();
 
-    const hoverOverlay = Animated.useSharedValue(0);
+    const hoverAnim = Animated.useSharedValue(0);
     const hoverOverlayValue = Animated.useDerivedValue(() => {
         return Animated.interpolateColor(
-            hoverOverlay.value,
+            hoverAnim.value,
             [0, 1],
             [
                 theme[ColorVariants.Transparent] as string,
@@ -134,10 +134,10 @@ function useButtonAnimations(
         };
     });
 
-    const pressOverlay = Animated.useSharedValue(0);
+    const pressAnim = Animated.useSharedValue(0);
     const pressOverlayValue = Animated.useDerivedValue(() => {
         return Animated.interpolateColor(
-            pressOverlay.value,
+            pressAnim.value,
             [0, 1],
             [
                 theme[ColorVariants.Transparent] as string,
@@ -187,11 +187,13 @@ function useButtonAnimations(
 
     return {
         animatedHover: {
-            hoverOverlay,
+            hoverAnim,
+            hoverBackgroundStyle: null,
             hoverOverlayStyle,
         },
         animatedPress: {
-            pressOverlay,
+            pressAnim,
+            pressBackgroundStyle: null,
             pressOverlayStyle,
         },
         animatedTitle: {

@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import { Easing } from 'react-native-reanimated';
 
 export const UIConstant = {
     iconSize: 24,
@@ -32,7 +33,10 @@ export const UIConstant = {
 
     swipeThreshold: 50,
 
-    opacityAnimDuration: 100,
+    animationConfig: {
+        duration: 100,
+        easing: Easing.bezier(0.5, 0.01, 0, 1),
+    },
 
     cardShadow:
         Platform.OS === 'android'

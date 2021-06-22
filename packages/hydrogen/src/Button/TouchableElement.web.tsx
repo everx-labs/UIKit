@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
@@ -30,11 +30,13 @@ export const TouchableElement = ({
 }: TouchableElementProps) => {
     const {
         animatedHover: {
-            hoverOverlay,
+            hoverAnim,
+            hoverBackgroundStyle,
             hoverOverlayStyle,
         },
         animatedPress: {
-            pressOverlay,
+            pressAnim,
+            pressBackgroundStyle,
             pressOverlayStyle,
         },
         animatedTitle: {
@@ -54,55 +56,31 @@ export const TouchableElement = ({
     React.useEffect(
         () => {
             if (!disabled && !loading && isHovered) {
-                hoverOverlay.value = Animated.withTiming(1, {
-                    duration: UIConstant.opacityAnimDuration,
-                });
-                titleAnim.value = Animated.withTiming(1, {
-                    duration: UIConstant.opacityAnimDuration,
-                });
-                iconAnim.value = Animated.withTiming(1, {
-                    duration: UIConstant.opacityAnimDuration,
-                });
+                hoverAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
+                titleAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
+                iconAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
             } else {
-                hoverOverlay.value = Animated.withTiming(0, {
-                    duration: UIConstant.opacityAnimDuration,
-                });
-                titleAnim.value = Animated.withTiming(0, {
-                    duration: UIConstant.opacityAnimDuration,
-                });
-                iconAnim.value = Animated.withTiming(0, {
-                    duration: UIConstant.opacityAnimDuration,
-                });
+                hoverAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
+                titleAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
+                iconAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
             }
         },
-        [disabled, loading, isHovered, hoverOverlay, titleAnim, iconAnim],
+        [disabled, loading, isHovered, hoverAnim, titleAnim, iconAnim],
     );
 
     const handlePressIn = () => {
         if (!loading) {
-            pressOverlay.value = Animated.withTiming(1, {
-                duration: UIConstant.opacityAnimDuration,
-            });
-            titleAnim.value = Animated.withTiming(1, {
-                duration: UIConstant.opacityAnimDuration,
-            });
-            iconAnim.value = Animated.withTiming(1, {
-                duration: UIConstant.opacityAnimDuration,
-            });
+            pressAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
+            titleAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
+            iconAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
         }
     };
 
     const handlePressOut = () => {
         if (!loading) {
-            pressOverlay.value = Animated.withTiming(0, {
-                duration: UIConstant.opacityAnimDuration,
-            });
-            titleAnim.value = Animated.withTiming(0, {
-                duration: UIConstant.opacityAnimDuration,
-            });
-            iconAnim.value = Animated.withTiming(0, {
-                duration: UIConstant.opacityAnimDuration,
-            });
+            pressAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
+            titleAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
+            iconAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
         }
     };
 
@@ -115,16 +93,22 @@ export const TouchableElement = ({
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
         >
-            <View style={style}>
+            <Animated.View
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                style={[style, hoverBackgroundStyle, pressBackgroundStyle]}
+            >
                 <Animated.View
-                    // @ts-expect-error
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
-                    style={[contentStyle, hoverOverlayStyle, pressOverlayStyle]}
+                    style={[
+                        contentStyle,
+                        hoverOverlayStyle,
+                        pressOverlayStyle,
+                    ]}
                 >
                     {React.Children.only(children)}
                 </Animated.View>
-            </View>
+            </Animated.View>
         </TouchableWithoutFeedback>
     );
 };

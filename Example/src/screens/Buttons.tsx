@@ -12,6 +12,7 @@ import {
     UIMsgButtonCornerPosition,
     UIMsgButtonIconPosition,
     UIMsgButtonType,
+    UIMsgButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
@@ -288,6 +289,28 @@ const Buttons = () => (
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIMsgButton
+                    testID="uiMsgButton_secondary_negative"
+                    title="Secondary"
+                    type={UIMsgButtonType.Secondary}
+                    variant={UIMsgButtonVariant.Negative}
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    testID="uiMsgButton_secondary_positive"
+                    title="Secondary"
+                    type={UIMsgButtonType.Secondary}
+                    variant={UIMsgButtonVariant.Positive}
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
                     testID="uiMsgButton_secondary_with_caption"
                     title="1.000000000 | Loooooooooooong title"
                     caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooong caption"
@@ -304,27 +327,6 @@ const Buttons = () => (
                     testID="uiMsgButton_secondary_disabled"
                     title="Secondary disabled"
                     type={UIMsgButtonType.Secondary}
-                    onPress={() => {
-                        //
-                    }}
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIMsgButton
-                    testID="uiMsgButton_tertiary"
-                    title="Tertiary"
-                    type={UIMsgButtonType.Tertiary}
-                    onPress={() => {
-                        //
-                    }}
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIMsgButton
-                    disabled
-                    testID="uiMsgButton_tertiary_disabled"
-                    title="Tertiary disabled"
-                    type={UIMsgButtonType.Tertiary}
                     onPress={() => {
                         //
                     }}
