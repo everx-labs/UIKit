@@ -106,7 +106,7 @@ const getSuffixOnUI = (powerOfThousand: number): string => {
  */
 export const formatNumberOnUI = (
     value: number,
-    settings?: NumberFormatSettings,
+    { digitsAfterDecimalPoint: DEFAULT_DIGITS_AFTER_DECIMAL_POINT }: NumberFormatSettings = {},
 ): string => {
     'worklet';
 
@@ -174,4 +174,3 @@ export const formatNumberOnUI = (
 //     );
 // });
 // console.log();
-
