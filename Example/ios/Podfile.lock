@@ -265,8 +265,8 @@ PODS:
     - React-Core
   - react-native-safe-area (0.5.1):
     - React
-  - react-native-safe-area-context (3.1.3):
-    - React
+  - react-native-safe-area-context (3.2.0):
+    - React-Core
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
   - React-RCTAnimation (0.63.4):
@@ -436,7 +436,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../../node_modules/react-native-pager-view`)
   - react-native-safe-area (from `../../node_modules/react-native-safe-area`)
-  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-safe-area-context (from `../../node_modules/react-native-safe-area-context`)
   - React-RCTActionSheet (from `../../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../../node_modules/react-native/Libraries/Blob`)
@@ -527,7 +527,7 @@ EXTERNAL SOURCES:
   react-native-safe-area:
     :path: "../../node_modules/react-native-safe-area"
   react-native-safe-area-context:
-    :path: "../node_modules/react-native-safe-area-context"
+    :path: "../../node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
     :path: "../../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -611,7 +611,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-pager-view: 14653de580178af7e65aa7e3fa08b4f243c86d4d
   react-native-safe-area: e8230b0017d76c00de6b01e2412dcf86b127c6a3
-  react-native-safe-area-context: b0bdaac4c56a861b06aaf1569efd1121c6a2427e
+  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
