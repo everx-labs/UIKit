@@ -2,8 +2,11 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
 import { useState } from 'react';
-import { Text, View } from 'react-native';
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
+import { StatusBar, Text, useWindowDimensions, View } from 'react-native';
+import {
+    SafeAreaInsetsContext,
+    useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -12,6 +15,7 @@ import {
     UIPopover,
     UIPopoverMenu,
 } from '@tonlabs/uikit.navigation_legacy';
+import { ScrollView } from '@tonlabs/uikit.navigation';
 import {
     UITextButton,
     UIButton,
@@ -33,12 +37,69 @@ import { ExampleScreen } from '../components/ExampleScreen';
 
 export const actionSheet = React.createRef<typeof UIActionSheet>();
 
+function BigBottomSheet() {
+    const theme = useTheme();
+    const [bigBottomSheetVisible, setBigBottomSheetVisible] =
+        React.useState(false);
+    const { height } = useWindowDimensions();
+    const insets = useSafeAreaInsets();
+    return (
+        <>
+            <UITextButton
+                testID="show_big_uiBottomSheet"
+                title="Show Big UIBottomSheet"
+                onPress={() => {
+                    setBigBottomSheetVisible(true);
+                }}
+            />
+            <UIBottomSheet
+                visible={bigBottomSheetVisible}
+                onClose={() => {
+                    setBigBottomSheetVisible(false);
+                }}
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    // padding: 20,
+                    paddingBottom: Math.max(
+                        insets?.bottom || 0,
+                        UIConstant.contentOffset(),
+                    ),
+                    borderRadius: 10,
+                }}
+            >
+                <View
+                    style={{
+                        height: 100,
+                        backgroundColor: 'rgba(255, 0,0,.2)',
+                    }}
+                />
+                <ScrollView
+                    style={{
+                        height:
+                            height -
+                            (StatusBar.currentHeight ?? 0) -
+                            insets.top -
+                            Math.max(
+                                insets?.bottom ?? 0,
+                                UIConstant.contentOffset(),
+                            ) -
+                            200,
+                    }}
+                >
+                    <UILabel>Hello!</UILabel>
+                </ScrollView>
+            </UIBottomSheet>
+        </>
+    );
+}
+
 export const Menus = () => {
     const theme = useTheme();
     const [activeIndex, setActiveIndex] = useState(0);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
+
     const [qrVisible, setQrVisible] = React.useState(false);
     return (
         <ExampleScreen>
@@ -169,6 +230,7 @@ export const Menus = () => {
                             </UIBottomSheet>
                         )}
                     </SafeAreaInsetsContext.Consumer>
+                    <BigBottomSheet />
                     <UITextButton
                         testID="show_uiQRCodeScannerSheet"
                         title="Show UIQRcodeScannerSheet"
@@ -193,7 +255,10 @@ export const Menus = () => {
                         placement="top"
                         component={<Text>This is a popover</Text>}
                     >
-                        <UITextButton testID="show_uiPopover" title="Show UIPopover" />
+                        <UITextButton
+                            testID="show_uiPopover"
+                            title="Show UIPopover"
+                        />
                     </UIPopover>
                 </View>
             </ExampleSection>

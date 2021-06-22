@@ -7,15 +7,26 @@ import {
     Platform,
     Keyboard,
 } from 'react-native';
+// @ts-expect-error
+import SpringConfig from 'react-native/Libraries/Animated/src/SpringConfig';
 
 import {
     PanGestureHandler,
     TapGestureHandler,
-    State as RNGHState,
+    PanGestureHandlerGestureEvent,
+    TapGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
-import type { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated from 'react-native-reanimated';
+import Animated, {
+    cancelAnimation,
+    runOnJS,
+    useAnimatedGestureHandler,
+    useAnimatedReaction,
+    useAnimatedStyle,
+    useDerivedValue,
+    useSharedValue,
+    withSpring,
+} from 'react-native-reanimated';
 import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
 
 import { ColorVariants } from './Colors';
@@ -23,6 +34,7 @@ import { UIConstant } from './constants';
 import { Portal } from './Portal';
 import { useColorParts } from './useColorParts';
 import { useStatusBar } from './UIStatusBar';
+import { getYWithRubberBandEffect } from './getYWithRubberBandEffect';
 
 type OnClose = () => void | Promise<void>;
 
@@ -36,28 +48,6 @@ export type UISheetProps = {
 
 const RUBBER_BAND_EFFECT_DISTANCE = 50;
 
-function getYWithRubberBandEffect(
-    currentPosition: Animated.Value<number>,
-    translationY: Animated.Value<number>,
-) {
-    const { abs, sub, divide, add, multiply } = Animated;
-    // Rubber band effect
-    // https://medium.com/@esskeetit/как-работает-uiscrollview-2e7052032d97
-    // (1 - 1 / (Math.abs(translationY) / d + 1)) * d;
-    const y = multiply(
-        sub(
-            1,
-            divide(
-                1,
-                add(divide(abs(translationY), RUBBER_BAND_EFFECT_DISTANCE), 1),
-            ),
-        ),
-        RUBBER_BAND_EFFECT_DISTANCE,
-    );
-
-    return sub(currentPosition, y);
-}
-
 // eslint-disable-next-line no-shadow
 enum SHOW_STATES {
     CLOSE = 0,
@@ -67,245 +57,216 @@ enum SHOW_STATES {
     DRAG = 4,
 }
 
-function getPosition(
-    height: Animated.Value<number>,
-    keyboardHeight: Animated.Value<number>,
-    show: Animated.Value<number>,
-    onCloseModal: () => void,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    onCloseProp: OnClose = () => {},
-) {
-    const {
-        SpringUtils,
-        block,
-        cond,
-        eq,
-        neq,
-        set,
-        spring,
-        startClock,
-        stopClock,
-        clockRunning,
-        sub,
-        call,
-        and,
-        add,
-        greaterThan,
-    } = Animated;
+const OpenSpringConfig = {
+    overshootClamping: false,
+    mass: 1,
+    restSpeedThreshold: 0.001,
+    restDisplacementThreshold: 0.001,
+    ...SpringConfig.fromBouncinessAndSpeed(8, 12),
+};
 
-    const clock = new Animated.Clock();
+const CloseSpringConfig = {
+    overshootClamping: false,
+    mass: 1,
+    restSpeedThreshold: 100,
+    restDisplacementThreshold: 40,
+    ...SpringConfig.fromBouncinessAndSpeed(8, 12),
+};
 
-    const state = {
-        finished: new Animated.Value(0),
-        velocity: new Animated.Value(0),
-        position: new Animated.Value(0),
-        time: new Animated.Value(0),
-    };
-
-    const config: Animated.SpringConfig = {
-        // Default ones from https://reactnative.dev/docs/animated#spring
-        ...SpringUtils.makeConfigFromBouncinessAndSpeed({
-            overshootClamping: false,
-            bounciness: 8,
-            speed: 12,
-            mass: new Animated.Value(1),
-            restSpeedThreshold: new Animated.Value(0.001),
-            restDisplacementThreshold: new Animated.Value(0.001),
-            toValue: new Animated.Value(0),
-        }),
-    };
-
-    const gestureState = new Animated.Value(-1);
-    const dragY = new Animated.Value(0);
-    const beforeDragPosition = new Animated.Value(0);
-    const beforeKeyboardHeight = new Animated.Value(0);
-    const beforeHeight = new Animated.Value(0);
-
-    return {
-        value: block([
-            cond(
-                and(
-                    // Sometimes we could be caught in a situation
-                    // when UISheet was asked to be closed (via visible=false)
-                    // and at the same time a keyboard was opened
-                    // so to prevent opening this guard is needed
-                    // (due to the fact that when sheet is open it's in OPENING state)
-                    eq(show, SHOW_STATES.OPENING),
-                    neq(beforeKeyboardHeight, keyboardHeight),
-                ),
-                [
-                    // OPEN gonna start spring animation
-                    set(show, SHOW_STATES.OPEN),
-                    set(beforeKeyboardHeight, keyboardHeight),
-                ],
-            ),
-            cond(eq(height, 0), 0, [
-                cond(
-                    eq(gestureState, RNGHState.ACTIVE),
-                    [
-                        stopClock(clock),
-                        set(show, SHOW_STATES.DRAG),
-                        cond(
-                            greaterThan(dragY, 0),
-                            set(state.position, add(beforeDragPosition, dragY)),
-                            set(
-                                state.position,
-                                getYWithRubberBandEffect(
-                                    beforeDragPosition,
-                                    dragY,
-                                ),
-                            ),
-                        ),
-                    ],
-                    [
-                        cond(
-                            eq(show, SHOW_STATES.DRAG),
-                            [
-                                cond(
-                                    greaterThan(
-                                        dragY,
-                                        UIConstant.swipeThreshold,
-                                    ),
-                                    [
-                                        set(show, SHOW_STATES.CLOSE),
-                                        call([], onCloseProp),
-                                    ],
-                                    set(show, SHOW_STATES.OPEN),
-                                ),
-                            ],
-                            [
-                                [
-                                    set(beforeDragPosition, state.position),
-                                    spring(clock, state, config),
-                                ],
-                            ],
-                        ),
-                    ],
-                ),
-                // If height is changed when sheet is opened, need to adjust position
-                cond(
-                    and(
-                        eq(show, SHOW_STATES.OPENING),
-                        neq(height, beforeHeight),
-                    ),
-                    [
-                        cond(
-                            state.finished,
-                            [
-                                set(
-                                    state.position,
-                                    sub(0, add(height, beforeKeyboardHeight)),
-                                ),
-                            ],
-                            [
-                                set(
-                                    // @ts-ignore
-                                    config.toValue,
-                                    sub(0, add(height, beforeKeyboardHeight)),
-                                ),
-                            ],
-                        ),
-                    ],
-                ),
-                cond(neq(height, beforeHeight), [set(beforeHeight, height)]),
-                // Opening/Closing spring animation
-                // All this blocks should be after gesture handling
-                // because it changes `show` variable, that could affect this part
-                cond(eq(show, SHOW_STATES.OPEN), [
-                    set(state.finished, 0),
-                    // @ts-ignore
-                    set(config.restSpeedThreshold, 0.001),
-                    // @ts-ignore
-                    set(config.restDisplacementThreshold, 0.001),
-                    set(
-                        // @ts-ignore
-                        config.toValue,
-                        sub(0, add(height, beforeKeyboardHeight)),
-                    ),
-                    set(show, SHOW_STATES.OPENING),
-                    startClock(clock),
-                ]),
-                cond(eq(show, SHOW_STATES.CLOSE), [
-                    set(state.finished, 0),
-                    // @ts-ignore
-                    set(config.restSpeedThreshold, 100),
-                    // @ts-ignore
-                    set(config.restDisplacementThreshold, 40),
-                    // @ts-ignore
-                    set(config.toValue, sub(0, beforeKeyboardHeight)),
-                    set(show, SHOW_STATES.CLOSING),
-                    startClock(clock),
-                ]),
-                cond(and(state.finished, clockRunning(clock)), [
-                    stopClock(clock),
-                    // Animated.debug('stopped', show),
-                    cond(eq(show, SHOW_STATES.CLOSING), call([], onCloseModal)),
-                ]),
-                state.position,
-            ]),
-        ]),
-        onPan: Animated.event([
-            {
-                nativeEvent: {
-                    state: gestureState,
-                    translationY: dragY,
-                },
+function useSheetHeight(countRubberBandDistance?: boolean) {
+    const height = useSharedValue(0);
+    const onSheetLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { height: lHeight },
             },
-        ]),
-    };
-}
-
-function usePosition(
-    height: Animated.Value<number>,
-    keyboardHeight: Animated.Value<number>,
-    onCloseProp: OnClose | undefined,
-    onCloseModal: OnClose,
-) {
-    const show = Animated.useValue<SHOW_STATES>(SHOW_STATES.CLOSING);
-
-    const { value, onPan } = getPosition(
-        height,
-        keyboardHeight,
-        show,
-        onCloseModal,
-        onCloseProp,
-    );
-
-    const positionRef = React.useRef(value);
-    const onPanRef = React.useRef(onPan);
-
-    const animate = React.useCallback(
-        (isShow: boolean) => {
-            if (isShow) {
-                show.setValue(SHOW_STATES.OPEN);
-                return;
-            }
-            show.setValue(SHOW_STATES.CLOSE);
+        }) => {
+            const newHeight = countRubberBandDistance
+                ? lHeight - RUBBER_BAND_EFFECT_DISTANCE
+                : lHeight;
+            height.value = newHeight;
         },
-        [show],
+        [height, countRubberBandDistance],
     );
 
     return {
-        animate,
-        position: positionRef.current,
-        onPan: onPanRef.current,
+        height,
+        onSheetLayout,
     };
 }
 
 function useAnimatedKeyboard() {
     const keyboard = useKeyboard();
-    const keyboardHeightValue = Animated.useValue(keyboard.keyboardHeight);
+    const keyboardHeight = useSharedValue(keyboard.keyboardHeight);
 
     React.useEffect(() => {
         if (Platform.OS !== 'ios') {
             return;
         }
-        keyboardHeightValue.setValue(
-            keyboard.keyboardShown ? keyboard.keyboardHeight : 0,
-        );
-    }, [keyboard.keyboardHeight, keyboardHeightValue, keyboard.keyboardShown]);
+        keyboardHeight.value = keyboard.keyboardShown
+            ? keyboard.keyboardHeight
+            : 0;
+    }, [keyboard.keyboardHeight, keyboard.keyboardShown, keyboardHeight]);
 
-    return keyboardHeightValue;
+    return keyboardHeight;
+}
+
+function usePosition(
+    height: Animated.SharedValue<number>,
+    keyboardHeight: Animated.SharedValue<number>,
+    onCloseProp: OnClose | undefined,
+    onCloseModal: OnClose,
+) {
+    const showState = useSharedValue<SHOW_STATES>(SHOW_STATES.CLOSING);
+
+    const animate = React.useCallback(
+        (isShow: boolean) => {
+            if (isShow) {
+                showState.value = SHOW_STATES.OPEN;
+                return;
+            }
+            showState.value = SHOW_STATES.CLOSE;
+        },
+        [showState],
+    );
+
+    const position = useSharedValue(0);
+
+    const snapPointPosition = useDerivedValue(() => {
+        return 0 - height.value - keyboardHeight.value;
+    });
+
+    useAnimatedReaction(
+        () => {
+            return {
+                showState: showState.value,
+                height: height.value,
+                keyboardHeight: keyboardHeight.value,
+                snapPointPosition: snapPointPosition.value,
+            };
+        },
+        (currentState, prevState) => {
+            // Sometimes we could be caught in a situation
+            // when UISheet was asked to be closed (via visible=false)
+            // and at the same time a keyboard was opened
+            // so to prevent opening this guard is needed
+            // (due to the fact that when sheet is open it's in OPENING state)
+            if (
+                currentState.showState === SHOW_STATES.OPENING &&
+                prevState?.keyboardHeight !== currentState.keyboardHeight
+            ) {
+                cancelAnimation(position);
+                showState.value = SHOW_STATES.OPEN;
+
+                return;
+            }
+
+            if (currentState.height === 0) {
+                return;
+            }
+
+            if (
+                currentState.showState === SHOW_STATES.OPENING &&
+                prevState?.height !== currentState.height
+            ) {
+                cancelAnimation(position);
+                showState.value = SHOW_STATES.OPEN;
+
+                return;
+            }
+
+            if (currentState.showState === SHOW_STATES.OPEN) {
+                position.value = withSpring(
+                    currentState.snapPointPosition,
+                    OpenSpringConfig,
+                );
+                showState.value = SHOW_STATES.OPENING;
+
+                return;
+            }
+
+            if (currentState.showState === SHOW_STATES.CLOSE) {
+                position.value = withSpring(
+                    0 - currentState.keyboardHeight,
+                    CloseSpringConfig,
+                    (isFinished) => {
+                        if (isFinished && onCloseModal) {
+                            runOnJS(onCloseModal)();
+                        }
+                    },
+                );
+                showState.value = SHOW_STATES.CLOSING;
+            }
+        },
+    );
+
+    const positionWithoutRubberBand = useSharedValue(0);
+
+    const onTapGestureHandler = useAnimatedGestureHandler<
+        TapGestureHandlerGestureEvent
+    >({
+        onActive: () => {
+            showState.value = SHOW_STATES.CLOSE;
+            if (onCloseProp) {
+                runOnJS(onCloseProp)();
+            }
+        },
+    });
+
+    const onPanGestureHandler = useAnimatedGestureHandler<
+        PanGestureHandlerGestureEvent,
+        {
+            translationY: number;
+        }
+    >({
+        onActive: (event, ctx) => {
+            const y = ctx.translationY - event.translationY;
+            ctx.translationY = event.translationY;
+            const intermediatePosition = position.value - y;
+
+            if (y > 0 && intermediatePosition < snapPointPosition.value) {
+                positionWithoutRubberBand.value += y;
+                position.value =
+                    snapPointPosition.value -
+                    getYWithRubberBandEffect(
+                        positionWithoutRubberBand.value,
+                        RUBBER_BAND_EFFECT_DISTANCE,
+                    );
+
+                return;
+            }
+
+            positionWithoutRubberBand.value = Math.max(
+                positionWithoutRubberBand.value + y,
+                0,
+            );
+            position.value = intermediatePosition;
+        },
+        onStart: (_event, ctx) => {
+            ctx.translationY = 0;
+            positionWithoutRubberBand.value = 0;
+        },
+        onEnd: () => {
+            if (
+                position.value - snapPointPosition.value >
+                UIConstant.swipeThreshold
+            ) {
+                showState.value = SHOW_STATES.CLOSE;
+                if (onCloseProp) {
+                    runOnJS(onCloseProp)();
+                }
+                return;
+            }
+            showState.value = SHOW_STATES.OPEN;
+        },
+    });
+
+    return {
+        animate,
+        onTapGestureHandler,
+        onPanGestureHandler,
+        position,
+    };
 }
 
 type UISheetPortalContentProps = UISheetProps & {
@@ -320,15 +281,15 @@ function UISheetPortalContent({
     onClosePortalRequest,
     style,
 }: UISheetPortalContentProps) {
-    const heightValue = Animated.useValue(0);
-    const keyboardHeightValue = useAnimatedKeyboard();
+    const { height, onSheetLayout } = useSheetHeight(countRubberBandDistance);
+    const keyboardHeight = useAnimatedKeyboard();
 
-    const { animate, position, onPan } = usePosition(
-        heightValue,
-        keyboardHeightValue,
-        onClose,
-        onClosePortalRequest,
-    );
+    const {
+        animate,
+        onTapGestureHandler,
+        onPanGestureHandler,
+        position,
+    } = usePosition(height, keyboardHeight, onClose, onClosePortalRequest);
 
     React.useEffect(() => {
         if (!visible) {
@@ -349,29 +310,6 @@ function UISheetPortalContent({
         return true;
     });
 
-    const onSheetLayout = React.useCallback(
-        ({
-            nativeEvent: {
-                layout: { height: lHeight },
-            },
-        }) => {
-            const newHeight = countRubberBandDistance
-                ? lHeight - RUBBER_BAND_EFFECT_DISTANCE
-                : lHeight;
-            heightValue.setValue(newHeight);
-        },
-        [heightValue, countRubberBandDistance],
-    );
-
-    const onTapStateChange = React.useCallback(
-        ({ nativeEvent: { state } }: TapGestureHandlerStateChangeEvent) => {
-            if (state === RNGHState.ACTIVE && onClose) {
-                onClose();
-            }
-        },
-        [onClose],
-    );
-
     const {
         colorParts: overlayColorParts,
         opacity: overlayOpacity,
@@ -381,9 +319,8 @@ function UISheetPortalContent({
         backgroundColor: ColorVariants.BackgroundOverlay,
     });
 
-    // @ts-ignore TS doesn't understand when backgroundColor is animated node
-    const overlayStyle: ViewStyle = React.useMemo(
-        () => ({
+    const overlayStyle = useAnimatedStyle(() => {
+        return {
             flex: 1,
             // There was theoretically better for perf solution
             // with opacity, but on web it worked really bad
@@ -391,47 +328,39 @@ function UISheetPortalContent({
             // to initialize before it's applied
             // and before it happen it shown provided background color
             // with default opacity (that is 1)
-            backgroundColor: Animated.interpolateColors(
-                Animated.abs(position),
-                {
-                    inputRange: [0, heightValue],
-                    outputColorRange: [
-                        `rgba(${overlayColorParts}, 0)`,
-                        `rgba(${overlayColorParts}, ${overlayOpacity})`,
-                    ],
-                },
-            ),
-        }),
-        [overlayColorParts, overlayOpacity, heightValue, position],
-    );
-
-    const cardStyle = React.useMemo(
-        () => [
-            styles.sheet,
-            {
-                transform: [
-                    {
-                        translateY: position,
-                    },
+            backgroundColor: Animated.interpolateColor(
+                position.value,
+                [0, -height.value],
+                [
+                    `rgba(${overlayColorParts}, 0)`,
+                    `rgba(${overlayColorParts}, ${overlayOpacity})`,
                 ],
-            },
-        ],
-        [position],
-    );
+            ),
+        };
+    }, [overlayColorParts, overlayOpacity, height, position]);
+
+    const cardStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY: position.value,
+                },
+            ],
+        };
+    }, [position]);
 
     return (
         <View style={styles.container}>
             <TapGestureHandler
                 enabled={onClose != null}
-                onHandlerStateChange={onTapStateChange}
+                onGestureEvent={onTapGestureHandler}
             >
                 {/* https://github.com/software-mansion/react-native-gesture-handler/issues/71 */}
                 <Animated.View style={styles.interlayer}>
                     <PanGestureHandler
                         maxPointers={1}
                         enabled={onClose != null}
-                        onGestureEvent={onPan}
-                        onHandlerStateChange={onPan}
+                        onGestureEvent={onPanGestureHandler}
                     >
                         <Animated.View style={overlayStyle} />
                     </PanGestureHandler>
@@ -439,15 +368,14 @@ function UISheetPortalContent({
             </TapGestureHandler>
 
             <Animated.View
-                style={cardStyle}
+                style={[styles.sheet, cardStyle]}
                 onLayout={onSheetLayout}
                 pointerEvents="box-none"
             >
                 <PanGestureHandler
                     maxPointers={1}
                     enabled={onClose != null}
-                    onGestureEvent={onPan}
-                    onHandlerStateChange={onPan}
+                    onGestureEvent={onPanGestureHandler}
                 >
                     <Animated.View style={style}>{children}</Animated.View>
                 </PanGestureHandler>
