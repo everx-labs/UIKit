@@ -62,6 +62,7 @@ export const useAnimatedPathProps = (
         );
     });
 
+    // Don't use useDerivedValue because it leads to an infinite loop
     React.useEffect(() => {
         runOnUI(() => {
             'worklet';
