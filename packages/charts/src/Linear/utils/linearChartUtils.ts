@@ -1,6 +1,11 @@
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import type { Path } from 'react-native-redash';
-import type { Point, Dimensions } from './LinearChart';
+import type {
+    Point,
+    Dimensions,
+    ControlPoints,
+    Extremum,
+} from '../../../types';
 
 /**
  * @worklet
@@ -49,24 +54,6 @@ export const getScaledData = (
     );
 };
 
-export type ControlPoint = {
-    value: number;
-    x: number;
-    y: number;
-};
-export type ControlPoints = {
-    start: ControlPoint;
-    end: ControlPoint;
-    minimum: ControlPoint;
-    maximum: ControlPoint;
-};
-
-type Extremum = {
-    minimumPoint: Point;
-    minimumScaledPoint: Point;
-    maximumPoint: Point;
-    maximumScaledPoint: Point;
-};
 const getExtremum = (data: Point[], scaledData: Point[]): Extremum => {
     'worklet';
 
@@ -234,7 +221,9 @@ export const convertDataToPath = (
     if (scaledData === null) {
         return null;
     }
-    const movedScaledData: Point[] = scaledData.map(getMovedPointbyHalfCurveWidth(curveWidth));
+    const movedScaledData: Point[] = scaledData.map(
+        getMovedPointbyHalfCurveWidth(curveWidth),
+    );
     return curveLines(movedScaledData);
 };
 
@@ -313,4 +302,10 @@ export const interpolatePath = (
         close: outputRange[0].close,
     };
     return path;
+};
+
+export const negateProgressTarget = (progressTarget: number): number => {
+    'worklet';
+
+    return progressTarget ? 0 : 1;
 };

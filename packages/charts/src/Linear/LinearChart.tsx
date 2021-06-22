@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, StyleSheet, LayoutChangeEvent, ViewStyle } from 'react-native';
+import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
-import Animated, { runOnUI } from 'react-native-reanimated';
-import { Path, serialize } from 'react-native-redash';
+import Animated from 'react-native-reanimated';
 import {
     TypographyVariants,
     ColorVariants,
@@ -11,25 +10,22 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { addNativeProps } from '../Utils';
 import {
-    convertDataToPath,
-    interpolatePath,
-    getScaledData,
-    getControlPoints,
-    ControlPoints,
-} from './linearChartUtils';
+    LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET,
+    LINEAR_CHART_STROKE_WIDTH,
+    LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+    LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+    LINEAR_CHART_INITIAL_DIMENSIONS,
+} from '../../constants';
+import type { Dimensions, LabelData, Point } from '../../types';
+import { useLabelData, useAnimatedPathProps } from './hooks';
 
 Animated.addWhitelistedNativeProps({ text: true, value: true });
-
-const CONTENT_HORIZONTAL_OFFSET: number = 16;
-const STROKE_WIDTH: number = 2;
-const HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE: number = 60;
-const VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE: number = 24;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
-        paddingVertical: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        paddingHorizontal: LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        paddingVertical: LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     },
     chartСontainer: {
         flex: 1,
@@ -40,15 +36,15 @@ const styles = StyleSheet.create({
         top: -8,
     },
     labelArea: {
-        width: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        width: LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     },
     leftLabelArea: {
         position: 'absolute',
         top: 0,
         left: 0,
         bottom: 0,
-        paddingLeft: CONTENT_HORIZONTAL_OFFSET,
-        marginVertical: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        paddingLeft: LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET,
+        marginVertical: LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     },
     rightLabelArea: {
         position: 'absolute',
@@ -56,12 +52,12 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         paddingLeft: 8,
-        marginVertical: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        marginVertical: LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     },
     extremumLabelArea: {
-        left: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
-        right: HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
-        height: VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        left: LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        right: LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
+        height: LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -82,36 +78,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export type Dimensions = {
-    width: number;
-    height: number;
-};
-const initialDimensions: Dimensions = {
-    width: 0,
-    height: 0,
-};
-
-const withSpringConfig: Animated.WithSpringConfig = {
-    damping: 100,
-    stiffness: 200,
-};
-
-const negateProgressTarget = (progressTarget: number): number => {
-    'worklet';
-
-    return progressTarget ? 0 : 1;
-};
-
-export type Point = {
-    x: number;
-    y: number;
-};
-
-type IProps = {
-    data: Point[];
-    testID?: string;
-};
-
 const AnimatedPath = Animated.createAnimatedComponent(
     addNativeProps(SvgPath, { d: true }),
 );
@@ -122,416 +88,16 @@ const AnimatedSvg = Animated.createAnimatedComponent(
     }),
 );
 
-type AnimatedState = {
-    dimensions: Dimensions;
-    controlPoints: ControlPoints | null;
-};
-
-const getIsNoAnimationNeeded = (
-    currentAnimatedState: AnimatedState,
-    previousAnimatedState: AnimatedState | null,
-): boolean => {
-    'worklet';
-
-    if (!previousAnimatedState || !previousAnimatedState.controlPoints) {
-        return true;
-    }
-    const isWidthChanged: boolean =
-        currentAnimatedState.dimensions.width !==
-        previousAnimatedState.dimensions.width;
-    const isHeightChanged: boolean =
-        currentAnimatedState.dimensions.height !==
-        previousAnimatedState.dimensions.height;
-    return isWidthChanged || isHeightChanged;
-};
-
-const useLabelCoordinates = (
-    dimensions: Animated.SharedValue<Dimensions>,
-    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
-) => {
-    const minimumLabelXCoordinate = Animated.useSharedValue<number>(0);
-    const maximumLabelXCoordinate = Animated.useSharedValue<number>(0);
-    const startLabelYCoordinate = Animated.useSharedValue<number>(0);
-    const endLabelYCoordinate = Animated.useSharedValue<number>(0);
-
-    Animated.useAnimatedReaction(
-        () => {
-            'worklet';
-
-            return {
-                dimensions: dimensions.value,
-                controlPoints: controlPoints.value,
-            };
-        },
-        (
-            currentAnimatedState: AnimatedState,
-            previousAnimatedState: AnimatedState | null,
-        ) => {
-            'worklet';
-
-            if (currentAnimatedState.controlPoints === null) {
-                return;
-            }
-            if (
-                getIsNoAnimationNeeded(
-                    currentAnimatedState,
-                    previousAnimatedState,
-                )
-            ) {
-                minimumLabelXCoordinate.value =
-                    currentAnimatedState.controlPoints.minimum.x;
-                maximumLabelXCoordinate.value =
-                    currentAnimatedState.controlPoints.maximum.x;
-                startLabelYCoordinate.value =
-                    currentAnimatedState.controlPoints.start.y;
-                endLabelYCoordinate.value =
-                    currentAnimatedState.controlPoints.end.y;
-            } else {
-                minimumLabelXCoordinate.value = Animated.withSpring(
-                    currentAnimatedState.controlPoints.minimum.x,
-                    withSpringConfig,
-                );
-                maximumLabelXCoordinate.value = Animated.withSpring(
-                    currentAnimatedState.controlPoints.maximum.x,
-                    withSpringConfig,
-                );
-                startLabelYCoordinate.value = Animated.withSpring(
-                    currentAnimatedState.controlPoints.start.y,
-                    withSpringConfig,
-                );
-                endLabelYCoordinate.value = Animated.withSpring(
-                    currentAnimatedState.controlPoints.end.y,
-                    withSpringConfig,
-                );
-            }
-        },
-        [controlPoints.value, dimensions.value],
-    );
-
-    return {
-        minimumLabelXCoordinate,
-        maximumLabelXCoordinate,
-        startLabelYCoordinate,
-        endLabelYCoordinate,
-    };
-};
-
-const useLabelStyles = (
-    dimensions: Animated.SharedValue<Dimensions>,
-    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
-    minimumLabelXCoordinate: Animated.SharedValue<number>,
-    maximumLabelXCoordinate: Animated.SharedValue<number>,
-    startLabelYCoordinate: Animated.SharedValue<number>,
-    endLabelYCoordinate: Animated.SharedValue<number>,
-) => {
-    const leftLabelContainerStyle = Animated.useAnimatedStyle(() => {
-        'worklet';
-
-        return {
-            transform: [
-                {
-                    translateY: startLabelYCoordinate.value,
-                },
-            ],
-        };
-    });
-
-    const rightLabelContainerStyle = Animated.useAnimatedStyle(() => {
-        'worklet';
-
-        return {
-            transform: [
-                {
-                    translateY: endLabelYCoordinate.value,
-                },
-            ],
-        };
-    });
-
-    const maximumLabelContainerStyle = Animated.useAnimatedStyle(() => {
-        'worklet';
-
-        return {
-            transform: [
-                {
-                    translateX: maximumLabelXCoordinate.value,
-                },
-            ],
-        };
-    });
-    const maximumLabelStyle = Animated.useAnimatedStyle(() => {
-        'worklet';
-
-        return {
-            opacity:
-                !controlPoints.value ||
-                controlPoints.value.maximum.x <= 0 ||
-                controlPoints.value.maximum.x >= dimensions.value.width
-                    ? 0
-                    : 1,
-        };
-    });
-
-    const minimumLabelContainerStyle = Animated.useAnimatedStyle(() => {
-        'worklet';
-
-        return {
-            transform: [
-                {
-                    translateX: minimumLabelXCoordinate.value,
-                },
-            ],
-        };
-    });
-    const minimumLabelStyle = Animated.useAnimatedStyle(() => {
-        'worklet';
-
-        return {
-            opacity:
-                minimumLabelXCoordinate.value === null ||
-                !controlPoints.value ||
-                controlPoints.value.minimum.x <= 0 ||
-                controlPoints.value.minimum.x >= dimensions.value.width
-                    ? 0
-                    : 1,
-        };
-    });
-    return {
-        leftLabelContainerStyle,
-        rightLabelContainerStyle,
-        maximumLabelContainerStyle,
-        maximumLabelStyle,
-        minimumLabelContainerStyle,
-        minimumLabelStyle,
-    };
-};
-
-const useLabelText = (
-    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
-) => {
-    const maximum = Animated.useDerivedValue<number | null>(() => {
-        'worklet';
-
-        if (controlPoints.value === null) {
-            return null;
-        }
-        return controlPoints.value.maximum.value;
-    });
-    const minimum = Animated.useDerivedValue<number | null>(() => {
-        'worklet';
-
-        if (controlPoints.value === null) {
-            return null;
-        }
-        return controlPoints.value.minimum.value;
-    });
-
-    const maximumText = Animated.useDerivedValue(() => {
-        'worklet';
-
-        return maximum.value ? maximum.value.toFixed(2) : '';
-    }, []);
-    const minimumText = Animated.useDerivedValue(() => {
-        'worklet';
-
-        return minimum.value ? minimum.value.toFixed(2) : 'Empty';
-    }, []);
-
-    const [minimumValue, setMinimumValue] = React.useState<string>('');
-    const [maximumValue, setMaximumValue] = React.useState<string>('');
-
-    Animated.useAnimatedReaction(
-        () => {
-            'worklet';
-
-            return minimumText.value;
-        },
-        (text: string) => {
-            'worklet';
-
-            Animated.runOnJS(setMinimumValue)(text);
-        },
-    );
-
-    Animated.useAnimatedReaction(
-        () => {
-            'worklet';
-
-            return maximumText.value;
-        },
-        (text: string) => {
-            'worklet';
-
-            Animated.runOnJS(setMaximumValue)(text);
-        },
-    );
-
-    return {
-        minimumValue,
-        maximumValue,
-    };
-};
-
-type LabelData = {
-    leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    minimumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    minimumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumValue: string;
-    minimumValue: string;
-};
-const useLabelData = (
-    dimensions: Animated.SharedValue<Dimensions>,
-    data: Point[],
-): LabelData => {
-    const scaledData = Animated.useDerivedValue<Point[] | null>(() => {
-        'worklet';
-
-        return getScaledData(data, dimensions.value);
-    }, [data]);
-
-    const controlPoints = Animated.useDerivedValue<ControlPoints | null>(() => {
-        'worklet';
-
-        return getControlPoints(data, scaledData.value, STROKE_WIDTH);
-    }, [data]);
-
-    const {
-        minimumLabelXCoordinate,
-        maximumLabelXCoordinate,
-        startLabelYCoordinate,
-        endLabelYCoordinate,
-    } = useLabelCoordinates(dimensions, controlPoints);
-
-    const {
-        leftLabelContainerStyle,
-        rightLabelContainerStyle,
-        maximumLabelContainerStyle,
-        maximumLabelStyle,
-        minimumLabelContainerStyle,
-        minimumLabelStyle,
-    } = useLabelStyles(
-        dimensions,
-        controlPoints,
-        minimumLabelXCoordinate,
-        maximumLabelXCoordinate,
-        startLabelYCoordinate,
-        endLabelYCoordinate,
-    );
-
-    const { minimumValue, maximumValue } = useLabelText(controlPoints);
-
-    return {
-        leftLabelContainerStyle,
-        rightLabelContainerStyle,
-        maximumLabelContainerStyle,
-        maximumLabelStyle,
-        minimumLabelContainerStyle,
-        minimumLabelStyle,
-        maximumValue,
-        minimumValue,
-    };
-};
-
-const useAnimatedPathProps = (
-    dimensions: Animated.SharedValue<Dimensions>,
-    data: Point[],
-): Partial<{
-    d: string;
-}> => {
-    const progress = Animated.useSharedValue<number>(0);
-    const progressTarget = Animated.useSharedValue<number>(0);
-
-    /** Used to avoid unwanted chart jumps.
-     * We need it to save path state if the animation did not have time to end,
-     * and the data changed again.
-     */
-    const intermediatePath = Animated.useSharedValue<Path | null>(null);
-
-    const targetPath = Animated.useDerivedValue(() => {
-        'worklet';
-
-        return convertDataToPath(data, dimensions.value, STROKE_WIDTH);
-    }, [data, dimensions]);
-
-    const currentPath = Animated.useDerivedValue<Path | null>(() => {
-        'worklet';
-
-        if (targetPath.value === null) {
-            return null;
-        }
-        if (
-            targetPath.value.curves.length !==
-            intermediatePath.value?.curves.length
-        ) {
-            /**
-             * If the number of points has changed, the interpolatePath function crashes with an error
-             * TODO: Remove this if-block and fix these crashes.
-             */
-            return targetPath.value;
-        }
-        return interpolatePath(
-            progress.value,
-            [negateProgressTarget(progressTarget.value), progressTarget.value],
-            [
-                intermediatePath.value
-                    ? intermediatePath.value
-                    : targetPath.value,
-                targetPath.value,
-            ],
-            Animated.Extrapolate.CLAMP,
-        );
-    });
-
-    React.useEffect(() => {
-        runOnUI(() => {
-            'worklet';
-
-            progress.value = progressTarget.value;
-            progressTarget.value = negateProgressTarget(progressTarget.value);
-            intermediatePath.value = currentPath.value;
-
-            if (!dimensions.value.width || !dimensions.value.height) {
-                progress.value = progressTarget.value;
-            } else {
-                progress.value = Animated.withSpring(
-                    progressTarget.value,
-                    withSpringConfig,
-                );
-            }
-        })();
-    }, [
-        data,
-        progressTarget,
-        intermediatePath,
-        currentPath,
-        progress,
-        dimensions,
-    ]);
-
-    const animatedPathProps = Animated.useAnimatedProps(() => {
-        'worklet';
-
-        if (currentPath.value === null) {
-            return {
-                d: '',
-            };
-        }
-        return {
-            d: serialize(currentPath.value),
-        };
-    }, [currentPath]);
-
-    return animatedPathProps;
+type IProps = {
+    data: Point[];
+    testID?: string;
 };
 
 export const LinearChart: React.FC<IProps> = (props: IProps) => {
     const theme = useTheme();
     const { data } = props;
     const dimensions = Animated.useSharedValue<Dimensions>({
-        ...initialDimensions,
+        ...LINEAR_CHART_INITIAL_DIMENSIONS,
     });
 
     const onLayout = React.useCallback(
@@ -541,13 +107,17 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 event.nativeEvent.layout.width !== dimensions.value.width
             ) {
                 /**
-                 * We should subtract STROKE_WIDTH from dimensions.
+                 * We should subtract LINEAR_CHART_STROKE_WIDTH from dimensions.
                  * So that the thick line of the graph is not cut off at the edges of the graph.
                  * The line is built from its center.
                  */
                 dimensions.value = {
-                    height: event.nativeEvent.layout.height - STROKE_WIDTH,
-                    width: event.nativeEvent.layout.width - STROKE_WIDTH,
+                    height:
+                        event.nativeEvent.layout.height -
+                        LINEAR_CHART_STROKE_WIDTH,
+                    width:
+                        event.nativeEvent.layout.width -
+                        LINEAR_CHART_STROKE_WIDTH,
                 };
             }
         },
@@ -561,11 +131,9 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
     const labelData: LabelData = useLabelData(dimensions, data);
 
     const animatedSvgProps = Animated.useAnimatedProps(() => {
-        'worklet';
-
         return {
-            width: dimensions.value.width + STROKE_WIDTH,
-            height: dimensions.value.height + STROKE_WIDTH,
+            width: dimensions.value.width + LINEAR_CHART_STROKE_WIDTH,
+            height: dimensions.value.height + LINEAR_CHART_STROKE_WIDTH,
         };
     });
 
@@ -578,7 +146,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                         fill="transparent"
                         // @ts-ignore
                         stroke={theme[ColorVariants.LineAccent]}
-                        strokeWidth={STROKE_WIDTH}
+                        strokeWidth={LINEAR_CHART_STROKE_WIDTH}
                     />
                 </AnimatedSvg>
             </View>
