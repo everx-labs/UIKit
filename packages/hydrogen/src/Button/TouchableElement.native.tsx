@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
@@ -67,10 +67,23 @@ export const TouchableElement = ({
             onPressOut={handlePressOut}
         >
             <Animated.View style={[style, pressBackgroundStyle]}>
-                <Animated.View style={[contentStyle, pressOverlayStyle]}>
+                <Animated.View
+                    style={[
+                        styles.overlayContainer,
+                        contentStyle,
+                        pressOverlayStyle,
+                    ]}
+                >
                     {React.Children.only(children)}
                 </Animated.View>
             </Animated.View>
         </TouchableNativeFeedback>
     );
 };
+
+const styles = StyleSheet.create({
+    overlayContainer: {
+        height: '100%',
+        justifyContent: 'center',
+    },
+});

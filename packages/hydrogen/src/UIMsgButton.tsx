@@ -471,8 +471,6 @@ const styles = StyleSheet.create({
     },
     singleLineContent: {
         paddingHorizontal: UIConstant.normalContentOffset,
-        // height: '100%',
-        // justifyContent: 'center',
     },
     doubleLineContent: {
         padding: UIConstant.smallContentOffset,

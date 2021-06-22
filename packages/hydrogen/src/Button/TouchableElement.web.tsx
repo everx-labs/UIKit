@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
@@ -101,6 +101,7 @@ export const TouchableElement = ({
             >
                 <Animated.View
                     style={[
+                        styles.overlayContainer,
                         contentStyle,
                         hoverOverlayStyle,
                         pressOverlayStyle,
@@ -112,3 +113,10 @@ export const TouchableElement = ({
         </TouchableWithoutFeedback>
     );
 };
+
+const styles = StyleSheet.create({
+    overlayContainer: {
+        height: '100%',
+        justifyContent: 'center',
+    },
+});
