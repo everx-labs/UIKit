@@ -436,7 +436,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../../node_modules/react-native-pager-view`)
   - react-native-safe-area (from `../../node_modules/react-native-safe-area`)
-  - react-native-safe-area-context (from `../../node_modules/react-native-safe-area-context`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-RCTActionSheet (from `../../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../../node_modules/react-native/Libraries/Blob`)
@@ -527,7 +527,7 @@ EXTERNAL SOURCES:
   react-native-safe-area:
     :path: "../../node_modules/react-native-safe-area"
   react-native-safe-area-context:
-    :path: "../../node_modules/react-native-safe-area-context"
+    :path: "../node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
     :path: "../../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
