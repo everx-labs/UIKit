@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Animated, { runOnUI } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
-import type { Dimensions, Point } from '../../../types';
+import type { LinearChartDimensions, LinearChartPoint } from '../../../types';
 import {
     convertDataToPath,
     interpolatePath,
@@ -10,11 +10,11 @@ import {
 import {
     LINEAR_CHART_STROKE_WIDTH,
     LINEAR_CHART_WITH_SPRING_CONFIG,
-} from '../../../constants';
+} from '../../constants';
 
 export const useAnimatedPathProps = (
-    dimensions: Animated.SharedValue<Dimensions>,
-    data: Point[],
+    dimensions: Animated.SharedValue<LinearChartDimensions>,
+    data: LinearChartPoint[],
 ): Partial<{
     d: string;
 }> => {

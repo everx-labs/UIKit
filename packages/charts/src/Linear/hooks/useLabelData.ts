@@ -1,23 +1,27 @@
 import Animated from 'react-native-reanimated';
 import type {
-    ControlPoints,
-    Dimensions,
-    Point,
-    LabelData,
+    LinearChartDimensions,
+    LinearChartPoint,
+    LinearChartLabelData,
+    LinearChartControlPoints,
 } from '../../../types';
 import { getScaledData, getControlPoints } from '../utils';
-import { useLabelCoordinates, useLabelText, useLabelStyles } from '.';
-import { LINEAR_CHART_STROKE_WIDTH } from '../../../constants';
+import { useLabelCoordinates } from './useLabelCoordinates';
+import { useLabelText } from './useLabelText';
+import { useLabelStyles } from './useLabelStyles';
+import { LINEAR_CHART_STROKE_WIDTH } from '../../constants';
 
 export const useLabelData = (
-    dimensions: Animated.SharedValue<Dimensions>,
-    data: Point[],
-): LabelData => {
-    const scaledData = Animated.useDerivedValue<Point[] | null>(() => {
+    dimensions: Animated.SharedValue<LinearChartDimensions>,
+    data: LinearChartPoint[],
+): LinearChartLabelData => {
+    const scaledData = Animated.useDerivedValue<
+        LinearChartPoint[] | null
+    >(() => {
         return getScaledData(data, dimensions.value);
     }, [data]);
 
-    const controlPoints = Animated.useDerivedValue<ControlPoints | null>(() => {
+    const controlPoints = Animated.useDerivedValue<LinearChartControlPoints | null>(() => {
         return getControlPoints(
             data,
             scaledData.value,

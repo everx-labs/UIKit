@@ -1,10 +1,14 @@
 import Animated from 'react-native-reanimated';
-import type { AnimatedState, ControlPoints, Dimensions } from '../../../types';
-import { LINEAR_CHART_WITH_SPRING_CONFIG } from '../../../constants';
+import type {
+    LinearChartAnimatedState,
+    LinearChartDimensions,
+    LinearChartControlPoints,
+} from '../../../types';
+import { LINEAR_CHART_WITH_SPRING_CONFIG } from '../../constants';
 
 const getIsNoAnimationNeeded = (
-    currentAnimatedState: AnimatedState,
-    previousAnimatedState: AnimatedState | null,
+    currentAnimatedState: LinearChartAnimatedState,
+    previousAnimatedState: LinearChartAnimatedState | null,
 ): boolean => {
     'worklet';
 
@@ -21,8 +25,10 @@ const getIsNoAnimationNeeded = (
 };
 
 export const useLabelCoordinates = (
-    dimensions: Animated.SharedValue<Dimensions>,
-    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
+    dimensions: Animated.SharedValue<LinearChartDimensions>,
+    controlPoints: Readonly<
+        Animated.SharedValue<LinearChartControlPoints | null>
+    >,
 ) => {
     const minimumLabelXCoordinate = Animated.useSharedValue<number>(0);
     const maximumLabelXCoordinate = Animated.useSharedValue<number>(0);
@@ -37,8 +43,8 @@ export const useLabelCoordinates = (
             };
         },
         (
-            currentAnimatedState: AnimatedState,
-            previousAnimatedState: AnimatedState | null,
+            currentAnimatedState: LinearChartAnimatedState,
+            previousAnimatedState: LinearChartAnimatedState | null,
         ) => {
             if (currentAnimatedState.controlPoints === null) {
                 return;

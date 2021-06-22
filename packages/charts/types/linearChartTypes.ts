@@ -1,17 +1,17 @@
 import type { ViewStyle } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
-export type Dimensions = {
+export type LinearChartDimensions = {
     width: number;
     height: number;
 };
 
-export type AnimatedState = {
-    dimensions: Dimensions;
-    controlPoints: ControlPoints | null;
+export type LinearChartAnimatedState = {
+    dimensions: LinearChartDimensions;
+    controlPoints: LinearChartControlPoints | null;
 };
 
-export type LabelData = {
+export type LinearChartLabelData = {
     leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     maximumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
@@ -22,26 +22,26 @@ export type LabelData = {
     minimumValue: string;
 };
 
-export type Point = {
+export type LinearChartPoint = {
     x: number;
     y: number;
 };
 
-export type ControlPoint = {
+export type LinearChartControlPoint = {
     value: number;
     x: number;
     y: number;
 };
-export type ControlPoints = {
-    start: ControlPoint;
-    end: ControlPoint;
-    minimum: ControlPoint;
-    maximum: ControlPoint;
+export type LinearChartControlPoints = {
+    start: LinearChartControlPoint;
+    end: LinearChartControlPoint;
+    minimum: LinearChartControlPoint;
+    maximum: LinearChartControlPoint;
 };
 
-export type Extremum = {
-    minimumPoint: Point;
-    minimumScaledPoint: Point;
-    maximumPoint: Point;
-    maximumScaledPoint: Point;
+export type LinearChartExtremum = {
+    minimumPoint: LinearChartPoint;
+    minimumScaledPoint: LinearChartPoint;
+    maximumPoint: LinearChartPoint;
+    maximumScaledPoint: LinearChartPoint;
 };

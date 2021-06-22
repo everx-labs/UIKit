@@ -1,10 +1,10 @@
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import type { Path } from 'react-native-redash';
 import type {
-    Point,
-    Dimensions,
-    ControlPoints,
-    Extremum,
+    LinearChartPoint,
+    LinearChartDimensions,
+    LinearChartExtremum,
+    LinearChartControlPoints,
 } from '../../../types';
 
 /**
@@ -20,9 +20,9 @@ const scale = (value: number, domain: number[], range: number[]) => {
  * @worklet
  */
 export const getScaledData = (
-    data: Point[],
-    dimensions: Dimensions,
-): Point[] | null => {
+    data: LinearChartPoint[],
+    dimensions: LinearChartDimensions,
+): LinearChartPoint[] | null => {
     'worklet';
 
     if (dimensions.height === 0 || dimensions.width === 0) {
@@ -45,7 +45,7 @@ export const getScaledData = (
     };
 
     return data.map(
-        (point: Point): Point => {
+        (point: LinearChartPoint): LinearChartPoint => {
             return {
                 x: scale(point.x, domain.x, range.x),
                 y: scale(point.y, domain.y, range.y),
@@ -54,13 +54,16 @@ export const getScaledData = (
     );
 };
 
-const getExtremum = (data: Point[], scaledData: Point[]): Extremum => {
+const getExtremum = (
+    data: LinearChartPoint[],
+    scaledData: LinearChartPoint[],
+): LinearChartExtremum => {
     'worklet';
 
-    let minimumPoint: Point = data[0];
-    let minimumScaledPoint: Point = scaledData[0];
-    let maximumPoint: Point = data[0];
-    let maximumScaledPoint: Point = scaledData[0];
+    let minimumPoint: LinearChartPoint = data[0];
+    let minimumScaledPoint: LinearChartPoint = scaledData[0];
+    let maximumPoint: LinearChartPoint = data[0];
+    let maximumScaledPoint: LinearChartPoint = scaledData[0];
     for (let i = 0; i < data.length; i += 1) {
         if (data[i].y < minimumPoint.y) {
             minimumPoint = data[i];
@@ -80,17 +83,17 @@ const getExtremum = (data: Point[], scaledData: Point[]): Extremum => {
 };
 
 export const getControlPoints = (
-    data: Point[],
-    scaledData: Point[] | null,
+    data: LinearChartPoint[],
+    scaledData: LinearChartPoint[] | null,
     curveWidth: number,
-): ControlPoints | null => {
+): LinearChartControlPoints | null => {
     'worklet';
 
     if (scaledData === null) {
         return null;
     }
 
-    const extremum: Extremum = getExtremum(data, scaledData);
+    const extremum: LinearChartExtremum = getExtremum(data, scaledData);
     return {
         start: {
             value: data[0].y,
@@ -119,7 +122,7 @@ export const getControlPoints = (
  * @worklet
  * Was copied from `react-native-redash/Paths`
  */
-const createPath = (move: Point): Path => {
+const createPath = (move: LinearChartPoint): Path => {
     'worklet';
 
     return {
@@ -134,9 +137,9 @@ const createPath = (move: Point): Path => {
  * Was copied from `react-native-redash/Paths`
  */
 const getCurve = (
-    currentPoint: Point,
-    p0: Point,
-    p1: Point,
+    currentPoint: LinearChartPoint,
+    p0: LinearChartPoint,
+    p1: LinearChartPoint,
     isLastPoint: boolean,
 ) => {
     'worklet';
@@ -166,7 +169,7 @@ const getCurve = (
  * @worklet
  * Was copied from `react-native-redash/Paths` and changed
  */
-const curveLines = (points: Point[]) => {
+const curveLines = (points: LinearChartPoint[]) => {
     'worklet';
 
     const path = createPath(points[0]);
@@ -196,7 +199,7 @@ const curveLines = (points: Point[]) => {
 const getMovedPointbyHalfCurveWidth = (curveWidth: number) => {
     'worklet';
 
-    return (point: Point): Point => {
+    return (point: LinearChartPoint): LinearChartPoint => {
         'worklet';
 
         return {
@@ -211,17 +214,20 @@ const getMovedPointbyHalfCurveWidth = (curveWidth: number) => {
  * @worklet
  */
 export const convertDataToPath = (
-    data: Point[],
-    dimensions: Dimensions,
+    data: LinearChartPoint[],
+    dimensions: LinearChartDimensions,
     curveWidth: number,
 ): Path | null => {
     'worklet';
 
-    const scaledData: Point[] | null = getScaledData(data, dimensions);
+    const scaledData: LinearChartPoint[] | null = getScaledData(
+        data,
+        dimensions,
+    );
     if (scaledData === null) {
         return null;
     }
-    const movedScaledData: Point[] = scaledData.map(
+    const movedScaledData: LinearChartPoint[] = scaledData.map(
         getMovedPointbyHalfCurveWidth(curveWidth),
     );
     return curveLines(movedScaledData);

@@ -15,8 +15,12 @@ import {
     LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     LINEAR_CHART_INITIAL_DIMENSIONS,
-} from '../../constants';
-import type { Dimensions, LabelData, Point } from '../../types';
+} from '../constants';
+import type {
+    LinearChartPoint,
+    LinearChartDimensions,
+    LinearChartLabelData,
+} from '../../types';
 import { useLabelData, useAnimatedPathProps } from './hooks';
 
 Animated.addWhitelistedNativeProps({ text: true, value: true });
@@ -89,14 +93,14 @@ const AnimatedSvg = Animated.createAnimatedComponent(
 );
 
 type IProps = {
-    data: Point[];
+    data: LinearChartPoint[];
     testID?: string;
 };
 
 export const LinearChart: React.FC<IProps> = (props: IProps) => {
     const theme = useTheme();
     const { data } = props;
-    const dimensions = Animated.useSharedValue<Dimensions>({
+    const dimensions = Animated.useSharedValue<LinearChartDimensions>({
         ...LINEAR_CHART_INITIAL_DIMENSIONS,
     });
 
@@ -128,7 +132,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
         d: string;
     }> = useAnimatedPathProps(dimensions, data);
 
-    const labelData: LabelData = useLabelData(dimensions, data);
+    const labelData: LinearChartLabelData = useLabelData(dimensions, data);
 
     const animatedSvgProps = Animated.useAnimatedProps(() => {
         return {

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Animated from 'react-native-reanimated';
-import type { ControlPoints } from '../../../types';
+import type { LinearChartControlPoints } from '../../../types';
 
 export const useLabelText = (
-    controlPoints: Readonly<Animated.SharedValue<ControlPoints | null>>,
+    controlPoints: Readonly<
+        Animated.SharedValue<LinearChartControlPoints | null>
+    >,
 ) => {
     const maximum = Animated.useDerivedValue<number | null>(() => {
         if (controlPoints.value === null) {

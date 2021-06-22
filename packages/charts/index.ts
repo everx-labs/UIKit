@@ -1,3 +1,3 @@
-export * from './src/Linear';
-export * from './constants';
+export * from './src';
+export * from './src/constants';
 export * from './types';
