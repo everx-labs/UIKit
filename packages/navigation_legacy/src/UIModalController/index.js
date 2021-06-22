@@ -28,6 +28,7 @@ import {
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { NestedInDismissibleModalContext } from '@tonlabs/uikit.navigation';
 
 import type {
     AnimationParameters,
@@ -560,34 +561,6 @@ export default class UIModalController<Props, State> extends UIController<
         return null;
     }
 
-    renderModalNavigationBar() {
-        if (!this.dismissible) {
-            return null;
-        }
-        if (this.state.header) {
-            return this.state.header;
-        }
-        return (
-            <UIModalNavigationBar
-                dismissStripeStyle={
-                    this.smallStripe ? styles.smallDismissStripe : styles.defaultDismissStripe
-                }
-                height={this.getNavigationBarHeight()}
-                swipeToDismiss={this.shouldSwipeToDismiss()}
-                leftComponent={this.renderLeftHeader()}
-                centralComponent={this.renderCentralHeader()}
-                rightComponent={this.renderRightHeader()}
-                bottomLine={this.isHeaderLineVisible()}
-                // onMove={Animated.event([{ nativeEvent: { translationY: this.dy } }], {
-                //     useNativeDriver: true,
-                // })}
-                // onRelease={this.onReleaseSwipe}
-                onCancel={this.onCancelPress}
-                cancelImage={this.getCancelImage()}
-            />
-        );
-    }
-
     // eslint-disable-next-line no-unused-vars
     renderContentView(contentHeight: number): React$Node {
         return null;
@@ -631,60 +604,75 @@ export default class UIModalController<Props, State> extends UIController<
 
     renderContainer() {
         const backgroundColor = this.getBackgroundColor();
-        const { containerStyle, contentHeight, dialogStyle } = this.getDialogStyle();
-        const testIDProp = this.testID ? { testID: `${this.testID}_dialog` } : null;
+        const {
+            containerStyle,
+            contentHeight,
+            dialogStyle,
+        } = this.getDialogStyle();
+        const testIDProp = this.testID
+            ? { testID: `${this.testID}_dialog` }
+            : null;
         return (
-            <Animated.View style={containerStyle}>
-                <TapGestureHandler
-                    enabled={this.dismissible && this.shouldSwipeToDismiss()}
-                    waitFor={this.panHandlerRef}
-                    onHandlerStateChange={this.onTapHandlerStateChange}
-                >
+            <NestedInDismissibleModalContext.Provider value={this.dismissible}>
+                <Animated.View style={containerStyle}>
+                    <TapGestureHandler
+                        enabled={this.dismissible}
+                        {...(this.dismissible && this.shouldSwipeToDismiss()
+                            ? {
+                                  waitFor: this.panHandlerRef,
+                              }
+                            : null)}
+                        onHandlerStateChange={this.onTapHandlerStateChange}
+                    >
+                        <PanGestureHandler
+                            enabled={
+                                this.dismissible && this.shouldSwipeToDismiss()
+                            }
+                            ref={this.panHandlerRef}
+                            onGestureEvent={this.onPan}
+                            onHandlerStateChange={this.onPanHandlerStateChange}
+                        >
+                            <AnimatedViewWithColor
+                                color={backgroundColor}
+                                style={[
+                                    // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
+                                    // And this brings a layout bug to Safari
+                                    UIStyle.Common.absoluteFillContainer(),
+                                    { opacity: this.getDYDependentOpacity() },
+                                ]}
+                                onLayout={this.onLayout}
+                            />
+                        </PanGestureHandler>
+                    </TapGestureHandler>
                     <PanGestureHandler
-                        enabled={this.dismissible && this.shouldSwipeToDismiss()}
-                        ref={this.panHandlerRef}
+                        enabled={
+                            this.dismissible && this.shouldSwipeToDismiss()
+                        }
                         onGestureEvent={this.onPan}
                         onHandlerStateChange={this.onPanHandlerStateChange}
                     >
                         <AnimatedViewWithColor
-                            color={backgroundColor}
-                            style={[
-                                // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
-                                // And this brings a layout bug to Safari
-                                UIStyle.Common.absoluteFillContainer(),
-                                { opacity: this.getDYDependentOpacity() },
-                            ]}
-                            onLayout={this.onLayout}
-                        />
-                    </PanGestureHandler>
-                </TapGestureHandler>
-                <PanGestureHandler
-                    enabled={this.dismissible && this.shouldSwipeToDismiss()}
-                    onGestureEvent={this.onPan}
-                    onHandlerStateChange={this.onPanHandlerStateChange}
-                >
-                    <AnimatedViewWithColor
-                        {...testIDProp}
-                        color={UIBackgroundViewColors.BackgroundPrimary}
-                        style={dialogStyle}
-                    >
-                        {this.renderModalNavigationBar()}
-                        <Animated.View
-                            style={[
-                                UIStyle.common.flex(),
-                                this.adjustKeyboardInsetDynamically
-                                    ? { paddingBottom: this.marginBottom }
-                                    : null,
-                            ]}
+                            {...testIDProp}
+                            color={UIBackgroundViewColors.BackgroundPrimary}
+                            style={dialogStyle}
                         >
-                            <View style={UIStyle.common.flex()}>
-                                {this.renderContentView(contentHeight)}
-                            </View>
-                        </Animated.View>
-                        {this.renderSpinnerOverlay()}
-                    </AnimatedViewWithColor>
-                </PanGestureHandler>
-            </Animated.View>
+                            <Animated.View
+                                style={[
+                                    UIStyle.common.flex(),
+                                    this.adjustKeyboardInsetDynamically
+                                        ? { paddingBottom: this.marginBottom }
+                                        : null,
+                                ]}
+                            >
+                                <View style={UIStyle.common.flex()}>
+                                    {this.renderContentView(contentHeight)}
+                                </View>
+                            </Animated.View>
+                            {this.renderSpinnerOverlay()}
+                        </AnimatedViewWithColor>
+                    </PanGestureHandler>
+                </Animated.View>
+            </NestedInDismissibleModalContext.Provider>
         );
     }
 

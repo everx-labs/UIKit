@@ -39,7 +39,14 @@ export function ButtonContent({
     }, [direction]);
 
     return (
-        <View {...props} style={[childrenDirection, Platform.OS === 'web' ? styles.flex : null, style]}>
+        <View
+            {...props}
+            style={[
+                childrenDirection,
+                Platform.OS === 'web' ? styles.flexShrink : null,
+                style,
+            ]}
+        >
             {children}
         </View>
     );
@@ -184,8 +191,8 @@ const styles = StyleSheet.create({
     leftContent: {
         alignItems: 'flex-start',
     },
-    flex: {
-        flex: 1,
+    flexShrink: {
+        flexShrink: 1
     },
     singleElementContainer: {
         flexDirection: 'row',

@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { ImageProps, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+    ImageProps,
+    ImageStyle,
+    StyleProp,
+    StyleSheet,
+    TouchableOpacity,
+} from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -29,7 +35,12 @@ export type HeaderItem = {
      * Icon source
      * Have default size: UIConstant.iconSize()
      */
-    icon?: ImageProps;
+    icon?:
+        | ImageProps
+        | ((props: {
+              style: StyleProp<ImageStyle>;
+              tintColor?: ColorVariants;
+          }) => JSX.Element);
     /**
      * Icon react node
      */
@@ -66,6 +77,12 @@ function UIHeaderIconItem({
     }
 
     if (icon) {
+        if (typeof icon === 'function') {
+            return icon({
+                style: styles.headerIcon,
+                tintColor: iconTintColor,
+            });
+        }
         return (
             <UIImage
                 {...icon}

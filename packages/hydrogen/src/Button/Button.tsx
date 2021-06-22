@@ -108,6 +108,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     content: {
-        flex: 1,
+        flexShrink: 1
     },
 });
