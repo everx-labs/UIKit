@@ -4,6 +4,7 @@ import { ColorValue, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } fro
 import { Button, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
+import { UILabelRoles } from './UILabel';
 
 // eslint-disable-next-line no-shadow
 export enum UIMsgButtonType {
@@ -28,6 +29,10 @@ export enum UIMsgButtonIconPosition {
 }
 
 export type UIMsgButtonProps = {
+    /**
+     * Auxiliary text displayed on the button under the main title
+     */
+    caption?: string;
     /**
      * Position of non-rounded corner of the button
      * - `UIMsgButtonCornerPosition.BottomLeft` - bottom left corner has zero radius
@@ -153,6 +158,7 @@ function useButtonStyles(
 }
 
 export const UIMsgButton = ({
+    caption,
     cornerPosition,
     disabled,
     icon,
@@ -164,10 +170,63 @@ export const UIMsgButton = ({
     type = UIMsgButtonType.Primary
 }: UIMsgButtonProps) => {
     const { buttonStyle, titleColor } = useButtonStyles(type, cornerPosition, disabled);
+
+    const [ content, container ] = React.useMemo(() => {
+        if (title && caption) {
+            return [
+                (
+                    <Button.Content
+                        direction={Button.ContentDirection.Column}
+                        style={styles.doubleLineContainer}
+                    >
+                        <Button.Title titleColor={titleColor}>
+                            {title}
+                        </Button.Title>
+                        <Button.Title
+                            titleColor={titleColor}
+                            titleRole={UILabelRoles.ActionLabel}
+                        >
+                            {caption}
+                        </Button.Title>
+                    </Button.Content>
+                ),
+                null,
+            ];
+        }
+
+        return [
+            (
+                <>
+                    <Button.Content direction={Button.ContentDirection.Row}>
+                        {
+                            iconPosition === UIMsgButtonIconPosition.Left && icon &&
+                            <Button.Icon
+                                source={icon}
+                                style={styles.leftIcon}
+                                tintColor={titleColor}
+                            />
+                        }
+                        {/* TODO: think about the case when there is no title, only icon */}
+                        <Button.Title titleColor={titleColor}>{title}</Button.Title>
+                        {
+                            iconPosition === UIMsgButtonIconPosition.Middle && icon &&
+                            <Button.Icon source={icon} tintColor={titleColor} />
+                        }
+                    </Button.Content>
+                    {
+                        iconPosition === UIMsgButtonIconPosition.Right && icon &&
+                        <Button.Icon source={icon} tintColor={titleColor} />
+                    }
+                </>
+            ),
+            styles.singleLineContainer,
+        ];
+    }, [caption, icon, iconPosition, title, titleColor]);
+
     return (
         <Button
             containerStyle={[
-                styles.container,
+                container,
                 buttonStyle,
                 layout,
             ]}
@@ -175,34 +234,18 @@ export const UIMsgButton = ({
             onPress={onPress}
             testID={testID}
         >
-            <Button.Content>
-                {
-                    iconPosition === UIMsgButtonIconPosition.Left && icon &&
-                    <Button.Icon
-                        source={icon}
-                        style={styles.leftIcon}
-                        tintColor={titleColor}
-                    />
-                }
-                {/* TODO: think about the case when there is no title, only icon */}
-                <Button.Title titleColor={titleColor}>{title}</Button.Title>
-                {
-                    iconPosition === UIMsgButtonIconPosition.Middle && icon &&
-                    <Button.Icon source={icon} tintColor={titleColor} />
-                }
-            </Button.Content>
-            {
-                iconPosition === UIMsgButtonIconPosition.Right && icon &&
-                <Button.Icon source={icon} tintColor={titleColor} />
-            }
+            {content}
         </Button>
     )
 };
 
 const styles = StyleSheet.create({
-    container: {
+    singleLineContainer: {
         height: UIConstant.msgButtonHeight,
         paddingHorizontal: UIConstant.normalContentOffset,
+    },
+    doubleLineContainer: {
+        padding: UIConstant.smallContentOffset,
     },
     leftIcon: {
         marginRight: UIConstant.smallContentOffset,

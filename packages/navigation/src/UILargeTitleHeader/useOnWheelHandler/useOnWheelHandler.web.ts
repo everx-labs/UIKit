@@ -2,36 +2,35 @@
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
 
-import { getYWithRubberBandEffect } from '../getYWithRubberBandEffect';
 import { resetPosition } from '../useResetPosition';
 
 const END_THRESHOLD = 100;
 
-export default function useOnWheelHandler(
-    shift: Animated.SharedValue<number>,
-    largeTitleHeight: Animated.SharedValue<number>,
-    yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
-    rubberBandDistance: number,
-) {
+function useCreateOnWheelHandler({
+    onActive,
+    onStart,
+    onEnd,
+}: {
+    onActive: (event: React.WheelEvent) => void;
+    onStart: () => void;
+    onEnd: () => void;
+}) {
     const onWheelEndTimeout = React.useRef<number | null>(null);
     const onWheelEndCbRef = React.useRef<(() => void) | null>(null);
 
     if (onWheelEndCbRef.current == null) {
         onWheelEndCbRef.current = () => {
-            resetPosition(shift, largeTitleHeight);
+            onEnd();
             onWheelEndTimeout.current = null;
         };
     }
 
     const onWheel = React.useCallback(
         (event) => {
-            const { deltaY } = event.nativeEvent;
-
             if (onWheelEndTimeout.current != null) {
                 clearTimeout(onWheelEndTimeout.current);
-            } else if (yIsNegative.value) {
-                yWithoutRubberBand.value = shift.value;
+            } else {
+                onStart();
             }
 
             onWheelEndTimeout.current = setTimeout(
@@ -39,21 +38,45 @@ export default function useOnWheelHandler(
                 END_THRESHOLD,
             );
 
-            // TODO: copy pasted
-            if (yIsNegative.value && deltaY < 0) {
-                yWithoutRubberBand.value -= deltaY;
-                if (shift.value > 0) {
-                    shift.value = getYWithRubberBandEffect(
-                        yWithoutRubberBand.value,
-                        rubberBandDistance,
-                    );
-                } else {
-                    shift.value -= deltaY;
-                }
-            }
+            onActive(event);
         },
-        [yIsNegative, shift, yWithoutRubberBand, rubberBandDistance],
+        [onStart, onActive],
     );
 
     return onWheel;
+}
+
+export default function useOnWheelHandler(
+    shift: Animated.SharedValue<number>,
+    largeTitleHeight: Animated.SharedValue<number>,
+    yIsNegative: Animated.SharedValue<boolean>,
+    yWithoutRubberBand: Animated.SharedValue<number>,
+    hasScrollShared: Animated.SharedValue<boolean>,
+    onScroll: (event: { contentOffset: { y: number } }) => void,
+) {
+    return useCreateOnWheelHandler({
+        onActive: React.useCallback(
+            (event: React.WheelEvent) => {
+                const { deltaY } = event.nativeEvent;
+
+                if (!hasScrollShared.value) {
+                    onScroll({ contentOffset: { y: deltaY } });
+                    return;
+                }
+
+                if (yIsNegative.value && deltaY < 0) {
+                    onScroll({ contentOffset: { y: deltaY } });
+                }
+            },
+            [hasScrollShared, yIsNegative, onScroll],
+        ),
+        onStart: React.useCallback(() => {
+            if (yIsNegative.value) {
+                yWithoutRubberBand.value = shift.value;
+            }
+        }, [yIsNegative, yWithoutRubberBand, shift]),
+        onEnd: React.useCallback(() => {
+            resetPosition(shift, largeTitleHeight);
+        }, [largeTitleHeight, shift]),
+    });
 }

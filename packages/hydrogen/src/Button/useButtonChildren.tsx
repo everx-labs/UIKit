@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { UIConstant } from '../constants';
@@ -8,15 +8,43 @@ import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 import type { ColorVariants } from '../Colors';
 import type { TypographyVariants } from '../Typography';
 
+// eslint-disable-next-line no-shadow
+export enum ButtonContentDirection {
+    Column = 'column',
+    Row = 'row',
+}
+
 export function ButtonContent({
     children,
+    direction = ButtonContentDirection.Row,
     style,
     ...props
 }: ViewProps & {
-    children: React.ReactNode;
+    children: React.ReactNode,
+    direction?: ButtonContentDirection,
 }) {
+    const childrenDirection = React.useMemo(() => {
+        if (direction === ButtonContentDirection.Column) {
+            return [
+                { flexDirection: direction },
+                styles.leftContent,
+            ];
+        }
+        return [
+            { flexDirection: direction },
+            styles.centerContent,
+        ];
+    }, [direction]);
+
     return (
-        <View {...props} style={[styles.content, style]}>
+        <View
+            {...props}
+            style={[
+                childrenDirection,
+                Platform.OS === 'web' ? styles.flexShrink : null,
+                style,
+            ]}
+        >
             {children}
         </View>
     );
@@ -71,6 +99,8 @@ export function ButtonTitle({
             {...props}
             color={titleColor}
             role={titleRole}
+            numberOfLines={1}
+            ellipsizeMode="tail"
         >
             {children}
         </UILabel>
@@ -149,9 +179,14 @@ export const useButtonChildren = (children: React.ReactNode) => {
 };
 
 const styles = StyleSheet.create({
-    content: {
-        flexDirection: 'row',
+    centerContent: {
         alignItems: 'center',
+    },
+    leftContent: {
+        alignItems: 'flex-start',
+    },
+    flexShrink: {
+        flexShrink: 1
     },
     singleElementContainer: {
         flexDirection: 'row',

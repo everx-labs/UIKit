@@ -3,28 +3,57 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.hydrogen';
+
 import { HEADER_HEIGHT } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
+import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
 
 type UISlideBarProps = {
     testID?: string;
+    /**
+     * Method to render any content of the left side of header.
+     * Has a higer priority then `headerLeftItems`.
+     */
+    headerLeft?: () => React.ReactNode;
+    /**
+     * Set of items to render on the left side of header.
+     * Limited to 3 items.
+     */
     headerLeftItems?: HeaderItem[];
+    /**
+     * Configuration for header back button only.
+     *
+     * Usefull if you want to customise back button,
+     * but doesn't want to provide all the `HeaderItem`
+     * options themself.
+     * (It will be merged with default,
+     *  so for example you don't need to pass `onPress`
+     *  to have a proper behaviour)
+     */
+    headerBackButton?: HeaderItem;
     headerRightItems?: HeaderItem[];
     hasPuller?: boolean;
 };
 
 export function UISlideBar({
     testID,
+    headerLeft,
     headerLeftItems,
+    headerBackButton,
     headerRightItems,
     hasPuller = true,
 }: UISlideBarProps) {
+    const headerLeftElement = useNavigationHeaderLeftItems(
+        headerLeft,
+        headerLeftItems,
+        headerBackButton,
+        false,
+    );
+
     return (
         <UIBackgroundView style={styles.container} testID={testID}>
-            <View style={styles.headerLeftItems}>
-                <UIHeaderItems items={headerLeftItems} />
-            </View>
+            <View style={styles.headerLeftItems}>{headerLeftElement}</View>
             {hasPuller ? (
                 <UIBackgroundView
                     color={ColorVariants.BackgroundNeutral}

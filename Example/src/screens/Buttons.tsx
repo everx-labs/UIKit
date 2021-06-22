@@ -2,18 +2,14 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import {
-    UIButton,
-    UIImageButton,
-    UIScaleButton,
-    UITextButton,
-} from '@tonlabs/uikit.components';
+import { UIButton, UIImageButton, UIScaleButton, UITextButton } from '@tonlabs/uikit.components';
 import {
     UIBoxButton,
     UIBoxButtonIconPosition,
     UIBoxButtonType,
     UIMsgButton,
     UIMsgButtonCornerPosition,
+    UIMsgButtonIconPosition,
     UIMsgButtonType,
 } from '@tonlabs/uikit.hydrogen';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
@@ -133,11 +129,21 @@ const Buttons = () => (
                 />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIMsgButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIMsgButton
                     testID="uiMsgButton_default"
                     title="Action"
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    testID="uiMsgButton_longTitle"
+                    title="Action with a very loooooooong title"
                     onPress={() => {
                         //
                     }}
@@ -166,7 +172,29 @@ const Buttons = () => (
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIMsgButton
                     icon={UIAssets.icons.ui.camera}
-                    testID="uiMsgButton_leftIcon"
+                    testID="uiMsgButton_leftIcon_default"
+                    title="Action"
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    icon={UIAssets.icons.ui.arrowUpRight}
+                    iconPosition={UIMsgButtonIconPosition.Middle}
+                    testID="uiMsgButton_middleIcon"
+                    title="Action"
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    icon={UIAssets.icons.ui.camera}
+                    iconPosition={UIMsgButtonIconPosition.Right}
+                    testID="uiMsgButton_rightIcon"
                     title="Action"
                     onPress={() => {
                         //
@@ -177,6 +205,18 @@ const Buttons = () => (
                 <UIMsgButton
                     testID="uiMsgButton_secondary"
                     title="Secondary"
+                    type={UIMsgButtonType.Secondary}
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIMsgButton
+                    testID="uiMsgButton_secondary_with_caption"
+                    title="1.000000000 | Loooooooooooong title"
+                    caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooong caption"
+                    cornerPosition={UIMsgButtonCornerPosition.TopLeft}
                     type={UIMsgButtonType.Secondary}
                     onPress={() => {
                         //
@@ -216,6 +256,7 @@ const Buttons = () => (
                 />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIButton testID="uiButton_default" title="Example" />
@@ -355,6 +396,7 @@ const Buttons = () => (
                 <UIButton testID="uiButton_animation" showIndicator />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIImageButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIImageButton
@@ -411,6 +453,7 @@ const Buttons = () => (
                 />
             </View>
         </ExampleSection>
+
         <ExampleSection title="UIScaleButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UIScaleButton testID="uiScaleButton_default">
@@ -426,6 +469,7 @@ const Buttons = () => (
                 </UIScaleButton>
             </View>
         </ExampleSection>
+
         <ExampleSection title="UITextButton">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                 <UITextButton
