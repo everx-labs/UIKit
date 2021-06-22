@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 // import Animated from 'react-native-reanimated';
 import { uiLocalized } from '../service';
 
-type NumberFormatSettings = {
+type FormatNumberSettings = {
     digitsAfterDecimalPoint?: number | undefined;
 };
 type PowerOfTenForDecimalSuffixes =
@@ -34,7 +34,7 @@ const getSuffix = (powerOfThousand: number): string => {
 const DEFAULT_DIGITS_AFTER_DECIMAL_POINT: number = 0;
 const formatBigNumber = (
     value: BigNumber,
-    settings?: NumberFormatSettings,
+    settings?: FormatNumberSettings,
 ): string => {
     const digitsAfterDecimalPoint: number =
         settings && settings.digitsAfterDecimalPoint
@@ -55,9 +55,9 @@ const formatBigNumber = (
     return scaledValue.toFixed(digitsAfterDecimalPoint) + (suffix || '');
 };
 
-export const numberFormat = (
+export const formatNumber = (
     value: number | BigNumber | null,
-    settings?: NumberFormatSettings,
+    settings?: FormatNumberSettings,
 ): string => {
     if (value === null) {
         return ''
@@ -70,7 +70,7 @@ export const numberFormat = (
         } catch (error) {
             if (__DEV__) {
                 console.error(
-                    `numberFormat: Failed to convert the number to BigNumber`,
+                    `formatNumber: Failed to convert the number to BigNumber`,
                 );
             }
             return value.toFixed(settings && settings.digitsAfterDecimalPoint);
