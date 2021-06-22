@@ -92,8 +92,13 @@ const AnimatedSvg = Animated.createAnimatedComponent(
     }),
 );
 
+/**
+ * LinearChart props
+ */
 type IProps = {
+    /** Data for the chart */
     data: LinearChartPoint[];
+    /** ID for usage in tests */
     testID?: string;
 };
 
