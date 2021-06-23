@@ -155,7 +155,7 @@
         "month": "월",
         "year": "년"
     },
-    "DecimalSuffixes": {
+    "ShortenedNumberSuffix": {
         "3": "K",
         "6": "M",
         "9": "B",

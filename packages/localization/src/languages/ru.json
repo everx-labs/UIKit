@@ -155,7 +155,7 @@
         "month": "ММ",
         "year": "ГГГГ"
     },
-    "DecimalSuffixes": {
+    "ShortenedNumberSuffix": {
         "3": "тыс",
         "6": "млн",
         "9": "млрд",

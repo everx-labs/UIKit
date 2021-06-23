@@ -27,7 +27,7 @@ const getSuffix = (powerOfThousand: number): string => {
     const shortenedNumberSuffix: ShortenedNumberSuffix = convertPowerOfThousandToShortenedNumberSuffix(
         powerOfThousand,
     );
-    return uiLocalized.DecimalSuffixes[shortenedNumberSuffix];
+    return uiLocalized.ShortenedNumberSuffix[shortenedNumberSuffix];
 };
 
 const DEFAULT_FRACTIONAL_DIGITS: number = 0;

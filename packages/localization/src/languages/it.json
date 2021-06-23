@@ -155,7 +155,7 @@
         "month": "MM",
         "year": "AAAAA"
     },
-    "DecimalSuffixes": {
+    "ShortenedNumberSuffix": {
         "3": "K",
         "6": "M",
         "9": "B",
