@@ -31,14 +31,22 @@ const getSuffix = (powerOfThousand: number): string => {
 };
 
 const DEFAULT_DIGITS_AFTER_DECIMAL_POINT: number = 0;
+const getDigitsAfterDecimalPoint = (
+    settings?: FormatNumberSettings,
+): number => {
+    return settings && settings.digitsAfterDecimalPoint
+        ? settings.digitsAfterDecimalPoint
+        : DEFAULT_DIGITS_AFTER_DECIMAL_POINT;
+};
+
 const formatBigNumber = (
     value: BigNumber,
     settings?: FormatNumberSettings,
 ): string => {
-    const digitsAfterDecimalPoint: number =
-        settings && settings.digitsAfterDecimalPoint
-            ? settings.digitsAfterDecimalPoint
-            : DEFAULT_DIGITS_AFTER_DECIMAL_POINT;
+    const digitsAfterDecimalPoint: number = getDigitsAfterDecimalPoint(
+        settings,
+    );
+
     const powerOfThousand: number = Math.floor(
         (value.decimalPlaces(0, 1).precision(true) - 1) / 3,
     );
@@ -62,6 +70,9 @@ export const formatNumber = (
         return '';
     }
 
+    const digitsAfterDecimalPoint: number = getDigitsAfterDecimalPoint(
+        settings,
+    );
     let bigNumberValue: BigNumber;
     if (!BigNumber.isBigNumber(value)) {
         try {
@@ -72,7 +83,7 @@ export const formatNumber = (
                     `formatNumber: Failed to convert the number to BigNumber`,
                 );
             }
-            return value.toFixed(settings && settings.digitsAfterDecimalPoint);
+            return value.toFixed(digitsAfterDecimalPoint);
         }
     } else {
         bigNumberValue = value;
