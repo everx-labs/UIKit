@@ -39,6 +39,34 @@ const getDigitsAfterDecimalPoint = (
         : DEFAULT_DIGITS_AFTER_DECIMAL_POINT;
 };
 
+const getNumberOfDigitsInIntegerPartOfNumber = (value: BigNumber): number =>
+    value.decimalPlaces(0, 1).precision(true);
+
+type Result = {
+    value: string;
+    suffix: string;
+};
+const getResult = (
+    value: BigNumber,
+    powerOfThousand: number,
+    digitsAfterDecimalPoint: number,
+): Result => {
+    const suffix: string = getSuffix(powerOfThousand);
+    const scale: BigNumber = new BigNumber(1000).pow(powerOfThousand);
+    const scaledValue: BigNumber = value.div(scale);
+    const resultValue: string = scaledValue.toFixed(digitsAfterDecimalPoint);
+    /** resultValue can contain another power of the number */
+    if (
+        getNumberOfDigitsInIntegerPartOfNumber(new BigNumber(resultValue)) > 3
+    ) {
+        return getResult(value, powerOfThousand + 1, digitsAfterDecimalPoint);
+    }
+    return {
+        value: scaledValue.toFixed(digitsAfterDecimalPoint),
+        suffix,
+    };
+};
+
 const formatBigNumber = (
     value: BigNumber,
     settings?: FormatNumberSettings,
@@ -48,18 +76,19 @@ const formatBigNumber = (
     );
 
     const powerOfThousand: number = Math.floor(
-        (value.decimalPlaces(0, 1).precision(true) - 1) / 3,
+        (getNumberOfDigitsInIntegerPartOfNumber(value) - 1) / 3,
     );
 
     if (powerOfThousand <= 0) {
         return value.toFixed(digitsAfterDecimalPoint);
     }
 
-    const suffix: string = getSuffix(powerOfThousand);
-
-    const scale: BigNumber = new BigNumber(1000).pow(powerOfThousand);
-    const scaledValue: BigNumber = value.div(scale);
-    return scaledValue.toFixed(digitsAfterDecimalPoint) + (suffix || '');
+    const result: Result = getResult(
+        value,
+        powerOfThousand,
+        digitsAfterDecimalPoint,
+    );
+    return result.value + result.suffix;
 };
 
 export const formatNumber = (
