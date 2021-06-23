@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
@@ -8,6 +8,7 @@ import { UIIndicator } from '../UIIndicator';
 
 import {
     ButtonContent,
+    ButtonContentDirection,
     ButtonIcon,
     ButtonTitle,
     useButtonChildren,
@@ -23,8 +24,10 @@ export type UILayout = {
 }
 
 type ButtonProps = {
+    animations?: any;
     children: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle>;
+    contentStyle?: StyleProp<ViewStyle>;
     disabled?: boolean;
     loading?: boolean;
     onPress?: () => void | Promise<void>;
@@ -36,8 +39,10 @@ const ButtonForward = React.forwardRef<
     ButtonProps
 >(function ButtonForwarded(
     {
+        animations,
         children,
         containerStyle,
+        contentStyle,
         disabled,
         loading,
         onPress,
@@ -61,16 +66,19 @@ const ButtonForward = React.forwardRef<
         <TouchableElement
             ref={ref}
             {...props}
+            animations={animations}
             disabled={disabled}
+            loading={loading}
             onPress={handleOnPress}
-            style={[containerStyle, styles.content]}
+            style={[styles.container, containerStyle]}
+            contentStyle={[styles.content, contentStyle]}
             testID={testID}
         >
-            <View>
+            <View style={Platform.OS === 'web' ? styles.content : null}>
                 {loading ? (
                     <UIIndicator
-                        color={ColorVariants.StaticTextPrimaryLight}
-                        size={UIConstant.iconSize}
+                        color={ColorVariants.StaticIconPrimaryDark}
+                        size={UIConstant.loaderSize}
                     />
                 ) : processedChildren}
             </View>
@@ -82,19 +90,24 @@ const ButtonForward = React.forwardRef<
 // ts doesn't understand that we assign [Content|Icon|Title] later, and want to see it right away
 export const Button: typeof ButtonForward & {
     Content: typeof ButtonContent;
+    ContentDirection: typeof ButtonContentDirection;
     Icon: typeof ButtonIcon;
     Title: typeof ButtonTitle;
 } = ButtonForward;
 
 Button.Content = ButtonContent;
+Button.ContentDirection = ButtonContentDirection;
 Button.Icon = ButtonIcon;
 Button.Title = ButtonTitle;
 
 const styles = StyleSheet.create({
-    content: {
+    container: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
+    },
+    content: {
+        flexShrink: 1
     },
 });

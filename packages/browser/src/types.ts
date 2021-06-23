@@ -184,9 +184,9 @@ export type TransactionConfirmationExternalState = {
 export type TransactionConfirmationMessage = InteractiveMessage<
     InteractiveMessageType.TransactionConfirmation,
     {
-        toAddress: string;
-        onAddressPress: () => void | Promise<void>;
-        recipientsCount: number;
+        toAddress?: string;
+        onAddressPress?: () => void | Promise<void>;
+        recipientsCount?: number;
         totalAmount: string | React.ReactElement<any, any>;
         fees: string | React.ReactElement<any, any>;
         signature: SigningBox;

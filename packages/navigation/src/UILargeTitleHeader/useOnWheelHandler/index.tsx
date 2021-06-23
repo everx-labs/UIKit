@@ -11,7 +11,8 @@ export const useOnWheelHandler: (
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
-    rubberBandDistance: number,
+    hasScrollShared: Animated.SharedValue<boolean>,
+    onScroll: (event: NativeScrollEvent) => void,
 ) =>
     | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
     | null = onWheelHandler;

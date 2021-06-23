@@ -1,7 +1,10 @@
 import { Platform } from 'react-native';
+import type Animated from 'react-native-reanimated';
 
 export const UIConstant = {
     iconSize: 24,
+
+    loaderSize: 18,
 
     buttonBorderWidth: 1,
 
@@ -53,4 +56,9 @@ export const UIConstant = {
         left: 24,
         right: 24,
     },
+};
+
+export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
+    damping: 100,
+    stiffness: 500,
 };

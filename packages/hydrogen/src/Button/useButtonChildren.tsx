@@ -1,40 +1,71 @@
 import * as React from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps, ImageProps } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 
 import { UIConstant } from '../constants';
-import { UIImage, UIImageProps } from '../UIImage';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 import type { ColorVariants } from '../Colors';
 import type { TypographyVariants } from '../Typography';
 
+// eslint-disable-next-line no-shadow
+export enum ButtonContentDirection {
+    Column = 'column',
+    Row = 'row',
+}
+
+const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
+
 export function ButtonContent({
     children,
+    direction = ButtonContentDirection.Row,
     style,
     ...props
 }: ViewProps & {
-    children: React.ReactNode;
+    children: React.ReactNode,
+    direction?: ButtonContentDirection,
 }) {
+    const childrenDirection = React.useMemo(() => {
+        if (direction === ButtonContentDirection.Column) {
+            return [
+                { flexDirection: direction },
+                styles.leftContent,
+            ];
+        }
+        return [
+            { flexDirection: direction },
+            styles.centerContent,
+        ];
+    }, [direction]);
+
     return (
-        <View {...props} style={[styles.content, style]}>
+        <View
+            {...props}
+            style={[
+                childrenDirection,
+                Platform.OS === 'web' ? styles.flexShrink : null,
+                style,
+            ]}
+        >
             {children}
         </View>
     );
 }
 
 export function ButtonIcon({
-    source,
-    tintColor,
-    style,
+    iconAnimStyle,
     onPress,
+    source,
+    style,
     ...props
-}: UIImageProps & {
+}: ImageProps & {
+    iconAnimStyle?: any,
     // add possibility to pass action to the icon, may be used for the right icons
     onPress?: () => void | Promise<void>,
 }) {
     const image = React.useMemo(() => {
         return (
-            <UIImage
+            <Animated.Image
                 {...props}
                 source={source}
                 style={[
@@ -43,11 +74,11 @@ export function ButtonIcon({
                         height: UIConstant.iconSize,
                     },
                     style,
+                    iconAnimStyle,
                 ]}
-                tintColor={tintColor}
             />
         );
-    }, [props, source, style, tintColor]);
+    }, [props, source, style, iconAnimStyle]);
 
     return onPress ? (
         <TouchableOpacity onPress={onPress}>
@@ -60,20 +91,25 @@ export function ButtonTitle({
     children,
     titleColor = UILabelColors.TextPrimaryInverted,
     titleRole = UILabelRoles.Action,
+    titleAnimStyle,
     ...props
 }: {
     children: string,
     titleColor?: ColorVariants,
-    titleRole?: TypographyVariants
+    titleRole?: TypographyVariants,
+    titleAnimStyle?: any,
 }) {
     return (
-        <UILabel
+        <AnimatedUILabel
             {...props}
             color={titleColor}
             role={titleRole}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={titleAnimStyle}
         >
             {children}
-        </UILabel>
+        </AnimatedUILabel>
     );
 }
 
@@ -149,9 +185,14 @@ export const useButtonChildren = (children: React.ReactNode) => {
 };
 
 const styles = StyleSheet.create({
-    content: {
-        flexDirection: 'row',
+    centerContent: {
         alignItems: 'center',
+    },
+    leftContent: {
+        alignItems: 'flex-start',
+    },
+    flexShrink: {
+        flexShrink: 1
     },
     singleElementContainer: {
         flexDirection: 'row',

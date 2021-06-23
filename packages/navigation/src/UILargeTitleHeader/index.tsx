@@ -10,6 +10,7 @@ import Animated, {
     Extrapolate,
     useAnimatedGestureHandler,
 } from 'react-native-reanimated';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
     UILabel,
     UILabelColors,
@@ -18,12 +19,12 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 
 import { useOnScrollHandler } from './useOnScrollHandler';
-import { getYWithRubberBandEffect } from './getYWithRubberBandEffect';
 import { ScrollableContext } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
 import { HEADER_HEIGHT, SCREEN_CONTENT_INSET_HORIZONTAL } from '../constants';
-import { UINavigationBar, UINavigationBarProps } from '../UINavigationBar';
+import type { UINavigationBarProps } from '../UINavigationBar';
+import { UIStackNavigationBar } from '../UIStackNavigationBar';
 
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
@@ -40,7 +41,19 @@ const HEADER_TITLE_OPACITY_ANIM_DURATION = 100;
  */
 const LARGE_HEADER_BOTTOM_OFFSET_TO_SHOW_TITLE = 20;
 
+export const UILargeTitleContainerRefContext = React.createContext<React.RefObject<
+    View
+> | null>(null);
+
 export type UILargeTitleHeaderProps = UINavigationBarProps & {
+    /**
+     * A title to use only for collapsible title
+     */
+    headerLargeTitle?: UINavigationBarProps['title'];
+    /**
+     * A callback that fires when user press on large title header content
+     */
+    onHeaderLargeTitlePress?: () => void;
     /**
      * A label string
      */
@@ -59,6 +72,7 @@ export function UILargeTitleHeader({
     label,
     note,
     children,
+    onHeaderLargeTitlePress,
     ...navigationBarProps
 }: UILargeTitleHeaderProps) {
     const shift = useSharedValue(0);
@@ -165,6 +179,20 @@ export function UILargeTitleHeader({
     }, [largeTitleHeight, shift]);
 
     const ghYPrev = useSharedValue(0);
+
+    const [hasScroll, setHasScroll] = React.useState(false);
+    const hasScrollShared = useSharedValue(false);
+
+    const setHasScrollGuarded = React.useCallback(
+        (newHasScroll) => {
+            if (newHasScroll !== hasScroll) {
+                setHasScroll(newHasScroll);
+                hasScrollShared.value = newHasScroll;
+            }
+        },
+        [hasScroll, setHasScroll, hasScrollShared],
+    );
+
     /**
      * On Android ScrollView stops to fire events when it reaches the end (y is 0).
      * For that reason we place a ScrollView inside of PanResponder,
@@ -180,29 +208,30 @@ export function UILargeTitleHeader({
             const y = ghYPrev.value - event.translationY;
             ghYPrev.value = event.translationY;
 
-            if (yIsNegative.value) {
-                if (y > 0) {
-                    return;
-                }
+            if (!hasScrollShared.value) {
+                // @ts-ignore
+                onScroll({ contentOffset: { y } });
+                return;
+            }
 
-                // TODO: copy pasted
-                yWithoutRubberBand.value -= y;
-                if (shift.value > 0) {
-                    shift.value = getYWithRubberBandEffect(
-                        yWithoutRubberBand.value,
-                        RUBBER_BAND_EFFECT_DISTANCE,
-                    );
-                } else {
-                    shift.value -= y;
-                }
+            if (yIsNegative.value && y < 0) {
+                // @ts-ignore
+                onScroll({ contentOffset: { y } });
             }
         },
         onStart: () => {
+            if (!hasScrollShared.value) {
+                yWithoutRubberBand.value = shift.value;
+                return;
+            }
             if (yIsNegative.value) {
                 yWithoutRubberBand.value = shift.value;
             }
         },
         onEnd: () => {
+            if (!hasScrollShared.value) {
+                onEndDrag();
+            }
             ghYPrev.value = 0;
         },
     });
@@ -222,8 +251,28 @@ export function UILargeTitleHeader({
         largeTitleHeight,
         yIsNegative,
         yWithoutRubberBand,
-        RUBBER_BAND_EFFECT_DISTANCE,
+        hasScrollShared,
+        onScroll,
     );
+
+    const [scrollablesCount, setScrollablesCount] = React.useState(0);
+    const scrollablesCountRef = React.useRef(0);
+
+    const hasScrollables = React.useMemo(() => scrollablesCount > 0, [
+        scrollablesCount,
+    ]);
+
+    const registerScrollable = React.useCallback(() => {
+        const count = scrollablesCountRef.current + 1;
+        setScrollablesCount(count);
+        scrollablesCountRef.current = count;
+    }, [setScrollablesCount]);
+
+    const unregisterScrollable = React.useCallback(() => {
+        const count = scrollablesCountRef.current + 1;
+        setScrollablesCount(count);
+        scrollablesCountRef.current = count;
+    }, [setScrollablesCount]);
 
     const scrollableContextValue = React.useMemo(
         () => ({
@@ -231,58 +280,115 @@ export function UILargeTitleHeader({
             scrollHandler,
             gestureHandler,
             onWheel,
+            hasScroll,
+            setHasScroll: setHasScrollGuarded,
+            registerScrollable,
+            unregisterScrollable,
         }),
-        [scrollRef, scrollHandler, gestureHandler, onWheel],
+        [
+            scrollRef,
+            scrollHandler,
+            gestureHandler,
+            onWheel,
+            hasScroll,
+            setHasScrollGuarded,
+            registerScrollable,
+            unregisterScrollable,
+        ],
     );
 
+    const title =
+        navigationBarProps.headerLargeTitle || navigationBarProps.title;
+
+    const hasSomethingInHeader = title != null || label != null || note != null;
+
+    const largeTitleInnerElement = (
+        <>
+            {label && (
+                <UILabel
+                    role={UILabelRoles.ParagraphLabel}
+                    color={UILabelColors.TextSecondary}
+                    style={{ marginBottom: 8 }}
+                >
+                    {label}
+                </UILabel>
+            )}
+            {title &&
+                (React.isValidElement(title) ? (
+                    title
+                ) : (
+                    <AnimatedUILabel
+                        role={UILabelRoles.TitleLarge}
+                        style={largeTitleStyle}
+                        onLayout={({
+                            nativeEvent: {
+                                layout: { width },
+                            },
+                        }) => {
+                            titleWidth.value = width;
+                        }}
+                    >
+                        {title}
+                    </AnimatedUILabel>
+                ))}
+            {note && (
+                <UILabel
+                    role={UILabelRoles.ParagraphNote}
+                    style={{ marginTop: 8 }}
+                >
+                    {note}
+                </UILabel>
+            )}
+        </>
+    );
+
+    const contentContainerRef = React.useRef<View>(null);
+
     return (
-        <UIBackgroundView style={[styles.container]}>
+        <UIBackgroundView
+            style={styles.container}
+            ref={contentContainerRef}
+            collapsable={false}
+        >
             <View style={styles.mainHeaderFiller} />
             <Animated.View style={[{ flex: 1 }, style]}>
                 <Animated.View
                     ref={largeTitleViewRef}
-                    style={[styles.largeTitleHeaderContainer]}
+                    style={
+                        hasSomethingInHeader && styles.largeTitleHeaderContainer
+                    }
                 >
-                    {label && (
-                        <UILabel
-                            role={UILabelRoles.ParagraphLabel}
-                            color={UILabelColors.TextSecondary}
-                        >
-                            {label}
-                        </UILabel>
-                    )}
-                    {navigationBarProps.title && (
-                        <AnimatedUILabel
-                            role={UILabelRoles.TitleLarge}
-                            style={largeTitleStyle}
-                            onLayout={({
-                                nativeEvent: {
-                                    layout: { width },
-                                },
-                            }) => {
-                                titleWidth.value = width;
-                            }}
-                        >
-                            {navigationBarProps.title}
-                        </AnimatedUILabel>
-                    )}
-                    {note && (
-                        <UILabel role={UILabelRoles.ParagraphNote}>
-                            {note}
-                        </UILabel>
+                    {onHeaderLargeTitlePress != null ? (
+                        <TouchableOpacity onPress={onHeaderLargeTitlePress}>
+                            {largeTitleInnerElement}
+                        </TouchableOpacity>
+                    ) : (
+                        largeTitleInnerElement
                     )}
                 </Animated.View>
 
-                <ScrollableContext.Provider value={scrollableContextValue}>
-                    <Animated.View style={styles.sceneContainer}>
-                        {children}
-                    </Animated.View>
-                </ScrollableContext.Provider>
+                {/* TODO(savelichalex): This is a huge hack for UIController measurement mechanics
+                need to get rid of it as soon as we'll manage to remove UIController  */}
+                <UILargeTitleContainerRefContext.Provider
+                    value={contentContainerRef}
+                >
+                    <ScrollableContext.Provider value={scrollableContextValue}>
+                        <Animated.View
+                            style={
+                                hasScroll || hasScrollables
+                                    ? styles.sceneContainerWithScroll
+                                    : styles.sceneContainerWithoutScroll
+                            }
+                        >
+                            {children}
+                        </Animated.View>
+                    </ScrollableContext.Provider>
+                </UILargeTitleContainerRefContext.Provider>
             </Animated.View>
             <UIBackgroundView
                 style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
             >
-                <UINavigationBar
+                <UIStackNavigationBar
                     {...navigationBarProps}
                     headerTitleOpacity={headerTitleOpacity}
                 />
@@ -311,7 +417,10 @@ const styles = StyleSheet.create({
     largeTitleHeaderContainer: {
         padding: SCREEN_CONTENT_INSET_HORIZONTAL,
     },
-    sceneContainer: {
+    sceneContainerWithoutScroll: {
+        flex: 1,
+    },
+    sceneContainerWithScroll: {
         /**
          * We render both large title container and a content in one wrapper. So, now let's try imagine how it's drawed:
          *

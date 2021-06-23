@@ -11,3 +11,5 @@ export const CONTENT_INSET_VERTICAL_X4 = 4 * GRID_LINE_HEIGHT;
 
 export const CONTENT_OFFSET: number = 16;
 export const PAGER_VIEW_HEIGHT: number = 72;
+
+export const TITLE_MINIMUM_FONT_SCALE: number = 0.7;
