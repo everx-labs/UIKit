@@ -15,7 +15,12 @@ import {
     UIPopover,
     UIPopoverMenu,
 } from '@tonlabs/uikit.navigation_legacy';
-import { ScrollView } from '@tonlabs/uikit.navigation';
+import {
+    ScrollView,
+    UICardSheet,
+    UIBottomSheet,
+    UIQRCodeScannerSheet,
+} from '@tonlabs/uikit.navigation';
 import {
     UITextButton,
     UIButton,
@@ -24,10 +29,7 @@ import {
     UITabView,
 } from '@tonlabs/uikit.components';
 import {
-    UIBottomSheet,
     UIMaterialTextView,
-    UIQRCodeScannerSheet,
-    UICardSheet,
     useTheme,
     ColorVariants,
     UILabel,
@@ -83,7 +85,7 @@ function BigBottomSheet() {
                                 insets?.bottom ?? 0,
                                 UIConstant.contentOffset(),
                             ) -
-                            200,
+                            100,
                     }}
                 >
                     <UILabel>Hello!</UILabel>

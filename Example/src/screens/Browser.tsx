@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Route, useNavigation, useRoute } from '@react-navigation/core';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import BigNumber from 'bignumber.js';
 
@@ -24,21 +23,22 @@ import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import {
     useTheme,
     ColorVariants,
-    UIBottomSheet,
     UIBoxButton,
-    UICardSheet,
     UILabel,
     UILabelColors,
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import {
+    UICardSheet,
+    UIBottomSheet,
+    createStackNavigator,
+} from '@tonlabs/uikit.navigation';
 
 const BrowserStack = createStackNavigator();
 
-const BrowserScreen = () => {
-    const navigation = useNavigation();
-    const route = useRoute<Route<'browser', { menuVisible: boolean }>>();
+type BrowserScreenRef = { toggleMenu(): void };
 
+const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const theme = useTheme();
 
     const [messages, setMessages] = React.useState<BrowserMessage[]>([
@@ -68,7 +68,13 @@ const BrowserScreen = () => {
         },
     ]);
 
-    const { menuVisible } = route.params;
+    const [menuVisible, setMenuVisible] = React.useState(false);
+
+    React.useImperativeHandle(ref, () => ({
+        toggleMenu: () => {
+            setMenuVisible(!menuVisible);
+        },
+    }));
 
     return (
         <>
@@ -76,15 +82,9 @@ const BrowserScreen = () => {
             <SafeAreaInsetsContext.Consumer>
                 {(insets) => (
                     <UIBottomSheet
-                        visible={
-                            typeof menuVisible === 'string'
-                                ? false
-                                : menuVisible
-                        }
+                        visible={menuVisible}
                         onClose={() => {
-                            navigation.setParams({
-                                menuVisible: false,
-                            });
+                            setMenuVisible(false);
                         }}
                         style={{
                             backgroundColor:
@@ -107,8 +107,7 @@ const BrowserScreen = () => {
                                     key: `${Date.now()}-address-input`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.AddressInput,
-                                    prompt:
-                                        'What wallet do you want to work with?',
+                                    prompt: 'What wallet do you want to work with?',
                                     mainAddress: '0:000',
                                     input: {
                                         validateAddress: (text: string) => {
@@ -118,8 +117,7 @@ const BrowserScreen = () => {
                                             ) {
                                                 return Promise.resolve({
                                                     status: ValidationResultStatus.Error,
-                                                    text:
-                                                        'Oh no, the length is divided by 5',
+                                                    text: 'Oh no, the length is divided by 5',
                                                 });
                                             }
                                             return Promise.resolve({
@@ -161,9 +159,7 @@ const BrowserScreen = () => {
                                     },
                                     ...messages,
                                 ]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -188,9 +184,7 @@ const BrowserScreen = () => {
                                     },
                                 };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -245,9 +239,7 @@ const BrowserScreen = () => {
                                     ],
                                 };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -272,9 +264,7 @@ const BrowserScreen = () => {
                                     },
                                 };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -312,9 +302,7 @@ const BrowserScreen = () => {
                                     },
                                 };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -332,8 +320,8 @@ const BrowserScreen = () => {
                                         const newSigningBox = {
                                             id:
                                                 signingBoxes[
-                                                signingBoxes.length - 1
-                                                    ].id + 1,
+                                                    signingBoxes.length - 1
+                                                ].id + 1,
                                             title: 'Signature',
                                             publicKey: privateKey,
                                         };
@@ -375,9 +363,7 @@ const BrowserScreen = () => {
                                     },
                                 };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -386,76 +372,76 @@ const BrowserScreen = () => {
                                 marginBottom: 10,
                             }}
                             onPress={() => {
-                                const message: TransactionConfirmationMessage = {
-                                    key: `${Date.now()}-approve`,
-                                    status: MessageStatus.Received,
-                                    type:
-                                    InteractiveMessageType.TransactionConfirmation,
-                                    toAddress: '0:12300000006789',
-                                    onAddressPress: () => {},
-                                    recipientsCount: 255,
-                                    totalAmount: (
-                                        <UILabel>
-                                            <UILabel
-                                                role={UILabelRoles.MonoText}
-                                            >
-                                                0,000
+                                const message: TransactionConfirmationMessage =
+                                    {
+                                        key: `${Date.now()}-approve`,
+                                        status: MessageStatus.Received,
+                                        type: InteractiveMessageType.TransactionConfirmation,
+                                        toAddress: '0:12300000006789',
+                                        onAddressPress: () => {
+                                            // nothing
+                                        },
+                                        recipientsCount: 255,
+                                        totalAmount: (
+                                            <UILabel>
+                                                <UILabel
+                                                    role={UILabelRoles.MonoText}
+                                                >
+                                                    0,000
+                                                </UILabel>
+                                                <UILabel
+                                                    role={UILabelRoles.MonoText}
+                                                    color={
+                                                        UILabelColors.TextTertiary
+                                                    }
+                                                >
+                                                    .000 000 000
+                                                </UILabel>
                                             </UILabel>
-                                            <UILabel
-                                                role={UILabelRoles.MonoText}
-                                                color={
-                                                    UILabelColors.TextTertiary
-                                                }
-                                            >
-                                                .000 000 000
+                                        ),
+                                        fees: (
+                                            <UILabel>
+                                                <UILabel
+                                                    role={UILabelRoles.MonoText}
+                                                >
+                                                    0
+                                                </UILabel>
+                                                <UILabel
+                                                    role={UILabelRoles.MonoText}
+                                                    color={
+                                                        UILabelColors.TextTertiary
+                                                    }
+                                                >
+                                                    .000 000 000
+                                                </UILabel>
                                             </UILabel>
-                                        </UILabel>
-                                    ),
-                                    fees: (
-                                        <UILabel>
-                                            <UILabel
-                                                role={UILabelRoles.MonoText}
-                                            >
-                                                0
-                                            </UILabel>
-                                            <UILabel
-                                                role={UILabelRoles.MonoText}
-                                                color={
-                                                    UILabelColors.TextTertiary
-                                                }
-                                            >
-                                                .000 000 000
-                                            </UILabel>
-                                        </UILabel>
-                                    ),
-                                    signature: {
-                                        id: 1,
-                                        title: 'My Surf',
-                                        publicKey: '1c2f3b4a',
-                                    },
-                                    onApprove: (externalState: any) => {
-                                        setMessages([
-                                            {
-                                                ...message,
-                                                externalState,
-                                            },
-                                            ...messages,
-                                        ]);
-                                    },
-                                    onCancel: (externalState: any) => {
-                                        setMessages([
-                                            {
-                                                ...message,
-                                                externalState,
-                                            },
-                                            ...messages,
-                                        ]);
-                                    },
-                                };
+                                        ),
+                                        signature: {
+                                            id: 1,
+                                            title: 'My Surf',
+                                            publicKey: '1c2f3b4a',
+                                        },
+                                        onApprove: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
+                                        },
+                                        onCancel: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
+                                        },
+                                    };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -480,9 +466,7 @@ const BrowserScreen = () => {
                                     },
                                 };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                         <UIBoxButton
@@ -508,9 +492,7 @@ const BrowserScreen = () => {
                                     },
                                 };
                                 setMessages([message, ...messages]);
-                                navigation.setParams({
-                                    menuVisible: false,
-                                });
+                                setMenuVisible(false);
                             }}
                         />
                     </UIBottomSheet>
@@ -530,32 +512,32 @@ const BrowserScreen = () => {
             </UICardSheet>
         </>
     );
-};
+});
 
-export const Browser = () => {
+export const Browser = React.memo(() => {
+    const screenRef = React.useRef<BrowserScreenRef>(null);
     return (
         <BrowserStack.Navigator>
             <BrowserStack.Screen
                 name="BrowserScreen"
-                options={({ navigation }) => ({
+                options={{
                     // headerVisible: false,
                     title: 'Browser',
                     headerRightItems: [
                         {
                             label: 'Add',
                             onPress: () => {
-                                navigation.setParams({
-                                    menuVisible: true,
-                                });
+                                screenRef.current?.toggleMenu();
                             },
                         },
                     ],
-                })}
-                component={BrowserScreen}
+                }}
                 initialParams={{
                     menuVisible: false,
                 }}
-            />
+            >
+                {() => <BrowserScreen ref={screenRef} />}
+            </BrowserStack.Screen>
         </BrowserStack.Navigator>
     );
-};
+});

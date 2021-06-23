@@ -5,15 +5,20 @@ import Animated from 'react-native-reanimated';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import {
+    useTheme,
+    ColorVariants,
+    UIImage,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 // @ts-ignore
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved, import/extensions
 import { QRCodeScanner, OnReadEvent } from './QRCodeScanner';
-import { useTheme, ColorVariants } from './Colors';
 import { UICardSheet, UICardSheetProps } from './UISheet';
-import { UIImage } from './UIImage';
-import { UIConstant } from './constants';
-import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
+import { UIConstant } from '../constants';
 
 export type UIQRCodeScannerSheetProps = Omit<UICardSheetProps, 'children'> & {
     onRead: (event: OnReadEvent) => void | Promise<void>;

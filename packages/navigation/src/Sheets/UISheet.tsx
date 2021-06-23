@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/src/SpringConfig';
-
 import {
     PanGestureHandler,
     TapGestureHandler,
@@ -22,19 +21,26 @@ import Animated, {
     runOnJS,
     useAnimatedGestureHandler,
     useAnimatedReaction,
+    useAnimatedRef,
+    useAnimatedScrollHandler,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
     withSpring,
+    scrollTo,
 } from 'react-native-reanimated';
 import { useBackHandler, useKeyboard } from '@react-native-community/hooks';
 
-import { ColorVariants } from './Colors';
-import { UIConstant } from './constants';
-import { Portal } from './Portal';
-import { useColorParts } from './useColorParts';
-import { useStatusBar } from './UIStatusBar';
-import { getYWithRubberBandEffect } from './getYWithRubberBandEffect';
+import {
+    ColorVariants,
+    Portal,
+    useColorParts,
+    useStatusBar,
+} from '@tonlabs/uikit.hydrogen';
+
+import { UIConstant } from '../constants';
+import { getYWithRubberBandEffect } from '../AnimationHelpers/getYWithRubberBandEffect';
+import { ScrollableContext } from '../Scrollable/Context';
 
 type OnClose = () => void | Promise<void>;
 
@@ -213,6 +219,71 @@ function usePosition(
         },
     });
 
+    const yIsNegative = useSharedValue<boolean>(true);
+
+    const adjustPosition = (y: number) => {
+        'worklet';
+
+        const intermediatePosition = position.value - y;
+
+        if (y > 0 && intermediatePosition < snapPointPosition.value) {
+            positionWithoutRubberBand.value += y;
+            position.value =
+                snapPointPosition.value -
+                getYWithRubberBandEffect(
+                    positionWithoutRubberBand.value,
+                    RUBBER_BAND_EFFECT_DISTANCE,
+                );
+
+            return;
+        }
+
+        positionWithoutRubberBand.value = Math.max(
+            positionWithoutRubberBand.value + y,
+            0,
+        );
+        position.value = intermediatePosition;
+    };
+
+    const resetPosition = () => {
+        'worklet';
+
+        if (
+            position.value - snapPointPosition.value >
+            UIConstant.swipeThreshold
+        ) {
+            showState.value = SHOW_STATES.CLOSE;
+            if (onCloseProp) {
+                runOnJS(onCloseProp)();
+            }
+            return;
+        }
+        showState.value = SHOW_STATES.OPEN;
+    };
+
+    const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+    const scrollHandler = useAnimatedScrollHandler({
+        onScroll: (event) => {
+            const { y } = event.contentOffset;
+
+            yIsNegative.value = y <= 0;
+
+            const intermediatePosition = position.value - y;
+
+            if (y <= 0 || intermediatePosition > snapPointPosition.value) {
+                adjustPosition(y);
+                scrollTo(scrollRef, 0, 0, false);
+            }
+        },
+        onBeginDrag: () => {
+            positionWithoutRubberBand.value = 0;
+        },
+        onEndDrag: () => {
+            resetPosition();
+        },
+    });
+
     const onPanGestureHandler = useAnimatedGestureHandler<
         PanGestureHandlerGestureEvent,
         {
@@ -222,42 +293,15 @@ function usePosition(
         onActive: (event, ctx) => {
             const y = ctx.translationY - event.translationY;
             ctx.translationY = event.translationY;
-            const intermediatePosition = position.value - y;
 
-            if (y > 0 && intermediatePosition < snapPointPosition.value) {
-                positionWithoutRubberBand.value += y;
-                position.value =
-                    snapPointPosition.value -
-                    getYWithRubberBandEffect(
-                        positionWithoutRubberBand.value,
-                        RUBBER_BAND_EFFECT_DISTANCE,
-                    );
-
-                return;
-            }
-
-            positionWithoutRubberBand.value = Math.max(
-                positionWithoutRubberBand.value + y,
-                0,
-            );
-            position.value = intermediatePosition;
+            adjustPosition(y);
         },
         onStart: (_event, ctx) => {
             ctx.translationY = 0;
             positionWithoutRubberBand.value = 0;
         },
         onEnd: () => {
-            if (
-                position.value - snapPointPosition.value >
-                UIConstant.swipeThreshold
-            ) {
-                showState.value = SHOW_STATES.CLOSE;
-                if (onCloseProp) {
-                    runOnJS(onCloseProp)();
-                }
-                return;
-            }
-            showState.value = SHOW_STATES.OPEN;
+            resetPosition();
         },
     });
 
@@ -265,6 +309,8 @@ function usePosition(
         animate,
         onTapGestureHandler,
         onPanGestureHandler,
+        scrollRef,
+        scrollHandler,
         position,
     };
 }
@@ -288,6 +334,8 @@ function UISheetPortalContent({
         animate,
         onTapGestureHandler,
         onPanGestureHandler,
+        scrollRef,
+        scrollHandler,
         position,
     } = usePosition(height, keyboardHeight, onClose, onClosePortalRequest);
 
@@ -349,6 +397,26 @@ function UISheetPortalContent({
         };
     }, [position]);
 
+    const scrollableContextValue = React.useMemo(
+        () => ({
+            ref: scrollRef,
+            scrollHandler,
+            gestureHandler: undefined,
+            onWheel: null,
+            hasScroll: true,
+            setHasScroll: () => {
+                // nothing
+            },
+            registerScrollable: null,
+            unregisterScrollable: null,
+        }),
+        [
+            scrollRef,
+            scrollHandler,
+            // gestureHandler,
+        ],
+    );
+
     return (
         <View style={styles.container}>
             <TapGestureHandler
@@ -377,7 +445,13 @@ function UISheetPortalContent({
                     enabled={onClose != null}
                     onGestureEvent={onPanGestureHandler}
                 >
-                    <Animated.View style={style}>{children}</Animated.View>
+                    <Animated.View style={style}>
+                        <ScrollableContext.Provider
+                            value={scrollableContextValue}
+                        >
+                            {children}
+                        </ScrollableContext.Provider>
+                    </Animated.View>
                 </PanGestureHandler>
             </Animated.View>
         </View>

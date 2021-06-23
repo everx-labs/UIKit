@@ -8,8 +8,10 @@ export * from './UIDialogBar';
 export * from './UISlideBar';
 export * from './UIAndroidNavigationBar';
 export * from './Scrollable';
+export { ScrollableContext } from './Scrollable/Context';
 export * from './UILargeTitleHeader';
 export * from './constants';
+export * from './Sheets';
 
 export * from './SplitNavigator/createSplitNavigator';
 export {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { Portal, UIQRCodeScannerSheet } from '@tonlabs/uikit.hydrogen';
+import { Portal } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
     MessageStatus,
@@ -9,6 +9,7 @@ import {
     BubbleSimplePlainText,
     BubbleActionButton,
 } from '@tonlabs/uikit.chats';
+import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 
 import type { AddressInputMessage } from '../types';
 import { UIAddressInput } from '../UIAddressInput';

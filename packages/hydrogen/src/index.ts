@@ -17,10 +17,8 @@ export * from './UIMaterialTextView';
 export * from './UIMsgButton';
 export * from './UINotice';
 export * from './UINumberTextView';
-export * from './UIQRCodeScannerSheet';
 export * from './UISafeAreaView';
 export * from './UISeedPhraseTextView';
-export * from './UISheet';
 export * from './UIStatusBar';
 export * from './UITextView';
 

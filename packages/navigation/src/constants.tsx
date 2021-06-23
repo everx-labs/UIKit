@@ -13,3 +13,13 @@ export const CONTENT_OFFSET: number = 16;
 export const PAGER_VIEW_HEIGHT: number = 72;
 
 export const TITLE_MINIMUM_FONT_SCALE: number = 0.7;
+
+export const UIConstant = {
+    contentOffset: 16,
+    alertBorderRadius: 12,
+
+    elasticWidthCardSheet: 414,
+    elasticWidthBottomSheet: 448,
+
+    swipeThreshold: 50,
+};
