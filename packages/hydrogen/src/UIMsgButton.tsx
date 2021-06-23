@@ -107,7 +107,7 @@ const getButtonStates = (
             hoverBorderColor: ColorVariants.StaticHoverOverlay,
             pressBackgroundColor: ColorVariants.StaticPressOverlay,
             pressBorderColor: ColorVariants.StaticPressOverlay,
-            activeTitleColor: ColorVariants.StaticTextPrimaryLight,
+            activeContentColor: ColorVariants.StaticTextPrimaryLight,
         };
     }
     return {
@@ -115,7 +115,7 @@ const getButtonStates = (
         hoverBorderColor: ColorVariants.LineNeutral,
         pressBackgroundColor: ColorVariants.BackgroundPrimary,
         pressBorderColor: ColorVariants.LineNeutral,
-        activeTitleColor: ColorVariants.TextPrimary,
+        activeContentColor: ColorVariants.TextPrimary,
     };
 };
 
@@ -131,7 +131,7 @@ function useButtonAnimations(
         hoverBorderColor,
         pressBackgroundColor,
         pressBorderColor,
-        activeTitleColor,
+        activeContentColor,
     } = getButtonStates(type);
     const theme = useTheme();
 
@@ -213,7 +213,7 @@ function useButtonAnimations(
                 [0, 1],
                 [
                     theme[ColorVariants[contentColor]] as string,
-                    theme[ColorVariants[activeTitleColor]] as string,
+                    theme[ColorVariants[activeContentColor]] as string,
                 ],
             ),
         };
@@ -227,7 +227,7 @@ function useButtonAnimations(
                 [0, 1],
                 [
                     theme[ColorVariants[contentColor]] as string,
-                    theme[ColorVariants[activeTitleColor]] as string,
+                    theme[ColorVariants[activeContentColor]] as string,
                 ],
             ),
         };

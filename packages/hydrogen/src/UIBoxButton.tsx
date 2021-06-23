@@ -88,25 +88,25 @@ const getButtonStates = (
         return {
             hoverOverlayColor: ColorVariants.StaticHoverOverlay,
             pressOverlayColor: ColorVariants.StaticPressOverlay,
-            activeTitleColor: ColorVariants.StaticTextPrimaryLight,
+            activeContentColor: ColorVariants.StaticTextPrimaryLight,
         };
     } else if (type === UIBoxButtonType.Secondary) {
         return {
             hoverOverlayColor: ColorVariants.BackgroundTertiary,
             pressOverlayColor: ColorVariants.BackgroundNeutral,
-            activeTitleColor: ColorVariants.TextPrimary,
+            activeContentColor: ColorVariants.TextPrimary,
         }
     } else if (type === UIBoxButtonType.Tertiary) {
         return {
             hoverOverlayColor: ColorVariants.Transparent,
             pressOverlayColor: ColorVariants.Transparent,
-            activeTitleColor: ColorVariants.TextPrimary,
+            activeContentColor: ColorVariants.TextPrimary,
         }
     }
     return {
         hoverOverlayColor: ColorVariants.Transparent,
         pressOverlayColor: ColorVariants.Transparent,
-        activeTitleColor: ColorVariants.TextAccent,
+        activeContentColor: ColorVariants.TextAccent,
     };
 };
 
@@ -114,7 +114,7 @@ function useButtonAnimations(
     type: UIBoxButtonType,
     contentColor: ColorVariants,
 ) {
-    const { hoverOverlayColor, pressOverlayColor, activeTitleColor } = getButtonStates(type);
+    const { hoverOverlayColor, pressOverlayColor, activeContentColor } = getButtonStates(type);
     const theme = useTheme();
 
     const hoverAnim = Animated.useSharedValue(0);
@@ -158,7 +158,7 @@ function useButtonAnimations(
             [0, 1],
             [
                 theme[ColorVariants[contentColor]] as string,
-                theme[ColorVariants[activeTitleColor]] as string,
+                theme[ColorVariants[activeContentColor]] as string,
             ],
         );
     });
@@ -175,7 +175,7 @@ function useButtonAnimations(
             [0, 1],
             [
                 theme[ColorVariants[contentColor]] as string,
-                theme[ColorVariants[activeTitleColor]] as string,
+                theme[ColorVariants[activeContentColor]] as string,
             ],
         );
     });
