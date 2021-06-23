@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { Easing } from 'react-native-reanimated';
+import type Animated from 'react-native-reanimated';
 
 export const UIConstant = {
     iconSize: 24,
@@ -33,11 +33,6 @@ export const UIConstant = {
 
     swipeThreshold: 50,
 
-    animationConfig: {
-        duration: 100,
-        easing: Easing.bezier(0.5, 0.01, 0, 1),
-    },
-
     cardShadow:
         Platform.OS === 'android'
             ? {
@@ -61,4 +56,9 @@ export const UIConstant = {
         left: 24,
         right: 24,
     },
+};
+
+export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
+    damping: 100,
+    stiffness: 500,
 };

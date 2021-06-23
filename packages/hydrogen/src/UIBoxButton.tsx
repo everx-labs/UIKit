@@ -112,7 +112,7 @@ const getButtonStates = (
 
 function useButtonAnimations(
     type: UIBoxButtonType,
-    titleColor: ColorVariants,
+    contentColor: ColorVariants,
 ) {
     const { hoverOverlayColor, pressOverlayColor, activeTitleColor } = getButtonStates(type);
     const theme = useTheme();
@@ -157,7 +157,7 @@ function useButtonAnimations(
             titleAnim.value,
             [0, 1],
             [
-                theme[ColorVariants[titleColor]] as string,
+                theme[ColorVariants[contentColor]] as string,
                 theme[ColorVariants[activeTitleColor]] as string,
             ],
         );
@@ -174,7 +174,7 @@ function useButtonAnimations(
             iconAnim.value,
             [0, 1],
             [
-                theme[ColorVariants[titleColor]] as string,
+                theme[ColorVariants[contentColor]] as string,
                 theme[ColorVariants[activeTitleColor]] as string,
             ],
         );
@@ -214,7 +214,7 @@ function useButtonStyles(
     loading?: boolean,
 ) {
     let backgroundColor: ColorVariants = ColorVariants.Transparent;
-    let titleColor: ColorVariants = ColorVariants.TextAccent;
+    let contentColor: ColorVariants = ColorVariants.TextAccent;
 
     if (type === UIBoxButtonType.Primary) {
         // primary background color
@@ -229,9 +229,9 @@ function useButtonStyles(
         }
         // primary content color (title, icons)
         if (disabled) {
-            titleColor = ColorVariants.TextOverlayInverted;
+            contentColor = ColorVariants.TextOverlayInverted;
         } else {
-            titleColor = ColorVariants.StaticTextPrimaryLight;
+            contentColor = ColorVariants.StaticTextPrimaryLight;
         }
     } else if (type === UIBoxButtonType.Secondary) {
         // secondary background color
@@ -242,35 +242,35 @@ function useButtonStyles(
         }
         // secondary content color (title, icons)
         if (disabled) {
-            titleColor = ColorVariants.TextOverlay;
+            contentColor = ColorVariants.TextOverlay;
         } else if (variant === UIBoxButtonVariant.Negative) {
-            titleColor = ColorVariants.TextNegative;
+            contentColor = ColorVariants.TextNegative;
         } else if (variant === UIBoxButtonVariant.Positive) {
-            titleColor = ColorVariants.TextPositive;
+            contentColor = ColorVariants.TextPositive;
         } else {
-            titleColor = ColorVariants.TextPrimary;
+            contentColor = ColorVariants.TextPrimary;
         }
     } else if (type === UIBoxButtonType.Tertiary) {
         // tertiary content color (title, icons)
         if (disabled) {
-            titleColor = ColorVariants.TextOverlay;
+            contentColor = ColorVariants.TextOverlay;
         } else if (variant === UIBoxButtonVariant.Negative) {
-            titleColor = ColorVariants.TextNegative;
+            contentColor = ColorVariants.TextNegative;
         } else if (variant === UIBoxButtonVariant.Positive) {
-            titleColor = ColorVariants.TextPositive;
+            contentColor = ColorVariants.TextPositive;
         } else {
-            titleColor = ColorVariants.TextAccent;
+            contentColor = ColorVariants.TextAccent;
         }
     } else if (type === UIBoxButtonType.Nulled) {
         // nulled content color (title, icons)
         if (disabled) {
-            titleColor = ColorVariants.TextOverlay;
+            contentColor = ColorVariants.TextOverlay;
         } else if (variant === UIBoxButtonVariant.Negative) {
-            titleColor = ColorVariants.TextNegative;
+            contentColor = ColorVariants.TextNegative;
         } else if (variant === UIBoxButtonVariant.Positive) {
-            titleColor = ColorVariants.TextPositive;
+            contentColor = ColorVariants.TextPositive;
         } else {
-            titleColor = ColorVariants.TextPrimary;
+            contentColor = ColorVariants.TextPrimary;
         }
     }
 
@@ -283,7 +283,7 @@ function useButtonStyles(
 
     return {
         buttonStyle,
-        titleColor,
+        contentColor,
     };
 }
 
@@ -299,8 +299,8 @@ export const UIBoxButton = ({
     type= UIBoxButtonType.Primary,
     variant = UIBoxButtonVariant.Neutral,
 }: UIBoxButtonProps) => {
-    const { buttonStyle, titleColor } = useButtonStyles(type, variant, disabled, loading);
-    const buttonAnimations = useButtonAnimations(type, titleColor);
+    const { buttonStyle, contentColor } = useButtonStyles(type, variant, disabled, loading);
+    const buttonAnimations = useButtonAnimations(type, contentColor);
 
     return (
         <Button
@@ -328,7 +328,7 @@ export const UIBoxButton = ({
                 {
                     title &&
                     <Button.Title
-                        titleColor={titleColor}
+                        titleColor={contentColor}
                         titleAnimStyle={buttonAnimations.animatedTitle.titleAnimStyle}
                     >
                         {title}

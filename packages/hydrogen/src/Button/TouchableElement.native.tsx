@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import { UIConstant } from '../constants';
+import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
 
 type TouchableElementProps = {
     animations?: any;
@@ -43,17 +43,17 @@ export const TouchableElement = ({
 
     const handlePressIn = () => {
         if (!loading) {
-            pressAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
-            titleAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
-            iconAnim.value = Animated.withTiming(1, UIConstant.animationConfig);
+            pressAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            titleAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            iconAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
     const handlePressOut = () => {
         if (!loading) {
-            pressAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
-            titleAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
-            iconAnim.value = Animated.withTiming(0, UIConstant.animationConfig);
+            pressAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            titleAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            iconAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
@@ -84,6 +84,7 @@ export const TouchableElement = ({
 const styles = StyleSheet.create({
     overlayContainer: {
         height: '100%',
+        flexGrow: 1,
         justifyContent: 'center',
     },
 });
