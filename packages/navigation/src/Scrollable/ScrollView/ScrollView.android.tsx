@@ -19,6 +19,7 @@ export const ScrollView = React.forwardRef<RNScrollView>(
 
         const {
             ref,
+            panGestureHandlerRef,
             scrollHandler,
             gestureHandler,
             registerScrollable,
@@ -44,6 +45,7 @@ export const ScrollView = React.forwardRef<RNScrollView>(
 
         return (
             <PanGestureHandler
+                ref={panGestureHandlerRef}
                 shouldCancelWhenOutside={false}
                 onGestureEvent={gestureHandler}
                 {...(hasScroll ? { waitFor: nativeGestureRef } : null)}

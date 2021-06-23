@@ -19,6 +19,7 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 
 import { useOnScrollHandler } from './useOnScrollHandler';
+import { useHasScroll } from '../Scrollable';
 import { ScrollableContext } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
@@ -180,18 +181,7 @@ export function UILargeTitleHeader({
 
     const ghYPrev = useSharedValue(0);
 
-    const [hasScroll, setHasScroll] = React.useState(false);
-    const hasScrollShared = useSharedValue(false);
-
-    const setHasScrollGuarded = React.useCallback(
-        (newHasScroll) => {
-            if (newHasScroll !== hasScroll) {
-                setHasScroll(newHasScroll);
-                hasScrollShared.value = newHasScroll;
-            }
-        },
-        [hasScroll, setHasScroll, hasScrollShared],
-    );
+    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
     /**
      * On Android ScrollView stops to fire events when it reaches the end (y is 0).
@@ -277,11 +267,12 @@ export function UILargeTitleHeader({
     const scrollableContextValue = React.useMemo(
         () => ({
             ref: scrollRef,
+            panGestureHandlerRef: null,
             scrollHandler,
             gestureHandler,
             onWheel,
             hasScroll,
-            setHasScroll: setHasScrollGuarded,
+            setHasScroll,
             registerScrollable,
             unregisterScrollable,
         }),
@@ -291,7 +282,7 @@ export function UILargeTitleHeader({
             gestureHandler,
             onWheel,
             hasScroll,
-            setHasScrollGuarded,
+            setHasScroll,
             registerScrollable,
             unregisterScrollable,
         ],

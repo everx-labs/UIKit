@@ -72,7 +72,6 @@ function BigBottomSheet() {
                 <View
                     style={{
                         height: 100,
-                        backgroundColor: 'rgba(255, 0,0,.2)',
                     }}
                 />
                 <ScrollView
@@ -89,6 +88,18 @@ function BigBottomSheet() {
                     }}
                 >
                     <UILabel>Hello!</UILabel>
+                    {new Array(9)
+                        .fill(null)
+                        .map((_el, i) => (i + 1) / 10)
+                        .map((opacity) => (
+                            <View
+                                key={opacity}
+                                style={{
+                                    height: 100,
+                                    backgroundColor: `rgba(255,0,0,${opacity})`,
+                                }}
+                            />
+                        ))}
                 </ScrollView>
             </UIBottomSheet>
         </>

@@ -40,6 +40,7 @@ import {
 
 import { UIConstant } from '../constants';
 import { getYWithRubberBandEffect } from '../AnimationHelpers/getYWithRubberBandEffect';
+import { useHasScroll } from '../Scrollable';
 import { ScrollableContext } from '../Scrollable/Context';
 
 type OnClose = () => void | Promise<void>;
@@ -284,6 +285,41 @@ function usePosition(
         },
     });
 
+    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
+
+    const scrollGestureHandler = useAnimatedGestureHandler<
+        PanGestureHandlerGestureEvent,
+        {
+            translationY: number;
+        }
+    >({
+        onActive: (event, ctx) => {
+            const y = ctx.translationY - event.translationY;
+            ctx.translationY = event.translationY;
+
+            const intermediatePosition = position.value - y;
+
+            if (!hasScrollShared.value) {
+                if (y <= 0 || intermediatePosition > snapPointPosition.value) {
+                    adjustPosition(y);
+                    scrollTo(scrollRef, 0, 0, false);
+                    return;
+                }
+            }
+
+            if (yIsNegative.value && y <= 0) {
+                adjustPosition(y);
+            }
+        },
+        onStart: (_event, ctx) => {
+            ctx.translationY = 0;
+            positionWithoutRubberBand.value = 0;
+        },
+        onEnd: () => {
+            resetPosition();
+        },
+    });
+
     const onPanGestureHandler = useAnimatedGestureHandler<
         PanGestureHandlerGestureEvent,
         {
@@ -311,6 +347,9 @@ function usePosition(
         onPanGestureHandler,
         scrollRef,
         scrollHandler,
+        scrollGestureHandler,
+        hasScroll,
+        setHasScroll,
         position,
     };
 }
@@ -336,6 +375,9 @@ function UISheetPortalContent({
         onPanGestureHandler,
         scrollRef,
         scrollHandler,
+        scrollGestureHandler,
+        hasScroll,
+        setHasScroll,
         position,
     } = usePosition(height, keyboardHeight, onClose, onClosePortalRequest);
 
@@ -397,23 +439,27 @@ function UISheetPortalContent({
         };
     }, [position]);
 
+    const scrollPanGestureHandlerRef = React.useRef<PanGestureHandler>(null);
+
     const scrollableContextValue = React.useMemo(
         () => ({
             ref: scrollRef,
+            panGestureHandlerRef: scrollPanGestureHandlerRef,
             scrollHandler,
-            gestureHandler: undefined,
+            gestureHandler: scrollGestureHandler,
             onWheel: null,
-            hasScroll: true,
-            setHasScroll: () => {
-                // nothing
-            },
+            hasScroll,
+            setHasScroll,
             registerScrollable: null,
             unregisterScrollable: null,
         }),
         [
             scrollRef,
+            scrollPanGestureHandlerRef,
             scrollHandler,
-            // gestureHandler,
+            scrollGestureHandler,
+            hasScroll,
+            setHasScroll,
         ],
     );
 
@@ -444,6 +490,9 @@ function UISheetPortalContent({
                     maxPointers={1}
                     enabled={onClose != null}
                     onGestureEvent={onPanGestureHandler}
+                    {...(Platform.OS === 'android' && hasScroll
+                        ? { waitFor: scrollPanGestureHandlerRef }
+                        : null)}
                 >
                     <Animated.View style={style}>
                         <ScrollableContext.Provider
