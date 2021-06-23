@@ -107,7 +107,6 @@ export const shortenAmount = <T>(
 
     const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization =
         uiLocalized.ShortenedNumberSuffix;
-    console.log(shortenedNumberSuffixLocalization);
 
     const fractionalDigits: number = getDractionalDigits(settings);
     let bigNumberValue: BigNumber;
