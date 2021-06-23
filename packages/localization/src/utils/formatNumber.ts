@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { uiLocalized } from '../service';
 
 type FormatNumberSettings = {
-    digitsAfterDecimalPoint?: number | undefined;
+    fractionalDigits?: number | undefined;
 };
 type PowerOfTenForDecimalSuffixes =
     | '3'
