@@ -33,7 +33,7 @@ export type UILinkButtonProps = {
     layout?: UILayout;
     onPress?: () => void | Promise<void>;
     testID?: string;
-    title: string;
+    title?: string;
     type?: UILinkButtonType;
     variant?: UILinkButtonVariant;
 }
@@ -162,12 +162,15 @@ export const UILinkButton = ({
                         iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
                     />
                 }
-                <Button.Title
-                    titleColor={ColorVariants.TextAccent}
-                    titleAnimStyle={buttonAnimations.animatedTitle.titleAnimStyle}
-                >
-                    {title}
-                </Button.Title>
+                {
+                    title &&
+                    <Button.Title
+                        titleColor={ColorVariants.TextAccent}
+                        titleAnimStyle={buttonAnimations.animatedTitle.titleAnimStyle}
+                    >
+                        {title}
+                    </Button.Title>
+                }
                 {
                     iconPosition === UILinkButtonIconPosition.Middle && icon &&
                     <Button.Icon
