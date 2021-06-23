@@ -148,6 +148,7 @@ export const UILinkButton = ({
                 styles.container,
                 layout,
             ]}
+            contentStyle={styles.content}
             animations={buttonAnimations}
             onPress={onPress}
             testID={testID}
@@ -189,6 +190,9 @@ export const UILinkButton = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.linkButtonHeight,
+    },
+    content: {
+        alignItems: 'flex-start',
     },
     leftIcon: {
         marginRight: UIConstant.smallContentOffset,
