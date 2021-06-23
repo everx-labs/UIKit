@@ -7,12 +7,14 @@ import {
     getNumberFormatInfo,
     prepare,
     UIFunction,
+    shortenAmount,
 } from './utils';
 import type {
     Languages,
     NumberParts,
     NumberPartsOptions,
     StringLocaleInfo,
+    ShortenAmount,
 } from './types';
 import {
     Language,
@@ -21,7 +23,6 @@ import {
     UIConstant,
 } from './constants';
 import type { LanguagesOptions } from './types';
-import { getShortenAmount } from './utils/shortenAmount'
 
 const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
@@ -184,7 +185,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         return Language.En;
     }
 
-    shortenAmount = getShortenAmount<T>(this)
+    shortenAmount: ShortenAmount = shortenAmount.bind(this, this)
 }
 
 export const uiLocalized: LocalizedInstance<UILocalizedData> =

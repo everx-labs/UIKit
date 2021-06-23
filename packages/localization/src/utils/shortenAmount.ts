@@ -1,20 +1,10 @@
 import BigNumber from 'bignumber.js';
 import type { LocalizationService } from '../service';
-
-type FormatNumberSettings = {
-    fractionalDigits?: number | undefined;
-};
-type ShortenedNumberSuffix =
-    | '3'
-    | '6'
-    | '9'
-    | '12'
-    | '15'
-    | '18'
-    | '21'
-    | '24'
-    | '27'
-    | '30';
+import type {
+    ShortenedNumberSuffix,
+    ShortenedNumberSuffixLocalization,
+    ShortenAmountSettings,
+} from '../types';
 
 const convertPowerOfThousandToShortenedNumberSuffix = (
     powerOfThousand: number,
@@ -23,18 +13,18 @@ const convertPowerOfThousandToShortenedNumberSuffix = (
     return powerOfTen.toFixed() as ShortenedNumberSuffix;
 };
 
-const getSuffix = <T>(
+const getSuffix = (
     powerOfThousand: number,
-    uiLocalized: LocalizationService<T>,
+    shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization,
 ): string => {
     const shortenedNumberSuffix: ShortenedNumberSuffix = convertPowerOfThousandToShortenedNumberSuffix(
         powerOfThousand,
     );
-    return uiLocalized.ShortenedNumberSuffix[shortenedNumberSuffix];
+    return shortenedNumberSuffixLocalization[shortenedNumberSuffix];
 };
 
 const DEFAULT_FRACTIONAL_DIGITS: number = 0;
-const getDractionalDigits = (settings?: FormatNumberSettings): number => {
+const getDractionalDigits = (settings?: ShortenAmountSettings): number => {
     return settings && settings.fractionalDigits
         ? settings.fractionalDigits
         : DEFAULT_FRACTIONAL_DIGITS;
@@ -47,13 +37,16 @@ type ShortenAmountAttributes = {
     value: string;
     suffix: string;
 };
-const getShortenAmountAttributes = <T>(
+const getShortenAmountAttributes = (
     value: BigNumber,
     powerOfThousand: number,
     fractionalDigits: number,
-    uiLocalized: LocalizationService<T>,
+    shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization,
 ): ShortenAmountAttributes => {
-    const suffix: string = getSuffix(powerOfThousand, uiLocalized);
+    const suffix: string = getSuffix(
+        powerOfThousand,
+        shortenedNumberSuffixLocalization,
+    );
     const scale: BigNumber = new BigNumber(1000).pow(powerOfThousand);
     const scaledValue: BigNumber = value.div(scale);
     const resultValue: string = scaledValue.toFixed(fractionalDigits);
@@ -68,7 +61,7 @@ const getShortenAmountAttributes = <T>(
             value,
             powerOfThousand + 1,
             fractionalDigits,
-            uiLocalized,
+            shortenedNumberSuffixLocalization,
         );
     }
     return {
@@ -86,10 +79,10 @@ const getPowerOfThousand = (value: BigNumber): number => {
     return Math.floor((getNumberOfDigitsInIntegerPartOfNumber(value) - 1) / 3);
 };
 
-const shortenBigNumber = <T>(
+const shortenBigNumber = (
     value: BigNumber,
     fractionalDigits: number,
-    uiLocalized: LocalizationService<T>,
+    shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization,
 ): string => {
     const powerOfThousand: number = getPowerOfThousand(value);
 
@@ -101,19 +94,23 @@ const shortenBigNumber = <T>(
         value,
         powerOfThousand,
         fractionalDigits,
-        uiLocalized,
+        shortenedNumberSuffixLocalization,
     );
     return `${shortenAmountAttributes.value} ${shortenAmountAttributes.suffix}`;
 };
 
-const shortenAmount = <T>(
+export const shortenAmount = <T>(
     uiLocalized: LocalizationService<T>,
     value: number | BigNumber | null,
-    settings?: FormatNumberSettings,
+    settings?: ShortenAmountSettings,
 ): string => {
     if (value === null) {
         return '';
     }
+
+    const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization =
+        uiLocalized.ShortenedNumberSuffix;
+    console.log(shortenedNumberSuffixLocalization);
 
     const fractionalDigits: number = getDractionalDigits(settings);
     let bigNumberValue: BigNumber;
@@ -129,10 +126,9 @@ const shortenAmount = <T>(
     } else {
         bigNumberValue = value;
     }
-    return shortenBigNumber(bigNumberValue, fractionalDigits, uiLocalized);
+    return shortenBigNumber(
+        bigNumberValue,
+        fractionalDigits,
+        shortenedNumberSuffixLocalization,
+    );
 };
-
-export const getShortenAmount = <T>(uiLocalized: LocalizationService<T>) => (
-    value: number | BigNumber | null,
-    settings?: FormatNumberSettings,
-): string => shortenAmount(uiLocalized, value, settings);
