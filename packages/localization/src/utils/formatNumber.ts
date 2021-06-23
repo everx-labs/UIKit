@@ -62,7 +62,7 @@ const getResult = (
         return getResult(value, powerOfThousand + 1, digitsAfterDecimalPoint);
     }
     return {
-        value: scaledValue.toFixed(digitsAfterDecimalPoint),
+        value: resultValue,
         suffix,
     };
 };
