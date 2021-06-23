@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-// import Animated from 'react-native-reanimated';
 import { uiLocalized } from '../service';
 
 type FormatNumberSettings = {
@@ -60,7 +59,7 @@ export const formatNumber = (
     settings?: FormatNumberSettings,
 ): string => {
     if (value === null) {
-        return ''
+        return '';
     }
 
     let bigNumberValue: BigNumber;
