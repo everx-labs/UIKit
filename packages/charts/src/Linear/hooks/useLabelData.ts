@@ -4,7 +4,7 @@ import type {
     LinearChartPoint,
     LinearChartLabelData,
     LinearChartControlPoints,
-} from '../../../types';
+} from '../../types';
 import { getScaledData, getControlPoints } from '../utils';
 import { useLabelCoordinates } from './useLabelCoordinates';
 import { useLabelText } from './useLabelText';
