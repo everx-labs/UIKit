@@ -21,6 +21,7 @@ import {
     UIConstant,
 } from './constants';
 import type { LanguagesOptions } from './types';
+import { getShortenAmount } from './utils/shortenAmount'
 
 const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
@@ -182,6 +183,8 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
 
         return Language.En;
     }
+
+    shortenAmount = getShortenAmount<T>(this)
 }
 
 export const uiLocalized: LocalizedInstance<UILocalizedData> =

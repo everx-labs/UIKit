@@ -1,10 +1,8 @@
 import BigNumber from 'bignumber.js';
 
 import type { NumberParts, NumberPartsOptions, StringLocaleInfo } from '../types';
-// import { numberFormat } from './numberFormat'
 
 export class UIFunction {
-    // static numberFormat = numberFormat
     // Allows to print small numbers with "-e" suffix
     static getNumberString(
         number: number | BigNumber,
