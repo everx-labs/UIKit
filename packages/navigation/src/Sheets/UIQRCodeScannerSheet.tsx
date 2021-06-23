@@ -17,7 +17,7 @@ import {
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import { QRCodeScanner, OnReadEvent } from './QRCodeScanner';
-import { UICardSheet, UICardSheetProps } from './UISheet';
+import { UICardSheet, UICardSheetProps } from './UICardSheet';
 import { UIConstant } from '../constants';
 
 export type UIQRCodeScannerSheetProps = Omit<UICardSheetProps, 'children'> & {

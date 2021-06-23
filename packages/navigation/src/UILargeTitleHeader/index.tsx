@@ -23,7 +23,7 @@ import { useHasScroll } from '../Scrollable';
 import { ScrollableContext } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
-import { HEADER_HEIGHT, SCREEN_CONTENT_INSET_HORIZONTAL } from '../constants';
+import { UIConstant } from '../constants';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
 
@@ -376,9 +376,7 @@ export function UILargeTitleHeader({
                     </ScrollableContext.Provider>
                 </UILargeTitleContainerRefContext.Provider>
             </Animated.View>
-            <UIBackgroundView
-                style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
-            >
+            <UIBackgroundView style={styles.mainHeaderContainer}>
                 <UIStackNavigationBar
                     {...navigationBarProps}
                     headerTitleOpacity={headerTitleOpacity}
@@ -394,19 +392,20 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    mainHeaderFiller: { height: HEADER_HEIGHT },
+    mainHeaderFiller: { height: UIConstant.headerHeight },
     mainHeaderContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
+        height: UIConstant.headerHeight,
     },
     mainHeaderTitleContainer: {
         alignItems: 'center',
         justifyContent: 'center',
     },
     largeTitleHeaderContainer: {
-        padding: SCREEN_CONTENT_INSET_HORIZONTAL,
+        padding: UIConstant.scrollContentInsetHorizontal,
     },
     sceneContainerWithoutScroll: {
         flex: 1,
