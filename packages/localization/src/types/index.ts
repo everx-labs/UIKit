@@ -108,3 +108,8 @@ export type ShortenAmount = (
     value: number | BigNumber | null,
     settings?: ShortenAmountSettings,
 ) => string;
+
+export type ShortenedAmountAttributes = {
+    value: string;
+    suffix: string;
+};

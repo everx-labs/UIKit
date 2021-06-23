@@ -4,6 +4,7 @@ import type {
     ShortenedNumberSuffix,
     ShortenedNumberSuffixLocalization,
     ShortenAmountSettings,
+    ShortenedAmountAttributes,
 } from '../types';
 
 const convertPowerOfThousandToShortenedNumberSuffix = (
@@ -33,16 +34,12 @@ const getDractionalDigits = (settings?: ShortenAmountSettings): number => {
 const getNumberOfDigitsInIntegerPartOfNumber = (value: BigNumber): number =>
     value.decimalPlaces(0, 1).precision(true);
 
-type ShortenAmountAttributes = {
-    value: string;
-    suffix: string;
-};
-const getShortenAmountAttributes = (
+const getShortenedAmountAttributes = (
     value: BigNumber,
     powerOfThousand: number,
     fractionalDigits: number,
     shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization,
-): ShortenAmountAttributes => {
+): ShortenedAmountAttributes => {
     const suffix: string = getSuffix(
         powerOfThousand,
         shortenedNumberSuffixLocalization,
@@ -57,7 +54,7 @@ const getShortenAmountAttributes = (
     if (
         getNumberOfDigitsInIntegerPartOfNumber(new BigNumber(resultValue)) > 3
     ) {
-        return getShortenAmountAttributes(
+        return getShortenedAmountAttributes(
             value,
             powerOfThousand + 1,
             fractionalDigits,
@@ -90,13 +87,13 @@ const shortenBigNumber = (
         return value.toFixed(fractionalDigits);
     }
 
-    const shortenAmountAttributes: ShortenAmountAttributes = getShortenAmountAttributes(
+    const shortenedAmountAttributes: ShortenedAmountAttributes = getShortenedAmountAttributes(
         value,
         powerOfThousand,
         fractionalDigits,
         shortenedNumberSuffixLocalization,
     );
-    return `${shortenAmountAttributes.value} ${shortenAmountAttributes.suffix}`;
+    return `${shortenedAmountAttributes.value} ${shortenedAmountAttributes.suffix}`;
 };
 
 export const shortenAmount = <T>(
