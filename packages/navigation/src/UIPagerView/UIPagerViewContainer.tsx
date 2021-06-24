@@ -23,7 +23,7 @@ import {
     useTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
-import { CONTENT_OFFSET, PAGER_VIEW_HEIGHT } from '../constants';
+import { UIConstant } from '../constants';
 import type {
     UIPagerViewContainerProps,
     UIPagerViewContainerType,
@@ -364,24 +364,24 @@ const styles = StyleSheet.create({
         height: 1,
     },
     fixedTabBar: {
-        height: PAGER_VIEW_HEIGHT,
+        height: UIConstant.pagerViewHeight,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
     },
     fixedPaddedTabBar: {
-        height: PAGER_VIEW_HEIGHT,
+        height: UIConstant.pagerViewHeight,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
-        marginHorizontal: CONTENT_OFFSET,
+        marginHorizontal: UIConstant.contentOffset,
     },
     tab: {
         minHeight: 40,
         paddingVertical: 10,
-        paddingHorizontal: CONTENT_OFFSET,
+        paddingHorizontal: UIConstant.contentOffset,
     },
     fixedTab: {
         alignItems: 'stretch',
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         height: 1,
     },
     scrollableTabBar: {
-        height: PAGER_VIEW_HEIGHT,
+        height: UIConstant.pagerViewHeight,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,

@@ -194,6 +194,8 @@ module.exports = {
                 'react-native-web/dist/exports/AppRegistry/AppContainer',
             'react-native/Libraries/Text/TextAncestor':
                 'react-native-web/dist/exports/Text/TextAncestorContext',
+            'react-native/Libraries/Animated/src/SpringConfig':
+                'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes':
                 'react',
             'react-native$': 'react-native-web',

@@ -6,7 +6,7 @@ import type {
     NativeScrollEvent,
 } from 'react-native';
 
-import { getYWithRubberBandEffect } from '../getYWithRubberBandEffect';
+import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 
 export default function (
     scrollRef: React.RefObject<RNScrollView>,

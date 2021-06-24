@@ -18,11 +18,7 @@ import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import {
-    HEADER_HEIGHT,
-    ICON_SEARCH_SIZE,
-    ICON_SEARCHING_INDICATOR_SIZE,
-} from './constants';
+import { UIConstant as UINavConstant } from './constants';
 
 type OnPress = () => void | Promise<void>;
 
@@ -83,7 +79,7 @@ function useInnerRightAction(
         return (
             <UIIndicator
                 style={styles.loadingIcon}
-                size={ICON_SEARCHING_INDICATOR_SIZE}
+                size={UINavConstant.iconSearchingIndicatorSize}
                 trackWidth={2}
             />
         );
@@ -190,7 +186,7 @@ export function UISearchBar({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: HEADER_HEIGHT,
+        minHeight: UINavConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UIConstant.smallContentOffset(),
@@ -206,8 +202,8 @@ const styles = StyleSheet.create({
         paddingRight: 8,
     },
     searchIcon: {
-        width: ICON_SEARCH_SIZE,
-        height: ICON_SEARCH_SIZE,
+        width: UINavConstant.iconSearchSize,
+        height: UINavConstant.iconSearchSize,
         marginRight: UIConstant.tinyContentOffset(),
     },
     loadingIcon: {

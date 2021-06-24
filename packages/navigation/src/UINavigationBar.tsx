@@ -11,12 +11,7 @@ import {
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
 
-import {
-    HEADER_HEIGHT,
-    SCREEN_CONTENT_INSET_HORIZONTAL,
-    CONTENT_INSET_VERTICAL_X2,
-    TITLE_MINIMUM_FONT_SCALE,
-} from './constants';
+import { UIConstant as UINavConstant } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
@@ -120,7 +115,7 @@ export function UINavigationBar({
             <UILabel
                 role={UILabelRoles.HeadlineHead}
                 adjustsFontSizeToFit
-                minimumFontScale={TITLE_MINIMUM_FONT_SCALE}
+                minimumFontScale={UINavConstant.titleMinimumFontScale}
                 numberOfLines={1}
                 ellipsizeMode="middle"
             >
@@ -188,25 +183,25 @@ export function UINavigationBar({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: HEADER_HEIGHT,
+        minHeight: UINavConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: CONTENT_INSET_VERTICAL_X2,
-        paddingHorizontal: SCREEN_CONTENT_INSET_HORIZONTAL,
+        paddingVertical: UINavConstant.contentInsetVerticalX2,
+        paddingHorizontal: UINavConstant.scrollContentInsetHorizontal,
         flexWrap: 'nowrap',
     },
     titleContainer: {
         position: 'absolute',
-        top: CONTENT_INSET_VERTICAL_X2,
-        bottom: CONTENT_INSET_VERTICAL_X2,
+        top: UINavConstant.contentInsetVerticalX2,
+        bottom: UINavConstant.contentInsetVerticalX2,
         left:
             UIConstant.iconSize() +
-            CONTENT_INSET_VERTICAL_X2 +
-            SCREEN_CONTENT_INSET_HORIZONTAL,
+            UINavConstant.contentInsetVerticalX2 +
+            UINavConstant.scrollContentInsetHorizontal,
         right:
             UIConstant.iconSize() +
-            CONTENT_INSET_VERTICAL_X2 +
-            SCREEN_CONTENT_INSET_HORIZONTAL,
+            UINavConstant.contentInsetVerticalX2 +
+            UINavConstant.scrollContentInsetHorizontal,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'transparent',
