@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Button, UILayout } from './Button';
+import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 import { UILabelRoles } from './UILabel';
@@ -107,7 +107,7 @@ const getButtonStates = (
             hoverBorderColor: ColorVariants.StaticHoverOverlay,
             pressBackgroundColor: ColorVariants.StaticPressOverlay,
             pressBorderColor: ColorVariants.StaticPressOverlay,
-            activeTitleColor: ColorVariants.StaticTextPrimaryLight,
+            activeContentColor: ColorVariants.StaticTextPrimaryLight,
         };
     }
     return {
@@ -115,7 +115,7 @@ const getButtonStates = (
         hoverBorderColor: ColorVariants.LineNeutral,
         pressBackgroundColor: ColorVariants.BackgroundPrimary,
         pressBorderColor: ColorVariants.LineNeutral,
-        activeTitleColor: ColorVariants.TextPrimary,
+        activeContentColor: ColorVariants.TextPrimary,
     };
 };
 
@@ -125,30 +125,30 @@ function useButtonAnimations(
     backgroundColor: ColorVariants,
     borderColor: ColorVariants,
     contentColor: ColorVariants,
-) {
+): ButtonAnimations {
     const {
         hoverBackgroundColor,
         hoverBorderColor,
         pressBackgroundColor,
         pressBorderColor,
-        activeTitleColor,
+        activeContentColor,
     } = getButtonStates(type);
     const theme = useTheme();
 
+    let initialBackgroundColor: string;
+    let initialBorderColor: string;
+
+    if (type === UIMsgButtonType.Primary) {
+        initialBackgroundColor = theme[ColorVariants.Transparent] as string;
+        initialBorderColor = theme[ColorVariants.Transparent] as string;
+    } else {
+        initialBackgroundColor = theme[ColorVariants[backgroundColor]] as string;
+        initialBorderColor = theme[ColorVariants[borderColor]] as string;
+    }
+
     const hoverAnim = Animated.useSharedValue(0);
     const hoverStyle = Animated.useAnimatedStyle(() => {
-        let initialBackgroundColor;
-        let initialBorderColor;
-
-        if (type === UIMsgButtonType.Primary) {
-            initialBackgroundColor = theme[ColorVariants.Transparent] as string;
-            initialBorderColor = theme[ColorVariants.Transparent] as string;
-        } else {
-            initialBackgroundColor = theme[ColorVariants[backgroundColor]] as string;
-            initialBorderColor = theme[ColorVariants[borderColor]] as string;
-        }
-
-        const hoverStyleValues = {
+        return {
             backgroundColor: Animated.interpolateColor(
                 hoverAnim.value,
                 [0, 1],
@@ -166,24 +166,16 @@ function useButtonAnimations(
                 ],
             ),
         };
-
-        if (type === UIMsgButtonType.Primary) {
-            return hoverStyleValues;
-        }
-        return StyleSheet.flatten([
-            buttonStyle,
-            hoverStyleValues,
-        ]);
     });
 
     const pressAnim = Animated.useSharedValue(0);
     const pressStyle = Animated.useAnimatedStyle(() => {
-        const pressStyleValues = {
+        return {
             backgroundColor: Animated.interpolateColor(
                 pressAnim.value,
                 [0, 1],
                 [
-                    theme[ColorVariants.Transparent] as string,
+                    initialBackgroundColor,
                     theme[ColorVariants[pressBackgroundColor]] as string,
                 ],
             ),
@@ -191,18 +183,11 @@ function useButtonAnimations(
                 pressAnim.value,
                 [0, 1],
                 [
-                    theme[ColorVariants.Transparent] as string,
+                    initialBorderColor,
                     theme[ColorVariants[pressBorderColor]] as string,
                 ],
             ),
         };
-        if (type === UIMsgButtonType.Primary) {
-            return pressStyleValues;
-        }
-        return StyleSheet.flatten([
-            buttonStyle,
-            pressStyleValues,
-        ]);
     });
 
     const titleAnim = Animated.useSharedValue(0);
@@ -213,7 +198,7 @@ function useButtonAnimations(
                 [0, 1],
                 [
                     theme[ColorVariants[contentColor]] as string,
-                    theme[ColorVariants[activeTitleColor]] as string,
+                    theme[ColorVariants[activeContentColor]] as string,
                 ],
             ),
         };
@@ -222,57 +207,54 @@ function useButtonAnimations(
     const iconAnim = Animated.useSharedValue(0);
     const iconAnimStyle = Animated.useAnimatedStyle(() => {
         return {
-            tintColor: Animated.interpolateColor(
-                iconAnim.value,
-                [0, 1],
-                [
-                    theme[ColorVariants[contentColor]] as string,
-                    theme[ColorVariants[activeTitleColor]] as string,
-                ],
-            ),
+            opacity: iconAnim.value,
         };
     });
 
     if (type === UIMsgButtonType.Primary) {
         return {
-            animatedHover: {
-                hoverAnim,
-                hoverBackgroundStyle: null,
-                hoverOverlayStyle: hoverStyle,
+            hover: {
+                animationParam: hoverAnim,
+                backgroundStyle: undefined,
+                overlayStyle: hoverStyle,
             },
-            animatedPress: {
-                pressAnim,
-                hoverBackgroundStyle: null,
-                pressOverlayStyle: pressStyle,
+            press: {
+                animationParam: pressAnim,
+                backgroundStyle: undefined,
+                overlayStyle: pressStyle,
             },
-            animatedTitle: {
-                titleAnim,
-                titleAnimStyle,
+            title: {
+                animationParam: titleAnim,
+                style: titleAnimStyle,
             },
-            animatedIcon: {
-                iconAnim,
-                iconAnimStyle,
+            icon: {
+                animationParam: iconAnim,
+                style: iconAnimStyle,
+                initialColor: contentColor,
+                activeColor: activeContentColor,
             },
         }
     }
     return {
-        animatedHover: {
-            hoverAnim,
-            hoverBackgroundStyle: hoverStyle,
-            hoverOverlayStyle: null,
+        hover: {
+            animationParam: hoverAnim,
+            backgroundStyle: hoverStyle,
+            overlayStyle: undefined,
         },
-        animatedPress: {
-            pressAnim,
-            pressBackgroundStyle: pressStyle,
-            pressOverlayStyle: null,
+        press: {
+            animationParam: pressAnim,
+            backgroundStyle: pressStyle,
+            overlayStyle: undefined,
         },
-        animatedTitle: {
-            titleAnim,
-            titleAnimStyle,
+        title: {
+            animationParam: titleAnim,
+            style: titleAnimStyle,
         },
-        animatedIcon: {
-            iconAnim,
-            iconAnimStyle,
+        icon: {
+            animationParam: iconAnim,
+            style: iconAnimStyle,
+            initialColor: contentColor,
+            activeColor: activeContentColor,
         },
     };
 }
@@ -378,21 +360,21 @@ export const UIMsgButton = ({
     const { buttonStyle, backgroundColor, borderColor, contentColor } = useButtonStyles(type, variant, cornerPosition, disabled, loading);
     const buttonAnimations = useButtonAnimations(type, buttonStyle, backgroundColor, borderColor, contentColor);
     const [ content, containerStyle, contentStyle ] = React.useMemo(() => {
-        const { animatedTitle: { titleAnimStyle }, animatedIcon: { iconAnimStyle }} = buttonAnimations;
+        const { title: titleAnim, icon: iconAnim} = buttonAnimations;
         if (title && caption) {
             return [
                 (
                     <Button.Content direction={Button.ContentDirection.Column}>
                         <Button.Title
                             titleColor={contentColor}
-                            titleAnimStyle={titleAnimStyle}
+                            titleAnimStyle={titleAnim?.style}
                         >
                             {title}
                         </Button.Title>
                         <Button.Title
                             titleColor={contentColor}
                             titleRole={UILabelRoles.ActionLabel}
-                            titleAnimStyle={titleAnimStyle}
+                            titleAnimStyle={titleAnim?.style}
                         >
                             {caption}
                         </Button.Title>
@@ -412,14 +394,16 @@ export const UIMsgButton = ({
                             <Button.Icon
                                 source={icon}
                                 style={styles.leftIcon}
-                                iconAnimStyle={iconAnimStyle}
+                                iconAnimStyle={iconAnim?.style}
+                                initialColor={iconAnim?.initialColor}
+                                activeColor={iconAnim?.activeColor}
                             />
                         }
                         {
                             title &&
                             <Button.Title
                                 titleColor={contentColor}
-                                titleAnimStyle={titleAnimStyle}
+                                titleAnimStyle={titleAnim?.style}
                             >
                                 {title}
                             </Button.Title>
@@ -428,7 +412,9 @@ export const UIMsgButton = ({
                             iconPosition === UIMsgButtonIconPosition.Middle && icon &&
                             <Button.Icon
                                 source={icon}
-                                iconAnimStyle={iconAnimStyle}
+                                iconAnimStyle={iconAnim?.style}
+                                initialColor={iconAnim?.initialColor}
+                                activeColor={iconAnim?.activeColor}
                             />
                         }
                     </Button.Content>
@@ -436,7 +422,9 @@ export const UIMsgButton = ({
                         iconPosition === UIMsgButtonIconPosition.Right && icon &&
                         <Button.Icon
                             source={icon}
-                            iconAnimStyle={iconAnimStyle}
+                            iconAnimStyle={iconAnim?.style}
+                            initialColor={iconAnim?.initialColor}
+                            activeColor={iconAnim?.activeColor}
                         />
                     }
                 </>

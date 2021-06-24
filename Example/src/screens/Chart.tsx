@@ -9,9 +9,9 @@ const getRandomSign = (): number => {
     return Math.random() > 0.5 ? 1 : -1;
 };
 const getRandomValue = () =>
-    (Math.floor(Math.random() * 10) / 10) * getRandomSign();
+    (Math.floor(Math.random() * 1000000) / 10) * getRandomSign();
 
-let acc = 100;
+let acc = 0;
 const getСumulativeValue = () => {
     acc += getRandomValue();
     return acc;
@@ -20,7 +20,7 @@ const getСumulativeValue = () => {
 const dataLength: number = 60;
 
 const getData = (): LinearChartPoint[] => {
-    acc = 100;
+    acc = 1000000;
     return Array(dataLength)
         .fill(0)
         .map((_, index: number) => {

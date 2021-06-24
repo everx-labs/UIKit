@@ -22,6 +22,7 @@ import type {
     LinearChartLabelData,
 } from '../types';
 import { useLabelData, useAnimatedPathProps } from './hooks';
+import { formatLabelText } from './utils';
 
 Animated.addWhitelistedNativeProps({ text: true, value: true });
 
@@ -70,9 +71,9 @@ const styles = StyleSheet.create({
         top: 0,
     },
     extremumLabelContainer: {
-        left: -25,
+        left: -50,
         height: 16,
-        width: 50,
+        width: 100,
         paddingHorizontal: 4,
         alignItems: 'center',
     },
@@ -170,7 +171,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                         role={TypographyVariants.ParagraphLabel}
                         color={ColorVariants.TextPrimary}
                     >
-                        {data[0].y.toFixed(2)}
+                        {formatLabelText(data[0].y)}
                     </UILabel>
                 </Animated.View>
             </View>
@@ -186,7 +187,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                         color={ColorVariants.TextPrimary}
                         numberOfLines={1}
                     >
-                        {data[data.length - 1].y.toFixed(2)}
+                        {formatLabelText(data[data.length - 1].y)}
                     </UILabel>
                 </Animated.View>
             </View>
@@ -203,7 +204,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                             color={ColorVariants.TextTertiary}
                             numberOfLines={1}
                         >
-                            {labelData.maximumValue}
+                            {formatLabelText(labelData.maximumValue)}
                         </UILabel>
                     </Animated.View>
                 </Animated.View>
@@ -221,7 +222,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                             color={ColorVariants.TextTertiary}
                             numberOfLines={1}
                         >
-                            {labelData.minimumValue}
+                            {formatLabelText(labelData.minimumValue)}
                         </UILabel>
                     </Animated.View>
                 </Animated.View>

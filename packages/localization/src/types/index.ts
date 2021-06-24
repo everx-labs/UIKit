@@ -83,3 +83,39 @@ export type LanguageInfo = {
     country: string, // Works with UICountryPicker
     dayJS: string, // Works with DayJS
 }
+
+export type ShortenAmountSettings = {
+    /** The number of digits in the fractional part of the number */
+    fractionalDigits?: number | undefined;
+    /**
+     * Is it necessary to localize amount?
+     * By default is `true`
+     */
+    isLocalized?: boolean;
+};
+
+export type ShortenedNumberSuffix =
+    | '3'
+    | '6'
+    | '9'
+    | '12'
+    | '15'
+    | '18'
+    | '21'
+    | '24'
+    | '27'
+    | '30';
+
+export type ShortenedNumberSuffixLocalization = {
+    [key in ShortenedNumberSuffix]: string;
+};
+
+export type ShortenAmount = (
+    value: number | BigNumber | null,
+    settings?: ShortenAmountSettings,
+) => string;
+
+export type ShortenedAmountAttributes = {
+    value: string;
+    suffix: string;
+};

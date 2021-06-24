@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Button, UILayout } from './Button';
+import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
@@ -88,33 +88,33 @@ const getButtonStates = (
         return {
             hoverOverlayColor: ColorVariants.StaticHoverOverlay,
             pressOverlayColor: ColorVariants.StaticPressOverlay,
-            activeTitleColor: ColorVariants.StaticTextPrimaryLight,
+            activeContentColor: ColorVariants.StaticTextPrimaryLight,
         };
     } else if (type === UIBoxButtonType.Secondary) {
         return {
             hoverOverlayColor: ColorVariants.BackgroundTertiary,
             pressOverlayColor: ColorVariants.BackgroundNeutral,
-            activeTitleColor: ColorVariants.TextPrimary,
+            activeContentColor: ColorVariants.TextPrimary,
         }
     } else if (type === UIBoxButtonType.Tertiary) {
         return {
             hoverOverlayColor: ColorVariants.Transparent,
             pressOverlayColor: ColorVariants.Transparent,
-            activeTitleColor: ColorVariants.TextPrimary,
+            activeContentColor: ColorVariants.TextPrimary,
         }
     }
     return {
         hoverOverlayColor: ColorVariants.Transparent,
         pressOverlayColor: ColorVariants.Transparent,
-        activeTitleColor: ColorVariants.TextAccent,
+        activeContentColor: ColorVariants.TextAccent,
     };
 };
 
 function useButtonAnimations(
     type: UIBoxButtonType,
     contentColor: ColorVariants,
-) {
-    const { hoverOverlayColor, pressOverlayColor, activeTitleColor } = getButtonStates(type);
+): ButtonAnimations {
+    const { hoverOverlayColor, pressOverlayColor, activeContentColor } = getButtonStates(type);
     const theme = useTheme();
 
     const hoverAnim = Animated.useSharedValue(0);
@@ -158,7 +158,7 @@ function useButtonAnimations(
             [0, 1],
             [
                 theme[ColorVariants[contentColor]] as string,
-                theme[ColorVariants[activeTitleColor]] as string,
+                theme[ColorVariants[activeContentColor]] as string,
             ],
         );
     });
@@ -169,40 +169,32 @@ function useButtonAnimations(
     });
 
     const iconAnim = Animated.useSharedValue(0);
-    const iconAnimValue = Animated.useDerivedValue(() => {
-        return Animated.interpolateColor(
-            iconAnim.value,
-            [0, 1],
-            [
-                theme[ColorVariants[contentColor]] as string,
-                theme[ColorVariants[activeTitleColor]] as string,
-            ],
-        );
-    });
     const iconAnimStyle = Animated.useAnimatedStyle(() => {
         return {
-            tintColor: iconAnimValue.value,
+            opacity: iconAnim.value,
         };
     });
 
     return {
-        animatedHover: {
-            hoverAnim,
-            hoverBackgroundStyle: null,
-            hoverOverlayStyle,
+        hover: {
+            animationParam: hoverAnim,
+            backgroundStyle: undefined,
+            overlayStyle: hoverOverlayStyle,
         },
-        animatedPress: {
-            pressAnim,
-            pressBackgroundStyle: null,
-            pressOverlayStyle,
+        press: {
+            animationParam: pressAnim,
+            backgroundStyle: undefined,
+            overlayStyle: pressOverlayStyle,
         },
-        animatedTitle: {
-            titleAnim,
-            titleAnimStyle,
+        title: {
+            animationParam: titleAnim,
+            style: titleAnimStyle,
         },
-        animatedIcon: {
-            iconAnim,
-            iconAnimStyle,
+        icon: {
+            animationParam: iconAnim,
+            style: iconAnimStyle,
+            initialColor: contentColor,
+            activeColor: activeContentColor,
         },
     };
 }
@@ -322,14 +314,16 @@ export const UIBoxButton = ({
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
-                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                        iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
                     />
                 }
                 {
                     title &&
                     <Button.Title
                         titleColor={contentColor}
-                        titleAnimStyle={buttonAnimations.animatedTitle.titleAnimStyle}
+                        titleAnimStyle={buttonAnimations.title?.style}
                     >
                         {title}
                     </Button.Title>
@@ -338,7 +332,9 @@ export const UIBoxButton = ({
                     iconPosition === UIBoxButtonIconPosition.Middle && icon &&
                     <Button.Icon
                         source={icon}
-                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                        iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
                     />
                 }
             </Button.Content>
@@ -346,7 +342,9 @@ export const UIBoxButton = ({
                 iconPosition === UIBoxButtonIconPosition.Right && icon &&
                 <Button.Icon
                     source={icon}
-                    iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                    iconAnimStyle={buttonAnimations.icon?.style}
+                    initialColor={buttonAnimations.icon?.initialColor}
+                    activeColor={buttonAnimations.icon?.activeColor}
                 />
             }
         </Button>

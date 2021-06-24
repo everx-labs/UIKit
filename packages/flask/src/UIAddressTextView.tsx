@@ -1,5 +1,9 @@
 import * as React from 'react';
-import type { TextInput, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import type {
+    TextInput,
+    NativeSyntheticEvent,
+    TextInputFocusEventData,
+} from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
@@ -7,10 +11,10 @@ import {
     useUITextViewValue,
     UIMaterialTextView,
     UIMaterialTextViewProps,
-    UIQRCodeScannerSheet,
     ColorVariants,
     UIMaterialTextViewRef,
 } from '@tonlabs/uikit.hydrogen';
+import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 
 export type UIAddressTextViewValidationResult = {
     helperText?: string;

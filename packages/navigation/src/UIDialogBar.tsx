@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.hydrogen';
-import { HEADER_HEIGHT } from './constants';
+import { UIConstant as UINavConstant } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 
@@ -42,7 +42,7 @@ export function UIDialogBar({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: HEADER_HEIGHT,
+        minHeight: UINavConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UIConstant.smallContentOffset(),
