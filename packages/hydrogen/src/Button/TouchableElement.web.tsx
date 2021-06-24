@@ -65,30 +65,32 @@ export const TouchableElement = ({
     );
 
     const handlePressIn = () => {
-        if (!loading) {
-            if (press) {
-                press.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-            }
-            if (title) {
-                title.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-            }
-            if (icon) {
-                icon.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-            }
+        if (loading) {
+            return;
+        }
+        if (press) {
+            press.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+        }
+        if (title) {
+            title.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+        }
+        if (icon) {
+            icon.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
     const handlePressOut = () => {
-        if (!loading) {
-            if (press) {
-                press.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-            }
-            if (title) {
-                title.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-            }
-            if (icon) {
-                icon.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-            }
+        if (loading) {
+            return;
+        }
+        if (press) {
+            press.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+        }
+        if (title) {
+            title.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+        }
+        if (icon) {
+            icon.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
