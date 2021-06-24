@@ -1,26 +1,7 @@
-import * as React from 'react';
-import { SectionList as RNSectionList, SectionListProps } from 'react-native';
+import { SectionList as RNSectionList } from 'react-native';
+import { wrapScrollableComponent } from './wrapScrollableComponent';
 
-import { ScrollView } from './ScrollView';
-
-export const SectionList = React.forwardRef<
+export const SectionList: typeof RNSectionList = wrapScrollableComponent(
     RNSectionList,
-    SectionListProps<any>
->(function SectionListForwarded<ItemT>(
-    props: SectionListProps<ItemT>,
-    ref: React.Ref<RNSectionList>,
-) {
-    return (
-        <RNSectionList
-            ref={ref}
-            {...props}
-            renderScrollComponent={(scrollProps) => (
-                // @ts-ignore
-                <ScrollView {...scrollProps} />
-            )}
-        />
-    );
-}) as <ItemT>(props: SectionListProps<ItemT>) => React.ReactElement;
-
-// @ts-ignore
-SectionList.displayName = 'SectionList';
+    'UISectionList',
+);

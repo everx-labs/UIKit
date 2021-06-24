@@ -1,19 +1,28 @@
 import * as React from 'react';
-import type { ScrollViewProps, ScrollView as RNScrollView } from 'react-native';
+import type { ScrollViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
 
-type Props = ScrollViewProps & { children?: React.ReactNode };
+export function wrapScrollableComponent<Props extends ScrollViewProps>(
+    ScrollableComponent: React.ComponentClass<Props>,
+    displayName: string,
+) {
+    const AnimatedScrollable = Animated.createAnimatedComponent(
+        ScrollableComponent,
+    );
 
-export const ScrollView = React.forwardRef<RNScrollView>(
-    function ScrollViewForwarded(props: Props, forwardRef) {
+    function ScrollableForwarded(
+        props: Props & { children?: React.ReactNode },
+        forwardRef: React.RefObject<typeof AnimatedScrollable>,
+    ) {
         const { onLayout, onContentSizeChange } = useHasScroll();
 
         const {
             ref,
             scrollHandler,
+            onWheel,
             registerScrollable,
             unregisterScrollable,
         } = React.useContext(ScrollableContext);
@@ -28,7 +37,7 @@ export const ScrollView = React.forwardRef<RNScrollView>(
                     unregisterScrollable();
                 }
             };
-        });
+        }, [registerScrollable, unregisterScrollable]);
 
         React.useImperativeHandle(forwardRef, () => {
             // @ts-ignore
@@ -37,17 +46,30 @@ export const ScrollView = React.forwardRef<RNScrollView>(
 
         return (
             <Animated.View style={{ flex: 1 }}>
-                <Animated.ScrollView
+                {/* @ts-ignore */}
+                <AnimatedScrollable
                     {...props}
                     ref={ref}
+                    overScrollMode="never"
                     onScrollBeginDrag={scrollHandler}
                     scrollEventThrottle={16}
+                    // @ts-ignore
+                    onWheel={onWheel}
                     onLayout={onLayout}
                     onContentSizeChange={onContentSizeChange}
                 />
             </Animated.View>
         );
-    },
-);
+    }
 
-ScrollView.displayName = 'ScrollView';
+    ScrollableForwarded.displayName = `${displayName}Inner`;
+
+    const Scrollable = React.forwardRef<typeof ScrollableComponent>(
+        // @ts-ignore
+        ScrollableForwarded,
+    );
+
+    Scrollable.displayName = displayName;
+
+    return Scrollable;
+}
