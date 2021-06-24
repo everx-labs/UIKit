@@ -71,37 +71,23 @@ function useButtonAnimations(
             ),
         };
     });
+
     const iconAnimStyle = Animated.useAnimatedStyle(() => {
         return {
-            tintColor: Animated.interpolateColor(
-                titleAnim.value,
-                [0, 1],
-                [
-                    theme[ColorVariants[contentColor]] as string,
-                    theme[ColorVariants[activeContentColor]] as string,
-                ],
-            ),
+            opacity: titleAnim.value,
         };
     });
 
     return {
-        animatedHover: {
-            hoverAnim: titleAnim,
-            hoverBackgroundStyle: null,
-            hoverOverlayStyle: null,
+        title: {
+            animationParam: titleAnim,
+            style: titleAnimStyle,
         },
-        animatedPress: {
-            pressAnim: titleAnim,
-            pressBackgroundStyle: null,
-            pressOverlayStyle: null,
-        },
-        animatedTitle: {
-            titleAnim,
-            titleAnimStyle,
-        },
-        animatedIcon: {
-            iconAnim: titleAnim,
-            iconAnimStyle,
+        icon: {
+            animationParam: titleAnim,
+            style: iconAnimStyle,
+            initialColor: contentColor,
+            activeColor: activeContentColor,
         },
     }
 }
@@ -111,7 +97,7 @@ function useButtonStyles(
     variant: UILinkButtonVariant,
     disabled?: boolean,
 ) {
-    let contentColor: ColorVariants = ColorVariants.TextAccent;
+    let contentColor: ColorVariants;
 
     if (disabled) {
         contentColor = ColorVariants.TextOverlay;
@@ -159,14 +145,16 @@ export const UILinkButton = ({
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
-                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                        iconAnimStyle={buttonAnimations.icon.style}
+                        initialColor={buttonAnimations.icon.initialColor}
+                        activeColor={buttonAnimations.icon.activeColor}
                     />
                 }
                 {
                     title &&
                     <Button.Title
-                        titleColor={ColorVariants.TextAccent}
-                        titleAnimStyle={buttonAnimations.animatedTitle.titleAnimStyle}
+                        titleColor={contentColor}
+                        titleAnimStyle={buttonAnimations.title.style}
                     >
                         {title}
                     </Button.Title>
@@ -175,7 +163,9 @@ export const UILinkButton = ({
                     iconPosition === UILinkButtonIconPosition.Middle && icon &&
                     <Button.Icon
                         source={icon}
-                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                        iconAnimStyle={buttonAnimations.icon.style}
+                        initialColor={buttonAnimations.icon.initialColor}
+                        activeColor={buttonAnimations.icon.activeColor}
                     />
                 }
             </Button.Content>
@@ -183,7 +173,9 @@ export const UILinkButton = ({
                 iconPosition === UILinkButtonIconPosition.Right && icon &&
                 <Button.Icon
                     source={icon}
-                    iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                    iconAnimStyle={buttonAnimations.icon.style}
+                    initialColor={buttonAnimations.icon.initialColor}
+                    activeColor={buttonAnimations.icon.activeColor}
                 />
             }
         </Button>
