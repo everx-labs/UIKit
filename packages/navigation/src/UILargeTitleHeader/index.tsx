@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, LayoutChangeEvent } from 'react-native';
 import Animated, {
     useAnimatedScrollHandler,
     useAnimatedStyle,
@@ -81,6 +81,25 @@ export function UILargeTitleHeader({
 
     const largeTitleViewRef = useAnimatedRef<Animated.View>();
     const largeTitleHeight = useSharedValue(0);
+
+    const onLargeTitleLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { height },
+            },
+        }: LayoutChangeEvent) => {
+            /**
+             * Sometimes it's needed to invalidate a height of large title
+             */
+            if (
+                largeTitleHeight.value > 0 &&
+                largeTitleHeight.value !== height
+            ) {
+                largeTitleHeight.value = height;
+            }
+        },
+        [largeTitleHeight],
+    );
 
     // when we use `rubber band` effect, we need to know
     // actual y, that's why we need to store it separately
@@ -348,6 +367,7 @@ export function UILargeTitleHeader({
                     style={
                         hasSomethingInHeader && styles.largeTitleHeaderContainer
                     }
+                    onLayout={onLargeTitleLayout}
                 >
                     {onHeaderLargeTitlePress != null ? (
                         <TouchableOpacity onPress={onHeaderLargeTitlePress}>
