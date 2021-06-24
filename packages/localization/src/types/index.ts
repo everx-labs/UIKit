@@ -85,7 +85,12 @@ export type LanguageInfo = {
 }
 
 export type ShortenAmountSettings = {
+    /** The number of digits in the fractional part of the number */
     fractionalDigits?: number | undefined;
+    /**
+     * Is it necessary to localize amount?
+     * By default is `true`
+     */
     isLocalized?: boolean;
 };
 

@@ -318,7 +318,13 @@ export const negateProgressTarget = (progressTarget: number): number => {
 };
 
 export const formatLabelText = (value: number | null) => {
+    /**
+     * `isLocalized: false` because in a non-English localization,
+     * it is possible that either the labels will be cutted
+     * or the chart will be too narrow.
+     */
     return uiLocalized.shortenAmount(value, {
         fractionalDigits: 2,
+        isLocalized: false,
     });
 };

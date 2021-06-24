@@ -39,13 +39,13 @@ const getSuffix = (
 
 const DEFAULT_FRACTIONAL_DIGITS: number = 0;
 const getFractionalDigits = (settings?: ShortenAmountSettings): number => {
-    return settings && settings.fractionalDigits
+    return settings && settings.fractionalDigits !== undefined
         ? settings.fractionalDigits
         : DEFAULT_FRACTIONAL_DIGITS;
 };
-const DEFAULT_IS_LOCALIZED: boolean = false;
+const DEFAULT_IS_LOCALIZED: boolean = true;
 const getIsLocalized = (settings?: ShortenAmountSettings): boolean => {
-    return settings && settings.isLocalized
+    return settings && settings.isLocalized !== undefined
         ? settings.isLocalized
         : DEFAULT_IS_LOCALIZED;
 };
