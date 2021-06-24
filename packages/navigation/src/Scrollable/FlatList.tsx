@@ -3,5 +3,5 @@ import { wrapScrollableComponent } from './wrapScrollableComponent';
 
 export const FlatList: typeof RNFlatList = wrapScrollableComponent(
     RNFlatList,
-    'UISectionList',
+    'UIFlatList',
 );
