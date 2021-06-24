@@ -1,5 +1,6 @@
 package tonlabs.uikit.keyboard;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.Window;
@@ -135,7 +136,13 @@ public class CustomKeyboardLayout implements SoftKeyboardMonitor.Listener, Scree
     }
 
     private void hideSoftKeyboardIfNeeded() {
-        final View focusedView = AppContextHolder.getCurrentActivity().getCurrentFocus();
+        Activity activity = AppContextHolder.getCurrentActivity();
+
+        if (activity == null) {
+            return;
+        }
+
+        final View focusedView = activity.getCurrentFocus();
 
         if (focusedView != null) {
             mInputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
