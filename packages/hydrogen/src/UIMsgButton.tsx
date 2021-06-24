@@ -121,7 +121,6 @@ const getButtonStates = (
 
 function useButtonAnimations(
     type: UIMsgButtonType,
-    buttonStyle: StyleProp<ViewStyle>,
     backgroundColor: ColorVariants,
     borderColor: ColorVariants,
     contentColor: ColorVariants,
@@ -358,7 +357,7 @@ export const UIMsgButton = ({
     variant = UIMsgButtonVariant.Neutral
 }: UIMsgButtonProps) => {
     const { buttonStyle, backgroundColor, borderColor, contentColor } = useButtonStyles(type, variant, cornerPosition, disabled, loading);
-    const buttonAnimations = useButtonAnimations(type, buttonStyle, backgroundColor, borderColor, contentColor);
+    const buttonAnimations = useButtonAnimations(type, backgroundColor, borderColor, contentColor);
     const [ content, containerStyle, contentStyle ] = React.useMemo(() => {
         const { title: titleAnim, icon: iconAnim} = buttonAnimations;
         if (title && caption) {
