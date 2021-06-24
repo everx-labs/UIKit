@@ -5,9 +5,10 @@ import Animated from 'react-native-reanimated';
 
 import { useHover } from '../useHover';
 import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
+import type { ButtonAnimations } from './Button';
 
 type TouchableElementProps = {
-    animations?: any;
+    animations: ButtonAnimations;
     children: React.ReactNode;
     disabled?: boolean;
     loading?: boolean;
@@ -28,24 +29,7 @@ export const TouchableElement = ({
     testID,
     ...props
 }: TouchableElementProps) => {
-    const {
-        animatedHover: {
-            hoverAnim,
-            hoverBackgroundStyle,
-            hoverOverlayStyle,
-        },
-        animatedPress: {
-            pressAnim,
-            pressBackgroundStyle,
-            pressOverlayStyle,
-        },
-        animatedTitle: {
-            titleAnim,
-        },
-        animatedIcon: {
-            iconAnim,
-        },
-    } = animations;
+    const { hover, press, title, icon } = animations;
 
     const {
         isHovered,
@@ -56,31 +40,55 @@ export const TouchableElement = ({
     React.useEffect(
         () => {
             if (!disabled && !loading && isHovered) {
-                hoverAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-                titleAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-                iconAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+                if (hover) {
+                    hover.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+                }
+                if (title) {
+                    title.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+                }
+                if (icon) {
+                    icon.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+                }
             } else {
-                hoverAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-                titleAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-                iconAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+                if (hover) {
+                    hover.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+                }
+                if (title) {
+                    title.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+                }
+                if (icon) {
+                    icon.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+                }
             }
         },
-        [disabled, loading, isHovered, hoverAnim, titleAnim, iconAnim],
+        [disabled, loading, isHovered, hover, title, icon],
     );
 
     const handlePressIn = () => {
         if (!loading) {
-            pressAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-            titleAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-            iconAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            if (press) {
+                press.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (title) {
+                title.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (icon) {
+                icon.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            }
         }
     };
 
     const handlePressOut = () => {
         if (!loading) {
-            pressAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-            titleAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-            iconAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            if (press) {
+                press.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (title) {
+                title.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (icon) {
+                icon.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            }
         }
     };
 
@@ -97,14 +105,14 @@ export const TouchableElement = ({
                 // @ts-expect-error
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
-                style={[style, hoverBackgroundStyle, pressBackgroundStyle]}
+                style={[style, hover?.backgroundStyle, press?.backgroundStyle]}
             >
                 <Animated.View
                     style={[
                         styles.overlayContainer,
                         contentStyle,
-                        hoverOverlayStyle,
-                        pressOverlayStyle,
+                        hover?.overlayStyle,
+                        press?.overlayStyle,
                     ]}
                 >
                     {React.Children.only(children)}

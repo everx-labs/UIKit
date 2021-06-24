@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { ImageStyle, Platform, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import type Animated from 'react-native-reanimated';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
@@ -23,8 +24,26 @@ export type UILayout = {
     marginLeft?: number;
 }
 
+type BackgroundParams = {
+    animationParam: Animated.SharedValue<number>;
+    backgroundStyle?: Animated.AnimatedStyleProp<ViewStyle>;
+    overlayStyle?: Animated.AnimatedStyleProp<ViewStyle>;
+};
+
+type ContentParams = {
+    animationParam: Animated.SharedValue<number>;
+    style: Animated.AnimatedStyleProp<TextStyle | ImageStyle>;
+};
+
+export type ButtonAnimations = {
+    hover?: BackgroundParams,
+    press?: BackgroundParams,
+    title?: ContentParams,
+    icon?: ContentParams,
+};
+
 type ButtonProps = {
-    animations?: any;
+    animations: ButtonAnimations;
     children: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle>;
     contentStyle?: StyleProp<ViewStyle>;

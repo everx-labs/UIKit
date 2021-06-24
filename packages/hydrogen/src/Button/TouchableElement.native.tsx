@@ -3,10 +3,11 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
+import type { ButtonAnimations } from './Button';
 import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
 
 type TouchableElementProps = {
-    animations?: any;
+    animations: ButtonAnimations;
     children: React.ReactNode;
     disabled?: boolean;
     loading?: boolean;
@@ -27,33 +28,33 @@ export const TouchableElement = ({
     testID,
     ...props
 }: TouchableElementProps) => {
-    const {
-        animatedPress: {
-            pressAnim,
-            pressBackgroundStyle,
-            pressOverlayStyle,
-        },
-        animatedTitle: {
-            titleAnim,
-        },
-        animatedIcon: {
-            iconAnim,
-        },
-    } = animations;
+    const { press, title, icon } = animations;
 
     const handlePressIn = () => {
         if (!loading) {
-            pressAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-            titleAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
-            iconAnim.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            if (press) {
+                press.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (title) {
+                title.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (icon) {
+                icon.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            }
         }
     };
 
     const handlePressOut = () => {
         if (!loading) {
-            pressAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-            titleAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
-            iconAnim.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            if (press) {
+                press.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (title) {
+                title.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            }
+            if (icon) {
+                icon.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            }
         }
     };
 
@@ -66,12 +67,12 @@ export const TouchableElement = ({
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
         >
-            <Animated.View style={[style, pressBackgroundStyle]}>
+            <Animated.View style={[style, press?.backgroundStyle]}>
                 <Animated.View
                     style={[
                         styles.overlayContainer,
                         contentStyle,
-                        pressOverlayStyle,
+                        press?.overlayStyle,
                     ]}
                 >
                     {React.Children.only(children)}

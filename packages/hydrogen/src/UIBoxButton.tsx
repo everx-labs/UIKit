@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Button, UILayout } from './Button';
+import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
@@ -113,7 +113,7 @@ const getButtonStates = (
 function useButtonAnimations(
     type: UIBoxButtonType,
     contentColor: ColorVariants,
-) {
+): ButtonAnimations {
     const { hoverOverlayColor, pressOverlayColor, activeContentColor } = getButtonStates(type);
     const theme = useTheme();
 
@@ -186,23 +186,23 @@ function useButtonAnimations(
     });
 
     return {
-        animatedHover: {
-            hoverAnim,
-            hoverBackgroundStyle: null,
-            hoverOverlayStyle,
+        hover: {
+            animationParam: hoverAnim,
+            backgroundStyle: undefined,
+            overlayStyle: hoverOverlayStyle,
         },
-        animatedPress: {
-            pressAnim,
-            pressBackgroundStyle: null,
-            pressOverlayStyle,
+        press: {
+            animationParam: pressAnim,
+            backgroundStyle: undefined,
+            overlayStyle: pressOverlayStyle,
         },
-        animatedTitle: {
-            titleAnim,
-            titleAnimStyle,
+        title: {
+            animationParam: titleAnim,
+            style: titleAnimStyle,
         },
-        animatedIcon: {
-            iconAnim,
-            iconAnimStyle,
+        icon: {
+            animationParam: iconAnim,
+            style: iconAnimStyle,
         },
     };
 }
@@ -322,14 +322,14 @@ export const UIBoxButton = ({
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
-                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                        iconAnimStyle={buttonAnimations.icon?.style}
                     />
                 }
                 {
                     title &&
                     <Button.Title
                         titleColor={contentColor}
-                        titleAnimStyle={buttonAnimations.animatedTitle.titleAnimStyle}
+                        titleAnimStyle={buttonAnimations.title?.style}
                     >
                         {title}
                     </Button.Title>
@@ -338,7 +338,7 @@ export const UIBoxButton = ({
                     iconPosition === UIBoxButtonIconPosition.Middle && icon &&
                     <Button.Icon
                         source={icon}
-                        iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                        iconAnimStyle={buttonAnimations.icon?.style}
                     />
                 }
             </Button.Content>
@@ -346,7 +346,7 @@ export const UIBoxButton = ({
                 iconPosition === UIBoxButtonIconPosition.Right && icon &&
                 <Button.Icon
                     source={icon}
-                    iconAnimStyle={buttonAnimations.animatedIcon.iconAnimStyle}
+                    iconAnimStyle={buttonAnimations.icon?.style}
                 />
             }
         </Button>
