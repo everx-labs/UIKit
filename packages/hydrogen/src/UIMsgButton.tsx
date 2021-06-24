@@ -148,7 +148,7 @@ function useButtonAnimations(
 
     const hoverAnim = Animated.useSharedValue(0);
     const hoverStyle = Animated.useAnimatedStyle(() => {
-        const hoverStyleValues = {
+        return {
             backgroundColor: Animated.interpolateColor(
                 hoverAnim.value,
                 [0, 1],
@@ -166,19 +166,11 @@ function useButtonAnimations(
                 ],
             ),
         };
-
-        if (type === UIMsgButtonType.Primary) {
-            return hoverStyleValues;
-        }
-        return StyleSheet.flatten([
-            buttonStyle,
-            hoverStyleValues,
-        ]);
     });
 
     const pressAnim = Animated.useSharedValue(0);
     const pressStyle = Animated.useAnimatedStyle(() => {
-        const pressStyleValues = {
+        return {
             backgroundColor: Animated.interpolateColor(
                 pressAnim.value,
                 [0, 1],
@@ -196,13 +188,6 @@ function useButtonAnimations(
                 ],
             ),
         };
-        if (type === UIMsgButtonType.Primary) {
-            return pressStyleValues;
-        }
-        return StyleSheet.flatten([
-            buttonStyle,
-            pressStyleValues,
-        ]);
     });
 
     const titleAnim = Animated.useSharedValue(0);
