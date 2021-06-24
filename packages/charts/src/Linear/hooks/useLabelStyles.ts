@@ -2,7 +2,7 @@ import Animated from 'react-native-reanimated';
 import type {
     LinearChartDimensions,
     LinearChartControlPoints,
-} from '../../../types';
+} from '../../types';
 
 export const useLabelStyles = (
     dimensions: Animated.SharedValue<LinearChartDimensions>,

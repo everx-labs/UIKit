@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Animated, { runOnUI } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
-import type { LinearChartDimensions, LinearChartPoint } from '../../../types';
+import type { LinearChartDimensions, LinearChartPoint } from '../../types';
 import {
     convertDataToPath,
     interpolatePath,

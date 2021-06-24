@@ -20,7 +20,7 @@ import type {
     LinearChartPoint,
     LinearChartDimensions,
     LinearChartLabelData,
-} from '../../types';
+} from '../types';
 import { useLabelData, useAnimatedPathProps } from './hooks';
 import { formatLabelText } from './utils';
 
