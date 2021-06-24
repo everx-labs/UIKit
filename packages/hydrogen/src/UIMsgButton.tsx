@@ -222,14 +222,7 @@ function useButtonAnimations(
     const iconAnim = Animated.useSharedValue(0);
     const iconAnimStyle = Animated.useAnimatedStyle(() => {
         return {
-            tintColor: Animated.interpolateColor(
-                iconAnim.value,
-                [0, 1],
-                [
-                    theme[ColorVariants[contentColor]] as string,
-                    theme[ColorVariants[activeContentColor]] as string,
-                ],
-            ),
+            opacity: iconAnim.value,
         };
     });
 
@@ -252,6 +245,8 @@ function useButtonAnimations(
             icon: {
                 animationParam: iconAnim,
                 style: iconAnimStyle,
+                initialColor: contentColor,
+                activeColor: activeContentColor,
             },
         }
     }
@@ -273,6 +268,8 @@ function useButtonAnimations(
         icon: {
             animationParam: iconAnim,
             style: iconAnimStyle,
+            initialColor: contentColor,
+            activeColor: activeContentColor,
         },
     };
 }
@@ -413,6 +410,8 @@ export const UIMsgButton = ({
                                 source={icon}
                                 style={styles.leftIcon}
                                 iconAnimStyle={iconAnim?.style}
+                                initialColor={iconAnim?.initialColor}
+                                activeColor={iconAnim?.activeColor}
                             />
                         }
                         {
@@ -429,6 +428,8 @@ export const UIMsgButton = ({
                             <Button.Icon
                                 source={icon}
                                 iconAnimStyle={iconAnim?.style}
+                                initialColor={iconAnim?.initialColor}
+                                activeColor={iconAnim?.activeColor}
                             />
                         }
                     </Button.Content>
@@ -437,6 +438,8 @@ export const UIMsgButton = ({
                         <Button.Icon
                             source={icon}
                             iconAnimStyle={iconAnim?.style}
+                            initialColor={iconAnim?.initialColor}
+                            activeColor={iconAnim?.activeColor}
                         />
                     }
                 </>

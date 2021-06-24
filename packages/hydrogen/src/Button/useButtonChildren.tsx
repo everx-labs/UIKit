@@ -3,9 +3,9 @@ import { Platform, StyleSheet, View, ViewProps, ImageProps } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
+import { ColorVariants, useTheme } from '../Colors';
 import { UIConstant } from '../constants';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
-import type { ColorVariants } from '../Colors';
 import type { TypographyVariants } from '../Typography';
 
 // eslint-disable-next-line no-shadow
@@ -54,31 +54,53 @@ export function ButtonContent({
 
 export function ButtonIcon({
     iconAnimStyle,
+    initialColor,
+    activeColor,
     onPress,
     source,
     style,
     ...props
 }: ImageProps & {
     iconAnimStyle?: any,
+    initialColor?: ColorVariants,
+    activeColor?: ColorVariants,
     // add possibility to pass action to the icon, may be used for the right icons
     onPress?: () => void | Promise<void>,
 }) {
+    const theme = useTheme();
+
     const image = React.useMemo(() => {
         return (
-            <Animated.Image
-                {...props}
-                source={source}
-                style={[
-                    {
-                        width: UIConstant.iconSize,
-                        height: UIConstant.iconSize,
-                    },
-                    style,
-                    iconAnimStyle,
-                ]}
-            />
+            <View>
+                <Animated.Image
+                    {...props}
+                    source={source}
+                    style={[
+                        {
+                            width: UIConstant.iconSize,
+                            height: UIConstant.iconSize,
+                            tintColor: theme[ColorVariants[initialColor as ColorVariants]],
+                        },
+                        style,
+                    ]}
+                />
+                <Animated.Image
+                    {...props}
+                    source={source}
+                    style={[
+                        {
+                            width: UIConstant.iconSize,
+                            height: UIConstant.iconSize,
+                            tintColor: theme[ColorVariants[activeColor as ColorVariants]],
+                            position: 'absolute',
+                        },
+                        style,
+                        iconAnimStyle,
+                    ]}
+                />
+            </View>
         );
-    }, [props, source, style, iconAnimStyle]);
+    }, [props, source, style, iconAnimStyle, initialColor, activeColor]);
 
     return onPress ? (
         <TouchableOpacity onPress={onPress}>

@@ -169,19 +169,9 @@ function useButtonAnimations(
     });
 
     const iconAnim = Animated.useSharedValue(0);
-    const iconAnimValue = Animated.useDerivedValue(() => {
-        return Animated.interpolateColor(
-            iconAnim.value,
-            [0, 1],
-            [
-                theme[ColorVariants[contentColor]] as string,
-                theme[ColorVariants[activeContentColor]] as string,
-            ],
-        );
-    });
     const iconAnimStyle = Animated.useAnimatedStyle(() => {
         return {
-            tintColor: iconAnimValue.value,
+            opacity: iconAnim.value,
         };
     });
 
@@ -203,6 +193,8 @@ function useButtonAnimations(
         icon: {
             animationParam: iconAnim,
             style: iconAnimStyle,
+            initialColor: contentColor,
+            activeColor: activeContentColor,
         },
     };
 }
@@ -323,6 +315,8 @@ export const UIBoxButton = ({
                         source={icon}
                         style={styles.leftIcon}
                         iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
                     />
                 }
                 {
@@ -339,6 +333,8 @@ export const UIBoxButton = ({
                     <Button.Icon
                         source={icon}
                         iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
                     />
                 }
             </Button.Content>
@@ -347,6 +343,8 @@ export const UIBoxButton = ({
                 <Button.Icon
                     source={icon}
                     iconAnimStyle={buttonAnimations.icon?.style}
+                    initialColor={buttonAnimations.icon?.initialColor}
+                    activeColor={buttonAnimations.icon?.activeColor}
                 />
             }
         </Button>

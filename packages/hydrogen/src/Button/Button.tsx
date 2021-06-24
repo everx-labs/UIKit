@@ -33,6 +33,8 @@ type BackgroundParams = {
 type ContentParams = {
     animationParam: Animated.SharedValue<number>;
     style: Animated.AnimatedStyleProp<TextStyle | ImageStyle>;
+    initialColor?: ColorVariants;
+    activeColor?: ColorVariants;
 };
 
 export type ButtonAnimations = {
