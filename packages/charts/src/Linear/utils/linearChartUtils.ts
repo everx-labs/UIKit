@@ -1,5 +1,6 @@
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import type { Path } from 'react-native-redash';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import type {
     LinearChartPoint,
     LinearChartDimensions,
@@ -314,4 +315,10 @@ export const negateProgressTarget = (progressTarget: number): number => {
     'worklet';
 
     return progressTarget ? 0 : 1;
+};
+
+export const formatLabelText = (value: number | null) => {
+    return uiLocalized.shortenAmount(value, {
+        fractionalDigits: 2,
+    });
 };

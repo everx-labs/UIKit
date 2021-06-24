@@ -20,30 +20,23 @@ export const useLabelText = (
         return controlPoints.value.minimum.value;
     });
 
-    const maximumText = Animated.useDerivedValue(() => {
-        return maximum.value ? maximum.value.toFixed(2) : '';
-    }, []);
-    const minimumText = Animated.useDerivedValue(() => {
-        return minimum.value ? minimum.value.toFixed(2) : 'Empty';
-    }, []);
-
-    const [minimumValue, setMinimumValue] = React.useState<string>('');
-    const [maximumValue, setMaximumValue] = React.useState<string>('');
+    const [minimumValue, setMinimumValue] = React.useState<number | null>(null);
+    const [maximumValue, setMaximumValue] = React.useState<number | null>(null);
 
     Animated.useAnimatedReaction(
         () => {
-            return minimumText.value;
+            return minimum.value;
         },
-        (text: string) => {
+        (text: number | null) => {
             Animated.runOnJS(setMinimumValue)(text);
         },
     );
 
     Animated.useAnimatedReaction(
         () => {
-            return maximumText.value;
+            return maximum.value;
         },
-        (text: string) => {
+        (text: number | null) => {
             Animated.runOnJS(setMaximumValue)(text);
         },
     );

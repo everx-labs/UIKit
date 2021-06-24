@@ -86,6 +86,7 @@ export type LanguageInfo = {
 
 export type ShortenAmountSettings = {
     fractionalDigits?: number | undefined;
+    isLocalized?: boolean;
 };
 
 export type ShortenedNumberSuffix =
