@@ -135,19 +135,19 @@ function useButtonAnimations(
     } = getButtonStates(type);
     const theme = useTheme();
 
+    let initialBackgroundColor: string;
+    let initialBorderColor: string;
+
+    if (type === UIMsgButtonType.Primary) {
+        initialBackgroundColor = theme[ColorVariants.Transparent] as string;
+        initialBorderColor = theme[ColorVariants.Transparent] as string;
+    } else {
+        initialBackgroundColor = theme[ColorVariants[backgroundColor]] as string;
+        initialBorderColor = theme[ColorVariants[borderColor]] as string;
+    }
+
     const hoverAnim = Animated.useSharedValue(0);
     const hoverStyle = Animated.useAnimatedStyle(() => {
-        let initialBackgroundColor;
-        let initialBorderColor;
-
-        if (type === UIMsgButtonType.Primary) {
-            initialBackgroundColor = theme[ColorVariants.Transparent] as string;
-            initialBorderColor = theme[ColorVariants.Transparent] as string;
-        } else {
-            initialBackgroundColor = theme[ColorVariants[backgroundColor]] as string;
-            initialBorderColor = theme[ColorVariants[borderColor]] as string;
-        }
-
         const hoverStyleValues = {
             backgroundColor: Animated.interpolateColor(
                 hoverAnim.value,
@@ -183,7 +183,7 @@ function useButtonAnimations(
                 pressAnim.value,
                 [0, 1],
                 [
-                    theme[ColorVariants.Transparent] as string,
+                    initialBackgroundColor,
                     theme[ColorVariants[pressBackgroundColor]] as string,
                 ],
             ),
@@ -191,7 +191,7 @@ function useButtonAnimations(
                 pressAnim.value,
                 [0, 1],
                 [
-                    theme[ColorVariants.Transparent] as string,
+                    initialBorderColor,
                     theme[ColorVariants[pressBorderColor]] as string,
                 ],
             ),
