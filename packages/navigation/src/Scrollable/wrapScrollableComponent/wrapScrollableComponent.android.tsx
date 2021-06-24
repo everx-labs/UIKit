@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ScrollViewProps, ScrollView as RNScrollView } from 'react-native';
+import type { ScrollViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
 import {
     NativeViewGestureHandler,
@@ -9,10 +9,18 @@ import {
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
 
-type Props = ScrollViewProps & { children?: React.ReactNode };
+export function wrapScrollableComponent<Props extends ScrollViewProps>(
+    ScrollableComponent: React.ComponentClass<Props>,
+    displayName: string,
+) {
+    const AnimatedScrollable = Animated.createAnimatedComponent(
+        ScrollableComponent,
+    );
 
-export const ScrollView = React.forwardRef<RNScrollView>(
-    function ScrollViewForwarded(props: Props, forwardRef) {
+    function ScrollableForwarded(
+        props: Props & { children?: React.ReactNode },
+        forwardRef: React.RefObject<typeof AnimatedScrollable>,
+    ) {
         const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
 
         const { hasScroll, onLayout, onContentSizeChange } = useHasScroll();
@@ -57,7 +65,8 @@ export const ScrollView = React.forwardRef<RNScrollView>(
                                 height: '100%',
                             }}
                         >
-                            <Animated.ScrollView
+                            {/* @ts-ignore */}
+                            <AnimatedScrollable
                                 {...props}
                                 ref={ref}
                                 overScrollMode="never"
@@ -71,7 +80,16 @@ export const ScrollView = React.forwardRef<RNScrollView>(
                 </Animated.View>
             </PanGestureHandler>
         );
-    },
-);
+    }
 
-ScrollView.displayName = 'ScrollView';
+    ScrollableForwarded.displayName = `${displayName}Inner`;
+
+    const Scrollable = React.forwardRef<typeof ScrollableComponent>(
+        // @ts-ignore
+        ScrollableForwarded,
+    );
+
+    Scrollable.displayName = displayName;
+
+    return Scrollable;
+}
