@@ -1,5 +1,6 @@
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import type { Path } from 'react-native-redash';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import type {
     LinearChartPoint,
     LinearChartDimensions,
@@ -314,4 +315,17 @@ export const negateProgressTarget = (progressTarget: number): number => {
     'worklet';
 
     return progressTarget ? 0 : 1;
+};
+
+export const formatLabelText = (value: number | null) => {
+    /**
+     * `isLocalized: false` because in a non-English localization,
+     * it is possible that either the labels will be cutted
+     * or the chart will be too narrow.
+     * @TODO fix the UI for working with labels so that they fit regardless of localization
+     */
+    return uiLocalized.shortenAmount(value, {
+        fractionalDigits: 2,
+        isLocalized: false,
+    });
 };

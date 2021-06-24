@@ -14,7 +14,7 @@ import { Portal, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UISearchBar } from './UISearchBar';
-import { ELASTIC_WIDTH_CONTROLLER } from './constants';
+import { UIConstant } from './constants';
 
 const ANIMATION_TRANSITION_SPACE: number = 40;
 
@@ -73,7 +73,7 @@ const useProgress = (
             if (
                 isFinished &&
                 visibleState.value === VISIBLE_STATE_CLOSED &&
-                /** On web `reanimated` tries to call onAnimation 
+                /** On web `reanimated` tries to call onAnimation
                  * (passed to `withSpring`) on the first render
                  * when controller still closed. Preventing this.
                  *
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     },
     contentInner: {
         width: '100%',
-        maxWidth: ELASTIC_WIDTH_CONTROLLER,
+        maxWidth: UIConstant.elastiicWidthController,
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',

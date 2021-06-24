@@ -7,12 +7,14 @@ import {
     getNumberFormatInfo,
     prepare,
     UIFunction,
+    shortenAmount,
 } from './utils';
 import type {
     Languages,
     NumberParts,
     NumberPartsOptions,
     StringLocaleInfo,
+    ShortenAmount,
 } from './types';
 import {
     Language,
@@ -182,6 +184,8 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
 
         return Language.En;
     }
+
+    shortenAmount: ShortenAmount = shortenAmount.bind(this, this)
 }
 
 export const uiLocalized: LocalizedInstance<UILocalizedData> =

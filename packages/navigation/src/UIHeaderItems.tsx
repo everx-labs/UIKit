@@ -70,7 +70,7 @@ function UIHeaderActionItem({ label, accessibilityLabel }: HeaderItem) {
 function UIHeaderIconItem({
     icon,
     iconElement,
-    iconTintColor,
+    iconTintColor = ColorVariants.IconAccent,
 }: HeaderItem): JSX.Element | null {
     if (iconElement) {
         return iconElement;

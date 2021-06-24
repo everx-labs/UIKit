@@ -18,8 +18,8 @@ export type LinearChartLabelData = {
     maximumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
     minimumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
     minimumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumValue: string;
-    minimumValue: string;
+    maximumValue: number | null;
+    minimumValue: number | null;
 };
 
 export type LinearChartPoint = {

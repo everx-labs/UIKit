@@ -13,7 +13,7 @@ import {
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { HEADER_HEIGHT, ICON_SEARCH_SIZE } from './constants';
+import { UIConstant as UINavConstant } from './constants';
 import { UISearchController } from './UISearchController';
 
 export function UISearchBarButton({
@@ -77,7 +77,7 @@ export function UISearchBarButton({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: HEADER_HEIGHT,
+        minHeight: UINavConstant.headerHeight,
         paddingVertical: UIConstant.smallContentOffset(),
     },
     touchable: { flex: 1 },
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
         paddingRight: 14,
     },
     searchIcon: {
-        width: ICON_SEARCH_SIZE,
-        height: ICON_SEARCH_SIZE,
+        width: UINavConstant.iconSearchSize,
+        height: UINavConstant.iconSearchSize,
         marginRight: UIConstant.tinyContentOffset(),
     },
 });

@@ -155,6 +155,18 @@
         "month": "MM",
         "year": "JJJJ"
     },
+    "ShortenedNumberSuffix": {
+        "3": "K",
+        "6": "M",
+        "9": "B",
+        "12": "T",
+        "15": "Qd",
+        "18": "Qn",
+        "21": "Sx",
+        "24": "Sp",
+        "27": "Oc",
+        "30": "N"
+    },
     "DecryptingDocument": "Dokument entschlüsseln...",
     "Delete": "Löschen",
     "DeleteChannel": "Kanal löschen",

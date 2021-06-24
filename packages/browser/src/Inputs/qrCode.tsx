@@ -1,8 +1,12 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { BubbleActionButton, ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
-import { UIQRCodeScannerSheet } from '@tonlabs/uikit.hydrogen';
+import {
+    BubbleActionButton,
+    ChatMessageType,
+    MessageStatus,
+} from '@tonlabs/uikit.chats';
+import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import type { QRCodeMessage } from '../types';

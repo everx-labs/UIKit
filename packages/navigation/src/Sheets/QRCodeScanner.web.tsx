@@ -2,10 +2,10 @@ import * as React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import QRCodeScannerWeb from 'react-qr-reader';
 
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { UIConstant } from './constants';
-import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
+import { UIConstant } from '../constants';
 
 export type OnReadEvent = {
     data: any;

@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { StyleSheet, useWindowDimensions, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
-    UIBottomSheet,
     UIBackgroundView,
     useTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { UIBottomSheet, ScrollView } from '@tonlabs/uikit.navigation';
 
 const PULLER_HEIGHT = 12;
 

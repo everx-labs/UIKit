@@ -1,6 +1,5 @@
 declare module '*.css';
 
-declare module 'react-qr-reader';
 declare module 'react-native-indicators' {
     import * as React from 'react';
     import type { ColorPropType, StyleProp, ViewStyle } from 'react-native';
@@ -17,4 +16,5 @@ declare module 'react-native-indicators' {
     > {}
 }
 
+declare module '@tonlabs/uikit.assets';
 declare module '@tonlabs/uikit.assets';

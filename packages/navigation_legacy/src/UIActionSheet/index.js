@@ -4,7 +4,8 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UIBackgroundView, UICardSheet } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
+import { UICardSheet } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import MenuItem from './MenuItem';
