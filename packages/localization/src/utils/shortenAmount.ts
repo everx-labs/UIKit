@@ -7,6 +7,19 @@ import type {
     ShortenedAmountAttributes,
 } from '../types';
 
+const ShortenedNumberSuffixEnglish: ShortenedNumberSuffixLocalization = {
+    3: 'K',
+    6: 'M',
+    9: 'B',
+    12: 'T',
+    15: 'Qd',
+    18: 'Qn',
+    21: 'Sx',
+    24: 'Sp',
+    27: 'Oc',
+    30: 'N',
+};
+
 const convertPowerOfThousandToShortenedNumberSuffix = (
     powerOfThousand: number,
 ): ShortenedNumberSuffix => {
@@ -25,10 +38,16 @@ const getSuffix = (
 };
 
 const DEFAULT_FRACTIONAL_DIGITS: number = 0;
-const getDractionalDigits = (settings?: ShortenAmountSettings): number => {
-    return settings && settings.fractionalDigits
+const getFractionalDigits = (settings?: ShortenAmountSettings): number => {
+    return settings && settings.fractionalDigits !== undefined
         ? settings.fractionalDigits
         : DEFAULT_FRACTIONAL_DIGITS;
+};
+const DEFAULT_IS_LOCALIZED: boolean = true;
+const getIsLocalized = (settings?: ShortenAmountSettings): boolean => {
+    return settings && settings.isLocalized !== undefined
+        ? settings.isLocalized
+        : DEFAULT_IS_LOCALIZED;
 };
 
 const getNumberOfDigitsInIntegerPartOfNumber = (value: BigNumber): number =>
@@ -105,10 +124,12 @@ export const shortenAmount = <T>(
         return '';
     }
 
-    const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization =
-        uiLocalized.ShortenedNumberSuffix;
+    const isLocalized: boolean = getIsLocalized(settings);
+    const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization = isLocalized
+        ? uiLocalized.ShortenedNumberSuffix
+        : ShortenedNumberSuffixEnglish;
 
-    const fractionalDigits: number = getDractionalDigits(settings);
+    const fractionalDigits: number = getFractionalDigits(settings);
     let bigNumberValue: BigNumber;
     if (!BigNumber.isBigNumber(value)) {
         try {

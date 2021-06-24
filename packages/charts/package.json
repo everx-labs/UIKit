@@ -37,7 +37,8 @@
     "types/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.hydrogen": "^2.2.0"
+    "@tonlabs/uikit.hydrogen": "^2.2.0",
+    "@tonlabs/uikit.localization": "^2.2.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
