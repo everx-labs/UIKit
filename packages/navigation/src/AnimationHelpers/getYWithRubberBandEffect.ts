@@ -2,9 +2,6 @@
  * A method to calculate a position with a Rubber band effect
  * https://medium.com/@esskeetit/как-работает-uiscrollview-2e7052032d97
  *
- * TODO: this was copy-pasted from uikit.navigation
- *       but I don't know what a proper place to put it
- *
  * @param y - This is a position of current tap
  *            from the point where rubber band effect
  *            should be applied

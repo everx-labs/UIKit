@@ -3,10 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import QRCodeScannerNative from 'react-native-qrcode-scanner';
 import type { Event } from 'react-native-qrcode-scanner';
 
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
-import { UIConstant } from './constants';
+import { UIConstant } from '../constants';
 
 export type OnReadEvent = Event;
 

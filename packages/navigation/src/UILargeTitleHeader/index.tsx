@@ -19,10 +19,11 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 
 import { useOnScrollHandler } from './useOnScrollHandler';
+import { useHasScroll } from '../Scrollable';
 import { ScrollableContext } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
-import { HEADER_HEIGHT, SCREEN_CONTENT_INSET_HORIZONTAL } from '../constants';
+import { UIConstant } from '../constants';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
 
@@ -180,18 +181,7 @@ export function UILargeTitleHeader({
 
     const ghYPrev = useSharedValue(0);
 
-    const [hasScroll, setHasScroll] = React.useState(false);
-    const hasScrollShared = useSharedValue(false);
-
-    const setHasScrollGuarded = React.useCallback(
-        (newHasScroll) => {
-            if (newHasScroll !== hasScroll) {
-                setHasScroll(newHasScroll);
-                hasScrollShared.value = newHasScroll;
-            }
-        },
-        [hasScroll, setHasScroll, hasScrollShared],
-    );
+    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
     /**
      * On Android ScrollView stops to fire events when it reaches the end (y is 0).
@@ -277,11 +267,12 @@ export function UILargeTitleHeader({
     const scrollableContextValue = React.useMemo(
         () => ({
             ref: scrollRef,
+            panGestureHandlerRef: null,
             scrollHandler,
             gestureHandler,
             onWheel,
             hasScroll,
-            setHasScroll: setHasScrollGuarded,
+            setHasScroll,
             registerScrollable,
             unregisterScrollable,
         }),
@@ -291,7 +282,7 @@ export function UILargeTitleHeader({
             gestureHandler,
             onWheel,
             hasScroll,
-            setHasScrollGuarded,
+            setHasScroll,
             registerScrollable,
             unregisterScrollable,
         ],
@@ -385,9 +376,7 @@ export function UILargeTitleHeader({
                     </ScrollableContext.Provider>
                 </UILargeTitleContainerRefContext.Provider>
             </Animated.View>
-            <UIBackgroundView
-                style={[styles.mainHeaderContainer, { height: HEADER_HEIGHT }]}
-            >
+            <UIBackgroundView style={styles.mainHeaderContainer}>
                 <UIStackNavigationBar
                     {...navigationBarProps}
                     headerTitleOpacity={headerTitleOpacity}
@@ -403,19 +392,20 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    mainHeaderFiller: { height: HEADER_HEIGHT },
+    mainHeaderFiller: { height: UIConstant.headerHeight },
     mainHeaderContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
+        height: UIConstant.headerHeight,
     },
     mainHeaderTitleContainer: {
         alignItems: 'center',
         justifyContent: 'center',
     },
     largeTitleHeaderContainer: {
-        padding: SCREEN_CONTENT_INSET_HORIZONTAL,
+        padding: UIConstant.scrollContentInsetHorizontal,
     },
     sceneContainerWithoutScroll: {
         flex: 1,

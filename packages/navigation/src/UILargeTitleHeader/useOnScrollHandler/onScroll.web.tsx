@@ -11,7 +11,7 @@ import type {
     NativeScrollEvent,
 } from 'react-native';
 
-import { getYWithRubberBandEffect } from '../getYWithRubberBandEffect';
+import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 
 const measure: (
     ...args: Parameters<typeof measureNative>
