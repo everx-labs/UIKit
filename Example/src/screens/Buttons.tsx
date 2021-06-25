@@ -248,7 +248,7 @@ const Buttons = () => (
                 <UILinkButton
                     testID="uiLinkButton_secondary"
                     title="Action"
-                    type={UILinkButtonType.Secondary}
+                    type={UILinkButtonType.Menu}
                     onPress={() => console.log('Pressed UILinkButton')}
                 />
             </View>

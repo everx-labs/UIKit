@@ -8,8 +8,8 @@ import { ColorVariants, useTheme } from './Colors';
 
 // eslint-disable-next-line no-shadow
 export enum UILinkButtonType {
-    Primary = 'Primary',
-    Secondary = 'Secondary',
+    Menu = 'Menu',
+    Link = 'Link',
 }
 
 // eslint-disable-next-line no-shadow
@@ -41,7 +41,7 @@ export type UILinkButtonProps = {
 const getButtonStates = (
     type: UILinkButtonType,
 ) => {
-    if (type === UILinkButtonType.Primary) {
+    if (type === UILinkButtonType.Menu) {
         return {
             activeContentColor: ColorVariants.TextAccent,
         };
@@ -105,7 +105,7 @@ function useButtonStyles(
         contentColor = ColorVariants.TextNegative;
     } else if (variant === UILinkButtonVariant.Positive) {
         contentColor = ColorVariants.TextPositive;
-    } else if (type === UILinkButtonType.Primary) {
+    } else if (type === UILinkButtonType.Menu) {
         contentColor = ColorVariants.TextPrimary;
     } else {
         contentColor = ColorVariants.TextAccent;
@@ -122,7 +122,7 @@ export const UILinkButton = ({
     onPress,
     testID,
     title,
-    type = UILinkButtonType.Primary,
+    type = UILinkButtonType.Link,
     variant = UILinkButtonVariant.Neutral,
 }: UILinkButtonProps) => {
     const { contentColor } = useButtonStyles(type, variant, disabled);
