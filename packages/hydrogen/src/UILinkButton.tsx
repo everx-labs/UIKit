@@ -136,6 +136,7 @@ export const UILinkButton = ({
             ]}
             contentStyle={styles.content}
             animations={buttonAnimations}
+            disabled={disabled}
             onPress={onPress}
             testID={testID}
         >
