@@ -48,7 +48,7 @@ export type HeaderItem = {
     /**
      * Color variant for icon
      */
-    iconTintColor?: ColorVariants;
+    iconTintColor?: ColorVariants | null;
     /**
      * Whether the press behavior is disabled
      */
