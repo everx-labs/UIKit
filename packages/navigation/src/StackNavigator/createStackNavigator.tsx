@@ -87,16 +87,14 @@ export type StackNavigationOptions = Omit<
 function ScreenWithHeaderContent({
     descriptor,
     children,
+    compareProps,
 }: {
     descriptor: StackDescriptor;
     children: React.ReactNode;
+    compareProps: any;
 }) {
     const { top } = useSafeAreaInsets();
     const closeModal = React.useContext(NestedInModalContext);
-
-    if (descriptor == null) {
-        return null;
-    }
 
     if (descriptor.options.headerVisible === false) {
         return (
@@ -107,7 +105,7 @@ function ScreenWithHeaderContent({
                 }
                 style={styles.screenContainer}
             >
-                {children}
+                <StaticContainer {...compareProps}>{children}</StaticContainer>
             </UIBackgroundView>
         );
     }
@@ -144,7 +142,9 @@ function ScreenWithHeaderContent({
                         headerRight={descriptor.options.headerRight}
                         headerRightItems={descriptor.options.headerRightItems}
                     >
-                        {children}
+                        <StaticContainer {...compareProps}>
+                            {children}
+                        </StaticContainer>
                     </UILargeTitleHeader>
                 </PortalManager>
             ) : (
@@ -160,7 +160,9 @@ function ScreenWithHeaderContent({
                         headerRight={descriptor.options.headerRight}
                         headerRightItems={descriptor.options.headerRightItems}
                     />
-                    {children}
+                    <StaticContainer {...compareProps}>
+                        {children}
+                    </StaticContainer>
                 </PortalManager>
             )}
         </UIBackgroundView>
@@ -184,15 +186,22 @@ function wrapScreenComponentWithHeader(
         const descriptors = React.useContext(DescriptorsContext);
         const descriptor = descriptors[route.key];
 
+        if (descriptor == null) {
+            return null;
+        }
+
         return (
-            <ScreenWithHeaderContent descriptor={descriptor}>
-                <StaticContainer
-                    render={ScreenComponent}
-                    navigation={navigation}
-                    route={route}
-                >
-                    <ScreenComponent navigation={navigation} route={route} />
-                </StaticContainer>
+            <ScreenWithHeaderContent
+                descriptor={descriptor}
+                compareProps={{
+                    name: route.name,
+                    render: ScreenComponent,
+                    navigation,
+                    route,
+                    descriptor,
+                }}
+            >
+                <ScreenComponent navigation={navigation} route={route} />
             </ScreenWithHeaderContent>
         );
     }
@@ -227,15 +236,22 @@ function wrapScreenRenderPropWithHeader(
         const descriptors = React.useContext(DescriptorsContext);
         const descriptor = descriptors[route.key];
 
+        if (descriptor == null) {
+            return null;
+        }
+
         return (
-            <ScreenWithHeaderContent descriptor={descriptor}>
-                <StaticContainer
-                    render={screenRenderProp}
-                    navigation={navigation}
-                    route={route}
-                >
-                    {screenRenderProp({ navigation, route })}
-                </StaticContainer>
+            <ScreenWithHeaderContent
+                descriptor={descriptor}
+                compareProps={{
+                    name: route.name,
+                    render: screenRenderProp,
+                    navigation,
+                    route,
+                    descriptor,
+                }}
+            >
+                {screenRenderProp({ navigation, route })}
             </ScreenWithHeaderContent>
         );
     }
@@ -315,16 +331,87 @@ type SurfSplitNavigatorProps = {
     screenOptions: StackRouterOptions;
 };
 
+function shouldUpdateScreens(
+    children: React.ReactNode,
+    prevChildren: React.ReactNode,
+) {
+    const prevScreens = React.Children.toArray(prevChildren);
+    const currentScreens = React.Children.toArray(children);
+
+    if (prevScreens.length !== currentScreens.length) {
+        return true;
+    }
+
+    for (let i = 0; i < currentScreens.length; i += 1) {
+        const prevScreen = prevScreens[i];
+        const currentScreen = currentScreens[i];
+
+        if (
+            React.isValidElement(prevScreen) &&
+            React.isValidElement(currentScreen)
+        ) {
+            if (currentScreen.type === React.Fragment) {
+                if (
+                    shouldUpdateScreens(
+                        currentScreen.props.children,
+                        prevScreen.props.children,
+                    )
+                ) {
+                    return true;
+                }
+                continue;
+            }
+
+            if (currentScreen.props && 'component' in currentScreen.props) {
+                if (
+                    currentScreen.props.component !== prevScreen.props.component
+                ) {
+                    return true;
+                }
+                continue;
+            }
+
+            if (currentScreen.props && 'getComponent' in currentScreen.props) {
+                if (
+                    currentScreen.props.getComponent !==
+                    prevScreen.props.getComponent
+                ) {
+                    return true;
+                }
+                continue;
+            }
+
+            if (currentScreen.props && 'children' in currentScreen.props) {
+                if (
+                    currentScreen.props.children !== prevScreen.props.children
+                ) {
+                    return true;
+                }
+                continue;
+            }
+        }
+    }
+
+    return false;
+}
+
 export const StackNavigator = ({
     children,
     initialRouteName,
     screenOptions,
 }: SurfSplitNavigatorProps) => {
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
-    const wrappedChildren = React.useMemo(
-        () => wrapScreensWithHeader(children),
-        [children],
-    );
+
+    const prevChildren = React.useRef<React.ReactNode>(null);
+    const wrappedChildren = React.useRef<React.ReactNode>(null);
+
+    if (
+        prevChildren.current == null ||
+        shouldUpdateScreens(children, prevChildren.current)
+    ) {
+        prevChildren.current = children;
+        wrappedChildren.current = wrapScreensWithHeader(children);
+    }
 
     const { state, navigation, descriptors } = useNavigationBuilder<
         StackNavigationState<ParamListBase>,
@@ -333,7 +420,7 @@ export const StackNavigator = ({
         StackNavigationOptions,
         StackNavigationEventMap
     >(StackRouter, {
-        children: wrappedChildren,
+        children: wrappedChildren.current,
         initialRouteName,
         screenOptions: {
             ...screenOptions,
