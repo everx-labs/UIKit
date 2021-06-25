@@ -8,8 +8,8 @@ import { ColorVariants, useTheme } from './Colors';
 
 // eslint-disable-next-line no-shadow
 export enum UILinkButtonType {
-    Menu = 'Menu',
     Link = 'Link',
+    Menu = 'Menu',
 }
 
 // eslint-disable-next-line no-shadow
@@ -27,14 +27,53 @@ export enum UILinkButtonIconPosition {
 }
 
 export type UILinkButtonProps = {
+    /**
+     * Whether the button is disabled or not; if true a button is grayed out and `onPress` does no response
+     */
     disabled?: boolean;
+    /**
+     * Source for the button icon
+     */
     icon?: ImageSourcePropType;
+    /**
+     * Position of icon on the button
+     * - `UILinkButtonIconPosition.Left` - icon to the left near the title
+     * - `UILinkButtonIconPosition.Middle` - icon to the right near the title
+     * - `UILinkButtonIconPosition.Right` - icon at the end of the button
+     */
     iconPosition?: UILinkButtonIconPosition;
+    /**
+     * Allows to set top, right, bottom and left margins to the button container
+     */
     layout?: UILayout;
+    /**
+     * Function will be called on button press
+     */
     onPress?: () => void | Promise<void>;
+    /**
+     * Flag for reducing button height
+     */
+    reducedHeight?: boolean;
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
+    /**
+     * Text displayed on the button
+     */
     title?: string;
+    /**
+     * Type of the button; specific type allows to set the corresponding accent
+     * - `UILinkButtonType.Link` - button with current theme accent title color (default)
+     * - `UILinkButtonType.Menu` - button with current theme primary title color
+     */
     type?: UILinkButtonType;
+    /**
+     * Variant of the button; specific type allows to display the corresponding button action nature
+     * - `UILinkButtonVariant.Neutral` - button with regular action (default)
+     * - `UILinkButtonVariant.Negative` - button associated with some destructive action
+     * - `UILinkButtonVariant.Positive` - button associated with some affirmative action
+     */
     variant?: UILinkButtonVariant;
 }
 
@@ -120,6 +159,7 @@ export const UILinkButton = ({
     iconPosition = UILinkButtonIconPosition.Middle,
     layout,
     onPress,
+    reducedHeight,
     testID,
     title,
     type = UILinkButtonType.Link,
@@ -131,7 +171,7 @@ export const UILinkButton = ({
     return (
         <Button
             containerStyle={[
-                styles.container,
+                reducedHeight ? styles.reducedContainer : styles.container,
                 layout,
             ]}
             contentStyle={styles.content}
@@ -186,6 +226,9 @@ export const UILinkButton = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.linkButtonHeight,
+    },
+    reducedContainer: {
+        height: UIConstant.linkButtonHeight / 2,
     },
     content: {
         alignItems: 'flex-start',
