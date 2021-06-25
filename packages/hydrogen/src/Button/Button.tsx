@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { ImageStyle, Platform, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import type Animated from 'react-native-reanimated';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
@@ -23,9 +24,31 @@ export type UILayout = {
     marginLeft?: number;
 }
 
+type BackgroundParams = {
+    animationParam: Animated.SharedValue<number>;
+    backgroundStyle?: Animated.AnimatedStyleProp<ViewStyle>;
+    overlayStyle?: Animated.AnimatedStyleProp<ViewStyle>;
+};
+
+type ContentParams = {
+    animationParam: Animated.SharedValue<number>;
+    style: Animated.AnimatedStyleProp<TextStyle | ImageStyle>;
+    initialColor?: ColorVariants;
+    activeColor?: ColorVariants;
+};
+
+export type ButtonAnimations = {
+    hover?: BackgroundParams,
+    press?: BackgroundParams,
+    title?: ContentParams,
+    icon?: ContentParams,
+};
+
 type ButtonProps = {
+    animations: ButtonAnimations;
     children: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle>;
+    contentStyle?: StyleProp<ViewStyle>;
     disabled?: boolean;
     loading?: boolean;
     onPress?: () => void | Promise<void>;
@@ -37,8 +60,10 @@ const ButtonForward = React.forwardRef<
     ButtonProps
 >(function ButtonForwarded(
     {
+        animations,
         children,
         containerStyle,
+        contentStyle,
         disabled,
         loading,
         onPress,
@@ -62,16 +87,19 @@ const ButtonForward = React.forwardRef<
         <TouchableElement
             ref={ref}
             {...props}
+            animations={animations}
             disabled={disabled}
+            loading={loading}
             onPress={handleOnPress}
-            style={[containerStyle, styles.container]}
+            style={[styles.container, containerStyle]}
+            contentStyle={[styles.content, contentStyle]}
             testID={testID}
         >
             <View style={Platform.OS === 'web' ? styles.content : null}>
                 {loading ? (
                     <UIIndicator
-                        color={ColorVariants.StaticTextPrimaryLight}
-                        size={UIConstant.iconSize}
+                        color={ColorVariants.StaticIconPrimaryDark}
+                        size={UIConstant.loaderSize}
                     />
                 ) : processedChildren}
             </View>
@@ -98,6 +126,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden',
     },
     content: {
         flexShrink: 1
