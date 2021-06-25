@@ -44,7 +44,7 @@ export enum ColorVariants {
     IconSecondary = 'IconSecondary',
     // IconTertiary = 'IconTertiary',
     // IconPrimaryInverted = 'IconPrimaryInverted',
-    // IconNeutral = 'IconNeutral',
+    IconNeutral = 'IconNeutral',
     // IconNegative = 'IconNegative',
     // That ones are for technical reasons
     Transparent = 'Transparent',
@@ -115,7 +115,7 @@ export const LightTheme: Theme = {
     [ColorVariants.IconSecondary]: '#707376',
     // [ColorVariants.IconTertiary]: '#B6B8BA',
     // [ColorVariants.IconPrimary]Inverted: '#FDFDFD',
-    // [ColorVariants.IconNeutral]: '#E2E3E4',
+    [ColorVariants.IconNeutral]: '#E2E3E4',
     // [ColorVariants.IconNegative]: '#CA1414',
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'light',
@@ -160,6 +160,7 @@ export const DarkTheme: Theme = {
 
     [ColorVariants.IconAccent]: '#0073C4',
     [ColorVariants.IconSecondary]: '#ADB0B1',
+    [ColorVariants.IconNeutral]: '#3B4043',
 
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
