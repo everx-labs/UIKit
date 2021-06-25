@@ -8,8 +8,9 @@ import {
     StackActionHelpers,
     StackActions,
     EventArg,
-    useRoute,
     Descriptor,
+    RouteProp,
+    NavigationProp,
 } from '@react-navigation/native';
 import type {
     StackNavigationState,
@@ -33,21 +34,21 @@ import {
 } from '../UILargeTitleHeader';
 import { NestedInModalContext } from '../ModalNavigator/createModalNavigator';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
+import StaticContainer from './StaticContainer';
 
-const DescriptorsContext = React.createContext<
-    Record<
-        string,
-        Descriptor<
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            Record<string, object | undefined>,
-            string,
-            StackNavigationState<ParamListBase>,
-            StackNavigationOptions,
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            {}
-        >
-    >
->({});
+type StackDescriptor = Descriptor<
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    Record<string, object | undefined>,
+    string,
+    StackNavigationState<ParamListBase>,
+    StackNavigationOptions,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    {}
+>;
+
+const DescriptorsContext = React.createContext<Record<string, StackDescriptor>>(
+    {},
+);
 
 export type StackNavigationOptions = Omit<
     UILargeTitleHeaderProps,
@@ -83,98 +84,116 @@ export type StackNavigationOptions = Omit<
     backgroundColor?: ColorVariants;
 };
 
-function wrapScreenComponentWithHeader(
-    ScreenComponent: React.ComponentType<any>,
-) {
-    function ScreenWithHeader(props: any) {
-        const { top } = useSafeAreaInsets();
+function ScreenWithHeaderContent({
+    descriptor,
+    children,
+}: {
+    descriptor: StackDescriptor;
+    children: React.ReactNode;
+}) {
+    const { top } = useSafeAreaInsets();
+    const closeModal = React.useContext(NestedInModalContext);
 
-        const descriptors = React.useContext(DescriptorsContext);
-        const route = useRoute();
-        const descriptor = descriptors[route.key];
+    if (descriptor == null) {
+        return null;
+    }
 
-        const closeModal = React.useContext(NestedInModalContext);
-
-        if (descriptor == null) {
-            return null;
-        }
-
-        if (descriptor.options.headerVisible === false) {
-            return (
-                <UIBackgroundView
-                    color={
-                        descriptor.options.backgroundColor ||
-                        ColorVariants.BackgroundPrimary
-                    }
-                    style={styles.screenContainer}
-                >
-                    <ScreenComponent {...props} />
-                </UIBackgroundView>
-            );
-        }
-
+    if (descriptor.options.headerVisible === false) {
         return (
             <UIBackgroundView
                 color={
                     descriptor.options.backgroundColor ||
                     ColorVariants.BackgroundPrimary
                 }
-                style={[
-                    styles.screenContainer,
-                    closeModal == null
-                        ? {
-                              paddingTop: top,
-                          }
-                        : null,
-                ]}
+                style={styles.screenContainer}
             >
-                {descriptor.options.useHeaderLargeTitle ? (
-                    <PortalManager id="scene">
-                        <UILargeTitleHeader
-                            testID={descriptor.options.testID}
-                            title={descriptor.options.title}
-                            headerLargeTitle={
-                                descriptor.options.headerLargeTitle
-                            }
-                            caption={descriptor.options.caption}
-                            onTitlePress={descriptor.options.onTitlePress}
-                            onHeaderLargeTitlePress={
-                                descriptor.options.onHeaderLargeTitlePress
-                            }
-                            headerLeft={descriptor.options.headerLeft}
-                            headerLeftItems={descriptor.options.headerLeftItems}
-                            headerBackButton={
-                                descriptor.options.headerBackButton
-                            }
-                            headerRight={descriptor.options.headerRight}
-                            headerRightItems={
-                                descriptor.options.headerRightItems
-                            }
-                        >
-                            <ScreenComponent {...props} />
-                        </UILargeTitleHeader>
-                    </PortalManager>
-                ) : (
-                    <PortalManager id="scene">
-                        <UIStackNavigationBar
-                            testID={descriptor.options.testID}
-                            title={descriptor.options.title}
-                            caption={descriptor.options.caption}
-                            onTitlePress={descriptor.options.onTitlePress}
-                            headerLeft={descriptor.options.headerLeft}
-                            headerLeftItems={descriptor.options.headerLeftItems}
-                            headerBackButton={
-                                descriptor.options.headerBackButton
-                            }
-                            headerRight={descriptor.options.headerRight}
-                            headerRightItems={
-                                descriptor.options.headerRightItems
-                            }
-                        />
-                        <ScreenComponent {...props} />
-                    </PortalManager>
-                )}
+                {children}
             </UIBackgroundView>
+        );
+    }
+
+    return (
+        <UIBackgroundView
+            color={
+                descriptor.options.backgroundColor ||
+                ColorVariants.BackgroundPrimary
+            }
+            style={[
+                styles.screenContainer,
+                closeModal == null
+                    ? {
+                          paddingTop: top,
+                      }
+                    : null,
+            ]}
+        >
+            {descriptor.options.useHeaderLargeTitle ? (
+                <PortalManager id="scene">
+                    <UILargeTitleHeader
+                        testID={descriptor.options.testID}
+                        title={descriptor.options.title}
+                        headerLargeTitle={descriptor.options.headerLargeTitle}
+                        caption={descriptor.options.caption}
+                        onTitlePress={descriptor.options.onTitlePress}
+                        onHeaderLargeTitlePress={
+                            descriptor.options.onHeaderLargeTitlePress
+                        }
+                        headerLeft={descriptor.options.headerLeft}
+                        headerLeftItems={descriptor.options.headerLeftItems}
+                        headerBackButton={descriptor.options.headerBackButton}
+                        headerRight={descriptor.options.headerRight}
+                        headerRightItems={descriptor.options.headerRightItems}
+                    >
+                        {children}
+                    </UILargeTitleHeader>
+                </PortalManager>
+            ) : (
+                <PortalManager id="scene">
+                    <UIStackNavigationBar
+                        testID={descriptor.options.testID}
+                        title={descriptor.options.title}
+                        caption={descriptor.options.caption}
+                        onTitlePress={descriptor.options.onTitlePress}
+                        headerLeft={descriptor.options.headerLeft}
+                        headerLeftItems={descriptor.options.headerLeftItems}
+                        headerBackButton={descriptor.options.headerBackButton}
+                        headerRight={descriptor.options.headerRight}
+                        headerRightItems={descriptor.options.headerRightItems}
+                    />
+                    {children}
+                </PortalManager>
+            )}
+        </UIBackgroundView>
+    );
+}
+
+function wrapScreenComponentWithHeader(
+    ScreenComponent: React.ComponentType<any>,
+) {
+    function ScreenWithHeader({
+        navigation,
+        route,
+    }: {
+        navigation: NavigationProp<
+            ParamListBase,
+            string,
+            StackNavigationState<ParamListBase>
+        >;
+        route: RouteProp<ParamListBase, string>;
+    }) {
+        const descriptors = React.useContext(DescriptorsContext);
+        const descriptor = descriptors[route.key];
+
+        return (
+            <ScreenWithHeaderContent descriptor={descriptor}>
+                <StaticContainer
+                    render={ScreenComponent}
+                    navigation={navigation}
+                    route={route}
+                >
+                    <ScreenComponent navigation={navigation} route={route} />
+                </StaticContainer>
+            </ScreenWithHeaderContent>
         );
     }
 
@@ -182,101 +201,42 @@ function wrapScreenComponentWithHeader(
 }
 
 function wrapScreenRenderPropWithHeader(
-    screenRenderProp: (props: any) => React.ReactNode,
+    screenRenderProp: ({
+        navigation,
+        route,
+    }: {
+        navigation: NavigationProp<
+            ParamListBase,
+            string,
+            StackNavigationState<ParamListBase>
+        >;
+        route: RouteProp<ParamListBase, string>;
+    }) => React.ReactNode,
 ) {
-    function ScreenWithHeader(props: any) {
-        const { top } = useSafeAreaInsets();
-
+    function ScreenWithHeader({
+        navigation,
+        route,
+    }: {
+        navigation: NavigationProp<
+            ParamListBase,
+            string,
+            StackNavigationState<ParamListBase>
+        >;
+        route: RouteProp<ParamListBase, string>;
+    }) {
         const descriptors = React.useContext(DescriptorsContext);
-        const route = useRoute();
         const descriptor = descriptors[route.key];
 
-        const closeModal = React.useContext(NestedInModalContext);
-
-        if (descriptor == null) {
-            return null;
-        }
-
-        if (descriptor.options.headerVisible === false) {
-            return (
-                <UIBackgroundView
-                    color={
-                        descriptor.options.backgroundColor ||
-                        ColorVariants.BackgroundPrimary
-                    }
-                    style={styles.screenContainer}
-                >
-                    {screenRenderProp(props)}
-                </UIBackgroundView>
-            );
-        }
-
         return (
-            <UIBackgroundView
-                color={
-                    descriptor.options.backgroundColor ||
-                    ColorVariants.BackgroundPrimary
-                }
-                style={[
-                    styles.screenContainer,
-                    closeModal == null
-                        ? {
-                              paddingTop: top,
-                          }
-                        : null,
-                ]}
-            >
-                {descriptor.options.useHeaderLargeTitle ? (
-                    <PortalManager id="scene">
-                        <UILargeTitleHeader
-                            testID={descriptor.options.testID}
-                            title={
-                                descriptor.options.headerLargeTitle != null
-                                    ? descriptor.options.headerLargeTitle
-                                    : descriptor.options.title
-                            }
-                            headerLargeTitle={
-                                descriptor.options.headerLargeTitle
-                            }
-                            caption={descriptor.options.caption}
-                            onTitlePress={descriptor.options.onTitlePress}
-                            onHeaderLargeTitlePress={
-                                descriptor.options.onHeaderLargeTitlePress
-                            }
-                            headerLeft={descriptor.options.headerLeft}
-                            headerLeftItems={descriptor.options.headerLeftItems}
-                            headerBackButton={
-                                descriptor.options.headerBackButton
-                            }
-                            headerRight={descriptor.options.headerRight}
-                            headerRightItems={
-                                descriptor.options.headerRightItems
-                            }
-                        >
-                            {screenRenderProp(props)}
-                        </UILargeTitleHeader>
-                    </PortalManager>
-                ) : (
-                    <PortalManager id="scene">
-                        <UIStackNavigationBar
-                            testID={descriptor.options.testID}
-                            title={descriptor.options.title}
-                            caption={descriptor.options.caption}
-                            onTitlePress={descriptor.options.onTitlePress}
-                            headerLeft={descriptor.options.headerLeft}
-                            headerLeftItems={descriptor.options.headerLeftItems}
-                            headerBackButton={
-                                descriptor.options.headerBackButton
-                            }
-                            headerRight={descriptor.options.headerRight}
-                            headerRightItems={
-                                descriptor.options.headerRightItems
-                            }
-                        />
-                        {screenRenderProp(props)}
-                    </PortalManager>
-                )}
-            </UIBackgroundView>
+            <ScreenWithHeaderContent descriptor={descriptor}>
+                <StaticContainer
+                    render={screenRenderProp}
+                    navigation={navigation}
+                    route={route}
+                >
+                    {screenRenderProp({ navigation, route })}
+                </StaticContainer>
+            </ScreenWithHeaderContent>
         );
     }
 
@@ -327,18 +287,7 @@ function wrapScreensWithHeader(children: React.ReactNode) {
 }
 
 function filterDescriptorOptionsForOriginalImplementation(
-    descriptors: Record<
-        string,
-        Descriptor<
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            Record<string, object | undefined>,
-            string,
-            StackNavigationState<ParamListBase>,
-            StackNavigationOptions,
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            {}
-        >
-    >,
+    descriptors: Record<string, StackDescriptor>,
 ) {
     return Object.keys(descriptors).reduce<Record<string, any>>((acc, key) => {
         const originalDescriptor = descriptors[key];
