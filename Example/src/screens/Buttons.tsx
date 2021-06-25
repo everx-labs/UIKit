@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 
-import {UIAssets} from '@tonlabs/uikit.assets';
-import {UIButton, UIImageButton, UIScaleButton, UITextButton} from '@tonlabs/uikit.components';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIButton, UIImageButton, UIScaleButton } from '@tonlabs/uikit.components';
 import {
     UIBoxButton,
     UIBoxButtonIconPosition,
@@ -17,10 +17,10 @@ import {
     UIMsgButtonType,
     UIMsgButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
-import {createStackNavigator} from '@tonlabs/uikit.navigation';
+import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
-import {ExampleSection} from '../components/ExampleSection';
-import {ExampleScreen} from '../components/ExampleScreen';
+import { ExampleSection } from '../components/ExampleSection';
+import { ExampleScreen } from '../components/ExampleScreen';
 
 const Buttons = () => (
     <ExampleScreen>
@@ -592,29 +592,6 @@ const Buttons = () => (
                 >
                     <Text>Scale example factor 2</Text>
                 </UIScaleButton>
-            </View>
-        </ExampleSection>
-
-        <ExampleSection title="UITextButton">
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
-                    testID="uiTextButton_default"
-                    title="Text button"
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
-                    testID="uiTextButton_with_details"
-                    title="Text button with details"
-                    details="Some details"
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
-                    testID="uiTextButton_disabled"
-                    disabled
-                    title="Disabled text button"
-                />
             </View>
         </ExampleSection>
     </ExampleScreen>
