@@ -59,11 +59,11 @@ export type HeaderItem = {
     onPress?: OnPress;
 };
 
-function UIHeaderActionItem({ label, accessibilityLabel }: HeaderItem) {
+function UIHeaderActionItem({ disabled, label, accessibilityLabel }: HeaderItem) {
     return (
         <UILabel
             role={UILabelRoles.Action}
-            color={UILabelColors.TextAccent}
+            color={disabled ? UILabelColors.TextNeutral : UILabelColors.TextAccent}
             accessibilityLabel={accessibilityLabel}
         >
             {label}
@@ -72,6 +72,7 @@ function UIHeaderActionItem({ label, accessibilityLabel }: HeaderItem) {
 }
 
 function UIHeaderIconItem({
+    disabled,
     icon,
     iconElement,
     iconTintColor = ColorVariants.IconAccent,
@@ -80,18 +81,20 @@ function UIHeaderIconItem({
         return iconElement;
     }
 
+    const tintColor = disabled ? ColorVariants.LineNeutral : iconTintColor;
+
     if (icon) {
         if (typeof icon === 'function') {
             return icon({
                 style: styles.headerIcon,
-                tintColor: iconTintColor,
+                tintColor,
             });
         }
         return (
             <UIImage
                 {...icon}
                 style={[styles.headerIcon, icon.style]}
-                tintColor={iconTintColor}
+                tintColor={tintColor}
             />
         );
     }
