@@ -81,7 +81,7 @@ function UIHeaderIconItem({
         return iconElement;
     }
 
-    const tintColor = disabled ? ColorVariants.LineNeutral : iconTintColor;
+    const tintColor = disabled ? ColorVariants.IconNeutral : iconTintColor;
 
     if (icon) {
         if (typeof icon === 'function') {
