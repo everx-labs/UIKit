@@ -50,6 +50,10 @@ export type HeaderItem = {
      */
     iconTintColor?: ColorVariants;
     /**
+     * Whether the press behavior is disabled
+     */
+    disabled?: boolean;
+    /**
      * Press handler
      */
     onPress?: OnPress;
@@ -97,11 +101,13 @@ function UIHeaderIconItem({
 
 function UIHeaderItemPressable({
     testID,
+    disabled,
     onPress,
     children,
     applyMargin,
 }: {
     testID?: string;
+    disabled?: boolean;
     onPress?: OnPress;
     children: React.ReactNode;
     applyMargin: boolean;
@@ -115,6 +121,7 @@ function UIHeaderItemPressable({
                 left: UIConstant.contentOffset(),
                 right: UIConstant.contentOffset(),
             }}
+            disabled={disabled}
             onPress={onPress}
             style={applyMargin ? styles.headerItemMargin : null}
         >
@@ -131,6 +138,7 @@ function UIHeaderItem({
         return (
             <UIHeaderItemPressable
                 testID={item.testID}
+                disabled={item.disabled}
                 onPress={item.onPress}
                 applyMargin={applyMargin}
             >
@@ -141,6 +149,7 @@ function UIHeaderItem({
     if (item.icon != null || item.iconElement != null) {
         return (
             <UIHeaderItemPressable
+                disabled={item.disabled}
                 onPress={item.onPress}
                 applyMargin={applyMargin}
             >
