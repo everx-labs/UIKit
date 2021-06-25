@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 public class AppContextHolder {
     private static Activity sCurrentActivity;
+    private static ReactApplicationContext mReactContext;
     private static boolean isSubscribedToActivityChanges = false;
 
     private static class VisibleViewClassMatchPredicate implements PredicateFunc<View> {
@@ -30,20 +31,18 @@ public class AppContextHolder {
     }
     private static final VisibleViewClassMatchPredicate sVisibleReactRootViewMatcher = new VisibleViewClassMatchPredicate(ReactRootView.class);
 
-    public static void init(ReactApplicationContext reactContext) {
+    public static void init(final ReactApplicationContext reactContext) {
+        mReactContext = reactContext;
+
         if (isSubscribedToActivityChanges) {
             return;
         }
 
-        Activity activity = reactContext.getCurrentActivity();
+        Application app = (Application) reactContext.getApplicationContext();
 
-        if (activity == null) {
+        if (app == null) {
             return;
         }
-
-        sCurrentActivity = activity;
-
-        Application app = activity.getApplication();
 
         app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
@@ -86,11 +85,21 @@ public class AppContextHolder {
     }
 
     public static Activity getCurrentActivity() {
+        if (sCurrentActivity == null) {
+            Activity tActivity = mReactContext.getCurrentActivity();
+
+            if (tActivity != null) {
+                sCurrentActivity = tActivity;
+            }
+        }
+
         return sCurrentActivity;
     }
 
     public static Window getWindow() {
-        return (sCurrentActivity == null ? null : sCurrentActivity.getWindow());
+        Activity cActivity = getCurrentActivity();
+
+        return (cActivity == null ? null : cActivity.getWindow());
     }
 
     public static ReactRootView getReactRootView() {

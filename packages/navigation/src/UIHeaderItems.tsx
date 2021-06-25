@@ -50,16 +50,20 @@ export type HeaderItem = {
      */
     iconTintColor?: ColorVariants;
     /**
+     * Whether the press behavior is disabled
+     */
+    disabled?: boolean;
+    /**
      * Press handler
      */
     onPress?: OnPress;
 };
 
-function UIHeaderActionItem({ label, accessibilityLabel }: HeaderItem) {
+function UIHeaderActionItem({ disabled, label, accessibilityLabel }: HeaderItem) {
     return (
         <UILabel
             role={UILabelRoles.Action}
-            color={UILabelColors.TextAccent}
+            color={disabled ? UILabelColors.TextNeutral : UILabelColors.TextAccent}
             accessibilityLabel={accessibilityLabel}
         >
             {label}
@@ -68,6 +72,7 @@ function UIHeaderActionItem({ label, accessibilityLabel }: HeaderItem) {
 }
 
 function UIHeaderIconItem({
+    disabled,
     icon,
     iconElement,
     iconTintColor = ColorVariants.IconAccent,
@@ -76,18 +81,20 @@ function UIHeaderIconItem({
         return iconElement;
     }
 
+    const tintColor = disabled ? ColorVariants.IconNeutral : iconTintColor;
+
     if (icon) {
         if (typeof icon === 'function') {
             return icon({
                 style: styles.headerIcon,
-                tintColor: iconTintColor,
+                tintColor,
             });
         }
         return (
             <UIImage
                 {...icon}
                 style={[styles.headerIcon, icon.style]}
-                tintColor={iconTintColor}
+                tintColor={tintColor}
             />
         );
     }
@@ -97,11 +104,13 @@ function UIHeaderIconItem({
 
 function UIHeaderItemPressable({
     testID,
+    disabled,
     onPress,
     children,
     applyMargin,
 }: {
     testID?: string;
+    disabled?: boolean;
     onPress?: OnPress;
     children: React.ReactNode;
     applyMargin: boolean;
@@ -115,6 +124,7 @@ function UIHeaderItemPressable({
                 left: UIConstant.contentOffset(),
                 right: UIConstant.contentOffset(),
             }}
+            disabled={disabled}
             onPress={onPress}
             style={applyMargin ? styles.headerItemMargin : null}
         >
@@ -131,6 +141,7 @@ function UIHeaderItem({
         return (
             <UIHeaderItemPressable
                 testID={item.testID}
+                disabled={item.disabled}
                 onPress={item.onPress}
                 applyMargin={applyMargin}
             >
@@ -141,6 +152,7 @@ function UIHeaderItem({
     if (item.icon != null || item.iconElement != null) {
         return (
             <UIHeaderItemPressable
+                disabled={item.disabled}
                 onPress={item.onPress}
                 applyMargin={applyMargin}
             >
