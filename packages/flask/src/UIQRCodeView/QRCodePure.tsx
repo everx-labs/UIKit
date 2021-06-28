@@ -1,7 +1,7 @@
 import * as React from 'react';
 import QRCode from 'qrcode';
 import Svg, { Path } from 'react-native-svg';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { UIImage } from '@tonlabs/uikit.hydrogen';
 
 const DEFAULT_SIZE: number = 200;
@@ -190,15 +190,19 @@ export const QRCodePure: React.FC<IProps> = ({
     const qr = QRCode.create(value, {});
 
     if (getPng) {
-        QRCode.toDataURL(
-            value,
-            {
-                type: 'image/png',
-            },
-            (_error: Error, url: string): void => {
-                getPng(url);
-            },
-        );
+        if (Platform.OS === 'web') {
+            QRCode.toDataURL(
+                value,
+                {
+                    type: 'image/png',
+                },
+                (_error: Error, url: string): void => {
+                    getPng(url.split(';base64,')[1]);
+                },
+            );
+        } else {
+            // TODO
+        }
     }
 
     const qrDataLength = qr.modules.size;
