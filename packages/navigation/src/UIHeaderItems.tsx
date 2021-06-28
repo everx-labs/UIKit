@@ -39,7 +39,7 @@ export type HeaderItem = {
         | ImageProps
         | ((props: {
               style: StyleProp<ImageStyle>;
-              tintColor?: ColorVariants;
+              tintColor?: ColorVariants | null;
           }) => JSX.Element);
     /**
      * Icon react node

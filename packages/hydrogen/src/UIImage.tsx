@@ -12,7 +12,7 @@ export type UIImageProps = ImageProps & {
     // tintColor for some reason don't work properly with
     // react-native-fast-image, hence passing this prop
     // we force to use default <Image /> from RN
-    tintColor?: ColorVariants;
+    tintColor?: ColorVariants | null;
 };
 
 export function UIImage({ tintColor, ...rest }: UIImageProps) {
