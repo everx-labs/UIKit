@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ImageSourcePropType, StyleSheet } from 'react-native';
+import { ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Button, UILayout } from './Button';
@@ -17,6 +17,12 @@ export enum UILinkButtonVariant {
     Neutral = 'Neutral',
     Negative = 'Negative',
     Positive = 'Positive',
+}
+
+// eslint-disable-next-line no-shadow
+export enum UILinkButtonSize {
+    Small = 'Small',
+    Normal = 'Normal',
 }
 
 // eslint-disable-next-line no-shadow
@@ -51,9 +57,11 @@ export type UILinkButtonProps = {
      */
     onPress?: () => void | Promise<void>;
     /**
-     * Flag for reducing button height
+     * Size property for button height regulation
+     * - `UILinkButtonSize.Small` - button with height 24
+     * - `UILinkButtonSize.Normal` - button with height 48 (default)
      */
-    reducedHeight?: boolean;
+    size?: UILinkButtonSize;
     /**
      * ID for usage in tests
      */
@@ -132,11 +140,19 @@ function useButtonAnimations(
 }
 
 function useButtonStyles(
+    size: UILinkButtonSize,
     type: UILinkButtonType,
     variant: UILinkButtonVariant,
     disabled?: boolean,
 ) {
     let contentColor: ColorVariants;
+    let containerHeight: StyleProp<ViewStyle>;
+
+    if (size === UILinkButtonSize.Small) {
+        containerHeight = styles.smallContainer;
+    } else {
+        containerHeight = styles.normalContainer;
+    }
 
     if (disabled) {
         contentColor = ColorVariants.TextOverlay;
@@ -150,7 +166,7 @@ function useButtonStyles(
         contentColor = ColorVariants.TextAccent;
     }
 
-    return { contentColor };
+    return { contentColor, containerHeight };
 }
 
 export const UILinkButton = ({
@@ -159,19 +175,19 @@ export const UILinkButton = ({
     iconPosition = UILinkButtonIconPosition.Middle,
     layout,
     onPress,
-    reducedHeight,
+    size = UILinkButtonSize.Normal,
     testID,
     title,
     type = UILinkButtonType.Link,
     variant = UILinkButtonVariant.Neutral,
 }: UILinkButtonProps) => {
-    const { contentColor } = useButtonStyles(type, variant, disabled);
+    const { contentColor, containerHeight } = useButtonStyles(size, type, variant, disabled);
     const buttonAnimations = useButtonAnimations(type, contentColor);
 
     return (
         <Button
             containerStyle={[
-                reducedHeight ? styles.reducedContainer : styles.container,
+                containerHeight,
                 layout,
             ]}
             contentStyle={styles.content}
@@ -224,16 +240,16 @@ export const UILinkButton = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
-        height: UIConstant.linkButtonHeight,
-    },
-    reducedContainer: {
-        height: UIConstant.linkButtonHeight / 2,
-    },
     content: {
         alignItems: 'flex-start',
     },
     leftIcon: {
         marginRight: UIConstant.smallContentOffset,
+    },
+    normalContainer: {
+        height: UIConstant.linkButtonHeight,
+    },
+    smallContainer: {
+        height: UIConstant.linkButtonHeight / 2,
     },
 });

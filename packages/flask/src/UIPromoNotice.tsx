@@ -8,6 +8,7 @@ import {
     UILabelColors,
     UILabelRoles,
     UILinkButton,
+    UILinkButtonSize,
     UILinkButtonType,
     UINotice,
 } from '@tonlabs/uikit.hydrogen';
@@ -76,8 +77,8 @@ export function UIPromoNotice({
                     <View>
                         <UILinkButton
                             title={uiLocalized.promoDownload.appStore}
+                            size={UILinkButtonSize.Small}
                             onPress={onAppStore}
-                            reducedHeight
                         />
                         <UILabel
                             color={UILabelColors.TextPrimary}
@@ -93,8 +94,8 @@ export function UIPromoNotice({
                     <View>
                         <UILinkButton
                             title={uiLocalized.promoDownload.googlePlay}
+                            size={UILinkButtonSize.Small}
                             onPress={onGooglePlay}
-                            reducedHeight
                         />
                         <UILabel
                             color={UILabelColors.TextPrimary}
@@ -119,16 +120,16 @@ export function UIPromoNotice({
                         <UILinkButton
                             title={uiLocalized.promoDownload.appStore}
                             type={UILinkButtonType.Menu}
+                            size={UILinkButtonSize.Small}
                             onPress={onAppStore}
                             layout={styles.leftButton}
-                            reducedHeight
                         />
                         <UILinkButton
                             title={uiLocalized.promoDownload.googlePlay}
                             type={UILinkButtonType.Menu}
+                            size={UILinkButtonSize.Small}
                             onPress={onGooglePlay}
                             layout={styles.rightButton}
-                            reducedHeight
                         />
                     </View>
                 </View>

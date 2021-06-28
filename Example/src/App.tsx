@@ -9,11 +9,8 @@
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-// $FlowFixMe
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
-// $FlowFixMe
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
-// $FlowFixMe
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIColor } from '@tonlabs/uikit.core';
