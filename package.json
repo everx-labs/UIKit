@@ -77,7 +77,9 @@
         "react-qr-reader": "2.2.1",
         "react-style-proptype": "3.2.2",
         "react-native-redash": "16.0.11",
-        "validator": "10.11.0"
+        "validator": "10.11.0",
+        "qrcode": "^1.4.4",
+        "@types/qrcode": "^1.4.0"
     },
     "devDependencies": {
         "@babel/core": "7.9.0",
