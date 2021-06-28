@@ -31,6 +31,31 @@ export const NestedInDismissibleModalContext = React.createContext<boolean>(
     false,
 );
 
+const ModalScreen = React.memo(
+    ({
+        navigation,
+        route,
+        descriptor,
+    }: {
+        route: RouteProp<ParamListBase, string>;
+        descriptor: Descriptor<ParamListBase>;
+        navigation: NavigationProp<ParamListBase>;
+    }) => {
+        const { name } = route;
+
+        const hide = React.useCallback(() => {
+            Keyboard.dismiss();
+            navigation.dispatch(ModalActions.hide(name));
+        }, [name, navigation]);
+
+        return (
+            <NestedInModalContext.Provider value={hide}>
+                {descriptor.render()}
+            </NestedInModalContext.Provider>
+        );
+    },
+);
+
 export class ModalController extends React.Component<ModalControllerProps> {
     static show(name: string, params?: Record<string, unknown>) {
         if (ModalController.instance) {
@@ -84,11 +109,11 @@ export class ModalController extends React.Component<ModalControllerProps> {
             }
 
             return (
-                <NestedInModalContext.Provider
-                    value={() => this.hide(route.name)}
-                >
-                    {descriptor.render()}
-                </NestedInModalContext.Provider>
+                <ModalScreen
+                    navigation={this.props.navigation}
+                    route={route}
+                    descriptor={descriptor}
+                />
             );
         });
     }
