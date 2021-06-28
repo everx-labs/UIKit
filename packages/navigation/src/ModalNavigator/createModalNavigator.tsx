@@ -44,6 +44,7 @@ const ModalScreen = React.memo(
         const { name } = route;
 
         const hide = React.useCallback(() => {
+            Keyboard.dismiss();
             navigation.dispatch(ModalActions.hide(name));
         }, [name, navigation]);
 
