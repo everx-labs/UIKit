@@ -283,10 +283,12 @@ export function UILargeTitleHeader({
         scrollablesCountRef.current = count;
     }, [setScrollablesCount]);
 
+    const { panGestureHandlerRef } = React.useContext(ScrollableContext);
+
     const scrollableContextValue = React.useMemo(
         () => ({
             ref: scrollRef,
-            panGestureHandlerRef: null,
+            panGestureHandlerRef,
             scrollHandler,
             gestureHandler,
             onWheel,
@@ -297,6 +299,7 @@ export function UILargeTitleHeader({
         }),
         [
             scrollRef,
+            panGestureHandlerRef,
             scrollHandler,
             gestureHandler,
             onWheel,
