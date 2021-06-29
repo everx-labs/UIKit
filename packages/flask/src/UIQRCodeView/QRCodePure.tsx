@@ -1,9 +1,10 @@
 import * as React from 'react';
 import QRCode from 'qrcode';
 import Svg, { Path } from 'react-native-svg';
-import { View, StyleSheet, Platform } from 'react-native';
-import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { StyleSheet, View } from 'react-native';
+import { UIImage, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
+const RADIUS: number = 1;
 const DEFAULT_SIZE: number = 200;
 const DEFAULT_LOGO_SIZE: number = 40;
 
@@ -112,7 +113,7 @@ type SideData = {
     bottomValue: number | null;
     leftValue: number | null;
 };
-const RADIUS: number = 1;
+
 const draw = (
     x: number,
     y: number,
@@ -181,29 +182,13 @@ const renderLogo = (
 export const QRCodePure: React.FC<IProps> = ({
     size = DEFAULT_SIZE,
     value,
-    getPng,
     logo,
     logoSize,
     logoMargin,
     logoBackgroundColor,
 }: IProps) => {
+    const theme = useTheme();
     const qr = QRCode.create(value, {});
-
-    if (getPng) {
-        if (Platform.OS === 'web') {
-            QRCode.toDataURL(
-                value,
-                {
-                    type: 'image/png',
-                },
-                (_error: Error, url: string): void => {
-                    getPng(url.split(';base64,')[1]);
-                },
-            );
-        } else {
-            // TODO
-        }
-    }
 
     const qrDataLength = qr.modules.size;
     const qrData: number[][] = new Array(qrDataLength)
@@ -249,12 +234,18 @@ export const QRCodePure: React.FC<IProps> = ({
             }}
         >
             <View
-                style={{
-                    ...StyleSheet.absoluteFillObject,
-                }}
+                style={StyleSheet.absoluteFillObject}
+                nativeID={`uri-qr-${value}`}
             >
                 <Svg width={size} height={size}>
-                    <Path fill="#000000" d={QRsvg} />
+                    <Path
+                        fill={
+                            theme[
+                                ColorVariants.BackgroundPrimaryInverted
+                            ] as string
+                        }
+                        d={QRsvg}
+                    />
                 </Svg>
             </View>
             {renderLogo(logo, logoSize, logoMargin, logoBackgroundColor)}

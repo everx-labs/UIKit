@@ -50,7 +50,8 @@
     "react-native": "^0.63.0",
     "react-native-svg": "^12.1.1",
     "qrcode": "^1.4.4",
-    "@types/qrcode": "^1.4.0"
+    "@types/qrcode": "^1.4.0",
+    "react-native-view-shot": "^3.1.2"
   },
   "peerDependencies": {
     "react": "^16.13.1",
@@ -58,7 +59,8 @@
     "react-native": "^0.63.0",
     "react-native-svg": "^12.1.1",
     "qrcode": "^1.4.4",
-    "@types/qrcode": "^1.4.0"
+    "@types/qrcode": "^1.4.0",
+    "react-native-view-shot": "^3.1.2"
   },
   "@react-native-community/bob": {
     "source": "src",
