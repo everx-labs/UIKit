@@ -81,9 +81,17 @@ export type UINavigationBarProps = {
      */
     title?: React.ReactNode | string;
     /**
+     * testID for title string
+     */
+    titleTestID?: string;
+    /**
      * A caption string
      */
     caption?: string;
+    /**
+     * testID for caption string
+     */
+    captionTestID?: string;
     /**
      * A callback that fires when user taps on title area (including caption)
      */
@@ -102,7 +110,9 @@ export function UINavigationBar({
     headerRight,
     headerRightItems,
     title,
+    titleTestID,
     caption,
+    captionTestID,
     onTitlePress,
     // private
     headerTitleOpacity,
@@ -113,6 +123,7 @@ export function UINavigationBar({
     } else if (title != null) {
         titleElement = (
             <UILabel
+                testID={titleTestID}
                 role={UILabelRoles.HeadlineHead}
                 adjustsFontSizeToFit
                 minimumFontScale={UINavConstant.titleMinimumFontScale}
@@ -126,6 +137,7 @@ export function UINavigationBar({
 
     const captionElement = caption ? (
         <UILabel
+            testID={captionTestID}
             role={UILabelRoles.ParagraphFootnote}
             color={UILabelColors.TextSecondary}
         >
