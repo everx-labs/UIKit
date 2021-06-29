@@ -152,6 +152,7 @@ function UIHeaderItem({
     if (item.icon != null || item.iconElement != null) {
         return (
             <UIHeaderItemPressable
+                testID={item.testID}
                 disabled={item.disabled}
                 onPress={item.onPress}
                 applyMargin={applyMargin}
