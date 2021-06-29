@@ -10,7 +10,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import type { ViewStyleProp } from 'react-native/Libraries/View/ViewStyleProp';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import {
@@ -159,7 +159,7 @@ function ModalControllerContainer({
     onPanHandlerStateChange: any,
     onPan: any,
     onLayout: any,
-    marginBottom: number,
+    marginBottom: Animated.Value,
     spinnerOverlay: any,
     children: any,
 }) {
@@ -519,7 +519,7 @@ export default class UIModalController<Props, State> extends UIController<
         return height - UIDevice.statusBarHeight();
     }
 
-    getDYDependentOpacity(): ColorValue {
+    getDYDependentOpacity(): number {
         const maxHeight = this.getMaxHeight();
         return (this.dy: any).interpolate({
             inputRange: [0, maxHeight],
