@@ -31,31 +31,26 @@ export const NestedInDismissibleModalContext = React.createContext<boolean>(
     false,
 );
 
-const ModalScreen = React.memo(
-    ({
-        navigation,
-        route,
-        descriptor,
-    }: {
-        route: RouteProp<ParamListBase, string>;
-        descriptor: Descriptor<ParamListBase>;
-        navigation: NavigationProp<ParamListBase>;
-    }) => {
-        const { name } = route;
+const ModalScreen = ({
+    route,
+    descriptor,
+}: {
+    route: RouteProp<ParamListBase, string>;
+    descriptor: Descriptor<ParamListBase>;
+}) => {
+    const { name } = route;
 
-        const hide = React.useCallback(() => {
-            Keyboard.dismiss();
-            navigation.dispatch(ModalActions.hide(name));
-        }, [name, navigation]);
+    const hide = React.useCallback(() => {
+        Keyboard.dismiss();
+        descriptor.navigation.dispatch(ModalActions.hide(name));
+    }, [name, descriptor.navigation]);
 
-        return (
-            <NestedInModalContext.Provider value={hide}>
-                {descriptor.render()}
-            </NestedInModalContext.Provider>
-        );
-    },
-);
-
+    return (
+        <NestedInModalContext.Provider value={hide}>
+            {descriptor.render()}
+        </NestedInModalContext.Provider>
+    );
+};
 export class ModalController extends React.Component<ModalControllerProps> {
     static show(name: string, params?: Record<string, unknown>) {
         if (ModalController.instance) {
@@ -110,7 +105,7 @@ export class ModalController extends React.Component<ModalControllerProps> {
 
             return (
                 <ModalScreen
-                    navigation={this.props.navigation}
+                    key={route.key}
                     route={route}
                     descriptor={descriptor}
                 />
@@ -226,9 +221,7 @@ const ModalNavigator = ({ children }: { children: React.ReactNode }) => {
                 descriptors={descriptors}
                 state={state}
                 navigation={navigation}
-            >
-                {children}
-            </ModalController>
+            />
         </NavigationHelpersContext.Provider>
     );
 };
