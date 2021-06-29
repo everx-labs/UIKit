@@ -21,7 +21,10 @@ export function UIImage({ tintColor, ...rest }: UIImageProps) {
         return (
             <Image
                 {...rest}
-                style={[rest.style, { tintColor: theme[tintColor] }]}
+                style={[
+                    rest.style,
+                    tintColor != null ? { tintColor: theme[tintColor] } : null,
+                ]}
             />
         );
     }
