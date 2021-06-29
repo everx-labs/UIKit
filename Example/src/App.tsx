@@ -3,13 +3,12 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow
  */
 
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import { NavigationContainer, NavigationProp } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -77,7 +76,7 @@ const ThemeSwitcher = React.createContext({
     toggleTheme: () => {},
 });
 
-const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
+const Main = ({ navigation }: { navigation: any }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
     const { top, bottom } = useSafeAreaInsets();
