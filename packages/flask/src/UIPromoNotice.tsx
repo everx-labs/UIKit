@@ -1,20 +1,16 @@
 import * as React from 'react';
-import {
-    ImageProps,
-    Linking,
-    Platform,
-    StyleSheet,
-    View,
-} from 'react-native';
+import { ImageProps, Linking, Platform, StyleSheet, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIDevice } from '@tonlabs/uikit.core';
 import {
-    UIButton,
-    UINotice,
     UILabel,
     UILabelColors,
     UILabelRoles,
+    UILinkButton,
+    UILinkButtonSize,
+    UILinkButtonType,
+    UINotice,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -57,7 +53,7 @@ export function UIPromoNotice({
     googlePlayUrl,
     icon = UIAssets.icons.brand.tonSymbol,
     folding = false,
-    testID, 
+    testID,
 }: UIPromoNoticeProps) {
     const [visible, setVisible] = React.useState(Platform.OS === 'web');
     const deviceOS = UIDevice.deviceOS();
@@ -79,8 +75,9 @@ export function UIPromoNotice({
             if (deviceOS === 'ios') {
                 return (
                     <View>
-                        <UIButton
+                        <UILinkButton
                             title={uiLocalized.promoDownload.appStore}
+                            size={UILinkButtonSize.Small}
                             onPress={onAppStore}
                         />
                         <UILabel
@@ -95,8 +92,9 @@ export function UIPromoNotice({
             } else if (deviceOS === 'android') {
                 return (
                     <View>
-                        <UIButton
+                        <UILinkButton
                             title={uiLocalized.promoDownload.googlePlay}
+                            size={UILinkButtonSize.Small}
                             onPress={onGooglePlay}
                         />
                         <UILabel
@@ -119,15 +117,19 @@ export function UIPromoNotice({
                         {uiLocalized.promoDownload.notice}
                     </UILabel>
                     <View style={styles.buttons}>
-                        <UIButton
+                        <UILinkButton
                             title={uiLocalized.promoDownload.appStore}
+                            type={UILinkButtonType.Menu}
+                            size={UILinkButtonSize.Small}
                             onPress={onAppStore}
-                            style={styles.leftButton}
+                            layout={styles.leftButton}
                         />
-                        <UIButton
+                        <UILinkButton
                             title={uiLocalized.promoDownload.googlePlay}
+                            type={UILinkButtonType.Menu}
+                            size={UILinkButtonSize.Small}
                             onPress={onGooglePlay}
-                            style={styles.rightButton}
+                            layout={styles.rightButton}
                         />
                     </View>
                 </View>

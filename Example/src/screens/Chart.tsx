@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Platform } from 'react-native';
-import { ColorVariants, UIButton, useTheme } from '@tonlabs/uikit.hydrogen';
+import { Platform, View } from 'react-native';
+import { ColorVariants, UILinkButton, UILinkButtonSize, useTheme } from '@tonlabs/uikit.hydrogen';
 import { LinearChart, LinearChartPoint } from '@tonlabs/uikit.charts';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -55,16 +55,15 @@ export function Chart() {
                     >
                         <LinearChart {...{ data }} />
                     </View>
-                    <UIButton
-                        title="Refresh"
-                        onPress={() => {
-                            setChartData(getData());
-                        }}
-                        style={{
-                            margin: 16,
-                            alignSelf: 'flex-end',
-                        }}
-                    />
+                    <View style={{ alignSelf: 'flex-end', margin: 16 }}>
+                        <UILinkButton
+                            title="Refresh"
+                            size={UILinkButtonSize.Small}
+                            onPress={() => {
+                                setChartData(getData());
+                            }}
+                        />
+                    </View>
                 </View>
             </ExampleSection>
         </ExampleScreen>
