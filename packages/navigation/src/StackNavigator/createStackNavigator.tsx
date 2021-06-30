@@ -131,8 +131,10 @@ function ScreenWithHeaderContent({
                     <UILargeTitleHeader
                         testID={descriptor.options.testID}
                         title={descriptor.options.title}
+                        titleTestID={descriptor.options.titleTestID}
                         headerLargeTitle={descriptor.options.headerLargeTitle}
                         caption={descriptor.options.caption}
+                        captionTestID={descriptor.options.captionTestID}
                         onTitlePress={descriptor.options.onTitlePress}
                         onHeaderLargeTitlePress={
                             descriptor.options.onHeaderLargeTitlePress
@@ -153,7 +155,9 @@ function ScreenWithHeaderContent({
                     <UIStackNavigationBar
                         testID={descriptor.options.testID}
                         title={descriptor.options.title}
+                        titleTestID={descriptor.options.titleTestID}
                         caption={descriptor.options.caption}
+                        captionTestID={descriptor.options.captionTestID}
                         onTitlePress={descriptor.options.onTitlePress}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
