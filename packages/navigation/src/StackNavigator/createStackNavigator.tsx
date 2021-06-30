@@ -139,6 +139,8 @@ function ScreenWithHeaderContent({
                         onHeaderLargeTitlePress={
                             descriptor.options.onHeaderLargeTitlePress
                         }
+                        label={descriptor.options.label}
+                        note={descriptor.options.note}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
