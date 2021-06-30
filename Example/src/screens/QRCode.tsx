@@ -1,13 +1,12 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 import { useTheme } from '@tonlabs/uikit.hydrogen';
-// import { QRCodeView } from '@tonlabs/uikit.flask';
+import { UIQRCodeView } from '@tonlabs/uikit.flask';
+import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
-import { UIQRCodeView } from '../../../packages/flask/src/UIQRCodeView';
-// import UIQRCode from '../../../packages/components/src/UIQRCode';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const logo = require('../../assets/icons/ico-crystal/crystal-fill-L.png');
 
 const QRCode = () => {
@@ -28,29 +27,41 @@ const QRCode = () => {
                         value="Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR "
                         size={200}
                         logo={logo}
-                        logoMargin={4}
+                        logoMargin={0}
                         logoBackgroundColor="lightblue"
-                        logoSize={60}
+                        logoSize={40}
                         getPng={(base64: string) => {
                             console.log('base64', base64);
                             setBase64Image(`data:image/png;base64,${base64}`);
                         }}
                     />
-                    {base64Image ? (
-                        <Image
-                            style={{
-                                height: 200,
-                                width: 200,
-                            }}
-                            source={{ uri: base64Image }}
-                        />
-                    ) : null}
+
                     {/* <UIQRCodeView
                         type="Circle"
                         value="Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR "
                         size={200}
                         logo={logo}
+                        logoSize={40}
+                        getPng={(base64: string) => {
+                            // console.log('base64', base64);
+                            setBase64Image(`data:image/png;base64,${base64}`);
+                        }}
                     /> */}
+                    {base64Image ? (
+                        <View
+                            style={{
+                                marginVertical: 30
+                            }}
+                        >
+                            <Image
+                                style={{
+                                    height: 200,
+                                    width: 200,
+                                }}
+                                source={{ uri: base64Image }}
+                            />
+                        </View>
+                    ) : null}
                     {/* <UIQRCode
                         type="Default"
                         value="Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR "
