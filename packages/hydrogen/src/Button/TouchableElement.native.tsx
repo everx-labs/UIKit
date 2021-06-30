@@ -68,6 +68,7 @@ export const TouchableElement = ({
             onPress={onPress}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
+            background={TouchableNativeFeedback.Ripple('transparent', false)}
         >
             <Animated.View style={[style, press?.backgroundStyle]}>
                 <Animated.View
