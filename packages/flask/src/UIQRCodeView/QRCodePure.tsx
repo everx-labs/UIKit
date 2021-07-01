@@ -1,38 +1,56 @@
 import * as React from 'react';
 import QRCode from 'qrcode';
 import Svg, { Path } from 'react-native-svg';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ImageStyle } from 'react-native';
 import { UIImage, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import type { QRCodeProps } from '../types';
-import { getQRSvg } from './utils';
+import { getQRSvg, makeStyles } from './utils';
 
 const RADIUS_OF_SQUARE: number = 1;
 const DEFAULT_SIZE: number = 200;
 const DEFAULT_LOGO_SIZE: number = 40;
 
-export const renderLogo = (
+const useStyles = makeStyles((size: number) => {
+    return {
+        container: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: size,
+            width: size,
+        },
+    };
+});
+
+const useLogoStyles = makeStyles(
+    (logoSize: number, logoMargin: number, logoBackgroundColor: string) => ({
+        container: {
+            padding: logoMargin,
+            backgroundColor: logoBackgroundColor,
+        },
+        image: {
+            width: logoSize,
+            height: logoSize,
+        },
+    }),
+);
+
+export const useRenderLogo = (
     logo: number | undefined,
     logoSize: number,
     logoMargin: number,
     logoBackgroundColor: string | undefined,
     defaultBackgroundColor: string,
 ): React.ReactElement<View> | null => {
+    const logoStyles = useLogoStyles(
+        logoSize,
+        logoMargin,
+        logoBackgroundColor || defaultBackgroundColor,
+    );
     if (logo) {
         return (
-            <View
-                style={{
-                    padding: logoMargin,
-                    backgroundColor:
-                        logoBackgroundColor || defaultBackgroundColor,
-                }}
-            >
-                <UIImage
-                    source={logo}
-                    style={{
-                        width: logoSize,
-                        height: logoSize,
-                    }}
-                />
+            <View style={logoStyles.container}>
+                <UIImage source={logo} style={logoStyles.image as ImageStyle} />
             </View>
         );
     }
@@ -48,6 +66,7 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
     logoBackgroundColor,
 }: QRCodeProps) => {
     const theme = useTheme();
+    const styles = useStyles(size);
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
 
     const qrSvg = React.useMemo(
@@ -56,15 +75,7 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
     );
 
     return (
-        <View
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: size,
-                width: size,
-            }}
-        >
+        <View style={styles.container}>
             <View style={StyleSheet.absoluteFillObject}>
                 <Svg width={size} height={size}>
                     <Path
@@ -77,7 +88,7 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
                     />
                 </Svg>
             </View>
-            {renderLogo(
+            {useRenderLogo(
                 logo,
                 logoSize,
                 logoMargin,

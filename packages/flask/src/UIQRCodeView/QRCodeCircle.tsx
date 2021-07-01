@@ -3,13 +3,36 @@ import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import QRCode from 'qrcode';
-import { renderLogo } from './QRCodePure';
-import { getEmptyIndexRange, draw, getQRSvg } from './utils';
+import { useRenderLogo } from './QRCodePure';
+import { getEmptyIndexRange, draw, getQRSvg, makeStyles } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
 
 const DEFAULT_SIZE: number = 200;
 const BORDER_WIDTH: number = 16;
 const RADIUS_OF_SQUARE: number = 1;
+
+const useStyles = makeStyles((theme, size: number) => ({
+    container: {
+        borderRadius: size,
+        height: size,
+        width: size,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+        borderColor: theme[ColorVariants.BackgroundPrimary],
+        overflow: 'hidden',
+        borderWidth: BORDER_WIDTH,
+    },
+    qrCodeContainer: {
+        ...StyleSheet.absoluteFillObject,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    outerQrCodeContainer: {
+        ...StyleSheet.absoluteFillObject,
+        zIndex: -10,
+    },
+}));
 
 export const getQRSvgCirlce = (
     qr: QRCode.QRCode,
@@ -90,6 +113,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
     logoBackgroundColor,
 }: QRCodeProps) => {
     const theme = useTheme();
+    const styles = useStyles(theme, size);
 
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
     const widthOfQR: number = qr.modules?.size || 2;
@@ -121,32 +145,9 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
     );
 
     return (
-        <View
-            style={{
-                borderRadius: size,
-                height: size,
-                width: size,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                borderColor: theme[ColorVariants.BackgroundPrimary],
-                overflow: 'hidden',
-                borderWidth: BORDER_WIDTH,
-            }}
-        >
-            <View
-                style={{
-                    ...StyleSheet.absoluteFillObject,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <View
-                    style={{
-                        ...StyleSheet.absoluteFillObject,
-                        zIndex: -10,
-                    }}
-                >
+        <View style={styles.container}>
+            <View style={styles.qrCodeContainer}>
+                <View style={styles.outerQrCodeContainer}>
                     <Svg
                         width={diameterOfCircleQRCode}
                         height={diameterOfCircleQRCode}
@@ -172,7 +173,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                     />
                 </Svg>
             </View>
-            {renderLogo(
+            {useRenderLogo(
                 logo,
                 logoSize,
                 logoMargin,
