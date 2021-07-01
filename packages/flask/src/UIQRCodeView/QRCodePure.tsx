@@ -48,9 +48,12 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
     logoBackgroundColor,
 }: QRCodeProps) => {
     const theme = useTheme();
-    const qr = QRCode.create(value, {});
+    const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
 
-    const qrSvg = getQRSvg(qr, size, logoSize, logoMargin, RADIUS_OF_SQUARE);
+    const qrSvg = React.useMemo(
+        () => getQRSvg(qr, size, logoSize, logoMargin, RADIUS_OF_SQUARE),
+        [qr, size, logoSize, logoMargin],
+    );
 
     return (
         <View
