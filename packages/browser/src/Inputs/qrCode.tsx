@@ -56,7 +56,7 @@ export function QRCode({
             <View onLayout={onLayout}>
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
-                    key="terminal-input-bubble-answer"
+                    key="qr-code-bubble-answer"
                     text={message.externalState.value}
                     status={MessageStatus.Sent}
                     firstFromChain
