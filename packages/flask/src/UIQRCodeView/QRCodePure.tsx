@@ -39,13 +39,12 @@ export const useRenderLogo = (
     logo: number | undefined,
     logoSize: number,
     logoMargin: number,
-    logoBackgroundColor: string | undefined,
-    defaultBackgroundColor: string,
+    logoBackgroundColor: string,
 ): React.ReactElement<View> | null => {
     const logoStyles = useLogoStyles(
         logoSize,
         logoMargin,
-        logoBackgroundColor || defaultBackgroundColor,
+        logoBackgroundColor,
     );
     if (logo) {
         return (
@@ -63,7 +62,7 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
     logo,
     logoSize = DEFAULT_LOGO_SIZE,
     logoMargin = 0,
-    logoBackgroundColor,
+    logoBackgroundColor = ColorVariants.BackgroundPrimary,
 }: QRCodeProps) => {
     const theme = useTheme();
     const styles = useStyles(size);
@@ -92,8 +91,7 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
                 logo,
                 logoSize,
                 logoMargin,
-                logoBackgroundColor,
-                theme[ColorVariants.BackgroundPrimary] as string,
+                theme[logoBackgroundColor] as string,
             )}
         </View>
     );

@@ -110,7 +110,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
     logoSize = 40,
     logoMargin = 0,
     logo,
-    logoBackgroundColor,
+    logoBackgroundColor = ColorVariants.BackgroundPrimary,
 }: QRCodeProps) => {
     const theme = useTheme();
     const styles = useStyles(theme, size);
@@ -177,8 +177,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                 logo,
                 logoSize,
                 logoMargin,
-                logoBackgroundColor,
-                theme[ColorVariants.BackgroundPrimary] as string,
+                theme[logoBackgroundColor] as string,
             )}
         </View>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View } from 'react-native';
-import { UIBoxButton, UITextView, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UITextView, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 import { UIQRCodeView, QRCodeType } from '@tonlabs/uikit.flask';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
@@ -49,6 +49,7 @@ const QRCode = () => {
                         logo={logo}
                         logoMargin={2}
                         logoSize={40}
+                        logoBackgroundColor={ColorVariants.BackgroundNegative}
                         getPng={(base64: string) => {
                             setBase64Image(`data:image/png;base64,${base64}`);
                         }}

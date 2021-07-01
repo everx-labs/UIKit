@@ -1,3 +1,5 @@
+import type { ColorVariants } from '@tonlabs/uikit.hydrogen'
+
 export type QRCodeType = 'Default' | 'Circle';
 
 /**
@@ -19,7 +21,7 @@ export type QRCodeProps = {
     /** Logo image offset from logo edges */
     logoMargin?: number;
     /** Color of background of logo */
-    logoBackgroundColor?: string;
+    logoBackgroundColor?: ColorVariants;
     /** ID for usage in tests */
     testID?: string;
 };
