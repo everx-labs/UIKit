@@ -26,7 +26,7 @@ export const UIQRCodeView: React.FC<QRCodeProps> = (props: QRCodeProps) => {
             ref={screenshotRef}
             options={{ format: 'png', result: 'base64' }}
         >
-            <View nativeID={`uri-qr-${props.value}`}>
+            <View nativeID={`uri-qr-${props.value}`} testID={props.testID}>
                 {renderContent(props)}
             </View>
         </ViewShot>

@@ -173,7 +173,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                 logoSize,
                 logoMargin,
                 logoBackgroundColor,
-                theme[ColorVariants.BackgroundPrimaryInverted] as string,
+                theme[ColorVariants.BackgroundPrimary] as string,
             )}
         </View>
     );

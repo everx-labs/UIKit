@@ -24,33 +24,27 @@ const QRCode = () => {
                 >
                     <UIQRCodeView
                         type="Default"
-                        value="Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR "
+                        value="Default QR code Default QR Default QR code Default QR Default QR code Default QR Default QR code Default QR Default QR code Default QR "
                         size={200}
                         logo={logo}
-                        logoMargin={0}
-                        logoBackgroundColor="lightblue"
+                        logoMargin={2}
                         logoSize={40}
                         getPng={(base64: string) => {
-                            console.log('base64', base64);
                             setBase64Image(`data:image/png;base64,${base64}`);
                         }}
                     />
 
-                    {/* <UIQRCodeView
+                    <UIQRCodeView
                         type="Circle"
-                        value="Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR "
+                        value="Circle QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR "
                         size={200}
                         logo={logo}
                         logoSize={40}
-                        getPng={(base64: string) => {
-                            // console.log('base64', base64);
-                            setBase64Image(`data:image/png;base64,${base64}`);
-                        }}
-                    /> */}
+                    />
                     {base64Image ? (
                         <View
                             style={{
-                                marginVertical: 30
+                                marginVertical: 30,
                             }}
                         >
                             <Image
@@ -62,19 +56,6 @@ const QRCode = () => {
                             />
                         </View>
                     ) : null}
-                    {/* <UIQRCode
-                        type="Default"
-                        value="Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR Cirlce QR code Cirlce QR "
-                        size={200}
-                        logo={logo}
-                        logoMargin={4}
-                        logoBackgroundColor="lightblue"
-                        logoSize={60}
-                        getPng={(base64: string) => {
-                            // console.log('UIQRCode base64', base64)
-                            // setBase64Image(`data:image/png;base64,${  base64}`)
-                        }}
-                    /> */}
                 </View>
             </ExampleSection>
         </ExampleScreen>
