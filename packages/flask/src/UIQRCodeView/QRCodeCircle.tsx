@@ -50,7 +50,7 @@ export const getQRSvgCirlce = (
             });
         });
 
-    let QRsvg = '';
+    let qrSvg = '';
     for (let y = 0; y < qrDataLength; y += 1) {
         for (let x = 0; x < qrDataLength; x += 1) {
             const currentValue: number = qrData[y][x];
@@ -63,7 +63,7 @@ export const getQRSvgCirlce = (
                     qrData[y + 1] !== undefined ? qrData[y + 1][x] : null;
                 const leftValue: number | null =
                     qrData[y][x - 1] !== undefined ? qrData[y][x - 1] : null;
-                QRsvg += ` ${draw(
+                qrSvg += ` ${draw(
                     x,
                     y,
                     sizeOfSquare,
@@ -78,7 +78,7 @@ export const getQRSvgCirlce = (
             }
         }
     }
-    return QRsvg;
+    return qrSvg;
 };
 
 export const QRCodeCircle: React.FC<QRCodeProps> = ({
@@ -97,15 +97,19 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
     const sizeOfInnerQRCode = diameterOfCircleQRCode / Math.SQRT2;
     const quietZone = sizeOfInnerQRCode / widthOfQR;
 
-    const QRsvg = getQRSvg(
-        qr,
-        sizeOfInnerQRCode,
-        logoSize,
-        logoMargin,
-        RADIUS_OF_SQUARE,
+    const qrSvg = React.useMemo(
+        () =>
+            getQRSvg(
+                qr,
+                sizeOfInnerQRCode,
+                logoSize,
+                logoMargin,
+                RADIUS_OF_SQUARE,
+            ),
+        [qr, sizeOfInnerQRCode, logoSize, logoMargin],
     );
 
-    const QRsvgOuter = React.useMemo(
+    const qrSvgOuter = React.useMemo(
         () =>
             getQRSvgCirlce(
                 qr,
@@ -153,7 +157,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                                     ColorVariants.BackgroundPrimaryInverted
                                 ] as string
                             }
-                            d={QRsvgOuter}
+                            d={qrSvgOuter}
                         />
                     </Svg>
                 </View>
@@ -164,7 +168,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                                 ColorVariants.BackgroundPrimaryInverted
                             ] as string
                         }
-                        d={QRsvg}
+                        d={qrSvg}
                     />
                 </Svg>
             </View>
