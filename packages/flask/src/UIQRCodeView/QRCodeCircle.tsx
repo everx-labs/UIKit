@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import QRCode from 'qrcode';
-import { useRenderLogo } from './QRCodePure';
+import { useLogoRender } from './QRCodePure';
 import { getEmptyIndexRange, draw, getQRSvg, makeStyles } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
 
@@ -144,6 +144,13 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
         [qr, diameterOfCircleQRCode, sizeOfInnerQRCode, quietZone],
     );
 
+    const renderLogo = useLogoRender(
+        logo,
+        logoSize,
+        logoMargin,
+        theme[logoBackgroundColor] as string,
+    );
+
     return (
         <View style={styles.container}>
             <View style={styles.qrCodeContainer}>
@@ -173,12 +180,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                     />
                 </Svg>
             </View>
-            {useRenderLogo(
-                logo,
-                logoSize,
-                logoMargin,
-                theme[logoBackgroundColor] as string,
-            )}
+            {renderLogo}
         </View>
     );
 };

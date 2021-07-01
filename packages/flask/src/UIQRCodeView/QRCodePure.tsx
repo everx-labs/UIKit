@@ -35,7 +35,7 @@ const useLogoStyles = makeStyles(
     }),
 );
 
-export const useRenderLogo = (
+export const useLogoRender = (
     logo: number | undefined,
     logoSize: number,
     logoMargin: number,
@@ -68,6 +68,12 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
         () => getQRSvg(qr, size, logoSize, logoMargin, RADIUS_OF_SQUARE),
         [qr, size, logoSize, logoMargin],
     );
+    const logoRender = useLogoRender(
+        logo,
+        logoSize,
+        logoMargin,
+        theme[logoBackgroundColor] as string,
+    );
 
     return (
         <View style={styles.container}>
@@ -83,12 +89,7 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
                     />
                 </Svg>
             </View>
-            {useRenderLogo(
-                logo,
-                logoSize,
-                logoMargin,
-                theme[logoBackgroundColor] as string,
-            )}
+            {logoRender}
         </View>
     );
 };
