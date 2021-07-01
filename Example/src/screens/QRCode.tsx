@@ -1,7 +1,12 @@
 import React from 'react';
 import { Image, View } from 'react-native';
-import { UIBoxButton, UITextView, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
-import { UIQRCodeView, QRCodeType } from '@tonlabs/uikit.flask';
+import {
+    UIBoxButton,
+    UITextView,
+    useTheme,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
+import { UIQRCodeView, QRCodeType, QRCodeRef } from '@tonlabs/uikit.flask';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -13,6 +18,12 @@ const QRCode = () => {
     const theme = useTheme();
     const [base64Image, setBase64Image] = React.useState<string>('');
     const [type, setType] = React.useState<QRCodeType>('Default');
+    const ref = React.useRef<QRCodeRef>(null);
+    const onGetPng = () => {
+        ref.current?.getPng().then((base64: string) => {
+            setBase64Image(base64);
+        });
+    };
     return (
         <ExampleScreen>
             <ExampleSection title="QRCode">
@@ -40,6 +51,7 @@ const QRCode = () => {
                         padding: 32,
                         backgroundColor: theme.BackgroundNeutral,
                         alignItems: 'center',
+                        width: '100%',
                     }}
                 >
                     <UIQRCodeView
@@ -47,27 +59,31 @@ const QRCode = () => {
                         value="QR code value QR value QR code value QR value QR code value QR value QR code value QR value QR code value QR "
                         size={200}
                         logo={logo}
-                        logoMargin={2}
+                        logoMargin={10}
                         logoSize={40}
                         logoBackgroundColor={ColorVariants.BackgroundNegative}
-                        getPng={(base64: string) => {
-                            setBase64Image(`data:image/png;base64,${base64}`);
-                        }}
+                        ref={ref}
                     />
 
+                    <View style={{ paddingVertical: 20 }}>
+                        <UIBoxButton title="getPng" onPress={onGetPng} />
+                    </View>
                     {base64Image ? (
                         <View
                             style={{
-                                marginVertical: 30,
+                                width: '100%',
+                                alignItems: 'center',
                             }}
                         >
-                            <View
+                            <UITextView
                                 style={{
-                                    height: 40,
+                                    width: '100%',
+                                    alignItems: 'center',
+                                    paddingVertical: 8,
+                                    textAlign: 'center',
                                 }}
-                            >
-                                <UITextView value="Image from getPng prop:" />
-                            </View>
+                                value="Image from getPng by ref:"
+                            />
                             <Image
                                 style={{
                                     height: 200,
