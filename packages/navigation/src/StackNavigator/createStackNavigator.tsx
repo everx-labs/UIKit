@@ -20,7 +20,6 @@ import { screensEnabled } from 'react-native-screens';
 import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typescript/src/types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
     ColorVariants,
@@ -32,10 +31,10 @@ import {
     UILargeTitleHeader,
     UILargeTitleHeaderProps,
 } from '../UILargeTitleHeader';
-import { NestedInModalContext } from '../ModalNavigator/createModalNavigator';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
 import StaticContainer from './StaticContainer';
 import { shouldUpdateScreens } from './shouldUpdateScreens';
+import { useStackTopInsetStyle } from './useStackTopInsetStyle';
 
 type StackDescriptor = Descriptor<
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -94,8 +93,7 @@ function ScreenWithHeaderContent({
     children: React.ReactNode;
     compareProps: any;
 }) {
-    const { top } = useSafeAreaInsets();
-    const closeModal = React.useContext(NestedInModalContext);
+    const topInsetStyle = useStackTopInsetStyle();
 
     if (descriptor.options.headerVisible === false) {
         return (
@@ -117,14 +115,7 @@ function ScreenWithHeaderContent({
                 descriptor.options.backgroundColor ||
                 ColorVariants.BackgroundPrimary
             }
-            style={[
-                styles.screenContainer,
-                closeModal == null
-                    ? {
-                          paddingTop: top,
-                      }
-                    : null,
-            ]}
+            style={[styles.screenContainer, topInsetStyle]}
         >
             {descriptor.options.useHeaderLargeTitle ? (
                 <PortalManager id="scene">
