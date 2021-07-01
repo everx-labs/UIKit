@@ -14,6 +14,6 @@ export const makeStyles: MakeStyles = (styles) => (...args) => {
             return styles(...args);
         }
         return styles;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...args]);
 };

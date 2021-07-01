@@ -1,5 +1,10 @@
 import type QRCode from 'qrcode';
-import type { QRItemAngleSide, QRItemAngleType, QRItemRange, QRItemSideData } from '../../types';
+import type {
+    QRItemAngleSide,
+    QRItemAngleType,
+    QRItemRange,
+    QRItemSideData,
+} from '../../types';
 
 const getStartLineType = (angleSide: QRItemAngleSide): string => {
     switch (angleSide) {
@@ -66,7 +71,10 @@ const drawCorner = (
     `;
 };
 
-const getAngleType = (sideData: QRItemSideData, angleSide: QRItemAngleSide): QRItemAngleType => {
+const getAngleType = (
+    sideData: QRItemSideData,
+    angleSide: QRItemAngleSide,
+): QRItemAngleType => {
     switch (angleSide) {
         case 'TopRight':
             return sideData.topValue || sideData.rightValue

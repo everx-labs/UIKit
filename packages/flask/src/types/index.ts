@@ -1,4 +1,4 @@
-import type { ColorVariants } from '@tonlabs/uikit.hydrogen'
+import type { ColorVariants } from '@tonlabs/uikit.hydrogen';
 
 export type QRCodeType = 'Default' | 'Circle';
 

@@ -41,11 +41,7 @@ export const useRenderLogo = (
     logoMargin: number,
     logoBackgroundColor: string,
 ): React.ReactElement<View> | null => {
-    const logoStyles = useLogoStyles(
-        logoSize,
-        logoMargin,
-        logoBackgroundColor,
-    );
+    const logoStyles = useLogoStyles(logoSize, logoMargin, logoBackgroundColor);
     if (logo) {
         return (
             <View style={logoStyles.container}>
