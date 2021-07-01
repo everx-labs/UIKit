@@ -711,8 +711,8 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     render(): React$Node {
-        // We must set the 'collapsible' to 'false'
-        // for the containers 'measure' works well on Android.
+        const contentInSafeArea = this.renderSafely();
+
         const main = (
             <UISafeAreaView
                 color={UIBackgroundViewColors.BackgroundPrimary}
@@ -727,10 +727,12 @@ export default class UIController<Props, State> extends UIComponent<
                         return (
                             <View
                                 style={UIStyle.common.flex()}
+                                // We must set the 'collapsible' to 'false'
+                                // for the containers 'measure' works well on Android.
                                 collapsable={false}
                                 ref={ref == null ? this.containerRef : null}
                             >
-                                {this.renderSafely()}
+                                {contentInSafeArea}
                             </View>
                         );
                     }}

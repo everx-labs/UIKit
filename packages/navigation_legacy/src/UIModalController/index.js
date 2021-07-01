@@ -10,6 +10,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import {
@@ -27,8 +28,15 @@ import {
 } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
-import { NestedInDismissibleModalContext } from '@tonlabs/uikit.navigation';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+} from '@tonlabs/uikit.hydrogen';
+import {
+    NestedInDismissibleModalContext,
+    useHasScroll,
+    ScrollableContext,
+} from '@tonlabs/uikit.navigation';
 
 import type {
     AnimationParameters,
@@ -121,6 +129,130 @@ const styles = StyleSheet.create({
 });
 
 const AnimatedViewWithColor = Animated.createAnimatedComponent(UIBackgroundView);
+
+function ModalControllerContainer({
+    testID,
+    containerStyle,
+    dialogStyle,
+    backgroundColor,
+    dYDependentOpacity,
+    dismissible,
+    shouldSwipeToDismiss,
+    adjustKeyboardInsetDynamically,
+    onTapHandlerStateChange,
+    onPan,
+    onPanHandlerStateChange,
+    onLayout,
+    marginBottom,
+    spinnerOverlay,
+    children,
+}: {
+    testID: ?string,
+    containerStyle: ViewStyleProp,
+    dialogStyle: ViewStyleProp,
+    backgroundColor: any,
+    dYDependentOpacity: number,
+    dismissible: boolean,
+    shouldSwipeToDismiss: boolean,
+    adjustKeyboardInsetDynamically: boolean,
+    onTapHandlerStateChange: any,
+    onPanHandlerStateChange: any,
+    onPan: any,
+    onLayout: any,
+    marginBottom: Animated.Value,
+    spinnerOverlay: any,
+    children: any,
+}) {
+    const testIDProp = React.useMemo(
+        () => (testID ? { testID: `${testID}_dialog` } : null),
+        [testID],
+    );
+    const panHandlerRef = React.useRef<PanGestureHandler>(null);
+    const scrollPanGestureHandlerRef = React.useRef<PanGestureHandler>(null);
+
+    const { hasScroll, setHasScroll } = useHasScroll();
+
+    const scrollableContextValue = React.useMemo(
+        () => ({
+            ref: null,
+            panGestureHandlerRef: scrollPanGestureHandlerRef,
+            scrollHandler: null,
+            gestureHandler: null,
+            onWheel: null,
+            hasScroll,
+            setHasScroll,
+            registerScrollable: null,
+            unregisterScrollable: null,
+        }),
+        [scrollPanGestureHandlerRef, hasScroll, setHasScroll],
+    );
+
+    return (
+        <NestedInDismissibleModalContext.Provider value={dismissible}>
+            <Animated.View style={containerStyle}>
+                <TapGestureHandler
+                    enabled={dismissible}
+                    {...(dismissible && shouldSwipeToDismiss
+                        ? {
+                              waitFor: panHandlerRef,
+                          }
+                        : null)}
+                    onHandlerStateChange={onTapHandlerStateChange}
+                >
+                    <PanGestureHandler
+                        enabled={dismissible && shouldSwipeToDismiss}
+                        ref={panHandlerRef}
+                        onGestureEvent={onPan}
+                        onHandlerStateChange={onPanHandlerStateChange}
+                    >
+                        <AnimatedViewWithColor
+                            color={backgroundColor}
+                            style={[
+                                // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
+                                // And this brings a layout bug to Safari
+                                UIStyle.Common.absoluteFillContainer(),
+                                { opacity: dYDependentOpacity },
+                            ]}
+                            onLayout={onLayout}
+                        />
+                    </PanGestureHandler>
+                </TapGestureHandler>
+                <PanGestureHandler
+                    enabled={dismissible && shouldSwipeToDismiss}
+                    onGestureEvent={onPan}
+                    onHandlerStateChange={onPanHandlerStateChange}
+                    {...(Platform.OS === 'android' && hasScroll
+                        ? { waitFor: scrollPanGestureHandlerRef }
+                        : null)}
+                >
+                    <AnimatedViewWithColor
+                        {...testIDProp}
+                        color={UIBackgroundViewColors.BackgroundPrimary}
+                        style={dialogStyle}
+                    >
+                        <Animated.View
+                            style={[
+                                UIStyle.common.flex(),
+                                adjustKeyboardInsetDynamically
+                                    ? { paddingBottom: marginBottom }
+                                    : null,
+                            ]}
+                        >
+                            <View style={UIStyle.common.flex()}>
+                                <ScrollableContext.Provider
+                                    value={scrollableContextValue}
+                                >
+                                    {children}
+                                </ScrollableContext.Provider>
+                            </View>
+                        </Animated.View>
+                        {spinnerOverlay}
+                    </AnimatedViewWithColor>
+                </PanGestureHandler>
+            </Animated.View>
+        </NestedInDismissibleModalContext.Provider>
+    );
+}
 
 export default class UIModalController<Props, State> extends UIController<
     ModalControllerProps & Props,
@@ -387,7 +519,7 @@ export default class UIModalController<Props, State> extends UIController<
         return height - UIDevice.statusBarHeight();
     }
 
-    getDYDependentOpacity(): ColorValue {
+    getDYDependentOpacity(): number {
         const maxHeight = this.getMaxHeight();
         return (this.dy: any).interpolate({
             inputRange: [0, maxHeight],
@@ -566,14 +698,12 @@ export default class UIModalController<Props, State> extends UIController<
         return null;
     }
 
-    panHandlerRef = React.createRef<TapGestureHandler>();
-
     onReleaseSwipe = (dy: number) => {
         if (this.closeAnimation != null) {
             // Do not process the swipe release as the modal is already closing
             return;
         }
-        
+
         if (dy > UIConstant.swipeThreshold()) {
             this.onCancelPress();
         } else {
@@ -603,76 +733,33 @@ export default class UIModalController<Props, State> extends UIController<
     };
 
     renderContainer() {
-        const backgroundColor = this.getBackgroundColor();
         const {
             containerStyle,
             contentHeight,
             dialogStyle,
         } = this.getDialogStyle();
-        const testIDProp = this.testID
-            ? { testID: `${this.testID}_dialog` }
-            : null;
+
         return (
-            <NestedInDismissibleModalContext.Provider value={this.dismissible}>
-                <Animated.View style={containerStyle}>
-                    <TapGestureHandler
-                        enabled={this.dismissible}
-                        {...(this.dismissible && this.shouldSwipeToDismiss()
-                            ? {
-                                  waitFor: this.panHandlerRef,
-                              }
-                            : null)}
-                        onHandlerStateChange={this.onTapHandlerStateChange}
-                    >
-                        <PanGestureHandler
-                            enabled={
-                                this.dismissible && this.shouldSwipeToDismiss()
-                            }
-                            ref={this.panHandlerRef}
-                            onGestureEvent={this.onPan}
-                            onHandlerStateChange={this.onPanHandlerStateChange}
-                        >
-                            <AnimatedViewWithColor
-                                color={backgroundColor}
-                                style={[
-                                    // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
-                                    // And this brings a layout bug to Safari
-                                    UIStyle.Common.absoluteFillContainer(),
-                                    { opacity: this.getDYDependentOpacity() },
-                                ]}
-                                onLayout={this.onLayout}
-                            />
-                        </PanGestureHandler>
-                    </TapGestureHandler>
-                    <PanGestureHandler
-                        enabled={
-                            this.dismissible && this.shouldSwipeToDismiss()
-                        }
-                        onGestureEvent={this.onPan}
-                        onHandlerStateChange={this.onPanHandlerStateChange}
-                    >
-                        <AnimatedViewWithColor
-                            {...testIDProp}
-                            color={UIBackgroundViewColors.BackgroundPrimary}
-                            style={dialogStyle}
-                        >
-                            <Animated.View
-                                style={[
-                                    UIStyle.common.flex(),
-                                    this.adjustKeyboardInsetDynamically
-                                        ? { paddingBottom: this.marginBottom }
-                                        : null,
-                                ]}
-                            >
-                                <View style={UIStyle.common.flex()}>
-                                    {this.renderContentView(contentHeight)}
-                                </View>
-                            </Animated.View>
-                            {this.renderSpinnerOverlay()}
-                        </AnimatedViewWithColor>
-                    </PanGestureHandler>
-                </Animated.View>
-            </NestedInDismissibleModalContext.Provider>
+            <ModalControllerContainer
+                testID={this.testID}
+                containerStyle={containerStyle}
+                dialogStyle={dialogStyle}
+                backgroundColor={this.getBackgroundColor()}
+                dYDependentOpacity={this.getDYDependentOpacity()}
+                dismissible={this.dismissible}
+                shouldSwipeToDismiss={this.shouldSwipeToDismiss()}
+                adjustKeyboardInsetDynamically={
+                    this.adjustKeyboardInsetDynamically
+                }
+                onTapHandlerStateChange={this.onTapHandlerStateChange}
+                onPanHandlerStateChange={this.onPanHandlerStateChange}
+                onPan={this.onPan}
+                onLayout={this.onLayout}
+                marginBottom={this.marginBottom}
+                spinnerOverlay={this.renderSpinnerOverlay()}
+            >
+                {this.renderContentView(contentHeight)}
+            </ModalControllerContainer>
         );
     }
 

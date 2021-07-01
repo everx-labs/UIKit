@@ -68,6 +68,8 @@ export const TouchableElement = ({
             onPress={onPress}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
+            // Disable ripple effect on Android
+            background={TouchableNativeFeedback.Ripple('transparent', false)}
         >
             <Animated.View style={[style, press?.backgroundStyle]}>
                 <Animated.View

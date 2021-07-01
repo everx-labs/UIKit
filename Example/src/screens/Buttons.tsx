@@ -2,12 +2,15 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIButton, UIImageButton, UIScaleButton, UITextButton } from '@tonlabs/uikit.components';
+import { UIButton, UIImageButton, UIScaleButton } from '@tonlabs/uikit.components';
 import {
     UIBoxButton,
     UIBoxButtonIconPosition,
     UIBoxButtonType,
     UIBoxButtonVariant,
+    UILinkButton,
+    UILinkButtonIconPosition,
+    UILinkButtonType,
     UIMsgButton,
     UIMsgButtonCornerPosition,
     UIMsgButtonIconPosition,
@@ -202,6 +205,51 @@ const Buttons = () => (
                     onPress={() => {
                         // empty
                     }}
+                />
+            </View>
+        </ExampleSection>
+
+        <ExampleSection title="UILinkButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UILinkButton
+                    testID="uiLinkButton_default"
+                    title="Action"
+                    onPress={() => console.log('Pressed UILinkButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UILinkButton
+                    testID="uiLinkButton_leftIcon"
+                    title="Action"
+                    icon={UIAssets.icons.ui.camera}
+                    iconPosition={UILinkButtonIconPosition.Left}
+                    onPress={() => console.log('Pressed UILinkButton with left icon')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UILinkButton
+                    testID="uiLinkButton_middleIcon"
+                    title="Action"
+                    icon={UIAssets.icons.ui.arrowUpRight}
+                    iconPosition={UILinkButtonIconPosition.Middle}
+                    onPress={() => console.log('Pressed UILinkButton with middle icon')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UILinkButton
+                    testID="uiLinkButton_rightIcon"
+                    title="Action"
+                    icon={UIAssets.icons.ui.camera}
+                    iconPosition={UILinkButtonIconPosition.Right}
+                    onPress={() => console.log('Pressed UILinkButton with right icon')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UILinkButton
+                    testID="uiLinkButton_secondary"
+                    title="Action"
+                    type={UILinkButtonType.Menu}
+                    onPress={() => console.log('Pressed UILinkButton')}
                 />
             </View>
         </ExampleSection>
@@ -544,29 +592,6 @@ const Buttons = () => (
                 >
                     <Text>Scale example factor 2</Text>
                 </UIScaleButton>
-            </View>
-        </ExampleSection>
-
-        <ExampleSection title="UITextButton">
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
-                    testID="uiTextButton_default"
-                    title="Text button"
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
-                    testID="uiTextButton_with_details"
-                    title="Text button with details"
-                    details="Some details"
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
-                    testID="uiTextButton_disabled"
-                    disabled
-                    title="Disabled text button"
-                />
             </View>
         </ExampleSection>
     </ExampleScreen>

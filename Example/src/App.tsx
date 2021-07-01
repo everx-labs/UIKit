@@ -3,56 +3,46 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow
  */
 
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
-// $FlowFixMe
-import { NavigationContainer, NavigationProp } from '@react-navigation/native';
-// $FlowFixMe
+import { Platform, StyleSheet, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
-// $FlowFixMe
-import {
-    SafeAreaProvider,
-    useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIColor } from '@tonlabs/uikit.core';
 import {
-    UIButton,
-    UILayoutManager,
-    UIToggle,
-    UINotice,
     UIAlert,
     UIAlertView,
     UIDropdownAlert,
+    UILayoutManager,
+    UINotice,
+    UIToggle,
 } from '@tonlabs/uikit.components';
+import { UIActionSheet, UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import {
-    UICountryPicker,
-    UIActionSheet,
-    UIPopoverBackground,
-} from '@tonlabs/uikit.navigation_legacy';
-import {
-    // @ts-ignore
-    useWebFonts,
-    useTheme,
-    UILabel,
-    ThemeContext,
+    ColorVariants,
     DarkTheme,
     LightTheme,
-    ColorVariants,
     PortalManager,
+    ThemeContext,
     UIBackgroundView,
+    UILabel,
+    UILinkButton,
+    UILinkButtonType,
     UIStatusBarManager,
+    useTheme,
+    // @ts-ignore
+    useWebFonts,
 } from '@tonlabs/uikit.hydrogen';
 import {
-    UISearchBarButton,
+    createSplitNavigator,
+    ScrollView,
     UIAndroidNavigationBar,
     UILargeTitleHeader,
-    ScrollView,
-    createSplitNavigator,
+    UISearchBarButton,
 } from '@tonlabs/uikit.navigation';
 
 import { ButtonsScreen } from './screens/Buttons';
@@ -62,7 +52,7 @@ import { Design } from './screens/Design';
 import { Chart } from './screens/Chart';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
-import { Menus, actionSheet } from './screens/Menus';
+import { actionSheet, Menus } from './screens/Menus';
 import { Notifications } from './screens/Notifications';
 import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
@@ -87,7 +77,7 @@ const ThemeSwitcher = React.createContext({
     toggleTheme: () => {},
 });
 
-const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
+const Main = ({ navigation }: { navigation: any }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
     const { top, bottom } = useSafeAreaInsets();
@@ -158,100 +148,119 @@ const Main = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     <ScrollView
                         contentContainerStyle={{ paddingBottom: bottom }}
                     >
-                        {/* <UIButton
-                            onPress={() => navigation.navigate('large-header')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Large header"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('keyboard')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Keyboard"
-                        /> */}
-                        <UIButton
-                            onPress={() => navigation.navigate('qr-code')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="QR code"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('buttons')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Buttons"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('checkbox')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Checkbox"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('inputs')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Inputs"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('design')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Design"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('chart')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Chart"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('images')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Images"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('layouts')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Layouts"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('menus')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Menus"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('notifications')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Notifications"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('popups')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Popups"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('products')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Products"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('profile')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Profile"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('text')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Text"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('chat')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
-                            title="Chat"
-                        />
-                        <UIButton
-                            onPress={() => navigation.navigate('browser')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
+                        <UILinkButton
                             title="Browser"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('browser')}
+                            layout={styles.button}
                         />
-                        <UIButton
-                            onPress={() => navigation.navigate('navigation')}
-                            buttonStyle={UIButton.ButtonStyle.Link}
+                        <UILinkButton
+                            title="QR code"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('qr-code')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Buttons"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('buttons')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Chart"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('chart')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Chat"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('chat')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Checkbox"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('checkbox')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Design"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('design')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Images"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('images')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Inputs"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('inputs')}
+                            layout={styles.button}
+                        />
+                        {/* <UILinkButton
+                            title="Keyboard"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('keyboard')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Large header"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('large-header')}
+                            layout={styles.button}
+                        /> */}
+                        <UILinkButton
+                            title="Layouts"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('layouts')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Menus"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('menus')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Navigation"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('navigation')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Notifications"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('notifications')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Popups"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('popups')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Products"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('products')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Profile"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('profile')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Text"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('text')}
+                            layout={styles.button}
                         />
                     </ScrollView>
                 </UILargeTitleHeader>
@@ -309,50 +318,26 @@ const App = () => {
                             }}
                             mainWidth={900}
                         >
-                            <Split.Screen name="main" component={Main} />
-                            <Split.Screen
-                                name="buttons"
-                                component={ButtonsScreen}
-                            />
-                            <Split.Screen
-                                name="checkbox"
-                                component={Checkbox}
-                            />
-                            <Split.Screen name="inputs" component={Inputs} />
-                            <Split.Screen name="design" component={Design} />
+                            <Split.Screen name="browser" component={Browser} />
+                            <Split.Screen name="buttons" component={ButtonsScreen} />
                             <Split.Screen name="chart" component={Chart} />
+                            <Split.Screen name="chat" component={Chat} />
+                            <Split.Screen name="checkbox" component={Checkbox} />
+                            <Split.Screen name="design" component={Design} />
                             <Split.Screen name="images" component={Images} />
+                            <Split.Screen name="inputs" component={Inputs} />
+                            <Split.Screen name="keyboard" component={KeyboardScreen} />
+                            <Split.Screen name="large-header" component={LargeHeaderScreen} />
                             <Split.Screen name="layouts" component={Layouts} />
+                            <Split.Screen name="main" component={Main} />
                             <Split.Screen name="menus" component={Menus} />
-                            <Split.Screen
-                                name="notifications"
-                                component={Notifications}
-                            />
+                            <Split.Screen name="navigation" component={Navigation} />
+                            <Split.Screen name="notifications" component={Notifications} />
                             <Split.Screen name="popups" component={Popups} />
-                            <Split.Screen
-                                name="products"
-                                component={Products}
-                            />
+                            <Split.Screen name="products" component={Products} />
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="text" component={TextScreen} />
-                            <Split.Screen name="chat" component={Chat} />
-                            <Split.Screen name="browser" component={Browser} />
-                            <Split.Screen
-                                name="navigation"
-                                component={Navigation}
-                            />
-                            <Split.Screen
-                                name="keyboard"
-                                component={KeyboardScreen}
-                            />
-                            <Split.Screen
-                                name="large-header"
-                                component={LargeHeaderScreen}
-                            />
-                            <Split.Screen
-                                name="qr-code"
-                                component={QRCodeScreen}
-                            />
+                            <Split.Screen name="qr-code" component={QRCodeScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
@@ -414,14 +399,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
     },
-    main: {
-        minWidth: 300,
-        marginRight: 10,
-        borderRadius: 5,
-        overflow: 'hidden',
+    button: {
+        marginLeft: 16,
+        marginRight: 16,
     },
     detail: {
         flex: 1,
+        borderRadius: 5,
+        overflow: 'hidden',
+    },
+    grid: {},
+    main: {
+        minWidth: 300,
+        marginRight: 10,
         borderRadius: 5,
         overflow: 'hidden',
     },
@@ -429,7 +419,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
     },
-    grid: {},
 });
 
 export default AppWrapper;
