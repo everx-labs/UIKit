@@ -4,12 +4,13 @@ import Svg, { Path } from 'react-native-svg';
 import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.hydrogen';
 import QRCode from 'qrcode';
 import { useLogoRender } from './QRCodePure';
-import { getEmptyIndexRange, draw, getQRSvg } from './utils';
+import { getEmptyAreaIndexRange, draw, getQRSvg } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
 
 const DEFAULT_SIZE: number = 200;
 const BORDER_WIDTH: number = 16;
 const RADIUS_OF_SQUARE: number = 1;
+const QUIET_ZONE_IN_SQUARES: number = 1;
 
 const useStyles = makeStyles((theme, size: number) => ({
     container: {
@@ -34,22 +35,43 @@ const useStyles = makeStyles((theme, size: number) => ({
     },
 }));
 
-export const getQRSvgCirlce = (
-    qr: QRCode.QRCode,
-    size: number,
-    logoSize: number,
-    logoMargin: number,
+const getQrDataLength = (
+    diameterOfCircleQRCode: number,
+    sizeOfSquare: number,
 ) => {
-    const qrDataLength: number = Math.floor(qr.modules.size * Math.SQRT2);
+    const qrDataLength = diameterOfCircleQRCode / sizeOfSquare;
+    const qrDataLengthFloored = Math.floor(qrDataLength);
+    if (qrDataLength !== qrDataLengthFloored) {
+        if (qrDataLengthFloored % 2 === 0) {
+            return qrDataLengthFloored + 1;
+        }
+        return qrDataLengthFloored + 2;
+    }
+    return qrDataLengthFloored;
+};
 
-    const sizeOfSquare: number = size / qrDataLength;
-
-    const emptyIndexRange: QRItemRange = getEmptyIndexRange(
-        size,
-        logoSize,
-        logoMargin,
+export const getQRSvgCirlce = (
+    diameterOfCircleQRCode: number,
+    sizeOfInnerQRCode: number,
+    quietZone: number,
+    sizeOfSquare: number,
+) => {
+    const qrDataLength: number = getQrDataLength(
+        diameterOfCircleQRCode,
         sizeOfSquare,
-        qrDataLength,
+    );
+    /**
+     * The part of the square that did not fit into the QRSvgCirlce
+     * due to the alignment in the center of the QR code
+     */
+    const offsetOfCoordinateGrid =
+        (diameterOfCircleQRCode - qrDataLength * sizeOfSquare) / 2;
+
+    const emptyAreaIndexRange: QRItemRange = getEmptyAreaIndexRange(
+        qrDataLength * sizeOfSquare,
+        sizeOfInnerQRCode,
+        quietZone,
+        sizeOfSquare,
     );
 
     const qrData: number[][] = new Array(qrDataLength)
@@ -62,10 +84,10 @@ export const getQRSvgCirlce = (
         .map((row: number[], y: number): number[] => {
             return row.map((value: number, x: number): number => {
                 if (
-                    x > emptyIndexRange.start &&
-                    x < emptyIndexRange.end &&
-                    y > emptyIndexRange.start &&
-                    y < emptyIndexRange.end
+                    x >= emptyAreaIndexRange.start &&
+                    x <= emptyAreaIndexRange.end &&
+                    y >= emptyAreaIndexRange.start &&
+                    y <= emptyAreaIndexRange.end
                 ) {
                     return 0;
                 }
@@ -97,6 +119,7 @@ export const getQRSvgCirlce = (
                         leftValue,
                     },
                     RADIUS_OF_SQUARE,
+                    offsetOfCoordinateGrid,
                 )}`;
             }
         }
@@ -116,10 +139,11 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
     const styles = useStyles(theme, size);
 
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
-    const widthOfQR: number = qr.modules?.size || 2;
+    const widthOfInnerQRCodeInSquares: number = qr.modules?.size || 2;
     const diameterOfCircleQRCode = size - BORDER_WIDTH * 2;
     const sizeOfInnerQRCode = diameterOfCircleQRCode / Math.SQRT2;
-    const quietZone = sizeOfInnerQRCode / widthOfQR;
+    const sizeOfSquare = sizeOfInnerQRCode / widthOfInnerQRCodeInSquares;
+    const quietZone = QUIET_ZONE_IN_SQUARES * sizeOfSquare;
 
     const qrSvg = React.useMemo(
         () =>
@@ -136,12 +160,12 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
     const qrSvgOuter = React.useMemo(
         () =>
             getQRSvgCirlce(
-                qr,
                 diameterOfCircleQRCode,
                 sizeOfInnerQRCode,
                 quietZone,
+                sizeOfSquare,
             ),
-        [qr, diameterOfCircleQRCode, sizeOfInnerQRCode, quietZone],
+        [diameterOfCircleQRCode, sizeOfInnerQRCode, quietZone, sizeOfSquare],
     );
 
     const logoRender = useLogoRender(

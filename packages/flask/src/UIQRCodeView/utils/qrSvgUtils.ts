@@ -100,9 +100,10 @@ export const draw = (
     sizeOfSquare: number,
     sideData: QRItemSideData,
     radius: number,
+    offsetOfCoordinateGrid: number = 0,
 ) => {
-    const scaledX = x * sizeOfSquare;
-    const scaledY = y * sizeOfSquare;
+    const scaledX = x * sizeOfSquare + offsetOfCoordinateGrid;
+    const scaledY = y * sizeOfSquare + offsetOfCoordinateGrid;
 
     return `
         M${scaledX + sizeOfSquare / 2},${scaledY}
@@ -133,17 +134,21 @@ export const draw = (
     `;
 };
 
-export const getEmptyIndexRange = (
+export const getEmptyAreaIndexRange = (
     size: number,
     logoSize: number,
     logoMargin: number,
     sizeOfSquare: number,
-    qrDataLength: number,
 ): QRItemRange => {
-    const offset = size / 2 - logoSize / 2 - logoMargin;
-    const offsetInSquares: number = Math.floor(offset / sizeOfSquare);
-    const start = offsetInSquares - 1;
-    const end: number = qrDataLength - offsetInSquares;
+    const sizeInSquares = Math.floor(size / sizeOfSquare);
+    const logoWithMarginSizeInSquares = Math.ceil(
+        (logoSize + logoMargin * 2) / sizeOfSquare,
+    );
+    const offsetInSquares = Math.floor(
+        (sizeInSquares - logoWithMarginSizeInSquares) / 2,
+    );
+    const start = offsetInSquares;
+    const end: number = sizeInSquares - offsetInSquares - 1;
     return { start, end };
 };
 
@@ -158,12 +163,11 @@ export const getQRSvg = (
 
     const sizeOfSquare: number = size / qrDataLength;
 
-    const emptyIndexRange: QRItemRange = getEmptyIndexRange(
+    const emptyAreaIndexRange: QRItemRange = getEmptyAreaIndexRange(
         size,
         logoSize,
         logoMargin,
         sizeOfSquare,
-        qrDataLength,
     );
 
     const qrData: number[][] = new Array(qrDataLength)
@@ -177,10 +181,10 @@ export const getQRSvg = (
         .map((row: number[], y: number): number[] => {
             return row.map((value: number, x: number): number => {
                 if (
-                    x > emptyIndexRange.start &&
-                    x < emptyIndexRange.end &&
-                    y > emptyIndexRange.start &&
-                    y < emptyIndexRange.end
+                    x >= emptyAreaIndexRange.start &&
+                    x <= emptyAreaIndexRange.end &&
+                    y >= emptyAreaIndexRange.start &&
+                    y <= emptyAreaIndexRange.end
                 ) {
                     return 0;
                 }
