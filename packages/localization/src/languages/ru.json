@@ -32,7 +32,7 @@
     "BackupAccount": "Резервная копия аккаунта",
     "BackupNow": "Сделать копию сейчас",
     "BackupWallet": "Резервная копия кошелька",
-    "BackupWalletDescription": "Чтобы получить доступ к приложению TON Wallet на другом устройстве, вам понадобится сид-фраза из 12 слов. Эти 12 слов невозможно восстановить, нельзя их терять! Сид-фраза НЕ ДОЛЖНА быть известна никому, кроме вас! По этой сид-фразе осуществляется доступ к вашей учетной записи, она используется для подписи транзакций. Если вы потеряете сид-фразу, вы НИКОГДА не сможете получить доступ к своей учетной записи!",
+    "BackupWalletDescription": "Чтобы получить доступ к приложению TON Wallet на другом устройстве, вам понадобится мастер-пароль ( сид-фраза из 12 слов). Эти 12 слов невозможно восстановить, нельзя их терять! Мастер-пароль НЕ ДОЛЕН быть известен никому, кроме вас! По этому мастер-паролю осуществлется доступ к вашей учетной записи, она используется для подписи транзакций. Если вы потеряете мастер-пароль, вы НИКОГДА не сможете получить доступ к своей учетной записи!",
     "BackupWalletSuggestion": "Сделайте резервную копию своей учетной записи! Для этого мы представим вам 12 слов. Пожалуйста, запишите их и храните в безопасности! Они будут использоваться для восстановления вашей учетной записи или открытия ее на другом устройстве.",
     "BackupWalletTitle": "Запишите следующие 12 слов.",
     "Balance": "Баланс",
@@ -41,56 +41,44 @@
     "BlockUser": "Заблокировать пользователя",
     "Browser": {
         "AddressInput": {
-            "Placeholder": "Wallet address…"
+            "Placeholder": "Адрес кошелька…"
         },
         "AddressInputBubble": {
-            "EnterManually": "Enter manually",
-            "MainAccount": "Main account",
-            "ScanQR": "Scan QR code",
-            "SelectAsset": "Select asset"
+            "EnterManually": "Ввести вручную",
+            "MainAccount": "Основной аккаунт",
+            "ScanQR": "Отсканировать QR-код",
+            "SelectAsset": "Выбрать актив"
         },
         "AmountInput": {
-            "Placeholder": "Amount…",
-            "ErrorLess": "The amount is less than {0}",
             "ErrorBigger": "The amount is bigger than {0}",
+            "ErrorLess": "The amount is less than {0}",
+            "HintMax": "max.",
             "HintMin": "min.",
-            "HintMax": "max."
-        },
-        "SigningBox": {
-            "Prompt": "How would you like to sign?",
-            "EnterKey": "Enter Key",
-            "PickSignature": "Pick a signature",
-            "UseSecurityCard": "Use Security Card",
-            "Signatures": "Signatures",
-            "AddSignature": "Add signature",
-            "PrivateKey": "Private key"
-        },
-        "Approve": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
-        },
-        "TransactionConfirmation": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
+            "Placeholder": "Amount…"
         },
         "Menu": {
             "More": "More..."
+        },
+        "SigningBox": {
+            "AddSignature": "Add signature",
+            "EnterKey": "Enter Key",
+            "PickSignature": "Pick a signature",
+            "PrivateKey": "Private key",
+            "Prompt": "How would you like to sign?",
+            "Signatures": "Signatures",
+            "UseSecurityCard": "Use Security Card"
+        },
+        "TransactionConfirmation": {
+            "Attention": "Attention",
+            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
+            "Cancel": "Cancel",
+            "Confirm": "Confirm",
+            "Fees": "Fees",
+            "Recipients": "Recipients",
+            "Signature": "Signature",
+            "Title": "Transaction confirmation",
+            "To": "To",
+            "Total": "Total"
         }
     },
     "Cancel": "Отмена",
@@ -155,18 +143,6 @@
         "month": "ММ",
         "year": "ГГГГ"
     },
-    "ShortenedNumberSuffix": {
-        "3": "тыс",
-        "6": "млн",
-        "9": "млрд",
-        "12": "трлн",
-        "15": "квадрлн",
-        "18": "квинтлн",
-        "21": "секстлн",
-        "24": "септлн",
-        "27": "октлн",
-        "30": "нонлн"
-    },
     "DecryptingDocument": "Расшифровка документа...",
     "Delete": "Удалить",
     "DeleteChannel": "Удалить канал",
@@ -229,7 +205,7 @@
     "FailedToLoadDocument": "Не удалось загрузить документ",
     "FailedToSendTransaction": "Не удалось отправить перевод",
     "FailedToSetLimit": "Не удалось установить лимит",
-    "fee": "Network fees",
+    "fee": "Комиссия",
     "feeAmount": "≈ {0}",
     "Female": "Женщина",
     "FileIsTooBig": "Извините, мы не можем это обработать. Файл слишком большой (лимит: {0} MB).",
@@ -278,6 +254,11 @@
     "InvalidPhone": "Invalid phone",
     "InviteFriends": "Пригласить",
     "InvitesYouToWallet": "Предлагает вам присоединиться к TON Surf и получить перевод",
+    "KeyTextView": {
+        "InproperLength": "The key should be 64 symbols long",
+        "InvalidChars": "The key isn't in HEX format",
+        "Valid": "Looks good"
+    },
     "LastMonth": "был(а) в этом месяце",
     "LastName": "Фамилия",
     "LastWeek": "был(а) на этой неделе",
@@ -294,7 +275,7 @@
     "MakePublic": "Сделать публичным",
     "Male": "Мужчина",
     "Manage": "Управлять",
-    "MasterPassword": "Сид-фраза",
+    "MasterPassword": "Мастер-пароль",
     "max": "макс.",
     "Member01": "участник",
     "Member11": "участник",
@@ -339,7 +320,7 @@
     "OnlyAdminsCanAddAndRemoveMembers": "Только администраторы могут добавлять и удалять участников, редактировать название и фото группы.",
     "OpenSettings": "Открыть настройки",
     "operationTime": "Время операции",
-    "orDelimeter": " или ",
+    "orDelimeter": "или",
     "OutOf": "из",
     "Passport": "Паспорт",
     "PassportFetchingStatus": "Получение статуса...",
@@ -391,7 +372,7 @@
     "PushFeedbackLong": "Оставьте отзыв, помогите нам сделать приложение лучше. Нажмите, чтобы продолжить",
     "PushFeedbackShort": "Оставьте отзыв, если хотите поучаствовать в разработке приложения",
     "QRCodeScanner": {
-        "ErrorOnRead": "Couldn't read QR code",
+        "ErrorOnRead": "Не удалось прочитать QR-код",
         "ErrorPermissions": "Чтобы сканировать QR-коды, разрешите доступ к камере вашего устройства",
         "ErrorUnexpected": "Непредвиденная ошибка сканирования"
     },
@@ -410,11 +391,11 @@
     "RestoreFrom12Words": "Восстановить из 12 слов",
     "ReviewAndConfirm": "Проверить и подтвердить",
     "RevokeLink": "Аннулировать ссылку",
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds",
+    "rounds": "раунды",
+    "rounds01": "раунд",
+    "rounds11": "раунды",
+    "rounds24": "раунды",
+    "rounds50": "раунды",
     "SayHello": "Скажи \"Привет\"",
     "ScanQRCodeWithTONChatApplicationToContinue": "Пожалуйста, используйте приложение TON Wallet для сканирования этого QR-кода.\nНажмите кнопку сканирования, расположенную в правом верхнем углу главного экрана.",
     "Search": "Искать",
@@ -441,6 +422,18 @@
     "Share": "Скопируй и поделись ссылкой",
     "ShareLink": "Поделиться ссылкой",
     "ShareToTalk": "Ссылка на твой адрес Surf позволит твоим друзьям связаться с тобой и посылать токены.",
+    "ShortenedNumberSuffix": {
+        "12": "T",
+        "15": "Qd",
+        "18": "Qn",
+        "21": "Sx",
+        "24": "Sp",
+        "27": "Oc",
+        "3": "K",
+        "30": "N",
+        "6": "M",
+        "9": "B"
+    },
     "SingleOperationLimit": "Лимит на одну операцию",
     "Skip": "Пропустить",
     "SmartContractAddress": "Адрес смарт-контракта",
@@ -552,10 +545,5 @@
     "Yesterday": "Вчера",
     "YesterdayAt": "Вчера в {0}",
     "You": "Вы",
-    "YourEmail": "Ваш адрес электронной почты",
-    "KeyTextView": {
-        "InvalidChars": "The key isn't in HEX format",
-        "InproperLength": "The key should be 64 symbols long",
-        "Valid": "Looks good"
-    }
+    "YourEmail": "Ваш адрес электронной почты"
 }

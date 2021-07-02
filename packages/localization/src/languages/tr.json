@@ -41,56 +41,44 @@
     "BlockUser": "Kullanıcıyı Engelle",
     "Browser": {
         "AddressInput": {
-            "Placeholder": "Wallet address…"
+            "Placeholder": "Cüzdan adresi..."
         },
         "AddressInputBubble": {
-            "EnterManually": "Enter manually",
-            "MainAccount": "Main account",
-            "ScanQR": "Scan QR code",
-            "SelectAsset": "Select asset"
+            "EnterManually": "El ile girmek",
+            "MainAccount": "Ana hesap",
+            "ScanQR": "QR kodunu tara",
+            "SelectAsset": "Varlığı seç"
         },
         "AmountInput": {
-            "Placeholder": "Amount…",
-            "ErrorLess": "The amount is less than {0}",
             "ErrorBigger": "The amount is bigger than {0}",
+            "ErrorLess": "The amount is less than {0}",
+            "HintMax": "max.",
             "HintMin": "min.",
-            "HintMax": "max."
-        },
-        "SigningBox": {
-            "Prompt": "How would you like to sign?",
-            "EnterKey": "Enter Key",
-            "PickSignature": "Pick a signature",
-            "UseSecurityCard": "Use Security Card",
-            "Signatures": "Signatures",
-            "AddSignature": "Add signature",
-            "PrivateKey": "Private key"
-        },
-        "Approve": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
-        },
-        "TransactionConfirmation": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
+            "Placeholder": "Amount…"
         },
         "Menu": {
             "More": "More..."
+        },
+        "SigningBox": {
+            "AddSignature": "Add signature",
+            "EnterKey": "Enter Key",
+            "PickSignature": "Pick a signature",
+            "PrivateKey": "Private key",
+            "Prompt": "How would you like to sign?",
+            "Signatures": "Signatures",
+            "UseSecurityCard": "Güvenlik Kartını Kullan"
+        },
+        "TransactionConfirmation": {
+            "Attention": "Attention",
+            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
+            "Cancel": "Cancel",
+            "Confirm": "Confirm",
+            "Fees": "Fees",
+            "Recipients": "Recipients",
+            "Signature": "Signature",
+            "Title": "Transaction confirmation",
+            "To": "To",
+            "Total": "Toplam"
         }
     },
     "Cancel": "İptal",
@@ -155,18 +143,6 @@
         "month": "AA",
         "year": "YYYY"
     },
-    "ShortenedNumberSuffix": {
-        "3": "K",
-        "6": "M",
-        "9": "B",
-        "12": "T",
-        "15": "Qd",
-        "18": "Qn",
-        "21": "Sx",
-        "24": "Sp",
-        "27": "Oc",
-        "30": "N"
-    },
     "DecryptingDocument": "Belgenin şifresi çözülüyor...",
     "Delete": "Sil",
     "DeleteChannel": "Kanalı sil",
@@ -229,7 +205,7 @@
     "FailedToLoadDocument": "Belge yüklenmesi başarısız.",
     "FailedToSendTransaction": "Başarısız aktarım",
     "FailedToSetLimit": "Sınır ayarlaması başarısız",
-    "fee": "Network fees",
+    "fee": "Ücret",
     "feeAmount": "≈ {0}",
     "Female": "Kadın",
     "FileIsTooBig": "Maalesef bunu işleyemiyoruz. Dosya çok büyük (maks: {0} MB).",
@@ -278,6 +254,11 @@
     "InvalidPhone": "Geçersiz telefon numarası",
     "InviteFriends": "Arkadaşları Davet Et",
     "InvitesYouToWallet": "Sizi TON Surf'e katılmaya ve para teslim almaya davet ediyor",
+    "KeyTextView": {
+        "InproperLength": "The key should be 64 symbols long",
+        "InvalidChars": "The key isn't in HEX format",
+        "Valid": "Looks good"
+    },
     "LastMonth": "son görülme bir ay içinde",
     "LastName": "Soyad",
     "LastWeek": "son görülme bir hafta içinde",
@@ -380,7 +361,7 @@
     "promoDownload": {
         "appStore": "App Store",
         "googlePlay": "Google Play",
-        "notice": "Download application"
+        "notice": "Uygulamayı indir"
     },
     "Public": "Genel",
     "PublicAccount": "Açık hesap",
@@ -391,7 +372,7 @@
     "PushFeedbackLong": "Uygulamayı daha iyi hale getirmemize yardımcı olmak için geribeslemenizi verin. Devam etmek için buraya tıklayın",
     "PushFeedbackShort": "Surf'e katkıda bulunmak için geribeslemede bulunun",
     "QRCodeScanner": {
-        "ErrorOnRead": "Couldn't read QR code",
+        "ErrorOnRead": "QR kodu okunamadı",
         "ErrorPermissions": "QR kodlarını tarayabilmek için kamera izinlerinizi açın",
         "ErrorUnexpected": "Tarama sırasında beklenmedik bir şey oldu"
     },
@@ -410,11 +391,11 @@
     "RestoreFrom12Words": "12 kelimelik anahtar cümleden geri yükle",
     "ReviewAndConfirm": "İncele ve Onayla",
     "RevokeLink": "Bağlantıyı iptal et",
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds",
+    "rounds": "tur",
+    "rounds01": "tur",
+    "rounds11": "tur",
+    "rounds24": "tur",
+    "rounds50": "tur",
     "SayHello": "\"Selam\" deyin",
     "ScanQRCodeWithTONChatApplicationToContinue": "Bu QR kodunu taramak için lütfen TON Cüzdan uygulamasını kullanın.\nAna ekranın sağ üst köşesinde bulunan Tara düğmesine basın.",
     "Search": "Ara",
@@ -441,6 +422,18 @@
     "Share": "Bağlantıyı Kopyala ve Paylaş",
     "ShareLink": "Bağlantıyı Paylaş",
     "ShareToTalk": "Surf adresi bağlantınız, arkadaşlarınızın sizinle iletişime geçmesine ve size para göndermesine izin verecek",
+    "ShortenedNumberSuffix": {
+        "12": "T",
+        "15": "Qd",
+        "18": "Qn",
+        "21": "Sx",
+        "24": "Sp",
+        "27": "Oc",
+        "3": "K",
+        "30": "N",
+        "6": "M",
+        "9": "B"
+    },
     "SingleOperationLimit": "Tek İşlem sınırı",
     "Skip": "Atla",
     "SmartContractAddress": "Akıllı sözleşme adresi",
@@ -552,10 +545,5 @@
     "Yesterday": "Dün",
     "YesterdayAt": "Dün {0}",
     "You": "Siz",
-    "YourEmail": "E-posta adresiniz",
-    "KeyTextView": {
-        "InvalidChars": "The key is not in a HEX format",
-        "InproperLength": "The key should be 64 symbols long",
-        "Valid": "Looks good"
-    }
+    "YourEmail": "E-posta adresiniz"
 }

@@ -45,52 +45,40 @@
         },
         "AddressInputBubble": {
             "EnterManually": "Enter manually",
-            "MainAccount": "Main account",
+            "MainAccount": "My account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
         },
         "AmountInput": {
-            "Placeholder": "Amount…",
-            "ErrorLess": "The amount is less than {0}",
             "ErrorBigger": "The amount is bigger than {0}",
+            "ErrorLess": "The amount is less than {0}",
+            "HintMax": "max.",
             "HintMin": "min.",
-            "HintMax": "max."
-        },
-        "SigningBox": {
-            "Prompt": "How would you like to sign?",
-            "EnterKey": "Enter Key",
-            "PickSignature": "Pick a signature",
-            "UseSecurityCard": "Use Security Card",
-            "Signatures": "Signatures",
-            "AddSignature": "Add signature",
-            "PrivateKey": "Private key"
-        },
-        "Approve": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
-        },
-        "TransactionConfirmation": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
+            "Placeholder": "Amount…"
         },
         "Menu": {
             "More": "More..."
+        },
+        "SigningBox": {
+            "AddSignature": "Add signature",
+            "EnterKey": "Enter Key",
+            "PickSignature": "Pick a signature",
+            "PrivateKey": "Private key",
+            "Prompt": "How would you like to sign?",
+            "Signatures": "Signatures",
+            "UseSecurityCard": "Use Security Card"
+        },
+        "TransactionConfirmation": {
+            "Attention": "Attention",
+            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
+            "Cancel": "Cancel",
+            "Confirm": "Confirm",
+            "Fees": "Fees",
+            "Recipients": "Recipients",
+            "Signature": "Signature",
+            "Title": "Transaction confirmation",
+            "To": "To",
+            "Total": "Total"
         }
     },
     "Cancel": "Annuler",
@@ -155,18 +143,6 @@
         "month": "MM",
         "year": "YYYY"
     },
-    "ShortenedNumberSuffix": {
-        "3": "K",
-        "6": "M",
-        "9": "B",
-        "12": "T",
-        "15": "Qd",
-        "18": "Qn",
-        "21": "Sx",
-        "24": "Sp",
-        "27": "Oc",
-        "30": "N"
-    },
     "DecryptingDocument": "Décryptage du document ...",
     "Delete": "Supprimer",
     "DeleteChannel": "Supprimer la chaîne",
@@ -229,7 +205,7 @@
     "FailedToLoadDocument": "Échec du chargement du document.",
     "FailedToSendTransaction": "Échec de l'envoi de la transaction",
     "FailedToSetLimit": "Échec de la définition de la limite",
-    "fee": "Network fees",
+    "fee": "Frais",
     "feeAmount": "≈ {0}",
     "Female": "Femme",
     "FileIsTooBig": "Désolé, nous ne pouvons pas traiter cela. Le fichier est trop volumineux (maximum: {0} MB).",
@@ -278,6 +254,11 @@
     "InvalidPhone": "Téléphone non valide",
     "InviteFriends": "Inviter des amis",
     "InvitesYouToWallet": "Vous invite à rejoindre TON Surf et à recevoir un transfert",
+    "KeyTextView": {
+        "InproperLength": "The key should be 64 symbols long",
+        "InvalidChars": "The key isn't in HEX format",
+        "Valid": "Looks good"
+    },
     "LastMonth": "a été le mois dernier",
     "LastName": "Nom de famille",
     "LastWeek": "était la semaine dernière",
@@ -441,6 +422,18 @@
     "Share": "Copier et partager ce lien",
     "ShareLink": "Partager le lien",
     "ShareToTalk": "Votre lien d’adresse Surf permettra à vos amis de vous contacter et de vous envoyer des tokens",
+    "ShortenedNumberSuffix": {
+        "12": "T",
+        "15": "Qd",
+        "18": "Qn",
+        "21": "Sx",
+        "24": "Sp",
+        "27": "Oc",
+        "3": "K",
+        "30": "N",
+        "6": "M",
+        "9": "B"
+    },
     "SingleOperationLimit": "Opération unique jusqu'à",
     "Skip": "Sauter",
     "SmartContractAddress": "Adresse du smart-contract",
@@ -552,10 +545,5 @@
     "Yesterday": "Hier",
     "YesterdayAt": "Hier à {0}",
     "You": "Vous",
-    "YourEmail": "Votre e-mail",
-    "KeyTextView": {
-        "InvalidChars": "The key is not in a HEX format",
-        "InproperLength": "The key should be 64 symbols long",
-        "Valid": "Looks good"
-    }
+    "YourEmail": "Votre e-mail"
 }

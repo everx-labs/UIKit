@@ -43,42 +43,42 @@
         "AddressInput": {
             "Placeholder": "Wallet address…"
         },
-        "AmountInput": {
-            "Placeholder": "Amount…",
-            "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}",
-            "HintMin": "min.",
-            "HintMax": "max."
-        },
         "AddressInputBubble": {
             "EnterManually": "Enter manually",
             "MainAccount": "My account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
         },
+        "AmountInput": {
+            "ErrorBigger": "The amount is bigger than {0}",
+            "ErrorLess": "The amount is less than {0}",
+            "HintMax": "max.",
+            "HintMin": "min.",
+            "Placeholder": "Amount…"
+        },
         "Menu": {
             "More": "More..."
         },
         "SigningBox": {
-            "Prompt": "How would you like to sign?",
+            "AddSignature": "Add signature",
             "EnterKey": "Enter Key",
             "PickSignature": "Pick a signature",
-            "UseSecurityCard": "Use Security Card",
+            "PrivateKey": "Private key",
+            "Prompt": "How would you like to sign?",
             "Signatures": "Signatures",
-            "AddSignature": "Add signature",
-            "PrivateKey": "Private key"
+            "UseSecurityCard": "Use Security Card"
         },
         "TransactionConfirmation": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
             "Attention": "Attention",
             "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
+            "Cancel": "Cancel",
             "Confirm": "Confirm",
-            "Cancel": "Cancel"
+            "Fees": "Fees",
+            "Recipients": "Recipients",
+            "Signature": "Signature",
+            "Title": "Transaction confirmation",
+            "To": "To",
+            "Total": "Total"
         }
     },
     "Cancel": "Cancel",
@@ -142,18 +142,6 @@
         "day": "DD",
         "month": "MM",
         "year": "YYYY"
-    },
-    "ShortenedNumberSuffix": {
-        "3": "K",
-        "6": "M",
-        "9": "B",
-        "12": "T",
-        "15": "Qd",
-        "18": "Qn",
-        "21": "Sx",
-        "24": "Sp",
-        "27": "Oc",
-        "30": "N"
     },
     "DecryptingDocument": "Decrypting document...",
     "Delete": "Delete",
@@ -267,8 +255,8 @@
     "InviteFriends": "Invite Friends",
     "InvitesYouToWallet": "Invites you to join TON Surf and receive a transfer",
     "KeyTextView": {
-        "InvalidChars": "The key isn't in HEX format",
         "InproperLength": "The key should be 64 symbols long",
+        "InvalidChars": "The key isn't in HEX format",
         "Valid": "Looks good"
     },
     "LastMonth": "was last month",
@@ -434,6 +422,18 @@
     "Share": "Copy & Share This Link",
     "ShareLink": "Share Link",
     "ShareToTalk": "Your Surf address link will let your friends contact you and send you tokens ",
+    "ShortenedNumberSuffix": {
+        "12": "T",
+        "15": "Qd",
+        "18": "Qn",
+        "21": "Sx",
+        "24": "Sp",
+        "27": "Oc",
+        "3": "K",
+        "30": "N",
+        "6": "M",
+        "9": "B"
+    },
     "SingleOperationLimit": "Single Operation up to",
     "Skip": "Skip",
     "SmartContractAddress": "Smart-contract address",

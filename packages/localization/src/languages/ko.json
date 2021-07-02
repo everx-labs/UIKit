@@ -45,52 +45,40 @@
         },
         "AddressInputBubble": {
             "EnterManually": "Enter manually",
-            "MainAccount": "Main account",
+            "MainAccount": "My account",
             "ScanQR": "Scan QR code",
             "SelectAsset": "Select asset"
         },
         "AmountInput": {
-            "Placeholder": "Amount…",
-            "ErrorLess": "The amount is less than {0}",
             "ErrorBigger": "The amount is bigger than {0}",
+            "ErrorLess": "The amount is less than {0}",
+            "HintMax": "max.",
             "HintMin": "min.",
-            "HintMax": "max."
-        },
-        "SigningBox": {
-            "Prompt": "How would you like to sign?",
-            "EnterKey": "Enter Key",
-            "PickSignature": "Pick a signature",
-            "UseSecurityCard": "Use Security Card",
-            "Signatures": "Signatures",
-            "AddSignature": "Add signature",
-            "PrivateKey": "Private key"
-        },
-        "Approve": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
-        },
-        "TransactionConfirmation": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
+            "Placeholder": "Amount…"
         },
         "Menu": {
             "More": "More..."
+        },
+        "SigningBox": {
+            "AddSignature": "Add signature",
+            "EnterKey": "Enter Key",
+            "PickSignature": "Pick a signature",
+            "PrivateKey": "Private key",
+            "Prompt": "How would you like to sign?",
+            "Signatures": "Signatures",
+            "UseSecurityCard": "Use Security Card"
+        },
+        "TransactionConfirmation": {
+            "Attention": "Attention",
+            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
+            "Cancel": "Cancel",
+            "Confirm": "Confirm",
+            "Fees": "Fees",
+            "Recipients": "Recipients",
+            "Signature": "Signature",
+            "Title": "Transaction confirmation",
+            "To": "To",
+            "Total": "Total"
         }
     },
     "Cancel": "취소",
@@ -155,18 +143,6 @@
         "month": "월",
         "year": "년"
     },
-    "ShortenedNumberSuffix": {
-        "3": "K",
-        "6": "M",
-        "9": "B",
-        "12": "T",
-        "15": "Qd",
-        "18": "Qn",
-        "21": "Sx",
-        "24": "Sp",
-        "27": "Oc",
-        "30": "N"
-    },
     "DecryptingDocument": "문서 해독하는 중 ...",
     "Delete": "삭제",
     "DeleteChannel": "채널 삭제",
@@ -229,7 +205,7 @@
     "FailedToLoadDocument": "문서를 로드하지 못했습니다.",
     "FailedToSendTransaction": "트랜잭션을 보내지 못했습니다.",
     "FailedToSetLimit": "한도를 설정하지 못했습니다.",
-    "fee": "Network fees",
+    "fee": "수수료",
     "feeAmount": "≈ {0}",
     "Female": "여성",
     "FileIsTooBig": "죄송합니다, 이 파일을 처리할 수 없습니다. 파일이 너무 큰 편입니다 (최대: {0} MB).",
@@ -278,6 +254,11 @@
     "InvalidPhone": "유효하지 않은 전화 번호",
     "InviteFriends": "친구를 초대하기",
     "InvitesYouToWallet": "TON 서핑에 가입하고 송금을 받도록 초대합니다.",
+    "KeyTextView": {
+        "InproperLength": "The key should be 64 symbols long",
+        "InvalidChars": "The key isn't in HEX format",
+        "Valid": "Looks good"
+    },
     "LastMonth": "지난달이었습니다",
     "LastName": "성",
     "LastWeek": "지난주였습니다",
@@ -441,6 +422,18 @@
     "Share": "이 링크 복사 및 공유",
     "ShareLink": "링크 공유하기",
     "ShareToTalk": "당신의 서핑 주소 링크를 통해서 친구들이 당신과 연락할 수 있고 토큰도 보낼 수 있습니다.",
+    "ShortenedNumberSuffix": {
+        "12": "T",
+        "15": "Qd",
+        "18": "Qn",
+        "21": "Sx",
+        "24": "Sp",
+        "27": "Oc",
+        "3": "K",
+        "30": "N",
+        "6": "M",
+        "9": "B"
+    },
     "SingleOperationLimit": "...까지 단일 작업",
     "Skip": "건너 뛰기",
     "SmartContractAddress": "스마트 컨트랙트 주소",
@@ -552,10 +545,5 @@
     "Yesterday": "어제",
     "YesterdayAt": "어제 {0}",
     "You": "당신은",
-    "YourEmail": "이용자의 이메일",
-    "KeyTextView": {
-        "InvalidChars": "The key is not in a HEX format",
-        "InproperLength": "The key should be 64 symbols long",
-        "Valid": "Looks good"
-    }
+    "YourEmail": "이용자의 이메일"
 }
