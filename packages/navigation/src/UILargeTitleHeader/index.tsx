@@ -125,6 +125,7 @@ export function UILargeTitleHeader({
             yWithoutRubberBand.value = shift.value;
         },
         onEndDrag,
+        onMomentumEnd: onEndDrag,
     });
 
     const style = useAnimatedStyle(() => {

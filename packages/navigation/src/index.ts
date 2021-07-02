@@ -26,3 +26,4 @@ export {
 export { ModalActions } from './ModalNavigator/ModalRouter';
 export * from './StackNavigator/createStackNavigator';
 export * from './SplitNavigator/createSplitNavigator';
+export * from './StackNavigator/useStackTopInsetStyle';
