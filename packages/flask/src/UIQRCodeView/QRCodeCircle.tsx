@@ -144,7 +144,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
         [qr, diameterOfCircleQRCode, sizeOfInnerQRCode, quietZone],
     );
 
-    const renderLogo = useLogoRender(
+    const logoRender = useLogoRender(
         logo,
         logoSize,
         logoMargin,
@@ -180,7 +180,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                     />
                 </Svg>
             </View>
-            {renderLogo}
+            {logoRender}
         </View>
     );
 };
