@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-import { UIColor, UIFont, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIToastMessage, UIButton } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIToastMessage } from '@tonlabs/uikit.components';
+import { UIColor, UIFont, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIBoxButton, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: UIConstant.contentOffset(),
-        //
     },
     titleText: {
+        // TODO: @vetkamak remove font & color
         ...UIFont.subtitleBold(),
         color: UIColor.black(),
     },
@@ -159,12 +159,11 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                         {this.getMessage()}
                     </UILabel>
                 </ScrollView>
-                <UIButton
+                <UIBoxButton
                     testID="copy_button"
                     title={uiLocalized.CopyToClipboard}
-                    buttonShape={UIButton.ButtonShape.Radius}
-                    style={UIStyle.margin.topDefault()}
                     onPress={this.onCopyPressed}
+                    layout={UIStyle.margin.topDefault()}
                 />
             </View>
         );
