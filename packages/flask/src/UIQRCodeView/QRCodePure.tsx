@@ -1,7 +1,12 @@
 import * as React from 'react';
 import QRCode from 'qrcode';
 import Svg, { Path } from 'react-native-svg';
-import { StyleSheet, View, ImageStyle } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    ImageStyle,
+    ImageSourcePropType,
+} from 'react-native';
 import {
     UIImage,
     ColorVariants,
@@ -41,7 +46,7 @@ const useLogoStyles = makeStyles(
 );
 
 export const useLogoRender = (
-    logo: number | undefined,
+    logo: ImageSourcePropType | undefined,
     logoSize: number,
     logoMargin: number,
     logoBackgroundColor: string,
