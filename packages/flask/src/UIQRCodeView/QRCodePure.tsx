@@ -2,9 +2,14 @@ import * as React from 'react';
 import QRCode from 'qrcode';
 import Svg, { Path } from 'react-native-svg';
 import { StyleSheet, View, ImageStyle } from 'react-native';
-import { UIImage, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import {
+    UIImage,
+    ColorVariants,
+    useTheme,
+    makeStyles,
+} from '@tonlabs/uikit.hydrogen';
 import type { QRCodeProps } from '../types';
-import { getQRSvg, makeStyles } from './utils';
+import { getQRSvg } from './utils';
 
 const RADIUS_OF_SQUARE: number = 1;
 const DEFAULT_SIZE: number = 200;

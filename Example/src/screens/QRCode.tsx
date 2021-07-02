@@ -59,9 +59,9 @@ const QRCode = () => {
                         value="QR code value QR value QR code value QR value QR code value QR value QR code value QR value QR code value QR "
                         size={200}
                         logo={logo}
-                        logoMargin={10}
+                        logoMargin={4}
                         logoSize={40}
-                        logoBackgroundColor={ColorVariants.BackgroundNegative}
+                        logoBackgroundColor={ColorVariants.BackgroundNeutral}
                         ref={ref}
                     />
 

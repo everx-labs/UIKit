@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.hydrogen';
 import QRCode from 'qrcode';
 import { useLogoRender } from './QRCodePure';
-import { getEmptyIndexRange, draw, getQRSvg, makeStyles } from './utils';
+import { getEmptyIndexRange, draw, getQRSvg } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
 
 const DEFAULT_SIZE: number = 200;

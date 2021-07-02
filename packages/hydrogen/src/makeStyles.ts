@@ -1,8 +1,10 @@
 import * as React from 'react';
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
-type NamedStyles<T> = { [P in keyof T]: ViewStyle | TextStyle | ImageStyle };
-type FunctionStyles<T> = (...args: any[]) => NamedStyles<T>;
+export type NamedStyles<T> = {
+    [P in keyof T]: ViewStyle | TextStyle | ImageStyle;
+};
+export type FunctionStyles<T> = (...args: any[]) => NamedStyles<T>;
 
 type MakeStyles = <T extends Record<string, unknown>>(
     styles: NamedStyles<T> | FunctionStyles<T>,
