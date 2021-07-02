@@ -88,12 +88,22 @@ const stackStateToTab = <ParamList extends ParamListBase>(
     }
 
     const routes = state.routeNames.map((name) => {
-        return (
-            state.routes.find(({ name: routeName }) => routeName === name) || {
-                name,
-                key: `${name}-${nanoid()}`,
-            }
+        const route = state.routes.find(
+            ({ name: routeName }) => routeName === name,
         );
+
+        if (route) {
+            return {
+                ...route,
+                // change a route key, to force re-render of the screen
+                // to avoid race-conditions in nested navigation
+                key: `${route.name}-${nanoid()}`,
+            };
+        }
+        return {
+            name,
+            key: `${name}-${nanoid()}`,
+        };
     }) as TabLikeSplitNavigationState<ParamList>['routes'];
 
     return {
@@ -108,14 +118,29 @@ const tabStateToStack = <ParamList extends ParamListBase>(
     state: TabLikeSplitNavigationState<ParamList>,
 ): StackLikeSplitNavigationState<ParamList> => {
     let { index } = state;
-    const mainRoute = (state.routes.find(
+    const possibleMainRoute = state.routes.find(
         ({ name }) => name === MAIN_SCREEN_NAME,
-    ) || {
-        name: MAIN_SCREEN_NAME,
-        key: `${MAIN_SCREEN_NAME}-${nanoid()}`,
-    }) as NavigationRoute<ParamList, keyof ParamList>;
+    );
+    let mainRoute: NavigationRoute<ParamList, keyof ParamList>;
+
+    if (possibleMainRoute) {
+        mainRoute = {
+            ...possibleMainRoute,
+            key: `${MAIN_SCREEN_NAME}-${nanoid()}`,
+        } as NavigationRoute<ParamList, keyof ParamList>;
+    } else {
+        mainRoute = {
+            name: MAIN_SCREEN_NAME,
+            key: `${MAIN_SCREEN_NAME}-${nanoid()}`,
+        } as NavigationRoute<ParamList, keyof ParamList>;
+    }
     let routes;
-    const currentRoute = state.routes[index];
+    const currentRoute = {
+        ...state.routes[index],
+        // change a route key, to force re-render of the screen
+        // to avoid race-conditions in nested navigation
+        key: `${state.routes[index].name}-${nanoid()}`,
+    };
     if (currentRoute.name === MAIN_SCREEN_NAME) {
         index = 0;
         routes = [mainRoute];
@@ -158,9 +183,10 @@ type TabLikeSplitNavigationState<
 
 export type SplitNavigationState<
     ParamList extends ParamListBase = ParamListBase
-> =
+> = (
     | StackLikeSplitNavigationState<ParamList>
-    | TabLikeSplitNavigationState<ParamList>;
+    | TabLikeSplitNavigationState<ParamList>
+) & { isSplitted?: boolean };
 
 export function SplitRouter(routerOptions: SplitRouterOptions) {
     // eslint-disable-next-line prefer-const
@@ -242,7 +268,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 newState = this.ensureStackState(newState);
             }
 
-            Object.assign(newState, { type: router.type });
+            Object.assign(newState, { type: router.type, isSplitted });
             return newState;
         },
 
@@ -268,7 +294,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 newState = this.ensureStackState(newState);
             }
 
-            Object.assign(newState, { type: router.type });
+            Object.assign(newState, { type: router.type, isSplitted });
             return newState;
         },
 
@@ -283,7 +309,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                       options,
                   );
 
-            Object.assign(newState, { type: router.type });
+            Object.assign(newState, { type: router.type, isSplitted });
             return newState;
         },
 
@@ -292,7 +318,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 ? (tabRouter.getStateForRouteFocus(state as any, key) as any)
                 : stackRouter.getStateForRouteFocus(state as any, key);
 
-            Object.assign(newState, { type: router.type });
+            Object.assign(newState, { type: router.type, isSplitted });
             return newState;
         },
 
@@ -393,7 +419,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 }
             }
 
-            Object.assign(newState, { type: router.type });
+            Object.assign(newState, { type: router.type, isSplitted });
             return newState;
         },
 

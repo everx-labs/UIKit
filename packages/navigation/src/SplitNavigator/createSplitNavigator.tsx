@@ -126,7 +126,9 @@ export const SplitNavigator = ({
         }
     }, [state, loaded]);
 
-    if (isSplitted) {
+    // Access it from the state to re-render a container
+    // only when router has processed SET_SPLITTED action
+    if (state.isSplitted) {
         const mainRoute = state.routes.find(
             ({ name }: { name: string }) => name === MAIN_SCREEN_NAME,
         );
