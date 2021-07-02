@@ -14,7 +14,7 @@ type MakeStyles = <T extends Record<string, unknown>>(
  * This function is used to dynamically style the React component.
  *
  * Usecase: {
- *      Make a hook:
+ *      // Make a hook:
  *      const useStyles = makeStyles((theme, dynamicWidth) => ({
  *          container: {
  *              width: dynamicWidth,
@@ -22,6 +22,7 @@ type MakeStyles = <T extends Record<string, unknown>>(
  *          },
  *      }));
  *
+ *      // Use it in React component:
  *      const component: React.FC = (props) => {
  *          const theme = useTheme();
  *          const dynamicWidth = /Some calculation e.g. from props.width/;
