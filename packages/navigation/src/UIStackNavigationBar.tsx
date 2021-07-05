@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Platform } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
 import { NestedInDismissibleModalContext } from './ModalNavigator/createModalNavigator';
@@ -16,7 +17,9 @@ export function UIStackNavigationBar({
         NestedInDismissibleModalContext,
     );
 
-    if (isNestedInDismissibleModalContext) {
+    // temporary solution to have default close button for dismissible modals on web
+    // @savelichalex will probably remove it in closest navigation releases
+    if (isNestedInDismissibleModalContext && Platform.OS !== 'web') {
         return <UISlideBar {...rest} />;
     }
 
