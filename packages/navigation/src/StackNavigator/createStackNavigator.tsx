@@ -20,7 +20,6 @@ import { screensEnabled } from 'react-native-screens';
 import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typescript/src/types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
     ColorVariants,
@@ -32,10 +31,10 @@ import {
     UILargeTitleHeader,
     UILargeTitleHeaderProps,
 } from '../UILargeTitleHeader';
-import { NestedInModalContext } from '../ModalNavigator/createModalNavigator';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
 import StaticContainer from './StaticContainer';
 import { shouldUpdateScreens } from './shouldUpdateScreens';
+import { useStackTopInsetStyle } from './useStackTopInsetStyle';
 
 type StackDescriptor = Descriptor<
     // eslint-disable-next-line @typescript-eslint/ban-types
@@ -94,8 +93,7 @@ function ScreenWithHeaderContent({
     children: React.ReactNode;
     compareProps: any;
 }) {
-    const { top } = useSafeAreaInsets();
-    const closeModal = React.useContext(NestedInModalContext);
+    const topInsetStyle = useStackTopInsetStyle();
 
     if (descriptor.options.headerVisible === false) {
         return (
@@ -117,14 +115,7 @@ function ScreenWithHeaderContent({
                 descriptor.options.backgroundColor ||
                 ColorVariants.BackgroundPrimary
             }
-            style={[
-                styles.screenContainer,
-                closeModal == null
-                    ? {
-                          paddingTop: top,
-                      }
-                    : null,
-            ]}
+            style={[styles.screenContainer, topInsetStyle]}
         >
             {descriptor.options.useHeaderLargeTitle ? (
                 <PortalManager id="scene">
@@ -176,125 +167,154 @@ function ScreenWithHeaderContent({
     );
 }
 
-function wrapScreenComponentWithHeader(
-    ScreenComponent: React.ComponentType<any>,
-) {
-    function ScreenWithHeader({
-        navigation,
-        route,
-    }: {
+type OriginalComponentsRegistry = Record<
+    string,
+    React.ComponentType<{
         navigation: NavigationProp<
             ParamListBase,
             string,
             StackNavigationState<ParamListBase>
         >;
         route: RouteProp<ParamListBase, string>;
-    }) {
-        const descriptors = React.useContext(DescriptorsContext);
-        const descriptor = descriptors[route.key];
+    }>
+>;
+type OriginalRenderPropRegistry = Record<
+    string,
+    (params: {
+        navigation: NavigationProp<
+            ParamListBase,
+            string,
+            StackNavigationState<ParamListBase>
+        >;
+        route: RouteProp<ParamListBase, string>;
+    }) => React.ReactNode
+>;
+const OriginalComponentsContext = React.createContext<{
+    components: OriginalComponentsRegistry;
+    renderProps: OriginalRenderPropRegistry;
+}>({
+    components: {},
+    renderProps: {},
+});
 
-        if (descriptor == null) {
-            return null;
-        }
+function ComponentScreenWithHeader({
+    navigation,
+    route,
+}: {
+    navigation: NavigationProp<
+        ParamListBase,
+        string,
+        StackNavigationState<ParamListBase>
+    >;
+    route: RouteProp<ParamListBase, string>;
+}) {
+    const descriptors = React.useContext(DescriptorsContext);
+    const descriptor = descriptors[route.key];
 
-        return (
-            <ScreenWithHeaderContent
-                descriptor={descriptor}
-                compareProps={{
-                    name: route.name,
-                    render: ScreenComponent,
-                    navigation,
-                    route,
-                    descriptor,
-                }}
-            >
-                <ScreenComponent navigation={navigation} route={route} />
-            </ScreenWithHeaderContent>
-        );
+    const ScreenComponent = React.useContext(OriginalComponentsContext)
+        .components[route.name];
+
+    if (descriptor == null || ScreenComponent == null) {
+        return null;
     }
 
-    return ScreenWithHeader;
+    return (
+        <ScreenWithHeaderContent
+            descriptor={descriptor}
+            compareProps={{
+                name: route.name,
+                render: ScreenComponent,
+                navigation,
+                route,
+                descriptor,
+            }}
+        >
+            <ScreenComponent navigation={navigation} route={route} />
+        </ScreenWithHeaderContent>
+    );
 }
 
-function wrapScreenRenderPropWithHeader(
-    screenRenderProp: ({
-        navigation,
-        route,
-    }: {
-        navigation: NavigationProp<
-            ParamListBase,
-            string,
-            StackNavigationState<ParamListBase>
-        >;
-        route: RouteProp<ParamListBase, string>;
-    }) => React.ReactNode,
-) {
-    function ScreenWithHeader({
-        navigation,
-        route,
-    }: {
-        navigation: NavigationProp<
-            ParamListBase,
-            string,
-            StackNavigationState<ParamListBase>
-        >;
-        route: RouteProp<ParamListBase, string>;
-    }) {
-        const descriptors = React.useContext(DescriptorsContext);
-        const descriptor = descriptors[route.key];
+function RenderPropScreenWithHeader({
+    navigation,
+    route,
+}: {
+    navigation: NavigationProp<
+        ParamListBase,
+        string,
+        StackNavigationState<ParamListBase>
+    >;
+    route: RouteProp<ParamListBase, string>;
+}) {
+    const descriptors = React.useContext(DescriptorsContext);
+    const descriptor = descriptors[route.key];
 
-        if (descriptor == null) {
-            return null;
-        }
+    const screenRenderProp = React.useContext(OriginalComponentsContext)
+        .renderProps[route.name];
 
-        return (
-            <ScreenWithHeaderContent
-                descriptor={descriptor}
-                compareProps={{
-                    name: route.name,
-                    render: screenRenderProp,
-                    navigation,
-                    route,
-                    descriptor,
-                }}
-            >
-                {screenRenderProp({ navigation, route })}
-            </ScreenWithHeaderContent>
-        );
+    if (descriptor == null || screenRenderProp == null) {
+        return null;
     }
 
-    return ScreenWithHeader;
+    return (
+        <ScreenWithHeaderContent
+            descriptor={descriptor}
+            compareProps={{
+                name: route.name,
+                render: screenRenderProp,
+                navigation,
+                route,
+                descriptor,
+            }}
+        >
+            {screenRenderProp({ navigation, route })}
+        </ScreenWithHeaderContent>
+    );
 }
 
 function wrapScreensWithHeader(children: React.ReactNode) {
+    const originalComponents: OriginalComponentsRegistry = {};
+    const originalRenderProps: OriginalRenderPropRegistry = {};
     const screens = React.Children.toArray(children).reduce<React.ReactNode[]>(
         (acc, child) => {
             if (React.isValidElement(child)) {
                 if (child.type === React.Fragment) {
-                    acc.push(...wrapScreensWithHeader(child.props.children));
+                    const {
+                        screens: innerScreens,
+                        original: { components, renderProps },
+                    } = wrapScreensWithHeader(child.props.children);
+
+                    acc.push(...innerScreens);
+                    // Iterate over deep components to collect into one registry
+                    Object.keys(components).forEach((key) => {
+                        originalComponents[key] = components[key];
+                    });
+                    // Iterate over deep render props to collect into one registry
+                    Object.keys(renderProps).forEach((key) => {
+                        originalRenderProps[key] = renderProps[key];
+                    });
 
                     return acc;
                 }
 
                 if (child.props && 'component' in child.props) {
+                    originalComponents[child.props.name] =
+                        child.props.component;
                     acc.push(
                         React.cloneElement(child, {
                             ...child.props,
-                            component: wrapScreenComponentWithHeader(
-                                child.props.component,
-                            ),
+                            component: ComponentScreenWithHeader,
                         }),
                     );
                     return acc;
                 }
 
                 if (child.props && 'children' in child.props) {
+                    originalRenderProps[child.props.name] =
+                        child.props.children;
                     acc.push(
                         React.cloneElement(child, {
                             ...child.props,
-                            component: wrapScreenRenderPropWithHeader(
-                                child.props.children,
-                            ),
+                            component: RenderPropScreenWithHeader,
                             children: null,
                         }),
                     );
@@ -306,7 +326,13 @@ function wrapScreensWithHeader(children: React.ReactNode) {
         [],
     );
 
-    return screens;
+    return {
+        screens,
+        original: {
+            components: originalComponents,
+            renderProps: originalRenderProps,
+        },
+    };
 }
 
 function filterDescriptorOptionsForOriginalImplementation(
@@ -346,14 +372,14 @@ export const StackNavigator = ({
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
     const prevChildren = React.useRef<React.ReactNode>(null);
-    const wrappedChildren = React.useRef<React.ReactNode>(null);
+    const wrapped = React.useRef<ReturnType<typeof wrapScreensWithHeader>>();
 
     if (
         prevChildren.current == null ||
         shouldUpdateScreens(children, prevChildren.current)
     ) {
         prevChildren.current = children;
-        wrappedChildren.current = wrapScreensWithHeader(children);
+        wrapped.current = wrapScreensWithHeader(children);
     }
 
     const { state, navigation, descriptors } = useNavigationBuilder<
@@ -363,7 +389,7 @@ export const StackNavigator = ({
         StackNavigationOptions,
         StackNavigationEventMap
     >(StackRouter, {
-        children: wrappedChildren.current,
+        children: wrapped.current?.screens,
         initialRouteName,
         screenOptions: {
             ...screenOptions,
@@ -408,30 +434,41 @@ export const StackNavigator = ({
         [navigation, state.index, state.key],
     );
 
+    const originalComponentsData = wrapped.current?.original;
+
+    if (originalComponentsData == null) {
+        return null;
+    }
+
     if (doesSupportNative) {
         const descriptorsFiltered = filterDescriptorOptionsForOriginalImplementation(
             descriptors,
         );
         return (
-            <DescriptorsContext.Provider value={descriptors}>
-                <NativeStackView
-                    state={state}
-                    navigation={navigation}
-                    descriptors={descriptorsFiltered}
-                />
-            </DescriptorsContext.Provider>
+            <OriginalComponentsContext.Provider value={originalComponentsData}>
+                <DescriptorsContext.Provider value={descriptors}>
+                    <NativeStackView
+                        state={state}
+                        navigation={navigation}
+                        descriptors={descriptorsFiltered}
+                    />
+                </DescriptorsContext.Provider>
+            </OriginalComponentsContext.Provider>
         );
     }
+
     return (
-        <DescriptorsContext.Provider value={descriptors}>
-            <StackView
-                headerMode="none"
-                state={state}
-                navigation={navigation}
-                // @ts-ignore `title` types are incompatible
-                descriptors={descriptors}
-            />
-        </DescriptorsContext.Provider>
+        <OriginalComponentsContext.Provider value={originalComponentsData}>
+            <DescriptorsContext.Provider value={descriptors}>
+                <StackView
+                    headerMode="none"
+                    state={state}
+                    navigation={navigation}
+                    // @ts-ignore `title` types are incompatible
+                    descriptors={descriptors}
+                />
+            </DescriptorsContext.Provider>
+        </OriginalComponentsContext.Provider>
     );
 };
 
