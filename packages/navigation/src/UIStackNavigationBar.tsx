@@ -17,6 +17,8 @@ export function UIStackNavigationBar({
         NestedInDismissibleModalContext,
     );
 
+    // temporary solution to have default close button for dismissible modals on web
+    // @savelichalex will probably remove it in closest navigation releases
     if (isNestedInDismissibleModalContext && Platform.OS !== 'web') {
         return <UISlideBar {...rest} />;
     }
