@@ -87,11 +87,9 @@ export type StackNavigationOptions = Omit<
 function ScreenWithHeaderContent({
     descriptor,
     children,
-    compareProps,
 }: {
     descriptor: StackDescriptor;
     children: React.ReactNode;
-    compareProps: any;
 }) {
     const topInsetStyle = useStackTopInsetStyle();
 
@@ -104,7 +102,7 @@ function ScreenWithHeaderContent({
                 }
                 style={styles.screenContainer}
             >
-                <StaticContainer {...compareProps}>{children}</StaticContainer>
+                {children}
             </UIBackgroundView>
         );
     }
@@ -138,9 +136,7 @@ function ScreenWithHeaderContent({
                         headerRight={descriptor.options.headerRight}
                         headerRightItems={descriptor.options.headerRightItems}
                     >
-                        <StaticContainer {...compareProps}>
-                            {children}
-                        </StaticContainer>
+                        {children}
                     </UILargeTitleHeader>
                 </PortalManager>
             ) : (
@@ -158,9 +154,7 @@ function ScreenWithHeaderContent({
                         headerRight={descriptor.options.headerRight}
                         headerRightItems={descriptor.options.headerRightItems}
                     />
-                    <StaticContainer {...compareProps}>
-                        {children}
-                    </StaticContainer>
+                    {children}
                 </PortalManager>
             )}
         </UIBackgroundView>
@@ -219,16 +213,7 @@ function ComponentScreenWithHeader({
     }
 
     return (
-        <ScreenWithHeaderContent
-            descriptor={descriptor}
-            compareProps={{
-                name: route.name,
-                render: ScreenComponent,
-                navigation,
-                route,
-                descriptor,
-            }}
-        >
+        <ScreenWithHeaderContent descriptor={descriptor}>
             <ScreenComponent navigation={navigation} route={route} />
         </ScreenWithHeaderContent>
     );
@@ -256,16 +241,7 @@ function RenderPropScreenWithHeader({
     }
 
     return (
-        <ScreenWithHeaderContent
-            descriptor={descriptor}
-            compareProps={{
-                name: route.name,
-                render: screenRenderProp,
-                navigation,
-                route,
-                descriptor,
-            }}
-        >
+        <ScreenWithHeaderContent descriptor={descriptor}>
             {screenRenderProp({ navigation, route })}
         </ScreenWithHeaderContent>
     );
