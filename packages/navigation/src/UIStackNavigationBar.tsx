@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Platform } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
 import { NestedInDismissibleModalContext } from './ModalNavigator/createModalNavigator';
@@ -16,7 +17,7 @@ export function UIStackNavigationBar({
         NestedInDismissibleModalContext,
     );
 
-    if (isNestedInDismissibleModalContext) {
+    if (isNestedInDismissibleModalContext && Platform.OS !== 'web') {
         return <UISlideBar {...rest} />;
     }
 
