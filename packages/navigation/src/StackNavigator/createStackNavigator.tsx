@@ -32,7 +32,6 @@ import {
     UILargeTitleHeaderProps,
 } from '../UILargeTitleHeader';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
-import StaticContainer from './StaticContainer';
 import { shouldUpdateScreens } from './shouldUpdateScreens';
 import { useStackTopInsetStyle } from './useStackTopInsetStyle';
 
