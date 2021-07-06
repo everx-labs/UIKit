@@ -16,14 +16,16 @@ export function AmountInput({ onLayout, ...message }: AmountInputMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
-                <BubbleSimplePlainText
-                    type={ChatMessageType.PlainText}
-                    key="amount-input-bubble-prompt"
-                    text={message.prompt}
-                    status={MessageStatus.Received}
-                    firstFromChain
-                    lastFromChain
-                />
+                {message.prompt && (
+                    <BubbleSimplePlainText
+                        type={ChatMessageType.PlainText}
+                        key="amount-input-bubble-prompt"
+                        text={message.prompt}
+                        status={MessageStatus.Received}
+                        firstFromChain
+                        lastFromChain
+                    />
+                )}
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="amount-input-bubble-amount"
@@ -42,14 +44,16 @@ export function AmountInput({ onLayout, ...message }: AmountInputMessage) {
 
     return (
         <View onLayout={onLayout}>
-            <BubbleSimplePlainText
-                type={ChatMessageType.PlainText}
-                key="amount-input-bubble-prompt"
-                text={message.prompt}
-                status={MessageStatus.Received}
-                firstFromChain
-                lastFromChain
-            />
+            {message.prompt && (
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="amount-input-bubble-prompt"
+                    text={message.prompt}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                    lastFromChain
+                />
+            )}
             <Portal forId="browser">
                 <UIAmountInput
                     decimals={message.decimals}
