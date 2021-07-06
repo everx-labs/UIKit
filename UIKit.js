@@ -19,7 +19,6 @@ export {
     UIBadge,
     UIBullet,
     UIButton,
-    UIButtonGroup,
     UIBankCardNumberInput,
     UICard,
     UICheckboxItem,

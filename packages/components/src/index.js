@@ -9,7 +9,6 @@ export { default as UIBadge } from './UIBadge';
 export { default as UIBankCardNumberInput } from './UIBankCardNumberInput';
 export { default as UIBullet } from './UIBullet';
 export { default as UIButton } from './UIButton';
-export { default as UIButtonGroup } from './UIButtonGroup';
 export { default as UICard } from './UICard';
 export { default as UICheckboxItem } from './UICheckboxItem';
 export { default as UICompatibilityView } from './UICompatibilityView';

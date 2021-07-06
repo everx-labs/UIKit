@@ -1,12 +1,9 @@
 import * as React from 'react';
-import {
-    TouchableOpacity,
-    Image, // TODO: use UIImage?
-} from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIButtonGroup, UITextButton } from '@tonlabs/uikit.components';
-import { UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIStyle } from '@tonlabs/uikit.core';
+import { UIImage, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';
@@ -27,7 +24,7 @@ export function QuickAction(props: Props) {
                 style={commonStyles.buttonContainer}
                 onPress={onSendText}
             >
-                <Image
+                <UIImage
                     source={UIAssets.icons.ui.buttonMsgSend}
                     style={commonStyles.icon}
                 />
@@ -40,19 +37,25 @@ export function QuickAction(props: Props) {
     }
 
     return (
-        <UIButtonGroup>
+        <View style={UIStyle.flex.row()}>
             {quickActions.map((action) => (
-                <UITextButton
+                <TouchableOpacity
                     key={`quickAction~${action.key}`}
                     testID={action.testID}
-                    buttonStyle={commonStyles.buttonContainer}
                     onPress={action.onPress}
-                    icon={action.icon}
-                    title={action.title}
-                    titleRole={UILabelRoles.Action}
-                    disableIconColor
-                />
+                    style={[commonStyles.buttonContainer, UIStyle.flex.row()]}
+                >
+                    {action.icon && <UIImage source={action.icon} />}
+                    {action.title &&
+                    <UILabel
+                        color={UILabelColors.TextAccent}
+                        role={UILabelRoles.Action}
+                        style={action.icon ? UIStyle.margin.leftSmall() : null}
+                    >
+                        {action.title}
+                    </UILabel>}
+                </TouchableOpacity>
             ))}
-        </UIButtonGroup>
+        </View>
     );
 }
