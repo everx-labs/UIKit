@@ -98,7 +98,7 @@ const ButtonForward = React.forwardRef<
             <View style={Platform.OS === 'web' ? styles.content : null}>
                 {loading ? (
                     <UIIndicator
-                        color={ColorVariants.StaticIconPrimaryDark}
+                        color={ColorVariants.LineNeutral}
                         size={UIConstant.loaderSize}
                     />
                 ) : processedChildren}

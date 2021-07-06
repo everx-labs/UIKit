@@ -2,11 +2,18 @@
 import React from 'react';
 import { View, StyleSheet, Keyboard, Animated } from 'react-native';
 
-import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UIBoxButton,
+    UIBoxButtonType,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UITextButton from '../UITextButton';
 
 export type UIAlertButton = {
     title: string,
@@ -41,9 +48,12 @@ type State = {
     content: ?UIAlertContent,
 };
 
+const AnimatedUIBackgroundView = Animated.createAnimatedComponent(
+    UIBackgroundView,
+);
+
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: UIColor.overlay60(),
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 16777271,
@@ -52,7 +62,6 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         width: UIConstant.alertWidth(),
         borderRadius: UIConstant.mediumBorderRadius(),
-        backgroundColor: UIColor.backgroundPrimary(),
         padding: UIConstant.mediumContentOffset(),
     },
 });
@@ -217,14 +226,15 @@ export default class UIAlert extends UIComponent<Props, State> {
         buttons.forEach((row, index) => {
             const btns = [];
             row.forEach((buttonInRow, btnIndex) => {
-                btns.push(<UITextButton
-                    testID={`UIAlert_Button_${buttonInRow.title}`}
-                    align={UITextButton.align.center}
-                    title={buttonInRow.title}
-                    buttonStyle={UIStyle.common.flex()}
-                    onPress={() => { buttonInRow.onPress(); this.hideAlert(); }}
-                    key={`alert_rowOfButtons_${index}_${btnIndex}`}
-                />);
+                btns.push(
+                    <UIBoxButton
+                        testID={`UIAlert_Button_${buttonInRow.title}`}
+                        title={buttonInRow.title}
+                        type={UIBoxButtonType.Tertiary}
+                        onPress={() => { buttonInRow.onPress(); this.hideAlert(); }}
+                        key={`alert_rowOfButtons_${index}_${btnIndex}`}
+                    />
+                );
             });
             btnRows.push((
                 <View style={UIStyle.common.flexRow()} key={`alert_rowOfButtons_${index}`}>
@@ -247,13 +257,19 @@ export default class UIAlert extends UIComponent<Props, State> {
 
         const animation = { transform: [{ scale: this.animatedValue }] };
         return (
-            <View style={[UIStyle.container.absoluteFill(), styles.container]}>
-                <Animated.View style={[styles.alert, animation]}>
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundOverlay}
+                style={[UIStyle.container.absoluteFill(), styles.container]}
+            >
+                <AnimatedUIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundPrimary}
+                    style={[styles.alert, animation]}
+                >
                     {this.renderTitle()}
                     {this.renderDescription()}
                     {this.renderButtons()}
-                </Animated.View>
-            </View>
+                </AnimatedUIBackgroundView>
+            </UIBackgroundView>
         );
     }
 }

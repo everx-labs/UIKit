@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import {
-    UITextButton,
     UINotice,
     UINotificationBadge,
     UIToastMessage,
     UITooltip,
 } from '@tonlabs/uikit.components';
+import { UILinkButton } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -15,7 +15,7 @@ export const Notifications = () => (
     <ExampleScreen>
         <ExampleSection title="UINotice">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
+                <UILinkButton
                     testID="show_default_uiNotice_message"
                     title="Show default notice with message only"
                     onPress={() =>
@@ -33,7 +33,7 @@ export const Notifications = () => (
         </ExampleSection>
         <ExampleSection title="UIToastMessage">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
+                <UILinkButton
                     testID="show_default_uiToastMessageg"
                     title="Show default notice with message only"
                     onPress={() =>
@@ -55,7 +55,7 @@ export const Notifications = () => (
                 <UITooltip message="Message three is huge, with five lines of text wich contains more usefull information for all users and many-many bla-bla-bla to see maximum height of tooltip. You can add here some instructions.">
                     <Text style={{ fontSize: 16 }}> Trigger 3</Text>
                 </UITooltip>
-                <UITextButton
+                <UILinkButton
                     title="Show onMouse tooltip"
                     onPress={() =>
                         UITooltip.showOnMouseForWeb(
@@ -63,7 +63,7 @@ export const Notifications = () => (
                         )
                     }
                 />
-                <UITextButton
+                <UILinkButton
                     title="Hide onMouse tooltip"
                     onPress={() => UITooltip.hideOnMouseForWeb()}
                 />
