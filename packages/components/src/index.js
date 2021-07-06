@@ -28,7 +28,6 @@ export { default as UIDropdownAlert } from './UIDropdownAlert';
 export { default as UIEmailInput } from './UIEmailInput';
 export { default as UIGrid } from './UIGrid';
 export { default as UIGridColumn } from './UIGridColumn';
-export { default as UIImageButton } from './UIImageButton';
 export { default as UILayoutManager } from './UILayoutManager';
 export { default as UILink } from './UILink';
 export { default as UILinkInput } from './UILinkInput';

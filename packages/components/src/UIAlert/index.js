@@ -58,6 +58,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 16777271,
     },
+    buttonContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        flex: 1,
+    },
     alert: {
         flexShrink: 1,
         width: UIConstant.alertWidth(),
@@ -227,13 +233,15 @@ export default class UIAlert extends UIComponent<Props, State> {
             const btns = [];
             row.forEach((buttonInRow, btnIndex) => {
                 btns.push(
-                    <UIBoxButton
-                        testID={`UIAlert_Button_${buttonInRow.title}`}
-                        title={buttonInRow.title}
-                        type={UIBoxButtonType.Tertiary}
-                        onPress={() => { buttonInRow.onPress(); this.hideAlert(); }}
-                        key={`alert_rowOfButtons_${index}_${btnIndex}`}
-                    />
+                    <View style={styles.buttonContainer}>
+                        <UIBoxButton
+                            testID={`UIAlert_Button_${buttonInRow.title}`}
+                            title={buttonInRow.title}
+                            type={UIBoxButtonType.Tertiary}
+                            onPress={() => { buttonInRow.onPress(); this.hideAlert(); }}
+                            key={`alert_rowOfButtons_${index}_${btnIndex}`}
+                        />
+                    </View>
                 );
             });
             btnRows.push((
