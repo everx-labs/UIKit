@@ -194,14 +194,14 @@ export const UIPillButton = ({
     const { buttonStyle, contentColor } = useButtonStyles(variant, disabled, loading);
     const buttonAnimations = useButtonAnimations(contentColor);
     const contentStyle = React.useMemo(() => {
+        if (icon && !title) {
+            return [styles.leftIconOffset, styles.rightIconOffset];
+        }
         if (icon && iconPosition === UIPillButtonIconPosition.Left) {
             return [styles.leftIconOffset, styles.rightTitleOffset];
         }
         if (icon && iconPosition === UIPillButtonIconPosition.Right) {
             return [styles.leftTitleOffset, styles.rightIconOffset];
-        }
-        if (icon && !title) {
-            return [styles.leftIconOffset, styles.rightIconOffset];
         }
         return [styles.leftTitleOffset, styles.rightTitleOffset];
     }, [icon, iconPosition, title]);
