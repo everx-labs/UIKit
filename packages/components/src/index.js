@@ -50,7 +50,6 @@ export { default as UISpinnerOverlay } from './UISpinnerOverlay';
 export { default as UIStepBar } from './UIStepBar';
 export { default as UITabView } from './UITabView';
 export { default as UITag } from './UITag';
-export { default as UITextButton } from './UITextButton';
 export { default as UITextInput } from './UITextInput';
 export { default as UIToastMessage } from './UIToastMessage';
 export { default as UIToggle } from './UIToggle';

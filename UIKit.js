@@ -61,7 +61,6 @@ export {
     UIStepBar,
     UITabView,
     UITag,
-    UITextButton,
     UITextInput,
     UIToastMessage,
     UIToggle,
