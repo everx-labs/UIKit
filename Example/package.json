@@ -82,7 +82,11 @@
     "react-native-web-modal": "^1.0.1",
     "react-navigation-surf": "ssh://git@github.com/tonlabs/react-navigation-surf",
     "rn-fetch-blob": "git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39",
-    "validator": "10.11.0"
+    "validator": "10.11.0",
+    "qrcode": "1.4.4",
+    "@types/qrcode": "1.4.0",
+    "react-native-view-shot": "3.1.2",
+    "html2canvas": "1.0.0-rc.7"
   },
   "devDependencies": {
     "@babel/cli": "7.8.4",

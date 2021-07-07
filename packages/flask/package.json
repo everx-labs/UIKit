@@ -39,7 +39,9 @@
     "@tonlabs/uikit.core": "^2.3.0",
     "@tonlabs/uikit.hydrogen": "^2.3.0",
     "@tonlabs/uikit.localization": "^2.3.0",
-    "@tonlabs/uikit.navigation": "^2.3.0"
+    "@tonlabs/uikit.navigation": "^2.3.0",
+    "qrcode": "^1.4.4",
+    "html2canvas": "^1.0.0-rc.7"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
@@ -47,12 +49,16 @@
     "@types/react-native": "0.63.37",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-native": "^0.63.0"
+    "react-native": "^0.63.0",
+    "react-native-svg": "^12.1.1",
+    "@types/qrcode": "^1.4.0"
   },
   "peerDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-native": "^0.63.0"
+    "react-native": "^0.63.0",
+    "react-native-svg": "^12.1.1",
+    "react-native-view-shot": "^3.1.2"
   },
   "@react-native-community/bob": {
     "source": "src",

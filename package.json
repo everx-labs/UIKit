@@ -77,7 +77,10 @@
         "react-qr-reader": "2.2.1",
         "react-style-proptype": "3.2.2",
         "react-native-redash": "16.0.11",
-        "validator": "10.11.0"
+        "validator": "10.11.0",
+        "qrcode": "1.4.4",
+        "react-native-view-shot": "3.1.2",
+        "html2canvas": "1.0.0-rc.7"
     },
     "devDependencies": {
         "@babel/core": "7.9.0",
@@ -114,7 +117,8 @@
         "metro-react-native-babel-preset": "0.63.0",
         "pre-commit": "1.2.2",
         "prettier": "2.1.1",
-        "react-test-renderer": "16.13.1"
+        "react-test-renderer": "16.13.1",
+        "@types/qrcode": "1.4.0"
     },
     "repository": {
         "type": "git",

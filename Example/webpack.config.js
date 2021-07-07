@@ -120,6 +120,10 @@ module.exports = {
                         __dirname,
                         '../node_modules/react-native-reanimated/',
                     ),
+                    path.resolve(
+                        __dirname,
+                        '../node_modules/react-native-view-shot/',
+                    ),
                 ],
                 loader: 'babel-loader',
                 query: {

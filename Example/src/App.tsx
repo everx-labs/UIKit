@@ -64,6 +64,7 @@ import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
 import { LargeHeaderScreen } from './screens/LargeHeader';
+import { QRCodeScreen } from './screens/QRCode';
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
@@ -151,6 +152,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             title="Browser"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('browser')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="QR code"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('qr-code')}
                             layout={styles.button}
                         />
                         <UILinkButton
@@ -330,6 +337,7 @@ const App = () => {
                             <Split.Screen name="products" component={Products} />
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="text" component={TextScreen} />
+                            <Split.Screen name="qr-code" component={QRCodeScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
