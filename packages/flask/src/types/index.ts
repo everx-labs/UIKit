@@ -55,6 +55,5 @@ export type QRItemSideData = {
 
 export type ScreenshotViewProps = {
     ref: ForwardedRef<QRCodeRef>;
-    testID: string | undefined;
     children: React.ReactNode;
 };

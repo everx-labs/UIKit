@@ -19,7 +19,7 @@ export const UIQRCodeViewImpl: React.ForwardRefRenderFunction<
     QRCodeProps
 > = (props: QRCodeProps, ref) => {
     return (
-        <ScreenshotView ref={ref} testID={props.testID}>
+        <ScreenshotView ref={ref}>
             {renderContent(props)}
         </ScreenshotView>
     );

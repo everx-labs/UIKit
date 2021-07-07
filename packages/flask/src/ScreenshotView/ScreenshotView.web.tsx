@@ -20,7 +20,7 @@ export const ScreenshotViewImpl: React.ForwardRefRenderFunction<
     );
 
     return (
-        <View ref={screenshotRef} testID={props.testID}>
+        <View ref={screenshotRef}>
             {props.children}
         </View>
     );
