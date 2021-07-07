@@ -98,7 +98,7 @@ export function UIBoxPicker<Box extends AbstractBox>({
             {/* TODO: use UILinkButton instead once it's ready! */}
             <View style={styles.addButtonContainer}>
                 <UIBoxButton
-                    testID="box-picker-add-signature"
+                    testID="box-picker-add"
                     disabled
                     title={addSignatureTitle}
                     type={UIBoxButtonType.Nulled}
