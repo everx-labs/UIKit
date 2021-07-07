@@ -5,6 +5,11 @@ import type {
     QRItemRange,
     QRItemSideData,
 } from '../../types';
+import {
+    QR_CODE_LOGO_SIZE,
+    QR_CODE_LOGO_MARGIN_IN_SQUARES,
+    QR_CODE_ITEM_BORDER_RADIUS,
+} from '../../constants';
 
 const getStartLineType = (angleSide: QRItemAngleSide): string => {
     switch (angleSide) {
@@ -99,12 +104,15 @@ export const draw = (
     y: number,
     sizeOfSquare: number,
     sideData: QRItemSideData,
-    radius: number,
+    itemBorderRadius: number,
     offsetOfCoordinateGrid: number = 0,
 ) => {
     const scaledX = x * sizeOfSquare + offsetOfCoordinateGrid;
     const scaledY = y * sizeOfSquare + offsetOfCoordinateGrid;
-    const safeRadius = radius > sizeOfSquare / 2 ? sizeOfSquare / 2 : radius
+    const safeRadius =
+        itemBorderRadius > sizeOfSquare / 2
+            ? sizeOfSquare / 2
+            : itemBorderRadius;
 
     return `
         M${scaledX + sizeOfSquare / 2},${scaledY}
@@ -138,27 +146,43 @@ export const draw = (
 export const getEmptyAreaIndexRange = (
     size: number,
     logoSize: number,
-    logoMargin: number,
+    logoMarginInSquares: number,
     sizeOfSquare: number,
+    isThereLogo: boolean,
 ): QRItemRange => {
-    const sizeInSquares = Math.floor(size / sizeOfSquare);
+    if (!isThereLogo) {
+        /** EmptyArea is absent */
+        return {
+            start: -1,
+            end: -1,
+        };
+    }
+    const sizeInSquares = Math.round(size / sizeOfSquare);
     const logoWithMarginSizeInSquares = Math.ceil(
-        (logoSize + logoMargin * 2) / sizeOfSquare,
+        (logoSize + logoMarginInSquares * sizeOfSquare * 2) / sizeOfSquare,
     );
     const offsetInSquares = Math.floor(
         (sizeInSquares - logoWithMarginSizeInSquares) / 2,
     );
     const start = offsetInSquares;
     const end: number = sizeInSquares - offsetInSquares - 1;
+    console.log({
+        size,
+        sizeOfSquare,
+        sizeInSquaresRelative: size / sizeOfSquare,
+        sizeInSquares,
+        logoWithMarginSizeInSquares,
+        offsetInSquares,
+        start,
+        end,
+    });
     return { start, end };
 };
 
 export const getQRSvg = (
     qr: QRCode.QRCode,
     size: number,
-    logoSize: number,
-    logoMargin: number,
-    radiusOfSquare: number,
+    isThereLogo: boolean,
 ) => {
     const qrDataLength: number = qr.modules.size;
 
@@ -166,9 +190,10 @@ export const getQRSvg = (
 
     const emptyAreaIndexRange: QRItemRange = getEmptyAreaIndexRange(
         size,
-        logoSize,
-        logoMargin,
+        QR_CODE_LOGO_SIZE,
+        QR_CODE_LOGO_MARGIN_IN_SQUARES,
         sizeOfSquare,
+        isThereLogo,
     );
 
     const qrData: number[][] = new Array(qrDataLength)
@@ -216,7 +241,7 @@ export const getQRSvg = (
                         bottomValue,
                         leftValue,
                     },
-                    radiusOfSquare,
+                    QR_CODE_ITEM_BORDER_RADIUS,
                 )}`;
             }
         }

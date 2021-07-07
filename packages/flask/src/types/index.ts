@@ -1,6 +1,5 @@
 import type { ForwardedRef } from 'react';
 import type { ImageSourcePropType } from 'react-native';
-import type { ColorVariants } from '@tonlabs/uikit.hydrogen';
 
 export type QRCodeType = 'Default' | 'Circle';
 
@@ -23,12 +22,6 @@ export type QRCodeProps = {
     ref?: QRCodeRef;
     /** Image for logo in the center of the QR code */
     logo?: ImageSourcePropType;
-    /** Size of logo */
-    logoSize?: number;
-    /** Logo image offset from logo edges */
-    logoMargin?: number;
-    /** Color of background of logo */
-    logoBackgroundColor?: ColorVariants;
     /** ID for usage in tests */
     testID?: string;
 };
