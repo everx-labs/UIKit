@@ -318,7 +318,7 @@ export function UILargeTitleHeader({
 
     const largeTitleInnerElement = (
         <>
-            {label && (
+            {label != null && (
                 <UILabel
                     role={UILabelRoles.ParagraphLabel}
                     color={UILabelColors.TextSecondary}
@@ -327,7 +327,7 @@ export function UILargeTitleHeader({
                     {label}
                 </UILabel>
             )}
-            {title &&
+            {title != null &&
                 (React.isValidElement(title) ? (
                     title
                 ) : (
@@ -345,7 +345,7 @@ export function UILargeTitleHeader({
                         {title}
                     </AnimatedUILabel>
                 ))}
-            {note && (
+            {note != null && (
                 <UILabel
                     role={UILabelRoles.ParagraphNote}
                     style={{ marginTop: 8 }}

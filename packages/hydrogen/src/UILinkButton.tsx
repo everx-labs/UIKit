@@ -227,7 +227,7 @@ export const UILinkButton = ({
                 }
             </Button.Content>
             {
-                iconPosition === UILinkButtonIconPosition.Right && icon &&
+                iconPosition === UILinkButtonIconPosition.Right && icon != null &&
                 <Button.Icon
                     source={icon}
                     iconAnimStyle={buttonAnimations.icon.style}
