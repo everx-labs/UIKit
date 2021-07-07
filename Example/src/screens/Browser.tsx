@@ -384,7 +384,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                             onPress={() => {
                                 const message: EncryptionBoxMessage = {
-                                    key: `${Date.now()}-signing-box`,
+                                    key: `${Date.now()}-encryption-box`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.EncryptionBox,
                                     encryptionBoxes,
