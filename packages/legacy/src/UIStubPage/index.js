@@ -185,7 +185,6 @@ export default class UIStubPage extends UIComponent<Props, State> {
     renderBottomBar() {
         return (
             <UIBottomBar
-                theme={UIColor.Theme.Action}
                 accentText={uiLocalized.Contact}
                 accentEmail={uiLocalized.PressEmail}
                 copyRight={uiLocalized.CopyRight}

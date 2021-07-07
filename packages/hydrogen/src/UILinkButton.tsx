@@ -53,6 +53,10 @@ export type UILinkButtonProps = {
      */
     layout?: UILayout;
     /**
+     * Whether to display a loading indicator instead of button content or not
+     */
+    loading?: boolean;
+    /**
      * Function will be called on button press
      */
     onPress?: () => void | Promise<void>;
@@ -174,6 +178,7 @@ export const UILinkButton = ({
     icon,
     iconPosition = UILinkButtonIconPosition.Middle,
     layout,
+    loading,
     onPress,
     size = UILinkButtonSize.Normal,
     testID,
@@ -193,6 +198,7 @@ export const UILinkButton = ({
             contentStyle={styles.content}
             animations={buttonAnimations}
             disabled={disabled}
+            loading={loading}
             onPress={onPress}
             testID={testID}
         >

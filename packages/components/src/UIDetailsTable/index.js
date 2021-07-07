@@ -11,10 +11,11 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    UILinkButton,
+    UILinkButtonSize,
 } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UITextButton from '../UITextButton';
 
 type Value = ?(string | number | boolean);
 
@@ -244,11 +245,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return this.renderTextCell(primary, secondary);
         } else if (type === UIDetailsTable.cellType.action || onPress) {
             return (
-                <UITextButton
-                    multiLine
-                    title={value}
-                    onPress={onPress || (() => this.onActionPressed(details))}
+                <UILinkButton
                     testID={`table_cell_clickable_${caption || 'default'}_value`}
+                    title={value}
+                    size={UILinkButtonSize.Small}
+                    onPress={onPress || (() => this.onActionPressed(details))}
                 />
             );
         } else if (component) {

@@ -2,9 +2,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { UIStyle, UIColor, UIFunction } from '@tonlabs/uikit.core';
-import { UIComponent, UITextButton } from '@tonlabs/uikit.components';
-import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIStyle, UIFunction } from '@tonlabs/uikit.core';
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UILinkButton } from '@tonlabs/uikit.hydrogen';
 
 type Props = {
     // screens: BreadCrumbScreen[],
@@ -72,12 +72,10 @@ export default class UIBreadCrumbs extends UIComponent<Props, {}> {
 
                     return (
                         <React.Fragment key={`bread-crumbs-${title}-${index}`}>
-                            <UITextButton
+                            <UILinkButton
                                 title={title}
-                                titleColor={UILabelColors.TextPrimary}
-                                titleRole={UILabelRoles.ParagraphNote}
-                                style={UIStyle.margin.rightNormal()}
                                 onPress={() => this.props.navigation.pop(lastRoutes.length - index)}
+                                layout={UIStyle.margin.rightNormal()}
                             />
                             {index < lastRoutes.length - 1 && slash}
                         </React.Fragment>

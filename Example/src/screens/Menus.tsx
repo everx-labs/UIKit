@@ -22,8 +22,6 @@ import {
     UIQRCodeScannerSheet,
 } from '@tonlabs/uikit.navigation';
 import {
-    UITextButton,
-    UIButton,
     UISlider,
     UIStepBar,
     UITabView,
@@ -32,7 +30,9 @@ import {
     UIMaterialTextView,
     useTheme,
     ColorVariants,
+    UIBoxButton,
     UILabel,
+    UILinkButton,
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -47,7 +47,7 @@ function BigBottomSheet() {
     const insets = useSafeAreaInsets();
     return (
         <>
-            <UITextButton
+            <UILinkButton
                 testID="show_big_uiBottomSheet"
                 title="Show Big UIBottomSheet"
                 onPress={() => {
@@ -118,7 +118,7 @@ export const Menus = () => {
         <ExampleScreen>
             <ExampleSection title="UIActionSheet">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UITextButton
+                    <UILinkButton
                         testID="show_actionSheet"
                         title="Show ActionSheet"
                         onPress={() => {
@@ -145,7 +145,7 @@ export const Menus = () => {
             </ExampleSection>
             <ExampleSection title="UICountryPicker">
                 <View style={{ paddingVertical: 20 }}>
-                    <UITextButton
+                    <UILinkButton
                         testID="show_uiCountryPicker"
                         title="Show UICountryPicker"
                         onPress={() => UICountryPicker.show({})}
@@ -154,7 +154,7 @@ export const Menus = () => {
             </ExampleSection>
             <ExampleSection title="UICardSheet">
                 <View style={{ paddingVertical: 20 }}>
-                    <UITextButton
+                    <UILinkButton
                         testID="show_uiCardSheet"
                         title="Show UICardSheet"
                         onPress={() => {
@@ -174,14 +174,14 @@ export const Menus = () => {
                         }}
                     >
                         <UILabel>Hi there!</UILabel>
-                        <UIButton
+                        <UIBoxButton
                             title="close"
                             onPress={() => {
                                 setCardSheetVisible(false);
                             }}
                         />
                     </UICardSheet>
-                    <UITextButton
+                    <UILinkButton
                         testID="show_uiCardSheet_with_input"
                         title="Show UICardSheet with input"
                         onPress={() => {
@@ -201,14 +201,14 @@ export const Menus = () => {
                         }}
                     >
                         <UIMaterialTextView label="Write smth" />
-                        <UIButton
+                        <UIBoxButton
                             title="close"
                             onPress={() => {
                                 setCardSheet2Visible(false);
                             }}
                         />
                     </UICardSheet>
-                    <UITextButton
+                    <UILinkButton
                         testID="show_uiBottomSheet"
                         title="Show UIBottomSheet"
                         onPress={() => {
@@ -234,7 +234,7 @@ export const Menus = () => {
                                 }}
                             >
                                 <UILabel>Hi there!</UILabel>
-                                <UIButton
+                                <UIBoxButton
                                     title="close"
                                     onPress={() => {
                                         setBottomSheetVisible(false);
@@ -244,7 +244,7 @@ export const Menus = () => {
                         )}
                     </SafeAreaInsetsContext.Consumer>
                     <BigBottomSheet />
-                    <UITextButton
+                    <UILinkButton
                         testID="show_uiQRCodeScannerSheet"
                         title="Show UIQRcodeScannerSheet"
                         onPress={() => {
@@ -268,7 +268,7 @@ export const Menus = () => {
                         placement="top"
                         component={<Text>This is a popover</Text>}
                     >
-                        <UITextButton
+                        <UILinkButton
                             testID="show_uiPopover"
                             title="Show UIPopover"
                         />
@@ -290,7 +290,7 @@ export const Menus = () => {
                             },
                         ]}
                     >
-                        <UITextButton title="Show UIPopoverMenu" />
+                        <UILinkButton title="Show UIPopoverMenu" />
                     </UIPopoverMenu>
                 </View>
             </ExampleSection>

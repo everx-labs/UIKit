@@ -27,11 +27,11 @@ Also for web there is a second type - onMouse tooltip.
             <Text style={{ fontSize: 16 }}> Trigger 3</Text>
         </UITooltip>
     </div>
-    <UITextButton
+    <UILinkButton
         title="Show onMouse tooltip"
         onPress={() => UITooltip.showOnMouseForWeb('Message of onMouse tooltip')}
     />
-    <UITextButton
+    <UILinkButton
         title="Hide onMouse tooltip"
         onPress={() => UITooltip.hideOnMouseForWeb()}
     />

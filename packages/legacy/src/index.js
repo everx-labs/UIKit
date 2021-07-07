@@ -9,7 +9,6 @@ export { default as UIAccountPicker } from './UIAccountPicker';
 export { default as UIBalanceView } from './UIBalanceView';
 export { default as UIAnimatedBalanceView } from './UIAnimatedBalanceView';
 export { default as UIFeedback } from './UIFeedback';
-export { default as UIPushFeedback } from './UIPushFeedback';
 export { default as UIFlashMessage } from './UIFlashMessage';
 export { default as UIIdleDetector } from './UIIdleDetector';
 export { default as UILandingView } from './UILandingView';

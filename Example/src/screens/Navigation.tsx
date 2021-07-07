@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ColorValue } from 'react-native';
 
-import { ColorVariants, UILabel } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIBoxButton, UILabel } from '@tonlabs/uikit.hydrogen';
 import {
     UIDialogBar,
     UIPagerView,
@@ -11,7 +11,6 @@ import {
     UISlideBar,
 } from '@tonlabs/uikit.navigation';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIButton } from '@tonlabs/uikit.components';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -189,14 +188,14 @@ export const Navigation = () => {
                         paddingVertical: 20,
                     }}
                 >
-                    <UIButton
+                    <UIBoxButton
                         testID="UISearchController_open_button"
+                        title="Open search controller"
                         onPress={() =>
                             setSearchControllerVisible(
                                 !isSearchControllerVisible,
                             )
                         }
-                        title="Open search controller"
                     />
                     <UISearchController
                         visible={isSearchControllerVisible}

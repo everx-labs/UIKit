@@ -5,8 +5,8 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { UIActionImage, UITextButton } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIActionImage } from '@tonlabs/uikit.components';
+import { UIBoxButton, UIBoxButtonType, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIScreen from '../UIScreen';
@@ -181,13 +181,14 @@ export default class UIErrorScreen extends UIScreen<Props, {}> {
                         {this.getCaption()}
                     </UILabel>
                 </View>
-                <UITextButton
-                    testID={UIErrorScreen.testIDs.BACK_TO_HOME_BUTTON}
-                    align={UITextButton.align.center}
-                    title={uiLocalized.BackToHome}
-                    buttonStyle={[UIStyle.common.positionAbsolute(), styles.textButton]}
-                    onPress={this.onPressBackToHome}
-                />
+                <View style={[UIStyle.common.positionAbsolute(), styles.textButton]}>
+                    <UIBoxButton
+                        testID={UIErrorScreen.testIDs.BACK_TO_HOME_BUTTON}
+                        title={uiLocalized.BackToHome}
+                        type={UIBoxButtonType.Tertiary}
+                        onPress={this.onPressBackToHome}
+                    />
+                </View>
                 <UIBottomBar
                     isNarrow={this.isNarrow()}
                     copyRight={`2018–${(new Date()).getFullYear()} © TON Labs`}
