@@ -91,6 +91,14 @@
         },
         "Menu": {
             "More": "More..."
+        },
+        "EncryptionBox": {
+            "Prompt": "How would you like to cipher?",
+            "EnterKey": "Enter a cipher key manually",
+            "PickCypher": "Pick a cypher key",
+            "CipherKeys": "Cipher keys",
+            "AddCipherKey": "Add cipher key",
+            "CipherKeyLabel": "Cipher key"
         }
     },
     "Cancel": "キャンセル",

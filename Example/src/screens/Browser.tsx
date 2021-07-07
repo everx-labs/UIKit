@@ -9,6 +9,7 @@ import {
     BrowserMessage,
     ValidationResultStatus,
     QRCodeMessage,
+    EncryptionBoxMessage,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -65,6 +66,16 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
             id: 3,
             title: 'Signature',
             publicKey: '3b4a',
+        },
+    ]);
+    const [encryptionBoxes, setEncryptionBoxes] = React.useState([
+        {
+            id: 1,
+            title: 'Encrypt / Decrypt with Surf',
+        },
+        {
+            id: 2,
+            title: 'Unknown',
         },
     ]);
 
@@ -351,6 +362,60 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                                 resolve(true);
                                             }, 1000);
                                         });
+                                    },
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
+                            title="Add EncryptionBoxInput"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: EncryptionBoxMessage = {
+                                    key: `${Date.now()}-signing-box`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.EncryptionBox,
+                                    encryptionBoxes,
+                                    onAddEncryptionBox: (
+                                        _privateKey: string,
+                                    ) => {
+                                        const newEncryptionBox = {
+                                            id:
+                                                encryptionBoxes[
+                                                    encryptionBoxes.length - 1
+                                                ].id + 1,
+                                            title: 'Signature',
+                                        };
+                                        setEncryptionBoxes([
+                                            ...encryptionBoxes,
+                                            newEncryptionBox,
+                                        ]);
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                encryptionBoxes: [
+                                                    ...encryptionBoxes,
+                                                    newEncryptionBox,
+                                                ],
+                                            },
+                                            ...messages,
+                                        ]);
+
+                                        return Promise.resolve(
+                                            newEncryptionBox,
+                                        );
                                     },
                                     onSelect: (externalState: any) => {
                                         setMessages([
