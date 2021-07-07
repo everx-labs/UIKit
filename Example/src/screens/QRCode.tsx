@@ -4,7 +4,6 @@ import {
     UIBoxButton,
     UITextView,
     useTheme,
-    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
 import { UIQRCodeView, QRCodeType, QRCodeRef } from '@tonlabs/uikit.flask';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
@@ -58,12 +57,8 @@ const QRCode = () => {
                 >
                     <UIQRCodeView
                         type={type}
-                        value="QR code value QR value QR code value QR value QR code value QR value QR code value QR value QR code value QR "
-                        size={250}
+                        value="QR code value QR value QR QR code value QR value QR QR code value QR value QR QR code value QR value QR "
                         logo={logo}
-                        logoMargin={0}
-                        logoSize={40}
-                        logoBackgroundColor={ColorVariants.BackgroundNeutral}
                         ref={ref}
                     />
 
