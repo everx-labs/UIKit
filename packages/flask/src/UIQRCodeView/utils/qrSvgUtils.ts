@@ -104,6 +104,7 @@ export const draw = (
 ) => {
     const scaledX = x * sizeOfSquare + offsetOfCoordinateGrid;
     const scaledY = y * sizeOfSquare + offsetOfCoordinateGrid;
+    const safeRadius = radius > sizeOfSquare / 2 ? sizeOfSquare / 2 : radius
 
     return `
         M${scaledX + sizeOfSquare / 2},${scaledY}
@@ -111,25 +112,25 @@ export const draw = (
             sizeOfSquare,
             'TopRight',
             getAngleType(sideData, 'TopRight'),
-            radius,
+            safeRadius,
         )}
         ${drawCorner(
             sizeOfSquare,
             'BottomRight',
             getAngleType(sideData, 'BottomRight'),
-            radius,
+            safeRadius,
         )}
         ${drawCorner(
             sizeOfSquare,
             'BottomLeft',
             getAngleType(sideData, 'BottomLeft'),
-            radius,
+            safeRadius,
         )}
         ${drawCorner(
             sizeOfSquare,
             'TopLeft',
             getAngleType(sideData, 'TopLeft'),
-            radius,
+            safeRadius,
         )}
     `;
 };
