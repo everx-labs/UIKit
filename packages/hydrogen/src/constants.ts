@@ -27,6 +27,7 @@ export const UIConstant = {
     contentOffset: 16,
     borderRadius: 8,
     alertBorderRadius: 12,
+    pillButtonBorderRadius: 20,
 
     cardShadow:
         Platform.OS === 'android'

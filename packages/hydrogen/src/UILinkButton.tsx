@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Button, UILayout } from './Button';
+import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
 
@@ -101,7 +101,7 @@ const getButtonStates = (
 function useButtonAnimations(
     type: UILinkButtonType,
     contentColor: ColorVariants,
-) {
+): ButtonAnimations {
     const { activeContentColor } = getButtonStates(type);
     const theme = useTheme();
 
@@ -202,16 +202,16 @@ export const UILinkButton = ({
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
-                        iconAnimStyle={buttonAnimations.icon.style}
-                        initialColor={buttonAnimations.icon.initialColor}
-                        activeColor={buttonAnimations.icon.activeColor}
+                        iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
                     />
                 }
                 {
                     title &&
                     <Button.Title
                         titleColor={contentColor}
-                        titleAnimStyle={buttonAnimations.title.style}
+                        titleAnimStyle={buttonAnimations.title?.style}
                     >
                         {title}
                     </Button.Title>
@@ -220,9 +220,9 @@ export const UILinkButton = ({
                     iconPosition === UILinkButtonIconPosition.Middle && icon &&
                     <Button.Icon
                         source={icon}
-                        iconAnimStyle={buttonAnimations.icon.style}
-                        initialColor={buttonAnimations.icon.initialColor}
-                        activeColor={buttonAnimations.icon.activeColor}
+                        iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
                     />
                 }
             </Button.Content>
@@ -230,9 +230,9 @@ export const UILinkButton = ({
                 iconPosition === UILinkButtonIconPosition.Right && icon &&
                 <Button.Icon
                     source={icon}
-                    iconAnimStyle={buttonAnimations.icon.style}
-                    initialColor={buttonAnimations.icon.initialColor}
-                    activeColor={buttonAnimations.icon.activeColor}
+                    iconAnimStyle={buttonAnimations.icon?.style}
+                    initialColor={buttonAnimations.icon?.initialColor}
+                    activeColor={buttonAnimations.icon?.activeColor}
                 />
             }
         </Button>
