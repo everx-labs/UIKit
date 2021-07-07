@@ -41,14 +41,14 @@ class ExampleComponent extends React.Component {
         return (
             <View style={{ marginTop: 16 }}>
                 <View style={rowStyle}>
-                    <UITextButton 
+                    <UILinkButton 
                         title="Show default on left"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Address copied to clipboard.',
                             placement: UIToastMessage.Place.Left,
                         })}
                     />
-                    <UITextButton 
+                    <UILinkButton 
                         title="Show default with message only"
                         onPress={() => UIToastMessage.showMessage(
                             'Address copied to clipboard.'
@@ -57,7 +57,7 @@ class ExampleComponent extends React.Component {
                     <View/>
                 </View>
                 <View style={[{ display: 'flex' }, rowStyle]}>
-                    <UITextButton 
+                    <UILinkButton 
                         title="Show action on left, no autohide"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Account deleted.',
@@ -69,7 +69,7 @@ class ExampleComponent extends React.Component {
                             autoHide: false,
                         })}
                     />
-                    <UITextButton 
+                    <UILinkButton 
                         title="Show alert on center, no autohide"
                         onPress={() => UIToastMessage.showMessage({
                             message: 'Error deleting account.',
@@ -88,12 +88,12 @@ class ExampleComponent extends React.Component {
             return null;
         }
         return (
-            <UIButton
-                title="Footer button"
-                style={UIStyle.bottomScreenContainer}
-                footer
-                onPress={() => alert('Action was called')}
-            />
+            <View style={UIStyle.bottomScreenContainer}>
+                <UIBoxButton
+                    title="Footer button"
+                    onPress={() => alert('Action was called')}
+                />
+            </View>
         )
     }
 
