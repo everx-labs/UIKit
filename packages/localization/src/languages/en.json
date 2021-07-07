@@ -68,6 +68,14 @@
             "AddSignature": "Add signature",
             "PrivateKey": "Private key"
         },
+        "EncryptionBox": {
+            "Prompt": "How would you like to cipher?",
+            "EnterKey": "Enter a cipher key manually",
+            "PickCipher": "Pick a cipher key",
+            "CipherKeys": "Cipher keys",
+            "AddCipherKey": "Add cipher key",
+            "CipherKeyLabel": "Cipher key"
+        },
         "TransactionConfirmation": {
             "Title": "Transaction confirmation",
             "To": "To",

@@ -9,26 +9,22 @@ import {
 } from '@tonlabs/uikit.chats';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import type { SigningBoxMessage } from '../types';
+import type { EncryptionBoxMessage } from '../types';
 import { UIBoxPicker } from '../UIBoxPicker';
 import { UIKeySheet } from '../UIKeySheet';
 
-type SigningBoxInternalState = {
+type EncryptionBoxInternalState = {
     keyInputVisible: boolean;
     pickerVisible: boolean;
 };
 
-type SigningBoxAction = {
-    type:
-        | 'OPEN_KEY_INPUT'
-        | 'CLOSE_KEY_INPUT'
-        | 'OPEN_SIGNATURE_PICKER'
-        | 'CLOSE_SIGNATURE_PICKER';
+type EncryptionBoxAction = {
+    type: 'OPEN_KEY_INPUT' | 'CLOSE_KEY_INPUT' | 'OPEN_PICKER' | 'CLOSE_PICKER';
 };
 
-function signingBoxReducer(
-    state: SigningBoxInternalState,
-    action: SigningBoxAction,
+function encryptionBoxReducer(
+    state: EncryptionBoxInternalState,
+    action: EncryptionBoxAction,
 ) {
     if (action.type === 'OPEN_KEY_INPUT') {
         return {
@@ -42,13 +38,13 @@ function signingBoxReducer(
             keyInputVisible: false,
         };
     }
-    if (action.type === 'OPEN_SIGNATURE_PICKER') {
+    if (action.type === 'OPEN_PICKER') {
         return {
             ...state,
             pickerVisible: true,
         };
     }
-    if (action.type === 'CLOSE_SIGNATURE_PICKER') {
+    if (action.type === 'CLOSE_PICKER') {
         return {
             ...state,
             pickerVisible: false,
@@ -61,9 +57,9 @@ function signingBoxReducer(
     };
 }
 
-export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
-    const [mainSigningBox, ...restSigningBoxes] = message.signingBoxes;
-    const [state, dispatch] = React.useReducer(signingBoxReducer, {
+export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
+    const [mainEncryptionBox, ...restEncryptionBoxes] = message.encryptionBoxes;
+    const [state, dispatch] = React.useReducer(encryptionBoxReducer, {
         keyInputVisible: false,
         pickerVisible: false,
     });
@@ -73,9 +69,10 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
             <View onLayout={onLayout}>
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
-                    key="signing-box-bubble-prompt"
+                    key="encryption-box-bubble-prompt"
                     text={
-                        message.prompt || uiLocalized.Browser.SigningBox.Prompt
+                        message.prompt ||
+                        uiLocalized.Browser.EncryptionBox.Prompt
                     }
                     status={MessageStatus.Received}
                     firstFromChain
@@ -84,28 +81,20 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 {message.externalState.chosenOption != null ? (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
-                        key="signing-box-bubble-option-answer"
+                        key="encryption-box-bubble-option-answer"
                         text={message.externalState.chosenOption}
                         status={MessageStatus.Sent}
                         firstFromChain
-                        lastFromChain={message.externalState.signingBox == null}
+                        lastFromChain={
+                            message.externalState.encryptionBox == null
+                        }
                     />
                 ) : null}
-                {message.externalState.signingBox != null ? (
+                {message.externalState.encryptionBox != null ? (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
-                        key="signing-box-bubble-address-answer"
-                        text={
-                            message.externalState.signingBox.title ===
-                            mainSigningBox.title
-                                ? mainSigningBox.title
-                                : `${
-                                      message.externalState.signingBox.title
-                                  } ${message.externalState.signingBox.publicKey.slice(
-                                      0,
-                                      2,
-                                  )} ·· `
-                        }
+                        key="encryption-box-bubble-address-answer"
+                        text={message.externalState.encryptionBox.title}
                         status={MessageStatus.Sent}
                         firstFromChain={
                             message.externalState.chosenOption == null
@@ -121,77 +110,59 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
         <View onLayout={onLayout}>
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
-                key="signing-box-bubble-prompt"
-                text={message.prompt || uiLocalized.Browser.SigningBox.Prompt}
+                key="encryption-box-bubble-prompt"
+                text={
+                    message.prompt || uiLocalized.Browser.EncryptionBox.Prompt
+                }
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain
             />
-            {mainSigningBox != null ? (
+            {mainEncryptionBox != null ? (
                 <BubbleActionButton
-                    key="signing-box-bubble-main"
+                    key="encryption-box-bubble-main"
                     firstFromChain
                     type={ChatMessageType.ActionButton}
                     status={MessageStatus.Received}
-                    text={mainSigningBox.title}
+                    text={mainEncryptionBox.title}
                     onPress={() => {
                         message.onSelect({
-                            signingBox: mainSigningBox,
+                            encryptionBox: mainEncryptionBox,
                         });
                     }}
                 />
             ) : null}
             <BubbleActionButton
                 type={ChatMessageType.ActionButton}
-                key="signing-box-bubble-enter-key"
+                key="encryption-box-bubble-enter-key"
                 status={MessageStatus.Received}
-                text={uiLocalized.Browser.SigningBox.EnterKey}
+                text={uiLocalized.Browser.EncryptionBox.EnterKey}
                 onPress={() => {
                     dispatch({
                         type: 'OPEN_KEY_INPUT',
                     });
                 }}
-                firstFromChain={message.signingBoxes.length === 0}
+                firstFromChain={message.encryptionBoxes.length === 0}
             />
-            {message.signingBoxes.length > 1 && (
+            {message.encryptionBoxes.length > 1 && (
                 <BubbleActionButton
                     type={ChatMessageType.ActionButton}
-                    key="signing-box-bubble-pick-signature"
+                    key="encryption-box-bubble-pick-cipher"
                     status={MessageStatus.Received}
-                    text={uiLocalized.Browser.SigningBox.PickSignature}
+                    text={uiLocalized.Browser.EncryptionBox.PickCipher}
                     onPress={() => {
                         dispatch({
-                            type: 'OPEN_SIGNATURE_PICKER',
+                            type: 'OPEN_PICKER',
                         });
                     }}
-                    firstFromChain={message.signingBoxes.length === 0}
+                    firstFromChain={message.encryptionBoxes.length === 0}
                 />
             )}
-            <BubbleActionButton
-                type={ChatMessageType.ActionButton}
-                key="signing-box-bubble-use-scard"
-                status={MessageStatus.Received}
-                text={uiLocalized.Browser.SigningBox.UseSecurityCard}
-                disabled={!message.securityCardSupported}
-                onPress={async () => {
-                    const isSuccessful = await message.onUseSecurityCard();
-
-                    if (!isSuccessful) {
-                        return;
-                    }
-
-                    message.onSelect({
-                        chosenOption:
-                            uiLocalized.Browser.SigningBox.UseSecurityCard,
-                    });
-                }}
-                lastFromChain
-            />
             <UIBoxPicker
                 visible={state.pickerVisible}
                 onClose={() => {
                     dispatch({
-                        type: 'CLOSE_SIGNATURE_PICKER',
+                        type: 'CLOSE_PICKER',
                     });
                 }}
                 onAdd={() => {
@@ -199,19 +170,19 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                         type: 'OPEN_KEY_INPUT',
                     });
                 }}
-                onSelect={(signingBox) => {
+                onSelect={(encryptionBox) => {
                     message.onSelect({
                         chosenOption:
-                            uiLocalized.Browser.SigningBox.PickSignature,
-                        signingBox,
+                            uiLocalized.Browser.EncryptionBox.PickCipher,
+                        encryptionBox,
                     });
                     dispatch({
-                        type: 'CLOSE_SIGNATURE_PICKER',
+                        type: 'CLOSE_PICKER',
                     });
                 }}
-                boxes={restSigningBoxes}
-                headerTitle={uiLocalized.Browser.SigningBox.Signatures}
-                addTitle={uiLocalized.Browser.SigningBox.AddSignature}
+                boxes={restEncryptionBoxes}
+                headerTitle={uiLocalized.Browser.EncryptionBox.CipherKeys}
+                addTitle={uiLocalized.Browser.EncryptionBox.AddCipherKey}
             />
             <UIKeySheet
                 visible={state.keyInputVisible}
@@ -221,18 +192,19 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     });
                 }}
                 onKeyRetrieved={async (key: string) => {
-                    const signingBox = await message.onAddSigningBox(key);
+                    const encryptionBox = await message.onAddEncryptionBox(key);
 
                     message.onSelect({
-                        chosenOption: uiLocalized.Browser.SigningBox.EnterKey,
-                        signingBox,
+                        chosenOption:
+                            uiLocalized.Browser.EncryptionBox.EnterKey,
+                        encryptionBox,
                     });
 
                     dispatch({
                         type: 'CLOSE_KEY_INPUT',
                     });
                 }}
-                label={uiLocalized.Browser.SigningBox.PrivateKey}
+                label={uiLocalized.Browser.EncryptionBox.CipherKeyLabel}
             />
         </View>
     );

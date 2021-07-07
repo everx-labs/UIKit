@@ -13,23 +13,22 @@ import {
     UIBoxButton,
     UIBoxButtonType,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import type { SigningBox } from './types';
 import { UIPullerSheet } from './UIPullerSheet';
 
-type OnSelect = (signingBox: SigningBox) => void;
+type AbstractBox = { id: number; title: string; publicKey?: string };
+type OnSelect<Box extends AbstractBox> = (box: Box) => void;
 
 const Touchable =
     Platform.OS === 'web' ? TouchableOpacity : RNGHTouchableOpacity;
 
-function UISignaturePickerItem({
+function UIBoxPickerItem<Box extends AbstractBox>({
     onSelect,
-    signingBox,
+    box,
 }: {
-    signingBox: SigningBox;
-    onSelect: OnSelect;
+    box: Box;
+    onSelect: OnSelect<Box>;
 }) {
     const theme = useTheme();
 
@@ -42,15 +41,17 @@ function UISignaturePickerItem({
                 },
             ]}
             onPress={() => {
-                onSelect(signingBox);
+                onSelect(box);
             }}
         >
             <UILabel style={styles.itemTitle} role={UILabelRoles.Action}>
-                {signingBox.title}
+                {box.title}
             </UILabel>
-            <UILabel color={UILabelColors.TextSecondary}>
-                {`${signingBox.publicKey.slice(0, 2)} ·· `}
-            </UILabel>
+            {box.publicKey && (
+                <UILabel color={UILabelColors.TextSecondary}>
+                    {`${box.publicKey.slice(0, 2)} ·· `}
+                </UILabel>
+            )}
             <UIImage
                 source={UIAssets.icons.ui.keyThin}
                 tintColor={ColorVariants.IconSecondary}
@@ -60,20 +61,24 @@ function UISignaturePickerItem({
     );
 }
 
-export function UISignaturePicker({
+export function UIBoxPicker<Box extends AbstractBox>({
     visible,
     onClose,
     onSelect,
-    onAddSignature,
-    signingBoxes,
+    onAdd,
+    boxes,
+    headerTitle,
+    addTitle,
 }: {
     visible: boolean;
     onClose: () => void;
-    onSelect: OnSelect;
-    onAddSignature: () => void;
-    signingBoxes: SigningBox[];
+    onSelect: OnSelect<Box>;
+    onAdd: () => void;
+    boxes: Box[];
+    headerTitle: string;
+    addTitle: string;
 }) {
-    if (signingBoxes.length === 0) {
+    if (boxes.length === 0) {
         return null;
     }
 
@@ -84,24 +89,20 @@ export function UISignaturePicker({
                     role={UILabelRoles.HeadlineFootnote}
                     color={UILabelColors.TextPrimary}
                 >
-                    {uiLocalized.Browser.SigningBox.Signatures}
+                    {headerTitle}
                 </UILabel>
             </UIBackgroundView>
-            {signingBoxes.map((box) => (
-                <UISignaturePickerItem
-                    key={box.id}
-                    signingBox={box}
-                    onSelect={onSelect}
-                />
+            {boxes.map((box) => (
+                <UIBoxPickerItem key={box.id} box={box} onSelect={onSelect} />
             ))}
             {/* TODO: use UILinkButton instead once it's ready! */}
             <View style={styles.addButtonContainer}>
                 <UIBoxButton
-                    testID="signing-box-add-signature"
+                    testID="box-picker-add"
                     disabled
-                    title={uiLocalized.Browser.SigningBox.AddSignature}
+                    title={addTitle}
                     type={UIBoxButtonType.Nulled}
-                    onPress={onAddSignature}
+                    onPress={onAdd}
                 />
             </View>
         </UIPullerSheet>
