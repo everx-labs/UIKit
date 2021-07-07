@@ -166,16 +166,6 @@ export const getEmptyAreaIndexRange = (
     );
     const start = offsetInSquares;
     const end: number = sizeInSquares - offsetInSquares - 1;
-    console.log({
-        size,
-        sizeOfSquare,
-        sizeInSquaresRelative: size / sizeOfSquare,
-        sizeInSquares,
-        logoWithMarginSizeInSquares,
-        offsetInSquares,
-        start,
-        end,
-    });
     return { start, end };
 };
 
