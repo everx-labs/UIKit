@@ -396,7 +396,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                                 encryptionBoxes[
                                                     encryptionBoxes.length - 1
                                                 ].id + 1,
-                                            title: 'Signature',
+                                            title: 'Cipher key',
                                         };
                                         setEncryptionBoxes([
                                             ...encryptionBoxes,
