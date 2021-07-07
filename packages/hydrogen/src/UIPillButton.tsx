@@ -3,8 +3,9 @@ import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Button, ButtonAnimations, UILayout } from './Button';
-import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
+import { UIConstant } from './constants';
+import { UILabelRoles } from './UILabel';
 
 // eslint-disable-next-line no-shadow
 export enum UIPillButtonIconPosition {
@@ -63,16 +64,16 @@ export type UIPillButtonProps = {
     variant?: UIPillButtonVariant;
 }
 
-const getButtonStates = () => ({
+const buttonStates = {
     hoverOverlayColor: ColorVariants.StaticHoverOverlay,
     pressOverlayColor: ColorVariants.StaticPressOverlay,
     activeContentColor: ColorVariants.StaticTextPrimaryLight,
-});
+};
 
 function useButtonAnimations(
     contentColor: ColorVariants,
 ): ButtonAnimations {
-    const { hoverOverlayColor, pressOverlayColor, activeContentColor } = getButtonStates();
+    const { hoverOverlayColor, pressOverlayColor, activeContentColor } = buttonStates;
     const theme = useTheme();
 
     const hoverAnim = Animated.useSharedValue(0);
@@ -234,6 +235,7 @@ export const UIPillButton = ({
                     title &&
                     <Button.Title
                         titleColor={contentColor}
+                        titleRole={UILabelRoles.ActionCallout}
                         titleAnimStyle={buttonAnimations.title?.style}
                     >
                         {title}
