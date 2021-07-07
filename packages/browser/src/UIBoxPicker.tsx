@@ -100,7 +100,7 @@ export function UIBoxPicker<Box extends AbstractBox>({
                 <UIBoxButton
                     testID="box-picker-add"
                     disabled
-                    title={addSignatureTitle}
+                    title={addTitle}
                     type={UIBoxButtonType.Nulled}
                     onPress={onAdd}
                 />
