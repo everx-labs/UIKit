@@ -1,15 +1,17 @@
-import { PixelRatio } from 'react-native';
+import { PixelRatio, View } from 'react-native';
 import html2canvas from 'html2canvas';
 
 const PIXEL_RATIO_MULTIPLIER = 4;
 const pixelRatio: number = PixelRatio.get() * PIXEL_RATIO_MULTIPLIER;
 
-export const getScreenshot = async (screenId: string): Promise<string> => {
-    const element: HTMLElement | null = document.getElementById(screenId);
-    if (!element) {
+export const getScreenshot = async (
+    ref: React.MutableRefObject<View | null>,
+): Promise<string> => {
+    if (!ref.current) {
         return '';
     }
-    const canvas = await html2canvas(element, {
+    // @ts-ignore
+    const canvas = await html2canvas(ref.current, {
         backgroundColor: 'transparent',
         scale: pixelRatio,
     });

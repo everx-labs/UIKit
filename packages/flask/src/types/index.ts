@@ -1,4 +1,5 @@
-import type { ImageSourcePropType } from 'react-native'
+import type { ForwardedRef } from 'react';
+import type { ImageSourcePropType } from 'react-native';
 import type { ColorVariants } from '@tonlabs/uikit.hydrogen';
 
 export type QRCodeType = 'Default' | 'Circle';
@@ -50,4 +51,10 @@ export type QRItemSideData = {
     rightValue: number | null;
     bottomValue: number | null;
     leftValue: number | null;
+};
+
+export type ScreenshotViewProps = {
+    ref: ForwardedRef<QRCodeRef>;
+    testID: string | undefined;
+    children: React.ReactNode;
 };
