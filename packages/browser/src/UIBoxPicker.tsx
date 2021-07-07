@@ -76,7 +76,7 @@ export function UIBoxPicker<Box extends AbstractBox>({
     onAdd: () => void;
     boxes: Box[];
     headerTitle: string;
-    addSignatureTitle: string;
+    addTitle: string;
 }) {
     if (boxes.length === 0) {
         return null;
