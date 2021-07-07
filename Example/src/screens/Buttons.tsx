@@ -16,6 +16,9 @@ import {
     UIMsgButtonIconPosition,
     UIMsgButtonType,
     UIMsgButtonVariant,
+    UIPillButton,
+    UIPillButtonIconPosition,
+    UIPillButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
@@ -575,6 +578,69 @@ const Buttons = () => (
                 <UIImageButton
                     testID="uiImageButton_menu_contained"
                     image={UIImageButton.Images.menuContained}
+                />
+            </View>
+        </ExampleSection>
+
+        <ExampleSection title="UIPillButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_default"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIPillButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_negative"
+                    title="Action negative"
+                    variant={UIPillButtonVariant.Negative}
+                    onPress={() => console.log('Pressed UIPillButton negative action')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_positive"
+                    title="Action positive"
+                    variant={UIPillButtonVariant.Positive}
+                    onPress={() => console.log('Pressed UIPillButton positive action')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    disabled
+                    testID="uiPillButton_disabled"
+                    title="Action disabled"
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_loading"
+                    title="Action"
+                    loading
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    icon={UIAssets.icons.ui.arrowUpRight}
+                    testID="uiPillButton_leftIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    icon={UIAssets.icons.ui.arrowUpRight}
+                    iconPosition={UIPillButtonIconPosition.Right}
+                    testID="uiPillButton_rightIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
                 />
             </View>
         </ExampleSection>
