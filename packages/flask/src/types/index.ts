@@ -1,4 +1,3 @@
-import type { ForwardedRef } from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
 export type QRCodeType = 'Default' | 'Circle';
@@ -43,6 +42,9 @@ export type QRItemSideData = {
     bottomValue: number | null;
     leftValue: number | null;
 };
+
+// The following type is taken from @types/react@^17.0.0 which is not yet supported in UIKit
+type ForwardedRef<T> = ((instance: T | null) => void) | React.MutableRefObject<T | null> | null;
 
 export type ScreenshotViewProps = {
     ref: ForwardedRef<QRCodeRef>;
