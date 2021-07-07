@@ -6,11 +6,12 @@ import QRCode from 'qrcode';
 import { useLogoRender } from './QRCodePure';
 import { getEmptyAreaIndexRange, draw, getQRSvg } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
-
-const DEFAULT_SIZE: number = 200;
-const BORDER_WIDTH: number = 16;
-const RADIUS_OF_SQUARE: number = 1;
-const QUIET_ZONE_IN_SQUARES: number = 1;
+import {
+    QR_CODE_DEFAULT_SIZE,
+    CIRCLE_QR_CODE_BORDER_WIDTH,
+    QR_CODE_ITEM_BORDER_RADIUS,
+    CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES,
+} from '../constants'
 
 const useStyles = makeStyles((theme, size: number) => ({
     container: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme, size: number) => ({
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
         borderColor: theme[ColorVariants.BackgroundPrimary],
         overflow: 'hidden',
-        borderWidth: BORDER_WIDTH,
+        borderWidth: CIRCLE_QR_CODE_BORDER_WIDTH,
     },
     qrCodeContainer: {
         ...StyleSheet.absoluteFillObject,
@@ -118,7 +119,7 @@ export const getQRSvgCirlce = (
                         bottomValue,
                         leftValue,
                     },
-                    RADIUS_OF_SQUARE,
+                    QR_CODE_ITEM_BORDER_RADIUS,
                     offsetOfCoordinateGrid,
                 )}`;
             }
@@ -128,7 +129,7 @@ export const getQRSvgCirlce = (
 };
 
 export const QRCodeCircle: React.FC<QRCodeProps> = ({
-    size = DEFAULT_SIZE,
+    size = QR_CODE_DEFAULT_SIZE,
     value,
     logoSize = 40,
     logoMargin = 0,
@@ -140,10 +141,10 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
 
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
     const widthOfInnerQRCodeInSquares: number = qr.modules?.size || 2;
-    const diameterOfCircleQRCode = size - BORDER_WIDTH * 2;
+    const diameterOfCircleQRCode = size - CIRCLE_QR_CODE_BORDER_WIDTH * 2;
     const sizeOfInnerQRCode = diameterOfCircleQRCode / Math.SQRT2;
     const sizeOfSquare = sizeOfInnerQRCode / widthOfInnerQRCodeInSquares;
-    const quietZone = QUIET_ZONE_IN_SQUARES * sizeOfSquare;
+    const quietZone = CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES * sizeOfSquare;
 
     const qrSvg = React.useMemo(
         () =>
@@ -152,7 +153,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
                 sizeOfInnerQRCode,
                 logoSize,
                 logoMargin,
-                RADIUS_OF_SQUARE,
+                QR_CODE_ITEM_BORDER_RADIUS,
             ),
         [qr, sizeOfInnerQRCode, logoSize, logoMargin],
     );

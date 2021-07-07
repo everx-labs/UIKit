@@ -15,10 +15,11 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import type { QRCodeProps } from '../types';
 import { getQRSvg } from './utils';
-
-const RADIUS_OF_SQUARE: number = 1;
-const DEFAULT_SIZE: number = 200;
-const DEFAULT_LOGO_SIZE: number = 40;
+import {
+    QR_CODE_ITEM_BORDER_RADIUS,
+    QR_CODE_DEFAULT_SIZE,
+    QR_CODE_DEFAULT_LOGO_SIZE,
+} from '../constants';
 
 const useStyles = makeStyles((size: number) => {
     return {
@@ -63,10 +64,10 @@ export const useLogoRender = (
 };
 
 export const QRCodePure: React.FC<QRCodeProps> = ({
-    size = DEFAULT_SIZE,
+    size = QR_CODE_DEFAULT_SIZE,
     value,
     logo,
-    logoSize = DEFAULT_LOGO_SIZE,
+    logoSize = QR_CODE_DEFAULT_LOGO_SIZE,
     logoMargin = 0,
     logoBackgroundColor = ColorVariants.BackgroundPrimary,
 }: QRCodeProps) => {
@@ -75,7 +76,14 @@ export const QRCodePure: React.FC<QRCodeProps> = ({
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
 
     const qrSvg = React.useMemo(
-        () => getQRSvg(qr, size, logoSize, logoMargin, RADIUS_OF_SQUARE),
+        () =>
+            getQRSvg(
+                qr,
+                size,
+                logoSize,
+                logoMargin,
+                QR_CODE_ITEM_BORDER_RADIUS,
+            ),
         [qr, size, logoSize, logoMargin],
     );
     const logoRender = useLogoRender(
