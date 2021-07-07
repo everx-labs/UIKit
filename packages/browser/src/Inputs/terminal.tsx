@@ -15,13 +15,15 @@ export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
-                <BubbleSimplePlainText
-                    type={ChatMessageType.PlainText}
-                    key="terminal-input-bubble-prompt"
-                    text={message.prompt}
-                    status={MessageStatus.Received}
-                    firstFromChain
-                />
+                {message.prompt && (
+                    <BubbleSimplePlainText
+                        type={ChatMessageType.PlainText}
+                        key="terminal-input-bubble-prompt"
+                        text={message.prompt}
+                        status={MessageStatus.Received}
+                        firstFromChain
+                    />
+                )}
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="terminal-input-bubble-answer"
@@ -36,13 +38,15 @@ export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
 
     return (
         <View onLayout={onLayout}>
-            <BubbleSimplePlainText
-                type={ChatMessageType.PlainText}
-                key="terminal-input-bubble-prompt"
-                text={message.prompt}
-                status={MessageStatus.Received}
-                firstFromChain
-            />
+            {message.prompt && (
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="terminal-input-bubble-prompt"
+                    text={message.prompt}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                />
+            )}
             <Portal forId="browser">
                 <UIChatInput
                     editable
