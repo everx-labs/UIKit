@@ -6,9 +6,8 @@ import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleS
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UITextButton } from '@tonlabs/uikit.components';
-import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIBackgroundView, UIBackgroundViewColors, UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.hydrogen';
 
 export type TabViewPage = {
     title: string,
@@ -29,10 +28,13 @@ export const tabViewTestIDs = {
     tabTitle: (title: string) => `tabTitle_${title}`,
 };
 
+const AnimatedUIBackgroundView = Animated.createAnimatedComponent(
+    UIBackgroundView,
+);
+
 const styles = StyleSheet.create({
     bottomLine: {
         height: 2,
-        backgroundColor: UIColor.primary(),
     },
 });
 
@@ -42,7 +44,6 @@ const UITabView = ({
    indicatorWidth,
    style,
    pageStyle,
-   titleStyle,
    initialIndex = 0,
 }: TabViewProps) => {
     const [animatedIndex] = useState<AnimatedValue>(new Animated.Value(initialIndex));
@@ -74,14 +75,12 @@ const UITabView = ({
                         key={`tab-view-label-${title}`}
                     >
                         <View style={[UIStyle.flex.x1(), UIStyle.flex.alignCenter()]}>
-                            <UITextButton
-                                title={title}
-                                titleColor={index === integerIndex
-                                    ? UILabelColors.TextAccent : UILabelColors.TextSecondary}
-                                titleRole={UILabelRoles.HeadlineHead}
-                                textStyle={titleStyle}
-                                // onPress={() => onPressTab(index)}
+                            <UIBoxButton
                                 testID={tabViewTestIDs.tabTitle(title)}
+                                title={title}
+                                type={index === integerIndex
+                                    ? UIBoxButtonType.Tertiary
+                                    : UIBoxButtonType.Nulled}
                             />
                         </View>
                     </TouchableWithoutFeedback>
@@ -97,7 +96,8 @@ const UITabView = ({
 
     const indicatorLine = (pages.length && width) && (
         <View style={[UIStyle.flex.x1(), UIStyle.common.overflowHidden()]}>
-            <Animated.View
+            <AnimatedUIBackgroundView
+                color={UIBackgroundViewColors.BackgroundAccent}
                 style={[
                     styles.bottomLine,
                     {
