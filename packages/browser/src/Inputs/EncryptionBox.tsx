@@ -147,7 +147,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
             {message.encryptionBoxes.length > 1 && (
                 <BubbleActionButton
                     type={ChatMessageType.ActionButton}
-                    key="encryption-box-bubble-pick-signature"
+                    key="encryption-box-bubble-pick-cipher"
                     status={MessageStatus.Received}
                     text={uiLocalized.Browser.EncryptionBox.PickCypher}
                     onPress={() => {
