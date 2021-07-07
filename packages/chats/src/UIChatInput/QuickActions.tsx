@@ -36,6 +36,8 @@ export function QuickAction(props: Props) {
         return null;
     }
 
+    // TODO: change TouchableOpacity & its content to some component,
+    //  that will allow to set icon size 32 (for currency signs)
     return (
         <View style={UIStyle.flex.row()}>
             {quickActions.map((action) => (
