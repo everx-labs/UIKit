@@ -68,7 +68,7 @@ export function UIBoxPicker<Box extends AbstractBox>({
     onAdd,
     boxes,
     headerTitle,
-    addSignatureTitle,
+    addTitle,
 }: {
     visible: boolean;
     onClose: () => void;

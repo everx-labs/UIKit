@@ -211,7 +211,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 }}
                 boxes={restSigningBoxes}
                 headerTitle={uiLocalized.Browser.SigningBox.Signatures}
-                addSignatureTitle={uiLocalized.Browser.SigningBox.AddSignature}
+                addTitle={uiLocalized.Browser.SigningBox.AddSignature}
             />
             <UIKeySheet
                 visible={state.keyInputVisible}

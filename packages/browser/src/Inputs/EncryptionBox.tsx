@@ -149,7 +149,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                     type={ChatMessageType.ActionButton}
                     key="encryption-box-bubble-pick-cipher"
                     status={MessageStatus.Received}
-                    text={uiLocalized.Browser.EncryptionBox.PickCypher}
+                    text={uiLocalized.Browser.EncryptionBox.PickCipher}
                     onPress={() => {
                         dispatch({
                             type: 'OPEN_PICKER',
@@ -173,7 +173,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                 onSelect={(encryptionBox) => {
                     message.onSelect({
                         chosenOption:
-                            uiLocalized.Browser.EncryptionBox.PickCypher,
+                            uiLocalized.Browser.EncryptionBox.PickCipher,
                         encryptionBox,
                     });
                     dispatch({
@@ -182,9 +182,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                 }}
                 boxes={restEncryptionBoxes}
                 headerTitle={uiLocalized.Browser.EncryptionBox.CipherKeys}
-                addSignatureTitle={
-                    uiLocalized.Browser.EncryptionBox.AddCipherKey
-                }
+                addTitle={uiLocalized.Browser.EncryptionBox.AddCipherKey}
             />
             <UIKeySheet
                 visible={state.keyInputVisible}
