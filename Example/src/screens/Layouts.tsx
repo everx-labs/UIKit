@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import {
-    UIDetailsTable,
-    UIGrid,
-    UIGridColumn,
-    UIButton,
-} from '@tonlabs/uikit.components';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UIDetailsTable, UIGrid, UIGridColumn } from '@tonlabs/uikit.components';
+import { ColorVariants, UIBoxButton, useTheme } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -52,107 +47,74 @@ export const Layouts = () => {
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIGrid testID="uiGrid_default" type={UIGrid.Type.C6} style={styles.grid}>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={3}
                         >
-                            <UIButton
-                                title="3 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="3 cells" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning], padding: 2 }}
                             medium={3}
                         >
-                            <UIButton
-                                title="3 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="3 cells" />
                         </UIGridColumn>
                     </UIGrid>
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIGrid type={UIGrid.Type.C8} style={styles.grid}>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={2}
                         >
-                            <UIButton
-                                title="2 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="2 cells" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning], padding: 2 }}
                             medium={4}
                         >
-                            <UIButton
-                                title="4 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="4 cells" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning], padding: 2 }}
                             medium={3}
                         >
-                            <UIButton
-                                title="3 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="3 cells" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundWarning], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                     </UIGrid>
                 </View>
@@ -165,139 +127,94 @@ export const Layouts = () => {
                         rowGutter={8}
                     >
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={4}
                         >
-                            <UIButton
-                                title="4 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="4 cells" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={4}
                         >
-                            <UIButton
-                                title="4 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="4 cells" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={4}
                         >
-                            <UIButton
-                                title="4 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="4 cells" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                         <UIGridColumn
-                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive] }}
+                            style={{ backgroundColor: theme[ColorVariants.BackgroundPositive], padding: 2 }}
                             medium={1}
                         >
-                            <UIButton
-                                title="1 cells"
-                                buttonStyle={UIButton.ButtonStyle.Border}
-                            />
+                            <UIBoxButton title="1 cell" />
                         </UIGridColumn>
                     </UIGrid>
                 </View>

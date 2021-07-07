@@ -5,11 +5,10 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type AnimatedMultiplication from 'react-native/Libraries/Animated/src/nodes/AnimatedMultiplication';
 
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIBackgroundView, UIBackgroundViewColors, UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UITextButton from '../UITextButton';
 
 export type TabViewPage = {
     title: string,
@@ -29,10 +28,13 @@ type State = {
     integerIndex: number,
 };
 
+const AnimatedUIBackgroundView = Animated.createAnimatedComponent(
+    UIBackgroundView,
+);
+
 const styles = StyleSheet.create({
     bottomLine: {
         height: 2,
-        backgroundColor: UIColor.primary(),
     },
 });
 
@@ -80,13 +82,13 @@ export default class UITabView extends UIComponent<TabViewProps, State> {
                             key={`tab-view-label-${title}`}
                         >
                             <View style={[UIStyle.common.flex(), UIStyle.common.alignCenter()]}>
-                                <UITextButton
-                                    title={title}
-                                    titleColor={index === this.state.integerIndex
-                                        ? UILabelColors.TextAccent : UILabelColors.TextSecondary}
-                                    titleRole={UILabelRoles.HeadlineHead}
-                                    onPress={() => this.onPressTab(index)}
+                                <UIBoxButton
                                     testID={UITabView.testIDs.tabTitle(title)}
+                                    title={title}
+                                    type={index === this.state.integerIndex
+                                        ? UIBoxButtonType.Tertiary
+                                        : UIBoxButtonType.Nulled}
+                                    onPress={() => this.onPressTab(index)}
                                 />
                             </View>
                         </TouchableWithoutFeedback>
@@ -109,7 +111,8 @@ export default class UITabView extends UIComponent<TabViewProps, State> {
 
         return (
             <View style={[UIStyle.common.flex(), UIStyle.common.overflowHidden()]}>
-                <Animated.View
+                <AnimatedUIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundAccent}
                     style={[
                         styles.bottomLine,
                         {
