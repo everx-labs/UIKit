@@ -17,11 +17,13 @@ const logo = require('../../assets/icons/ico-crystal/crystal-fill-L.png');
 const QRCode = () => {
     const theme = useTheme();
     const [base64Image, setBase64Image] = React.useState<string>('');
-    const [type, setType] = React.useState<QRCodeType>('Default');
+    const [type, setType] = React.useState<QRCodeType>('Circle');
     const ref = React.useRef<QRCodeRef>(null);
     const onGetPng = () => {
-        ref.current?.getPng().then((base64: string) => {
-            setBase64Image(base64);
+        ref.current?.getPng().then((base64: string | null) => {
+            if (base64) {
+                setBase64Image(base64);
+            }
         });
     };
     return (
@@ -57,9 +59,9 @@ const QRCode = () => {
                     <UIQRCodeView
                         type={type}
                         value="QR code value QR value QR code value QR value QR code value QR value QR code value QR value QR code value QR "
-                        size={200}
+                        size={250}
                         logo={logo}
-                        logoMargin={4}
+                        logoMargin={0}
                         logoSize={40}
                         logoBackgroundColor={ColorVariants.BackgroundNeutral}
                         ref={ref}
@@ -86,8 +88,8 @@ const QRCode = () => {
                             />
                             <Image
                                 style={{
-                                    height: 200,
-                                    width: 200,
+                                    height: 250,
+                                    width: 250,
                                 }}
                                 source={{ uri: base64Image }}
                             />
