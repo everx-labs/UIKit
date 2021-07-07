@@ -3,21 +3,21 @@ import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.hydrogen';
 import QRCode from 'qrcode';
-import { useLogoRender } from './QRCodePure';
+import { useLogoRender } from './hooks';
 import { getEmptyAreaIndexRange, draw, getQRSvg } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
 import {
-    QR_CODE_DEFAULT_SIZE,
+    QR_CODE_SIZE,
     CIRCLE_QR_CODE_BORDER_WIDTH,
     QR_CODE_ITEM_BORDER_RADIUS,
     CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES,
 } from '../constants';
 
-const useStyles = makeStyles((theme, size: number) => ({
+const useStyles = makeStyles((theme) => ({
     container: {
-        borderRadius: size,
-        height: size,
-        width: size,
+        borderRadius: QR_CODE_SIZE,
+        height: QR_CODE_SIZE,
+        width: QR_CODE_SIZE,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
@@ -129,16 +129,16 @@ export const getQRSvgCirlce = (
 };
 
 export const QRCodeCircle: React.FC<QRCodeProps> = ({
-    size = QR_CODE_DEFAULT_SIZE,
     value,
     logo,
 }: QRCodeProps) => {
     const theme = useTheme();
-    const styles = useStyles(theme, size);
+    const styles = useStyles(theme);
 
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
     const widthOfInnerQRCodeInSquares: number = qr.modules?.size || 2;
-    const diameterOfCircleQRCode = size - CIRCLE_QR_CODE_BORDER_WIDTH * 2;
+    const diameterOfCircleQRCode =
+        QR_CODE_SIZE - CIRCLE_QR_CODE_BORDER_WIDTH * 2;
     const sizeOfInnerQRCode = diameterOfCircleQRCode / Math.SQRT2;
     const sizeOfSquare = sizeOfInnerQRCode / widthOfInnerQRCodeInSquares;
     const isThereLogo = logo !== undefined;

@@ -16,8 +16,6 @@ export type QRCodeProps = {
     type: QRCodeType;
     /** String value to encode into the QR сode */
     value: string;
-    /** QR code size */
-    size?: number;
     /** Used to get an image of the QR code */
     ref?: QRCodeRef;
     /** Image for logo in the center of the QR code */

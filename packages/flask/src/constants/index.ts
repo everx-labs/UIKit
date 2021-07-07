@@ -1,4 +1,4 @@
-export const QR_CODE_DEFAULT_SIZE: number = 200;
+export const QR_CODE_SIZE: number = 256;
 export const QR_CODE_LOGO_SIZE: number = 40;
 export const QR_CODE_LOGO_MARGIN_IN_SQUARES: number = 1;
 export const QR_CODE_ITEM_BORDER_RADIUS: number = 1;
