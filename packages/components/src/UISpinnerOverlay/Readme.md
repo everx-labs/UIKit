@@ -36,11 +36,11 @@ class ModalExample extends React.Component {
         return (
             <View style={{ margin: -16, padding: 16 }}>
                 <View style={buttonContainer}>
-                    <UIButton 
+                    <UILinkButton 
                         title="Show spinner overlay"
                         onPress={() => this.showSpinner()}
                     />
-                    <UIButton 
+                    <UILinkButton 
                         title="Show master spinner overlay"
                         onPress={() => this.showMasterSpinner()}
                     />

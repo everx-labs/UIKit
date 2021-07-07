@@ -5,11 +5,7 @@ import { View } from 'react-native';
 import { UIDetailsToggle } from '@tonlabs/uikit.components';
 import { UIPromoNotice } from '@tonlabs/uikit.flask';
 import { UIBottomBar } from '@tonlabs/uikit.navigation_legacy';
-import {
-    UIFeedback,
-    UIPushFeedback,
-    UIStubPage,
-} from '@tonlabs/uikit.legacy';
+import { UIFeedback, UIStubPage } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -57,11 +53,6 @@ export const Products = () => {
                         />
                     )
                 }
-            </ExampleSection>
-            <ExampleSection title="UIPushFeedback">
-                <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-                    <UIPushFeedback testID="uiPushFeedback_message" onPress={() => undefined} />
-                </View>
             </ExampleSection>
             <ExampleSection title="UIStubPage">
                 <View style={{ maxWidth: 500, paddingVertical: 20 }}>

@@ -22,7 +22,6 @@ import {
     UIQRCodeScannerSheet,
 } from '@tonlabs/uikit.navigation';
 import {
-    UIButton,
     UISlider,
     UIStepBar,
     UITabView,
@@ -31,6 +30,7 @@ import {
     UIMaterialTextView,
     useTheme,
     ColorVariants,
+    UIBoxButton,
     UILabel,
     UILinkButton,
 } from '@tonlabs/uikit.hydrogen';
@@ -174,7 +174,7 @@ export const Menus = () => {
                         }}
                     >
                         <UILabel>Hi there!</UILabel>
-                        <UIButton
+                        <UIBoxButton
                             title="close"
                             onPress={() => {
                                 setCardSheetVisible(false);
@@ -201,7 +201,7 @@ export const Menus = () => {
                         }}
                     >
                         <UIMaterialTextView label="Write smth" />
-                        <UIButton
+                        <UIBoxButton
                             title="close"
                             onPress={() => {
                                 setCardSheet2Visible(false);
@@ -234,7 +234,7 @@ export const Menus = () => {
                                 }}
                             >
                                 <UILabel>Hi there!</UILabel>
-                                <UIButton
+                                <UIBoxButton
                                     title="close"
                                     onPress={() => {
                                         setBottomSheetVisible(false);

@@ -1,6 +1,5 @@
 // @flow
 export * from './UIActionComponent';
-export { default as UIActionIcon } from './UIActionIcon';
 export { default as UIActionImage } from './UIActionImage';
 export { default as UIAlert } from './UIAlert';
 export { default as UIAlertView } from './UIAlertView';
@@ -8,8 +7,6 @@ export { default as UIAmountInput } from './UIAmountInput';
 export { default as UIBadge } from './UIBadge';
 export { default as UIBankCardNumberInput } from './UIBankCardNumberInput';
 export { default as UIBullet } from './UIBullet';
-export { default as UIButton } from './UIButton';
-export { default as UICard } from './UICard';
 export { default as UICheckboxItem } from './UICheckboxItem';
 export { default as UICompatibilityView } from './UICompatibilityView';
 export { default as UIComponent } from './UIComponent';
