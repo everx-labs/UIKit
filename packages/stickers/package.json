@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.stickers",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Stickers components for Tonlabs's UIKit",
   "scripts": {
     "tsc": "tsc --noEmit",
@@ -35,11 +35,11 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.2.0",
-    "@tonlabs/uikit.components": "^2.2.0",
-    "@tonlabs/uikit.core": "^2.2.0",
-    "@tonlabs/uikit.hydrogen": "^2.2.0",
-    "@tonlabs/uikit.keyboard": "^2.2.0"
+    "@tonlabs/uikit.assets": "^2.3.0",
+    "@tonlabs/uikit.components": "^2.3.0",
+    "@tonlabs/uikit.core": "^2.3.0",
+    "@tonlabs/uikit.hydrogen": "^2.3.0",
+    "@tonlabs/uikit.keyboard": "^2.3.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",

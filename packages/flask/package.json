@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.flask",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Flask package is a set of user stories built upon the components from uikit.hydrogen",
   "scripts": {
     "tsc": "tsc --noEmit --composite false",
@@ -35,11 +35,11 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.2.0",
-    "@tonlabs/uikit.core": "^2.2.0",
-    "@tonlabs/uikit.hydrogen": "^2.2.0",
-    "@tonlabs/uikit.localization": "^2.2.0",
-    "@tonlabs/uikit.navigation": "^2.2.0"
+    "@tonlabs/uikit.assets": "^2.3.0",
+    "@tonlabs/uikit.core": "^2.3.0",
+    "@tonlabs/uikit.hydrogen": "^2.3.0",
+    "@tonlabs/uikit.localization": "^2.3.0",
+    "@tonlabs/uikit.navigation": "^2.3.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",

@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.components",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "description": "Base components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -33,8 +33,8 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.2.0",
-    "@tonlabs/uikit.core": "^2.2.0",
+    "@tonlabs/uikit.assets": "^2.3.0",
+    "@tonlabs/uikit.core": "^2.3.0",
     "bignumber.js": "9.0.0",
     "bowser": "1.9.4",
     "dayjs": "1.9.1",
