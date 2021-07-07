@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.keyboard",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Components and helpers to work with a keyboard for Tonlabs's UIKit",
   "scripts": {
     "tsc": "tsc --noEmit",
@@ -38,9 +38,9 @@
     "UIKitKeyboard.podspec"
   ],
   "dependencies": {
-    "@tonlabs/uikit.core": "^2.2.0",
-    "@tonlabs/uikit.hydrogen": "^2.2.0",
-    "@tonlabs/uikit.navigation_legacy": "^2.2.0"
+    "@tonlabs/uikit.core": "^2.3.0",
+    "@tonlabs/uikit.hydrogen": "^2.3.0",
+    "@tonlabs/uikit.navigation_legacy": "^2.3.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import {
+    BubbleSimplePlainText,
     BubbleActionButton,
     ChatMessageType,
     MessageStatus,
@@ -49,6 +50,21 @@ export function QRCode({
     const [state, dispatch] = React.useReducer(qrCodeReducer, {
         qrCodeVisible: message.fastScan || false,
     });
+
+    if (message.externalState != null) {
+        return (
+            <View onLayout={onLayout}>
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="qr-code-bubble-answer"
+                    text={message.externalState.value}
+                    status={MessageStatus.Sent}
+                    firstFromChain
+                    lastFromChain
+                />
+            </View>
+        );
+    }
 
     return (
         <View onLayout={onLayout}>

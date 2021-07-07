@@ -88,14 +88,16 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
-                <BubbleSimplePlainText
-                    type={ChatMessageType.PlainText}
-                    key="address-input-bubble-prompt"
-                    text={message.prompt}
-                    status={MessageStatus.Received}
-                    firstFromChain
-                    lastFromChain
-                />
+                {message.prompt && (
+                    <BubbleSimplePlainText
+                        type={ChatMessageType.PlainText}
+                        key="address-input-bubble-prompt"
+                        text={message.prompt}
+                        status={MessageStatus.Received}
+                        firstFromChain
+                        lastFromChain
+                    />
+                )}
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="address-input-bubble-option-answer"
@@ -120,14 +122,16 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
 
     return (
         <View onLayout={onLayout}>
-            <BubbleSimplePlainText
-                type={ChatMessageType.PlainText}
-                key="address-input-bubble-prompt"
-                text={message.prompt}
-                status={MessageStatus.Received}
-                firstFromChain
-                lastFromChain
-            />
+            {message.prompt && (
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="address-input-bubble-prompt"
+                    text={message.prompt}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                    lastFromChain
+                />
+            )}
             <BubbleActionButton
                 key="address-input-bubble-action-account"
                 firstFromChain

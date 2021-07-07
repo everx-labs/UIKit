@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
-import type { ColorValue } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 import {
     PanGestureHandler,
     TapGestureHandler,
@@ -46,7 +45,6 @@ import type {
 } from '../UIController';
 
 import UIController from '../UIController';
-import UIModalNavigationBar from './UIModalNavigationBar';
 
 const { fullScreenDialogWidth, fullScreenDialogHeight } = UIConstant;
 const HARDWARE_BACK_PRESS_EVENT = 'hardwareBackPress';
@@ -634,7 +632,7 @@ export default class UIModalController<Props, State> extends UIController<
             // Stop the closing animation if it was started
             this.closeAnimation.stop();
         }
-        
+
         // Open the modal
         this.dy.setValue(this.getMaxHeight());
         this.moveToTop(this.onDidAppearHandler);

@@ -32,6 +32,10 @@ import {
 } from './SplitRouter';
 import type { SplitNavigationState, SplitRouterOptions } from './SplitRouter';
 
+export const NestedInSplitContext = React.createContext<{
+    isSplitted: boolean;
+}>({ isSplitted: false });
+
 const getIsSplitted = ({ width }: { width: number }, mainWidth: number) =>
     width > mainWidth;
 
@@ -122,7 +126,9 @@ export const SplitNavigator = ({
         }
     }, [state, loaded]);
 
-    if (isSplitted) {
+    // Access it from the state to re-render a container
+    // only when router has processed SET_SPLITTED action
+    if (state.isSplitted) {
         const mainRoute = state.routes.find(
             ({ name }: { name: string }) => name === MAIN_SCREEN_NAME,
         );
@@ -131,52 +137,60 @@ export const SplitNavigator = ({
         }
         return (
             <NavigationHelpersContext.Provider value={navigation}>
-                <SafeAreaProviderCompat>
-                    <View style={splitStyles.body}>
-                        <View style={splitStyles.main}>
-                            {descriptors[mainRoute.key].render()}
+                <NestedInSplitContext.Provider value={{ isSplitted }}>
+                    <SafeAreaProviderCompat>
+                        <View style={splitStyles.body}>
+                            <View style={splitStyles.main}>
+                                {descriptors[mainRoute.key].render()}
+                            </View>
+                            <View style={splitStyles.detail}>
+                                <ScreenContainer
+                                    // If not disabling the container for native, it will crash on iOS.
+                                    // It happens due to an error in `react-native-reanimated`:
+                                    // https://github.com/software-mansion/react-native-reanimated/issues/216
+                                    enabled={!doesSupportNative}
+                                    style={styles.pages}
+                                >
+                                    {state.routes.map((route, index) => {
+                                        const descriptor =
+                                            descriptors[route.key];
+                                        const isFocused = state.index === index;
+
+                                        // Do not render main route
+                                        if (route.key === mainRoute.key) {
+                                            return null;
+                                        }
+
+                                        // isFocused check is important here
+                                        // as we can try to render a screen before it was put
+                                        // to `loaded` screens
+                                        if (
+                                            !loaded.includes(index) &&
+                                            !isFocused
+                                        ) {
+                                            // Don't render a screen if we've never navigated to it
+                                            return null;
+                                        }
+
+                                        return (
+                                            <ResourceSavingScene
+                                                key={route.key}
+                                                style={StyleSheet.absoluteFill}
+                                                isVisible={isFocused}
+                                            >
+                                                <SceneContent
+                                                    isFocused={isFocused}
+                                                >
+                                                    {descriptor.render()}
+                                                </SceneContent>
+                                            </ResourceSavingScene>
+                                        );
+                                    })}
+                                </ScreenContainer>
+                            </View>
                         </View>
-                        <View style={splitStyles.detail}>
-                            <ScreenContainer
-                                // If not disabling the container for native, it will crash on iOS.
-                                // It happens due to an error in `react-native-reanimated`:
-                                // https://github.com/software-mansion/react-native-reanimated/issues/216
-                                enabled={!doesSupportNative}
-                                style={styles.pages}
-                            >
-                                {state.routes.map((route, index) => {
-                                    const descriptor = descriptors[route.key];
-                                    const isFocused = state.index === index;
-
-                                    // Do not render main route
-                                    if (route.key === mainRoute.key) {
-                                        return null;
-                                    }
-
-                                    // isFocused check is important here
-                                    // as we can try to render a screen before it was put
-                                    // to `loaded` screens
-                                    if (!loaded.includes(index) && !isFocused) {
-                                        // Don't render a screen if we've never navigated to it
-                                        return null;
-                                    }
-
-                                    return (
-                                        <ResourceSavingScene
-                                            key={route.key}
-                                            style={StyleSheet.absoluteFill}
-                                            isVisible={isFocused}
-                                        >
-                                            <SceneContent isFocused={isFocused}>
-                                                {descriptor.render()}
-                                            </SceneContent>
-                                        </ResourceSavingScene>
-                                    );
-                                })}
-                            </ScreenContainer>
-                        </View>
-                    </View>
-                </SafeAreaProviderCompat>
+                    </SafeAreaProviderCompat>
+                </NestedInSplitContext.Provider>
             </NavigationHelpersContext.Provider>
         );
     }
@@ -191,22 +205,26 @@ export const SplitNavigator = ({
     // if (Platform.OS === 'android' && screensEnabled()) {
     if (doesSupportNative) {
         return (
-            <NativeStackView
-                state={stackState}
-                navigation={navigation}
-                // @ts-ignore
-                descriptors={descriptors}
-            />
+            <NestedInSplitContext.Provider value={{ isSplitted }}>
+                <NativeStackView
+                    state={stackState}
+                    navigation={navigation}
+                    // @ts-ignore
+                    descriptors={descriptors}
+                />
+            </NestedInSplitContext.Provider>
         );
     }
     return (
-        // @ts-ignore
-        <StackView
-            headerMode="none"
-            state={stackState}
-            navigation={navigation}
-            descriptors={descriptors}
-        />
+        <NestedInSplitContext.Provider value={{ isSplitted }}>
+            {/* @ts-ignore */}
+            <StackView
+                headerMode="none"
+                state={stackState}
+                navigation={navigation}
+                descriptors={descriptors}
+            />
+        </NestedInSplitContext.Provider>
     );
 };
 
