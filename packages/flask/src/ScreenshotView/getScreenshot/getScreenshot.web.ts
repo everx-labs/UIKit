@@ -6,9 +6,9 @@ const pixelRatio: number = PixelRatio.get() * PIXEL_RATIO_MULTIPLIER;
 
 export const getScreenshot = async (
     ref: React.MutableRefObject<View | null>,
-): Promise<string> => {
+): Promise<string | null> => {
     if (!ref.current) {
-        return '';
+        return null;
     }
     // @ts-ignore
     const canvas = await html2canvas(ref.current, {

@@ -12,8 +12,9 @@ import { ScreenshotView as ScreenshotViewImpl } from './ScreenshotView';
  *   const ref = React.useRef<QRCodeRef>(null);
  * 
  *   // Get PNG image:
- *   // ref.current?.getPng().then((base64: string) => {
+ *   // ref.current?.getPng().then((base64: string | null) => {
  *   //   base64 - target PNG image
+ *   //   base64 === null - it wasn't possible to get png
  *   // });
  * 
  *   return (

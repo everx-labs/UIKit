@@ -12,7 +12,7 @@ export const ScreenshotViewImpl: React.ForwardRefRenderFunction<
     React.useImperativeHandle(
         ref,
         () => ({
-            getPng: (): Promise<string> => {
+            getPng: (): Promise<string | null> => {
                 return getScreenshot(screenshotRef);
             },
         }),

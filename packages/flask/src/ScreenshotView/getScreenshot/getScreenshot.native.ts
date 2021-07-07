@@ -3,9 +3,9 @@ import type ViewShot from 'react-native-view-shot';
 
 export const getScreenshot = async (
     ref: React.MutableRefObject<ViewShot | null>,
-): Promise<string> => {
+): Promise<string | null> => {
     if (!ref.current || !ref.current.capture) {
-        return '';
+        return null;
     }
     const uri = await ref.current.capture();
     return `data:image/png;base64,${uri}`;

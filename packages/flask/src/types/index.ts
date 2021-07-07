@@ -6,7 +6,7 @@ export type QRCodeType = 'Default' | 'Circle';
 
 export type QRCodeRef = {
     /** Returns a QR code image as a string in base64 format */
-    getPng: () => Promise<string>;
+    getPng: () => Promise<string | null>;
 };
 
 /**

@@ -7,4 +7,4 @@ import { getScreenshot as getScreenshotImpl } from './getScreenshot';
 
 export const getScreenshot: (
     ref: React.MutableRefObject<ViewShot | View | null>,
-) => Promise<string> = getScreenshotImpl;
+) => Promise<string | null> = getScreenshotImpl;
