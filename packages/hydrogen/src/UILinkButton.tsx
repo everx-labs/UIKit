@@ -198,7 +198,7 @@ export const UILinkButton = ({
         >
             <Button.Content>
                 {
-                    iconPosition === UILinkButtonIconPosition.Left && icon &&
+                    iconPosition === UILinkButtonIconPosition.Left && icon != null &&
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
@@ -208,7 +208,7 @@ export const UILinkButton = ({
                     />
                 }
                 {
-                    title &&
+                    title != null &&
                     <Button.Title
                         titleColor={contentColor}
                         titleAnimStyle={buttonAnimations.title.style}
@@ -217,7 +217,7 @@ export const UILinkButton = ({
                     </Button.Title>
                 }
                 {
-                    iconPosition === UILinkButtonIconPosition.Middle && icon &&
+                    iconPosition === UILinkButtonIconPosition.Middle && icon != null &&
                     <Button.Icon
                         source={icon}
                         iconAnimStyle={buttonAnimations.icon.style}
