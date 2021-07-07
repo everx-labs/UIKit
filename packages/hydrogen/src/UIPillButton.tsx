@@ -195,13 +195,13 @@ export const UIPillButton = ({
     const { buttonStyle, contentColor } = useButtonStyles(variant, disabled, loading);
     const buttonAnimations = useButtonAnimations(contentColor);
     const contentStyle = React.useMemo(() => {
-        if (icon && !title) {
+        if (icon != null && !title) {
             return [styles.leftIconOffset, styles.rightIconOffset];
         }
-        if (icon && iconPosition === UIPillButtonIconPosition.Left) {
+        if (icon != null && iconPosition === UIPillButtonIconPosition.Left) {
             return [styles.leftIconOffset, styles.rightTitleOffset];
         }
-        if (icon && iconPosition === UIPillButtonIconPosition.Right) {
+        if (icon != null && iconPosition === UIPillButtonIconPosition.Right) {
             return [styles.leftTitleOffset, styles.rightIconOffset];
         }
         return [styles.leftTitleOffset, styles.rightTitleOffset];
@@ -223,7 +223,7 @@ export const UIPillButton = ({
         >
             <Button.Content>
                 {
-                    iconPosition === UIPillButtonIconPosition.Left && icon &&
+                    iconPosition === UIPillButtonIconPosition.Left && icon != null &&
                         <Button.Icon
                             source={icon}
                             iconAnimStyle={buttonAnimations.icon?.style}
@@ -232,7 +232,7 @@ export const UIPillButton = ({
                         />
                 }
                 {
-                    title &&
+                    title != null &&
                     <Button.Title
                         titleColor={contentColor}
                         titleRole={UILabelRoles.ActionCallout}
@@ -242,7 +242,7 @@ export const UIPillButton = ({
                     </Button.Title>
                 }
                 {
-                    iconPosition === UIPillButtonIconPosition.Right && icon &&
+                    iconPosition === UIPillButtonIconPosition.Right && icon != null &&
                         <Button.Icon
                             source={icon}
                             iconAnimStyle={buttonAnimations.icon?.style}
