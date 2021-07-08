@@ -247,14 +247,14 @@ PODS:
   - React-jsinspector (0.63.4)
   - react-native-blur (0.8.0):
     - React
-  - react-native-camera (3.6.0):
-    - React
-    - react-native-camera/RCT (= 3.6.0)
-    - react-native-camera/RN (= 3.6.0)
-  - react-native-camera/RCT (3.6.0):
-    - React
-  - react-native-camera/RN (3.6.0):
-    - React
+  - react-native-camera (3.44.3):
+    - React-Core
+    - react-native-camera/RCT (= 3.44.3)
+    - react-native-camera/RN (= 3.44.3)
+  - react-native-camera/RCT (3.44.3):
+    - React-Core
+  - react-native-camera/RN (3.44.3):
+    - React-Core
   - react-native-document-picker (3.2.4):
     - React
   - react-native-image-picker (0.14.3):
@@ -387,7 +387,7 @@ PODS:
   - SDWebImageWebPCoder (0.2.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.0)
-  - UIKitKeyboard (2.2.0):
+  - UIKitKeyboard (2.3.0):
     - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -610,7 +610,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-camera: b6a6a61bcdbd619c19df3df581fcb009131938bf
+  react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
   react-native-image-picker: 3693786b3d5958c8f71deed66ec068b323565e0d
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
@@ -641,7 +641,7 @@ SPEC CHECKSUMS:
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
-  UIKitKeyboard: 0249fb253810af931854a0cd4100f538f9e1333c
+  UIKitKeyboard: fb4c39177a21cbb8b86801d0ff8280f555b04d6f
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
