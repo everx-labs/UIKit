@@ -115,6 +115,11 @@ const styles = StyleSheet.create({
         ...Platform.select({
             web: {
                 outlineStyle: 'none',
+                // it's a hack for a web input to not have
+                // a width equal to it's placeholder
+                // (i.e. when input has a value, it pushes clear button
+                //       to the right outside the boundaries)
+                minWidth: 0,
             },
             android: {
                 padding: 0,
