@@ -14,12 +14,15 @@ import {
     RawButton as GHRawButton,
 } from 'react-native-gesture-handler';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIConstant } from '@tonlabs/uikit.core';
 import {
     UILabel,
     UILabelColors,
     UILabelRoles,
     useTheme,
     ColorVariants,
+    UIImage,
 } from '@tonlabs/uikit.hydrogen';
 
 function hapticResponse() {
@@ -63,19 +66,26 @@ function useAnimatedDot(
                 dotsAnims.current[num].value,
                 [0, 1],
                 [
-                    theme[ColorVariants.BackgroundTertiary] as string,
+                    theme[ColorVariants.BackgroundNeutral] as string,
                     theme[ColorVariants.BackgroundAccent] as string,
                 ],
             ),
-            // transform: [
-            //     {
-            //         translateX: Animated.interpolate(
-            //             dotsAnims.current[num].value,
-            //             [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
-            //             [0, -10, 10, -10, 10, -10, 0],
-            //         ),
-            //     },
-            // ],
+            transform: [
+                // {
+                //     translateX: Animated.interpolate(
+                //         dotsAnims.current[num].value,
+                //         [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
+                //         [0, -10, 10, -10, 10, -10, 0],
+                //     ),
+                // },
+                {
+                    scale: Animated.interpolate(
+                        dotsAnims.current[num].value,
+                        [0, 1],
+                        [1, 2],
+                    ),
+                },
+            ],
         };
     });
 }
@@ -141,15 +151,27 @@ export function UIPinCode() {
         );
     });
 
+    const delButtonStyle = useAnimatedStyle(() => {
+        return {
+            opacity: activeDotIndex.value > 0 ? 1 : 0.5,
+        };
+    });
+
     return (
         <>
-            <View style={{ flexDirection: 'row' }}>
-                <Animated.View style={[styles.circle, stylesDot1]} />
-                <Animated.View style={[styles.circle, stylesDot2]} />
-                <Animated.View style={[styles.circle, stylesDot3]} />
-                <Animated.View style={[styles.circle, stylesDot4]} />
-                <Animated.View style={[styles.circle, stylesDot5]} />
-                <Animated.View style={[styles.circle, stylesDot6]} />
+            <View
+                style={{
+                    flexDirection: 'row',
+                    height: UIConstant.bigCellHeight(),
+                    alignItems: 'center',
+                }}
+            >
+                <Animated.View style={[styles.dot, stylesDot1]} />
+                <Animated.View style={[styles.dot, stylesDot2]} />
+                <Animated.View style={[styles.dot, stylesDot3]} />
+                <Animated.View style={[styles.dot, stylesDot4]} />
+                <Animated.View style={[styles.dot, stylesDot5]} />
+                <Animated.View style={[styles.dot, stylesDot6]} />
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <RawButton
@@ -277,17 +299,27 @@ export function UIPinCode() {
                 </RawButton>
                 <RawButton
                     onGestureEvent={gestureHandlerDel}
-                    style={styles.button}
+                    style={[styles.button, delButtonStyle]}
                 >
-                    <UILabel>Del</UILabel>
+                    <UIImage
+                        source={UIAssets.icons.ui.delete}
+                        tintColor={ColorVariants.TextPrimary}
+                    />
                 </RawButton>
             </View>
         </>
     );
 }
 
+const dotSize = UIConstant.tinyCellHeight();
+
 const styles = StyleSheet.create({
-    circle: { width: 10, height: 10, borderRadius: 5 },
+    dot: {
+        width: dotSize / 2,
+        height: dotSize / 2,
+        borderRadius: dotSize / 4,
+        marginHorizontal: UIConstant.smallContentOffset(),
+    },
     button: {
         width: 90, // 1 + 88 + 1
         height: 74, // 1 + 72 + 1
