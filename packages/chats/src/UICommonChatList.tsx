@@ -163,8 +163,65 @@ function useLayoutHelpers<ItemT extends BubbleBaseT>(
     };
 }
 
+export function useHasScroll() {
+    const [hasScroll, setHasScroll] = React.useState(false);
+    const hasScrollRef = React.useRef(hasScroll);
+
+    React.useEffect(() => {
+        hasScrollRef.current = hasScroll;
+    }, [hasScroll]);
+
+    const scrollViewOutterHeight = React.useRef(0);
+    const scrollViewInnerHeight = React.useRef(0);
+
+    const compareHeights = React.useCallback(() => {
+        if (
+            scrollViewInnerHeight.current === 0 ||
+            scrollViewOutterHeight.current === 0
+        ) {
+            return;
+        }
+
+        setHasScroll(
+            scrollViewInnerHeight.current > scrollViewOutterHeight.current,
+        );
+    }, [setHasScroll]);
+
+    const onLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { height },
+            },
+        }) => {
+            scrollViewOutterHeight.current = height;
+
+            compareHeights();
+        },
+        [compareHeights],
+    );
+
+    const onContentSizeChange = React.useCallback(
+        (_width, height) => {
+            scrollViewInnerHeight.current = height;
+
+            compareHeights();
+        },
+        [compareHeights],
+    );
+
+    return {
+        hasScroll,
+        hasScrollRef,
+        onLayout,
+        onContentSizeChange,
+    };
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useContentInset(ref: React.RefObject<SectionList>) {
+function useContentInset(
+    ref: React.RefObject<SectionList>,
+    hasScrollOverflow: boolean,
+) {
     const bottomInset = useSafeAreaInsets().bottom;
     const contentInset = React.useMemo(
         () => ({
@@ -186,14 +243,17 @@ function useContentInset(ref: React.RefObject<SectionList>) {
             requestAnimationFrame(scrollToTop);
         }
         scrollToTop();
-    }, [bottomInset, ref]);
+        /**
+         * We should adjust position on a first render (bottomInset set)
+         * and if the list completely rerendered
+         * (hasScrollOverflow going to be changed since a data would be [] for a sec)
+         */
+    }, [bottomInset, ref, hasScrollOverflow]);
 
     return contentInset;
 }
 
-function useLinesAnimation() {
-    const listSize = React.useRef({ height: 0 });
-    const contentHeight = React.useRef(0);
+function useLinesAnimation(hasScrollOverflow: React.RefObject<boolean>) {
     const listContentOffset = React.useRef({ y: 0 });
 
     const topOpacity = React.useRef(new Animated.Value(0));
@@ -217,11 +277,7 @@ function useLinesAnimation() {
     const linesIsShown = React.useRef(false);
 
     const checkVisualStyle = React.useCallback(() => {
-        if (
-            !listSize.current ||
-            !contentHeight.current ||
-            !listContentOffset.current
-        ) {
+        if (!listContentOffset.current) {
             // Not ready to animate as there are some missing variables to make calculations
             return;
         }
@@ -231,12 +287,11 @@ function useLinesAnimation() {
             return;
         }
 
-        const hasScroll =
+        const hasScrollShift =
             listContentOffset.current && listContentOffset.current.y > 1;
-        const hasHeight = listSize.current && listSize.current.height > 0;
-        const hasOverflow = contentHeight.current > listSize.current?.height;
 
-        const shouldLinesBeShown = hasScroll || (hasHeight && hasOverflow);
+        const shouldLinesBeShown =
+            hasScrollShift || hasScrollOverflow.current || false;
 
         if (shouldLinesBeShown === linesIsShown.current) {
             return;
@@ -256,26 +311,7 @@ function useLinesAnimation() {
 
             checkVisualStyle();
         });
-    }, []);
-
-    const onLayout = React.useCallback(
-        (e: LayoutChangeEvent) => {
-            listSize.current = e.nativeEvent.layout;
-
-            checkVisualStyle();
-        },
-        [checkVisualStyle],
-    );
-
-    const onContentSizeChange = React.useCallback(
-        (_width: number, height: number) => {
-            // Save the content height in state
-            contentHeight.current = height;
-
-            checkVisualStyle();
-        },
-        [checkVisualStyle],
-    );
+    }, [hasScrollOverflow]);
 
     const onScrollMessages = React.useCallback(
         (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -291,8 +327,8 @@ function useLinesAnimation() {
     return {
         listContentOffset,
         lineStyle,
-        onLayout,
-        onContentSizeChange,
+        onLayout: checkVisualStyle,
+        onContentSizeChange: checkVisualStyle,
         onScrollMessages,
         onViewableItemsChanged: checkVisualStyle,
     };
@@ -406,16 +442,37 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
         getItemLayoutFabric,
     );
     const {
+        hasScroll,
+        hasScrollRef,
+        onLayout: onLayoutMeasureScroll,
+        onContentSizeChange: onContentSizeChangeMeasureScroll,
+    } = useHasScroll();
+    const {
         listContentOffset,
         lineStyle,
-        onLayout,
-        onContentSizeChange,
+        onLayout: onLayoutLines,
+        onContentSizeChange: onContentSizeChangeLines,
         onScrollMessages,
         onViewableItemsChanged,
-    } = useLinesAnimation();
+    } = useLinesAnimation(hasScrollRef);
     useChatListWheelHandler(localRef, nativeID, listContentOffset);
-    const contentInset = useContentInset(localRef);
+    const contentInset = useContentInset(localRef, hasScroll);
     const handlers = useCloseKeyboardOnTap();
+
+    const onLayout = React.useCallback(
+        (e) => {
+            onLayoutMeasureScroll(e);
+            onLayoutLines();
+        },
+        [onLayoutMeasureScroll, onLayoutLines],
+    );
+    const onContentSizeChange = React.useCallback(
+        (w, h) => {
+            onContentSizeChangeMeasureScroll(w, h);
+            onContentSizeChangeLines();
+        },
+        [onContentSizeChangeMeasureScroll, onContentSizeChangeLines],
+    );
 
     return (
         <>
