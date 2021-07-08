@@ -16,6 +16,9 @@ import {
     UIMsgButtonIconPosition,
     UIMsgButtonType,
     UIMsgButtonVariant,
+    UIPillButton,
+    UIPillButtonIconPosition,
+    UIPillButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
@@ -378,6 +381,266 @@ const Buttons = () => (
                     onPress={() => {
                         //
                     }}
+                />
+            </View>
+        </ExampleSection>
+
+        <ExampleSection title="UIButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton testID="uiButton_default" title="Example" />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton
+                    testID="uiButton_with_counter"
+                    title="Example"
+                    badge={2}
+                />
+            </View>
+            <View
+                style={{
+                    maxWidth: 300,
+                    paddingVertical: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <UIButton
+                    testID="uiButton_large"
+                    title="Large"
+                    buttonSize={UIButton.ButtonSize.Large}
+                />
+                <UIButton
+                    testID="uiButton_medium"
+                    title="Medium"
+                    buttonSize={UIButton.ButtonSize.Medium}
+                />
+                <UIButton
+                    testID="uiButton_small"
+                    title="Small"
+                    buttonSize={UIButton.ButtonSize.Small}
+                />
+                <UIButton
+                    testID="uiButton_default_size"
+                    title="Default"
+                    buttonSize={UIButton.ButtonSize.Default}
+                />
+            </View>
+            <View
+                style={{
+                    maxWidth: 300,
+                    paddingVertical: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <UIButton
+                    testID="uiButton_radiused"
+                    title="Radius"
+                    buttonShape={UIButton.ButtonShape.Radius}
+                />
+                <UIButton
+                    testID="uiButton_rounded"
+                    title="Rounded"
+                    buttonShape={UIButton.ButtonShape.Rounded}
+                />
+                <UIButton
+                    testID="uiButton_full"
+                    title="Full"
+                    buttonShape={UIButton.ButtonShape.Full}
+                />
+                <UIButton
+                    testID="uiButton_default_form"
+                    title="Default"
+                    buttonShape={UIButton.ButtonShape.Default}
+                />
+            </View>
+            <View
+                style={{
+                    maxWidth: 300,
+                    paddingVertical: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <UIButton
+                    testID="uiButton_default_style"
+                    title="Full"
+                    buttonStyle={UIButton.ButtonStyle.Full}
+                />
+                <UIButton
+                    testID="uiButton_bordered"
+                    title="Border"
+                    buttonStyle={UIButton.ButtonStyle.Border}
+                />
+                <UIButton
+                    testID="uiButton_as_link"
+                    title="Link"
+                    buttonStyle={UIButton.ButtonStyle.Link}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton
+                    testID="uiButton_counter_1"
+                    title="Example"
+                    count="1"
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton
+                    testID="uiButton_with_data"
+                    title="Example"
+                    data="data"
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton
+                    testID="uiButton_icon_left"
+                    title="Icon left"
+                    icon={UIAssets.icons.ui.arrowLeft}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton
+                    testID="uiButton_icon_right"
+                    title="Icon right"
+                    iconR={UIAssets.icons.ui.arrowLeft}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton
+                    testID="uiButton_with_tooltip"
+                    title="With tooltip"
+                    tooltip="Hi there!"
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton
+                    testID="uiButton_disabled"
+                    title="Disabled"
+                    disabled
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIButton testID="uiButton_animation" showIndicator />
+            </View>
+        </ExampleSection>
+
+        <ExampleSection title="UIImageButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIImageButton
+                    testID="uiImageButton_back"
+                    image={UIImageButton.Images.back}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIImageButton
+                    testID="uiImageButton_close_primary"
+                    image={UIImageButton.Images.closePrimary}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIImageButton
+                    testID="uiImageButton_close_secondary"
+                    image={UIImageButton.Images.closeSecondary}
+                />
+            </View>
+            <View
+                style={{
+                    maxWidth: 300,
+                    paddingVertical: 20,
+                    backgroundColor: 'black',
+                }}
+            >
+                <UIImageButton
+                    testID="uiImageButton_close_dark_theme_secondary"
+                    image={UIImageButton.Images.closeDarkThemeSecondary}
+                />
+            </View>
+            <View
+                style={{
+                    maxWidth: 300,
+                    paddingVertical: 20,
+                    backgroundColor: 'black',
+                }}
+            >
+                <UIImageButton
+                    testID="uiImageButton_close_light"
+                    image={UIImageButton.Images.closeLight}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIImageButton
+                    testID="uiImageButton_menu"
+                    image={UIImageButton.Images.menu}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIImageButton
+                    testID="uiImageButton_menu_contained"
+                    image={UIImageButton.Images.menuContained}
+                />
+            </View>
+        </ExampleSection>
+
+        <ExampleSection title="UIPillButton">
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_default"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIPillButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_negative"
+                    title="Action negative"
+                    variant={UIPillButtonVariant.Negative}
+                    onPress={() => console.log('Pressed UIPillButton negative action')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_positive"
+                    title="Action positive"
+                    variant={UIPillButtonVariant.Positive}
+                    onPress={() => console.log('Pressed UIPillButton positive action')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    disabled
+                    testID="uiPillButton_disabled"
+                    title="Action disabled"
+                    onPress={() => {
+                        // empty
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    testID="uiPillButton_loading"
+                    title="Action"
+                    loading
+                    onPress={() => {
+                        //
+                    }}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    icon={UIAssets.icons.ui.arrowUpRight}
+                    testID="uiPillButton_leftIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UIPillButton
+                    icon={UIAssets.icons.ui.arrowUpRight}
+                    iconPosition={UIPillButtonIconPosition.Right}
+                    testID="uiPillButton_rightIcon"
+                    title="Action"
+                    onPress={() => console.log('Pressed UIBoxButton')}
                 />
             </View>
         </ExampleSection>
