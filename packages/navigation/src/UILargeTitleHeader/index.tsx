@@ -56,6 +56,10 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
      */
     onHeaderLargeTitlePress?: () => void;
     /**
+     * A callback that fires when the user presses on large title header content longer than 500 milliseconds
+     */
+    onHeaderLargeTitleLongPress?: () => void;
+    /**
      * A label string
      */
     label?: string;
@@ -74,6 +78,7 @@ export function UILargeTitleHeader({
     note,
     children,
     onHeaderLargeTitlePress,
+    onHeaderLargeTitleLongPress,
     ...navigationBarProps
 }: UILargeTitleHeaderProps) {
     const shift = useSharedValue(0);
@@ -318,7 +323,7 @@ export function UILargeTitleHeader({
 
     const largeTitleInnerElement = (
         <>
-            {label && (
+            {label != null && (
                 <UILabel
                     role={UILabelRoles.ParagraphLabel}
                     color={UILabelColors.TextSecondary}
@@ -327,7 +332,7 @@ export function UILargeTitleHeader({
                     {label}
                 </UILabel>
             )}
-            {title &&
+            {title != null &&
                 (React.isValidElement(title) ? (
                     title
                 ) : (
@@ -345,7 +350,7 @@ export function UILargeTitleHeader({
                         {title}
                     </AnimatedUILabel>
                 ))}
-            {note && (
+            {note != null && (
                 <UILabel
                     role={UILabelRoles.ParagraphNote}
                     style={{ marginTop: 8 }}
@@ -373,8 +378,11 @@ export function UILargeTitleHeader({
                     }
                     onLayout={onLargeTitleLayout}
                 >
-                    {onHeaderLargeTitlePress != null ? (
-                        <TouchableOpacity onPress={onHeaderLargeTitlePress}>
+                    {onHeaderLargeTitlePress != null || onHeaderLargeTitleLongPress != null ? (
+                        <TouchableOpacity
+                            onPress={onHeaderLargeTitlePress}
+                            onLongPress={onHeaderLargeTitleLongPress}
+                        >
                             {largeTitleInnerElement}
                         </TouchableOpacity>
                     ) : (

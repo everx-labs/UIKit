@@ -10,7 +10,7 @@ import {
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import type { SigningBoxMessage } from '../types';
-import { UISignaturePicker } from '../UISignaturePicker';
+import { UIBoxPicker } from '../UIBoxPicker';
 import { UIKeySheet } from '../UIKeySheet';
 
 type SigningBoxInternalState = {
@@ -187,14 +187,14 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 }}
                 lastFromChain
             />
-            <UISignaturePicker
+            <UIBoxPicker
                 visible={state.pickerVisible}
                 onClose={() => {
                     dispatch({
                         type: 'CLOSE_SIGNATURE_PICKER',
                     });
                 }}
-                onAddSignature={() => {
+                onAdd={() => {
                     dispatch({
                         type: 'OPEN_KEY_INPUT',
                     });
@@ -209,7 +209,9 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                         type: 'CLOSE_SIGNATURE_PICKER',
                     });
                 }}
-                signingBoxes={restSigningBoxes}
+                boxes={restSigningBoxes}
+                headerTitle={uiLocalized.Browser.SigningBox.Signatures}
+                addTitle={uiLocalized.Browser.SigningBox.AddSignature}
             />
             <UIKeySheet
                 visible={state.keyInputVisible}
@@ -230,6 +232,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                         type: 'CLOSE_KEY_INPUT',
                     });
                 }}
+                label={uiLocalized.Browser.SigningBox.PrivateKey}
             />
         </View>
     );

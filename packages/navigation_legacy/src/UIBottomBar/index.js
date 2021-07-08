@@ -1,19 +1,22 @@
 // @flow
 import React from 'react';
-import { View, StyleSheet, Text, Linking } from 'react-native';
+import { View, StyleSheet, Linking } from 'react-native';
 import type {
     ViewStyleProp,
     TextStyleProp,
 } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
-import { UIConstant, UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UIComponent, UITooltip } from '@tonlabs/uikit.components';
 import {
-    UIComponent,
-    UITextButton,
-    UITooltip,
-} from '@tonlabs/uikit.components';
-import type { UIColorThemeNameType } from '@tonlabs/uikit.core';
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    UILinkButton,
+    UILinkButtonIconPosition,
+    UILinkButtonSize,
+} from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const styles = StyleSheet.create({
@@ -39,7 +42,6 @@ type MenuItem = {
 };
 
 type Props = {
-    theme?: UIColorThemeNameType,
     leftText: string,
     accentText: string,
     accentEmail: string,
@@ -72,18 +74,6 @@ export default class UIBottomBar extends UIComponent<Props, State> {
     }
 
     // Getters
-    textStyle() {
-        const { theme, textStyle } = this.props;
-        const colorStyle = UIColor.textTertiaryStyle(theme);
-        return [UIStyle.text.tinyMedium(), colorStyle, textStyle];
-    }
-
-    textAccentStyle() {
-        const { theme, textStyle } = this.props;
-        const colorStyle = UIColor.textSecondaryStyle(theme);
-        return [UIStyle.text.tinyMedium(), colorStyle, textStyle];
-    }
-
     isNarrow() {
         const { screenWidth, isNarrow } = this.props;
         if (!screenWidth) {
@@ -120,22 +110,23 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         if (!accentText && !accentEmail) {
             return null;
         }
-        const accentStyle = this.textAccentStyle();
         return (
             <View style={[styles.container, UIStyle.flex.justifyCenter()]}>
-                <Text>
-                    <Text style={accentStyle}>{accentText}</Text>{' '}
-                    <UITextButton
+                <UILabel>
+                    <UILabel
+                        color={UILabelColors.TextSecondary}
+                        role={UILabelRoles.ActionFootnote}
+                    >
+                        {accentText}
+                    </UILabel>
+                    <UILinkButton
                         title={accentEmail}
-                        buttonStyle={UIStyle.height.tinyCell()}
-                        textStyle={accentStyle}
-                        textHoverStyle={accentStyle}
-                        textTappedStyle={accentStyle}
+                        size={UILinkButtonSize.Small}
                         onPress={() => {
                             Linking.openURL(`mailto:${accentEmail}`);
                         }}
                     />
-                </Text>
+                </UILabel>
             </View>
         );
     }
@@ -145,14 +136,10 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         if (!email) {
             return null;
         }
-        const primaryColorStyle = UIColor.textPrimaryStyle();
         return (
-            <UITextButton
+            <UILinkButton
                 title={email}
-                buttonStyle={UIStyle.height.tinyCell()}
-                textStyle={this.textStyle()}
-                textHoverStyle={primaryColorStyle}
-                textTappedStyle={primaryColorStyle}
+                size={UILinkButtonSize.Small}
                 onPress={() => {
                     Linking.openURL(`mailto:${email}`);
                 }}
@@ -168,8 +155,9 @@ export default class UIBottomBar extends UIComponent<Props, State> {
             postalCode,
             location,
             info,
+            textStyle: style,
         } = this.props;
-        const textStyle = [this.textStyle(), UIStyle.text.alignCenter()];
+        const textStyle = [style, UIStyle.text.alignCenter()];
         if (!able || this.hasNoContacts()) {
             return null;
         }
@@ -181,78 +169,113 @@ export default class UIBottomBar extends UIComponent<Props, State> {
                 itemScope
                 itemType="http://schema.org/Organization"
             >
-                <Text style={textStyle} {...UIBottomBar.getItemProp('name')}>
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.ActionFootnote}
+                    style={textStyle}
+                    {...UIBottomBar.getItemProp('name')}
+                >
                     {companyName}
-                </Text>
-                <Text
-                    {...UIBottomBar.getItemProp('address')}
+                </UILabel>
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.ActionFootnote}
+                    style={textStyle}
                     itemScope
                     itemType="http://schema.org/PostalAddress"
+                    {...UIBottomBar.getItemProp('address')}
+                >
+                    <UILabel
+                        color={UILabelColors.TextTertiary}
+                        role={UILabelRoles.ActionFootnote}
+                        {...UIBottomBar.getItemProp('streetAddress')}
+                    >
+                        {address}
+                    </UILabel>
+                    {', '}
+                    <UILabel
+                        color={UILabelColors.TextTertiary}
+                        role={UILabelRoles.ActionFootnote}
+                        {...UIBottomBar.getItemProp('postalCode')}
+                    >
+                        {postalCode}
+                    </UILabel>
+                    {', '}
+                    <UILabel
+                        color={UILabelColors.TextTertiary}
+                        role={UILabelRoles.ActionFootnote}
+                        {...UIBottomBar.getItemProp('addressLocality')}
+                    >
+                        {location}
+                    </UILabel>
+                </UILabel>
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.ActionFootnote}
                     style={textStyle}
                 >
-                    <Text {...UIBottomBar.getItemProp('streetAddress')}>
-                        {address}
-                    </Text>
-                    {', '}
-                    <Text {...UIBottomBar.getItemProp('postalCode')}>
-                        {postalCode}
-                    </Text>
-                    {', '}
-                    <Text {...UIBottomBar.getItemProp('addressLocality')}>
-                        {location}
-                    </Text>
-                </Text>
-                <Text style={textStyle}>{info}</Text>
-                <Text style={textStyle}>
+                    {info}
+                </UILabel>
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.ActionFootnote}
+                    style={textStyle}
+                >
                     {this.renderEmail()}
                     {this.hasNoPhoneNumber() ? null : (
                         <React.Fragment>
                             {'   ·  '}
-                            <Text {...UIBottomBar.getItemProp('telephone')}>
+                            <UILabel
+                                color={UILabelColors.TextTertiary}
+                                role={UILabelRoles.ActionFootnote}
+                                {...UIBottomBar.getItemProp('telephone')}
+                            >
                                 {phoneNumber}
-                            </Text>
+                            </UILabel>
                         </React.Fragment>
                     )}
-                </Text>
+                </UILabel>
             </View>
         );
     }
 
     renderLeft() {
-        const { leftText } = this.props;
-        const textStyle = this.textStyle();
+        const { leftText, textStyle } = this.props;
         if (this.hasNoLeftPart()) {
             return null;
         }
         return (
             <View style={[UIStyle.flex.x1(), UIStyle.container.centerLeft()]}>
-                <Text style={[UIStyle.text.tinyMedium(), textStyle]}>
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.ActionFootnote}
+                    style={textStyle}
+                >
                     {leftText}
-                </Text>
+                </UILabel>
                 {this.renderMenu()}
             </View>
         );
     }
 
     renderMenu() {
-        const { menuItems } = this.props;
-        const textStyle = this.textStyle();
+        const { menuItems, textStyle } = this.props;
         if (!menuItems.length) {
             return null;
         }
-        const dot = <Text style={textStyle}>{'  ·  '}</Text>;
+        const dot = <UILabel
+            color={UILabelColors.TextTertiary}
+            role={UILabelRoles.ActionFootnote}
+            style={textStyle}
+        >{'  ·  '}</UILabel>;
         const menu = menuItems.map(
             ({ title, href, componentClass, onPress }, index) => {
-                const Component = componentClass || UITextButton;
+                const Component = componentClass || UILinkButton;
                 return (
                     <React.Fragment key={`bottom-bar-menu-item-${title}`}>
                         <Component
                             href={href}
                             title={title}
-                            buttonStyle={UIStyle.height.bigCell()}
-                            textStyle={textStyle}
-                            textHoverStyle={UIColor.textPrimaryStyle()}
-                            textTappedStyle={UIColor.textPrimaryStyle()}
                             onPress={onPress}
                         />
                         {index === menuItems.length - 1 ? null : dot}
@@ -283,17 +306,16 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         }
         return (
             <UITooltip message={disclaimer}>
-                <Text style={textStyle}>
+                <UILabel style={textStyle}>
                     {'. '}
                     {uiLocalized.Disclaimer}
-                </Text>
+                </UILabel>
             </UITooltip>
         );
     }
 
     renderCopyRight() {
-        const { copyRight, onPressCopyRight, copyRightIcon } = this.props;
-        const textStyle = this.textStyle();
+        const { copyRight, onPressCopyRight, copyRightIcon, textStyle } = this.props;
         const isShort = this.hasNoLeftPart() && this.hasNoContacts();
         const isNarrowAndNotShort = this.isNarrow() && !isShort;
         const copyRightText = isNarrowAndNotShort ? '' : copyRight;
@@ -303,23 +325,19 @@ export default class UIBottomBar extends UIComponent<Props, State> {
         const flex = isNarrowAndNotShort ? null : UIStyle.flex.x1();
         return (
             <View style={[flex, align]}>
-                <Text style={textStyle}>
-                    <UITextButton
-                        icon={isNarrowAndNotShort && copyRightIcon}
-                        iconColor={
-                            isNarrowAndNotShort && UIColor.textTertiary()
-                        }
-                        iconHoverColor={
-                            isNarrowAndNotShort && UIColor.textPrimary()
-                        }
+                <UILabel
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.ActionFootnote}
+                    style={textStyle}
+                >
+                    <UILinkButton
                         title={copyRightText}
-                        textStyle={textStyle}
-                        textHoverStyle={UIColor.textPrimaryStyle()}
-                        textTappedStyle={UIColor.textPrimaryStyle()}
+                        icon={isNarrowAndNotShort && copyRightIcon}
+                        iconPosition={UILinkButtonIconPosition.Middle}
                         onPress={onPressCopyRight}
                     />
                     {this.renderDisclaimer()}
-                </Text>
+                </UILabel>
             </View>
         );
     }
@@ -345,7 +363,6 @@ export default class UIBottomBar extends UIComponent<Props, State> {
 }
 
 UIBottomBar.defaultProps = {
-    theme: UIColor.Theme.Light,
     textStyle: {},
     containerStyle: {},
 

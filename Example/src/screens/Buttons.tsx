@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIButton, UIImageButton, UIScaleButton } from '@tonlabs/uikit.components';
+import { UIScaleButton } from '@tonlabs/uikit.components';
 import {
     UIBoxButton,
     UIBoxButtonIconPosition,

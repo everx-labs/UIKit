@@ -4,12 +4,12 @@ import React from 'react';
 import { Platform, Text, View, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
-import type { UIColorThemeNameType } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIColor, UIConstant, UITextStyle } from '@tonlabs/uikit.core';
+import { UILinkButton, UILinkButtonIconPosition, UILinkButtonType } from '@tonlabs/uikit.hydrogen';
+import type { UIColorThemeNameType } from '@tonlabs/uikit.core';
 
 import UIComponent from '../UIComponent';
-import UITextButton from '../UITextButton';
 
 const styles = StyleSheet.create({
     container: {
@@ -51,10 +51,6 @@ const uploadFileDefaultProps = {
 
 type UploadFileState = {
     file: ?any,
-};
-
-type WebInput = {
-  click: (e: any) => void,
 };
 
 // FOR WEB OBLY, TODO: iOS, Android support
@@ -105,18 +101,19 @@ export default class UIUploadFileInput<Props, State> extends UIComponent<Props &
     }
 
     renderAction() {
-        const { theme } = this.props;
         if (!this.getFile()) {
             return null;
         }
 
         return (
-            <UITextButton
-                buttonStyle={styles.iconCloseButton}
-                iconColor={UIColor.black()}
-                icon={UIAssets.icons.ui.closeRemove}
-                onPress={this.deleteFile}
-            />
+            <View style={styles.iconCloseButton}>
+                <UILinkButton
+                    type={UILinkButtonType.Menu}
+                    icon={UIAssets.icons.ui.closeRemove}
+                    iconPosition={UILinkButtonIconPosition.Middle}
+                    onPress={this.deleteFile}
+                />
+            </View>
         );
     }
 
@@ -127,7 +124,7 @@ export default class UIUploadFileInput<Props, State> extends UIComponent<Props &
 
     renderTextButton() {
         return (
-            <UITextButton
+            <UILinkButton
                 title={this.getFile() && this.getFile().name || this.props.uploadText}
                 onPress={this.props.editable === false ? null : () => this.showFilePicker()}
             />

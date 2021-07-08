@@ -2,11 +2,17 @@
 import React from 'react';
 import { Linking, Platform } from 'react-native';
 
-import UIButton from '../UIButton';
-import type { ButtonProps } from '../UIButton';
+import {
+    UILinkButton,
+    UILinkButtonProps,
+    UILinkButtonSize,
+    UILinkButtonType,
+    UILinkButtonVariant,
+} from '@tonlabs/uikit.hydrogen';
+
 import UIComponent from '../UIComponent';
 
-type Props = ButtonProps & {
+type Props = UILinkButtonProps & {
     /** external url, starting with http...
     @default null
     */
@@ -14,12 +20,18 @@ type Props = ButtonProps & {
     target?: '_blank' | '_self',
 };
 
-type State = {};
+type State = {
+    //
+};
 
 export default class UILink extends UIComponent<Props, State> {
-    static TextAlign = UIButton.TextAlign;
-    static Indicator = UIButton.Indicator;
-    static Size = UIButton.ButtonSize;
+    static Size = UILinkButtonSize;
+    static Type = UILinkButtonType;
+    static Variant = UILinkButtonVariant;
+
+    static defaultProps: Props = {
+        href: null,
+    };
 
     goHref = () => {
         if (this.props.href) {
@@ -33,28 +45,20 @@ export default class UILink extends UIComponent<Props, State> {
             }
             Linking.openURL(this.props.href);
         }
-    }
+    };
 
     render() {
         if (this.props.href) {
             return (
-                <UIButton
+                <UILinkButton
                     {...this.props}
                     onPress={this.goHref}
-                    buttonStyle={UIButton.ButtonStyle.Link}
                 />
             );
         }
         return (
-            <UIButton {...this.props} buttonStyle={UIButton.ButtonStyle.Link} />
+            <UILinkButton {...this.props} />
 
         );
     }
-
-    static defaultProps: Props;
 }
-
-UILink.defaultProps = {
-    ...UIButton.defaultProps,
-    href: null,
-};

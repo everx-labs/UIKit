@@ -15,7 +15,6 @@ import {
     UILabelColors,
     UILabelRoles,
     Portal,
-    PortalManager,
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
 

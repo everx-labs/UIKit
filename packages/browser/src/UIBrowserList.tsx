@@ -18,6 +18,7 @@ import { AmountInput } from './Inputs/amountInput';
 import { SigningBox } from './Inputs/SigningBox';
 import { TransactionConfirmation } from './Inputs/TransactionConfirmation';
 import { QRCode } from './Inputs/qrCode';
+import { EncryptionBox } from './Inputs/EncryptionBox';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -74,6 +75,9 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.SigningBox) {
         return <SigningBox {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.EncryptionBox) {
+        return <EncryptionBox {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;

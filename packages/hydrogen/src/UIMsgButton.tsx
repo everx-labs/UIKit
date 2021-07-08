@@ -389,7 +389,7 @@ export const UIMsgButton = ({
                 <>
                     <Button.Content>
                         {
-                            iconPosition === UIMsgButtonIconPosition.Left && icon &&
+                            iconPosition === UIMsgButtonIconPosition.Left && icon != null &&
                             <Button.Icon
                                 source={icon}
                                 style={styles.leftIcon}
@@ -399,7 +399,7 @@ export const UIMsgButton = ({
                             />
                         }
                         {
-                            title &&
+                            title != null &&
                             <Button.Title
                                 titleColor={contentColor}
                                 titleAnimStyle={titleAnim?.style}
@@ -408,7 +408,7 @@ export const UIMsgButton = ({
                             </Button.Title>
                         }
                         {
-                            iconPosition === UIMsgButtonIconPosition.Middle && icon &&
+                            iconPosition === UIMsgButtonIconPosition.Middle && icon != null  &&
                             <Button.Icon
                                 source={icon}
                                 iconAnimStyle={iconAnim?.style}
@@ -418,7 +418,7 @@ export const UIMsgButton = ({
                         }
                     </Button.Content>
                     {
-                        iconPosition === UIMsgButtonIconPosition.Right && icon &&
+                        iconPosition === UIMsgButtonIconPosition.Right && icon != null &&
                         <Button.Icon
                             source={icon}
                             iconAnimStyle={iconAnim?.style}

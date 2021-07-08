@@ -28,6 +28,7 @@ export enum InteractiveMessageType {
     Confirm = 'Confirm',
     AmountInput = 'AmountInput',
     SigningBox = 'SigningBox',
+    EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
     QRCode = 'QRCode',
 }
@@ -177,6 +178,28 @@ export type SigningBoxMessage = InteractiveMessage<
     SigningBoxExternalState
 >;
 
+export type EncryptionBox = {
+    id: number;
+    title: string;
+};
+
+export type EncryptionBoxExternalState = {
+    chosenOption?: string;
+    encryptionBox?: EncryptionBox;
+};
+
+export type EncryptionBoxMessage = InteractiveMessage<
+    InteractiveMessageType.EncryptionBox,
+    {
+        prompt?: string;
+        encryptionBoxes: EncryptionBox[];
+        /* in case of a manual enter */
+        onAddEncryptionBox: (privateKey: string) => Promise<EncryptionBox>;
+        onSelect: (state: EncryptionBoxExternalState) => void;
+    },
+    EncryptionBoxExternalState
+>;
+
 export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
@@ -224,6 +247,7 @@ export type BrowserMessage =
     | ConfirmMessage
     | AmountInputMessage
     | SigningBoxMessage
+    | EncryptionBoxMessage
     | TransactionConfirmationMessage
     | QRCodeMessage;
 

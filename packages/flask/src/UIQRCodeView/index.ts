@@ -1,0 +1,1 @@
+export { UIQRCodeView } from './UIQRCodeView';

@@ -53,6 +53,10 @@ export type UILinkButtonProps = {
      */
     layout?: UILayout;
     /**
+     * Whether to display a loading indicator instead of button content or not
+     */
+    loading?: boolean;
+    /**
      * Function will be called on button press
      */
     onPress?: () => void | Promise<void>;
@@ -174,6 +178,7 @@ export const UILinkButton = ({
     icon,
     iconPosition = UILinkButtonIconPosition.Middle,
     layout,
+    loading,
     onPress,
     size = UILinkButtonSize.Normal,
     testID,
@@ -193,12 +198,13 @@ export const UILinkButton = ({
             contentStyle={styles.content}
             animations={buttonAnimations}
             disabled={disabled}
+            loading={loading}
             onPress={onPress}
             testID={testID}
         >
             <Button.Content>
                 {
-                    iconPosition === UILinkButtonIconPosition.Left && icon &&
+                    iconPosition === UILinkButtonIconPosition.Left && icon != null &&
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
@@ -208,7 +214,7 @@ export const UILinkButton = ({
                     />
                 }
                 {
-                    title &&
+                    title != null &&
                     <Button.Title
                         titleColor={contentColor}
                         titleAnimStyle={buttonAnimations.title?.style}
@@ -217,7 +223,7 @@ export const UILinkButton = ({
                     </Button.Title>
                 }
                 {
-                    iconPosition === UILinkButtonIconPosition.Middle && icon &&
+                    iconPosition === UILinkButtonIconPosition.Middle && icon != null &&
                     <Button.Icon
                         source={icon}
                         iconAnimStyle={buttonAnimations.icon?.style}
@@ -227,7 +233,7 @@ export const UILinkButton = ({
                 }
             </Button.Content>
             {
-                iconPosition === UILinkButtonIconPosition.Right && icon &&
+                iconPosition === UILinkButtonIconPosition.Right && icon != null &&
                 <Button.Icon
                     source={icon}
                     iconAnimStyle={buttonAnimations.icon?.style}

@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.charts",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Charts for Tonlabs's UIKit",
   "scripts": {
     "tsc": "tsc --noEmit --composite false",
@@ -37,8 +37,8 @@
     "types/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.hydrogen": "^2.2.0",
-    "@tonlabs/uikit.localization": "^2.2.0"
+    "@tonlabs/uikit.hydrogen": "^2.3.0",
+    "@tonlabs/uikit.localization": "^2.3.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",

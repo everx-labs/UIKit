@@ -20,11 +20,11 @@ const menuItems = [
 ];
 
 <View style={containerStyle}>
-    <UITextButton 
+    <UILinkButton 
         title="Show ActionSheet"
         onPress={() => this.actionSheet.show()}
     />
-    <UITextButton 
+    <UILinkButton 
         title="Show master ActionSheet"
         onPress={() => UIActionSheet.show(menuItems)}
     />

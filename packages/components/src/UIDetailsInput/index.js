@@ -21,11 +21,13 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    UILinkButton,
+    UILinkButtonSize,
+    UILinkButtonVariant,
     UITextView,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
-import UITextButton from '../UITextButton';
 import UIActionImage from '../UIActionImage';
 import { UIActionComponent } from '../UIActionComponent';
 import type {
@@ -56,10 +58,6 @@ const styles = StyleSheet.create({
     },
     commentStyle: {
         zIndex: -1,
-    },
-    button: {
-        marginLeft: UIConstant.tinyContentOffset(),
-        height: undefined,
     },
     prefixIcon: {
         marginRight: UIConstant.smallContentOffset(),
@@ -101,8 +99,8 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     */
     beginningTag: string,
     /**
-    Object to describe right button, contains properties like UITextButton.
-    For ex, {title: "Action", icon: iconSrc, textStyle: {color: UIColor.black(), onPress: ()=>{}}}
+    Object to describe right button, contains properties like UILinkButton.
+    For ex, {title: "Action", icon: iconSrc, textStyle: onPress: ()=>{}}
     @default null
     */
     button?: Object,
@@ -641,6 +639,17 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         return this.props.commentColor;
     }
 
+    commentButtonVariant(): UILinkButtonVariant {
+        const commentColor = this.commentColor();
+        if (commentColor === ColorVariants.TextPositive) {
+            return UILinkButtonVariant.Positive;
+        } else if (commentColor === ColorVariants.TextNegative) {
+            return UILinkButtonVariant.Negative;
+        } else {
+            return UILinkButtonVariant.Neutral;
+        }
+    }
+
     defaultValue() {
         return this.props.defaultValue;
     }
@@ -913,18 +922,14 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
             return null;
         }
 
-        const buttonTextStyle = [];
-        if (button.onPress && !button.disabled) {
-            buttonTextStyle.push(UIStyle.text.primaryBodyMedium());
-        } else {
-            buttonTextStyle.push(UIStyle.text.tertiaryBodyRegular());
-        }
-
-        return (<UITextButton
-            textStyle={buttonTextStyle}
-            {...button}
-            buttonStyle={[styles.button, button.buttonStyle]}
-        />);
+        return (
+            <UILinkButton
+                {...button}
+                layout={{
+                    marginLeft: UIConstant.tinyContentOffset(),
+                }}
+            />
+        );
     }
 
     renderArrow() {
@@ -1041,6 +1046,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const { onPressComment } = this.props;
         const comment = this.getComment();
         const commentColor = this.commentColor();
+        const commentButtonVariant = this.commentButtonVariant();
         const commentRight = this.getCommentRight();
         const testID = this.getCommentTestID();
         const testIDProp = testID ? { testID } : null;
@@ -1050,19 +1056,19 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         }
 
         const component = onPressComment ? (
-            <UITextButton
-                {...testIDProp}
-                style={[
-                    styles.commentStyle,
-                    UIStyle.margin.topSmall(),
-                    UIStyle.margin.bottomSmall(),
-                    UIStyle.height.littleCell(),
-                ]}
-                title={comment}
-                titleColor={commentColor || UILabelColors.TextAccent}
-                titleRole={UILabelRoles.ParagraphNote}
-                onPress={onPressComment}
-            />
+            <View style={styles.commentStyle}>
+                <UILinkButton
+                    {...testIDProp}
+                    title={comment}
+                    size={UILinkButtonSize.Small}
+                    variant={commentButtonVariant}
+                    onPress={onPressComment}
+                    layout={{
+                        marginTop: UIConstant.smallContentOffset() - 2,
+                        marginBottom: UIConstant.smallContentOffset() - 2,
+                    }}
+                />
+            </View>
         ) : (
             <UILabel
                 {...testIDProp}

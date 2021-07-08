@@ -15,27 +15,27 @@ Example:
          return (
              <React.Fragment>
                  <View style={UIStyle.container.centerLeft()}>
-                     <UIButton
+                     <UIBoxButton
                          title="1426.53"
                          style={UIStyle.margin.rightDefault()}
                          onPress={() => this.setState({ balance: '1426.53', loading: false })}
                      />
-                     <UIButton
+                     <UIBoxButton
                          title="18.904638302"
                          style={UIStyle.margin.rightDefault()}
                          onPress={() => this.setState({ balance: '18.904638302', loading: false })}
                      />
-                     <UIButton
+                     <UIBoxButton
                          title="182"
                          style={UIStyle.margin.rightDefault()}
                          onPress={() => this.setState({ balance: '182', loading: false })}
                      />
-                     <UIButton
+                     <UIBoxButton
                          title="0"
                          style={UIStyle.margin.rightDefault()}
                          onPress={() => this.setState({ balance: '0', loading: false })}
                      />
-                     <UIButton
+                     <UIBoxButton
                          title="Random"
                          style={UIStyle.margin.rightDefault()}
                          onPress={() => {
@@ -43,7 +43,7 @@ Example:
                             this.setState({ balance, loading: false })
                          }}
                      />
-                     <UIButton
+                     <UIBoxButton
                          title={this.state.loading ? 'Loading ....' : 'Set loading'}
                          style={UIStyle.margin.rightDefault()}
                          onPress={() => this.setState({ loading: true })}

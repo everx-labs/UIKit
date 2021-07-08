@@ -36,20 +36,20 @@ class ExampleComponent extends React.Component {
     renderNoticeButtons() {
         return (
             <View>
-                <UITextButton 
+                <UILinkButton 
                     title="Show default notice with message only"
                     onPress={() => UINotice.showMessage(
                         'System is going down at midnight tonight. We’ll notify you when it’s back up.'
                     )}
                 />
-                <UITextButton 
+                <UILinkButton 
                     title="Show default notice on top"
                     onPress={() => UINotice.showMessage({
                         message: 'System is going down at midnight tonight. We’ll notify you when it’s back up.',
                         placement: UINotice.Place.Top,
                     })}
                 />
-                <UITextButton 
+                <UILinkButton 
                     title="Show notice with subcomponent"
                     onPress={() => UINotice.showMessage({
                         title: 'Hey, Eugene',
@@ -79,12 +79,12 @@ class ExampleComponent extends React.Component {
             return null;
         }
         return (
-            <UIButton
-                title="Footer button"
-                style={UIStyle.bottomScreenContainer}
-                footer
-                onPress={() => alert('Action was called')}
-            />
+            <View style={UIStyle.bottomScreenContainer}>
+                <UIBoxButton
+                    title="Footer button"
+                    onPress={() => alert('Action was called')}
+                />
+            </View>
         )
     }
 

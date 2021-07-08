@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.chats",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Chat components for Tonlabs's UIKit",
   "scripts": {
     "tsc": "tsc --noEmit",
@@ -35,13 +35,13 @@
     "src/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.2.0",
-    "@tonlabs/uikit.components": "^2.2.0",
-    "@tonlabs/uikit.core": "^2.2.0",
-    "@tonlabs/uikit.hydrogen": "^2.2.0",
-    "@tonlabs/uikit.keyboard": "^2.2.0",
-    "@tonlabs/uikit.localization": "^2.2.0",
-    "@tonlabs/uikit.navigation_legacy": "^2.2.0",
+    "@tonlabs/uikit.assets": "^2.3.0",
+    "@tonlabs/uikit.components": "^2.3.0",
+    "@tonlabs/uikit.core": "^2.3.0",
+    "@tonlabs/uikit.hydrogen": "^2.3.0",
+    "@tonlabs/uikit.keyboard": "^2.3.0",
+    "@tonlabs/uikit.localization": "^2.3.0",
+    "@tonlabs/uikit.navigation_legacy": "^2.3.0",
     "bignumber.js": "9.0.0",
     "dayjs": "1.9.1",
     "lodash": "4.17.21",

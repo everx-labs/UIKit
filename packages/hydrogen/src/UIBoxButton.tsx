@@ -310,7 +310,7 @@ export const UIBoxButton = ({
         >
             <Button.Content>
                 {
-                    iconPosition === UIBoxButtonIconPosition.Left && icon &&
+                    iconPosition === UIBoxButtonIconPosition.Left && icon != null &&
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
@@ -320,7 +320,7 @@ export const UIBoxButton = ({
                     />
                 }
                 {
-                    title &&
+                    title != null &&
                     <Button.Title
                         titleColor={contentColor}
                         titleAnimStyle={buttonAnimations.title?.style}
@@ -329,7 +329,7 @@ export const UIBoxButton = ({
                     </Button.Title>
                 }
                 {
-                    iconPosition === UIBoxButtonIconPosition.Middle && icon &&
+                    iconPosition === UIBoxButtonIconPosition.Middle && icon != null &&
                     <Button.Icon
                         source={icon}
                         iconAnimStyle={buttonAnimations.icon?.style}
@@ -339,7 +339,7 @@ export const UIBoxButton = ({
                 }
             </Button.Content>
             {
-                iconPosition === UIBoxButtonIconPosition.Right && icon &&
+                iconPosition === UIBoxButtonIconPosition.Right && icon != null &&
                 <Button.Icon
                     source={icon}
                     iconAnimStyle={buttonAnimations.icon?.style}

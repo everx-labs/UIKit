@@ -1,6 +1,6 @@
 {
   "name": "@tonlabs/uikit.navigation_legacy",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Navigation components for Tonlabs's UIKit",
   "scripts": {
     "prepare": "bob build",
@@ -34,10 +34,10 @@
     "types/"
   ],
   "dependencies": {
-    "@tonlabs/uikit.assets": "^2.2.0",
-    "@tonlabs/uikit.components": "^2.2.0",
-    "@tonlabs/uikit.core": "^2.2.0",
-    "@tonlabs/uikit.hydrogen": "^2.2.0",
+    "@tonlabs/uikit.assets": "^2.3.0",
+    "@tonlabs/uikit.components": "^2.3.0",
+    "@tonlabs/uikit.core": "^2.3.0",
+    "@tonlabs/uikit.hydrogen": "^2.3.0",
     "prop-types": "15.6.2",
     "react-image-lightbox": "5.1.1",
     "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",

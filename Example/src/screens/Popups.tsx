@@ -2,11 +2,11 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import {
-    UITextButton,
     UIAlert,
     UIAlertView,
     UIDropdownAlert,
 } from '@tonlabs/uikit.components';
+import { UILinkButton } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -14,7 +14,7 @@ export const Popups = () => (
     <ExampleScreen>
         <ExampleSection title="UIAlert">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
+                <UILinkButton
                     title="Show UIAlert"
                     onPress={() =>
                         UIAlert.showAlert({
@@ -46,7 +46,7 @@ export const Popups = () => (
         </ExampleSection>
         <ExampleSection title="UIAlertView">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
+                <UILinkButton
                     title="Show UIAlertView"
                     onPress={() =>
                         UIAlertView.showAlert('Title', 'Some message here', [
@@ -58,7 +58,7 @@ export const Popups = () => (
         </ExampleSection>
         <ExampleSection title="UIDropdownAlert">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UITextButton
+                <UILinkButton
                     title="Show UIDropdownAlert"
                     onPress={() =>
                         UIDropdownAlert.showNotification(
