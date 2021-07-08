@@ -371,7 +371,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={[styles.textView, style]}
+                        style={style}
                     />
                     <FloatingLabel
                         isFolded={isLabelFolded}
@@ -490,14 +490,6 @@ const styles = StyleSheet.create({
         paddingBottom: 9,
         borderBottomWidth: 1,
         flexDirection: 'row',
-    },
-    textView: {
-        ...Platform.select({
-            web: {
-                minWidth: 0,
-            },
-            default: null,
-        }),
     },
     floatingLabel: {
         position: 'absolute',
