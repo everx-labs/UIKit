@@ -436,7 +436,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={[styles.textView, style]}
+                        style={style}
                     />
                     {processedChildren}
                 </UIMaterialTextViewBorder>
