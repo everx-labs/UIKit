@@ -316,30 +316,45 @@ function DelKey() {
     );
 }
 
+// eslint-disable-next-line no-shadow
+enum ValidationState {
+    None = 0,
+    Success = 1,
+    Error = 2,
+}
+
 function useAnimatedDot(
     index: number,
     dotsAnims: { current: Animated.SharedValue<number>[] },
+    validState: Animated.SharedValue<ValidationState>,
+    shakeAnim: Animated.SharedValue<number>,
 ) {
     const theme = useTheme();
 
     return useAnimatedStyle(() => {
+        let color = ColorVariants.BackgroundAccent;
+        if (validState.value === ValidationState.Success) {
+            color = ColorVariants.BackgroundPositive;
+        } else if (validState.value === ValidationState.Error) {
+            color = ColorVariants.BackgroundNegative;
+        }
         return {
             backgroundColor: Animated.interpolateColor(
                 dotsAnims.current[index].value,
                 [0, 1],
                 [
                     theme[ColorVariants.BackgroundNeutral] as string,
-                    theme[ColorVariants.BackgroundAccent] as string,
+                    theme[color] as string,
                 ],
             ),
             transform: [
-                // {
-                //     translateX: Animated.interpolate(
-                //         dotsAnims.current[num].value,
-                //         [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
-                //         [0, -10, 10, -10, 10, -10, 0],
-                //     ),
-                // },
+                {
+                    translateX: Animated.interpolate(
+                        shakeAnim.value,
+                        [0, 0.25, 0.5, 0.75, 1],
+                        [0, -10, 10, -10, 0],
+                    ),
+                },
                 {
                     scale: Animated.interpolate(
                         dotsAnims.current[index].value,
@@ -358,6 +373,7 @@ export function UIPinCode({
     description,
     descriptionTestID,
     disabled = false,
+    onEnter,
     isBiometryEnabled = true,
     biometryType,
     getPasscodeWithBiometry,
@@ -367,6 +383,7 @@ export function UIPinCode({
     description?: string;
     descriptionTestID?: string;
     disabled?: boolean;
+    onEnter: (pin: string) => Promise<boolean>;
 } & BiometryProps) {
     const dotsValues = React.useRef([
         useSharedValue(-1),
@@ -385,21 +402,54 @@ export function UIPinCode({
         useSharedValue(0),
     ]);
     const activeDotIndex = useSharedValue(0);
+    const validState = useSharedValue(ValidationState.None);
+    const shakeAnim = useSharedValue(0);
 
-    const stylesDot1 = useAnimatedDot(0, dotsAnims);
-    const stylesDot2 = useAnimatedDot(1, dotsAnims);
-    const stylesDot3 = useAnimatedDot(2, dotsAnims);
-    const stylesDot4 = useAnimatedDot(3, dotsAnims);
-    const stylesDot5 = useAnimatedDot(4, dotsAnims);
-    const stylesDot6 = useAnimatedDot(5, dotsAnims);
+    const stylesDot1 = useAnimatedDot(0, dotsAnims, validState, shakeAnim);
+    const stylesDot2 = useAnimatedDot(1, dotsAnims, validState, shakeAnim);
+    const stylesDot3 = useAnimatedDot(2, dotsAnims, validState, shakeAnim);
+    const stylesDot4 = useAnimatedDot(3, dotsAnims, validState, shakeAnim);
+    const stylesDot5 = useAnimatedDot(4, dotsAnims, validState, shakeAnim);
+    const stylesDot6 = useAnimatedDot(5, dotsAnims, validState, shakeAnim);
+
+    const validatePin = React.useCallback(
+        (pin: string) => {
+            onEnter(pin).then((isValid) => {
+                validState.value = isValid
+                    ? ValidationState.Success
+                    : ValidationState.Error;
+
+                if (!isValid) {
+                    shakeAnim.value = 0;
+                    shakeAnim.value = withSpring(1, DOT_WITH_SPRING_CONFIG);
+                }
+
+                setTimeout(() => {
+                    validState.value = ValidationState.None;
+
+                    dotsValues.current.forEach((_dot, index) => {
+                        dotsValues.current[index].value = -1;
+                        dotsAnims.current[index].value = withSpring(
+                            0,
+                            DOT_WITH_SPRING_CONFIG,
+                        );
+                    });
+                    activeDotIndex.value = 0;
+                }, 1000);
+            });
+        },
+        [onEnter, validState, activeDotIndex, shakeAnim],
+    );
 
     useDerivedValue(() => {
-        console.log(
-            dotsValues.current
-                .map((d) => d.value)
-                .filter((val) => val !== -1)
-                .join(''),
-        );
+        const pin = dotsValues.current
+            .map((d) => d.value)
+            .filter((val) => val !== -1)
+            .join('');
+
+        if (pin.length === 6) {
+            runOnJS(validatePin)(pin);
+        }
     });
 
     const dotsContextValue = React.useMemo(
