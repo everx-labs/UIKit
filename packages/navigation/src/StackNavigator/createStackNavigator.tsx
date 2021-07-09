@@ -101,7 +101,7 @@ function ScreenWithHeaderContent({
                 }
                 style={styles.screenContainer}
             >
-                {children}
+                <PortalManager id="scene">{children}</PortalManager>
             </UIBackgroundView>
         );
     }
