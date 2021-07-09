@@ -15,7 +15,7 @@ export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
-                {message.prompt != null  && (
+                {!!message.prompt && (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
                         key="terminal-input-bubble-prompt"
@@ -38,7 +38,7 @@ export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
 
     return (
         <View onLayout={onLayout}>
-            {message.prompt != null  && (
+            {!!message.prompt && (
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="terminal-input-bubble-prompt"
