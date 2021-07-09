@@ -20,29 +20,83 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
+    UISheet,
+    UIConstant as UINavConstant,
 } from '@tonlabs/uikit.navigation';
-import {
-    UISlider,
-    UIStepBar,
-    UITabView,
-} from '@tonlabs/uikit.components';
+import { UISlider, UIStepBar, UITabView } from '@tonlabs/uikit.components';
 import {
     UIMaterialTextView,
     useTheme,
     ColorVariants,
     UIBoxButton,
     UILabel,
-    UILinkButton,
+    UIBackgroundView,
 } from '@tonlabs/uikit.hydrogen';
+import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+function LockScreen() {
+    const theme = useTheme();
+    const [isVisible, setVisible] = React.useState(false);
+    const { height } = useWindowDimensions();
+    const insets = useSafeAreaInsets();
+
+    return (
+        <>
+            <UITextButton
+                testID="show_lockscreen"
+                title="Show LockScreen"
+                onPress={() => {
+                    setVisible(true);
+                }}
+            />
+            <UISheet visible={isVisible} countRubberBandDistance>
+                <UIBackgroundView
+                    style={{
+                        height:
+                            height -
+                            Math.max(StatusBar.currentHeight ?? 0, insets.top) +
+                            UINavConstant.rubberBandEffectDistance,
+                        paddingBottom:
+                            Math.max(
+                                insets?.bottom || 0,
+                                UIConstant.contentOffset(),
+                            ) + UINavConstant.rubberBandEffectDistance,
+                    }}
+                >
+                    <UIPinCode
+                        label="PIN code"
+                        description="Correct"
+                        isBiometryEnabled
+                        biometryType={UIPinCodeBiometryType.Face}
+                        getPasscodeWithBiometry={() => {
+                            return Promise.resolve('123123');
+                        }}
+                        onEnter={(pin: string) => {
+                            return new Promise((resolve) => {
+                                setTimeout(() => {
+                                    resolve(pin === '123123');
+                                }, 500);
+                            });
+                        }}
+                        onSuccess={() => {
+                            setVisible(false);
+                        }}
+                    />
+                </UIBackgroundView>
+            </UISheet>
+        </>
+    );
+}
 
 export const actionSheet = React.createRef<typeof UIActionSheet>();
 
 function BigBottomSheet() {
     const theme = useTheme();
-    const [bigBottomSheetVisible, setBigBottomSheetVisible] =
-        React.useState(false);
+    const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(
+        false,
+    );
     const { height } = useWindowDimensions();
     const insets = useSafeAreaInsets();
     return (
@@ -260,6 +314,7 @@ export const Menus = () => {
                             setQrVisible(false);
                         }}
                     />
+                    <LockScreen />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">

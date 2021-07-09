@@ -9,11 +9,7 @@ import {
     UINumberTextView,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
-import {
-    UIAddressTextView,
-    UIPinCode,
-    UIPinCodeBiometryType,
-} from '@tonlabs/uikit.flask';
+import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {
     UIAmountInput,
     UIBankCardNumberInput,
@@ -290,24 +286,6 @@ export const Inputs = () => {
                         }}
                     />
                 </View>
-            </ExampleSection>
-            <ExampleSection title="UIPinCode">
-                <UIPinCode
-                    label="PIN code"
-                    description="Correct"
-                    isBiometryEnabled
-                    biometryType={UIPinCodeBiometryType.Face}
-                    getPasscodeWithBiometry={() => {
-                        return Promise.resolve('123123');
-                    }}
-                    onEnter={(pin: string) => {
-                        return new Promise((resolve) => {
-                            setTimeout(() => {
-                                resolve(pin === '123123');
-                            }, 500);
-                        });
-                    }}
-                />
             </ExampleSection>
             <ExampleSection title="UIAmountInput">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>

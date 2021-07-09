@@ -374,6 +374,7 @@ export function UIPinCode({
     descriptionTestID,
     disabled = false,
     onEnter,
+    onSuccess,
     isBiometryEnabled = true,
     biometryType,
     getPasscodeWithBiometry,
@@ -384,6 +385,7 @@ export function UIPinCode({
     descriptionTestID?: string;
     disabled?: boolean;
     onEnter: (pin: string) => Promise<boolean>;
+    onSuccess: () => void;
 } & BiometryProps) {
     const dotsValues = React.useRef([
         useSharedValue(-1),
@@ -458,10 +460,14 @@ export function UIPinCode({
                     });
                     activeDotIndex.value = 0;
                     validState.value = ValidationState.None;
+
+                    if (isValid) {
+                        onSuccess();
+                    }
                 }, 1000);
             });
         },
-        [onEnter, validState, activeDotIndex, shakeAnim],
+        [onEnter, validState, activeDotIndex, shakeAnim, onSuccess],
     );
 
     useDerivedValue(() => {
@@ -499,7 +505,7 @@ export function UIPinCode({
     });
 
     return (
-        <>
+        <View style={styles.container}>
             {label != null && (
                 <UILabel
                     testID={labelTestID}
@@ -540,6 +546,7 @@ export function UIPinCode({
             >
                 {description || ' '}
             </UILabel>
+            <View style={styles.space} />
             <DotsContext.Provider value={dotsContextValue}>
                 <View style={{ position: 'relative' }}>
                     <View style={{ flexDirection: 'row' }}>
@@ -568,13 +575,19 @@ export function UIPinCode({
                     </View>
                 </View>
             </DotsContext.Provider>
-        </>
+        </View>
     );
 }
 
 const dotSize = UIConstant.tinyCellHeight();
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: '20%',
+        paddingBottom: '5%',
+    },
     dotsContainer: {
         flexDirection: 'row',
         height: UIConstant.bigCellHeight(),
@@ -606,5 +619,8 @@ const styles = StyleSheet.create({
         height: 74,
         borderRadius: 74 / 2,
         zIndex: -1,
+    },
+    space: {
+        flexGrow: 3,
     },
 });
