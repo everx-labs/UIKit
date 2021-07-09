@@ -327,17 +327,31 @@ function useAnimatedDot(
     index: number,
     dotsAnims: { current: Animated.SharedValue<number>[] },
     validState: Animated.SharedValue<ValidationState>,
-    shakeAnim: Animated.SharedValue<number>,
 ) {
     const theme = useTheme();
 
-    return useAnimatedStyle(() => {
+    /**
+     * Styles has to be separated and applied to different views
+     * to work properly on web
+     */
+    const outterStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    scale: dotsAnims.current[index].value + 1,
+                },
+            ],
+        };
+    });
+
+    const innerStyle = useAnimatedStyle(() => {
         let color = ColorVariants.BackgroundAccent;
         if (validState.value === ValidationState.Success) {
             color = ColorVariants.BackgroundPositive;
         } else if (validState.value === ValidationState.Error) {
             color = ColorVariants.BackgroundNegative;
         }
+
         return {
             backgroundColor: Animated.interpolateColor(
                 dotsAnims.current[index].value,
@@ -347,24 +361,10 @@ function useAnimatedDot(
                     theme[color] as string,
                 ],
             ),
-            transform: [
-                {
-                    translateX: Animated.interpolate(
-                        shakeAnim.value,
-                        [0, 0.25, 0.5, 0.75, 1],
-                        [0, -10, 10, -10, 0],
-                    ),
-                },
-                {
-                    scale: Animated.interpolate(
-                        dotsAnims.current[index].value,
-                        [0, 1],
-                        [1, 2],
-                    ),
-                },
-            ],
         };
     });
+
+    return [outterStyle, innerStyle];
 }
 
 export function UIPinCode({
@@ -405,12 +405,36 @@ export function UIPinCode({
     const validState = useSharedValue(ValidationState.None);
     const shakeAnim = useSharedValue(0);
 
-    const stylesDot1 = useAnimatedDot(0, dotsAnims, validState, shakeAnim);
-    const stylesDot2 = useAnimatedDot(1, dotsAnims, validState, shakeAnim);
-    const stylesDot3 = useAnimatedDot(2, dotsAnims, validState, shakeAnim);
-    const stylesDot4 = useAnimatedDot(3, dotsAnims, validState, shakeAnim);
-    const stylesDot5 = useAnimatedDot(4, dotsAnims, validState, shakeAnim);
-    const stylesDot6 = useAnimatedDot(5, dotsAnims, validState, shakeAnim);
+    const [outterStylesDot1, innerStylesDot1] = useAnimatedDot(
+        0,
+        dotsAnims,
+        validState,
+    );
+    const [outterStylesDot2, innerStylesDot2] = useAnimatedDot(
+        1,
+        dotsAnims,
+        validState,
+    );
+    const [outterStylesDot3, innerStylesDot3] = useAnimatedDot(
+        2,
+        dotsAnims,
+        validState,
+    );
+    const [outterStylesDot4, innerStylesDot4] = useAnimatedDot(
+        3,
+        dotsAnims,
+        validState,
+    );
+    const [outterStylesDot5, innerStylesDot5] = useAnimatedDot(
+        4,
+        dotsAnims,
+        validState,
+    );
+    const [outterStylesDot6, innerStylesDot6] = useAnimatedDot(
+        5,
+        dotsAnims,
+        validState,
+    );
 
     const validatePin = React.useCallback(
         (pin: string) => {
@@ -425,8 +449,6 @@ export function UIPinCode({
                 }
 
                 setTimeout(() => {
-                    validState.value = ValidationState.None;
-
                     dotsValues.current.forEach((_dot, index) => {
                         dotsValues.current[index].value = -1;
                         dotsAnims.current[index].value = withSpring(
@@ -435,6 +457,7 @@ export function UIPinCode({
                         );
                     });
                     activeDotIndex.value = 0;
+                    validState.value = ValidationState.None;
                 }, 1000);
             });
         },
@@ -461,6 +484,20 @@ export function UIPinCode({
         [activeDotIndex],
     );
 
+    const shakeStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateX: Animated.interpolate(
+                        shakeAnim.value,
+                        [0, 0.25, 0.5, 0.75, 1],
+                        [0, -10, 10, -10, 0],
+                    ),
+                },
+            ],
+        };
+    });
+
     return (
         <>
             {label != null && (
@@ -474,20 +511,26 @@ export function UIPinCode({
                     {label}
                 </UILabel>
             )}
-            <View
-                style={{
-                    flexDirection: 'row',
-                    height: UIConstant.bigCellHeight(),
-                    alignItems: 'center',
-                }}
-            >
-                <Animated.View style={[styles.dot, stylesDot1]} />
-                <Animated.View style={[styles.dot, stylesDot2]} />
-                <Animated.View style={[styles.dot, stylesDot3]} />
-                <Animated.View style={[styles.dot, stylesDot4]} />
-                <Animated.View style={[styles.dot, stylesDot5]} />
-                <Animated.View style={[styles.dot, stylesDot6]} />
-            </View>
+            <Animated.View style={[styles.dotsContainer, shakeStyle]}>
+                <Animated.View style={[styles.dot, outterStylesDot1]}>
+                    <Animated.View style={[styles.dotInner, innerStylesDot1]} />
+                </Animated.View>
+                <Animated.View style={[styles.dot, outterStylesDot2]}>
+                    <Animated.View style={[styles.dotInner, innerStylesDot2]} />
+                </Animated.View>
+                <Animated.View style={[styles.dot, outterStylesDot3]}>
+                    <Animated.View style={[styles.dotInner, innerStylesDot3]} />
+                </Animated.View>
+                <Animated.View style={[styles.dot, outterStylesDot4]}>
+                    <Animated.View style={[styles.dotInner, innerStylesDot4]} />
+                </Animated.View>
+                <Animated.View style={[styles.dot, outterStylesDot5]}>
+                    <Animated.View style={[styles.dotInner, innerStylesDot5]} />
+                </Animated.View>
+                <Animated.View style={[styles.dot, outterStylesDot6]}>
+                    <Animated.View style={[styles.dotInner, innerStylesDot6]} />
+                </Animated.View>
+            </Animated.View>
             <UILabel
                 testID={descriptionTestID}
                 numberOfLines={1}
@@ -532,11 +575,21 @@ export function UIPinCode({
 const dotSize = UIConstant.tinyCellHeight();
 
 const styles = StyleSheet.create({
+    dotsContainer: {
+        flexDirection: 'row',
+        height: UIConstant.bigCellHeight(),
+        alignItems: 'center',
+    },
     dot: {
         width: dotSize / 2,
         height: dotSize / 2,
         borderRadius: dotSize / 4,
         marginHorizontal: UIConstant.smallContentOffset(),
+    },
+    dotInner: {
+        width: dotSize / 2,
+        height: dotSize / 2,
+        borderRadius: dotSize / 4,
     },
     button: {
         width: 90, // 1 + 88 + 1
