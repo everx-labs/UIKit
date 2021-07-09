@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { StyleProp, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useHover } from '../useHover';
