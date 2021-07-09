@@ -88,7 +88,7 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
-                {message.prompt && (
+                {message.prompt != null && (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
                         key="address-input-bubble-prompt"
@@ -122,7 +122,7 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
 
     return (
         <View onLayout={onLayout}>
-            {message.prompt && (
+            {message.prompt != null  && (
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="address-input-bubble-prompt"

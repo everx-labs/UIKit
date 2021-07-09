@@ -16,7 +16,7 @@ export function AmountInput({ onLayout, ...message }: AmountInputMessage) {
     if (message.externalState != null) {
         return (
             <View onLayout={onLayout}>
-                {message.prompt && (
+                {message.prompt != null  && (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
                         key="amount-input-bubble-prompt"
@@ -44,7 +44,7 @@ export function AmountInput({ onLayout, ...message }: AmountInputMessage) {
 
     return (
         <View onLayout={onLayout}>
-            {message.prompt && (
+            {message.prompt != null  && (
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="amount-input-bubble-prompt"
