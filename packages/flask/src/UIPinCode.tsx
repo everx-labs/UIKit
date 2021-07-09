@@ -39,6 +39,11 @@ function hapticResponse() {
     Vibration.vibrate(40);
 }
 
+const DOT_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
+    damping: 100,
+    stiffness: 500,
+};
+
 // eslint-disable-next-line no-shadow
 export enum UIPinCodeBiometryType {
     Fingerprint = 'Fingerprint',
@@ -68,7 +73,7 @@ function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<number>) {
                     scale: Animated.interpolate(
                         circleAnimProgress.value,
                         [0, 1],
-                        [0.7, 1],
+                        [0.8, 1],
                     ),
                 },
             ],
@@ -105,7 +110,10 @@ function Key({ num, disabled }: { num: number; disabled: boolean }) {
 
             // A number was chosen
             dotsValues.current[activeDotIndex.value].value = num;
-            dotsAnims.current[activeDotIndex.value].value = withSpring(1);
+            dotsAnims.current[activeDotIndex.value].value = withSpring(
+                1,
+                DOT_WITH_SPRING_CONFIG,
+            );
             activeDotIndex.value += 1;
 
             runOnJS(hapticResponse)();
@@ -175,7 +183,10 @@ function BiometryKey({
         if (usePredefined) {
             dotsValues.current.forEach((_dot, index) => {
                 dotsValues.current[index].value = 1;
-                dotsAnims.current[index].value = withSpring(1);
+                dotsAnims.current[index].value = withSpring(
+                    1,
+                    DOT_WITH_SPRING_CONFIG,
+                );
             });
             activeDotIndex.value = 6;
             return;
@@ -187,7 +198,10 @@ function BiometryKey({
 
         dotsValues.current.forEach((_dot, index) => {
             dotsValues.current[index].value = Number(passcode[index]);
-            dotsAnims.current[index].value = withSpring(1);
+            dotsAnims.current[index].value = withSpring(
+                1,
+                DOT_WITH_SPRING_CONFIG,
+            );
         });
         activeDotIndex.value = 6;
     }, [
@@ -263,7 +277,10 @@ function DelKey() {
             }
 
             dotsValues.current[activeDotIndex.value - 1].value = -1;
-            dotsAnims.current[activeDotIndex.value - 1].value = withSpring(0);
+            dotsAnims.current[activeDotIndex.value - 1].value = withSpring(
+                0,
+                DOT_WITH_SPRING_CONFIG,
+            );
             activeDotIndex.value -= 1;
 
             runOnJS(hapticResponse)();
@@ -300,7 +317,7 @@ function DelKey() {
 }
 
 function useAnimatedDot(
-    num: number,
+    index: number,
     dotsAnims: { current: Animated.SharedValue<number>[] },
 ) {
     const theme = useTheme();
@@ -308,7 +325,7 @@ function useAnimatedDot(
     return useAnimatedStyle(() => {
         return {
             backgroundColor: Animated.interpolateColor(
-                dotsAnims.current[num].value,
+                dotsAnims.current[index].value,
                 [0, 1],
                 [
                     theme[ColorVariants.BackgroundNeutral] as string,
@@ -325,7 +342,7 @@ function useAnimatedDot(
                 // },
                 {
                     scale: Animated.interpolate(
-                        dotsAnims.current[num].value,
+                        dotsAnims.current[index].value,
                         [0, 1],
                         [1, 2],
                     ),
@@ -480,9 +497,11 @@ const styles = StyleSheet.create({
     },
     circleAbove: {
         position: 'absolute',
-        left: 0,
-        right: 0,
-        aspectRatio: 1,
-        borderRadius: 45,
+        left: (90 - 74) / 2,
+        top: 0,
+        width: 74,
+        height: 74,
+        borderRadius: 74 / 2,
+        zIndex: -1,
     },
 });
