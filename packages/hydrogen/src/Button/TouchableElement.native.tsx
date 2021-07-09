@@ -11,6 +11,7 @@ type TouchableElementProps = {
     children: React.ReactNode;
     disabled?: boolean;
     loading?: boolean;
+    onLongPress: () => void;
     onPress: () => void;
     style?: StyleProp<ViewStyle>;
     contentStyle?: StyleProp<ViewStyle>;
@@ -22,6 +23,7 @@ export const TouchableElement = ({
     children,
     disabled,
     loading,
+    onLongPress,
     onPress,
     style,
     contentStyle,
@@ -65,6 +67,7 @@ export const TouchableElement = ({
             {...props}
             disabled={disabled}
             testID={testID}
+            onLongPress={onLongPress}
             onPress={onPress}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}

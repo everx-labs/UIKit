@@ -57,6 +57,10 @@ export type UILinkButtonProps = {
      */
     loading?: boolean;
     /**
+     * Function will be called on button press longer than 500 milliseconds
+     */
+    onLongPress?: () => void | Promise<void>;
+    /**
      * Function will be called on button press
      */
     onPress?: () => void | Promise<void>;
@@ -179,6 +183,7 @@ export const UILinkButton = ({
     iconPosition = UILinkButtonIconPosition.Middle,
     layout,
     loading,
+    onLongPress,
     onPress,
     size = UILinkButtonSize.Normal,
     testID,
@@ -199,6 +204,7 @@ export const UILinkButton = ({
             animations={buttonAnimations}
             disabled={disabled}
             loading={loading}
+            onLongPress={onLongPress}
             onPress={onPress}
             testID={testID}
         >

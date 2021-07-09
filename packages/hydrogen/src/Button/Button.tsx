@@ -51,6 +51,7 @@ type ButtonProps = {
     contentStyle?: StyleProp<ViewStyle>;
     disabled?: boolean;
     loading?: boolean;
+    onLongPress?: () => void | Promise<void>;
     onPress?: () => void | Promise<void>;
     testID?: string;
 }
@@ -66,20 +67,24 @@ const ButtonForward = React.forwardRef<
         contentStyle,
         disabled,
         loading,
+        onLongPress,
         onPress,
         testID,
         ...props
     }: ButtonProps,
     ref,
 ) {
-    const handleOnPress = React.useCallback(
-        () => {
-            if (!loading && onPress) {
-                onPress();
-            }
-        },
-        [loading, onPress],
-    );
+    const handleOnLongPress = React.useCallback(() => {
+        if (!loading && onLongPress != null) {
+            onLongPress();
+        }
+    }, [loading, onLongPress]);
+
+    const handleOnPress = React.useCallback(() => {
+        if (!loading && onPress != null) {
+            onPress();
+        }
+    }, [loading, onPress]);
 
     const processedChildren = useButtonChildren(children);
 
@@ -90,6 +95,7 @@ const ButtonForward = React.forwardRef<
             animations={animations}
             disabled={disabled}
             loading={loading}
+            onLongPress={handleOnLongPress}
             onPress={handleOnPress}
             style={[styles.container, containerStyle]}
             contentStyle={[styles.content, contentStyle]}
