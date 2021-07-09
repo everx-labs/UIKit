@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { View, StyleSheet, Vibration } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Vibration,
+    StyleProp,
+    ViewStyle,
+} from 'react-native';
 import Animated, {
     useSharedValue,
     useAnimatedGestureHandler,
@@ -11,7 +17,9 @@ import Animated, {
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
+    NativeViewGestureHandlerProps,
     RawButton as GHRawButton,
+    RawButtonProps,
 } from 'react-native-gesture-handler';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -23,6 +31,7 @@ import {
     useTheme,
     ColorVariants,
     UIImage,
+    useColorParts,
 } from '@tonlabs/uikit.hydrogen';
 
 function hapticResponse() {
@@ -30,17 +39,65 @@ function hapticResponse() {
     Vibration.vibrate(40);
 }
 
-export const RawButton = Animated.createAnimatedComponent(GHRawButton);
+// eslint-disable-next-line no-shadow
+export enum UIPinCodeBiometryType {
+    Fingerprint = 'Fingerprint',
+    Face = 'Face',
+}
 
-function useKey(
-    num: number,
-    dotsValues: React.RefObject<Animated.SharedValue<number>[]>,
-    dotsAnims: React.RefObject<Animated.SharedValue<number>[]>,
-    activeDotIndex: Animated.SharedValue<number>,
-) {
-    return useAnimatedGestureHandler<
+export const RawButton: React.FunctionComponent<Animated.AnimateProps<
+    RawButtonProps &
+        NativeViewGestureHandlerProps & {
+            testID?: string;
+            style?: StyleProp<ViewStyle>;
+        }
+>> = Animated.createAnimatedComponent(GHRawButton);
+
+function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<number>) {
+    const { colorParts } = useColorParts(ColorVariants.BackgroundSecondary);
+
+    return useAnimatedStyle(() => {
+        return {
+            backgroundColor: Animated.interpolateColor(
+                circleAnimProgress.value,
+                [0, 1],
+                [`rgba(${colorParts},1)`, `rgba(${colorParts},0)`],
+            ),
+            transform: [
+                {
+                    scale: Animated.interpolate(
+                        circleAnimProgress.value,
+                        [0, 1],
+                        [0.7, 1],
+                    ),
+                },
+            ],
+        };
+    });
+}
+
+const DotsContext = React.createContext<{
+    activeDotIndex: Animated.SharedValue<number>;
+    dotsValues: { current: Animated.SharedValue<number>[] };
+    dotsAnims: { current: Animated.SharedValue<number>[] };
+}>(
+    // @ts-ignore
+    {},
+);
+
+function Key({ num, disabled }: { num: number; disabled: boolean }) {
+    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
+        DotsContext,
+    );
+
+    const circleAnimProgress = useSharedValue(1);
+
+    const gestureHandler = useAnimatedGestureHandler<
         GestureEvent<NativeViewGestureHandlerPayload>
     >({
+        onActive: () => {
+            circleAnimProgress.value = 0;
+        },
         onFinish: () => {
             if (activeDotIndex.value > 5) {
                 return;
@@ -50,13 +107,201 @@ function useKey(
             dotsValues.current[activeDotIndex.value].value = num;
             dotsAnims.current[activeDotIndex.value].value = withSpring(1);
             activeDotIndex.value += 1;
+
             runOnJS(hapticResponse)();
         },
+        onCancel: () => {
+            circleAnimProgress.value = withSpring(1);
+        },
+        onEnd: () => {
+            circleAnimProgress.value = withSpring(1);
+        },
     });
+
+    const circleAboveButtonStyle = useCircleAboveStyle(circleAnimProgress);
+
+    return (
+        <RawButton
+            testID={`pincode_digit_${num}`}
+            onGestureEvent={gestureHandler}
+            style={[styles.button, disabled ? { opacity: 0.5 } : null]}
+        >
+            <Animated.View
+                style={[styles.circleAbove, circleAboveButtonStyle]}
+            />
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.LightHuge}
+            >
+                {num}
+            </UILabel>
+        </RawButton>
+    );
 }
+
+type BiometryProps = {
+    isBiometryEnabled: boolean;
+    biometryType?: UIPinCodeBiometryType;
+    getPasscodeWithBiometry?: () => Promise<string>;
+};
+
+function BiometryKey({
+    isBiometryEnabled,
+    biometryType,
+    getPasscodeWithBiometry,
+}: BiometryProps) {
+    const usePredefined =
+        !isBiometryEnabled && process.env.NODE_ENV === 'development';
+
+    let icon = null;
+    if (biometryType && getPasscodeWithBiometry != null) {
+        icon = (
+            <UIImage
+                source={
+                    biometryType === UIPinCodeBiometryType.Face
+                        ? UIAssets.icons.security.faceId
+                        : UIAssets.icons.security.touchId
+                }
+                tintColor={ColorVariants.TextPrimary}
+            />
+        );
+    }
+
+    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
+        DotsContext,
+    );
+
+    const getPasscode = React.useCallback(async () => {
+        if (usePredefined) {
+            dotsValues.current.forEach((_dot, index) => {
+                dotsValues.current[index].value = 1;
+                dotsAnims.current[index].value = withSpring(1);
+            });
+            activeDotIndex.value = 6;
+            return;
+        }
+        if (!isBiometryEnabled || getPasscodeWithBiometry == null) {
+            return;
+        }
+        const passcode = await getPasscodeWithBiometry();
+
+        dotsValues.current.forEach((_dot, index) => {
+            dotsValues.current[index].value = Number(passcode[index]);
+            dotsAnims.current[index].value = withSpring(1);
+        });
+        activeDotIndex.value = 6;
+    }, [
+        usePredefined,
+        isBiometryEnabled,
+        getPasscodeWithBiometry,
+        dotsValues,
+        dotsAnims,
+        activeDotIndex,
+    ]);
+
+    const circleAnimProgress = useSharedValue(1);
+    const gestureHandler = useAnimatedGestureHandler<
+        GestureEvent<NativeViewGestureHandlerPayload>
+    >({
+        onActive: () => {
+            circleAnimProgress.value = 0;
+        },
+        onFinish: () => {
+            runOnJS(getPasscode)();
+            runOnJS(hapticResponse)();
+        },
+        onCancel: () => {
+            circleAnimProgress.value = withSpring(1);
+        },
+        onEnd: () => {
+            circleAnimProgress.value = withSpring(1);
+        },
+    });
+
+    const circleAboveButtonStyle = useCircleAboveStyle(circleAnimProgress);
+
+    return (
+        <RawButton
+            testID="pincode_biometry"
+            onGestureEvent={gestureHandler}
+            style={styles.button}
+        >
+            <Animated.View
+                style={[styles.circleAbove, circleAboveButtonStyle]}
+            />
+            {usePredefined ? (
+                <UILabel
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.ActionFootnote}
+                >
+                    DEV
+                </UILabel>
+            ) : (
+                icon
+            )}
+        </RawButton>
+    );
+}
+
+function DelKey() {
+    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
+        DotsContext,
+    );
+
+    const circleAnimProgress = useSharedValue(1);
+    const circleAboveDelButtonStyle = useCircleAboveStyle(circleAnimProgress);
+    const gestureHandlerDel = useAnimatedGestureHandler<
+        GestureEvent<NativeViewGestureHandlerPayload>
+    >({
+        onActive: () => {
+            circleAnimProgress.value = 0;
+        },
+        onFinish: () => {
+            // Nothing to delete
+            if (activeDotIndex.value <= 0) {
+                return;
+            }
+
+            dotsValues.current[activeDotIndex.value - 1].value = -1;
+            dotsAnims.current[activeDotIndex.value - 1].value = withSpring(0);
+            activeDotIndex.value -= 1;
+
+            runOnJS(hapticResponse)();
+        },
+        onCancel: () => {
+            circleAnimProgress.value = withSpring(1);
+        },
+        onEnd: () => {
+            circleAnimProgress.value = withSpring(1);
+        },
+    });
+
+    const delButtonStyle = useAnimatedStyle(() => {
+        return {
+            opacity: activeDotIndex.value > 0 ? 1 : 0.5,
+        };
+    });
+
+    return (
+        <RawButton
+            testID="pincode_digit_delete"
+            onGestureEvent={gestureHandlerDel}
+            style={[styles.button, delButtonStyle]}
+        >
+            <Animated.View
+                style={[styles.circleAbove, circleAboveDelButtonStyle]}
+            />
+            <UIImage
+                source={UIAssets.icons.ui.delete}
+                tintColor={ColorVariants.TextPrimary}
+            />
+        </RawButton>
+    );
+}
+
 function useAnimatedDot(
     num: number,
-    dotsAnims: React.RefObject<Animated.SharedValue<number>[]>,
+    dotsAnims: { current: Animated.SharedValue<number>[] },
 ) {
     const theme = useTheme();
 
@@ -90,7 +335,22 @@ function useAnimatedDot(
     });
 }
 
-export function UIPinCode() {
+export function UIPinCode({
+    label,
+    labelTestID,
+    description,
+    descriptionTestID,
+    disabled = false,
+    isBiometryEnabled = true,
+    biometryType,
+    getPasscodeWithBiometry,
+}: {
+    label?: string;
+    labelTestID?: string;
+    description?: string;
+    descriptionTestID?: string;
+    disabled?: boolean;
+} & BiometryProps) {
     const dotsValues = React.useRef([
         useSharedValue(-1),
         useSharedValue(-1),
@@ -109,32 +369,6 @@ export function UIPinCode() {
     ]);
     const activeDotIndex = useSharedValue(0);
 
-    const gestureHandler1 = useKey(1, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler2 = useKey(2, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler3 = useKey(3, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler4 = useKey(4, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler5 = useKey(5, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler6 = useKey(6, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler7 = useKey(7, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler8 = useKey(8, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler9 = useKey(9, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandler0 = useKey(0, dotsValues, dotsAnims, activeDotIndex);
-    const gestureHandlerDel = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
-        onFinish: () => {
-            // Nothing to delete
-            if (activeDotIndex.value <= 0) {
-                return;
-            }
-
-            dotsValues.current[activeDotIndex.value - 1].value = -1;
-            dotsAnims.current[activeDotIndex.value - 1].value = withSpring(0);
-            activeDotIndex.value -= 1;
-            runOnJS(hapticResponse)();
-        },
-    });
-
     const stylesDot1 = useAnimatedDot(0, dotsAnims);
     const stylesDot2 = useAnimatedDot(1, dotsAnims);
     const stylesDot3 = useAnimatedDot(2, dotsAnims);
@@ -151,14 +385,28 @@ export function UIPinCode() {
         );
     });
 
-    const delButtonStyle = useAnimatedStyle(() => {
-        return {
-            opacity: activeDotIndex.value > 0 ? 1 : 0.5,
-        };
-    });
+    const dotsContextValue = React.useMemo(
+        () => ({
+            activeDotIndex,
+            dotsValues,
+            dotsAnims,
+        }),
+        [activeDotIndex],
+    );
 
     return (
         <>
+            {label != null && (
+                <UILabel
+                    testID={labelTestID}
+                    numberOfLines={1}
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.ParagraphText}
+                    selectable={false}
+                >
+                    {label}
+                </UILabel>
+            )}
             <View
                 style={{
                     flexDirection: 'row',
@@ -173,140 +421,43 @@ export function UIPinCode() {
                 <Animated.View style={[styles.dot, stylesDot5]} />
                 <Animated.View style={[styles.dot, stylesDot6]} />
             </View>
-            <View style={{ flexDirection: 'row' }}>
-                <RawButton
-                    onGestureEvent={gestureHandler1}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        1
-                    </UILabel>
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandler2}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        2
-                    </UILabel>
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandler3}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        3
-                    </UILabel>
-                </RawButton>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <RawButton
-                    onGestureEvent={gestureHandler4}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        4
-                    </UILabel>
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandler5}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        5
-                    </UILabel>
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandler6}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        6
-                    </UILabel>
-                </RawButton>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <RawButton
-                    onGestureEvent={gestureHandler7}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        7
-                    </UILabel>
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandler8}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        8
-                    </UILabel>
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandler9}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        9
-                    </UILabel>
-                </RawButton>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <RawButton
-                    // ref={ref7}
-                    // onGestureEvent={gestureHandler}
-                    style={styles.button}
-                >
-                    {/* <UILabel>7</UILabel> */}
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandler0}
-                    style={styles.button}
-                >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.LightHuge}
-                    >
-                        0
-                    </UILabel>
-                </RawButton>
-                <RawButton
-                    onGestureEvent={gestureHandlerDel}
-                    style={[styles.button, delButtonStyle]}
-                >
-                    <UIImage
-                        source={UIAssets.icons.ui.delete}
-                        tintColor={ColorVariants.TextPrimary}
-                    />
-                </RawButton>
-            </View>
+            <UILabel
+                testID={descriptionTestID}
+                numberOfLines={1}
+                color={UILabelColors.TextSecondary}
+                role={UILabelRoles.ParagraphFootnote}
+                selectable={false}
+            >
+                {description || ' '}
+            </UILabel>
+            <DotsContext.Provider value={dotsContextValue}>
+                <View style={{ position: 'relative' }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Key num={1} disabled={disabled} />
+                        <Key num={2} disabled={disabled} />
+                        <Key num={3} disabled={disabled} />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Key num={4} disabled={disabled} />
+                        <Key num={5} disabled={disabled} />
+                        <Key num={6} disabled={disabled} />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Key num={7} disabled={disabled} />
+                        <Key num={8} disabled={disabled} />
+                        <Key num={9} disabled={disabled} />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <BiometryKey
+                            isBiometryEnabled={isBiometryEnabled}
+                            biometryType={biometryType}
+                            getPasscodeWithBiometry={getPasscodeWithBiometry}
+                        />
+                        <Key num={0} disabled={disabled} />
+                        <DelKey />
+                    </View>
+                </View>
+            </DotsContext.Provider>
         </>
     );
 }
@@ -325,5 +476,13 @@ const styles = StyleSheet.create({
         height: 74, // 1 + 72 + 1
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
+    },
+    circleAbove: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        aspectRatio: 1,
+        borderRadius: 45,
     },
 });
