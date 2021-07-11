@@ -47,8 +47,6 @@ const UI_CHAT_INPUT_MAX_HEIGHT = 172;
 const UI_HORIZONTAL_CONTENT_OFFSET = 12;
 const UI_VERTICAL_CONTENT_OFFSET = 8;
 
-const UI_TINY_ICON_SIZE = 4;
-
 const UI_TINY_BUTTON_HEIGHT = 20;
 const UI_SMALL_BUTTON_HEIGHT = 32;
 const UI_MEDIUM_BUTTON_HEIGHT = 40;
@@ -79,7 +77,9 @@ const UI_MEDIUM_AVATAR_SIZE = 40;
 const UI_DETAILS_AVATAR_SIZE = 44;
 const UI_LARGE_AVATAR_SIZE = 64;
 
-const UI_ICON_SIZE = 24;
+const UI_TINY_ICON_SIZE = 4;
+const UI_DEFAULT_ICON_SIZE = 24;
+const UI_MEDIUM_ICON_SIZE = 32;
 
 const UI_DISABLED_OUTLINE = Platform.OS === 'web' && !global.__TEST__ ? { outlineStyle: 'none' } : null;
 
@@ -347,10 +347,6 @@ export default class UIConstant {
     }
 
     // Button heights
-    static tinyIconSize() {
-        return UI_TINY_ICON_SIZE;
-    }
-
     static tinyButtonHeight() {
         return UI_TINY_BUTTON_HEIGHT;
     }
@@ -459,8 +455,17 @@ export default class UIConstant {
         return UI_SMALL_AVATAR_SIZE;
     }
 
+    // Icons
+    static tinyIconSize() {
+        return UI_TINY_ICON_SIZE;
+    }
+
     static iconSize() {
-        return UI_ICON_SIZE;
+        return UI_DEFAULT_ICON_SIZE;
+    }
+    
+    static mediumIconSize() {
+        return UI_MEDIUM_ICON_SIZE;
     }
 
     // Styles

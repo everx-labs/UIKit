@@ -47,15 +47,21 @@ export function QuickAction(props: Props) {
                     onPress={action.onPress}
                     style={[commonStyles.buttonContainer, UIStyle.flex.row()]}
                 >
-                    {action.icon && <UIImage source={action.icon} />}
-                    {action.title &&
-                    <UILabel
-                        color={UILabelColors.TextAccent}
-                        role={UILabelRoles.Action}
-                        style={action.icon ? UIStyle.margin.leftSmall() : null}
+                    {action.icon != null && 
+                        <UIImage 
+                            source={action.icon}
+                            style={commonStyles.actionIcon}
+                        />
+                    }
+                    {action.title != null &&
+                        <UILabel
+                            color={UILabelColors.TextAccent}
+                            role={UILabelRoles.Action}
+                            style={action.icon ? UIStyle.margin.leftSmall() : null}
                     >
-                        {action.title}
-                    </UILabel>}
+                            {action.title}
+                        </UILabel>
+                    }
                 </TouchableOpacity>
             ))}
         </View>
