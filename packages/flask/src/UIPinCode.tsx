@@ -506,75 +506,93 @@ export function UIPinCode({
 
     return (
         <View style={styles.container}>
-            {label != null && (
+            <View style={styles.upperSpacer} />
+            <View style={styles.inner}>
+                {label != null && (
+                    <UILabel
+                        testID={labelTestID}
+                        numberOfLines={1}
+                        color={UILabelColors.TextPrimary}
+                        role={UILabelRoles.ParagraphText}
+                        selectable={false}
+                    >
+                        {label}
+                    </UILabel>
+                )}
+                <Animated.View style={[styles.dotsContainer, shakeStyle]}>
+                    <Animated.View style={[styles.dot, outterStylesDot1]}>
+                        <Animated.View
+                            style={[styles.dotInner, innerStylesDot1]}
+                        />
+                    </Animated.View>
+                    <Animated.View style={[styles.dot, outterStylesDot2]}>
+                        <Animated.View
+                            style={[styles.dotInner, innerStylesDot2]}
+                        />
+                    </Animated.View>
+                    <Animated.View style={[styles.dot, outterStylesDot3]}>
+                        <Animated.View
+                            style={[styles.dotInner, innerStylesDot3]}
+                        />
+                    </Animated.View>
+                    <Animated.View style={[styles.dot, outterStylesDot4]}>
+                        <Animated.View
+                            style={[styles.dotInner, innerStylesDot4]}
+                        />
+                    </Animated.View>
+                    <Animated.View style={[styles.dot, outterStylesDot5]}>
+                        <Animated.View
+                            style={[styles.dotInner, innerStylesDot5]}
+                        />
+                    </Animated.View>
+                    <Animated.View style={[styles.dot, outterStylesDot6]}>
+                        <Animated.View
+                            style={[styles.dotInner, innerStylesDot6]}
+                        />
+                    </Animated.View>
+                </Animated.View>
                 <UILabel
-                    testID={labelTestID}
+                    testID={descriptionTestID}
                     numberOfLines={1}
-                    color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.ParagraphText}
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.ParagraphFootnote}
                     selectable={false}
                 >
-                    {label}
+                    {description || ' '}
                 </UILabel>
-            )}
-            <Animated.View style={[styles.dotsContainer, shakeStyle]}>
-                <Animated.View style={[styles.dot, outterStylesDot1]}>
-                    <Animated.View style={[styles.dotInner, innerStylesDot1]} />
-                </Animated.View>
-                <Animated.View style={[styles.dot, outterStylesDot2]}>
-                    <Animated.View style={[styles.dotInner, innerStylesDot2]} />
-                </Animated.View>
-                <Animated.View style={[styles.dot, outterStylesDot3]}>
-                    <Animated.View style={[styles.dotInner, innerStylesDot3]} />
-                </Animated.View>
-                <Animated.View style={[styles.dot, outterStylesDot4]}>
-                    <Animated.View style={[styles.dotInner, innerStylesDot4]} />
-                </Animated.View>
-                <Animated.View style={[styles.dot, outterStylesDot5]}>
-                    <Animated.View style={[styles.dotInner, innerStylesDot5]} />
-                </Animated.View>
-                <Animated.View style={[styles.dot, outterStylesDot6]}>
-                    <Animated.View style={[styles.dotInner, innerStylesDot6]} />
-                </Animated.View>
-            </Animated.View>
-            <UILabel
-                testID={descriptionTestID}
-                numberOfLines={1}
-                color={UILabelColors.TextSecondary}
-                role={UILabelRoles.ParagraphFootnote}
-                selectable={false}
-            >
-                {description || ' '}
-            </UILabel>
-            <View style={styles.space} />
-            <DotsContext.Provider value={dotsContextValue}>
-                <View style={{ position: 'relative' }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Key num={1} disabled={disabled} />
-                        <Key num={2} disabled={disabled} />
-                        <Key num={3} disabled={disabled} />
+                <View style={styles.space} />
+                <DotsContext.Provider value={dotsContextValue}>
+                    <View style={{ position: 'relative' }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Key num={1} disabled={disabled} />
+                            <Key num={2} disabled={disabled} />
+                            <Key num={3} disabled={disabled} />
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Key num={4} disabled={disabled} />
+                            <Key num={5} disabled={disabled} />
+                            <Key num={6} disabled={disabled} />
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Key num={7} disabled={disabled} />
+                            <Key num={8} disabled={disabled} />
+                            <Key num={9} disabled={disabled} />
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <BiometryKey
+                                isBiometryEnabled={isBiometryEnabled}
+                                biometryType={biometryType}
+                                getPasscodeWithBiometry={
+                                    getPasscodeWithBiometry
+                                }
+                            />
+                            <Key num={0} disabled={disabled} />
+                            <DelKey />
+                        </View>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Key num={4} disabled={disabled} />
-                        <Key num={5} disabled={disabled} />
-                        <Key num={6} disabled={disabled} />
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Key num={7} disabled={disabled} />
-                        <Key num={8} disabled={disabled} />
-                        <Key num={9} disabled={disabled} />
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <BiometryKey
-                            isBiometryEnabled={isBiometryEnabled}
-                            biometryType={biometryType}
-                            getPasscodeWithBiometry={getPasscodeWithBiometry}
-                        />
-                        <Key num={0} disabled={disabled} />
-                        <DelKey />
-                    </View>
-                </View>
-            </DotsContext.Provider>
+                </DotsContext.Provider>
+            </View>
+            <View style={styles.bottomSpacer} />
         </View>
     );
 }
@@ -584,9 +602,16 @@ const dotSize = UIConstant.tinyCellHeight();
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    upperSpacer: {
+        flex: 3,
+    },
+    inner: {
+        flex: 10,
         alignItems: 'center',
-        paddingTop: '20%',
-        paddingBottom: '5%',
+    },
+    bottomSpacer: {
+        flex: 1,
     },
     dotsContainer: {
         flexDirection: 'row',

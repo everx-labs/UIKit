@@ -2,7 +2,13 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
 import { useState } from 'react';
-import { StatusBar, Text, useWindowDimensions, View } from 'react-native';
+import {
+    Platform,
+    StatusBar,
+    Text,
+    useWindowDimensions,
+    View,
+} from 'react-native';
 import {
     SafeAreaInsetsContext,
     useSafeAreaInsets,
@@ -20,8 +26,7 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
-    UISheet,
-    UIConstant as UINavConstant,
+    UIFullscreenSheet,
 } from '@tonlabs/uikit.navigation';
 import { UISlider, UIStepBar, UITabView } from '@tonlabs/uikit.components';
 import {
@@ -30,16 +35,14 @@ import {
     ColorVariants,
     UIBoxButton,
     UILabel,
-    UIBackgroundView,
 } from '@tonlabs/uikit.hydrogen';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-function LockScreen() {
+function PinCodeMenu() {
     const theme = useTheme();
     const [isVisible, setVisible] = React.useState(false);
-    const { height } = useWindowDimensions();
     const insets = useSafeAreaInsets();
 
     return (
@@ -51,41 +54,39 @@ function LockScreen() {
                     setVisible(true);
                 }}
             />
-            <UISheet visible={isVisible} countRubberBandDistance>
-                <UIBackgroundView
-                    style={{
-                        height:
-                            height -
-                            Math.max(StatusBar.currentHeight ?? 0, insets.top) +
-                            UINavConstant.rubberBandEffectDistance,
-                        paddingBottom:
-                            Math.max(
-                                insets?.bottom || 0,
-                                UIConstant.contentOffset(),
-                            ) + UINavConstant.rubberBandEffectDistance,
+            <UIFullscreenSheet
+                visible={isVisible}
+                hasOpenAnimation={false}
+                forId="lockScreen"
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    paddingBottom: Math.max(
+                        insets?.bottom || 0,
+                        UIConstant.contentOffset(),
+                    ),
+                    borderRadius: Platform.select({ web: 10, default: 0 }),
+                }}
+            >
+                <UIPinCode
+                    label="PIN code"
+                    description="Correct"
+                    isBiometryEnabled
+                    biometryType={UIPinCodeBiometryType.Face}
+                    getPasscodeWithBiometry={() => {
+                        return Promise.resolve('123123');
                     }}
-                >
-                    <UIPinCode
-                        label="PIN code"
-                        description="Correct"
-                        isBiometryEnabled
-                        biometryType={UIPinCodeBiometryType.Face}
-                        getPasscodeWithBiometry={() => {
-                            return Promise.resolve('123123');
-                        }}
-                        onEnter={(pin: string) => {
-                            return new Promise((resolve) => {
-                                setTimeout(() => {
-                                    resolve(pin === '123123');
-                                }, 500);
-                            });
-                        }}
-                        onSuccess={() => {
-                            setVisible(false);
-                        }}
-                    />
-                </UIBackgroundView>
-            </UISheet>
+                    onEnter={(pin: string) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve(pin === '123123');
+                            }, 500);
+                        });
+                    }}
+                    onSuccess={() => {
+                        setVisible(false);
+                    }}
+                />
+            </UIFullscreenSheet>
         </>
     );
 }
@@ -314,7 +315,7 @@ export const Menus = () => {
                             setQrVisible(false);
                         }}
                     />
-                    <LockScreen />
+                    <PinCodeMenu />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">

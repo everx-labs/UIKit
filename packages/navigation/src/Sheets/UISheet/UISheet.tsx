@@ -31,9 +31,17 @@ import { usePosition } from './usePosition';
 export type UISheetProps = {
     visible: boolean;
     onClose?: OnClose;
-    countRubberBandDistance?: boolean;
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
+    // advanced
+    // not for public use
+    countRubberBandDistance?: boolean;
+    hasOpenAnimation?: boolean;
+    hasCloseAnimation?: boolean;
+    /**
+     * See Portal
+     */
+    forId?: string;
 };
 
 type UISheetPortalContentProps = UISheetProps & {
@@ -43,10 +51,12 @@ type UISheetPortalContentProps = UISheetProps & {
 function UISheetPortalContent({
     visible,
     onClose,
-    countRubberBandDistance,
     children,
     onClosePortalRequest,
     style,
+    countRubberBandDistance,
+    hasOpenAnimation,
+    hasCloseAnimation,
 }: UISheetPortalContentProps) {
     const { height, onSheetLayout } = useSheetHeight(
         UIConstant.rubberBandEffectDistance,
@@ -64,7 +74,14 @@ function UISheetPortalContent({
         hasScroll,
         setHasScroll,
         position,
-    } = usePosition(height, keyboardHeight, onClose, onClosePortalRequest);
+    } = usePosition(
+        height,
+        keyboardHeight,
+        hasOpenAnimation,
+        hasCloseAnimation,
+        onClose,
+        onClosePortalRequest,
+    );
 
     React.useEffect(() => {
         if (!visible) {
@@ -193,7 +210,7 @@ function UISheetPortalContent({
 }
 
 export function UISheet(props: UISheetProps) {
-    const { visible } = props;
+    const { visible, forId } = props;
     const [isVisible, setIsVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -216,7 +233,7 @@ export function UISheet(props: UISheetProps) {
     }
 
     return (
-        <Portal absoluteFill>
+        <Portal absoluteFill forId={forId}>
             <UISheetPortalContent
                 {...props}
                 onClosePortalRequest={onClosePortalRequest}
