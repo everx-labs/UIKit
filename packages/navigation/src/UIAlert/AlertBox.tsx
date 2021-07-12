@@ -43,7 +43,7 @@ type ContentProps = AlertBoxProps & {
 const Content: React.FC<ContentProps> = ({
     children,
     testID,
-    isVisible,
+    visible,
     onDisappeared,
 }: ContentProps) => {
     const theme = useTheme();
@@ -53,19 +53,19 @@ const Content: React.FC<ContentProps> = ({
     );
 
     React.useEffect(() => {
-        const newDisplayState = isVisible
+        const newDisplayState = visible
             ? DisplayState.VISIBLE
             : DisplayState.HIDDEN;
         if (newDisplayState !== displayState.value) {
             displayState.value = newDisplayState;
         }
-    }, [isVisible, displayState]);
+    }, [visible, displayState]);
 
     const onAnimationEnd = React.useCallback(() => {
-        if (!isVisible) {
+        if (!visible) {
             onDisappeared();
         }
-    }, [isVisible, onDisappeared]);
+    }, [visible, onDisappeared]);
 
     const springAnimatedState = Animated.useDerivedValue<number>(() => {
         return Animated.withSpring(displayState.value);
@@ -124,11 +124,11 @@ const Content: React.FC<ContentProps> = ({
     );
 };
 
-type AlertBoxProps = {
+export type AlertBoxProps = {
     /**
      * State of visibility
      */
-    isVisible: boolean;
+    visible: boolean;
     /**
      * ID for usage in tests
      */
@@ -140,17 +140,17 @@ type AlertBoxProps = {
 };
 
 export const AlertBox: React.FC<AlertBoxProps> = (props: AlertBoxProps) => {
-    const { isVisible } = props;
+    const { visible } = props;
     /** It is needed to see how the alert disappears animatedly */
     const [isComponentVisible, setIsComponentVisible] = React.useState<boolean>(
         false,
     );
 
     React.useEffect(() => {
-        if (isVisible && !isComponentVisible) {
+        if (visible && !isComponentVisible) {
             setIsComponentVisible(true);
         }
-    }, [isVisible, isComponentVisible]);
+    }, [visible, isComponentVisible]);
 
     const onDisappeared = React.useCallback(() => {
         setIsComponentVisible(false);
