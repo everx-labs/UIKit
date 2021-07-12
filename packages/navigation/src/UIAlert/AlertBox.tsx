@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
     Portal,
     ColorVariants,
@@ -7,15 +7,24 @@ import {
     makeStyles,
 } from '@tonlabs/uikit.hydrogen';
 import Animated from 'react-native-reanimated';
+import { TapGestureHandler } from 'react-native-gesture-handler';
+import { UIConstant } from '@tonlabs/uikit.core';
 
 const ALERT_WINDOW_MINIMUM_OFFSET = 48;
 const ALERT_WINDOW_MAXIMUM_WIDTH = 350;
+const MAX_DISTANCE_OF_TAP = 4;
 
 // eslint-disable-next-line no-shadow
 enum DisplayState {
     VISIBLE = 1,
     HIDDEN = 0,
 }
+
+const DURATION_OF_LINEAR_ANIMATION = 150;
+const springConfig: Animated.WithSpringConfig = {
+    damping: 20,
+    stiffness: 300,
+};
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -33,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: ALERT_WINDOW_MAXIMUM_WIDTH,
         flex: 1,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
+        borderRadius: UIConstant.mediumBorderRadius(),
+        overflow: 'hidden',
     },
 }));
 
@@ -45,6 +56,7 @@ const Content: React.FC<ContentProps> = ({
     testID,
     visible,
     onDisappeared,
+    onTapUnderlay,
 }: ContentProps) => {
     const theme = useTheme();
     const styles = useStyles(theme);
@@ -68,13 +80,13 @@ const Content: React.FC<ContentProps> = ({
     }, [visible, onDisappeared]);
 
     const springAnimatedState = Animated.useDerivedValue<number>(() => {
-        return Animated.withSpring(displayState.value);
+        return Animated.withSpring(displayState.value, springConfig);
     });
 
     const linearAnimatedState = Animated.useDerivedValue<number>(() => {
         return Animated.withTiming(
             displayState.value,
-            { duration: 200 },
+            { duration: DURATION_OF_LINEAR_ANIMATION },
             (isFinished: boolean) => {
                 if (isFinished) {
                     Animated.runOnJS(onAnimationEnd)();
@@ -107,18 +119,44 @@ const Content: React.FC<ContentProps> = ({
         };
     });
 
+    const containerAnimatedStyle = Animated.useAnimatedStyle(() => {
+        return {
+            opacity: Animated.interpolate(
+                linearAnimatedState.value,
+                [DisplayState.HIDDEN, DisplayState.VISIBLE],
+                [0, 1],
+            ),
+        };
+    });
+
+    const onEnded = React.useCallback(() => {
+        if (onTapUnderlay) {
+            onTapUnderlay();
+        }
+    }, [onTapUnderlay]);
+
     return (
         <Portal absoluteFill>
-            <Animated.View
-                style={[styles.backgroundStyle, backgroundAnimatedStyle]}
+            <TapGestureHandler
+                enabled={!!onTapUnderlay}
+                onEnded={onEnded}
+                maxDist={MAX_DISTANCE_OF_TAP}
             >
-                <View style={styles.container} testID={testID}>
-                    <Animated.View
-                        style={[styles.windowStyles, windowAnimatedStyles]}
-                    >
-                        {children}
-                    </Animated.View>
-                </View>
+                <Animated.View
+                    style={[styles.backgroundStyle, backgroundAnimatedStyle]}
+                />
+            </TapGestureHandler>
+
+            <Animated.View
+                style={[styles.container, containerAnimatedStyle]}
+                testID={testID}
+                pointerEvents="box-none"
+            >
+                <Animated.View
+                    style={[styles.windowStyles, windowAnimatedStyles]}
+                >
+                    {children}
+                </Animated.View>
             </Animated.View>
         </Portal>
     );
@@ -130,13 +168,17 @@ export type AlertBoxProps = {
      */
     visible: boolean;
     /**
-     * ID for usage in tests
-     */
-    testID?: string;
-    /**
      * Content of alert
      */
     children: React.ReactNode;
+    /**
+     * The callback that is called when tapping on the underlay
+     */
+    onTapUnderlay?: () => void;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export const AlertBox: React.FC<AlertBoxProps> = (props: AlertBoxProps) => {
