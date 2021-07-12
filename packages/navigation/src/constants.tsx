@@ -22,4 +22,10 @@ export const UIConstant = {
     rubberBandEffectDistance: 50,
 
     titleMinimumFontScale: 0.7,
+
+    alertWindowMinimumHorizontalOffset: 48,
+    alertWindowMaximumWidth: 350,
+
+    maxSlideDistanceOfTap: 4,
+    mediumBorderRadius: 12,
 };

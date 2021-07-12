@@ -8,11 +8,7 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
-import { UIConstant } from '@tonlabs/uikit.core';
-
-const ALERT_WINDOW_MINIMUM_OFFSET = 48;
-const ALERT_WINDOW_MAXIMUM_WIDTH = 350;
-const MAX_DISTANCE_OF_TAP = 4;
+import { UIConstant } from '../constants';
 
 // eslint-disable-next-line no-shadow
 enum DisplayState {
@@ -29,7 +25,7 @@ const springConfig: Animated.WithSpringConfig = {
 const useStyles = makeStyles((theme) => ({
     container: {
         ...StyleSheet.absoluteFillObject,
-        padding: ALERT_WINDOW_MINIMUM_OFFSET,
+        padding: UIConstant.alertWindowMinimumHorizontalOffset,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -39,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme[ColorVariants.BackgroundOverlay],
     },
     windowStyles: {
-        maxWidth: ALERT_WINDOW_MAXIMUM_WIDTH,
+        maxWidth: UIConstant.alertWindowMaximumWidth,
         flex: 1,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderRadius: UIConstant.mediumBorderRadius(),
+        borderRadius: UIConstant.mediumBorderRadius,
         overflow: 'hidden',
     },
 }));
@@ -140,7 +136,7 @@ const Content: React.FC<ContentProps> = ({
             <TapGestureHandler
                 enabled={!!onTapUnderlay}
                 onEnded={onEnded}
-                maxDist={MAX_DISTANCE_OF_TAP}
+                maxDist={UIConstant.maxSlideDistanceOfTap}
             >
                 <Animated.View
                     style={[styles.backgroundStyle, backgroundAnimatedStyle]}
