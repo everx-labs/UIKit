@@ -6,7 +6,6 @@ import {
     Animated,
     NativeScrollEvent,
     NativeSyntheticEvent,
-    LayoutChangeEvent,
     SectionListProps,
     ScrollViewProps,
     VirtualizedListProps,
