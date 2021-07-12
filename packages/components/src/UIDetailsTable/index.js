@@ -245,12 +245,14 @@ class UIDetailsTable extends UIComponent<Props, State> {
             return this.renderTextCell(primary, secondary);
         } else if (type === UIDetailsTable.cellType.action || onPress) {
             return (
-                <UILinkButton
-                    testID={`table_cell_clickable_${caption || 'default'}_value`}
-                    title={value}
-                    size={UILinkButtonSize.Small}
-                    onPress={onPress || (() => this.onActionPressed(details))}
-                />
+                <View>
+                    <UILinkButton
+                        testID={`table_cell_clickable_${caption || 'default'}_value`}
+                        title={value}
+                        size={UILinkButtonSize.Small}
+                        onPress={onPress || (() => this.onActionPressed(details))}
+                    />
+                </View>
             );
         } else if (component) {
             return component;
