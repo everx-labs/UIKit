@@ -80,6 +80,10 @@ const Content: React.FC<ContentProps> = ({
     });
 
     const linearAnimatedState = Animated.useDerivedValue<number>(() => {
+        /**
+         * Used linear animation because there is no bouncing effect on transparency.
+         * Linear animation in this case will be sufficient because there will be no animation interruption
+         * */
         return Animated.withTiming(
             displayState.value,
             { duration: DURATION_OF_LINEAR_ANIMATION },
