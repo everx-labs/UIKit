@@ -12,9 +12,9 @@ import type {
 
 const getActionVariant = (type: UIAlertViewActionType): UIBoxButtonVariant => {
     switch (type) {
-        case 'Destructive':
+        case 'Negative':
             return UIBoxButtonVariant.Negative;
-        case 'Primary':
+        case 'Neutral':
         default:
             return UIBoxButtonVariant.Neutral;
     }

@@ -33,17 +33,17 @@ export const Popups = () => {
                         <UIAlertView.Action
                             title="First Action"
                             onPress={getCallback('First Action')}
-                            type="Primary"
+                            type="Neutral"
                         />
                         <UIAlertView.Action
                             title="Second Action"
                             onPress={getCallback('Second Action')}
-                            type="Primary"
+                            type="Neutral"
                         />
                         <UIAlertView.Action
                             title="Destructive Action"
-                            onPress={getCallback('Destructive Action')}
-                            type="Destructive"
+                            onPress={getCallback('Negative Action')}
+                            type="Negative"
                         />
                     </UIAlertView>
                 </View>

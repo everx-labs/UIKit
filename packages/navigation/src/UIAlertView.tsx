@@ -1,6 +1,6 @@
 import { UIAlertViewContainer, UIAlertViewAction } from './UIAlert';
 
-export type UIAlertViewActionType = 'Primary' | 'Destructive';
+export type UIAlertViewActionType = 'Neutral' | 'Negative';
 
 export type UIAlertViewActionProps = {
     /**
