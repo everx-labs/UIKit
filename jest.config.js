@@ -2,15 +2,18 @@ module.exports = {
     setupFiles: [
         '<rootDir>/jest-setup.js',
     ],
-    setupFilesAfterEnv: [
-        '@testing-library/react-native/cleanup-after-each',
-    ],
     testEnvironment: 'node',
-    testMatch: [
-        '**/__tests__/*/*.[jt]s?(x)',
+    preset: 'react-native',
+    setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
+    collectCoverage: true,
+    collectCoverageFrom: [
+        'packages/**/*.{js}',
+        '!**/node_modules/**',
     ],
-    preset: '@testing-library/react-native',
+    roots: [
+        'packages/',
+    ],
     transformIgnorePatterns: [
-        '<rootDir>/node_modules/(?!react-navigation|react-native|rn-fetch-blob|react-native-fs|jest|)',
+        '<rootDir>/node_modules/(?!react-navigation|@react-native|rn-fetch-blob|react-native-fs|jest|)',
     ],
 };
