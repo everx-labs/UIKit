@@ -150,7 +150,7 @@ function Key({ num, disabled }: { num: number; disabled: boolean }) {
 type BiometryProps = {
     isBiometryEnabled: boolean;
     biometryType?: UIPinCodeBiometryType;
-    getPasscodeWithBiometry?: () => Promise<string>;
+    getPasscodeWithBiometry?: () => Promise<string | undefined>;
 };
 
 function BiometryKey({
@@ -195,6 +195,10 @@ function BiometryKey({
             return;
         }
         const passcode = await getPasscodeWithBiometry();
+
+        if (passcode == null) {
+            return;
+        }
 
         dotsValues.current.forEach((_dot, index) => {
             dotsValues.current[index].value = Number(passcode[index]);
@@ -385,7 +389,7 @@ export function UIPinCode({
     descriptionTestID?: string;
     disabled?: boolean;
     onEnter: (pin: string) => Promise<boolean>;
-    onSuccess: () => void;
+    onSuccess: (pin: string) => void;
 } & BiometryProps) {
     const dotsValues = React.useRef([
         useSharedValue(-1),
@@ -462,7 +466,7 @@ export function UIPinCode({
                     validState.value = ValidationState.None;
 
                     if (isValid) {
-                        onSuccess();
+                        onSuccess(pin);
                     }
                 }, 1000);
             });
