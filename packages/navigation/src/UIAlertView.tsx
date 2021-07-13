@@ -49,14 +49,12 @@ export type UIAlertViewContainerProps = {
 /**
  * UIAlertView components
  */
-export type UIAlertView = {
-    /** Parent component that contains the actions */
-    Container: React.FC<UIAlertViewContainerProps>;
+export type UIAlertView = React.FC<UIAlertViewContainerProps> & {
     /** Action component */
     Action: React.FC<UIAlertViewActionProps>;
 };
 
-export const UIAlertView: UIAlertView = {
-    Container: UIAlertViewContainer,
-    Action: UIAlertViewAction,
-};
+// @ts-expect-error
+// ts doesn't understand that we assign [Action] later, and want to see it right away
+export const UIAlertView: UIAlertView = UIAlertViewContainer
+UIAlertView.Action = UIAlertViewAction

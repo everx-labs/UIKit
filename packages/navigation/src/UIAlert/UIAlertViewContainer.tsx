@@ -7,6 +7,7 @@ import type {
     UIAlertViewActionProps,
     UIAlertViewContainerProps,
 } from '../UIAlertView';
+import { UIConstant } from '../constants';
 
 const getAlertViewActions = (
     children: React.ReactNode,
@@ -69,8 +70,12 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
         >
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <UILabel role={UILabelRoles.TitleSmall}>{title}</UILabel>
-                    <View style={styles.headerSeparator} />
+                    <UILabel
+                        role={UILabelRoles.TitleSmall}
+                        style={styles.headerTitle}
+                    >
+                        {title}
+                    </UILabel>
                     <UILabel role={UILabelRoles.ParagraphFootnote}>
                         {note}
                     </UILabel>
@@ -87,10 +92,10 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
     },
     header: {
-        paddingVertical: 16,
+        paddingVertical: UIConstant.contentInsetVerticalX4,
     },
-    headerSeparator: {
-        height: 4,
+    headerTitle: {
+        paddingBottom: 4,
     },
     actionsContainer: {
         flexDirection: 'row',

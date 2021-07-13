@@ -24,7 +24,7 @@ export const Popups = () => {
                         title="Show UIAlertView"
                         onPress={() => setIsUIAlertViewVisible(true)}
                     />
-                    <UIAlertView.Container
+                    <UIAlertView
                         visible={isUIAlertViewVisible}
                         title="Please select your action"
                         note="You can select it later"
@@ -45,7 +45,7 @@ export const Popups = () => {
                             onPress={getCallback('Destructive Action')}
                             type="Destructive"
                         />
-                    </UIAlertView.Container>
+                    </UIAlertView>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDropdownAlert">
